@@ -232,7 +232,7 @@ export default function Dashboard() {
 
         <div ref={mainScrollRef} className="flex-1 overflow-y-auto p-[var(--space-lg)]">
           {view === 'secrets' && !selectedSkill && (
-            <SecretsPanel secrets={secrets} skills={skills} busy={busy} repo={repo} focusKey={secretFocus} onFocusHandled={() => setSecretFocus(null)} onSave={saveSecret} onDelete={deleteSecret} onSelectSkill={(name) => { setSelectedSkill(name); setView('hq') }} onConnectClaude={() => setupAuth()} connecting={authLoading} />
+            <SecretsPanel secrets={secrets} skills={skills} busy={busy} repo={repo} focusKey={secretFocus} onFocusHandled={() => setSecretFocus(null)} onSave={saveSecret} onDelete={deleteSecret} onSelectSkill={(name) => { setSelectedSkill(name); setView('hq') }} onConnectClaude={() => setupAuth()} connecting={authLoading} onConnectGrok={() => setupGrokAuth()} grokConnecting={grokLoading} />
           )}
           {view === 'strategy' && !selectedSkill && (
             strategyError

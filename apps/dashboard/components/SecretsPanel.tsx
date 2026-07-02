@@ -33,9 +33,11 @@ interface SecretsPanelProps {
   onSelectSkill: (name: string) => void
   onConnectClaude: () => void
   connecting?: boolean
+  onConnectGrok: () => void
+  grokConnecting?: boolean
 }
 
-export function SecretsPanel({ secrets, skills, busy, repo, focusKey, onFocusHandled, onSave, onDelete, onSelectSkill, onConnectClaude, connecting }: SecretsPanelProps) {
+export function SecretsPanel({ secrets, skills, busy, repo, focusKey, onFocusHandled, onSave, onDelete, onSelectSkill, onConnectClaude, connecting, onConnectGrok, grokConnecting }: SecretsPanelProps) {
   const [editingSecret, setEditingSecret] = useState<string | null>(null)
   const [secretValue, setSecretValue] = useState('')
   const [addingSecret, setAddingSecret] = useState(false)
@@ -164,6 +166,7 @@ export function SecretsPanel({ secrets, skills, busy, repo, focusKey, onFocusHan
                     </div>
                     <div className="flex gap-1.5 shrink-0">
                       {secret.name === 'CLAUDE_CODE_OAUTH_TOKEN' && !claudeAuthSet && <button onClick={onConnectClaude} disabled={connecting} title="Run the Claude Code OAuth flow - signs in with your Claude Pro/Max plan, no API key or manual token needed." className="text-[11px] text-aeon-bg bg-aeon-fg font-mono px-2.5 py-1 hover:opacity-90 transition-opacity disabled:opacity-50">{connecting ? '…' : 'Connect'}</button>}
+                      {secret.name === 'GROK_CREDENTIALS' && <button onClick={onConnectGrok} disabled={grokConnecting} title="Run the Grok Build device-auth flow - opens your browser to approve on accounts.x.ai, then stores the session for CI. Use Reconnect if the session expires." className="text-[11px] text-aeon-bg bg-aeon-fg font-mono px-2.5 py-1 hover:opacity-90 transition-opacity disabled:opacity-50">{grokConnecting ? '…' : (secret.isSet ? 'Reconnect' : 'Connect')}</button>}
                       {!secret.isSet && editingSecret !== secret.name && <button onClick={() => { setEditingSecret(secret.name); setSecretValue('') }} className="text-[11px] text-primary-40 font-mono hover:text-eva-orange transition-colors px-2 py-1">Set</button>}
                       {secret.isSet && <button onClick={() => onDelete(secret.name)} disabled={!!busy[`sec-${secret.name}`]} className="text-[11px] text-eva-red/50 hover:text-eva-red font-mono px-2 py-1 transition-colors">Remove</button>}
                     </div>
