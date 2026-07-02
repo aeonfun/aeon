@@ -21,7 +21,6 @@ on:
           - claude-sonnet-4-6
           - claude-haiku-4-5-20251001
           - grok-composer-2.5-fast
-          - grok-build
       harness:
         description: 'Agent harness'
         required: false
@@ -367,6 +366,7 @@ jobs:
           fi
           echo "Using harness: $HARNESS  |  model: $MODEL"
           echo "SKILL_MODEL=$MODEL" >> "$GITHUB_OUTPUT"
+          echo "HARNESS=$HARNESS" >> "$GITHUB_OUTPUT"   # read by the post-run scorer / feed-convert steps
 
           # --- AI Gateway routing ---
           # provider: auto → cascade through every provider whose key is set, in
@@ -648,7 +648,8 @@ jobs:
           USEPOD_TOKEN: ${{ secrets.USEPOD_TOKEN }}
           VENICE_API_KEY: ${{ secrets.VENICE_API_KEY }}
           SURPLUS_API_KEY: ${{ secrets.SURPLUS_API_KEY }}
-          XAI_API_KEY: ${{ secrets.XAI_API_KEY }}   # grok gateway: score grok-harness output via xAI
+          XAI_API_KEY: ${{ secrets.XAI_API_KEY }}   # grok scorer: API-key auth path
+          GROK_CREDENTIALS: ${{ secrets.GROK_CREDENTIALS }}   # grok scorer: X-account OAuth (restored by run-grok.sh)
           OPENROUTER_MODEL: ${{ vars.OPENROUTER_MODEL }}
           OPENROUTER_MODEL_SONNET: ${{ vars.OPENROUTER_MODEL_SONNET }}
           OPENROUTER_MODEL_HAIKU: ${{ vars.OPENROUTER_MODEL_HAIKU }}
@@ -666,9 +667,15 @@ jobs:
           # Skip analysis for meta skills (they don't produce scorable output)
           case "$SKILL" in heartbeat|skill-health|skill-analytics|reflect|memory-flush|self-review|cost-report) echo "Skipping analysis for meta skill"; exit 0;; esac
 
-          # Route through gateway if configured
-          GATEWAY="${{ steps.run.outputs.GATEWAY }}"
-          source "${GITHUB_WORKSPACE}/scripts/llm-gateway.sh"
+          HARNESS="${{ steps.run.outputs.HARNESS }}"
+          # Route the scorer's claude call through the gateway (claude harness only).
+          # On grok we score via run-grok.sh below and don't touch the gateway, so
+          # skip the source entirely — otherwise it prints "Using direct Anthropic
+          # API" noise on a grok-only repo.
+          if [ "$HARNESS" != "grok" ]; then
+            GATEWAY="${{ steps.run.outputs.GATEWAY }}"
+            source "${GITHUB_WORKSPACE}/scripts/llm-gateway.sh"
+          fi
 
           # Read and truncate skill output for analysis
           OUTPUT=""
@@ -695,7 +702,18 @@ jobs:
           JSON format: {\"score\": N, \"assessment\": \"one line\", \"flags\": []}"
 
           SCORE_MODEL="${ANTHROPIC_DEFAULT_HAIKU_MODEL:-claude-haiku-4-5-20251001}"
-          if ! RAW=$(echo "$ANALYSIS_PROMPT" | claude -p - \
+          if [ "$HARNESS" = "grok" ]; then
+            # Score through the SAME harness the skill ran on. A grok-only repo has
+            # no Claude credentials, so `claude -p` would just print "Not logged in";
+            # run-grok.sh reuses the run's X-account/API-key auth and emits the same
+            # {result,usage} envelope. MODEL= → grok's default (grok-composer-2.5-fast,
+            # the only grok model that completes in CI). Its notices go to stderr.
+            if ! RAW=$(echo "$ANALYSIS_PROMPT" | MODEL= SKILL_MODE=read-only \
+                bash "${GITHUB_WORKSPACE}/scripts/run-grok.sh" 2>/dev/null); then
+              echo "::notice::Skill scoring skipped — grok scorer unavailable (non-fatal)"
+              exit 0
+            fi
+          elif ! RAW=$(echo "$ANALYSIS_PROMPT" | claude -p - \
             --model "$SCORE_MODEL" --output-format json 2>&1); then
             echo "::warning::Skill analysis failed (non-fatal). Raw: $(printf '%s' "$RAW" | head -c 800 | tr '\n' ' ')"
             exit 0
@@ -706,13 +724,14 @@ jobs:
           # this call (seen twice on OpenRouter's haiku slug, while its opus
           # slug always returns text). Retry once on the run's main model —
           # llm-gateway.sh only sets MODEL here when the gateway remaps it.
-          if [ -z "$ANALYSIS_TEXT" ] && [ -n "${MODEL:-}" ] && [ "$MODEL" != "$SCORE_MODEL" ]; then
+          # (claude harness only; grok already used its default.)
+          if [ "$HARNESS" != "grok" ] && [ -z "$ANALYSIS_TEXT" ] && [ -n "${MODEL:-}" ] && [ "$MODEL" != "$SCORE_MODEL" ]; then
             echo "::warning::Empty analysis result from ${SCORE_MODEL} — retrying with ${MODEL}. Raw: $(printf '%s' "$RAW" | head -c 800 | tr '\n' ' ')"
             if RAW=$(echo "$ANALYSIS_PROMPT" | claude -p - --model "$MODEL" --output-format json 2>&1); then
               ANALYSIS_TEXT=$(echo "$RAW" | jq -r '.result // empty')
             fi
           fi
-          if [ -z "$ANALYSIS_TEXT" ]; then echo "::warning::Empty analysis result. Raw: $(printf '%s' "$RAW" | head -c 800 | tr '\n' ' ')"; exit 0; fi
+          if [ -z "$ANALYSIS_TEXT" ]; then echo "::notice::Empty analysis result — skipping score (non-fatal)."; exit 0; fi
 
           # Parse score: accept raw JSON, else strip code fences, flatten newlines,
           # and grab the outermost {…} object — handles fenced / multi-line output
@@ -766,7 +785,10 @@ jobs:
           echo "::notice::Skill quality — $SKILL: score=$SCORE, avg=$AVG — $ASSESSMENT"
 
       - name: Convert feed outputs
-        if: steps.work.outputs.mode != '' && vars.JSONRENDER_ENABLED != 'false'
+        # Skipped on the grok harness: notify-jsonrender renders via `claude -p`, so
+        # on a grok-only repo (no Claude auth) it can only no-op with noise. The
+        # jsonrender feed is a Claude-Code-side feature.
+        if: steps.work.outputs.mode != '' && vars.JSONRENDER_ENABLED != 'false' && steps.run.outputs.HARNESS != 'grok'
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
