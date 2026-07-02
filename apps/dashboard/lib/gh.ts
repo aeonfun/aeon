@@ -60,3 +60,14 @@ export function ensureActionsCanOpenPRs(): void {
       { stdio: 'pipe', cwd: REPO_ROOT })
   } catch { /* auto-merge unavailable (e.g. private free repo) — skill falls back to direct merge */ }
 }
+
+// Dispatch the "Setup Telegram Commands" workflow (.github/workflows/setup-commands.yml).
+// It reads TELEGRAM_BOT_TOKEN server-side (where secrets are readable) and pushes the
+// bot's `/` command menu via setMyCommands + setChatMenuButton — no token pasting. Used
+// both by the manual "Re-register" button and automatically right after the bot token is
+// saved. Throws on failure so the API route can surface it; wrap in try/catch for the
+// best-effort auto-register path.
+export function dispatchCommandsWorkflow(): void {
+  execFileSync('gh', ['workflow', 'run', 'setup-commands.yml', ...ghArgsRepo()],
+    { stdio: 'pipe', cwd: REPO_ROOT })
+}

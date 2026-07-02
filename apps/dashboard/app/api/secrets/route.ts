@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { execFileSync } from 'child_process'
-import { ghAvailable, ghArgsRepo } from '@/lib/gh'
+import { ghAvailable, ghArgsRepo, dispatchCommandsWorkflow } from '@/lib/gh'
 import { syncGatewayProvider } from '@/lib/gateway'
 import { errorResponse } from '@/lib/http'
 import { GATEWAY_SECRET_NAMES } from '@/lib/gateway-registry'
@@ -114,6 +114,13 @@ export async function POST(request: Request) {
     // Keep routing on `auto` so the workflow resolves the provider at run time
     // from whichever keys are set (scripts/llm-gateway.sh) - no per-key pinning.
     if (GATEWAY_SECRET_NAMES.includes(name)) await syncGatewayProvider()
+    // Auto-register the Telegram slash-command menu the moment the bot token lands,
+    // so the operator never has to run the workflow by hand for the first setup.
+    // Best-effort: a dispatch hiccup must not fail the secret save (the manual
+    // "Re-register" button and the aeon.yml push trigger are the fallbacks).
+    if (name === 'TELEGRAM_BOT_TOKEN') {
+      try { dispatchCommandsWorkflow() } catch { /* non-fatal — token is still saved */ }
+    }
     return NextResponse.json({ ok: true })
   } catch (error: unknown) {
     return errorResponse(error, 'Failed to set secret')

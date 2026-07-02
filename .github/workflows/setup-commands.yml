@@ -3,9 +3,15 @@ name: Setup Telegram Commands
 # Pushes the bot's slash-command list (the `/` autocomplete menu) to Telegram and
 # points the message-field menu button at it. Idempotent — safe to re-run anytime.
 #
-# Runs on demand (Actions tab → Run workflow) and automatically whenever aeon.yml
-# changes on main, so the menu never drifts from the set of enabled skills.
-# No-ops silently on forks without TELEGRAM_BOT_TOKEN configured.
+# Triggers:
+#   • automatically the moment TELEGRAM_BOT_TOKEN is saved in the dashboard
+#     (apps/dashboard → POST /api/secrets dispatches this workflow), so first-time
+#     setup needs no manual step;
+#   • the dashboard's "Re-register commands" button (POST /api/telegram/commands);
+#   • whenever aeon.yml changes on main, so the menu never drifts from the enabled set;
+#   • on demand from the Actions tab → Run workflow.
+# All paths read TELEGRAM_BOT_TOKEN server-side (no token pasting). No-ops silently on
+# forks without TELEGRAM_BOT_TOKEN configured.
 
 on:
   workflow_dispatch:
