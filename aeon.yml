@@ -218,7 +218,7 @@ chains:
 # Default model for all skills. Override per-run via workflow_dispatch.
 # Options: claude-opus-4-8, claude-fable-5, claude-sonnet-5, claude-sonnet-4-6, claude-haiku-4-5-20251001
 # (Grok Build harness models: grok-composer-2.5-fast [default], grok-build)
-model: grok-composer-2.5-fast
+model: claude-opus-4-8
 
 # Agent harness — which coding-agent CLI runs your skills.
 #   claude (default) — Claude Code (`claude -p`); uses the AI Gateway below.
@@ -228,7 +228,7 @@ model: grok-composer-2.5-fast
 # Override per-skill with `harness: "grok"` in the skill entry, or per-run via
 # the workflow_dispatch `harness` input. Default stays claude — everything
 # already configured keeps working unchanged.
-harness: grok
+harness: claude
 
 # AI Gateway — route Claude Code requests through an LLM provider.
 #
