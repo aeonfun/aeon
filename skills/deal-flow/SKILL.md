@@ -2,10 +2,13 @@
 name: Deal Flow
 category: productivity
 description: Funding round tracker across configurable verticals
+var: ""
 tags: [research]
 ---
 
 <!-- autoresearch: variation B — sharper output via leverage scoring, valuation context, and banned-phrase quality gates -->
+
+> **${var}** — Optional. Normally empty (runs the full weekly digest across tracked verticals). A value starting with `add-topic:` (e.g. `add-topic:stablecoin infra`) is the Telegram force-reply shape — it appends `<topic>` to the tracked verticals in `memory/MEMORY.md` and ends the run without producing a digest (see Step 0).
 
 Read `memory/MEMORY.md` for context (tracked verticals, active theses).
 Read the last 14 days of `memory/logs/` and extract company names from prior `### deal-flow` entries to build the dedup set.
@@ -15,6 +18,25 @@ Read the last 14 days of `memory/logs/` and extract company names from prior `##
 Produce a weekly funding-round digest that tells the reader **what the capital reveals**, not just what closed. A flat list of rounds is noise; a ranked, contextualized read is signal.
 
 ## Steps
+
+### 0. Inbound reply + onboarding offer (Telegram force-reply wiring)
+
+**Handle a reply first — this branch takes priority over the digest below.** If `${var}` starts with `add-topic:`, this run is the operator answering the "track a new vertical?" prompt, not a scheduled digest:
+
+1. Strip the prefix and trim: `topic="${var#add-topic:}"` then strip surrounding whitespace. The value is free text and may contain spaces (e.g. `stablecoin infra`, `prediction markets`) — keep it whole.
+2. If `topic` is empty/blank after trimming, send a friendly re-ask (no force-reply loop) and END the run:
+   `./notify "No vertical received — reply to the prompt with a vertical to track (for example: stablecoin infra, or prediction markets), and I'll add it to deal-flow's tracked verticals."`
+3. Otherwise append `topic` as a `- ${topic}` bullet under a `## Tracked Verticals` section in `memory/MEMORY.md` (create the section if it doesn't exist — this is the same section Tier 2 reads). **Dedup:** skip the append if the vertical already appears there (case-insensitive).
+4. Confirm (keep it ≥120 chars so a topic containing a filtered word can't be dropped as a probe):
+   `./notify "Now tracking \"${topic}\" for deal-flow. It's been added to the Tracked Verticals in memory/MEMORY.md and will get its own source sweep in next week's funding-round digest."`
+5. Log under `### deal-flow`: `- add-topic: "${topic}" → appended to ## Tracked Verticals in memory/MEMORY.md` and **END the run** (skip all steps below).
+
+**Onboarding offer (normal runs only, deduped).** If `${var}` did NOT start with `add-topic:` AND `memory/MEMORY.md` has no `## Tracked Verticals` section (or it's empty) AND the last 14 days of `memory/logs/` contain no `FORCE_REPLY_OFFERED: add-topic` marker for this skill, send one force-reply offer, then continue the normal digest below:
+```bash
+./notify "Want deal-flow to track another vertical beyond AI / crypto / infra? Reply with one (e.g. stablecoin infra) and I'll sweep it each week." \
+  --force-reply --placeholder "a topic to track" --context "deal-flow::add-topic"
+```
+Then log a `FORCE_REPLY_OFFERED: add-topic` marker line under `### deal-flow` so it doesn't re-offer next run. (The force-reply is a separate notify, never combined with other output.)
 
 ### 1. Gather candidates from tiered sources
 
@@ -28,7 +50,9 @@ Run searches in parallel. Use the **current month + year** in queries. Aim for �
 - WebSearch: `"Series A" OR "Series B" OR "seed" raised ${month} ${year} startup`
 - WebFetch `https://news.crunchbase.com/sections/venture/` — extract this week's roundup if present (apply source-miss rule above)
 
-**Tier 2 — vertical-specific (run for verticals in MEMORY.md; defaults: AI, crypto, infra/devtools):**
+**Tier 2 — vertical-specific (run for the operator's tracked verticals; defaults: AI, crypto, infra/devtools):**
+
+Read the `## Tracked Verticals` section of `memory/MEMORY.md` (Step 0 maintains it — one `- ` bullet per vertical) and merge those with the defaults below. For any operator-added vertical not already covered by the three built-in sweeps, add one `WebSearch: "<vertical>" funding round OR raised ${month} ${year}`.
 - AI: WebFetch `https://aifundingtracker.com/`; WebSearch `"AI startup" "raised" Series ${month} ${year}`
 - Crypto: WebFetch `https://crypto-fundraising.info/` and `https://cryptorank.io/funding-rounds` (apply source-miss rule); WebSearch `crypto funding round ${month} ${year}`
 - Infra/devtools: WebSearch `developer tools OR infrastructure OR compute startup raised ${month} ${year}`

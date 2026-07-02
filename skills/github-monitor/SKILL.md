@@ -14,6 +14,7 @@ permissions: []
 > - **`issues [scope]`** → new-issue triage queue. `scope` accepts `owner/repo`, `org:foo`, `user:bar`, or a bare login; empty = all repos owned by the authenticated user.
 > - **`releases [repo,repo,…]`** → release upgrade-triage digest. Comma-separated repo list; empty = the built-in watch list.
 > - **`prs`** → status tracker for PRs this aeon instance opened across external repos.
+> - **`add-repo:<owner/repo>`** → append `owner/repo` to `memory/watched-repos.md`, confirm, and end (the shape the Telegram force-reply sends — see the config-capture note in Shared setup). No view runs.
 
 This skill is four focused views of the same GitHub surface. The combined monitor is the default; `issues`, `releases`, and `prs` each drill into one dimension with the sibling view's own filtering, ranking, and output format. Only the `monitor` and `issues` views take a repo scope; `releases` takes a repo list; `prs` takes no scope (it reads its config from `aeon.yml`/env).
 
@@ -27,6 +28,30 @@ This skill is four focused views of the same GitHub surface. The combined monito
 
 ```bash
 RAW="$(printf '%s' "${var}" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
+
+# Config capture (Telegram force-reply): var="add-repo:<owner/repo>" appends to the watchlist,
+# confirms, and ends — it is NOT a view, so it must be intercepted before the VIEW parse below.
+case "$RAW" in
+  add-repo:*)
+    CAND="$(printf '%s' "${RAW#add-repo:}" \
+      | sed -e 's#^https\?://github.com/##' -e 's/^@//' -e 's/\.git$//' \
+            -e 's/^[[:space:]]*//' -e 's/[[:space:]].*$//')"
+    if ! printf '%s' "$CAND" | grep -qE '^[A-Za-z0-9._-]+/[A-Za-z0-9._-]+$'; then
+      ./notify "Couldn't read \"$CAND\" as a repo. Reply with owner/repo (e.g. acme/api)."
+      # log: - view: add-repo (var="${var}") → BAD_VALUE
+      exit 0
+    fi
+    mkdir -p memory; touch memory/watched-repos.md
+    if grep -qiE "^[[:space:]]*-[[:space:]]*${CAND}[[:space:]]*$" memory/watched-repos.md; then
+      ./notify "Already watching $CAND."
+    else
+      printf -- '- %s\n' "$CAND" >> memory/watched-repos.md
+      ./notify "Now watching $CAND — it'll show up in the next GitHub Monitor run."
+    fi
+    # log under ### github-monitor: - view: add-repo (var="${var}") → $CAND
+    exit 0 ;;
+esac
+
 if [ -z "$RAW" ]; then
   VIEW=monitor; SCOPE=""
 else
@@ -53,7 +78,15 @@ Tiered urgency scan of PRs, new issues, and new releases across watched repos, w
 
 ### Config
 
-Read repos from `memory/watched-repos.md`. If the file is missing or empty, log `GITHUB_MONITOR_EMPTY_CONFIG` (under `### github-monitor`) and end.
+Read repos from `memory/watched-repos.md`. If the file is missing or empty, offer to add the first repo via a Telegram force-reply, then log `GITHUB_MONITOR_EMPTY_CONFIG` (under `### github-monitor`) and end. Send the offer **only** if no `add-repo` prompt was already offered in the last 2 days of `memory/logs/` (dedup so an unconfigured fork isn't nagged every run):
+
+```bash
+./notify "No repos on the watchlist yet. Which repo should I watch? Reply with owner/repo." \
+  --force-reply --placeholder "owner/repo" \
+  --context "github-monitor::add-repo"
+```
+
+The reply routes back as `var=add-repo:<owner/repo>`, handled by the config-capture branch in Shared setup. Record `FORCE_REPLY_OFFERED: add-repo` in the log when you send it.
 
 ```markdown
 # memory/watched-repos.md

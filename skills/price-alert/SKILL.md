@@ -5,7 +5,7 @@ description: Fire when the tracked token does something — new ATH, sharp 1h mo
 var: ""
 tags: [crypto]
 ---
-> **${var}** — Optional. Pass one or more `target_price` levels (comma-separated USD numbers, scientific notation allowed) to fire a one-time alert when the price crosses any of them. Empty = only ATH and sharp-move gates run. Pass `dry-run` to skip notify (state still updates).
+> **${var}** — Optional. Pass one or more `target_price` levels (comma-separated USD numbers, scientific notation allowed) to fire a one-time alert when the price crosses any of them. Empty = only ATH and sharp-move gates run. Pass `dry-run` to skip notify (state still updates). Pass `set-target:<price>` — the shape the Telegram force-reply sends (step 7) — to register a target and get a one-line confirmation.
 
 Today is ${today}. `repo-pulse` reports star/fork deltas once a day, and the other scheduled digests run at fixed hours. None of them tell the operator "the price just hit a new high" or "the token moved 28% in the last hour" — both are events that warrant attention the moment they happen, not 14 hours later in a daily digest. This skill closes that window.
 
@@ -68,11 +68,12 @@ Key invariants:
 
 ### 1. Parse var
 
-- If `${var}` matches `^dry-run` → `MODE=dry-run`. Strip the prefix; remainder (if any) is treated as targets.
+- If `${var}` starts with `set-target:` → set `FROM_REPLY=1`, `MODE=execute`. Strip the `set-target:` prefix (`${var#set-target:}`); the remainder is the target(s) list, parsed exactly like the comma-split below. This is the shape `scripts/telegram-route.sh` sends when the operator replies to the step-7 force-reply prompt. The run proceeds normally (register the target, don't fire on first observation) and closes the loop with a confirmation in step 7.
+- Else if `${var}` matches `^dry-run` → `MODE=dry-run`. Strip the prefix; remainder (if any) is treated as targets.
 - Otherwise `MODE=execute`.
 - Split the remainder on `,` (commas) and strip whitespace.
 - For each token: if it parses as a positive float (scientific notation OK, e.g. `5e-6`), include it. Reject zero / negative / non-numeric tokens and log `PRICE_ALERT_BAD_TARGET: ${token}` — continue with the surviving targets.
-- If after filtering the remainder was non-empty but yielded zero valid targets → log `PRICE_ALERT_BAD_VAR: ${var}` and exit (no notify).
+- If after filtering the remainder was non-empty but yielded zero valid targets → log `PRICE_ALERT_BAD_VAR: ${var}` and exit. Normally no notify — **but if `FROM_REPLY=1`**, first close the loop with `./notify "Couldn't read \"${var#set-target:}\" as a price. Reply with a number like 0.000005."` (a force-reply always deserves an acknowledgement).
 - If the remainder was empty, `TARGETS=()` is fine — ATH and sharp-move gates still run.
 
 ### 2. Resolve tracked token
@@ -193,6 +194,48 @@ Chart: ${POOL_URL}
 If `MODE == dry-run`: build the messages, log the planned notifications, but skip `./notify`. State still updates so dedup clocks advance correctly.
 
 Cap each message at ~2500 chars; price-alert messages are short by nature and shouldn't approach this.
+
+#### Interactive controls (Telegram)
+
+Every alert notification carries snooze/mute controls plus a one-tap deep report, so a chatty
+token can be quieted without a config edit (see [`docs/telegram-commands.md`](../../docs/telegram-commands.md)).
+Pass **`--mute-key "price-alert:$SYMBOL"`** so a tapped Snooze/Mute actually suppresses future
+alerts — `notify` skips the send when that key is muted or snoozed into the future, no skill-side
+logic required. Build each gate's message to a file and send it like this:
+
+```bash
+KEY="price-alert:$SYMBOL"          # $SYMBOL resolved from the tracked token (a bare ticker)
+./notify -f alert.md \
+  --mute-key "$KEY" \
+  --buttons "[[{\"text\":\"Snooze 24h\",\"callback_data\":\"snooze:${KEY}:86400\"},
+               {\"text\":\"Mute\",\"callback_data\":\"mute:${KEY}\"},
+               {\"text\":\"Deep report\",\"callback_data\":\"run:token-movers:${SYMBOL}\"}]]"
+```
+
+- The **Deep report** button re-dispatches `token-movers` in single-token mode on the same symbol
+  (`run:token-movers:$SYMBOL`) — one tap from "it moved" to a full report.
+- The mute-key is shared across all three gates, so muting a token silences its ATH, sharp-move,
+  and target pings together — the intended "quiet this token" behaviour. State still advances, so
+  the moment the operator unmutes, dedup clocks are already correct.
+- Keep `callback_data` ≤64 bytes: `$SYMBOL` is a bare ticker, never a name with spaces.
+
+#### Set-a-target follow-up (force-reply)
+
+Buttons and force_reply can't share one message, so this is a **separate** send. After a genuine
+**ATH** alert (post-baseline, not a deduped repeat), and only when no un-hit operator target
+currently sits above `CURRENT_PRICE` (don't nag operators who already queued one), offer to capture
+the next level:
+
+```bash
+./notify "New high — want an alert when $SYMBOL clears a level above this? Reply with a price." \
+  --force-reply --placeholder "e.g. 0.000005" \
+  --context "price-alert::set-target"
+```
+
+The reply routes back as `var=set-target:<price>` (handled in step 1). On that run, once the target
+is registered (step 6, first-observation — no cross alert), close the loop with a one-line
+confirmation: `./notify "Target set: \$<price> for $SYMBOL — I'll alert you when it crosses."`
+(Send it only when a *new* target was actually registered this run.)
 
 ### 8. Persist state
 

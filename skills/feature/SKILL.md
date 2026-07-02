@@ -10,7 +10,7 @@ requires: [GH_GLOBAL?]
 tags: [dev, build, growth]
 depends_on: [repo-scanner]
 ---
-> **${var}** — Selector `target[:arg] [--fix-issues]`, `target ∈ {watched, external, dormant}`. Empty or `watched` = build a feature on every watched repo (one PR each); `external:<owner/repo>` = one best enhancement on that external repo; `dormant` = revive the highest-scoring dormant repo. `--fix-issues` biases the chosen branch toward fixing an open GitHub issue. Full grammar below.
+> **${var}** — Selector `target[:arg] [--fix-issues]`, `target ∈ {watched, external, dormant}`. Empty or `watched` = build a feature on every watched repo (one PR each); `external:<owner/repo>` = one best enhancement on that external repo; `dormant` = revive the highest-scoring dormant repo. A leading `build:<owner/repo | issue-url | free-text instruction>` — the shape the Telegram "ship which opportunity?" force-reply sends via `repo-scanner`'s offer — is intercepted **first** and routed into the **external** branch on that target/instruction. `--fix-issues` biases the chosen branch toward fixing an open GitHub issue. Full grammar below.
 
 This skill merges three repo-work modes behind one selector so no capability is lost:
 
@@ -23,6 +23,15 @@ This skill merges three repo-work modes behind one selector so no capability is 
 Today is ${today}. Read `memory/MEMORY.md` and the last 7 days of `memory/logs/` before starting — and before notifying, drop anything already reported in the last ~3 days of logs.
 
 ## Selector
+
+**Telegram force-reply interception — check this FIRST, before parsing anything else.** If `${var}` starts with `build:`, it is the "ship which opportunity?" force-reply that `repo-scanner` offers (routed here as `feature` with `var="build:<the operator's reply>"`). Strip the prefix with `${var#build:}` and treat the remainder as an **external build target/instruction** — route it straight into the **external** branch (§B), reusing that branch's existing logic (do **not** run the watched or dormant branches for a `build:` value, and do not duplicate §B). Normalize the remainder into a §B target:
+
+- `owner/repo` → run §B as if `external:owner/repo` (B2 "clone that repo").
+- an issue URL (`https://github.com/owner/repo/issues/N`) or `owner/repo#N` → run §B as if `external:owner/repo#N` (B2 "fetch that issue").
+- free text like `owner/repo: add retry to the client` → run §B on `owner/repo`, using the trailing text as the **explicit enhancement to build** (see §B4's "requested enhancement" note — skip the auto-pick).
+- anything else with no parseable repo → run §B passing the whole remainder as the enhancement instruction; §B B2/B4 already reason about selecting and scoping a target.
+
+The remainder may itself contain colons — keep them. This is a complete run once §B ships its PR (or cleanly skips); do not then fall through to the normal selector.
 
 Parse `${var}` into a **target** and optional flags:
 
@@ -249,6 +258,8 @@ Before doing anything, deeply understand the codebase:
 - Understand the test setup if tests exist
 
 ### B4. Decide what to do
+
+**Requested enhancement (force-reply `build:` path).** If this run was reached via the Selector's `build:` interception carrying a trailing free-text instruction (e.g. `owner/repo: add retry to the client`), that instruction **is** the change — implement it directly and skip the priority list below (still honor `--fix-issues` if it was passed). Only fall through to the priority list when the `build:` value was a bare repo/issue with no explicit instruction, or when this run wasn't reached via `build:` at all.
 
 Pick ONE thing from this priority list:
 

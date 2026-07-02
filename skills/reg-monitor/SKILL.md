@@ -8,7 +8,7 @@ requires: [CONGRESS_GOV_API_KEY?]
 ---
 <!-- autoresearch: variation B — sharper output via stage×impact scoring, action-first triage, deadline-aware buckets, structured primary sources (Federal Register + SEC/CFTC RSS), persistent URL dedup, source-status observability -->
 
-> **${var}** — Specific regulatory topic to narrow focus (e.g. `prediction-markets`, `stablecoins`, `ai-agents`). If empty, scans all tracked domains.
+> **${var}** — Specific regulatory topic to narrow focus (e.g. `prediction-markets`, `stablecoins`, `ai-agents`). If empty, scans all tracked domains. A value starting with `add-topic:` (e.g. `add-topic:RWA tokenization`) is the Telegram force-reply shape — it appends `<topic>` to the tracked verticals and ends the run without scanning (see Step 0).
 
 Read `memory/MEMORY.md` for context on current positions and interests.
 Read the last 2 days of `memory/logs/` entries for this skill to avoid repeating items.
@@ -19,6 +19,25 @@ Read `memory/topics/reg-monitor-seen.md` (create if missing) for persistent URL 
 Original skill produced news-shaped output (HIGH PRIORITY / NOTABLE / WATCH LIST) with soft ranking and no deadlines. Reg-monitor's real value is **decisions** — file a comment, prepare for a ban, short a market, brief counsel. Rank items by **stage × impact**, surface deadlines, drop filler buckets, and distinguish "quiet week" from "monitor failure" via source-status observability.
 
 ## Steps
+
+### 0. Inbound reply + onboarding offer (Telegram force-reply wiring)
+
+**Handle a reply first — this branch takes priority over everything below.** If `${var}` starts with `add-topic:`, this run is the operator answering the "track a new vertical?" prompt, not a scheduled scan:
+
+1. Strip the prefix and trim: `topic="${var#add-topic:}"` then strip surrounding whitespace. The value is free text and may contain spaces (e.g. `RWA tokenization`, `stablecoin regulation`) — keep it whole.
+2. If `topic` is empty/blank after trimming, send a friendly re-ask (no force-reply loop) and END the run:
+   `./notify "No vertical received — reply to the prompt with a regulatory topic to track (for example: stablecoin regulation, or prediction markets), and I'll add it to reg-monitor's tracked list."`
+3. Otherwise append `topic` as a new line to `memory/topics/reg-monitor-topics.md` (operator-tracked extra verticals, one topic per line — create the file if missing). **Dedup:** skip the append if the topic already appears (case-insensitive).
+4. Confirm (keep it ≥120 chars so a topic containing a filtered word can't be dropped as a probe):
+   `./notify "Now tracking \"${topic}\" for reg-monitor. It's been added to memory/topics/reg-monitor-topics.md and will be folded into the regulatory searches on the next scheduled run."`
+5. Log under `### reg-monitor`: `- add-topic: "${topic}" → appended to memory/topics/reg-monitor-topics.md` and **END the run** (skip all steps below).
+
+**Onboarding offer (normal runs only, deduped).** If `${var}` did NOT start with `add-topic:` AND `memory/topics/reg-monitor-topics.md` is missing or empty AND the last 2 days of `memory/logs/` contain no `FORCE_REPLY_OFFERED: add-topic` marker for this skill, send one force-reply offer, then continue the normal flow below:
+```bash
+./notify "Want reg-monitor to track another regulatory vertical? Reply with one (e.g. RWA tokenization) and I'll fold it into the searches." \
+  --force-reply --placeholder "a topic to track" --context "reg-monitor::add-topic"
+```
+Then log a `FORCE_REPLY_OFFERED: add-topic` marker line under `### reg-monitor` so it doesn't re-offer next run. (Sending a force-reply is just a notify flag — the offer is separate from any digest, never combined with buttons.)
 
 ### 1. Load inputs (structured primary sources first, WebSearch as gap-filler)
 
@@ -51,7 +70,9 @@ Keep items on/after `${since}`. CFTC runs prediction-market rulemaking — all C
 - `"AI agent" (regulation OR liability OR legislation) ${year}`
 - `ESMA OR MiCA (enforcement OR guidance) ${year}`
 
-If `${var}` is set, replace the above with 3 targeted searches for that specific topic (include `${year}` and "bill OR ruling OR enforcement").
+Also read `memory/topics/reg-monitor-topics.md` (operator-tracked extra verticals, one topic per line — Step 0 maintains it; treat as empty if the file is absent). For each listed topic, add one WebSearch: `"<topic>" (bill OR legislation OR regulation OR enforcement OR ruling) ${year}`. These fold the operator's topics into the same scoring/triage as the built-in domains.
+
+If `${var}` is set (and is not an `add-topic:` reply — that's handled in Step 0), replace the above with 3 targeted searches for that specific topic (include `${year}` and "bill OR ruling OR enforcement").
 
 **E. Congress.gov (optional, skip if no API key)** — if `CONGRESS_GOV_API_KEY` env var is set, WebFetch bill search for crypto/prediction-market keywords. Otherwise skip silently and rely on Federal Register + WebSearch to catch bill activity.
 

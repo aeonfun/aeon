@@ -484,6 +484,22 @@ Full details: https://github.com/${AEON_REPO}/blob/main/articles/repo-actions-${
 ```
 Where `AEON_REPO` = `git remote get-url origin` stripped to `owner/repo` (this is the Aeon repo, **not** `${TARGET}`).
 
+### B9a. Offer to ship one (Telegram force-reply)
+
+After the ideas article (and any Branch B notification), offer the operator a one-tap way to ship an opportunity: a Telegram force-reply whose answer routes to the `feature` skill, which opens the PR. This is a **separate** `./notify` call (force-reply and inline buttons can't share one Telegram message), sent only at this natural moment right after the ideas land.
+
+**Gate — offer only on real signal:**
+- Only when this run actually surfaced ≥1 opportunity — i.e. Branch B shipped ≥1 action idea (mode `REPO_ACTIONS_OK`, or `THIN` with ≥1 idea). Skip entirely on `NO_CHANGE`, `NO_CONFIG`, `ERROR`, or any zero-idea run.
+- **Dedup to once/day:** scan the last ~2 days of `memory/logs/` for a `FORCE_REPLY_OFFERED: build` marker. If one is present, skip the offer — you already asked recently. Don't nag every scheduled run.
+
+If both checks pass, send exactly one prompt:
+```bash
+./notify "Ship which opportunity? Reply with an owner/repo, an issue URL, or a one-line idea and I'll open a PR." \
+  --force-reply --context "feature::build" \
+  --placeholder "owner/repo or an idea"
+```
+The `--context "feature::build"` marker makes the operator's reply dispatch the **`feature`** skill with `var="build:<their reply>"`; feature's Selector intercepts the `build:` prefix and routes it into its external-enhancement branch. After sending, record the marker in the log (see B10) so the dedup holds. Keep the message free of `test`/`trace`/`ping`/`debug` (notify drops short diagnostic-looking probes).
+
 ### B10. Log (Branch B)
 Contribute to the consolidated `### repo-scanner` log block under an `actions:` sub-block:
 - Target: ${TARGET}
@@ -496,6 +512,7 @@ Contribute to the consolidated `### repo-scanner` log block under an `actions:` 
 - Dropped (novelty): [count]
 - Dropped (implementability → Monitor): [count]
 - Carried over to tomorrow: [titles of the top pick if not closed]
+- Force-reply offer: [sent → also append a discrete `FORCE_REPLY_OFFERED: build` line under this sub-block | skipped (deduped, offered ≤1d ago) | n/a (no ideas surfaced)]
 - Source status: gh=[...] code_search=[...] memory_topics=[...]
 
 ### Branch B guardrails

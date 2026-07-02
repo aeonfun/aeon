@@ -9,13 +9,21 @@ capabilities: [external_api, sends_notifications]
 ---
 <!-- autoresearch: variation B — sharper output (decoded transfers + counterparty labels + ranked USD-denominated one-liners + TL;DR lede); folds in A's Alchemy+Etherscan-v2 input path and C's persistent state + source-status footer + dedup. -->
 
-> **${var}** — Watch label or chain to check. Empty = all watches.
+> **${var}** — Watch label or chain to check. Empty = all watches. `add-address:<0x… [chain]>` is the shape the Telegram force-reply sends — it appends a new watch and exits (see step 0).
 
 If `${var}` is set, only monitor the watch with that label or watches on that chain.
 
 ## Config
 
-Reads `memory/on-chain-watches.yml`. If the file is missing or `watches: []`, log `ON_CHAIN_NO_CONFIG` and exit cleanly (do **not** notify — empty config is not an error).
+Reads `memory/on-chain-watches.yml`. If the file is missing or `watches: []`, offer to add the first watch via a Telegram force-reply (only if no `add-address` prompt was offered in the last 2 days of `memory/logs/` — dedup so an unconfigured fork isn't nagged every run), then log `ON_CHAIN_NO_CONFIG` and exit cleanly (do **not** send an alert — empty config is not an error):
+
+```bash
+./notify "No addresses on watch yet. Paste one to monitor — a 0x… wallet, optionally its chain." \
+  --force-reply --placeholder "0x… base" \
+  --context "onchain-monitor::add-address"
+```
+
+The reply routes back as `var=add-address:<0x… [chain]>`, handled by the config-capture branch in step 0. Record `FORCE_REPLY_OFFERED: add-address` in the log when you send it.
 
 ```yaml
 # memory/on-chain-watches.yml
@@ -66,6 +74,45 @@ Write the file via `mv` from a tempfile so a mid-run failure cannot corrupt stat
 ## Steps
 
 Read `memory/MEMORY.md`, `memory/on-chain-watches.yml`, `memory/on-chain-state.json`, and the last 2 days of `memory/logs/` (for visibility only — state lives in the JSON file).
+
+### 0. Config capture (Telegram force-reply)
+
+Before the per-watch loop, intercept the add-a-watch reply. When `${var}` starts with `add-address:`, the operator replied to the force-reply prompt (offered in the Config section on an empty config) — append a watch and **exit** (no monitoring this invocation). The remainder is `<address> [chain]`:
+
+```bash
+case "${var}" in
+  add-address:*)
+    REST="$(printf '%s' "${var#add-address:}" | sed 's/^[[:space:]]*//')"
+    ADDR="$(printf '%s' "$REST" | awk '{print $1}')"
+    CHAIN="$(printf '%s' "$REST" | awk '{print tolower($2)}')"; CHAIN="${CHAIN:-ethereum}"
+    case "$CHAIN" in ethereum|base|arbitrum|optimism|polygon) ;; *) CHAIN=ethereum ;; esac
+    if ! printf '%s' "$ADDR" | grep -qiE '^0x[0-9a-f]{40}$'; then
+      ./notify "Couldn't read \"$ADDR\" as an address. Reply with a 0x… wallet, optionally a chain."
+      exit 0
+    fi
+    mkdir -p memory; touch memory/on-chain-watches.yml
+    # Normalize an empty inline list so we can append block items, and ensure a watches: key exists.
+    sed -i.bak -E 's/^watches:[[:space:]]*\[\][[:space:]]*$/watches:/' memory/on-chain-watches.yml && rm -f memory/on-chain-watches.yml.bak
+    grep -q '^watches:' memory/on-chain-watches.yml || printf 'watches:\n' >> memory/on-chain-watches.yml
+    if grep -qi "$ADDR" memory/on-chain-watches.yml; then
+      ./notify "Already watching ${ADDR}."
+    else
+      SHORT="$(printf '%s' "$ADDR" | sed -E 's/^(0x.{4}).*(.{4})$/\1…\2/')"
+      cat >> memory/on-chain-watches.yml <<EOF
+  - label: "$SHORT"
+    address: "$ADDR"
+    chain: $CHAIN
+    type: wallet
+    threshold_usd: 1000
+EOF
+      ./notify "Now watching ${SHORT} on ${CHAIN} (wallet, moves ≥\$1000). Edit memory/on-chain-watches.yml to tune."
+    fi
+    # log under ### onchain-monitor: - view: add-address (var="${var}") → $ADDR on $CHAIN
+    exit 0 ;;
+esac
+```
+
+Defaults for a captured watch: `type: wallet`, `threshold_usd: 1000`, `label` = the shortened address. The operator refines chain/type/threshold by editing `memory/on-chain-watches.yml` directly. (This appends to the end of the file, which is correct because `watches:` is the only top-level key — if a future config grows more keys, insert under `watches:` instead of at EOF.)
 
 For each watch (filtered by `${var}`):
 
@@ -135,7 +182,11 @@ Native ETH/MATIC/etc. use `simple/price?ids=ethereum,matic-network,...`. If Coin
 
 ### 4. Filter
 
-Drop an event if any of:
+**Per-watch mute gate (Telegram).** First, if a watch is muted or snoozed via a Telegram button, drop **all** of its events (note `muted`/`snoozed` in the step-7 log and skip it in the notification). This is what the per-watch Mute/Snooze buttons in step 6 act on — no `--mute-key` needed because suppression is per-watch, not per-message:
+- muted if `memory/mutes.log` contains a line exactly `onchain-monitor:<label>` (or the global `onchain-monitor:all`);
+- snoozed if `memory/snoozes.log` has `onchain-monitor:<label>:<until_epoch>` (or `onchain-monitor:all:<until_epoch>`) with `until_epoch` still in the future.
+
+Then drop an individual event if any of:
 - `value_usd < threshold_usd` (watch config, default $1000)
 - `value_usd < $0.10` (hard dust floor — prevents airdrop / phishing spam)
 - `tx_hash` already present in this watch's `alerted_tx` (cross-run dedup)
@@ -176,6 +227,18 @@ TL;DR: My Wallet sent $1.2M USDC to Binance 14 (biggest move on any watch in 30d
 
 Cap the notification body at 10 events; if more survived, append `+N more — see memory/logs/${today}.md`. The `./notify` call should use the explorer URL for each chain (`etherscan.io`, `basescan.org`, `arbiscan.io`, `optimistic.etherscan.io`, `polygonscan.com`).
 
+**Interactive controls (Telegram).** Attach a per-watch Mute button for each watch that appears in the message, plus a Snooze 24h for the busiest watch, so a chatty address can be quieted in one tap (suppression is honoured in step 4 — see [`docs/telegram-commands.md`](../../docs/telegram-commands.md)):
+
+```bash
+# one row per watch present in the message; the busiest watch also gets a Snooze.
+# key each button on the EXACT label string step 4 checks against memory/mutes.log.
+./notify -f alert.md --buttons "[[
+  {\"text\":\"Mute My Wallet\",\"callback_data\":\"mute:onchain-monitor:My Wallet\"},
+  {\"text\":\"Snooze 24h\",\"callback_data\":\"snooze:onchain-monitor:My Wallet:86400\"}]]"
+```
+
+Rules: `callback_data` must stay ≤64 bytes — `mute:onchain-monitor:` already spends 21 bytes, so keep watch `label`s short (rename a long label in the config). A label must not contain `:` (the router splits `callback_data` on it). If more than ~3 watches fired, attach Mute buttons for the top 3 by event count and rely on the log for the rest.
+
 ### 7. Persist state and log
 
 For each watch whose fetch **succeeded** (success ≠ "events found"):
@@ -203,7 +266,7 @@ This honest log matters: it powers the next run's median computation and lets th
 - All watches ran, zero events survived → no notify; log `ON_CHAIN_OK (n_watches=X, n_raw=Y, n_dropped=Y)`.
 - Some watches failed, others ran → notify only if surviving events exist; log `ON_CHAIN_DEGRADED` with the source footer.
 - Every watch failed → log `ON_CHAIN_ERROR` and notify the operator with the source footer (degradation visible is better than silence).
-- Config missing/empty → log `ON_CHAIN_NO_CONFIG`, exit, no notify.
+- Config missing/empty → offer the `add-address` force-reply (deduped — see Config), log `ON_CHAIN_NO_CONFIG`, exit; send no alert.
 
 ## Sandbox note
 

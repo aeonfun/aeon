@@ -19,6 +19,7 @@ capabilities: [external_api, sends_notifications]
 > - **`<contract>`** or **`<contract>:<chain>`** (e.g. `0xabc…`, `0xabc…:base`) → single-token deep report on that contract.
 > - **`<SYMBOL>`** (e.g. `SOL`, `WIF`) → single-token deep report; resolve the symbol to its top contract first.
 > - **`token`** / **`single-token`** → single-token deep report on the token configured in `memory/token-report.md`.
+> - **`deep-dive:<symbol|contract>`** (e.g. `deep-dive:WIF`, `deep-dive:0xabc…:base`) → single-token deep report — the shape the Telegram force-reply sends. Strips the `deep-dive:` prefix and resolves the remainder exactly like a bare symbol/contract.
 >
 > Examples: `""` (global movers), `geckoterminal:base` (Base runners), `category:layer-2` (L2 movers), `0x4ed…:base` or `WIF` (single-token report).
 
@@ -28,6 +29,7 @@ capabilities: [external_api, sends_notifications]
 2. Read the last 2 days of `memory/logs/` to avoid repeating the same movers/trending/runner names unless the move is materially different — **repeat runners across days are the real signal**. (The single-token branch reads the last **30 days** for its `TOKEN_REPORT_STATE:` delta lines — see that branch.)
 3. **Parse `${var}` → `source` + `mode` (+ optional `token`/`chain`/`category`).** Trim whitespace; evaluate the rules top-to-bottom, first match wins (fully deterministic):
 
+   0. **Force-reply intercept (Telegram deep-dive).** starts with `deep-dive:` → strip the prefix (`${var#deep-dive:}`) and treat the remainder EXACTLY as a single-token target, resolving it contract-or-symbol just like rule 8 (`token:`) does → **single-token**. Single-token branch. This is the shape the Telegram force-reply sends; it reuses all existing single-token logic (no separate handler, no confirmation — the single-token report IS the response).
    1. empty → **mode=movers, source=coingecko** (global). Go to **Movers branch**.
    2. `coingecko` (case-insensitive) → **movers / coingecko** (global). Movers branch.
    3. `geckoterminal` → **movers / geckoterminal** (all major networks). Movers branch.
@@ -366,6 +368,34 @@ KEY="token-movers:all"     # or token-movers:<SYMBOL> when the run is scoped to 
 Keep `callback_data` short (≤64 bytes): use a bare symbol like `BTC`, never a name
 with spaces. For a single-token **[PUMP-RISK]** you may also send a dedicated alert
 keyed to that symbol (`--mute-key "token-movers:SYMBOL"`) so it can be muted on its own.
+
+### Deep-dive offer (force-reply — movers runs only)
+
+On a **movers** run that surfaced **notable** movers, follow the buttoned digest with a
+one-tap offer to get the single-token deep report on any name the operator names. "Notable"
+means: coingecko → at least one winner/loser or `Notable` signal was published; geckoterminal
+→ verdict is **not** SLEEPY and ≥1 pick cleared the gate. Skip the offer on a SLEEPY / all-sources-failed
+run, and **never** on a single-token run (that branch never reaches this section).
+
+Because `force_reply` and inline buttons can't share one Telegram message, this is a SEPARATE
+`./notify` sent AFTER the buttoned digest:
+
+```bash
+./notify "Want a deep-dive report on a mover? Reply with a ticker or contract." \
+  --force-reply --placeholder "e.g. WIF" \
+  --context "token-movers::deep-dive"
+```
+
+The operator's reply comes back as `var="deep-dive:<their text>"` and re-dispatches this skill,
+which rule 0 routes into the single-token branch.
+
+**Dedup — once per day.** Before offering, scan the last ~2 days of `memory/logs/` for a
+`FORCE_REPLY_OFFERED: deep-dive` line dated `${today}`; if present, skip the offer. When you do
+send it, append the marker to `memory/logs/${today}.md` under the run's `### token-movers` entry:
+
+```
+- FORCE_REPLY_OFFERED: deep-dive
+```
 
 ---
 
