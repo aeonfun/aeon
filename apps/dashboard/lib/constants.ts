@@ -19,16 +19,16 @@ export const MODELS = [
 // CI), so selecting it would be a footgun. Grok still accepts custom model ids
 // via ~/.grok/config.toml for anyone who needs one.
 export const GROK_MODELS = [
-  { id: 'grok-composer-2.5-fast', label: 'Composer 2.5 Fast' },
+  { id: 'grok-composer-2.5-fast', label: 'Composer 2.5' },
 ]
 
 // Harnesses (agent CLIs). `claude` = Claude Code (default, uses the AI Gateway),
 // labelled "Anthropic" in the UI; `grok` = Grok Build (own X-account/API-key
-// auth, own model list above), labelled "Grok". The `id`s are the on-disk
+// auth, own model list above), labelled "xAI". The `id`s are the on-disk
 // harness values (aeon.yml `harness:`) and never change — only the labels do.
 export const HARNESSES = [
   { id: 'claude', label: 'Anthropic' },
-  { id: 'grok', label: 'Grok' },
+  { id: 'grok', label: 'xAI' },
 ] as const
 
 export function modelsForHarness(harness: string) {
