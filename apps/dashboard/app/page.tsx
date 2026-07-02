@@ -8,7 +8,7 @@ import type {
   UploadResponse, ErrorResponse, PacksResponse, McpServers,
 } from '../lib/types'
 import { postJson, putJson, patchJson, del, scheduleRunRefresh } from '../lib/api-client'
-import { MODELS, AUTH_SECRETS, PACK_BY_KEY, FIRST_PARTY_KEYS, HARNESSES, modelsForHarness } from '../lib/constants'
+import { MODELS, AUTH_SECRETS, GROK_AUTH_SECRETS, PACK_BY_KEY, FIRST_PARTY_KEYS, HARNESSES, modelsForHarness } from '../lib/constants'
 import { displayName } from '../lib/utils'
 import TargetCursor from '../components/ui/TargetCursor'
 import { LoadingScreen } from '../components/LoadingScreen'
@@ -25,6 +25,7 @@ import { PacksPanel } from '../components/PacksPanel'
 import { RightPanel } from '../components/RightPanel'
 import { ImportModal } from '../components/ImportModal'
 import { AuthModal } from '../components/AuthModal'
+import { GrokAuthModal } from '../components/GrokAuthModal'
 import { PanelError } from '../components/PanelError'
 
 export default function Dashboard() {
@@ -185,8 +186,10 @@ export default function Dashboard() {
   // --- Derived ---
   const skill = selectedSkill ? skills.find(s => s.name === selectedSkill) || null : null
   // Any model/provider key set means Aeon can authenticate - the "Auth" CTA hides.
-  // Derived from live `secrets` so it reacts the instant a key is saved or removed.
-  const hasModelKey = secrets.some(s => s.isSet && AUTH_SECRETS.includes(s.name))
+  // Harness-aware: the grok harness needs its OWN auth (X-account session or an
+  // xAI key), so a Claude token doesn't count when grok is selected — that's what
+  // surfaces the Auth CTA → "Connect X account". Derived from live `secrets`.
+  const hasModelKey = secrets.some(s => s.isSet && (harness === 'grok' ? GROK_AUTH_SECRETS : AUTH_SECRETS).includes(s.name))
   // Skills visible across the dashboard = first-party skills whose pack is
   // enabled (Core always on), PLUS every community skill — anything in a pack
   // that isn't first-party was installed from another repo on purpose, so it's
@@ -274,7 +277,9 @@ export default function Dashboard() {
       />
 
       {showImport && <ImportModal onClose={() => setShowImport(false)} onImport={importSkill} />}
-      {showAuthModal && <AuthModal loading={authLoading} grokLoading={grokLoading} onClose={() => setShowAuthModal(false)} onAuth={(auth) => setupAuth(auth)} onGrokAuth={(p) => setupGrokAuth(p)} />}
+      {showAuthModal && (harness === 'grok'
+        ? <GrokAuthModal loading={grokLoading} onClose={() => setShowAuthModal(false)} onGrokAuth={(p) => setupGrokAuth(p)} />
+        : <AuthModal loading={authLoading} onClose={() => setShowAuthModal(false)} onAuth={(auth) => setupAuth(auth)} />)}
     </div>
   )
 }

@@ -3,10 +3,11 @@
 import { useState } from 'react'
 import { inputCls } from '../lib/utils'
 
-// Key providers selectable in the picker. Anthropic submits no provider, so
-// the backend still prefix-detects (Anthropic-compatible keys, OAuth tokens);
-// every gateway is selected explicitly. `grok` here is the GATEWAY path (Claude
-// Code → xAI); the grok CLI *harness* is connected via "Connect X account" below.
+// Claude Code auth: a Claude subscription token (one-click), or a gateway/
+// Anthropic-compatible key. Anthropic submits no provider, so the backend still
+// prefix-detects (Anthropic-compatible keys, OAuth tokens); every gateway is
+// selected explicitly. `grok` here is the GATEWAY path (Claude Code → xAI); the
+// grok CLI *harness* has its own modal (GrokAuthModal → "Connect X account").
 const PROVIDER_OPTIONS = [
   { value: '', label: 'Anthropic (or compatible)' },
   { value: 'bankr', label: 'Bankr' },
@@ -19,15 +20,11 @@ const PROVIDER_OPTIONS = [
 
 interface AuthModalProps {
   loading: boolean
-  grokLoading?: boolean
   onClose: () => void
   onAuth: (payload?: { key: string, baseUrl?: string, provider?: string }) => void
-  // Connect the grok harness: no arg captures the local X-account OAuth session
-  // (GROK_CREDENTIALS); a key stores it as XAI_API_KEY.
-  onGrokAuth: (payload?: { key: string }) => void
 }
 
-export function AuthModal({ loading, grokLoading, onClose, onAuth, onGrokAuth }: AuthModalProps) {
+export function AuthModal({ loading, onClose, onAuth }: AuthModalProps) {
   const [authKey, setAuthKey] = useState('')
   const [provider, setProvider] = useState('')
   const submit = () => authKey.trim() && onAuth({ key: authKey.trim(), ...(provider ? { provider } : {}) })
@@ -36,7 +33,7 @@ export function AuthModal({ loading, grokLoading, onClose, onAuth, onGrokAuth }:
     <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/30 backdrop-blur-sm">
       <div className="bg-aeon-panel border border-[rgba(250,250,250,0.10)] w-full max-w-sm mx-4 p-[var(--space-lg)] shadow-2xl">
         <div className="flex items-center justify-between mb-[var(--space-sm)]">
-          <h2 className="font-display text-xl">Authenticate</h2>
+          <h2 className="font-display text-xl">Claude Code</h2>
           <button onClick={onClose} className="text-primary-35 hover:text-primary-100 text-lg">&times;</button>
         </div>
         <p className="text-xs text-primary-50 font-mono mb-[var(--space-md)]">Connect a Claude subscription token, or pick your key&apos;s provider and paste it below. Routing is automatic - at run time Aeon uses whichever provider keys are set, in priority order.</p>
@@ -53,14 +50,6 @@ export function AuthModal({ loading, grokLoading, onClose, onAuth, onGrokAuth }:
         </select>
         <input type="password" value={authKey} onChange={(e) => setAuthKey(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && submit()} placeholder="API key" className={`${inputCls} mb-[var(--space-md)]`} />
         <button onClick={submit} disabled={!authKey.trim() || loading} className="w-full bg-aeon-panel text-aeon-fg border border-[rgba(250,250,250,0.14)] text-sm py-3 font-mono uppercase tracking-[2px] hover:border-eva-orange transition-colors disabled:opacity-50">{loading ? '...' : 'Save API Key'}</button>
-
-        <div className="my-[var(--space-md)] border-t border-[rgba(250,250,250,0.10)]" />
-        <p className="text-xs text-primary-50 font-mono mb-[var(--space-sm)]">
-          <span className="text-eva-orange">Grok Build harness</span> — run skills with the grok CLI on your X account. Click below: a browser tab opens to approve on <code className="text-primary-70">accounts.x.ai</code>, and the session is stored for CI. Needs SuperGrok / X Premium+ and the <code className="text-primary-70">grok</code> CLI installed.
-        </p>
-        <button onClick={() => onGrokAuth()} disabled={grokLoading} className="w-full bg-aeon-panel text-aeon-fg border border-[rgba(250,250,250,0.14)] text-sm py-3 font-mono uppercase tracking-[2px] hover:border-eva-orange transition-colors disabled:opacity-50">
-          {grokLoading ? '...' : 'Connect X account'}
-        </button>
       </div>
     </div>
   )

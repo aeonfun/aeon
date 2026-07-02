@@ -36,6 +36,11 @@ export function modelsForHarness(harness: string) {
 // present. The client derives auth state from /api/secrets by testing membership.
 export const AUTH_SECRETS = ['CLAUDE_CODE_OAUTH_TOKEN', 'ANTHROPIC_API_KEY', 'GROK_CREDENTIALS', ...GATEWAY_SECRET_NAMES]
 
+// Auth secrets that specifically authenticate the GROK harness (X-account OAuth
+// session or an xAI key). A Claude token does NOT authenticate grok, so the Auth
+// CTA must key off these when the grok harness is selected.
+export const GROK_AUTH_SECRETS = ['GROK_CREDENTIALS', 'XAI_API_KEY']
+
 export const DAYS = [
   { label: 'All', value: -1 }, { label: 'Mon', value: 1 }, { label: 'Tue', value: 2 },
   { label: 'Wed', value: 3 }, { label: 'Thu', value: 4 }, { label: 'Fri', value: 5 },
