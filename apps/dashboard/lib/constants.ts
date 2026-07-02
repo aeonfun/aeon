@@ -9,11 +9,12 @@ export const MODELS = [
   { id: 'claude-haiku-4-5-20251001', label: 'Haiku 4.5' },
 ]
 
-// Models offered when the Grok Build (`grok`) harness is selected. Grok also
-// accepts custom OpenAI-compatible models via ~/.grok/config.toml, but these are
-// the first-party coding models surfaced in the picker.
+// Models offered when the Grok Build (`grok`) harness is selected (from
+// `grok models`). grok-composer-2.5-fast is grok's default; grok-build is the
+// alternative. Grok also accepts custom models via ~/.grok/config.toml.
 export const GROK_MODELS = [
-  { id: 'grok-build-0.1', label: 'Grok Build 0.1' },
+  { id: 'grok-composer-2.5-fast', label: 'Composer 2.5 Fast' },
+  { id: 'grok-build', label: 'Grok Build' },
 ]
 
 // Harnesses (agent CLIs). `claude` = Claude Code (default, uses the AI Gateway);

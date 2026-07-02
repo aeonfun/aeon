@@ -28,7 +28,7 @@ chmod +x "$BIN/grok"
 export GROK_ARGS_FILE="$ARGS_FILE"
 export PATH="$BIN:$PATH"
 
-run() { echo "test prompt" | GROK_FAKE_OUT="$1" GROK_FAKE_RC="${2:-0}" MODEL="${3:-grok-build-0.1}" SKILL_MODE="${4:-write}" XAI_API_KEY=xai-test bash "$R" 2>/dev/null; }
+run() { echo "test prompt" | GROK_FAKE_OUT="$1" GROK_FAKE_RC="${2:-0}" MODEL="${3:-grok-composer-2.5-fast}" SKILL_MODE="${4:-write}" XAI_API_KEY=xai-test bash "$R" 2>/dev/null; }
 
 # 1. Claude-shaped JSON normalizes to result + usage
 OUT=$(run '{"result":"hi there","usage":{"input_tokens":11,"output_tokens":4}}')
@@ -40,6 +40,11 @@ OUT=$(run '{"text":"grok hi","usage":{"prompt_tokens":50,"completion_tokens":7}}
 [ "$(echo "$OUT" | jq -r '.result')" = "grok hi" ] && pass "maps .text alias" || bad "maps .text alias (got: $OUT)"
 [ "$(echo "$OUT" | jq -r '.usage.output_tokens')" = "7" ] && pass "maps completion_tokens alias" || bad "maps completion_tokens alias"
 
+# 2b. Exact real grok 0.2.82 shape: .text present, NO usage field → tokens = 0
+OUT=$(run '{"text":"ok","stopReason":"EndTurn","sessionId":"s","requestId":"r","thought":"t"}')
+[ "$(echo "$OUT" | jq -r '.result')" = "ok" ] && pass "real grok shape → .result from .text" || bad "real grok shape → .result (got: $OUT)"
+[ "$(echo "$OUT" | jq -r '.usage.input_tokens')" = "0" ] && pass "real grok shape → 0 tokens (no usage field)" || bad "real grok shape → 0 tokens"
+
 # 3. Non-JSON stdout falls back to raw-text envelope (never "no output")
 OUT=$(run 'plain text, not json')
 [ "$(echo "$OUT" | jq -r '.result')" = "plain text, not json" ] && pass "wraps non-JSON stdout" || bad "wraps non-JSON stdout (got: $OUT)"
@@ -49,10 +54,16 @@ run '{"result":"x"}' >/dev/null
 grep -qx -- "--output-format" "$ARGS_FILE" && grep -qx "json" "$ARGS_FILE" \
   && pass "passes --output-format json" || bad "passes --output-format json"
 grep -qx -- "--no-auto-update" "$ARGS_FILE" && pass "passes --no-auto-update" || bad "passes --no-auto-update"
-grep -qx -- "--model" "$ARGS_FILE" && grep -qx "grok-build-0.1" "$ARGS_FILE" \
-  && pass "passes --model" || bad "passes --model"
+grep -qx -- "--model" "$ARGS_FILE" && grep -qx "grok-composer-2.5-fast" "$ARGS_FILE" \
+  && pass "passes --model for a real grok model" || bad "passes --model"
 grep -qx -- "--permission-mode" "$ARGS_FILE" && grep -qx "dontAsk" "$ARGS_FILE" \
   && pass "passes permission flags from skill_mode" || bad "passes permission flags"
+
+# 4b. --model is OMITTED for a leftover claude-* id or empty (grok uses its default)
+echo "p" | GROK_FAKE_OUT='{"text":"x"}' MODEL=claude-sonnet-4-6 SKILL_MODE=write XAI_API_KEY=xai-test bash "$R" >/dev/null 2>&1
+if grep -qx -- "--model" "$ARGS_FILE"; then bad "omits --model for claude-* id"; else pass "omits --model for claude-* id"; fi
+echo "p" | GROK_FAKE_OUT='{"text":"x"}' MODEL="" SKILL_MODE=write XAI_API_KEY=xai-test bash "$R" >/dev/null 2>&1
+if grep -qx -- "--model" "$ARGS_FILE"; then bad "omits --model for empty model"; else pass "omits --model for empty model"; fi
 
 # 5. read-only mode adds --sandbox read-only
 echo "p" | GROK_FAKE_OUT='{"result":"x"}' MODEL=grok-build-0.1 SKILL_MODE=read-only XAI_API_KEY=xai-test bash "$R" >/dev/null 2>&1
@@ -62,12 +73,15 @@ grep -qx -- "--sandbox" "$ARGS_FILE" && grep -qx "read-only" "$ARGS_FILE" \
 # 6. grok non-zero exit → run-grok.sh fails
 if run '{"result":"x"}' 1 >/dev/null 2>&1; then bad "propagates grok failure"; else pass "propagates grok failure"; fi
 
-# 7. No auth (no XAI_API_KEY / GROK_CREDENTIALS) → hard fail
-if echo "p" | env -u XAI_API_KEY -u GROK_CREDENTIALS GROK_FAKE_OUT='{"result":"x"}' MODEL=grok-build-0.1 SKILL_MODE=write bash "$R" >/dev/null 2>&1; then
+# 7. No auth at all (no XAI_API_KEY / GROK_CREDENTIALS / ~/.grok session) → hard fail.
+# Use a clean HOME so an ambient ~/.grok/auth.json on the test machine can't satisfy it.
+EMPTY_HOME="$(mktemp -d)"
+if echo "p" | env -u XAI_API_KEY -u GROK_CREDENTIALS HOME="$EMPTY_HOME" GROK_FAKE_OUT='{"text":"x"}' MODEL="" SKILL_MODE=write bash "$R" >/dev/null 2>&1; then
   bad "fails without auth"
 else
   pass "fails without auth"
 fi
+rm -rf "$EMPTY_HOME"
 
 echo "---"
 [ "$fail" = "0" ] && echo "ALL PASS" || echo "SOME FAILED"

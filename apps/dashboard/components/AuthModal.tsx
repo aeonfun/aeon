@@ -56,7 +56,7 @@ export function AuthModal({ loading, grokLoading, onClose, onAuth, onGrokAuth }:
 
         <div className="my-[var(--space-md)] border-t border-[rgba(250,250,250,0.10)]" />
         <p className="text-xs text-primary-50 font-mono mb-[var(--space-sm)]">
-          <span className="text-eva-orange">Grok Build harness</span> — run skills with the grok CLI on your X account. First run <code className="text-primary-70">grok login --device-auth</code> in a terminal, then connect to capture the session for CI.
+          <span className="text-eva-orange">Grok Build harness</span> — run skills with the grok CLI on your X account. Click below: a browser tab opens to approve on <code className="text-primary-70">accounts.x.ai</code>, and the session is stored for CI. Needs SuperGrok / X Premium+ and the <code className="text-primary-70">grok</code> CLI installed.
         </p>
         <button onClick={() => onGrokAuth()} disabled={grokLoading} className="w-full bg-aeon-panel text-aeon-fg border border-[rgba(250,250,250,0.14)] text-sm py-3 font-mono uppercase tracking-[2px] hover:border-eva-orange transition-colors disabled:opacity-50">
           {grokLoading ? '...' : 'Connect X account'}

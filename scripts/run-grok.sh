@@ -37,7 +37,7 @@ set -uo pipefail   # NOT -e: we capture grok's exit code and output explicitly.
 
 # --- pin (single source of truth for the grok CLI version) ------------------
 # Keep this current the same way aeon.yml/messages.yml pin the claude CLI.
-GROK_CLI_VERSION="${GROK_CLI_VERSION:-0.2.81}"
+GROK_CLI_VERSION="${GROK_CLI_VERSION:-0.2.82}"
 
 log() { echo "$@" >&2; }
 
@@ -61,11 +61,14 @@ if [ -n "${GROK_CREDENTIALS:-}" ]; then
     log "::error::GROK_CREDENTIALS is not valid base64"; rm -f "$tmp_creds"; exit 1; }
   # The dashboard captures the session as a tar rooted at $HOME (robust to the
   # exact cred filename); if it isn't a tar, treat it as a single cred file.
+  # The dashboard captures the session as a tar rooted at $HOME (contains
+  # .grok/auth.json — the confirmed credential file); if it isn't a tar, treat
+  # it as the raw auth.json.
   if tar tzf "$tmp_creds" >/dev/null 2>&1; then
     tar xzf "$tmp_creds" -C "$HOME" >&2 || { log "::error::failed to extract GROK_CREDENTIALS"; rm -f "$tmp_creds"; exit 1; }
     log "::notice::restored grok OAuth session from GROK_CREDENTIALS (archive)"
   else
-    dest="${GROK_CREDENTIALS_PATH:-$GROK_HOME/credentials.json}"
+    dest="${GROK_CREDENTIALS_PATH:-$GROK_HOME/auth.json}"
     mkdir -p "$(dirname "$dest")"
     cp "$tmp_creds" "$dest"; chmod 600 "$dest" 2>/dev/null || true
     log "::notice::restored grok OAuth session from GROK_CREDENTIALS to ${dest}"
@@ -74,14 +77,25 @@ if [ -n "${GROK_CREDENTIALS:-}" ]; then
 elif [ -n "${XAI_API_KEY:-}" ]; then
   export XAI_API_KEY
   log "::notice::authenticating grok with XAI_API_KEY"
+elif [ -f "$GROK_HOME/auth.json" ]; then
+  # Already signed in on this machine (local run / mcp-server path) — use it.
+  log "::notice::using existing grok session at $GROK_HOME/auth.json"
 else
-  log "::error::grok harness needs auth: set GROK_CREDENTIALS (X-account login via the dashboard) or XAI_API_KEY"
+  log "::error::grok harness needs auth: set GROK_CREDENTIALS (X-account login via the dashboard) or XAI_API_KEY, or run 'grok login'"
   exit 1
 fi
 
-# --- 3. permission flags (mode → grok grammar) ------------------------------
-MODEL="${MODEL:-grok-build-0.1}"
+# --- 3. model + permission flags --------------------------------------------
+# Only pass --model for a real grok model id; for an empty value or a leftover
+# claude-* id (harness switched but model not), OMIT it so grok uses its own
+# current default (e.g. grok-composer-2.5-fast) rather than a hardcoded id.
+MODEL="${MODEL:-}"
 SKILL_MODE="${SKILL_MODE:-write}"
+MODEL_FLAG=()
+case "$MODEL" in
+  ""|default|claude-*) ;;                 # let grok pick its default model
+  *)                   MODEL_FLAG=(--model "$MODEL") ;;
+esac
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # One argv token per line → array. Plain while-read (not `mapfile`) so this runs
 # on bash 3.2 (macOS) as well as CI's bash 5.
@@ -99,9 +113,9 @@ fi
 # --- 4. run -----------------------------------------------------------------
 PROMPT="$(cat)"
 out_file="$(mktemp)"; err_file="$(mktemp)"
-# Guard the array expansion for the (unexpected) empty case under bash 3.2 set -u.
+# Guard the array expansions for the empty case under bash 3.2 set -u.
 grok -p "$PROMPT" \
-  --model "$MODEL" \
+  ${MODEL_FLAG[@]+"${MODEL_FLAG[@]}"} \
   --output-format json \
   --no-auto-update \
   ${GROK_ARGS[@]+"${GROK_ARGS[@]}"} >"$out_file" 2>"$err_file"
@@ -115,10 +129,12 @@ if [ $rc -ne 0 ]; then
 fi
 
 # --- 5. normalize output ----------------------------------------------------
-# Map grok's --output-format json onto the envelope the pipeline expects. Grok's
-# exact field names are still being confirmed, so we accept the common aliases
-# and, if the output isn't the JSON we expect, fall back to wrapping the raw text
-# as .result with zeroed usage (never break the run on a shape mismatch).
+# Map grok's --output-format json onto the envelope the pipeline expects.
+# Confirmed shape (grok 0.2.82): {"text": "...", "stopReason", "sessionId",
+# "requestId", "thought"} — the result is in .text and there is NO usage/token
+# field, so token counts normalize to 0 (grok-harness runs report 0 tokens).
+# We still accept common aliases (.result/.output/etc.) for forward-compat, and
+# fall back to wrapping raw stdout if the shape ever changes (never break a run).
 NORMALIZE='
   (.result // .text // .output // .response // .content // .message // "") as $r
   | (.usage // .usageMetadata // {}) as $u

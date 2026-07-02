@@ -407,7 +407,7 @@ Override the order with the repo variable **`GATEWAY_ORDER`** (space-separated n
 | <img src="https://icons.duckduckgo.com/ip3/usepod.ai.ico" width="16" valign="middle"> [UsePod](https://usepod.ai) | `USEPOD_TOKEN` | Solana marketplace; token is embedded in the base URL, keep it secret |
 | <img src="https://icons.duckduckgo.com/ip3/venice.ai.ico" width="16" valign="middle"> [Venice](https://venice.ai) | `VENICE_API_KEY` | Privacy-first; OpenAI-compatible, bridged via a per-run [claude-code-router](https://github.com/musistudio/claude-code-router) sidecar. Point it at any Venice-compatible endpoint with the `VENICE_BASE_URL` repo variable |
 | <img src="https://icons.duckduckgo.com/ip3/surplusintelligence.ai.ico" width="16" valign="middle"> [Surplus](https://surplusintelligence.ai) | `SURPLUS_API_KEY` | Routed via The Bridge; settles in USDC on Base - fund the wallet + `approve()` once before use |
-| <img src="https://icons.duckduckgo.com/ip3/x.ai.ico" width="16" valign="middle"> [Grok (xAI)](https://x.ai/api) | `XAI_API_KEY` | Anthropic-native passthrough to `api.x.ai` (`grok-build-0.1`); the `xai-…` key is auto-detected. Same key also powers the [grok harness](#harnesses) |
+| <img src="https://icons.duckduckgo.com/ip3/x.ai.ico" width="16" valign="middle"> [Grok (xAI)](https://x.ai/api) | `XAI_API_KEY` | Anthropic-native passthrough to `api.x.ai`; the `xai-…` key is auto-detected. Set the model with the `GROK_MODEL` repo variable. Same key also powers the [grok harness](#harnesses) |
 
 #### Adding a gateway
 
@@ -428,7 +428,7 @@ The **harness** is the coding-agent CLI that actually runs your skills. It's a s
 | Harness | CLI | Auth | Models |
 |---------|-----|------|--------|
 | `claude` (default) | [Claude Code](https://github.com/anthropics/claude-code) (`claude -p`) | `CLAUDE_CODE_OAUTH_TOKEN` / `ANTHROPIC_API_KEY` / any gateway above | `claude-*` |
-| `grok` | [Grok Build](https://x.ai/cli) (`grok -p`) | **X account** (`GROK_CREDENTIALS`) or `XAI_API_KEY` | `grok-build-0.1` |
+| `grok` | [Grok Build](https://x.ai/cli) (`grok -p`) | **X account** (`GROK_CREDENTIALS`) or `XAI_API_KEY` | `grok-composer-2.5-fast` (default), `grok-build` |
 
 Everything already configured keeps running on `claude` — the harness is fully additive and defaults to Claude Code. Select it globally in the dashboard top bar, per-run via the workflow-dispatch **Harness** input, or per-skill / globally in `aeon.yml`:
 
@@ -439,17 +439,17 @@ skills:
   digest: { enabled: true, schedule: "0 9 * * *", harness: "grok" }   # per-skill override
 ```
 
-**Logging in with your X account (for CI).** Grok Build's browser login can't run headlessly, so you log in once locally and Aeon reuses the session:
+**One-click login with your X account.** Just like **Use Claude Subscription**, the dashboard drives the login for you — click **Connect X account** in the Authenticate modal:
 
-1. Install + log in locally: `npm i -g @xai-official/grok && grok login --device-auth` (requires a **SuperGrok** or **X Premium+** entitlement).
-2. In the dashboard's Authenticate modal, click **Connect X account** — it captures your `~/.grok` session and stores it as the `GROK_CREDENTIALS` repo secret.
+1. The dashboard runs `grok login --device-auth`, opens your browser to the `accounts.x.ai` consent page, and waits while you approve (requires a **SuperGrok** or **X Premium+** entitlement, and the `grok` CLI installed: `npm i -g @xai-official/grok`).
+2. On approval it captures your `~/.grok/auth.json` session and stores it as the `GROK_CREDENTIALS` repo secret.
 3. Each Actions run restores that session into `~/.grok` (via `scripts/run-grok.sh`) before invoking `grok`.
 
-Prefer no browser flow? Set **`XAI_API_KEY`** instead (also powers the Grok gateway) and grok authenticates with the API key directly.
+Prefer no browser flow? Paste an **`XAI_API_KEY`** in the same modal (also powers the Grok gateway) and grok authenticates with the API key directly.
 
-Capability mode carries over unchanged: a `mode: read-only` skill maps to grok's `--sandbox read-only --permission-mode dontAsk` with a read-only allowlist; `write` adds `Edit` + `git`/`gh`/`python` — the same drops as on Claude Code (`scripts/skill_mode.sh grok-args`). Grok reads **`AGENTS.md`** (generated from `CLAUDE.md` + `STRATEGY.md` by `scripts/gen-agents-md.js`) as its standing instructions, so behaviour matches. MCP on the grok harness is not yet wired (fast-follow).
+> Grok's `--output-format json` returns the result text but no token counts, so grok-harness runs report **0 tokens** in cost tracking. The captured OAuth session can expire — if unattended runs start failing on auth, click **Connect X account** again. MCP on the grok harness is a fast-follow.
 
-> **Requirements & caveats:** Grok Build needs a SuperGrok / X Premium+ subscription (OAuth) or xAI API credits (`XAI_API_KEY`) — there's no free tier. The captured OAuth session can expire; if unattended grok runs start failing on auth, re-run **Connect X account**.
+Capability mode carries over unchanged: a `mode: read-only` skill maps to grok's `--sandbox read-only --permission-mode dontAsk` with a read-only allowlist; `write` adds `Edit` + `git`/`gh`/`python` — the same drops as on Claude Code (`scripts/skill_mode.sh grok-args`). Grok reads **`AGENTS.md`** (generated from `CLAUDE.md` + `STRATEGY.md` by `scripts/gen-agents-md.js`) as its standing instructions, so behaviour matches. Grok Build has no free tier — it needs a SuperGrok / X Premium+ subscription (OAuth) or xAI API credits (`XAI_API_KEY`).
 
 ### Strategy
 
