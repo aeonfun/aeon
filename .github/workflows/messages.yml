@@ -830,6 +830,7 @@ jobs:
           SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
+          GROK_CREDENTIALS: ${{ secrets.GROK_CREDENTIALS }}   # grok harness: X-account OAuth (restored by run-grok.sh)
           COINGECKO_API_KEY: ${{ secrets.COINGECKO_API_KEY }}
           ALCHEMY_API_KEY: ${{ secrets.ALCHEMY_API_KEY }}
           _MSG_SOURCE: ${{ steps.msg.outputs.source }}
@@ -839,10 +840,26 @@ jobs:
           CONFIG_MODEL=$(grep -E '^model:' aeon.yml | sed 's/^model: *//' | tr -d ' ')
           MODEL="${CONFIG_MODEL:-claude-opus-4-8}"
 
-          # AI Gateway routing — same path as aeon.yml's Run steps
-          GATEWAY=$(grep -A1 '^gateway:' aeon.yml | grep 'provider:' | sed 's/.*provider:[[:space:]]*//' | sed "s/[\"' ]//g" || true)
-          GATEWAY="${GATEWAY:-auto}"
-          source "${GITHUB_WORKSPACE}/scripts/llm-gateway.sh"
+          # Harness resolution — inbound messaging isn't a per-skill run, so it
+          # follows the repo's global `harness:` in aeon.yml (same default/guard as
+          # aeon.yml). A grok-only repo (no Claude creds) must respond via grok.
+          CONFIG_HARNESS=$(grep -E '^harness:' aeon.yml | sed 's/^harness: *//' | tr -d ' ')
+          HARNESS="${CONFIG_HARNESS:-claude}"
+          if [ "$HARNESS" != "grok" ]; then HARNESS="claude"; fi   # unknown → safe default
+          # On grok a claude-* model id is meaningless — fall back to grok's default.
+          if [ "$HARNESS" = "grok" ]; then
+            case "$MODEL" in claude-*|"") MODEL="grok-composer-2.5-fast" ;; esac
+          fi
+          echo "Using harness: $HARNESS  |  model: $MODEL"
+
+          # AI Gateway routing — same path as aeon.yml's Run steps. The grok harness
+          # has its own auth and does NOT use the gateway, so skip it there (avoids
+          # "no gateway/Anthropic API" noise on a grok-only repo).
+          if [ "$HARNESS" != "grok" ]; then
+            GATEWAY=$(grep -A1 '^gateway:' aeon.yml | grep 'provider:' | sed 's/.*provider:[[:space:]]*//' | sed "s/[\"' ]//g" || true)
+            GATEWAY="${GATEWAY:-auto}"
+            source "${GITHUB_WORKSPACE}/scripts/llm-gateway.sh"
+          fi
 
           cat > ./notify << 'NOTIFY_SCRIPT'
           #!/usr/bin/env bash
@@ -940,7 +957,20 @@ jobs:
           - For anything else, do your best and explain what you did.
 
           Always send your response back via ./notify so the user sees it."
-          if ! CLAUDE_OUTPUT=$(echo "$PROMPT" | claude -p - \
+          # Harness split — both paths emit the SAME {result, usage} envelope, so
+          # the token/notify handling below is unchanged. run-grok.sh discovers
+          # .mcp.json natively (the preflight above already exported its secrets)
+          # and maps SKILL_MODE=write to grok's permission flags; a conversational
+          # reply can run skills, update memory, and notify, i.e. write mode.
+          if [ "$HARNESS" = "grok" ]; then
+            if ! CLAUDE_OUTPUT=$(
+              export MODEL SKILL_MODE=write
+              echo "$PROMPT" | bash "${GITHUB_WORKSPACE}/scripts/run-grok.sh"
+            ); then
+              echo "::error::grok harness failed. Output: $(printf '%s' "$CLAUDE_OUTPUT" | tail -c 300 | tr '\n' ' ')"
+              exit 1
+            fi
+          elif ! CLAUDE_OUTPUT=$(echo "$PROMPT" | claude -p - \
             --model "$MODEL" --allowedTools "$ALLOWED" \
             "${MCP_FLAGS[@]}" --output-format json 2>&1); then
             echo "::error::Claude CLI failed. Output: $CLAUDE_OUTPUT"

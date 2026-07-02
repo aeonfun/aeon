@@ -64,10 +64,18 @@ write_tools() { echo "$BASE_TOOLS,$WRITE_TOOLS"; }
 
 # --- Grok Build harness permission mapping ----------------------------------
 # The grok CLI uses a DIFFERENT permission grammar from Claude Code's
-# --allowedTools: `--permission-mode dontAsk` (silently deny anything not
-# explicitly allowed — the exact analogue of Claude's `-p` allowlist) plus
-# `--allow`/`--deny` rules over categories Bash/Edit/Read/Grep/MCPTool/WebFetch.
+# --allowedTools: `--allow`/`--deny` rules over categories
+# Bash/Edit/Read/Grep/Write/MCPTool/WebFetch, plus a `--permission-mode`.
 # Bash rules use a space-glob — `Bash(git *)` — not Claude's colon `Bash(git:*)`.
+#
+# Deny-by-default, honestly: grok currently wires `--permission-mode` for
+# `bypassPermissions` only (per grok's permissions docs), so the flag alone does
+# NOT enforce dontAsk. What actually gives us deny-by-default is that we always
+# run HEADLESS (`grok -p`): a tool that is neither on grok's read-class fast path
+# nor named by an explicit `--allow` rule has no TTY to prompt, so it is refused.
+# We still pass `--permission-mode dontAsk` (harmless, and future-proof if grok
+# wires the flag), but the enforcement is the explicit allowlist below + the
+# read-only sandbox — not the mode string. So the allowlist must be exhaustive.
 #
 # We mirror the SAME capability intent as BASE_TOOLS / WRITE_TOOLS above, so a
 # skill behaves identically on either harness: read-only gets no Edit and no
@@ -86,7 +94,7 @@ GROK_WRITE_BASH="gh git python3 python"
 
 grok_args() {
   local mode="$1"
-  # Non-listed tools are auto-denied by dontAsk — the allowlist is exhaustive.
+  # Non-listed tools have no headless approval path → refused. Allowlist is exhaustive.
   printf '%s\n' --permission-mode dontAsk
   if [ "$mode" = "read-only" ]; then
     printf '%s\n' --sandbox read-only
@@ -102,6 +110,40 @@ grok_args() {
   fi
 }
 
+# --- Grok Build run-shaping: frontmatter -> GROK_* env -----------------------
+# Map optional per-skill frontmatter to the env vars run-grok.sh reads, so a
+# skill can opt into grok's newer headless features without any workflow change:
+#
+#   effort: high            # low|medium|high|xhigh|max  -> --effort
+#   reasoning_effort: high  # same set                   -> --reasoning-effort
+#   max_turns: 60           # agentic-turn cap           -> --max-turns
+#   best_of_n: 3            # run N ways, keep the best   -> --best-of-n
+#   verify: true            # append a self-check loop    -> --check
+#
+# Output is `export GROK_X=...` lines for exactly the fields present (so unset
+# fields fall through to run-grok.sh's defaults, and the scorer's own
+# GROK_JSON_SCHEMA is never clobbered). aeon.yml's grok branch evals this.
+# read one frontmatter scalar (first '---' block), stripping inline # comment,
+# quotes and surrounding whitespace. Prints nothing if absent.
+_fm() {
+  local skill="$1" key="$2" f="skills/$1/SKILL.md"
+  [ -f "$f" ] || return 0
+  awk -v k="$key" '
+    /^---$/{n++; next}
+    n==1 && $0 ~ "^"k":" {
+      v=$0; sub("^"k":[ \t]*","",v); sub(/[ \t]*#.*$/,"",v);
+      gsub(/^[ \t"'"'"']+|[ \t"'"'"']+$/,"",v); print v; exit
+    }' "$f"
+}
+grok_run_env() {
+  local skill="$1" v
+  v=$(_fm "$skill" effort);           [ -n "$v" ] && printf 'export GROK_EFFORT=%q\n' "$v"
+  v=$(_fm "$skill" reasoning_effort); [ -n "$v" ] && printf 'export GROK_REASONING_EFFORT=%q\n' "$v"
+  v=$(_fm "$skill" max_turns);        [ -n "$v" ] && printf 'export GROK_MAX_TURNS=%q\n' "$v"
+  v=$(_fm "$skill" best_of_n);        [ -n "$v" ] && printf 'export GROK_BEST_OF_N=%q\n' "$v"
+  v=$(_fm "$skill" verify);           [ -n "$v" ] && printf 'export GROK_CHECK=%q\n' "$v"
+}
+
 case "${1:-}" in
   mode)          resolve_mode "${2:?skill name required}" ;;
   allowed-tools)
@@ -114,5 +156,6 @@ case "${1:-}" in
       read-only|readonly|read_only) grok_args read-only ;;
       *)                            grok_args write ;;
     esac ;;
-  *) echo "usage: skill_mode.sh {mode <skill>|allowed-tools <mode>|grok-args <mode>}" >&2; exit 2 ;;
+  grok-run-env)  grok_run_env "${2:?skill name required}" ;;
+  *) echo "usage: skill_mode.sh {mode <skill>|allowed-tools <mode>|grok-args <mode>|grok-run-env <skill>}" >&2; exit 2 ;;
 esac

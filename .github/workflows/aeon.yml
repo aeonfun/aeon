@@ -422,6 +422,9 @@ jobs:
           # in the dashboard and it just works, no per-name workflow wiring. If a
           # referenced secret genuinely isn't set, skip MCP with a warning rather
           # than let Claude's config parse-failure break the whole skill run.
+          # The MCP_FLAGS/ALLOWED additions below are the CLAUDE path; the exported
+          # ${VAR}s are harness-agnostic and also feed grok, which reads .mcp.json
+          # natively and expands them (run-grok.sh only adds the MCPTool allows).
           MCP_FLAGS=()
           if [ -f .mcp.json ] && jq -e '.mcpServers' .mcp.json >/dev/null 2>&1; then
             MCP_MISSING=""
@@ -478,9 +481,13 @@ jobs:
             # --- Grok Build harness ---
             # run-grok.sh installs/pins the grok CLI, restores the X-account OAuth
             # session (or uses XAI_API_KEY), maps SKILL_MODE to grok's permission
-            # flags, runs `grok -p`, and emits the SAME normalized JSON envelope
-            # Claude Code's --output-format json produces. Its stdout is the JSON;
-            # diagnostics go to stderr (the step log), so capture stdout only.
+            # flags, discovers .mcp.json natively + allows its tools, runs `grok -p`,
+            # and emits the SAME normalized JSON envelope Claude Code's
+            # --output-format json produces. Its stdout is the JSON; diagnostics go
+            # to stderr (the step log), so capture stdout only.
+            # Opt-in per-skill run knobs (effort/max_turns/best_of_n/verify) come
+            # from SKILL.md frontmatter → GROK_* env for run-grok.sh to map to flags.
+            eval "$(bash "${GITHUB_WORKSPACE}/scripts/skill_mode.sh" grok-run-env "$SKILL_NAME")"
             if CLAUDE_OUTPUT=$(
               export MODEL="$BASE_MODEL" SKILL_MODE
               echo "$PROMPT" | bash "${GITHUB_WORKSPACE}/scripts/run-grok.sh"
@@ -708,6 +715,10 @@ jobs:
             # run-grok.sh reuses the run's X-account/API-key auth and emits the same
             # {result,usage} envelope. MODEL= → grok's default (grok-composer-2.5-fast,
             # the only grok model that completes in CI). Its notices go to stderr.
+            # NB: we deliberately do NOT pass grok's --json-schema here — composer
+            # doesn't populate structured output (it leaves .structuredOutput null),
+            # and the ANALYSIS_PROMPT already asks for a {score,assessment,flags}
+            # object, so the robust parse below handles composer's JSON text fine.
             if ! RAW=$(echo "$ANALYSIS_PROMPT" | MODEL= SKILL_MODE=read-only \
                 bash "${GITHUB_WORKSPACE}/scripts/run-grok.sh" 2>/dev/null); then
               echo "::notice::Skill scoring skipped — grok scorer unavailable (non-fatal)"

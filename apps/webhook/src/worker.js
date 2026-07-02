@@ -11,7 +11,7 @@
  *   • inline-button taps   -> event_type "telegram-callback" (snooze/mute/re-run…)
  *   • replies to a prompt   -> event_type "telegram-reply"    (force_reply follow-ups)
  *   • /slash + /start links -> event_type "telegram-command"  (dispatched, no LLM)
- *   • plain text            -> event_type "telegram-message"  (Claude interprets)
+ *   • plain text            -> event_type "telegram-message"  (the agent interprets)
  * The repo-side `route` job runs scripts/telegram-route.sh for the first three.
  *
  * Each user deploys this into their OWN Cloudflare account — there is no shared
@@ -92,7 +92,8 @@ export default {
     if (message.text.startsWith("/")) {
       return dispatch(env, "telegram-command", { ...base, text: message.text });
     }
-    // Plain text — Claude interprets (unchanged from the original behaviour).
+    // Plain text — the agent interprets it (messages.yml runs the configured
+    // harness: claude or grok). Unchanged relay behaviour from the original.
     return dispatch(env, "telegram-message", {
       ...base,
       message: message.text,

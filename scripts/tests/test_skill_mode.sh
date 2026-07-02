@@ -69,6 +69,24 @@ echo "$GR" | grep -qx "Read" && echo "$GR" | grep -Fqx "Bash(curl *)" && echo "$
 GB=$(bash "$M" grok-args banana)
 if echo "$GB" | grep -qx -- "--sandbox"; then bad "grok unknown mode falls back to write (no sandbox)"; else pass "grok unknown mode falls back to write"; fi
 
+# grok-run-env: frontmatter run-knobs → export GROK_* lines
+FX="zzz-test-fx-$$"
+mkdir -p "skills/$FX"
+printf '%s\n' "---" "name: $FX" "mode: write" "effort: high" "max_turns: 60" "best_of_n: 3" "verify: true" "---" "body" > "skills/$FX/SKILL.md"
+cleanup_fx() { rm -rf "skills/$FX"; }
+trap 'cleanup; cleanup_fx' EXIT
+GE=$(bash "$M" grok-run-env "$FX")
+echo "$GE" | grep -qx "export GROK_EFFORT=high"  && pass "grok-run-env maps effort"    || bad "grok-run-env effort ($GE)"
+echo "$GE" | grep -qx "export GROK_MAX_TURNS=60" && pass "grok-run-env maps max_turns" || bad "grok-run-env max_turns ($GE)"
+echo "$GE" | grep -qx "export GROK_BEST_OF_N=3"  && pass "grok-run-env maps best_of_n" || bad "grok-run-env best_of_n ($GE)"
+echo "$GE" | grep -qx "export GROK_CHECK=true"   && pass "grok-run-env maps verify→CHECK" || bad "grok-run-env verify ($GE)"
+# A skill with none of these fields emits nothing (falls through to defaults)
+GE2=$(bash "$M" grok-run-env "$WR")
+[ -z "$GE2" ] && pass "grok-run-env empty when no run-knobs" || bad "grok-run-env should be empty for plain skill ($GE2)"
+# eval-safety: output is valid shell that sets exactly those vars
+( eval "$GE"; [ "$GROK_EFFORT" = high ] && [ "$GROK_MAX_TURNS" = 60 ]; ) \
+  && pass "grok-run-env output is eval-safe" || bad "grok-run-env output not eval-safe"
+
 echo "---"
 [ "$fail" = "0" ] && echo "ALL PASS" || echo "SOME FAILED"
 exit "$fail"
