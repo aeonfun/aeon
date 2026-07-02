@@ -158,7 +158,7 @@ cd aeon/apps/mcp-server && npm install && npm run build
 }
 ```
 
-3. Restart Claude Desktop. All 95 Aeon skills appear as `aeon-<slug>` tools.
+3. Restart Claude Desktop. All 102 Aeon skills appear as `aeon-<slug>` tools.
 
 ## Notes for the maintainer
 
