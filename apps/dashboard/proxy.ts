@@ -18,7 +18,7 @@ import { gateRequest } from "@/lib/security/api-gate";
  * entirely via `AEON_DASHBOARD_ALLOW_ANY_HOST=1` (intended only for
  * trusted-reverse-proxy setups).
  */
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   const rejected = gateRequest(req);
   if (rejected) return rejected;
   return NextResponse.next();
