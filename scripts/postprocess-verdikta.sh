@@ -175,9 +175,13 @@ def do_submit(req, acct, pending_dir):
     if req.get("dryRun"):
         print(f"verdikta-postprocess: DRY-RUN validate #{job_id}")
         multipart = [("files", (n, c, "text/markdown")) for n, c in file_list]
-        resp = api("POST", f"/jobs/{job_id}/submit/dry-run", files=multipart)
+        # valid-format placeholder keeps the hunter check meaningful on keyless dry-runs
+        hunter = acct.address if acct else "0x0000000000000000000000000000000000000001"
+        resp = api("POST", f"/jobs/{job_id}/submit/dry-run", files=multipart, data={"hunter": hunter})
         print(f"  dry-run result: {json.dumps(resp)[:500]}")
-        log_line(f"Dry-run #{job_id}: {'OK' if resp.get('success') else 'FAILED'} — no transactions sent")
+        verdict = "VALID" if resp.get("valid") else "INVALID"
+        issues = "; ".join(e.get("code", "?") for e in resp.get("errors") or [])
+        log_line(f"Dry-run #{job_id}: {verdict}{' (' + issues + ')' if issues else ''} — no transactions sent")
         return
 
     print(f"verdikta-postprocess: submit #{job_id} as {acct.address}")

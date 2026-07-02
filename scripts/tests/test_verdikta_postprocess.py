@@ -91,8 +91,9 @@ class FakeBackend:
 
     def api(self, method, path, **kw):
         self.api_calls.append(path)
+        self.api_kwargs = kw
         if path.endswith("/submit/dry-run"):
-            return {"success": True}
+            return {"success": True, "valid": True, "errors": []}
         if path.endswith("/submit/bundle"):
             return {"hunterCid": "QmTest", "transactions": [
                 {"to": self.escrow, "data": "0xab", "value": "0",
@@ -203,6 +204,15 @@ class VerdiktaGuardTests(unittest.TestCase):
         self.assertEqual(be.api_calls, ["/jobs/97/submit/dry-run"])
         self.assertEqual(be.rpc_calls, [])
         self.assertFalse(Path("memory/state/verdikta-hunter.json").exists())
+        # keyless dry-run still sends a valid-format hunter so the API's
+        # address check yields signal instead of a guaranteed error
+        hunter = be.api_kwargs.get("data", {}).get("hunter", "")
+        self.assertRegex(hunter, r"^0x[a-fA-F0-9]{40}$")
+
+    def test_dry_run_uses_wallet_address_when_available(self):
+        be = self._install(FakeBackend())
+        helper.do_submit(make_request(dry_run=True), self.acct, Path(".pending-verdikta"))
+        self.assertEqual(be.api_kwargs.get("data", {}).get("hunter"), self.acct.address)
 
     def test_finalize(self):
         be = self._install(FakeBackend())
