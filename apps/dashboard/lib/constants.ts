@@ -32,18 +32,30 @@ export function modelsForHarness(harness: string) {
   return harness === 'grok' ? GROK_MODELS : MODELS
 }
 
-// Secret names that authenticate Aeon's model access: Claude's own credentials
-// (OAuth token or Anthropic key), the gateway-provider keys that route Claude
-// through a third party (incl. XAI_API_KEY via the grok gateway), and the grok
-// harness's X-account OAuth session (GROK_CREDENTIALS). Setting any one means the
-// agent can run, so the top-bar "Auth" call-to-action hides once at least one is
-// present. The client derives auth state from /api/secrets by testing membership.
-export const AUTH_SECRETS = ['CLAUDE_CODE_OAUTH_TOKEN', 'ANTHROPIC_API_KEY', 'GROK_CREDENTIALS', ...GATEWAY_SECRET_NAMES]
+// Secret names that authenticate the CLAUDE harness (Claude Code): its own
+// credentials (OAuth token or Anthropic key) or any gateway-provider key that
+// routes Claude through a third party (incl. XAI_API_KEY via the grok gateway).
+// A grok X-account OAuth session (GROK_CREDENTIALS) does NOT authenticate Claude
+// Code, so it is deliberately excluded here.
+export const CLAUDE_AUTH_SECRETS = ['CLAUDE_CODE_OAUTH_TOKEN', 'ANTHROPIC_API_KEY', ...GATEWAY_SECRET_NAMES]
 
 // Auth secrets that specifically authenticate the GROK harness (X-account OAuth
-// session or an xAI key). A Claude token does NOT authenticate grok, so the Auth
-// CTA must key off these when the grok harness is selected.
+// session or an xAI key). A Claude token does NOT authenticate grok, and vice
+// versa — so the top-bar "Auth" CTA and the run-gate must key off the set for the
+// SELECTED harness (see authSecretsForHarness), never the union below.
 export const GROK_AUTH_SECRETS = ['GROK_CREDENTIALS', 'XAI_API_KEY']
+
+// Union of everything that authenticates ANY harness — for coarse "is the repo
+// authed at all" checks only. Harness-specific UI must use authSecretsForHarness()
+// so switching harness re-evaluates against that harness's own credentials.
+export const AUTH_SECRETS = [...CLAUDE_AUTH_SECRETS, 'GROK_CREDENTIALS']
+
+// The auth-secret set that authenticates the given harness. The client derives
+// auth state from /api/secrets by testing membership against this — so the Auth
+// CTA reappears when you switch to a harness whose own auth isn't set yet.
+export function authSecretsForHarness(harness: string): string[] {
+  return harness === 'grok' ? GROK_AUTH_SECRETS : CLAUDE_AUTH_SECRETS
+}
 
 export const DAYS = [
   { label: 'All', value: -1 }, { label: 'Mon', value: 1 }, { label: 'Tue', value: 2 },
