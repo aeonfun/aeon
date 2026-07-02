@@ -113,11 +113,18 @@ fi
 # --- 4. run -----------------------------------------------------------------
 PROMPT="$(cat)"
 out_file="$(mktemp)"; err_file="$(mktemp)"
+# --no-subagents: a headless skill run is a single focused agent. The multi-agent
+# models (grok-build) otherwise try to DELEGATE to parallel subagents, whose
+# Task/spawn tool is not in our --permission-mode dontAsk allowlist — the denial
+# aborts the whole turn (observed: grok-build → stopReason=Cancelled, empty text,
+# ~18s). Disabling subagents keeps the model doing the work itself. Composer is
+# single-agent already, so this is a no-op for it.
 # Guard the array expansions for the empty case under bash 3.2 set -u.
 grok -p "$PROMPT" \
   ${MODEL_FLAG[@]+"${MODEL_FLAG[@]}"} \
   --output-format json \
   --no-auto-update \
+  --no-subagents \
   ${GROK_ARGS[@]+"${GROK_ARGS[@]}"} >"$out_file" 2>"$err_file"
 rc=$?
 # Surface grok's own diagnostics into the step log regardless of outcome.
@@ -133,8 +140,13 @@ fi
 # Confirmed shape (grok 0.2.82): {"text": "...", "stopReason", "sessionId",
 # "requestId", "thought"} — the result is in .text and there is NO usage/token
 # field, so token counts normalize to 0 (grok-harness runs report 0 tokens).
-# We still accept common aliases (.result/.output/etc.) for forward-compat, and
-# fall back to wrapping raw stdout if the shape ever changes (never break a run).
+#
+# CRITICAL: `.thought` is grok's internal chain-of-thought. It must NEVER become
+# the skill result — downstream this gets committed to the repo, sent via
+# ./notify, and fed into chains. So .result is built ONLY from recognized text
+# fields, and a valid grok JSON object is NEVER dumped raw (which is how .thought
+# previously leaked when .text was empty). Common aliases are kept for forward-
+# compat; the raw-stdout fallback fires only for genuinely non-JSON output.
 NORMALIZE='
   (.result // .text // .output // .response // .content // .message // "") as $r
   | (.usage // .usageMetadata // {}) as $u
@@ -149,17 +161,34 @@ NORMALIZE='
         cache_creation_input_tokens: (($u.cache_creation_input_tokens // $u.cache_creation // 0) | floor)
       }
     }'
-# Use the normalized envelope only if it parsed AND actually recovered text;
-# otherwise wrap grok's raw stdout so a shape mismatch never looks like "no
-# output". (An empty envelope on genuinely-empty output is fine — the fallback
-# then wraps the empty string, same result.)
-ENVELOPE=""
-if ENVELOPE=$(jq -ce "$NORMALIZE" "$out_file" 2>/dev/null) \
-   && [ -n "$ENVELOPE" ] \
-   && [ -n "$(printf '%s' "$ENVELOPE" | jq -r '.result')" ]; then
+
+if jq -e 'type == "object"' "$out_file" >/dev/null 2>&1; then
+  # A recognized grok JSON envelope. Build the normalized result (text fields
+  # only — never .thought) and inspect how the turn ended.
+  ENVELOPE=$(jq -ce "$NORMALIZE" "$out_file")
+  RESULT_TEXT=$(printf '%s' "$ENVELOPE" | jq -r '.result // ""')
+  STOP=$(jq -r '.stopReason // .stop_reason // ""' "$out_file")
+  # grok exits 0 even when a run is Cancelled / aborted with no output. That is a
+  # FAILED run, not an empty-but-successful one — surface it so the workflow's
+  # grok-error path fires instead of committing/reporting an empty (or partial)
+  # result. A clean EndTurn with empty text is legitimate (the skill did its work
+  # via tool calls and wrote no final message) and passes through as result "".
+  case "$STOP" in
+    Cancelled|cancelled|Aborted|aborted|Interrupted|interrupted|Error|error|Failed|failed|Refusal|refusal)
+      if [ -z "$RESULT_TEXT" ]; then
+        log "::error::grok terminated abnormally (stopReason=$STOP) with no output — failing the run rather than emitting an empty/partial result"
+        rm -f "$out_file" "$err_file"
+        exit 3
+      fi
+      log "::warning::grok stopReason=$STOP — retaining partial output"
+      ;;
+  esac
   printf '%s\n' "$ENVELOPE"
 else
-  log "::warning::grok output was not the expected JSON shape (or had no recoverable text) — wrapping raw stdout (verify grok --output-format json fields)"
+  # Not a single JSON object: shape changed, plain-text output, or leading noise.
+  # Wrap raw stdout so a mismatch never silently looks like "no output". (This
+  # path only fires for non-JSON, so it can't leak a JSON object's .thought.)
+  log "::warning::grok output was not a JSON object (expected --output-format json) — wrapping raw stdout; verify the grok CLI version/output format"
   jq -Rsc '{result: ., usage: {input_tokens: 0, output_tokens: 0, cache_read_input_tokens: 0, cache_creation_input_tokens: 0}}' "$out_file"
 fi
 rm -f "$out_file" "$err_file"

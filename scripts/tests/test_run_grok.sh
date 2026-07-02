@@ -45,6 +45,28 @@ OUT=$(run '{"text":"ok","stopReason":"EndTurn","sessionId":"s","requestId":"r","
 [ "$(echo "$OUT" | jq -r '.result')" = "ok" ] && pass "real grok shape → .result from .text" || bad "real grok shape → .result (got: $OUT)"
 [ "$(echo "$OUT" | jq -r '.usage.input_tokens')" = "0" ] && pass "real grok shape → 0 tokens (no usage field)" || bad "real grok shape → 0 tokens"
 
+# 2c. grok's internal .thought is NEVER surfaced as the result (leak guard)
+OUT=$(run '{"text":"visible answer","stopReason":"EndTurn","thought":"SECRET_CHAIN_OF_THOUGHT"}')
+{ [ "$(echo "$OUT" | jq -r '.result')" = "visible answer" ] && ! echo "$OUT" | grep -q "SECRET_CHAIN_OF_THOUGHT"; } \
+  && pass "does not leak .thought into result" || bad "leaked .thought (got: $OUT)"
+
+# 2d. Cancelled/aborted with EMPTY text → hard fail; must NOT emit an empty result
+# or raw-wrap the JSON (which would leak .thought). Regression for the grok-build
+# 'Cancelled' run that committed chain-of-thought to the repo.
+if OUT=$(run '{"text":"","stopReason":"Cancelled","thought":"SECRET"}' 0 2>/dev/null); then
+  bad "Cancelled+empty should fail (got rc 0, out: $OUT)"
+else
+  echo "$OUT" | grep -q "SECRET" && bad "Cancelled+empty leaked .thought" || pass "Cancelled+empty fails without leaking .thought"
+fi
+
+# 2e. Clean EndTurn with empty text is a legitimate success (skill acted via tools,
+# no final message) → result "" and exit 0, NOT a failure.
+if OUT=$(run '{"text":"","stopReason":"EndTurn"}' 0 2>/dev/null); then
+  [ "$(echo "$OUT" | jq -r '.result')" = "" ] && pass "empty EndTurn → clean empty result" || bad "empty EndTurn result (got: $OUT)"
+else
+  bad "empty EndTurn should succeed"
+fi
+
 # 3. Non-JSON stdout falls back to raw-text envelope (never "no output")
 OUT=$(run 'plain text, not json')
 [ "$(echo "$OUT" | jq -r '.result')" = "plain text, not json" ] && pass "wraps non-JSON stdout" || bad "wraps non-JSON stdout (got: $OUT)"
@@ -54,6 +76,7 @@ run '{"result":"x"}' >/dev/null
 grep -qx -- "--output-format" "$ARGS_FILE" && grep -qx "json" "$ARGS_FILE" \
   && pass "passes --output-format json" || bad "passes --output-format json"
 grep -qx -- "--no-auto-update" "$ARGS_FILE" && pass "passes --no-auto-update" || bad "passes --no-auto-update"
+grep -qx -- "--no-subagents" "$ARGS_FILE" && pass "passes --no-subagents" || bad "passes --no-subagents"
 grep -qx -- "--model" "$ARGS_FILE" && grep -qx "grok-composer-2.5-fast" "$ARGS_FILE" \
   && pass "passes --model for a real grok model" || bad "passes --model"
 grep -qx -- "--permission-mode" "$ARGS_FILE" && grep -qx "dontAsk" "$ARGS_FILE" \
