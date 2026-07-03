@@ -4,7 +4,7 @@ import { existsSync } from 'fs'
 import { homedir } from 'os'
 import { join } from 'path'
 import { ghAvailable, ghArgsRepo } from '@/lib/gh'
-import { syncGatewayProvider } from '@/lib/gateway'
+import { syncGatewayProvider, syncHarness } from '@/lib/gateway'
 import { errorResponse } from '@/lib/http'
 
 // One-click "Connect X account" for the Grok Build (`grok`) harness — the exact
@@ -116,7 +116,14 @@ export async function POST(request: Request) {
       stdio: ['pipe', 'pipe', 'pipe'],
     })
 
-    return NextResponse.json({ ok: true, method: 'oauth', secret: 'GROK_CREDENTIALS' })
+    // GROK_CREDENTIALS is grok-CLI-only, so connecting the X account is an
+    // unambiguous "use the grok harness" signal: switch harness to grok and push
+    // aeon.yml — mirroring how setting a provider key auto-syncs the gateway.
+    // (The API-key path above deliberately doesn't, since XAI_API_KEY is also a
+    // gateway/tweet-skill secret.)
+    const sync = await syncHarness('grok')
+
+    return NextResponse.json({ ok: true, method: 'oauth', secret: 'GROK_CREDENTIALS', harness: 'grok', synced: sync.synced })
   } catch (error: unknown) {
     return errorResponse(error, 'Failed to connect Grok')
   }
