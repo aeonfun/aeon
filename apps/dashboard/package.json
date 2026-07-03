@@ -30,5 +30,10 @@
   },
   "overrides": {
     "postcss": "^8.5.10"
+  },
+  "allowScripts": {
+    "esbuild": true,
+    "fsevents": true,
+    "sharp": true
   }
 }
