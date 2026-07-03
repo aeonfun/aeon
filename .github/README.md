@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="../assets/aeon.jpg" alt="Aeon" width="120" />
+  <img src="../docs/assets/aeon.jpg" alt="Aeon" width="120" />
 </p>
 
 <h1 align="center">AEON</h1>
@@ -17,7 +17,7 @@
 </p>
 
 <p align="center">
-  <img src="../assets/aeon-demo.gif" alt="Aeon Demo" />
+  <img src="../docs/assets/aeon-demo.gif" alt="Aeon Demo" />
 </p>
 
 ---
@@ -30,7 +30,7 @@ You need three things:
 2. **[GitHub CLI](https://cli.github.com/) (`gh`), authenticated** - the dashboard uses it for everything (secrets, workflows), and `./aeon` checks it before starting. Install: `brew install gh` (macOS), `winget install --id GitHub.cli` (Windows), [per-distro instructions](https://github.com/cli/cli/blob/trunk/docs/install_linux.md) (Linux). Then run `gh auth login` and follow the prompts.
 3. **Your own copy of this repo** - click **Use this template** at the top of [the repo page](https://github.com/aaronjmars/aeon) - keep it public, Actions minutes are free on public repos. CLI version: `gh repo fork aaronjmars/aeon --clone`.
 
-   <img src="../assets/use-this-template.png" alt="The Use this template button at the top of the repo page" width="320" />
+   <img src="../docs/assets/use-this-template.png" alt="The Use this template button at the top of the repo page" width="320" />
 
 ```bash
 git clone https://github.com/<you>/aeon   # skip if you used `gh repo fork --clone`
@@ -96,11 +96,11 @@ Authoritative source: [`skills.json`](../catalog/skills.json) + [`packs.json`](.
 
 ### It heals itself
 
-![Anatomy of a skill run](../assets/skill-run-aeon.jpg)
+![Anatomy of a skill run](../docs/assets/skill-run-aeon.jpg)
 
 Every skill output is automatically scored 1–5 by Haiku after each run. Scores and failure flags (`api_error`, `stale_data`, `rate_limited`) are tracked per skill in `memory/skill-health/` with a rolling 30-run history. When something breaks, the loop fixes it without you:
 
-![Self-healing architecture](../assets/architecture-aeon.jpg)
+![Self-healing architecture](../docs/assets/architecture-aeon.jpg)
 
 1. **`heartbeat`** (3x daily) - detects failed, stuck, or chronically broken skills
 2. **`skill-health`** - audits quality scores and flags API degradation patterns
@@ -156,13 +156,13 @@ Most agent tools put you in the driver's seat - approve this tool call, review t
 
 For a comparison against the broader ecosystem (AutoGen, CrewAI, n8n, LangGraph) and active forks in production, see [`SHOWCASE.md`](../docs/SHOWCASE.md). For products built on Aeon, see [`ECOSYSTEM.md`](../docs/ECOSYSTEM.md).
 
-![Autonomy spectrum](../assets/autonomy-aeon.jpg)
+![Autonomy spectrum](../docs/assets/autonomy-aeon.jpg)
 
 ---
 
 ## Configure
 
-![Aeon never sleeps - a full day of autonomous runs](../assets/never-sleeps-aeon.jpg)
+![Aeon never sleeps - a full day of autonomous runs](../docs/assets/never-sleeps-aeon.jpg)
 
 ### Schedules
 
@@ -373,7 +373,7 @@ The built-in `GITHUB_TOKEN` is scoped to this repo only. For `github-monitor`, `
 ### LLM Gateways
 
 <p align="center">
-  <img src="../assets/providers.png" alt="Seven AI providers supported: Claude subscription, Anthropic API, OpenRouter, Bankr, UsePod, Venice, Surplus" width="640" />
+  <img src="../docs/assets/providers.png" alt="Seven AI providers supported: Claude subscription, Anthropic API, OpenRouter, Bankr, UsePod, Venice, Surplus" width="640" />
 </p>
 
 Aeon can power Claude Code **eight** ways. Two are **direct** to Anthropic; the other six route through a **gateway**. You add a credential in the dashboard's Authenticate modal - paste it and the provider is detected from its prefix (or picked from the dropdown) and saved as the secret below. (Separately, the [Grok Build harness](#harnesses) runs the `grok` CLI instead of Claude Code — that's a different axis from the gateways here.)
@@ -531,7 +531,7 @@ If the secrets aren't set, both steps no-op - fully backward compatible. If Flee
 
 ### Community skill packs
 
-![Aeon Framework ecosystem map](../assets/ecosystem-aeon.jpg)
+![Aeon Framework ecosystem map](../docs/assets/ecosystem-aeon.jpg)
 
 > Aeon's **built-in (first-party) packs** - Core, Fleet, Research, Dev, Markets, Hound, Social, Productivity, Agent Ops - live in this repo and are enabled from the dashboard's **Packs** view; see [`docs/skill-packs.md`](../docs/skill-packs.md). The packs below are **community** collections in their own repos.
 
@@ -582,7 +582,7 @@ Your `memory/`, `output/`, and personal config won't conflict - they're in files
 
 ### GitHub Actions cost
 
-![Basically free - runs on your existing Claude subscription and a free GitHub account](../assets/free-aeon.jpg)
+![Basically free - runs on your existing Claude subscription and a free GitHub account](../docs/assets/free-aeon.jpg)
 
 | Scenario | Cost |
 |----------|------|
@@ -595,7 +595,7 @@ Private repos: Free plan = 2,000 min/mo, Pro/Team = 3,000 + $0.008/min overage. 
 
 ### Project structure
 
-![The Stack](../assets/stack-aeon.jpg)
+![The Stack](../docs/assets/stack-aeon.jpg)
 
 ```
 CLAUDE.md                ← agent identity (auto-loaded by Claude Code)
