@@ -17,7 +17,7 @@ branch of [`aaronjmars/aeon`](https://github.com/aaronjmars/aeon) only.
 | Your fork, behind `main` | ⚠️ Pull `upstream/main` to receive fixes |
 | Older tags / releases | ❌ No |
 
-Forks are self-maintained. To stay current, follow the [two-repo strategy](README.md#two-repo-strategy):
+Forks are self-maintained. To stay current, follow the [two-repo strategy](../README.md#two-repo-strategy):
 
 ```bash
 git remote add upstream https://github.com/aaronjmars/aeon.git
@@ -71,7 +71,7 @@ Every skill is told to treat fetched external content as **data, not
 commands**. If fetched content contains text aimed at the agent ("ignore
 previous instructions", "you are now…"), the skill discards it, logs a warning,
 and continues from trusted sources. This is the primary defense against prompt
-injection — see the `## Security` section of [`CLAUDE.md`](CLAUDE.md).
+injection — see the `## Security` section of [`CLAUDE.md`](../CLAUDE.md).
 
 ### Secrets
 
@@ -83,7 +83,7 @@ injection — see the `## Security` section of [`CLAUDE.md`](CLAUDE.md).
 - The default `GITHUB_TOKEN` is scoped to the running repo only. Cross-repo
   skills (`github-monitor`, `pr-review`, `issue-triage`, `external-feature`) use an optional
   fine-grained `GH_GLOBAL` token whose scope **you** choose — grant it the least
-  access those skills need. See [Cross-repo access](README.md#cross-repo-access).
+  access those skills need. See [Cross-repo access](../README.md#cross-repo-access).
 - Run your live instance as a **private fork** so `memory/`, `articles/`, and any
   operator data stay private.
 
@@ -94,7 +94,7 @@ Skill runs execute inside the GitHub Actions runner sandbox, which blocks
 so a leaked secret can't be silently shipped out of a bash step. Auth'd data is
 fetched via `scripts/prefetch-*.sh` (full env, before Claude starts) or `gh api`,
 never by curling secrets from inside a skill. See
-[Sandbox limitations](CLAUDE.md#sandbox-limitations).
+[Sandbox limitations](../CLAUDE.md#sandbox-limitations).
 
 ### Dashboard
 
@@ -104,7 +104,7 @@ state-changing requests whose `Origin` isn't allowlisted — a malicious web pag
 can't drive `/api/secrets` via a no-cors POST. Widen access deliberately with
 `AEON_DASHBOARD_ALLOWED_HOSTS`; `AEON_DASHBOARD_ALLOW_ANY_HOST=1` disables the
 check entirely and is only safe behind a trusted reverse proxy. See
-[Remote dashboard access](README.md#remote-dashboard-access).
+[Remote dashboard access](../README.md#remote-dashboard-access).
 
 ### Third-party skills
 
@@ -112,7 +112,7 @@ check entirely and is only safe behind a trusted reverse proxy. See
 incoming `SKILL.md` and install it **disabled** in `aeon.yml`. Review any
 community skill before flipping `enabled: true` — a skill is a prompt that runs
 with your secrets. For an authorization layer that ALLOW/BLOCKs every run before
-Claude starts, see [Fleet Watcher](README.md#fleet-watcher-authorization-layer).
+Claude starts, see [Fleet Watcher](../README.md#fleet-watcher-authorization-layer).
 
 ## Scope
 
