@@ -283,6 +283,18 @@ Per-skill execution state (`memory/cron-state.json` — status, success rate, qu
 
 Chains record to the same ledger.
 
+### Knowledge (OKF)
+
+Aeon's knowledge is a native **[OKF](https://github.com/GoogleCloudPlatform/knowledge-catalog/tree/main/okf) (Open Knowledge Format) v0.1** bundle — a portable, self-describing markdown corpus other tools and agents can read straight from the repo. It's **in place, not a separate export**: the real files *are* the bundle. Every markdown file in scope carries a non-empty `type:` frontmatter field (OKF's one hard requirement, §9):
+
+| Scope | `type:` | |
+|---|---|---|
+| `memory/topics/**` | `Token` `Protocol` `Narrative` `Repo` `Metric` `Playbook` `Reference` | living concepts, updated in place (last-writer-wins) |
+| `output/articles/` · `skills/*/SKILL.md` · `docs/` | `Article` · `Skill` · `Reference` | publications, the catalog, docs |
+| `memory/logs/` · `MEMORY.md` · `memory/issues/` | `Log` · `Index` · `Issue` | operational records |
+
+Scope, exclusions, and per-family types live in one place — [`scripts/okf-config.json`](../scripts/okf-config.json). Tooling: `node scripts/okf-validate.mjs` asserts conformance (held at the spec's bar, never stricter) and the **`ci-okf`** check gates any PR that touches a root; `node scripts/okf-backfill.mjs` stamps a missing `type:`; `node scripts/okf-index.mjs` regenerates the bundle index. The Aeon **MCP server** also serves the bundle as read-only resources (`okf://index`, `okf://concept/{id}`, `okf://skill/{slug}`) so consumption agents can traverse it without cloning. Two optional, default-off skills round it out: **`okf-export`** (backfill existing notes) and **`okf-ingest`** (fetch + validate + quarantine an *external* bundle). Full guide: [`docs/OKF.md`](../docs/OKF.md).
+
 ### Skill chaining
 
 Chain skills so outputs flow between them. Chains run as separate GitHub Actions workflow steps via `chain-runner.yml`:
@@ -618,7 +630,7 @@ bin/                     ← operator + maintainer CLI (run from repo root, e.g.
   generate-skills-json   ← regenerate catalog/skills.json from SKILL.md files
   generate-packs-json    ← regenerate catalog/packs.json from the two configs above
 docs/                    ← reference docs, community registries, adopter examples
-  CORE.md · CAPABILITIES.md · skill-packs.md · telegram-* · help/status
+  CORE.md · CAPABILITIES.md · OKF.md · skill-packs.md · telegram-* · help/status
   ECOSYSTEM.md           ← products & agents built on Aeon (community-curated)
   SHOWCASE.md            ← leaderboard of active forks
   examples/              ← MCP quickstart, portable workflow templates, skill templates
@@ -631,14 +643,14 @@ apps/                    ← standalone sub-projects, each with its own package.
   dashboard/             ← local web UI (Next.js + json-render feed)
   mcp-server/            ← MCP server - exposes skills as Claude tools
   webhook/               ← Telegram instant-mode Cloudflare Worker (~1s delivery)
-memory/
-  MEMORY.md              ← goals, active topics, pointers
+memory/                  ← native OKF v0.1 bundle: every .md carries a type: (see docs/OKF.md)
+  MEMORY.md              ← goals, active topics, pointers (type: Index)
   cron-state.json        ← per-skill execution metrics (status, success rate, quality)
   skill-health/          ← rolling quality scores per skill (last 30 runs)
   token-usage.csv        ← token cost tracking per run
-  issues/                ← structured issue tracker for skill failures
-  topics/                ← detailed notes by topic
-  logs/                  ← daily activity logs (YYYY-MM-DD.md)
+  issues/                ← structured issue tracker for skill failures (type: Issue)
+  topics/                ← OKF concepts by topic — tokens, protocols, narratives, repos…
+  logs/                  ← daily activity logs (YYYY-MM-DD.md; type: Log)
 output/                  ← everything skills produce, committed to the repo
   articles/ · images/    ← published deliverables
   .chains/               ← transient chain-step handoff (consumed by downstream steps)
@@ -648,6 +660,8 @@ scripts/
   prefetch-xai.sh        ← pre-fetch X/Grok API data outside sandbox
   postprocess-replicate.sh ← generate images via Replicate after Claude runs
   skill-runs             ← audit recent GitHub Actions skill runs
+  okf-validate.mjs       ← assert OKF conformance (the ci-okf gate); okf-backfill.mjs stamps a missing type:
+  okf-config.json        ← OKF scope: roots, exclusions, per-family types
 .github/workflows/
   aeon.yml               ← skill runner (workflow_dispatch, issues, quality scoring)
   chain-runner.yml       ← skill chain executor (parallel + sequential pipelines)
