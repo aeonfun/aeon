@@ -102,7 +102,7 @@ Every skill output is automatically scored 1–5 by Haiku after each run. Scores
 
 ![Self-healing architecture](../docs/assets/architecture-aeon.jpg)
 
-1. **`heartbeat`** (3x daily) - detects failed, stuck, or chronically broken skills
+1. **`heartbeat`** (daily) - detects failed, stuck, or chronically broken skills
 2. **`skill-health`** - audits quality scores and flags API degradation patterns
 3. **`skill-repair`** - diagnoses and patches failing skills automatically
 4. **`self-improve`** - evolves prompts, config, and workflows based on performance
