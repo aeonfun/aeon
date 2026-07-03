@@ -18,25 +18,6 @@
       ]
     },
     {
-      "repo": "UIZorrot/careful-finance-aeon-skill-pack",
-      "name": "Careful Finance Aeon Skill Pack",
-      "description": "Market-intelligence scanner for DeFi yield and perpetual-futures opportunities; prints or publishes a conservative hourly Careful Finance snapshot.",
-      "author": "UIZorrot",
-      "license": "MIT",
-      "homepage": "https://careful-finance.txzy.net",
-      "category": "crypto",
-      "trust_level": "community",
-      "skills": [
-        "careful-finance"
-      ],
-      "secrets_required": [],
-      "capabilities": [
-        "external_api",
-        "writes_external_host",
-        "sends_notifications"
-      ]
-    },
-    {
       "repo": "liquidpadbot/aeon-skill-pack-liquidpad",
       "name": "LiquidPad",
       "description": "Track LiquidPad on Base — $LPAD burn cycle alerts, new token launches with onchain provenance, daily protocol digest, and fee-accrual tracking on every launched token.",
