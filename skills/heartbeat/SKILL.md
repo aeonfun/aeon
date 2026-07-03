@@ -91,7 +91,7 @@ Batch all findings into a **single notification**, grouped by priority tier:
 
 ### Public status page
 
-After the priority checks (even when everything is green — this step **always** runs), regenerate `docs/status.md` so the public GitHub Pages site reflects current fleet health.
+After the priority checks (even when everything is green — this step **always** runs), regenerate `docs/status.md` so it reflects current fleet health.
 
 #### Data sources
 - `memory/cron-state.json` — per-skill run state (authoritative)
@@ -109,7 +109,7 @@ This refines **only** the public status-page colour. It does **not** change the 
 
 #### Format
 
-Write `docs/status.md` with Jekyll frontmatter so it renders as a gallery page:
+Write `docs/status.md` with frontmatter so it renders as a status page:
 
 ```markdown
 ---

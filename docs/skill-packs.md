@@ -1,6 +1,6 @@
 # Skill packs
 
-Aeon ships **69 skills**, but most forks only ever run a handful. Packs make
+Aeon ships **68 skills**, but most forks only ever run a handful. Packs make
 that manageable: by default the dashboard shows only the small **core** set —
 everything else is grouped into **packs** that stay hidden until you enable them.
 **Enabling a pack reveals its skills** across the sidebar and HQ. That's a

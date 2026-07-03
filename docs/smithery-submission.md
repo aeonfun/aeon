@@ -22,13 +22,13 @@
 
 ## Description (short — for the listing card)
 
-The most autonomous agent framework — give it a direction and it leverages 69 skills like deep research, PR reviews, market monitoring, and Vercel deploys.
+The most autonomous agent framework — give it a direction and it leverages 68 skills like deep research, PR reviews, market monitoring, and Vercel deploys.
 
 ## Description (long — for the listing body)
 
-Aeon is an autonomous agent framework that runs on GitHub Actions and exposes its 69 skills as MCP tools so any Claude Desktop or Claude Code session can invoke them directly. The catalog is dominated by Dev (26), Crypto (20), and Productivity (11), with the remainder covering crypto/markets, social drafting, and self-managing meta-skills (heartbeat, self-improve, skill-health). Each MCP tool maps 1:1 to an Aeon skill — calling `aeon-digest` from Claude Desktop runs the same prompt that the scheduled cron runs. The server speaks stdio, requires no extra API keys, and reuses whichever Claude credential is already configured for the operator.
+Aeon is an autonomous agent framework that runs on GitHub Actions and exposes its 68 skills as MCP tools so any Claude Desktop or Claude Code session can invoke them directly. The catalog is dominated by Dev (26), Crypto (20), and Productivity (11), with the remainder covering crypto/markets, social drafting, and self-managing meta-skills (heartbeat, self-improve, skill-health). Each MCP tool maps 1:1 to an Aeon skill — calling `aeon-digest` from Claude Desktop runs the same prompt that the scheduled cron runs. The server speaks stdio, requires no extra API keys, and reuses whichever Claude credential is already configured for the operator.
 
-## Tool catalog (69 tools)
+## Tool catalog (68 tools)
 
 | Tool | Category | Description |
 |------|----------|-------------|
@@ -97,7 +97,6 @@ Aeon is an autonomous agent framework that runs on GitHub Actions and exposes it
 | `aeon-unlock-monitor` | Crypto | Token unlock and vesting tracker — quantify supply pressure via absorption ratio, classify cliff vs linear, deliver one-line market reads |
 | `aeon-vuln-scanner` | Dev | Audit trending repos for real security vulnerabilities and disclose responsibly — scan and route findings (PVR / dependency PR), re-submit queued advisories when a watched repo enables private reporting, and auto-send armed out-of-band email disclosures via Resend |
 | `aeon-vuln-tracker` | Dev | One lifecycle poll over everything vuln-scanner produces — PR & advisory status (merges, stale opens, maintainer replies needing an answer, queued-too-long carve-outs), PVR triage-state transitions on submitted advisories, and pending-disclosure queue aging — with a stars-secured impact headline and a single operator-action queue. |
-| `aeon-wallet-profile` | Crypto | One read-only wallet-analysis skill for Base with six modes — behavioral profile (default), balance digest, drain-risk audit (approvals + honeypot + severity), live approval inventory, same-entity clustering, and multi-hop fund-flow tracing with a Mermaid graph. Keyless via Etherscan v2 + Base RPC; optional Basescan key deepens history. Analysis only — never revokes, never sends a transaction. |
 | `aeon-workflow-audit` | Dev | Audit .github/workflows and composite actions with zizmor + actionlint, classify findings against the prior audit, auto-fix Critical/High regressions, and open a PR only when something actually changed. |
 | `aeon-write-tweet` | Social | Multi-format tweet studio — standalone drafts (10 across 5 size tiers), a 5–10 tweet thread, or 10 remixes of past tweets, selected via ${var} |
 | `aeon-x402-monitor` | Crypto | Configurable weekly vertical/ecosystem tracker. Defaults to x402 (agent micropayments); preset selectors track RWA tokenization, the AI compute market, the MCP ecosystem, or AI agent job-displacement — each with its own sources, scoring, and output format. Repoint the default protocol via memory/topics/tracked-protocol.md. |
@@ -125,7 +124,7 @@ cd aeon/apps/mcp-server && npm install && npm run build
 }
 ```
 
-3. Restart Claude Desktop. All 69 Aeon skills appear as `aeon-<slug>` tools.
+3. Restart Claude Desktop. All 68 Aeon skills appear as `aeon-<slug>` tools.
 
 ## Notes for the maintainer
 

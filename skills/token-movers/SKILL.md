@@ -459,7 +459,7 @@ For each wallet, query the chain in this fallback order:
    ```
    Use a public, keyless JSON-RPC endpoint for the configured chain (e.g. `https://mainnet.base.org` for Base, `https://eth.llamarpc.com` for Ethereum), or the per-wallet `RPC URL` from config. Override Base via `BASE_RPC_URL` for an authenticated endpoint (append any key in the URL **path**, **never a `-H` header** — the sandbox blocks env-var expansion in headers). The static `-H "Content-Type: application/json"` carries no secret, so it is safe. Response is JSON-RPC `{"jsonrpc":"2.0","result":"0x<hex_wei>","id":1}`. Convert hex → decimal → ÷1e18. If the response has no `result`, the `result` is `null`/non-hex, or it carries an `error`, mark this wallet `eth=fetch_fail` and continue.
 
-   > Note on explorers: the unified `api.etherscan.io/v2` endpoint gates several chains behind a paid plan, so a plain JSON-RPC `eth_getBalance` is the reliable keyless path — matching `wallet-profile`/`tx-explain`.
+   > Note on explorers: the unified `api.etherscan.io/v2` endpoint gates several chains behind a paid plan, so a plain JSON-RPC `eth_getBalance` is the reliable keyless path — matching `tx-explain`.
 
 2. **Alchemy (secondary, only if `ALCHEMY_API_KEY` is set AND the public RPC failed):**
    ```bash

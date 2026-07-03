@@ -1,3 +1,0 @@
-{
-  "content": "# Long-term Memory\n*Last consolidated: never*\n\n## About This Repo\n- Autonomous agent running on GitHub Actions via Claude Code\n\n## Recent Articles\n| Date | Title | Topic |\n|------|-------|-------|\n\n## Recent Digests\n| Date | Type | Key Topics |\n|------|------|------------|\n\n## Skills Built\n| Skill | Date | Notes |\n|-------|------|-------|\n\n## Lessons Learned\n- Digest format: Markdown with clickable links, under 4000 chars\n- Always save files AND commit before logging\n\n## Next Priorities\n- Configure notification channels (Telegram, Discord, or Slack)\n- Run first digest"
-}

@@ -2,7 +2,7 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.aaronjmars/aeon-mcp",
   "title": "Aeon",
-  "description": "The most autonomous agent framework — give it a direction and it leverages 69 skills like deep research, PR reviews, market monitoring, and Vercel deploys.",
+  "description": "The most autonomous agent framework — give it a direction and it leverages 68 skills like deep research, PR reviews, market monitoring, and Vercel deploys.",
   "version": "1.0.0",
   "websiteUrl": "https://github.com/aaronjmars/aeon",
   "repository": {
@@ -286,10 +286,6 @@
           "description": "[Aeon · Dev] One lifecycle poll over everything vuln-scanner produces — PR & advisory status (merges, stale opens, maintainer replies needing an answer, queued-too-long carve-outs), PVR triage-state transitions on submitted advisories, and pending-disclosure queue aging — with a stars-secured impact headline and a single operator-action queue. (cron: 30 16 * * *)"
         },
         {
-          "name": "aeon-wallet-profile",
-          "description": "[Aeon · Crypto] One read-only wallet-analysis skill for Base with six modes — behavioral profile (default), balance digest, drain-risk audit (approvals + honeypot + severity), live approval inventory, same-entity clustering, and multi-hop fund-flow tracing with a Mermaid graph. Keyless via Etherscan v2 + Base RPC; optional Basescan key deepens history. Analysis only — never revokes, never sends a transaction."
-        },
-        {
           "name": "aeon-workflow-audit",
           "description": "[Aeon · Dev] Audit .github/workflows and composite actions with zizmor + actionlint, classify findings against the prior audit, auto-fix Critical/High regressions, and open a PR only when something actually changed. (cron: 0 16 * * 0)"
         },
@@ -302,7 +298,7 @@
           "description": "[Aeon · Crypto] Configurable weekly vertical/ecosystem tracker. Defaults to x402 (agent micropayments); preset selectors track RWA tokenization, the AI compute market, the MCP ecosystem, or AI agent job-displacement — each with its own sources, scoring, and output format. Repoint the default protocol via memory/topics/tracked-protocol.md. (cron: 0 12 * * 2)"
         }
       ],
-      "totalSkills": 69,
+      "totalSkills": 68,
       "categories": {
         "Productivity": 21,
         "Dev": 35,
