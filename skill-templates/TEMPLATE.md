@@ -71,7 +71,7 @@ requires: [XAI_API_KEY, COINGECKO_API_KEY?]
 
 ### Declaring MCP servers (`mcp:`)
 
-If a skill calls an [MCP server](../README.md#mcp-servers-in-skill-runs) during
+If a skill calls an [MCP server](../.github/README.md#mcp-servers-in-skill-runs) during
 its run, declare it in the `mcp:` frontmatter list. Same two-tier semantics as
 `requires:` — a bare slug is **required**, a trailing `?` means **works better
 with**. Slugs reference the MCP catalog (`apps/dashboard/lib/mcp-catalog.ts`).

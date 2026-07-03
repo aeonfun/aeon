@@ -12,7 +12,7 @@
 
 ## Building on Aeon
 
-These are the projects we know of that run Aeon, extend it, or integrate with the framework. The list is curated from operator self-disclosures and public mentions — it isn't exhaustive, and not every fork is listed here. For a leaderboard of active forks see [`SHOWCASE.md`](SHOWCASE.md); for installable skill collections see the [Community skill packs](README.md#community-skill-packs) section in the README.
+These are the projects we know of that run Aeon, extend it, or integrate with the framework. The list is curated from operator self-disclosures and public mentions — it isn't exhaustive, and not every fork is listed here. For a leaderboard of active forks see [`SHOWCASE.md`](SHOWCASE.md); for installable skill collections see the [Community skill packs](.github/README.md#community-skill-packs) section in the README.
 
 | Logo | Project | Links |
 |------|---------|-------|
@@ -107,4 +107,4 @@ Guidelines:
 - **Logo / PFP** — add a square logo in the first column via an `<img>` tag sized `width="36" height="36"` so the column stays tidy, with an `alt` like `"YourProject logo"`. Point `src` at a directly-hosted square image — your X avatar works well (open your profile picture and use its `..._400x400.jpg`/`.png` URL). Leave the cell empty (`|  |`) if you don't have one yet.
 - Provide at least an X handle or a public link. A short website link is welcome alongside the X handle.
 - Forks that are mainly running stock skills belong on [`SHOWCASE.md`](SHOWCASE.md), not here. This page is for products and agents *built with* Aeon.
-- If your project also ships an installable skill pack, list the pack under [Community skill packs](README.md#community-skill-packs) in the README as well.
+- If your project also ships an installable skill pack, list the pack under [Community skill packs](.github/README.md#community-skill-packs) in the README as well.
