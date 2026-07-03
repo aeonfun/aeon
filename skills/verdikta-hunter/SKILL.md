@@ -99,7 +99,7 @@ The postprocess script executes this after the run: upload → `prepareSubmissio
 
 ### 5. Notify
 
-One `./notify -f` message per run with real signal, following soul/ voice if present:
+One `./notify -f` message per run with real signal, following soul/ voice if present. Write the message body to `.verdikta-cache/notify.md` (gitignored and regenerated each run — the harness can't `rm`, so scratch files anywhere else end up auto-committed):
 
 - Settlements first: won (score, payout), lost (score vs threshold, one-line diagnosis from `.verdikta-cache/` evaluation data if available), finalizes queued.
 - Then the action taken: shortlist (discover), or "queued submission to #<jobId> (<reward> ETH, threshold <t>%) — pending postprocess" (hunt), or dry-run verdict.
