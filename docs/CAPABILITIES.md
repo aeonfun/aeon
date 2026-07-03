@@ -5,7 +5,7 @@ title: Skill Capabilities Taxonomy
 
 # Skill Capabilities Taxonomy
 
-A **capability** is a self-declared blast-radius hint that a skill carries in its pack manifest. Capabilities surface at install time (`./install-skill-pack` and `./install-skill-pack --list`) so an operator can glance at what a pack can do — read-only? touches the chain? sends Slack? — before approving a `community` pack on a live agent.
+A **capability** is a self-declared blast-radius hint that a skill carries in its pack manifest. Capabilities surface at install time (`bin/install-skill-pack` and `bin/install-skill-pack --list`) so an operator can glance at what a pack can do — read-only? touches the chain? sends Slack? — before approving a `community` pack on a live agent.
 
 Capabilities are **not** a gate. The trust boundary is still the operator + the security scanner + `trusted-sources.txt`. A skill that omits `capabilities` installs as before. A skill that declares them gets the listing surface for free.
 
@@ -59,7 +59,7 @@ When in doubt, declare more than less. The listing surface only widens the opera
 }
 ```
 
-The pack-level field is the **union** of every skill's capabilities — kept in sync with the per-skill declarations so `./install-skill-pack --list` can summarise without fetching every pack tarball.
+The pack-level field is the **union** of every skill's capabilities — kept in sync with the per-skill declarations so `bin/install-skill-pack --list` can summarise without fetching every pack tarball.
 
 See [community-skill-packs.md](community-skill-packs.md) for the full schema reference for both files.
 
@@ -67,7 +67,7 @@ See [community-skill-packs.md](community-skill-packs.md) for the full schema ref
 
 ## Validation
 
-`./install-skill-pack` runs strict allow-list validation when a manifest declares `capabilities`:
+`bin/install-skill-pack` runs strict allow-list validation when a manifest declares `capabilities`:
 
 - Each value must match one of the six listed above (case-sensitive, exact match).
 - Unknown values abort the install with an error message naming the invalid value and pointing at this file.

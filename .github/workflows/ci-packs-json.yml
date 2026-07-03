@@ -1,8 +1,8 @@
 name: ci-packs-json
 
-# packs.json is the canonical FIRST-PARTY pack catalog (the dashboard groups
-# skills into installable packs from it). It is generated from packs.config.json
-# + skills.json via ./generate-packs-json and must be committed in sync. This
+# catalog/packs.json is the canonical FIRST-PARTY pack catalog (the dashboard groups
+# skills into installable packs from it). It is generated from catalog/packs.config.json
+# + catalog/skills.json via bin/generate-packs-json and must be committed in sync. This
 # workflow fails any PR that changes a generator input without committing the
 # regenerated manifest, so pack drift can't ship silently.
 #
@@ -14,17 +14,17 @@ name: ci-packs-json
 on:
   pull_request:
     paths:
-      - 'packs.config.json'
-      - 'skills.json'
-      - 'generate-packs-json'
-      - 'packs.json'
+      - 'catalog/packs.config.json'
+      - 'catalog/skills.json'
+      - 'bin/generate-packs-json'
+      - 'catalog/packs.json'
   push:
     branches: [main]
     paths:
-      - 'packs.config.json'
-      - 'skills.json'
-      - 'generate-packs-json'
-      - 'packs.json'
+      - 'catalog/packs.config.json'
+      - 'catalog/skills.json'
+      - 'bin/generate-packs-json'
+      - 'catalog/packs.json'
   workflow_dispatch:
 
 permissions:
@@ -41,11 +41,11 @@ jobs:
           norm() {
             sed -E -e 's/"generated":"[^"]*"/"generated":""/' "$1"
           }
-          norm packs.json > /tmp/packs.committed.json
-          ./generate-packs-json
-          norm packs.json > /tmp/packs.regenerated.json
+          norm catalog/packs.json > /tmp/packs.committed.json
+          bin/generate-packs-json
+          norm catalog/packs.json > /tmp/packs.regenerated.json
           if ! diff -u /tmp/packs.committed.json /tmp/packs.regenerated.json; then
-            echo "::error::packs.json is stale — run ./generate-packs-json and commit the result (the 'generated' timestamp is ignored by this check)."
+            echo "::error::packs.json is stale — run bin/generate-packs-json and commit the result (the 'generated' timestamp is ignored by this check)."
             exit 1
           fi
           echo "packs-json: OK — committed manifest matches a fresh regen (timestamp aside)."

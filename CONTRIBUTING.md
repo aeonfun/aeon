@@ -16,8 +16,8 @@ Most contributions fall into one of four buckets — **a new skill**, **a new LL
 A skill is a single `skills/<name>/SKILL.md` prompt file plus a registration in `aeon.yml`. The fastest paths:
 
 ```bash
-./new-from-template <template> <skill-name> --category <pack>   # scaffold from skill-templates/
-./add-skill <owner/repo> <skill> [skill...]                     # import from any GitHub repo
+bin/new-from-template <template> <skill-name> --category <pack>   # scaffold from skill-templates/
+bin/add-skill <owner/repo> <skill> [skill...]                     # import from any GitHub repo
 ```
 
 You can also describe one to the `create-skill` skill, or label a GitHub issue `ai-build` and let Aeon implement it and open the PR.
@@ -38,7 +38,7 @@ mcp: [base]                                    # MCP servers, same two tiers
 ---
 ```
 
-- `category:` is the **single source of truth** for which [pack](docs/skill-packs.md) the skill belongs to. Use one of `research` `dev` `crypto` `onchain-security` `social` `productivity` `meta`. (`core` and `fleet` are curated in [`packs.config.json`](packs.config.json), not set here.) Omit it and the skill lands in the **Lab** catch-all until triaged. `./new-from-template ... --category <pack>` and the dashboard import dropdown set it for you.
+- `category:` is the **single source of truth** for which [pack](docs/skill-packs.md) the skill belongs to. Use one of `research` `dev` `crypto` `onchain-security` `social` `productivity` `meta`. (`core` and `fleet` are curated in [`packs.config.json`](catalog/packs.config.json), not set here.) Omit it and the skill lands in the **Lab** catch-all until triaged. `bin/new-from-template ... --category <pack>` and the dashboard import dropdown set it for you.
 - `requires:` is the **single source of truth** the dashboard reads to show which skill needs which key. Use the exact env-var name. A bare name is required; a trailing `?` means the skill still runs without it (degraded). Omit `requires:` (or use `[]`) for skills that only need the built-in Claude + GitHub tokens.
 - `mcp:` declares [MCP servers](README.md#mcp-servers-in-skill-runs) the skill calls, with the same two-tier semantics. Slugs reference `apps/dashboard/lib/mcp-catalog.ts`.
 - Match the names to the registry in [`apps/dashboard/app/api/secrets/route.ts`](apps/dashboard/app/api/secrets/route.ts) so the dashboard can describe the key and link where to get it.
@@ -55,8 +55,8 @@ mcp: [base]                                    # MCP servers, same two tiers
 `skills.json` (the skill catalog) and `packs.json` (the [pack](docs/skill-packs.md) catalog the dashboard reads) are both **generated**, never hand-edited. After adding or recategorizing a skill, regenerate both:
 
 ```bash
-./generate-skills-json   # skill catalog (reads each SKILL.md's category:)
-./generate-packs-json    # pack catalog (groups skills by category + packs.config.json)
+bin/generate-skills-json   # skill catalog (reads each SKILL.md's category:)
+bin/generate-packs-json    # pack catalog (groups skills by category + packs.config.json)
 # then commit both results
 ```
 
@@ -79,7 +79,7 @@ Then add a row to the gateway table in the README. Verify the loop end to end: p
 Skill packs are third-party skill collections in their own repos, installable as one bundle. To list yours in the README's [Community skill packs](README.md#community-skill-packs) table, open a PR that:
 
 - Adds a README table row linking to your public repo, with the skill count and a one-line description.
-- Adds a matching entry to [`skill-packs.json`](skill-packs.json) — the machine-readable mirror.
+- Adds a matching entry to [`skill-packs.json`](catalog/skill-packs.json) — the machine-readable mirror.
 - Confirms the pack has a `skills-pack.json` manifest, a clear license, and a per-skill `SKILL.md`.
 
 Before opening the PR, run the local pre-flight validator against your pack directory — it checks the same structural invariants `install-skill-pack` enforces (valid manifest, slugs, paths, capability taxonomy, present `SKILL.md`s) plus the publishing-checklist items, so you catch problems before a reviewer does:
@@ -98,12 +98,12 @@ Locking gates run on every PR. All are fast and only trigger on the paths they p
 
 | Gate | Triggers on | What it enforces |
 |------|-------------|------------------|
-| `ci-skills-json` | `skills/**`, `aeon.yml`, `generate-skills-json`, `skills.json` | `skills.json` matches a fresh `./generate-skills-json` |
-| `ci-packs-json` | `packs.config.json`, `skills.json`, `generate-packs-json`, `packs.json` | `packs.json` matches a fresh `./generate-packs-json` |
+| `ci-skills-json` | `skills/**`, `aeon.yml`, `generate-skills-json`, `skills.json` | `skills.json` matches a fresh `bin/generate-skills-json` |
+| `ci-packs-json` | `packs.config.json`, `skills.json`, `generate-packs-json`, `packs.json` | `packs.json` matches a fresh `bin/generate-packs-json` |
 | `ci-skill-category` | `skills/**`, the category-check script | every `SKILL.md` declares a valid `category:` |
 | `ci-capabilities-parity` | `install-skill-pack`, `docs/CAPABILITIES.md`, the parity script | the capabilities taxonomy stays in sync across its sources |
 
-Run the checks locally before pushing: `bash scripts/check-skill-categories.sh` (categories) and `bash scripts/check-capabilities-parity.sh` (taxonomy). If `ci-packs-json` or `ci-skills-json` fails, you changed a generator input without committing the regen — run `./generate-skills-json && ./generate-packs-json`.
+Run the checks locally before pushing: `bash scripts/check-skill-categories.sh` (categories) and `bash scripts/check-capabilities-parity.sh` (taxonomy). If `ci-packs-json` or `ci-skills-json` fails, you changed a generator input without committing the regen — run `bin/generate-skills-json && bin/generate-packs-json`.
 
 ## Reporting bugs and requesting features
 

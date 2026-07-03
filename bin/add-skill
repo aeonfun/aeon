@@ -4,17 +4,17 @@ set -euo pipefail
 # add-skill — Install skills from GitHub repos into this Aeon project
 #
 # Usage:
-#   ./add-skill <github-repo> [skill-name]          Install a specific skill from a repo
-#   ./add-skill <github-repo> --list                 List available skills in a repo
-#   ./add-skill <github-repo> --all                  Install all skills from a repo
+#   bin/add-skill <github-repo> [skill-name]          Install a specific skill from a repo
+#   bin/add-skill <github-repo> --list                 List available skills in a repo
+#   bin/add-skill <github-repo> --all                  Install all skills from a repo
 #
 # Examples:
-#   ./add-skill BankrBot/skills bankr                Install the bankr skill
-#   ./add-skill BankrBot/skills --list               List all skills in the repo
-#   ./add-skill BankrBot/skills --all                Install everything
-#   ./add-skill BankrBot/skills bankr hydrex veil    Install multiple skills
+#   bin/add-skill BankrBot/skills bankr                Install the bankr skill
+#   bin/add-skill BankrBot/skills --list               List all skills in the repo
+#   bin/add-skill BankrBot/skills --all                Install everything
+#   bin/add-skill BankrBot/skills bankr hydrex veil    Install multiple skills
 
-ROOT_DIR="$(cd "$(dirname "$0")" && pwd)"
+ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 SKILLS_DIR="$ROOT_DIR/skills"
 AEON_YML="$ROOT_DIR/aeon.yml"
 # shellcheck source=scripts/lib/skill-install.sh
@@ -24,7 +24,7 @@ trap 'rm -rf "$TMP_DIR"' EXIT
 
 usage() {
   cat <<'EOF'
-Usage: ./add-skill <github-repo> [options] [skill-names...]
+Usage: bin/add-skill <github-repo> [options] [skill-names...]
 
 Install skills from a GitHub repository into this project.
 
@@ -40,11 +40,11 @@ Options:
   --help              Show this help
 
 Examples:
-  ./add-skill BankrBot/skills --list
-  ./add-skill BankrBot/skills bankr
-  ./add-skill BankrBot/skills bankr hydrex veil
-  ./add-skill BankrBot/skills --all
-  ./add-skill BankrBot/skills bankr --branch develop
+  bin/add-skill BankrBot/skills --list
+  bin/add-skill BankrBot/skills bankr
+  bin/add-skill BankrBot/skills bankr hydrex veil
+  bin/add-skill BankrBot/skills --all
+  bin/add-skill BankrBot/skills bankr --branch develop
 EOF
   exit 0
 }

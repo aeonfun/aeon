@@ -15,8 +15,8 @@ There are two kinds:
   first-party pack just **reveals** its skills in the dashboard — nothing is
   downloaded, and nothing runs until you turn individual skills on.
 - **Community packs** — maintained by others in external repos, listed in
-  [`skill-packs.json`](../skill-packs.json) and installed with
-  [`./install-skill-pack`](../install-skill-pack).
+  [`skill-packs.json`](../catalog/skill-packs.json) and installed with
+  [`bin/install-skill-pack`](../bin/install-skill-pack).
 
 ---
 
@@ -26,14 +26,14 @@ There are two kinds:
 
 ```
 packs.config.json   ──┐
-                      ├─►  ./generate-packs-json  ──►  packs.json  ──►  dashboard
+                      ├─►  bin/generate-packs-json  ──►  packs.json  ──►  dashboard
 skills.json         ──┘                                 (generated)      (/api/packs)
 ```
 
-- **[`packs.config.json`](../packs.config.json)** — the hand-authored source of
+- **[`packs.config.json`](../catalog/packs.config.json)** — the hand-authored source of
   truth: the `core` allowlist + the list of packs with their display metadata
   (name, description, color) and how they claim skills.
-- **[`generate-packs-json`](../generate-packs-json)** — derives `packs.json` from
+- **[`generate-packs-json`](../bin/generate-packs-json)** — derives `packs.json` from
   `packs.config.json` + `skills.json`. It asserts every skill lands in **exactly
   one** pack (no duplicate claims, no unknown slugs).
 - **`packs.json`** — the generated catalog the dashboard reads. Membership only;
@@ -47,8 +47,8 @@ skills.json         ──┘                                 (generated)      (
 Regenerate after any change to the config or to `skills.json`:
 
 ```bash
-./generate-packs-json            # compact (committed form)
-./generate-packs-json --pretty   # readable
+bin/generate-packs-json            # compact (committed form)
+bin/generate-packs-json --pretty   # readable
 ```
 
 ### Membership precedence
@@ -60,7 +60,7 @@ When assigning a skill to a pack, the generator applies, in order:
 3. **Category packs** — packs that claim a `category`; they take that category's
    remaining skills. A skill's category is declared in its `SKILL.md`
    frontmatter (`category:`) — the single source of truth, read by
-   [`generate-skills-json`](../generate-skills-json) into `skills.json`.
+   [`generate-skills-json`](../bin/generate-skills-json) into `skills.json`.
 4. **The Lab catch-all** — anything still unassigned (a freshly authored or
    imported skill whose category isn't a known pack) lands in **Lab**, so adding
    a skill never breaks the catalog. Triage it into a real pack later.
@@ -110,13 +110,13 @@ description: ...
 
 The authoring tools set it for you:
 
-- **`./new-from-template <tmpl> <name> --category dev`** — stamps the category
+- **`bin/new-from-template <tmpl> <name> --category dev`** — stamps the category
   (templates also ship a sensible default).
 - **`create-skill`** — chooses a category as part of its design step.
 - **Dashboard → Hire (import)** — a Pack dropdown writes the category onto the
   uploaded `SKILL.md`.
 
-Then **regenerate**: `./generate-skills-json && ./generate-packs-json`, and commit
+Then **regenerate**: `bin/generate-skills-json && bin/generate-packs-json`, and commit
 both manifests (CI enforces they're fresh).
 
 > **Core** and **Fleet** aren't category-selectable — they're curated in
@@ -142,7 +142,7 @@ The **Packs** view (`/api/packs`):
   pack. The sidebar's **Enabled** chip is an optional filter (off by default)
   that narrows the roster to skills on duty.
 - **Community packs** — browse the registry with author, trust level, required
-  secrets/capabilities, and a copy-paste `./install-skill-pack <repo>` command.
+  secrets/capabilities, and a copy-paste `bin/install-skill-pack <repo>` command.
 
 ---
 
@@ -150,8 +150,8 @@ The **Packs** view (`/api/packs`):
 
 Unchanged from before — see
 [community-skill-packs.md](./community-skill-packs.md). To list a pack: open a PR
-adding an entry to [`skill-packs.json`](../skill-packs.json) and the README
-table. To install one into your fork: `./install-skill-pack <owner>/<repo>`, then
+adding an entry to [`skill-packs.json`](../catalog/skill-packs.json) and the README
+table. To install one into your fork: `bin/install-skill-pack <owner>/<repo>`, then
 enable its skills from the dashboard's Packs view.
 
 ---

@@ -8,15 +8,15 @@ set -euo pipefail
 # instruction for every gap.
 #
 # Usage:
-#   ./onboard                  Run every check, print summary, exit 0/1
-#   ./onboard --remote         Also run a workflow_dispatch of the onboard skill
+#   bin/onboard                  Run every check, print summary, exit 0/1
+#   bin/onboard --remote         Also run a workflow_dispatch of the onboard skill
 #                              so the same checklist arrives in your notification
 #                              channel.
-#   ./onboard --quiet          Suppress per-check output, print summary only
-#   ./onboard --json           Machine-readable JSON output (no colors, no fixes)
-#   ./onboard --help           Show this help
+#   bin/onboard --quiet          Suppress per-check output, print summary only
+#   bin/onboard --json           Machine-readable JSON output (no colors, no fixes)
+#   bin/onboard --help           Show this help
 
-ROOT="$(cd "$(dirname "$0")" && pwd)"
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
 REMOTE=false
@@ -251,7 +251,7 @@ if [[ -n "$REPO_SLUG" ]] && command -v gh >/dev/null 2>&1 && gh auth status >/de
   fi
 else
   emit warn "GitHub Actions" "could not query run history" \
-    "Run 'gh auth login' and rerun ./onboard to verify."
+    "Run 'gh auth login' and rerun bin/onboard to verify."
 fi
 
 # --- 6b. Actions may open & auto-merge PRs --------------------------------
@@ -318,7 +318,7 @@ else
   elif [[ "$FAIL_COUNT" -eq 0 ]]; then
     printf "\nAeon will run, but some optional pieces are missing (warnings above).\n\n"
   else
-    printf "\nFix the ${C_RED}✗${C_RESET} items above, then rerun ${C_BOLD}./onboard${C_RESET}.\n\n"
+    printf "\nFix the ${C_RED}✗${C_RESET} items above, then rerun ${C_BOLD}bin/onboard${C_RESET}.\n\n"
   fi
 fi
 

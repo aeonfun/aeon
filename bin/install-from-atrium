@@ -10,16 +10,16 @@ set -euo pipefail
 # opt-in step — see the atrium-scout skill / `atrium invoke`).
 #
 # Usage:
-#   ./install-from-atrium --list                     Browse the marketplace
-#   ./install-from-atrium 0x<64-hex-skillId>         Install by canonical onchain id
-#   ./install-from-atrium <skill-name>               Install by listed name
-#   ./install-from-atrium <id|name> --force          Install despite scan findings
+#   bin/install-from-atrium --list                     Browse the marketplace
+#   bin/install-from-atrium 0x<64-hex-skillId>         Install by canonical onchain id
+#   bin/install-from-atrium <skill-name>               Install by listed name
+#   bin/install-from-atrium <id|name> --force          Install despite scan findings
 #
 # Env: ATRIUM_HOST (default https://atriumhermes.tech)
 
 ATRIUM_HOST="${ATRIUM_HOST:-https://atriumhermes.tech}"
 WELLKNOWN="$ATRIUM_HOST/.well-known/skills"
-ROOT="$(cd "$(dirname "$0")" && pwd)"
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 SKILLS_DIR="$ROOT/skills"
 SCANNER="$ROOT/skills/skill-scan/scan.sh"
 LOCK_FILE="$ROOT/skills.lock"
@@ -36,7 +36,7 @@ if [[ "${1:-}" == "--list" || -z "${1:-}" || "${1:-}" == "--help" || "${1:-}" ==
     | grep -oE '"(name|skill_id|description)":"[^"]*"' \
     | sed 's/^"name":/\n• /; s/^"skill_id":/  id:   /; s/^"description":/  /; s/"//g'
   echo
-  echo "Install:  ./install-from-atrium <skill-name|0x-skillId> [--force]"
+  echo "Install:  bin/install-from-atrium <skill-name|0x-skillId> [--force]"
   exit 0
 fi
 
@@ -58,7 +58,7 @@ SLUG="$(skill_fm "$TMP/SKILL.md" name | tr '[:upper:] ' '[:lower:]-')"
 [[ -n "$SLUG" ]] || die "SKILL.md has no name: in frontmatter"
 CID="$(skill_fm "$TMP/SKILL.md" cid)"; SKILL_ID="$(skill_fm "$TMP/SKILL.md" skill_id)"
 
-# ── security scan (Aeon's own; honor --force exactly like ./add-skill) ────────
+# ── security scan (Aeon's own; honor --force exactly like bin/add-skill) ────────
 if [[ -x "$SCANNER" ]]; then
   echo "  scanning: $SLUG ..."
   if ! "$SCANNER" "$TMP/SKILL.md" 2>/dev/null; then
@@ -78,7 +78,7 @@ DEST="$SKILLS_DIR/$SLUG"
 [[ -d "$DEST" ]] && { echo "  update: $SLUG (overwriting)"; rm -rf "$DEST"; } || echo "  install: $SLUG"
 mkdir -p "$DEST"; cp "$TMP/SKILL.md" "$DEST/SKILL.md"
 
-# ── provenance in skills.lock (same schema as ./add-skill; CID is the content hash) ──
+# ── provenance in skills.lock (same schema as bin/add-skill; CID is the content hash) ──
 if command -v jq >/dev/null; then
   ENTRY="$(jq -n --arg name "$SLUG" --arg repo "atrium:$SKILL_ID" \
     --arg path "$WELLKNOWN/by-id/$SKILL_ID/SKILL.md" --arg branch "base-mainnet" \

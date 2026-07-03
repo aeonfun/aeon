@@ -10,10 +10,10 @@ Aeon ships with **69 skills** across **10 packs**. Each skill is a self-containe
 
 Install any skill into your own agent:
 ```bash
-./add-skill aaronjmars/aeon <skill-name>
+bin/add-skill aaronjmars/aeon <skill-name>
 ```
 
-> Authoritative catalog: [`skills.json`](../skills.json) + [`packs.json`](../packs.json), or the dashboard **Packs** view. This page is generated from them.
+> Authoritative catalog: [`skills.json`](../catalog/skills.json) + [`packs.json`](../catalog/packs.json), or the dashboard **Packs** view. This page is generated from them.
 
 ---
 
@@ -153,16 +153,16 @@ Install any skill into your own agent:
 
 ```bash
 # Install a single skill
-./add-skill aaronjmars/aeon article
+bin/add-skill aaronjmars/aeon article
 
 # Install multiple skills
-./add-skill aaronjmars/aeon article digest heartbeat
+bin/add-skill aaronjmars/aeon article digest heartbeat
 
 # Install everything
-./add-skill aaronjmars/aeon --all
+bin/add-skill aaronjmars/aeon --all
 
 # Browse available skills
-./add-skill aaronjmars/aeon --list
+bin/add-skill aaronjmars/aeon --list
 ```
 
 Installed skills land in `skills/` and appear in `aeon.yml` as disabled. Flip `enabled: true` to activate.

@@ -121,7 +121,7 @@ From the `files` array, tag each fork:
 - **Modified dashboard**: any change under `apps/dashboard/`
 - **Custom notify**: change to `notify` or `notify-jsonrender`
 - **New content**: additions under `articles/` or `memory/topics/`
-- **Config changes**: changes to `CLAUDE.md`, `.github/`, or root `scripts/`
+- **Config changes**: changes to `CLAUDE.md`, `.github/`, `bin/`, or root `scripts/`
 - **Workflow changes**: changes under `.github/workflows/`
 
 ### A3. Score each fork (substance-weighted)

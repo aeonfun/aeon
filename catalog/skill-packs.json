@@ -1,7 +1,7 @@
 {
   "version": "1.0",
   "updated": "2026-07-03",
-  "description": "Machine-readable registry of community skill packs installable via ./install-skill-pack. Mirrors the human-readable table in README.md.",
+  "description": "Machine-readable registry of community skill packs installable via bin/install-skill-pack. Mirrors the human-readable table in README.md.",
   "packs": [
     {
       "repo": "AntFleet/aeon-skills",

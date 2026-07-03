@@ -39,7 +39,7 @@ export function PacksPanel({ firstParty, community, skills, enabledPacks, loadin
 
   const handleCopy = async (pack: CommunityPack) => {
     try {
-      await navigator.clipboard.writeText(`./install-skill-pack ${installArg(pack)}`)
+      await navigator.clipboard.writeText(`bin/install-skill-pack ${installArg(pack)}`)
       setCopied(pack.repo)
       setTimeout(() => setCopied(c => (c === pack.repo ? null : c)), 1500)
     } catch { /* clipboard blocked — the command is still shown in the tooltip */ }
@@ -279,7 +279,7 @@ export function PacksPanel({ firstParty, community, skills, enabledPacks, loadin
                   </button>
                   <button
                     onClick={() => handleCopy(pack)}
-                    title={`Copy: ./install-skill-pack ${installArg(pack)}`}
+                    title={`Copy: bin/install-skill-pack ${installArg(pack)}`}
                     className="shrink-0 px-2 py-1.5 border border-[rgba(250,250,250,0.12)] text-primary-50 hover:text-primary-100 hover:border-[rgba(250,250,250,0.22)] transition-colors cursor-target"
                   >
                     {copied === pack.repo ? (

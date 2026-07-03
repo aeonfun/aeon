@@ -4,21 +4,21 @@ set -euo pipefail
 # new-from-template — Bootstrap a new skill from a local template under skill-templates/.
 #
 # Usage:
-#   ./new-from-template --list                          List available templates
-#   ./new-from-template <template> --tokens             List replacement tokens for a template
-#   ./new-from-template <template> <skill-name> [--var KEY=VALUE]...
+#   bin/new-from-template --list                          List available templates
+#   bin/new-from-template <template> --tokens             List replacement tokens for a template
+#   bin/new-from-template <template> <skill-name> [--var KEY=VALUE]...
 #                                                       Copy template into skills/<skill-name>/,
 #                                                       replace [REPLACE: KEY] tokens, register
 #                                                       a disabled entry in aeon.yml.
 
-ROOT="$(cd "$(dirname "$0")" && pwd)"
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 TEMPLATES_DIR="$ROOT/skill-templates"
 SKILLS_DIR="$ROOT/skills"
 AEON_YML="$ROOT/aeon.yml"
 
 usage() {
   cat <<'EOF'
-Usage: ./new-from-template <template> <skill-name> [--var KEY=VALUE]...
+Usage: bin/new-from-template <template> <skill-name> [--var KEY=VALUE]...
 
 Bootstrap a new skill from a local template.
 
@@ -36,9 +36,9 @@ Options:
   --help, -h         Show this help
 
 Examples:
-  ./new-from-template --list
-  ./new-from-template crypto-tracker --tokens
-  ./new-from-template crypto-tracker my-eth-watch \
+  bin/new-from-template --list
+  bin/new-from-template crypto-tracker --tokens
+  bin/new-from-template crypto-tracker my-eth-watch \
     --var TOKEN_SYMBOL=ETH \
     --var COINGECKO_ID=ethereum \
     --var ALERT_THRESHOLD_PCT=10
@@ -117,7 +117,7 @@ TEMPLATE_DIR="$TEMPLATES_DIR/$TEMPLATE"
 TEMPLATE_FILE="$TEMPLATE_DIR/SKILL.md"
 if [[ ! -d "$TEMPLATE_DIR" ]] || [[ ! -f "$TEMPLATE_FILE" ]]; then
   echo "Template '$TEMPLATE' not found in $TEMPLATES_DIR." >&2
-  echo "Run './new-from-template --list' to see what's available." >&2
+  echo "Run 'bin/new-from-template --list' to see what's available." >&2
   exit 1
 fi
 
@@ -129,7 +129,7 @@ fi
 
 # Need skill name now
 if [[ $# -lt 1 ]]; then
-  echo "Missing <skill-name>. See './new-from-template --help'." >&2
+  echo "Missing <skill-name>. See 'bin/new-from-template --help'." >&2
   exit 1
 fi
 
@@ -276,7 +276,7 @@ fi
 echo ""
 echo "✓ Created skills/$SKILL_NAME/SKILL.md from template '$TEMPLATE'."
 if [[ -n "$CATEGORY" ]]; then
-  echo "✓ Category set to '$CATEGORY' (regenerate the catalog with ./generate-skills-json && ./generate-packs-json to slot it into its pack)."
+  echo "✓ Category set to '$CATEGORY' (regenerate the catalog with bin/generate-skills-json && bin/generate-packs-json to slot it into its pack)."
 fi
 if [[ "$registered" == "true" ]]; then
   echo "✓ Registered in aeon.yml (disabled, schedule: 0 12 * * *)."

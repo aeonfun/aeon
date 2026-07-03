@@ -5,8 +5,8 @@ set -eo pipefail
 # packs.config.json + skills.json.
 #
 # Usage:
-#   ./generate-packs-json            Generate packs.json at repo root (compact)
-#   ./generate-packs-json --pretty   Pretty-print the output
+#   bin/generate-packs-json            Generate packs.json at repo root (compact)
+#   bin/generate-packs-json --pretty   Pretty-print the output
 #
 # packs.json is the catalog the dashboard reads to group skills into installable
 # first-party packs. Membership is derived deterministically; every skill in
@@ -18,7 +18,7 @@ set -eo pipefail
 #   2. packs that list explicit `skills`
 #   3. packs that claim a `category` (take that category's remaining skills)
 
-ROOT="$(cd "$(dirname "$0")" && pwd)"
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 
 PRETTY=false
 if [[ "${1:-}" == "--pretty" ]]; then
@@ -31,9 +31,9 @@ import json, os, sys, datetime
 root = sys.argv[1]
 pretty = os.environ.get("PRETTY") == "true"
 
-with open(os.path.join(root, "packs.config.json")) as f:
+with open(os.path.join(root, "catalog", "packs.config.json")) as f:
     config = json.load(f)
-with open(os.path.join(root, "skills.json")) as f:
+with open(os.path.join(root, "catalog", "skills.json")) as f:
     catalog = json.load(f)
 
 skills = {s["slug"]: s for s in catalog["skills"]}
@@ -147,7 +147,7 @@ result = {
     "packs": out_packs,
 }
 
-out = os.path.join(root, "packs.json")
+out = os.path.join(root, "catalog", "packs.json")
 with open(out, "w") as f:
     if pretty:
         json.dump(result, f, indent=2)

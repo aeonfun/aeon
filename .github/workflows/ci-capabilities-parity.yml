@@ -16,14 +16,14 @@ name: ci-capabilities-parity
 on:
   pull_request:
     paths:
-      - 'install-skill-pack'
+      - 'bin/install-skill-pack'
       - 'docs/CAPABILITIES.md'
       - 'scripts/check-capabilities-parity.sh'
       - '.github/workflows/ci-capabilities-parity.yml'
   push:
     branches: [main]
     paths:
-      - 'install-skill-pack'
+      - 'bin/install-skill-pack'
       - 'docs/CAPABILITIES.md'
       - 'scripts/check-capabilities-parity.sh'
       - '.github/workflows/ci-capabilities-parity.yml'

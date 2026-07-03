@@ -22,7 +22,7 @@
 - [ ] `skills/<name>/SKILL.md` frontmatter has `name:`, `category:`, `description:`, `tags:` (plus `requires:` / `mcp:` if it needs keys or MCP servers)
 - [ ] Body is self-contained and includes a **Sandbox note** with the right fallback (WebFetch / `scripts/prefetch-*.sh` / `gh api`)
 - [ ] Notifies through `./notify`, never a channel API directly
-- [ ] Ran `./generate-skills-json && ./generate-packs-json` and committed both regenerated manifests
+- [ ] Ran `bin/generate-skills-json && bin/generate-packs-json` and committed both regenerated manifests
 
 ### New LLM gateway
 

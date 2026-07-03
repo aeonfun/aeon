@@ -45,7 +45,7 @@ Open [http://localhost:5555](http://localhost:5555) and follow the four steps:
 3. **Pick skills** - toggle what you want, set schedules. Each skill shows the API keys and MCP servers it needs, with one-click setup.
 4. **Run** - hit **Run now** on any skill to try it immediately; API keys and `var` values apply directly, no push needed. When you change config (schedules, toggles), **Push** commits it to GitHub in one click so Actions runs it on cron.
 
-That's it - Aeon now runs unattended. On a public repo, GitHub Actions minutes are **free**. Run `./onboard` anytime to verify your setup.
+That's it - Aeon now runs unattended. On a public repo, GitHub Actions minutes are **free**. Run `bin/onboard` anytime to verify your setup.
 
 Dashboard views, local dev, env vars, and remote access are documented in [`apps/dashboard/README.md`](apps/dashboard/README.md).
 
@@ -91,7 +91,7 @@ Grab the `gh_*_macOS_arm64.zip` (or your platform's binary) from [github.com/cli
 | **Agent Ops** (`agent-ops`, 2) | `memory-flush`,`operator-scorecard` |
 | **Lab** (`lab`, 0) | _(empty)_ |
 
-Authoritative source: [`skills.json`](skills.json) + [`packs.json`](packs.json), the dashboard **Packs** view, or `./add-skill aaronjmars/aeon --list`. A skill's pack comes from its `category:` frontmatter - see [`docs/skill-packs.md`](docs/skill-packs.md).
+Authoritative source: [`skills.json`](catalog/skills.json) + [`packs.json`](catalog/packs.json), the dashboard **Packs** view, or `bin/add-skill aaronjmars/aeon --list`. A skill's pack comes from its `category:` frontmatter - see [`docs/skill-packs.md`](docs/skill-packs.md).
 
 </details>
 
@@ -123,15 +123,15 @@ Aeon can spawn and manage copies of itself. `spawn-instance` forks the repo into
 ### Add more skills
 
 ```bash
-./add-skill aaronjmars/aeon --list        # browse the built-in catalog
-./add-skill BankrBot/skills bankr hydrex  # install from any GitHub repo
-./add-skill BankrBot/skills --all         # install everything from a repo
-./export-skill token-movers               # package one for standalone use
+bin/add-skill aaronjmars/aeon --list        # browse the built-in catalog
+bin/add-skill BankrBot/skills bankr hydrex  # install from any GitHub repo
+bin/add-skill BankrBot/skills --all         # install everything from a repo
+bin/export-skill token-movers               # package one for standalone use
 ```
 
 Installed skills land in `skills/` and are added to `aeon.yml` disabled - flip `enabled: true` to activate. You can also:
 
-- **Build your own** from [`skill-templates/`](skill-templates/TEMPLATE.md): `./new-from-template <template> <skill-name> --category <pack>` - the `--category` slots it into a pack (or set `category:` in the SKILL.md frontmatter). See [`docs/skill-packs.md`](docs/skill-packs.md).
+- **Build your own** from [`skill-templates/`](skill-templates/TEMPLATE.md): `bin/new-from-template <template> <skill-name> --category <pack>` - the `--category` slots it into a pack (or set `category:` in the SKILL.md frontmatter). See [`docs/skill-packs.md`](docs/skill-packs.md).
 - **Label any GitHub issue `ai-build`** - Claude reads the issue, implements it, and opens a PR
 - **Install community packs** - see [Community skill packs](#community-skill-packs)
 
@@ -357,9 +357,9 @@ Aeon skills work outside GitHub Actions too - locally via `claude -p -`, identic
 **Claude (MCP)** - every skill appears as an `aeon-<name>` tool in Claude Desktop and Claude Code:
 
 ```bash
-./add-mcp                    # build and register
-./add-mcp --desktop          # also print Claude Desktop config
-./add-mcp --uninstall        # remove
+bin/add-mcp                    # build and register
+bin/add-mcp --desktop          # also print Claude Desktop config
+bin/add-mcp --uninstall        # remove
 ```
 
 Tool naming, the `var` argument, Claude Desktop config, and a test client are in [`apps/mcp-server/README.md`](apps/mcp-server/README.md).
@@ -549,8 +549,8 @@ Third-party skill collections in their own repos, installable as one bundle - tw
 **CLI.**
 
 ```bash
-./install-skill-pack AntFleet/aeon-skills
-./install-skill-pack --list      # browse the registry (skill-packs.json)
+bin/install-skill-pack AntFleet/aeon-skills
+bin/install-skill-pack --list      # browse the registry (skill-packs.json)
 ```
 
 Either way the installer reads the pack's `skills-pack.json` manifest, runs the security scanner on each `SKILL.md`, and copies approved skills into `skills/` - **disabled** in `aeon.yml` (nothing runs until you set the pack's secrets and flip `enabled: true`), with provenance recorded in `skills.lock`. Full schema and trust model: [`docs/community-skill-packs.md`](docs/community-skill-packs.md).
@@ -573,7 +573,7 @@ Either way the installer reads the pack's `skills-pack.json` manifest, runs the 
 - Skills should follow the conventions in [`add-skill`](add-skill) and the core catalog - no monkey-patching of Aeon internals, no skill that depends on private endpoints.
 - Add a `skills-pack.json` manifest at the pack root so `install-skill-pack` knows which skills the pack ships (see [docs](docs/community-skill-packs.md) for the schema).
 - The README row should link to the repo, name the skill count, and one-line what the pack is for.
-- In the same PR, add a matching entry to [`skill-packs.json`](skill-packs.json) - the machine-readable mirror of this table (registry schema in [the docs](docs/community-skill-packs.md#skill-packsjson-community-registry)).
+- In the same PR, add a matching entry to [`skill-packs.json`](catalog/skill-packs.json) - the machine-readable mirror of this table (registry schema in [the docs](docs/community-skill-packs.md#skill-packsjson-community-registry)).
 
 ### Two-repo strategy
 
@@ -608,19 +608,23 @@ Private repos: Free plan = 2,000 min/mo, Pro/Team = 3,000 + $0.008/min overage. 
 CLAUDE.md                ← agent identity (auto-loaded by Claude Code)
 STRATEGY.md              ← north-star: goal, priorities, audience, constraints (rides along every run)
 aeon.yml                 ← skill schedules, chains, reactive triggers, enabled flags
-skills.json              ← machine-readable skill catalog (69 skills, category per skill)
-packs.config.json        ← first-party pack definitions (core allowlist + pack list)
-packs.json               ← generated pack catalog the dashboard reads (10 packs)
-./aeon                   ← launch the local dashboard (Next.js on port 5555)
-./onboard                ← validate the fork's setup (secrets, workflows, channels)
-./notify                 ← multi-channel notifications (Telegram, Discord, Slack, Email, json-render)
-./notify-jsonrender      ← convert skill output to dashboard feed cards via Haiku
-./add-skill              ← import skills from GitHub repos (with security scanning)
-./add-mcp                ← register Aeon as an MCP server for Claude Desktop/Code
-./export-skill           ← package skills for standalone distribution
-./generate-skills-json   ← regenerate skills.json from SKILL.md files
-./generate-packs-json    ← regenerate packs.json from packs.config.json + skills.json
-./new-from-template      ← scaffold a skill from a template (--category sets its pack)
+aeon                     ← launch the local dashboard (run ./aeon; Next.js on port 5555)
+notify                   ← multi-channel notifications (Telegram, Discord, Slack, Email, json-render)
+notify-jsonrender        ← convert skill output to dashboard feed cards via Haiku
+catalog/                 ← registries the dashboard reads (generated + hand-authored)
+  skills.json            ← machine-readable skill catalog (69 skills, category per skill)
+  packs.config.json      ← first-party pack definitions (core allowlist + pack list)
+  packs.json             ← generated pack catalog (10 packs)
+  skill-packs.json       ← community skill-pack registry
+bin/                     ← operator + maintainer CLI (run from repo root, e.g. bin/add-skill)
+  onboard                ← validate the fork's setup (secrets, workflows, channels)
+  add-skill              ← import skills from GitHub repos (with security scanning)
+  add-mcp                ← register Aeon as an MCP server for Claude Desktop/Code
+  install-skill-pack     ← install a curated community skill pack
+  export-skill           ← package skills for standalone distribution
+  new-from-template      ← scaffold a skill from a template (--category sets its pack)
+  generate-skills-json   ← regenerate catalog/skills.json from SKILL.md files
+  generate-packs-json    ← regenerate catalog/packs.json from the two configs above
 docs/                    ← GitHub Pages site (articles, activity log, memory)
 soul/                    ← optional identity files (SOUL.md, STYLE.md, examples/, data/)
 skills/                  ← each skill is a SKILL.md prompt file (69 total; `category:` = its pack)
@@ -660,18 +664,18 @@ Aeon is an AI agent system that runs unattended on GitHub Actions, self-heals wh
 
 ### Can I create custom skills?
 
-Yes. Bootstrap from [`skill-templates/`](skill-templates/TEMPLATE.md) (`./new-from-template <template> <skill-name> --var KEY=VALUE...`), describe one to the `create-skill` skill, or label a GitHub issue `ai-build` and let Aeon build it.
+Yes. Bootstrap from [`skill-templates/`](skill-templates/TEMPLATE.md) (`bin/new-from-template <template> <skill-name> --var KEY=VALUE...`), describe one to the `create-skill` skill, or label a GitHub issue `ai-build` and let Aeon build it.
 
 ### Troubleshooting
 
 - **Dashboard not loading** - make sure `./aeon` is running and check `http://localhost:5555`.
-- **Skills not executing** - run `./onboard --remote` to verify setup, check GitHub Actions workflow status.
+- **Skills not executing** - run `bin/onboard --remote` to verify setup, check GitHub Actions workflow status.
 - **Notifications not working** - verify channel secrets in the dashboard (Telegram/Discord/Slack tokens).
 - **Self-healing not working** - enable `skill-repair` and `skill-health`, check `memory/` state.
 
 ### Need more help?
 
-Check the [`docs/`](docs/) directory, run `./onboard` for setup verification, or open an issue on GitHub.
+Check the [`docs/`](docs/) directory, run `bin/onboard` for setup verification, or open an issue on GitHub.
 
 ---
 

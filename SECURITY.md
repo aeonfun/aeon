@@ -108,7 +108,7 @@ check entirely and is only safe behind a trusted reverse proxy. See
 
 ### Third-party skills
 
-`./add-skill` and `./install-skill-pack` run a security scan over each
+`bin/add-skill` and `bin/install-skill-pack` run a security scan over each
 incoming `SKILL.md` and install it **disabled** in `aeon.yml`. Review any
 community skill before flipping `enabled: true` — a skill is a prompt that runs
 with your secrets. For an authorization layer that ALLOW/BLOCKs every run before

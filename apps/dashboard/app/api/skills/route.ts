@@ -42,7 +42,7 @@ export async function GET() {
     // Falls back to 'meta' for any skill not yet in the catalog.
     const categoryBySlug: Record<string, string> = {}
     try {
-      const { content: catalogRaw } = await getFileContent('skills.json')
+      const { content: catalogRaw } = await getFileContent('catalog/skills.json')
       const catalog = JSON.parse(catalogRaw) as { skills?: Array<{ slug: string; category: string }> }
       for (const s of catalog.skills ?? []) categoryBySlug[s.slug] = s.category
     } catch { /* catalog optional - categories default to meta */ }
@@ -53,7 +53,7 @@ export async function GET() {
     const packBySlug: Record<string, string> = {}
     const packNameBySlug: Record<string, string> = {}
     try {
-      const { content: packsRaw } = await getFileContent('packs.json')
+      const { content: packsRaw } = await getFileContent('catalog/packs.json')
       const packs = JSON.parse(packsRaw) as { packs?: Array<{ key: string; name?: string; skills?: Array<{ slug: string }> }> }
       for (const p of packs.packs ?? []) for (const s of p.skills ?? []) {
         packBySlug[s.slug] = p.key

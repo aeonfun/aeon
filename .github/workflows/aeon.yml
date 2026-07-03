@@ -967,9 +967,9 @@ jobs:
           TODAY=$(date -u +%Y-%m-%d)
           mkdir -p memory/logs
           printf '\n## %s (read-only)\nRan %s UTC.\n' "$SKILL" "$(date -u +%FT%TZ)" >> "memory/logs/${TODAY}.md"
-          CODE_PATHS="skills .github apps/mcp-server apps/webhook apps/dashboard/app apps/dashboard/lib apps/dashboard/components scripts skill-templates workflow-templates docs *.md *.json *.yml aeon add-skill add-mcp export-skill new-from-template onboard install-skill-pack install-from-atrium generate-skills-json generate-packs-json notify-jsonrender"
+          CODE_PATHS="skills .github apps/mcp-server apps/webhook apps/dashboard/app apps/dashboard/lib apps/dashboard/components scripts skill-templates workflow-templates docs catalog bin *.md *.json *.yml aeon notify-jsonrender"
           git checkout -- $CODE_PATHS 2>/dev/null || true
-          git clean -fd -- skills scripts skill-templates workflow-templates .github 2>/dev/null || true
+          git clean -fd -- skills scripts skill-templates workflow-templates .github bin catalog 2>/dev/null || true
           echo "read-only guard: logged run + reverted code/config writes for $SKILL"
 
       - name: Commit results

@@ -4,10 +4,10 @@ set -euo pipefail
 # export-skill — Package a single skill for standalone use
 #
 # Usage:
-#   ./export-skill <skill-name>                    Package to ./exports/<skill-name>/
-#   ./export-skill <skill-name> --output /path     Package to custom directory
-#   ./export-skill <skill-name> --tar              Create a .tar.gz archive
-#   ./export-skill --list                          List all exportable skills
+#   bin/export-skill <skill-name>                    Package to ./exports/<skill-name>/
+#   bin/export-skill <skill-name> --output /path     Package to custom directory
+#   bin/export-skill <skill-name> --tar              Create a .tar.gz archive
+#   bin/export-skill --list                          List all exportable skills
 #
 # The exported package includes:
 #   - SKILL.md (the skill definition)
@@ -15,15 +15,15 @@ set -euo pipefail
 #   - A generated README.md with install instructions
 #
 # Recipients can install the exported skill with:
-#   ./add-skill <path-or-repo> <skill-name>
+#   bin/add-skill <path-or-repo> <skill-name>
 
-ROOT="$(cd "$(dirname "$0")" && pwd)"
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 SKILLS_DIR="$ROOT/skills"
 EXPORTS_DIR="$ROOT/exports"
 
 usage() {
   cat <<'EOF'
-Usage: ./export-skill <skill-name> [options]
+Usage: bin/export-skill <skill-name> [options]
 
 Package a single Aeon skill for standalone distribution.
 
@@ -37,10 +37,10 @@ Options:
   --help              Show this help
 
 Examples:
-  ./export-skill token-movers
-  ./export-skill token-movers --tar
-  ./export-skill token-movers --output ~/my-skills/token-movers
-  ./export-skill --list
+  bin/export-skill token-movers
+  bin/export-skill token-movers --tar
+  bin/export-skill token-movers --output ~/my-skills/token-movers
+  bin/export-skill --list
 EOF
   exit 0
 }
@@ -57,7 +57,7 @@ if [[ "${1:-}" == "--list" ]]; then
     printf "  %-24s %s (%s files)\n" "$slug" "$desc" "$file_count"
   done
   echo ""
-  echo "Export with: ./export-skill <skill-name>"
+  echo "Export with: bin/export-skill <skill-name>"
   exit 0
 fi
 
@@ -86,7 +86,7 @@ done
 SKILL_SRC="$SKILLS_DIR/$SKILL_NAME"
 if [[ ! -d "$SKILL_SRC" ]] || [[ ! -f "$SKILL_SRC/SKILL.md" ]]; then
   echo "Error: skill '$SKILL_NAME' not found in $SKILLS_DIR" >&2
-  echo "Run './export-skill --list' to see available skills." >&2
+  echo "Run 'bin/export-skill --list' to see available skills." >&2
   exit 1
 fi
 
@@ -117,7 +117,7 @@ If you have an Aeon-compatible agent, install this skill with:
 
 \`\`\`bash
 # From a GitHub repo
-./add-skill aaronjmars/aeon ${SKILL_NAME}
+bin/add-skill aaronjmars/aeon ${SKILL_NAME}
 
 # Or copy the SKILL.md into your skills directory
 cp SKILL.md /path/to/your/agent/skills/${SKILL_NAME}/SKILL.md

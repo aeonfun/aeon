@@ -3,24 +3,24 @@ set -euo pipefail
 
 # install-skill-pack — Install a curated community skill pack from a single command.
 #
-# Why this exists (vs ./add-skill):
-#   ./add-skill works against a generic GitHub repo and scans for SKILL.md files.
+# Why this exists (vs bin/add-skill):
+#   bin/add-skill works against a generic GitHub repo and scans for SKILL.md files.
 #   A *skill pack* is a curated collection with a manifest (skills-pack.json) that
 #   declares the pack's identity, version, license, and per-skill metadata. This
 #   script reads that manifest and installs the whole pack as one unit — the same
 #   distribution surface that the Community Skill Packs README section describes.
 #
 # Usage:
-#   ./install-skill-pack --list                              List every pack in the community registry (skill-packs.json)
-#   ./install-skill-pack <github-repo>                       Install everything the pack manifest declares
-#   ./install-skill-pack <github-repo> --list                List skills in the pack
-#   ./install-skill-pack <github-repo> <skill> [skill...]    Install only the named skills from the pack
-#   ./install-skill-pack <github-repo> --path skills/sub     Pack lives in a subdirectory (path holds skills-pack.json)
-#   ./install-skill-pack <github-repo> --branch develop      Use a non-default branch
-#   ./install-skill-pack <github-repo> --yes                 Auto-accept HIGH findings (CI/non-interactive)
-#   ./install-skill-pack <github-repo> --force               Install even if security scan finds HIGH issues
-#   ./install-skill-pack <github-repo> --dry-run             Preview without writing
-#   ./install-skill-pack --list --no-secrets                 List only registry packs whose skills declare no secrets_required
+#   bin/install-skill-pack --list                              List every pack in the community registry (skill-packs.json)
+#   bin/install-skill-pack <github-repo>                       Install everything the pack manifest declares
+#   bin/install-skill-pack <github-repo> --list                List skills in the pack
+#   bin/install-skill-pack <github-repo> <skill> [skill...]    Install only the named skills from the pack
+#   bin/install-skill-pack <github-repo> --path skills/sub     Pack lives in a subdirectory (path holds skills-pack.json)
+#   bin/install-skill-pack <github-repo> --branch develop      Use a non-default branch
+#   bin/install-skill-pack <github-repo> --yes                 Auto-accept HIGH findings (CI/non-interactive)
+#   bin/install-skill-pack <github-repo> --force               Install even if security scan finds HIGH issues
+#   bin/install-skill-pack <github-repo> --dry-run             Preview without writing
+#   bin/install-skill-pack --list --no-secrets                 List only registry packs whose skills declare no secrets_required
 #
 # Manifest format (skills-pack.json, at pack root or under --path):
 #   {
@@ -54,15 +54,15 @@ set -euo pipefail
 # See docs/CAPABILITIES.md for the meaning of each value and the rule for
 # proposing additions.
 
-ROOT_DIR="$(cd "$(dirname "$0")" && pwd)"
+ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 SKILLS_DIR="$ROOT_DIR/skills"
-SKILLS_JSON="$ROOT_DIR/skills.json"
+SKILLS_JSON="$ROOT_DIR/catalog/skills.json"
 SKILLS_LOCK="$ROOT_DIR/skills.lock"
 AEON_YML="$ROOT_DIR/aeon.yml"
 SCANNER="$ROOT_DIR/skills/skill-scan/scan.sh"
 TRUSTED_FILE="$ROOT_DIR/skills/security/trusted-sources.txt"
-REGISTRY_FILE="$ROOT_DIR/skill-packs.json"
-REGISTRY_URL="https://raw.githubusercontent.com/aaronjmars/aeon/main/skill-packs.json"
+REGISTRY_FILE="$ROOT_DIR/catalog/skill-packs.json"
+REGISTRY_URL="https://raw.githubusercontent.com/aaronjmars/aeon/main/catalog/skill-packs.json"
 TMP_DIR=$(mktemp -d)
 trap 'rm -rf "$TMP_DIR"' EXIT
 # shellcheck source=scripts/lib/skill-install.sh
@@ -91,7 +91,7 @@ is_allowed_capability() {
 
 usage() {
   cat <<'EOF'
-Usage: ./install-skill-pack [<github-repo>] [options] [skill-names...]
+Usage: bin/install-skill-pack [<github-repo>] [options] [skill-names...]
 
 Install a curated community skill pack from a GitHub repository, or browse the
 community registry.
@@ -123,11 +123,11 @@ Community registry:
   file when available and falls back to the upstream raw URL otherwise.
 
 Examples:
-  ./install-skill-pack --list
-  ./install-skill-pack AntFleet/aeon-skills --list
-  ./install-skill-pack AntFleet/aeon-skills
-  ./install-skill-pack liquidpadbot/aeon-skill-pack-liquidpad liquidpad-burn-monitor liquidpad-token-alert
-  ./install-skill-pack mnemedb/aeon-skill-pack-mneme --dry-run
+  bin/install-skill-pack --list
+  bin/install-skill-pack AntFleet/aeon-skills --list
+  bin/install-skill-pack AntFleet/aeon-skills
+  bin/install-skill-pack liquidpadbot/aeon-skill-pack-liquidpad liquidpad-burn-monitor liquidpad-token-alert
+  bin/install-skill-pack mnemedb/aeon-skill-pack-mneme --dry-run
 EOF
   exit 0
 }
@@ -216,14 +216,14 @@ list_registry() {
   echo "  [caps: ...] = declared capabilities — see docs/CAPABILITIES.md for the taxonomy"
   echo ""
   if [[ "$no_secrets" == "true" ]]; then
-    echo "$shown of $total packs shown ($hidden hidden by --no-secrets). Install with: ./install-skill-pack <repo>"
+    echo "$shown of $total packs shown ($hidden hidden by --no-secrets). Install with: bin/install-skill-pack <repo>"
   else
-    echo "$total packs in registry. Install with: ./install-skill-pack <repo>"
+    echo "$total packs in registry. Install with: bin/install-skill-pack <repo>"
   fi
   exit 0
 }
 
-# Registry-list mode: `./install-skill-pack --list` (no repo, optionally with
+# Registry-list mode: `bin/install-skill-pack --list` (no repo, optionally with
 # --no-secrets) prints the registry. We do a focused detect-and-route here so
 # the original single-pack flow below is unchanged. Any unrecognised flag or
 # positional argument disqualifies registry mode.
@@ -649,7 +649,7 @@ update_skills_json() {
   fi
   local today
   today=$(date -u '+%Y-%m-%d')
-  local install_cmd="./install-skill-pack $REPO $slug"
+  local install_cmd="bin/install-skill-pack $REPO $slug"
   local entry
   entry=$(jq -n \
     --arg slug "$slug" \
@@ -751,15 +751,15 @@ if [[ "$DRY_RUN" == "false" ]] && [[ $INSTALLED -gt 0 ]]; then
   # synthetic "installed" pack the dashboard surfaces. Leaving this to a caller's
   # follow-up command is exactly how an install lands skills.json-but-not-
   # packs.json and the skill never appears. Best-effort: warn, don't abort.
-  if [[ -x "$ROOT_DIR/generate-skills-json" ]]; then
-    "$ROOT_DIR/generate-skills-json" >/dev/null 2>&1 \
+  if [[ -x "$ROOT_DIR/bin/generate-skills-json" ]]; then
+    "$ROOT_DIR/bin/generate-skills-json" >/dev/null 2>&1 \
       && echo "  catalog: skills.json regenerated" \
-      || echo "  warning: skills.json regen failed — run ./generate-skills-json"
+      || echo "  warning: skills.json regen failed — run bin/generate-skills-json"
   fi
-  if [[ -x "$ROOT_DIR/generate-packs-json" ]] && command -v python3 >/dev/null 2>&1; then
-    "$ROOT_DIR/generate-packs-json" >/dev/null 2>&1 \
+  if [[ -x "$ROOT_DIR/bin/generate-packs-json" ]] && command -v python3 >/dev/null 2>&1; then
+    "$ROOT_DIR/bin/generate-packs-json" >/dev/null 2>&1 \
       && echo "  catalog: packs.json regenerated (installed pack)" \
-      || echo "  warning: packs.json regen failed — run ./generate-packs-json"
+      || echo "  warning: packs.json regen failed — run bin/generate-packs-json"
   fi
 
   echo ""

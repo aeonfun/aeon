@@ -3,18 +3,18 @@
 # can invoke any Aeon skill directly from the Claude interface.
 #
 # Usage:
-#   ./add-mcp                  Build the MCP server and register it with Claude Code
-#   ./add-mcp --desktop        Also print Claude Desktop config snippet
-#   ./add-mcp --build-only     Build without registering (useful for CI)
-#   ./add-mcp --uninstall      Remove the Aeon MCP server from Claude Code
-#   ./add-mcp --help           Show this help
+#   bin/add-mcp                  Build the MCP server and register it with Claude Code
+#   bin/add-mcp --desktop        Also print Claude Desktop config snippet
+#   bin/add-mcp --build-only     Build without registering (useful for CI)
+#   bin/add-mcp --uninstall      Remove the Aeon MCP server from Claude Code
+#   bin/add-mcp --help           Show this help
 #
 # After running, every Aeon skill appears as an 'aeon-<name>' tool in Claude.
 # Skills run locally via `claude -p -` exactly as they do on GitHub Actions.
 
 set -euo pipefail
 
-DIR="$(cd "$(dirname "$0")" && pwd)"
+DIR="$(cd "$(dirname "$0")/.." && pwd)"
 MCP_DIR="$DIR/apps/mcp-server"
 
 usage() {
@@ -161,4 +161,4 @@ EOF
 fi
 
 echo "To verify, run: claude mcp list"
-echo "To remove:      ./add-mcp --uninstall"
+echo "To remove:      bin/add-mcp --uninstall"

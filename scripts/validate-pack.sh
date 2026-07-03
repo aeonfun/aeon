@@ -40,7 +40,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-INSTALL_SCRIPT="$ROOT_DIR/install-skill-pack"
+INSTALL_SCRIPT="$ROOT_DIR/bin/install-skill-pack"
 
 PACK_DIR="."
 SUBPATH=""

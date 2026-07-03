@@ -27,11 +27,11 @@ interface SkillsManifest {
   skills: Skill[];
 }
 
-/** Load the skill catalog from <repoRoot>/skills.json. Returns [] if missing. */
+/** Load the skill catalog from <repoRoot>/catalog/skills.json. Returns [] if missing. */
 export function loadSkills(repoRoot: string, logPrefix = "[aeon]"): Skill[] {
-  const manifestPath = join(repoRoot, "skills.json");
+  const manifestPath = join(repoRoot, "catalog", "skills.json");
   if (!existsSync(manifestPath)) {
-    process.stderr.write(`${logPrefix} skills.json not found at ${manifestPath}\n`);
+    process.stderr.write(`${logPrefix} catalog/skills.json not found at ${manifestPath}\n`);
     return [];
   }
   const manifest: SkillsManifest = JSON.parse(readFileSync(manifestPath, "utf-8"));

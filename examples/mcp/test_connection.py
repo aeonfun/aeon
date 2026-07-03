@@ -14,7 +14,7 @@ script works, your Claude Desktop / Claude Code wiring will too.
 
 Setup:
     cd /path/to/aeon
-    ./add-mcp --build-only          # produce apps/mcp-server/dist/index.js
+    bin/add-mcp --build-only          # produce apps/mcp-server/dist/index.js
     pip install mcp                 # official anthropic MCP client
     python examples/mcp/test_connection.py            # lists + calls default tool
     python examples/mcp/test_connection.py aeon-token-movers AEON
@@ -47,7 +47,7 @@ async def main(tool_name: str, var_value: str) -> int:
     server_js = root / "apps/mcp-server" / "dist" / "index.js"
     if not server_js.exists():
         print(f"✗ MCP server build missing at {server_js}")
-        print("  Run `./add-mcp --build-only` from the repo root first.")
+        print("  Run `bin/add-mcp --build-only` from the repo root first.")
         return 1
 
     params = StdioServerParameters(

@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # skill-install.sh — shared helpers for the three skill installers:
-#   ./add-skill            (any GitHub repo, scans for SKILL.md)
-#   ./install-skill-pack   (curated community packs with a skills-pack.json manifest)
-#   ./install-from-atrium  (Atrium onchain marketplace, single SKILL.md endpoint)
+#   bin/add-skill            (any GitHub repo, scans for SKILL.md)
+#   bin/install-skill-pack   (curated community packs with a skills-pack.json manifest)
+#   bin/install-from-atrium  (Atrium onchain marketplace, single SKILL.md endpoint)
 #
 # SOURCED, never executed. Before this file existed each installer carried its
 # own copy of: frontmatter parsing, trusted-source check, tarball fetch+extract,
