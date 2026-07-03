@@ -35,7 +35,7 @@ If `${var}` is set to a focus area, focus checks on that specific area.
 
 #### P0 — Failed & stuck skills (check first)
 
-Read `memory/cron-state.json`. This file tracks every scheduled skill's state and quality metrics:
+Read `memory/cron-state.json`. **If the file is missing or empty** (e.g. a fresh fork whose scheduler hasn't written it yet), treat state as empty: report `no cron-state yet` for the P0 tier, skip the failure/degradation checks below, and still render the status page (every enabled skill shows `not yet run`). This file tracks every scheduled skill's state and quality metrics:
 ```json
 {
   "skill-name": {
@@ -254,25 +254,27 @@ Style rules:
 ### 4. Send via `./notify` and email
 
 - Send the formatted brief with `./notify "..."`.
-- Send email via Resend:
-  - Build the brief as HTML (wrap each section in `<h2>` headers, `<ul>/<li>` bullets)
-  - Also keep a plain-text copy (the `./notify` content above, as-is)
-  - Parse `$BRIEF_RECIPIENTS` as a comma-separated list of addresses
-  - POST to `https://api.resend.com/emails`:
-    ```
-    Authorization: Bearer $RESEND_API_KEY
-    Content-Type: application/json
+- Send email via Resend (**optional — skip cleanly when unconfigured**):
+  - **Preflight:** if `$RESEND_API_KEY` is empty/unset **or** `$BRIEF_RECIPIENTS` has no addresses, **skip the email step entirely** — the `./notify` send above already delivered the brief. Note the skip in the log (`email: skipped (no RESEND_API_KEY)`) and continue; do **not** fail the run. `RESEND_API_KEY` is an optional dependency.
+  - When configured:
+    - Build the brief as HTML (wrap each section in `<h2>` headers, `<ul>/<li>` bullets)
+    - Also keep a plain-text copy (the `./notify` content above, as-is)
+    - Parse `$BRIEF_RECIPIENTS` as a comma-separated list of addresses
+    - POST to `https://api.resend.com/emails`:
+      ```
+      Authorization: Bearer $RESEND_API_KEY
+      Content-Type: application/json
 
-    {
-      "from": "Aeon Briefings <onboarding@resend.dev>",
-      "to": ["<each recipient>"],
-      "subject": "[Aeon] Priority Brief — ${today}",
-      "html": "<html version>",
-      "text": "<plain-text version>"
-    }
-    ```
-  - Log the `id` field from the Resend response as a comment on the current Paperclip execution issue for traceability
-  - If Resend returns an error, log the full error body as a comment and fail loudly (do not silently continue)
+      {
+        "from": "Aeon Briefings <onboarding@resend.dev>",
+        "to": ["<each recipient>"],
+        "subject": "[Aeon] Priority Brief — ${today}",
+        "html": "<html version>",
+        "text": "<plain-text version>"
+      }
+      ```
+    - Log the `id` field from the Resend response to `memory/logs/${today}.md` for traceability
+    - If the key **is** set and Resend returns an error, log the full error body and fail loudly (do not silently continue) — a real send failure is a signal, an absent optional key is not
 - Append to `memory/logs/${today}.md` under the shared `### heartbeat` heading (see [Log](#log)) with a `mode: brief` discriminator line: timestamp, the 3 focus items (one line each), headline count, and any skills flagged from cron-state. This becomes tomorrow's "since yesterday" input.
 
 ---
