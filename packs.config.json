@@ -12,12 +12,9 @@
       "self-improve",
       "skill-health",
       "skill-repair",
-      "skill-evals",
       "autoresearch",
       "heartbeat",
-      "onboard",
       "cost-report",
-      "reflect",
       "digest"
     ]
   },

@@ -1,6 +1,6 @@
 # Skill packs
 
-Aeon ships **94 skills**, but most forks only ever run a handful. Packs make
+Aeon ships **69 skills**, but most forks only ever run a handful. Packs make
 that manageable: by default the dashboard shows only the small **core** set —
 everything else is grouped into **packs** that stay hidden until you enable them.
 **Enabling a pack reveals its skills** across the sidebar and HQ. That's a
@@ -69,7 +69,7 @@ When assigning a skill to a pack, the generator applies, in order:
 
 | Pack | What's in it | ~count |
 |---|---|---|
-| **Core** | Self-evolution, self-healing, memory/liveness, setup, cost guardrail, + two default outputs. Always present. | 13 |
+| **Core** | Self-evolution, self-healing, memory/liveness, cost guardrail, + two default outputs. Always present. | 9 |
 | **Fleet & Replication** | Spawn/coordinate sub-agents, scorecards, feature rollout, on-chain distribute/reward, vuln scanning. | 8 |
 | **Research & Content** | Digests, deep research, trend/framework tracking. | 26 |
 | **Dev & Code** | PR/issue triage, review, merges, releases, repo health, ecosystem mapping. | 34 |
@@ -87,9 +87,8 @@ self-improving*, plus a couple of broadly useful default outputs. Of these,
 `heartbeat` and `digest` are enabled by default; the rest ship present but
 on-demand.
 
-`create-skill`, `self-improve`, `skill-health`, `skill-repair`, `skill-evals`,
-`autoresearch`, `heartbeat`, `onboard`, `cost-report`,
-`reflect`, `digest`.
+`create-skill`, `self-improve`, `skill-health`, `skill-repair`,
+`autoresearch`, `heartbeat`, `cost-report`, `digest`.
 
 Edit the `core.skills` allowlist in `packs.config.json` to change it.
 

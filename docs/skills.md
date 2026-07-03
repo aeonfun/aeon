@@ -6,7 +6,7 @@ permalink: /skills/
 
 # Skills
 
-Aeon ships with **94 skills** across **10 packs**. Each skill is a self-contained markdown instruction file in `skills/<name>/SKILL.md`. Enable any skill in `aeon.yml` and it runs on its schedule (schedules live in `aeon.yml`; many skills also accept a `var` selector — see the skill's frontmatter).
+Aeon ships with **69 skills** across **10 packs**. Each skill is a self-contained markdown instruction file in `skills/<name>/SKILL.md`. Enable any skill in `aeon.yml` and it runs on its schedule (schedules live in `aeon.yml`; many skills also accept a `var` selector — see the skill's frontmatter).
 
 Install any skill into your own agent:
 ```bash
@@ -17,7 +17,7 @@ Install any skill into your own agent:
 
 ---
 
-## Core (`core`, 12)
+## Core (`core`, 9)
 
 | Skill | Description |
 |-------|-------------|
@@ -27,10 +27,7 @@ Install any skill into your own agent:
 | `digest` | Generate and send a digest on a configurable topic, optionally pulling RSS/Atom feeds as an input source alongside web + X signal |
 | `heartbeat` | Ambient fleet-health check that surfaces anything worth attention (default), or an on-demand priority brief — the 3 things to focus on, why now, and what moved (var=brief) |
 | `install-skill` | Install a community skill pack into this fork from a GitHub repo and ship it as an auto-merged PR |
-| `onboard` | One-shot setup validator — runs every check from the ./onboard CLI inside the workflow and sends the resulting checklist to the configured notification channel |
-| `reflect` | Reflect on recent activity — either consolidate and prune long-term memory (default), or run a KALM retrospective (Keep/Add/Less/More) grounded in objective metrics, with closed-loop tracking of prior actions and SMART next actions (retro) |
 | `self-improve` | Improve the agent itself, or audit its recent performance — better skills, prompts, workflows, and config, plus a quality/reliability/memory-hygiene review of what the agent did and what failed |
-| `skill-evals` | Validate skill outputs against assertions, diff vs prior eval to flag regressions, file issues for new failures, and queue concrete fixes |
 | `skill-health` | Fleet skill observability with two views. Health view audits per-skill metrics, files/resolves issues in memory/issues/, and notifies on state change only. Analytics view ranks the fleet by 7d run count, surfaces success rates, exit-taxonomy distribution, and anomaly flags (significance-gated). The selector picks the view. |
 | `skill-repair` | Diagnose and fix failing or degraded skills automatically — systemic-first triage, per-category playbooks, verification plan |
 
@@ -48,20 +45,15 @@ Install any skill into your own agent:
 
 ---
 
-## Research & Content (`research`, 16)
+## Research & Content (`research`, 6)
 
 | Skill | Description |
 |-------|-------------|
 | `article` | Write a publication-ready article in one of three angles — a general trending long-form piece (or a single-mechanism technical explainer), a thesis-driven article about a watched repo, or a project-through-a-lens essay. Optionally generate a Replicate hero image with --visual. |
-| `article-queue` | Content planner — tracks multi-beat storylines over time (beat continuity via WebSearch), scans content gaps for uncovered angles, and synthesizes both (plus narrative-tracker signals) into a ranked article queue the article skill reads on its next run. `var` scopes to the combined planner (default), gap-scan only, or beat-tracking only, with an optional domain filter. |
 | `bd-radar` | Business-development radar across your product family — find who's building, forking, integrating, and mentioning your products, then rank them into a who-to-talk-to-this-week lead list with a suggested next move per lead |
-| `deep-research` | Research any topic at two depths — a fast one-pass cited brief (falsifiable thesis, every claim cited, explicit uncertainty) or an exhaustive multi-source synthesis with CRAAP-lite source tiering, adversarial cross-source verification, and per-finding confidence. Analyst-grade, not aggregator-grade. |
 | `fetch-tweets` | Search and curate X/Twitter behind one selector — by keyword/query, topic roundup, a single account or a tracked-account digest, an X list, or the AI-agent "buzz" preset — clustered into sub-narratives with signal-scored, insight-per-item output. |
-| `framework-watch` | Competitive-intelligence digest on the AI agent framework space — momentum, releases, breaking changes across a curated watchlist |
-| `hn-digest` | Top HN stories filtered by interests, with comment-mined insights and themed clustering |
 | `idea-forge` | Three-mode idea engine. generate — collide the week's zeitgeist with what the operator can ship now into 3-5 wedges scored by timing-window/fit/edge, appended to the shared backlog. validate — viability-screen and score the startup-idea backlog (competition, funding, timing, operator-fit, market size). memo — 2 evidence-backed startup memos with ICP, wedge, monetization, cited pain, and numeric kill criteria. |
 | `last30` | Cross-platform social research — narrative-first intelligence on what people are saying about a topic across Reddit, X, HN, Polymarket, and the web over the last 30 days |
-| `launch-radar` | Two-branch launch radar. BACKLOG branch searches ProductHunt + HN Show HN for launches matching the operator's startup-idea backlog and flags when someone ships an idea from the list. CATEGORY branch scans Product Hunt RSS + HN Algolia for brand-new entrants in the operator's tracked category, suppressing the framework-watch cohort and deduping via LRU state so each launch fires once. The selector picks the branch. |
 | `narrative-convergence` | Cross-skill signal detector — finds entities or themes surfaced independently by 3+ different skill categories within 48h and surfaces them as high-confidence write opportunities |
 
 ---
@@ -114,18 +106,17 @@ Install any skill into your own agent:
 
 ---
 
-## Onchain Security (`hound`, 4)
+## Onchain Security (`hound`, 3)
 
 | Skill | Description |
 |-------|-------------|
 | `investigation-report` | One-shot composite investigation of a Base token — a single report that runs any subset of six onchain-security analyzers (rug-scan, contract-audit, deployer-trace, holder-concentration, honeypot-check, lp-lock) behind a selector and merges them into one at-a-glance verdict. Each check preserves its full standalone logic, so selecting a single check reproduces that analyzer exactly. Keyless core; a Basescan/Etherscan key or custom Base RPC deepens it. |
 | `tx-explain` | Decode any Base transaction into a plain-English story — method, token movements, swaps/approvals, counterparties, and suspicious-approval flags. Keyless via Base RPC + Etherscan v2. |
-| `vigil` | Onchain security scanner + approval revoker on Base. DEFAULT (scan) — 17 read-only tools, keyless via VIGIL API, non-mutating: scan approvals, detect honeypots, owner-modifiable tax, dangerous owner permissions, scam clones, liquidity locks, simulate approvals, and a multi-source consensus verdict. ACTION arm `--revoke wallet:spender:token` — WRITE: confirms the approval is live then submits `approve(spender,0)` via Bankr (wallet-bound, confirmation-gated) to close the detect→revoke loop. Only the explicit `--revoke` flag broadcasts a transaction. |
 | `wallet-profile` | One read-only wallet-analysis skill for Base with six modes — behavioral profile (default), balance digest, drain-risk audit (approvals + honeypot + severity), live approval inventory, same-entity clustering, and multi-hop fund-flow tracing with a Mermaid graph. Keyless via Etherscan v2 + Base RPC; optional Basescan key deepens history. Analysis only — never revokes, never sends a transaction. |
 
 ---
 
-## Social & Writing (`social`, 8)
+## Social & Writing (`social`, 5)
 
 | Skill | Description |
 |-------|-------------|
@@ -137,40 +128,24 @@ Install any skill into your own agent:
 
 ---
 
-## Productivity (`productivity`, 11)
+## Productivity (`productivity`, 5)
 
 | Skill | Description |
 |-------|-------------|
 | `action-converter` | 5 concrete real-life actions, leverage-scored against open loops with specificity and anti-fluff gates |
-| `deal-flow` | Funding round tracker across configurable verticals |
-| `followup-patrol` | Escalation audit — parses the follow-up / open-loop section of MEMORY.md plus the issue tracker, computes item ages, and alerts on items hitting urgency thresholds so nothing rots unattended |
-| `goal-tracker` | Track progress against goals AND fire threshold alerts on milestones — quantified per-goal status (velocity, trend, one next action) plus crossing / approaching / stalled milestone detection with celebration and alerts |
 | `idea-pipeline` | Execution-gap audit — cross-references the startup idea backlog against shipped skills, prototypes, and cross-repo PRs. Surfaces the top 3 ideas to build next based on narrative fit and operator fit. |
-| `note-taking` | Capture a note or idea from any channel — restate, triage into a PARA bucket, tag, color, detect recurring themes, and append a timestamped record to memory/notes/ plus the daily log. Echoes a restatement back for instant confirmation. |
-| `reg-monitor` | Track legislation, regulatory actions, and legal developments affecting prediction markets, crypto, and AI agents — triaged by stage × impact for decision-ready output |
 | `send-email` | Compose and send a one-off email to a named recipient via Resend — written in the operator's voice, staged locally, then sent in postprocess with caps and an operator audit copy |
 | `shiplog` | Recap of everything shipped since the last run — cross-repo PRs and commits, security fixes merged into other people's repos, star deltas, and X + ecosystem traction — synthesized into a digest article AND a ready-to-post shiplog in the operator's voice. Cadence-agnostic: schedule it daily, weekly, or on-demand. |
 | `strategy-builder` | Draft STRATEGY.md from a goal — read the operator's brief (goal text, repo, links) plus the repo README + memory, then write a tight north-star/priorities/audience/constraints strategy that every skill reads on every run. |
-| `tool-builder` | Build automation scripts from action-converter suggestions and recurring manual tasks |
 
 ---
 
-## Agent Ops (`agent-ops`, 12)
+## Agent Ops (`agent-ops`, 2)
 
 | Skill | Description |
 |-------|-------------|
-| `api-health` | Pre-batch API provider health check — detects credit exhaustion or auth failure for every configured provider key before the scheduled batch runs, giving the operator a window to act before skills degrade |
-| `batch-health` | Post-batch audit — checks whether all enabled scheduled skills fired in their expected window, alerts on silent misses, files issues on batch-level outages |
-| `capabilities-map` | Meta-view of the installed skill stack behind one selector — a read-only capability-coverage audit against the locked 6-value taxonomy in docs/CAPABILITIES.md (empty var), a one-shot backfill that infers and PRs the missing `capabilities:` frontmatter declarations (var `sweep`/`backfill`), and a navigable Mermaid dependency graph regenerated to docs/skill-graph.md (var `graph`) |
-| `contributor-leaderboard` | Ranking of developers contributing to the fork fleet and back upstream |
-| `fork-events` | Same-day named alert when a fork first runs — catches the activation moment the day it happens, which slower fork-cohort snapshots would miss |
-| `fork-health` | Fork-intelligence skill with three lenses selected by ${var} — health (per-fork 3-signal ACTIVE/WARM/STALE/QUIET tier + fleet health ratio + top-10 leaderboard), cohort (run-recency COLD/STALE/ACTIVE/POWER activation buckets with WoW transitions), and fleet (a "state of the fleet" narrative digest synthesising the cohort snapshot + contributor leaderboard with week-over-week deltas). Read-only across the fleet; silent when nothing moves. |
 | `memory-flush` | Promote important recent log entries into MEMORY.md and prune stale ones |
 | `operator-scorecard` | Three recap modes behind one selector — (default) a plain-language operator scorecard synthesizing agent health + community growth + economic activity into a was-it-worth-it verdict; `ops` an operational day-recap of what Aeon shipped, what failed, and what needs a human call; `push` a diff-reading deep-dive that ranks push impact and separates user-visible shipments from internal work. |
-| `product-pulse` | Daily state-of-your-products read across three facets — repo growth (stars/forks/releases + notable-stargazer enrichment + growth verdict), X content engagement (tweet resonance, top formats, breakouts), and Vercel deploy-fleet health (errored-first triage) — with week-over-week deltas. Empty runs the unified digest; `${var}` scopes to one facet. |
-| `skill-gap` | Fleet skill-adoption intelligence — per-fork upstream gaps (what's in upstream you haven't adopted), a fleet-wide most/least-adopted leaderboard by enablement, and a configured-fork ranking with promote/match/sunset calls. Default runs all three lenses; silent when nothing moves. |
-| `skill-scan` | Skill-security hub with three targets. (repo) Audit the in-repo skill / workflow / companion-script corpus for injection, exfiltration, traversal and prompt-override risks with delta tracking, baseline suppression, issue filing and per-finding remediation. (pr) Triage an inbound skill PR into one structured security + Phylax + required-secrets + cron-conflict receipt comment. (external-preinstall) Return a deterministic pre-install ALLOW / WARN / DENY verdict for an external skill via the hosted Phylax engine (inline fallback) plus Base-contract and x402 endpoint probing. Keyless via Base RPC + Etherscan v2. |
-| `skill-update` | Two-branch skill-fleet audit — (drift) imported skills' upstream SKILL.md changes and security regressions vs skills.lock, and (freshness) enabled skills' on-disk file dependencies going stale. Branch selected by ${var}. |
 
 ---
 

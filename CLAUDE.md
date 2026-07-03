@@ -13,7 +13,7 @@ One skill run, end to end:
 4. **Act** — read memory, fetch/compute, write files or open a PR (write mode only), and report via `./notify`.
 5. **After** — on success the workflow runs `scripts/postprocess-*.sh` (deferred network side-effects), converts feed output via `./notify-jsonrender`, and reverts stray writes from read-only skills. You append a log to `memory/logs/`.
 
-A self-healing loop runs on top: **health skills** (`skill-health`, `skill-evals`) score runs and file issues; **repair skills** (`skill-repair`) fix them by PR. Alternate entry points (`apps/mcp-server`, `apps/webhook`) launch the same skill prompt — behaviour is entry-point-agnostic. Config is managed by the dashboard (`apps/dashboard`) and pushed to GitHub as repo secrets/vars.
+A self-healing loop runs on top: the **health skill** (`skill-health`) scores runs and files issues; **repair skills** (`skill-repair`) fix them by PR. Alternate entry points (`apps/mcp-server`, `apps/webhook`) launch the same skill prompt — behaviour is entry-point-agnostic. Config is managed by the dashboard (`apps/dashboard`) and pushed to GitHub as repo secrets/vars.
 
 ## Strategy
 
@@ -46,7 +46,7 @@ After completing any task, append a log entry to `memory/logs/YYYY-MM-DD.md` und
 - **`memory/MEMORY.md`** — Short index (~50 lines): current goals, active topics, and pointers to topic files. A table of contents, not a dumping ground.
 - **`memory/topics/`** — Detailed notes by topic (e.g. `crypto.md`, `research.md`). When a topic outgrows a few lines in MEMORY.md, move it here and link.
 - **`memory/logs/`** — Daily activity logs (`YYYY-MM-DD.md`), append-only.
-- **`memory/issues/`** — Structured issue tracker for skill failures and degradations. **Health skills (`skill-health`, `skill-evals`) file issues; repair skills (`skill-repair`) close them.** The schema (frontmatter fields, severity, categories, lifecycle) is owned by `skills/skill-health/SKILL.md`; the end-to-end loop is documented in `docs/CORE.md`. Only active once `INDEX.md` exists.
+- **`memory/issues/`** — Structured issue tracker for skill failures and degradations. **The health skill (`skill-health`) files issues; repair skills (`skill-repair`) close them.** The schema (frontmatter fields, severity, categories, lifecycle) is owned by `skills/skill-health/SKILL.md`; the end-to-end loop is documented in `docs/CORE.md`. Only active once `INDEX.md` exists.
 - **`memory/skill-health/`** — Per-run quality scores the health loop reads; don't hand-edit.
 
 When consolidating memory (reflect), move detail into topic files rather than cramming everything into MEMORY.md.
