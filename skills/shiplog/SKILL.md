@@ -52,7 +52,7 @@ SINCE_DATE="${SINCE%%T*}"
 
 - `since:YYYY-MM-DD` in `${var}` → `SINCE` = that date at `T00:00:00Z`; `days:N` → N days ago. These override the state file.
 - Use `$SINCE` for ALL time filtering — never substitute "since Monday" or other drift-prone shortcuts. The window is `[$SINCE, $NOW)`; state the span (`$SINCE_DATE → $TODAY`) in the output.
-- **Idempotency is the state file** (step 8 advances it each run, so windows never overlap). No once-per-day lock — a back-to-back re-run just yields an empty window → `SHIPLOG_NOTHING_NEW`. Write the digest to `articles/shiplog-${TODAY}.md`; if that name exists and there's genuinely new activity since the last run, use `articles/shiplog-${TODAY}-2.md` rather than clobbering.
+- **Idempotency is the state file** (step 8 advances it each run, so windows never overlap). No once-per-day lock — a back-to-back re-run just yields an empty window → `SHIPLOG_NOTHING_NEW`. Write the digest to `output/articles/shiplog-${TODAY}.md`; if that name exists and there's genuinely new activity since the last run, use `output/articles/shiplog-${TODAY}-2.md` rather than clobbering.
 
 ### 2. GitHub activity (the bytes)
 
@@ -124,9 +124,9 @@ If `${var}` narrows to one repo/project and nothing matched, status `SHIPLOG_NO_
 
 ### 6. Synthesize + write the article
 
-**Output handling — no PR.** This is a content skill: write the article straight to `articles/` and let the workflow's commit step push it to `main` (same as the `article` skill). Do **not** create a branch or open a pull request — `CLAUDE.md`'s "branch + PR, never push to main" rule is for source-code changes, not generated articles.
+**Output handling — no PR.** This is a content skill: write the article straight to `output/articles/` and let the workflow's commit step push it to `main` (same as the `article` skill). Do **not** create a branch or open a pull request — `CLAUDE.md`'s "branch + PR, never push to main" rule is for source-code changes, not generated articles.
 
-Write the **digest** to `articles/shiplog-${TODAY}.md`: themed "what shipped" sections, a **By-the-numbers** line (PRs · commits · star deltas), traction/ecosystem, and the gaps you hit. Then append the **ready-to-post shiplog** using this template — load `soul/STYLE.md` first so the register matches (if `soul/` is empty, write a plain, direct post and drop the `⭐` sign-off):
+Write the **digest** to `output/articles/shiplog-${TODAY}.md`: themed "what shipped" sections, a **By-the-numbers** line (PRs · commits · star deltas), traction/ecosystem, and the gaps you hit. Then append the **ready-to-post shiplog** using this template — load `soul/STYLE.md` first so the register matches (if `soul/` is empty, write a plain, direct post and drop the `⭐` sign-off):
 
 ```
 <product(s)> shiplog ⭐ <span: month day → day>
@@ -166,7 +166,7 @@ Advance on **every** completed run — including `SHIPLOG_NOTHING_NEW` / `SHIPLO
 
 ```bash
 REPO_URL=$(gh repo view --json url -q .url)
-ARTICLE_URL="${REPO_URL}/blob/main/articles/shiplog-${TODAY}.md"
+ARTICLE_URL="${REPO_URL}/blob/main/output/articles/shiplog-${TODAY}.md"
 ```
 
 Write the ready-to-post shiplog to a **gitignored** temp file — `.xai-cache/shiplog-notify.md` (the `.xai-cache/` dir is gitignored and sandbox-writable, so the temp never lands in a commit) — and send it with `./notify -f .xai-cache/shiplog-notify.md` (NOT `./notify "$(cat …)"` — long multi-line argv trips the sandbox). Append `${ARTICLE_URL}` as the last line. For `SHIPLOG_NOTHING_NEW` / `SHIPLOG_NO_MATCH`, send a one-line status instead of the post (or stay silent on sub-daily cadences).
@@ -181,7 +181,7 @@ Append to `memory/logs/${TODAY}.md`:
 - PRs / flagship commits: N / M   ·   external-security PRs: K
 - Stars: <repo> <total> (+d) … [or: no baseline yet]
 - X source: xai-cache | webfetch | none
-- Article: articles/shiplog-${TODAY}.md (if written)
+- Article: output/articles/shiplog-${TODAY}.md (if written)
 - State advanced to: ${NOW} (unless dry-run)
 - Sources: prs=ok|fail · commits=ok|fail · stars=ok|fail · x=ok|fail · ecosystem=ok|fail
 ```
@@ -195,7 +195,7 @@ Append to `memory/logs/${TODAY}.md`:
 ## Constraints
 
 - The window is **always** "since last run" (state file) unless `${var}` overrides it — never hardcode 7 days except as the first-run default. Always advance `memory/state/shiplog-last.json` on a real run, even a quiet one.
-- Content, not code: write the article to `articles/` and let the workflow commit it to `main`. Never open a per-run PR for the shiplog.
+- Content, not code: write the article to `output/articles/` and let the workflow commit it to `main`. Never open a per-run PR for the shiplog.
 - Every concrete claim traces to real data — a PR `(#N)`, a commit, a measured number, or a cached tweet. No invented activity, no fabricated star deltas.
 - RTs are amplification, not ships — narrative/ecosystem only, never "the bytes".
 - Verify a handle before @-mentioning it; an unverified tag stays untagged.

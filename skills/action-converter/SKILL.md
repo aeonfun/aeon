@@ -14,7 +14,7 @@ Read the last 7 days of `memory/logs/` for recent activity, patterns, and what's
 Read `memory/topics/` (every file) for active threads.
 Read `memory/cron-state.json` for failing or stuck skills.
 Read `memory/watched-repos.md` for repos under attention.
-Read `articles/` (last 7 days, filenames only — peek at the 2 most recent for theme).
+Read `output/articles/` (last 7 days, filenames only — peek at the 2 most recent for theme).
 If `soul/SOUL.md` exists, read it for identity, voice, focus areas.
 Run `gh pr list --state open --limit 20 --json number,title,createdAt,isDraft,reviewDecision,headRefName 2>/dev/null` to get open PRs (used to anchor "ship" / "review" / "merge" loops).
 

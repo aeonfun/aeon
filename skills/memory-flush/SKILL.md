@@ -17,7 +17,7 @@ Read the last 3 days of `memory/logs/` for recent activity.
 ### 1. Scan recent logs for entries worth promoting to long-term memory
 
 - New lessons learned (errors encountered, workarounds found)
-- Topics covered (articles, digests) — add to the recent articles/digests tables
+- Topics covered (articles, digests) — add to the recent output/articles/digests tables
 - Features built or tools created
 - Important findings from monitors (on-chain, GitHub, papers)
 - Ideas captured that are still relevant

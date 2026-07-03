@@ -130,7 +130,7 @@ bin/export-skill token-movers               # package one for standalone use
 
 Installed skills land in `skills/` and are added to `aeon.yml` disabled - flip `enabled: true` to activate. You can also:
 
-- **Build your own** from [`skill-templates/`](../skill-templates/TEMPLATE.md): `bin/new-from-template <template> <skill-name> --category <pack>` - the `--category` slots it into a pack (or set `category:` in the SKILL.md frontmatter). See [`docs/skill-packs.md`](../docs/skill-packs.md).
+- **Build your own** from [`examples/skill-templates/`](../examples/skill-templates/TEMPLATE.md): `bin/new-from-template <template> <skill-name> --category <pack>` - the `--category` slots it into a pack (or set `category:` in the SKILL.md frontmatter). See [`docs/skill-packs.md`](../docs/skill-packs.md).
 - **Use one skill elsewhere** without forking: drop a portable workflow from [`examples/workflow-templates/`](../examples/workflow-templates) into any repo's `.github/workflows/`.
 - **Label any GitHub issue `ai-build`** - Claude reads the issue, implements it, and opens a PR
 - **Install community packs** - see [Community skill packs](#community-skill-packs)
@@ -252,7 +252,7 @@ Skills that call third-party APIs declare their credentials in a `requires:` fro
 requires: [XAI_API_KEY, COINGECKO_API_KEY?]   # bare = required · `?` = works better with
 ```
 
-The dashboard surfaces this as an **API keys** panel on each skill (set/unset status, inline "Set" button), a ⚠ flag when an enabled skill is missing a required key, and a **"used by"** index under each key in Settings → Access Keys. Skills can likewise declare MCP servers with an `mcp:` list (`mcp: [base]`) - same two tiers, shown as a per-skill **MCP servers** panel with install state. Convention details: [`skill-templates/TEMPLATE.md`](../skill-templates/TEMPLATE.md#declaring-api-keys-requires).
+The dashboard surfaces this as an **API keys** panel on each skill (set/unset status, inline "Set" button), a ⚠ flag when an enabled skill is missing a required key, and a **"used by"** index under each key in Settings → Access Keys. Skills can likewise declare MCP servers with an `mcp:` list (`mcp: [base]`) - same two tiers, shown as a per-skill **MCP servers** panel with install state. Convention details: [`examples/skill-templates/TEMPLATE.md`](../examples/skill-templates/TEMPLATE.md#declaring-api-keys-requires).
 
 ---
 
@@ -329,7 +329,7 @@ Claude only installs and runs when a skill actually matches - non-matching ticks
 Let skills **call** MCP servers (GitHub, a database, a paid API, your own) while they run in GitHub Actions. Opt-in and safe - with no `.mcp.json` at the repo root, runs are byte-identical to before.
 
 ```bash
-cp .mcp.json.example .mcp.json   # then edit, commit, push
+cp examples/mcp/.mcp.json.example .mcp.json   # then edit, commit, push
 ```
 
 The example ships two working servers - `github` (uses the runner's built-in `GITHUB_TOKEN`) and `sequential-thinking` (no-auth stdio). On the next run, the runner loads `.mcp.json` and auto-allows every server's tools, so a skill can just say *"use the github MCP server to …"*.
@@ -578,7 +578,7 @@ git fetch upstream
 git merge upstream/main --no-edit
 ```
 
-Your `memory/`, `articles/`, and personal config won't conflict - they're in files that don't exist in the template.
+Your `memory/`, `output/`, and personal config won't conflict - they're in files that don't exist in the template.
 
 ### GitHub Actions cost
 
@@ -602,8 +602,7 @@ CLAUDE.md                ← agent identity (auto-loaded by Claude Code)
 STRATEGY.md              ← north-star: goal, priorities, audience, constraints (rides along every run)
 aeon.yml                 ← skill schedules, chains, reactive triggers, enabled flags
 aeon                     ← launch the local dashboard (run ./aeon; Next.js on port 5555)
-notify                   ← multi-channel notifications (Telegram, Discord, Slack, Email, json-render)
-notify-jsonrender        ← convert skill output to dashboard feed cards via Haiku
+notify                   ← multi-channel notify command (generated per-run from scripts/notify.sh)
 catalog/                 ← registries the dashboard reads (generated + hand-authored)
   skills.json            ← machine-readable skill catalog (68 skills, category per skill)
   packs.config.json      ← first-party pack definitions (core allowlist + pack list)
@@ -621,9 +620,10 @@ bin/                     ← operator + maintainer CLI (run from repo root, e.g.
 docs/                    ← reference docs (CORE, CAPABILITIES, skill-packs, telegram, help/status)
 soul/                    ← optional identity files (SOUL.md, STYLE.md, examples/, data/)
 skills/                  ← each skill is a SKILL.md prompt file (68 total; `category:` = its pack)
-skill-templates/         ← templates for building your own skills
-examples/                ← MCP quickstart + portable workflow templates
+examples/                ← MCP quickstart, portable workflow templates, skill templates
   workflow-templates/    ← GitHub Agentic Workflow .md (adopt a skill without forking)
+  skill-templates/       ← templates for building your own skills
+  mcp/                   ← MCP quickstart config + .mcp.json.example
 apps/                    ← standalone sub-projects, each with its own package.json
   dashboard/             ← local web UI (Next.js + json-render feed)
   mcp-server/            ← MCP server - exposes skills as Claude tools
@@ -636,8 +636,11 @@ memory/
   issues/                ← structured issue tracker for skill failures
   topics/                ← detailed notes by topic
   logs/                  ← daily activity logs (YYYY-MM-DD.md)
-.outputs/                ← skill chain outputs (passed between chained steps)
+output/                  ← skill deliverables committed to the repo (articles/, images/)
+.outputs/                ← skill chain outputs (transient handoff between chained steps)
 scripts/
+  notify.sh              ← source for the ./notify command (multi-channel notifications)
+  notify-jsonrender.sh   ← source for ./notify-jsonrender (feed cards via Haiku)
   prefetch-xai.sh        ← pre-fetch X/Grok API data outside sandbox
   postprocess-replicate.sh ← generate images via Replicate after Claude runs
   skill-runs             ← audit recent GitHub Actions skill runs
@@ -657,7 +660,7 @@ Aeon is an AI agent system that runs unattended on GitHub Actions, self-heals wh
 
 ### Can I create custom skills?
 
-Yes. Bootstrap from [`skill-templates/`](../skill-templates/TEMPLATE.md) (`bin/new-from-template <template> <skill-name> --var KEY=VALUE...`), describe one to the `create-skill` skill, or label a GitHub issue `ai-build` and let Aeon build it.
+Yes. Bootstrap from [`examples/skill-templates/`](../examples/skill-templates/TEMPLATE.md) (`bin/new-from-template <template> <skill-name> --var KEY=VALUE...`), describe one to the `create-skill` skill, or label a GitHub issue `ai-build` and let Aeon build it.
 
 ### Troubleshooting
 

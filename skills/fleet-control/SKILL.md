@@ -230,9 +230,9 @@ For each registered instance (skip `archived` from detail blocks but count them 
 - `aeon.yml` (parse enabled skills)
 - Last 5 commits (one-line `gh api repos/${REPO}/commits?per_page=5 --jq ...`)
 
-Compute the same delta block, but compare against the most recent prior `articles/fleet-status-*.md` (parse the per-instance health rows; if none exists, mark the section "no prior status to diff against").
+Compute the same delta block, but compare against the most recent prior `output/articles/fleet-status-*.md` (parse the per-instance health rows; if none exists, mark the section "no prior status to diff against").
 
-Write to `articles/fleet-status-${today}.md`:
+Write to `output/articles/fleet-status-${today}.md`:
 ```markdown
 # Fleet Status — ${today}
 
@@ -274,7 +274,7 @@ gh=ok · rate_remaining=N · registry=N instances · prior_status=<filename or "
 ```
 ### fleet-control
 - Mode: status
-- Article: articles/fleet-status-${today}.md
+- Article: output/articles/fleet-status-${today}.md
 - Verdict: <line>
 - Sizes: total=N, healthy=N, ...
 ```
@@ -285,7 +285,7 @@ gh=ok · rate_remaining=N · registry=N instances · prior_status=<filename or "
 <verdict>
 Top issue: <one line, or "none">
 Counts: healthy <H> · warning <W> · degraded <D> · stale <S> · pending <P> · unreachable <U>
-Article: articles/fleet-status-${today}.md
+Article: output/articles/fleet-status-${today}.md
 ```
 
 ---

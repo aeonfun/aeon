@@ -120,7 +120,7 @@ No new secrets. GitHub access uses the `gh` CLI (`GH_TOKEN`), which handles auth
 Writes:
 - `memory/topics/ecosystem-pulse-state.json` — per-project snapshot keyed by project name.
 - `memory/topics/ecosystem-pulse-map.json` — created from an empty template on first run if absent (never auto-populated with guessed repos).
-- `articles/ecosystem-pulse-${today}.md` — digest article on every non-error run (including QUIET).
+- `output/articles/ecosystem-pulse-${today}.md` — digest article on every non-error run (including QUIET).
 - Notification via `./notify` — only when signal warrants (see A6).
 
 ## A.Activity buckets
@@ -270,7 +270,7 @@ In `MODE=dry-run`: build the message, write the article, update state — **do n
 
 ### A7. Write article
 
-Path: `articles/ecosystem-pulse-${today}.md`. Written on every non-error run (including QUIET — the article is the always-fresh snapshot; only the notification is gated).
+Path: `output/articles/ecosystem-pulse-${today}.md`. Written on every non-error run (including QUIET — the article is the always-fresh snapshot; only the notification is gated).
 
 ```markdown
 # Ecosystem Pulse — ${today}
@@ -369,7 +369,7 @@ New entrant: Vexor
 
 Top by stars: MiroShark (★312), Powerloom (★188), GitBounty (★97)
 
-Full snapshot: articles/ecosystem-pulse-${today}.md
+Full snapshot: output/articles/ecosystem-pulse-${today}.md
 ```
 
 Drop any line whose list is empty (don't print "New releases: none" — just omit the section). On a baseline (first) run, omit the woke-up/went-quiet/new-entrant lines and lead with the snapshot.
@@ -434,7 +434,7 @@ No new secrets. GitHub via the `gh` CLI (`GH_TOKEN`). All non-GitHub URLs are re
 
 Writes:
 - `memory/topics/ecosystem-links-state.json` — per-URL snapshot keyed by the canonical (raw) URL.
-- `articles/ecosystem-links-${today}.md` — digest on every non-error run (including QUIET; the article is the durable record even when the notification is suppressed).
+- `output/articles/ecosystem-links-${today}.md` — digest on every non-error run (including QUIET; the article is the durable record even when the notification is suppressed).
 - Notification via `./notify` — only when ≥1 DEAD / newly-ARCHIVED / newly-MOVED URL has surfaced since the last run (see B7).
 
 ## B.URL extraction
@@ -593,7 +593,7 @@ Plus transitions since last run: `T_NEW_DEAD`, `T_NEW_ARCH`, `T_NEW_MOVED`, `T_R
 
 ### B6. Write the article
 
-Overwrite `articles/ecosystem-links-${today}.md`:
+Overwrite `output/articles/ecosystem-links-${today}.md`:
 
 ```markdown
 # Ecosystem Links — ${today}
@@ -662,7 +662,7 @@ Baseline (first) run:
 
 ecosystem-pulse link-health is now monitoring {N} URLs across ECOSYSTEM.md.
 Next Monday will report transitions. Snapshot in
-articles/ecosystem-links-${today}.md.
+output/articles/ecosystem-links-${today}.md.
 ```
 
 Normal run with transitions:
@@ -689,7 +689,7 @@ Moved (resolves to a different host now):
 Recovered:
 - {Project}: {url} (was {prior_bucket})
 
-Full digest: articles/ecosystem-links-${today}.md
+Full digest: output/articles/ecosystem-links-${today}.md
 ```
 
 Keep under 900 chars. If any section has more than 6 entries, list the first 6 and append "+M more (see article)" — preserves the dashboard render and the article carries the full list.
@@ -750,7 +750,7 @@ Append **one** block to `memory/logs/${today}.md` under a single `### ecosystem-
 - **[liveness] New releases (7d)**: ${NEW_RELEASE_COUNT} (${NEW_RELEASE_NAMES} or none)
 - **[liveness] Movements**: ${WOKE_COUNT} woke / ${QUIET_COUNT} went quiet / ${NEW_ENTRANT_COUNT} new entrants
 - **[liveness] Top project**: ${TOP_NAME} (★ ${TOP_STARS}) (or none)
-- **[liveness] Article**: articles/ecosystem-pulse-${today}.md (or none)
+- **[liveness] Article**: output/articles/ecosystem-pulse-${today}.md (or none)
 - **[liveness] Notification sent**: yes | no
 - **[liveness] Status**: ECOSYSTEM_PULSE_OK | ECOSYSTEM_PULSE_QUIET | ECOSYSTEM_PULSE_DRY_RUN | ECOSYSTEM_PULSE_PARTIAL | ECOSYSTEM_PULSE_NO_ECOSYSTEM_FILE | ECOSYSTEM_PULSE_STATE_CORRUPT | ECOSYSTEM_PULSE_BAD_VAR
 
@@ -758,7 +758,7 @@ Append **one** block to `memory/logs/${today}.md` under a single `### ecosystem-
 - **[link-health] OK**: ${OK_C} · **Archived**: ${ARCH_C} · **Moved**: ${MOVED_C} · **Dead**: ${DEAD_C} · **Inconclusive**: ${INC_C}
 - **[link-health] Transitions since last run**: ${T_NEW_DEAD} new dead · ${T_NEW_ARCH} new archived · ${T_NEW_MOVED} new moved · ${T_RECOVERED} recovered
 - **[link-health] Baseline run**: yes/no
-- **[link-health] Article**: articles/ecosystem-links-${today}.md
+- **[link-health] Article**: output/articles/ecosystem-links-${today}.md
 - **[link-health] Notification**: sent / skipped (gated)
 - **[link-health] Status**: ECOSYSTEM_LINKS_OK | ECOSYSTEM_LINKS_QUIET | ECOSYSTEM_LINKS_DRY_RUN | ECOSYSTEM_LINKS_NO_ECOSYSTEM_FILE | ECOSYSTEM_LINKS_NO_PROJECT_TABLE | ECOSYSTEM_LINKS_STATE_CORRUPT | ECOSYSTEM_LINKS_BAD_VAR
 ```
@@ -791,7 +791,7 @@ No prefetch/postprocess wrapper required. If `gh` is entirely unavailable (no to
 
 - `GH_TOKEN` (or `GITHUB_TOKEN` in CI) — provided by the runner; no new secret to provision. Used by both branches via `gh api`.
 
-No third-party API keys. No on-chain reads. No file writes outside `memory/`, `articles/`, and `/tmp/`.
+No third-party API keys. No on-chain reads. No file writes outside `memory/`, `output/articles/`, and `/tmp/`.
 
 # Why weekly, Monday morning
 

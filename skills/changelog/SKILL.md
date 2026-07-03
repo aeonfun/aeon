@@ -127,7 +127,7 @@ Commit message → changelog line rules:
 
 ### A.6. Assemble the article
 
-Save to `articles/changelog-${today}.md`:
+Save to `output/articles/changelog-${today}.md`:
 
 ```markdown
 # Changelog — Week of ${today}
@@ -172,7 +172,7 @@ Send one concise paragraph via `./notify`:
 
 ```
 *Changelog — Week of ${today}*
-${total_repos} repos: ${total_user_facing} user-facing changes (${breaking_count} breaking, ${added_count} added, ${fixed_count} fixed, ${security_count} security). Top: ${one_line_most_important_change}. Full: articles/changelog-${today}.md
+${total_repos} repos: ${total_user_facing} user-facing changes (${breaking_count} breaking, ${added_count} added, ${fixed_count} fixed, ${security_count} security). Top: ${one_line_most_important_change}. Full: output/articles/changelog-${today}.md
 ```
 
 If zero user-facing changes across all repos: send `CHANGELOG_QUIET — no user-facing changes across ${N} repos this week.`
@@ -348,7 +348,7 @@ Consolidate both branches under ONE `### changelog` heading in `memory/logs/${to
 - Repos: ${ok_count} ok, ${empty_count} empty, ${fail_count} fail
 - User-facing: ${breaking} breaking, ${added} added, ${changed} changed, ${fixed} fixed, ${security} security
 - Internal filtered: ${internal_count} commits, ${bot_count} bot commits
-- Article: articles/changelog-${today}.md
+- Article: output/articles/changelog-${today}.md
 - Notes: [anything surprising — e.g. big breaking change, repo with no activity, first run for a new repo]
 ```
 

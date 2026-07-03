@@ -23,7 +23,7 @@ Today is ${today}. Your task is to ship a small, self-contained prototype that s
 2. **Pick what to build (if `${var}` is empty or vague).**
 
    Scan these sources, in order, for prototype-worthy signals:
-   - `articles/` — last 7 entries by mtime: any claim, finding, or dataset that would be more useful as an interactive page?
+   - `output/articles/` — last 7 entries by mtime: any claim, finding, or dataset that would be more useful as an interactive page?
    - `memory/topics/*.md` — running narratives; pick one with a live data source (prices, feeds, markets)
    - `memory/logs/${today}.md` and the two prior days — skill outputs flagged as interesting
    - `memory/MEMORY.md` → "Next Priorities" and "Recent Articles"
@@ -31,7 +31,7 @@ Today is ${today}. Your task is to ship a small, self-contained prototype that s
    Score each candidate 1-5 on:
    - **Leverage** — does an interactive version beat the static write-up?
    - **Concreteness** — is the spec obvious in one sentence? (if no, reject)
-   - **Novelty** — haven't shipped this in the last 14 days (check `articles/prototype-*.md` by mtime and any `memory/topics/prototypes.md`)
+   - **Novelty** — haven't shipped this in the last 14 days (check `output/articles/prototype-*.md` by mtime and any `memory/topics/prototypes.md`)
 
    Pick the highest-total candidate. If no candidate reaches 9/15, skip building and exit as `DEPLOY_PROTOTYPE_EMPTY` (step 9).
 
@@ -104,7 +104,7 @@ Today is ${today}. Your task is to ship a small, self-contained prototype that s
    - Grep every file for literal `TODO`, `FIXME`, `lorem ipsum`, `placeholder`. Any hit → fix in place before proceeding.
    - If `scripts/postprocess-deploy.sh` does not exist, continue but flag `DEPLOY_PROTOTYPE_NO_POSTPROCESS` in the notify (operator needs to know deploys won't happen automatically).
 
-7. **Save the prototype record.** Write to `articles/prototype-${today}.md`. If a file with that name already exists (second run in the same day), append `-02`, `-03`, etc.
+7. **Save the prototype record.** Write to `output/articles/prototype-${today}.md`. If a file with that name already exists (second run in the same day), append `-02`, `-03`, etc.
    ```markdown
    # Prototype: <Name>
 
@@ -134,7 +134,7 @@ Today is ${today}. Your task is to ship a small, self-contained prototype that s
    ```
    | date | slug | tagline | signal_source | live_url |
    |------|------|---------|---------------|----------|
-   | 2026-04-20 | aeon-prototype-foo | ... | articles/... | _pending_ |
+   | 2026-04-20 | aeon-prototype-foo | ... | output/articles/... | _pending_ |
    ```
 
 8. **Notify.** Send via `./notify` (one of these, depending on outcome):

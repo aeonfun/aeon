@@ -35,7 +35,7 @@ Parse `${var}` once, up front:
 4. Otherwise (a bare theme like `crypto`/`payments`/`simulation`), mode = `generate` and the whole string is the theme.
 
 Then run exactly one branch:
-- **`generate`** → weekly zeitgeist × capability-surface wedge engine (writes `articles/` digest + state + appends the shared backlog).
+- **`generate`** → weekly zeitgeist × capability-surface wedge engine (writes `output/articles/` digest + state + appends the shared backlog).
 - **`validate`** → viability screen + scoring of `memory/topics/startup-ideas.md`.
 - **`memo`** → 2 evidence-backed startup memos (pain-cited, tarpit-filtered, full schema).
 
@@ -88,7 +88,7 @@ For each kept idea, write:
 - **Fit tag** — which product(s) from `memory/products.md` it rides, or `skill` / `chain` if it's a harness capability
 
 #### 5. Write + state
-- `articles/idea-forge-${today}.md`: the 3-5 sharpened ideas, ranked, each as the block above; a short "zeitgeist this week" header; a one-line "what I'd build if I could only build one."
+- `output/articles/idea-forge-${today}.md`: the 3-5 sharpened ideas, ranked, each as the block above; a short "zeitgeist this week" header; a one-line "what I'd build if I could only build one."
 - Append kept ideas to `idea-forge-state.json` (cap 60).
 - **Append to the shared backlog** `memory/topics/startup-ideas.md` so `validate` (this skill's screen mode), `idea-pipeline` (execution-gap), and `launch-radar` (market-watch) have something to consume — this is what turns generation into a pipeline. Create the file with this header if missing, then append one row per kept idea:
   ```markdown

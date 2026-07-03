@@ -96,11 +96,11 @@ Rank descending by score. Take top 5 (or fewer if <5 clear signals).
 
 ### 4. Check against recent article coverage
 
-Glob `articles/*.md`, filter to the last 14 days. For each top signal:
+Glob `output/articles/*.md`, filter to the last 14 days. For each top signal:
 - If an article covered this entity/theme in the last 7 days: suppress it (−10, effectively dropping it).
 - If covered 8–14 days ago: note "recently covered" as a caveat.
 
-Update the final ranking after suppression. (If no `articles/` dir exists, skip this step.)
+Update the final ranking after suppression. (If no `output/articles/` dir exists, skip this step.)
 
 ### 5. Develop write opportunities
 
@@ -184,7 +184,7 @@ If skipped: `NARRATIVE_CONVERGENCE_SKIP: <reason>`.
 
 ## Required Env Vars
 
-None. All reads from local `.outputs/`, `memory/`, and `articles/` dirs.
+None. All reads from local `.outputs/`, `memory/`, and `output/articles/` dirs.
 
 ## Sandbox Note
 

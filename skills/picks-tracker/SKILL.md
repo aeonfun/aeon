@@ -141,14 +141,14 @@ Send via `./notify` (inline multi-line literal — do NOT pipe or use `$(cat)`):
 
 no financial advice. just tracking the record.
 
-read it: https://github.com/aaronjmars/aeon/blob/main/articles/picks-scorecard-${today}.md
+read it: https://github.com/aaronjmars/aeon/blob/main/output/articles/picks-scorecard-${today}.md
 ```
 
 Keep the message under 3000 chars. If too long, truncate to the most recent 10 picks.
 
 ### 7. Save scorecard
 
-Write a brief scorecard to `articles/picks-scorecard-${today}.md`:
+Write a brief scorecard to `output/articles/picks-scorecard-${today}.md`:
 ```markdown
 # Picks Scorecard — [DATE]
 

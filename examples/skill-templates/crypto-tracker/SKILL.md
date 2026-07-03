@@ -32,7 +32,7 @@ Today is ${today}. Track [REPLACE: TOKEN_SYMBOL] price/volume and alert on anoma
 
 3. **Detect anomalies** — flag if `|price_change_24h| >= [REPLACE: ALERT_THRESHOLD_PCT]%` OR if 24h volume is `>= 2x` the 7-day median.
 
-4. **Write `articles/[REPLACE: SKILL_NAME]-${today}.md`** with:
+4. **Write `output/articles/[REPLACE: SKILL_NAME]-${today}.md`** with:
    - Current price, 24h change, 24h volume
    - 7-day price chart (sparkline as `▁▂▃▅▇` characters)
    - Anomaly verdict: `QUIET` / `STEADY` / `ANOMALY` (and which fired)

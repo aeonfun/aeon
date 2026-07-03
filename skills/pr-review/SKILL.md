@@ -189,7 +189,7 @@ The four compose. `pr-triage` runs once per PR open; `skill-scan` runs on demand
 No new secrets. GitHub access via `gh` CLI (`GH_TOKEN`) per CLAUDE.md.
 
 Writes:
-- `articles/pr-merge-${today}.md` — full digest with one row per open PR, sortable by bucket + age (every non-error run, including `QUIET`)
+- `output/articles/pr-merge-${today}.md` — full digest with one row per open PR, sortable by bucket + age (every non-error run, including `QUIET`)
 - `memory/topics/pr-merge-state.json` — prior-run snapshot (per-PR bucket + first_seen date + last_head_sha, used to suppress re-notification on the same head SHA)
 - `memory/logs/${today}.md` — one log block per run
 - Notification via `./notify` — only when ≥1 new PR appeared in a non-FAST_TRACK bucket since the last run, or a SKILL_BLOCK / CORE_REVIEW PR is present and operator has not been notified about it on this head SHA yet, or it's the first (baseline) run (see step 8)
@@ -250,7 +250,7 @@ Apply this rubric in order (first match wins). The rubric is conservative — wh
 
 | Bucket | Match condition | Rationale |
 |--------|-----------------|-----------|
-| **CORE_REVIEW** | Any changed path matches `bin/install-skill-pack`, `scripts/lib/skill-install.sh`, `bin/add-skill`, `bin/add-mcp`, `aeon`, `notify`, `notify-jsonrender`, `aeon.yml`, `bin/generate-skills-json`, `scripts/check-capabilities-parity.sh`, `.github/workflows/aeon.yml`, `.github/workflows/chain-runner.yml`, `chain-runner.yml`, `CLAUDE.md` | The runtime executor + the things every skill depends on. A bug here ships to every fork. |
+| **CORE_REVIEW** | Any changed path matches `bin/install-skill-pack`, `scripts/lib/skill-install.sh`, `bin/add-skill`, `bin/add-mcp`, `aeon`, `scripts/notify.sh`, `scripts/notify-jsonrender.sh`, `aeon.yml`, `bin/generate-skills-json`, `scripts/check-capabilities-parity.sh`, `.github/workflows/aeon.yml`, `.github/workflows/chain-runner.yml`, `chain-runner.yml`, `CLAUDE.md` | The runtime executor + the things every skill depends on. A bug here ships to every fork. |
 | **INFRA_REVIEW** | Any changed path matches `.github/workflows/*.yml` (excluding `aeon.yml` already in CORE_REVIEW), `.github/actions/*`, `Dockerfile*`, `package.json` at repo root, `package-lock.json` at repo root, `apps/dashboard/package.json`, `mcp-server/package.json` | Build + CI + dependency surface. Not the executor itself but adjacent enough that the operator should look. |
 | **SKILL_WARN_OR_BLOCK** | Touches any `skills/*/SKILL.md` AND `skill-scan/scan.sh` returned WARN or BLOCK on at least one of them (step 5) | A skill PR with a HIGH (BLOCK) or MEDIUM (WARN) security finding — surface explicitly. |
 | **SKILL_PASS** | Touches any `skills/*/SKILL.md` AND every scanned `SKILL.md` returned PASS | A clean skill PR. The category most likely to be safely merged once a human has read the description. |
@@ -288,7 +288,7 @@ Within each bucket, sort by `age_days DESC, then updated_age_days DESC, then num
 
 ### 7. Write the article
 
-Overwrite `articles/pr-merge-${today}.md`:
+Overwrite `output/articles/pr-merge-${today}.md`:
 
 ```markdown
 # PR Merge Queue — ${TARGET_REPO} — ${today}
@@ -379,7 +379,7 @@ CORE_REVIEW ({n}): #J ⚠️ touches aeon.yml · #K
 {If unknown_count > 0:} UNKNOWN ({n}): #L — files API failed
 
 Oldest in queue: #M (Nd, {bucket})
-Full digest: articles/pr-merge-${today}.md
+Full digest: output/articles/pr-merge-${today}.md
 ```
 
 Keep under 900 chars. Drop any bucket row whose count is zero. Drop the "oldest in queue" line if `open_count == 0`. The `⚠️ HIGH security finding` / `⚠️ touches aeon.yml` annotations are appended only to PRs the operator has not been notified about on this head SHA — repeat-rendering them would dilute the alert signal.
@@ -399,7 +399,7 @@ Append to `memory/logs/${today}.md` under the shared `### pr-review` heading wit
 - **New since last run**: G (excluding FAST_TRACK and TRUSTED_AUTHOR)
 - **Oldest open PR**: #N (Mt days, bucket={bucket})
 - **Scan results**: PASS=P · WARN=W · BLOCK=B · scan_error=E
-- **Article**: articles/pr-merge-${today}.md
+- **Article**: output/articles/pr-merge-${today}.md
 - **Notification**: sent / skipped (gated)
 - **Status**: PR_MERGE_QUEUE_OK
 ```
@@ -437,4 +437,4 @@ Append to `memory/logs/${today}.md` under the shared `### pr-review` heading wit
 - **REVIEW branch**: if `gh` fails at the repo level, log the error and continue to the next repo. As a last-resort fallback, use **WebFetch** on the raw PR URL to read the diff.
 - **SURVEY branch**: the `pulls` list endpoint is the floor (see step 2) — on failure, one-line failure notify + exit `API_FAIL`. A single PR's files-endpoint failure degrades that PR to `UNKNOWN` but keeps it in the digest.
 
-No third-party API keys. No on-chain reads. No file writes outside `memory/`, `articles/`, and `/tmp/`.
+No third-party API keys. No on-chain reads. No file writes outside `memory/`, `output/articles/`, and `/tmp/`.

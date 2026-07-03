@@ -74,7 +74,7 @@ Each entry is a post (@handle, text, date, builder/project note, engagement, lin
 One concrete line each, in the operator's voice, e.g. "DM @x — they forked your repo + shipped an extension, invite to the community"; "reply to the HN thread, drop your product link"; "open an issue offer: we'll write the integration if they host". Keep it to a verb + who + why now.
 
 ### 5. Write + state
-- `articles/bd-radar-${today}.md`: ranked lead table (class · who · signal · fit · suggested move). Cap the digest at the top **10** leads; note total found.
+- `output/articles/bd-radar-${today}.md`: ranked lead table (class · who · signal · fit · suggested move). Cap the digest at the top **10** leads; note total found.
 - Append new lead keys to `surfaced` (LRU 300). Persist full lead objects under `leads` (cap 200).
 - `memory/logs/${today}.md`: `### bd-radar` block — counts by class, top 3 leads.
 

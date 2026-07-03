@@ -31,7 +31,7 @@ Today is ${today}. Build a digest of the [REPLACE: MAX_ITEMS] most interesting n
 
    Drop anything obviously off-topic (the `${var}` or `[REPLACE: TOPIC]` keyword should appear somewhere in title or summary).
 
-4. **Pick the top [REPLACE: MAX_ITEMS]** — write `articles/[REPLACE: SKILL_NAME]-${today}.md` with one entry each:
+4. **Pick the top [REPLACE: MAX_ITEMS]** — write `output/articles/[REPLACE: SKILL_NAME]-${today}.md` with one entry each:
    ```markdown
    ### [Title](url)
    *[Source · published date]*
@@ -44,7 +44,7 @@ Today is ${today}. Build a digest of the [REPLACE: MAX_ITEMS] most interesting n
 
    [N] picks. Top item: [shortened title].
 
-   Full digest: https://github.com/${GITHUB_REPOSITORY}/blob/main/articles/[REPLACE: SKILL_NAME]-${today}.md
+   Full digest: https://github.com/${GITHUB_REPOSITORY}/blob/main/output/articles/[REPLACE: SKILL_NAME]-${today}.md
    ```
 
 6. **Log** — append to `memory/logs/${today}.md`:

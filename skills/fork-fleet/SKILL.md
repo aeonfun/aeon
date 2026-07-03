@@ -120,7 +120,7 @@ From the `files` array, tag each fork:
 - **Custom schedule**: any change to `aeon.yml`
 - **Modified dashboard**: any change under `apps/dashboard/`
 - **Custom notify**: change to `notify` or `notify-jsonrender`
-- **New content**: additions under `articles/` or `memory/topics/`
+- **New content**: additions under `output/articles/` or `memory/topics/`
 - **Config changes**: changes to `CLAUDE.md`, `.github/`, `bin/`, or root `scripts/`
 - **Workflow changes**: changes under `.github/workflows/`
 
@@ -483,7 +483,7 @@ ${"First divergence snapshot — no comparison" OR list of NEW_FLIP / STRENGTHEN
 
 ### R1. Write the combined article
 
-To `articles/fork-divergence-${today}.md`. Header first, then whichever parts ran:
+To `output/articles/fork-divergence-${today}.md`. Header first, then whichever parts ran:
 
 ```markdown
 # Fork Divergence — ${today}
@@ -550,7 +550,7 @@ Model consensus:
 {If config delta NEW_FORK_ONLY non-empty:}
 New fork-only skills: {comma-separated owner/skill, capped at 3}
 
-Full report: https://github.com/${GITHUB_REPOSITORY}/blob/main/articles/fork-divergence-${today}.md
+Full report: https://github.com/${GITHUB_REPOSITORY}/blob/main/output/articles/fork-divergence-${today}.md
 ```
 
 Use `$GITHUB_REPOSITORY` for the URL (the article lives in this running instance's repo, not the target repo).
@@ -577,7 +577,7 @@ Append to `memory/logs/${today}.md` under **one** heading. Include a discriminat
 - DEFAULT_FLIP_ENABLE: N · DEFAULT_FLIP_DISABLE: N · MODEL_CONSENSUS: N · VAR_HOTSPOT: N · EMERGING: N
 - Fork-only skills: N · Heaviest customizer: {fork} ({N} overrides)
 
-- Article: articles/fork-divergence-${today}.md
+- Article: output/articles/fork-divergence-${today}.md
 - Notification sent: yes/no
 ```
 

@@ -46,7 +46,7 @@ Improve the agent itself based on recent performance. **ONE change per run.**
      - Notifications that didn't send or were truncated
      - Memory consolidation problems
    - Read `memory/cron-state.json` for skills with low success rates
-   - Read `articles/repo-actions-*.md` from last 7 days for self-improvement ideas
+   - Read `output/articles/repo-actions-*.md` from last 7 days for self-improvement ideas
    - Pick the **highest-impact, smallest-effort** fix. One change per run.
 
 3. **Understand the area you're fixing.** Read the relevant files:
@@ -122,7 +122,7 @@ Audit what the agent did, what failed, and what to improve. Produce a full revie
 Read `memory/MEMORY.md` for context and goals. Read ALL `memory/logs/` entries from the last 7 days.
 
 1. **Audit quality of outputs:**
-   - Read recent articles in `articles/` — are they substantive or formulaic?
+   - Read recent articles in `output/articles/` — are they substantive or formulaic?
    - Check recent notifications in logs — were they useful or noisy?
    - Review any PR comments posted — were they actionable?
 2. **Audit reliability:**
@@ -138,7 +138,7 @@ Read `memory/MEMORY.md` for context and goals. Read ALL `memory/logs/` entries f
    - Schedule adjustments
    - Config changes (feeds, repos, addresses to add/remove)
    - Quality improvements (better prompts, new data sources)
-5. **Save the full review** to `articles/self-review-${today}.md`.
+5. **Save the full review** to `output/articles/self-review-${today}.md`.
 6. **Apply any safe, obvious improvements directly:**
    - Prune stale `MEMORY.md` entries
    - Update `feeds.yml` if feeds are dead
@@ -173,7 +173,7 @@ Then, for **improve** mode:
 
 For **audit** mode:
 ```
-- **Review:** articles/self-review-${today}.md
+- **Review:** output/articles/self-review-${today}.md
 - **Quality:** [assessment]
 - **Reliability:** [X/Y skills ran]
 - **Actions taken:** [what was fixed directly]
@@ -182,4 +182,4 @@ For **audit** mode:
 
 ## Sandbox note
 
-Write mode. Both branches touch the repo (improve opens a PR via `git`/`gh`; audit writes `articles/self-review-${today}.md` and may prune `MEMORY.md`/`feeds.yml`). For the GitHub API, use the `gh` CLI (`gh pr list`, `gh pr create`) — it handles auth internally and works from the sandbox where secret-bearing `curl` calls are blocked. No pre-fetch or post-process side-channel is needed.
+Write mode. Both branches touch the repo (improve opens a PR via `git`/`gh`; audit writes `output/articles/self-review-${today}.md` and may prune `MEMORY.md`/`feeds.yml`). For the GitHub API, use the `gh` CLI (`gh pr list`, `gh pr create`) — it handles auth internally and works from the sandbox where secret-bearing `curl` calls are blocked. No pre-fetch or post-process side-channel is needed.

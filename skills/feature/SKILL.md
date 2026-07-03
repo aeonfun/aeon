@@ -100,7 +100,7 @@ A failure on one repo must NOT stop the others — catch the failure, log it, co
 In this priority order:
 
 a. **If `${var}` is `watched:<feature-spec>` AND this is the first repo**, build that.
-b. **Check yesterday's `repo-actions` output** in `articles/repo-actions-*.md` (most recent file) for ideas scoped to THIS repo. Pick the highest-impact idea that's autonomously implementable.
+b. **Check yesterday's `repo-actions` output** in `output/articles/repo-actions-*.md` (most recent file) for ideas scoped to THIS repo. Pick the highest-impact idea that's autonomously implementable.
 c. **Check open GitHub issues labelled `ai-build`** on this repo:
    ```bash
    gh issue list -R owner/repo --label ai-build --state open

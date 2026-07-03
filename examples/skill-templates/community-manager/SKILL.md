@@ -41,7 +41,7 @@ If the secrets for `[REPLACE: CHANNEL_PLATFORM]` aren't set, log `COMMUNITY_NO_T
 
 5. **Detect open questions** — scan all parent-level messages. If a message ends with `?` and has zero replies after 6 hours, mark it as `OPEN_QUESTION`. List them separately so the operator can chase.
 
-6. **Write `articles/[REPLACE: SKILL_NAME]-${today}.md`**:
+6. **Write `output/articles/[REPLACE: SKILL_NAME]-${today}.md`**:
    ```markdown
    # [REPLACE: CHANNEL_NAME] — ${today}
 

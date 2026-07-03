@@ -40,7 +40,7 @@ A single long-form article. It takes one of two structures depending on the topi
 
 - If `arg` (the topic) is set, use it verbatim. If it clearly names a single mechanism/technique/system → **technical explainer** structure; otherwise → **general article** structure.
 - If `arg` is empty, pick deterministically — first hit wins:
-  1. **Explainer candidate:** a single most non-obvious mechanism inside the newest file in `articles/` from the last 3 days; else the newest "Paper Pick" in `memory/logs/` from the last 7 days (its headline mechanism); else a specific technique/algorithm/system surfaced in the last 7 days of logs. If a strong single-mechanism candidate exists → **technical explainer** on it. Reject any candidate broader than a single mechanism (e.g. "AI agents" — too vague; "MCP tool-routing via vector search" — usable).
+  1. **Explainer candidate:** a single most non-obvious mechanism inside the newest file in `output/articles/` from the last 3 days; else the newest "Paper Pick" in `memory/logs/` from the last 7 days (its headline mechanism); else a specific technique/algorithm/system surfaced in the last 7 days of logs. If a strong single-mechanism candidate exists → **technical explainer** on it. Reject any candidate broader than a single mechanism (e.g. "AI agents" — too vague; "MCP tool-routing via vector search" — usable).
   2. **General candidate:** otherwise search the web for the most interesting recent development in AI, crypto/DeFi, or consciousness research — pick whichever has the most compelling story today (WebSearch) → **general article**.
 
 ### Voice (technical explainer)
@@ -112,8 +112,8 @@ A numbered walkthrough of the mechanism in **3-7 steps**. Each step is one or tw
 
 ### Save & notify (standard)
 
-- **General article:** save to `articles/${today}.md`.
-- **Technical explainer:** save to `articles/explainer-${today}.md`. If a hero image was generated (see Visual add-on), put it at the very top: `![hero](../images/explainer-${today}.<ext>)` — relative path, skip the line if no image — and add an HTML comment with the image prompt used (for future audits).
+- **General article:** save to `output/articles/${today}.md`.
+- **Technical explainer:** save to `output/articles/explainer-${today}.md`. If a hero image was generated (see Visual add-on), put it at the very top: `![hero](../images/explainer-${today}.<ext>)` — relative path, skip the line if no image — and add an HTML comment with the image prompt used (for future audits).
 
 Update `memory/MEMORY.md` to record the article and its topic (add to the `Recent Articles` list/table). Append the consolidated log entry (see **Log**), then notify via `./notify`:
 
@@ -121,7 +121,7 @@ Update `memory/MEMORY.md` to record the article and its topic (add to the `Recen
   ```
   New article written: [title]
 
-  https://github.com/${GITHUB_REPOSITORY}/blob/main/articles/${today}.md
+  https://github.com/${GITHUB_REPOSITORY}/blob/main/output/articles/${today}.md
   ```
   Use the `$GITHUB_REPOSITORY` env var (GitHub Actions sets it to `owner/repo` of the running instance).
 
@@ -133,7 +133,7 @@ Update `memory/MEMORY.md` to record the article and its topic (add to the `Recen
 
   [hero image URL if generated — original Replicate URL still works for ~24h]
 
-  read it: articles/explainer-${today}.md
+  read it: output/articles/explainer-${today}.md
   ```
 
 ---
@@ -248,7 +248,7 @@ If any item still fails after one rewrite pass, publish with status `REPO_ARTICL
 
 ### Phase 5 — Save, log, notify (repo)
 
-1. Save the article to `articles/repo-article-${today}.md`. (If a hero image was generated via the Visual add-on, put `![hero](../images/repo-article-${today}.<ext>)` at the top.)
+1. Save the article to `output/articles/repo-article-${today}.md`. (If a hero image was generated via the Visual add-on, put `![hero](../images/repo-article-${today}.<ext>)` at the top.)
 2. Append the consolidated log entry (see **Log**) **before** notifying.
 3. Update the `Recent Articles` table in `memory/MEMORY.md` (Date | Title | Topic).
 4. Notify via `./notify`:
@@ -257,7 +257,7 @@ If any item still fails after one rewrite pass, publish with status `REPO_ARTICL
 
    Thesis: [one sentence]
 
-   Read: [link to articles/repo-article-${today}.md in THIS repo — get the repo name from `git remote get-url origin`, not the watched repo]
+   Read: [link to output/articles/repo-article-${today}.md in THIS repo — get the repo name from `git remote get-url origin`, not the watched repo]
    ```
 
 ### Banned phrase lexicon (repo angle)
@@ -305,8 +305,8 @@ Read before deciding anything: `memory/MEMORY.md`, the last 7 days of `memory/lo
 ### Phase 1 — Context
 
 Read before deciding anything:
-- Last 14 days of `articles/project-lens-*.md` and `memory/project-lens-angles.md` — know which angle categories and theses are exhausted.
-- 2–3 most recent `articles/repo-article-*.md` and `articles/push-recap-*.md` — know what shipped lately.
+- Last 14 days of `output/articles/project-lens-*.md` and `memory/project-lens-angles.md` — know which angle categories and theses are exhausted.
+- 2–3 most recent `output/articles/repo-article-*.md` and `output/articles/push-recap-*.md` — know what shipped lately.
 - Repo state: `gh api repos/{owner}/{repo} --jq '{name, description, stargazers_count, forks_count, open_issues_count, updated_at}'`. If unreachable, continue with memory only and log the gap.
 
 If `memory/watched-repos.md` is empty or missing, abort and notify: "project-lens: no watched repo configured."
@@ -341,7 +341,7 @@ If `memory/watched-repos.md` is empty or missing, abort and notify: "project-len
 - Log every URL consulted
 
 **Project side — required minimums:**
-- 2+ recent articles in `articles/` read end-to-end
+- 2+ recent articles in `output/articles/` read end-to-end
 - `gh api repos/{owner}/{repo}/commits --jq '.[0:10] | .[] | {sha: .sha[0:7], msg: (.commit.message|split("\n")[0])}'` — last 10 commits
 - ≥3 specific project references you plan to use: named features, file paths, commit hashes, architectural choices. **Not** vague claims like "the project uses AI" or "it has good UX."
 
@@ -361,7 +361,7 @@ Rules:
 
 ### Phase 5 — Draft (700–1000 words)
 
-Save to `articles/project-lens-${today}.md` with this structure:
+Save to `output/articles/project-lens-${today}.md` with this structure:
 ```markdown
 # [Title: leads with the lens, works for a reader who doesn't know the project]
 
@@ -407,7 +407,7 @@ Go through this checklist after the first draft. If any gate fails, rewrite the 
 
 ### Phase 7 — Output (lens)
 
-1. **Save** `articles/project-lens-${today}.md`. (If a hero image was generated via the Visual add-on, put `![hero](../images/project-lens-${today}.<ext>)` at the top.)
+1. **Save** `output/articles/project-lens-${today}.md`. (If a hero image was generated via the Visual add-on, put `![hero](../images/project-lens-${today}.<ext>)` at the top.)
 2. **Append** to `memory/project-lens-angles.md` (create if missing):
    ```markdown
    ## ${today}
@@ -422,7 +422,7 @@ Go through this checklist after the first draft. If any gate fails, rewrite the 
 
    [3-4 sentence summary: the external thing the article connects to, the thesis claim, one specific project detail.]
 
-   Read: [URL to articles/project-lens-${today}.md — use `git remote get-url origin` for this repo]
+   Read: [URL to output/articles/project-lens-${today}.md — use `git remote get-url origin` for this repo]
    ```
 4. **Log** the consolidated entry (see **Log**).
 
@@ -478,7 +478,7 @@ Runs **only when `visual = true`**, after the article body is written and saved,
    IMAGE_URL=<extracted from response.output>
    EXT=$(echo "$IMAGE_URL" | grep -oE '\.(jpg|jpeg|png|webp)' | tail -1)
    EXT="${EXT:-.jpg}"
-   LOCAL_PATH="images/${IMG_BASENAME}${EXT}"
+   LOCAL_PATH="output/images/${IMG_BASENAME}${EXT}"
    curl -sL "$IMAGE_URL" -o "$LOCAL_PATH" \
      || (echo "curl failed — retry via WebFetch or skip"; exit 0)
    ```
@@ -507,7 +507,7 @@ Append **one** entry under a single `### article` heading in `memory/logs/${toda
 - Image: generated | fallback-model | skipped (<reason>) | n/a
 - Image prompt: [prompt used, or "n/a"]
 - Primary source: [URL]            (technical-explainer only)
-- File: articles/${today}.md | articles/explainer-${today}.md
+- File: output/articles/${today}.md | output/articles/explainer-${today}.md
 - Notification sent: yes | no
 ```
 
@@ -540,7 +540,7 @@ Log **always — even on partial failure** (e.g. IMAGE_SKIPPED, REPO_ARTICLE_SKI
 
 The sandbox may block outbound curl. Use **WebFetch** as a fallback for any URL fetch. For auth-required APIs, use the pre-fetch/post-process pattern (see CLAUDE.md). `gh api` handles GitHub auth internally — prefer it over raw curl for repo metadata.
 
-For the Replicate call (auth-required via env var), if the inline curl fails, write the request payload to `.pending-replicate/explainer-${today}.json` and rely on the post-process pattern documented in `CLAUDE.md` (`scripts/postprocess-replicate.sh` runs after Claude finishes with full env access). Continue down the no-image path so the article still ships. The deferred JSON uses the flat shape `scripts/postprocess-replicate.sh` reads: `{ "prompt": "...", "aspect_ratio": "16:9", "output_path": "images/${IMG_BASENAME}.jpg", "model": "google/nano-banana-pro" }`.
+For the Replicate call (auth-required via env var), if the inline curl fails, write the request payload to `.pending-replicate/explainer-${today}.json` and rely on the post-process pattern documented in `CLAUDE.md` (`scripts/postprocess-replicate.sh` runs after Claude finishes with full env access). Continue down the no-image path so the article still ships. The deferred JSON uses the flat shape `scripts/postprocess-replicate.sh` reads: `{ "prompt": "...", "aspect_ratio": "16:9", "output_path": "output/images/${IMG_BASENAME}.jpg", "model": "google/nano-banana-pro" }`.
 
 ## Environment Variables
 - `REPLICATE_API_TOKEN` — Replicate API key, used only by the `--visual` add-on. Optional: article text ships without it via the no-image path.

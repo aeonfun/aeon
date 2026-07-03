@@ -116,7 +116,7 @@ Sort descending. Pick top 3. For each pick, in step 7's `Why now:` line, name th
 
 ### 7. Format and write the report
 
-Write to `articles/idea-pipeline-${today}.md`:
+Write to `output/articles/idea-pipeline-${today}.md`:
 
 ```markdown
 # Idea Pipeline — ${today}

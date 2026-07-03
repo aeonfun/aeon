@@ -212,11 +212,11 @@ Pure local file I/O — no `gh api`, no curl. Reads the star-count history that 
 
 **Data sources (reads):**
 - `memory/logs/YYYY-MM-DD.md` for the last 14 days — extract every `- **owner/repo**: stargazers_count=N` line. `repo-pulse` writes these under its `## Repo Pulse` blocks (`stargazers_count=N, forks_count=M`); this skill's own Phase A log line (`- **owner/repo**: stargazers_count=N, milestone=M, shape=$SHAPE`) matches the same pattern, so on days repo-pulse didn't run, the crossing phase still self-feeds a data point into this series.
-- Optional fallback: `articles/repo-pulse-*.md` if any fork writes them — same regex applies. Logs are the source of truth on the canonical instance.
+- Optional fallback: `output/articles/repo-pulse-*.md` if any fork writes them — same regex applies. Logs are the source of truth on the canonical instance.
 - `memory/topics/star-momentum-state.json` — prior-run dedup state (created in the preamble if absent).
 
 **Writes:**
-- `articles/star-momentum-${today}.md` — the per-repo projection report (always written, even when no alert fires; also written under `DRY_RUN`).
+- `output/articles/star-momentum-${today}.md` — the per-repo projection report (always written, even when no alert fires; also written under `DRY_RUN`).
 - `memory/topics/star-momentum-state.json` — last-alert timestamp per `(repo, target_milestone)` pair (skipped under `DRY_RUN`).
 - the consolidated log block (Log section).
 
@@ -292,7 +292,7 @@ If all gates pass: verdict `ALERT`. Promote this repo into the momentum notify l
 
 ### B6. Build the article (always — even when zero alerts fire)
 
-Path: `articles/star-momentum-${today}.md`. Overwrite if exists.
+Path: `output/articles/star-momentum-${today}.md`. Overwrite if exists.
 
 ```markdown
 # Star Momentum — ${today}
@@ -369,7 +369,7 @@ ${projected_date_v7} is a ${day_of_week_v7} — inside the Show HN dispatch wind
 
 Suggested action: dispatch \`product-hunt:showhn\` 24-48 hours before ${projected_date_v7} so the post is ready when the milestone lands.
 
-Article: articles/star-momentum-${today}.md
+Article: output/articles/star-momentum-${today}.md
 ```
 
 Cap each message at ~2500 chars. Notifications fan out via `./notify` (Telegram/Discord/Slack — whichever are configured).
@@ -426,7 +426,7 @@ Phase B — momentum:
 - **owner/repo**: ${verdict} — ${current_stars}⭐ → ${target}⭐ in ~${eta}d (${projected_date_v7}, ${day_of_week_v7})
 - **Velocity (log-series)**: v7=$N/day, v3=$N/day, gap=$N
 - **Alerts sent**: ${alert_count}
-- **Article**: articles/star-momentum-${today}.md
+- **Article**: output/articles/star-momentum-${today}.md
 - **Momentum notification sent**: yes — N alerts | no — STAR_MOMENTUM_NO_ALERTS | no — dry-run
 - **Status**: STAR_MOMENTUM_OK | STAR_MOMENTUM_NO_ALERTS | STAR_MOMENTUM_DRY_RUN | STAR_MOMENTUM_NO_REPOS | STAR_MOMENTUM_BAD_VAR | STAR_MOMENTUM_BAD_TARGET
 ```
@@ -461,7 +461,7 @@ Phase B — momentum:
 ## Sandbox note
 
 - **Phase A** uses `gh api` and `gh workflow run`, which handle auth via the workflow's `GITHUB_TOKEN` — no env-var curl workaround needed. The stargazer pagination call is the only network-heavy step; if it fails, fall through to `UNKNOWN` shape rather than aborting. Auto-dispatch (A7) uses the gh CLI's internal auth — no separate token plumbing.
-- **Phase B** is pure local file I/O — no curl, no `gh api`, no env-var-in-headers, no prefetch script. Every read is a directory listing, file-existence check, or grep over `memory/logs/`. Every write goes to `articles/`, `memory/topics/`, or `memory/logs/`. Works in the GitHub Actions sandbox without any network workarounds.
+- **Phase B** is pure local file I/O — no curl, no `gh api`, no env-var-in-headers, no prefetch script. Every read is a directory listing, file-existence check, or grep over `memory/logs/`. Every write goes to `output/articles/`, `memory/topics/`, or `memory/logs/`. Works in the GitHub Actions sandbox without any network workarounds.
 - `./notify` fans out to every configured channel and is already sandbox-safe (postprocess-notify pattern).
 
 ## Constraints

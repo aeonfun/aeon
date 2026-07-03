@@ -406,9 +406,10 @@ jobs:
           mkdir -p .pending-notify
           : > .notify-sent-hashes
 
-          # notify is the committed scripts/notify.sh (testable; see scripts/tests/).
+          # notify / notify-jsonrender are the committed scripts/*.sh (testable; see scripts/tests/).
           cp scripts/notify.sh ./notify
-          chmod +x ./notify
+          cp scripts/notify-jsonrender.sh ./notify-jsonrender
+          chmod +x ./notify ./notify-jsonrender
 
           # Capability tier (hardening §6): the toolset is resolved per-skill from
           # scripts/skill_mode.sh. Default is `write` (backward compatible — a superset
@@ -974,14 +975,14 @@ jobs:
           # read-only skills (mode: read-only) get no Write/Edit/git/gh, so they can't
           # mutate the repo. Two jobs here: (1) record the run-log entry on their behalf
           # (they couldn't), (2) revert any code/config that slipped through a shell
-          # redirection. State/memory/outputs/articles are preserved for the commit step.
+          # redirection. State/memory, .outputs/ and output/ are preserved for the commit step.
           SKILL="${{ steps.skill.outputs.name }}"
           TODAY=$(date -u +%Y-%m-%d)
           mkdir -p memory/logs
           printf '\n## %s (read-only)\nRan %s UTC.\n' "$SKILL" "$(date -u +%FT%TZ)" >> "memory/logs/${TODAY}.md"
-          CODE_PATHS="skills .github apps/mcp-server apps/webhook apps/dashboard/app apps/dashboard/lib apps/dashboard/components scripts skill-templates examples/workflow-templates docs catalog bin *.md *.json *.yml aeon notify-jsonrender"
+          CODE_PATHS="skills .github apps/mcp-server apps/webhook apps/dashboard/app apps/dashboard/lib apps/dashboard/components scripts examples docs catalog bin *.md *.json *.yml aeon"
           git checkout -- $CODE_PATHS 2>/dev/null || true
-          git clean -fd -- skills scripts skill-templates examples/workflow-templates .github bin catalog 2>/dev/null || true
+          git clean -fd -- skills scripts examples .github bin catalog 2>/dev/null || true
           echo "read-only guard: logged run + reverted code/config writes for $SKILL"
 
       - name: Commit results
@@ -991,7 +992,7 @@ jobs:
         run: |
           git config user.name "aeonframework"
           git config user.email "aeonframework@proton.me"
-          rm -f ./notify .notify-sent-hashes  # Remove generated notify script + dedup log before committing
+          rm -f ./notify ./notify-jsonrender .notify-sent-hashes  # Remove generated notify scripts + dedup log before committing
 
           # Issues-as-state (hardening §3): cron-state.json was materialized from the
           # pinned Issue for this run's readers — it's a projection, not source of truth.
@@ -1037,7 +1038,7 @@ jobs:
                 CONFLICTED=$(git diff --name-only --diff-filter=U) || true
                 [ -z "$CONFLICTED" ] && break
                 for f in $CONFLICTED; do
-                  if [[ "$f" == memory/logs/* ]] || [[ "$f" == memory/topics/* ]] || [[ "$f" == memory/MEMORY.md ]] || [[ "$f" == memory/skill-health/* ]] || [[ "$f" == apps/dashboard/outputs/* ]] || [[ "$f" == .outputs/* ]]; then
+                  if [[ "$f" == memory/logs/* ]] || [[ "$f" == memory/topics/* ]] || [[ "$f" == memory/MEMORY.md ]] || [[ "$f" == memory/skill-health/* ]] || [[ "$f" == apps/dashboard/outputs/* ]] || [[ "$f" == .outputs/* ]] || [[ "$f" == output/* ]]; then
                     sed -i '/^<<<<<<< /d; /^=======/d; /^>>>>>>> /d' "$f"
                     git add "$f"
                   else

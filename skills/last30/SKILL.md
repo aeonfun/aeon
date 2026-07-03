@@ -220,7 +220,7 @@ After writing the report, overwrite `memory/topics/last30-${TOPIC_SLUG}.md` with
 
 ### 9. Write the report
 
-Save to `articles/last30-${TOPIC_SLUG}-${TODAY}.md`.
+Save to `output/articles/last30-${TOPIC_SLUG}-${TODAY}.md`.
 
 ```markdown
 # Last 30 Days: ${topic}
@@ -312,7 +312,7 @@ Append to `memory/logs/${TODAY}.md`:
 - Platforms with data: ${platform_count}
 - Narratives: ${narrative_count}
 - Prior snapshot: ${has_prior ? "yes (" + prior_date + ")" : "cold run, baseline written"}
-- Output: articles/last30-${TOPIC_SLUG}-${TODAY}.md
+- Output: output/articles/last30-${TOPIC_SLUG}-${TODAY}.md
 ```
 
 Send via `./notify`:
@@ -328,7 +328,7 @@ Sentiment split: ${narrative_1_sentiment_summary}
 
 ${what_changed_oneline_or_blank}
 
-Report: articles/last30-${TOPIC_SLUG}-${TODAY}.md
+Report: output/articles/last30-${TOPIC_SLUG}-${TODAY}.md
 ```
 
 For `LAST30_EMPTY` or `LAST30_ERROR`, skip the verdict/narrative lines and instead list which source layers failed and why (e.g. `x=missing-prefetch, reddit=rate-limit-retry-failed`).

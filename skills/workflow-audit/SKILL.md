@@ -109,7 +109,7 @@ The fingerprint is the key for delta classification — keep it stable across ru
 
 Find the most recent prior report:
 ```bash
-PRIOR=$(ls -1 articles/workflow-audit-*.md 2>/dev/null | sort | tail -1)
+PRIOR=$(ls -1 output/articles/workflow-audit-*.md 2>/dev/null | sort | tail -1)
 ```
 
 If `$PRIOR` exists, extract its fingerprints from a machine-readable trailer (see step 6 format). Then label each current finding:
@@ -139,7 +139,7 @@ Compute a one-line verdict from the delta:
 
 ### 6. Write the audit report
 
-Path: `articles/workflow-audit-${today}.md` (if the file already exists from an earlier run today, overwrite it — the latest audit of the day is authoritative).
+Path: `output/articles/workflow-audit-${today}.md` (if the file already exists from an earlier run today, overwrite it — the latest audit of the day is authoritative).
 
 Format:
 
@@ -277,13 +277,13 @@ else
   git checkout -b "$BRANCH"
 fi
 
-git add .github/workflows/ .github/actions/ articles/workflow-audit-${today}.md
+git add .github/workflows/ .github/actions/ output/articles/workflow-audit-${today}.md
 git commit -m "fix(security): workflow audit ${today} — ${exit_mode}
 
 Auto-fixed: ${fixed_count} finding(s)
 Manual review: ${manual_count} finding(s)
 Regressions: ${reintroduced_count}
-Report: articles/workflow-audit-${today}.md"
+Report: output/articles/workflow-audit-${today}.md"
 
 git push -u origin "$BRANCH"
 
@@ -305,14 +305,14 @@ ${VERDICT_LINE}
 ${top_3_chain_titles}
 
 ## Full report
-articles/workflow-audit-${today}.md
+output/articles/workflow-audit-${today}.md
 
 ## Source status
 zizmor: ${ok|fail} · actionlint: ${ok|fail} · hand-rolled: ${ok|fail}
 EOF
 )
 else
-  gh pr comment "$EXISTING" --body "Re-ran ${today}: ${VERDICT_LINE}. Auto-fixed ${fixed_count} new finding(s). See articles/workflow-audit-${today}.md."
+  gh pr comment "$EXISTING" --body "Re-ran ${today}: ${VERDICT_LINE}. Auto-fixed ${fixed_count} new finding(s). See output/articles/workflow-audit-${today}.md."
 fi
 ```
 
@@ -347,7 +347,7 @@ Append to `memory/logs/${today}.md`:
 - Delta: ${new_count} new, ${reintroduced_count} reintroduced, ${unchanged_count} unchanged, ${resolved_count} resolved
 - Auto-fixed: ${fixed_count}
 - PR: ${pr_url or "(none — no delta)"}
-- Report: articles/workflow-audit-${today}.md
+- Report: output/articles/workflow-audit-${today}.md
 - Source status: zizmor=${ok|fail} actionlint=${ok|fail} hand-rolled=${ok|fail}
 ```
 

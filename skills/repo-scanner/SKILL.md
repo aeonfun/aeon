@@ -17,7 +17,7 @@ tags: [dev, meta, social, ecosystem]
 Today is ${today}. This is the unified repo-intelligence skill. It has three facets that share one data spine (`memory/topics/repos.md`, `memory/watched-repos.md`) and one dispatcher:
 
 - **Branch A — Catalog scan** (was `repo-scanner`): catalog all repos under an owner into a prioritized fleet report with a fixed opportunity taxonomy. Writes `memory/topics/repos.md` + `memory/watched-repos.md`. This is the spine every other repo skill (`external-feature`/`feature`, `pr-review`, `code-health`, `repo-pulse`, `vercel-projects`) consumes.
-- **Branch B — Action ideas** (was `repo-actions`): generate 5 anchored, implementable action ideas for the top watched repo, specificity-gated and priority-ranked with a Top-Pick verdict. Writes `articles/repo-actions-${TODAY}.md` — **read directly by the `feature` skill** (which declares `depends_on: [repo-scanner]`) and `self-improve`; this path is a hard contract, do not change it.
+- **Branch B — Action ideas** (was `repo-actions`): generate 5 anchored, implementable action ideas for the top watched repo, specificity-gated and priority-ranked with a Top-Pick verdict. Writes `output/articles/repo-actions-${TODAY}.md` — **read directly by the `feature` skill** (which declares `depends_on: [repo-scanner]`) and `self-improve`; this path is a hard contract, do not change it.
 - **Branch C — Builder map** (was `builder-map`): weekly sweep of who's building on top of the watched repos — active forks, third-party ecosystem repos, public builder announcements. Writes `memory/topics/ecosystem.md` — read by `idea-pipeline` and `narrative-convergence`.
 
 ## Why this shape
@@ -342,7 +342,7 @@ Record results; code search may be rate-limited separately (source-status `code_
 ```bash
 TODAY=$(date -u +%Y-%m-%d)
 # Ideas suggested in the last 14 days — do not repeat
-ls articles/repo-actions-*.md 2>/dev/null | sort -r | head -14 | xargs -r grep -h '^### [0-9]\+\.' 2>/dev/null | sed 's/^### [0-9]\+\. //' > /tmp/repo-actions-recent-ideas.txt
+ls output/articles/repo-actions-*.md 2>/dev/null | sort -r | head -14 | xargs -r grep -h '^### [0-9]\+\.' 2>/dev/null | sed 's/^### [0-9]\+\. //' > /tmp/repo-actions-recent-ideas.txt
 # Things already shipped/closed in the repo in last 30 days — do not re-propose
 jq -r '.data.repository.closedIssues.nodes[].title, .data.repository.mergedPRs.nodes[].title' /tmp/repo-actions-state.json 2>/dev/null >> /tmp/repo-actions-recent-ideas.txt
 ```
@@ -461,9 +461,9 @@ Structure:
 **Carried over from prior runs:** [titles of yesterday's top-pick if not yet merged/closed, else "—"]
 ```
 
-Write to `articles/repo-actions-${TODAY}.md`. If the file already exists and the repo's `pushedAt` hasn't advanced since the last run, exit `REPO_ACTIONS_NO_CHANGE` silently (no notify, no commit, log only). Otherwise overwrite.
+Write to `output/articles/repo-actions-${TODAY}.md`. If the file already exists and the repo's `pushedAt` hasn't advanced since the last run, exit `REPO_ACTIONS_NO_CHANGE` silently (no notify, no commit, log only). Otherwise overwrite.
 
-> **Contract:** the `articles/repo-actions-${TODAY}.md` path is read by the `feature` skill (`depends_on: [repo-scanner]`) and `self-improve`. Do not rename it.
+> **Contract:** the `output/articles/repo-actions-${TODAY}.md` path is read by the `feature` skill (`depends_on: [repo-scanner]`) and `self-improve`. Do not rename it.
 
 ### B9. Notify (Branch B)
 Send via `./notify` only if mode is `REPO_ACTIONS_OK` with ≥3 ideas (skip notify on THIN with ≤2, skip on NO_CHANGE):
@@ -480,7 +480,7 @@ Top pick: [title] ([type], [effort], Priority [HIGH/MED/LOW])
 4. [title] ([Priority], [type], [effort])
 5. [title] ([Priority], [type], [effort])
 
-Full details: https://github.com/${AEON_REPO}/blob/main/articles/repo-actions-${TODAY}.md
+Full details: https://github.com/${AEON_REPO}/blob/main/output/articles/repo-actions-${TODAY}.md
 ```
 Where `AEON_REPO` = `git remote get-url origin` stripped to `owner/repo` (this is the Aeon repo, **not** `${TARGET}`).
 
@@ -748,7 +748,7 @@ Downstream consumers (`external-feature`/`feature`, `pr-review`, `code-health`, 
 - Machine block delimiters: `<!-- repo-scanner-state` … `-->` and the `name|pushedAt|category` pipe-schema inside
 - Opportunity taxonomy codes (A4 table): `MISSING_CI`, `MISSING_LICENSE`, `MISSING_DEPENDABOT`, `MISSING_CLAUDE_MD`, `MISSING_CONTRIBUTING`, `README_STUB`, `EMPTY_DESCRIPTION`, `OPEN_ISSUE_BACKLOG:N`, `STALE_PRS:N`, `GOOD_FIRST_ISSUES:N`, `ABANDON_RISK`. Adding new codes is fine; renaming existing ones breaks consumers.
 - Status codes — Branch A: `REPO_SCANNER_OK`, `REPO_SCANNER_EMPTY`, `REPO_SCANNER_NO_USERNAME`, `REPO_SCANNER_API_FAIL`. Branch B: `REPO_ACTIONS_OK`, `REPO_ACTIONS_THIN`, `REPO_ACTIONS_NO_CHANGE`, `REPO_ACTIONS_NO_CONFIG`, `REPO_ACTIONS_ERROR`. Branch C: `BUILDER_MAP_OK`, `BUILDER_MAP_SKIP`, `BUILDER_MAP_QUIET`.
-- Branch B article path: `articles/repo-actions-${TODAY}.md` (consumed by `feature`, `self-improve`, `skill-evals`). Branch C ecosystem file: `memory/topics/ecosystem.md` (consumed by `idea-pipeline`, `narrative-convergence`).
+- Branch B article path: `output/articles/repo-actions-${TODAY}.md` (consumed by `feature`, `self-improve`, `skill-evals`). Branch C ecosystem file: `memory/topics/ecosystem.md` (consumed by `idea-pipeline`, `narrative-convergence`).
 
 ## Constraints
 

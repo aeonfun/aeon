@@ -79,13 +79,13 @@ injection — see the `## Security` section of [`CLAUDE.md`](../CLAUDE.md).
 
 - Secrets live in **GitHub Actions secrets / repo variables**, never in files.
   Skills read them from the environment; they are never written into `memory/`,
-  `articles/`, notifications, or commits.
+  `output/`, notifications, or commits.
 - Skills are instructed to **never exfiltrate** environment variables, secrets,
   or file contents to an external URL.
 - The default `GITHUB_TOKEN` is scoped to the running repo only. Cross-repo
   skills use an optional fine-grained `GH_GLOBAL` token whose scope **you**
   choose — grant it the least access those skills need.
-- Run your live instance as a **private fork** so `memory/`, `articles/`, and any
+- Run your live instance as a **private fork** so `memory/`, `output/`, and any
   operator data stay private.
 
 ### Sandbox

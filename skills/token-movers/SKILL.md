@@ -516,7 +516,7 @@ Do not freelance labels. The verdict drives the lede, the TL;DR, and the notific
 
 ### 5. Compile the report
 
-Save to `articles/token-report-${today}.md`:
+Save to `output/articles/token-report-${today}.md`:
 
 ```markdown
 # $TOKEN — ${today}
@@ -585,7 +585,7 @@ If the response has fewer than 2 tweets that clear the engagement bar, skip the 
 
 ### 7. Save article
 
-Write the compiled report to `articles/token-report-${today}.md`.
+Write the compiled report to `output/articles/token-report-${today}.md`.
 
 ### 8. State log (powers tomorrow's deltas)
 
@@ -600,7 +600,7 @@ Append to `memory/logs/${today}.md`:
 - TREASURY_WALLET_STATE: addr=0x…158e role=treasury eth=X.XXXX
 - TREASURY_WALLET_STATE: addr=0x…e3a2 role=deployer eth=X.XXXX
 - 24h: ±X.X% | 7d: ±X.X% | 30d: ±X.X%
-- Article: articles/token-report-${today}.md
+- Article: output/articles/token-report-${today}.md
 - Sources: gt=ok ds=[ok|fail|divergent] xai=[ok|skip|fail] treasury=[ok|skip|fetch_fail]
 ```
 

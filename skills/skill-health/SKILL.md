@@ -317,7 +317,7 @@ If gate says skip, still write the article and JSON spec, and log `SKILL_ANALYTI
 
 ### 10. Write the article
 
-Path: `articles/skill-analytics-${today}.md`. Overwrite if it exists (idempotent same-day reruns).
+Path: `output/articles/skill-analytics-${today}.md`. Overwrite if it exists (idempotent same-day reruns).
 
 ```markdown
 # Skill Analytics — ${today}
@@ -471,7 +471,7 @@ ${If 🟡 flags (top 3, only if no 🔴/🟠 already filled the slots):}
 
 Top by runs: ${top_3_skills_by_run_count_with_counts}
 
-Full: articles/skill-analytics-${today}.md
+Full: output/articles/skill-analytics-${today}.md
 ```
 
 Cap the message body at ~3500 chars (Telegram safe limit). Drop the "Top by runs" line first if exceeded; flags are higher signal.
@@ -491,7 +491,7 @@ Log under the shared `### skill-health` heading (the health loop parses this sha
 - **Top runner**: ${top_skill} (${top_runs} runs)
 - **Exit dominant**: ${exit_dominant_summary}
 - **Verdict**: ${verdict_line}
-- **Article**: articles/skill-analytics-${today}.md
+- **Article**: output/articles/skill-analytics-${today}.md
 - **Dashboard**: apps/dashboard/outputs/skill-analytics.json
 - **Notification sent**: ${yes|no — quiet (no anomalies)}
 - **Status**: SKILL_ANALYTICS_OK | SKILL_ANALYTICS_QUIET | SKILL_ANALYTICS_NO_DATA

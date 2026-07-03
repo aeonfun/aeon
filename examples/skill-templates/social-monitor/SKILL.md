@@ -39,7 +39,7 @@ Today is ${today}. Monitor social mentions of **[REPLACE: KEYWORDS]** and produc
 
 5. **Tag sentiment** — for the top 10 posts overall, label each `positive` / `neutral` / `negative` based on tone of the post text. Keep this lightweight — one-token classification, no nested reasoning.
 
-6. **Write `articles/[REPLACE: SKILL_NAME]-${today}.md`**:
+6. **Write `output/articles/[REPLACE: SKILL_NAME]-${today}.md`**:
    ```markdown
    # [REPLACE: KEYWORDS] — ${today}
 

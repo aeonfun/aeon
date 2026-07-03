@@ -117,7 +117,7 @@ Scan the in-window data and produce up to 3 concrete recommendations. Each must 
 - **Model downgrade**: skill runs on `claude-opus-4-7`, its median `output_tokens / input_tokens` ratio across runs is < 0.3, AND its avg run cost > $0.25. → Suggest Sonnet; savings = `this_skill_cost × (1 − sonnet_rate_mix / opus_rate_mix)`.
 - **Cache underuse** *(direct gateway only)*: skill's `cache_read / (cache_read + input_tokens)` ratio < 0.2 across runs AND avg run cost > $0.10. → "Add a stable prompt prefix so Claude Code can cache it — would move ~X% of input tokens to cache_read at 10× savings."
 - **Aeon.yml mismatch**: `aeon.yml` sets a `model:` override for the skill but the CSV shows runs on a different model. → "Model override drift — aeon.yml says X, runs show Y."
-- **Long-tail waste**: a skill with >10 runs in-window where avg cost/run < $0.01 AND it produces no written artifact (no `articles/` file, no notification). → "Possible no-op loop."
+- **Long-tail waste**: a skill with >10 runs in-window where avg cost/run < $0.01 AND it produces no written artifact (no `output/articles/` file, no notification). → "Possible no-op loop."
 
 If fewer than 3 candidates pass the filters, say so — do not pad. If zero candidates, write "No optimization levers found this week."
 
@@ -127,7 +127,7 @@ If any CSV row referenced a model not in the active pricing table, list those mo
 
 ### A6. Write the full report
 
-Path: `articles/cost-report-${today}.md`. If the file already exists, overwrite it (idempotent).
+Path: `output/articles/cost-report-${today}.md`. If the file already exists, overwrite it (idempotent).
 
 ```markdown
 # Aeon Cost Report — ${today}
@@ -193,7 +193,7 @@ Actions this week:
 {{If pricing drift:}} ⚠ unknown models in CSV — see report.
 
 30-day projection: $X.XX
-Full: articles/cost-report-${today}.md
+Full: output/articles/cost-report-${today}.md
 ```
 
 Then log per the shared **Log** section below (discriminator: `report`).
@@ -311,7 +311,7 @@ Append ONE entry under a single `### cost-report` heading in `memory/logs/${toda
 - Week-over-week: +/-X% (or "no baseline")
 - Pricing drift: {{none | list of unknown models}}
 - Source status: csv={{ok|degraded}}, aeon.yml={{ok|missing}}
-- Article: articles/cost-report-${today}.md
+- Article: output/articles/cost-report-${today}.md
 - Notification sent via ./notify
 ```
 

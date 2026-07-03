@@ -47,10 +47,10 @@ It is deliberately a synthesis view, not a measurement view — every number it 
 
 No new config. No new secrets. Reads:
 
-- `articles/skill-analytics-*.md` — most recent file in window for fleet pass rate + anomaly count (written by `skill-health`'s analytics view — the former `skill-analytics` skill, now the analytics view of `skill-health`)
-- `articles/heartbeat-*.md` (or `memory/logs/*.md` heartbeat sections) — P0–P3 verdict tally
-- `articles/tweet-allocator-*.md` — weekly distributed totals + recipient counts
-- `articles/repo-pulse-*.md` — daily star/fork delta entries summed across the window
+- `output/articles/skill-analytics-*.md` — most recent file in window for fleet pass rate + anomaly count (written by `skill-health`'s analytics view — the former `skill-analytics` skill, now the analytics view of `skill-health`)
+- `output/articles/heartbeat-*.md` (or `memory/logs/*.md` heartbeat sections) — P0–P3 verdict tally
+- `output/articles/tweet-allocator-*.md` — weekly distributed totals + recipient counts
+- `output/articles/repo-pulse-*.md` — daily star/fork delta entries summed across the window
 - `memory/MEMORY.md` — last consolidation date + "Skills Built" recent rows for the activity-pulse line
 - `memory/issues/INDEX.md` (optional) — open issue count if present
 
@@ -68,7 +68,7 @@ No outbound HTTP. No `gh api` calls. Pure file scanning + arithmetic.
 
 ### 2. Collect agent-health signals
 
-a. **Latest analytics article.** `LATEST_ANALYTICS=$(ls -1t articles/skill-analytics-*.md 2>/dev/null | head -1)`. If found AND its date suffix is within the window → parse the metadata line `*Window: ... · N runs across M skills · X% success · Y anomalies*` for `total_runs`, `distinct_skills`, `success_pct`, `anomaly_count`. If not found (`skill-health`'s analytics view didn't run this window): set all four to `null` and mark `agent_health_source=missing`.
+a. **Latest analytics article.** `LATEST_ANALYTICS=$(ls -1t output/articles/skill-analytics-*.md 2>/dev/null | head -1)`. If found AND its date suffix is within the window → parse the metadata line `*Window: ... · N runs across M skills · X% success · Y anomalies*` for `total_runs`, `distinct_skills`, `success_pct`, `anomaly_count`. If not found (`skill-health`'s analytics view didn't run this window): set all four to `null` and mark `agent_health_source=missing`.
 
 b. **Heartbeat verdicts.** For every heartbeat run logged in the window, scan `memory/logs/YYYY-MM-DD.md` between `WINDOW_START_DATE` and today for `## Heartbeat` sections. Count occurrences of: `P0` / `P1` / `P2` / `P3` / `OK` markers. The simplest first-match wins per heartbeat block: an `OK` block (no P-flags) increments `heartbeat_ok`; any P-flag increments the matching `heartbeat_pX` counter and skips the OK count. If no heartbeat sections found, set counts to zero and mark `agent_health_source=partial`.
 
@@ -82,13 +82,13 @@ d. **Compute health verdict (paragraph 1):**
 
 ### 3. Collect community-growth signals
 
-a. **Stars + forks delta.** Sum every `articles/repo-pulse-*.md` file with date suffix in window. From each, extract the `New stars (24h)` count and `New forks (24h)` count for each watched repo. Aggregate per-repo totals across the window. The `aaronjmars/aeon` row is the headline; other repos go on a continuation line.
+a. **Stars + forks delta.** Sum every `output/articles/repo-pulse-*.md` file with date suffix in window. From each, extract the `New stars (24h)` count and `New forks (24h)` count for each watched repo. Aggregate per-repo totals across the window. The `aaronjmars/aeon` row is the headline; other repos go on a continuation line.
 
 If the file format doesn't contain the canonical fields, fall back to scanning `memory/logs/*.md` for `## Repo Pulse` blocks (older format). If both fail for a given repo: `stars_added=null`, mark `growth_source=partial`.
 
 b. **New contributors.** Count first-time merged-PR authors in the window from the GitHub search API — `search/issues?q=repo:<repo>+is:pr+is:merged+merged:<start>..<end>` (via `gh api` in write mode, or WebFetch `https://api.github.com/search/issues?...` in read-only). For each unique non-bot author, a prior-PR check (`…+author:<login>+merged:<<start>` → `total_count == 0`) marks them new; `new_contributors` = that count. If the GitHub API is unavailable: `new_contributors=null`.
 
-c. **Notable mentions.** Scan `articles/repo-article-*.md` and `articles/project-lens-*.md` filenames in window for any title containing milestones-language (regex `(milestone|launch|hit \d+|featured|HN|Show HN|Hacker News)`). If found, capture up to 2 titles for the `Notable` line. Otherwise omit.
+c. **Notable mentions.** Scan `output/articles/repo-article-*.md` and `output/articles/project-lens-*.md` filenames in window for any title containing milestones-language (regex `(milestone|launch|hit \d+|featured|HN|Show HN|Hacker News)`). If found, capture up to 2 titles for the `Notable` line. Otherwise omit.
 
 d. **Compute growth verdict (paragraph 2):**
 - `OK` if `total_stars_added >= 20` OR `new_contributors >= 1` (a real signal of community pull)
@@ -97,9 +97,9 @@ d. **Compute growth verdict (paragraph 2):**
 
 ### 4. Collect economic-activity signals
 
-a. **$AEON distributed.** Sum every `articles/tweet-allocator-*.md` in the window: extract the `Total distributed: $X.XX in $AEON` line. Track the count of `Paid tweets:` recipients across the window (deduped by handle).
+a. **$AEON distributed.** Sum every `output/articles/tweet-allocator-*.md` in the window: extract the `Total distributed: $X.XX in $AEON` line. Track the count of `Paid tweets:` recipients across the window (deduped by handle).
 
-If `articles/distribute-tokens-*.md` exists in the window, also tally any explicit on-chain payouts there. Report both as `$AEON distributed: $X.XX (Y recipients via tweet-allocator + Z via distribute-tokens)`.
+If `output/articles/distribute-tokens-*.md` exists in the window, also tally any explicit on-chain payouts there. Report both as `$AEON distributed: $X.XX (Y recipients via tweet-allocator + Z via distribute-tokens)`.
 
 b. **Compute economic verdict (paragraph 3):**
 - `OK` if `total_distributed > 0`
@@ -113,7 +113,7 @@ b. **Compute economic verdict (paragraph 3):**
 
 ### 6. Build the article
 
-Path: `articles/operator-scorecard-${today}.md`. Overwrite if exists (idempotent same-day reruns).
+Path: `output/articles/operator-scorecard-${today}.md`. Overwrite if exists (idempotent same-day reruns).
 
 ```markdown
 # Operator Scorecard — ${today}
@@ -232,7 +232,7 @@ Economic activity: $${total_distributed} in $AEON to ${recipient_count} recipien
 ${notable_addendum_or_omit}
 
 Window: last ${WINDOW_DAYS}d
-Full: articles/operator-scorecard-${today}.md
+Full: output/articles/operator-scorecard-${today}.md
 ```
 
 `notable_addendum`: if any "What was notable" bullet exists, prefix with `Notable:` and inline the first one only (cap at ~120 chars). If none, omit the line.
@@ -251,7 +251,7 @@ Append under the shared `### operator-scorecard` heading (see the **Log** sectio
 - **Agent health**: ${success_pct}% success across ${total_runs} runs · ${anomaly_count} anomalies · ${heartbeat_p0+p1} flagged heartbeats · ${open_issues} open issues
 - **Community growth**: +${total_stars_added}⭐ +${total_forks_added} forks · ${new_contributors} new contributors
 - **Economic activity**: $${total_distributed} in $AEON to ${recipient_count} recipients · token ${token_7d_pct}% 7d (${token_verdict})
-- **Article**: articles/operator-scorecard-${today}.md
+- **Article**: output/articles/operator-scorecard-${today}.md
 - **Dashboard**: apps/dashboard/outputs/operator-scorecard.json
 - **Notification sent**: ${yes|no — dry-run|no — INSUFFICIENT_DATA}
 - **Status**: OPERATOR_SCORECARD_OK | OPERATOR_SCORECARD_QUIET | OPERATOR_SCORECARD_NO_DATA
@@ -301,7 +301,7 @@ Read `memory/MEMORY.md` for context and `memory/issues/INDEX.md` for open issues
 
 4. **Deduplicate repeat runs.** If the same skill appears N>1 times in the log, fold into one entry labeled `skill ×N`. Keep the most informative run's headline (the one with a PR/URL or the longest body); collapse the rest to `+K more`.
 
-5. **Extract every artifact link.** For each entry, capture every URL or file path in the body (PR link, run URL, `articles/...` path, `apps/dashboard/outputs/...` path, ISS-NNN reference). An entry with no concrete artifact is "talk, not ship" — demote it to the Notable tier.
+5. **Extract every artifact link.** For each entry, capture every URL or file path in the body (PR link, run URL, `output/articles/...` path, `apps/dashboard/outputs/...` path, ISS-NNN reference). An entry with no concrete artifact is "talk, not ship" — demote it to the Notable tier.
 
 6. **Score and tier each entry on leverage.** What matters for tomorrow's decisions:
    - **Headlines (top tier, cap 5):** new PR opened, change merged, new article shipped, issue resolved or newly filed, new failure pattern.
@@ -460,7 +460,7 @@ If a theme has no user-visible commits, label it `Internal: <theme>` and push it
 
 ### 6. Write the deep recap
 
-Write to `articles/push-recap-${today}.md`:
+Write to `output/articles/push-recap-${today}.md`:
 
 ```markdown
 # Push Recap — ${today}
@@ -532,7 +532,7 @@ Append to `memory/logs/${today}.md` under the shared `### operator-scorecard` he
 - Commits: <total> (user-visible: X, internal: Y, infra: Z, bot-filtered: B)
 - Merged PRs: <count>
 - Verdict: <the one-line verdict>
-- Article: articles/push-recap-${today}.md
+- Article: output/articles/push-recap-${today}.md
 - Sources: <per-repo ok/error/empty>
 ```
 
@@ -560,7 +560,7 @@ Under the hood:
 Shape: X user-visible · Y internal · Z infra · N bot-filtered · P merged PRs
 Volume: X files, +Y/-Z lines
 
-Full recap: https://github.com/$(git remote get-url origin | sed -E 's|.*github.com[:/]([^/]+/[^/.]+).*|\1|')/blob/main/articles/push-recap-${today}.md
+Full recap: https://github.com/$(git remote get-url origin | sed -E 's|.*github.com[:/]([^/]+/[^/.]+).*|\1|')/blob/main/output/articles/push-recap-${today}.md
 ```
 
 The notification must let a reader know what shipped without clicking through. Names and numbers, not "various improvements." Each bullet must cite at least one: specific file, specific feature, specific user impact.

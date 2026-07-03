@@ -35,7 +35,7 @@ Steps:
    - **Test coverage**: check if test files exist for key modules, note untested areas
    - **Large files**: files over 500 lines that might need splitting
    - **Secrets in code**: scan for hardcoded API keys, tokens, passwords
-3. Compile a health report and save to articles/code-health-${today}.md:
+3. Compile a health report and save to output/articles/code-health-${today}.md:
    ```markdown
    # Code Health Report — ${today}
 

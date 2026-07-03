@@ -175,7 +175,7 @@ scanned: N markets · flagged: M · suspicious: K · high-conf: J
 --- CLEAN (scanned but no flags) ---
 N markets, no anomalies above threshold.
 
-read it: articles/pm-manipulation-${today}.md
+read it: output/articles/pm-manipulation-${today}.md
 MSG
 ```
 
@@ -183,7 +183,7 @@ Keep the notification under 3500 chars. If it exceeds, drop the CLEAN section an
 
 ### 7. Save the full report
 
-Write the unabridged report to `articles/pm-manipulation-${today}.md`:
+Write the unabridged report to `output/articles/pm-manipulation-${today}.md`:
 
 ```markdown
 # PM Manipulation Watch — ${today}
