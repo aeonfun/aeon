@@ -17,7 +17,7 @@ tags: [dev, meta, social, ecosystem]
 Today is ${today}. This is the unified repo-intelligence skill. It has three facets that share one data spine (`memory/topics/repos.md`, `memory/watched-repos.md`) and one dispatcher:
 
 - **Branch A — Catalog scan** (was `repo-scanner`): catalog all repos under an owner into a prioritized fleet report with a fixed opportunity taxonomy. Writes `memory/topics/repos.md` + `memory/watched-repos.md`. This is the spine every other repo skill (`external-feature`/`feature`, `pr-review`, `code-health`, `repo-pulse`, `vercel-projects`) consumes.
-- **Branch B — Action ideas** (was `repo-actions`): generate 5 anchored, implementable action ideas for the top watched repo, specificity-gated and priority-ranked with a Top-Pick verdict. Writes `articles/repo-actions-${TODAY}.md` — **read directly by the `feature` skill** (which declares `depends_on: [repo-scanner]`), `self-improve`, and `skill-evals`; this path is a hard contract, do not change it.
+- **Branch B — Action ideas** (was `repo-actions`): generate 5 anchored, implementable action ideas for the top watched repo, specificity-gated and priority-ranked with a Top-Pick verdict. Writes `articles/repo-actions-${TODAY}.md` — **read directly by the `feature` skill** (which declares `depends_on: [repo-scanner]`) and `self-improve`; this path is a hard contract, do not change it.
 - **Branch C — Builder map** (was `builder-map`): weekly sweep of who's building on top of the watched repos — active forks, third-party ecosystem repos, public builder announcements. Writes `memory/topics/ecosystem.md` — read by `idea-pipeline` and `narrative-convergence`.
 
 ## Why this shape
@@ -463,7 +463,7 @@ Structure:
 
 Write to `articles/repo-actions-${TODAY}.md`. If the file already exists and the repo's `pushedAt` hasn't advanced since the last run, exit `REPO_ACTIONS_NO_CHANGE` silently (no notify, no commit, log only). Otherwise overwrite.
 
-> **Contract:** the `articles/repo-actions-${TODAY}.md` path is read by the `feature` skill (`depends_on: [repo-scanner]`), `self-improve`, and `skill-evals` (`output_pattern: articles/repo-actions-*.md`). Do not rename it.
+> **Contract:** the `articles/repo-actions-${TODAY}.md` path is read by the `feature` skill (`depends_on: [repo-scanner]`) and `self-improve`. Do not rename it.
 
 ### B9. Notify (Branch B)
 Send via `./notify` only if mode is `REPO_ACTIONS_OK` with ≥3 ideas (skip notify on THIN with ≤2, skip on NO_CHANGE):

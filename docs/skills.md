@@ -38,7 +38,7 @@ Install any skill into your own agent:
 | Skill | Description |
 |-------|-------------|
 | `deploy-prototype` | Generate a small app or tool and deploy it live to Vercel via API |
-| `distribute-tokens` | Two-phase contributor rewards — computes a tier-priced reward plan from the contributor-leaderboard ranking (plan phase) and executes the on-chain send via Bankr Wallet API with per-recipient idempotency, resolve→execute, dry-run, and partial-run recovery (send phase). Run either phase alone or both back-to-back. |
+| `distribute-tokens` | Two-phase contributor rewards — computes a tier-priced reward plan from the repo's merged-PR contributor ranking (plan phase) and executes the on-chain send via Bankr Wallet API with per-recipient idempotency, resolve→execute, dry-run, and partial-run recovery (send phase). Run either phase alone or both back-to-back. |
 | `fleet-control` | Operate managed Aeon instances registered in memory/instances.json — health-check, dispatch skills, and full status snapshots (control view), plus a fleet-wide scorecard of runs, tokens (OpenRouter shape), est. cost and reliability with day-over-day deltas and alerts (scorecard view) |
 | `spawn-instance` | Clone this Aeon agent into a new GitHub repo — fork, configure skills, validate, register in fleet |
 | `vuln-scanner` | Audit trending repos for real security vulnerabilities and disclose responsibly — scan and route findings (PVR / dependency PR), re-submit queued advisories when a watched repo enables private reporting, and auto-send armed out-of-band email disclosures via Resend |

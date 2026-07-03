@@ -86,7 +86,7 @@ a. **Stars + forks delta.** Sum every `articles/repo-pulse-*.md` file with date 
 
 If the file format doesn't contain the canonical fields, fall back to scanning `memory/logs/*.md` for `## Repo Pulse` blocks (older format). If both fail for a given repo: `stars_added=null`, mark `growth_source=partial`.
 
-b. **New contributors.** Parse the most recent `articles/contributor-leaderboard-*.md` if it falls in the window. Extract the count of rows in the `## Top Contributors` table whose `Change` column shows `NEW` or `↑NEW` (first-time appearance this week). If no leaderboard in window: `new_contributors=null`.
+b. **New contributors.** Count first-time merged-PR authors in the window from the GitHub search API — `search/issues?q=repo:<repo>+is:pr+is:merged+merged:<start>..<end>` (via `gh api` in write mode, or WebFetch `https://api.github.com/search/issues?...` in read-only). For each unique non-bot author, a prior-PR check (`…+author:<login>+merged:<<start>` → `total_count == 0`) marks them new; `new_contributors` = that count. If the GitHub API is unavailable: `new_contributors=null`.
 
 c. **Notable mentions.** Scan `articles/repo-article-*.md` and `articles/project-lens-*.md` filenames in window for any title containing milestones-language (regex `(milestone|launch|hit \d+|featured|HN|Show HN|Hacker News)`). If found, capture up to 2 titles for the `Notable` line. Otherwise omit.
 
@@ -150,7 +150,7 @@ ${bullet list of up to 3 entries from MEMORY.md "Skills Built" rows where date i
 - heartbeat: ${N runs found in memory/logs}
 - repo-pulse: ${N daily articles in window}
 - tweet-allocator: ${N daily articles in window} · total: $${total_distributed}
-- contributor-leaderboard: ${article_path or "no leaderboard run in window"}
+- new-contributors: ${new_contributors or "GitHub API unavailable"}
 
 ---
 *Companion to `skill-health`'s analytics view (per-skill ranking) and heartbeat (per-run pulse). This branch answers the operator-level question those two don't: "given everything that happened, was this week worth it?" Methodology: every number is sourced from another skill's article — this branch measures nothing itself.*

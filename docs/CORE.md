@@ -48,12 +48,6 @@ Phases: PREFLIGHT → TRIAGE → DIAGNOSE → REPAIR → VERIFY → LOG, with a 
 - Guards against looping: 24h per-skill cooldown (tracked in `skill-repair-history.json`), and caps itself at 3 repair PRs/day.
 - Builds a diagnostic dossier, applies the fix, opens a PR, and verifies. `dry-run:NAME` diagnoses without writing.
 
-### [`skill-evals`](../skills/skill-evals/SKILL.md) — the regression catcher · Sun 06:00
-
-Runs an assertion manifest (`evals.json`) against each skill's latest output: empty / stale file checks, word-count floors, required / forbidden regex patterns, numeric range checks, and a quality cross-check against `skill-health/*.json`.
-
-The lede is the **diff vs. the previous run** — each skill classified NEW_FAIL / FIXED / STILL_FAIL / NEW_PASS / STABLE, so it catches quality degradation *between* runs rather than just snapshotting. Files issues for every NEW_FAIL, runs a coverage audit (`eval-audit`) to surface enabled skills with no eval spec, and queues concrete fixes.
-
 ### [`self-improve`](../skills/self-improve/SKILL.md) — broad self-tuning · every other day
 
 Reads the last 2 days of logs + `cron-state.json` for the highest-impact, smallest fix (failing skills, timeouts, truncated notifications, low-quality output), makes **one** minimal targeted change (tighten a prompt, add backoff, fix a config), and opens a PR with Problem / Fix / Evidence.
@@ -62,7 +56,7 @@ Backpressure: if 3+ improvement PRs are already open, it exits without creating 
 
 ### How the loop closes
 
-`skill-health` / `skill-evals` **detect** → file issue → `skill-repair` **fixes** → PR → merge → cron-state recovers → `skill-health` **resolves** the issue. `CLAUDE.md` codifies the contract: **health skills file issues, repair skills close them.**
+`skill-health` **detects** → file issue → `skill-repair` **fixes** → PR → merge → cron-state recovers → `skill-health` **resolves** the issue. `CLAUDE.md` codifies the contract: **the health skill files issues, repair skills close them.**
 
 **Votable health** runs alongside this loop. Whenever a skill regresses (Haiku score 1–2 or a failure flag), the run appends a `⚠️ Regression …` comment to a per-skill GitHub Issue titled `health: <skill>` — silent on clean runs, so no spam. A human 👍/👎 on that issue sets repair priority (`health_triage.prioritize` ranks open items by votes, then severity), so `self-improve` / `skill-repair` fix what people care about and what's worst, first. On by default; disable with the repo variable `HEALTH_ISSUES=0`. State itself rides an append-only Issue too — see [Durable state](https://github.com/aaronjmars/aeon#durable-state-without-the-churn) (`STATE_BACKEND`).
 

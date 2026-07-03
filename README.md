@@ -92,7 +92,6 @@ Grab the `gh_*_macOS_arm64.zip` (or your platform's binary) from [github.com/cli
 | **Lab** (`lab`, 0) | _(empty)_ |
 
 Authoritative source: [`skills.json`](skills.json) + [`packs.json`](packs.json), the dashboard **Packs** view, or `./add-skill aaronjmars/aeon --list`. A skill's pack comes from its `category:` frontmatter - see [`docs/skill-packs.md`](docs/skill-packs.md).
-Dependency graph: [`docs/skill-graph.md`](docs/skill-graph.md) - a visual map of how skills connect.
 
 </details>
 
@@ -106,9 +105,8 @@ Every skill output is automatically scored 1–5 by Haiku after each run. Scores
 
 1. **`heartbeat`** (3x daily) - detects failed, stuck, or chronically broken skills
 2. **`skill-health`** - audits quality scores and flags API degradation patterns
-3. **`skill-evals`** - assertion-based output tests to catch regressions
-4. **`skill-repair`** - diagnoses and patches failing skills automatically
-5. **`self-improve`** - evolves prompts, config, and workflows based on performance
+3. **`skill-repair`** - diagnoses and patches failing skills automatically
+4. **`self-improve`** - evolves prompts, config, and workflows based on performance
 
 Health skills file issues, repair skills close them. `heartbeat` is the only skill enabled by default: nothing to report → silent; something needs attention → one notification. Deep dive: [`docs/CORE.md`](docs/CORE.md).
 
