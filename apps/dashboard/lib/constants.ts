@@ -12,14 +12,18 @@ export const MODELS = [
   { id: 'claude-haiku-4-5-20251001', label: 'Haiku 4.5' },
 ]
 
-// Models offered when the Grok (`grok`) harness is selected. Only
-// grok-composer-2.5-fast (grok's default) is exposed: it runs cleanly end-to-end
-// in GitHub Actions. grok-build is intentionally NOT offered — it Cancels every
-// time in the Actions sandbox (works locally, drops its relay/entitlement path in
-// CI), so selecting it would be a footgun. Grok still accepts custom model ids
-// via ~/.grok/config.toml for anyone who needs one.
+// Models offered when the Grok (`grok`) harness is selected.
+// - grok-composer-2.5-fast (grok's default) — fast single-agent, runs cleanly in CI.
+// - grok-build — reasoning/multi-agent coding model. It used to Cancel every run in
+//   the Actions sandbox (its subagent-spawn tool was denied); run-grok.sh now passes
+//   --no-subagents by default, so it runs single-agent in CI. Skills that opt into
+//   best_of_n:/verify: get subagents back automatically.
+// Use the bare CLI id (grok-build), not the API id (grok-build-0.1).
+// Keep this list in sync with the workflow_dispatch `model` choice options in
+// .github/workflows/aeon.yml — a mismatch 422s at dispatch time.
 export const GROK_MODELS = [
   { id: 'grok-composer-2.5-fast', label: 'Composer 2.5' },
+  { id: 'grok-build', label: 'Grok Build' },
 ]
 
 // Harnesses (agent CLIs). `claude` = Claude Code (default, uses the AI Gateway),
