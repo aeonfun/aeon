@@ -51,6 +51,30 @@ After completing any task, append a log entry to `memory/logs/YYYY-MM-DD.md` und
 
 When consolidating memory (reflect), move detail into topic files rather than cramming everything into MEMORY.md.
 
+## Publishing knowledge (OKF)
+
+Aeon's `memory/topics/` directory **is** a native [OKF](docs/OKF.md) (Open Knowledge Format) knowledge bundle — a portable, self-describing corpus other tools and agents can read. This is not a separate export; the topic files *are* the bundle. So when you write a durable, shareable **concept** to `memory/topics/` (a tracked token, a protocol, a narrative, a watched repo, a runbook), write it as an OKF concept:
+
+- **One concept = one markdown file at a stable path** under `memory/topics/`. The path is its identity; `memory/topics/` is the bundle root (a link `/tokens/ethereum.md` resolves there). Subfolders (`tokens/`, `repos/`) are fine.
+- **Start every concept file with YAML frontmatter carrying a non-empty `type:`** from the vocabulary below. Add `title`, `description`, `tags`, `resource` (canonical URL), and `timestamp` (ISO 8601) whenever you can — they power the index and previews.
+- **Ownership is last-writer-wins.** Any skill may create or rewrite any concept. **Always set/bump `timestamp:` on every write** — the newest timestamp is the source of truth. Edit the existing file in place rather than duplicating it.
+- **Cross-link** related concepts with bundle-relative markdown links (`See [Solana](/tokens/solana.md)`). **Cite** external sources under a `# Citations` heading. Favor structure (headings, tables) over prose.
+
+`type:` vocabulary — reuse these exact words across the fleet (the list is additive; new descriptive types are fine, but check here first):
+
+| `type:` | Use for |
+|---|---|
+| `Token` | A tracked crypto asset |
+| `Protocol` | A DeFi / onchain protocol |
+| `Narrative` | A market or tech narrative being tracked |
+| `Repo` | A watched GitHub repository |
+| `Playbook` | A reusable procedure / runbook |
+| `Metric` | A tracked number / KPI |
+| `Reference` | Mirrored external source material or config |
+| `Skill` | An Aeon skill (served from the catalog; you don't hand-write these) |
+
+Do **not** OKF-ify the rest of `memory/`: `MEMORY.md` (the human index) and `memory/logs/` (the daily log) already play OKF's index/log roles in their existing Aeon shapes — never add `type:` frontmatter to a log file or reformat `MEMORY.md`. `memory/issues/` and `memory/skill-health/` are internal and out of scope. Validate the bundle with `node scripts/okf-validate.mjs`; the `ci-okf` check gates any PR touching `memory/topics/`.
+
 ## Tools
 
 - **`./notify "message"`** — Send to all configured channels (Telegram, Discord, Slack, SendGrid email, json-render). Unconfigured channels are skipped silently.

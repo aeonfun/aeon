@@ -1,3 +1,11 @@
+---
+type: Reference
+title: Skill Spotlight — Rotation State
+description: Queue, coverage history, and blocklist config for the skill-spotlight rotation.
+tags: [meta, config]
+timestamp: 2026-07-03T00:00:00Z
+---
+
 # Skill Spotlight — Rotation State
 
 Queue + history for `skills/skill-spotlight/`. The picker reads top-down, skips anything covered in the last 30 days or in the blocklist.

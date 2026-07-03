@@ -18,10 +18,13 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
+  ListResourcesRequestSchema,
+  ReadResourceRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 import { type Skill, loadSkills, runSkill } from "./skill-executor.js";
+import { listOkfResources, readOkfResource } from "./okf.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -101,7 +104,7 @@ function categoryName(category: string): string {
 
 const server = new Server(
   { name: "aeon-mcp", version: "1.0.0" },
-  { capabilities: { tools: {} } }
+  { capabilities: { tools: {}, resources: {} } }
 );
 
 const skills = loadSkills(REPO_ROOT, LOG_PREFIX);
@@ -136,6 +139,26 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
   return {
     content: [{ type: "text" as const, text: output }],
+  };
+});
+
+// ---- OKF knowledge bundle (read-only resources) ----
+// memory/topics/ is a native OKF v0.1 bundle; expose it (plus skills as
+// `type: Skill` concepts) so consumption agents can traverse Aeon's knowledge
+// over MCP without cloning the repo. See apps/mcp-server/src/okf.ts.
+
+server.setRequestHandler(ListResourcesRequestSchema, async () => ({
+  resources: listOkfResources(REPO_ROOT, skills),
+}));
+
+server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
+  const uri = request.params.uri;
+  const resolved = readOkfResource(REPO_ROOT, uri, skills);
+  if (!resolved) {
+    throw new Error(`Unknown OKF resource: ${uri}`);
+  }
+  return {
+    contents: [{ uri, mimeType: resolved.mimeType, text: resolved.text }],
   };
 });
 

@@ -1,0 +1,39 @@
+name: ci-okf
+
+# Aeon's memory/topics/ directory is a native OKF (Open Knowledge Format) v0.1
+# knowledge bundle: every concept file must carry a non-empty `type:` frontmatter
+# field (OKF §9). Agents are non-deterministic, so some run WILL eventually drop
+# the `type:` line — this workflow fails any PR that leaves the bundle non-conformant
+# before it can rot silently.
+#
+# The validator (scripts/okf-validate.mjs) enforces ONLY the spec's hard bar (§9):
+# it does NOT reject unknown types, missing optional fields, or broken links — that
+# over-conformance would fight Aeon's own agents. See docs/OKF.md.
+#
+# Same shape/permissions as ci-skills-json.yml.
+
+on:
+  pull_request:
+    paths:
+      - 'memory/topics/**'
+      - 'scripts/okf-validate.mjs'
+      - 'scripts/okf-index.mjs'
+      - '.github/workflows/ci-okf.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'memory/topics/**'
+      - 'scripts/okf-validate.mjs'
+      - 'scripts/okf-index.mjs'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Validate OKF conformance of memory/topics/
+        run: node scripts/okf-validate.mjs memory/topics
