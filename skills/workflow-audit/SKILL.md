@@ -354,8 +354,8 @@ Append to `memory/logs/${today}.md`:
 ## Sandbox note
 
 - `pipx install zizmor` and `pip install --user zizmor` both hit PyPI — expected to work from GitHub-hosted runners (outbound to PyPI is allowed), but if the sandbox blocks them use **WebFetch** to retrieve the zizmor install script from `https://docs.zizmor.sh/install.sh` (or the release tarball from the `zizmorcore/zizmor` releases page) and run it locally.
-- `gh` CLI uses existing `GITHUB_TOKEN` / `GH_GLOBAL` — no extra auth setup needed.
-- No new secrets required. zizmor and actionlint are offline-only static analyzers.
+- `gh` CLI uses existing `GITHUB_TOKEN` / `GH_GLOBAL`. The audit + report path works with the built-in `GITHUB_TOKEN`, but the **auto-fix path** commits changes to `.github/workflows/` — and the built-in token is **forbidden from pushing workflow-file edits** (GitHub rejects them without the `workflow` scope). So `GH_GLOBAL` (a PAT carrying that scope) is needed to actually land auto-fixes; without it, findings are still reported and flagged `Manual required`. That's why `requires:` lists it as optional — it degrades to report-only, it isn't a cross-repo concern.
+- No new secrets required beyond that. zizmor and actionlint are offline-only static analyzers.
 
 ## Constraints
 

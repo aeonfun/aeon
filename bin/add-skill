@@ -1,0 +1,229 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# add-skill — Install skills from GitHub repos into this Aeon project
+#
+# Usage:
+#   bin/add-skill <github-repo> [skill-name]          Install a specific skill from a repo
+#   bin/add-skill <github-repo> --list                 List available skills in a repo
+#   bin/add-skill <github-repo> --all                  Install all skills from a repo
+#
+# Examples:
+#   bin/add-skill BankrBot/skills bankr                Install the bankr skill
+#   bin/add-skill BankrBot/skills --list               List all skills in the repo
+#   bin/add-skill BankrBot/skills --all                Install everything
+#   bin/add-skill BankrBot/skills bankr hydrex veil    Install multiple skills
+
+ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+SKILLS_DIR="$ROOT_DIR/skills"
+AEON_YML="$ROOT_DIR/aeon.yml"
+# shellcheck source=scripts/lib/skill-install.sh
+. "$ROOT_DIR/scripts/lib/skill-install.sh"
+TMP_DIR=$(mktemp -d)
+trap 'rm -rf "$TMP_DIR"' EXIT
+
+usage() {
+  cat <<'EOF'
+Usage: bin/add-skill <github-repo> [options] [skill-names...]
+
+Install skills from a GitHub repository into this project.
+
+Arguments:
+  <github-repo>       GitHub repo in owner/repo format (e.g. BankrBot/skills)
+  [skill-names...]    One or more skill names to install
+
+Options:
+  --list              List available skills in the repo
+  --all               Install all skills from the repo
+  --branch <branch>   Use a specific branch (default: main)
+  --force             Install even if security scan finds issues
+  --help              Show this help
+
+Examples:
+  bin/add-skill BankrBot/skills --list
+  bin/add-skill BankrBot/skills bankr
+  bin/add-skill BankrBot/skills bankr hydrex veil
+  bin/add-skill BankrBot/skills --all
+  bin/add-skill BankrBot/skills bankr --branch develop
+EOF
+  exit 0
+}
+
+if [[ $# -lt 1 ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-h" ]]; then
+  usage
+fi
+
+REPO="$1"
+shift
+
+# Parse flags
+BRANCH="main"
+LIST_ONLY=false
+INSTALL_ALL=false
+SKILL_NAMES=()
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --list) LIST_ONLY=true; shift ;;
+    --all) INSTALL_ALL=true; shift ;;
+    --branch) BRANCH="$2"; shift 2 ;;
+    --force) SKILL_NAMES+=("--force"); shift ;;
+    --help|-h) usage ;;
+    -*) echo "Unknown option: $1" >&2; exit 1 ;;
+    *) SKILL_NAMES+=("$1"); shift ;;
+  esac
+done
+
+# Normalize repo format
+REPO="${REPO#https://github.com/}"
+REPO="${REPO%.git}"
+
+echo "Fetching skill index from $REPO ($BRANCH)..."
+
+REPO_DIR=$(skill_fetch_repo "$REPO" "$BRANCH" "$TMP_DIR") || exit 1
+
+# Find all skills (directories containing SKILL.md)
+AVAILABLE=()
+while IFS= read -r skill_file; do
+  skill_dir=$(dirname "$skill_file")
+  skill_name=$(basename "$skill_dir")
+  # Skip the root directory
+  if [[ "$skill_dir" != "$REPO_DIR" ]]; then
+    AVAILABLE+=("$skill_name")
+  fi
+done < <(find "$REPO_DIR" -maxdepth 2 -name "SKILL.md" -type f 2>/dev/null | sort)
+
+if [[ ${#AVAILABLE[@]} -eq 0 ]]; then
+  echo "No skills found in $REPO" >&2
+  exit 1
+fi
+
+# List mode
+if [[ "$LIST_ONLY" == "true" ]]; then
+  echo ""
+  echo "Available skills in $REPO:"
+  echo ""
+  for skill in "${AVAILABLE[@]}"; do
+    skill_dir="$REPO_DIR/$skill"
+    if [[ -f "$skill_dir/SKILL.md" ]]; then
+      # Extract description from frontmatter
+      desc=$(sed -n '/^---$/,/^---$/p' "$skill_dir/SKILL.md" | grep -E '^description:' | sed 's/^description: *//' | head -1)
+      if [[ -z "$desc" ]]; then
+        desc=$(sed -n '/^---$/,/^---$/p' "$skill_dir/SKILL.md" | sed -n '/^description:/,/^[a-z]/p' | head -2 | tail -1 | sed 's/^ *//')
+      fi
+      # Truncate long descriptions
+      if [[ ${#desc} -gt 80 ]]; then
+        desc="${desc:0:77}..."
+      fi
+      local_marker=""
+      if [[ -d "$SKILLS_DIR/$skill" ]]; then
+        local_marker=" (installed)"
+      fi
+      printf "  %-20s %s%s\n" "$skill" "$desc" "$local_marker"
+    fi
+  done
+  echo ""
+  echo "${#AVAILABLE[@]} skills available"
+  exit 0
+fi
+
+# Determine which skills to install
+if [[ "$INSTALL_ALL" == "true" ]]; then
+  SKILL_NAMES=("${AVAILABLE[@]}")
+fi
+
+if [[ ${#SKILL_NAMES[@]} -eq 0 ]]; then
+  echo "No skill names specified. Use --list to see available skills." >&2
+  exit 1
+fi
+
+# Security scanning
+SCANNER="$ROOT_DIR/skills/skill-scan/scan.sh"
+TRUSTED_FILE="$ROOT_DIR/skills/security/trusted-sources.txt"
+FORCE_INSTALL=false
+
+# Check for --force flag (already parsed, but check env)
+for arg in "${SKILL_NAMES[@]}"; do
+  if [[ "$arg" == "--force" ]]; then
+    FORCE_INSTALL=true
+  fi
+done
+
+TRUSTED_SOURCE=false
+if skill_is_trusted "$REPO" "$TRUSTED_FILE"; then
+  TRUSTED_SOURCE=true
+  echo "Source $REPO is trusted — skipping deep security scan."
+fi
+
+# Install each skill
+INSTALLED=0
+SKIPPED=0
+FAILED=0
+
+for skill in "${SKILL_NAMES[@]}"; do
+  [[ "$skill" == "--force" ]] && continue
+
+  src="$REPO_DIR/$skill"
+
+  if [[ ! -d "$src" ]] || [[ ! -f "$src/SKILL.md" ]]; then
+    echo "  skip: '$skill' not found in repo"
+    FAILED=$((FAILED + 1))
+    continue
+  fi
+
+  # Run security scan on untrusted sources
+  if [[ "$TRUSTED_SOURCE" == "false" ]] && [[ -x "$SCANNER" ]]; then
+    echo "  scanning: $skill ..."
+    if ! "$SCANNER" "$src/SKILL.md" 2>/dev/null; then
+      if [[ "$FORCE_INSTALL" == "true" ]]; then
+        echo "  ⚠ SECURITY ISSUES DETECTED — installing anyway (--force)"
+        skill_log_force_install "$ROOT_DIR/memory/logs/security.log" "$skill" "$REPO"
+      else
+        echo "  ✗ BLOCKED: $skill has security issues. Use --force to override."
+        FAILED=$((FAILED + 1))
+        continue
+      fi
+    else
+      echo "  ✓ security scan passed"
+    fi
+  fi
+
+  dest="$SKILLS_DIR/$skill"
+
+  if [[ -d "$dest" ]]; then
+    echo "  update: $skill (overwriting)"
+    rm -rf "$dest"
+  else
+    echo "  install: $skill"
+  fi
+
+  cp -r "$src" "$dest"
+  INSTALLED=$((INSTALLED + 1))
+
+  # Record provenance in skills.lock
+  SKILL_REMOTE_PATH="skills/$skill/SKILL.md"
+  COMMIT_SHA=$(gh api "repos/$REPO/commits" -f path="$SKILL_REMOTE_PATH" --jq '.[0].sha' 2>/dev/null || echo "unknown")
+
+  NEW_ENTRY=$(jq -n \
+    --arg name "$skill" \
+    --arg repo "$REPO" \
+    --arg path "$SKILL_REMOTE_PATH" \
+    --arg branch "$BRANCH" \
+    --arg sha "$COMMIT_SHA" \
+    --arg at "$(date -u '+%Y-%m-%dT%H:%M:%SZ')" \
+    '{skill_name: $name, source_repo: $repo, source_path: $path, branch: $branch, commit_sha: $sha, imported_at: $at}')
+
+  skill_lock_upsert "$ROOT_DIR/skills.lock" "$NEW_ENTRY"
+  echo "    -> provenance recorded in skills.lock (sha: ${COMMIT_SHA:0:7})"
+
+  # Add to aeon.yml (disabled by default) if not already present
+  skill_add_to_aeon_yml "$AEON_YML" "$skill" false "0 12 * * *"
+done
+
+echo ""
+echo "Done: $INSTALLED installed, $FAILED not found"
+if [[ $INSTALLED -gt 0 ]]; then
+  echo ""
+  echo "Enable skills in aeon.yml to schedule them, or run manually:"
+  echo "  Read skills/<name>/SKILL.md and execute its steps."
+fi

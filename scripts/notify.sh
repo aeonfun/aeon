@@ -144,19 +144,44 @@ printf '%s' "$PLAIN" > ".pending-notify/${TS}.md"
 
 DELIVERED=false
 
-# Build reply_markup once (Telegram-only). Inline buttons and force_reply are
-# mutually exclusive per message, so --buttons wins if both are somehow set.
-# Attached to the LAST chunk so it renders under the full (possibly chunked) text.
+# Build reply_markup once (Telegram-only). Attached to the LAST chunk so it renders
+# under the full (possibly chunked) text.
+#
+# GLOBAL quick-action buttons: every skill notification gets a "Run again" +
+# "Schedule weekly" row, keyed to $SKILL_NAME (the running skill) so a tap re-runs
+# it (callback run:<skill>) or schedules it weekly (callback schedule:<skill>:weekly,
+# handled in scripts/telegram-route.sh). This is a global notify feature — skills do
+# NOT wire it per-skill. The row is appended beneath any skill-supplied --buttons.
+# Skipped when there's no skill context ($SKILL_NAME unset), when the skill name is
+# too long to fit callback_data's 64-byte budget, or on a force_reply prompt (Telegram
+# forbids inline buttons + force_reply on one message — the deliberate ask wins).
+GLOBAL_ROW=""
+if [ -n "${SKILL_NAME:-}" ] && [ -z "$FORCE_REPLY" ] && [ "${#SKILL_NAME}" -le 48 ]; then
+  GLOBAL_ROW=$(jq -n --arg s "$SKILL_NAME" \
+    '[{text:"🔁 Run again",       callback_data:("run:"+$s)},
+      {text:"📅 Schedule weekly", callback_data:("schedule:"+$s+":weekly")}]')
+fi
+
 REPLY_MARKUP="null"
-if [ -n "$BUTTONS_JSON" ]; then
-  REPLY_MARKUP=$(jq -n --argjson kb "$BUTTONS_JSON" '{inline_keyboard:$kb}' 2>/dev/null || echo "null")
-  [ -z "$REPLY_MARKUP" ] && REPLY_MARKUP="null"
-  if [ "$REPLY_MARKUP" = "null" ]; then
-    echo "notify: --buttons is not valid JSON, ignoring" >&2
-  fi
-elif [ -n "$FORCE_REPLY" ]; then
+if [ -n "$FORCE_REPLY" ]; then
   REPLY_MARKUP=$(jq -n --arg p "$PLACEHOLDER" \
     '{force_reply:true} + (if $p != "" then {input_field_placeholder:$p} else {} end)')
+else
+  # inline_keyboard = optional skill --buttons rows, then the global quick-action row.
+  KB="[]"
+  if [ -n "$BUTTONS_JSON" ]; then
+    KB=$(jq -n --argjson kb "$BUTTONS_JSON" '$kb' 2>/dev/null || echo "null")
+    if [ -z "$KB" ] || [ "$KB" = "null" ]; then
+      echo "notify: --buttons is not valid JSON, ignoring" >&2
+      KB="[]"
+    fi
+  fi
+  if [ -n "$GLOBAL_ROW" ]; then
+    KB=$(jq -n --argjson kb "$KB" --argjson row "$GLOBAL_ROW" '$kb + [$row]')
+  fi
+  if [ "$KB" != "[]" ]; then
+    REPLY_MARKUP=$(jq -n --argjson kb "$KB" '{inline_keyboard:$kb}')
+  fi
 fi
 
 # Telegram — fence-safe chunks (parse_mode Markdown, fallback to none)

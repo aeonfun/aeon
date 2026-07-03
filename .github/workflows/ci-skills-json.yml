@@ -1,8 +1,8 @@
 name: ci-skills-json
 
-# Proposal #455: skills.json is the canonical catalog (dashboard, ./add-skill,
+# Proposal #455: catalog/skills.json is the canonical catalog (dashboard, bin/add-skill,
 # and downstream consumers all read it). It must be regenerated from
-# skills/*/SKILL.md via ./generate-skills-json. This workflow fails any PR that
+# skills/*/SKILL.md via bin/generate-skills-json. This workflow fails any PR that
 # changes a generator input without committing the regenerated manifest, so
 # catalog drift can't ship silently (cf. #456, #445).
 #
@@ -26,14 +26,14 @@ on:
   pull_request:
     paths:
       - 'skills/**'
-      - 'generate-skills-json'
-      - 'skills.json'
+      - 'bin/generate-skills-json'
+      - 'catalog/skills.json'
   push:
     branches: [main]
     paths:
       - 'skills/**'
-      - 'generate-skills-json'
-      - 'skills.json'
+      - 'bin/generate-skills-json'
+      - 'catalog/skills.json'
   workflow_dispatch:
 
 permissions:
@@ -57,11 +57,11 @@ jobs:
                    -e 's/"sha":"[^"]*"/"sha":""/g' \
                    -e 's/"updated":"[^"]*"/"updated":""/g' "$1"
           }
-          norm skills.json > /tmp/skills.committed.json
-          ./generate-skills-json
-          norm skills.json > /tmp/skills.regenerated.json
+          norm catalog/skills.json > /tmp/skills.committed.json
+          bin/generate-skills-json
+          norm catalog/skills.json > /tmp/skills.regenerated.json
           if ! diff -u /tmp/skills.committed.json /tmp/skills.regenerated.json; then
-            echo "::error::skills.json is stale — run ./generate-skills-json and commit the result (the 'generated' timestamp and per-skill sha/updated are ignored by this check)."
+            echo "::error::skills.json is stale — run bin/generate-skills-json and commit the result (the 'generated' timestamp and per-skill sha/updated are ignored by this check)."
             exit 1
           fi
           echo "skills-json: OK — committed manifest matches a fresh regen (timestamp + per-skill sha/updated aside)."

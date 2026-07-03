@@ -4,7 +4,7 @@ category: core
 description: Generate a small app or tool and deploy it live to Vercel via API
 var: ""
 tags: [dev, build]
-requires: [VERCEL_TOKEN, GH_GLOBAL]
+requires: [VERCEL_TOKEN?, GH_GLOBAL?]
 ---
 <!-- autoresearch: variation B — sharper output via prototype quality bar + self-check + signal-anchored record -->
 
@@ -159,10 +159,10 @@ Today is ${today}. Your task is to ship a small, self-contained prototype that s
 
 ## Environment Variables
 
-- `VERCEL_TOKEN` — Required for the deploy (used by `scripts/postprocess-deploy.sh`, not by Claude).
-- `GH_GLOBAL` — Required for GitHub repo creation in the postprocess step.
+- `VERCEL_TOKEN` — Needed for the Vercel deploy (used by `scripts/postprocess-deploy.sh`, not by Claude).
+- `GH_GLOBAL` — Needed for GitHub repo creation in the postprocess step.
 
-Neither is needed during Claude's in-sandbox run. Do not read them, do not embed them in any file.
+Both are **postprocess-only** — neither is used during Claude's in-sandbox run, which always succeeds at file-writing and flags `DEPLOY_PROTOTYPE_NO_POSTPROCESS` when the deploy can't run. That graceful degrade is why both are declared optional (`?`); the deploy simply doesn't happen without them. Do not read them, do not embed them in any file.
 
 ## Guidelines
 

@@ -2,7 +2,7 @@ blank_issues_enabled: false
 contact_links:
   - name: 📖 Setup & usage help
     url: https://github.com/aaronjmars/aeon#quick-start
-    about: New to Aeon? Start with the Quick start, then run ./onboard to verify your setup before filing an issue.
+    about: New to Aeon? Start with the Quick start, then run bin/onboard to verify your setup before filing an issue.
   - name: 🐦 Questions & updates
     url: https://x.com/aeonframework
     about: For general questions or to follow what's shipping, reach out on X.

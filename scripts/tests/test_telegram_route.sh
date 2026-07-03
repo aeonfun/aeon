@@ -134,6 +134,26 @@ if ! grep -q "workflow run" "$GH_LOG"; then
   pass "path-traversal skill name rejected"
 else bad "path-traversal skill name rejected"; fi
 
+# 14. callback schedule -> enable + weekly cron in aeon.yml, confirm, no dispatch.
+# os.replace in schedule_skill swaps the symlinked aeon.yml for a private sandbox
+# copy, so the real repo aeon.yml is never written through.
+reset
+run callback "schedule:token-movers:weekly"
+tmline=$(grep -E '^  token-movers:' aeon.yml 2>/dev/null)
+if [[ "$tmline" == *'enabled: true'* ]] && [[ "$tmline" == *'schedule: "0 9 * * 1"'* ]] \
+   && grep -qi "scheduled" "$CURL_LOG" && ! grep -q "workflow run" "$GH_LOG"; then
+  pass "callback schedule -> weekly cron in aeon.yml, no dispatch"
+else bad "callback schedule -> weekly cron in aeon.yml, no dispatch (got '$tmline')"; fi
+
+# 15. schedule for an unknown skill is rejected (no aeon.yml write, user told)
+reset
+before=$(grep -E '^  token-movers:' aeon.yml 2>/dev/null)
+run callback "schedule:definitely-not-a-skill-xyz:weekly"
+after=$(grep -E '^  token-movers:' aeon.yml 2>/dev/null)
+if [ "$before" = "$after" ] && grep -qi "unknown skill" "$CURL_LOG"; then
+  pass "schedule unknown skill rejected, no aeon.yml write"
+else bad "schedule unknown skill rejected, no aeon.yml write"; fi
+
 rm -rf "$SANDBOX"
 echo "---"
 [ "$fail" = "0" ] && echo "ALL PASS" || echo "SOME FAILED"

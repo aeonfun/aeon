@@ -18,12 +18,20 @@ loop for commands, buttons, or replies.
 
 ## 1. Slash commands & the `/` menu
 
-Push your enabled skills to Telegram as slash commands so the `/` autocomplete
-menu populates and the message-field menu button points at it:
+Your enabled skills become Telegram slash commands so the `/` autocomplete menu
+populates and the message-field menu button points at it. Registration is automatic:
 
-1. Actions tab → **Setup Telegram Commands** → **Run workflow**
+1. **On first setup** — saving `TELEGRAM_BOT_TOKEN` in the dashboard dispatches the
+   registration workflow for you (POST `/api/secrets` → `setup-commands.yml`). No manual step.
+2. **Re-sync after toggling skills** — the dashboard's **Re-register commands** button
+   (Credentials → Telegram) POSTs to `/api/telegram/commands`, which re-runs the same
+   workflow. It reuses the stored token server-side — nothing to paste.
+3. It also re-runs automatically on any push to `aeon.yml`, and can be run by hand from
+   the Actions tab → **Setup Telegram Commands** → **Run workflow**
    (`.github/workflows/setup-commands.yml`).
-2. It also re-runs automatically on any push to `aeon.yml`, so the menu never drifts.
+
+Every path reads `TELEGRAM_BOT_TOKEN` server-side (where secrets are readable) and calls
+`setMyCommands` + `setChatMenuButton` — identical result, no browser token handling.
 
 Command names can only use `a-z`, `0-9`, `_` — so a skill dir `deep-research`
 becomes `/deep_research`. The router inverts `_`→`-` when it dispatches.
@@ -37,19 +45,22 @@ Telegram caps the list at 100 commands; the setup workflow truncates + warns bey
 
 ## 2. Buttons on notifications
 
-`./notify` (the canonical `scripts/notify.sh`) takes `--buttons`, a JSON array of
-rows. `callback_data` has a hard **64-byte** limit — use the compact
-`action:skill:arg1:arg2` scheme:
+### Global quick actions (automatic — no skill wiring)
 
-```bash
-./notify "BTC dropped 12% in 1h" --buttons '[[
-  {"text":"Snooze 24h","callback_data":"snooze:token-movers:BTC:86400"},
-  {"text":"Mute BTC","callback_data":"mute:token-movers:BTC"}
-]]'
-```
+Every skill notification automatically carries two quick-action buttons — **🔁 Run
+again** and **📅 Schedule weekly** — keyed to the running skill (`$SKILL_NAME`).
+This is a global `notify` feature, not per-skill: `scripts/notify.sh` appends the
+row to any Telegram send. Tapping **Run again** re-dispatches the skill
+(`run:<skill>`); **Schedule weekly** enables it and sets a weekly cron in `aeon.yml`
+(`schedule:<skill>:weekly`), which the router commits. The row is skipped only when
+there is no skill context, or on a force-reply prompt (Telegram forbids inline
+buttons and `force_reply` on the same message).
 
-Recognised callback actions: `run`, `snooze`, `mute`, `save`, `dismiss`. A `url`
-button opens a link and skips the callback loop entirely:
+### Custom buttons (`--buttons`)
+
+`./notify` (the canonical `scripts/notify.sh`) also takes `--buttons`, a JSON array
+of rows appended *above* the global quick-action row. `callback_data` has a hard
+**64-byte** limit — use the compact `action:skill:arg1:arg2` scheme:
 
 ```bash
 ./notify "PR #482 needs a look" --buttons '[[
@@ -58,12 +69,15 @@ button opens a link and skips the callback loop entirely:
 ]]'
 ```
 
+Recognised callback actions: `run`, `schedule`, `snooze`, `mute`, `save`, `dismiss`.
+A `url` button opens a link and skips the callback loop entirely.
+
 ### Making snooze & mute real
 
-Button taps append to `memory/mutes.log` (`skill:arg`) and `memory/snoozes.log`
-(`skill:arg:until_epoch`). To honour them, a skill passes **`--mute-key`** when it
-alerts — `notify` then suppresses the send if the key is muted or snoozed into the
-future. No per-skill logic needed:
+Button taps for `snooze`/`mute` append to `memory/snoozes.log`
+(`skill:arg:until_epoch`) and `memory/mutes.log` (`skill:arg`). To honour them, a
+skill passes **`--mute-key`** when it alerts — `notify` then suppresses the send if
+the key is muted or snoozed into the future. No per-skill logic needed:
 
 ```bash
 ./notify "BTC dropped 12% in 1h" \
@@ -71,8 +85,6 @@ future. No per-skill logic needed:
   --buttons '[[{"text":"Snooze 24h","callback_data":"snooze:token-movers:BTC:86400"},
                {"text":"Mute BTC","callback_data":"mute:token-movers:BTC"}]]'
 ```
-
-`skills/token-movers/SKILL.md` is the reference implementation.
 
 ## 3. Menu button
 

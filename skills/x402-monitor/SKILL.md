@@ -8,7 +8,7 @@ commits: true
 permissions:
   - contents:write
 ---
-> **${var}** — vertical selector. **Empty** → the default protocol (x402) via `memory/topics/tracked-protocol.md`. A **reserved preset keyword** selects a specialized vertical: `rwa` | `compute` | `mcp` | `agent-displacement` (aliases: `agents`, `displacement`). **Any other value** is treated as a protocol name and must match a stanza in `memory/topics/tracked-protocol.md` (runs the generic Protocol Monitor branch on that protocol).
+> **${var}** — vertical selector. **Empty** → the default protocol (x402) via `memory/topics/tracked-protocol.md`. A **reserved preset keyword** selects a specialized vertical: `rwa` | `compute` | `mcp` | `agent-displacement` (aliases: `agents`, `displacement`). A value starting with `add-topic:` (e.g. `add-topic:RWA tokenization`) is the Telegram force-reply shape — it appends a new protocol stanza to the registry and ends the run without tracking (see **Inbound reply handler** below). **Any other value** is treated as a protocol name and must match a stanza in `memory/topics/tracked-protocol.md` (runs the generic Protocol Monitor branch on that protocol).
 
 Today is ${today}. Read `memory/MEMORY.md` before starting, and scan the last ~3 days of `memory/logs/` — drop anything already reported so you don't re-emit the same signal.
 
@@ -29,6 +29,39 @@ Several fast-moving verticals each need a recurring weekly "is this still spread
 Each vertical keeps its own sources, signal definitions, scoring, output format, and state file. Only the memory read, voice, and selector are shared.
 
 **Original cadences** (wired in `aeon.yml`, not here): Protocol Monitor/x402 = Tue 12:00 UTC; `rwa` = Mon 12:00; `compute` = Sat 11:00; `mcp` = Fri 10:00; `agent-displacement` = Sun 11:00. One invocation runs exactly one vertical, chosen by `${var}`.
+
+## Inbound reply handler + onboarding offer (Telegram force-reply wiring)
+
+**Check this BEFORE the selector.** If `${var}` starts with `add-topic:`, this run is the operator answering the "track a new vertical?" prompt — do NOT run any tracker branch:
+
+1. Strip the prefix and trim: `topic="${var#add-topic:}"` then strip surrounding whitespace. The value is free text and may contain spaces (e.g. `RWA tokenization`, `stablecoin infra`) — keep it whole. Derive `slug` = `topic` lowercased with spaces → hyphens (this is what the selector will normalize `${var}` to when the operator later runs the vertical).
+2. If `topic` is empty/blank after trimming, send a friendly re-ask (no force-reply loop) and END the run:
+   `./notify "No vertical received — reply to the prompt with a protocol or ecosystem to track (for example: RWA tokenization, or stablecoin infra), and I'll add it to the tracked-protocol registry."`
+3. If `slug` collides with a **reserved preset keyword** (`rwa`, `compute`, `mcp`, `agent-displacement`, or their aliases `agents`/`displacement`/`real-world-assets`/`tokenization`/`gpu`/`depin-compute`/`model-context-protocol`/`jobs`), it's already tracked — skip the append and confirm that (see step 6), then END.
+4. Ensure `memory/topics/tracked-protocol.md` exists (create the seed from the **Config** section if missing). **Dedup:** if a `### ${slug}` stanza already exists under `## Verticals`, skip the append. Otherwise append a new protocol-monitor stanza, matching the registry's documented format:
+   ```markdown
+   ### ${slug}   (preset: protocol-monitor)
+   - **Search queries (GitHub):**
+     - `${topic}`
+     - `"${topic}"`
+   - **npm packages to watch:**
+     - `${slug}`
+   - **WebSearch queries:**
+     - `${topic} site:github.com OR site:npmjs.com`
+     - `"${topic}" launch OR integration OR announcement`
+   - **One-line context:** Operator-added vertical (via Telegram force-reply). Tracks ${topic} ecosystem velocity.
+   ```
+   (All three of Search queries / npm packages / WebSearch queries are populated so the stanza is complete and won't trip `PROTOCOL_MONITOR_NO_CONFIG`. If the guessed npm package 404s, Branch A skips it gracefully.)
+5. Log under `### x402-monitor`: `- add-topic: "${topic}" → appended stanza ### ${slug} to memory/topics/tracked-protocol.md`.
+6. Confirm (keep it ≥120 chars so a topic containing a filtered word can't be dropped as a probe) and **END the run**:
+   `./notify "Now tracking \"${topic}\" as a Protocol Monitor vertical — a stanza was added to memory/topics/tracked-protocol.md. Run it any time with var=${slug}, or add a cron for it in aeon.yml."`
+
+**Onboarding offer (normal runs only, deduped).** If `${var}` did NOT start with `add-topic:` AND `memory/topics/tracked-protocol.md` did not exist before this run (i.e. you're about to create the seed) AND the last 3 days of `memory/logs/` contain no `FORCE_REPLY_OFFERED: add-topic` marker for this skill, send one force-reply offer, then continue into the selector below:
+```bash
+./notify "Want the Protocol Monitor to track another vertical beyond x402? Reply with a protocol or ecosystem (e.g. RWA tokenization) and I'll add it to the registry." \
+  --force-reply --placeholder "a topic to track" --context "x402-monitor::add-topic"
+```
+Then log a `FORCE_REPLY_OFFERED: add-topic` marker line under `### x402-monitor` so it doesn't re-offer next run. (The force-reply is a standalone notify, never combined with a digest.)
 
 ## Selector — resolve `${var}` to a branch
 

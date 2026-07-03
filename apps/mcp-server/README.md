@@ -13,13 +13,13 @@ It's the local, push-button way to run any skill from a Claude client. It spawns
 From the **repo root** (the server needs `skills.json` and the `skills/` directory beside it):
 
 ```bash
-./add-mcp                    # build + register with Claude Code
-./add-mcp --desktop          # also print the Claude Desktop config snippet
-./add-mcp --build-only       # compile without registering (useful for CI / Claude Desktop)
-./add-mcp --uninstall        # remove the 'aeon' server from Claude Code
+bin/add-mcp                    # build + register with Claude Code
+bin/add-mcp --desktop          # also print the Claude Desktop config snippet
+bin/add-mcp --build-only       # compile without registering (useful for CI / Claude Desktop)
+bin/add-mcp --uninstall        # remove the 'aeon' server from Claude Code
 ```
 
-`./add-mcp` checks Node, builds the TypeScript, and runs `claude mcp add aeon node <path>` so every skill is immediately available as an `aeon-*` tool in Claude Code. Restart your Claude session and ask: *"Use the aeon-hn-digest tool"* or *"Run aeon-token-movers with var=AEON"*.
+`bin/add-mcp` checks Node, builds the TypeScript, and runs `claude mcp add aeon node <path>` so every skill is immediately available as an `aeon-*` tool in Claude Code. Restart your Claude session and ask: *"Use the aeon-hn-digest tool"* or *"Run aeon-token-movers with var=AEON"*.
 
 Or build this app directly:
 
@@ -50,11 +50,11 @@ Examples of what `var` means per skill: a topic for research skills (`var="AI ag
 
 ## Claude Desktop
 
-`./add-mcp` registers with **Claude Code** automatically. For **Claude Desktop**, build once and add the server to your config:
+`bin/add-mcp` registers with **Claude Code** automatically. For **Claude Desktop**, build once and add the server to your config:
 
 ```bash
-./add-mcp --build-only       # produces apps/mcp-server/dist/index.js
-./add-mcp --desktop          # prints the snippet + the config path for your OS
+bin/add-mcp --build-only       # produces apps/mcp-server/dist/index.js
+bin/add-mcp --desktop          # prints the snippet + the config path for your OS
 ```
 
 Then add this to your Claude Desktop config (macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`, Windows: `%APPDATA%\Claude\claude_desktop_config.json`), replacing the path with your real repo path — see [`examples/mcp/claude_desktop_config.json`](../../examples/mcp/claude_desktop_config.json):
@@ -77,7 +77,7 @@ Restart Claude Desktop — Aeon skills appear in the tools list.
 Before wiring it into a client, confirm the server lists and runs tools with the standalone Python client:
 
 ```bash
-./add-mcp --build-only                          # produce dist/index.js
+bin/add-mcp --build-only                          # produce dist/index.js
 pip install mcp                                 # official Anthropic MCP client
 python examples/mcp/test_connection.py          # lists every aeon-* tool, then calls aeon-cost-report
 python examples/mcp/test_connection.py aeon-token-movers AEON   # call a specific tool with a var

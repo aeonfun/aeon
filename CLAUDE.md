@@ -13,7 +13,7 @@ One skill run, end to end:
 4. **Act** — read memory, fetch/compute, write files or open a PR (write mode only), and report via `./notify`.
 5. **After** — on success the workflow runs `scripts/postprocess-*.sh` (deferred network side-effects), converts feed output via `./notify-jsonrender`, and reverts stray writes from read-only skills. You append a log to `memory/logs/`.
 
-A self-healing loop runs on top: **health skills** (`skill-health`, `skill-evals`) score runs and file issues; **repair skills** (`skill-repair`) fix them by PR. Alternate entry points (`apps/mcp-server`, `apps/webhook`) launch the same skill prompt — behaviour is entry-point-agnostic. Config is managed by the dashboard (`apps/dashboard`) and pushed to GitHub as repo secrets/vars.
+A self-healing loop runs on top: the **health skill** (`skill-health`) scores runs and files issues; **repair skills** (`skill-repair`) fix them by PR. Alternate entry points (`apps/mcp-server`, `apps/webhook`) launch the same skill prompt — behaviour is entry-point-agnostic. Config is managed by the dashboard (`apps/dashboard`) and pushed to GitHub as repo secrets/vars.
 
 ## Strategy
 
@@ -46,7 +46,7 @@ After completing any task, append a log entry to `memory/logs/YYYY-MM-DD.md` und
 - **`memory/MEMORY.md`** — Short index (~50 lines): current goals, active topics, and pointers to topic files. A table of contents, not a dumping ground.
 - **`memory/topics/`** — Detailed notes by topic (e.g. `crypto.md`, `research.md`). When a topic outgrows a few lines in MEMORY.md, move it here and link.
 - **`memory/logs/`** — Daily activity logs (`YYYY-MM-DD.md`), append-only.
-- **`memory/issues/`** — Structured issue tracker for skill failures and degradations. **Health skills (`skill-health`, `skill-evals`) file issues; repair skills (`skill-repair`) close them.** The schema (frontmatter fields, severity, categories, lifecycle) is owned by `skills/skill-health/SKILL.md`; the end-to-end loop is documented in `docs/CORE.md`. Only active once `INDEX.md` exists.
+- **`memory/issues/`** — Structured issue tracker for skill failures and degradations. **The health skill (`skill-health`) files issues; repair skills (`skill-repair`) close them.** The schema (frontmatter fields, severity, categories, lifecycle) is owned by `skills/skill-health/SKILL.md`; the end-to-end loop is documented in `docs/CORE.md`. Only active once `INDEX.md` exists.
 - **`memory/skill-health/`** — Per-run quality scores the health loop reads; don't hand-edit.
 
 When consolidating memory (reflect), move detail into topic files rather than cramming everything into MEMORY.md.
@@ -56,7 +56,7 @@ When consolidating memory (reflect), move detail into topic files rather than cr
 - **`./notify "message"`** — Send to all configured channels (Telegram, Discord, Slack, SendGrid email, json-render). Unconfigured channels are skipped silently.
   - **Multi-line content: `./notify -f path/to/file.md`** (`--file`/`--body` also accepted). Do NOT use `./notify "$(cat file.md)"` — long multi-line argv trips the sandbox; the `-f` flag reads the file inside the script so argv stays short.
   - Optional flags: `--title`, `--severity {info|success|warn|critical}`, `--link`. Note: short messages containing `test`/`ping`/`debug`/`trace` are suppressed as diagnostic probes, and `NOTIFY_MIN_SEVERITY` gates low-severity sends — so don't rely on a "test" ping to confirm delivery.
-  - **Interactive (Telegram):** `--buttons '<json array-of-arrays>'` adds inline buttons (each `callback_data` uses the compact `action:skill:arg1:arg2` scheme, ≤64 bytes; actions: `run`/`snooze`/`mute`/`save`/`dismiss`, or a `url` button). `--mute-key "skill:arg"` suppresses the send when that key was muted/snoozed via a button tap — alert skills should pass it. `--force-reply` + `--placeholder` + `--context "skill::intent"` ask a stateless follow-up: the user's reply is routed back to that skill as `var=intent:reply`. Full guide: [docs/telegram-commands.md](docs/telegram-commands.md).
+  - **Interactive (Telegram):** every skill notification automatically gets two global quick-action buttons — **Run again** and **Schedule weekly** — keyed to the running skill (added by `notify`, not wired per-skill). `--buttons '<json array-of-arrays>'` adds *extra* inline buttons above that row (each `callback_data` uses the compact `action:skill:arg1:arg2` scheme, ≤64 bytes; actions: `run`/`schedule`/`snooze`/`mute`/`save`/`dismiss`, or a `url` button). `--mute-key "skill:arg"` suppresses the send when that key was muted/snoozed via a button tap — alert skills should pass it. `--force-reply` + `--placeholder` + `--context "skill::intent"` ask a stateless follow-up: the user's reply is routed back to that skill as `var=intent:reply`. Full guide: [docs/telegram-commands.md](docs/telegram-commands.md).
 - **`./scripts/skill-runs [--hours N] [--full] [--json] [--failures]`** — Audit recent GitHub Actions skill runs (counts, pass/fail rates, anomalies). Needs `gh` + `jq`.
 - **WebSearch** / **WebFetch** — built-in Claude tools for search and URL fetching; they bypass the bash sandbox, so prefer them over `curl` for reads.
 

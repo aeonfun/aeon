@@ -105,7 +105,7 @@ e. **Logs**: search last 3 days of `memory/logs/*.md` for `{name}` mentions. Sur
 
 f. **Quality history**: if `memory/skill-health/{name}.json` exists, note `avg_score` trend.
 
-g. **Output expectations**: if `skills/skill-evals/evals.json` has an entry for `{name}`, extract its `min_words`, `required_patterns`, `forbidden_patterns`. A passing run that fails these is `quality-regression`.
+g. **Output expectations**: read the target skill's own `SKILL.md` (its Output / format section and `## Summary` contract) for the shape a good run must produce — required sections, a word floor, forbidden placeholders. A passing run that violates its own spec is `quality-regression`.
 
 h. **Issue**: if `memory/issues/INDEX.md` lists an open issue for this skill, read the file — its `category` and `root_cause` short-circuit the playbook lookup below.
 
@@ -120,7 +120,7 @@ Categories follow `CLAUDE.md`. Pick the **most specific** category that fits the
 | **`timeout`** | Split work into stages, add early-return on partial success, downgrade `model:` to `claude-sonnet-4-6` or `claude-haiku-4-5-20251001` for the skill that doesn't need Opus. |
 | **`sandbox-limitation`** | Convert auth-required curls to the prefetch (`scripts/prefetch-{name}.sh`) or postprocess (`.pending-{name}/` + `scripts/postprocess-{name}.sh`) pattern from `CLAUDE.md`. Add a "Sandbox note" section to the skill. |
 | **`prompt-bug`** | Minimum-edit specificity insertion. Don't rewrite — add the missing constraint, a forbidden phrase, a required output structure, or a clarifying example. Diff should be < 30 added/removed lines. |
-| **`output-format`** / **`quality-regression`** | Cross-reference `skills/skill-evals/evals.json` for the failing assertion. Edit the skill so the next run satisfies that exact pattern. Cite the assertion in the PR body. |
+| **`output-format`** / **`quality-regression`** | Re-read the target skill's own output spec in its `SKILL.md`. Edit the skill so the next run satisfies that spec. Cite the exact requirement (section / line) in the PR body. |
 | **`missing-secret`** | **Do not modify `aeon.yml` or the workflow.** File or update the issue with `status: open`, `category: missing-secret`, naming the secret. Notify operator with the env-var name. Exit `REPAIR_DIAGNOSED_NO_FIX`. |
 | **`config`** | Reversible aeon.yml edits only — `schedule`, `var`, `model`, `enabled: false`. **Never** add or remove top-level structure or chains. Keep diff < 5 lines in aeon.yml. |
 | **`permanent-limitation`** | Skip — should not have reached repair. Update issue, exit `REPAIR_DIAGNOSED_NO_FIX`. |

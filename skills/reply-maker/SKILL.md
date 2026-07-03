@@ -14,6 +14,7 @@ requires: [XAI_API_KEY?]
 > - **empty** → **Mode A (Reply Drafting):** auto-discover reply-worthy tweets across your areas of interest (from recent logs + memory) and draft two reply options for each.
 > - **`@handle` / numeric X list ID / topic** → **Mode A (Reply Drafting)** scoped to that handle, list, or topic.
 > - **`from-logs`** (or **`--from-logs`**, optionally followed by an `@handle` or project name to narrow the scan) → **Mode B (From-Logs Engagement):** scan recent logs for flagged engagement opportunities and turn them into copy-paste-ready responses.
+> - **`revise:<instruction>`** → **Revise branch:** reload the last drafted replies and refine them per the instruction (the Telegram force-reply shape, e.g. `revise:make them shorter`).
 
 ## Preamble (both modes)
 
@@ -24,6 +25,7 @@ Then read `memory/logs/` — the window depends on the mode:
 - **Mode B:** the last 7 days of `memory/logs/` for engagement opportunities flagged by other skills (`project-pulse`, `refresh-x`, `reply-maker`, `channel-recap`) or noted in MEMORY.md "Known Follow-ups".
 
 **Parse `${var}` to pick the branch** (trim whitespace, compare case-insensitively):
+- If `${var}` starts with `revise:` — run the **Revise branch** (below) and stop. This is the shape `scripts/telegram-route.sh` sends when the operator replies to a "refine these replies?" force-reply prompt; catch it before mode parsing.
 - If `${var}` is `from-logs` or `--from-logs` — optionally followed by a whitespace-separated `@handle` or project name — run **Mode B (From-Logs Engagement)**. Treat any trailing token as an optional filter that narrows the opportunity scan to that handle/project.
 - Otherwise run **Mode A (Reply Drafting)**, treating `${var}` as the scope: empty, `@handle`, numeric X list ID, or a topic string.
 
@@ -38,6 +40,25 @@ If no soul files exist (or the bodies are empty placeholders), write replies tha
 - The kind of reply that adds to the conversation, not noise
 
 Either way, when responding to someone who cosigned/mentioned/attributed the operator (Mode B): **acknowledge without groveling** — no "thanks so much for the kind words!", just the actual response.
+
+---
+
+# Revise branch (`revise:…` — Telegram force-reply)
+
+The operator tapped the "refine these replies?" prompt and sent a free-text revision instruction. Handle it before Mode A/B:
+
+1. **Strip the prefix.** The instruction is `${var#revise:}` (keep any inner colons). Trim whitespace — e.g. `make them shorter`, `less formal`, `drop reply B on #2`.
+2. **Load the last draft.** Read `memory/drafts/reply-maker-latest.md` — the stable path every normal run saves to (see the save steps in A4 / B6). If it's missing or empty, there's nothing to refine: send `./notify "Nothing to revise yet — run reply-maker first, then reply here to refine the drafts."` and **end the run**.
+3. **Apply the instruction.** Read `soul/` for voice, then regenerate the saved replies applying the operator's instruction. Keep the same set of target tweets and the same **A/B two-option** structure (Mode A) or ready-to-post list (Mode B) — you're refining wording, not re-discovering candidates. Re-enforce the hard reply rules: ≤280 chars for X replies, no sycophancy (see **Banned sycophancy phrases**), specifics not gestures.
+4. **Re-save** the revised drafts to `memory/drafts/reply-maker-latest.md` (overwrite), so a further `revise:` refines the newest version.
+5. **Re-send** via `./notify` in the same format the originating mode uses, with a first line flagging it as a revision, e.g. `revised (${var#revise:}):`. Use `./notify -f <file>` for multi-line output.
+6. **Re-offer** a further revision (the operator is actively iterating, so this is expected, not a nag — skip the daily dedup guard here):
+   ```bash
+   ./notify "Want another pass? Reply with a change and I'll revise again." \
+     --force-reply --placeholder "e.g. make them shorter" \
+     --context "reply-maker::revise"
+   ```
+7. **Log** under `### reply-maker` with `- **Mode:** revise` and the instruction (see **Log**), then **end the run** — do NOT run Mode A or B.
 
 ---
 
@@ -161,6 +182,8 @@ source-status: xai=ok|fail|skip, memory=N, websearch=ok|fail|skip
 
 If zero candidates survive the skip gate from any source, send a single `REPLY_MAKER_EMPTY — [one-line reason]` notification and stop.
 
+Otherwise, after notifying, **save the drafts and offer a revision** (see *Save drafts + offer revision*).
+
 ### A5. Log
 
 Append to `memory/logs/${today}.md` under the shared `### reply-maker` heading (see **Log** below), using the **Mode A** template.
@@ -227,11 +250,35 @@ some opps aging — act or drop
 
 Write this to `/tmp/reply-maker-from-logs.md` then run `./notify -f /tmp/reply-maker-from-logs.md`.
 
+After notifying, **save the drafts and offer a revision** (see *Save drafts + offer revision*).
+
 ### B7. Log
 
 Append to `memory/logs/${today}.md` under the shared `### reply-maker` heading (see **Log** below), using the **Mode B** template.
 
 ---
+
+## Save drafts + offer revision (both modes)
+
+After a normal run (Mode A or B) has drafted and notified replies, do two things so the operator can refine them from Telegram. **Skip both** when the run sent nothing (`REPLY_MAKER_EMPTY`, or Mode B's `ENGAGEMENT_ACT_SKIP`).
+
+1. **Persist the drafts** to a stable path a later `revise:` run can reload:
+   ```bash
+   mkdir -p memory/drafts
+   ```
+   Write the full draft body you just sent — all selected tweets with their A/B options (Mode A), or the ready-to-post list (Mode B) — to `memory/drafts/reply-maker-latest.md`, overwriting any previous file. Only the newest draft is revisable.
+2. **Offer a revision** — a **separate** `./notify` (force_reply can't share a message with inline buttons):
+   ```bash
+   ./notify "Want to refine these replies? Reply with a change and I'll revise them." \
+     --force-reply --placeholder "e.g. make them shorter" \
+     --context "reply-maker::revise"
+   ```
+   The reply routes back as `var="revise:<instruction>"` and re-dispatches this skill into the **Revise branch**.
+
+   **Dedup — once per produced draft.** Before offering, scan the last ~2 days of `memory/logs/` for a `FORCE_REPLY_OFFERED: revise` line dated `${today}`; if present, skip the offer. When you send it, append the marker under the run's `### reply-maker` entry:
+   ```
+   - FORCE_REPLY_OFFERED: revise
+   ```
 
 ## Banned sycophancy phrases
 
@@ -270,6 +317,15 @@ The `Tweet URLs` line is what tomorrow's run reads to avoid duplicate replies �
 - ENGAGEMENT_ACT_OK
 ```
 If skipped: `ENGAGEMENT_ACT_SKIP: <reason>` (still under `### reply-maker`).
+
+**Revise (Telegram force-reply):**
+```
+### reply-maker
+- **Mode:** revise
+- **Instruction:** [the operator's revision instruction]
+- **Base draft:** memory/drafts/reply-maker-latest.md (reloaded + re-saved)  (or: none — nothing to revise)
+- **Notification:** sent
+```
 
 ## Sandbox note
 

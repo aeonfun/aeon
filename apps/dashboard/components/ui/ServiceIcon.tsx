@@ -42,7 +42,6 @@ const DOMAINS: Record<string, string> = {
   RESEND_API_KEY: 'resend.com',
   LIQUIDPAD_API_KEY: 'liquidpad.site',
   ADMANAGE_API_KEY: 'admanage.ai',
-  SUPERNOTES_API_KEY: 'supernotes.app',
   CONGRESS_GOV_API_KEY: 'congress.gov',
   DEVTO_API_KEY: 'dev.to',
   NEYNAR_API_KEY: 'neynar.com',

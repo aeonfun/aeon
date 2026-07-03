@@ -26,8 +26,8 @@ LOW_AVG = 2.5
 # The load-bearing set (docs/CORE.md) — never retirement candidates.
 CORE_SKILLS = {
     "autoresearch", "cost-report", "create-skill", "digest",
-    "heartbeat", "onboard", "priority-brief", "reflect", "self-improve",
-    "skill-evals", "skill-health", "skill-repair",
+    "heartbeat", "priority-brief", "self-improve",
+    "skill-health", "skill-repair",
 }
 
 

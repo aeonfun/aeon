@@ -39,7 +39,7 @@ export function PacksPanel({ firstParty, community, skills, enabledPacks, loadin
 
   const handleCopy = async (pack: CommunityPack) => {
     try {
-      await navigator.clipboard.writeText(`./install-skill-pack ${installArg(pack)}`)
+      await navigator.clipboard.writeText(`bin/install-skill-pack ${installArg(pack)}`)
       setCopied(pack.repo)
       setTimeout(() => setCopied(c => (c === pack.repo ? null : c)), 1500)
     } catch { /* clipboard blocked — the command is still shown in the tooltip */ }
@@ -74,9 +74,61 @@ export function PacksPanel({ firstParty, community, skills, enabledPacks, loadin
   ]
 
   if (loading) {
+    // Skeleton mirrors the loaded layout (hero + stat grid + card grid) so the
+    // page doesn't reflow when data lands. Static labels stay real; only the
+    // data-driven surfaces pulse.
     return (
-      <div className="max-w-5xl mx-auto py-24 text-center">
-        <p className="font-display uppercase text-aeon-fg text-xl tracking-wide">Loading packs…</p>
+      <div className="max-w-5xl mx-auto pb-16 space-y-10" aria-busy="true" aria-live="polite">
+        <span className="sr-only">Loading packs…</span>
+
+        {/* Hero skeleton */}
+        <section className="relative overflow-hidden border border-[rgba(250,250,250,0.10)] bg-aeon-panel">
+          <div className="dither" aria-hidden="true" />
+          <div className="relative z-10 px-8 pt-10 pb-8">
+            <div className="flex items-center gap-3 mb-5">
+              <span className="w-7 h-px bg-aeon-red/60" />
+              <div className="h-2.5 w-24 bg-[rgba(250,250,250,0.10)] animate-pulse" />
+            </div>
+            <div className="h-14 w-56 bg-[rgba(250,250,250,0.14)] animate-pulse" />
+            <div className="mt-6 max-w-xl space-y-2">
+              <div className="h-3 w-full bg-[rgba(250,250,250,0.07)] animate-pulse" />
+              <div className="h-3 w-4/5 bg-[rgba(250,250,250,0.07)] animate-pulse" />
+            </div>
+          </div>
+          <dl className="relative z-10 grid grid-cols-2 sm:grid-cols-4 border-t border-[rgba(250,250,250,0.10)]">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className={`px-6 py-5 ${i < 3 ? 'border-r border-[rgba(250,250,250,0.10)]' : ''}`}>
+                <div className="h-2.5 w-12 bg-[rgba(250,250,250,0.10)] mb-3 animate-pulse" />
+                <div className="h-8 w-10 bg-[rgba(250,250,250,0.12)] animate-pulse" />
+              </div>
+            ))}
+          </dl>
+        </section>
+
+        {/* Pack card grid skeleton */}
+        <Section index="01" label="Your packs">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-[rgba(250,250,250,0.10)] border border-[rgba(250,250,250,0.10)]">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="bg-aeon-bg px-6 py-5 flex flex-col gap-3">
+                <div className="flex items-start gap-3">
+                  <span className="mt-1 w-2.5 h-2.5 rounded-full bg-[rgba(250,250,250,0.14)] shrink-0 animate-pulse" />
+                  <div className="flex-1 space-y-2">
+                    <div className="h-3.5 w-32 bg-[rgba(250,250,250,0.14)] animate-pulse" />
+                    <div className="h-2.5 w-20 bg-[rgba(250,250,250,0.08)] animate-pulse" />
+                  </div>
+                </div>
+                <div className="space-y-2 pt-1">
+                  <div className="h-2.5 w-full bg-[rgba(250,250,250,0.06)] animate-pulse" />
+                  <div className="h-2.5 w-5/6 bg-[rgba(250,250,250,0.06)] animate-pulse" />
+                </div>
+                <div className="mt-auto flex items-center gap-2 pt-2">
+                  <div className="h-7 w-24 bg-[rgba(250,250,250,0.08)] animate-pulse" />
+                  <div className="h-7 w-20 bg-[rgba(250,250,250,0.06)] animate-pulse" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </Section>
       </div>
     )
   }
@@ -227,7 +279,7 @@ export function PacksPanel({ firstParty, community, skills, enabledPacks, loadin
                   </button>
                   <button
                     onClick={() => handleCopy(pack)}
-                    title={`Copy: ./install-skill-pack ${installArg(pack)}`}
+                    title={`Copy: bin/install-skill-pack ${installArg(pack)}`}
                     className="shrink-0 px-2 py-1.5 border border-[rgba(250,250,250,0.12)] text-primary-50 hover:text-primary-100 hover:border-[rgba(250,250,250,0.22)] transition-colors cursor-target"
                   >
                     {copied === pack.repo ? (

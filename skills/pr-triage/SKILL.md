@@ -102,7 +102,7 @@ Score the PR against four checks. Every check is observable from the diff + meta
 
 | Check | Pass condition |
 |---|---|
-| **Scope** | Touches only `skills/`, `docs/`, `examples/`, `images/`, `assets/`, `README.md`, `SHOWCASE.md`, `CLAUDE.md`. Touching `.github/workflows/`, `aeon` (root binary), `scripts/`, `apps/mcp-server/`, `apps/dashboard/lib/` requires a maintainer. |
+| **Scope** | Touches only `skills/`, `docs/`, `examples/`, `images/`, `assets/`, `catalog/`, `README.md`, `SHOWCASE.md`, `CLAUDE.md`. Touching `.github/workflows/`, `aeon` (root binary), `bin/`, `scripts/`, `apps/mcp-server/`, `apps/dashboard/lib/` requires a maintainer. |
 | **Format** | If a `skills/<name>/SKILL.md` is added or modified, the file has YAML frontmatter with `name`, `description`, `var`, `tags` keys. (Skip this check when no SKILL.md is touched.) |
 | **Originality** | If a new skill is added, its directory name does not already exist on `main`. Cross-check via `gh api repos/owner/repo/contents/skills` once per run. |
 | **Size** | `additions + deletions ≤ 500` lines, OR labelled `large-ok` by a maintainer. |

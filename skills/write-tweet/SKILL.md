@@ -6,13 +6,15 @@ var: ""
 tags: [social, content]
 requires: [XAI_API_KEY?]
 ---
-> **${var}** — `[format] [argument]`. Pick one of three formats, then pass its argument. Empty ⇒ **drafts** (standalone tweet drafts). `thread …` ⇒ a multi-tweet **thread**. `remix …` ⇒ **remix** of your past tweets. See Selector below.
+> **${var}** — `[format] [argument]`. Pick one of three formats, then pass its argument. Empty ⇒ **drafts** (standalone tweet drafts). `thread …` ⇒ a multi-tweet **thread**. `remix …` ⇒ **remix** of your past tweets. `revise:<instruction>` ⇒ **revise** the last saved draft (the Telegram force-reply shape, e.g. `revise:make it punchier`). See Selector below.
 
 Read `memory/MEMORY.md` for context on recent articles, digests, topics being tracked, and the operator's tracked handles/token. Each branch then reads its own `memory/logs/` window (drafts: 3 days, thread: 7 days, remix: 14 days) — see the branch.
 
 ## Selector
 
-Parse `${var}` once, before doing anything else:
+**Revise intercept first (Telegram force-reply).** If `${var}` starts with `revise:` → jump straight to **Branch: REVISE** (below) and stop; do **not** token-parse. This is the shape `scripts/telegram-route.sh` sends when the operator replies to a "refine this draft?" prompt — the `revise:` prefix would otherwise fall through to the drafts branch.
+
+Otherwise, parse `${var}` once, before doing anything else:
 
 1. Trim whitespace. Take the **first token** (everything up to the first space **or** the first `:`), lowercased.
 2. If that token is one of `drafts`, `thread`, `remix` → that's the **format**. The **argument** is the remainder of `${var}` after stripping the keyword and one optional following `:` and surrounding whitespace.
@@ -31,6 +33,25 @@ Parse `${var}` once, before doing anything else:
 | `remix 2025-01-01:2025-03-01` | remix | `2025-01-01:2025-03-01` | Remix, explicit date range |
 
 Then dispatch to the matching branch below. Only run the selected branch.
+
+---
+
+# Branch: REVISE (`revise:…` — Telegram force-reply)
+
+The operator tapped the "refine this draft?" prompt and sent a free-text revision instruction. Handle it before any normal generation:
+
+1. **Strip the prefix.** The instruction is `${var#revise:}` (the remainder may itself contain colons — keep them). Trim surrounding whitespace. Example values: `make it punchier`, `drop the emoji`, `lead with the number`.
+2. **Load the last draft.** Read `memory/drafts/write-tweet-latest.md` — the stable path every normal run saves to (see **Save draft + offer revision**). If it's missing or empty, there's nothing to refine yet: send `./notify "Nothing to revise yet — run a tweet draft first, then reply here to refine it."` and **end the run**.
+3. **Apply the instruction.** Re-read `soul/` (`SOUL.md`, `STYLE.md`, examples) for voice, then regenerate the saved draft applying the operator's instruction. Keep the **same format** (drafts / thread / remix) and structure as the saved draft — you're refining it, not starting over — and respect the same character limits and anti-patterns as the originating branch (no hashtags, no emojis unless the draft had them, per-tier/thread length caps).
+4. **Re-save.** Overwrite `memory/drafts/write-tweet-latest.md` with the revised draft, so a further `revise:` refines the newest version.
+5. **Re-send** via `./notify` in the same shape the originating branch uses for its draft, with a first line that flags it as a revision, e.g. `revised (${var#revise:}):` followed by the refreshed draft body. (For multi-line output use `./notify -f <file>`.)
+6. **Re-offer** a further revision (the operator is actively iterating, so this is expected, not a nag — skip the daily dedup guard here):
+   ```bash
+   ./notify "Want another pass? Reply with a change and I'll revise again." \
+     --force-reply --placeholder "e.g. cut the last line" \
+     --context "write-tweet::revise"
+   ```
+7. **Log** under `### write-tweet` with `- **Format:** revise` and the instruction (see **Log**), then **end the run** — do NOT run drafts / thread / remix.
 
 ---
 
@@ -194,7 +215,7 @@ tweet drafts: [topic]
 best: #[n] — [reason]
 ```
 
-Then log (see **Log**, format `drafts`).
+Then **save the draft and offer a revision** (see *Save draft + offer revision*), and log (see **Log**, format `drafts`).
 
 ---
 
@@ -345,7 +366,7 @@ thread: [topic — 3-5 words]
 n/ [tweet n]
 ```
 
-Then log (see **Log**, format `thread`). On a quiet day (top candidate < 3, or empty log), send nothing — just log the no-op.
+Then **save the draft and offer a revision** (see *Save draft + offer revision*), and log (see **Log**, format `thread`). On a quiet day (top candidate < 3, or empty log), send nothing — no draft, no save, no offer — just log the no-op.
 
 ---
 
@@ -506,6 +527,8 @@ source: cache=hit|miss, xai=ok|partial|fail, fetched=N, kept=N, drops=N
 - `REMIX_TWEETS_EMPTY` — XAI returned no usable tweets in the window. Notify once with cause and stop.
 - `REMIX_TWEETS_ERROR` — no handle configured, no `XAI_API_KEY`, OR both XAI queries failed AND WebFetch fallback failed. Notify cause and stop.
 
+On a successful (`OK`/`DEGRADED`) run, after notifying, **save the draft and offer a revision** (see *Save draft + offer revision*) — persist the remix batch to `memory/drafts/write-tweet-latest.md`. Skip the save+offer on `EMPTY`/`ERROR` (nothing was produced).
+
 ### 7. Log (remix)
 
 Append to `memory/logs/${today}.md` under the shared `### write-tweet` heading (see **Log**, format `remix`).
@@ -525,6 +548,28 @@ Save the fetched originals (even the filtered-out ones) to `memory/topics/tweet-
 - `X_HANDLE` (optional) — X handle to search. Falls back to `soul/SOUL.md` Identity section if unset.
 
 ---
+
+## Save draft + offer revision (all branches)
+
+After a normal run (drafts / thread / remix) has produced and notified a draft, do two things so the operator can refine it from Telegram. **Skip both on a no-op** (e.g. a quiet-day thread that produced nothing) — there's nothing to save or offer.
+
+1. **Persist the draft** to a stable path a later `revise:` run can reload:
+   ```bash
+   mkdir -p memory/drafts
+   ```
+   Write the full draft you just sent — the same content as the notification body (all tiers / the whole thread / all remixes) — to `memory/drafts/write-tweet-latest.md`, overwriting any previous file. Only the newest draft is revisable.
+2. **Offer a revision.** Because `force_reply` and inline buttons can't share one Telegram message, send this as a **separate** `./notify` after the draft:
+   ```bash
+   ./notify "Want to refine this draft? Reply with a change and I'll revise it." \
+     --force-reply --placeholder "e.g. make it punchier" \
+     --context "write-tweet::revise"
+   ```
+   The reply routes back as `var="revise:<instruction>"` and re-dispatches this skill into **Branch: REVISE**.
+
+   **Dedup — once per produced draft.** Before offering, scan the last ~2 days of `memory/logs/` for a `FORCE_REPLY_OFFERED: revise` line dated `${today}`; if present, skip the offer. When you send it, append the marker under the run's `### write-tweet` entry:
+   ```
+   - FORCE_REPLY_OFFERED: revise
+   ```
 
 ## Log
 
@@ -549,6 +594,15 @@ Append **one** entry to `memory/logs/${today}.md` under a single `### write-twee
 - **Length:** [n] tweets
 - **Hook:** [first 60 chars of tweet 1]
 - **Notification sent:** yes | no (quiet day)
+```
+
+**Format `revise`:**
+```
+### write-tweet
+- **Format:** revise
+- **Instruction:** [the operator's revision instruction]
+- **Base draft:** memory/drafts/write-tweet-latest.md (reloaded + re-saved)  (or: none — nothing to revise)
+- **Notification sent:** yes
 ```
 
 **Format `remix`:**

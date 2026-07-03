@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { execFileSync } from 'child_process'
-import { ghAvailable, ghArgsRepo } from '@/lib/gh'
+import { ghAvailable, ghArgsRepo, dispatchCommandsWorkflow } from '@/lib/gh'
 import { syncGatewayProvider } from '@/lib/gateway'
 import { errorResponse } from '@/lib/http'
 import { GATEWAY_SECRET_NAMES } from '@/lib/gateway-registry'
@@ -31,22 +31,22 @@ const BUILTIN_SECRETS: Omit<Secret, 'isSet'>[] = [
   { name: 'XAI_API_KEY', group: 'Skill Keys', description: 'xAI / Grok API key (xai-...) - triple-duty: (1) tweet & X-analysis skills, (2) the Grok gateway (routes Claude Code at api.x.ai), (3) API-key auth for the grok harness. Create at console.x.ai' },
   { name: 'COINGECKO_API_KEY', group: 'Skill Keys', description: 'CoinGecko API key - crypto price/market skills. Get one at coingecko.com/en/api' },
   { name: 'ALCHEMY_API_KEY', group: 'Skill Keys', description: 'Alchemy API key - on-chain RPC/data skills. Create at dashboard.alchemy.com' },
-  { name: 'ETHERSCAN_API_KEY', group: 'Skill Keys', description: 'Etherscan multichain (V2) API key - on-chain skills (tx-explain, rug-scan, holder-concentration); lifts rate limits. Get one at etherscan.io/apis' },
-  { name: 'BASESCAN_KEY', group: 'Skill Keys', description: 'Basescan API key - Base on-chain skills (fund-flow, linked-wallets, investigation-report). Get one at basescan.org/myapikey' },
+  { name: 'ETHERSCAN_API_KEY', group: 'Skill Keys', description: 'Etherscan multichain (V2) API key - one key covers Ethereum + Base + other chains for on-chain skills (tx-explain, investigation-report, onchain-monitor); lifts rate limits. Get one at etherscan.io/apis' },
+  { name: 'BASESCAN_KEY', group: 'Skill Keys', description: 'Base explorer key for on-chain skills (investigation-report). Etherscan V2 is one multichain key, so the simplest setup is the SAME value as ETHERSCAN_API_KEY; a standalone basescan.org key also works. Optional - lifts Base rate limits. Keys at etherscan.io/apis' },
   { name: 'BANKR_API_KEY', group: 'Skill Keys', description: 'Bankr Wallet API key (X-API-Key) - token distribution & treasury skills (distribute-tokens, vigil, treasury-info). Enable at bankr.bot/api-keys' },
   { name: 'VERDIKTA_API_KEY', group: 'Skill Keys', description: 'Verdikta bounty bot API key (X-Bot-API-Key) - bounty hunting (verdikta-hunter). Register via POST bounties.verdikta.org/api/bots/register' },
   { name: 'VERDIKTA_WALLET_KEY', group: 'Skill Keys', description: 'Private key of a DEDICATED low-balance Base hot wallet - verdikta-hunter on-chain submissions only. Every tx is pinned to the BountyEscrow contract and hard-capped by the VERDIKTA_MAX_SPEND_ETH repo var (default 0.0005). Never reuse a wallet holding real funds' },
-  { name: 'VERCEL_TOKEN', group: 'Skill Keys', description: 'Vercel access token - deploy skills (deploy-prototype, vercel-projects). Create at vercel.com/account/settings/tokens' },
-  { name: 'REPLICATE_API_TOKEN', group: 'Skill Keys', description: 'Replicate API token - image/diagram generation (technical-explainer). Get one at replicate.com/account/api-tokens' },
-  { name: 'RESEND_API_KEY', group: 'Skill Keys', description: 'Resend API key - emailed digests (priority-brief, retrospective). Create at resend.com' },
-  { name: 'ADMANAGE_API_KEY', group: 'Skill Keys', description: 'AdManage API key - ad campaign skills (schedule-ads, create-campaign). From admanage.ai/api-docs' },
-  { name: 'SUPERNOTES_API_KEY', group: 'Skill Keys', description: 'Supernotes API key - note-taking skill. Create one under Settings → API at supernotes.app' },
+  { name: 'VERCEL_TOKEN', group: 'Skill Keys', description: 'Vercel access token - deploy skills (deploy-prototype, auto-workflow, product-pulse). Create at vercel.com/account/settings/tokens' },
+  { name: 'REPLICATE_API_TOKEN', group: 'Skill Keys', description: 'Replicate API token - hero/diagram image generation (article, capabilities-map). Get one at replicate.com/account/api-tokens' },
+  { name: 'RESEND_API_KEY', group: 'Skill Keys', description: 'Resend API key - emailed digests & security disclosures (send-email, reflect, heartbeat, vuln-scanner, vuln-tracker). Create at resend.com' },
+  { name: 'ADMANAGE_API_KEY', group: 'Skill Keys', description: 'AdManage API key - ad-campaign skill (schedule-ads). From admanage.ai/api-docs' },
   { name: 'CONGRESS_GOV_API_KEY', group: 'Skill Keys', description: 'Congress.gov API key - regulatory monitoring (reg-monitor). Sign up at api.congress.gov/sign-up' },
   { name: 'DEVTO_API_KEY', group: 'Skill Keys', description: 'Dev.to API key - article syndication. Generate at dev.to/settings/extensions' },
   { name: 'NEYNAR_API_KEY', group: 'Skill Keys', description: 'Neynar API key - Farcaster read/cast (farcaster-digest, syndicate-article). Get one at neynar.com' },
-  { name: 'NEYNAR_SIGNER_UUID', group: 'Skill Keys', description: 'Neynar managed signer UUID - required to publish Farcaster casts' },
-  { name: 'GH_GLOBAL', group: 'Skill Keys', description: 'GitHub PAT with cross-repo access - cross-repo skills & deploys. Create one at github.com/settings/tokens' },
-  { name: 'BASE_RPC_URL', group: 'Skill Keys', description: 'Custom Base RPC endpoint - onchain Base skills (fund-flow, honeypot-check, vigil-revoke). Optional: a public RPC is used by default; set a paid endpoint to lift rate limits. Find a provider at docs.base.org/chain/node-providers' },
+  { name: 'NEYNAR_SIGNER_UUID', group: 'Skill Keys', description: 'Neynar managed signer UUID - required to publish Farcaster casts (syndicate-article); pairs with NEYNAR_API_KEY. Create a managed signer in the Neynar dev portal at dev.neynar.com' },
+  { name: 'GH_GLOBAL', group: 'Skill Keys', description: 'GitHub PAT with cross-repo WRITE access - cross-repo skills & deploys (changelog push-to, feature external, deploy-prototype, vuln-scanner). Auto-promoted to the run\'s GITHUB_TOKEN. Create one at github.com/settings/tokens' },
+  { name: 'GH_READ_PAT', group: 'Skill Keys', description: 'GitHub read-only PAT - optional. Used only by prefetch steps to enrich cross-repo / private-repo reads (bd-radar, product-pulse); kept separate from the write-capable GH_GLOBAL for least privilege. Without it those skills fall back to public data. Create a read-only token at github.com/settings/tokens' },
+  { name: 'BASE_RPC_URL', group: 'Skill Keys', description: 'Custom Base RPC endpoint - onchain Base skills (investigation-report, vigil, token-movers). Optional: a public RPC is used by default; set a paid endpoint to lift rate limits. Find a provider at docs.base.org/chain/node-providers' },
 ]
 
 const BUILTIN_NAMES = new Set(BUILTIN_SECRETS.map(s => s.name))
@@ -116,6 +116,13 @@ export async function POST(request: Request) {
     // Keep routing on `auto` so the workflow resolves the provider at run time
     // from whichever keys are set (scripts/llm-gateway.sh) - no per-key pinning.
     if (GATEWAY_SECRET_NAMES.includes(name)) await syncGatewayProvider()
+    // Auto-register the Telegram slash-command menu the moment the bot token lands,
+    // so the operator never has to run the workflow by hand for the first setup.
+    // Best-effort: a dispatch hiccup must not fail the secret save (the manual
+    // "Re-register" button and the aeon.yml push trigger are the fallbacks).
+    if (name === 'TELEGRAM_BOT_TOKEN') {
+      try { dispatchCommandsWorkflow() } catch { /* non-fatal — token is still saved */ }
+    }
     return NextResponse.json({ ok: true })
   } catch (error: unknown) {
     return errorResponse(error, 'Failed to set secret')

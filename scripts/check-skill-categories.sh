@@ -54,7 +54,7 @@ if [[ "$status" -eq 0 ]]; then
 else
   echo ""
   echo "Fix: set 'category: <pack>' in each SKILL.md frontmatter (one of: $VALID)."
-  echo "See docs/skill-packs.md. New skills: ./new-from-template ... --category <pack>."
+  echo "See docs/skill-packs.md. New skills: bin/new-from-template ... --category <pack>."
 fi
 
 exit "$status"

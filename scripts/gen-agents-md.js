@@ -1,14 +1,22 @@
 #!/usr/bin/env node
-// gen-agents-md.js — generate AGENTS.md from CLAUDE.md + STRATEGY.md.
+// gen-agents-md.js — generate a MINIMAL AGENTS.md carrying STRATEGY.md for grok.
 //
-// Why: the Grok Build (`grok`) harness auto-loads AGENTS.md as its standing
-// instructions the way Claude Code auto-loads CLAUDE.md. To make a skill behave
-// identically on either harness, AGENTS.md must carry the SAME operating manual.
-// CLAUDE.md pulls STRATEGY.md via the Claude-Code-specific `@STRATEGY.md` import,
-// which grok does not honour, so we inline STRATEGY.md's contents here.
+// Why this file is tiny (and used to be a full copy of CLAUDE.md):
+//
+// The Grok Build (`grok`) harness reads BOTH `AGENTS.md` and `CLAUDE.md` as
+// standing instructions — a directory that holds both contributes both (verified
+// with `grok inspect`). Grok reads `CLAUDE.md` natively via its Claude-compat
+// discovery, so duplicating the whole operating manual into AGENTS.md just
+// double-loaded ~2.5k tokens of near-identical text on every grok run.
+//
+// The ONE thing CLAUDE.md can't deliver to grok is STRATEGY.md: CLAUDE.md pulls
+// it via the Claude-Code-specific `@STRATEGY.md` import, and grok does not expand
+// `@`-imports (it loads each instruction file verbatim). So AGENTS.md now carries
+// ONLY the strategy — the delta — and lets grok read the rest of the manual from
+// CLAUDE.md. This keeps both harnesses behaviour-identical at ~1/12th the tokens.
 //
 // AGENTS.md is committed (grok reads it from the checkout), so regenerate it
-// whenever CLAUDE.md or STRATEGY.md changes:
+// whenever STRATEGY.md changes:
 //
 //   node scripts/gen-agents-md.js          # write AGENTS.md
 //   node scripts/gen-agents-md.js --check  # verify it's up to date (CI/parity)
@@ -19,25 +27,29 @@ const fs = require('fs')
 const path = require('path')
 
 const root = path.resolve(__dirname, '..')
-const claudePath = path.join(root, 'CLAUDE.md')
 const strategyPath = path.join(root, 'STRATEGY.md')
 const outPath = path.join(root, 'AGENTS.md')
 
-const BANNER = `<!-- AUTO-GENERATED from CLAUDE.md + STRATEGY.md by scripts/gen-agents-md.js.
-     Do not edit by hand — edit CLAUDE.md / STRATEGY.md and re-run the generator.
-     This is Aeon's operating manual for the Grok Build (grok) harness; it mirrors
-     CLAUDE.md, which Claude Code loads. Keep behaviour harness-agnostic. -->
+const BANNER = `<!-- AUTO-GENERATED from STRATEGY.md by scripts/gen-agents-md.js. Do not edit by hand.
+     Grok (the grok harness) loads BOTH this file and CLAUDE.md as standing
+     instructions and reads CLAUDE.md natively, so the full operating manual lives
+     in CLAUDE.md — NOT duplicated here. This file carries only STRATEGY.md, which
+     CLAUDE.md delivers to Claude Code via the \`@STRATEGY.md\` import that grok does
+     not expand. Edit STRATEGY.md and re-run the generator to update it. -->
+`
+
+const PREAMBLE = `# Strategy (Grok harness)
+
+Grok already loads Aeon's full operating manual from \`CLAUDE.md\` (how Aeon works,
+memory, tools, capability mode, security, output). This file adds only the
+operator's strategy below — the north-star \`CLAUDE.md\` references as \`@STRATEGY.md\`,
+which grok does not expand. Read it at the start of every task and let it break
+ties; absorb it, don't quote it.
 `
 
 function build() {
-  const claude = fs.readFileSync(claudePath, 'utf8')
   const strategy = fs.readFileSync(strategyPath, 'utf8').trim()
-  // Inline the `@STRATEGY.md` import (its own line) with STRATEGY.md's body.
-  const inlined = claude.replace(
-    /^@STRATEGY\.md$/m,
-    `<!-- begin inlined STRATEGY.md -->\n${strategy}\n<!-- end inlined STRATEGY.md -->`,
-  )
-  return BANNER + '\n' + inlined
+  return `${BANNER}\n${PREAMBLE}\n${strategy}\n`
 }
 
 const generated = build()

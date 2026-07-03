@@ -132,6 +132,57 @@ TELEGRAM_BOT_TOKEN=x TELEGRAM_CHAT_ID=123 NOTIFY_DRY_RUN=1 \
 cd "$ROOT" || exit 1
 rm -rf "$MK"
 
+# --- global quick-action buttons (Run again + Schedule weekly), keyed to SKILL_NAME ---
+
+# 12. a normal skill notification gets the global Run again + Schedule weekly row
+reset
+TELEGRAM_BOT_TOKEN=x TELEGRAM_CHAT_ID=123 NOTIFY_DRY_RUN=1 SKILL_NAME=token-movers \
+  bash "$NOTIFY" "A normal skill digest long enough to clear the probe filter here" >/dev/null 2>&1
+if [ -f "$WORK/tg-payload.jsonl" ] && \
+   jq -e '.reply_markup.inline_keyboard[-1][0].callback_data=="run:token-movers"' "$WORK/tg-payload.jsonl" >/dev/null 2>&1 && \
+   jq -e '.reply_markup.inline_keyboard[-1][1].callback_data=="schedule:token-movers:weekly"' "$WORK/tg-payload.jsonl" >/dev/null 2>&1; then
+  pass "global Run again + Schedule weekly buttons attached"
+else
+  bad "global Run again + Schedule weekly buttons attached"
+fi
+
+# 13. skill --buttons rows are kept, with the global quick-action row appended beneath
+reset
+TELEGRAM_BOT_TOKEN=x TELEGRAM_CHAT_ID=123 NOTIFY_DRY_RUN=1 SKILL_NAME=pr-review \
+  bash "$NOTIFY" "Digest body long enough to clear the probe filter comfortably" \
+  --buttons '[[{"text":"Open","url":"https://example.com"}]]' >/dev/null 2>&1
+if [ -f "$WORK/tg-payload.jsonl" ] && \
+   jq -e '.reply_markup.inline_keyboard[0][0].url=="https://example.com"' "$WORK/tg-payload.jsonl" >/dev/null 2>&1 && \
+   jq -e '.reply_markup.inline_keyboard[-1][0].callback_data=="run:pr-review"' "$WORK/tg-payload.jsonl" >/dev/null 2>&1; then
+  pass "custom --buttons kept + global row appended"
+else
+  bad "custom --buttons kept + global row appended"
+fi
+
+# 14. a force_reply prompt never carries inline buttons (mutual exclusivity), even with SKILL_NAME set
+reset
+TELEGRAM_BOT_TOKEN=x TELEGRAM_CHAT_ID=123 NOTIFY_DRY_RUN=1 SKILL_NAME=github-monitor \
+  bash "$NOTIFY" "Which repository should I track for you now" \
+  --force-reply --placeholder "owner/repo" --context "github-monitor::add-repo" >/dev/null 2>&1
+if [ -f "$WORK/tg-payload.jsonl" ] && \
+   jq -e '.reply_markup.force_reply==true' "$WORK/tg-payload.jsonl" >/dev/null 2>&1 && \
+   jq -e '.reply_markup|has("inline_keyboard")|not' "$WORK/tg-payload.jsonl" >/dev/null 2>&1; then
+  pass "force_reply prompt carries no inline buttons"
+else
+  bad "force_reply prompt carries no inline buttons"
+fi
+
+# 15. no SKILL_NAME context -> no global buttons (bare notify stays button-free)
+reset
+TELEGRAM_BOT_TOKEN=x TELEGRAM_CHAT_ID=123 NOTIFY_DRY_RUN=1 \
+  bash "$NOTIFY" "A contextless notification with no skill name set at all here" >/dev/null 2>&1
+if [ -f "$WORK/tg-payload.jsonl" ] && \
+   jq -e '.|has("reply_markup")|not' "$WORK/tg-payload.jsonl" >/dev/null 2>&1; then
+  pass "no SKILL_NAME -> no global buttons"
+else
+  bad "no SKILL_NAME -> no global buttons"
+fi
+
 reset
 echo "---"
 [ "$fail" = "0" ] && echo "ALL PASS" || echo "SOME FAILED"

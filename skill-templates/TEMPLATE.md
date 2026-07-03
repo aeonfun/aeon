@@ -15,10 +15,10 @@ Six pre-built skill starters for the most common operator use cases. Each templa
 
 ## Install a template
 
-Use `./new-from-template`:
+Use `bin/new-from-template`:
 
 ```bash
-./new-from-template crypto-tracker my-token-watcher \
+bin/new-from-template crypto-tracker my-token-watcher \
   --var TOKEN_SYMBOL=ETH \
   --var COINGECKO_ID=ethereum \
   --var ALERT_THRESHOLD_PCT=10
@@ -29,8 +29,8 @@ That copies `templates/crypto-tracker/SKILL.md` → `skills/my-token-watcher/SKI
 If you don't pass `--var` flags, the script copies the file verbatim and prints the list of tokens that still need replacement before the skill will run cleanly.
 
 ```bash
-./new-from-template --list                    # print available templates
-./new-from-template crypto-tracker --tokens   # print the tokens a template uses
+bin/new-from-template --list                    # print available templates
+bin/new-from-template crypto-tracker --tokens   # print the tokens a template uses
 ```
 
 ## Template format
@@ -84,7 +84,7 @@ The dashboard shows a per-skill **MCP servers** panel (install state pulled from
 `.mcp.json`, name/logo from the catalog) and a ⚠ banner with a one-click jump to
 the MCP page when a required server isn't installed.
 
-Replacement tokens use the form `[REPLACE: KEY]`. Keys are uppercase snake-case so they're easy to spot in a diff. The literal token `[REPLACE: SKILL_NAME]` is special — it's auto-set to the skill name passed to `./new-from-template` (the second positional argument).
+Replacement tokens use the form `[REPLACE: KEY]`. Keys are uppercase snake-case so they're easy to spot in a diff. The literal token `[REPLACE: SKILL_NAME]` is special — it's auto-set to the skill name passed to `bin/new-from-template` (the second positional argument).
 
 ## Adding a new template
 
@@ -92,4 +92,4 @@ Replacement tokens use the form `[REPLACE: KEY]`. Keys are uppercase snake-case 
 2. Drop a `SKILL.md` inside, with `[REPLACE: KEY]` tokens for the operator-specific parts.
 3. Add a row to the table at the top of this file.
 
-That's it — `./new-from-template --list` discovers templates by scanning for `SKILL.md` files under `templates/`, so no registry update is required.
+That's it — `bin/new-from-template --list` discovers templates by scanning for `SKILL.md` files under `templates/`, so no registry update is required.

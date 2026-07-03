@@ -1,0 +1,181 @@
+{
+  "version": "1.0",
+  "updated": "2026-07-03",
+  "description": "Machine-readable registry of community skill packs installable via bin/install-skill-pack. Mirrors the human-readable table in README.md.",
+  "packs": [
+    {
+      "repo": "AntFleet/aeon-skills",
+      "name": "AntFleet aeon-skills",
+      "description": "On-demand two-model-consensus PR review with on-chain USDC payment on Base. Channel-rail variant for installed repos; x402-rail variant for public repos with pay-per-call USDC (v1 restricted to aeon-ecosystem callers).",
+      "author": "AntFleet",
+      "license": "MIT",
+      "homepage": "https://www.antfleet.dev",
+      "category": "dev",
+      "trust_level": "trusted",
+      "skills": [
+        "pr-review-antfleet",
+        "pr-review-antfleet-x402"
+      ]
+    },
+    {
+      "repo": "liquidpadbot/aeon-skill-pack-liquidpad",
+      "name": "LiquidPad",
+      "description": "Track LiquidPad on Base — $LPAD burn cycle alerts, new token launches with onchain provenance, daily protocol digest, and fee-accrual tracking on every launched token.",
+      "author": "liquidpadbot",
+      "license": "MIT",
+      "homepage": "https://www.liquidpad.site",
+      "category": "crypto",
+      "trust_level": "community",
+      "skills": [
+        "liquidpad-burn-monitor",
+        "liquidpad-stats-digest",
+        "liquidpad-token-alert",
+        "liquidpad-fee-tracker"
+      ]
+    },
+    {
+      "repo": "ryjin111/aeon-skill-pack-mythosforge",
+      "name": "aeon-skill-pack-mythosforge",
+      "description": "Read-only MythosForge monitoring — ops/backlog/jury/payout health, proof-of-creation integrity on Base, theme/round guard against silent relabels, jury-drift detection, and live gallery/proof-page QA.",
+      "author": "ryjin111",
+      "license": "MIT",
+      "homepage": "https://mythosforge.xyz",
+      "category": "dev",
+      "trust_level": "community",
+      "skills": [
+        "mythosforge-ops-report",
+        "mythosforge-proof-integrity",
+        "mythosforge-theme-round-guard",
+        "mythosforge-jury-drift-watcher",
+        "mythosforge-gallery-qa-watcher"
+      ]
+    },
+    {
+      "repo": "codexvritra/signa",
+      "path": "aeon-skills",
+      "name": "signa",
+      "description": "The full SIGNA skill suite — wallet-signed cross-platform agent messaging, multi-agent coordination (broadcast and delegate across the network), plus integrations with Aeon ecosystem partners already on Base: Bankr resolver and recent launches, gitlawb activity for any wallet, MiroShark sim stats and wallet-signed sim fire, plus x402 receipts and bounded spend mandates (a human grants a signed budget, the agent spends within it and asks for more). Lives at aeon-skills/ inside the SIGNA monorepo so the wire format, SDKs, and skill pack all version together.",
+      "author": "signa-agent",
+      "license": "MIT",
+      "homepage": "https://www.signaagent.xyz/partners",
+      "category": "messaging",
+      "trust_level": "community",
+      "skills": [
+        "signa-connect",
+        "signa-message",
+        "signa-inbox",
+        "signa-discover",
+        "signa-broadcast",
+        "signa-delegate",
+        "signa-encrypted-room",
+        "signa-pubkey-register",
+        "signa-trust-gate",
+        "signa-search",
+        "signa-receipts",
+        "signa-room-holders",
+        "signa-launches-leaderboard",
+        "signa-anchor-status",
+        "bankr-resolve",
+        "bankr-launches",
+        "gitlawb-stats",
+        "miroshark-stats",
+        "miroshark-fire",
+        "signa-spend"
+      ]
+    },
+    {
+      "repo": "Atrium-Hermes/aeon-atrium-skills",
+      "name": "Atrium Skills",
+      "description": "Publish, monetize & discover agent skills on Atrium — the onchain skill marketplace on Base. atrium-publish turns evolving skills into DID-signed, IPFS-pinned, USDC-earning assets (with royalty lineage to prior versions); atrium-scout rents skills that match open loops; atrium-earnings tracks and withdraws creator USDC.",
+      "author": "Atrium-Hermes",
+      "license": "MIT",
+      "homepage": "https://atriumhermes.tech",
+      "category": "crypto",
+      "trust_level": "community",
+      "skills": [
+        "atrium-publish",
+        "atrium-scout",
+        "atrium-earnings"
+      ]
+    },
+    {
+      "repo": "mnemedb/aeon-skill-pack-mneme",
+      "name": "aeon-skill-pack-mneme",
+      "description": "Mneme as Aeon's persistent memory layer — vector recall across runs, entity/relation graph, live Base chain streams, async LLM 'dream' reflections, and schema-aware /chat. One MNEME_API_KEY (scope *), zero infra. Drops into any Aeon agent and replaces the markdown+JSON memory dir with a real Postgres schema that's searchable, traversable, and stream-aware.",
+      "author": "mnemedb",
+      "license": "MIT",
+      "homepage": "https://mnemedb.dev",
+      "category": "memory",
+      "trust_level": "community",
+      "skills": [
+        "mneme-remember",
+        "mneme-recall",
+        "mneme-entity",
+        "mneme-relate",
+        "mneme-find",
+        "mneme-dream",
+        "mneme-watch",
+        "mneme-ask"
+      ]
+    },
+    {
+      "repo": "clawhunter/clawhunter-skills",
+      "name": "clawhunter-skills",
+      "description": "Aggregates and AI-triages crypto bounties across venues (Pump Fun GO, Atelier, EarnFi, tiny.place) and matches each to your agent with a plan to win — plus paid research and create tools (voice tones, logo-grounded images, Kling video direction, web + X research). Paid tools settle via x402 (USDC on Solana or Base).",
+      "author": "clawhunter",
+      "license": "MIT",
+      "homepage": "https://clawhunter.fun",
+      "category": "crypto",
+      "trust_level": "community",
+      "skills": [
+        "clawhunter-bounties",
+        "clawhunter-content-studio"
+      ]
+    },
+    {
+      "repo": "SpartanLabsXyz/aeon-skill-pack-polymarket",
+      "path": "aeon-skill-pack",
+      "name": "Polymarket Trader by Simmer",
+      "description": "Signal, market discovery, and real position-taking on Polymarket - the deepest prediction-market venue - powered by Simmer. Unlike monitor-only packs, polymarket-trade places actual orders on live Polymarket liquidity: simulate-by-default, live opt-in, bounded. The wired Simmer MCP also exposes Simmer's full catalog of ready-to-run Polymarket strategies (copytrading, market-making, signal-sniping) via list_skills.",
+      "author": "simmer",
+      "license": "MIT",
+      "homepage": "https://simmer.markets",
+      "category": "crypto",
+      "trust_level": "community",
+      "skills": [
+        "polymarket-intel",
+        "polymarket-markets",
+        "polymarket-trade"
+      ],
+      "secrets_required": [
+        "SIMMER_API_KEY"
+      ],
+      "capabilities": [
+        "external_api",
+        "writes_external_host",
+        "onchain_writes",
+        "sends_notifications"
+      ]
+    },
+    {
+      "repo": "CharonAI-code/charon",
+      "path": "skills/aeon",
+      "name": "Charon for AEON",
+      "description": "Repo-local policy enforcement for AEON runs, with guided setup and natural-language policy management.",
+      "author": "CharonAI-code",
+      "license": "MIT",
+      "homepage": "https://charon.codes",
+      "category": "dev",
+      "trust_level": "community",
+      "skills": [
+        "charon-setup",
+        "charon-policy"
+      ],
+      "secrets_required": [],
+      "capabilities": [
+        "external_api",
+        "writes_external_host"
+      ]
+    }
+  ]
+}

@@ -1,6 +1,0 @@
-[
-  {
-    "date": "2026-03-19",
-    "content": "# 2026-03-19\n\n## Changelog Skill\n- Created `memory/watched-repos.md` with `aaronjmars/aeon` (file didn't exist yet)\n- Fetched 51 commits from the last 7 days (2026-03-12 to 2026-03-19)\n- Grouped into: 12 features, 17 fixes, 5 docs, 10 chores\n- Saved full changelog to `articles/changelog-2026-03-19.md`\n- Sent abbreviated summary via `./notify`"
-  }
-]

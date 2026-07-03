@@ -6,9 +6,25 @@ var: ""
 tags: [research, ideas, creative, meta]
 ---
 
-> **${var}** — Selector `mode [theme/constraint]`. First token picks the mode: `generate` (default) collides the zeitgeist with the capability surface into ranked wedges; `validate` screens the existing backlog for viability; `memo` writes 2 rigorous evidence-backed startup memos. Anything after the mode is a theme/constraint bias. A bare theme with no mode keyword (e.g. `payments`, `crypto`) = `generate` biased to that theme. `dry-run` anywhere skips the notify. Examples: `` (empty → generate, open-ended) · `simulation` (generate, themed) · `validate crypto` (screen crypto ideas) · `memo solo founder` (memos under a constraint) · `generate payments dry-run` (generate, no notify).
+> **${var}** — Selector `mode [theme/constraint]`. First token picks the mode: `generate` (default) collides the zeitgeist with the capability surface into ranked wedges; `validate` screens the existing backlog for viability; `memo` writes 2 rigorous evidence-backed startup memos. Anything after the mode is a theme/constraint bias. A bare theme with no mode keyword (e.g. `payments`, `crypto`) = `generate` biased to that theme. `dry-run` anywhere skips the notify. Examples: `` (empty → generate, open-ended) · `simulation` (generate, themed) · `validate crypto` (screen crypto ideas) · `memo solo founder` (memos under a constraint) · `generate payments dry-run` (generate, no notify). A `pick:<id|name>` value (from the "build next?" force-reply — e.g. `pick:Onchain reputation`) is intercepted **before** mode dispatch: it marks that idea as chosen-to-build in the shared backlog and ends — see "Force-reply interception" below.
 
 Today is ${today}. **Read `soul/SOUL.md` + `soul/STYLE.md` + `STRATEGY.md` first and read them closely** — this skill thinks *as the operator*, in their worldview, not about them. If `soul/` is the empty template, ground purely on `STRATEGY.md` + the capability surface and write in a clear, direct tone. Then read `memory/MEMORY.md` for current goals and active topics. Each mode below names its own `memory/logs/` scan window for dedup — honor it.
+
+## Force-reply interception — `pick:<idea>` (run FIRST, before mode dispatch)
+
+Before tokenizing `${var}` for the mode, check it. If `${var}` **starts with `pick:`**, this run is the operator answering the "which idea to build next?" force-reply — do **not** run generate/validate/memo. Handle it and end. This is behaviorally identical to idea-pipeline's step 0 (same backlog, same marking convention), so a `pick` reply works whichever skill it routes to:
+
+1. Strip the prefix: `sel="${var#pick:}"`, then trim whitespace (the remainder may contain colons/spaces — keep them).
+2. If `sel` is empty → `./notify "Which idea should I mark as next to build? Reply with its name or backlog number."` and end.
+3. Read the shared backlog `memory/topics/startup-ideas.md`. If missing or no idea rows → `./notify "No idea backlog yet — nothing to mark. Run generate first to fill it."` and end.
+4. Resolve `sel` to exactly one row in the table (`| date | name | one-liner | fit | T+F+E |`):
+   - **By name (preferred):** case-insensitive exact match on the `name` cell; else fuzzy — most significant-word overlap, or `sel` a substring of the name (or vice-versa). Require one clear best match.
+   - **By number:** a bare integer N with no name match → the Nth data row (1-based, in file order).
+   - No match / ambiguous tie → `./notify "Couldn't find an idea matching \"<sel>\". Reply with the exact name or backlog number. Candidates: <name1>, <name2>, <name3>."` and end.
+5. **Mark it chosen-to-build** — the shared marking convention, identical to idea-pipeline: append ` ✓ selected ${today}` to the end of that row's `name` cell, keeping the table pipes intact. If already marked, leave it (idempotent).
+6. Confirm with a short `./notify` (keep it clean — no `test`/`trace`/`ping`/`debug` substrings): `./notify "Marked \"<idea name>\" as next to build — flagged in the backlog. Run /feature or /deploy-prototype on it when you're ready."` Do not auto-dispatch any skill — marking chosen is the safe action.
+7. Log under a `### idea-forge` heading in `memory/logs/${today}.md`: a `- Mode: pick` line, then `- IDEA_FORGE_PICK: marked "<idea name>" as chosen-to-build (from a pick: reply)`.
+8. **End the run** — do not run mode dispatch.
 
 ## Mode dispatch
 
@@ -85,6 +101,17 @@ For each kept idea, write:
 
 #### 6. Notify (gated)
 Unless `DRY_RUN`: `./notify` the **single best idea** — one-liner + why-now + the smallest shippable cut, in the operator's voice, with a link to the full digest. One paragraph. This is a deliberate weekly think, so it's worth one push even on a quiet week — but only the #1, never the whole list. Build the digest URL via `gh repo view --json url -q .url` (not the SSH remote), and send multi-line content with `./notify -f <file>`.
+
+#### 6b. Offer a "build next?" follow-up (force-reply)
+Unless `DRY_RUN`, and only when **≥1 idea was appended to the backlog** this run: offer the operator a one-tap pick of which fresh idea to build — a **separate** `./notify` after the step-6 push (a digest and a force-reply prompt can't share one Telegram message).
+
+Dedup once per day: scan the last ~2 days of `memory/logs/` for `FORCE_REPLY_OFFERED: idea-forge::pick`; if present, skip. Otherwise:
+```bash
+./notify "Which of this week's ideas should I mark as next to build? Reply with the idea's name." \
+  --force-reply --placeholder "idea name" \
+  --context "idea-forge::pick"
+```
+Then record `FORCE_REPLY_OFFERED: idea-forge::pick` in the generate log block (Log section). A `pick:` reply routes back to this skill and is handled by the "Force-reply interception" section above.
 
 ---
 
@@ -327,6 +354,12 @@ After any mode, append to `memory/logs/${today}.md` under a single `### idea-for
 - Config: `products.md` | `NO_PRODUCTS_CONFIG→watched-repos.md`
 - Theme: [var theme or "open-ended"]
 - Notification: sent / skipped (dry-run)
+- Force-reply offer: offered / skipped (already offered in last 2 days / dry-run / no ideas appended)
+- FORCE_REPLY_OFFERED: idea-forge::pick   ← include this exact line ONLY when the offer was actually sent (it's the once/day dedup marker)
+
+**pick (force-reply handler):**
+- Mode: pick
+- IDEA_FORGE_PICK: marked "<idea name>" as chosen-to-build (from a pick: reply)
 
 **validate:**
 - Mode: validate

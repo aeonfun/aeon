@@ -1,7 +1,7 @@
 ---
 name: Distribute Tokens
 category: core
-description: Two-phase contributor rewards — computes a tier-priced reward plan from the contributor-leaderboard ranking (plan phase) and executes the on-chain send via Bankr Wallet API with per-recipient idempotency, resolve→execute, dry-run, and partial-run recovery (send phase). Run either phase alone or both back-to-back.
+description: Two-phase contributor rewards — computes a tier-priced reward plan from the repo's merged-PR contributor ranking (plan phase) and executes the on-chain send via Bankr Wallet API with per-recipient idempotency, resolve→execute, dry-run, and partial-run recovery (send phase). Run either phase alone or both back-to-back.
 var: ""
 tags: [community, crypto]
 requires: [BANKR_API_KEY?]
@@ -11,16 +11,16 @@ capabilities: [external_api, writes_external_host, onchain_writes, sends_notific
 
 > **${var}** — Phase + target selector. Grammar: `[plan:|all:][dry-run:]<target>`
 > - `` (empty) / `<label>` / `dry-run:<label>` → **send** phase: distribute a list from `memory/distributions.yml` (empty = first list). *[default — no prefix]*
-> - `plan:` / `plan:<week>` / `plan:dry-run` / `plan:dry-run:<week>` → **plan** phase only: compute rewards from the contributor-leaderboard and write the list into `memory/distributions.yml`.
+> - `plan:` / `plan:<week>` / `plan:dry-run` / `plan:dry-run:<week>` → **plan** phase only: compute rewards from the repo's merged PRs and write the list into `memory/distributions.yml`.
 > - `all:` / `all:<week>` / `all:dry-run` / `all:dry-run:<week>` → **plan then send** in one run.
 >
-> `<label>` is a distribution-list label (e.g. `contributors-2026-W17`). `<week>` is an ISO week (`2026-W17`); empty `<week>` = most recent leaderboard. `dry-run:` previews without side effects (no yml/state writes in plan; no transfers in send).
+> `<label>` is a distribution-list label (e.g. `contributors-2026-W17`). `<week>` is an ISO week (`2026-W17`); empty `<week>` = most recent completed ISO week. `dry-run:` previews without side effects (no yml/state writes in plan; no transfers in send).
 
 ## Why this design
 
 This skill owns the whole contributor flywheel: **who deserves what** (plan) and **moving the money** (send). It is split into two phases that can run independently or chained.
 
-**Plan phase — the wiring the project was missing.** The `contributor-leaderboard` skill already names the people moving the project, but a contributor's Sunday score had no path to a wallet credit. The plan phase is that wiring: it reads the ranking, prices each eligible contributor against a tier table, and writes a labelled list into `memory/distributions.yml` — the exact file the send phase reads. Keeping a human-visible diff on `memory/distributions.yml` between plan and execution is the cheapest possible audit trail when real money is involved: the plan lands in git, and the operator (or `all:` mode, or a chained step) runs the send next.
+**Plan phase — the wiring the project was missing.** Merged PRs already name the people moving the project, but shipped work had no path to a wallet credit. The plan phase is that wiring: it ranks contributors by the PRs they merged in the target week (straight from the GitHub API), prices each eligible contributor against a tier table, and writes a labelled list into `memory/distributions.yml` — the exact file the send phase reads. Keeping a human-visible diff on `memory/distributions.yml` between plan and execution is the cheapest possible audit trail when real money is involved: the plan lands in git, and the operator (or `all:` mode, or a chained step) runs the send next.
 
 **Send phase — this moves real money.** The biggest failure mode is double-sending (re-runs, retries after partial failures, day-rollover bypass of "skip if today" logic) or sending into a black hole (no preflight balance, deprecated API path, missing handle resolution). The send phase therefore:
 
@@ -36,7 +36,7 @@ The two phases stay decoupled by design: the send phase is the only sanctioned t
 Reads two independent config/state surfaces depending on phase:
 
 - `memory/distributions.yml` — the distribution lists (read by **send**, written by **plan**).
-- `articles/contributor-leaderboard-<YYYY-MM-DD>.md` — the source-of-truth ranking (read by **plan**).
+- The **plan** phase computes its ranking live from the repo's merged PRs via the GitHub API — no input file (see Phase A).
 - `memory/state/distributions.json` — per-recipient send idempotency (read/written by **send**).
 - `memory/state/contributor-reward-state.json` — plan idempotency + first-PR-bonus history (read/written by **plan**).
 
@@ -117,27 +117,24 @@ Selector examples: `` → send first list · `contributors-2026-W17` → send th
 
 ## Phase A — Plan (reward computation)
 
-Pure local file I/O — no curl, no auth headers. Turns the leaderboard ranking into a tier-priced list in `memory/distributions.yml`.
+Ranks the target week's merged-PR authors (GitHub API) and turns that ranking into a tier-priced list in `memory/distributions.yml`.
 
-### A1. Validate the source leaderboard article
+### A1. Determine the target week and repo
 
-- `LEADERBOARD_FILE=$(ls -1t articles/contributor-leaderboard-*.md 2>/dev/null | head -1)`
-- If no file → log `CONTRIBUTOR_REWARD_NO_LEADERBOARD` to `memory/logs/${today}.md`, exit silently (no notify). The leaderboard skill is the upstream dependency; if it didn't run, this phase has nothing to do.
-- Compute the file's age in days from its filename suffix (`contributor-leaderboard-YYYY-MM-DD.md`). If age > 8 days → log `CONTRIBUTOR_REWARD_STALE_LEADERBOARD — last leaderboard ${age}d old`, notify the operator that the upstream leaderboard hasn't run, exit. Don't reward against a fortnight-old ranking.
+- `REPO="${GITHUB_REPOSITORY:-$(git config --get remote.origin.url | sed -E 's#.*[:/]([^/]+/[^/]+?)(\.git)?$#\1#')}"` — the running instance's repo.
+- `TARGET_WEEK` comes from the selector; empty = the most recent **completed** ISO week (the last full Mon–Sun). Compute its UTC bounds `WEEK_START`..`WEEK_END` as ISO datetimes (`YYYY-MM-DDT00:00:00Z`).
 
-### A2. Parse the Top Contributors table
+### A2. Rank contributors by merged PRs in the week
 
-The leaderboard's `## Top Contributors` section uses this column layout (from the upstream skill spec):
+Compute the ranking directly from GitHub — no upstream skill or article required.
 
-```
-| Rank | Contributor | Score | Merged PRs | Open PRs | Reviews | Fork Commits | New Skills | First PR? | Change |
-```
-
-Extract rows with a tolerant regex: `^\|\s*(\d+)\s*\|\s*@(\S+)\s*\|\s*(\d+)\s*\|.*?\|\s*(✨|—|\s*)\s*\|\s*[^|]*\|\s*$`
-
-Capture: `rank`, `login` (without `@`), `score`, `first_pr_marker` (✨ if present, else absent).
-
-If zero rows extracted (leaderboard format drift) → log `CONTRIBUTOR_REWARD_PARSE_FAIL — extracted 0 rows from ${LEADERBOARD_FILE}`, notify with the file path so the operator can inspect, exit.
+- Fetch every PR **merged inside the window**, by author:
+  `gh api -X GET search/issues -f q="repo:${REPO} is:pr is:merged merged:${WEEK_START}..${WEEK_END}" --paginate --jq '.items[].user.login'`
+- Drop bot authors (`*[bot]`, `dependabot*`, `github-actions*`). Count each remaining login's merged PRs → `score`. Rank by `score` descending; tie-break by earliest merge time, then login ascending.
+- **First-PR ✨** per ranked login — did they have any *prior* merged PR to the repo?
+  `gh api -X GET search/issues -f q="repo:${REPO} is:pr is:merged author:${login} merged:<${WEEK_START}" --jq '.total_count'` → `0` means this is their first-ever merged PR (set `first_pr_marker = ✨`).
+- If zero merged PRs in the window → log `CONTRIBUTOR_REWARD_NO_MERGED_PRS — week ${TARGET_WEEK}` to `memory/logs/${today}.md`, exit silently (no notify). Nothing shipped, nothing to reward.
+- If the GitHub API is unreachable (see Sandbox note for the `gh api` → WebFetch fallback) → log `CONTRIBUTOR_REWARD_API_FAIL`, notify the operator, exit.
 
 ### A3. Load plan idempotency state
 
@@ -148,7 +145,7 @@ If zero rows extracted (leaderboard format drift) → log `CONTRIBUTOR_REWARD_PA
     "2026-W17": {
       "written_at": "2026-04-26T09:00:00Z",
       "label": "contributors-2026-W17",
-      "leaderboard_file": "articles/contributor-leaderboard-2026-04-26.md",
+      "source": "github:merged-prs",
       "rewards": [
         { "login": "alice_dev", "rank": 1, "score": 47, "amount": "25", "first_pr_bonus": false },
         { "login": "bob_builder", "rank": 2, "score": 31, "amount": "20", "first_pr_bonus": true }
@@ -163,7 +160,7 @@ Bootstrap with `{"weeks": {}, "first_pr_bonus_paid": []}` if the file doesn't ex
 
 ### A4. Compute the plan
 
-For each parsed row with `rank ≤ 5` AND `score ≥ 10`:
+For each ranked login with `rank ≤ 5` AND `score ≥ 1` (at least one merged PR):
 
 - Look up `base_amount` from the tier table (rank 1→25, 2→15, 3→10, 4-5→5).
 - If `first_pr_marker == "✨"` AND `login ∉ first_pr_bonus_paid` → set `first_pr_bonus = true`, `amount = base_amount + 5`. Otherwise `first_pr_bonus = false`, `amount = base_amount`.
@@ -219,7 +216,7 @@ Compute the new list block:
 
 ```yaml
   contributors-${TARGET_WEEK}:
-    description: "Weekly contributor rewards for ${TARGET_WEEK} (auto-generated from contributor-leaderboard)"
+    description: "Weekly contributor rewards for ${TARGET_WEEK} (auto-generated from merged-PR ranking)"
     token: USDC
     amount: "5"
     recipients:
@@ -245,7 +242,7 @@ Verify the write by re-reading the file and confirming the list is present and h
 ### A7. Update plan state file  *(skipped when MODE=dry-run)*
 
 Atomically write the updated state JSON to `memory/state/contributor-reward-state.json`:
-- Set `weeks[TARGET_WEEK]` = `{ written_at: now_utc, label, leaderboard_file, rewards: [{login, rank, score, amount, first_pr_bonus}, ...] }` (full replacement on RE_PROCESS, otherwise additive).
+- Set `weeks[TARGET_WEEK]` = `{ written_at: now_utc, label, source: "github:merged-prs", rewards: [{login, rank, score, amount, first_pr_bonus}, ...] }` (full replacement on RE_PROCESS, otherwise additive).
 - Append any logins where `first_pr_bonus == true` to `first_pr_bonus_paid` (deduplicated).
 
 Write to a tempfile and `mv` over the target so partial writes can't corrupt state.
@@ -433,9 +430,9 @@ Append to `memory/logs/${today}.md` under **one** heading (the health loop parse
 - Phase: plan | send | all
 - Mode: execute | dry-run
 # --- plan phase (present when Phase A ran) ---
-- Plan mode: execute | dry-run | already-processed | no-leaderboard | stale-leaderboard | parse-fail | no-eligible
+- Plan mode: execute | dry-run | already-processed | no-merged-prs | api-fail | no-eligible
 - Week: ${TARGET_WEEK}
-- Source: ${LEADERBOARD_FILE} (age: ${AGE_DAYS}d)
+- Source: GitHub merged PRs for ${TARGET_WEEK}
 - List label: contributors-${TARGET_WEEK}
 - Entries written (new): ${N_NEW} | deduped: ${N_DEDUP} | total USDC planned: ${TOTAL_USDC}
 - First-PR bonuses: [list or "none"]
@@ -456,9 +453,8 @@ Omit the block for whichever phase did not run.
 - `CONTRIBUTOR_REWARD_OK` — plan written, notification sent
 - `CONTRIBUTOR_REWARD_DRY_RUN` — plan rendered, no writes, notification sent
 - `CONTRIBUTOR_REWARD_ALREADY_PROCESSED` — week already in state with identical plan, silent exit
-- `CONTRIBUTOR_REWARD_NO_LEADERBOARD` — no leaderboard article found, silent exit
-- `CONTRIBUTOR_REWARD_STALE_LEADERBOARD` — leaderboard >8 days old, notified
-- `CONTRIBUTOR_REWARD_PARSE_FAIL` — could not extract any rows from the leaderboard table, notified
+- `CONTRIBUTOR_REWARD_NO_MERGED_PRS` — no PRs merged in the target week, silent exit
+- `CONTRIBUTOR_REWARD_API_FAIL` — GitHub API unreachable (`gh api` + WebFetch both failed), notified
 - `CONTRIBUTOR_REWARD_NO_ELIGIBLE` — zero contributors above threshold, silent exit
 - `CONTRIBUTOR_REWARD_ERROR` — file I/O or YAML write failure, notified
 
@@ -473,7 +469,7 @@ For `all:`, the terminal exit code is the send phase's code (or the Phase A earl
 
 ## Sandbox note
 
-- **Plan phase (A):** pure local file I/O — no curl, no auth-bearing headers, no env-var-expansion. Reads `articles/`, `memory/state/contributor-reward-state.json`, `memory/distributions.yml`. Writes `memory/state/contributor-reward-state.json`, `memory/distributions.yml`, `memory/logs/${today}.md`. No prefetch, no postprocess scripts required.
+- **Plan phase (A):** ranks contributors via `gh api search/issues` (`gh` handles GitHub auth internally — the sandbox permits it in write mode). If `gh api` fails, fall back to **WebFetch** on the public `https://api.github.com/search/issues?q=…` URL. Also reads/writes `memory/state/contributor-reward-state.json`, `memory/distributions.yml`, `memory/logs/${today}.md`. No prefetch/postprocess scripts required.
 - **Send phase (B):** outbound curl may fail in the GH Actions sandbox. For each GET curl call, on failure try **WebFetch** (no body for GET). For `/wallet/transfer` specifically — a write endpoint with auth headers — if curl fails, queue the request as a JSON file under `.pending-bankr/` and rely on a `scripts/postprocess-bankr.sh` runner if available; otherwise mark the row `FAILED` reason `SANDBOX_BLOCKED` and continue. **Never silently drop a transfer.**
 
 ## Constraints
@@ -487,12 +483,12 @@ For `all:`, the terminal exit code is the send phase's code (or the Phase A earl
 
 **Plan (reward computation):**
 - **Idempotency is per-(week, login).** Re-runs in the same week add only deltas; demotions never claw back already-paid amounts.
-- **First-PR bonus is once-ever per login.** Track in `first_pr_bonus_paid`; never re-award even if the same person appears as ✨ on a later leaderboard (which they shouldn't, since ✨ means *first ever* — but defend against parsing drift).
+- **First-PR bonus is once-ever per login.** Track in `first_pr_bonus_paid`; never re-award even if the same person appears as ✨ in a later week (which they shouldn't, since ✨ means *first ever* merged PR — but defend against API drift).
 - **No silent overwrites of distributions.yml.** If the file exists and is malformed, fail loudly rather than rewriting.
-- **Eligibility floor stays low (score ≥ 10) by design.** A single merged upstream PR (+10) qualifies — reward shipped work, not volume.
+- **Eligibility floor stays low (≥ 1 merged PR) by design.** A single PR merged in the week qualifies — reward shipped work, not volume.
 
 ## Future iterations
 
-- Wire as a chain (`contributor-leaderboard → distribute-tokens plan: → distribute-tokens dry-run:...`) once the operator is comfortable with end-to-end automation, or just schedule `all:` directly for full hands-off payout. The pieces exist; the chain wiring is a one-line `aeon.yml` change.
+- Schedule `all:` directly (weekly, after the week closes) for full hands-off payout — the plan computes its own ranking from merged PRs, so no upstream skill or chain wiring is needed.
 - Add a Bankr Agent API "wallet-linked?" pre-filter in the plan phase so contributors without linked wallets are flagged in the notification (prevents the send phase from logging RESOLVE_FAILED rows on every run).
 - Tier table should become operator-configurable via `memory/contributor-reward-config.yml` once the first month of runs reveals the right curve. Hardcoded for v1.

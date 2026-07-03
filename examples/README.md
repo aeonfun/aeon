@@ -10,12 +10,12 @@ Aeon ships an [MCP server](../apps/mcp-server/) so any Claude client can call it
 ## MCP — verify the round-trip
 
 ```bash
-./add-mcp --build-only          # produce apps/mcp-server/dist/index.js
+bin/add-mcp --build-only          # produce apps/mcp-server/dist/index.js
 pip install mcp                 # official Anthropic MCP client
 python examples/mcp/test_connection.py
 ```
 
-You should see the full list of `aeon-*` tools followed by a real `aeon-cost-report` output. Once that works, hand `apps/mcp-server/dist/index.js` to Claude Code with `./add-mcp` (already done if you ran `./add-mcp` without `--build-only`) or to Claude Desktop using [`mcp/claude_desktop_config.json`](mcp/claude_desktop_config.json) — replace `/ABSOLUTE/PATH/TO/aeon` with your actual repo path.
+You should see the full list of `aeon-*` tools followed by a real `aeon-cost-report` output. Once that works, hand `apps/mcp-server/dist/index.js` to Claude Code with `bin/add-mcp` (already done if you ran `bin/add-mcp` without `--build-only`) or to Claude Desktop using [`mcp/claude_desktop_config.json`](mcp/claude_desktop_config.json) — replace `/ABSOLUTE/PATH/TO/aeon` with your actual repo path.
 
 ## Picking a different skill
 

@@ -134,6 +134,20 @@ sources: cg=ok|fail, dex=ok|fail, poly=ok|fail
 
 If all sources failed, send `TOKEN_PICK_NO_DATA` with the source-status line — do not invent picks from cached intuition.
 
+### 6c. Offer a deep-dive (force-reply — normal-day only)
+
+Only after a **normal-day** send (6a) — never on the skip-day (6b) or the no-data path (weak signals → no pick, so no offer). This skill is `read-only`, so it can't run the deep report itself; instead it offers to hand off to **token-movers** (write mode), which owns the single-token deep report and the `deep-dive:` handler. Because `force_reply` and inline buttons can't share one message, send this as a SEPARATE `./notify` AFTER the 6a pick:
+
+```bash
+./notify "Want a deeper report on a token? Reply with a ticker or contract." \
+  --force-reply --placeholder "e.g. WIF" \
+  --context "token-movers::deep-dive"
+```
+
+The `token-movers::deep-dive` marker routes the operator's reply to **token-movers** as `var="deep-dive:<their text>"`; token-movers strips the `deep-dive:` prefix and produces the single-token deep report.
+
+**Dedup.** token-pick runs once daily, so one offer per run is already once-per-day. Being `read-only`, it can't write a `FORCE_REPLY_OFFERED` marker — but it already reads recent logs, so if today's log already carries a `FORCE_REPLY_OFFERED: deep-dive` line (e.g. token-movers offered earlier today), SKIP this offer to avoid double-nagging.
+
 ### 7. Log to `memory/logs/${today}.md`
 
 ```

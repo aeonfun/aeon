@@ -1,0 +1,92 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# install-from-atrium — Install skills from the Atrium onchain marketplace into Aeon
+#
+# Atrium serves every registered skill as a SKILL.md at a stable well-known endpoint,
+# so this is a thin fetcher: it pulls the skill, runs Aeon's own security scanner
+# (never bypassed), copies it into skills/, and records onchain provenance in
+# skills.lock. No Atrium SDK or wallet needed to install (paying is a separate,
+# opt-in step — see the atrium-scout skill / `atrium invoke`).
+#
+# Usage:
+#   bin/install-from-atrium --list                     Browse the marketplace
+#   bin/install-from-atrium 0x<64-hex-skillId>         Install by canonical onchain id
+#   bin/install-from-atrium <skill-name>               Install by listed name
+#   bin/install-from-atrium <id|name> --force          Install despite scan findings
+#
+# Env: ATRIUM_HOST (default https://atriumhermes.tech)
+
+ATRIUM_HOST="${ATRIUM_HOST:-https://atriumhermes.tech}"
+WELLKNOWN="$ATRIUM_HOST/.well-known/skills"
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+SKILLS_DIR="$ROOT/skills"
+SCANNER="$ROOT/skills/skill-scan/scan.sh"
+LOCK_FILE="$ROOT/skills.lock"
+# shellcheck source=scripts/lib/skill-install.sh
+. "$ROOT/scripts/lib/skill-install.sh"
+
+die() { echo "error: $*" >&2; exit 1; }
+command -v curl >/dev/null || die "missing dependency: curl"
+
+# ── browse ──────────────────────────────────────────────────────────────────
+if [[ "${1:-}" == "--list" || -z "${1:-}" || "${1:-}" == "--help" || "${1:-}" == "-h" ]]; then
+  echo "Atrium marketplace — installable skills:"
+  curl -fsS "$WELLKNOWN/index.json" \
+    | grep -oE '"(name|skill_id|description)":"[^"]*"' \
+    | sed 's/^"name":/\n• /; s/^"skill_id":/  id:   /; s/^"description":/  /; s/"//g'
+  echo
+  echo "Install:  bin/install-from-atrium <skill-name|0x-skillId> [--force]"
+  exit 0
+fi
+
+ARG="$1"; shift || true
+FORCE=false
+for f in "$@"; do [[ "$f" == "--force" ]] && FORCE=true; done
+
+# ── fetch ───────────────────────────────────────────────────────────────────
+if [[ "$ARG" =~ ^0x[0-9a-fA-F]{64}$ ]]; then
+  URL="$WELLKNOWN/by-id/$ARG/SKILL.md"     # canonical, collision-free
+else
+  URL="$WELLKNOWN/$ARG/SKILL.md"           # by listed name
+fi
+echo "Fetching $URL"
+TMP="$(mktemp -d)"; trap 'rm -rf "$TMP"' EXIT
+curl -fsS "$URL" -o "$TMP/SKILL.md" || die "could not fetch (check id/name at $WELLKNOWN/index.json)"
+
+SLUG="$(skill_fm "$TMP/SKILL.md" name | tr '[:upper:] ' '[:lower:]-')"
+[[ -n "$SLUG" ]] || die "SKILL.md has no name: in frontmatter"
+CID="$(skill_fm "$TMP/SKILL.md" cid)"; SKILL_ID="$(skill_fm "$TMP/SKILL.md" skill_id)"
+
+# ── security scan (Aeon's own; honor --force exactly like bin/add-skill) ────────
+if [[ -x "$SCANNER" ]]; then
+  echo "  scanning: $SLUG ..."
+  if ! "$SCANNER" "$TMP/SKILL.md" 2>/dev/null; then
+    if [[ "$FORCE" == "true" ]]; then
+      echo "  ⚠ SECURITY ISSUES DETECTED — installing anyway (--force)"
+      skill_log_force_install "$ROOT/memory/logs/security.log" "$SLUG" "atrium:$SKILL_ID"
+    else
+      die "BLOCKED: $SLUG has security issues. Re-run with --force to override."
+    fi
+  else
+    echo "  ✓ security scan passed"
+  fi
+fi
+
+# ── install ─────────────────────────────────────────────────────────────────
+DEST="$SKILLS_DIR/$SLUG"
+[[ -d "$DEST" ]] && { echo "  update: $SLUG (overwriting)"; rm -rf "$DEST"; } || echo "  install: $SLUG"
+mkdir -p "$DEST"; cp "$TMP/SKILL.md" "$DEST/SKILL.md"
+
+# ── provenance in skills.lock (same schema as bin/add-skill; CID is the content hash) ──
+if command -v jq >/dev/null; then
+  ENTRY="$(jq -n --arg name "$SLUG" --arg repo "atrium:$SKILL_ID" \
+    --arg path "$WELLKNOWN/by-id/$SKILL_ID/SKILL.md" --arg branch "base-mainnet" \
+    --arg sha "$CID" --arg at "$(date -u '+%Y-%m-%dT%H:%M:%SZ')" \
+    '{skill_name:$name, source_repo:$repo, source_path:$path, branch:$branch, commit_sha:$sha, imported_at:$at}')"
+  skill_lock_upsert "$LOCK_FILE" "$ENTRY"
+  echo "    -> provenance recorded in skills.lock (cid: ${CID:0:12}…)"
+fi
+
+echo "✓ Installed $SLUG → skills/$SLUG/SKILL.md"
+echo "  Next: enable it in aeon.yml. Onchain provenance (skill_id, cid, price) is in the SKILL.md frontmatter under metadata.atrium."
