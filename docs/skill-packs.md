@@ -1,3 +1,7 @@
+---
+type: Reference
+---
+
 # Skill packs
 
 Aeon ships **68 skills**, but most forks only ever run a handful. Packs make

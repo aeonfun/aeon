@@ -1,3 +1,7 @@
+---
+type: Reference
+---
+
 Aeon — how to use me over Telegram
 
 • Type / to see every skill you have enabled, then tap one to run it.

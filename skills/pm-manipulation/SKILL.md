@@ -1,4 +1,5 @@
 ---
+type: Skill
 name: PM Manipulation
 category: crypto
 description: Detect suspected manipulation on prediction markets over the past 3 days by cross-referencing price/volume/comment anomalies with multilingual local-press coverage

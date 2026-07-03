@@ -15,16 +15,24 @@ name: ci-okf
 on:
   pull_request:
     paths:
-      - 'memory/topics/**'
+      - 'memory/**'
+      - 'output/articles/**'
+      - 'skills/**'
+      - 'docs/**'
       - 'scripts/okf-validate.mjs'
       - 'scripts/okf-index.mjs'
+      - 'scripts/okf-config.json'
       - '.github/workflows/ci-okf.yml'
   push:
     branches: [main]
     paths:
-      - 'memory/topics/**'
+      - 'memory/**'
+      - 'output/articles/**'
+      - 'skills/**'
+      - 'docs/**'
       - 'scripts/okf-validate.mjs'
       - 'scripts/okf-index.mjs'
+      - 'scripts/okf-config.json'
   workflow_dispatch:
 
 permissions:
@@ -35,5 +43,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - name: Validate OKF conformance of memory/topics/
-        run: node scripts/okf-validate.mjs memory/topics
+      - name: Validate OKF conformance (roots in scripts/okf-config.json)
+        run: node scripts/okf-validate.mjs

@@ -1,4 +1,5 @@
 ---
+type: Skill
 name: narrative-convergence
 category: research
 description: Cross-skill signal detector — finds entities or themes surfaced independently by 3+ different skill categories within 48h and surfaces them as high-confidence write opportunities

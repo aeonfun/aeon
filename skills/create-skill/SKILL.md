@@ -1,4 +1,5 @@
 ---
+type: Skill
 name: Create Skill
 category: core
 description: Generate a complete new skill from a one-line prompt and ship it as a PR

@@ -1,4 +1,5 @@
 ---
+type: Skill
 name: Install Skill
 category: core
 description: Install a community skill pack into this fork from a GitHub repo and ship it as an auto-merged PR

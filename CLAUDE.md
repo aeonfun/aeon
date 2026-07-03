@@ -53,27 +53,29 @@ When consolidating memory (reflect), move detail into topic files rather than cr
 
 ## Publishing knowledge (OKF)
 
-Aeon's `memory/topics/` directory **is** a native [OKF](docs/OKF.md) (Open Knowledge Format) knowledge bundle — a portable, self-describing corpus other tools and agents can read. This is not a separate export; the topic files *are* the bundle. So when you write a durable, shareable **concept** to `memory/topics/` (a tracked token, a protocol, a narrative, a watched repo, a runbook), write it as an OKF concept:
+Aeon's real files **are** a native [OKF](docs/OKF.md) (Open Knowledge Format) bundle — self-describing in place, not a separate export or duplicated copy. Every markdown file in the OKF scope (the roots in `scripts/okf-config.json`: `memory/`, `output/articles/`, `skills/`, `docs/`) carries a non-empty `type:` frontmatter field. **So any markdown file you create in that scope must start with a `type:`.** If you forget, `node scripts/okf-backfill.mjs` stamps the right one; the `ci-okf` check gates it.
 
-- **One concept = one markdown file at a stable path** under `memory/topics/`. The path is its identity; `memory/topics/` is the bundle root (a link `/tokens/ethereum.md` resolves there). Subfolders (`tokens/`, `repos/`) are fine.
-- **Start every concept file with YAML frontmatter carrying a non-empty `type:`** from the vocabulary below. Add `title`, `description`, `tags`, `resource` (canonical URL), and `timestamp` (ISO 8601) whenever you can — they power the index and previews.
-- **Ownership is last-writer-wins.** Any skill may create or rewrite any concept. **Always set/bump `timestamp:` on every write** — the newest timestamp is the source of truth. Edit the existing file in place rather than duplicating it.
-- **Cross-link** related concepts with bundle-relative markdown links (`See [Solana](/tokens/solana.md)`). **Cite** external sources under a `# Citations` heading. Favor structure (headings, tables) over prose.
+`memory/topics/` is the primary **living-knowledge** store — durable, shareable concepts (a token, a protocol, a narrative, a watched repo, a runbook). Write those with care:
 
-`type:` vocabulary — reuse these exact words across the fleet (the list is additive; new descriptive types are fine, but check here first):
+- **One concept = one markdown file at a stable path** under `memory/topics/` (the bundle root; a link `/tokens/ethereum.md` resolves there). Subfolders are fine.
+- **Frontmatter:** a `type:` from the vocabulary below, plus `title`, `description`, `tags`, `resource` (canonical URL), and `timestamp` (ISO 8601) whenever you can.
+- **Ownership is last-writer-wins.** Any skill may create or rewrite any concept. **Set/bump `timestamp:` on every write** — the newest wins. Edit in place; never duplicate.
+- **Cross-link** with bundle-relative links (`See [Solana](/tokens/solana.md)`); **cite** under a `# Citations` heading. Favor structure over prose.
+
+Everything else in scope is *operational* OKF — give it the right `type:` and otherwise leave its body/shape alone (don't reformat, don't rename). `type:` vocabulary (additive — new descriptive types are fine, but reuse these):
 
 | `type:` | Use for |
 |---|---|
-| `Token` | A tracked crypto asset |
-| `Protocol` | A DeFi / onchain protocol |
-| `Narrative` | A market or tech narrative being tracked |
-| `Repo` | A watched GitHub repository |
+| `Token` `Protocol` `Narrative` `Repo` `Metric` | Living `memory/topics/` concepts (asset / protocol / narrative / repo / KPI) |
 | `Playbook` | A reusable procedure / runbook |
-| `Metric` | A tracked number / KPI |
-| `Reference` | Mirrored external source material or config |
-| `Skill` | An Aeon skill (served from the catalog; you don't hand-write these) |
+| `Reference` | Mirrored source material, config, docs, skill-internal notes |
+| `Skill` | A `SKILL.md` (you rarely hand-edit this line) |
+| `Article` | A published piece under `output/articles/` |
+| `Log` | A daily `memory/logs/*.md` |
+| `Index` | `MEMORY.md`, `memory/issues/INDEX.md` |
+| `Issue` | A `memory/issues/` tracker entry |
 
-Do **not** OKF-ify the rest of `memory/`: `MEMORY.md` (the human index) and `memory/logs/` (the daily log) already play OKF's index/log roles in their existing Aeon shapes — never add `type:` frontmatter to a log file or reformat `MEMORY.md`. `memory/issues/` and `memory/skill-health/` are internal and out of scope. Validate the bundle with `node scripts/okf-validate.mjs`; the `ci-okf` check gates any PR touching `memory/topics/`.
+Two exemptions: **reserved `index.md`/`log.md`** stay untyped (OKF §6/§7), and **out-of-scope files** — root instruction files (`CLAUDE.md`, `STRATEGY.md`, `README.md`), generated files (`AGENTS.md`), and illustrative examples (`docs/examples/`, `soul/`) — carry no `type:`. Validate everything with `node scripts/okf-validate.mjs`.
 
 ## Tools
 

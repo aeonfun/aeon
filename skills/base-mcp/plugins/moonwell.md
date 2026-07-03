@@ -1,4 +1,5 @@
 ---
+type: Reference
 title: "Moonwell Plugin"
 description: "Skill plugin reference for lending on Moonwell through Base MCP."
 ---

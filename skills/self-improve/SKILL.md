@@ -1,4 +1,5 @@
 ---
+type: Skill
 name: self-improve
 category: core
 description: Improve the agent itself, or audit its recent performance — better skills, prompts, workflows, and config, plus a quality/reliability/memory-hygiene review of what the agent did and what failed

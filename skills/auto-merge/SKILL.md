@@ -1,4 +1,5 @@
 ---
+type: Skill
 name: Auto Merge
 category: dev
 description: Automatically merge open PRs that have passing CI, no blocking reviews, and no conflicts

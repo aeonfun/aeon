@@ -36,8 +36,14 @@ interface Concept {
   description: string;
 }
 
-function topicsRoot(repoRoot: string): string {
-  return join(repoRoot, "memory", "topics");
+// Concept roots served over MCP. Knowledge surfaces here; operational OKF files
+// (logs, issues, docs) are conformant but intentionally not published in the
+// index — serving every log would defeat progressive disclosure (§6).
+function conceptRoots(repoRoot: string): { dir: string; prefix: string }[] {
+  return [
+    { dir: join(repoRoot, "memory", "topics"), prefix: "" },
+    { dir: join(repoRoot, "output", "articles"), prefix: "articles/" },
+  ];
 }
 
 function walkMd(dir: string): string[] {
@@ -71,20 +77,21 @@ function parseFrontmatter(content: string): Record<string, string> {
 
 /** Load every OKF concept from memory/topics/ (reserved files excluded). */
 export function loadConcepts(repoRoot: string): Concept[] {
-  const root = topicsRoot(repoRoot);
   const concepts: Concept[] = [];
-  for (const file of walkMd(root)) {
-    const base = file.slice(file.lastIndexOf("/") + 1);
-    if (RESERVED.has(base)) continue;
-    const fm = parseFrontmatter(readFileSync(file, "utf-8"));
-    const rel = relative(root, file).split("\\").join("/");
-    concepts.push({
-      id: rel.replace(/\.md$/, ""),
-      file,
-      type: fm.type || "Untyped",
-      title: fm.title || rel.replace(/\.md$/, ""),
-      description: fm.description || "",
-    });
+  for (const { dir, prefix } of conceptRoots(repoRoot)) {
+    for (const file of walkMd(dir)) {
+      const base = file.slice(file.lastIndexOf("/") + 1);
+      if (RESERVED.has(base)) continue;
+      const fm = parseFrontmatter(readFileSync(file, "utf-8"));
+      const rel = relative(dir, file).split("\\").join("/");
+      concepts.push({
+        id: prefix + rel.replace(/\.md$/, ""),
+        file,
+        type: fm.type || "Untyped",
+        title: fm.title || rel.replace(/\.md$/, ""),
+        description: fm.description || "",
+      });
+    }
   }
   return concepts.sort((a, b) => a.id.localeCompare(b.id));
 }

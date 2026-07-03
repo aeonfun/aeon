@@ -1,4 +1,5 @@
 ---
+type: Skill
 name: Search Skills
 category: dev
 description: Search the open agent skills ecosystem for skills that fill a real gap and install them via the native add-skill path

@@ -1,4 +1,5 @@
 ---
+type: Skill
 name: Onchain Monitor
 category: crypto
 description: Monitor blockchain addresses and contracts for notable activity

@@ -1,4 +1,5 @@
 ---
+type: Skill
 name: Workflow Audit
 category: dev
 description: Audit .github/workflows and composite actions with zizmor + actionlint, classify findings against the prior audit, auto-fix Critical/High regressions, and open a PR only when something actually changed.

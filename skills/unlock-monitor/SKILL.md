@@ -1,4 +1,5 @@
 ---
+type: Skill
 name: Unlock Monitor
 category: crypto
 description: Token unlock and vesting tracker — quantify supply pressure via absorption ratio, classify cliff vs linear, deliver one-line market reads

@@ -1,4 +1,5 @@
 ---
+type: Skill
 mode: write
 name: Digest
 category: research

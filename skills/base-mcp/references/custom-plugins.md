@@ -1,4 +1,5 @@
 ---
+type: Reference
 title: "Custom Plugins and the web_request Allowlist"
 description: "Skill reference for how Base MCP routes plugin HTTP calls and which surfaces are allowlisted."
 ---

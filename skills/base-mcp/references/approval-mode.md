@@ -1,4 +1,5 @@
 ---
+type: Reference
 title: "Approval Mode"
 description: "Skill reference for how Base MCP returns approval URLs and request IDs for every write call."
 ---

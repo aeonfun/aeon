@@ -1,3 +1,7 @@
+---
+type: Index
+---
+
 # Issues
 
 ## Open

@@ -1,3 +1,7 @@
+---
+type: Article
+---
+
 # Changelog — Week of 2026-03-19
 
 ## aaronjmars/aeon

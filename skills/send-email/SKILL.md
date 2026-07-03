@@ -1,4 +1,5 @@
 ---
+type: Skill
 name: Send Email
 category: productivity
 description: Compose and send a one-off email to a named recipient via Resend — written in the operator's voice, staged locally, then sent in postprocess with caps and an operator audit copy

@@ -1,3 +1,7 @@
+---
+type: Reference
+---
+
 # Aeon — Smithery / MCP Registry Submission
 *Generated from `skills.json` (the `smithery-manifest` skill was retired in #566). Regenerate by re-deriving from `skills.json` when the skill catalog changes.*
 

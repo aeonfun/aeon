@@ -1,4 +1,5 @@
 ---
+type: Skill
 name: DeFi Overview
 category: crypto
 description: One-pass crypto read — tracked-protocol positions/health plus macro context. Regime Take + DeFi verdict, biggest movers with "why it matters", sustainable-vs-incentive yields, fees fundamentals, breadth, Fear & Greed, prediction markets; refreshes memory/topics/market-context.md.

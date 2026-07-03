@@ -1,4 +1,5 @@
 ---
+type: Skill
 name: Deploy Prototype
 category: core
 description: Generate a small app or tool and deploy it live to Vercel via API

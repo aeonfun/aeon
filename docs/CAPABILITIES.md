@@ -1,4 +1,5 @@
 ---
+type: Reference
 layout: default
 title: Skill Capabilities Taxonomy
 ---

@@ -1,4 +1,5 @@
 ---
+type: Skill
 name: ecosystem-pulse
 category: dev
 description: One weekly pass over ECOSYSTEM.md covering both project liveness (stars / forks / last-push recency + new releases for any project that resolves to a GitHub repo) AND link-health (URL audit of every link in every row — archived/disabled GitHub repos, HTTP 4xx/5xx dead links, cross-host redirects). Runs both branches by default; scope with var=liveness|links.

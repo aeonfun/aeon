@@ -1,4 +1,5 @@
 ---
+type: Skill
 name: Picks Tracker
 category: crypto
 description: Retrospective on past token and prediction market picks — what hit, what flopped, what the score is

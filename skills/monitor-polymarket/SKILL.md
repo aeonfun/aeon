@@ -1,4 +1,5 @@
 ---
+type: Skill
 mode: read-only
 name: Monitor Prediction Markets
 category: crypto

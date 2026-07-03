@@ -1,4 +1,5 @@
 ---
+type: Skill
 name: GitHub Monitor
 category: dev
 description: Watch your GitHub repos across four selectable views — a combined urgency monitor (stale PRs, new issues, new releases), a ranked new-issue triage queue, a release upgrade-triage digest, and a tracker for PRs this aeon instance opened. Empty var = combined monitor; issues|releases|prs select a focused view.

@@ -1,3 +1,7 @@
+---
+type: Reference
+---
+
 <p align="center">
   <img src="assets/aeon.jpg" alt="Aeon" width="80" />
 </p>

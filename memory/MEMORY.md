@@ -1,3 +1,7 @@
+---
+type: Index
+---
+
 # Long-term Memory
 *Last consolidated: never*
 

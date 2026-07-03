@@ -1,4 +1,5 @@
 ---
+type: Skill
 name: Repo Scanner
 category: dev
 description: Unified GitHub fleet intelligence — catalog repos into a prioritized report with concrete coded opportunities (that downstream skills consume directly), generate anchored, implementable per-repo action ideas, and map who's building on the fleet (forks, third-party ecosystem repos, builder announcements). One scan, three facets, selected via a var scope keyword.

@@ -1,26 +1,32 @@
 ---
+type: Reference
 layout: default
 title: OKF — Open Knowledge Format
 ---
 
 # OKF — the native knowledge bundle
 
-Aeon speaks [OKF](https://github.com/GoogleCloudPlatform/knowledge-catalog/tree/main/okf) (Open Knowledge Format) v0.1 **natively**. There is no separate `knowledge/` export directory — `memory/topics/` *is* the bundle. Any tool or agent that understands OKF can read Aeon's curated knowledge directly from the repo.
+Aeon speaks [OKF](https://github.com/GoogleCloudPlatform/knowledge-catalog/tree/main/okf) (Open Knowledge Format) v0.1 **natively and in place**. There is no separate `knowledge/` directory and no duplicated copy — the real files *are* the bundle. Any tool or agent that understands OKF can read Aeon directly from the repo.
 
-OKF is not a technology, it's an agreement: a directory of markdown files where **every concept file carries a non-empty `type:` frontmatter field**, with `index.md`/`log.md` playing reserved roles. That one rule (`type:`) is the whole hard requirement (OKF §9); everything else is soft.
+OKF is not a technology, it's an agreement: markdown files where **every non-reserved file carries a non-empty `type:` frontmatter field**, with `index.md`/`log.md` playing reserved roles. That one rule (`type:`) is the whole hard requirement (OKF §9); everything else is soft.
 
-## The native mapping
+## Scope — one file, self-describing
 
-Rather than bolt on a parallel directory, OKF's roles map onto structures Aeon already has:
+Conformance covers the "knowledge + operational" roots declared in [`scripts/okf-config.json`](../scripts/okf-config.json): `memory/`, `output/articles/`, `skills/`, `docs/`. Every markdown file under them carries a `type:` **in place** — a leading frontmatter block is *additive*, so the parsers that key off these files (the LLM-read logs, the filename-based `compact_logs.py`, the field-based issue/skills readers) are unaffected.
 
-| OKF role | Aeon-native home | Notes |
+| Family | `type:` | Note |
 |---|---|---|
-| **Concept store** (the bundle root) | `memory/topics/` | Each concept = one `.md` with `type:` frontmatter |
-| **Index** (§6) | `MEMORY.md` (human) + generated `memory/topics/index.md` (machine) | `MEMORY.md` keeps its Aeon shape; `index.md` is regenerable |
-| **Log** (§7) | `memory/logs/YYYY-MM-DD.md` | Unchanged — the `skill-health` loop parses this shape |
-| Out of scope | `memory/issues/`, `memory/skill-health/` | Internal; the validator never looks here |
+| `memory/topics/**` | `Token` `Protocol` `Narrative` `Repo` `Metric` `Playbook` `Reference` | Living, updated-in-place concepts (last-writer-wins) |
+| `output/articles/*.md` | `Article` | Dated, write-once publications |
+| `skills/*/SKILL.md` | `Skill` | Skill-internal notes/docs → `Reference` |
+| `docs/*.md` | `Reference` | `docs/examples/` excluded (illustrative) |
+| `memory/logs/*.md` | `Log` | Body untouched — health loop still parses `### skill` bullets |
+| `MEMORY.md`, `memory/issues/INDEX.md` | `Index` | Not renamed to reserved `index.md` (that would break parsers) |
+| `memory/issues/*.md` | `Issue` | Added to the existing frontmatter |
 
-Conformance is deliberately scoped to `memory/topics/` **only**. `MEMORY.md`, the daily logs, and the issue tracker keep their existing formats, so nothing that parses them (the health loop, memory-flush) is at risk. **Do not** add `type:` frontmatter to a log file or reformat `MEMORY.md`.
+**Two exemptions.** Reserved `index.md`/`log.md` stay untyped (OKF §6/§7 structural files). And these stay out of scope entirely — no `type:`: root instruction files (`CLAUDE.md`, `STRATEGY.md`, `README.md`), generated files (`AGENTS.md`), and illustrative examples (`docs/examples/`, `soul/`).
+
+> **Why type in place instead of renaming to `index.md`/`log.md`?** Aeon's index/log files (`MEMORY.md`, `memory/logs/YYYY-MM-DD.md`) are load-bearing under those exact names — `skill-health` and `memory-flush` parse them. Renaming to OKF's reserved names would break that for no gain, so they become normal typed concepts (`type: Index` / `type: Log`) instead. Consumers tolerate that (reserved files are optional; an index can be synthesized at read time).
 
 ## Writing a concept
 
@@ -59,10 +65,11 @@ Any skill may create or rewrite any concept. **Always set/bump `timestamp:` on e
 
 | Command | What it does |
 |---|---|
-| `node scripts/okf-validate.mjs [root]` | Assert OKF §9 conformance (non-empty `type:` on every concept). `--stale N` also warns on concepts older than N days. Exits non-zero on violation. |
+| `node scripts/okf-validate.mjs` | Assert OKF §9 conformance across all `okf-config.json` roots (non-empty `type:` on every non-reserved file). Pass an explicit `<root>` to check one tree (used by `okf-ingest`). `--stale N` warns on concepts older than N days. Exits non-zero on violation. |
+| `node scripts/okf-backfill.mjs` | Stamp the right `type:` onto every in-scope file that lacks one, per the `backfill_rules` in `okf-config.json`. Idempotent; `--dry` previews. Run it after adding files, or when CI flags a missing `type:`. |
 | `node scripts/okf-index.mjs [root]` | Regenerate `memory/topics/index.md` from concept frontmatter (idempotent). `--check` verifies it's current. |
 
-The validator holds the spec's bar and **no stricter** — it never rejects unknown `type:` values, missing optional fields, or broken links (over-conformance would fight Aeon's own non-deterministic agents). The `ci-okf` workflow runs it on every PR touching `memory/topics/`.
+The scope (roots + exclusions + per-family types) lives in one place: [`scripts/okf-config.json`](../scripts/okf-config.json). The validator holds the spec's bar and **no stricter** — it never rejects unknown `type:` values, missing optional fields, or broken links (over-conformance would fight Aeon's own non-deterministic agents). The `ci-okf` workflow runs it on every PR touching an OKF root.
 
 The index regenerator is **not scheduled and not CI-gated** — Aeon's OKF setup is passive. Knowledge accrues as skills naturally emit concepts; refresh the index on demand (or wire it into `memory-flush` later). The MCP server also synthesizes an index at read time (§6), so a stored `index.md` is a convenience snapshot.
 
@@ -73,10 +80,10 @@ The Aeon MCP server (`apps/mcp-server`) exposes the bundle as read-only resource
 | Resource URI | Content |
 |---|---|
 | `okf://index` | Synthesized bundle index (concepts + skills) |
-| `okf://concept/{id}` | One topic concept's raw markdown (`id` = path under `topics/`) |
+| `okf://concept/{id}` | One knowledge concept's raw markdown (`id` = path under `memory/topics/`, or `articles/<name>` for `output/articles/`) |
 | `okf://skill/{slug}` | One Aeon skill rendered as a `type: Skill` concept |
 
-Every `SKILL.md` is already a frontmatter concept doc, so the whole catalog is published "as OKF" nearly for free. The git repo itself is also a valid distribution — anyone can `git clone` and read `memory/topics/`.
+The served index surfaces **knowledge** (topics + articles + skills). Operational OKF files (logs, issues, docs) are conformant but intentionally not published in the index — serving every log would defeat progressive disclosure (§6). Every `SKILL.md` is already a frontmatter concept doc, so the whole catalog is published "as OKF" nearly for free, and the git repo itself is a valid distribution — anyone can `git clone` and read it.
 
 ## Producing & consuming (optional skills, default-off)
 

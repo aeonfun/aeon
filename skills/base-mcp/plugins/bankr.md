@@ -1,4 +1,5 @@
 ---
+type: Reference
 title: "Bankr Plugin"
 description: "Skill plugin reference for discovering the latest token launches on Base via the Bankr API and buying them with Base MCP's swap tool."
 ---

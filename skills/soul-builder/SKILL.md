@@ -1,4 +1,5 @@
 ---
+type: Skill
 name: soul-builder
 category: social
 description: Build a SOUL from an X handle — read a wide sample of someone's public X account, then draft soul/SOUL.md (identity, worldview, opinions, influences), soul/STYLE.md (voice), and soul/examples/good-outputs.md so every content skill can speak in that voice.

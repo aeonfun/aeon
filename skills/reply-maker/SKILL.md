@@ -1,4 +1,5 @@
 ---
+type: Skill
 name: Reply Maker
 category: social
 description: Draft copy-paste-ready X replies — either two reply options per reply-worthy tweet from tracked accounts/topics/lists (default), or (from-logs mode) ready-to-post responses to engagement opportunities flagged in recent logs

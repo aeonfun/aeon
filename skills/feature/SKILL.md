@@ -1,4 +1,5 @@
 ---
+type: Skill
 name: Feature
 category: dev
 description: Build, enhance, or revive GitHub repos — sweep every watched repo and ship one feature PR each (watched), make the best single enhancement on one external repo or issue (external), or reactivate the highest-scoring dormant repo (dormant); optional --fix-issues bias

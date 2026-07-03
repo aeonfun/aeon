@@ -1,4 +1,5 @@
 ---
+type: Skill
 name: Treasury Info
 category: crypto
 description: Decision-ready treasury overview — verdict, concentration, depegs, significant changes

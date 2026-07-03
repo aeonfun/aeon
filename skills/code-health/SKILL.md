@@ -1,4 +1,5 @@
 ---
+type: Skill
 name: Code Health
 category: dev
 description: Report on TODOs, dead code, and test coverage gaps

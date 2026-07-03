@@ -1,4 +1,5 @@
 ---
+type: Skill
 mode: read-only
 name: Investigation Report
 category: onchain-security

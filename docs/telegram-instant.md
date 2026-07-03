@@ -1,3 +1,7 @@
+---
+type: Reference
+---
+
 # Telegram Instant Mode
 
 Default polling checks for messages every 5 minutes. For ~1s response time, deploy

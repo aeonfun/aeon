@@ -1,4 +1,5 @@
 ---
+type: Skill
 name: Protocol Monitor (x402 default)
 category: crypto
 description: Configurable weekly vertical/ecosystem tracker. Defaults to x402 (agent micropayments); preset selectors track RWA tokenization, the AI compute market, the MCP ecosystem, or AI agent job-displacement — each with its own sources, scoring, and output format. Repoint the default protocol via memory/topics/tracked-protocol.md.

@@ -1,4 +1,5 @@
 ---
+type: Skill
 name: Memory Flush
 category: meta
 description: Promote important recent log entries into MEMORY.md and prune stale ones

@@ -1,4 +1,5 @@
 ---
+type: Skill
 mode: read-only
 name: Token Pick
 category: crypto

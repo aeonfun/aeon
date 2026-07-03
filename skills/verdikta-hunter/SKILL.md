@@ -1,4 +1,5 @@
 ---
+type: Skill
 name: Verdikta Hunter
 category: crypto
 description: Hunt Verdikta AI-judged bounties on Base — discover open bounties, write rubric-targeted reports, and queue hard-capped on-chain submissions (signing happens post-run via scripts/postprocess-verdikta.sh, never in-skill)

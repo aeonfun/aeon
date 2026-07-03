@@ -1,4 +1,5 @@
 ---
+type: Skill
 name: pm-pulse
 category: crypto
 description: Prediction-market & coordination-market tracker — volume, new mechanism designs, regulatory moves, plus competitive intel on what platforms ship and who's entering

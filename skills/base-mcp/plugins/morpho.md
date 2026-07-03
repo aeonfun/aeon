@@ -1,4 +1,5 @@
 ---
+type: Reference
 title: "Morpho Plugin"
 description: "Skill plugin reference for lending on Morpho with Morpho CLI when available, or Morpho MCP on chat-only surfaces."
 ---
