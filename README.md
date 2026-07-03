@@ -132,6 +132,7 @@ bin/export-skill token-movers               # package one for standalone use
 Installed skills land in `skills/` and are added to `aeon.yml` disabled - flip `enabled: true` to activate. You can also:
 
 - **Build your own** from [`skill-templates/`](skill-templates/TEMPLATE.md): `bin/new-from-template <template> <skill-name> --category <pack>` - the `--category` slots it into a pack (or set `category:` in the SKILL.md frontmatter). See [`docs/skill-packs.md`](docs/skill-packs.md).
+- **Use one skill elsewhere** without forking: drop a portable workflow from [`examples/workflow-templates/`](examples/workflow-templates/) into any repo's `.github/workflows/`.
 - **Label any GitHub issue `ai-build`** - Claude reads the issue, implements it, and opens a PR
 - **Install community packs** - see [Community skill packs](#community-skill-packs)
 
@@ -621,8 +622,9 @@ bin/                     ← operator + maintainer CLI (run from repo root, e.g.
 docs/                    ← reference docs (CORE, CAPABILITIES, skill-packs, telegram, help/status)
 soul/                    ← optional identity files (SOUL.md, STYLE.md, examples/, data/)
 skills/                  ← each skill is a SKILL.md prompt file (68 total; `category:` = its pack)
-workflow-templates/      ← GitHub Agentic Workflow templates (.md)
 skill-templates/         ← templates for building your own skills
+examples/                ← MCP quickstart + portable workflow templates
+  workflow-templates/    ← GitHub Agentic Workflow .md (adopt a skill without forking)
 apps/                    ← standalone sub-projects, each with its own package.json
   dashboard/             ← local web UI (Next.js + json-render feed)
   mcp-server/            ← MCP server - exposes skills as Claude tools

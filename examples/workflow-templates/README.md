@@ -18,7 +18,7 @@ Each template wraps one of Aeon's battle-tested skills as a portable `.md` workf
 1. Copy any `.md` file into your repo's `.github/workflows/` directory:
    ```bash
    # Example: add PR review to your repo
-   curl -O https://raw.githubusercontent.com/aaronjmars/aeon/main/workflow-templates/pr-review.md
+   curl -O https://raw.githubusercontent.com/aaronjmars/aeon/main/examples/workflow-templates/pr-review.md
    mv pr-review.md .github/workflows/
    ```
 
@@ -36,4 +36,4 @@ Each template is plain Markdown — edit it like you'd edit any document. Common
 
 ## From Aeon skills
 
-These templates are adapted from Aeon's internal skills. The full skills include memory integration, multi-repo support, notification channels, and dashboard rendering. If you want the full experience, [set up Aeon](../README.md#quick-start) instead.
+These templates are adapted from Aeon's internal skills. The full skills include memory integration, multi-repo support, notification channels, and dashboard rendering. If you want the full experience, [set up Aeon](../../README.md#quick-start) instead.
