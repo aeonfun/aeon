@@ -60,7 +60,7 @@ For every candidate that survived step 2, apply these **hard gates**. Fail any �
 - **Gate 1 — fills named gap.** Candidate's description plainly names the capability from step 1. Tangentially-related is not enough.
 - **Gate 2 — runtime compatible.** Runs with what we have: `gh` / `curl` / `WebFetch` / `jq` / stdlib. Needs only env vars already referenced in `aeon.yml` (do not recommend skills that require `docker`, `kubectl`, a paid-only API, or secrets we can't set). When in doubt, WebFetch the SKILL.md to confirm.
 - **Gate 3 — not archived / abandoned.** Source repo pushed within the last 180 days: `gh api repos/{owner}/{repo} --jq '.pushed_at'`. If unreachable, drop.
-- **Gate 4 — trust classification.** If `owner` or `owner/repo` appears in `skills/security/trusted-sources.txt` → mark **TRUSTED**. Otherwise → **UNTRUSTED** (install will require `bin/add-skill` to invoke `skills/skill-scan/scan.sh`, and we route to OK_CANDIDATES rather than auto-install).
+- **Gate 4 — trust classification.** If `owner` or `owner/repo` appears in `skills/security/trusted-sources.txt` → mark **TRUSTED**. Otherwise → **UNTRUSTED** (install will require `bin/add-skill` to invoke `scripts/skill-scan.sh`, and we route to OK_CANDIDATES rather than auto-install).
 
 Surviving candidates get a 1-5 score on three axes:
 
@@ -90,7 +90,7 @@ bin/add-skill <source-repo> <skill-name>
 This is the **only** supported install path for this skill. Do NOT use `npx skills add -g` — it installs to `~/.claude/skills/`, which is ephemeral on GitHub Actions runners and bypasses:
 - `skills.lock` provenance (commit SHA, source path, import time)
 - `aeon.yml` scheduling entry (appended disabled, operator flips `enabled: true` when ready)
-- `trusted-sources.txt` + `skills/skill-scan/scan.sh` gate on untrusted repos
+- `trusted-sources.txt` + `scripts/skill-scan.sh` gate on untrusted repos
 
 If `bin/add-skill` exits non-zero (security scan fail, skill not found in repo, tarball fetch fail), downgrade exit mode to **SEARCH_SKILL_OK_CANDIDATES** and include the failure reason + the manual `bin/add-skill ... --force` command in the notify (only suggest `--force` when the scan failure was benign — never for unreviewed third-party code).
 

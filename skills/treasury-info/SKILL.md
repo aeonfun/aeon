@@ -170,7 +170,7 @@ If every source failed for every wallet, notify `TREASURY_INFO_ERROR — all sou
 
 ## Sandbox note
 
-Sandbox may block outbound curl or env-var expansion in headers. Use **WebFetch** for auth-free URLs (public RPC, public CoinGecko). For `ALCHEMY_API_KEY` / `BANKR_API_KEY`, prefer the pre-fetch pattern: `scripts/prefetch-treasury.sh` runs before Claude with full env access, caches JSON under `.treasury-cache/`, and the skill reads the cache. See CLAUDE.md § Sandbox Limitations.
+Sandbox may block outbound curl or env-var expansion in headers. Use **WebFetch** for auth-free URLs (public RPC, public CoinGecko). For `ALCHEMY_API_KEY` / `BANKR_API_KEY`, use the pre-fetch pattern — **but note no `scripts/prefetch-treasury.sh` ships in the repo**, so until the operator adds one the auth'd sources are unavailable and the skill must fall back to WebFetch on public endpoints (or omit the auth'd source and say so in the footer). When present, that prefetch script runs before Claude with full env access, caches JSON under `.treasury-cache/`, and the skill reads the cache. See CLAUDE.md § Sandbox Limitations.
 
 ## Constraints
 

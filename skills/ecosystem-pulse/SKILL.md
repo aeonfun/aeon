@@ -31,7 +31,7 @@ Read `soul/SOUL.md` + `soul/STYLE.md` if populated to match voice in every notif
 ### S0. Bootstrap
 
 ```bash
-mkdir -p memory/topics articles
+mkdir -p memory/topics output/articles
 # liveness branch state + operator map
 [ -f memory/topics/ecosystem-pulse-state.json ] || cat > memory/topics/ecosystem-pulse-state.json <<'EOF'
 {"last_run":null,"last_status":null,"projects":{}}

@@ -34,7 +34,7 @@ Ranked strongest → weakest. Tag each lead with its class:
 
 ### 0. Bootstrap
 ```bash
-mkdir -p memory/topics articles
+mkdir -p memory/topics output/articles
 [ -f memory/topics/bd-radar-leads.json ] || echo '{"leads":[],"surfaced":[]}' > memory/topics/bd-radar-leads.json
 ```
 `surfaced` is an LRU (cap 300) of already-reported lead keys (`{source}:{handle_or_repo}`) so each lead fires once. Also read the last 14 days of `memory/logs/` and extract names from prior `### bd-radar` blocks into the dedup set.

@@ -9,18 +9,15 @@
 # Claude Code local state
 .claude/
 
-# Caches (regenerated per run)
-.xai-cache/
-.bankr-cache/
-.verdikta-cache/
-.pending-notify/
-.pending-replicate/
-.pending-supernotes/
-.pending-deploy/
-.pending-devto/
-.pending-farcaster/
-.pending-verdikta/
+# Caches — prefetch scripts write these, skills read them; regenerated every run
+# (.xai-cache, .verdikta-cache, .treasury-cache, .star-cache, .github-releases-cache, …)
+.*-cache/
 .tg_cache/
+
+# Pending queues — postprocess scripts consume + delete these after the run
+# (.pending-notify, .pending-email, .pending-admanage, .pending-verdikta, …),
+# plus the .pending-notify-temp scratch where skills stage notify bodies for `./notify -f`
+.pending-*/
 
 # Skill provenance lock (per-repo, not committed)
 skills.lock

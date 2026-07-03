@@ -21,7 +21,7 @@ ATRIUM_HOST="${ATRIUM_HOST:-https://atriumhermes.tech}"
 WELLKNOWN="$ATRIUM_HOST/.well-known/skills"
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 SKILLS_DIR="$ROOT/skills"
-SCANNER="$ROOT/skills/skill-scan/scan.sh"
+SCANNER="$ROOT/scripts/skill-scan.sh"
 LOCK_FILE="$ROOT/skills.lock"
 # shellcheck source=scripts/lib/skill-install.sh
 . "$ROOT/scripts/lib/skill-install.sh"

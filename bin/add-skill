@@ -138,7 +138,7 @@ if [[ ${#SKILL_NAMES[@]} -eq 0 ]]; then
 fi
 
 # Security scanning
-SCANNER="$ROOT_DIR/skills/skill-scan/scan.sh"
+SCANNER="$ROOT_DIR/scripts/skill-scan.sh"
 TRUSTED_FILE="$ROOT_DIR/skills/security/trusted-sources.txt"
 FORCE_INSTALL=false
 

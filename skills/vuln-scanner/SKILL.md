@@ -683,9 +683,9 @@ specific bullets.
 
 ## Sandbox note
 
-**Arm A (scan).** Getting the scanners to run in the GitHub Actions sandbox takes **two** things — both are now in place:
+**Arm A (scan).** Getting the scanners to run in the GitHub Actions sandbox takes **two** things:
 
-1. **Install** — the binaries (`semgrep`, `trufflehog`, `osv-scanner`, `slither`) are **not pre-installed**, and outbound `pip install` / `curl | sh` downloads are blocked. `scripts/prefetch-vuln-scanner.sh` stages them before Claude starts (full network access — see CLAUDE.md prefetch pattern), into `/tmp/bin` (+ `semgrep` symlink).
+1. **Install** — the binaries (`semgrep`, `trufflehog`, `osv-scanner`, `slither`) are **not pre-installed**, and outbound `pip install` / `curl | sh` downloads are blocked. They must be staged before Claude starts by a `scripts/prefetch-vuln-scanner.sh` prefetch script (full network access — see CLAUDE.md prefetch pattern) into `/tmp/bin` (+ `semgrep` symlink). **This prefetch script is not shipped in the repo** — until the operator adds it, the scanner binaries are unavailable: Arm A must report `SCAN_TOOLS_MISSING` and skip the scan cleanly rather than erroring the run.
 2. **Execute** — non-interactive `claude -p` runs under an `--allowedTools` allowlist, so any command not on it is **denied** ("requires approval") with no human to approve. The scanner *bare names* are granted in `scripts/skill_mode.sh` (write tier). This is why step A3 puts `/tmp/bin` on `PATH` and calls each tool by bare name (`semgrep …`, not `/tmp/bin/semgrep …`) — an absolute-path invocation would not match the allowlist pattern.
 
 This two-part fix resolves ISS-001 (binaries installed *and* runnable). If any scanner binary is still missing at runtime, log `VULN_SCANNER_SKIPPED: <tool> not available`, record `tool=fail` in `sources.txt`, and continue with the remaining scanners rather than aborting the whole run. An all-scanners-fail run must report **error**, not **clean**.

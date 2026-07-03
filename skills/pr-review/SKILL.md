@@ -159,7 +159,7 @@ If no open PRs across all repos, log `PR_REVIEW_OK` and end.
 
 Today is ${today}. The open-PR queue on `aaronjmars/aeon` has crossed the threshold where a human reviewer working alone falls behind: yesterday (June 1) eighteen PRs were merged in a single 37-minute Monday catch-up window, but on every prior weekend day they stacked up untouched. As community skill packs become the primary contribution model and external contributors keep landing skill PRs every other day, the queue's *steady-state* size will keep climbing — `skill-scan` evaluates one inbound skill PR at a time, but no skill answers the operator's actual morning question: *"of the N open PRs right now, which N1 can I merge in one click and which N2 need real review?"*
 
-This branch is that answer. It surveys every open PR on a target repo, categorises each by the files it touches, runs `skills/skill-scan/scan.sh` against every changed `SKILL.md` (same scanner `skill-scan` reuses verbatim), and emits one structured Telegram digest with four risk buckets sorted by PR age. The operator can fire-and-forget the FAST_TRACK bucket, glance at SKILL_PASS, and budget real attention for INFRA_REVIEW + SKILL_WARN_OR_BLOCK + CORE_REVIEW.
+This branch is that answer. It surveys every open PR on a target repo, categorises each by the files it touches, runs `scripts/skill-scan.sh` against every changed `SKILL.md` (same scanner `skill-scan` reuses verbatim), and emits one structured Telegram digest with four risk buckets sorted by PR age. The operator can fire-and-forget the FAST_TRACK bucket, glance at SKILL_PASS, and budget real attention for INFRA_REVIEW + SKILL_WARN_OR_BLOCK + CORE_REVIEW.
 
 Read `memory/MEMORY.md` for context.
 Read the last 8 days of `memory/logs/` for prior-run context (skip if dispatched).
@@ -183,7 +183,7 @@ The four compose. `pr-triage` runs once per PR open; `skill-scan` runs on demand
 | `gh api repos/{repo}/pulls?state=open&per_page=100 --paginate` | Open PR list with author, draft state, base ref, age, mergeable state, head SHA, statusCheckRollup summary, labels | `GH_TOKEN` |
 | `gh api repos/{repo}/pulls/{N}/files?per_page=100 --paginate` | Per-PR list of changed file paths + status (added/modified/removed) — the only signal we trust for bucketing | `GH_TOKEN` |
 | `gh api repos/{repo}/contents/{path}?ref={head_sha}` | Each changed `SKILL.md` body — fed to `scan.sh` for PASS/WARN/BLOCK verdict | `GH_TOKEN` |
-| `skills/skill-scan/scan.sh` (local) | Scanner reused verbatim (no fork, no shadow copy) — same source `skill-scan` reuses | Local script |
+| `scripts/skill-scan.sh` (local) | Scanner reused verbatim (no fork, no shadow copy) — same source `skill-scan` reuses | Local script |
 | `memory/watched-repos.md` (local) | Read only the `## Trusted Authors` section — those authors' PRs surface in a separate `TRUSTED_AUTHOR` row that bypasses the FAST_TRACK / CORE_REVIEW buckets | Local file |
 
 No new secrets. GitHub access via `gh` CLI (`GH_TOKEN`) per CLAUDE.md.
@@ -199,7 +199,7 @@ Writes:
 ### 0. Bootstrap
 
 ```bash
-mkdir -p memory/topics articles
+mkdir -p memory/topics output/articles
 [ -f memory/topics/pr-merge-state.json ] || cat > memory/topics/pr-merge-state.json <<'EOF'
 {"last_run":null,"last_status":null,"last_repo":null,"prs":{}}
 EOF
@@ -252,7 +252,7 @@ Apply this rubric in order (first match wins). The rubric is conservative — wh
 |--------|-----------------|-----------|
 | **CORE_REVIEW** | Any changed path matches `bin/install-skill-pack`, `scripts/lib/skill-install.sh`, `bin/add-skill`, `bin/add-mcp`, `aeon`, `scripts/notify.sh`, `scripts/notify-jsonrender.sh`, `aeon.yml`, `bin/generate-skills-json`, `scripts/check-capabilities-parity.sh`, `.github/workflows/aeon.yml`, `.github/workflows/chain-runner.yml`, `chain-runner.yml`, `CLAUDE.md` | The runtime executor + the things every skill depends on. A bug here ships to every fork. |
 | **INFRA_REVIEW** | Any changed path matches `.github/workflows/*.yml` (excluding `aeon.yml` already in CORE_REVIEW), `.github/actions/*`, `Dockerfile*`, `package.json` at repo root, `package-lock.json` at repo root, `apps/dashboard/package.json`, `mcp-server/package.json` | Build + CI + dependency surface. Not the executor itself but adjacent enough that the operator should look. |
-| **SKILL_WARN_OR_BLOCK** | Touches any `skills/*/SKILL.md` AND `skill-scan/scan.sh` returned WARN or BLOCK on at least one of them (step 5) | A skill PR with a HIGH (BLOCK) or MEDIUM (WARN) security finding — surface explicitly. |
+| **SKILL_WARN_OR_BLOCK** | Touches any `skills/*/SKILL.md` AND `scripts/skill-scan.sh` returned WARN or BLOCK on at least one of them (step 5) | A skill PR with a HIGH (BLOCK) or MEDIUM (WARN) security finding — surface explicitly. |
 | **SKILL_PASS** | Touches any `skills/*/SKILL.md` AND every scanned `SKILL.md` returned PASS | A clean skill PR. The category most likely to be safely merged once a human has read the description. |
 | **FAST_TRACK** | All changed paths match `*.md`, `*.txt`, `LICENSE*`, `docs/**`, `README*`, `_data/**`, `_layouts/**`, `_posts/**`, `_config.yml`, `output/.chains/**` | Docs/asset/data-only PR. No code path. Operator can merge on the title + a glance. |
 | **UNKNOWN** | Files endpoint failed, OR no rule matched (shouldn't happen — `UNKNOWN` is the catch-all so a future contributor's PR with a brand-new path doesn't silently vanish from the digest) | Surface and ask the operator to look. Never silently bucket as FAST_TRACK. |
@@ -266,7 +266,7 @@ For each `SKILL.md` path changed in such a PR:
 ```bash
 gh api "repos/${TARGET_REPO}/contents/${PATH}?ref=${HEAD_SHA}" \
   --jq '.content' | base64 -d > "/tmp/pr-merge-scan-${PR_NUMBER}-$(echo ${PATH} | tr '/' '_').md"
-bash skills/skill-scan/scan.sh "/tmp/pr-merge-scan-${PR_NUMBER}-$(echo ${PATH} | tr '/' '_').md" > "/tmp/pr-merge-scan-${PR_NUMBER}.out" 2>&1
+bash scripts/skill-scan.sh "/tmp/pr-merge-scan-${PR_NUMBER}-$(echo ${PATH} | tr '/' '_').md" > "/tmp/pr-merge-scan-${PR_NUMBER}.out" 2>&1
 ```
 
 The scan output's first HIGH/MEDIUM/PASS verdict line is taken as the per-file verdict. PR-level verdict is the **worst** across all scanned files: any HIGH → `BLOCK`; otherwise any MEDIUM → `WARN`; otherwise `PASS`.

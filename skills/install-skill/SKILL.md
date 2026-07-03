@@ -25,7 +25,7 @@ Today is ${today}. Your task is to install the community skill pack named in `${
 The repo already ships a hardened installer, `bin/install-skill-pack`, which is the single source of truth — **do not reimplement it**. Given `owner/repo` it:
 
 1. Downloads the repo tarball and reads its `skills-pack.json` manifest (per-skill `path`, `schedule`, `default_enabled`, `secrets_required`, `capabilities`). No manifest → it falls back to scanning `skills/*/SKILL.md`.
-2. **Security-scans** every skill from an untrusted source via `skills/skill-scan/scan.sh`. Sources listed in `skills/security/trusted-sources.txt` skip the deep scan (format checks still run). In CI there is no TTY, so a HIGH-severity finding **blocks** that skill unless `--force` is passed — this is the safety gate, leave it on.
+2. **Security-scans** every skill from an untrusted source via `scripts/skill-scan.sh`. Sources listed in `skills/security/trusted-sources.txt` skip the deep scan (format checks still run). In CI there is no TTY, so a HIGH-severity finding **blocks** that skill unless `--force` is passed — this is the safety gate, leave it on.
 3. Copies each skill into `skills/<slug>/`, then updates `aeon.yml` (added `enabled: false` so nothing runs until the operator turns it on), `skills.json`, and records provenance in `skills.lock`.
 
 Your job is to drive that script, regenerate the catalog, and wrap the result in a reviewable PR.

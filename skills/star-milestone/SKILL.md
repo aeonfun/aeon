@@ -35,7 +35,7 @@ Both phases use one ladder so they always agree on which numbers count as round-
    - empty `${var}` → `DRY_RUN=false`, `REPO_SCOPE=` (all repos), `OVERRIDE_MILESTONE=auto`.
 3. **Load the repo list.** If `REPO_SCOPE` is set, that is the single repo. Otherwise read `memory/watched-repos.md`:
    ```bash
-   mkdir -p memory/topics articles
+   mkdir -p memory/topics output/articles
    [ -f memory/topics/star-momentum-state.json ] || echo '{"last_run_at":null,"alerts":{}}' > memory/topics/star-momentum-state.json
    REPOS=$(grep -oE '^- [a-zA-Z0-9._-]+/[a-zA-Z0-9._-]+' memory/watched-repos.md \
      | sed 's/^- //' \
@@ -462,7 +462,7 @@ Phase B — momentum:
 
 - **Phase A** uses `gh api` and `gh workflow run`, which handle auth via the workflow's `GITHUB_TOKEN` — no env-var curl workaround needed. The stargazer pagination call is the only network-heavy step; if it fails, fall through to `UNKNOWN` shape rather than aborting. Auto-dispatch (A7) uses the gh CLI's internal auth — no separate token plumbing.
 - **Phase B** is pure local file I/O — no curl, no `gh api`, no env-var-in-headers, no prefetch script. Every read is a directory listing, file-existence check, or grep over `memory/logs/`. Every write goes to `output/articles/`, `memory/topics/`, or `memory/logs/`. Works in the GitHub Actions sandbox without any network workarounds.
-- `./notify` fans out to every configured channel and is already sandbox-safe (postprocess-notify pattern).
+- `./notify` fans out to every configured channel and is already sandbox-safe — it stages to `.pending-notify/` and the workflow re-delivers any that failed in-sandbox after the run.
 
 ## Constraints
 

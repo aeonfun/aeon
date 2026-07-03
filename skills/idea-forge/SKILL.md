@@ -60,7 +60,7 @@ Also, for current state, read the latest `product-pulse` + `bd-radar` digests if
 
 #### 0. Bootstrap
 ```bash
-mkdir -p memory/topics articles
+mkdir -p memory/topics output/articles
 [ -f memory/topics/idea-forge-state.json ] || echo '{"ideas":[]}' > memory/topics/idea-forge-state.json
 ```
 Load prior idea titles/one-liners into a dedup set (don't re-pitch the same wedge unless materially evolved). Also scan the last 21 days of `memory/logs/` for `### idea-forge` blocks.
