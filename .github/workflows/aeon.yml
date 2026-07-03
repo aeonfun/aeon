@@ -980,9 +980,9 @@ jobs:
           TODAY=$(date -u +%Y-%m-%d)
           mkdir -p memory/logs
           printf '\n## %s (read-only)\nRan %s UTC.\n' "$SKILL" "$(date -u +%FT%TZ)" >> "memory/logs/${TODAY}.md"
-          CODE_PATHS="skills .github apps/mcp-server apps/webhook apps/dashboard/app apps/dashboard/lib apps/dashboard/components scripts examples docs catalog bin *.md *.json *.yml aeon"
+          CODE_PATHS="skills .github apps/mcp-server apps/webhook apps/dashboard/app apps/dashboard/lib apps/dashboard/components scripts docs catalog bin *.md *.json *.yml aeon"
           git checkout -- $CODE_PATHS 2>/dev/null || true
-          git clean -fd -- skills scripts examples .github bin catalog 2>/dev/null || true
+          git clean -fd -- skills scripts docs .github bin catalog 2>/dev/null || true
           echo "read-only guard: logged run + reverted code/config writes for $SKILL"
 
       - name: Commit results

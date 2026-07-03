@@ -130,8 +130,8 @@ bin/export-skill token-movers               # package one for standalone use
 
 Installed skills land in `skills/` and are added to `aeon.yml` disabled - flip `enabled: true` to activate. You can also:
 
-- **Build your own** from [`examples/skill-templates/`](../examples/skill-templates/TEMPLATE.md): `bin/new-from-template <template> <skill-name> --category <pack>` - the `--category` slots it into a pack (or set `category:` in the SKILL.md frontmatter). See [`docs/skill-packs.md`](../docs/skill-packs.md).
-- **Use one skill elsewhere** without forking: drop a portable workflow from [`examples/workflow-templates/`](../examples/workflow-templates) into any repo's `.github/workflows/`.
+- **Build your own** from [`docs/examples/skill-templates/`](../docs/examples/skill-templates/TEMPLATE.md): `bin/new-from-template <template> <skill-name> --category <pack>` - the `--category` slots it into a pack (or set `category:` in the SKILL.md frontmatter). See [`docs/skill-packs.md`](../docs/skill-packs.md).
+- **Use one skill elsewhere** without forking: drop a portable workflow from [`docs/examples/workflow-templates/`](../docs/examples/workflow-templates) into any repo's `.github/workflows/`.
 - **Label any GitHub issue `ai-build`** - Claude reads the issue, implements it, and opens a PR
 - **Install community packs** - see [Community skill packs](#community-skill-packs)
 
@@ -154,7 +154,7 @@ Most agent tools put you in the driver's seat - approve this tool call, review t
 
 **Other agents are interactive tools you use. Aeon is an autonomous system you configure and walk away from.** It decides when to run, what to check, and when to bother you. You still want Claude Code for writing code interactively - but for the 90% of recurring tasks that don't need you in the loop, the most autonomous agent is the one that never asks.
 
-For a comparison against the broader ecosystem (AutoGen, CrewAI, n8n, LangGraph) and active forks in production, see [`SHOWCASE.md`](../SHOWCASE.md). For products built on Aeon, see [`ECOSYSTEM.md`](../ECOSYSTEM.md).
+For a comparison against the broader ecosystem (AutoGen, CrewAI, n8n, LangGraph) and active forks in production, see [`SHOWCASE.md`](../docs/SHOWCASE.md). For products built on Aeon, see [`ECOSYSTEM.md`](../docs/ECOSYSTEM.md).
 
 ![Autonomy spectrum](../assets/autonomy-aeon.jpg)
 
@@ -252,7 +252,7 @@ Skills that call third-party APIs declare their credentials in a `requires:` fro
 requires: [XAI_API_KEY, COINGECKO_API_KEY?]   # bare = required · `?` = works better with
 ```
 
-The dashboard surfaces this as an **API keys** panel on each skill (set/unset status, inline "Set" button), a ⚠ flag when an enabled skill is missing a required key, and a **"used by"** index under each key in Settings → Access Keys. Skills can likewise declare MCP servers with an `mcp:` list (`mcp: [base]`) - same two tiers, shown as a per-skill **MCP servers** panel with install state. Convention details: [`examples/skill-templates/TEMPLATE.md`](../examples/skill-templates/TEMPLATE.md#declaring-api-keys-requires).
+The dashboard surfaces this as an **API keys** panel on each skill (set/unset status, inline "Set" button), a ⚠ flag when an enabled skill is missing a required key, and a **"used by"** index under each key in Settings → Access Keys. Skills can likewise declare MCP servers with an `mcp:` list (`mcp: [base]`) - same two tiers, shown as a per-skill **MCP servers** panel with install state. Convention details: [`docs/examples/skill-templates/TEMPLATE.md`](../docs/examples/skill-templates/TEMPLATE.md#declaring-api-keys-requires).
 
 ---
 
@@ -329,7 +329,7 @@ Claude only installs and runs when a skill actually matches - non-matching ticks
 Let skills **call** MCP servers (GitHub, a database, a paid API, your own) while they run in GitHub Actions. Opt-in and safe - with no `.mcp.json` at the repo root, runs are byte-identical to before.
 
 ```bash
-cp examples/mcp/.mcp.json.example .mcp.json   # then edit, commit, push
+cp docs/examples/mcp/.mcp.json.example .mcp.json   # then edit, commit, push
 ```
 
 The example ships two working servers - `github` (uses the runner's built-in `GITHUB_TOKEN`) and `sequential-thinking` (no-auth stdio). On the next run, the runner loads `.mcp.json` and auto-allows every server's tools, so a skill can just say *"use the github MCP server to …"*.
@@ -364,7 +364,7 @@ bin/add-mcp --uninstall        # remove
 
 Tool naming, the `var` argument, Claude Desktop config, and a test client are in [`apps/mcp-server/README.md`](../apps/mcp-server/README.md).
 
-Working client scripts (MCP stdio, Claude Desktop) live in [`examples/`](../examples) - each calling a real skill end-to-end. Start with [`examples/README.md`](../examples/README.md).
+Working client scripts (MCP stdio, Claude Desktop) live in [`docs/examples/`](../docs/examples) - each calling a real skill end-to-end. Start with [`docs/examples/README.md`](../docs/examples/README.md).
 
 ### Cross-repo access
 
@@ -617,13 +617,16 @@ bin/                     ← operator + maintainer CLI (run from repo root, e.g.
   new-from-template      ← scaffold a skill from a template (--category sets its pack)
   generate-skills-json   ← regenerate catalog/skills.json from SKILL.md files
   generate-packs-json    ← regenerate catalog/packs.json from the two configs above
-docs/                    ← reference docs (CORE, CAPABILITIES, skill-packs, telegram, help/status)
+docs/                    ← reference docs, community registries, adopter examples
+  CORE.md · CAPABILITIES.md · skill-packs.md · telegram-* · help/status
+  ECOSYSTEM.md           ← products & agents built on Aeon (community-curated)
+  SHOWCASE.md            ← leaderboard of active forks
+  examples/              ← MCP quickstart, portable workflow templates, skill templates
+    workflow-templates/  ← GitHub Agentic Workflow .md (adopt a skill without forking)
+    skill-templates/     ← templates for building your own skills
+    mcp/                 ← MCP quickstart config + .mcp.json.example
 soul/                    ← optional identity files (SOUL.md, STYLE.md, examples/, data/)
 skills/                  ← each skill is a SKILL.md prompt file (68 total; `category:` = its pack)
-examples/                ← MCP quickstart, portable workflow templates, skill templates
-  workflow-templates/    ← GitHub Agentic Workflow .md (adopt a skill without forking)
-  skill-templates/       ← templates for building your own skills
-  mcp/                   ← MCP quickstart config + .mcp.json.example
 apps/                    ← standalone sub-projects, each with its own package.json
   dashboard/             ← local web UI (Next.js + json-render feed)
   mcp-server/            ← MCP server - exposes skills as Claude tools
@@ -660,7 +663,7 @@ Aeon is an AI agent system that runs unattended on GitHub Actions, self-heals wh
 
 ### Can I create custom skills?
 
-Yes. Bootstrap from [`examples/skill-templates/`](../examples/skill-templates/TEMPLATE.md) (`bin/new-from-template <template> <skill-name> --var KEY=VALUE...`), describe one to the `create-skill` skill, or label a GitHub issue `ai-build` and let Aeon build it.
+Yes. Bootstrap from [`docs/examples/skill-templates/`](../docs/examples/skill-templates/TEMPLATE.md) (`bin/new-from-template <template> <skill-name> --var KEY=VALUE...`), describe one to the `create-skill` skill, or label a GitHub issue `ai-build` and let Aeon build it.
 
 ### Troubleshooting
 

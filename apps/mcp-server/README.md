@@ -57,7 +57,7 @@ bin/add-mcp --build-only       # produces apps/mcp-server/dist/index.js
 bin/add-mcp --desktop          # prints the snippet + the config path for your OS
 ```
 
-Then add this to your Claude Desktop config (macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`, Windows: `%APPDATA%\Claude\claude_desktop_config.json`), replacing the path with your real repo path — see [`examples/mcp/claude_desktop_config.json`](../../examples/mcp/claude_desktop_config.json):
+Then add this to your Claude Desktop config (macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`, Windows: `%APPDATA%\Claude\claude_desktop_config.json`), replacing the path with your real repo path — see [`docs/examples/mcp/claude_desktop_config.json`](../../docs/examples/mcp/claude_desktop_config.json):
 
 ```json
 {
@@ -79,8 +79,8 @@ Before wiring it into a client, confirm the server lists and runs tools with the
 ```bash
 bin/add-mcp --build-only                          # produce dist/index.js
 pip install mcp                                 # official Anthropic MCP client
-python examples/mcp/test_connection.py          # lists every aeon-* tool, then calls aeon-cost-report
-python examples/mcp/test_connection.py aeon-token-movers AEON   # call a specific tool with a var
+python docs/examples/mcp/test_connection.py          # lists every aeon-* tool, then calls aeon-cost-report
+python docs/examples/mcp/test_connection.py aeon-token-movers AEON   # call a specific tool with a var
 ```
 
 You should see the full `aeon-*` tool list followed by a real skill output. If that works, your Claude Desktop / Claude Code wiring will too. `aeon-cost-report` is the default because it's fast and needs no external API.

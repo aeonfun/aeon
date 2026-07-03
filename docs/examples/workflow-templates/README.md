@@ -18,7 +18,7 @@ Each template wraps one of Aeon's battle-tested skills as a portable `.md` workf
 1. Copy any `.md` file into your repo's `.github/workflows/` directory:
    ```bash
    # Example: add PR review to your repo
-   curl -O https://raw.githubusercontent.com/aaronjmars/aeon/main/examples/workflow-templates/pr-review.md
+   curl -O https://raw.githubusercontent.com/aaronjmars/aeon/main/docs/examples/workflow-templates/pr-review.md
    mv pr-review.md .github/workflows/
    ```
 

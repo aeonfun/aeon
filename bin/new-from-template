@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# new-from-template — Bootstrap a new skill from a local template under examples/skill-templates/.
+# new-from-template — Bootstrap a new skill from a local template under docs/examples/skill-templates/.
 #
 # Usage:
 #   bin/new-from-template --list                          List available templates
@@ -12,7 +12,7 @@ set -euo pipefail
 #                                                       a disabled entry in aeon.yml.
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-TEMPLATES_DIR="$ROOT/examples/skill-templates"
+TEMPLATES_DIR="$ROOT/docs/examples/skill-templates"
 SKILLS_DIR="$ROOT/skills"
 AEON_YML="$ROOT/aeon.yml"
 
@@ -23,7 +23,7 @@ Usage: bin/new-from-template <template> <skill-name> [--var KEY=VALUE]...
 Bootstrap a new skill from a local template.
 
 Arguments:
-  <template>         Template name (a directory under examples/skill-templates/)
+  <template>         Template name (a directory under docs/examples/skill-templates/)
   <skill-name>       Name for the new skill (becomes skills/<skill-name>/)
 
 Options:
@@ -47,7 +47,7 @@ EOF
 
 list_templates() {
   if [[ ! -d "$TEMPLATES_DIR" ]]; then
-    echo "No examples/skill-templates/ directory found." >&2
+    echo "No docs/examples/skill-templates/ directory found." >&2
     return 1
   fi
   echo ""
@@ -68,7 +68,7 @@ list_templates() {
   echo ""
   echo "$count templates available."
   echo ""
-  echo "See examples/skill-templates/TEMPLATE.md for the full contract."
+  echo "See docs/examples/skill-templates/TEMPLATE.md for the full contract."
 }
 
 list_tokens() {

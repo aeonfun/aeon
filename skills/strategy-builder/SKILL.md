@@ -40,7 +40,7 @@ Read whatever's available and merge — more grounding makes a sharper strategy:
 
 - **Goal text** — the operator's own words. This is the spine; weight it highest.
 - **Current `STRATEGY.md`** — read it. If it's already customised (no `unconfigured defaults` line), you're **refining**, not nuking: keep what still holds, sharpen the rest.
-- **Repo (`repo=` or, if absent, this repo)** — read `README.md`, `SHOWCASE.md` if present, and the top of `memory/MEMORY.md` (current goals / active topics). Use `gh api repos/<owner>/<repo>/readme --jq '.content' | base64 -d` for an external repo, or read the local files for this repo. What is actually being built and shipped tells you the real north-star.
+- **Repo (`repo=` or, if absent, this repo)** — read `README.md`, `docs/SHOWCASE.md` if present, and the top of `memory/MEMORY.md` (current goals / active topics). Use `gh api repos/<owner>/<repo>/readme --jq '.content' | base64 -d` for an external repo, or read the local files for this repo. What is actually being built and shipped tells you the real north-star.
 - **Links (`links=`)** — **WebFetch** each (product page, site, deck) for the value prop, audience, and stage.
 
 ### 2. Synthesize the strategy

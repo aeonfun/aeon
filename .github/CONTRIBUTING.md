@@ -49,7 +49,7 @@ bin/add-skill <owner/repo> <skill> [skill...]
 ```
 
 Every `SKILL.md` opens with YAML frontmatter — the full contract is in
-[`examples/skill-templates/TEMPLATE.md`](../examples/skill-templates/TEMPLATE.md). Essentials:
+[`docs/examples/skill-templates/TEMPLATE.md`](../docs/examples/skill-templates/TEMPLATE.md). Essentials:
 
 ```yaml
 ---

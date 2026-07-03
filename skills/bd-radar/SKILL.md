@@ -61,7 +61,7 @@ For ecosystem/extension repos, note the owner (potential partner).
 ```bash
 jq -r '.output[]|select(.type=="message")|.content[]|select(.type=="output_text")|.text' .xai-cache/bd-radar-x.json
 ```
-Each entry is a post (@handle, text, date, builder/project note, engagement, link). Keep posts from accounts that read as **projects or builders** (bio/links, not pure reply-guys) — those are the `mentioning` leads. Cross-check against `ECOSYSTEM.md` if present: a handle already listed is an existing builder (*known — expanding*); a new builder handle is a fresh `mentioning` lead. If the cache is missing (no `XAI_API_KEY`), log `BD_RADAR_SOURCE_MISS: x (no xai cache)` and continue — `mention-radar` covers X separately.
+Each entry is a post (@handle, text, date, builder/project note, engagement, link). Keep posts from accounts that read as **projects or builders** (bio/links, not pure reply-guys) — those are the `mentioning` leads. Cross-check against `docs/ECOSYSTEM.md` if present: a handle already listed is an existing builder (*known — expanding*); a new builder handle is a fresh `mentioning` lead. If the cache is missing (no `XAI_API_KEY`), log `BD_RADAR_SOURCE_MISS: x (no xai cache)` and continue — `mention-radar` covers X separately.
 
 **HN / Reddit / web:** `WebSearch` for each product's name + `"built on <product>"`, plus relevant subreddits (e.g. `r/LocalLLaMA OR r/AI_Agents <product>`) for the last week. Surface threads where someone is using or asking about your products.
 
