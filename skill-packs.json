@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "updated": "2026-06-20",
+  "updated": "2026-07-03",
   "description": "Machine-readable registry of community skill packs installable via ./install-skill-pack. Mirrors the human-readable table in README.md.",
   "packs": [
     {
@@ -12,43 +12,9 @@
       "homepage": "https://www.antfleet.dev",
       "category": "dev",
       "trust_level": "trusted",
-      "skills": ["pr-review-antfleet", "pr-review-antfleet-x402"]
-    },
-    {
-      "repo": "baseddevoloper/aeon-skill-pack-vvvkernel",
-      "name": "aeon-skill-pack-vvvkernel",
-      "description": "Venice AI inference via VVVKernel — onchain, audit, growth, narrative, image gen, monitoring.",
-      "author": "baseddevoloper",
-      "license": "MIT",
-      "homepage": "https://github.com/baseddevoloper/aeon-skill-pack-vvvkernel",
-      "category": "crypto",
-      "trust_level": "community",
       "skills": [
-        "vvvkernel",
-        "vvvkernel-audit",
-        "vvvkernel-brief",
-        "vvvkernel-digest",
-        "vvvkernel-growth",
-        "vvvkernel-image",
-        "vvvkernel-monitor",
-        "vvvkernel-narrative",
-        "vvvkernel-onchain"
-      ]
-    },
-    {
-      "repo": "danbuildss/luca-aeon-skills",
-      "name": "luca-aeon-skills",
-      "description": "Financial intelligence via x402Books AI — wallet scanning, treasury monitoring, financial reports, agent registry on Base.",
-      "author": "danbuildss",
-      "license": "MIT",
-      "homepage": "https://github.com/danbuildss/luca-aeon-skills",
-      "category": "crypto",
-      "trust_level": "community",
-      "skills": [
-        "check-agent",
-        "get-report",
-        "scan-wallet",
-        "treasury-monitor"
+        "pr-review-antfleet",
+        "pr-review-antfleet-x402"
       ]
     },
     {
@@ -60,38 +26,15 @@
       "homepage": "https://careful-finance.txzy.net",
       "category": "crypto",
       "trust_level": "community",
-      "skills": ["careful-finance"],
-      "secrets_required": [],
-      "capabilities": ["external_api", "writes_external_host", "sends_notifications"]
-    },
-    {
-      "repo": "0xShak/zer0-skill-pack",
-      "name": "zer0-skill-pack",
-      "description": "Polymarket intelligence — daily theses, mispricing scans, contrarian fades, narrative-vs-markets gaps, paper-trade PnL journal, alpha comment curation.",
-      "author": "ZER0 LABS",
-      "license": "MIT",
-      "homepage": "https://atzer0.xyz",
-      "category": "crypto",
-      "trust_level": "community",
       "skills": [
-        "prediction-journal",
-        "polymarket-thesis",
-        "polymarket-edge",
-        "polymarket-contrarian",
-        "narrative-vs-markets",
-        "polymarket-alpha-comments"
+        "careful-finance"
+      ],
+      "secrets_required": [],
+      "capabilities": [
+        "external_api",
+        "writes_external_host",
+        "sends_notifications"
       ]
-    },
-    {
-      "repo": "gitlawbounty/gitbounty-skill-pack",
-      "name": "GitBounty Skill Pack",
-      "description": "Bounty hunting on the gitlawb network — discovers open bounties via the gitbounty firehose, scouts the best fit, drafts a PR plan with a confidence score.",
-      "author": "gitlawbounty",
-      "license": "MIT",
-      "homepage": "https://github.com/gitlawbounty/gitbounty-skill-pack",
-      "category": "dev",
-      "trust_level": "community",
-      "skills": ["bounty-hunter"]
     },
     {
       "repo": "liquidpadbot/aeon-skill-pack-liquidpad",
@@ -118,95 +61,13 @@
       "homepage": "https://mythosforge.xyz",
       "category": "dev",
       "trust_level": "community",
-      "skills": ["mythosforge-ops-report", "mythosforge-proof-integrity", "mythosforge-theme-round-guard", "mythosforge-jury-drift-watcher", "mythosforge-gallery-qa-watcher"]
-    },
-    {
-      "repo": "sparkleware/demo-pack",
-      "name": "demo-pack",
-      "description": "Holographic demo skill — proves the Sparkleware registry install pipeline works.",
-      "author": "sparkleware",
-      "license": "MIT",
-      "homepage": "https://github.com/sparkleware/demo-pack",
-      "category": "meta",
-      "trust_level": "community",
-      "skills": ["sparkle-status"]
-    },
-    {
-      "repo": "sparkleware/aeon-pulse",
-      "name": "aeon-pulse",
-      "description": "Daily activity summary for the Aeon framework — recent commits, releases, and open issues.",
-      "author": "sparkleware",
-      "license": "MIT",
-      "homepage": "https://github.com/sparkleware/aeon-pulse",
-      "category": "dev",
-      "trust_level": "community",
-      "skills": ["aeon-activity"]
-    },
-    {
-      "repo": "sparkleware/registry-watch",
-      "name": "registry-watch",
-      "description": "Daily digest of new packs added to the Sparkleware registry — discover community skills without manually browsing.",
-      "author": "sparkleware",
-      "license": "MIT",
-      "homepage": "https://github.com/sparkleware/registry-watch",
-      "category": "meta",
-      "trust_level": "community",
-      "skills": ["new-packs-digest"]
-    },
-    {
-      "repo": "sparkleware/arxiv-digest",
-      "name": "arxiv-digest",
-      "description": "Daily digest of newest AI / autonomous-agent papers on arXiv — top submissions in cs.AI, cs.LG, cs.MA.",
-      "author": "sparkleware",
-      "license": "MIT",
-      "homepage": "https://github.com/sparkleware/arxiv-digest",
-      "category": "research",
-      "trust_level": "community",
-      "skills": ["daily-papers"]
-    },
-    {
-      "repo": "sparkleware/hn-top",
-      "name": "hn-top",
-      "description": "Daily digest of HackerNews top stories — dev / startup / AI conversation in one screen.",
-      "author": "sparkleware",
-      "license": "MIT",
-      "homepage": "https://github.com/sparkleware/hn-top",
-      "category": "social",
-      "trust_level": "community",
-      "skills": ["hn-daily"]
-    },
-    {
-      "repo": "sparkleware/eth-gas-watch",
-      "name": "eth-gas-watch",
-      "description": "Ethereum gas-price status check on a schedule — flags cheap windows for batching on-chain ops.",
-      "author": "sparkleware",
-      "license": "MIT",
-      "homepage": "https://github.com/sparkleware/eth-gas-watch",
-      "category": "crypto",
-      "trust_level": "community",
-      "skills": ["gas-status"]
-    },
-    {
-      "repo": "sparkleware/morning-briefing",
-      "name": "morning-briefing",
-      "description": "Daily morning briefing — date, day-of-week, current weather, and a sparkly closer. No API key required.",
-      "author": "sparkleware",
-      "license": "MIT",
-      "homepage": "https://github.com/sparkleware/morning-briefing",
-      "category": "productivity",
-      "trust_level": "community",
-      "skills": ["morning-briefing"]
-    },
-    {
-      "repo": "noelclaw/aeon-skill-pack-noelclaw",
-      "name": "aeon-skill-pack-noelclaw",
-      "description": "Persistent versioned memory and multi-agent swarm coordination — save typed artifacts to Noel Vault and manage shared agent session state across runs.",
-      "author": "noelclaw",
-      "license": "MIT",
-      "homepage": "https://noelclaw.com",
-      "category": "dev",
-      "trust_level": "community",
-      "skills": ["noelvault", "noel-swarm"]
+      "skills": [
+        "mythosforge-ops-report",
+        "mythosforge-proof-integrity",
+        "mythosforge-theme-round-guard",
+        "mythosforge-jury-drift-watcher",
+        "mythosforge-gallery-qa-watcher"
+      ]
     },
     {
       "repo": "codexvritra/signa",
@@ -218,19 +79,28 @@
       "homepage": "https://www.signaagent.xyz/partners",
       "category": "messaging",
       "trust_level": "community",
-      "skills": ["signa-connect", "signa-message", "signa-inbox", "signa-discover", "signa-broadcast", "signa-delegate", "signa-encrypted-room", "signa-pubkey-register", "signa-trust-gate", "signa-search", "signa-receipts", "signa-room-holders", "signa-launches-leaderboard", "signa-anchor-status", "bankr-resolve", "bankr-launches", "gitlawb-stats", "miroshark-stats", "miroshark-fire", "signa-spend"]
-    },
-    {
-      "repo": "mandateseal/mandateseal-guard",
-      "path": "aeon",
-      "name": "MandateSeal Guard",
-      "description": "Guard Aeon fund-moving skills with a MandateSeal mandate before each transfer (per-tx cap, chain/token allow-list, blocked recipients, human-approval queue) and a signed, Base-anchored receipt after — bounded, gated, provable.",
-      "author": "mandateseal",
-      "license": "MIT",
-      "homepage": "https://mandateseal.tech",
-      "category": "crypto",
-      "trust_level": "community",
-      "skills": ["distribute-tokens-guarded"]
+      "skills": [
+        "signa-connect",
+        "signa-message",
+        "signa-inbox",
+        "signa-discover",
+        "signa-broadcast",
+        "signa-delegate",
+        "signa-encrypted-room",
+        "signa-pubkey-register",
+        "signa-trust-gate",
+        "signa-search",
+        "signa-receipts",
+        "signa-room-holders",
+        "signa-launches-leaderboard",
+        "signa-anchor-status",
+        "bankr-resolve",
+        "bankr-launches",
+        "gitlawb-stats",
+        "miroshark-stats",
+        "miroshark-fire",
+        "signa-spend"
+      ]
     },
     {
       "repo": "Atrium-Hermes/aeon-atrium-skills",
@@ -241,7 +111,11 @@
       "homepage": "https://atriumhermes.tech",
       "category": "crypto",
       "trust_level": "community",
-      "skills": ["atrium-publish", "atrium-scout", "atrium-earnings"]
+      "skills": [
+        "atrium-publish",
+        "atrium-scout",
+        "atrium-earnings"
+      ]
     },
     {
       "repo": "mnemedb/aeon-skill-pack-mneme",
@@ -252,19 +126,16 @@
       "homepage": "https://mnemedb.dev",
       "category": "memory",
       "trust_level": "community",
-      "skills": ["mneme-remember", "mneme-recall", "mneme-entity", "mneme-relate", "mneme-find", "mneme-dream", "mneme-watch", "mneme-ask"]
-    },
-    {
-      "repo": "rajkaria/hunch",
-      "path": "aeon-skill-pack",
-      "name": "Hunch Prediction Markets",
-      "description": "Crowd-conviction signal, market discovery, and autonomous x402 betting on PlayHunch - onchain prediction markets on Base. Unlike monitor-only market packs, hunch-bet lets the agent take a real position: simulate-by-default, $1-$10, settlement opt-in with a funded Base wallet, USDC payout + onchain proof.",
-      "author": "rajkaria",
-      "license": "MIT",
-      "homepage": "https://www.playhunch.xyz/agents",
-      "category": "crypto",
-      "trust_level": "community",
-      "skills": ["hunch-intel", "hunch-markets", "hunch-bet"]
+      "skills": [
+        "mneme-remember",
+        "mneme-recall",
+        "mneme-entity",
+        "mneme-relate",
+        "mneme-find",
+        "mneme-dream",
+        "mneme-watch",
+        "mneme-ask"
+      ]
     },
     {
       "repo": "clawhunter/clawhunter-skills",
@@ -275,7 +146,10 @@
       "homepage": "https://clawhunter.fun",
       "category": "crypto",
       "trust_level": "community",
-      "skills": ["clawhunter-bounties", "clawhunter-content-studio"]
+      "skills": [
+        "clawhunter-bounties",
+        "clawhunter-content-studio"
+      ]
     },
     {
       "repo": "SpartanLabsXyz/aeon-skill-pack-polymarket",
@@ -287,9 +161,20 @@
       "homepage": "https://simmer.markets",
       "category": "crypto",
       "trust_level": "community",
-      "skills": ["polymarket-intel", "polymarket-markets", "polymarket-trade"],
-      "secrets_required": ["SIMMER_API_KEY"],
-      "capabilities": ["external_api", "writes_external_host", "onchain_writes", "sends_notifications"]
+      "skills": [
+        "polymarket-intel",
+        "polymarket-markets",
+        "polymarket-trade"
+      ],
+      "secrets_required": [
+        "SIMMER_API_KEY"
+      ],
+      "capabilities": [
+        "external_api",
+        "writes_external_host",
+        "onchain_writes",
+        "sends_notifications"
+      ]
     },
     {
       "repo": "CharonAI-code/charon",
@@ -301,9 +186,15 @@
       "homepage": "https://charon.codes",
       "category": "dev",
       "trust_level": "community",
-      "skills": ["charon-setup", "charon-policy"],
+      "skills": [
+        "charon-setup",
+        "charon-policy"
+      ],
       "secrets_required": [],
-      "capabilities": ["external_api", "writes_external_host"]
+      "capabilities": [
+        "external_api",
+        "writes_external_host"
+      ]
     }
   ]
 }

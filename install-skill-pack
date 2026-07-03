@@ -97,7 +97,7 @@ Install a curated community skill pack from a GitHub repository, or browse the
 community registry.
 
 Arguments:
-  <github-repo>          owner/repo (e.g. baseddevoloper/aeon-skill-pack-vvvkernel)
+  <github-repo>          owner/repo (e.g. AntFleet/aeon-skills)
                          Omit with --list to browse the community registry.
   [skill-names...]       Optional — limit install to specific slugs from the pack
 
@@ -124,10 +124,10 @@ Community registry:
 
 Examples:
   ./install-skill-pack --list
-  ./install-skill-pack baseddevoloper/aeon-skill-pack-vvvkernel --list
-  ./install-skill-pack baseddevoloper/aeon-skill-pack-vvvkernel
-  ./install-skill-pack baseddevoloper/aeon-skill-pack-vvvkernel vvvkernel-onchain vvvkernel-audit
-  ./install-skill-pack danbuildss/luca-aeon-skills --dry-run
+  ./install-skill-pack AntFleet/aeon-skills --list
+  ./install-skill-pack AntFleet/aeon-skills
+  ./install-skill-pack liquidpadbot/aeon-skill-pack-liquidpad liquidpad-burn-monitor liquidpad-token-alert
+  ./install-skill-pack mnemedb/aeon-skill-pack-mneme --dry-run
 EOF
   exit 0
 }

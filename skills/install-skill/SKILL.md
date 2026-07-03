@@ -8,9 +8,9 @@ tags: [dev, meta, packs]
 
 > **${var}** — The community pack to install: `owner/repo`, optionally followed by specific skill slugs to install only a subset, and optional flags. **Required.**
 > Examples:
-> - `baseddevoloper/aeon-skill-pack-vvvkernel` — install the whole pack
-> - `baseddevoloper/aeon-skill-pack-vvvkernel vvvkernel-onchain` — install one skill from it
-> - `danbuildss/luca-aeon-skills --branch develop` — install from a non-default branch
+> - `AntFleet/aeon-skills` — install the whole pack
+> - `liquidpadbot/aeon-skill-pack-liquidpad liquidpad-burn-monitor` — install one skill from it
+> - `mnemedb/aeon-skill-pack-mneme --branch develop` — install from a non-default branch
 
 If `${var}` is empty, exit `INSTALL_SKILL_NO_VAR`:
 ```bash

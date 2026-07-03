@@ -26,7 +26,7 @@ public repos with x402 pay-per-call USDC.
 ## One-command install
 
 ```bash
-./install-skill-pack baseddevoloper/aeon-skill-pack-vvvkernel
+./install-skill-pack AntFleet/aeon-skills
 ```
 
 That single command:

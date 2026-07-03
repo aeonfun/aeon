@@ -551,7 +551,7 @@ Third-party skill collections in their own repos, installable as one bundle - tw
 **CLI.**
 
 ```bash
-./install-skill-pack baseddevoloper/aeon-skill-pack-vvvkernel
+./install-skill-pack AntFleet/aeon-skills
 ./install-skill-pack --list      # browse the registry (skill-packs.json)
 ```
 
@@ -559,25 +559,13 @@ Either way the installer reads the pack's `skills-pack.json` manifest, runs the 
 
 | Pack | Skills | Description |
 |------|--------|-------------|
-| [aeon-skill-pack-vvvkernel](https://github.com/baseddevoloper/aeon-skill-pack-vvvkernel) | 9 | Venice AI inference via VVVKernel - onchain, audit, growth, narrative, image gen, monitoring |
-| [luca-aeon-skills](https://github.com/danbuildss/luca-aeon-skills) | 4 | Financial intelligence via x402Books AI - wallet scanning, treasury monitoring, financial reports, and agent registry on Base |
-| [zer0-skill-pack](https://github.com/0xShak/zer0-skill-pack) | 6 | Polymarket intelligence - daily thesis, mispricing scanner, contrarian fades, narrative-vs-markets, paper-trade PnL journal, alpha comment curator |
-| [gitbounty-skill-pack](https://github.com/gitlawbounty/gitbounty-skill-pack) | 1 | Bounty hunting on the gitlawb network via gitbounty - discover open bounties, scout the best fit with the gitbounty LLM scout, draft a solution plan (read-only) |
 | [aeon-skills](https://github.com/AntFleet/aeon-skills) | 2 | Two-model-consensus PR review (Opus 4.7 + GPT-5) - channel drawdown for installed repos, x402 pay-per-call for public repos |
 | [careful-finance-aeon-skill-pack](https://github.com/UIZorrot/careful-finance-aeon-skill-pack) | 1 | Careful Finance market intelligence - scan DeFi yield and perpetual-futures opportunities, then print or publish a conservative hourly snapshot |
 | [aeon-skill-pack-liquidpad](https://github.com/liquidpadbot/aeon-skill-pack-liquidpad) | 4 | Track LiquidPad on Base - burn cycle alerts, new token launches with onchain provenance, daily protocol digest, and fee accrual tracking |
 | [aeon-skill-pack-mythosforge](https://github.com/ryjin111/aeon-skill-pack-mythosforge) | 5 | Read-only MythosForge monitoring - ops/backlog/jury/payout health, proof-of-creation integrity on Base, theme/round guard against silent relabels, jury-drift detection, and live gallery/proof-page QA |
-| [demo-pack](https://github.com/sparkleware/demo-pack) | 1 | Holographic demo skill - proves the Sparkleware registry install pipeline works |
-| [aeon-pulse](https://github.com/sparkleware/aeon-pulse) | 1 | Daily activity summary for the Aeon framework - recent commits, releases, and open issues |
-| [registry-watch](https://github.com/sparkleware/registry-watch) | 1 | Daily digest of new packs added to the Sparkleware registry - discover community skills without manually browsing |
-| [arxiv-digest](https://github.com/sparkleware/arxiv-digest) | 1 | Daily digest of newest AI / autonomous-agent papers on arXiv - top submissions in cs.AI, cs.LG, cs.MA |
-| [hn-top](https://github.com/sparkleware/hn-top) | 1 | Daily digest of HackerNews top stories - dev / startup / AI conversation in one screen |
-| [eth-gas-watch](https://github.com/sparkleware/eth-gas-watch) | 1 | Ethereum gas-price status check on a schedule - flags cheap windows for batching on-chain ops |
-| [morning-briefing](https://github.com/sparkleware/morning-briefing) | 1 | Daily morning briefing - date, day-of-week, current weather, and a sparkly closer |
-| [aeon-skill-pack-noelclaw](https://github.com/noelclaw/aeon-skill-pack-noelclaw) | 2 | Persistent versioned memory and multi-agent swarm coordination - save typed artifacts to Noel Vault and manage shared agent session state across runs |
 | [signa](https://github.com/codexvritra/signa) (`--path aeon-skills`) | 20 | Full SIGNA suite - wallet-signed cross-platform agent messaging, multi-agent broadcast and delegate, encrypted rooms + ERC-8004 trust gate, plus Bankr resolver / launches, gitlawb, MiroShark, and **x402 receipts + bounded spend mandates** (a human grants a signed budget, the agent spends within it and asks for more) |
+| [Atrium Skills](https://github.com/Atrium-Hermes/aeon-atrium-skills) | 3 | Publish, monetize & discover agent skills on Atrium - the onchain skill marketplace on Base. atrium-publish (DID-signed, IPFS-pinned, USDC-earning), atrium-scout (rents skills matching open loops), atrium-earnings (tracks and withdraws creator USDC) |
 | [aeon-skill-pack-mneme](https://github.com/mnemedb/aeon-skill-pack-mneme) | 8 | Mneme as Aeon's persistent memory layer - vector recall across runs, entity/relation graph, live Base chain streams, async LLM "dream" reflections, and schema-aware /chat. One `MNEME_API_KEY`, zero infra. |
-| [Hunch Prediction Markets](https://github.com/rajkaria/hunch/tree/main/aeon-skill-pack) (`--path aeon-skill-pack`) | 3 | Crowd-conviction signal, market discovery, and **x402 betting** on PlayHunch - onchain prediction markets on Base. Unlike monitor-only packs, hunch-bet places real positions (simulate-by-default, $1-$10, USDC payout + onchain proof) |
 | [clawhunter-skills](https://github.com/clawhunter/clawhunter-skills) | 2 | Aggregates and AI-triages crypto bounties across venues (Pump Fun GO, Atelier, EarnFi, tiny.place) and matches each to your agent with a plan to win — plus paid research and create tools (voice tones, logo-grounded images, Kling video direction, web + X research). Paid tools settle via x402 (USDC on Solana or Base). |
 | [Polymarket Trader by Simmer](https://github.com/SpartanLabsXyz/aeon-skill-pack-polymarket/tree/main/aeon-skill-pack) (`--path aeon-skill-pack`) | 3 | Signal, discovery, and real position-taking on **Polymarket** - the deepest prediction-market venue - powered by Simmer. Unlike monitor-only packs, polymarket-trade places actual orders (simulate-by-default, live opt-in, bounded) |
 | [Charon for AEON](https://github.com/CharonAI-code/charon/tree/main/skills/aeon) (`--path skills/aeon`) | 2 | Repo-local policy enforcement for AEON runs, with guided setup and natural-language policy management |
