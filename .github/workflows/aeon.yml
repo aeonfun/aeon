@@ -638,17 +638,17 @@ jobs:
         if: steps.work.outputs.mode != '' && steps.run.outcome == 'success'
         run: |
           SKILL="${{ steps.skill.outputs.name }}"
-          mkdir -p .outputs
+          mkdir -p output/.chains
           # Save the notification message as a chain artifact
           PENDING="apps/dashboard/outputs/.pending-${SKILL}.md"
           if [ -f "$PENDING" ]; then
-            cp "$PENDING" ".outputs/${SKILL}.md"
+            cp "$PENDING" "output/.chains/${SKILL}.md"
           elif [ -f /tmp/skill-result.txt ] && [ -s /tmp/skill-result.txt ]; then
-            cp /tmp/skill-result.txt ".outputs/${SKILL}.md"
+            cp /tmp/skill-result.txt "output/.chains/${SKILL}.md"
           else
-            echo "_No output captured._" > ".outputs/${SKILL}.md"
+            echo "_No output captured._" > "output/.chains/${SKILL}.md"
           fi
-          echo "::notice::Skill output captured to .outputs/${SKILL}.md ($(wc -c < ".outputs/${SKILL}.md") bytes)"
+          echo "::notice::Skill output captured to output/.chains/${SKILL}.md ($(wc -c < "output/.chains/${SKILL}.md") bytes)"
 
       - name: Analyze skill output
         id: analyze
@@ -975,7 +975,7 @@ jobs:
           # read-only skills (mode: read-only) get no Write/Edit/git/gh, so they can't
           # mutate the repo. Two jobs here: (1) record the run-log entry on their behalf
           # (they couldn't), (2) revert any code/config that slipped through a shell
-          # redirection. State/memory, .outputs/ and output/ are preserved for the commit step.
+          # redirection. State/memory and output/ (incl. .chains/) are preserved for the commit step.
           SKILL="${{ steps.skill.outputs.name }}"
           TODAY=$(date -u +%Y-%m-%d)
           mkdir -p memory/logs
@@ -1038,7 +1038,7 @@ jobs:
                 CONFLICTED=$(git diff --name-only --diff-filter=U) || true
                 [ -z "$CONFLICTED" ] && break
                 for f in $CONFLICTED; do
-                  if [[ "$f" == memory/logs/* ]] || [[ "$f" == memory/topics/* ]] || [[ "$f" == memory/MEMORY.md ]] || [[ "$f" == memory/skill-health/* ]] || [[ "$f" == apps/dashboard/outputs/* ]] || [[ "$f" == .outputs/* ]] || [[ "$f" == output/* ]]; then
+                  if [[ "$f" == memory/logs/* ]] || [[ "$f" == memory/topics/* ]] || [[ "$f" == memory/MEMORY.md ]] || [[ "$f" == memory/skill-health/* ]] || [[ "$f" == apps/dashboard/outputs/* ]] || [[ "$f" == output/* ]]; then
                     sed -i '/^<<<<<<< /d; /^=======/d; /^>>>>>>> /d' "$f"
                     git add "$f"
                   else

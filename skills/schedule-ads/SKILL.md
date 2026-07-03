@@ -126,7 +126,7 @@ If `scripts/postprocess-admanage.sh` is missing, the branch still queues correct
    ```
    `postprocess-admanage.sh` will pick these up after Claude exits, run the API calls with real env, poll batch status, and fire its own notifications.
 
-8. **Write artifact to `.outputs/schedule-ads.md`** so downstream chain consumers can read what was queued. Format:
+8. **Write artifact to `output/.chains/schedule-ads.md`** so downstream chain consumers can read what was queued. Format:
    ```markdown
    # Schedule Ads — ${today}
 
@@ -318,7 +318,7 @@ If the postprocess script is missing, the branch still queues correctly — the 
 
    The file-name convention matters: postprocess lexical-sorts `campaigns/` first, then `adsets/`, so campaigns always create before their children.
 
-10. **Write artifact to `.outputs/create-campaign.md`** so chain consumers can see what was queued:
+10. **Write artifact to `output/.chains/create-campaign.md`** so chain consumers can see what was queued:
     ```markdown
     # Create Campaign — ${today}
 

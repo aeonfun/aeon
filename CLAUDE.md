@@ -70,7 +70,7 @@ Your available tools depend on your skill's frontmatter `mode:` (default `write`
 
 ## Skill Chaining
 
-Operators chain skills in the `chains:` block of `aeon.yml`; `chain-runner.yml` dispatches each step. A step's `consume: [...]` injects the prior skills' `.outputs/{skill}.md` into your context. The `skill:` and its `consume:` must be on **one line** — `- skill: c, consume: [a, b]` — or `consume:` is silently dropped. See the `chains:` comment in `aeon.yml` for the authoritative format.
+Operators chain skills in the `chains:` block of `aeon.yml`; `chain-runner.yml` dispatches each step. A step's `consume: [...]` injects the prior skills' `output/.chains/{skill}.md` into your context. The `skill:` and its `consume:` must be on **one line** — `- skill: c, consume: [a, b]` — or `consume:` is silently dropped. See the `chains:` comment in `aeon.yml` for the authoritative format.
 
 ## Notifications
 

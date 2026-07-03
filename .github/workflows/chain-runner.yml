@@ -125,12 +125,12 @@ jobs:
             local target_skill="$1"
             shift
             local consume_skills=("$@")
-            local ctx_file=".outputs/.chain-context-${target_skill}.md"
+            local ctx_file="output/.chains/.chain-context-${target_skill}.md"
 
-            mkdir -p .outputs
+            mkdir -p output/.chains
             echo "" > "$ctx_file"
             for dep in "${consume_skills[@]}"; do
-              local output_file=".outputs/${dep}.md"
+              local output_file="output/.chains/${dep}.md"
               if [ -f "$output_file" ] && [ -s "$output_file" ]; then
                 echo "### ${dep}" >> "$ctx_file"
                 echo "" >> "$ctx_file"
@@ -230,7 +230,7 @@ jobs:
                 IFS=',' read -ra CONSUME_LIST <<< "$CONSUME"
                 CTX_FILE=$(build_context "$skill" "${CONSUME_LIST[@]}")
                 # Commit and push context file so the skill run can access it
-                git add .outputs/ 2>/dev/null || true
+                git add output/.chains/ 2>/dev/null || true
                 if ! git diff --staged --quiet 2>/dev/null; then
                   git commit -m "chore(chain): context for $skill"
                   for attempt in 1 2 3; do

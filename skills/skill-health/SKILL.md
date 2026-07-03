@@ -224,7 +224,7 @@ If all skills healthy, the body-only shortcut from step 6 still fires (once per 
 ### 2. Pull the run snapshot
 
 ```bash
-./scripts/skill-runs --json --hours $WINDOW_HOURS > .outputs/skill-analytics-runs.json 2>/dev/null
+./scripts/skill-runs --json --hours $WINDOW_HOURS > output/.chains/skill-analytics-runs.json 2>/dev/null
 ```
 
 If the script fails (auth, rate limit, sandbox block) or the JSON is empty:

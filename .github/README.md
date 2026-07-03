@@ -269,7 +269,7 @@ mode: read-only   # may read the repo, fetch the web, and ./notify — but canno
 mode: write       # full access (the default): adds Write / Edit / git / gh / python3
 ```
 
-`read-only` runs the skill with a restricted Claude Code `--allowedTools` set (`Write`, `Edit`, `Bash(git:*)`, `Bash(gh:*)` are dropped), so a research-and-notify skill **physically can't** commit, push, edit code, or open a PR. Its legitimate output (memory, `.outputs/`, articles) is still saved on its behalf by a post-run guard — which also reverts any stray code/config a shell redirection slipped through. `write` is the default and a strict superset. Use `read-only` for pure read-and-notify skills; keep `write` for anything that writes code or scratch files. This is the *runtime* enforcement of the install-time [`capabilities:`](../docs/CAPABILITIES.md) hint.
+`read-only` runs the skill with a restricted Claude Code `--allowedTools` set (`Write`, `Edit`, `Bash(git:*)`, `Bash(gh:*)` are dropped), so a research-and-notify skill **physically can't** commit, push, edit code, or open a PR. Its legitimate output (memory, `output/`) is still saved on its behalf by a post-run guard — which also reverts any stray code/config a shell redirection slipped through. `write` is the default and a strict superset. Use `read-only` for pure read-and-notify skills; keep `write` for anything that writes code or scratch files. This is the *runtime* enforcement of the install-time [`capabilities:`](../docs/CAPABILITIES.md) hint.
 
 ### Durable state without the churn
 
@@ -298,7 +298,7 @@ chains:
         consume: [token-movers, hn-digest]   # gets their outputs injected
 ```
 
-Each step runs as a separate workflow dispatch; outputs are saved to `.outputs/{skill}.md` and injected into downstream steps that `consume:` them. `fail-fast` aborts on any failure, `continue` keeps going.
+Each step runs as a separate workflow dispatch; outputs are saved to `output/.chains/{skill}.md` and injected into downstream steps that `consume:` them. `fail-fast` aborts on any failure, `continue` keeps going.
 
 ### Reactive triggers
 
@@ -639,8 +639,9 @@ memory/
   issues/                ← structured issue tracker for skill failures
   topics/                ← detailed notes by topic
   logs/                  ← daily activity logs (YYYY-MM-DD.md)
-output/                  ← skill deliverables committed to the repo (articles/, images/)
-.outputs/                ← skill chain outputs (transient handoff between chained steps)
+output/                  ← everything skills produce, committed to the repo
+  articles/ · images/    ← published deliverables
+  .chains/               ← transient chain-step handoff (consumed by downstream steps)
 scripts/
   notify.sh              ← source for the ./notify command (multi-channel notifications)
   notify-jsonrender.sh   ← source for ./notify-jsonrender (feed cards via Haiku)

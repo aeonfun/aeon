@@ -199,7 +199,7 @@ From the commit list, find the most-frequently-touched files. Read the top 2–3
 ### Phase 2 — Thesis
 
 Write one **falsifiable claim** in ≤25 words. The claim must be disprovable by specific evidence — not a vibe.
-- Good: "aaronjmars/aeon is pivoting from scheduled digests to reactive skill chains — 4 of 7 merged PRs this week added or consumed `.outputs/*.md` contracts."
+- Good: "aaronjmars/aeon is pivoting from scheduled digests to reactive skill chains — 4 of 7 merged PRs this week added or consumed `output/.chains/*.md` contracts."
 - Bad: "Aeon is an interesting agent framework." (not falsifiable)
 
 If an angle is forced (from `arg`), the thesis must relate to it (e.g. angle `architecture` → an architectural claim). If no angle is forced, pick the one with the strongest evidence from: shipping velocity shift, architectural pivot, community growth inflection, roadmap commitment, deprecation/scope cut, performance or scale milestone.

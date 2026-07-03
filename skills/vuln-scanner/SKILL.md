@@ -62,7 +62,7 @@ If `$TARGET` is set, use it. Otherwise:
 
 ```bash
 # Prefer chained output from github-trending skill
-if [ -s .outputs/github-trending.md ]; then
+if [ -s output/.chains/github-trending.md ]; then
   # parse owner/repo lines; pick first that matches criteria below
   :
 else

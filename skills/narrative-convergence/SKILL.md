@@ -47,7 +47,7 @@ cost-report, fleet-scorecard, fleet-control, repo-scanner, narrative-convergence
 
 ### 1. Identify which outputs to read
 
-List `.outputs/*.md` with the Glob tool. Exclude the **Housekeeping** skills from `signal-categories.md` — they carry no external signal.
+List `output/.chains/*.md` with the Glob tool. Exclude the **Housekeeping** skills from `signal-categories.md` — they carry no external signal.
 
 Map each remaining output file to its category using the table in `signal-categories.md`. Any signal skill not listed in the table goes into an `other` category (so newly-added skills still count toward convergence, just without a named lane).
 
@@ -70,7 +70,7 @@ Build an entity/theme map:
 }
 ```
 
-Also read memory logs from the last 2 days (Glob `memory/logs/*.md`, take the 2 most recent). From each log, extract entities/themes mentioned in specific skill run entries and add them to the map with their source skill. Every skill appends a log entry, so the signal map can be reconstructed from logs alone when `.outputs/` is sparse.
+Also read memory logs from the last 2 days (Glob `memory/logs/*.md`, take the 2 most recent). From each log, extract entities/themes mentioned in specific skill run entries and add them to the map with their source skill. Every skill appends a log entry, so the signal map can be reconstructed from logs alone when `output/.chains/` is sparse.
 
 ### 3. Score convergence signals
 
@@ -184,8 +184,8 @@ If skipped: `NARRATIVE_CONVERGENCE_SKIP: <reason>`.
 
 ## Required Env Vars
 
-None. All reads from local `.outputs/`, `memory/`, and `output/articles/` dirs.
+None. All reads from local `output/.chains/`, `memory/`, and `output/articles/` dirs.
 
 ## Sandbox Note
 
-No network calls required. All data comes from local files written by other skills. If `.outputs/` is sparse (e.g. first morning run before skills have written), fall back to reading the last 3 memory logs directly — every skill appends a log entry, so the signal map can be reconstructed from logs alone. The only outbound call is `./notify`, which is already sandbox-safe.
+No network calls required. All data comes from local files written by other skills. If `output/.chains/` is sparse (e.g. first morning run before skills have written), fall back to reading the last 3 memory logs directly — every skill appends a log entry, so the signal map can be reconstructed from logs alone. The only outbound call is `./notify`, which is already sandbox-safe.
