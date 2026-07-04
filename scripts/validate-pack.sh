@@ -181,6 +181,8 @@ fi
 
 # Track the manifest-declared paths so we can flag on-disk skills that aren't listed.
 declared_paths=""
+# Track slugs already seen so a duplicate declaration is caught before install.
+seen_slugs=""
 
 for i in $(seq 0 $((skill_count - 1))); do
   slug=$(jq -r ".skills[$i].slug // empty" "$MANIFEST_PATH")
@@ -194,6 +196,14 @@ for i in $(seq 0 $((skill_count - 1))); do
     err "skill '$slug' has an invalid slug (allowed: A-Z a-z 0-9 _ -)"
     continue
   fi
+
+  # Reject duplicate slugs — a second declaration silently overwrites the first
+  # at install time. Catching it here gives the author an actionable message.
+  # Space-delimited string check (portable, no associative arrays).
+  case " $seen_slugs " in
+    *" $slug "*) err "duplicate slug '$slug' — declared more than once in the manifest"; continue ;;
+  esac
+  seen_slugs="$seen_slugs $slug"
 
   rel_path=$(jq -r ".skills[$i].path // empty" "$MANIFEST_PATH")
   [[ -z "$rel_path" ]] && rel_path="skills/$slug"

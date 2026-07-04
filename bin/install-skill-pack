@@ -345,6 +345,7 @@ if [[ -f "$MANIFEST_PATH" ]]; then
     exit 1
   fi
 
+  seen_slugs=""
   for i in $(seq 0 $((skill_count - 1))); do
     slug=$(jq -r ".skills[$i].slug // empty" "$MANIFEST_PATH")
     if [[ -z "$slug" ]]; then
@@ -356,6 +357,13 @@ if [[ -f "$MANIFEST_PATH" ]]; then
       echo "Invalid slug in manifest: $slug" >&2
       exit 1
     fi
+    # Reject duplicate slugs — a second declaration would silently overwrite the
+    # first skill's install, leaving the author confused about which config won.
+    # Space-delimited string check (no associative arrays — macOS bash 3 compat).
+    case " $seen_slugs " in
+      *" $slug "*) echo "Duplicate slug in manifest: '$slug' is declared more than once — aborting." >&2; exit 1 ;;
+    esac
+    seen_slugs="$seen_slugs $slug"
     rel_path=$(jq -r ".skills[$i].path // empty" "$MANIFEST_PATH")
     [[ -z "$rel_path" ]] && rel_path="skills/$slug"
     rel_path="${rel_path#/}"
