@@ -88,15 +88,23 @@ case "${LANGFUSE_LOG_CONTENT:-1}" in
 esac
 
 # --- identity / grouping ----------------------------------------------------
-# Resource attributes land in Langfuse trace metadata.resourceAttributes. Claude
-# Code already stamps session.id per run, so one `claude -p` run groups into one
-# Langfuse session automatically; these add the Aeon-side context on top.
+# Resource attributes land in Langfuse (and are flattened onto each span, so the
+# langfuse.* ones below take effect). Each `claude -p` process gets its OWN
+# session.id (a per-process UUID), so a single Aeon run — the skill-run, the
+# post-run scorer, and the feed convert — would otherwise fragment into separate
+# Langfuse sessions. Pin langfuse.session.id to the GitHub run id so all of one
+# run's components collapse into ONE session; langfuse.trace.name gives the trace
+# a readable name instead of a blank one.
 export OTEL_SERVICE_NAME="${OTEL_SERVICE_NAME:-aeon}"
 _lf_attrs="service.name=aeon,deployment.environment=github-actions"
 _lf_attrs="${_lf_attrs},aeon.component=${AEON_OTEL_COMPONENT:-skill-run}"
-if [ -n "${SKILL_NAME:-}" ];        then _lf_attrs="${_lf_attrs},aeon.skill=${SKILL_NAME}"; fi
+if [ -n "${GITHUB_RUN_ID:-}" ]; then
+  _lf_attrs="${_lf_attrs},langfuse.session.id=${GITHUB_RUN_ID},aeon.run_id=${GITHUB_RUN_ID}"
+fi
+if [ -n "${SKILL_NAME:-}" ]; then
+  _lf_attrs="${_lf_attrs},aeon.skill=${SKILL_NAME},langfuse.trace.name=aeon:${AEON_OTEL_COMPONENT:-skill-run}:${SKILL_NAME}"
+fi
 if [ -n "${GITHUB_REPOSITORY:-}" ]; then _lf_attrs="${_lf_attrs},aeon.repo=${GITHUB_REPOSITORY}"; fi
-if [ -n "${GITHUB_RUN_ID:-}" ];     then _lf_attrs="${_lf_attrs},aeon.run_id=${GITHUB_RUN_ID}"; fi
 if [ -n "${GITHUB_RUN_ATTEMPT:-}" ];then _lf_attrs="${_lf_attrs},aeon.run_attempt=${GITHUB_RUN_ATTEMPT}"; fi
 export OTEL_RESOURCE_ATTRIBUTES="$_lf_attrs"
 

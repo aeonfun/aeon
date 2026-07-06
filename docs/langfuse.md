@@ -62,8 +62,10 @@ scorer, the json-render feed convert, and the conversational-reply poller
    gh variable set LANGFUSE_HOST --body 'https://langfuse.internal.example.com'
    ```
 
-That's it — the next run appears in Langfuse. One `claude -p` run maps to one
-Langfuse **session** (Claude Code stamps `session.id` per run).
+That's it — the next run appears in Langfuse. Every `claude -p` in one Aeon run
+(the skill-run, the post-run scorer, the feed convert) is grouped into a single
+Langfuse **session** keyed by the GitHub run id (`langfuse.session.id`), so you
+see the whole run in one place rather than one session per process.
 
 ## Configuration reference
 

@@ -98,7 +98,16 @@ unset LANGFUSE_PUBLIC_KEY LANGFUSE_SECRET_KEY LANGFUSE_HOST LANGFUSE_BASE_URL \
   esac
 ) && pass "resource attrs include component + skill" || bad "resource attrs include component + skill"
 
-# 12. Sourcing under `bash -e` (Actions default) never fails the caller.
+# 12. GITHUB_RUN_ID → langfuse.session.id, so a whole Aeon run groups into one
+#     Langfuse session (skill-run + scorer + feed share the run id).
+( export LANGFUSE_PUBLIC_KEY=pk LANGFUSE_SECRET_KEY=sk GITHUB_RUN_ID=123456789
+  source "$LF" 2>/dev/null
+  case "${OTEL_RESOURCE_ATTRIBUTES:-}" in
+    *langfuse.session.id=123456789*) exit 0 ;; *) exit 1 ;;
+  esac
+) && pass "GITHUB_RUN_ID → langfuse.session.id" || bad "GITHUB_RUN_ID → langfuse.session.id"
+
+# 13. Sourcing under `bash -e` (Actions default) never fails the caller.
 ( set -e
   export LANGFUSE_PUBLIC_KEY=pk LANGFUSE_SECRET_KEY=sk
   source "$LF" >/dev/null 2>&1
