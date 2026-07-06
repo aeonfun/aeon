@@ -87,6 +87,33 @@ metadata-only traces (tokens, cost, latency, structure — no text). All data go
 only to the Langfuse instance you configure; nothing is sent to Anthropic beyond
 the normal model call.
 
+## Known gaps (and what we deliberately don't do)
+
+Confirmed against a live run (Claude Code `2.1.168`): traces, span tree, latency,
+tool commands, prompts, and the `aeon.*` tags all flow correctly. Two gaps remain,
+both upstream — **neither is fixable from this shim's env vars**:
+
+- **Langfuse cost / token rollups are empty** (`usageDetails`, `costDetails`,
+  `totalCost`, and the rendered `input`/`output` fields). Langfuse reads usage
+  from `gen_ai.usage.*` and input from `gen_ai.prompt`, but Claude Code emits
+  **bare** `input_tokens` / `user_prompt`, so they land in
+  `metadata.attributes.*` — present and viewable per span, just not aggregated or
+  costed.
+- **Assistant response text never appears.** Claude Code puts it on the
+  `claude_code.assistant_response` **event** (the OTEL *logs* signal), which
+  Langfuse's OTLP endpoint doesn't ingest (traces only).
+
+**We deliberately do NOT run an OTEL-collector / rewrite-proxy sidecar to fix
+cost mapping.** Rationale: it adds a networked process to the critical path of
+every run (a reliability risk for a reporting nicety), it's hand-rolled OTLP
+parsing, and it shims *beta* Claude Code attribute names that will most likely
+align with `gen_ai.usage.*` upstream (or Langfuse will add native Claude-Code
+mapping) — at which point the proxy is dead code. Per-run token/cost data is
+already captured durably in `memory/token-usage.csv`, so the only thing missing
+is a Langfuse-native cost *view*. Revisit only if upstream stays unaligned **and**
+Langfuse becomes the primary cost surface across many repos. Model prices (with
+cache-token pricing) would also need adding in Langfuse's UI regardless.
+
 ## Sandbox note
 
 No sandbox workaround is needed. The OTEL exporter runs **inside** the `claude`
