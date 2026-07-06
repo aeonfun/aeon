@@ -1,7 +1,7 @@
 ---
 type: Skill
 name: Memory Flush
-category: meta
+category: core
 description: Promote important recent log entries into MEMORY.md and prune stale ones
 var: ""
 tags: [meta]

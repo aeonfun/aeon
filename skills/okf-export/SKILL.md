@@ -1,7 +1,7 @@
 ---
 type: Skill
 name: OKF Export
-category: meta
+category: core
 description: Backfill memory/topics into an OKF-conformant bundle by adding type frontmatter, then open a PR
 var: ""
 tags: [meta]
