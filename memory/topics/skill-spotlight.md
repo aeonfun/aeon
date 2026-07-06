@@ -66,7 +66,6 @@ Never feature these — they are meta/internal/repair skills that don't read as 
 - auto-workflow
 - distribute-tokens
 - workflow-audit
-- smithery-manifest
 - v4-readiness
 - update-gallery
 - search-skill
