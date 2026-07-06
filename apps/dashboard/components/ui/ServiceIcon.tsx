@@ -48,6 +48,9 @@ const DOMAINS: Record<string, string> = {
   NEYNAR_SIGNER_UUID: 'neynar.com',
   GH_GLOBAL: 'github.com',
   BASE_RPC_URL: 'base.org',
+  // Observability
+  LANGFUSE_PUBLIC_KEY: 'langfuse.com',
+  LANGFUSE_SECRET_KEY: 'langfuse.com',
 }
 
 // Non-brand entries - no logo exists, so show a meaningful glyph instead.
@@ -60,6 +63,13 @@ const GLYPHS: Record<string, 'mail' | 'key'> = {
 const ICON_URLS: Record<string, string> = {
   NEYNAR_API_KEY: '/icons/neynar.jpg',
   NEYNAR_SIGNER_UUID: '/icons/neynar.jpg',
+}
+
+// Same idea, keyed by DOMAIN — applies to group headers (which pass `domain`
+// directly) as well as any credential resolving to that domain. Langfuse's
+// favicon-service icon renders as a generic mark, so we vendor the real logo.
+const DOMAIN_ICON_URLS: Record<string, string> = {
+  'langfuse.com': '/icons/langfuse.svg',
 }
 
 // Heroicons (outline) paths - match the stroke icons used elsewhere in the UI.
@@ -90,9 +100,11 @@ export function ServiceIcon({ name, domain, glyph, className = '' }: ServiceIcon
   const [failed, setFailed] = useState(false)
   const resolvedDomain = domain ?? (name ? DOMAINS[name] : undefined)
   const resolvedGlyph = glyph ?? (name ? GLYPHS[name] : undefined)
-  // Explicit override wins over the domain favicon.
+  // Explicit override wins over the domain favicon; a vendored domain logo wins
+  // over the favicon service.
   const explicitSrc = name ? ICON_URLS[name] : undefined
-  const src = explicitSrc ?? (resolvedDomain ? faviconUrl(resolvedDomain) : undefined)
+  const domainSrc = resolvedDomain ? (DOMAIN_ICON_URLS[resolvedDomain] ?? faviconUrl(resolvedDomain)) : undefined
+  const src = explicitSrc ?? domainSrc
 
   // Light chip backing so dark/filled marks (GitHub, Base, x.AI…) stay legible
   // against the near-black UI. Logos sit grayscale-and-calm, lifting to full
