@@ -7,6 +7,7 @@ import { Scramble } from './ui/Animated'
 import { ServiceIcon } from './ui/ServiceIcon'
 import { linkify } from './ui/Linkify'
 import { InstantModeCard } from './InstantModeCard'
+import { LangfuseRegionCard } from './LangfuseRegionCard'
 import { TelegramCommandsCard } from './TelegramCommandsCard'
 import { TelegramChatIdHelper } from './TelegramChatIdHelper'
 
@@ -183,6 +184,7 @@ export function SecretsPanel({ secrets, skills, busy, repo, focusKey, onFocusHan
               ))}
               {group === 'Telegram' && <TelegramCommandsCard tokenSet={secrets.some(s => s.name === 'TELEGRAM_BOT_TOKEN' && s.isSet)} />}
               {group === 'Telegram' && <InstantModeCard repo={repo} sessionBotToken={sessionBotToken} />}
+              {group === 'Observability' && <LangfuseRegionCard keysSet={secrets.some(s => s.name === 'LANGFUSE_PUBLIC_KEY' && s.isSet) && secrets.some(s => s.name === 'LANGFUSE_SECRET_KEY' && s.isSet)} />}
             </div>
           </section>
         )

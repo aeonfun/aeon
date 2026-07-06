@@ -51,12 +51,14 @@ scorer, the json-render feed convert, and the conversational-reply poller
    gh secret set LANGFUSE_SECRET_KEY   # sk-lf-...
    ```
 
-3. If you're **not** on Langfuse EU cloud, set the host as a **repo variable**:
+3. Pick your region. In the dashboard, the **Observability** group has an
+   **EU / US** dropdown (🌍 Langfuse region) that writes the `LANGFUSE_HOST`
+   variable for you — **default is EU**. Or set it by hand:
 
    ```bash
    # US cloud:
    gh variable set LANGFUSE_HOST --body 'https://us.cloud.langfuse.com'
-   # or a self-hosted instance:
+   # or a self-hosted instance (shows as "Custom" in the dropdown, left untouched):
    gh variable set LANGFUSE_HOST --body 'https://langfuse.internal.example.com'
    ```
 
