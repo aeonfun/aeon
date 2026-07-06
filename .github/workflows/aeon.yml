@@ -71,6 +71,8 @@ on:
 
 permissions:
   contents: write
+  id-token: write        # mint the OIDC token that signs skill-run attestations
+  attestations: write    # write the attestation to the repo's attestation store
   pull-requests: write
   issues: write   # write (was read) for Issues-as-state append (§3) + votable health Issues (§7); harmless when STATE_BACKEND / HEALTH_ISSUES unset
   actions: read
@@ -661,6 +663,62 @@ jobs:
             echo "_No output captured._" > "output/.chains/${SKILL}.md"
           fi
           echo "::notice::Skill output captured to output/.chains/${SKILL}.md ($(wc -c < "output/.chains/${SKILL}.md") bytes)"
+
+      - name: Resolve attestation gate
+        id: attest-gate
+        if: steps.work.outputs.mode != '' && steps.run.outcome == 'success'
+        env:
+          ATTEST_ENABLED: ${{ vars.ATTEST_ENABLED || 'false' }}
+          JSONRENDER_ENABLED: ${{ vars.JSONRENDER_ENABLED || 'true' }}
+          SKILL_NAME: ${{ steps.skill.outputs.name }}
+        run: |
+          set -euo pipefail
+          ATTEST=false
+
+          # Tier 0 — global kill switch (repo var, default OFF so forks opt in).
+          if [ "${ATTEST_ENABLED}" = "true" ]; then
+            SKILL="${SKILL_NAME}"
+
+            # Tier 1 — per-skill override in aeon.yml (operator config, one line,
+            # no skill file touched). Same grep idiom as model:/harness:, but with
+            # ERE alternation (sed -nE) so (true|false) is portable across BSD/GNU sed.
+            SKILL_ATTEST=$(grep "^  ${SKILL}:" aeon.yml \
+              | sed -nE 's/.*attest:[[:space:]]*(true|false).*/\1/p' || true)
+
+            # Tier 2 — SKILL.md frontmatter (author intent, travels with the skill).
+            FM_ATTEST=$(awk '/^---$/{n++; next}
+              n==1 && /^attest:/{
+                v=$0; sub(/^attest:[ \t]*/,"",v); sub(/[ \t]*#.*$/,"",v);
+                gsub(/^[ \t"]+|[ \t"]+$/,"",v); print v; exit
+              }' "skills/${SKILL}/SKILL.md" 2>/dev/null || true)
+
+            # Tier 3 — default policy: attest runs whose output is PUBLISHED to the
+            # json-render feed (the trust boundary that actually benefits).
+            PUBLISHED=false
+            if [ "${JSONRENDER_ENABLED}" = "true" ] \
+               && [ -f "apps/dashboard/outputs/.pending-${SKILL}.md" ]; then
+              PUBLISHED=true
+            fi
+
+            if [ "$SKILL_ATTEST" = "false" ]; then
+              ATTEST=false                       # explicit operator opt-out wins
+            elif [ "$SKILL_ATTEST" = "true" ] || [ "$FM_ATTEST" = "true" ] \
+                 || [ "$PUBLISHED" = "true" ]; then
+              ATTEST=true
+            fi
+          fi
+
+          echo "attest=$ATTEST" >> "$GITHUB_OUTPUT"
+          echo "::notice::attestation gate for ${SKILL_NAME}: attest=$ATTEST"
+
+      - name: Attest skill execution
+        if: steps.attest-gate.outputs.attest == 'true'
+        # Pinned to the current major per this repo's supply-chain convention
+        # (checkout@v7, setup-node@v6). Latest major confirmed at:
+        # https://github.com/actions/attest-build-provenance/releases
+        uses: actions/attest-build-provenance@v4
+        with:
+          subject-path: output/.chains/${{ steps.skill.outputs.name }}.md
 
       - name: Analyze skill output
         id: analyze
