@@ -295,7 +295,7 @@ From the last 2 days of `memory/logs/`, extract any runner token names previousl
 
 ### 7. Notify (runners)
 
-Send via `./notify` (under 4000 chars, no leading spaces). Format:
+Send via `./notify`. Format:
 
 ```
 *runners — ${TODAY}* — verdict: STRONG

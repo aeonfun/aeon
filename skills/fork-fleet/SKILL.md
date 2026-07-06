@@ -520,7 +520,7 @@ Read `soul/` (if present) to match the operator's voice. **Skip notify entirely*
 
 If either branch hit `FORK_FLEET_API_FAIL`, send an **error** notify (`--severity warn`) noting the failure and source status.
 
-Otherwise send one combined message via `./notify` (include only the sub-blocks whose branch produced signal; cap ~900 chars so it renders across Telegram/Discord/Slack):
+Otherwise send one combined message via `./notify` (include only the sub-blocks whose branch produced signal; keep it tight):
 
 ```
 *Fork Divergence — ${today}*

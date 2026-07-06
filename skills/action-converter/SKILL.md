@@ -90,7 +90,7 @@ Order the 5 actions by descending quality score, then by descending urgency.
 
 ### 6. Send via `./notify`
 
-Use this exact format. Telegram-MD friendly. **No leading spaces on any line** (Telegram renders indents as code blocks).
+Use this exact format (`./notify` renders the Markdown per-channel — just write it cleanly):
 
 ```
 *5 Actions — ${today}*

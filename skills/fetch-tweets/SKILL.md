@@ -50,7 +50,7 @@ Once `SOURCE` and `ARG` are set, jump to the matching branch below. Only one bra
    | agent-buzz | *(logs only — 3-day `status/<id>` set)* | 3 days |
 3. Formatting invariants shared by **every** branch's notification:
    - Use `x.com/handle` (**never** `@handle`) so Telegram doesn't ping/tag users. *(Exception: the account-digest and agent-buzz formats below historically use `@handle` in-body; keep their documented format but prefer `x.com/handle` when practical.)*
-   - Every surviving tweet gets a tappable link — Telegram Markdown `[View](url)` / `[View tweet](url)`. If a URL is unavailable, drop the link and say "(link unavailable)".
+   - Every surviving tweet gets a tappable Markdown link — `[View](url)` / `[View tweet](url)`. If a URL is unavailable, drop the link and say "(link unavailable)".
    - Never fabricate engagement counts. Missing → `0`, not a guess.
    - **Notify only on signal.** A legitimately empty or all-duplicate run logs its status and sends **nothing**.
 
@@ -275,7 +275,7 @@ Use this to answer "what did *these specific people* post" across a watchlist.
 
 4. **Write a one-sentence take per notable tweet** — what the tweet says, not your opinion of it. Voice per the **Voice** section.
 
-5. **Notify** via `./notify` (<4000 chars):
+5. **Notify** via `./notify`:
    ```
    *Tweet Digest — ${today}*
 
@@ -362,7 +362,7 @@ Cross-list narrative resonance + signal-scored top tweets from tracked X lists i
 
 6. **Compose the digest** (cap 4000 chars): up to **3 narratives** at top (by narrative score); then up to **5 standalone tweets per list** (highest individual score, not already in a narrative); hard total cap **12 items** — cut from the bottom of standalones. **Insight discipline:** every item needs a one-line **so-what** (implication, contrarian angle, missing number, deal-flow signal); a paraphrase must be rewritten. **Quiet-list rule:** if a list's top surviving tweet scores <2.0 (≈<8 likes raw), write a one-line "quiet day" for that list. **Topic filter** is a scoring booster (step 4), NOT a hard filter. **Verdict line:** one line at the very top capturing what today's lists collectively say.
 
-7. **Send the notification** via `./notify` (<4000 chars), verbatim format (`x.com/handle`, Telegram `[label](url)`):
+7. **Send the notification** via `./notify`, verbatim format (`x.com/handle`, `[label](url)`):
    ```
    *List Digest — ${today}*
 
@@ -439,7 +439,7 @@ A topic-filtered preset: a curated, narrative-aware read on what the AI-agent sc
 
 6. **Conversation-shape lead** — one opening sentence (≤25 words) naming what the conversation was actually about ("Mostly protocol debate — MCP vs. A2A — with two concrete launches on the side."). If you can't characterize it honestly in one sentence, the clustering is wrong — redo step 4.
 
-7. **Notify** via `./notify` (<4000 chars):
+7. **Notify** via `./notify`:
    ```
    *Agent Buzz — ${today}*
    _<conversation-shape one-liner>_

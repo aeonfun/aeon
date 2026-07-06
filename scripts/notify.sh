@@ -11,9 +11,10 @@
 #   ./notify --title "Token Report" --severity warn -f body.md --link https://...
 #   severity ∈ {info(default), success, warn, critical}; gated by NOTIFY_MIN_SEVERITY.
 #
-# Per-channel rendering (via scripts/notify_format.py): Telegram chunks (fence-safe,
-# 3900), Discord embeds (color by severity), Slack Block Kit. Falls back to
-# .pending-notify/ for post-run delivery when the sandbox blocks outbound curl.
+# Per-channel rendering (via scripts/notify_format.py): Telegram = Markdown
+# normalized to HTML (parse_mode=HTML, fence-safe chunks, 3900), Discord embeds
+# (color by severity), Slack Block Kit. Falls back to .pending-notify/ for
+# post-run delivery when the sandbox blocks outbound curl.
 set -euo pipefail
 
 # Resolve the formatter whether run as ./notify (repo root) or scripts/notify.sh
@@ -202,8 +203,9 @@ if [ -n "${TELEGRAM_BOT_TOKEN:-}" ] && [ -n "${TELEGRAM_CHAT_ID:-}" ]; then
     else
       TG_RM="null"
     fi
+    # notify_format.py already normalized Markdown -> Telegram HTML for this path.
     TG_PAYLOAD=$(jq -n --arg chat "$TELEGRAM_CHAT_ID" --arg text "$TG_MSG" --argjson rm "$TG_RM" \
-      '{chat_id:$chat, text:$text, parse_mode:"Markdown"} + (if $rm then {reply_markup:$rm} else {} end)')
+      '{chat_id:$chat, text:$text, parse_mode:"HTML"} + (if $rm then {reply_markup:$rm} else {} end)')
 
     # Dry-run (tests): record the payload instead of sending. No network.
     if [ "${NOTIFY_DRY_RUN:-}" = "1" ]; then
@@ -220,8 +222,12 @@ if [ -n "${TELEGRAM_BOT_TOKEN:-}" ] && [ -n "${TELEGRAM_CHAT_ID:-}" ]; then
     if [ "$TG_HTTP" = "200" ] && [ "$TG_OK" = "true" ]; then
       DELIVERED=true
     else
-      # Fallback without parse_mode (Markdown parse errors) — keep the reply_markup.
-      TG_FALLBACK=$(jq -n --arg chat "$TELEGRAM_CHAT_ID" --arg text "$TG_MSG" --argjson rm "$TG_RM" \
+      # Fallback without parse_mode (should be near-zero — our HTML is deterministic).
+      # Strip tags and unescape entities so it degrades to clean plaintext, not
+      # visible <b>…</b> markup. Keep the reply_markup.
+      TG_PLAIN=$(printf '%s' "$TG_MSG" | sed -E 's/<[^>]+>//g' \
+        | sed -E 's/&lt;/</g; s/&gt;/>/g; s/&amp;/\&/g')
+      TG_FALLBACK=$(jq -n --arg chat "$TELEGRAM_CHAT_ID" --arg text "$TG_PLAIN" --argjson rm "$TG_RM" \
         '{chat_id:$chat, text:$text} + (if $rm then {reply_markup:$rm} else {} end)')
       curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
         -H "Content-Type: application/json" -d "$TG_FALLBACK" > /dev/null 2>&1 && DELIVERED=true || true

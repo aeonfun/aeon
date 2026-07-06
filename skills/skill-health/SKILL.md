@@ -475,7 +475,7 @@ Top by runs: ${top_3_skills_by_run_count_with_counts}
 Full: output/articles/skill-analytics-${today}.md
 ```
 
-Cap the message body at ~3500 chars (Telegram safe limit). Drop the "Top by runs" line first if exceeded; flags are higher signal.
+Keep the message body tight for signal. Drop the "Top by runs" line first if it runs long; flags are higher signal. (`./notify` auto-chunks, so length is about signal, not transport.)
 
 ### 13. Log to `memory/logs/${today}.md`
 

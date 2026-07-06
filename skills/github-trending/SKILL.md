@@ -115,7 +115,7 @@ Pick the single most interesting survivor (highest-signal regardless of category
 
 ### A8. Notify
 
-Send via `./notify` (≤ 4000 chars, no leading spaces on any line):
+Send via `./notify`:
 
 ```
 *GitHub Trending — ${today}*
@@ -254,7 +254,7 @@ Pick the single most interesting survivor (highest signal regardless of bucket) 
 
 ### B7. Notify
 
-Send via `./notify` (≤ 4000 chars, no leading spaces on any line):
+Send via `./notify`:
 
 ```
 *Hugging Face Trending — ${today}*

@@ -7,7 +7,7 @@ No network, no env, no deps (stdlib only) so it is unit-testable in isolation.
 stay in bash.
 
 Channels & limits:
-  - telegram : text chunks <= 3900 (4096 cap, room for "[i/N]"); base64 per line
+  - telegram : Markdown -> Telegram HTML (parse_mode=HTML), chunks <= 3900; base64 per line
   - discord  : embeds, description <= 4096; one JSON POST body per line
   - slack    : Block Kit, section text <= 3000; one JSON POST body (stdout)
 
@@ -16,10 +16,19 @@ Two correctness properties this guarantees and the tests pin:
   2. No chunk ever ends inside an unbalanced ``` code fence — if a split lands
      mid-fence, the open fence is closed and reopened on the next chunk, so every
      chunk renders as valid Markdown on its own.
+
+Telegram note: skills write ordinary Markdown (`**bold**`, `## headings`,
+`- bullets`, `| tables |`). Telegram's legacy Markdown parse_mode supports none
+of those and 400s on any unbalanced `*`/`_` (which silently drops the whole
+message to raw-syntax plaintext). So the telegram() path normalizes Markdown to
+Telegram's safe HTML subset (<b>/<i>/<code>/<pre>/<a>/<blockquote>) — deterministic
+escaping means the output is always valid and never collapses to plaintext.
+Skills should NOT hand-format for Telegram; just write clean Markdown.
 """
 import argparse
 import base64
 import json
+import re
 import sys
 
 SEVERITY = {
@@ -95,27 +104,158 @@ def chunk(text: str, limit: int):
     return _balance_fences(raw)
 
 
-def _header(title, severity):
-    meta = SEVERITY.get(severity, SEVERITY[DEFAULT_SEVERITY])
-    if title:
-        return f"{meta['emoji']} *{title}*"
-    return None
+# ---- Markdown -> Telegram HTML normalizer ---------------------------------
+# Telegram's HTML parse_mode supports a small tag set (<b> <i> <u> <s> <code>
+# <pre> <a> <blockquote>); everything else must be escaped. We convert ordinary
+# Markdown to that subset. It is deterministic and cannot 400 the way legacy
+# Markdown does: we only ever emit balanced tags we generate, and every run of
+# literal text is HTML-escaped, so the result is always valid Telegram HTML.
+
+def _esc(s):
+    """Escape literal text for Telegram HTML (only & < > are special)."""
+    return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+
+_RE_CODE = re.compile(r"`([^`]+)`")
+_RE_LINK = re.compile(r"\[([^\]]+)\]\(([^)\s]+)\)")
+_RE_BOLD = re.compile(r"\*\*(.+?)\*\*|__(.+?)__")
+_RE_STRIKE = re.compile(r"~~(.+?)~~")
+_RE_ITAL_STAR = re.compile(r"\*(?!\s)(.+?)(?<!\s)\*")
+_RE_ITAL_UND = re.compile(r"(?<!\w)_(?!\s)(.+?)(?<!\s)_(?!\w)")
+_RE_FENCE = re.compile(r"^\s*```(\w*)\s*$")
+_RE_HEADING = re.compile(r"^\s{0,3}(#{1,6})\s+(.*)$")
+_RE_HR = re.compile(r"^\s*([-*_])\1\1+\s*$")
+_RE_QUOTE = re.compile(r"^\s*>\s?")
+_RE_BULLET = re.compile(r"^(\s*)[-*+]\s+(.*)$")
+_RE_ORDERED = re.compile(r"^(\s*)(\d+)[.)]\s+(.*)$")
+_RE_TABLE_SEP = re.compile(r"^\s*\|?[\s:\-|]+\|?\s*$")
+
+
+def _inline(text):
+    """Convert inline Markdown in one line/cell to Telegram HTML."""
+    store = []
+
+    def _stash(frag):
+        store.append(frag)
+        return "\x00%d\x00" % (len(store) - 1)
+
+    # Protect code spans and links first — their contents must not be reprocessed.
+    text = _RE_CODE.sub(lambda m: _stash("<code>%s</code>" % _esc(m.group(1))), text)
+    text = _RE_LINK.sub(
+        lambda m: _stash('<a href="%s">%s</a>' % (_esc(m.group(2)), _esc(m.group(1)))),
+        text,
+    )
+    # Escape remaining literal text; emphasis markers (* _ ~) survive escaping.
+    text = _esc(text)
+    # Bold before italic so ** is never read as two single-* italics.
+    text = _RE_BOLD.sub(lambda m: "<b>%s</b>" % (m.group(1) or m.group(2)), text)
+    text = _RE_STRIKE.sub(lambda m: "<s>%s</s>" % m.group(1), text)
+    text = _RE_ITAL_STAR.sub(lambda m: "<i>%s</i>" % m.group(1), text)
+    text = _RE_ITAL_UND.sub(lambda m: "<i>%s</i>" % m.group(1), text)
+    # Restore protected fragments (already valid HTML).
+    text = re.sub(r"\x00(\d+)\x00", lambda m: store[int(m.group(1))], text)
+    return text
+
+
+def _split_row(row):
+    row = row.strip()
+    if row.startswith("|"):
+        row = row[1:]
+    if row.endswith("|"):
+        row = row[:-1]
+    return [c.strip() for c in row.split("|")]
+
+
+def md_to_telegram_html(text):
+    """Convert a Markdown string to Telegram's safe HTML subset."""
+    lines = text.split("\n")
+    out, i, n = [], 0, len(lines)
+    while i < n:
+        line = lines[i]
+
+        # Fenced code block -> <pre>. Content escaped, inline rules skipped.
+        m = _RE_FENCE.match(line)
+        if m:
+            lang, code, i = m.group(1), [], i + 1
+            while i < n and not _RE_FENCE.match(lines[i]):
+                code.append(lines[i])
+                i += 1
+            i += 1  # consume closing fence
+            body = _esc("\n".join(code))
+            if lang:
+                out.append('<pre><code class="language-%s">%s</code></pre>' % (lang, body))
+            else:
+                out.append("<pre>%s</pre>" % body)
+            continue
+
+        # Table: a "| … |" row followed by a "| --- |" separator. Telegram can't
+        # render tables — flatten to bold-header + " | "-joined rows.
+        if "|" in line and i + 1 < n and "-" in lines[i + 1] and _RE_TABLE_SEP.match(lines[i + 1]):
+            out.append(" | ".join("<b>%s</b>" % _inline(c) for c in _split_row(line)))
+            i += 2
+            while i < n and "|" in lines[i] and lines[i].strip():
+                out.append(" | ".join(_inline(c) for c in _split_row(lines[i])))
+                i += 1
+            continue
+
+        # Heading -> bold line.
+        m = _RE_HEADING.match(line)
+        if m:
+            out.append("<b>%s</b>" % _inline(m.group(2).strip().rstrip("#").strip()))
+            i += 1
+            continue
+
+        # Horizontal rule.
+        if _RE_HR.match(line):
+            out.append("———")
+            i += 1
+            continue
+
+        # Blockquote (consume consecutive > lines).
+        if _RE_QUOTE.match(line):
+            quote = []
+            while i < n and _RE_QUOTE.match(lines[i]):
+                quote.append(_inline(_RE_QUOTE.sub("", lines[i])))
+                i += 1
+            out.append("<blockquote>%s</blockquote>" % "\n".join(quote))
+            continue
+
+        # Bullet -> "• " (keep indentation; harmless in HTML mode).
+        m = _RE_BULLET.match(line)
+        if m:
+            out.append("%s• %s" % (m.group(1), _inline(m.group(2))))
+            i += 1
+            continue
+
+        # Ordered list -> keep the number.
+        m = _RE_ORDERED.match(line)
+        if m:
+            out.append("%s%s. %s" % (m.group(1), m.group(2), _inline(m.group(3))))
+            i += 1
+            continue
+
+        # Blank line or plain paragraph.
+        out.append("" if line.strip() == "" else _inline(line))
+        i += 1
+    return "\n".join(out)
 
 
 # ---- per-channel payload builders -----------------------------------------
 
 def telegram(text, title, severity, limit=3900):
+    meta = SEVERITY.get(severity, SEVERITY[DEFAULT_SEVERITY])
     body = text
-    head = _header(title, severity)
-    if head:
-        body = head + "\n\n" + body
-    chunks = chunk(body, limit)
-    n = len(chunks)
+    if title:
+        body = "**%s %s**\n\n%s" % (meta["emoji"], title, body)
+    # Chunk the Markdown first (fence-safe, tested), leaving headroom for the
+    # HTML growth (<b></b>, <a href=…>) that md_to_telegram_html adds per chunk.
+    md_chunks = chunk(body, min(limit, 3400))
+    n = len(md_chunks)
     out = []
-    for i, c in enumerate(chunks):
+    for i, c in enumerate(md_chunks):
         suffix = f"\n\n[{i + 1}/{n}]" if n > 1 else ""
-        out.append(c + suffix)
-    return out  # list[str]
+        out.append(md_to_telegram_html(c) + suffix)
+    return out  # list[str] of Telegram HTML
 
 
 def discord(text, title, severity, limit=4096):

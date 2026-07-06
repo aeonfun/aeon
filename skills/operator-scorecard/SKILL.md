@@ -238,7 +238,7 @@ Full: output/articles/operator-scorecard-${today}.md
 
 `notable_addendum`: if any "What was notable" bullet exists, prefix with `Notable:` and inline the first one only (cap at ~120 chars). If none, omit the line.
 
-Cap message at ~3500 chars (Telegram safe limit). The verdict + three lane lines are the priority — drop "Notable" first if exceeded.
+Keep it tight for signal — the verdict + three lane lines are the priority; drop "Notable" first if it runs long. (`./notify` auto-chunks, so length is about signal, not transport.)
 
 ### 9. Log to `memory/logs/${today}.md`
 
