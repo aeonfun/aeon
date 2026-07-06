@@ -1,7 +1,7 @@
 ---
 type: Skill
 name: Deploy Prototype
-category: core
+category: dev
 description: Generate a small app or tool and deploy it live to Vercel via API
 var: ""
 tags: [dev, build]

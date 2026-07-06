@@ -1,7 +1,7 @@
 ---
 type: Skill
 name: OKF Ingest
-category: core
+category: productivity
 description: Fetch, validate, and quarantine an EXTERNAL OKF knowledge bundle into memory/topics/ingested, then open a PR
 var: ""
 tags: [meta]
