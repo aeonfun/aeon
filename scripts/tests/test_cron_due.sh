@@ -66,6 +66,29 @@ check "weekly-not-friday"              "5 10 * * 5"    2026-07-09T11:00:00Z 2026
 check "workflow_dispatch-never"        "workflow_dispatch" 2026-07-07T08:00:00Z never             6  skip
 check "reactive-never"                 "reactive"          2026-07-07T08:00:00Z never             6  skip
 
+# --- correct cron day semantics: DOM & DOW both restricted => OR (13th OR Fri) ---
+check "dom-or-dow friday (dow hit)"    "0 0 13 * 5"    2026-07-10T00:30:00Z never                1  due
+check "dom-or-dow 13th (dom hit)"      "0 0 13 * 5"    2026-07-13T00:30:00Z never                1  due
+check "dom-or-dow neither -> skip"     "0 0 13 * 5"    2026-07-14T00:30:00Z never                1  skip
+# single-restricted day field still behaves as plain AND
+check "dom-only on the 13th"           "0 0 13 * *"    2026-07-13T00:30:00Z never                1  due
+check "dom-only off the 13th"          "0 0 13 * *"    2026-07-14T00:30:00Z never                1  skip
+check "dom-31 in a 31-day month"       "0 0 31 * *"    2026-07-31T00:30:00Z never                1  due
+check "dom-31 off day -> skip"         "0 0 31 * *"    2026-07-30T00:30:00Z never                1  skip
+
+# --- hour ranges / steps / odd minute steps / every-minute ---
+check "hour-range inside window"       "0 9-17 * * *"   2026-07-07T13:30:00Z 2026-07-07T12:00:00Z 6 due
+check "hour-range before window"       "0 9-17 * * *"   2026-07-07T08:30:00Z 2026-07-06T17:00:00Z 6 skip
+check "hour step-range 9-17/2"         "0 9-17/2 * * *" 2026-07-07T12:30:00Z 2026-07-07T09:30:00Z 6 due
+check "minute step */7 latest slot"    "*/7 9 * * *"    2026-07-07T09:59:00Z 2026-07-07T09:00:00Z 6 due
+check "minute step */7 after run"      "*/7 9 * * *"    2026-07-07T09:03:00Z 2026-07-07T09:01:00Z 6 skip
+check "every-minute due"               "* 9 * * *"      2026-07-07T09:30:00Z 2026-07-07T09:29:00Z 6 due
+check "every-minute after run"         "* 9 * * *"      2026-07-07T09:30:00Z 2026-07-07T09:30:00Z 6 skip
+
+# --- hour-granular catch-up cap boundary ---
+check "cap boundary reachable"         "0 6 * * *"     2026-07-07T12:59:00Z 2026-07-06T06:00:00Z 6  due
+check "cap boundary just out"          "0 6 * * *"     2026-07-07T13:00:00Z 2026-07-06T06:00:00Z 6  skip
+
 echo "---"
 echo "PASS: $pass   FAIL: $fail"
 [ "$fail" -eq 0 ]

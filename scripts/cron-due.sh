@@ -83,9 +83,17 @@ for (( h=0; h<=CATCHUP_HOURS; h++ )); do
   BUCKET_TOP=$(( HOUR_TOP - h * 3600 ))
   read -r B_HOUR B_DOM B_MON B_DOW <<< "$("$DATE" -u -d "@$BUCKET_TOP" +'%-H %-d %-m %w')"
   cron_match "$C_HOUR"  "$B_HOUR" || continue
-  cron_match "$C_DOM"   "$B_DOM"  || continue
   cron_match "$C_MONTH" "$B_MON"  || continue
-  cron_match "$C_DOW"   "$B_DOW"  || continue
+  # Standard cron day rule: when BOTH day-of-month and day-of-week are restricted
+  # (neither is "*"), the day matches if EITHER matches; otherwise it's a plain
+  # AND (the "*" field matches anything). NB: this is the POSIX/Vixie-cron rule —
+  # the old scheduler ANDed the two unconditionally.
+  if [ "$C_DOM" != "*" ] && [ "$C_DOW" != "*" ]; then
+    cron_match "$C_DOM" "$B_DOM" || cron_match "$C_DOW" "$B_DOW" || continue
+  else
+    cron_match "$C_DOM" "$B_DOM" || continue
+    cron_match "$C_DOW" "$B_DOW" || continue
+  fi
   for (( m=0; m<60; m++ )); do
     cron_match "$C_MIN" "$m" || continue
     SLOT=$(( BUCKET_TOP + m * 60 ))
