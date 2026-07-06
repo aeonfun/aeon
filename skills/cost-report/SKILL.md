@@ -1,7 +1,7 @@
 ---
 type: Skill
 name: cost-report
-category: meta
+category: core
 description: API cost intelligence — the full weekly report (dollar costs from token usage, anomaly flags, burn forecast, concrete optimizations) plus a `watch` budget watchdog that checks running weekly spend against a cap and alerts on WATCH/WARN/ALERT tiers
 var: ""
 tags: [meta]

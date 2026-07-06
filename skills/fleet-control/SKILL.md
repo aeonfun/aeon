@@ -1,7 +1,7 @@
 ---
 type: Skill
 name: Fleet Control
-category: meta
+category: core
 description: Operate managed Aeon instances registered in memory/instances.json — health-check, dispatch skills, and full status snapshots (control view), plus a fleet-wide scorecard of runs, tokens (OpenRouter shape), est. cost and reliability with day-over-day deltas and alerts (scorecard view)
 var: ""
 tags: [dev, meta, fleet, report, cost]

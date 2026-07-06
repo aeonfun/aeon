@@ -1,52 +1,22 @@
 {
   "version": "1.0",
-  "description": "Hand-authored source of truth for FIRST-PARTY skill packs. `generate-packs-json` reads this + skills.json and emits packs.json (the catalog the dashboard reads). Community packs live separately in skill-packs.json. Every skill in skills.json must land in exactly one pack here, or the generator fails. Membership precedence: (1) the `core` allowlist, (2) packs that list explicit `skills` (e.g. `basics`), (3) packs that claim a `category`'s remainder. `core` and `basics` are the two packs shown by default (and locked always-on) on the dashboard — see DEFAULT_VISIBLE_PACKS in apps/dashboard/lib/constants.ts.",
-  "core": {
-    "name": "Core",
-    "description": "What makes Aeon different from a cron job: it evolves its own skills, heals itself, coordinates a fleet of instances, and takes autonomous on-chain action. Shown by default and not removable — this is the showcase of what an autonomous agent can do.",
-    "color": "#E5484D",
-    "default_enabled": ["heartbeat"],
-    "skills": [
-      "create-skill",
-      "install-skill",
-      "self-improve",
-      "autoresearch",
-      "skill-health",
-      "skill-repair",
-      "spawn-instance",
-      "fleet-control",
-      "ctrl",
-      "distribute-tokens",
-      "deploy-prototype",
-      "heartbeat",
-      "cost-report"
-    ]
-  },
+  "description": "Hand-authored display metadata for FIRST-PARTY skill packs. `generate-packs-json` reads this + skills.json and emits packs.json (the catalog the dashboard reads). ONE grouping: a skill's pack IS its `category` (one line in its SKILL.md frontmatter) — there is no separate axis. Each pack below claims the skills whose category equals its `category` key. `core` and `basics` are the two packs shown by default (locked always-on) on the dashboard — see DEFAULT_VISIBLE_PACKS in apps/dashboard/lib/constants.ts. `lab` (category `other`) is the catch-all for skills with a missing/unknown category. Community packs live separately in skill-packs.json.",
   "packs": [
+    {
+      "key": "core",
+      "name": "Core",
+      "description": "What makes Aeon different from a cron job: it evolves its own skills, heals itself, coordinates a fleet of instances, and takes autonomous on-chain action. Shown by default and not removable.",
+      "color": "#E5484D",
+      "category": "core",
+      "default_enabled": ["heartbeat"]
+    },
     {
       "key": "basics",
       "name": "Basics",
-      "description": "Simple, immediately-runnable skills — one approachable entry per area. Point it at a topic, repo, token, or tx and get a useful result with little or no setup. Shown by default alongside Core; the deeper/advanced skills live in the domain packs you reveal on demand.",
+      "description": "Simple, immediately-runnable skills — point them at a topic, repo, token, or tx and get a useful result with little or no setup. Shown by default alongside Core.",
       "color": "#30A46C",
-      "category": null,
-      "default_enabled": ["digest"],
-      "skills": [
-        "digest",
-        "article",
-        "token-movers",
-        "tx-explain",
-        "write-tweet",
-        "pr-review",
-        "github-trending",
-        "price-alert"
-      ]
-    },
-    {
-      "key": "research",
-      "name": "Research & Content",
-      "description": "Digests, deep research, trend and framework tracking, paper/HN/RSS/Reddit/Telegram summaries — turn a firehose of sources into signal.",
-      "color": "#8B5CF6",
-      "category": "research"
+      "category": "basics",
+      "default_enabled": ["digest"]
     },
     {
       "key": "dev",
@@ -56,18 +26,18 @@
       "category": "dev"
     },
     {
-      "key": "markets",
+      "key": "crypto",
       "name": "Crypto & Markets",
-      "description": "Token, DeFi, and prediction-market monitoring: price/volume alerts, on-chain activity, narrative tracking, and market context.",
+      "description": "Token, DeFi, and prediction-market monitoring plus on-chain investigation: price/volume alerts, activity, narrative tracking, market context, and token/tx forensics.",
       "color": "#FF6B1A",
       "category": "crypto"
     },
     {
-      "key": "hound",
-      "name": "Onchain Security",
-      "description": "On-chain forensics and risk: rug/honeypot/LP-lock checks, contract and approval audits, deployer tracing, fund-flow and wallet clustering.",
-      "color": "#EAB308",
-      "category": "onchain-security"
+      "key": "research",
+      "name": "Research & Content",
+      "description": "Digests, deep research, trend and framework tracking, paper/HN/RSS/Reddit/Telegram summaries — turn a firehose of sources into signal.",
+      "color": "#8B5CF6",
+      "category": "research"
     },
     {
       "key": "social",
@@ -84,16 +54,23 @@
       "category": "productivity"
     },
     {
-      "key": "agent-ops",
+      "key": "meta",
       "name": "Agent Ops",
       "description": "Aeon's instrumentation: skill analytics/health/graphing, capability mapping, spend monitoring, memory housekeeping, fork health, and registry tooling.",
       "color": "#9CA3AF",
       "category": "meta"
     },
     {
+      "key": "onchain-security",
+      "name": "Onchain Security",
+      "description": "On-chain forensics and risk: rug/honeypot/LP-lock checks, contract and approval audits, deployer tracing, fund-flow and wallet clustering.",
+      "color": "#EAB308",
+      "category": "onchain-security"
+    },
+    {
       "key": "lab",
       "name": "Lab",
-      "description": "Unsorted skills — freshly authored or imported skills whose category isn't a known pack yet. Triage these into a real pack by setting their category. Catch-all: keeps adding a skill from ever breaking the catalog.",
+      "description": "Unsorted skills — freshly authored or imported skills whose category isn't a known pack yet. Set their category to file them. Catch-all: keeps adding a skill from ever breaking the catalog.",
       "color": "#71717A",
       "category": "other"
     }

@@ -1,7 +1,7 @@
 ---
 type: Skill
 name: Fetch Tweets
-category: research
+category: basics
 description: Search and curate X/Twitter behind one selector — by keyword/query, topic roundup, a single account or a tracked-account digest, an X list, or the AI-agent "buzz" preset — clustered into sub-narratives with signal-scored, insight-per-item output.
 var: ""
 tags: [social]

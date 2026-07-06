@@ -46,7 +46,7 @@ get_skill_updated() {
 # Start JSON output
 echo -n '{"version":"1.0","generated":"' > "$OUTPUT"
 echo -n "$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$OUTPUT"
-echo -n '","repo":"aaronjmars/aeon","total":0,"categories":{"research":"Research & Content","dev":"Dev & Code","crypto":"Crypto & Markets","onchain-security":"Onchain Security","social":"Social","productivity":"Productivity","meta":"Meta / Agent"},"skills":[' >> "$OUTPUT"
+echo -n '","repo":"aaronjmars/aeon","total":0,"categories":{"core":"Core","basics":"Basics","dev":"Dev & Code","crypto":"Crypto & Markets","research":"Research & Content","social":"Social","productivity":"Productivity","meta":"Agent Ops","onchain-security":"Onchain Security"},"skills":[' >> "$OUTPUT"
 
 TOTAL=0
 FIRST=true

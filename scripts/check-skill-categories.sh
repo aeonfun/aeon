@@ -12,12 +12,10 @@ set -eo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 SKILLS_DIR="$ROOT/skills"
 
-# Valid frontmatter categories — the 7 skills.json domain categories. `core` and
-# `fleet` are curated *packs* (resolved from packs.config.json via an allowlist /
-# explicit skills list), NOT author-selectable category values, so neither is
-# valid here. A skill that belongs to the core spine or fleet pack still declares
-# its real domain (e.g. `meta`, `dev`, `crypto`) as its category.
-VALID="research dev crypto onchain-security social productivity meta"
+# Valid frontmatter categories. A skill's category IS its pack — one grouping
+# (see docs/skill-packs.md). To move a skill between packs, change this one line.
+# `lab` is the catch-all for a missing/unknown category and isn't set by hand.
+VALID="core basics research dev crypto onchain-security social productivity meta"
 
 missing=()
 invalid=()

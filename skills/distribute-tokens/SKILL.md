@@ -1,7 +1,7 @@
 ---
 type: Skill
 name: Distribute Tokens
-category: crypto
+category: core
 description: Two-phase contributor rewards — computes a tier-priced reward plan from the repo's merged-PR contributor ranking (plan phase) and executes the on-chain send via Bankr Wallet API with per-recipient idempotency, resolve→execute, dry-run, and partial-run recovery (send phase). Run either phase alone or both back-to-back.
 var: ""
 tags: [community, crypto]

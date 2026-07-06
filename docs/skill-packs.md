@@ -35,9 +35,9 @@ packs.config.json   ──┐
 skills.json         ──┘                                 (generated)      (/api/packs)
 ```
 
-- **[`packs.config.json`](../catalog/packs.config.json)** — the hand-authored source of
-  truth: the `core` allowlist + the list of packs with their display metadata
-  (name, description, color) and how they claim skills.
+- **[`packs.config.json`](../catalog/packs.config.json)** — the hand-authored list of
+  packs with their display metadata (name, description, color) and the `category`
+  each one claims. Membership itself lives in each skill's frontmatter.
 - **[`generate-packs-json`](../bin/generate-packs-json)** — derives `packs.json` from
   `packs.config.json` + `skills.json`. It asserts every skill lands in **exactly
   one** pack (no duplicate claims, no unknown slugs).
@@ -56,34 +56,34 @@ bin/generate-packs-json            # compact (committed form)
 bin/generate-packs-json --pretty   # readable
 ```
 
-### Membership precedence
+### Membership — one grouping
 
-When assigning a skill to a pack, the generator applies, in order:
+**A skill's pack IS its `category`.** There's no separate axis: the `category:`
+line in a skill's `SKILL.md` frontmatter is the single source of truth, read by
+[`generate-skills-json`](../bin/generate-skills-json) into `skills.json`, and
+each pack in `packs.config.json` claims the skills whose category equals its key.
+To move a skill between packs, change that one line.
 
-1. **The `core` allowlist** — an explicit slug list in `packs.config.json`.
-2. **Explicit packs** — packs that list their own `skills` (e.g. `fleet`).
-3. **Category packs** — packs that claim a `category`; they take that category's
-   remaining skills. A skill's category is declared in its `SKILL.md`
-   frontmatter (`category:`) — the single source of truth, read by
-   [`generate-skills-json`](../bin/generate-skills-json) into `skills.json`.
-4. **The Lab catch-all** — anything still unassigned (a freshly authored or
-   imported skill whose category isn't a known pack) lands in **Lab**, so adding
-   a skill never breaks the catalog. Triage it into a real pack later.
+Anything with a missing/unknown category lands in the **Lab** catch-all (category
+`other`), so adding a skill never breaks the catalog. (A pack may also hand-list
+`skills` explicitly, but first-party packs are category-driven.)
 
 ### The packs
 
-| Pack | What's in it | ~count |
+Pack key = category. Empty packs are hidden in the UI.
+
+| Pack (`category`) | What's in it | count |
 |---|---|---|
-| **Core** | Aeon's differentiators: self-evolution, self-healing, fleet coordination, autonomous on-chain action. Shown by default; not removable. | 13 |
-| **Basics** | Simple, immediately-runnable skills — one approachable entry per area. Shown by default alongside Core. | 8 |
-| **Research & Content** | Digests, deep research, trend/framework tracking. | 26 |
-| **Dev & Code** | PR/issue triage, review, merges, releases, repo health, ecosystem mapping. | 34 |
-| **Crypto & Markets** | Token/DeFi/prediction-market monitoring, narrative tracking. | 23 |
-| **Onchain Security** | Rug/honeypot/LP checks, contract & approval audits, deployer/fund-flow tracing. | 15 |
-| **Social & Writing** | Tweets/threads, replies, syndication, campaigns, engagement. | 17 |
-| **Productivity** | Routines, goal/idea capture, retrospectives, deal flow, follow-ups. | 16 |
-| **Agent Ops** | Skill analytics/health/graphing, capability mapping, spend, memory housekeeping, fork health. | 30 |
-| **Lab** | Catch-all for unsorted skills. Hidden in the UI until something lands in it. | 0 |
+| **Core** (`core`) | Aeon's differentiators: self-evolution, self-healing, fleet coordination, autonomous on-chain action. Shown by default; not removable. | 16 |
+| **Basics** (`basics`) | Simple, immediately-runnable skills — one approachable entry per area. Shown by default alongside Core. | 12 |
+| **Dev & Code** (`dev`) | PR/issue triage, review, merges, releases, repo health, ecosystem mapping. | 17 |
+| **Crypto & Markets** (`crypto`) | Token/DeFi/prediction-market monitoring, narrative tracking, token/tx forensics. | 15 |
+| **Research & Content** (`research`) | Digests, deep research, trend/framework tracking. | 0 |
+| **Social & Writing** (`social`) | Tweets/threads, replies, syndication, campaigns, engagement. | 3 |
+| **Productivity** (`productivity`) | Routines, goal/idea capture, retrospectives, deal flow, follow-ups. | 4 |
+| **Agent Ops** (`meta`) | Skill analytics/health/graphing, capability mapping, spend, memory housekeeping, fork health. | 4 |
+| **Onchain Security** (`onchain-security`) | Rug/honeypot/LP checks, contract & approval audits, deployer/fund-flow tracing. | 0 |
+| **Lab** (`other`) | Catch-all for unsorted skills. Hidden until something lands in it. | 0 |
 
 ### Core + Basics — what a fresh fork shows
 
@@ -102,8 +102,8 @@ pack is revealed on demand). They answer two different questions:
   `github-trending`, `price-alert`.
 
 `heartbeat` (Core) and `digest` (Basics) are enabled by default; the rest ship
-present but on-demand. Edit the `core.skills` / `basics` skill lists in
-`packs.config.json` to change membership, and `DEFAULT_VISIBLE_PACKS` in
+present but on-demand. To move a skill into Core or Basics, set its `category:`
+to `core` / `basics`. Change `DEFAULT_VISIBLE_PACKS` in
 `apps/dashboard/lib/constants.ts` to change which packs show by default.
 
 ---
@@ -111,8 +111,8 @@ present but on-demand. Edit the `core.skills` / `basics` skill lists in
 ## Adding a skill to a pack
 
 A skill's pack is one frontmatter line. Set `category:` in its `SKILL.md` to one
-of the **category packs** — `research`, `dev`, `crypto` (→ Markets),
-`onchain-security` (→ Hound), `social`, `productivity`, `meta` (→ Agent Ops):
+of — `core`, `basics`, `dev`, `crypto`, `research`, `social`, `productivity`,
+`meta`, `onchain-security` (the pack key is the category, verbatim):
 
 ```yaml
 ---
@@ -133,9 +133,9 @@ The authoring tools set it for you:
 Then **regenerate**: `bin/generate-skills-json && bin/generate-packs-json`, and commit
 both manifests (CI enforces they're fresh).
 
-> **Core** and **Fleet** aren't category-selectable — they're curated in
-> `packs.config.json` (the `core.skills` allowlist / the `fleet` skill list).
-> And a skill with no/unknown category still works — it just lands in **Lab**
+> **Core** and **Basics** are ordinary categories now — set `category: core` or
+> `category: basics` to file a skill there (they're just the two packs shown by
+> default). A skill with no/unknown category still works — it lands in **Lab**
 > until you triage it. The dashboard surfaces Lab so unsorted skills don't get lost.
 
 ---

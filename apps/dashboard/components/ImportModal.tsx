@@ -10,8 +10,9 @@ interface ImportModalProps {
   onImport: (files: UploadFile[], name?: string, category?: string) => Promise<void>
 }
 
-// Author-selectable pack categories (core/fleet are curated, not chosen here).
-const PACK_CATEGORIES = CATEGORIES.filter(c => c.key !== 'core')
+// Categories an imported skill can be filed into. `core` and `basics` are the
+// curated default-visible packs — imported community skills don't land there.
+const PACK_CATEGORIES = CATEGORIES.filter(c => c.key !== 'core' && c.key !== 'basics')
 
 export function ImportModal({ onClose, onImport }: ImportModalProps) {
   const [uploadFiles, setUploadFiles] = useState<UploadFile[]>([])

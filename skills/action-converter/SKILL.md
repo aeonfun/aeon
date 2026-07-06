@@ -1,7 +1,7 @@
 ---
 type: Skill
 name: Action Converter
-category: productivity
+category: basics
 description: 5 concrete real-life actions, leverage-scored against open loops with specificity and anti-fluff gates
 var: ""
 tags: [meta]
