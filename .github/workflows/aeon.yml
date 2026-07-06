@@ -1,4 +1,4 @@
-name: Aeon
+name: Aeon · Skill Runner
 run-name: "skill: ${{ inputs.skill || 'feature' }}${{ inputs.var && format(' ({0})', inputs.var) || '' }}"
 
 on:

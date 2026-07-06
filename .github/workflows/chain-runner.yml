@@ -1,4 +1,4 @@
-name: Chain Runner
+name: Aeon · Chain Runner
 run-name: "chain: ${{ inputs.chain }}"
 
 on:

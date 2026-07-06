@@ -1,4 +1,4 @@
-name: Scheduler
+name: Aeon · Scheduler
 run-name: "scheduler: cron"
 
 # The cron scheduler. Extracted from messages.yml so scheduling and message
