@@ -103,11 +103,7 @@ export const CATEGORIES: { key: string; label: string; short: string; color: str
   { key: 'basics',           label: 'Basics',             short: 'Basics',       color: '#30A46C' },
   { key: 'dev',              label: 'Dev & Code',         short: 'Dev',          color: '#3B82F6' },
   { key: 'crypto',           label: 'Crypto & Markets',   short: 'Crypto',       color: '#FF6B1A' },
-  { key: 'research',         label: 'Research & Content', short: 'Research',     color: '#8B5CF6' },
-  { key: 'social',           label: 'Social & Writing',   short: 'Social',       color: '#EC4899' },
   { key: 'productivity',     label: 'Productivity',       short: 'Productivity', color: '#06B6D4' },
-  { key: 'meta',             label: 'Agent Ops',          short: 'Meta',         color: '#9CA3AF' },
-  { key: 'onchain-security', label: 'Onchain Security',   short: 'Onchain',      color: '#EAB308' },
 ]
 
 export const CATEGORY_BY_KEY: Record<string, { label: string; color: string }> =
@@ -125,12 +121,7 @@ const PACKS: { key: string; label: string; short: string; color: string }[] = [
   { key: 'basics',           label: 'Basics',             short: 'Basics',       color: '#30A46C' },
   { key: 'dev',              label: 'Dev & Code',         short: 'Dev',          color: '#3B82F6' },
   { key: 'crypto',           label: 'Crypto & Markets',   short: 'Crypto',       color: '#FF6B1A' },
-  { key: 'research',         label: 'Research & Content', short: 'Research',     color: '#8B5CF6' },
-  { key: 'social',           label: 'Social & Writing',   short: 'Social',       color: '#EC4899' },
   { key: 'productivity',     label: 'Productivity',       short: 'Productivity', color: '#06B6D4' },
-  { key: 'meta',             label: 'Agent Ops',          short: 'Ops',          color: '#9CA3AF' },
-  { key: 'onchain-security', label: 'Onchain Security',   short: 'Onchain',      color: '#EAB308' },
-  { key: 'lab',              label: 'Lab',                short: 'Lab',          color: '#71717A' },
 ]
 
 export const PACK_BY_KEY: Record<string, { label: string; color: string }> =

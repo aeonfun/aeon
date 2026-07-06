@@ -1,11 +1,11 @@
 {
   "version": "1.0",
-  "description": "Hand-authored display metadata for FIRST-PARTY skill packs. `generate-packs-json` reads this + skills.json and emits packs.json (the catalog the dashboard reads). ONE grouping: a skill's pack IS its `category` (one line in its SKILL.md frontmatter) — there is no separate axis. Each pack below claims the skills whose category equals its `category` key. `core` and `basics` are the two packs shown by default (locked always-on) on the dashboard — see DEFAULT_VISIBLE_PACKS in apps/dashboard/lib/constants.ts. `lab` (category `other`) is the catch-all for skills with a missing/unknown category. Community packs live separately in skill-packs.json.",
+  "description": "Hand-authored display metadata for FIRST-PARTY skill packs. `generate-packs-json` reads this + skills.json and emits packs.json (the catalog the dashboard reads). ONE grouping: a skill's pack IS its `category` (one line in its SKILL.md frontmatter) — there is no separate axis. Each pack below claims the skills whose category equals its `category` key. `core`, `evolution`, and `basics` are the three packs shown by default (locked always-on) on the dashboard — see DEFAULT_VISIBLE_PACKS in apps/dashboard/lib/constants.ts. Community packs live separately in skill-packs.json.",
   "packs": [
     {
       "key": "core",
       "name": "Core",
-      "description": "What makes Aeon different from a cron job: it evolves its own skills, heals itself, coordinates a fleet of instances, and takes autonomous on-chain action. Shown by default and not removable.",
+      "description": "What makes Aeon different from a cron job: it coordinates a fleet of instances, self-configures its own workflows, and keeps itself alive. Shown by default and not removable.",
       "color": "#E5484D",
       "category": "core",
       "default_enabled": ["heartbeat"]
@@ -20,7 +20,7 @@
     {
       "key": "basics",
       "name": "Basics",
-      "description": "Simple, immediately-runnable skills — point them at a topic, repo, token, or tx and get a useful result with little or no setup. Shown by default alongside Core.",
+      "description": "Simple, immediately-runnable skills — point them at a topic, repo, token, or tx and get a useful result with little or no setup. Shown by default alongside Core and Evolution.",
       "color": "#30A46C",
       "category": "basics",
       "default_enabled": ["digest"]
@@ -28,58 +28,23 @@
     {
       "key": "dev",
       "name": "Dev & Code",
-      "description": "GitHub and repo automation: PR/issue triage, review, merges, releases, changelogs, repo health and ecosystem mapping.",
+      "description": "GitHub and repo automation: PR/issue triage, review, merges, releases, changelogs, repo health, security scanning, and app deploys.",
       "color": "#3B82F6",
       "category": "dev"
     },
     {
       "key": "crypto",
       "name": "Crypto & Markets",
-      "description": "Token, DeFi, and prediction-market monitoring plus on-chain investigation: price/volume alerts, activity, narrative tracking, market context, and token/tx forensics.",
+      "description": "Token, DeFi, and prediction-market monitoring plus on-chain investigation and action: price/volume alerts, activity, narrative tracking, market context, token/tx forensics, and on-chain automation.",
       "color": "#FF6B1A",
       "category": "crypto"
     },
     {
-      "key": "research",
-      "name": "Research & Content",
-      "description": "Digests, deep research, trend and framework tracking, paper/HN/RSS/Reddit/Telegram summaries — turn a firehose of sources into signal.",
-      "color": "#8B5CF6",
-      "category": "research"
-    },
-    {
-      "key": "social",
-      "name": "Social & Writing",
-      "description": "Drafting and distribution: tweets/threads, replies, syndication, campaigns, and engagement.",
-      "color": "#EC4899",
-      "category": "social"
-    },
-    {
       "key": "productivity",
       "name": "Productivity",
-      "description": "Personal ops: routines, goal/idea capture and validation, retrospectives, deal flow, and follow-ups.",
+      "description": "Personal + social ops: routines, goal/idea capture, retrospectives, deal flow, follow-ups, mentions, replies, ads, email, and knowledge-bundle housekeeping.",
       "color": "#06B6D4",
       "category": "productivity"
-    },
-    {
-      "key": "meta",
-      "name": "Agent Ops",
-      "description": "Aeon's instrumentation: skill analytics/health/graphing, capability mapping, spend monitoring, memory housekeeping, fork health, and registry tooling.",
-      "color": "#9CA3AF",
-      "category": "meta"
-    },
-    {
-      "key": "onchain-security",
-      "name": "Onchain Security",
-      "description": "On-chain forensics and risk: rug/honeypot/LP-lock checks, contract and approval audits, deployer tracing, fund-flow and wallet clustering.",
-      "color": "#EAB308",
-      "category": "onchain-security"
-    },
-    {
-      "key": "lab",
-      "name": "Lab",
-      "description": "Unsorted skills — freshly authored or imported skills whose category isn't a known pack yet. Set their category to file them. Catch-all: keeps adding a skill from ever breaking the catalog.",
-      "color": "#71717A",
-      "category": "other"
     }
   ]
 }
