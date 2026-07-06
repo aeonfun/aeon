@@ -13,7 +13,7 @@
 
 <p align="center">
   <strong>The most autonomous agent framework.</strong><br>
-  Give it a direction - it'll use 68 skills (deep research, PR reviews, market monitoring, Vercel deploys…) to get it done. No approval loops. No babysitting. Configure once, forget forever.
+  Give it a direction - it'll use 67 skills (deep research, PR reviews, market monitoring, Vercel deploys…) to get it done. No approval loops. No babysitting. Configure once, forget forever.
 </p>
 
 <p align="center">
@@ -59,7 +59,7 @@ Grab the `gh_*_macOS_arm64.zip` (or your platform's binary) from [github.com/cli
 
 ## What Aeon can do
 
-**68 skills, grouped into 10 packs.** By default the dashboard shows only the small **core** set; everything else is hidden until you **enable its pack** in the **Packs** view - a visibility switch that reveals a pack's skills across the UI without running anything. Putting a skill on duty stays a per-skill toggle. Every skill is independently installable, schedulable, and chainable. How packs work: [`docs/skill-packs.md`](../docs/skill-packs.md).
+**67 skills, grouped into packs.** By default the dashboard shows **Core** and **Basics**; everything else is hidden until you **enable its pack** in the **Packs** view - a visibility switch that reveals a pack's skills across the UI without running anything. Putting a skill on duty stays a per-skill toggle. Every skill is independently installable, schedulable, and chainable. How packs work: [`docs/skill-packs.md`](../docs/skill-packs.md).
 
 | Pack | Key | Skills | Examples |
 | --- | --- | --- | --- |
@@ -75,19 +75,19 @@ Grab the `gh_*_macOS_arm64.zip` (or your platform's binary) from [github.com/cli
 | 🧪 **Lab** - unsorted; freshly authored/imported skills awaiting a pack | `lab` | 0 | _(empty — add via `category:`)_ |
 
 <details>
-<summary><strong>Full catalog (all 68 skills by pack)</strong></summary>
+<summary><strong>Full catalog (all 67 skills by pack)</strong></summary>
 
 | Pack | Skills |
 |------|--------|
-| **Core** (`core`, 9) | `autoresearch`,`cost-report`,`create-skill`,`digest`,`heartbeat`,`install-skill`,`self-improve`,`skill-health`,`skill-repair` |
-| **Fleet & Replication** (`fleet`, 5) | `deploy-prototype`,`distribute-tokens`,`fleet-control`,`spawn-instance`,`vuln-scanner` |
-| **Research & Content** (`research`, 6) | `article`,`bd-radar`,`fetch-tweets`,`idea-forge`,`last30`,`narrative-convergence` |
-| **Dev & Code** (`dev`, 18) | `auto-merge`,`auto-workflow`,`changelog`,`code-health`,`ecosystem-pulse`,`feature`,`fork-fleet`,`github-monitor`,`github-trending`,`inbox-triage`,`issue-triage`,`pr-review`,`pr-triage`,`repo-scanner`,`search-skill`,`star-milestone`,`vuln-tracker`,`workflow-audit` |
-| **Crypto & Markets** (`markets`, 16) | `base-mcp`,`ctrl`,`defi-overview`,`fear-divergence`,`monitor-polymarket`,`narrative-tracker`,`onchain-monitor`,`picks-tracker`,`pm-manipulation`,`pm-pulse`,`price-alert`,`token-movers`,`token-pick`,`treasury-info`,`unlock-monitor`,`x402-monitor` |
-| **Onchain Security** (`hound`, 2) | `investigation-report`,`tx-explain` |
-| **Social & Writing** (`social`, 5) | `mention-radar`,`reply-maker`,`schedule-ads`,`soul-builder`,`write-tweet` |
-| **Productivity** (`productivity`, 5) | `action-converter`,`idea-pipeline`,`send-email`,`shiplog`,`strategy-builder` |
-| **Agent Ops** (`agent-ops`, 2) | `memory-flush`,`operator-scorecard` |
+| **Core** (`core`, 19) | `auto-merge`,`auto-workflow`,`autoresearch`,`cost-report`,`create-skill`,`ctrl`,`deploy-prototype`,`distribute-tokens`,`fleet-control`,`fork-fleet`,`heartbeat`,`install-skill`,`narrative-convergence`,`self-improve`,`skill-health`,`skill-repair`,`soul-builder`,`spawn-instance`,`strategy-builder` |
+| **Basics** (`basics`, 12) | `action-converter`,`article`,`bd-radar`,`digest`,`fetch-tweets`,`github-trending`,`idea-forge`,`pr-review`,`price-alert`,`token-movers`,`tx-explain`,`write-tweet` |
+| **Dev & Code** (`dev`, 10) | `changelog`,`feature`,`github-monitor`,`inbox-triage`,`issue-triage`,`pr-triage`,`repo-scanner`,`search-skill`,`vuln-scanner`,`vuln-tracker` |
+| **Crypto & Markets** (`crypto`, 15) | `base-mcp`,`defi-overview`,`fear-divergence`,`investigation-report`,`monitor-polymarket`,`narrative-tracker`,`onchain-monitor`,`picks-tracker`,`pm-manipulation`,`pm-pulse`,`token-pick`,`treasury-info`,`unlock-monitor`,`verdikta-hunter`,`x402-monitor` |
+| **Research & Content** (`research`, 0) | _(empty)_ |
+| **Social & Writing** (`social`, 3) | `mention-radar`,`reply-maker`,`schedule-ads` |
+| **Productivity** (`productivity`, 4) | `idea-pipeline`,`last30`,`send-email`,`shiplog` |
+| **Agent Ops** (`meta`, 4) | `memory-flush`,`okf-export`,`okf-ingest`,`operator-scorecard` |
+| **Onchain Security** (`onchain-security`, 0) | _(empty)_ |
 | **Lab** (`lab`, 0) | _(empty)_ |
 
 Authoritative source: [`skills.json`](../catalog/skills.json) + [`packs.json`](../catalog/packs.json), the dashboard **Packs** view, or `bin/add-skill aaronjmars/aeon --list`. A skill's pack comes from its `category:` frontmatter - see [`docs/skill-packs.md`](../docs/skill-packs.md).
@@ -622,7 +622,7 @@ aeon.yml                 ← skill schedules, chains, reactive triggers, enabled
 aeon                     ← launch the local dashboard (run ./aeon; Next.js on port 5555)
 notify                   ← multi-channel notify command (generated per-run from scripts/notify.sh)
 catalog/                 ← registries the dashboard reads (generated + hand-authored)
-  skills.json            ← machine-readable skill catalog (68 skills, category per skill)
+  skills.json            ← machine-readable skill catalog (67 skills, category per skill)
   packs.config.json      ← first-party pack definitions (core allowlist + pack list)
   packs.json             ← generated pack catalog (10 packs)
   skill-packs.json       ← community skill-pack registry
