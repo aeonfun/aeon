@@ -137,6 +137,109 @@ def make_request(dry_run=False):
 
 
 class VerdiktaGuardTests(unittest.TestCase):
+
+    # ── balance & gas cap tests ────────────────────────────────────────
+
+    def test_insufficient_balance_refused(self):
+        """sign_and_send must refuse when balance < value + gas."""
+        be = self._install(FakeBackend())
+        _orig_rpc = be.rpc
+        def _low_balance_rpc(method, params):
+            if method == "eth_getBalance":
+                return hex(10_000_000_000_000)  # 0.00001 ETH
+            return _orig_rpc(method, params)
+        helper.api, helper.rpc = be.api, _low_balance_rpc
+        with self.assertRaises(RuntimeError) as cm:
+            helper.do_submit(make_request(), self.acct, Path(".pending-verdikta"))
+        self.assertIn("insufficient balance", str(cm.exception))
+        self.assertEqual(len(be.sent_raw), 0)
+
+    def test_gas_price_capped_at_max_gas_gwei(self):
+        """Gas price must not exceed VERDIKTA_MAX_GAS_GWEI even when chain is higher."""
+        be = self._install(FakeBackend())
+        _orig_rpc = be.rpc
+        def _high_gas_rpc(method, params):
+            if method == "eth_gasPrice":
+                return hex(50_000_000_000)
+            if method == "eth_getBalance":
+                return hex(50_000_000_000_000_000)  # 0.05 ETH
+            return _orig_rpc(method, params)
+        helper.api, helper.rpc = be.api, _high_gas_rpc
+        helper.do_submit(make_request(), self.acct, Path(".pending-verdikta"))
+        start = be.signed_tx(1)
+        gas_price = int(start["maxFeePerGas"])
+        self.assertLessEqual(gas_price, 3_000_000_000)
+
+    def test_tx_revert_detected(self):
+        """A reverted TX must raise RuntimeError, not silently succeed."""
+        be = self._install(FakeBackend())
+        _orig_rpc = be.rpc
+        def _revert_rpc(method, params):
+            if method == "eth_getTransactionReceipt":
+                return {"status": "0x0"}
+            return _orig_rpc(method, params)
+        helper.api, helper.rpc = be.api, _revert_rpc
+        with self.assertRaises(RuntimeError) as cm:
+            helper.do_submit(make_request(), self.acct, Path(".pending-verdikta"))
+        self.assertIn("REVERTED", str(cm.exception))
+
+    def test_api_error_response_raises(self):
+        """Non-200 API responses must raise RuntimeError."""
+        be = self._install(FakeBackend())
+        _orig_api = be.api
+        def _bad_api(method, path, **kw):
+            if path.endswith("/submit/bundle"):
+                raise RuntimeError(f"POST {path} -> HTTP 500: Internal Server Error")
+            return _orig_api(method, path, **kw)
+        helper.api, helper.rpc = _bad_api, be.rpc
+        with self.assertRaises(RuntimeError) as cm:
+            helper.do_submit(make_request(), self.acct, Path(".pending-verdikta"))
+        self.assertIn("HTTP 500", str(cm.exception))
+
+    def test_daily_cap_enforced_by_shell(self):
+        """do_submit increments daily count for shell cap enforcement."""
+        be = self._install(FakeBackend())
+        helper.do_submit(make_request(), self.acct, Path(".pending-verdikta"))
+        state = self._state()
+        today = __import__("datetime").datetime.now(
+            __import__("datetime").timezone.utc
+        ).strftime("%Y-%m-%d")
+        self.assertEqual(state["daily"].get(today, 0), 1)
+
+    def test_missing_state_file_handled(self):
+        """load_state must bootstrap cleanly when no state file exists."""
+        state = helper.load_state()
+        self.assertEqual(state, {"submissions": {}, "daily": {}})
+
+    def test_corrupt_state_file_raises(self):
+        """Corrupt JSON in state file must raise, not silently overwrite."""
+        Path("memory/state").mkdir(parents=True, exist_ok=True)
+        Path("memory/state/verdikta-hunter.json").write_text("{invalid json")
+        with self.assertRaises(json.JSONDecodeError):
+            helper.load_state()
+
+    def test_missing_file_raises(self):
+        """do_submit must raise when listed file doesn't exist."""
+        be = self._install(FakeBackend())
+        req = make_request()
+        req["files"] = ["nonexistent.md"]
+        with self.assertRaises(FileNotFoundError):
+            helper.do_submit(req, self.acct, Path(".pending-verdikta"))
+
+    def test_finalize_updates_state_to_finalized(self):
+        """Finalize must update state entry to FINALIZED with tx hash."""
+        be = self._install(FakeBackend())
+        helper.do_submit(make_request(), self.acct, Path(".pending-verdikta"))
+        state = self._state()
+        sub_key = [k for k in state["submissions"] if k.startswith("97:")][0]
+        sub_id = int(sub_key.split(":")[1])
+        helper.do_finalize(
+            {"action": "finalize", "jobId": 97, "submissionId": sub_id},
+            self.acct,
+        )
+        state = self._state()
+        self.assertEqual(state["submissions"][f"97:{sub_id}"]["status"], "FINALIZED")
+        self.assertIsNotNone(state["submissions"][f"97:{sub_id}"]["finalizeTx"])
     def setUp(self):
         self._old_cwd = os.getcwd()
         self._tmp = tempfile.TemporaryDirectory()

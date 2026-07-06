@@ -130,6 +130,17 @@ Append to `memory/logs/YYYY-MM-DD.md`:
 5. **Two-model jury.** Independent AI models score and their weighted results are combined — write for a careful, literal reader, not for keyword-matching.
 6. **The confirm call matters.** `POST /api/jobs/:id/submissions/confirm` (between prepare and start) registers the submission for backend tracking; the postprocess script does it — if you ever drive the flow manually, don't skip it.
 7. **API statuses lag chain state** by a sync cycle. `GET /api/jobs/:id/onchain-status` is the ground truth when they disagree.
+8. **Images cause ORACLE_TIMEOUT — every time.** Verified on multiple bounties: including `.jpg`, `.png`, or `.webp` files causes the oracle to timeout with score 0. Submit only text/markdown/PDF/code. Embed screenshots as base64 in markdown or convert to PDF if needed.
+9. **`.json` files also cause issues.** The oracle treats `.json` as binary data. Embed raw data inline using fenced code blocks. Verified: submission with separate `.json` file scored 0.
+10. **`ethMaxBudget` is a STRING, not an integer.** The API returns it as a decimal string (e.g. `"240000000000000"`). Always `int()` it before comparison.
+11. **Windowed (creator-approval) bounties are out of scope for v1.** These have `creatorAssessmentWindowSize > 0`. The discover filter drops them automatically.
+12. **`alpha` parameter tuning.** Default 200 favours quality (range 0–1000; lower = quality-weighted). For competitive bounties, try 100–150. For time-sensitive, try 400–500.
+13. **Gas price spikes on Base can stall TXs.** The postprocess script caps gas at `VERDIKTA_MAX_GAS_GWEI` (default 3). If Base gas spikes above this, TXs may be stuck until gas drops.
+14. **PREPARED_INCOMPLETE recovery.** If prepare TX succeeds but a later stage fails, the state entry stays `PREPARED_INCOMPLETE`. The next run sees this and skips the bounty. To recover: check on-chain submission ID via event log, update state, and finalize.
+15. **Multiple submitted files become separate evaluation units.** Each file is forwarded to jurors individually. Prefer a single markdown file with inline data.
+16. **Oracle intermittency is real.** The same report can score differently on retry due to different oracle node assignments. Retry before rewriting content.
+17. **`finalizeSubmission` timing.** For `EVALUATED_PASSED` submissions, finalize can fail if called before the oracle commits on-chain. Retry after a few minutes. Check if already `WINNER` — winners are auto-paid.
+18. **Claude model name bug.** Some creators set `claude-opus-4.6` (dot) but Anthropic expects `claude-opus-4-6` (dash). This causes 404 — only GPT evaluates. Creator config issue, not fixable by hunters.
 
 ## Sandbox note
 
