@@ -1,7 +1,7 @@
 ---
 type: Skill
 name: Reply Maker
-category: social
+category: productivity
 description: Draft copy-paste-ready X replies — either two reply options per reply-worthy tweet from tracked accounts/topics/lists (default), or (from-logs mode) ready-to-post responses to engagement opportunities flagged in recent logs
 var: "empty = auto-discover reply-worthy tweets and draft two options each; @handle / numeric X list ID / topic = scope the drafting to that; from-logs (or --from-logs [@handle|project]) = turn flagged engagement opps from recent logs into ready-to-post replies"
 commits: false

@@ -38,7 +38,7 @@ describe("packGroups", () => {
   });
 
   it("treats every first-party pack as non-community", () => {
-    const groups = packGroups([sk("a", "dev"), sk("b", "research"), sk("c", "lab")]);
+    const groups = packGroups([sk("a", "dev"), sk("b", "crypto"), sk("c", "productivity")]);
     assert.ok(groups.every(g => g.community === false));
   });
 

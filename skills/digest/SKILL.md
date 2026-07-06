@@ -2,7 +2,7 @@
 type: Skill
 mode: write
 name: Digest
-category: research
+category: basics
 description: Generate and send a digest on a configurable topic, optionally pulling RSS/Atom feeds as an input source alongside web + X signal
 var: ""
 tags: [content, news]

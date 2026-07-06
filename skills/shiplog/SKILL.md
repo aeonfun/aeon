@@ -1,7 +1,7 @@
 ---
 type: Skill
 name: Shiplog
-category: productivity
+category: core
 description: Recap of everything shipped since the last run — cross-repo PRs and commits, security fixes merged into other people's repos, star deltas, and X + ecosystem traction — synthesized into a digest article AND a ready-to-post shiplog in the operator's voice. Cadence-agnostic: schedule it daily, weekly, or on-demand.
 var: ""
 requires: [XAI_API_KEY?, GH_GLOBAL?]

@@ -13,10 +13,11 @@ set -eo pipefail
 # skills.json must land in exactly one pack or this script exits non-zero.
 # Community (external-repo) packs live separately in skill-packs.json.
 #
+# A skill's pack IS its `category` (one grouping — see docs/skill-packs.md).
 # Precedence when assigning a skill to a pack:
-#   1. the `core` allowlist in packs.config.json
-#   2. packs that list explicit `skills`
-#   3. packs that claim a `category` (take that category's remaining skills)
+#   1. packs that hand-list explicit `skills` (rare; kept for flexibility)
+#   2. packs that claim a `category` (take that category's skills) — the norm
+#   3. catch-all `lab` (category `other`) for a missing/unknown category
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 
@@ -46,17 +47,16 @@ def claim(slug, key):
         sys.exit(f"ERROR: skill '{slug}' claimed by both '{assigned[slug]}' and '{key}'")
     assigned[slug] = key
 
-# 1) core allowlist
-core = config["core"]
-for slug in core["skills"]:
-    claim(slug, "core")
-
-# 2) explicit-membership packs
+# 1) explicit-membership packs (rare; first-party packs are category-driven, but
+# this stays for any pack that hand-lists slugs). Runs before category so an
+# explicit listing wins.
 for p in config["packs"]:
     for slug in p.get("skills", []):
         claim(slug, p["key"])
 
-# 3) category packs — claim each category's remaining skills
+# 2) category packs — a skill's pack IS its category. Each pack claims the skills
+# whose `category` equals its `category` key. This is the single source of truth:
+# to move a skill, change its SKILL.md `category:` line.
 cat_to_pack = {p["category"]: p["key"] for p in config["packs"]
                if p.get("category") and not p.get("skills")}
 for slug, s in skills.items():
@@ -66,7 +66,7 @@ for slug, s in skills.items():
     if key:
         assigned[slug] = key
 
-# 4) catch-all — any skill whose category has no pack (freshly authored or
+# 3) catch-all — any skill whose category has no pack (freshly authored or
 # imported skills land here as category 'other') goes to the catch-all pack
 # (the one claiming category 'other'), so adding a skill never breaks the
 # catalog. Without a catch-all declared, an unassigned skill is a hard error.
@@ -114,11 +114,9 @@ def pack_out(key, name, description, color, category, default_enabled):
             "default_enabled": default_enabled,
             "skills": [skill_entry(sl) for sl in members(key)]}
 
-out_packs = [pack_out("core", core["name"], core["description"], core["color"],
-                      "core", core.get("default_enabled", []))]
-for p in config["packs"]:
-    out_packs.append(pack_out(p["key"], p["name"], p["description"], p["color"],
-                              p.get("category"), p.get("default_enabled", [])))
+out_packs = [pack_out(p["key"], p["name"], p["description"], p["color"],
+                      p.get("category"), p.get("default_enabled", []))
+             for p in config["packs"]]
 
 # Append the synthetic "installed" pack only when something was installed, so
 # the upstream manifest (no skills.lock) is unchanged. Each entry carries its

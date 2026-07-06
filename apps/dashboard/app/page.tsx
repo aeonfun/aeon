@@ -8,7 +8,7 @@ import type {
   UploadResponse, ErrorResponse, PacksResponse, McpServers,
 } from '../lib/types'
 import { postJson, putJson, patchJson, del, scheduleRunRefresh } from '../lib/api-client'
-import { MODELS, authSecretsForHarness, PACK_BY_KEY, FIRST_PARTY_KEYS, HARNESSES, modelsForHarness } from '../lib/constants'
+import { MODELS, authSecretsForHarness, PACK_BY_KEY, FIRST_PARTY_KEYS, DEFAULT_VISIBLE_PACKS, HARNESSES, modelsForHarness } from '../lib/constants'
 import { displayName } from '../lib/utils'
 import TargetCursor from '../components/ui/TargetCursor'
 import { LoadingScreen } from '../components/LoadingScreen'
@@ -67,7 +67,7 @@ export default function Dashboard() {
   // by default only Core shows everywhere; enabling a pack reveals its skills in
   // the sidebar + HQ. Pure client-side view preference - it never changes what
   // runs (that's the per-skill `enabled` toggle in aeon.yml). Persisted below.
-  const [enabledPacks, setEnabledPacks] = useState<string[]>(['core'])
+  const [enabledPacks, setEnabledPacks] = useState<string[]>(Array.from(DEFAULT_VISIBLE_PACKS))
 
   const [showImport, setShowImport] = useState(false)
   const [authLoading, setAuthLoading] = useState(false)
@@ -123,7 +123,7 @@ export default function Dashboard() {
       const raw = localStorage.getItem(`aeon.enabledPacks:${repo}`)
       if (raw) { const arr = JSON.parse(raw); if (Array.isArray(arr)) saved = arr.filter((k: unknown): k is string => typeof k === 'string') }
     } catch {}
-    setEnabledPacks(Array.from(new Set(['core', ...saved])))
+    setEnabledPacks(Array.from(new Set([...DEFAULT_VISIBLE_PACKS, ...saved])))
   }, [repo])
   useEffect(() => { const id = setInterval(refreshRuns, 10_000); return () => clearInterval(id) }, [refreshRuns])
   useEffect(() => { setFeedLoading(true); setFeedError(false); fetch('/api/outputs').then(r => r.ok ? r.json() as Promise<OutputsResponse> : Promise.reject(new Error(`HTTP ${r.status}`))).then(d => setOutputs(d.outputs || [])).catch(() => setFeedError(true)).finally(() => setFeedLoading(false)) }, [feedKey])
@@ -162,11 +162,11 @@ export default function Dashboard() {
   // Toggling reveals or hides the pack's skills across the sidebar + HQ; it's a
   // view preference, persisted to localStorage, with zero effect on what runs.
   const togglePack = (key: string) => {
-    if (key === 'core') return
+    if (DEFAULT_VISIBLE_PACKS.has(key)) return
     setEnabledPacks(prev => {
       const has = prev.includes(key)
       const next = has ? prev.filter(k => k !== key) : [...prev, key]
-      try { if (repo) localStorage.setItem(`aeon.enabledPacks:${repo}`, JSON.stringify(next.filter(k => k !== 'core'))) } catch {}
+      try { if (repo) localStorage.setItem(`aeon.enabledPacks:${repo}`, JSON.stringify(next.filter(k => !DEFAULT_VISIBLE_PACKS.has(k)))) } catch {}
       flash(`${PACK_BY_KEY[key]?.label || key} ${has ? 'hidden' : 'revealed'}`)
       return next
     })

@@ -9,9 +9,10 @@ export interface Frontmatter {
   mcp: SkillMcpRef[]
 }
 
-// The pack categories a skill's frontmatter may declare. `core`/`fleet` are
-// curated in packs.config.json, so they aren't author-selectable here.
-export const SKILL_CATEGORIES = ['research', 'dev', 'crypto', 'onchain-security', 'social', 'productivity', 'meta'] as const
+// The categories a skill's frontmatter may declare. A skill's category IS its
+// pack (one grouping) — set this one line to file a skill into a pack. `lab`
+// (category `other`) is the catch-all and isn't author-selectable.
+export const SKILL_CATEGORIES = ['core', 'evolution', 'basics', 'dev', 'crypto', 'productivity'] as const
 
 // Insert or replace the frontmatter `category:` line. Returns content unchanged
 // when there's no `--- ... ---` block. Mirrors the backfill: replace in place if

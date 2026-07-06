@@ -1,7 +1,7 @@
 ---
 type: Skill
 name: Idea Forge
-category: research
+category: basics
 description: Three-mode idea engine. generate — collide the week's zeitgeist with what the operator can ship now into 3-5 wedges scored by timing-window/fit/edge, appended to the shared backlog. validate — viability-screen and score the startup-idea backlog (competition, funding, timing, operator-fit, market size). memo — 2 evidence-backed startup memos with ICP, wedge, monetization, cited pain, and numeric kill criteria.
 var: ""
 tags: [research, ideas, creative, meta]

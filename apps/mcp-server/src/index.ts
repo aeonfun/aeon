@@ -72,13 +72,11 @@ function buildVarDescription(skill: Skill): string {
   if (skill.var) return skill.var;
   const defaults: Record<string, string> = {
     core: "Skill-specific input (e.g. a skill name, owner/repo, or 'name: purpose'). See the skill's SKILL.md for its var contract.",
-    research: "Topic or keyword to focus the skill on (e.g. 'AI agents'). Leave empty for auto-selection.",
+    evolution: "Optional target (a skill slug to author/evolve/heal, or a focus area). Leave empty to operate across the fleet.",
+    basics: "Optional focus (topic, repo, token, or tx hash). Leave empty for the skill's default behaviour.",
     dev: "Repo in owner/repo format to narrow scope. Leave empty to scan all watched repos.",
     crypto: "Token symbol or contract address to focus on. Leave empty for all tracked tokens.",
-    "onchain-security": "Address, transaction hash, or token contract to investigate.",
-    social: "Topic, handle, or keyword. Leave empty to use configured defaults.",
     productivity: "Focus area or goal. Leave empty for general operation.",
-    meta: "Skill slug or focus area to scope the run. Leave empty to operate across all skills.",
   };
   return (
     defaults[skill.category] ??
@@ -89,13 +87,11 @@ function buildVarDescription(skill: Skill): string {
 function categoryName(category: string): string {
   const labels: Record<string, string> = {
     core: "Core",
-    research: "Research",
+    evolution: "Evolution",
+    basics: "Basics",
     dev: "Dev",
     crypto: "Crypto",
-    "onchain-security": "Onchain Security",
-    social: "Social",
     productivity: "Productivity",
-    meta: "Meta",
   };
   return labels[category] ?? category;
 }

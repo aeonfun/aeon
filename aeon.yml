@@ -11,7 +11,6 @@ skills:
 
 
   # --- Mid-morning (9 AM UTC) ---
-  issue-triage: { enabled: false, schedule: "0 9 * * *" }
   pr-triage: { enabled: false, schedule: "30 9 * * *", var: "" } # first-touch external-PR triage (verdict + label + welcoming comment); var: owner/repo or owner/repo#N for one-shot
   pr-review: { enabled: false, schedule: "0 9 * * *", var: "" } # var: empty/owner/repo=per-PR review (posts comments) | --survey [dry-run] [owner/repo]=risk-tiered PR triage digest (folds in pr-merge)
   auto-merge: { enabled: false, schedule: "0 14 * * *" } # merge green PRs daily at 2 PM UTC; max 3 per run
@@ -21,10 +20,8 @@ skills:
   # --- Midday (12 PM UTC) ---
   token-movers: { enabled: false, schedule: "0 12 * * *", var: "" } # market-movers scan + single-token deep report. var: empty=movers (CoinGecko) | geckoterminal[:chain]=on-chain runners | category:<slug> | <address|symbol|token:sym>=single-token report. Optional COINGECKO/ALCHEMY/XAI/BASE_RPC keys.
   onchain-monitor: { enabled: false, schedule: "0 12 * * *" }
-  treasury-info: { enabled: false, schedule: "0 12 * * *" }
   distribute-tokens: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand contributor rewards. var: empty/<label>=distribute (send) | plan[:week]=compute reward plan | all[:week]=plan+send | dry-run (folds in contributor-reward). BANKR_API_KEY for send.
   defi-overview: { enabled: false, schedule: "0 12 * * *", var: "" } # one-pass DeFi read: tracked-protocol positions + macro context (regime verdict, movers, yields, fees, F&G, prediction markets; refreshes memory/topics/market-context.md). var: empty=full | positions[:label] | macro | <chain/protocol focus>. Optional COINGECKO_API_KEY.
-  verdikta-hunter: { enabled: false, schedule: "workflow_dispatch", var: "" } # Verdikta AI-judged bounties on Base. var: empty=discover+settle (no new spend) | hunt[:jobId]=write report + queue hard-capped on-chain submission (executed post-run by scripts/postprocess-verdikta.sh, cap VERDIKTA_MAX_SPEND_ETH) | dry-run[:jobId]=validate only. Needs VERDIKTA_API_KEY; VERDIKTA_WALLET_KEY (dedicated hot wallet) to submit.
 
   # --- Hound onchain investigation (on-demand; var = address / tx hash) ---
   investigation-report: { enabled: false, schedule: "workflow_dispatch", var: "" } # var: <token-address> [--checks=rug,contract,deployer,holders,honeypot,lp] [--depth=quick|deep] — composite investigation (folds in rug-scan/contract-audit/deployer-trace/holder-concentration/honeypot-check/lp-lock). read-only
@@ -45,11 +42,8 @@ skills:
 
 
   # --- Repo intelligence (3 PM UTC) ---
-  star-milestone: { enabled: false, schedule: "15 15 * * *", var: "" } # daily — star milestone crossings + next-milestone projection & Show HN launch-window alert (folds in star-momentum). var: empty=all | owner/repo | dry-run
-  repo-scanner: { enabled: false, schedule: "0 15 * * 0", var: "" } # GitHub fleet intel: repo catalog + per-repo action ideas + who's-building map (folds in repo-actions/builder-map). var: empty/<owner>=full | catalog[:owner] | actions[:focus] | builders
 
   # --- Late afternoon (4 PM UTC) ---
-  code-health: { enabled: false, schedule: "0 16 * * *" }
   changelog: { enabled: false, schedule: "0 16 * * *", var: "" } # changelog from recent commits/PRs. var: empty/owner/repo=in-repo | push-to:owner/website-repo=cross-repo changelog PR (needs GH_GLOBAL)
   vuln-scanner: { enabled: false, schedule: "0 16 * * 6", var: "" } # security scan + disclose. var: empty/owner/repo=scan | resubmit[:owner/repo]=PVR re-submit | disclose=queue armed emails (folds in pvr-watchlist/disclosure-emailer). RESEND_* for email.
   deploy-prototype: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — build app and deploy to Vercel
@@ -78,16 +72,13 @@ skills:
   skill-repair: { enabled: false, schedule: "reactive", var: "" } # reactive — auto-fix failing skills
 
   # --- Cost tracking (Monday 7 AM UTC, weekly) ---
-  cost-report: { enabled: false, schedule: "0 7 * * 1", var: "" } # weekly API cost breakdown by skill/model + anomalies + burn forecast + optimizations. var: empty=full report (7d) | N=report over last N days | watch=budget watchdog (weekly cost vs WEEKLY_BUDGET_CAP def $200, OK/WATCH/WARN/ALERT, silent <50%; folds in spend-monitor) | watch:<cap>=override cap
 
   # --- Weekly (Monday only) ---
-  ecosystem-pulse: { enabled: false, schedule: "0 11 * * 1", var: "" } # Monday — one ECOSYSTEM.md pass: project liveness (stars/forks/last-push buckets + 7d releases + WoW transitions) AND link-health (URL audit, buckets OK/ARCHIVED/MOVED/DEAD/…, folds in ecosystem-links). var: empty=both | liveness | links | dry-run
   fork-fleet: { enabled: false, schedule: "0 10 * * 1", var: "" } # fork divergence: code (unique commits/skills) + config (aeon.yml vs upstream defaults; folds in fork-digest). var: empty=both | code | config | fork=owner/repo | repo=owner/repo
   spawn-instance: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — var: "name: purpose"
   fleet-control: { enabled: false, schedule: "0 9,15 * * *", var: "" } # managed child instances. var: empty=health check | status | dispatch <inst|*> <skill> [var=…] | scorecard (fleet-wide runs/tokens/cost/reliability; folds in fleet-scorecard)
   shiplog: { enabled: false, schedule: "0 9 * * 1" } # everything shipped SINCE THE LAST RUN (memory/state/shiplog-last.json) — cross-repo PRs/commits, security fixes merged into others' repos, star deltas, X/ecosystem traction → digest article + ready-to-post shiplog in the operator's voice. Cadence-agnostic: this schedule just sets frequency (daily/weekly/on-demand). Config: memory/products.md + memory/watched-repos.md. Optional XAI_API_KEY (X traction) + GH_GLOBAL (cross-repo reach). var: since:DATE | days:N | dry-run | owner/repo | <theme>.
   operator-scorecard: { enabled: false, schedule: "30 10 * * 1", var: "" } # Monday — weekly plain-language scorecard: agent health + community growth + economic activity (worst-of-three OK/WATCH/DEGRADED verdict). var: empty=scorecard (7d) | dry-run=no notify | N=window N hours | ops[ DATE]=end-of-day ops recap (shipped/failed/follow-up) | push[ owner/repo]=diff-deep-dive push recap (folds in ops-recap + push-recap)
-  workflow-audit: { enabled: false, schedule: "0 16 * * 0" } # Sunday — scan workflows for injection vectors
 
   # --- Paid ads (AdManage.ai) ---
   schedule-ads: { enabled: false, schedule: "0 8 * * *", var: "" } # daily 08:00 UTC — paid ads via AdManage.ai. var: empty=schedule ad launches across Meta/TikTok/Snapchat/Pinterest/LinkedIn from config.yaml (PAUSED by default) | create=provision Meta campaigns/ad sets on-demand from config.create.yaml (PAUSED, IDs written back to state so the schedule branch can launch into them; folds in create-campaign)
@@ -97,9 +88,7 @@ skills:
 
   # --- Ported from derivative instances (PR #219) ---
   # Markets & crypto
-  pm-pulse: { enabled: false, schedule: "0 13 * * 1" } # Monday — prediction/coordination-market volume, new mechanisms, regulatory moves
   pm-manipulation: { enabled: false, schedule: "15 13 * * *" } # daily — flag suspected PM manipulation from 3-day price/volume/comment + local-press anomalies
-  x402-monitor: { enabled: false, schedule: "0 12 * * 2", var: "" } # Tuesday — protocol/vertical ecosystem velocity. var: empty=x402 default | rwa | compute | mcp | agent-displacement | <stanza in memory/topics/tracked-protocol.md>
 
   # Research & content
   narrative-convergence: { enabled: false, schedule: "0 13 * * *", var: "" } # daily 13:00 UTC — cross-skill convergence detector: entities/themes surfaced by 3+ independent skill categories in 48h = high-confidence write opportunities. Category map in memory/topics/signal-categories.md. Pass var to filter.
@@ -115,7 +104,6 @@ skills:
   # --- Ported from aeon-aaron ---
   # Infra & health
   # Markets & crypto
-  fear-divergence: { enabled: false, schedule: "30 7 * * *" } # daily 07:30 UTC — conditional: fires only when Fear & Greed < 25; surfaces assets diverging from the BTC drawdown with narrative catalysts from memory; silent skip otherwise. Reads market-context.md (enable market-context first).
   picks-tracker: { enabled: false, schedule: "0 9 * * 0" } # Sunday 09:00 UTC — 30-day retrospective scoring token + prediction-market picks from logs against current prices; W/H/L + hit rate; honest record-keeping. Pairs with token-pick / monitor-polymarket.
   # Content pipeline
   soul-builder: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — build a SOUL from any mix of sources (X handle, full name, links), drafting soul/SOUL.md + STYLE.md + examples so every content skill speaks in that voice. var: bare X handle, or structured brief "x=handle | name=Full Name | links=url1,url2". Powers the dashboard Soul → Build my soul button. XAI_API_KEY optional (name/links use built-in WebSearch/WebFetch).

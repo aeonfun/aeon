@@ -1,7 +1,7 @@
 ---
 type: Skill
 name: Article
-category: research
+category: basics
 description: Write a publication-ready article in one of three angles — a general trending long-form piece (or a single-mechanism technical explainer), a thesis-driven article about a watched repo, or a project-through-a-lens essay. Optionally generate a Replicate hero image with --visual.
 var: ""
 tags: [content, dev]
