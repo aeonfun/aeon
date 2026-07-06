@@ -820,6 +820,13 @@ jobs:
           VENICE_CLEANCACHE: ${{ vars.VENICE_CLEANCACHE }}
           SURPLUS_MODEL: ${{ vars.SURPLUS_MODEL }}
           CCR_LOG: ${{ vars.CCR_LOG }}
+          # Optional Langfuse observability — traces the conversational-reply run
+          # (scripts/langfuse-otel.sh; no-op unless both LANGFUSE_* keys are set).
+          LANGFUSE_PUBLIC_KEY: ${{ secrets.LANGFUSE_PUBLIC_KEY }}
+          LANGFUSE_SECRET_KEY: ${{ secrets.LANGFUSE_SECRET_KEY }}
+          LANGFUSE_HOST: ${{ vars.LANGFUSE_HOST }}
+          LANGFUSE_TRACING: ${{ vars.LANGFUSE_TRACING }}
+          LANGFUSE_LOG_CONTENT: ${{ vars.LANGFUSE_LOG_CONTENT }}
           GITHUB_TOKEN: ${{ secrets.GH_GLOBAL || secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.GH_GLOBAL || secrets.GITHUB_TOKEN }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
@@ -860,6 +867,7 @@ jobs:
             GATEWAY=$(grep -A1 '^gateway:' aeon.yml | grep 'provider:' | sed 's/.*provider:[[:space:]]*//' | sed "s/[\"' ]//g" || true)
             GATEWAY="${GATEWAY:-auto}"
             source "${GITHUB_WORKSPACE}/scripts/llm-gateway.sh"
+            AEON_OTEL_COMPONENT=message source "${GITHUB_WORKSPACE}/scripts/langfuse-otel.sh"
           fi
 
           cat > ./notify << 'NOTIFY_SCRIPT'

@@ -25,6 +25,13 @@ const BUILTIN_SECRETS: Omit<Secret, 'isSet'>[] = [
   { name: 'SLACK_WEBHOOK_URL', group: 'Slack', description: 'Webhook URL for notifications' },
   { name: 'SENDGRID_API_KEY', group: 'Email', description: 'SendGrid API key (SendGrid is a Twilio product) - keys & API reference at www.twilio.com/docs/sendgrid/api-reference' },
   { name: 'NOTIFY_EMAIL_TO', group: 'Email', description: 'Recipient email address for skill notifications' },
+  // Observability - optional. Set both keys to stream every Claude Code run to a
+  // Langfuse project as a trace (LLM calls, tokens, cost, prompts/responses) via
+  // OpenTelemetry. No-op when unset. Region/host + toggles are repo VARIABLES:
+  // LANGFUSE_HOST (default https://cloud.langfuse.com), LANGFUSE_TRACING (0 to
+  // disable), LANGFUSE_LOG_CONTENT (0 = metadata only, all = incl. tool bodies).
+  { name: 'LANGFUSE_PUBLIC_KEY', group: 'Observability', description: 'Langfuse public key (pk-lf-...) - pairs with LANGFUSE_SECRET_KEY to trace every run to Langfuse. Set the region via the LANGFUSE_HOST repo variable (default EU cloud; US = https://us.cloud.langfuse.com). Keys in Langfuse → Settings → API Keys.' },
+  { name: 'LANGFUSE_SECRET_KEY', group: 'Observability', description: 'Langfuse secret key (sk-lf-...) - the other half of the Langfuse trace-ingestion credential. Both keys must be set for tracing to activate.' },
   // Skill Keys - third-party API keys individual skills call. Each is opt-in:
   // unset means the skills that need it skip rather than fail. Names below are
   // the exact env vars referenced across skills/ (verified by global scan).

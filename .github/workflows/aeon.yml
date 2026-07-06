@@ -306,6 +306,13 @@ jobs:
           VENICE_CLEANCACHE: ${{ vars.VENICE_CLEANCACHE }}
           SURPLUS_MODEL: ${{ vars.SURPLUS_MODEL }}
           CCR_LOG: ${{ vars.CCR_LOG }}
+          # Optional Langfuse observability — set both keys to stream Claude Code's
+          # run to Langfuse as a trace (scripts/langfuse-otel.sh; no-op when unset).
+          LANGFUSE_PUBLIC_KEY: ${{ secrets.LANGFUSE_PUBLIC_KEY }}
+          LANGFUSE_SECRET_KEY: ${{ secrets.LANGFUSE_SECRET_KEY }}
+          LANGFUSE_HOST: ${{ vars.LANGFUSE_HOST }}
+          LANGFUSE_TRACING: ${{ vars.LANGFUSE_TRACING }}
+          LANGFUSE_LOG_CONTENT: ${{ vars.LANGFUSE_LOG_CONTENT }}
           GITHUB_TOKEN: ${{ secrets.GH_GLOBAL || secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.GH_GLOBAL || secrets.GITHUB_TOKEN }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
@@ -383,6 +390,9 @@ jobs:
           # The Grok Build harness has its own auth and does NOT use the gateway.
           BASE_MODEL="$MODEL"
           GW="${GITHUB_WORKSPACE}/scripts/llm-gateway.sh"
+          # Optional Langfuse OTEL tracing — sourced after the gateway in each
+          # claude attempt below. Self-gates on LANGFUSE_* and never fails the run.
+          LF="${GITHUB_WORKSPACE}/scripts/langfuse-otel.sh"
           if [ "$HARNESS" = "grok" ]; then
             # Set the post-run scorer's routing hint: route its `claude -p` scoring
             # call to xAI (Anthropic-compatible) when an API key is present, else
@@ -524,6 +534,7 @@ jobs:
                 GATEWAY="$cand"
                 MODEL="$BASE_MODEL"
                 source "$GW" >&2
+                source "$LF" >&2   # optional Langfuse tracing (no-op unless LANGFUSE_* set)
                 echo "$PROMPT" | claude -p - --model "$MODEL" --allowedTools "$ALLOWED" "${MCP_FLAGS[@]}" --output-format json 2>&1
               ); then
                 USED_GATEWAY="$cand"; CLAUDE_OK=1; break
@@ -676,6 +687,11 @@ jobs:
           VENICE_CLEANCACHE: ${{ vars.VENICE_CLEANCACHE }}
           SURPLUS_MODEL: ${{ vars.SURPLUS_MODEL }}
           CCR_LOG: ${{ vars.CCR_LOG }}
+          LANGFUSE_PUBLIC_KEY: ${{ secrets.LANGFUSE_PUBLIC_KEY }}
+          LANGFUSE_SECRET_KEY: ${{ secrets.LANGFUSE_SECRET_KEY }}
+          LANGFUSE_HOST: ${{ vars.LANGFUSE_HOST }}
+          LANGFUSE_TRACING: ${{ vars.LANGFUSE_TRACING }}
+          LANGFUSE_LOG_CONTENT: ${{ vars.LANGFUSE_LOG_CONTENT }}
         run: |
           SKILL="${{ steps.skill.outputs.name }}"
 
@@ -690,6 +706,7 @@ jobs:
           if [ "$HARNESS" != "grok" ]; then
             GATEWAY="${{ steps.run.outputs.GATEWAY }}"
             source "${GITHUB_WORKSPACE}/scripts/llm-gateway.sh"
+            AEON_OTEL_COMPONENT=scorer source "${GITHUB_WORKSPACE}/scripts/langfuse-otel.sh"
           fi
 
           # Read and truncate skill output for analysis
@@ -828,11 +845,17 @@ jobs:
           VENICE_CLEANCACHE: ${{ vars.VENICE_CLEANCACHE }}
           SURPLUS_MODEL: ${{ vars.SURPLUS_MODEL }}
           CCR_LOG: ${{ vars.CCR_LOG }}
+          LANGFUSE_PUBLIC_KEY: ${{ secrets.LANGFUSE_PUBLIC_KEY }}
+          LANGFUSE_SECRET_KEY: ${{ secrets.LANGFUSE_SECRET_KEY }}
+          LANGFUSE_HOST: ${{ vars.LANGFUSE_HOST }}
+          LANGFUSE_TRACING: ${{ vars.LANGFUSE_TRACING }}
+          LANGFUSE_LOG_CONTENT: ${{ vars.LANGFUSE_LOG_CONTENT }}
         run: |
           # GATEWAY may be empty when the Run step failed early — the script
           # treats that as `direct`, matching the old inline behavior.
           GATEWAY="${{ steps.run.outputs.GATEWAY }}"
           source "${GITHUB_WORKSPACE}/scripts/llm-gateway.sh"
+          AEON_OTEL_COMPONENT=feed source "${GITHUB_WORKSPACE}/scripts/langfuse-otel.sh"
           for pending in apps/dashboard/outputs/.pending-*.md; do
             [ -f "$pending" ] || continue
             SKILL=$(basename "$pending" .md | sed 's/^\.pending-//')
