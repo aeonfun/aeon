@@ -6,7 +6,7 @@ title: The Core
 
 # The Core
 
-The `core` category is the load-bearing set — the 15 skills that make Aeon autonomous rather than just scheduled. Everything else in the catalog is a workload; these are the machine. They group into three clusters: **self-evolution & self-healing**, **fleet / self-replication**, and **autonomous real-world action**.
+The skills below are the load-bearing set — the ~15 that make Aeon autonomous rather than just scheduled. Everything else in the catalog is a workload; these are the machine. They group into three clusters: **self-evolution & self-healing**, **fleet / self-replication**, and **autonomous real-world action**. At the dashboard level these now span two default-visible packs — **Core** (fleet coordination, self-config, liveness) and **Evolution** (the self-improvement loop) — plus a few autonomous-action skills filed under **Dev** and **Crypto**. The clustering here is conceptual; a skill's pack is set by its `category:` (see [skill-packs.md](./skill-packs.md)).
 
 If you're building a derivative architecture, this is the set to keep and validate first. It doesn't need to be 100% identical — but each skill below earns its place with a specific mechanism, and those mechanisms are what to preserve.
 

@@ -4,7 +4,7 @@ type: Reference
 
 # Skill packs
 
-Aeon ships **67 skills**, but most forks only ever run a handful. Packs make
+Aeon ships **59 skills**, but most forks only ever run a handful. Packs make
 that manageable: by default the dashboard shows **Core** (what makes Aeon
 different) and **Basics** (simple skills you can run right now) — everything else
 is grouped into **packs** that stay hidden until you enable them.
@@ -64,55 +64,54 @@ line in a skill's `SKILL.md` frontmatter is the single source of truth, read by
 each pack in `packs.config.json` claims the skills whose category equals its key.
 To move a skill between packs, change that one line.
 
-Anything with a missing/unknown category lands in the **Lab** catch-all (category
-`other`), so adding a skill never breaks the catalog. (A pack may also hand-list
-`skills` explicitly, but first-party packs are category-driven.)
+A skill with a missing or unknown `category` fails the `ci-skill-category` check
+(`scripts/check-skill-categories.sh`), so every skill must declare one of the six
+valid categories before it merges. (A pack may also hand-list `skills` explicitly,
+but first-party packs are category-driven.)
 
 ### The packs
 
-Pack key = category. Empty packs are hidden in the UI.
+Pack key = category. Six packs, no empties; three are shown by default.
 
 | Pack (`category`) | What's in it | count |
 |---|---|---|
-| **Core** (`core`) | Aeon's differentiators: self-evolution, self-healing, fleet coordination, autonomous on-chain action. Shown by default; not removable. | 16 |
-| **Basics** (`basics`) | Simple, immediately-runnable skills — one approachable entry per area. Shown by default alongside Core. | 12 |
-| **Dev & Code** (`dev`) | PR/issue triage, review, merges, releases, repo health, ecosystem mapping. | 17 |
-| **Crypto & Markets** (`crypto`) | Token/DeFi/prediction-market monitoring, narrative tracking, token/tx forensics. | 15 |
-| **Research & Content** (`research`) | Digests, deep research, trend/framework tracking. | 0 |
-| **Social & Writing** (`social`) | Tweets/threads, replies, syndication, campaigns, engagement. | 3 |
-| **Productivity** (`productivity`) | Routines, goal/idea capture, retrospectives, deal flow, follow-ups. | 4 |
-| **Agent Ops** (`meta`) | Skill analytics/health/graphing, capability mapping, spend, memory housekeeping, fork health. | 4 |
-| **Onchain Security** (`onchain-security`) | Rug/honeypot/LP checks, contract & approval audits, deployer/fund-flow tracing. | 0 |
-| **Lab** (`other`) | Catch-all for unsorted skills. Hidden until something lands in it. | 0 |
+| **Core** (`core`) | Fleet coordination, self-configuration, liveness, memory + reporting. Shown by default; not removable. | 11 |
+| **Evolution** (`evolution`) | The self-improvement loop — authors, evolves, installs, and heals its own skills. Shown by default. | 7 |
+| **Basics** (`basics`) | Simple, immediately-runnable skills — one approachable entry per area. Shown by default. | 13 |
+| **Dev & Code** (`dev`) | PR/issue triage, review, merges, changelogs, repo monitoring, security scanning, app deploys. | 8 |
+| **Crypto & Markets** (`crypto`) | Token/DeFi/prediction-market monitoring, narrative tracking, on-chain forensics + automation. | 12 |
+| **Productivity** (`productivity`) | Personal + social ops: routines, ideas, retrospectives, mentions, replies, ads, email, OKF housekeeping. | 8 |
 
-### Core + Basics — what a fresh fork shows
+### Core + Evolution + Basics — what a fresh fork shows
 
-Two packs are shown by default on the dashboard (locked always-on; every other
-pack is revealed on demand). They answer two different questions:
+Three packs are shown by default on the dashboard (locked always-on; every other
+pack is revealed on demand):
 
-- **Core — "what makes Aeon different from a cron job."** It evolves its own
-  skills, heals itself, coordinates a fleet of instances, and takes autonomous
-  on-chain action:
-  `create-skill`, `install-skill`, `self-improve`, `autoresearch`,
-  `skill-health`, `skill-repair`, `spawn-instance`, `fleet-control`, `ctrl`,
-  `distribute-tokens`, `deploy-prototype`, `heartbeat`, `cost-report`.
+- **Core — "what makes Aeon different from a cron job."** It coordinates a fleet
+  of instances, self-configures its workflows, and keeps itself alive:
+  `fleet-control`, `spawn-instance`, `fork-fleet`, `auto-workflow`, `auto-merge`,
+  `heartbeat`, `memory-flush`, `narrative-convergence`, `shiplog`, `soul-builder`,
+  `strategy-builder`.
+- **Evolution — "an agent that improves itself."** It authors new skills, evolves
+  and evaluates them, searches for and installs community skills, and heals its
+  own fleet: `create-skill`, `autoresearch`, `self-improve`, `install-skill`,
+  `search-skill`, `skill-health`, `skill-repair`.
 - **Basics — "something simple you can run right now."** One approachable entry
-  per area, little or no setup:
-  `digest`, `article`, `token-movers`, `tx-explain`, `write-tweet`, `pr-review`,
-  `github-trending`, `price-alert`.
+  per area, little or no setup: `digest`, `article`, `token-movers`, `tx-explain`,
+  `write-tweet`, `pr-review`, `github-trending`, `last30`, `price-alert`, and more.
 
 `heartbeat` (Core) and `digest` (Basics) are enabled by default; the rest ship
-present but on-demand. To move a skill into Core or Basics, set its `category:`
-to `core` / `basics`. Change `DEFAULT_VISIBLE_PACKS` in
-`apps/dashboard/lib/constants.ts` to change which packs show by default.
+present but on-demand. To move a skill into any pack, set its `category:` to that
+pack's key. Change `DEFAULT_VISIBLE_PACKS` in `apps/dashboard/lib/constants.ts`
+to change which packs show by default.
 
 ---
 
 ## Adding a skill to a pack
 
 A skill's pack is one frontmatter line. Set `category:` in its `SKILL.md` to one
-of — `core`, `basics`, `dev`, `crypto`, `research`, `social`, `productivity`,
-`meta`, `onchain-security` (the pack key is the category, verbatim):
+of — `core`, `evolution`, `basics`, `dev`, `crypto`, `productivity` (the pack key
+is the category, verbatim):
 
 ```yaml
 ---
@@ -133,22 +132,24 @@ The authoring tools set it for you:
 Then **regenerate**: `bin/generate-skills-json && bin/generate-packs-json`, and commit
 both manifests (CI enforces they're fresh).
 
-> **Core** and **Basics** are ordinary categories now — set `category: core` or
-> `category: basics` to file a skill there (they're just the two packs shown by
-> default). A skill with no/unknown category still works — it lands in **Lab**
-> until you triage it. The dashboard surfaces Lab so unsorted skills don't get lost.
+> **Core**, **Evolution**, and **Basics** are ordinary categories — set
+> `category: core` / `evolution` / `basics` to file a skill there (they're just
+> the three packs shown by default). Every skill must declare one of the six valid
+> categories; a missing or unknown one fails the `ci-skill-category` check.
 
 ---
 
 ## In the dashboard
 
-By default the dashboard shows **Core** and **Basics** — their skills appear in
-the sidebar and HQ, and nothing else does. Enable packs to reveal more.
+By default the dashboard shows **Core**, **Evolution**, and **Basics** — their
+skills appear in the sidebar and HQ, and nothing else does. Enable packs to reveal
+more.
 
 The **Packs** view (`/api/packs`):
 
 - **Your packs** — a card per first-party pack. Hit **Enable pack** to reveal
-  that pack's skills across the sidebar and HQ (**Core** is always on). It's a
+  that pack's skills across the sidebar and HQ (**Core**, **Evolution**, and
+  **Basics** are always on). It's a
   visibility toggle, stored per-browser, that never changes what runs. **View
   skills** expands the card to list the pack's skills, each with its own on/off
   toggle to actually put it on duty.
@@ -176,4 +177,4 @@ The pack system is fully shipped: the data layer + three CI gates
 (`ci-skills-json`, `ci-packs-json`, `ci-skill-category`), the dashboard **Packs**
 view, frontmatter-driven categories, and `--category` authoring. README and
 CONTRIBUTING document it. New skills declare `category:` (or use `--category`);
-the **Lab** catch-all keeps anything uncategorized from breaking the catalog.
+the `ci-skill-category` check rejects any skill with a missing or unknown one.
