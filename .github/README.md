@@ -665,7 +665,8 @@ scripts/
 .github/workflows/
   aeon.yml               ← skill runner (workflow_dispatch, issues, quality scoring)
   chain-runner.yml       ← skill chain executor (parallel + sequential pipelines)
-  messages.yml           ← cron scheduler + message polling (Telegram/Discord/Slack)
+  scheduler.yml          ← cron scheduler (dispatches due skills + chains */5)
+  messages.yml           ← message polling + routing (Telegram/Discord/Slack)
 ```
 
 ---

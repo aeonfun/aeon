@@ -16,7 +16,7 @@
 # Why this exists: GitHub only delivers ~10% of the */5 scheduler ticks, so gaps
 # routinely exceed the old 2h catch-up window and a due slot would silently age
 # out and never run. See docs and the "Determine and dispatch" step in
-# .github/workflows/messages.yml.
+# .github/workflows/scheduler.yml.
 #
 # Usage:
 #   cron-due.sh "<min hour dom month dow>" <now_epoch> <last_dispatch_epoch> [catchup_hours]
@@ -40,7 +40,8 @@ IFS=' ' read -r C_MIN C_HOUR C_DOM C_MONTH C_DOW <<< "$SCHED"
 case "$SCHED" in *workflow_dispatch*|*reactive*) exit 1 ;; esac
 
 # Cron field matcher — supports: *, N, N-M (ranges), N,M (lists), */N, N/step,
-# N-M/step (steps). Kept byte-for-byte in sync with the copy in messages.yml.
+# N-M/step (steps). This script is the single source of the match logic; the
+# scheduler.yml "Determine and dispatch" step calls it (no inline copy).
 cron_match() {
   local field="$1" value="$2"
   [ "$field" = "*" ] && return 0

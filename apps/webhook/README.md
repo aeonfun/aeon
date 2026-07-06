@@ -3,7 +3,7 @@
 Default polling checks Telegram every 5 minutes. Deploy this Cloudflare Worker as
 a Telegram webhook to drop that to **~1 second**: the Worker classifies each update
 and relays it to your Aeon fork via a GitHub `repository_dispatch`, which fires the
-**Messages & Scheduler** workflow immediately.
+**Messages** workflow immediately.
 
 It routes the full inbound feature set — slash commands, inline-button taps, and
 reply follow-ups — not just plain messages (see
@@ -78,7 +78,7 @@ curl "https://api.telegram.org/bot<YOUR_BOT_TOKEN>/deleteWebhook"
 ## How it coexists with polling
 
 A webhook and `getUpdates` polling are **mutually exclusive** — once a webhook is
-set, `getUpdates` returns `409 Conflict`. The Messages & Scheduler workflow's
+set, `getUpdates` returns `409 Conflict`. The Messages workflow's
 poller calls `getWebhookInfo` first and **skips the Telegram branch when a webhook
 is active**, so the two never fight. Delivery then runs entirely through this
 Worker → `repository_dispatch`.

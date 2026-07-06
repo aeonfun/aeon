@@ -8,7 +8,8 @@ type GhRunListItem = Pick<GhRunJson, 'databaseId' | 'name' | 'status' | 'conclus
 
 // Events that represent genuine Aeon skill activity, taken from the `on:` blocks
 // of the workflows Aeon owns: aeon.yml (workflow_dispatch / workflow_call / issues),
-// messages.yml (schedule / workflow_dispatch / repository_dispatch), chain-runner.yml
+// scheduler.yml (schedule / workflow_dispatch / repository_dispatch), messages.yml
+// (schedule / workflow_dispatch / repository_dispatch), chain-runner.yml
 // (workflow_dispatch). Allow-listing these keeps the feed to Aeon-launched runs and
 // structurally excludes repo CI (push / pull_request) and GitHub-managed noise like
 // Dependabot (event: 'dynamic'), without enumerating every bot/managed run by name.

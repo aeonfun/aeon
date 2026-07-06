@@ -252,7 +252,7 @@ Append to `memory/logs/${today}.md`:
 
 - One target per run (or one systemic cluster). Never bundle unrelated repairs.
 - Minimum-edit principle: keep diffs as small as possible. The original failure mode is rarely "the skill needs a rewrite".
-- Never modify secrets, the workflow file (`.github/workflows/aeon.yml`), or `messages.yml`.
+- Never modify secrets or the workflow files (`.github/workflows/aeon.yml`, `messages.yml`, `scheduler.yml`, `chain-runner.yml`).
 - Never push to `main`. Always branch + PR.
 - Never auto-merge HIGH-risk PRs. They carry the `manual-review` label.
 - If a skill has been failing > 7 days with no clear root cause and the category is `unknown`, recommend (in the issue and notify) `enabled: false` in `aeon.yml` — but **do not apply that change** without an explicit operator-approved issue.

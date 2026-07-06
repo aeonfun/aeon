@@ -2,8 +2,8 @@
  * Aeon — Telegram instant-delivery webhook.
  *
  * A Cloudflare Worker that receives Telegram webhook updates and relays them to
- * your Aeon fork via a GitHub `repository_dispatch`. The "Messages & Scheduler"
- * workflow picks it up immediately, so an update is acted on in ~1s instead of
+ * your Aeon fork via a GitHub `repository_dispatch`. The "Messages" workflow
+ * picks it up immediately, so an update is acted on in ~1s instead of
  * waiting up to 5 minutes for the next poll.
  *
  * It classifies each update the same way the poller does, so instant mode gets the
