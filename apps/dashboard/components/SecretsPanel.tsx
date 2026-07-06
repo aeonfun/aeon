@@ -18,6 +18,7 @@ const GROUP_ICON: Record<string, { domain?: string; glyph?: 'mail' | 'key' }> = 
   Discord: { domain: 'discord.com' },
   Slack: { domain: 'slack.com' },
   Email: { glyph: 'mail' },
+  Observability: { domain: 'langfuse.com' },
   'Skill Keys': { glyph: 'key' },
 }
 
@@ -105,7 +106,7 @@ export function SecretsPanel({ secrets, skills, busy, repo, focusKey, onFocusHan
         </div>
       </section>
 
-      {['Core', 'Telegram', 'Discord', 'Slack', 'Email', 'Skill Keys'].map((group, gi) => {
+      {['Core', 'Telegram', 'Discord', 'Slack', 'Email', 'Observability', 'Skill Keys'].map((group, gi) => {
         const gs = secrets.filter(s => s.group === group); if (!gs.length) return null
         return (
           <section key={group} className="border-t border-[rgba(250,250,250,0.10)] pt-6">

@@ -229,3 +229,10 @@ channels:
 # Polls for messages every 5 minutes on Telegram/Discord/Slack.
 telegram:
   enabled: true
+
+# Observability (optional) — no config lives here; it's credential-driven.
+# Set the repo secrets LANGFUSE_PUBLIC_KEY + LANGFUSE_SECRET_KEY and every
+# Claude Code run streams to your Langfuse project as a trace (LLM calls,
+# tokens, cost, prompts/responses). Region/toggles are repo variables:
+# LANGFUSE_HOST (default EU cloud), LANGFUSE_TRACING (0 to disable),
+# LANGFUSE_LOG_CONTENT (0 = metadata only). See docs/langfuse.md.

@@ -489,6 +489,12 @@ effort: high       # low|medium|high|xhigh|max → --effort  (grok-build only)
 
 Two surfaces stay Claude-only **by design**: the **AI gateway** (`scripts/llm-gateway.sh`) only reshapes the model behind Claude Code — grok has its own auth and bypasses it — and the **json-render feed** (`notify-jsonrender`) renders via `claude -p` and is skipped on grok (the feed is a display nicety; skill output, memory, and notifications are unaffected).
 
+### Observability (Langfuse)
+
+Optional, opt-in tracing. Set the repo secrets `LANGFUSE_PUBLIC_KEY` + `LANGFUSE_SECRET_KEY` (dashboard → Secrets → *Observability*) and every Claude Code run streams to your [Langfuse](https://langfuse.com) project as a trace — LLM calls (model, tokens, cost, latency), tool calls, and (by default) the prompts and responses. It's a pure no-op when the keys are unset.
+
+Under the hood `scripts/langfuse-otel.sh` exports Claude Code's OpenTelemetry env so its span tree ships to Langfuse's OTLP endpoint — out of band, so a Langfuse outage never affects a run. Region/toggles are repo **variables**: `LANGFUSE_HOST` (default EU cloud; US = `https://us.cloud.langfuse.com`), `LANGFUSE_TRACING=0` to disable, `LANGFUSE_LOG_CONTENT=0` for metadata-only (no prompt/response text). Covers the skill run, scorer, feed, and message poller; the grok harness is not traced. Full guide: [docs/langfuse.md](../docs/langfuse.md).
+
 ### Strategy
 
 `STRATEGY.md` is Aeon's north-star - your overarching goal, top priorities, audience, and hard constraints. It's imported into `CLAUDE.md`, so it rides along in the context of **every** skill run: when a choice isn't otherwise determined, the strategy breaks the tie ("showcase real output over new features", "depth over breadth"). Keep it tight (it costs tokens every run) and specific (a vague strategy can't break a tie).
