@@ -57,7 +57,7 @@ function KeyRow({ kref, secret, harness, onGoTo }: { kref: { key: string; option
   const dot = satisfied ? 'bg-eva-green' : kref.optional ? 'bg-eva-orange/60' : 'bg-eva-red'
   const tierLabel = kref.optional ? 'Works better' : 'Required'
   const tierColor = kref.optional ? 'text-eva-orange/80' : 'text-aeon-red'
-  const statusText = isSet ? '· set' : providedByHarness ? '· native to Grok Build' : '· not set'
+  const statusText = isSet ? '· set' : providedByHarness ? '· covered by Grok Build' : '· not set'
 
   return (
     <div className="px-[var(--space-md)] py-[var(--space-sm)]">
@@ -70,7 +70,7 @@ function KeyRow({ kref, secret, harness, onGoTo }: { kref: { key: string; option
             <span className="text-[9px] font-mono uppercase tracking-[0.18em] text-primary-35">{statusText}</span>
           </div>
           <div className="text-[11px] text-primary-40 font-mono mt-0.5 leading-relaxed">
-            {providedByHarness ? 'Provided natively by the Grok Build harness (built-in X search) — set a key only to also use it on the Claude harness.' : desc}
+            {providedByHarness ? 'Covered by the Grok Build harness via its built-in web search — set a key for the premium xAI x_search feed (used by both harnesses).' : desc}
           </div>
         </div>
         <button

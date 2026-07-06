@@ -135,7 +135,7 @@ export function SecretsPanel({ secrets, skills, busy, repo, harness, focusKey, o
                       {keyProvidedByHarness(secret.name, harness) && !secret.isSet && (
                         <div className="text-[10px] text-eva-green/80 font-mono mt-1 flex items-center gap-1.5">
                           <span className="w-1.5 h-1.5 rounded-full bg-eva-green shrink-0" />
-                          Provided natively by the Grok Build harness — optional here, set it to also run these skills on the Claude harness.
+                          Covered by the Grok Build harness (built-in web search) — optional here; set it for the premium xAI x_search feed, used by both harnesses.
                         </div>
                       )}
                       {secret.name === 'TELEGRAM_BOT_TOKEN' && (
