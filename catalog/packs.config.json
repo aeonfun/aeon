@@ -1,36 +1,44 @@
 {
   "version": "1.0",
-  "description": "Hand-authored source of truth for FIRST-PARTY skill packs. `generate-packs-json` reads this + skills.json and emits packs.json (the catalog the dashboard reads). Community packs live separately in skill-packs.json. Every skill in skills.json must land in exactly one pack here, or the generator fails. Membership precedence: (1) the `core` allowlist, (2) packs that list explicit `skills`, (3) packs that claim a `category`'s remainder.",
+  "description": "Hand-authored source of truth for FIRST-PARTY skill packs. `generate-packs-json` reads this + skills.json and emits packs.json (the catalog the dashboard reads). Community packs live separately in skill-packs.json. Every skill in skills.json must land in exactly one pack here, or the generator fails. Membership precedence: (1) the `core` allowlist, (2) packs that list explicit `skills` (e.g. `basics`), (3) packs that claim a `category`'s remainder. `core` and `basics` are the two packs shown by default (and locked always-on) on the dashboard — see DEFAULT_VISIBLE_PACKS in apps/dashboard/lib/constants.ts.",
   "core": {
     "name": "Core",
-    "description": "The load-bearing set every Aeon fork ships with: self-evolution (author + improve skills), self-healing (health/repair/evals), memory + liveness, setup, a cost guardrail, and two broadly-useful default outputs. Always present; not installable/removable as a pack.",
+    "description": "What makes Aeon different from a cron job: it evolves its own skills, heals itself, coordinates a fleet of instances, and takes autonomous on-chain action. Shown by default and not removable — this is the showcase of what an autonomous agent can do.",
     "color": "#E5484D",
-    "default_enabled": ["heartbeat", "digest"],
+    "default_enabled": ["heartbeat"],
     "skills": [
       "create-skill",
       "install-skill",
       "self-improve",
+      "autoresearch",
       "skill-health",
       "skill-repair",
-      "autoresearch",
+      "spawn-instance",
+      "fleet-control",
+      "ctrl",
+      "distribute-tokens",
+      "deploy-prototype",
       "heartbeat",
-      "cost-report",
-      "digest"
+      "cost-report"
     ]
   },
   "packs": [
     {
-      "key": "fleet",
-      "name": "Fleet & Replication",
-      "description": "Multi-agent autonomy: spawn and coordinate sub-agents, score the fleet, roll out features, distribute and reward on-chain, and scan for vulnerabilities. Power-user automation a fresh fork doesn't need on day one.",
+      "key": "basics",
+      "name": "Basics",
+      "description": "Simple, immediately-runnable skills — one approachable entry per area. Point it at a topic, repo, token, or tx and get a useful result with little or no setup. Shown by default alongside Core; the deeper/advanced skills live in the domain packs you reveal on demand.",
       "color": "#30A46C",
       "category": null,
+      "default_enabled": ["digest"],
       "skills": [
-        "spawn-instance",
-        "fleet-control",
-        "distribute-tokens",
-        "deploy-prototype",
-        "vuln-scanner"
+        "digest",
+        "article",
+        "token-movers",
+        "tx-explain",
+        "write-tweet",
+        "pr-review",
+        "github-trending",
+        "price-alert"
       ]
     },
     {

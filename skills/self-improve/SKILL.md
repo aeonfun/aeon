@@ -1,7 +1,7 @@
 ---
 type: Skill
 name: self-improve
-category: core
+category: meta
 description: Improve the agent itself, or audit its recent performance — better skills, prompts, workflows, and config, plus a quality/reliability/memory-hygiene review of what the agent did and what failed
 var: ""
 tags: [meta]

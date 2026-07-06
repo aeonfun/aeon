@@ -4,9 +4,10 @@ type: Reference
 
 # Skill packs
 
-Aeon ships **68 skills**, but most forks only ever run a handful. Packs make
-that manageable: by default the dashboard shows only the small **core** set —
-everything else is grouped into **packs** that stay hidden until you enable them.
+Aeon ships **71 skills**, but most forks only ever run a handful. Packs make
+that manageable: by default the dashboard shows **Core** (what makes Aeon
+different) and **Basics** (simple skills you can run right now) — everything else
+is grouped into **packs** that stay hidden until you enable them.
 **Enabling a pack reveals its skills** across the sidebar and HQ. That's a
 visibility switch (a per-browser preference), not a run switch — to actually put
 a skill on duty you still flip its own on/off toggle. Enabling is always
@@ -73,8 +74,8 @@ When assigning a skill to a pack, the generator applies, in order:
 
 | Pack | What's in it | ~count |
 |---|---|---|
-| **Core** | Self-evolution, self-healing, memory/liveness, cost guardrail, + two default outputs. Always present. | 9 |
-| **Fleet & Replication** | Spawn/coordinate sub-agents, scorecards, feature rollout, on-chain distribute/reward, vuln scanning. | 8 |
+| **Core** | Aeon's differentiators: self-evolution, self-healing, fleet coordination, autonomous on-chain action. Shown by default; not removable. | 13 |
+| **Basics** | Simple, immediately-runnable skills — one approachable entry per area. Shown by default alongside Core. | 8 |
 | **Research & Content** | Digests, deep research, trend/framework tracking. | 26 |
 | **Dev & Code** | PR/issue triage, review, merges, releases, repo health, ecosystem mapping. | 34 |
 | **Crypto & Markets** | Token/DeFi/prediction-market monitoring, narrative tracking. | 23 |
@@ -84,17 +85,26 @@ When assigning a skill to a pack, the generator applies, in order:
 | **Agent Ops** | Skill analytics/health/graphing, capability mapping, spend, memory housekeeping, fork health. | 30 |
 | **Lab** | Catch-all for unsorted skills. Hidden in the UI until something lands in it. | 0 |
 
-### Core — what every fork ships with
+### Core + Basics — what a fresh fork shows
 
-The core set is deliberately small: the skills that make Aeon *self-running and
-self-improving*, plus a couple of broadly useful default outputs. Of these,
-`heartbeat` and `digest` are enabled by default; the rest ship present but
-on-demand.
+Two packs are shown by default on the dashboard (locked always-on; every other
+pack is revealed on demand). They answer two different questions:
 
-`create-skill`, `self-improve`, `skill-health`, `skill-repair`,
-`autoresearch`, `heartbeat`, `cost-report`, `digest`.
+- **Core — "what makes Aeon different from a cron job."** It evolves its own
+  skills, heals itself, coordinates a fleet of instances, and takes autonomous
+  on-chain action:
+  `create-skill`, `install-skill`, `self-improve`, `autoresearch`,
+  `skill-health`, `skill-repair`, `spawn-instance`, `fleet-control`, `ctrl`,
+  `distribute-tokens`, `deploy-prototype`, `heartbeat`, `cost-report`.
+- **Basics — "something simple you can run right now."** One approachable entry
+  per area, little or no setup:
+  `digest`, `article`, `token-movers`, `tx-explain`, `write-tweet`, `pr-review`,
+  `github-trending`, `price-alert`.
 
-Edit the `core.skills` allowlist in `packs.config.json` to change it.
+`heartbeat` (Core) and `digest` (Basics) are enabled by default; the rest ship
+present but on-demand. Edit the `core.skills` / `basics` skill lists in
+`packs.config.json` to change membership, and `DEFAULT_VISIBLE_PACKS` in
+`apps/dashboard/lib/constants.ts` to change which packs show by default.
 
 ---
 
@@ -132,8 +142,8 @@ both manifests (CI enforces they're fresh).
 
 ## In the dashboard
 
-By default the dashboard shows only **Core** — its skills appear in the sidebar
-and HQ, and nothing else does. Enable packs to reveal more.
+By default the dashboard shows **Core** and **Basics** — their skills appear in
+the sidebar and HQ, and nothing else does. Enable packs to reveal more.
 
 The **Packs** view (`/api/packs`):
 

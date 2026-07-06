@@ -92,11 +92,11 @@ export const DAYS = [
   { label: 'Sat', value: 6 }, { label: 'Sun', value: 0 },
 ]
 
-// Canonical 8 skill categories. Mirrors get_category() in generate-skills-json
-// and the `category` field baked into skills.json - the single source of truth.
-// Ordered for display (Core first); every skill maps to exactly one key.
+// Canonical 7 skill categories (domains). Mirrors the `categories` map in
+// bin/generate-skills-json and the `category` field baked into skills.json - the
+// single source of truth. `core`/`fleet` are curated *packs* (see PACKS below),
+// not author categories, so they are deliberately absent here.
 export const CATEGORIES: { key: string; label: string; short: string; color: string }[] = [
-  { key: 'core',             label: 'Core',               short: 'Core',         color: '#E5484D' },
   { key: 'research',         label: 'Research & Content', short: 'Research',     color: '#8B5CF6' },
   { key: 'dev',              label: 'Dev & Code',         short: 'Dev',          color: '#3B82F6' },
   { key: 'crypto',           label: 'Crypto & Markets',   short: 'Crypto',       color: '#FF6B1A' },
@@ -115,7 +115,7 @@ export const CATEGORY_BY_KEY: Record<string, { label: string; color: string }> =
 // /api/skills); `lab` is the catch-all for uncategorized skills.
 const PACKS: { key: string; label: string; short: string; color: string }[] = [
   { key: 'core',         label: 'Core',                  short: 'Core',         color: '#E5484D' },
-  { key: 'fleet',        label: 'Fleet & Replication',   short: 'Fleet',        color: '#30A46C' },
+  { key: 'basics',       label: 'Basics',                short: 'Basics',       color: '#30A46C' },
   { key: 'research',     label: 'Research & Content',     short: 'Research',     color: '#8B5CF6' },
   { key: 'dev',          label: 'Dev & Code',             short: 'Dev',          color: '#3B82F6' },
   { key: 'markets',      label: 'Crypto & Markets',       short: 'Markets',      color: '#FF6B1A' },
@@ -136,6 +136,13 @@ export const PACK_BY_KEY: Record<string, { label: string; color: string }> =
 // first-party packs.
 export const FIRST_PARTY_KEYS = new Set(PACKS.map(p => p.key))
 
+// Packs shown by default on the dashboard and locked always-on (not hideable):
+// `core` (Aeon's differentiators — self-evolution, fleet, autonomous action) and
+// `basics` (simple, immediately-runnable skills). Every other first-party pack is
+// hidden until the operator reveals it. Purely a view preference — no effect on
+// what runs.
+export const DEFAULT_VISIBLE_PACKS = new Set(['core', 'basics'])
+
 const COMMUNITY_COLOR = '#A1A1AA'
 
 export interface PackGroup { key: string; label: string; short: string; color: string; community: boolean }
@@ -151,8 +158,8 @@ export function packGroups(skills: { pack?: string; packName?: string }[]): Pack
   const present = new Set(skills.map(s => s.pack || 'lab'))
   const firstParty = PACKS.filter(p => present.has(p.key))
     .map(p => ({ key: p.key, label: p.label, short: p.short, color: p.color, community: false }))
-  const core = firstParty.filter(g => g.key === 'core')
-  const restFirstParty = firstParty.filter(g => g.key !== 'core')
+  const defaultVisible = firstParty.filter(g => DEFAULT_VISIBLE_PACKS.has(g.key))
+  const restFirstParty = firstParty.filter(g => !DEFAULT_VISIBLE_PACKS.has(g.key))
   const community = [...present]
     .filter(k => !FIRST_PARTY_KEYS.has(k))
     .sort()
@@ -161,5 +168,5 @@ export function packGroups(skills: { pack?: string; packName?: string }[]): Pack
       const label = named?.packName || k
       return { key: k, label, short: label, color: COMMUNITY_COLOR, community: true }
     })
-  return [...core, ...community, ...restFirstParty]
+  return [...defaultVisible, ...community, ...restFirstParty]
 }

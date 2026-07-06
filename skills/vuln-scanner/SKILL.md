@@ -1,7 +1,7 @@
 ---
 type: Skill
 name: Vuln Scanner
-category: core
+category: dev
 description: Audit trending repos for real security vulnerabilities and disclose responsibly — scan and route findings (PVR / dependency PR), re-submit queued advisories when a watched repo enables private reporting, and auto-send armed out-of-band email disclosures via Resend
 var: ""
 tags: [dev, security, meta]

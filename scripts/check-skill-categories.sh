@@ -12,10 +12,12 @@ set -eo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 SKILLS_DIR="$ROOT/skills"
 
-# Valid frontmatter categories. These are the 8 skills.json categories; `core` is
-# valid (core/fleet skills declare it — their pack is then resolved from
-# packs.config.json), but `fleet` is never a category value.
-VALID="core research dev crypto onchain-security social productivity meta"
+# Valid frontmatter categories — the 7 skills.json domain categories. `core` and
+# `fleet` are curated *packs* (resolved from packs.config.json via an allowlist /
+# explicit skills list), NOT author-selectable category values, so neither is
+# valid here. A skill that belongs to the core spine or fleet pack still declares
+# its real domain (e.g. `meta`, `dev`, `crypto`) as its category.
+VALID="research dev crypto onchain-security social productivity meta"
 
 missing=()
 invalid=()
