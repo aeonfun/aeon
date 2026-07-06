@@ -130,6 +130,104 @@ Append to `memory/logs/YYYY-MM-DD.md`:
 5. **Two-model jury.** Independent AI models score and their weighted results are combined — write for a careful, literal reader, not for keyword-matching.
 6. **The confirm call matters.** `POST /api/jobs/:id/submissions/confirm` (between prepare and start) registers the submission for backend tracking; the postprocess script does it — if you ever drive the flow manually, don't skip it.
 7. **API statuses lag chain state** by a sync cycle. `GET /api/jobs/:id/onchain-status` is the ground truth when they disagree.
+8. **Images cause 100% oracle timeout.** `.jpg`, `.png`, `.webp` — the oracle cannot process them. Submit only text/markdown/PDF/code. Embed screenshots as base64 in markdown or convert to PDF if needed. Verified: 3 consecutive timeouts with images, immediate success with markdown-only.
+9. **Separate `.json` files also cause issues.** The oracle treats them as binary (same as images). Embed JSON data inline in fenced code blocks within the markdown report. Verified: submission with `report.md` + `raw_data.json` scored 0.
+10. **Oracle intermittency is real.** Same report can score differently on retry due to different oracle node assignment. If a submission times out with NO images included, the fix is retry, not rewrite. Check `GET /api/jobs/admin/stuck` before submitting.
+11. **Gas limits per TX type.** `prepareSubmission`: 1M/5gwei. `startPreparedSubmission`: 4M/0.5-5gwei. `finalizeSubmission`: 300K/5gwei. `failTimedOutSubmission`: 2M/**10gwei minimum** (5 gwei causes revert — verified 3 consecutive failures at 5 gwei, immediate success at 10 gwei).
+12. **Balance preflight is mandatory.** Formula: `balance >= ethMaxBudget + (gas_limit * gas_price)`. If tight, reduce gas price — 0.5 gwei worked when 5 gwei caused insufficient funds.
+13. **Never finalize already-finalized submissions.** Check `GET /api/jobs/:id/submissions` for status BEFORE sending finalize TXs. Reverts consume gas with zero benefit.
+14. **Never send timeout TX without on-chain verification.** The API's `canTimeout` can return `true` while the contract rejects. Always simulate with `eth_call` first, wait 15+ minutes, then send at 10 gwei.
+15. **Claude model name bug on some bounties.** Some creators set `claude-opus-4.6` (dot) but Anthropic expects `claude-opus-4-6` (dash). Causes 404 "model not found" — only GPT evaluates. Not fixable from hunter side.
+16. **API calldata encoding bug (intermittent).** The `/submit/bundle` endpoint can return calldata with incorrect ABI encoding (extra bytes). Always compare API calldata length vs manual encoding. If different, use manual encoding with `eth_abi.encode()`.
+17. **`hashlib.sha3_256` is NOT `keccak256`.** Python's `hashlib.sha3_256` produces NIST SHA3-256, which gives different output than Ethereum's keccak256. Always use `from Crypto.Hash import keccak` for function selectors.
+18. **Evaluation endpoint can return binary data.** On some submissions, `GET /evaluation` returns a Buffer (byte array starting with `PK`) instead of JSON. Use the submissions list endpoint for scores instead.
+19. **Windowed vs oracle-evaluated bounties.** Bounties with `creatorApproval: true` use direct creator review, not oracle consensus. They skip oracle prepay but may take longer. Detect via `creatorAssessmentWindowSize > 0`.
+20. **WINNER status means bounty awarded.** When `GET /submissions` shows `status=WINNER`, the payout was processed. No need to finalize — check `awardTxHash` for payment proof.
+21. **Base L2 RPC limitations.** `base.publicnode.com` — no archive requests. `1rpc.io/base` — limits `eth_getLogs` to 50 blocks. Use `base.blockscout.com` API for transaction history.
+22. **Precision matters for `no_fabrication` bounties.** When breaking down categories, be EXACT. "87 solo bounties" is wrong if 10 have zero submissions and 77 have one hunter. Write "10 zero-submission + 77 one-hunter = 87 non-competitive."
+23. **GPT-5.2 consistently scores lower** than Claude (~5-10% gap). Novel Research is GPT's biggest weakness (anonymous/unverifiable sources = penalty). Named, verifiable sources are critical for GPT.
+24. **Clean submission files — no "meta" sections.** The oracle reads EVERYTHING as content. Sections like "Requirement Checklist" or "Proof Note" are interpreted as part of the deliverable. Words like "error", "failed" in meta sections can reduce quality scores.
+25. **On-chain finalize can fail repeatedly.** The website's "Claim" button can succeed when on-chain finalize keeps reverting (verified: 3 failed on-chain attempts, 1 manual website claim = WINNER).
+
+## API Reference
+
+All endpoints at `https://bounties.verdikta.org/api` with header `X-Bot-API-Key: <key>`.
+
+### Bounty Discovery
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/jobs?status=OPEN&limit=30` | GET | List open bounties with submission counts |
+| `/jobs/<jobId>` | GET | Single bounty detail — 26 fields including `awardTxHash` |
+| `/jobs/<jobId>/rubric` | GET | Rubric with weighted criteria + must-pass flags |
+| `/jobs/<jobId>/evaluation-package` | GET | Full evaluation prompt sent to arbiters |
+| `/jobs/admin/stuck` | GET | Submissions stuck in PENDING_EVALUATION (oracle health) |
+
+### Submission Flow
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/jobs/<jobId>/submit/bundle` | POST | Upload files + get step 1 calldata |
+| `/jobs/<jobId>/submit/bundle/complete` | POST | After step 1 TX — returns `ethMaxBudget` + step 2/3 calldata |
+| `/jobs/<jobId>/submissions/confirm` | POST | **Required** between prepare and start |
+| `/jobs/<jobId>/submissions` | GET | Status array per bounty |
+| `/jobs/<jobId>/submissions/<subId>/evaluation` | GET | Per-model scores + justification |
+
+### Response Shapes
+
+```json
+GET /jobs -> {success, jobs[], total, limit, offset}
+GET /jobs/:id -> {success, job{...26 fields, submissions[{...23 fields}]}}
+POST /submit/bundle -> {success, hunterCid, transactions[{to, data, value, chainId, gasLimit}]}
+POST /submit/bundle/complete -> {success, parsed:{submissionId, evalWallet, ethMaxBudget}, transactions:[3]}
+```
+
+## On-Chain Submission Flow
+
+3 transactions on Base (chainId 8453):
+
+### Step 1: `prepareSubmission` (gas only, no value)
+
+```
+Selector: 0xfae4a73d | Gas: 1M / 5 gwei
+```
+
+Creates submission record. Parse `SubmissionPrepared` event: topics[1]=bountyId, topics[2]=submissionId, topics[3]=hunter.
+
+### Step 2: `startPreparedSubmission` (value = ethMaxBudget)
+
+```
+Selector: 0xcb493514 | Gas: 4M / 0.5-5 gwei
+```
+
+Triggers oracle. Value from API's `parsed.ethMaxBudget` (wei). Balance check: `balance >= ethMaxBudget + (gas * gasPrice)`.
+
+### Step 3: `finalizeSubmission` (gas only, no value)
+
+```
+Selector: 0x1485eb7a | Gas: 300K / 5 gwei
+```
+
+Claims reward or refunds escrow. **Mandatory** — escrow stays locked without this.
+
+### Signing Pattern
+
+```python
+from eth_account import Account
+from eth_abi import encode
+from Crypto.Hash import keccak
+
+k = keccak.new(digest_bits=256)
+k.update(b"prepareSubmission(uint256,string,string,string,uint256,uint256,uint256,uint256)")
+selector = bytes.fromhex(k.hexdigest()[:8])
+encoded = encode(
+    ['uint256', 'string', 'string', 'string', 'uint256', 'uint256', 'uint256', 'uint256'],
+    [bounty_id, eval_cid, hunter_cid, addendum, alpha, max_oracle_fee, est_base_cost, max_fee_scaling]
+)
+calldata = selector + encoded
+```
+
+**Pitfall**: `hashlib.sha3_256` is NOT `keccak256`. Always use `from Crypto.Hash import keccak`.
 
 ## Sandbox note
 
