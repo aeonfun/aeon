@@ -11,6 +11,13 @@
       "default_enabled": ["heartbeat"]
     },
     {
+      "key": "evolution",
+      "name": "Evolution",
+      "description": "The self-improvement loop that makes Aeon more than a cron job: it authors new skills from a prompt, evolves and evaluates them, searches for and installs community skills, and monitors + heals its own fleet of skills. Shown by default.",
+      "color": "#A855F7",
+      "category": "evolution"
+    },
+    {
       "key": "basics",
       "name": "Basics",
       "description": "Simple, immediately-runnable skills — point them at a topic, repo, token, or tx and get a useful result with little or no setup. Shown by default alongside Core.",

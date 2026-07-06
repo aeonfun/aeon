@@ -15,7 +15,7 @@ SKILLS_DIR="$ROOT/skills"
 # Valid frontmatter categories. A skill's category IS its pack — one grouping
 # (see docs/skill-packs.md). To move a skill between packs, change this one line.
 # `lab` is the catch-all for a missing/unknown category and isn't set by hand.
-VALID="core basics research dev crypto onchain-security social productivity meta"
+VALID="core evolution basics research dev crypto onchain-security social productivity meta"
 
 missing=()
 invalid=()

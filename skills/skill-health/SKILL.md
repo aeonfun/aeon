@@ -1,7 +1,7 @@
 ---
 type: Skill
 name: Skill Health
-category: core
+category: evolution
 description: Fleet skill observability with two views. Health view audits per-skill metrics, files/resolves issues in memory/issues/, and notifies on state change only. Analytics view ranks the fleet by 7d run count, surfaces success rates, exit-taxonomy distribution, and anomaly flags (significance-gated). The selector picks the view.
 var: ""
 tags: [meta]

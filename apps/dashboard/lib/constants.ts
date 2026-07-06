@@ -99,6 +99,7 @@ export const DAYS = [
 // isn't author-selectable, so it's absent here.
 export const CATEGORIES: { key: string; label: string; short: string; color: string }[] = [
   { key: 'core',             label: 'Core',               short: 'Core',         color: '#E5484D' },
+  { key: 'evolution',        label: 'Evolution',          short: 'Evolution',    color: '#A855F7' },
   { key: 'basics',           label: 'Basics',             short: 'Basics',       color: '#30A46C' },
   { key: 'dev',              label: 'Dev & Code',         short: 'Dev',          color: '#3B82F6' },
   { key: 'crypto',           label: 'Crypto & Markets',   short: 'Crypto',       color: '#FF6B1A' },
@@ -120,6 +121,7 @@ export const CATEGORY_BY_KEY: Record<string, { label: string; color: string }> =
 // non-default pack order (Core + Basics always render first via DEFAULT_VISIBLE_PACKS).
 const PACKS: { key: string; label: string; short: string; color: string }[] = [
   { key: 'core',             label: 'Core',               short: 'Core',         color: '#E5484D' },
+  { key: 'evolution',        label: 'Evolution',          short: 'Evolution',    color: '#A855F7' },
   { key: 'basics',           label: 'Basics',             short: 'Basics',       color: '#30A46C' },
   { key: 'dev',              label: 'Dev & Code',         short: 'Dev',          color: '#3B82F6' },
   { key: 'crypto',           label: 'Crypto & Markets',   short: 'Crypto',       color: '#FF6B1A' },
@@ -146,7 +148,7 @@ export const FIRST_PARTY_KEYS = new Set(PACKS.map(p => p.key))
 // `basics` (simple, immediately-runnable skills). Every other first-party pack is
 // hidden until the operator reveals it. Purely a view preference — no effect on
 // what runs.
-export const DEFAULT_VISIBLE_PACKS = new Set(['core', 'basics'])
+export const DEFAULT_VISIBLE_PACKS = new Set(['core', 'evolution', 'basics'])
 
 const COMMUNITY_COLOR = '#A1A1AA'
 
