@@ -1,7 +1,7 @@
 ---
 type: Skill
 name: operator-scorecard
-category: core
+category: productivity
 description: Three recap modes behind one selector — (default) a plain-language operator scorecard synthesizing agent health + community growth + economic activity into a was-it-worth-it verdict; `ops` an operational day-recap of what Aeon shipped, what failed, and what needs a human call; `push` a diff-reading deep-dive that ranks push impact and separates user-visible shipments from internal work.
 var: ""
 tags: [meta, productivity, dev]

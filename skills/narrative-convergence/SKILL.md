@@ -1,7 +1,7 @@
 ---
 type: Skill
 name: narrative-convergence
-category: core
+category: basics
 description: Cross-skill signal detector — finds entities or themes surfaced independently by 3+ different skill categories within 48h and surfaces them as high-confidence write opportunities
 var: ""
 tags: [content, meta, intelligence]

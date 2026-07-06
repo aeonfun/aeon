@@ -72,7 +72,6 @@ skills:
   skill-repair: { enabled: false, schedule: "reactive", var: "" } # reactive — auto-fix failing skills
 
   # --- Cost tracking (Monday 7 AM UTC, weekly) ---
-  cost-report: { enabled: false, schedule: "0 7 * * 1", var: "" } # weekly API cost breakdown by skill/model + anomalies + burn forecast + optimizations. var: empty=full report (7d) | N=report over last N days | watch=budget watchdog (weekly cost vs WEEKLY_BUDGET_CAP def $200, OK/WATCH/WARN/ALERT, silent <50%; folds in spend-monitor) | watch:<cap>=override cap
 
   # --- Weekly (Monday only) ---
   fork-fleet: { enabled: false, schedule: "0 10 * * 1", var: "" } # fork divergence: code (unique commits/skills) + config (aeon.yml vs upstream defaults; folds in fork-digest). var: empty=both | code | config | fork=owner/repo | repo=owner/repo
