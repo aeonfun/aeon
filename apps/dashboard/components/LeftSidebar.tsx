@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import type { Skill, Run, Secret } from '../lib/types'
-import { packGroups } from '../lib/constants'
+import { packGroups, keyProvidedByHarness } from '../lib/constants'
 import { displayName, initials, getSkillStatus, statusDot } from '../lib/utils'
 
 interface LeftSidebarProps {
@@ -14,6 +14,7 @@ interface LeftSidebarProps {
   runs: Run[]
   secrets: Secret[]
   repo: string
+  harness: string
   enabledCount: number
   workingCount: number
   categoryFilter: string | null
@@ -22,7 +23,7 @@ interface LeftSidebarProps {
   onShowImport: () => void
 }
 
-export function LeftSidebar({ view, setView, selectedSkill, skills, runs, secrets, repo, enabledCount, workingCount, categoryFilter, setCategoryFilter, onSkillSelect, onShowImport }: LeftSidebarProps) {
+export function LeftSidebar({ view, setView, selectedSkill, skills, runs, secrets, repo, harness, enabledCount, workingCount, categoryFilter, setCategoryFilter, onSkillSelect, onShowImport }: LeftSidebarProps) {
   const [skillSearch, setSkillSearch] = useState('')
   // The roster only ever holds skills from *enabled packs* (Core by default —
   // the parent filters before passing `skills`), so it's already focused. We
@@ -32,14 +33,16 @@ export function LeftSidebar({ view, setView, selectedSkill, skills, runs, secret
   const [availableOnly, setAvailableOnly] = useState(false)
 
   // A skill is "key-blocked" when it's enabled but a required (non-optional)
-  // credential it declares isn't set - flagged inline so the operator sees it
-  // without opening each skill.
+  // credential it declares isn't set AND isn't provided natively by the active
+  // harness (Grok Build covers XAI_API_KEY) - flagged inline so the operator sees
+  // it without opening each skill.
   const setSecretNames = new Set(secrets.filter(s => s.isSet).map(s => s.name))
   const missingRequiredKeys = (s: Skill) =>
-    (s.requires ?? []).filter(r => !r.optional && !setSecretNames.has(r.key))
+    (s.requires ?? []).filter(r => !r.optional && !setSecretNames.has(r.key) && !keyProvidedByHarness(r.key, harness))
 
-  // "Available" = runnable out of the box: every declared key is optional.
-  const needsNoKey = (s: Skill) => (s.requires ?? []).every(r => r.optional)
+  // "Available" = runnable out of the box: every declared key is either optional
+  // or provided natively by the current harness.
+  const needsNoKey = (s: Skill) => (s.requires ?? []).every(r => r.optional || keyProvidedByHarness(r.key, harness))
 
   // `categoryFilter` holds a PACK key - the sidebar groups by pack. Picking a
   // pack reveals ALL its skills (enabled + disabled) so you can switch them on in

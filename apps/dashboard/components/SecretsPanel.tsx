@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import type { Secret, Skill } from '../lib/types'
 import { inputCls, displayName } from '../lib/utils'
+import { keyProvidedByHarness } from '../lib/constants'
 import { Scramble } from './ui/Animated'
 import { ServiceIcon } from './ui/ServiceIcon'
 import { linkify } from './ui/Linkify'
@@ -28,6 +29,7 @@ interface SecretsPanelProps {
   skills: Skill[]
   busy: Record<string, boolean>
   repo: string
+  harness: string
   focusKey?: string | null
   onFocusHandled?: () => void
   onSave: (name: string, value: string) => void
@@ -39,7 +41,7 @@ interface SecretsPanelProps {
   grokConnecting?: boolean
 }
 
-export function SecretsPanel({ secrets, skills, busy, repo, focusKey, onFocusHandled, onSave, onDelete, onSelectSkill, onConnectClaude, connecting, onConnectGrok, grokConnecting }: SecretsPanelProps) {
+export function SecretsPanel({ secrets, skills, busy, repo, harness, focusKey, onFocusHandled, onSave, onDelete, onSelectSkill, onConnectClaude, connecting, onConnectGrok, grokConnecting }: SecretsPanelProps) {
   const [editingSecret, setEditingSecret] = useState<string | null>(null)
   const [secretValue, setSecretValue] = useState('')
   const [addingSecret, setAddingSecret] = useState(false)
@@ -130,6 +132,12 @@ export function SecretsPanel({ secrets, skills, busy, repo, focusKey, onFocusHan
                       <div className="min-w-0">
                       <div className="flex items-center gap-2"><span className="font-mono text-xs">{secret.name}</span><span className={`w-2 h-2 rounded-full ${secret.isSet ? 'bg-eva-green' : 'bg-[rgba(250,250,250,0.15)]'}`} /></div>
                       <div className="text-[11px] text-primary-40 font-mono">{linkify(secret.description)}</div>
+                      {keyProvidedByHarness(secret.name, harness) && !secret.isSet && (
+                        <div className="text-[10px] text-eva-green/80 font-mono mt-1 flex items-center gap-1.5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-eva-green shrink-0" />
+                          Provided natively by the Grok Build harness — optional here, set it to also run these skills on the Claude harness.
+                        </div>
+                      )}
                       {secret.name === 'TELEGRAM_BOT_TOKEN' && (
                         <a
                           href="https://t.me/BotFather"

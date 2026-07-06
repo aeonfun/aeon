@@ -64,6 +64,27 @@ export function authSecretsForHarness(harness: string): string[] {
   return harness === 'grok' ? GROK_AUTH_SECRETS : CLAUDE_AUTH_SECRETS
 }
 
+// Credentials whose CAPABILITY a harness provides natively — so a skill that
+// `requires:` that key is runnable on that harness with the secret unset. Grok
+// Build ships a built-in real-time X/Twitter search (`search_x`) + web search,
+// which is exactly what skills use XAI_API_KEY for (the `x_search` prefetch into
+// .xai-cache/). So on the grok harness XAI_API_KEY is covered by the harness
+// itself; the claude harness has no such native provider, so it still needs the
+// key. This only drops the dashboard's "needs key" gate — the runtime half lives
+// in scripts/run-grok.sh, whose compat `--rules` tell the model to call its
+// native search_x in place of the (absent) prefetch cache. The key stays fully
+// settable either way (it powers the Claude-harness prefetch + the grok gateway).
+export const HARNESS_NATIVE_KEYS: Record<string, string[]> = {
+  grok: ['XAI_API_KEY'],
+}
+
+// Does `harness` natively provide `key`'s capability (so a skill requiring it
+// runs on that harness with no secret set)? Drives the "provided by <harness>"
+// state in the dashboard's requirement checks.
+export function keyProvidedByHarness(key: string, harness: string): boolean {
+  return (HARNESS_NATIVE_KEYS[harness] ?? []).includes(key)
+}
+
 export const DAYS = [
   { label: 'All', value: -1 }, { label: 'Mon', value: 1 }, { label: 'Tue', value: 2 },
   { label: 'Wed', value: 3 }, { label: 'Thu', value: 4 }, { label: 'Fri', value: 5 },

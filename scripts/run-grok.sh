@@ -227,6 +227,10 @@ if [ -n "${GROK_JSON_SCHEMA:-}" ]; then RUN_FLAGS+=(--json-schema "$GROK_JSON_SC
 # tokens/run). It pairs with --permission-mode bypassPermissions from skill_mode.sh:
 # bypass stops the hard turn-abort, these rules stop the soft "I'll try other ways" give-up.
 # Override/extend via GROK_COMPAT_RULES in the environment.
+# EDITING NOTE: this heredoc sits inside "$(cat <<'RULES' … )" — bash's scanner for
+# that construct still counts apostrophes/backticks in the body, so keep them
+# BALANCED (even count) or the whole assignment breaks at EOF. Prefer "do not" over
+# "don't" and pair every backtick. (bash -n scripts/run-grok.sh catches a slip.)
 GROK_COMPAT_RULES="${GROK_COMPAT_RULES:-$(cat <<'RULES'
 This skill was authored for the Claude Code harness. Adapt its instructions to your
 own tools; do not abort when something does not match one-to-one:
@@ -235,6 +239,14 @@ own tools; do not abort when something does not match one-to-one:
   URL with your web tools instead.
 - When a skill relies on the gh CLI (e.g. `gh api`) and gh is unavailable, call the
   GitHub REST API directly over the web (https://api.github.com/...) — public for reads.
+- X/Twitter data: you have a NATIVE real-time X search (search_x) plus web search. A
+  skill step that reads a `.xai-cache/*.json` file, curls the xAI `x_search` API, or
+  says it needs XAI_API_KEY to pull posts is describing a capability you already have
+  built in — just run the search yourself with search_x (and search_web for the wider
+  web) and use those results in place of the cache. Never skip a section, fall back to
+  a lower-quality path, or emit a NO_KEY / NO_API_KEY / missing-cache status merely
+  because XAI_API_KEY or the prefetch cache is absent: that cache is only a
+  Claude-harness optimization you do not need.
 - If any tool is missing, denied, or returns unusable content, do NOT stop or end the
   turn. Try another route and finish the task; only surface a failure after you have
   exhausted the alternatives the skill names.

@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import type { Skill, Run, Secret, SkillMcpRef, McpServers } from '../lib/types'
-import { MODELS, CATEGORY_BY_KEY } from '../lib/constants'
+import { MODELS, CATEGORY_BY_KEY, keyProvidedByHarness } from '../lib/constants'
 import { MCP_BY_SLUG } from '../lib/mcp-catalog'
 import { displayName, getSkillStatus, cronLabel, statusDot, inputCls } from '../lib/utils'
 import { ScheduleEditor } from './ScheduleEditor'
@@ -13,6 +13,7 @@ interface SkillDetailProps {
   skill: Skill
   runs: Run[]
   model: string
+  harness: string
   secrets: Secret[]
   mcpServers: McpServers
   busy: Record<string, boolean>
@@ -43,14 +44,20 @@ function Section({ index, label, action, children }: { index: string; label: str
 // A single declared credential. The key name and the right-hand action both
 // jump to Settings → Access Keys, scrolled to this key with its input open —
 // so the operator can paste the value in one click.
-function KeyRow({ kref, secret, onGoTo }: { kref: { key: string; optional: boolean }; secret?: Secret; onGoTo: (name: string) => void }) {
+function KeyRow({ kref, secret, harness, onGoTo }: { kref: { key: string; optional: boolean }; secret?: Secret; harness: string; onGoTo: (name: string) => void }) {
   const isSet = !!secret?.isSet
+  // The harness may cover this key natively (Grok Build → XAI_API_KEY). Then the
+  // row reads as satisfied even unset, but the key stays settable as an override
+  // (it's what the Claude harness uses, and it also powers the grok gateway).
+  const providedByHarness = !isSet && keyProvidedByHarness(kref.key, harness)
+  const satisfied = isSet || providedByHarness
   const desc = secret?.description || 'Third-party credential referenced by this skill.'
 
-  // Status color: set → green. Missing required → red. Missing "works better" → muted amber.
-  const dot = isSet ? 'bg-eva-green' : kref.optional ? 'bg-eva-orange/60' : 'bg-eva-red'
+  // Status color: satisfied → green. Missing required → red. Missing "works better" → muted amber.
+  const dot = satisfied ? 'bg-eva-green' : kref.optional ? 'bg-eva-orange/60' : 'bg-eva-red'
   const tierLabel = kref.optional ? 'Works better' : 'Required'
   const tierColor = kref.optional ? 'text-eva-orange/80' : 'text-aeon-red'
+  const statusText = isSet ? '· set' : providedByHarness ? '· native to Grok Build' : '· not set'
 
   return (
     <div className="px-[var(--space-md)] py-[var(--space-sm)]">
@@ -60,15 +67,17 @@ function KeyRow({ kref, secret, onGoTo }: { kref: { key: string; optional: boole
             <span className={`w-2 h-2 rounded-full shrink-0 ${dot}`} />
             <button onClick={() => onGoTo(kref.key)} title="Open in Settings to set this key" className="font-mono text-xs text-aeon-fg hover:text-eva-orange underline decoration-dotted underline-offset-2 transition-colors">{kref.key}</button>
             <span className={`text-[9px] font-mono uppercase tracking-[0.18em] ${tierColor}`}>{tierLabel}</span>
-            <span className="text-[9px] font-mono uppercase tracking-[0.18em] text-primary-35">{isSet ? '· set' : '· not set'}</span>
+            <span className="text-[9px] font-mono uppercase tracking-[0.18em] text-primary-35">{statusText}</span>
           </div>
-          <div className="text-[11px] text-primary-40 font-mono mt-0.5 leading-relaxed">{desc}</div>
+          <div className="text-[11px] text-primary-40 font-mono mt-0.5 leading-relaxed">
+            {providedByHarness ? 'Provided natively by the Grok Build harness (built-in X search) — set a key only to also use it on the Claude harness.' : desc}
+          </div>
         </div>
         <button
           onClick={() => onGoTo(kref.key)}
           className={`text-[11px] font-mono px-2 py-1 shrink-0 uppercase tracking-[0.14em] transition-colors ${isSet ? 'text-eva-green hover:text-aeon-fg' : 'text-primary-40 hover:text-eva-orange'}`}
         >
-          {isSet ? '✓ in vault' : 'Set →'}
+          {isSet ? '✓ in vault' : providedByHarness ? 'Override →' : 'Set →'}
         </button>
       </div>
     </div>
@@ -115,7 +124,7 @@ function McpRow({ mref, installed, onGoTo }: { mref: SkillMcpRef; installed: boo
   )
 }
 
-export function SkillDetail({ skill, runs, model, secrets, mcpServers, busy, onToggle, onRun, onDelete, onUpdateSchedule, onUpdateVar, onUpdateModel, onGoToSecret, onGoToMcp, onViewRun }: SkillDetailProps) {
+export function SkillDetail({ skill, runs, model, harness, secrets, mcpServers, busy, onToggle, onRun, onDelete, onUpdateSchedule, onUpdateVar, onUpdateModel, onGoToSecret, onGoToMcp, onViewRun }: SkillDetailProps) {
   const modelOptions = MODELS
   const [editingSchedule, setEditingSchedule] = useState(false)
   const [editingVar, setEditingVar] = useState(false)
@@ -131,7 +140,9 @@ export function SkillDetail({ skill, runs, model, secrets, mcpServers, busy, onT
   const requires = skill.requires ?? []
   const requiredKeys = requires.filter(r => !r.optional)
   const worksBetterKeys = requires.filter(r => r.optional)
-  const missingRequired = requiredKeys.filter(r => !secretByName.get(r.key)?.isSet)
+  // A required key is only "missing" if it's neither set nor provided natively by
+  // the active harness (Grok Build covers XAI_API_KEY via its built-in search_x).
+  const missingRequired = requiredKeys.filter(r => !secretByName.get(r.key)?.isSet && !keyProvidedByHarness(r.key, harness))
 
   // Join the skill's declared `mcp:` servers against the live .mcp.json config
   // (installed = its URL is present) and the MCP catalog for name/logo/url.
@@ -231,7 +242,7 @@ export function SkillDetail({ skill, runs, model, secrets, mcpServers, busy, onT
               <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-aeon-red mb-2">Required to run</div>
               <div className="border border-[rgba(250,250,250,0.10)] divide-y divide-[rgba(250,250,250,0.08)]">
                 {requiredKeys.map(r => (
-                  <KeyRow key={r.key} kref={r} secret={secretByName.get(r.key)} onGoTo={onGoToSecret} />
+                  <KeyRow key={r.key} kref={r} secret={secretByName.get(r.key)} harness={harness} onGoTo={onGoToSecret} />
                 ))}
               </div>
             </div>
@@ -241,7 +252,7 @@ export function SkillDetail({ skill, runs, model, secrets, mcpServers, busy, onT
               <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-eva-orange/80 mb-2">Works better with</div>
               <div className="border border-[rgba(250,250,250,0.10)] divide-y divide-[rgba(250,250,250,0.08)]">
                 {worksBetterKeys.map(r => (
-                  <KeyRow key={r.key} kref={r} secret={secretByName.get(r.key)} onGoTo={onGoToSecret} />
+                  <KeyRow key={r.key} kref={r} secret={secretByName.get(r.key)} harness={harness} onGoTo={onGoToSecret} />
                 ))}
               </div>
             </div>

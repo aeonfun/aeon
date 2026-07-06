@@ -214,7 +214,7 @@ export default function Dashboard() {
       <LeftSidebar
         view={view} setView={(v) => { setView(v); setSelectedSkill(null) }}
         selectedSkill={selectedSkill} setSelectedSkill={setSelectedSkill}
-        skills={visibleSkills} runs={runs} secrets={secrets} repo={repo}
+        skills={visibleSkills} runs={runs} secrets={secrets} repo={repo} harness={harness}
         enabledCount={enabledCount} workingCount={workingCount}
         categoryFilter={categoryFilter} setCategoryFilter={setCategoryFilter}
         onSkillSelect={(name) => { setSelectedSkill(name); setView('hq') }}
@@ -232,7 +232,7 @@ export default function Dashboard() {
 
         <div ref={mainScrollRef} className="flex-1 overflow-y-auto p-[var(--space-lg)]">
           {view === 'secrets' && !selectedSkill && (
-            <SecretsPanel secrets={secrets} skills={skills} busy={busy} repo={repo} focusKey={secretFocus} onFocusHandled={() => setSecretFocus(null)} onSave={saveSecret} onDelete={deleteSecret} onSelectSkill={(name) => { setSelectedSkill(name); setView('hq') }} onConnectClaude={() => setupAuth()} connecting={authLoading} onConnectGrok={() => setupGrokAuth()} grokConnecting={grokLoading} />
+            <SecretsPanel secrets={secrets} skills={skills} busy={busy} repo={repo} harness={harness} focusKey={secretFocus} onFocusHandled={() => setSecretFocus(null)} onSave={saveSecret} onDelete={deleteSecret} onSelectSkill={(name) => { setSelectedSkill(name); setView('hq') }} onConnectClaude={() => setupAuth()} connecting={authLoading} onConnectGrok={() => setupGrokAuth()} grokConnecting={grokLoading} />
           )}
           {view === 'strategy' && !selectedSkill && (
             strategyError
@@ -259,7 +259,7 @@ export default function Dashboard() {
           )}
           {skill && (
             <SkillDetail
-              skill={skill} runs={runs} model={model} secrets={secrets} mcpServers={mcpServers} busy={busy}
+              skill={skill} runs={runs} model={model} harness={harness} secrets={secrets} mcpServers={mcpServers} busy={busy}
               onToggle={toggleSkill} onRun={runSkill} onDelete={deleteSkill}
               onUpdateSchedule={updateSchedule} onUpdateVar={updateVar} onUpdateModel={updateSkillModel}
               onGoToSecret={goToSecret} onGoToMcp={goToMcp}

@@ -9,7 +9,7 @@
 import { describe, it } from "node:test";
 import { strict as assert } from "node:assert";
 
-import { packGroups, FIRST_PARTY_KEYS } from "./constants";
+import { packGroups, FIRST_PARTY_KEYS, keyProvidedByHarness } from "./constants";
 
 const sk = (name: string, pack: string, packName = "") => ({ pack, packName });
 
@@ -50,5 +50,23 @@ describe("packGroups", () => {
   it("defaults a missing pack to the lab catch-all", () => {
     const groups = packGroups([{ pack: "", packName: "" }]);
     assert.deepEqual(groups.map(g => g.key), ["lab"]);
+  });
+});
+
+describe("keyProvidedByHarness", () => {
+  it("the grok harness natively provides XAI_API_KEY (built-in search_x)", () => {
+    assert.equal(keyProvidedByHarness("XAI_API_KEY", "grok"), true);
+  });
+
+  it("the claude harness provides no keys natively — XAI_API_KEY still required", () => {
+    assert.equal(keyProvidedByHarness("XAI_API_KEY", "claude"), false);
+  });
+
+  it("does not cover unrelated keys even on the grok harness", () => {
+    assert.equal(keyProvidedByHarness("COINGECKO_API_KEY", "grok"), false);
+  });
+
+  it("is safe for an unknown harness", () => {
+    assert.equal(keyProvidedByHarness("XAI_API_KEY", "whatever"), false);
   });
 });
