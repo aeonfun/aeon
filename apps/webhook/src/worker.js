@@ -93,7 +93,7 @@ export default {
       return dispatch(env, "telegram-command", { ...base, text: message.text });
     }
     // Plain text — the agent interprets it (messages.yml runs the configured
-    // harness: claude or grok). Unchanged relay behaviour from the original.
+    // harness: claude or grok).
     return dispatch(env, "telegram-message", {
       ...base,
       message: message.text,
