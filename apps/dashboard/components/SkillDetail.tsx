@@ -196,7 +196,7 @@ export function SkillDetail({ skill, runs, model, harness, secrets, mcpServers, 
             </button>
             <button
               onClick={() => { if (confirm(`Remove ${displayName(skill.name)}?`)) onDelete(skill.name) }}
-              className="text-[11px] text-eva-red/50 hover:text-eva-red font-mono px-3 py-2 ml-auto transition-colors uppercase tracking-[0.18em]"
+              className="btn-mini-danger ml-auto uppercase tracking-[0.18em]"
             >
               Remove
             </button>
@@ -307,7 +307,7 @@ export function SkillDetail({ skill, runs, model, harness, secrets, mcpServers, 
         action={
           <button
             onClick={() => { setEditingVar(!editingVar); setVarDraft(skill.var) }}
-            className="text-[11px] text-primary-40 font-mono uppercase tracking-[0.18em] hover:text-aeon-red transition-colors"
+            className="btn-mini uppercase tracking-[0.18em]"
           >
             {editingVar ? 'Cancel' : 'Edit'}
           </button>

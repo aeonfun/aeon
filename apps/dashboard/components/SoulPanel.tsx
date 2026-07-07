@@ -265,13 +265,11 @@ export function SoulPanel({ soul, style, loading, saving, building, installing, 
             <div className="flex items-center justify-end mt-3">
               <div className="flex items-center gap-2">
                 {dirty && (
-                  <button onClick={() => setDraft(content)}
-                    className="text-[11px] text-primary-40 font-mono px-2 py-2 hover:text-primary-70 transition-colors">
+                  <button onClick={() => setDraft(content)} className="btn-mini">
                     Revert
                   </button>
                 )}
-                <button onClick={() => onSave(active, draft)} disabled={!dirty || saving}
-                  className="bg-eva-green text-white text-[11px] px-4 py-2 font-mono hover:opacity-90 transition-opacity disabled:opacity-40 cursor-target">
+                <button onClick={() => onSave(active, draft)} disabled={!dirty || saving} className="btn-mini-go cursor-target">
                   {saving ? 'Saving…' : 'SAVE'}
                 </button>
               </div>

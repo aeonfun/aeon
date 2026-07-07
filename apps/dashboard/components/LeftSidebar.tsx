@@ -30,7 +30,6 @@ export function LeftSidebar({ view, setView, selectedSkill, skills, runs, secret
   // show all of those skills (enabled or not); "Enabled" is an opt-in filter,
   // off by default, to narrow to what's actually on duty.
   const [enabledOnly, setEnabledOnly] = useState(false)
-  const [availableOnly, setAvailableOnly] = useState(false)
 
   // A skill is "key-blocked" when it's enabled but a required (non-optional)
   // credential it declares isn't set AND isn't provided natively by the active
@@ -40,10 +39,6 @@ export function LeftSidebar({ view, setView, selectedSkill, skills, runs, secret
   const missingRequiredKeys = (s: Skill) =>
     (s.requires ?? []).filter(r => !r.optional && !setSecretNames.has(r.key) && !keyProvidedByHarness(r.key, harness))
 
-  // "Available" = runnable out of the box: every declared key is either optional
-  // or provided natively by the current harness.
-  const needsNoKey = (s: Skill) => (s.requires ?? []).every(r => r.optional || keyProvidedByHarness(r.key, harness))
-
   // `categoryFilter` holds a PACK key - the sidebar groups by pack. Picking a
   // pack reveals ALL its skills (enabled + disabled) so you can switch them on in
   // context; with no pack selected the roster stays focused on enabled skills.
@@ -52,7 +47,6 @@ export function LeftSidebar({ view, setView, selectedSkill, skills, runs, secret
     if (categoryFilter && (s.pack || 'lab') !== categoryFilter) return false
     if (skillSearch && !(displayName(s.name).toLowerCase().includes(skillSearch.toLowerCase()) || s.name.includes(skillSearch.toLowerCase()))) return false
     if (effectiveEnabledOnly && !s.enabled) return false
-    if (availableOnly && !needsNoKey(s)) return false
     return true
   }
   const visibleCount = skills.filter(matchesFilters).length
@@ -122,14 +116,6 @@ export function LeftSidebar({ view, setView, selectedSkill, skills, runs, secret
             <span className="w-1.5 h-1.5 rounded-full shrink-0 bg-eva-green" />
             Enabled
           </button>
-          <button
-            onClick={() => setAvailableOnly(v => !v)}
-            title="Show only skills that need no API key"
-            className={`text-[10px] font-mono uppercase tracking-[0.1em] px-2 py-1 border flex items-center gap-1.5 transition-colors ${availableOnly ? 'text-eva-amber border-eva-amber/50 bg-eva-amber/10' : 'text-primary-40 border-[rgba(250,250,250,0.12)] hover:text-primary-70 hover:border-[rgba(250,250,250,0.22)]'}`}
-          >
-            <span className="w-1.5 h-1.5 rounded-full shrink-0 bg-eva-amber" />
-            Available
-          </button>
           {packGroups(skills).map(cat => {
             const active = categoryFilter === cat.key
             return (
@@ -152,8 +138,7 @@ export function LeftSidebar({ view, setView, selectedSkill, skills, runs, secret
           const catSkills = skills.filter(s => (s.pack || 'lab') === cat.key)
           if (!catSkills.length) return null
           const searched = skillSearch ? catSkills.filter(s => displayName(s.name).toLowerCase().includes(skillSearch.toLowerCase()) || s.name.includes(skillSearch.toLowerCase())) : catSkills
-          const enabledFiltered = effectiveEnabledOnly ? searched.filter(s => s.enabled) : searched
-          const filtered = availableOnly ? enabledFiltered.filter(needsNoKey) : enabledFiltered
+          const filtered = effectiveEnabledOnly ? searched.filter(s => s.enabled) : searched
           if (!filtered.length) return null
           const en = filtered.filter(s => s.enabled).length
           return (

@@ -217,7 +217,7 @@ export function McpPanel({ servers, loading, saving, secrets, busy, onSave, onSe
                                   ) : (
                                     <>
                                       <input type="password" value={secretDraft[r] ?? ''} onChange={e => setSecretDraft(d => ({ ...d, [r]: e.target.value }))} onKeyDown={e => e.key === 'Enter' && saveRowSecret(r)} placeholder="paste bearer token - saved to GitHub & wired in" className="flex-1 min-w-0 bg-aeon-bg border border-[rgba(250,250,250,0.10)] px-2 py-1 text-[11px] font-mono text-primary-100 outline-none focus:border-eva-orange transition-colors cursor-target" />
-                                      <button onClick={() => saveRowSecret(r)} disabled={!(secretDraft[r] ?? '').trim()} className="bg-eva-green text-white text-[10px] px-3 py-1 font-mono hover:opacity-90 disabled:opacity-40 shrink-0 transition-opacity">Set</button>
+                                      <button onClick={() => saveRowSecret(r)} disabled={!(secretDraft[r] ?? '').trim()} className="btn-mini-go shrink-0">Set</button>
                                     </>
                                   )}
                                 </div>
@@ -226,7 +226,7 @@ export function McpPanel({ servers, loading, saving, secrets, busy, onSave, onSe
                           </div>
                         )}
                       </div>
-                      <button onClick={() => removeServer(n)} className="text-[11px] text-eva-red/50 hover:text-eva-red font-mono px-2 py-1 transition-colors shrink-0">Remove</button>
+                      <button onClick={() => removeServer(n)} className="btn-mini-danger shrink-0">Remove</button>
                     </div>
                   )
                 })}
@@ -263,8 +263,8 @@ export function McpPanel({ servers, loading, saving, secrets, busy, onSave, onSe
                     </>
                   )}
                   <div className="flex gap-2">
-                    <button onClick={addServer} className="bg-eva-green text-white text-[11px] px-4 py-2 font-mono hover:opacity-90 transition-opacity">Add server</button>
-                    <button onClick={resetForm} className="text-[11px] text-primary-40 font-mono px-2 py-2 hover:text-primary-70">Cancel</button>
+                    <button onClick={addServer} className="btn-mini-go">Add server</button>
+                    <button onClick={resetForm} className="btn-mini">Cancel</button>
                   </div>
                 </div>
               ) : (
@@ -281,9 +281,8 @@ export function McpPanel({ servers, loading, saving, secrets, busy, onSave, onSe
             )}
             <div className="flex items-center justify-end mt-4">
               <div className="flex items-center gap-2">
-                {dirty && <button onClick={() => setDraft(servers)} className="text-[11px] text-primary-40 font-mono px-2 py-2 hover:text-primary-70 transition-colors">Revert</button>}
-                <button onClick={() => onSave(draft)} disabled={!dirty || saving}
-                  className="bg-eva-green text-white text-[11px] px-4 py-2 font-mono hover:opacity-90 transition-opacity disabled:opacity-40">
+                {dirty && <button onClick={() => setDraft(servers)} className="btn-mini">Revert</button>}
+                <button onClick={() => onSave(draft)} disabled={!dirty || saving} className="btn-mini-go">
                   {saving ? 'Saving…' : 'Save'}
                 </button>
               </div>

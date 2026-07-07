@@ -387,6 +387,80 @@ body::before {
 }
 
 /* ──────────────────────────────────────────────────────────
+   COMPACT INLINE ACTIONS - Set / Edit / Remove / Cancel / Save
+   These tertiary actions used to render as bare text and didn't
+   read as buttons. Each variant is a bordered, faintly-filled
+   chip with explicit hover / active / disabled states so it's
+   unmistakably clickable.
+   ────────────────────────────────────────────────────────── */
+.btn-mini,
+.btn-mini-danger,
+.btn-mini-go {
+  font-family: var(--font-mono-space), ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  padding: 6px 12px;
+  border: 1px solid;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease,
+              border-color 0.18s ease, transform 0.12s ease,
+              box-shadow 0.18s ease;
+}
+.btn-mini:disabled,
+.btn-mini-danger:disabled,
+.btn-mini-go:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.btn-mini:active:not(:disabled),
+.btn-mini-danger:active:not(:disabled),
+.btn-mini-go:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+/* Neutral - Cancel / Revert / Set / Edit / Clear */
+.btn-mini {
+  color: var(--aeon-gray);
+  background: var(--aeon-rule-soft);
+  border-color: var(--aeon-rule);
+}
+.btn-mini:hover:not(:disabled) {
+  color: var(--aeon-fg);
+  background: rgba(250, 250, 250, 0.11);
+  border-color: var(--aeon-rule-strong);
+}
+
+/* Danger - Remove / Delete / Uninstall */
+.btn-mini-danger {
+  color: var(--aeon-red-alert);
+  background: rgba(255, 82, 82, 0.08);
+  border-color: rgba(255, 82, 82, 0.34);
+}
+.btn-mini-danger:hover:not(:disabled) {
+  color: #ffffff;
+  background: var(--aeon-red-alert);
+  border-color: var(--aeon-red-alert);
+  box-shadow: 0 4px 14px rgba(255, 82, 82, 0.28);
+}
+
+/* Confirm - Save / Set / Add (commits a value) */
+.btn-mini-go {
+  color: #04240f;
+  background: var(--aeon-green);
+  border-color: var(--aeon-green);
+  font-weight: 600;
+}
+.btn-mini-go:hover:not(:disabled) {
+  background: #4fd074;
+  border-color: #4fd074;
+  box-shadow: 0 4px 14px rgba(67, 193, 101, 0.3);
+}
+
+/* ──────────────────────────────────────────────────────────
    ANIMATIONS
    ────────────────────────────────────────────────────────── */
 @keyframes fade-in {
