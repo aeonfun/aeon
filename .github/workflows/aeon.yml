@@ -146,12 +146,28 @@ jobs:
         with:
           node-version: '22'
 
+      - name: Cache Claude Code (npm)
+        if: steps.work.outputs.mode != ''
+        # ~/.npm is npm's content-addressable download cache — reusing it lets the
+        # pinned install run fully offline. Version is baked into the key (immutable,
+        # ~100% hit after the first run of a version, shared with messages.yml). The
+        # restore-keys prefix degrades gracefully on a version bump. Keep the version
+        # in the key in sync with the pin below.
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: claude-code-${{ runner.os }}-2.1.168
+          restore-keys: |
+            claude-code-${{ runner.os }}-
+
       - name: Install Claude Code
         if: steps.work.outputs.mode != ''
         # Pinned for supply-chain safety — a freshly-published (or compromised)
         # version is never pulled automatically. Bump deliberately after reviewing
         # the release notes: https://github.com/anthropics/claude-code/releases
-        run: npm install -g @anthropic-ai/claude-code@2.1.168
+        # (--prefer-offline uses the cached tarball above; keep the pin and the
+        # cache key version in sync.)
+        run: npm install -g @anthropic-ai/claude-code@2.1.168 --prefer-offline
 
       - name: Validate skill secrets
         if: steps.work.outputs.mode != ''
