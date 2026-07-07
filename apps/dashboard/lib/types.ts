@@ -76,9 +76,19 @@ export interface UploadFile { path: string; content: string }
 export interface SoulSources { handle: string; name: string; links: string }
 export interface StrategySources { goal: string; repo: string; links: string }
 
-// `.mcp.json` server map. A server's shape varies by transport (http/stdio),
-// so each entry is an open record; consumers narrow fields as needed.
-export type McpServer = Record<string, unknown>
+// `.mcp.json` server map. A server's shape varies by transport: http (`url`,
+// optional `headers`) or stdio (`command`, `args`, `env`). The known fields are
+// typed; the index signature keeps this an open record so an operator's hand-edited
+// .mcp.json (extra/unknown keys) still parses and consumers narrow as needed.
+export interface McpServer {
+  type?: 'http' | 'stdio' | 'sse'
+  url?: string
+  command?: string
+  args?: string[]
+  headers?: Record<string, string>
+  env?: Record<string, string>
+  [key: string]: unknown
+}
 export type McpServers = Record<string, McpServer>
 
 export interface SkillMetrics {
