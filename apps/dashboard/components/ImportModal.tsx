@@ -53,7 +53,7 @@ export function ImportModal({ onClose, onImport }: ImportModalProps) {
     <div onClick={onClose} className="fixed inset-0 z-40 flex items-center justify-center bg-black/30 backdrop-blur-sm">
       <div onClick={(e) => e.stopPropagation()} className="bg-aeon-panel border border-[rgba(250,250,250,0.10)] w-full max-w-md mx-4 p-[var(--space-lg)] shadow-2xl">
         <div className="flex items-center justify-between mb-[var(--space-md)]">
-          <h2 className="font-display text-xl">Hire New Member</h2>
+          <h2 className="font-display text-xl">Add new skill</h2>
           <button onClick={onClose} className="text-primary-35 hover:text-primary-100 text-lg">&times;</button>
         </div>
         <input ref={fileInputRef} type="file" multiple className="hidden" onChange={(e) => e.target.files && readFilesFromInput(e.target.files)} />
