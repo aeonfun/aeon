@@ -4,8 +4,8 @@
 // keeps aeon.yml's gateway.provider on `auto` rather than pinning one.
 //
 // Add a provider HERE and it flows everywhere: the GatewayProvider union and
-// GATEWAY_PROVIDERS list (lib/types), AUTH_SECRETS (lib/constants), the secrets
-// route's gateway-key set, the auth key-detection, and the service-icon domain.
+// GATEWAY_PROVIDERS list (lib/types), CLAUDE_AUTH_SECRETS (lib/constants), the
+// secrets route's gateway-key set, the auth key-detection, and the service-icon domain.
 export const GATEWAY_REGISTRY = {
   bankr: { label: 'Bankr', secretName: 'BANKR_LLM_KEY', prefixes: ['bk_'], domain: 'bankr.bot' },
   openrouter: { label: 'OpenRouter', secretName: 'OPENROUTER_API_KEY', prefixes: ['sk-or-'], domain: 'openrouter.ai' },

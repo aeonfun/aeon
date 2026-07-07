@@ -52,11 +52,6 @@ export const CLAUDE_AUTH_SECRETS = ['CLAUDE_CODE_OAUTH_TOKEN', 'ANTHROPIC_API_KE
 // SELECTED harness (see authSecretsForHarness), never the union below.
 export const GROK_AUTH_SECRETS = ['GROK_CREDENTIALS', 'XAI_API_KEY']
 
-// Union of everything that authenticates ANY harness — for coarse "is the repo
-// authed at all" checks only. Harness-specific UI must use authSecretsForHarness()
-// so switching harness re-evaluates against that harness's own credentials.
-export const AUTH_SECRETS = [...CLAUDE_AUTH_SECRETS, 'GROK_CREDENTIALS']
-
 // The auth-secret set that authenticates the given harness. The client derives
 // auth state from /api/secrets by testing membership against this — so the Auth
 // CTA reappears when you switch to a harness whose own auth isn't set yet.
