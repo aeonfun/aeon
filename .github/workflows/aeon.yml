@@ -196,7 +196,6 @@ jobs:
           XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           REPLICATE_API_TOKEN: ${{ secrets.REPLICATE_API_TOKEN }}
-          VERDIKTA_API_KEY: ${{ secrets.VERDIKTA_API_KEY }}
           SKILL_VAR: ${{ inputs.var }}
         run: |
           # Run all scripts/prefetch-*.sh before Claude starts (outside sandbox).
@@ -1067,17 +1066,6 @@ jobs:
           RESEND_FROM: ${{ secrets.RESEND_FROM }}
           RESEND_REPLY_TO: ${{ secrets.RESEND_REPLY_TO }}
           RESEND_CC: ${{ vars.RESEND_CC }}
-          # verdikta-hunter (scripts/postprocess-verdikta.sh): executes queued bounty
-          # submissions/finalizes on Base. VERDIKTA_WALLET_KEY must be a DEDICATED
-          # low-balance hot wallet; every signed tx is pinned to the BountyEscrow
-          # contract and hard-capped by VERDIKTA_MAX_SPEND_ETH (default 0.0005).
-          # Unset => queued requests are skipped and nothing is signed.
-          VERDIKTA_API_KEY: ${{ secrets.VERDIKTA_API_KEY }}
-          VERDIKTA_WALLET_KEY: ${{ secrets.VERDIKTA_WALLET_KEY }}
-          VERDIKTA_MAX_SPEND_ETH: ${{ vars.VERDIKTA_MAX_SPEND_ETH }}
-          VERDIKTA_MAX_SUBMISSIONS_PER_DAY: ${{ vars.VERDIKTA_MAX_SUBMISSIONS_PER_DAY }}
-          VERDIKTA_MAX_GAS_GWEI: ${{ vars.VERDIKTA_MAX_GAS_GWEI }}
-          VERDIKTA_RPC_URL: ${{ vars.VERDIKTA_RPC_URL }}
           DISCLOSURE_EMAIL_PAUSED: ${{ vars.DISCLOSURE_EMAIL_PAUSED }}
           DISCLOSURE_EMAIL_MAX_PER_RUN: ${{ vars.DISCLOSURE_EMAIL_MAX_PER_RUN }}
           DISCLOSURE_EMAIL_DAILY_CAP: ${{ vars.DISCLOSURE_EMAIL_DAILY_CAP }}

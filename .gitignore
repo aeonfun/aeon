@@ -10,12 +10,12 @@
 .claude/
 
 # Caches — prefetch scripts write these, skills read them; regenerated every run
-# (.xai-cache, .verdikta-cache, .treasury-cache, .star-cache, .github-releases-cache, …)
+# (.xai-cache, .treasury-cache, .star-cache, .github-releases-cache, …)
 .*-cache/
 .tg_cache/
 
 # Pending queues — postprocess scripts consume + delete these after the run
-# (.pending-notify, .pending-email, .pending-admanage, .pending-verdikta, …),
+# (.pending-notify, .pending-email, .pending-admanage, …),
 # plus the .pending-notify-temp scratch where skills stage notify bodies for `./notify -f`
 .pending-*/
 
