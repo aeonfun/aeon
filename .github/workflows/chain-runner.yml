@@ -42,7 +42,8 @@ jobs:
           _INPUT_CHAIN: ${{ inputs.chain }}
         run: |
           set -euo pipefail
-          # env-bound (not ${{ }}-interpolated) + allowlisted: a chain name is an
+          # env-bound (passed via env:, not expanded into this run: block) +
+          # allowlisted: a chain name is an
           # aeon.yml chains: key, so it must match ^[a-zA-Z0-9_-]+$. Interpolating
           # it into the shell source let a crafted value break out and run
           # arbitrary commands on the runner. (GHSA-h9v2-7m42-33m3)
