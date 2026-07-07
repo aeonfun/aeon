@@ -490,7 +490,8 @@ jobs:
           VAR="$SKILL_VAR"
 
           # Build prompt — inject chain context if running as part of a chain.
-          # env-bound (not ${{ }}-interpolated) + path-contained: the context file
+          # env-bound (passed via env:, not expanded into this run: block) +
+          # path-contained: the context file
           # must be a chain-runner artifact under output/.chains/, never an
           # arbitrary path — otherwise cat would read any file on the runner (e.g.
           # /proc/self/environ, secrets) into the prompt/logs. (GHSA-cqvj-gr78-24mc)
