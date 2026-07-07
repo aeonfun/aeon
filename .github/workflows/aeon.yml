@@ -480,6 +480,23 @@ jobs:
               echo "MCP enabled: $(jq -r '.mcpServers | keys | join(", ")' .mcp.json)"
             fi
           fi
+
+          # Per-skill least-privilege secrets: inject ONLY the keys this skill
+          # declares in its `requires:` frontmatter (both required and `?` works-better
+          # tiers). Same resolve-from-ALL_SECRETS shape as the MCP loop above. A skill
+          # sees nothing else from the secret store — so an injected read skill has
+          # only its own (capped) keys to leak. Optional key with no secret set → not
+          # exported, skill degrades to its public path (unchanged behaviour).
+          SECRETS_JSON="${ALL_SECRETS:-}"; [ -z "$SECRETS_JSON" ] && SECRETS_JSON='{}'
+          INJECTED=""
+          while IFS= read -r key; do
+            [ -z "$key" ] && continue
+            [ -n "${!key:-}" ] && continue                     # already in env (infra) — leave it
+            val="$(jq -r --arg k "$key" '.[$k] // empty' <<<"$SECRETS_JSON")"
+            [ -n "$val" ] && { export "$key=$val"; INJECTED="$INJECTED $key"; }
+          done < <(bash scripts/skill_requires.sh "$SKILL_NAME" 2>/dev/null)
+          [ -n "$INJECTED" ] && echo "::notice::Injected declared secrets for ${SKILL_NAME}:${INJECTED}"
+
           unset ALL_SECRETS   # drop the secrets blob before any skill/Claude code runs
 
           SKILL_NAME="${{ steps.skill.outputs.name }}"
@@ -597,6 +614,10 @@ jobs:
           echo "SKILL_CACHE_READ_TOKENS=$CACHE_READ" >> "$GITHUB_OUTPUT"
           echo "SKILL_CACHE_CREATION_TOKENS=$CACHE_CREATION" >> "$GITHUB_OUTPUT"
           echo "SKILL_TOTAL_TOKENS=$TOTAL_TOKENS" >> "$GITHUB_OUTPUT"
+          # Session id → lets the post-run "Under the hood" step locate this run's
+          # transcript (~/.claude/projects/*/<id>.jsonl) and tally tool actions.
+          # Empty on the grok harness (no Claude transcript) — the step then no-ops.
+          echo "SESSION_ID=$(echo "$CLAUDE_OUTPUT" | jq -r '.session_id // empty')" >> "$GITHUB_OUTPUT"
 
           echo "::notice::Token usage — input: $INPUT_TOKENS, output: $OUTPUT_TOKENS, cache_read: $CACHE_READ, cache_creation: $CACHE_CREATION, total: $TOTAL_TOKENS"
 
@@ -663,6 +684,24 @@ jobs:
           echo "| Cache read | $CACHE_READ |" >> "$GITHUB_STEP_SUMMARY"
           echo "| Cache creation | $CACHE_CREATION |" >> "$GITHUB_STEP_SUMMARY"
           echo "| **Total** | **$TOTAL** |" >> "$GITHUB_STEP_SUMMARY"
+
+      # "Under the hood" — tally the tool actions Claude actually took this run
+      # (Read/Edit/Grep/Bash + network/exec breakdown), from its session transcript.
+      # Renders a table into the Actions run summary and appends a one-line footer to
+      # today's memory log so the record lives in git. Never fails the run.
+      - name: Under the hood (tool actions)
+        if: steps.work.outputs.mode != '' && steps.run.outcome == 'success' && steps.run.outputs.SESSION_ID != ''
+        env:
+          SESSION_ID: ${{ steps.run.outputs.SESSION_ID }}
+          SKILL_NAME: ${{ steps.skill.outputs.name }}
+        run: |
+          bash scripts/run-actions-summary.sh --md "" "$SESSION_ID" >> "$GITHUB_STEP_SUMMARY" || true
+          LINE=$(bash scripts/run-actions-summary.sh --line "" "$SESSION_ID" || true)
+          if [ -n "$LINE" ]; then
+            echo "::notice::$LINE"
+            TODAY=$(date -u +%Y-%m-%d); mkdir -p memory/logs
+            printf '\n### %s — under the hood\n- %s\n' "$SKILL_NAME" "$LINE" >> "memory/logs/${TODAY}.md"
+          fi
 
       - name: Track token costs
         if: steps.work.outputs.mode != '' && steps.run.outcome == 'success'

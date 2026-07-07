@@ -40,6 +40,10 @@ jobs:
         run: python3 scripts/tests/test_prune_skills.py
       - name: capability mode tests
         run: bash scripts/tests/test_skill_mode.sh
+      - name: per-skill requires parse tests
+        run: bash scripts/tests/test_skill_requires.sh
+      - name: run actions summary tests
+        run: bash scripts/tests/test_run_actions_summary.sh
       - name: skill-pack manifest validation tests
         run: bash scripts/tests/test_validate_pack.sh
       - name: grok harness runner tests
