@@ -13,7 +13,7 @@
     {
       "key": "evolution",
       "name": "Evolution",
-      "description": "The self-improvement loop that makes Aeon more than a cron job: it authors new skills from a prompt, evolves and evaluates them, searches for and installs community skills, and monitors + heals its own fleet of skills.",
+      "description": "The self-improvement loop that makes Aeon more than a cron job: it authors and evolves new skills, installs community ones, and heals its own fleet.",
       "color": "#A855F7",
       "category": "evolution"
     },
@@ -35,14 +35,14 @@
     {
       "key": "crypto",
       "name": "Crypto & Markets",
-      "description": "Token, DeFi, and prediction-market monitoring plus on-chain investigation and action: price/volume alerts, activity, narrative tracking, market context, token/tx forensics, and on-chain automation.",
+      "description": "Token, DeFi, and prediction-market monitoring plus on-chain investigation and action: alerts, narrative tracking, market context, and token forensics.",
       "color": "#FF6B1A",
       "category": "crypto"
     },
     {
       "key": "productivity",
       "name": "Productivity",
-      "description": "Personal + social ops: routines, goal/idea capture, retrospectives, deal flow, follow-ups, mentions, replies, ads, email, and knowledge-bundle housekeeping.",
+      "description": "Personal + social ops: routines, idea capture, retrospectives, deal flow, mentions, replies, ads, email, and knowledge housekeeping.",
       "color": "#06B6D4",
       "category": "productivity"
     }
