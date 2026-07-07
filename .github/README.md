@@ -489,6 +489,12 @@ Optional, opt-in tracing. Set the repo secrets `LANGFUSE_PUBLIC_KEY` + `LANGFUSE
 
 Under the hood `scripts/langfuse-otel.sh` exports Claude Code's OpenTelemetry env so its span tree ships to Langfuse's OTLP endpoint — out of band, so a Langfuse outage never affects a run. Region/toggles are repo **variables**: `LANGFUSE_HOST` (default EU cloud; US = `https://us.cloud.langfuse.com`), `LANGFUSE_TRACING=0` to disable, `LANGFUSE_LOG_CONTENT=0` for metadata-only (no prompt/response text). Covers the skill run, scorer, feed, and message poller; the grok harness is not traced. Full guide: [docs/langfuse.md](../docs/langfuse.md).
 
+### Provenance (attestation)
+
+Optional, off by default. Set the repo variable `ATTEST_ENABLED=true` and successful skill runs get a Sigstore-signed [GitHub Artifact Attestation](https://docs.github.com/en/actions/security-guides/using-artifact-attestations-to-establish-provenance-for-builds) binding the run's output bytes to the exact workflow identity that produced them — repo, commit SHA, `aeon.yml`, runner, trigger — logged to the public Rekor transparency log. Anyone can then confirm a piece of Aeon output really came from an unmodified skill at a known commit (`gh attestation verify <file> --repo <owner>/<repo>`), without trusting you. It proves *provenance of bytes*, not correctness of behaviour, and touches **zero skills** — it runs in the trusted workflow layer on output Aeon already captures.
+
+Opt in per skill with `attest: true` in `aeon.yml` (or `attest: false` to force-exclude), or in a `SKILL.md`'s frontmatter to make it travel with the skill; with neither, the default policy attests only runs that **published to the json-render feed** (the trust boundary that benefits), keeping the public Rekor log meaningful. **Public repos work on any plan; private repos need GitHub Team/Enterprise.** Full guide: [docs/attestation.md](../docs/attestation.md).
+
 ### Strategy
 
 `STRATEGY.md` is Aeon's north-star - your overarching goal, top priorities, audience, and hard constraints. It's imported into `CLAUDE.md`, so it rides along in the context of **every** skill run: when a choice isn't otherwise determined, the strategy breaks the tie ("showcase real output over new features", "depth over breadth"). Keep it tight (it costs tokens every run) and specific (a vague strategy can't break a tie).
