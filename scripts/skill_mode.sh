@@ -6,10 +6,9 @@
 #     mode: read-only      # may read repo + fetch web + notify; may NOT mutate the repo
 #     mode: write          # full access (default, current behaviour)
 #
-# Rollout note: default is `write` for backward compatibility — none of the 183
-# existing skills are annotated yet, and many legitimately write (create-skill,
-# article, reflect…). read-only is opt-in now; once writers are annotated we flip
-# the default to read-only (the design intent). Enforcement is by allowedTools:
+# Default is `write` for backward compatibility: most skills legitimately write
+# (create-skill, article, reflect…), so read-only is opt-in per SKILL.md.
+# Enforcement is by allowedTools:
 # read-only drops Write,Edit,Bash(git:*),Bash(gh:*) so the skill physically can't
 # commit/push/edit. A post-run guard in the workflow reverts any stray writes that
 # slipped through redirections, as defense-in-depth.
