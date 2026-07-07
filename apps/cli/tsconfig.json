@@ -8,7 +8,9 @@
     "strict": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
+    "ignoreDeprecations": "6.0",
     "types": ["node"],
+    "typeRoots": ["./node_modules/@types", "../dashboard/node_modules/@types"],
     "baseUrl": ".",
     "paths": {
       "yaml": ["./node_modules/yaml"],

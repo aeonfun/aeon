@@ -5,6 +5,10 @@ let jsonMode = false
 export function setJsonMode(on: boolean) { jsonMode = on }
 export function isJsonMode() { return jsonMode }
 
+let dryRun = false
+export function setDryRun(on: boolean) { dryRun = on }
+export function isDryRun() { return dryRun }
+
 const useColor = process.stdout.isTTY && !process.env.NO_COLOR
 const wrap = (code: number, s: string) => (useColor ? `\x1b[${code}m${s}\x1b[0m` : s)
 export const c = {

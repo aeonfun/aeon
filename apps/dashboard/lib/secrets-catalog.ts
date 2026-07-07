@@ -1,5 +1,7 @@
 import { execFileSync } from 'child_process'
-import { ghAvailable, ghArgsRepo } from './gh'
+import { ghAvailable, ghArgsRepo, dispatchCommandsWorkflow } from './gh'
+import { syncGatewayProvider } from './gateway'
+import { GATEWAY_SECRET_NAMES } from './gateway-registry'
 import type { Secret } from './types'
 
 // The curated credential catalog: every secret the dashboard/CLI knows how to
@@ -91,4 +93,25 @@ export function getSecrets(): { secrets: Secret[]; ghReady: boolean } {
     }
   }
   return { secrets, ghReady: true }
+}
+
+// Set a repo secret via gh, then run the same side-effects the dashboard route
+// does: keep the gateway on `auto` when a gateway key changes, and auto-register
+// the Telegram command menu the moment the bot token lands. Caller must
+// pre-validate `name` against VALID_SECRET_NAME. Throws on a gh failure.
+export async function setSecret(name: string, value: string): Promise<void> {
+  execFileSync('gh', ['secret', 'set', name, ...ghArgsRepo(), '-b', value], {
+    stdio: 'pipe',
+    cwd: process.cwd(),
+  })
+  if (GATEWAY_SECRET_NAMES.includes(name)) await syncGatewayProvider()
+  if (name === 'TELEGRAM_BOT_TOKEN') {
+    try { dispatchCommandsWorkflow() } catch { /* non-fatal — token is still saved */ }
+  }
+}
+
+// Delete a repo secret via gh; re-resolve the gateway if a gateway key was dropped.
+export async function deleteSecret(name: string): Promise<void> {
+  execFileSync('gh', ['secret', 'delete', name, ...ghArgsRepo()], { stdio: 'pipe', cwd: process.cwd() })
+  if (GATEWAY_SECRET_NAMES.includes(name)) await syncGatewayProvider()
 }

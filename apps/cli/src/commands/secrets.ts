@@ -1,21 +1,31 @@
-import { getSecrets } from '../../../dashboard/lib/secrets-catalog.ts'
+import { readFileSync } from 'node:fs'
+import {
+  getSecrets, setSecret, deleteSecret, VALID_SECRET_NAME,
+} from '../../../dashboard/lib/secrets-catalog.ts'
+import { ghAvailable } from '../../../dashboard/lib/gh.ts'
 import type { Secret } from '../../../dashboard/lib/types.ts'
-import { emit, table, c, fail } from '../output.ts'
+import { emit, table, c, fail, isDryRun } from '../output.ts'
 
 const USAGE = `aeon secrets — the credential vault (names + set-state, never values)
 
+Read:
   aeon secrets ls [--set] [--unset]    List every known secret, grouped
 
-Options:
-  --set      Only secrets that are set
-  --unset    Only secrets that are missing
-  --json     Machine-readable output
+Write (uses gh; never prints values):
+  aeon secrets set <NAME> --stdin      Set from stdin (recommended)
+  aeon secrets set <NAME> <value>      Set from an argument (leaks in shell history)
+  aeon secrets rm <NAME>               Delete a secret
 
-Setting/deleting secrets (writes) arrives in Phase 2.`
+Options:
+  --set / --unset   Filter \`ls\`
+  --dry-run         Preview a write without calling gh
+  --json            Machine-readable output`
 
 export async function secretsCommand(argv: string[]) {
   const sub = argv[0] && !argv[0].startsWith('-') ? argv[0] : 'ls'
   if (sub === 'help' || argv.includes('-h') || argv.includes('--help')) { console.log(USAGE); return }
+  if (sub === 'set') return setCmd(argv.slice(1))
+  if (sub === 'rm') return rmCmd(argv.slice(1))
   if (sub !== 'ls') fail(`unknown subcommand: ${sub}\n\n${USAGE}`)
 
   const { secrets, ghReady } = getSecrets()
@@ -50,6 +60,45 @@ export async function secretsCommand(argv: string[]) {
     const set = rows.filter(s => s.isSet).length
     console.log(c.dim(`${rows.length} secrets · ${set} set`))
   })
+}
+
+function requireSecretName(args: string[]): string {
+  const name = args.find(a => !a.startsWith('-'))
+  if (!name) fail('a secret NAME is required')
+  if (!VALID_SECRET_NAME.test(name)) fail('invalid secret name — use UPPER_SNAKE_CASE')
+  return name
+}
+
+async function setCmd(args: string[]) {
+  if (!ghAvailable()) fail('GitHub CLI not authenticated. Run: gh auth login')
+  const name = requireSecretName(args)
+  let value: string
+  if (args.includes('--stdin')) {
+    value = readFileSync(0, 'utf-8').replace(/\n$/, '')
+  } else {
+    const positional = args.filter(a => !a.startsWith('-') && a !== name)[0]
+    if (positional === undefined) fail('provide a value: `--stdin` (recommended) or a positional value')
+    value = positional
+  }
+  if (!value) fail('empty value')
+
+  if (isDryRun()) {
+    return emit({ label: `set ${name}`, dryRun: true }, () =>
+      console.log(c.yellow('dry-run: ') + `would set secret ${name} (${value.length} chars) via gh`))
+  }
+  await setSecret(name, value)
+  emit({ ok: true, set: name }, () => console.log(c.green('✓ ') + `set ${name}`))
+}
+
+async function rmCmd(args: string[]) {
+  if (!ghAvailable()) fail('GitHub CLI not authenticated. Run: gh auth login')
+  const name = requireSecretName(args)
+  if (isDryRun()) {
+    return emit({ label: `rm ${name}`, dryRun: true }, () =>
+      console.log(c.yellow('dry-run: ') + `would delete secret ${name} via gh`))
+  }
+  await deleteSecret(name)
+  emit({ ok: true, deleted: name }, () => console.log(c.green('✓ ') + `deleted ${name}`))
 }
 
 function truncate(s: string, n: number) {

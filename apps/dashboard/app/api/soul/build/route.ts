@@ -1,52 +1,18 @@
 import { NextResponse } from 'next/server'
-import { execFileSync } from 'child_process'
-import { REPO_ROOT } from '@/lib/gh'
 import { errorResponse } from '@/lib/http'
-import { normLinks, sanitizeModel } from '@/lib/dispatch'
+import { buildSoul } from '@/lib/builders'
 import type { SoulSources } from '@/lib/types'
 
-// Dispatch the soul-builder skill with a multi-source brief. A dedicated route
-// (rather than the generic /api/skills/[name]/run) because soul sources include
-// URLs - the generic route strips ':' and '/' from var for injection safety.
-// Here we validate each field ourselves and pass a composed var. execFileSync
-// uses argv (no shell), so URL characters are safe; the validation below is to
-// keep the brief well-formed, not to defend a shell.
-
-const HANDLE_RE = /^[A-Za-z0-9_]{1,30}$/
-const NAME_RE = /^[\p{L}\p{N} .,'’\-&/]{1,80}$/u
-
-function normHandle(raw: unknown): string {
-  if (typeof raw !== 'string') return ''
-  const h = raw.trim().replace(/^@/, '').replace(/^https?:\/\/(x|twitter)\.com\//i, '').replace(/\/.*$/, '')
-  return HANDLE_RE.test(h) ? h : ''
-}
-
+// The input normalizers + gh dispatch live in lib/builders.ts so `aeon soul build`
+// and this route compose the brief identically.
 export async function POST(request: Request) {
   try {
     const body = (await request.json()) as Partial<SoulSources> & { model?: string }
-
-    const handle = normHandle(body.handle)
-    const name = typeof body.name === 'string' && NAME_RE.test(body.name.trim()) ? body.name.trim() : ''
-    const links = normLinks(body.links)
-    const model = sanitizeModel(body.model)
-
-    if (!handle && !name && links.length === 0) {
-      return NextResponse.json({ error: 'Give at least one valid source (handle, name, or links).' }, { status: 400 })
-    }
-
-    // Compose the brief the skill parses: " | "-separated key=value tokens.
-    const parts: string[] = []
-    if (handle) parts.push(`x=${handle}`)
-    if (name) parts.push(`name=${name}`)
-    if (links.length) parts.push(`links=${links.join(',')}`)
-    const composedVar = parts.join(' | ')
-
-    const args = ['workflow', 'run', 'aeon.yml', '-f', 'skill=soul-builder', '-f', `var=${composedVar}`]
-    if (model) args.push('-f', `model=${model}`)
-
-    execFileSync('gh', args, { stdio: 'pipe', cwd: REPO_ROOT })
-    return NextResponse.json({ ok: true, sources: { handle: handle || null, name: name || null, links } })
+    const { sources } = buildSoul(body, { dispatch: true })
+    return NextResponse.json({ ok: true, sources })
   } catch (error: unknown) {
+    const msg = error instanceof Error ? error.message : ''
+    if (/at least one valid source/.test(msg)) return NextResponse.json({ error: msg }, { status: 400 })
     return errorResponse(error, 'Failed to dispatch soul-builder')
   }
 }

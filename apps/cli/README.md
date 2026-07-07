@@ -35,34 +35,57 @@ The launcher pins the repo it manages via `AEON_REPO_ROOT`, so `aeon` works from
 any directory. It uses your authenticated `gh` CLI for the commands that touch
 GitHub (`runs`, `secrets`).
 
-## Commands (Phase 1 — read-only)
+## Commands
+
+### Read
 
 | Command | What it shows |
 |---|---|
-| `aeon skills ls [--enabled] [--pack <k>]` | The skill roster with live enabled/schedule/pack state |
-| `aeon skills <name>` | One skill's detail (var, model, harness, requires, mcp) |
-| `aeon runs ls [--limit <n>]` | Recent Aeon-launched workflow runs |
-| `aeon runs logs <id>` | A run's Run-step output + `## Summary` block |
-| `aeon secrets ls [--set] [--unset]` | The credential vault — names + set-state, **never values** |
-| `aeon config show` | Top-level `aeon.yml` settings (model, harness, gateway, repo) |
-| `aeon memory [logs\|topics\|issues\|search] …` | Browse the agent's persistent memory |
+| `aeon skills ls [--enabled] [--pack <k>]` · `aeon skills <name>` | roster + per-skill detail |
+| `aeon runs ls [--limit <n>]` · `aeon runs logs <id>` | recent runs + a run's Run-step/`## Summary` |
+| `aeon secrets ls [--set] [--unset]` | credential vault — names + set-state, **never values** |
+| `aeon config show` | model / harness / gateway / repo from `aeon.yml` |
+| `aeon memory [logs\|topics\|issues\|search] …` | the agent's persistent memory |
+| `aeon packs ls` | first-party + community skill packs |
+| `aeon mcp ls` · `aeon mcp catalog` | configured MCP servers + the featured catalog |
+| `aeon strategy show` · `aeon soul show` | `STRATEGY.md` · `soul/SOUL.md` + `STYLE.md` |
 
-Add `--json` to any command for machine-readable output. Every command supports
-`--help`. Exit code is non-zero on error.
+### Write
 
-## Roadmap
+These edit `aeon.yml` / `.mcp.json` (commit + **push to `origin`**, so scheduled
+runs pick the change up), call `gh` (secrets/auth), or dispatch a workflow.
 
-- **Phase 2 (mutating):** `skills enable/disable/schedule/set/rm`, `skills run`
-  (dispatches `gh workflow run aeon.yml`), `secrets set/rm`, `auth`, `sync`.
-- **Phase 3:** `strategy`, `soul`, `packs`, `mcp`, `telegram`.
+| Command | Effect |
+|---|---|
+| `aeon skills enable\|disable <name>` | toggle a skill in `aeon.yml` |
+| `aeon skills schedule <name> "<cron>"` | set its schedule |
+| `aeon skills set <name> [--var\|--model\|--harness]` | set per-skill fields |
+| `aeon skills rm <name> --yes` | delete the skill dir + config entry |
+| `aeon skills run <name> [--var\|--model]` | dispatch a run (`gh workflow run aeon.yml`) |
+| `aeon secrets set <NAME> --stdin` · `aeon secrets rm <NAME>` | manage secrets via `gh` |
+| `aeon auth --oauth \| --key <k> [--provider\|--base-url]` | set Claude auth |
+| `aeon sync [--status]` | commit + push local changes |
+| `aeon config set model\|harness\|gateway <v>` | set top-level config |
+| `aeon strategy set --stdin\|--file` · `aeon strategy build "<goal>"` | write / regenerate STRATEGY.md |
+| `aeon soul build [--handle\|--name\|--links]` | dispatch soul-builder |
+| `aeon packs install <owner/repo> [slugs…]` | install a community pack (auto-merging PR) |
+| `aeon mcp add <slug> \| <name> <url>` · `aeon mcp rm <name>` | edit `.mcp.json` |
+| `aeon telegram register` | re-register the bot `/` command menu |
+
+Add `--json` to any command for machine-readable output, `--dry-run` to any
+**write** to preview it without touching anything, and `--help` per command.
+Exit code is non-zero on error.
 
 ## How it reuses the dashboard
 
-- Pure lib imported directly: `config.ts`, `gh.ts`, `github.ts`, `frontmatter.ts`,
-  `memory.ts`, `skills.ts`, `runs.ts`, `secrets-catalog.ts`, `types.ts`.
-- The route-embedded logic the dashboard used to inline — the credential catalog,
-  the run event-filter, and the skills⨯catalog merge — was lifted into
-  `apps/dashboard/lib/{secrets-catalog,runs,skills}.ts`. The dashboard routes now
-  call those too, so there is no duplicated logic to drift.
+- Every command imports `apps/dashboard/lib` directly — `config.ts`, `gh.ts`,
+  `github.ts`, `frontmatter.ts`, `memory.ts`, `gateway.ts`, `auth-provider.ts`,
+  `mcp-catalog.ts`, `types.ts`.
+- Route-embedded logic was lifted into shared lib so the dashboard routes **and**
+  the CLI call the same functions (no duplication to drift):
+  `skills.ts` (roster merge), `runs.ts` (run filter + log parsing),
+  `secrets-catalog.ts` (credential catalog + set/delete side-effects),
+  `run-skill.ts` (dispatch), `builders.ts` (strategy/soul briefs), `sync.ts`
+  (git), `auth.ts` (auth flow), `packs.ts` (pack join). Ten routes now wrap these.
 - `apps/dashboard/lib/gh.ts` honours `AEON_REPO_ROOT` so the shared lib is
   location-independent (unset = the dashboard's original cwd-relative behaviour).
