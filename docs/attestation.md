@@ -61,7 +61,9 @@ right after it — see [`docs/CORE.md`](CORE.md) for the full run loop:
         │
   Resolve attestation gate  → attest=true|false ← is THIS run attested?
         │
-  Attest skill execution    → Sigstore + Rekor  ← only if the gate opens
+  Build run manifest        → output/.attest-X.json ← model/mode/trigger + output digest
+        │
+  Attest skill execution    → Sigstore + Rekor  ← signs output + manifest (multi-subject)
         │
   Analyze / notify-jsonrender / commit …        ← unchanged
 ```
@@ -187,6 +189,29 @@ Browse all attestations under **Actions → Attestations**, list them with
 `gh attestation list --repo <owner>/<repo>`, or find the entry in the public
 Rekor log.
 
+### The run manifest
+
+Every attested run also produces a small JSON **run manifest**
+(`output/.attest-${SKILL}.json`) that binds the Aeon-specific facts the raw
+provenance doesn't carry — **model, capability mode, trigger** — plus a `sha256`
+of the output. It's signed in the *same* attestation as the output (a
+multi-subject attestation), so it costs no extra Rekor entry and doesn't change
+the command above: `gh attestation verify output/.chains/<skill>.md` still works.
+
+To read the richer metadata, verify the manifest instead and inspect its bytes
+(it's committed alongside the output):
+
+```bash
+gh attestation verify output/.attest-<skill>.json --repo <owner>/<repo>
+cat output/.attest-<skill>.json
+# { "skill": "...", "model": "claude-opus-4-8", "mode": "write",
+#   "trigger": "schedule", "commit": "<sha>", "run_id": "<id>",
+#   "output": { "path": "output/.chains/<skill>.md", "sha256": "<digest>" } }
+```
+
+Because both are subjects of the one attestation, the manifest's `output.sha256`
+also lets you cross-check the output bytes without a second verify.
+
 ### Worked example (validated)
 
 A real `github-trending` run on a public test instance, attested via the
@@ -208,30 +233,9 @@ The signer + commit are the guarantee: those exact bytes came from the unmodifie
 ## Optional enhancements
 
 None are required for correctness — add them if the extra rigor or presentation
-is worth it to you.
-
-### Attest the *run*, not just the file (run manifest)
-
-To bind model / mode / trigger / commit into the attested *subject* itself
-(rather than relying on the provenance predicate alone), build a small manifest
-from data Aeon already has and attest **that** instead of the raw output. Add a
-step before the attest step that writes a JSON manifest —
-
-```json
-{
-  "skill":   "crypto-scan",
-  "model":   "claude-opus-4-8",
-  "mode":    "write",
-  "trigger":  "schedule",
-  "commit":  "<GITHUB_SHA>",
-  "run_id":  "<GITHUB_RUN_ID>",
-  "output":  { "path": "output/.chains/crypto-scan.md", "sha256": "<digest>" }
-}
-```
-
-— and point `subject-path` at the manifest. To verify: verify the manifest, then
-re-hash the output and check it against the manifest's `output.sha256` — a
-two-link chain from workflow identity → manifest → output bytes.
+is worth it to you. (The **run manifest** — binding model/mode/trigger into the
+signed statement — is *not* on this list: it ships by default, see
+[The run manifest](#the-run-manifest) above.)
 
 ### Attest inbound & chained runs too
 

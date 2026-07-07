@@ -711,14 +711,50 @@ jobs:
           echo "attest=$ATTEST" >> "$GITHUB_OUTPUT"
           echo "::notice::attestation gate for ${SKILL_NAME}: attest=$ATTEST"
 
+      - name: Build run manifest
+        id: manifest
+        if: steps.attest-gate.outputs.attest == 'true'
+        env:
+          SKILL_NAME: ${{ steps.skill.outputs.name }}
+          SKILL_MODEL: ${{ steps.run.outputs.SKILL_MODEL }}
+        run: |
+          set -euo pipefail
+          # Bind Aeon-specific run facts (model, capability mode, trigger, commit)
+          # into a manifest that also hashes the output. Attested alongside the
+          # output itself (multi-subject), so `gh attestation verify <output>`
+          # still works AND the manifest carries the richer provenance.
+          SKILL="${SKILL_NAME}"
+          OUT="output/.chains/${SKILL}.md"
+          MODE="$(bash scripts/skill_mode.sh mode "$SKILL")"
+          DIGEST="$(sha256sum "$OUT" | cut -d' ' -f1)"
+          MANIFEST="output/.attest-${SKILL}.json"
+          jq -n \
+            --arg skill   "$SKILL" \
+            --arg model   "$SKILL_MODEL" \
+            --arg mode    "$MODE" \
+            --arg trigger "${GITHUB_EVENT_NAME:-}" \
+            --arg commit  "${GITHUB_SHA:-}" \
+            --arg run_id  "${GITHUB_RUN_ID:-}" \
+            --arg path    "$OUT" \
+            --arg sha     "$DIGEST" \
+            '{skill:$skill, model:$model, mode:$mode, trigger:$trigger,
+              commit:$commit, run_id:$run_id,
+              output:{path:$path, sha256:$sha}}' > "$MANIFEST"
+          echo "path=$MANIFEST" >> "$GITHUB_OUTPUT"
+          echo "::notice::run manifest for ${SKILL}: model=${SKILL_MODEL} mode=${MODE} output_sha256=${DIGEST}"
+
       - name: Attest skill execution
         if: steps.attest-gate.outputs.attest == 'true'
         # Pinned to the current major per this repo's supply-chain convention
         # (checkout@v7, setup-node@v6). Latest major confirmed at:
         # https://github.com/actions/attest-build-provenance/releases
+        # Multi-subject: one attestation covering both the output bytes and the
+        # run manifest (subject-path accepts a newline-separated list).
         uses: actions/attest-build-provenance@v4
         with:
-          subject-path: output/.chains/${{ steps.skill.outputs.name }}.md
+          subject-path: |
+            output/.chains/${{ steps.skill.outputs.name }}.md
+            output/.attest-${{ steps.skill.outputs.name }}.json
 
       - name: Analyze skill output
         id: analyze
