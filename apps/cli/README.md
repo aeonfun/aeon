@@ -20,11 +20,16 @@ No separate setup for the repo owner — the launcher self-installs a tiny runti
 (`tsx` + `yaml`, ~12MB) into `apps/cli/node_modules` on first run. It does **not**
 require the full dashboard app to be installed.
 
+The shortest way to run it is the **repo-root `./aeon`**: bare `./aeon` launches
+the web dashboard, and `./aeon <command> …` runs this CLI.
+
 ```sh
-./apps/cli/aeon --help
+./aeon skills ls               # ← same as ./apps/cli/aeon skills ls
+./aeon skills disable heartbeat --dry-run
+./aeon                         # (no args) launches the dashboard
 ```
 
-Put it on your `PATH` as `aeon`:
+Or put it on your `PATH` as `aeon` to drop the `./`:
 
 ```sh
 ln -s "$PWD/apps/cli/aeon" /usr/local/bin/aeon   # or: (cd apps/cli && npm link)
@@ -32,8 +37,9 @@ aeon skills ls
 ```
 
 The launcher pins the repo it manages via `AEON_REPO_ROOT`, so `aeon` works from
-any directory. It uses your authenticated `gh` CLI for the commands that touch
-GitHub (`runs`, `secrets`).
+any directory — and you can set `AEON_REPO_ROOT` yourself to target a *different*
+Aeon checkout. It uses your authenticated `gh` CLI for the commands that touch
+GitHub (`runs`, `secrets`, `auth`, `skills run`, …).
 
 ## Commands
 

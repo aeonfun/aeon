@@ -15,8 +15,9 @@ DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"   # apps/cli
 REPO_ROOT="$(cd "$DIR/../.." && pwd)"
 
 # The shared lib computes REPO_ROOT from cwd (it's built for the dashboard, which
-# runs from apps/dashboard). Pin it explicitly so the CLI is cwd-independent.
-export AEON_REPO_ROOT="$REPO_ROOT"
+# runs from apps/dashboard). Pin it to this checkout so the CLI is cwd-independent
+# — but honour an operator-set AEON_REPO_ROOT so `aeon` can target another Aeon repo.
+export AEON_REPO_ROOT="${AEON_REPO_ROOT:-$REPO_ROOT}"
 
 TSX="$DIR/node_modules/.bin/tsx"
 

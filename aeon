@@ -4,6 +4,13 @@ set -euo pipefail
 DIR="$(cd "$(dirname "$0")" && pwd)"
 DASHBOARD="$DIR/apps/dashboard"
 
+# `./aeon` with no args launches the web dashboard (below). `./aeon <command> …`
+# is the non-interactive CLI — delegate straight to it (it has its own, lighter
+# preflight, so read-only commands work without gh). See apps/cli/.
+if [ "$#" -gt 0 ]; then
+  exec "$DIR/apps/cli/aeon" "$@"
+fi
+
 # Preflight: the dashboard's /api/* routes shell out to `gh` for secrets,
 # workflow runs, and auth. Without an authenticated gh CLI nothing works,
 # and the failure shows up much later as a 503 in the Authenticate modal.
