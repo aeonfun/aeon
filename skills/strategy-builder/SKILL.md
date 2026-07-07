@@ -2,7 +2,7 @@
 type: Skill
 name: strategy-builder
 category: core
-description: Draft STRATEGY.md from a goal — read the operator's brief (goal text, repo, links) plus the repo README + memory, then write a tight north-star/priorities/audience/constraints strategy that every skill reads on every run.
+description: Draft STRATEGY.md from a goal - read the operator's brief (goal, repo, links) plus the repo README and memory, then write a tight north-star/priorities/audience/constraints strategy.
 schedule: "workflow_dispatch"
 commits: true
 permissions:

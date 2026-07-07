@@ -2,7 +2,7 @@
 type: Skill
 name: Skill Repair
 category: evolution
-description: Diagnose and fix failing or degraded skills automatically — systemic-first triage, per-category playbooks, verification plan
+description: Diagnose and fix failing or degraded skills automatically - systemic-first triage, per-category playbooks, and a verification plan
 var: ""
 tags: [meta, dev]
 depends_on: [skill-health]

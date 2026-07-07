@@ -2,7 +2,7 @@
 type: Skill
 name: Spawn Instance
 category: core
-description: Clone this Aeon agent into a new GitHub repo — fork, configure skills, validate, register in fleet
+description: Clone this Aeon agent into a new GitHub repo - fork, configure skills, validate, and register in the fleet
 var: ""
 tags: [dev]
 ---

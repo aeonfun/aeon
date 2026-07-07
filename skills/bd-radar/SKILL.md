@@ -2,7 +2,7 @@
 type: Skill
 name: BD Radar
 category: basics
-description: Business-development radar across your product family — find who's building, forking, integrating, and mentioning your products, then rank them into a who-to-talk-to-this-week lead list with a suggested next move per lead
+description: Business-development radar across your product family - find who's building, forking, integrating, and mentioning your products, ranked into a who-to-talk-to-this-week lead list.
 var: ""
 tags: [research, social, ecosystem]
 requires: [XAI_API_KEY?, GH_READ_PAT?]

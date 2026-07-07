@@ -3,7 +3,7 @@ type: Skill
 mode: read-only
 name: GitHub Trending
 category: basics
-description: Curated trending across GitHub repos and the Hugging Face Hub (models, datasets, spaces) — filtered, clustered, and labeled by momentum, with a one-line "why notable" per pick. A source selector routes to either the GitHub repo layer or the HF artifact layer.
+description: Curated trending across GitHub repos and the Hugging Face Hub (models, datasets, spaces) - filtered, clustered, and labeled by momentum with a one-line why-notable per pick.
 var: ""
 tags: [dev, research]
 ---

@@ -2,7 +2,7 @@
 type: Skill
 name: Price Alert
 category: basics
-description: Fire when the tracked token does something — new ATH, sharp 1h move, or operator-set target crossed. Silent on normal days.
+description: Fire when the tracked token does something - new ATH, sharp 1h move, or operator-set target crossed. Silent on normal days.
 var: ""
 tags: [crypto]
 ---

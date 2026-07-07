@@ -3,7 +3,7 @@ type: Skill
 mode: read-only
 name: Investigation Report
 category: crypto
-description: One-shot composite investigation of a Base token — a single report that runs any subset of six onchain-security analyzers (rug-scan, contract-audit, deployer-trace, holder-concentration, honeypot-check, lp-lock) behind a selector and merges them into one at-a-glance verdict. Each check preserves its full standalone logic, so selecting a single check reproduces that analyzer exactly. Keyless core; a Basescan/Etherscan key or custom Base RPC deepens it.
+description: One-shot Base-token investigation - runs any subset of six onchain-security checks (rug-scan, contract-audit, deployer-trace, holder-concentration, honeypot, lp-lock) into one verdict. Keyless core.
 var: ""
 tags: [crypto, security, base]
 requires: [ETHERSCAN_API_KEY?, BASESCAN_KEY?, BASE_RPC_URL?]
