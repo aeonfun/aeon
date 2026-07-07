@@ -75,7 +75,7 @@ function KeyRow({ kref, secret, harness, onGoTo }: { kref: { key: string; option
         </div>
         <button
           onClick={() => onGoTo(kref.key)}
-          className={`text-[11px] font-mono px-2 py-1 shrink-0 uppercase tracking-[0.14em] transition-colors ${isSet ? 'text-eva-green hover:text-aeon-fg' : 'text-primary-40 hover:text-eva-orange'}`}
+          className={`${isSet ? 'btn-mini-go' : 'btn-mini'} shrink-0`}
         >
           {isSet ? '✓ in vault' : providedByHarness ? 'Override →' : 'Set →'}
         </button>
@@ -115,7 +115,7 @@ function McpRow({ mref, installed, onGoTo }: { mref: SkillMcpRef; installed: boo
         </div>
         <button
           onClick={onGoTo}
-          className={`text-[11px] font-mono px-2 py-1 shrink-0 uppercase tracking-[0.14em] transition-colors ${installed ? 'text-eva-green hover:text-aeon-fg' : 'text-primary-40 hover:text-eva-orange'}`}
+          className={`${installed ? 'btn-mini-go' : 'btn-mini'} shrink-0`}
         >
           {installed ? '✓ installed' : 'Install →'}
         </button>
@@ -285,7 +285,7 @@ export function SkillDetail({ skill, runs, model, harness, secrets, mcpServers, 
         action={
           <button
             onClick={() => setEditingSchedule(!editingSchedule)}
-            className="text-[11px] text-primary-40 font-mono uppercase tracking-[0.18em] hover:text-aeon-red transition-colors"
+            className="btn-mini uppercase tracking-[0.18em]"
           >
             {editingSchedule ? 'Cancel' : 'Edit'}
           </button>

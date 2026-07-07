@@ -170,7 +170,7 @@ export function McpPanel({ servers, loading, saving, secrets, busy, onSave, onSe
                 {installed ? (
                   <span className="text-[10px] font-mono uppercase tracking-[0.14em] text-eva-green shrink-0">✓ installed</span>
                 ) : (
-                  <button onClick={() => installFeatured(f)} disabled={saving} className="bg-eva-green text-white text-[11px] px-3 py-1.5 font-mono hover:opacity-90 transition-opacity disabled:opacity-40 shrink-0">Install</button>
+                  <button onClick={() => installFeatured(f)} disabled={saving} className="btn-mini-go shrink-0">Install</button>
                 )}
               </div>
             )
