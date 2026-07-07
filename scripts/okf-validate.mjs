@@ -22,12 +22,9 @@
 //
 // Exit 1 on any §9 hard violation; exit 0 (with `okf-validate: OK`) otherwise.
 
-import { readFileSync, readdirSync } from 'node:fs'
-import { join, relative, basename, dirname } from 'node:path'
-import { fileURLToPath } from 'node:url'
-
-const RESERVED = new Set(['index.md', 'log.md'])
-const CONFIG_PATH = join(dirname(fileURLToPath(import.meta.url)), 'okf-config.json')
+import { readFileSync } from 'node:fs'
+import { relative, basename } from 'node:path'
+import { RESERVED, walk, parseFrontmatter, makeIsExcluded, loadConfig } from './lib/okf.mjs'
 
 // ---- args ----
 const rawArgs = process.argv.slice(2)
@@ -55,7 +52,7 @@ if (explicitRoots.length) {
 } else {
   let cfg = { roots: ['memory/topics'], exclude: [] }
   try {
-    cfg = JSON.parse(readFileSync(CONFIG_PATH, 'utf-8'))
+    cfg = loadConfig()
   } catch {
     /* no config → fall back to the original single root */
   }
@@ -63,38 +60,7 @@ if (explicitRoots.length) {
   exclude = cfg.exclude ?? []
 }
 
-const isExcluded = (p) => exclude.some((ex) => p === ex || p.startsWith(ex + '/'))
-
-// ---- fs walk ----
-function walk(dir) {
-  let out = []
-  let entries
-  try {
-    entries = readdirSync(dir, { withFileTypes: true })
-  } catch {
-    return out
-  }
-  for (const e of entries) {
-    const p = join(dir, e.name)
-    if (isExcluded(p)) continue
-    if (e.isDirectory()) out = out.concat(walk(p))
-    else if (e.isFile() && e.name.endsWith('.md')) out.push(p)
-  }
-  return out
-}
-
-// ---- frontmatter (§4.1: a leading `--- … ---` block; tolerate a BOM) ----
-function parseFrontmatter(content) {
-  const text = content.replace(/^﻿/, '')
-  const m = text.match(/^---[ \t]*\r?\n([\s\S]*?)\r?\n---[ \t]*(?:\r?\n|$)/)
-  if (!m) return null
-  const fields = {}
-  for (const line of m[1].split(/\r?\n/)) {
-    const km = line.match(/^([A-Za-z_][A-Za-z0-9_]*):\s*(.*)$/)
-    if (km) fields[km[1]] = (km[2] ?? '').trim().replace(/^['"]|['"]$/g, '').trim()
-  }
-  return { fields }
-}
+const isExcluded = makeIsExcluded(exclude)
 
 // ---- validate ----
 const errors = []
@@ -104,7 +70,7 @@ const seen = new Set()
 const staleCutoff = staleDays != null ? Date.now() - staleDays * 864e5 : null
 
 for (const root of roots) {
-  for (const file of walk(root)) {
+  for (const file of walk(root, isExcluded)) {
     if (seen.has(file)) continue // roots may nest; validate each file once
     seen.add(file)
     const rel = relative(process.cwd(), file)

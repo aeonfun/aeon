@@ -14,20 +14,18 @@
 //   node scripts/okf-backfill.mjs          # apply
 //   node scripts/okf-backfill.mjs --dry     # preview only
 
-import { readFileSync, writeFileSync, readdirSync } from 'node:fs'
-import { join, relative, basename, dirname } from 'node:path'
-import { fileURLToPath } from 'node:url'
+import { readFileSync, writeFileSync } from 'node:fs'
+import { relative, basename } from 'node:path'
+import { RESERVED, walk, makeIsExcluded, loadConfig } from './lib/okf.mjs'
 
-const RESERVED = new Set(['index.md', 'log.md'])
-const CONFIG_PATH = join(dirname(fileURLToPath(import.meta.url)), 'okf-config.json')
 const dry = process.argv.includes('--dry')
 
-const cfg = JSON.parse(readFileSync(CONFIG_PATH, 'utf-8'))
+const cfg = loadConfig()
 const roots = cfg.roots ?? []
 const exclude = cfg.exclude ?? []
 const rules = cfg.backfill_rules ?? []
 
-const isExcluded = (p) => exclude.some((ex) => p === ex || p.startsWith(ex + '/'))
+const isExcluded = makeIsExcluded(exclude)
 
 // forward-slash relative path from repo root, for rule matching
 const relPath = (p) => relative(process.cwd(), p).split('\\').join('/')
@@ -42,23 +40,6 @@ function ruleType(rel) {
   return null
 }
 
-function walk(dir) {
-  let out = []
-  let entries
-  try {
-    entries = readdirSync(dir, { withFileTypes: true })
-  } catch {
-    return out
-  }
-  for (const e of entries) {
-    const p = join(dir, e.name)
-    if (isExcluded(p)) continue
-    if (e.isDirectory()) out = out.concat(walk(p))
-    else if (e.isFile() && e.name.endsWith('.md')) out.push(p)
-  }
-  return out
-}
-
 const FM_OPEN = /^﻿?(---[ \t]*\r?\n)/
 function hasType(content) {
   const m = content.replace(/^﻿/, '').match(/^---[ \t]*\r?\n([\s\S]*?)\r?\n---/)
@@ -68,7 +49,7 @@ function hasType(content) {
 const changed = []
 const seen = new Set()
 for (const root of roots) {
-  for (const file of walk(root)) {
+  for (const file of walk(root, isExcluded)) {
     if (seen.has(file)) continue
     seen.add(file)
     if (RESERVED.has(basename(file))) continue

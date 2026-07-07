@@ -17,10 +17,10 @@
 //   node scripts/okf-index.mjs [root]           # write <root>/index.md (default memory/topics)
 //   node scripts/okf-index.mjs [root] --check   # exit 1 if <root>/index.md is stale/missing
 
-import { readFileSync, writeFileSync, readdirSync, statSync, existsSync } from 'node:fs'
+import { readFileSync, writeFileSync, existsSync } from 'node:fs'
 import { join, relative, basename } from 'node:path'
+import { RESERVED, walk, parseFrontmatter } from './lib/okf.mjs'
 
-const RESERVED = new Set(['index.md', 'log.md'])
 const OKF_VERSION = '0.1'
 
 const rawArgs = process.argv.slice(2)
@@ -28,45 +28,17 @@ const check = rawArgs.includes('--check')
 const root = rawArgs.find(a => !a.startsWith('--')) ?? 'memory/topics'
 const indexPath = join(root, 'index.md')
 
-function walk(dir) {
-  let out = []
-  let entries
-  try {
-    entries = readdirSync(dir, { withFileTypes: true })
-  } catch {
-    return out
-  }
-  for (const e of entries) {
-    const p = join(dir, e.name)
-    if (e.isDirectory()) out = out.concat(walk(p))
-    else if (e.isFile() && e.name.endsWith('.md')) out.push(p)
-  }
-  return out
-}
-
-function parseFrontmatter(content) {
-  const text = content.replace(/^﻿/, '')
-  const m = text.match(/^---[ \t]*\r?\n([\s\S]*?)\r?\n---[ \t]*(?:\r?\n|$)/)
-  if (!m) return {}
-  const fields = {}
-  for (const line of m[1].split(/\r?\n/)) {
-    const km = line.match(/^([A-Za-z_][A-Za-z0-9_]*):\s*(.*)$/)
-    if (km) fields[km[1]] = (km[2] ?? '').trim().replace(/^['"]|['"]$/g, '').trim()
-  }
-  return fields
-}
-
 // Collect concepts (non-reserved .md) with their type/title/description + a link
 // relative to the bundle root (renders correctly when browsing index.md on GitHub).
 const concepts = []
 for (const file of walk(root)) {
   if (RESERVED.has(basename(file))) continue
-  const fm = parseFrontmatter(readFileSync(file, 'utf-8'))
+  const fields = parseFrontmatter(readFileSync(file, 'utf-8'))?.fields ?? {}
   const rel = relative(root, file).split('\\').join('/')
   concepts.push({
-    type: fm.type || 'Untyped',
-    title: fm.title || basename(file, '.md'),
-    description: fm.description || '',
+    type: fields.type || 'Untyped',
+    title: fields.title || basename(file, '.md'),
+    description: fields.description || '',
     link: rel,
   })
 }
