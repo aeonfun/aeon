@@ -48,14 +48,8 @@ export function TelegramCommandsCard({ tokenSet }: TelegramCommandsCardProps) {
           </div>
           <div className="text-[11px] text-primary-40 font-mono mt-1">
             Enabled skills become Telegram <span className="text-primary-70">/</span> commands - then{' '}
-            <span className="text-primary-70">/skillname</span> runs instantly, no LLM call. They register
-            automatically when you save the bot token; use this to re-sync after toggling skills.
+            <span className="text-primary-70">/skillname</span> runs instantly, no LLM call.
           </div>
-          {!tokenSet && (
-            <p className="text-[11px] text-primary-35 mt-2">
-              Set the bot token above first - commands register automatically once it&apos;s saved.
-            </p>
-          )}
           {status && (
             <p className={`text-[11px] font-mono mt-2 ${status.ok ? 'text-eva-green' : 'text-eva-red/80'}`}>{status.msg}</p>
           )}
@@ -68,7 +62,7 @@ export function TelegramCommandsCard({ tokenSet }: TelegramCommandsCardProps) {
             : 'Set TELEGRAM_BOT_TOKEN first; commands register automatically once it is saved.'}
           className="text-[11px] text-aeon-bg bg-aeon-fg font-mono px-2.5 py-1 hover:opacity-90 transition-opacity disabled:opacity-50 shrink-0"
         >
-          {busy ? 'Registering…' : 'Re-register commands'}
+          {busy ? 'Registering…' : 'Register again'}
         </button>
       </div>
     </div>
