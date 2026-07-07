@@ -39,9 +39,18 @@ jobs:
       - name: Run chain
         env:
           GH_TOKEN: ${{ secrets.GH_GLOBAL || secrets.GITHUB_TOKEN }}
+          _INPUT_CHAIN: ${{ inputs.chain }}
         run: |
           set -euo pipefail
-          CHAIN="${{ inputs.chain }}"
+          # env-bound (not ${{ }}-interpolated) + allowlisted: a chain name is an
+          # aeon.yml chains: key, so it must match ^[a-zA-Z0-9_-]+$. Interpolating
+          # it into the shell source let a crafted value break out and run
+          # arbitrary commands on the runner. (GHSA-h9v2-7m42-33m3)
+          CHAIN="$_INPUT_CHAIN"
+          if ! printf '%s' "$CHAIN" | grep -qE '^[a-zA-Z0-9_-]+$'; then
+            echo "::error::Invalid chain name: must match ^[a-zA-Z0-9_-]+$"
+            exit 1
+          fi
           NOW_ISO=$(date -u +%FT%TZ)
           echo "Running chain: $CHAIN"
 
@@ -287,8 +296,14 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_GLOBAL || secrets.GITHUB_TOKEN }}
           STATE_BACKEND: ${{ vars.STATE_BACKEND }}
+          _INPUT_CHAIN: ${{ inputs.chain }}
         run: |
-          CHAIN="${{ inputs.chain }}"
+          # env-bound + allowlisted, same as the Run chain step. (GHSA-h9v2-7m42-33m3)
+          CHAIN="$_INPUT_CHAIN"
+          if ! printf '%s' "$CHAIN" | grep -qE '^[a-zA-Z0-9_-]+$'; then
+            echo "::error::Invalid chain name: must match ^[a-zA-Z0-9_-]+$"
+            exit 1
+          fi
           NOW_ISO=$(date -u +%FT%TZ)
           STATUS="${CHAIN_STATUS:-failed}"
           STATE_FILE="memory/cron-state.json"

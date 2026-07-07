@@ -346,6 +346,7 @@ jobs:
           SKILL_NAME: ${{ steps.skill.outputs.name }}
           INPUT_MODEL: ${{ inputs.model }}
           INPUT_HARNESS: ${{ inputs.harness }}
+          INPUT_CHAIN_CTX: ${{ inputs.chain_context_file }}
         run: |
           TODAY=$(date -u +%Y-%m-%d)
           export SKILL_NAME
@@ -472,8 +473,21 @@ jobs:
           SKILL_NAME="${{ steps.skill.outputs.name }}"
           VAR="$SKILL_VAR"
 
-          # Build prompt — inject chain context if running as part of a chain
-          CHAIN_CTX="${{ inputs.chain_context_file }}"
+          # Build prompt — inject chain context if running as part of a chain.
+          # env-bound (not ${{ }}-interpolated) + path-contained: the context file
+          # must be a chain-runner artifact under output/.chains/, never an
+          # arbitrary path — otherwise cat would read any file on the runner (e.g.
+          # /proc/self/environ, secrets) into the prompt/logs. (GHSA-cqvj-gr78-24mc)
+          CHAIN_CTX="$INPUT_CHAIN_CTX"
+          if [ -n "$CHAIN_CTX" ]; then
+            case "$CHAIN_CTX" in
+              *..*) echo "::error::chain_context_file must not contain '..'"; exit 1 ;;
+            esac
+            case "$CHAIN_CTX" in
+              output/.chains/*) : ;;
+              *) echo "::error::chain_context_file must be under output/.chains/"; exit 1 ;;
+            esac
+          fi
           if [ -n "$CHAIN_CTX" ] && [ -f "$CHAIN_CTX" ]; then
             CONTEXT=$(cat "$CHAIN_CTX")
             PROMPT="Today is $TODAY.
