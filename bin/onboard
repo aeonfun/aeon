@@ -225,7 +225,7 @@ check_channel() {
 check_channel "Telegram" TELEGRAM_BOT_TOKEN TELEGRAM_CHAT_ID
 check_channel "Discord"  DISCORD_WEBHOOK_URL
 check_channel "Slack"    SLACK_WEBHOOK_URL
-check_channel "Email"    SENDGRID_API_KEY NOTIFY_EMAIL_TO
+check_channel "Email"    RESEND_API_KEY NOTIFY_EMAIL_TO
 
 if [[ ${#channels_found[@]} -ge 1 ]]; then
   joined=$(printf "%s, " "${channels_found[@]}")
@@ -233,7 +233,7 @@ if [[ ${#channels_found[@]} -ge 1 ]]; then
   emit pass "notification channel" "$joined configured" ""
 elif [[ "$channels_unverified" == "true" ]]; then
   emit warn "notification channel" "could not verify (gh not authenticated)" \
-    "Authenticate with 'gh auth login' or check Settings → Secrets for one of: TELEGRAM_BOT_TOKEN+TELEGRAM_CHAT_ID, DISCORD_WEBHOOK_URL, SLACK_WEBHOOK_URL, SENDGRID_API_KEY+NOTIFY_EMAIL_TO."
+    "Authenticate with 'gh auth login' or check Settings → Secrets for one of: TELEGRAM_BOT_TOKEN+TELEGRAM_CHAT_ID, DISCORD_WEBHOOK_URL, SLACK_WEBHOOK_URL, RESEND_API_KEY+NOTIFY_EMAIL_TO."
 else
   emit fail "notification channel" "no channel configured" \
     "Pick one — Telegram is fastest. See README → Notifications for the @BotFather + chat_id walk-through, then: gh secret set TELEGRAM_BOT_TOKEN -R $REPO_SLUG && gh secret set TELEGRAM_CHAT_ID -R $REPO_SLUG"

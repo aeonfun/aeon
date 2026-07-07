@@ -12,10 +12,11 @@
 # workflow runs AFTER Claude finishes, with full env access — does the actual
 # send. Same split as scripts/postprocess-replicate.sh.
 #
-# This is OUTBOUND mail to third-party maintainers. It is deliberately separate
-# from the SendGrid operator-notify channel wired into the "Send pending
-# notifications" workflow step (that one tells the *operator* things; this one
-# tells *maintainers* about their bugs).
+# This is OUTBOUND mail to third-party maintainers. It shares the Resend account
+# with the operator-notify email channel wired into the "Send pending
+# notifications" workflow step, but stays a distinct purpose and from-address:
+# that one tells the *operator* things (RESEND_API_KEY + NOTIFY_EMAIL_TO/_FROM);
+# this one tells *maintainers* about their bugs (RESEND_FROM disclosure sender).
 #
 # CONTRACT with the skill (.pending-email/<slug>.json):
 #   { "draft_path": "memory/pending-disclosures/<file>.md",   # for status flip

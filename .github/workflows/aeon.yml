@@ -340,7 +340,6 @@ jobs:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
           SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
           NOTIFY_EMAIL_TO: ${{ secrets.NOTIFY_EMAIL_TO }}
           NOTIFY_EMAIL_FROM: ${{ vars.NOTIFY_EMAIL_FROM || 'aeon@notifications.aeon.bot' }}
           NOTIFY_EMAIL_SUBJECT_PREFIX: ${{ vars.NOTIFY_EMAIL_SUBJECT_PREFIX || '[Aeon]' }}
@@ -1014,7 +1013,7 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           NOTIFY_EMAIL_TO: ${{ secrets.NOTIFY_EMAIL_TO }}
           NOTIFY_EMAIL_FROM: ${{ vars.NOTIFY_EMAIL_FROM || 'aeon@notifications.aeon.bot' }}
           NOTIFY_EMAIL_SUBJECT_PREFIX: ${{ vars.NOTIFY_EMAIL_SUBJECT_PREFIX || '[Aeon]' }}
@@ -1073,6 +1072,19 @@ jobs:
               curl -sf -X POST "$SLACK_WEBHOOK_URL" \
                 -H "Content-Type: application/json" \
                 -d "$(jq -n --arg text "$MSG" '{text: $text}')" > /dev/null 2>&1 || true
+            fi
+            # Email (Resend) — same key as the vuln-disclosure sender
+            if [ -n "${RESEND_API_KEY:-}" ] && [ -n "${NOTIFY_EMAIL_TO:-}" ]; then
+              EMAIL_FROM="${NOTIFY_EMAIL_FROM:-aeon@notifications.aeon.bot}"
+              EMAIL_SUBJECT="${NOTIFY_EMAIL_SUBJECT_PREFIX:-[Aeon]} ${SKILL_NAME:-notification}"
+              EMAIL_HTML=$(printf '%s' "$MSG" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g')
+              EMAIL_HTML="<html><body><pre style=\"font-family:monospace;white-space:pre-wrap;\">${EMAIL_HTML}</pre></body></html>"
+              curl -sf -X POST "https://api.resend.com/emails" \
+                -H "Authorization: Bearer ${RESEND_API_KEY}" \
+                -H "Content-Type: application/json" \
+                -d "$(jq -n --arg from "$EMAIL_FROM" --arg to "$NOTIFY_EMAIL_TO" --arg subject "$EMAIL_SUBJECT" \
+                      --arg html "$EMAIL_HTML" --arg text "$MSG" \
+                      '{from:$from, to:[$to], subject:$subject, html:$html, text:$text}')" > /dev/null 2>&1 || true
             fi
           done
           rm -rf .pending-notify

@@ -490,7 +490,7 @@ When Arm A finds an exploitable **code** flaw (not a public dep CVE) in a repo t
 
 This is **fully autonomous** (operator chose this): an armed draft is sent without waiting for a human. That makes the **arming gate the only safeguard**, so this arm is conservative — it queues *only* drafts that pass every check below, and the post-send notification tells the operator exactly what went out.
 
-This is **outbound mail to third parties**. It is unrelated to the SendGrid operator-notify channel (which mails *the operator*). Do not conflate them.
+This is **outbound mail to third parties**. It shares the Resend account with the operator-notify email channel (which mails *the operator*) but is a distinct purpose and from-address. Do not conflate them.
 
 ### Eligibility — a draft is queued ONLY if ALL of these hold
 

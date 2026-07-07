@@ -31,7 +31,6 @@ const DOMAINS: Record<string, string> = {
   SLACK_BOT_TOKEN: 'slack.com',
   SLACK_CHANNEL_ID: 'slack.com',
   SLACK_WEBHOOK_URL: 'slack.com',
-  SENDGRID_API_KEY: 'sendgrid.com',
   // Skill keys
   XAI_API_KEY: 'x.ai',
   COINGECKO_API_KEY: 'coingecko.com',

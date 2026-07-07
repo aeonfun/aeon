@@ -256,19 +256,22 @@ if [ -n "${SLACK_WEBHOOK_URL:-}" ]; then
   fi
 fi
 
-# Email via SendGrid (unchanged)
-if [ -n "${SENDGRID_API_KEY:-}" ] && [ -n "${NOTIFY_EMAIL_TO:-}" ]; then
+# Email via Resend (operator-notify channel — same provider/key as the vuln
+# disclosure sender in scripts/postprocess-email.sh, one Resend account for all
+# outbound mail). Best-effort inline; the workflow's "Send pending notifications"
+# step re-delivers via Resend if this is blocked in the sandbox.
+if [ -n "${RESEND_API_KEY:-}" ] && [ -n "${NOTIFY_EMAIL_TO:-}" ]; then
   FROM="${NOTIFY_EMAIL_FROM:-aeon@notifications.aeon.bot}"
   PREFIX="${NOTIFY_EMAIL_SUBJECT_PREFIX:-[Aeon]}"
   SUBJECT="$PREFIX ${TITLE:-${SKILL_NAME:-notification}}"
   HTML_BODY=$(printf '%s' "$PLAIN" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g')
   HTML_BODY="<html><body><pre style=\"font-family:monospace;white-space:pre-wrap;\">${HTML_BODY}</pre></body></html>"
-  curl -sf -X POST "https://api.sendgrid.com/v3/mail/send" \
-    -H "Authorization: Bearer ${SENDGRID_API_KEY}" \
+  curl -sf -X POST "https://api.resend.com/emails" \
+    -H "Authorization: Bearer ${RESEND_API_KEY}" \
     -H "Content-Type: application/json" \
     -d "$(jq -n --arg from "$FROM" --arg to "$NOTIFY_EMAIL_TO" --arg subject "$SUBJECT" \
           --arg html "$HTML_BODY" --arg text "$PLAIN" \
-          '{personalizations:[{to:[{email:$to}]}],from:{email:$from},subject:$subject,content:[{type:"text/plain",value:$text},{type:"text/html",value:$html}]}')" > /dev/null 2>&1 || true
+          '{from:$from, to:[$to], subject:$subject, html:$html, text:$text}')" > /dev/null 2>&1 && DELIVERED=true || true
 fi
 
 # json-render channel — save raw message for post-run conversion

@@ -27,8 +27,7 @@ export const BUILTIN_SECRETS: Omit<Secret, 'isSet'>[] = [
   { name: 'SLACK_BOT_TOKEN', group: 'Slack', description: 'Slack bot OAuth token' },
   { name: 'SLACK_CHANNEL_ID', group: 'Slack', description: 'Channel ID for messages' },
   { name: 'SLACK_WEBHOOK_URL', group: 'Slack', description: 'Webhook URL for notifications' },
-  { name: 'SENDGRID_API_KEY', group: 'Email', description: 'SendGrid API key (SendGrid is a Twilio product) - keys & API reference at www.twilio.com/docs/sendgrid/api-reference' },
-  { name: 'NOTIFY_EMAIL_TO', group: 'Email', description: 'Recipient email address for skill notifications' },
+  { name: 'NOTIFY_EMAIL_TO', group: 'Email', description: 'Recipient address for the email notification channel - pairs with RESEND_API_KEY to email you (the operator) every skill notification, alongside Telegram/Discord/Slack. Optional repo variables: NOTIFY_EMAIL_FROM (default aeon@notifications.aeon.bot, must be a Resend-verified sender), NOTIFY_EMAIL_SUBJECT_PREFIX (default [Aeon]).' },
   // Observability - optional. Set both keys to stream every Claude Code run to a
   // Langfuse project as a trace (LLM calls, tokens, cost, prompts/responses) via
   // OpenTelemetry. No-op when unset. Region/host + toggles are repo VARIABLES:
@@ -47,7 +46,7 @@ export const BUILTIN_SECRETS: Omit<Secret, 'isSet'>[] = [
   { name: 'BANKR_API_KEY', group: 'Skill Keys', description: 'Bankr Wallet API key (X-API-Key) - token distribution skills (distribute-tokens). Enable at bankr.bot/api-keys' },
   { name: 'VERCEL_TOKEN', group: 'Skill Keys', description: 'Vercel access token - deploy skills (deploy-prototype). Create at vercel.com/account/settings/tokens' },
   { name: 'REPLICATE_API_TOKEN', group: 'Skill Keys', description: 'Replicate API token - hero image generation (article). Get one at replicate.com/account/api-tokens' },
-  { name: 'RESEND_API_KEY', group: 'Skill Keys', description: 'Resend API key - emailed digests & security disclosures (send-email, heartbeat, vuln-scanner). Create at resend.com' },
+  { name: 'RESEND_API_KEY', group: 'Skill Keys', description: 'Resend API key - powers ALL outbound email: the operator email-notification channel (with NOTIFY_EMAIL_TO), emailed digests, and security disclosures (send-email, heartbeat, vuln-scanner). Create at resend.com' },
   { name: 'ADMANAGE_API_KEY', group: 'Skill Keys', description: 'AdManage API key - ad-campaign skill (schedule-ads). From admanage.ai/api-docs' },
   { name: 'GH_GLOBAL', group: 'Skill Keys', description: 'GitHub PAT with cross-repo WRITE access - cross-repo skills & deploys (changelog push-to, feature external, deploy-prototype, vuln-scanner). Auto-promoted to the run\'s GITHUB_TOKEN. Create one at github.com/settings/tokens' },
   { name: 'GH_READ_PAT', group: 'Skill Keys', description: 'GitHub read-only PAT - optional. Used only by prefetch steps to enrich cross-repo / private-repo reads (bd-radar); kept separate from the write-capable GH_GLOBAL for least privilege. Without it those skills fall back to public data. Create a read-only token at github.com/settings/tokens' },

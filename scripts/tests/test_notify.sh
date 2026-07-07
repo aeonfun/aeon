@@ -8,7 +8,7 @@ NOTIFY="scripts/notify.sh"
 
 # Channels unset → everything falls back to .pending-notify
 unset TELEGRAM_BOT_TOKEN TELEGRAM_CHAT_ID DISCORD_WEBHOOK_URL SLACK_WEBHOOK_URL \
-      SENDGRID_API_KEY NOTIFY_EMAIL_TO JSONRENDER_ENABLED NOTIFY_MIN_SEVERITY 2>/dev/null
+      RESEND_API_KEY NOTIFY_EMAIL_TO JSONRENDER_ENABLED NOTIFY_MIN_SEVERITY 2>/dev/null
 
 WORK=".pending-notify"
 fail=0

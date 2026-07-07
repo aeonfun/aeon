@@ -229,12 +229,12 @@ Set the secret → channel activates. No code changes needed.
 | Telegram | `TELEGRAM_BOT_TOKEN` + `TELEGRAM_CHAT_ID` | Same |
 | Discord | `DISCORD_WEBHOOK_URL` | `DISCORD_BOT_TOKEN` + `DISCORD_CHANNEL_ID` |
 | Slack | `SLACK_WEBHOOK_URL` | `SLACK_BOT_TOKEN` + `SLACK_CHANNEL_ID` |
-| Email | `SENDGRID_API_KEY` + `NOTIFY_EMAIL_TO` | - |
+| Email | `RESEND_API_KEY` + `NOTIFY_EMAIL_TO` | - |
 
 **Telegram:** Create a bot with @BotFather → get token + chat ID. Saving the bot token in the dashboard **auto-registers** the slash-command menu (`/skillname` dispatches instantly, no LLM) — no manual step; a **Re-register commands** button re-syncs it after you toggle skills, and every notification carries **Run again / Schedule weekly** quick-action buttons, deep links, and stateless follow-up questions. Full guide: [docs/telegram-commands.md](../docs/telegram-commands.md).
 **Discord:** Outbound: Channel → Integrations → Webhooks → Create. Inbound: discord.com/developers → bot → add `channels:history` scope → copy token + channel ID.
 **Slack:** api.slack.com → Create App → Incoming Webhooks → install → copy URL. Inbound: add `channels:history`, `reactions:write` scopes → copy bot token + channel ID.
-**Email:** sendgrid.com/settings/api_keys → Create API Key (Mail Send permission) → add as `SENDGRID_API_KEY`, set `NOTIFY_EMAIL_TO`. Optional repo variables: `NOTIFY_EMAIL_FROM` (default `aeon@notifications.aeon.bot`), `NOTIFY_EMAIL_SUBJECT_PREFIX` (default `[Aeon]`).
+**Email:** resend.com/api-keys → Create API Key → add as `RESEND_API_KEY`, set `NOTIFY_EMAIL_TO` to your inbox. Optional repo variables: `NOTIFY_EMAIL_FROM` (default `aeon@notifications.aeon.bot` — **must be a domain/sender verified in Resend**), `NOTIFY_EMAIL_SUBJECT_PREFIX` (default `[Aeon]`). This is the same `RESEND_API_KEY` used for security disclosures, so one Resend key powers all of Aeon's outbound email.
 
 **Restrict who can command the agent (inbound):** Telegram is already scoped to a single `TELEGRAM_CHAT_ID`. For Discord and Slack, set the optional repo variables `DISCORD_ALLOWED_AUTHOR_ID` / `SLACK_ALLOWED_USER_ID` (or same-named secrets) to the authorized sender's user ID — inbound messages from anyone else in the channel are then ignored. **Leaving them unset processes commands from any non-bot member of the channel**, so set them whenever the channel isn't private to you.
 
