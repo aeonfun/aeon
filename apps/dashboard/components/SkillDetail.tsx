@@ -132,6 +132,9 @@ export function SkillDetail({ skill, runs, model, harness, secrets, mcpServers, 
 
   const skillRuns = runs.filter(r => r.workflow.toLowerCase().includes(skill.name))
   const st = getSkillStatus(skill.name, skill.enabled, runs)
+  // "On demand" skills carry no cron — they only fire on a manual Run now / dispatch.
+  const isManual = skill.schedule === 'workflow_dispatch'
+  const statusTextCls = st.color === 'green' ? 'text-eva-green' : st.color === 'orange' ? 'text-eva-amber' : st.color === 'red' ? 'text-eva-red' : 'text-primary-50'
 
   // Join the skill's declared `requires` against the central credential registry
   // (the same list shown in Settings → Access Keys) for descriptions + set state.
@@ -165,9 +168,13 @@ export function SkillDetail({ skill, runs, model, harness, secrets, mcpServers, 
         <div className="dither" aria-hidden="true" />
         <div className="relative z-10 px-8 pt-10 pb-8">
           <div className="flex items-center gap-4 mb-4 flex-wrap">
-            <span className="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.18em] text-primary-50">
+            <span className="inline-flex items-center gap-2 text-[11px] font-mono uppercase tracking-[0.18em]">
               <span className={statusDot(st.color)} />
-              {st.label}
+              <span className={statusTextCls}>{st.label}</span>
+              <span className="text-primary-35">·</span>
+              <span className="text-primary-50">
+                {!skill.enabled ? 'Paused' : isManual ? 'On demand' : `Runs ${cronLabel(skill.schedule)}`}
+              </span>
             </span>
           </div>
           <h1 className="font-display uppercase leading-[0.92] tracking-tight text-aeon-fg break-words"
@@ -178,13 +185,21 @@ export function SkillDetail({ skill, runs, model, harness, secrets, mcpServers, 
             <p className="mt-4 max-w-2xl text-sm text-primary-70 leading-relaxed">{skill.description}</p>
           )}
 
-          <div className="mt-7 flex items-center gap-3 flex-wrap">
+          <div className="mt-7 flex items-center gap-4 flex-wrap">
             <button
+              role="switch"
+              aria-checked={skill.enabled}
               onClick={() => onToggle(skill.name, !skill.enabled)}
               disabled={!!busy[skill.name]}
-              className={skill.enabled ? 'btn-ghost' : 'btn-solid'}
+              title={skill.enabled ? 'Enabled — click to turn off' : 'Disabled — click to turn on'}
+              className="inline-flex items-center gap-3 group disabled:opacity-50 cursor-target"
             >
-              {skill.enabled ? 'Enabled' : 'Disabled'}
+              <span className={`relative w-12 h-[26px] rounded-full border transition-colors duration-200 ${skill.enabled ? 'bg-eva-green/25 border-eva-green' : 'bg-[rgba(250,250,250,0.05)] border-[rgba(250,250,250,0.22)] group-hover:border-[rgba(250,250,250,0.4)]'}`}>
+                <span className={`absolute top-1/2 -translate-y-1/2 w-[18px] h-[18px] rounded-full transition-all duration-200 ${skill.enabled ? 'left-[26px] bg-eva-green' : 'left-[3px] bg-[rgba(250,250,250,0.5)]'}`} />
+              </span>
+              <span className={`font-display text-sm uppercase tracking-[0.14em] transition-colors ${skill.enabled ? 'text-eva-green' : 'text-primary-50'}`}>
+                {skill.enabled ? 'Enabled' : 'Disabled'}
+              </span>
             </button>
             <button
               onClick={() => onRun(skill.name, skill.var, skill.model)}
@@ -220,8 +235,13 @@ export function SkillDetail({ skill, runs, model, harness, secrets, mcpServers, 
             <ScheduleEditor cron={skill.schedule} onSave={(c) => { onUpdateSchedule(skill.name, c); setEditingSchedule(false) }} />
           </div>
         ) : (
-          <div className="font-display uppercase tracking-tight text-aeon-fg" style={{ fontSize: 'clamp(24px, 3vw, 36px)' }}>
-            {cronLabel(skill.schedule)}
+          <div className="flex items-center gap-4 flex-wrap">
+            <span className={`font-display uppercase tracking-tight ${skill.enabled && !isManual ? 'text-aeon-fg' : 'text-primary-50'}`} style={{ fontSize: 'clamp(24px, 3vw, 36px)' }}>
+              {cronLabel(skill.schedule)}
+            </span>
+            <span className={`inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-[0.16em] px-2.5 py-1 border ${!skill.enabled ? 'text-eva-amber border-eva-amber/40' : isManual ? 'text-primary-50 border-[rgba(250,250,250,0.2)]' : 'text-eva-green border-eva-green/40'}`}>
+              {!skill.enabled ? 'Paused while disabled' : isManual ? 'Manual only' : 'Runs automatically'}
+            </span>
           </div>
         )}
       </Section>
@@ -314,23 +334,30 @@ export function SkillDetail({ skill, runs, model, harness, secrets, mcpServers, 
         }
       >
         {editingVar ? (
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap">
             <input
               type="text"
               value={varDraft}
               onChange={(e) => setVarDraft(e.target.value)}
               onKeyDown={(e) => { if (e.key === 'Enter') { onUpdateVar(skill.name, varDraft); setEditingVar(false) } }}
               placeholder="e.g. AI, bitcoin, owner/repo"
+              autoFocus
               className={inputCls}
             />
-            <button onClick={() => { onUpdateVar(skill.name, varDraft); setEditingVar(false) }} className="btn-solid">Save</button>
+            <button onClick={() => { onUpdateVar(skill.name, varDraft); setEditingVar(false) }} className="btn-mini-go">Save</button>
           </div>
         ) : skill.var ? (
-          <div className="font-display uppercase tracking-tight text-aeon-fg" style={{ fontSize: 'clamp(22px, 2.4vw, 30px)' }}>
-            &ldquo;{skill.var}&rdquo;
-          </div>
+          <button onClick={() => { setEditingVar(true); setVarDraft(skill.var) }} className="group flex items-center gap-3 text-left cursor-target" title="Click to edit this input">
+            <span className="font-display uppercase tracking-tight text-aeon-fg" style={{ fontSize: 'clamp(22px, 2.4vw, 30px)' }}>
+              &ldquo;{skill.var}&rdquo;
+            </span>
+            <span className="btn-mini opacity-0 group-hover:opacity-100 transition-opacity">Edit</span>
+          </button>
         ) : (
-          <div className="text-sm text-primary-35 font-mono uppercase tracking-[0.18em]">Defaults settings</div>
+          <button onClick={() => { setEditingVar(true); setVarDraft('') }} className="group w-full flex items-center gap-3 border border-dashed border-[rgba(250,250,250,0.16)] px-4 py-4 hover:border-aeon-red/40 transition-colors cursor-target">
+            <span className="text-sm text-primary-40 font-mono uppercase tracking-[0.18em] group-hover:text-primary-70 transition-colors">Defaults settings · no custom input</span>
+            <span className="btn-mini-go ml-auto">+ Set input</span>
+          </button>
         )}
       </Section>
 
