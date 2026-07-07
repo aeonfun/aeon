@@ -2,7 +2,7 @@
 type: Skill
 name: Article
 category: basics
-description: Write a publication-ready article in one of three angles — a general trending long-form piece (or a single-mechanism technical explainer), a thesis-driven article about a watched repo, or a project-through-a-lens essay. Optionally generate a Replicate hero image with --visual.
+description: Write a publication-ready article in one of three angles - a trending long-form piece, a watched-repo thesis, or a project-through-a-lens essay. Optional Replicate hero image with --visual.
 var: ""
 tags: [content, dev]
 requires: [REPLICATE_API_TOKEN?]

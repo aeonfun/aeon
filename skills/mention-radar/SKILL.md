@@ -2,7 +2,7 @@
 type: Skill
 name: Mention Radar
 category: productivity
-description: Monitor external web and social mentions of the operator's active projects — surface what people are discovering, where they're confused, and where to engage
+description: Monitor external web and social mentions of the operator's active projects - surface what people are discovering, where they're confused, and where to engage
 schedule: "25 7 2/2 * *"
 commits: false
 permissions: []

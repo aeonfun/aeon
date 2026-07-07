@@ -2,7 +2,7 @@
 type: Skill
 name: idea-pipeline
 category: productivity
-description: Execution-gap audit — cross-references the startup idea backlog against shipped skills, prototypes, and cross-repo PRs. Surfaces the top 3 ideas to build next based on narrative fit and operator fit.
+description: Execution-gap audit - cross-references the startup idea backlog against shipped skills, prototypes, and cross-repo PRs, surfacing the top 3 ideas to build next by narrative and operator fit.
 var: ""
 tags: [meta, creative]
 ---

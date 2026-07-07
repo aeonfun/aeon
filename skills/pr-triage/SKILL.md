@@ -2,7 +2,7 @@
 type: Skill
 name: PR Triage
 category: dev
-description: First-touch triage for external pull requests — verdict + label + welcoming comment within minutes of open
+description: First-touch triage for external pull requests - verdict, label, and a welcoming comment within minutes of open
 var: ""
 tags: [dev]
 ---

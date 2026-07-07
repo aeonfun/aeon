@@ -2,7 +2,7 @@
 type: Skill
 name: self-improve
 category: evolution
-description: Improve the agent itself, or audit its recent performance — better skills, prompts, workflows, and config, plus a quality/reliability/memory-hygiene review of what the agent did and what failed
+description: Improve the agent itself, or audit its recent performance - better skills, prompts, workflows, and config, plus a quality/reliability/memory-hygiene review of what it did and what failed
 var: ""
 tags: [meta]
 ---

@@ -2,7 +2,7 @@
 type: Skill
 name: CTRL
 category: crypto
-description: Build on-chain automation workflows on Base via CTRL. Use for recurring or triggered actions — DCA, price-gated swaps, launchpad sniping, whale-follow — that should run autonomously after a single wallet signature. The wallet signs once (EIP-5792 batch), and the CTRL keeper executes every trigger after, bounded by per-swap and per-day caps the user pre-authorized.
+description: Build on-chain automation on Base via CTRL - DCA, price-gated swaps, launchpad sniping, or whale-follow that run autonomously after one EIP-5792 wallet signature, bounded by preset caps.
 var: ""
 tags: [crypto, automation, base, defi]
 capabilities: [external_api, writes_external_host, onchain_writes, sends_notifications]

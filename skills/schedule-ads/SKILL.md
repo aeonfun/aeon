@@ -2,7 +2,7 @@
 type: Skill
 name: Schedule Ads
 category: productivity
-description: Manage paid ads on AdManage.ai from declarative config. Default branch schedules ad launches across Meta/TikTok/Snapchat/Pinterest/LinkedIn (PAUSED by default, never auto-activates live spend); `create` branch provisions Meta campaigns + ad sets (created PAUSED, IDs written back to state so the schedule branch can launch into them).
+description: Manage paid ads on AdManage.ai from declarative config - default schedules launches across Meta/TikTok/Snapchat/Pinterest/LinkedIn (always PAUSED); create provisions Meta campaigns and ad sets.
 var: |
   Selects which flow runs (parse from ${var}):
   - empty / unset (default) → SCHEDULE branch: read config.yaml, pick schedule

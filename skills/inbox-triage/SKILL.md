@@ -2,7 +2,7 @@
 type: Skill
 name: Inbox Triage
 category: dev
-description: Daily GitHub notification inbox triage — surfaces aging vuln PR replies, security advisories, review requests, and mentions that need action
+description: Daily GitHub notification inbox triage - surfaces aging vuln PR replies, security advisories, review requests, and mentions that need action
 var: ""
 tags: [github, security, meta]
 schedule: "30 11 * * *"

@@ -2,7 +2,7 @@
 type: Skill
 name: Changelog
 category: dev
-description: Generate a user-facing changelog from recent commits/PRs across watched repos — write it in-repo (Keep a Changelog format), or with push-to open a cross-repo changelog PR on a marketing/docs website repo
+description: Generate a user-facing changelog from recent commits/PRs across watched repos - write it in-repo (Keep a Changelog format) or open a cross-repo changelog PR on a docs/marketing repo.
 var: ""
 tags: [dev, content, build]
 mode: write

@@ -2,7 +2,7 @@
 type: Skill
 name: Write Tweet
 category: basics
-description: Multi-format tweet studio — standalone drafts (10 across 5 size tiers), a 5–10 tweet thread, or 10 remixes of past tweets, selected via ${var}
+description: Multi-format tweet studio - standalone drafts (10 across 5 size tiers), a 5-10 tweet thread, or 10 remixes of past tweets, selected via ${var}
 var: ""
 tags: [social, content]
 requires: [XAI_API_KEY?]

@@ -2,7 +2,7 @@
 type: Skill
 name: fork-fleet
 category: core
-description: Fork divergence monitor — tracks where the fleet's active forks diverge in CODE (unique commits, new/modified skills, upstream-contribution candidates) and in CONFIG (enable/disable/var/model/schedule decisions vs upstream defaults), and gates notifications on real change
+description: Fork divergence monitor - tracks where the fleet's active forks diverge in CODE (unique commits, new/modified skills) and CONFIG (enable/var/model/schedule vs upstream), gated on real change.
 var: ""
 tags: [dev, meta]
 cron: "0 10 * * 1"
