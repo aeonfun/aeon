@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { ServiceIcon } from './ui/ServiceIcon'
 
 interface LangfuseRegionCardProps {
   // Whether both Langfuse keys are set — drives the "activate the keys" hint.
@@ -65,23 +66,26 @@ export function LangfuseRegionCard({ keysSet }: LangfuseRegionCardProps) {
   }
 
   return (
-    <div className="px-[var(--space-md)] py-[var(--space-sm)]">
-      <div className="flex items-center justify-between gap-3">
-        <div className="min-w-0">
-          <div className="flex items-center gap-2">
-            <span className="font-mono text-xs">🌍 Langfuse region</span>
-            <span className="text-[10px] font-mono uppercase tracking-[0.14em] text-primary-35">LANGFUSE_HOST</span>
+    <div className="group px-[var(--space-md)] py-[var(--space-sm)]">
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex items-start gap-3 min-w-0">
+          <ServiceIcon domain="langfuse.com" className="mt-0.5" />
+          <div className="min-w-0">
+            <div className="flex items-center gap-2">
+              <span className="font-mono text-xs">Langfuse region</span>
+              <span className="text-[10px] font-mono uppercase tracking-[0.14em] text-primary-35">LANGFUSE_HOST</span>
+            </div>
+            <div className="text-[11px] text-primary-40 font-mono">
+              {loading
+                ? 'Loading…'
+                : region === 'custom'
+                  ? `Self-hosted: ${host}. Pick EU/US to switch to Langfuse cloud.`
+                  : keysSet
+                    ? 'Where your traces are sent. Default is EU cloud.'
+                    : 'Where traces will be sent once the keys above are set. Default is EU cloud.'}
+            </div>
+            {error && <div className="text-[11px] text-eva-orange font-mono mt-1">{error}</div>}
           </div>
-          <div className="text-[11px] text-primary-40 font-mono">
-            {loading
-              ? 'Loading…'
-              : region === 'custom'
-                ? `Self-hosted: ${host}. Pick EU/US to switch to Langfuse cloud.`
-                : keysSet
-                  ? 'Where your traces are sent. Default is EU cloud.'
-                  : 'Where traces will be sent once the keys above are set. Default is EU cloud.'}
-          </div>
-          {error && <div className="text-[11px] text-eva-orange font-mono mt-1">{error}</div>}
         </div>
         <div className="flex items-center gap-2 shrink-0">
           {saving && <span className="text-[10px] font-mono text-primary-35">saving…</span>}

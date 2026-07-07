@@ -5,7 +5,7 @@
     {
       "key": "core",
       "name": "Core",
-      "description": "What makes Aeon different from a cron job: it coordinates a fleet of instances, self-configures its own workflows, and keeps itself alive. Shown by default and not removable.",
+      "description": "What makes Aeon different from a cron job: it coordinates a fleet of instances, self-configures its own workflows, and keeps itself alive.",
       "color": "#E5484D",
       "category": "core",
       "default_enabled": ["heartbeat"]
@@ -13,14 +13,14 @@
     {
       "key": "evolution",
       "name": "Evolution",
-      "description": "The self-improvement loop that makes Aeon more than a cron job: it authors new skills from a prompt, evolves and evaluates them, searches for and installs community skills, and monitors + heals its own fleet of skills. Shown by default.",
+      "description": "The self-improvement loop that makes Aeon more than a cron job: it authors new skills from a prompt, evolves and evaluates them, searches for and installs community skills, and monitors + heals its own fleet of skills.",
       "color": "#A855F7",
       "category": "evolution"
     },
     {
       "key": "basics",
       "name": "Basics",
-      "description": "Simple, immediately-runnable skills — point them at a topic, repo, token, or tx and get a useful result with little or no setup. Shown by default alongside Core and Evolution.",
+      "description": "Simple, immediately-runnable skills - point them at a topic, repo, token, or tx and get a useful result with little or no setup.",
       "color": "#30A46C",
       "category": "basics",
       "default_enabled": ["digest"]

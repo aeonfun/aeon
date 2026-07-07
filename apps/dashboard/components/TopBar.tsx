@@ -69,6 +69,14 @@ export function TopBar({ skill, view, repo, model, harness, gateway, hasModelKey
             <option key={m.id} value={m.id} className="bg-aeon-panel text-aeon-fg">{m.label}</option>
           ))}
         </select>
+        <button onClick={onPull} disabled={pulling} className="btn-quiet disabled:opacity-50">
+          {behind > 0 && <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-aeon-red animate-pulse" />}
+          {pulling ? '…' : 'Pull'}
+        </button>
+        <button onClick={onSync} disabled={syncing || !hasChanges} className="btn-quiet disabled:opacity-40">
+          {hasChanges && <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-aeon-green" />}
+          {syncing ? '…' : 'Push'}
+        </button>
         {repo && (
           <a
             href={`https://github.com/${repo}`}
@@ -83,14 +91,6 @@ export function TopBar({ skill, view, repo, model, harness, gateway, hasModelKey
             </svg>
           </a>
         )}
-        <button onClick={onPull} disabled={pulling} className="btn-quiet disabled:opacity-50">
-          {behind > 0 && <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-aeon-red animate-pulse" />}
-          {pulling ? '…' : 'Pull'}
-        </button>
-        <button onClick={onSync} disabled={syncing || !hasChanges} className="btn-quiet disabled:opacity-40">
-          {hasChanges && <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-aeon-green" />}
-          {syncing ? '…' : 'Push'}
-        </button>
       </div>
     </div>
   )

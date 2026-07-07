@@ -35,7 +35,7 @@ function describe(server: McpServer): string {
     const args = Array.isArray(server.args) ? ' ' + (server.args as string[]).join(' ') : ''
     return server.command + args
   }
-  return '—'
+  return '-'
 }
 
 function transportOf(server: McpServer): string {
@@ -138,25 +138,21 @@ export function McpPanel({ servers, loading, saving, secrets, busy, onSave, onSe
       <section className="relative overflow-hidden border border-[rgba(250,250,250,0.10)] bg-aeon-panel">
         <div className="dither" aria-hidden="true" />
         <div className="relative z-10 px-8 pt-10 pb-8">
-          <span className="text-[11px] font-mono uppercase tracking-[0.28em] text-aeon-red inline-flex items-center gap-3">
-            <span className="w-7 h-px bg-aeon-red" />
-            Tools · Model Context Protocol
-          </span>
-          <h1 className="mt-4 font-display uppercase leading-[0.92] tracking-tight text-aeon-fg"
+          <h1 className="font-display uppercase leading-[0.92] tracking-tight text-aeon-fg"
               style={{ fontSize: 'clamp(40px, 6.5vw, 88px)' }}>
             <Scramble text="MCP" />{' '}
             <span className="text-aeon-red"><Scramble text="SERVERS" delay={160} /></span>
           </h1>
           <p className="mt-4 max-w-xl text-sm text-primary-70 leading-relaxed">
             Servers your skills can <span className="text-primary-100">call</span> during a run - GitHub, a database,
-            a paid API. Saved to <span className="font-mono text-primary-100">.mcp.json</span> and loaded on every run.
+            a paid API.
           </p>
         </div>
       </section>
 
       <section className="border-t border-[rgba(250,250,250,0.10)] pt-6">
         <div className="flex items-center gap-3 mb-4">
-          <span className="font-display text-[13px] tracking-[0.18em] text-aeon-red">01 / Featured</span>
+          <span className="font-display text-[13px] tracking-[0.18em] text-aeon-red uppercase">Featured</span>
           <span className="flex-1 h-px bg-[rgba(250,250,250,0.10)]" />
           <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-primary-35">one-click install</span>
         </div>
@@ -184,7 +180,7 @@ export function McpPanel({ servers, loading, saving, secrets, busy, onSave, onSe
 
       <section className="border-t border-[rgba(250,250,250,0.10)] pt-6">
         <div className="flex items-center gap-3 mb-4">
-          <span className="font-display text-[13px] tracking-[0.18em] text-aeon-red">02 / .mcp.json</span>
+          <span className="font-display text-[13px] tracking-[0.18em] text-aeon-red uppercase">.mcp.json</span>
           <span className="flex-1 h-px bg-[rgba(250,250,250,0.10)]" />
           <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-primary-35">{names.length} server{names.length === 1 ? '' : 's'}</span>
         </div>
@@ -283,8 +279,7 @@ export function McpPanel({ servers, loading, saving, secrets, busy, onSave, onSe
                 and the runner wires it into every run automatically. Until set, runs skip MCP rather than fail.
               </p>
             )}
-            <div className="flex items-center justify-between mt-4">
-              <span className="text-[11px] font-mono text-primary-35">writes .mcp.json - then Push to commit</span>
+            <div className="flex items-center justify-end mt-4">
               <div className="flex items-center gap-2">
                 {dirty && <button onClick={() => setDraft(servers)} className="text-[11px] text-primary-40 font-mono px-2 py-2 hover:text-primary-70 transition-colors">Revert</button>}
                 <button onClick={() => onSave(draft)} disabled={!dirty || saving}

@@ -45,7 +45,7 @@ export function TelegramCommandsCard({ tokenSet }: TelegramCommandsCardProps) {
         <span className="text-[10px] font-mono uppercase tracking-[0.14em] text-primary-35">auto</span>
       </div>
       <div className="text-[11px] text-primary-40 font-mono mb-2">
-        Enabled skills become Telegram <span className="text-primary-70">/</span> commands — then{' '}
+        Enabled skills become Telegram <span className="text-primary-70">/</span> commands - then{' '}
         <span className="text-primary-70">/skillname</span> runs instantly, no LLM call. They register
         automatically when you save the bot token; use this to re-sync after toggling skills.
       </div>
@@ -53,7 +53,7 @@ export function TelegramCommandsCard({ tokenSet }: TelegramCommandsCardProps) {
         onClick={register}
         disabled={!tokenSet || busy}
         title={tokenSet
-          ? 'Runs the Setup Telegram Commands workflow — reuses the stored bot token server-side, no pasting.'
+          ? 'Runs the Setup Telegram Commands workflow - reuses the stored bot token server-side, no pasting.'
           : 'Set TELEGRAM_BOT_TOKEN first; commands register automatically once it is saved.'}
         className="bg-eva-green text-white text-[11px] px-4 py-2 font-mono hover:opacity-90 transition-opacity disabled:opacity-50 shrink-0"
       >
@@ -61,7 +61,7 @@ export function TelegramCommandsCard({ tokenSet }: TelegramCommandsCardProps) {
       </button>
       {!tokenSet && (
         <p className="text-[11px] text-primary-35 mt-2">
-          Set the bot token above first — commands register automatically once it&apos;s saved.
+          Set the bot token above first - commands register automatically once it&apos;s saved.
         </p>
       )}
       {status && (

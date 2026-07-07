@@ -86,10 +86,6 @@ export function PacksPanel({ firstParty, community, skills, enabledPacks, loadin
         <section className="relative overflow-hidden border border-[rgba(250,250,250,0.10)] bg-aeon-panel">
           <div className="dither" aria-hidden="true" />
           <div className="relative z-10 px-8 pt-10 pb-8">
-            <div className="flex items-center gap-3 mb-5">
-              <span className="w-7 h-px bg-aeon-red/60" />
-              <div className="h-2.5 w-24 bg-[rgba(250,250,250,0.10)] animate-pulse" />
-            </div>
             <div className="h-14 w-56 bg-[rgba(250,250,250,0.14)] animate-pulse" />
             <div className="mt-6 max-w-xl space-y-2">
               <div className="h-3 w-full bg-[rgba(250,250,250,0.07)] animate-pulse" />
@@ -107,7 +103,7 @@ export function PacksPanel({ firstParty, community, skills, enabledPacks, loadin
         </section>
 
         {/* Pack card grid skeleton */}
-        <Section index="01" label="Your packs">
+        <Section label="Your packs">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-[rgba(250,250,250,0.10)] border border-[rgba(250,250,250,0.10)]">
             {Array.from({ length: 4 }).map((_, i) => (
               <div key={i} className="bg-aeon-bg px-6 py-5 flex flex-col gap-3">
@@ -140,16 +136,11 @@ export function PacksPanel({ firstParty, community, skills, enabledPacks, loadin
       <section className="relative overflow-hidden border border-[rgba(250,250,250,0.10)] bg-aeon-panel">
         <div className="dither" aria-hidden="true" />
         <div className="relative z-10 px-8 pt-10 pb-8">
-          <div className="flex items-center gap-3 mb-4">
-            <span className="text-[11px] font-mono uppercase tracking-[0.28em] text-aeon-red inline-flex items-center gap-3">
-              <span className="w-7 h-px bg-aeon-red" /> Skill packs
-            </span>
-          </div>
           <h1 className="font-display uppercase leading-[0.92] tracking-tight text-aeon-fg" style={{ fontSize: 'clamp(40px, 6vw, 80px)' }}>
             PACKS
           </h1>
           <p className="mt-4 max-w-xl text-sm text-primary-70 leading-relaxed">
-            Curated bundles of skills. By default you only see <span className="text-aeon-fg">Core</span> - enable a pack to reveal its skills across the sidebar and HQ. Enabling a pack changes what you <span className="text-aeon-fg">see</span>, not what runs; switch individual skills on to put them on duty.
+            Curated bundles of skills.
           </p>
         </div>
         <dl className="relative z-10 grid grid-cols-2 sm:grid-cols-4 border-t border-[rgba(250,250,250,0.10)]">
@@ -163,7 +154,7 @@ export function PacksPanel({ firstParty, community, skills, enabledPacks, loadin
       </section>
 
       {/* First-party packs */}
-      <Section index="01" label="Your packs">
+      <Section label="Your packs">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-[rgba(250,250,250,0.10)] border border-[rgba(250,250,250,0.10)]">
           {visiblePacks.map(pack => {
             const isDefaultVisible = DEFAULT_VISIBLE_PACKS.has(pack.key)
@@ -179,7 +170,6 @@ export function PacksPanel({ firstParty, community, skills, enabledPacks, loadin
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2">
                         <span className="font-display uppercase tracking-wide text-aeon-fg text-base leading-tight">{pack.name}</span>
-                        {isDefaultVisible && <span className="text-[9px] font-mono uppercase tracking-[0.14em] px-1.5 py-0.5 border" style={{ borderColor: `${pack.color}66`, color: pack.color }}>{pack.key}</span>}
                         {isCommunity && <span className="text-[9px] font-mono uppercase tracking-[0.14em] px-1.5 py-0.5 border border-primary-40 text-primary-70">installed</span>}
                       </div>
                       <div className="text-[11px] text-primary-40 font-mono mt-1 uppercase tracking-[0.14em]">
@@ -194,7 +184,7 @@ export function PacksPanel({ firstParty, community, skills, enabledPacks, loadin
                     <button
                       onClick={() => onTogglePack(pack.key)}
                       disabled={isLocked}
-                      title={isCommunity ? 'Skills you installed are always shown' : isDefaultVisible ? 'Shown by default — always on' : on ? 'Hide this pack’s skills from the dashboard' : 'Reveal this pack’s skills across the sidebar and HQ'}
+                      title={isCommunity ? 'Skills you installed are always shown' : isDefaultVisible ? 'Shown by default - always on' : on ? 'Hide this pack’s skills from the dashboard' : 'Reveal this pack’s skills across the sidebar and HQ'}
                       className={`text-[10px] font-mono uppercase tracking-[0.14em] px-3 py-1.5 border transition-colors cursor-target disabled:cursor-default ${on ? 'text-eva-green border-eva-green/50 bg-eva-green/10' : 'text-primary-50 border-[rgba(250,250,250,0.18)] hover:text-primary-100 hover:border-[rgba(250,250,250,0.3)]'}`}
                     >
                       {isLocked ? 'Always on' : on ? '✓ Enabled' : 'Enable pack'}
@@ -238,9 +228,9 @@ export function PacksPanel({ firstParty, community, skills, enabledPacks, loadin
       </Section>
 
       {/* Community packs */}
-      <Section index="02" label="Community packs">
+      <Section label="Community packs">
         <p className="text-xs text-primary-50 leading-relaxed mb-4">
-          Maintained by the community in external repos. Hit <span className="text-aeon-fg">Install pack</span> to run the security-scanned installer and open a PR — or copy the command to run it yourself. Skills land disabled; enable them here after merging.
+          Maintained by the community in external repos. Hit <span className="text-aeon-fg">Install pack</span> to run the security-scanned installer and open a PR - or copy the command to run it yourself. Skills land disabled; enable them here after merging.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-[rgba(250,250,250,0.10)] border border-[rgba(250,250,250,0.10)]">
           {community.map(pack => {
@@ -273,7 +263,7 @@ export function PacksPanel({ firstParty, community, skills, enabledPacks, loadin
                   <button
                     onClick={() => handleInstall(pack)}
                     disabled={installing === pack.repo}
-                    title={`Install into your fork — runs the install-skill skill (security-scanned) and opens a PR for review. Skills land disabled.`}
+                    title={`Install into your fork - runs the install-skill skill (security-scanned) and opens a PR for review. Skills land disabled.`}
                     className="flex-1 text-[10px] font-mono uppercase tracking-[0.14em] px-3 py-1.5 border transition-colors cursor-target text-aeon-fg border-[rgba(250,250,250,0.25)] hover:border-aeon-red hover:text-aeon-red disabled:opacity-50 disabled:cursor-default"
                   >
                     {installing === pack.repo ? 'Installing…' : installed ? 'Reinstall' : 'Install pack'}

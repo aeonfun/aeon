@@ -128,7 +128,7 @@ export function InstantModeCard({ repo, sessionBotToken }: InstantModeCardProps)
               </li>
               <li>
                 <span className="text-primary-100">TELEGRAM_CHAT_ID</span>{' '}
-                <span className="text-[10px] text-primary-35">— use the &quot;Find my chat ID&quot; helper above, before registering the webhook (it stops getUpdates)</span>
+                <span className="text-[10px] text-primary-35">- use the &quot;Find my chat ID&quot; helper above, before registering the webhook (it stops getUpdates)</span>
               </li>
               <li>
                 <span className="text-primary-100">GITHUB_REPO</span> = {deployRepo}{' '}

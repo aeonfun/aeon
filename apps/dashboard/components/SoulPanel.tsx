@@ -33,8 +33,6 @@ function isBlank(md: string): boolean {
     .trim().length === 0
 }
 
-const SOFT_LIMIT = 6000
-
 export function SoulPanel({ soul, style, loading, saving, building, installing, onSave, onBuild, onInstallExample }: SoulPanelProps) {
   const [active, setActive] = useState<SoulFile>('soul')
   const [soulDraft, setSoulDraft] = useState(soul)
@@ -62,8 +60,6 @@ export function SoulPanel({ soul, style, loading, saving, building, installing, 
   const scaffold = active === 'soul' ? SOUL_SCAFFOLD : STYLE_SCAFFOLD
 
   const dirty = draft !== content
-  const chars = draft.length
-  const overLimit = chars > SOFT_LIMIT
   const blank = isBlank(draft)
 
   const applyTemplate = (next: string) => {
@@ -87,11 +83,7 @@ export function SoulPanel({ soul, style, loading, saving, building, installing, 
       <section className="relative overflow-hidden border border-[rgba(250,250,250,0.10)] bg-aeon-panel">
         <div className="dither" aria-hidden="true" />
         <div className="relative z-10 px-8 pt-10 pb-8">
-          <span className="text-[11px] font-mono uppercase tracking-[0.28em] text-aeon-red inline-flex items-center gap-3">
-            <span className="w-7 h-px bg-aeon-red" />
-            Identity · Voice
-          </span>
-          <h1 className="mt-4 font-display uppercase leading-[0.92] tracking-tight text-aeon-fg"
+          <h1 className="font-display uppercase leading-[0.92] tracking-tight text-aeon-fg"
               style={{ fontSize: 'clamp(40px, 6.5vw, 88px)' }}>
             <Scramble text="SOUL" />
             <span className="text-aeon-red">.MD</span>
@@ -100,7 +92,6 @@ export function SoulPanel({ soul, style, loading, saving, building, installing, 
             Who Aeon speaks as. Every content skill reads{' '}
             <span className="font-mono text-primary-100">soul/SOUL.md</span> and{' '}
             <span className="font-mono text-primary-100">soul/STYLE.md</span> to match your voice.
-            Build it from your handle, name, or links - start from a template, or write it by hand.
           </p>
         </div>
       </section>
@@ -108,7 +99,7 @@ export function SoulPanel({ soul, style, loading, saving, building, installing, 
       {/* Build my soul */}
       <section className="border border-[rgba(250,250,250,0.10)] bg-aeon-panel p-6">
         <div className="flex items-center gap-3 mb-3">
-          <span className="font-display text-[13px] tracking-[0.18em] text-aeon-red">BUILD MY SOUL</span>
+          <span className="font-display text-[13px] tracking-[0.18em] text-aeon-red uppercase">BUILD MY SOUL</span>
           <span className="flex-1 h-px bg-[rgba(250,250,250,0.10)]" />
         </div>
         <p className="text-[12px] text-primary-50 font-mono leading-relaxed mb-4">
@@ -162,12 +153,6 @@ export function SoulPanel({ soul, style, loading, saving, building, installing, 
           </button>
           <span className="text-[10px] text-primary-35 font-mono">Any one field is enough - all optional.</span>
         </div>
-
-        <p className="mt-3 text-[11px] text-primary-35 font-mono leading-relaxed">
-          Runs as a GitHub Action - watch the feed for <span className="text-primary-70">soul-builder</span>, then hit{' '}
-          <span className="text-primary-70">Pull</span> in the top bar to load the result. X reads are richest with{' '}
-          <span className="text-primary-70">XAI_API_KEY</span> set; name + links use web search and work without it.
-        </p>
       </section>
 
       {/* Editor */}
@@ -277,10 +262,7 @@ export function SoulPanel({ soul, style, loading, saving, building, installing, 
               placeholder={active === 'soul' ? SOUL_SCAFFOLD : STYLE_SCAFFOLD}
               className={editorCls}
             />
-            <div className="flex items-center justify-between mt-3">
-              <span className={`text-[11px] font-mono ${overLimit ? 'text-eva-orange' : 'text-primary-35'}`}>
-                {chars} chars{overLimit ? ` · over ~${SOFT_LIMIT}, this rides along in voice-matched runs` : ''}
-              </span>
+            <div className="flex items-center justify-end mt-3">
               <div className="flex items-center gap-2">
                 {dirty && (
                   <button onClick={() => setDraft(content)}
@@ -290,13 +272,10 @@ export function SoulPanel({ soul, style, loading, saving, building, installing, 
                 )}
                 <button onClick={() => onSave(active, draft)} disabled={!dirty || saving}
                   className="bg-eva-green text-white text-[11px] px-4 py-2 font-mono hover:opacity-90 transition-opacity disabled:opacity-40 cursor-target">
-                  {saving ? 'Saving…' : `Save ${active === 'soul' ? 'SOUL.md' : 'STYLE.md'}`}
+                  {saving ? 'Saving…' : 'SAVE'}
                 </button>
               </div>
             </div>
-            <p className="mt-3 text-[11px] text-primary-35 font-mono">
-              Save writes <span className="text-primary-70">soul/{active === 'soul' ? 'SOUL.md' : 'STYLE.md'}</span> and syncs to GitHub automatically.
-            </p>
           </>
         )}
       </section>

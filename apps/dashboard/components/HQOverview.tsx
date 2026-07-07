@@ -45,18 +45,13 @@ export function HQOverview({ skills, runs, enabledCount, workingCount, categoryF
       <section className="relative overflow-hidden border border-[rgba(250,250,250,0.10)] bg-aeon-panel">
         <div className="dither" aria-hidden="true" />
         <div className="relative z-10 px-8 pt-10 pb-8">
-          <div className="flex items-center gap-3 mb-4">
-            <span className="text-[11px] font-mono uppercase tracking-[0.28em] text-aeon-red inline-flex items-center gap-3">
-              <span className="w-7 h-px bg-aeon-red" /> Operations · Live
-            </span>
-          </div>
           <h1 className="font-display uppercase leading-[0.92] tracking-tight text-aeon-fg"
               style={{ fontSize: 'clamp(48px, 8vw, 110px)' }}>
             <Scramble text="AEON" />{' '}
             <span className="text-aeon-red"><Scramble text="HQ" delay={180} /></span>
           </h1>
           <p className="mt-4 max-w-xl text-sm text-primary-70 leading-relaxed">
-            {enabledCount} skill{enabledCount === 1 ? '' : 's'} on duty across {cats.length} pack{cats.length === 1 ? '' : 's'}. {workingCount > 0 ? `${workingCount} currently working.` : 'Idle - waiting for the next cron tick.'}
+            {enabledCount} skill{enabledCount === 1 ? '' : 's'} on duty across {cats.length} pack{cats.length === 1 ? '' : 's'}.{workingCount > 0 ? ` ${workingCount} currently working.` : ''}
           </p>
         </div>
 
@@ -76,7 +71,7 @@ export function HQOverview({ skills, runs, enabledCount, workingCount, categoryF
         </dl>
       </section>
 
-      <Section index="01" label="Packs">
+      <Section label="Packs">
         <ul
           ref={spotRef}
           onMouseMove={onMove}
@@ -129,7 +124,7 @@ export function HQOverview({ skills, runs, enabledCount, workingCount, categoryF
         </ul>
       </Section>
 
-      <Section index="02" label="Recent activity">
+      <Section label="Recent activity">
         <div className="border border-[rgba(250,250,250,0.10)] divide-y divide-[rgba(250,250,250,0.08)]">
           {runs.slice(0, 8).map(run => (
             <button

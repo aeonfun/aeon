@@ -19,6 +19,8 @@ const DOMAINS: Record<string, string> = {
   // Core - Claude-native auth (LLM-gateway domains spread in from the registry)
   CLAUDE_CODE_OAUTH_TOKEN: 'claude.ai',
   ANTHROPIC_API_KEY: 'anthropic.com',
+  // Grok Build (grok CLI) X-account OAuth session — same brand as XAI_API_KEY.
+  GROK_CREDENTIALS: 'x.ai',
   ...GATEWAY_DOMAINS,
   // Channels
   TELEGRAM_BOT_TOKEN: 'telegram.org',

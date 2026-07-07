@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import type { Skill, Run, Secret, SkillMcpRef, McpServers } from '../lib/types'
-import { MODELS, CATEGORY_BY_KEY, keyProvidedByHarness } from '../lib/constants'
+import { MODELS, keyProvidedByHarness } from '../lib/constants'
 import { MCP_BY_SLUG } from '../lib/mcp-catalog'
 import { displayName, getSkillStatus, cronLabel, statusDot, inputCls } from '../lib/utils'
 import { ScheduleEditor } from './ScheduleEditor'
@@ -28,11 +28,11 @@ interface SkillDetailProps {
   onViewRun: (run: Run) => void
 }
 
-function Section({ index, label, action, children }: { index: string; label: string; action?: React.ReactNode; children: React.ReactNode }) {
+function Section({ label, action, children }: { label: string; action?: React.ReactNode; children: React.ReactNode }) {
   return (
     <section className="border-t border-[rgba(250,250,250,0.10)] pt-6">
       <div className="flex items-center gap-3 mb-4">
-        <span className="font-display text-[13px] tracking-[0.18em] text-aeon-red">{index} / {label}</span>
+        <span className="font-display text-[13px] tracking-[0.18em] text-aeon-red uppercase">{label}</span>
         <span className="flex-1 h-px bg-[rgba(250,250,250,0.10)]" />
         {action}
       </div>
@@ -70,7 +70,7 @@ function KeyRow({ kref, secret, harness, onGoTo }: { kref: { key: string; option
             <span className="text-[9px] font-mono uppercase tracking-[0.18em] text-primary-35">{statusText}</span>
           </div>
           <div className="text-[11px] text-primary-40 font-mono mt-0.5 leading-relaxed">
-            {providedByHarness ? 'Covered by the Grok Build harness via its built-in web search — set a key for the premium xAI x_search feed (used by both harnesses).' : desc}
+            {providedByHarness ? 'Covered by the Grok Build harness via its built-in web search - set a key for the premium xAI x_search feed (used by both harnesses).' : desc}
           </div>
         </div>
         <button
@@ -130,7 +130,6 @@ export function SkillDetail({ skill, runs, model, harness, secrets, mcpServers, 
   const [editingVar, setEditingVar] = useState(false)
   const [varDraft, setVarDraft] = useState('')
 
-  const cat = CATEGORY_BY_KEY[skill.category || 'meta'] || null
   const skillRuns = runs.filter(r => r.workflow.toLowerCase().includes(skill.name))
   const st = getSkillStatus(skill.name, skill.enabled, runs)
 
@@ -153,17 +152,6 @@ export function SkillDetail({ skill, runs, model, harness, secrets, mcpServers, 
   const worksBetterMcp = mcp.filter(m => m.optional)
   const missingRequiredMcp = requiredMcp.filter(m => !isMcpInstalled(m.slug))
 
-  // Section numbers are assigned in render order; the API keys and MCP sections
-  // only appear when the skill declares requirements, so number them dynamically.
-  let sectionN = 0
-  const nextN = () => String(++sectionN).padStart(2, '0')
-  const nApiKeys = requires.length > 0 ? nextN() : ''
-  const nMcp = mcp.length > 0 ? nextN() : ''
-  const nSchedule = nextN()
-  const nBrief = nextN()
-  const nCapability = nextN()
-  const nActivity = nextN()
-
   // Scramble locks each word to `white-space: nowrap`, so a long unbreakable
   // token (e.g. "INVESTIGATION", 13 chars) can't wrap and would overflow the
   // hero box. Scale the max font-size down by the longest word so it always fits.
@@ -177,10 +165,6 @@ export function SkillDetail({ skill, runs, model, harness, secrets, mcpServers, 
         <div className="dither" aria-hidden="true" />
         <div className="relative z-10 px-8 pt-10 pb-8">
           <div className="flex items-center gap-4 mb-4 flex-wrap">
-            <span className="text-[11px] font-mono uppercase tracking-[0.28em] text-aeon-red inline-flex items-center gap-3">
-              <span className="w-7 h-px bg-aeon-red" />
-              {cat ? cat.label : 'Skill'}
-            </span>
             <span className="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.18em] text-primary-50">
               <span className={statusDot(st.color)} />
               {st.label}
@@ -221,12 +205,12 @@ export function SkillDetail({ skill, runs, model, harness, secrets, mcpServers, 
       </section>
 
       {requires.length > 0 && (
-        <Section index={nApiKeys} label="API keys">
+        <Section label="API keys">
           {missingRequired.length > 0 && (
             <div className="mb-4 flex items-start gap-3 border border-eva-red/40 bg-eva-red/5 px-4 py-3">
               <span className="text-eva-red text-sm leading-none mt-0.5">▲</span>
               <p className="text-[12px] text-primary-70 font-mono leading-relaxed">
-                Missing {missingRequired.length} required key{missingRequired.length > 1 ? 's' : ''} —
+                Missing {missingRequired.length} required key{missingRequired.length > 1 ? 's' : ''} -
                 this skill won&apos;t work until {missingRequired.length > 1 ? 'they are' : 'it is'} set:{' '}
                 {missingRequired.map((r, i) => (
                   <span key={r.key}>
@@ -261,12 +245,12 @@ export function SkillDetail({ skill, runs, model, harness, secrets, mcpServers, 
       )}
 
       {mcp.length > 0 && (
-        <Section index={nMcp} label="MCP servers">
+        <Section label="MCP servers">
           {missingRequiredMcp.length > 0 && (
             <div className="mb-4 flex items-start gap-3 border border-eva-red/40 bg-eva-red/5 px-4 py-3">
               <span className="text-eva-red text-sm leading-none mt-0.5">▲</span>
               <p className="text-[12px] text-primary-70 font-mono leading-relaxed">
-                Missing {missingRequiredMcp.length} required MCP server{missingRequiredMcp.length > 1 ? 's' : ''} —
+                Missing {missingRequiredMcp.length} required MCP server{missingRequiredMcp.length > 1 ? 's' : ''} -
                 this skill won&apos;t work until {missingRequiredMcp.length > 1 ? 'they are' : 'it is'} installed from the{' '}
                 <button onClick={onGoToMcp} className="text-eva-red underline decoration-dotted underline-offset-2 hover:text-aeon-fg transition-colors">MCP page</button>:{' '}
                 <span className="text-eva-red">{missingRequiredMcp.map(m => MCP_BY_SLUG[m.slug]?.name || m.slug).join(', ')}</span>
@@ -297,7 +281,6 @@ export function SkillDetail({ skill, runs, model, harness, secrets, mcpServers, 
       )}
 
       <Section
-        index={nSchedule}
         label="Shift schedule"
         action={
           <button
@@ -320,7 +303,6 @@ export function SkillDetail({ skill, runs, model, harness, secrets, mcpServers, 
       </Section>
 
       <Section
-        index={nBrief}
         label="Assignment brief"
         action={
           <button
@@ -352,7 +334,7 @@ export function SkillDetail({ skill, runs, model, harness, secrets, mcpServers, 
         )}
       </Section>
 
-      <Section index={nCapability} label="Capability level">
+      <Section label="Capability level">
         <select
           value={skill.model}
           onChange={(e) => onUpdateModel(skill.name, e.target.value)}
@@ -363,7 +345,7 @@ export function SkillDetail({ skill, runs, model, harness, secrets, mcpServers, 
         </select>
       </Section>
 
-      <Section index={nActivity} label="Activity log">
+      <Section label="Activity log">
         <div className="border border-[rgba(250,250,250,0.10)] divide-y divide-[rgba(250,250,250,0.08)]">
           {skillRuns.slice(0, 10).map(run => (
             <button

@@ -94,17 +94,13 @@ export function SecretsPanel({ secrets, skills, busy, repo, harness, focusKey, o
       <section className="relative overflow-hidden border border-[rgba(250,250,250,0.10)] bg-aeon-panel">
         <div className="dither" aria-hidden="true" />
         <div className="relative z-10 px-8 pt-10 pb-8">
-          <span className="text-[11px] font-mono uppercase tracking-[0.28em] text-aeon-red inline-flex items-center gap-3">
-            <span className="w-7 h-px bg-aeon-red" />
-            Credentials · Vault
-          </span>
-          <h1 className="mt-4 font-display uppercase leading-[0.92] tracking-tight text-aeon-fg"
+          <h1 className="font-display uppercase leading-[0.92] tracking-tight text-aeon-fg"
               style={{ fontSize: 'clamp(40px, 6.5vw, 88px)' }}>
             <Scramble text="ACCESS" />{' '}
             <span className="text-aeon-red"><Scramble text="KEYS" delay={180} /></span>
           </h1>
           <p className="mt-4 max-w-xl text-sm text-primary-70 leading-relaxed">
-            Set a secret, the channel turns on. Unset secrets are silently skipped - every channel is opt-in.
+            Set a secret, the channel turns on.
           </p>
         </div>
       </section>
@@ -115,8 +111,8 @@ export function SecretsPanel({ secrets, skills, busy, repo, harness, focusKey, o
           <section key={group} className="border-t border-[rgba(250,250,250,0.10)] pt-6">
             <div className="group flex items-center gap-3 mb-4">
               <ServiceIcon domain={GROUP_ICON[group]?.domain} glyph={GROUP_ICON[group]?.glyph} />
-              <span className="font-display text-[13px] tracking-[0.18em] text-aeon-red">
-                {String(gi + 1).padStart(2, '0')} / {group}
+              <span className="font-display text-[13px] tracking-[0.18em] text-aeon-red uppercase">
+                {group}
               </span>
               <span className="flex-1 h-px bg-[rgba(250,250,250,0.10)]" />
               <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-primary-35">
@@ -135,7 +131,7 @@ export function SecretsPanel({ secrets, skills, busy, repo, harness, focusKey, o
                       {keyProvidedByHarness(secret.name, harness) && !secret.isSet && (
                         <div className="text-[10px] text-eva-green/80 font-mono mt-1 flex items-center gap-1.5">
                           <span className="w-1.5 h-1.5 rounded-full bg-eva-green shrink-0" />
-                          Covered by the Grok Build harness (built-in web search) — optional here; set it for the premium xAI x_search feed, used by both harnesses.
+                          Covered by the Grok Build harness (built-in web search) - optional here; set it for the premium xAI x_search feed, used by both harnesses.
                         </div>
                       )}
                       {secret.name === 'TELEGRAM_BOT_TOKEN' && (
