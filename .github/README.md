@@ -48,6 +48,8 @@ That's it - Aeon now runs unattended. On a public repo, GitHub Actions minutes a
 
 Dashboard views, local dev, env vars, and remote access are documented in [`apps/dashboard/README.md`](../apps/dashboard/README.md).
 
+**Prefer the terminal?** Everything the dashboard does is also a command — `./aeon skills ls`, `./aeon skills enable <name>`, `./aeon secrets set …`, `./aeon runs logs <id>`. Same logic, no browser, scriptable with `--json`. See [Command line (headless)](#command-line-headless).
+
 <details>
 <summary><strong>No admin rights / can't install <code>gh</code>?</strong></summary>
 
@@ -370,6 +372,30 @@ bin/add-mcp --uninstall        # remove
 
 Tool naming, the `var` argument, Claude Desktop config, and a test client are in [`apps/mcp-server/README.md`](../apps/mcp-server/README.md).
 
+### Command line (headless)
+
+The dashboard is a web console over `gh` + `git` + your repo files. The **`aeon` CLI** exposes the same features as commands — no browser, no server, scriptable. It reuses the dashboard's exact logic (`apps/dashboard/lib`), so the two never drift.
+
+`./aeon` with **no args** launches the dashboard; **`./aeon <command>`** runs the CLI:
+
+```bash
+./aeon skills ls --enabled            # roster + live state
+./aeon skills enable action-converter # edit aeon.yml, commit + push
+./aeon skills run heartbeat --var brief   # dispatch a run (gh workflow run)
+./aeon runs ls          ./aeon runs logs <id>
+./aeon secrets ls       ./aeon secrets set COINGECKO_API_KEY --stdin
+./aeon config show      ./aeon config set model claude-opus-4-8
+./aeon memory search "okf"
+./aeon strategy build "grow weekly active users"   ./aeon soul build --handle @you
+./aeon packs ls         ./aeon mcp ls        ./aeon telegram register
+```
+
+- **`--json`** on any command for scripting; **`--dry-run`** on any *write* to preview it (diff or the exact `gh` command) without touching anything; **`--help`** per command. Destructive `skills rm` needs `--yes`.
+- Writes commit + **push config to `origin`** exactly like the dashboard, so scheduled runs pick them up. Read-only commands (`skills ls`, `config show`, `memory`) work without `gh`; GitHub-touching ones (`runs`, `secrets`, `auth`, `skills run`) use your authenticated `gh`.
+- Self-contained: first run installs a ~12MB runtime (`tsx` + `yaml`) — the full dashboard app is **not** required. Symlink it onto `PATH` (`ln -s "$PWD/apps/cli/aeon" /usr/local/bin/aeon`) to drop the `./`.
+
+Full command reference: [`apps/cli/README.md`](../apps/cli/README.md).
+
 Working client scripts (MCP stdio, Claude Desktop) live in [`docs/examples/`](../docs/examples) - each calling a real skill end-to-end. Start with [`docs/examples/README.md`](../docs/examples/README.md).
 
 ### Cross-repo access
@@ -419,7 +445,7 @@ A gateway is wired through a handful of files, all following the existing patter
 
 1. **`apps/dashboard/lib/gateway-registry.ts`** - add `slug: { label, secretName, prefixes, domain }` (empty `prefixes: []` = dropdown-only, no auto-detect). This is the **single source of truth**: it auto-flows to the `GatewayProvider` union (`lib/types.ts`), `CLAUDE_AUTH_SECRETS` (`lib/constants.ts`), the secrets route's gateway-key detection, the auth key-prefix detection (`lib/auth-provider.ts`), and the service-icon domain.
 2. **`apps/dashboard/components/AuthModal.tsx`** - add the slug to `PROVIDER_OPTIONS` (this dropdown list is **not** registry-derived).
-3. **`apps/dashboard/app/api/secrets/route.ts`** - add a `BUILTIN_SECRETS` row (description only) so the secret shows in Settings.
+3. **`apps/dashboard/lib/secrets-catalog.ts`** - add a `BUILTIN_SECRETS` row (description only) so the secret shows in Settings (and in `aeon secrets ls`).
 4. **`scripts/llm-gateway.sh`** - add an `aeon_present()` case, add the slug to the auto-resolver's default `GATEWAY_ORDER`, and add a `case` branch (a **native** provider exports `ANTHROPIC_BASE_URL` + the auth token; a **sidecar** provider calls `start_ccr_sidecar <slug> <openai-url> <key> <model>`).
 5. **`.github/workflows/aeon.yml`** - pass the new secret (and any `*_MODEL` override **variables**) into the run's `env:` (also `messages.yml`), so the resolver can see it.
 
@@ -619,7 +645,7 @@ Private repos: Free plan = 2,000 min/mo, Pro/Team = 3,000 + $0.008/min overage. 
 CLAUDE.md                ← agent identity (auto-loaded by Claude Code)
 STRATEGY.md              ← north-star: goal, priorities, audience, constraints (rides along every run)
 aeon.yml                 ← skill schedules, chains, reactive triggers, enabled flags
-aeon                     ← launch the local dashboard (run ./aeon; Next.js on port 5555)
+aeon                     ← ./aeon launches the dashboard; ./aeon <command> runs the headless CLI
 notify                   ← multi-channel notify command (generated per-run from scripts/notify.sh)
 catalog/                 ← registries the dashboard reads (generated + hand-authored)
   skills.json            ← machine-readable skill catalog (59 skills, category per skill)
@@ -647,6 +673,7 @@ soul/                    ← optional identity files (SOUL.md, STYLE.md, example
 skills/                  ← each skill is a SKILL.md prompt file (68 total; `category:` = its pack)
 apps/                    ← standalone sub-projects, each with its own package.json
   dashboard/             ← local web UI (Next.js + json-render feed)
+  cli/                   ← headless CLI (`./aeon <command>`) — the dashboard's features as commands
   mcp-server/            ← MCP server - exposes skills as Claude tools
   webhook/               ← Telegram instant-mode Cloudflare Worker (~1s delivery)
 memory/                  ← native OKF v0.1 bundle: every .md carries a type: (see docs/OKF.md)
