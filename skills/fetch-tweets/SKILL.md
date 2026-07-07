@@ -70,7 +70,7 @@ Search X for tweets matching `ARG` and produce a curated digest grouped by sub-n
 
 2. **Fetch tweets.** Use whichever path is available; record `SOURCE_PATH=cache|api|websearch` for the log.
 
-   **Path A — pre-fetched cache** (preferred): read the canonical file, fall back to the legacy name.
+   **Path A — pre-fetched cache** (preferred): read the canonical file.
    ```bash
    cat .xai-cache/fetch-tweets.json 2>/dev/null \
      | jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text'
@@ -149,8 +149,8 @@ Gist of the latest X chatter on one or more configurable topics.
 2. **Fetch per topic** — track `SOURCE ∈ {cache, websearch, failed}` per topic.
 
    **Path A — pre-fetched cache** (preferred):
-   - Single-topic mode: read `.xai-cache/fetch-tweets-topic.json` (legacy fallback: `.xai-cache/roundup-var.json`).
-   - Default/multi-topic mode: read any `.xai-cache/fetch-tweets-topic-*.json` (legacy fallback: `.xai-cache/roundup-*.json`), matching by slugified topic name if present.
+   - Single-topic mode: read `.xai-cache/fetch-tweets-topic.json`.
+   - Default/multi-topic mode: read any `.xai-cache/fetch-tweets-topic-*.json`, matching by slugified topic name if present.
    ```bash
    jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text' \
      .xai-cache/fetch-tweets-topic*.json 2>/dev/null
@@ -200,7 +200,7 @@ Two sub-modes: **single handle** (decision-ready gist of one account) vs. **all 
 1. **Normalize `ARG`.** Strip leading `@`, `https://x.com/`, `https://twitter.com/`, `https://nitter.net/`, trailing slash / `/status/...`. Lowercase. Reject if empty, contains whitespace, or >15 chars. On reject → `REFRESH_X_NO_VAR`: send `./notify "fetch-tweets: REFRESH_X_NO_VAR — set an X handle"` and exit 0. Store the cleaned handle as `ACCOUNT`.
 
 2. **Load tweets:**
-   - **Path A — prefetched cache** (preferred): read `.xai-cache/fetch-tweets-account.json` (legacy fallback: `.xai-cache/refresh-x.json`).
+   - **Path A — prefetched cache** (preferred): read `.xai-cache/fetch-tweets-account.json`.
      ```bash
      jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text' \
        .xai-cache/fetch-tweets-account.json 2>/dev/null
@@ -256,7 +256,7 @@ Use this to answer "what did *these specific people* post" across a watchlist.
    ```
 
 2. **Fetch recent tweets per account.** For each `handle`:
-   - **Path A — cache** (preferred): read `.xai-cache/fetch-tweets-account-<handle>.json` (legacy fallback: `.xai-cache/tweet-digest-<handle>.json`), parsed with the standard `jq` extractor.
+   - **Path A — cache** (preferred): read `.xai-cache/fetch-tweets-account-<handle>.json`, parsed with the standard `jq` extractor.
    - **Path B — live curl** (only outside the sandbox, when cache absent and `XAI_API_KEY` set):
      ```bash
      curl -m 30 -s -X POST "https://api.x.ai/v1/responses" \
@@ -319,7 +319,7 @@ Cross-list narrative resonance + signal-scored top tweets from tracked X lists i
    If `XAI_API_KEY` is unset and no cache exists, fall back to Path C. If no path returns data, log `LIST_DIGEST_NO_CONFIG: XAI_API_KEY required` and stop without notifying.
 
 2. **Fetch each list's top tweets (past 24h)** — prefer cache → API → WebSearch.
-   **Path A — cache** (preferred): read `.xai-cache/fetch-tweets-list-${LIST_ID}.json` (legacy fallback: `.xai-cache/list-digest-${LIST_ID}.json`).
+   **Path A — cache** (preferred): read `.xai-cache/fetch-tweets-list-${LIST_ID}.json`.
    ```bash
    cat ".xai-cache/fetch-tweets-list-${LIST_ID}.json" 2>/dev/null \
      | jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text'
@@ -493,17 +493,17 @@ No chain consumes this skill's output as of this commit (no `consume: [fetch-twe
 
 The sandbox blocks outbound curl that carries `$XAI_API_KEY` in a header. Every branch is cache-first — `scripts/prefetch-xai.sh` runs **before** Claude starts (with full env access) and writes `.xai-cache/*.json`; the skill reads those. Fallbacks that bypass the sandbox: **WebSearch** (keyword/topic/list/agent-buzz) and **WebFetch** (account single-handle against the public `x.com/${ACCOUNT}` profile; agent-buzz against the X.AI endpoint). Never rely on a live curl to `api.x.ai` succeeding inside the sandbox.
 
-**Cache filenames the prefetch must produce, per mode** (canonical first; legacy fallback the skill also reads):
+**Cache filenames the prefetch must produce, per mode:**
 
-| mode | X-search window | canonical cache | legacy fallback |
-|---|---|---|---|
-| keyword | yesterday→today | `.xai-cache/fetch-tweets.json` | *(same)* |
-| topic (single) | yesterday→today | `.xai-cache/fetch-tweets-topic.json` | `.xai-cache/roundup-var.json` |
-| topic (multi) | yesterday→today | `.xai-cache/fetch-tweets-topic-<slug>.json` | `.xai-cache/roundup-*.json` |
-| account (single) | yesterday→today | `.xai-cache/fetch-tweets-account.json` | `.xai-cache/refresh-x.json` |
-| account (all) | last 3 days | `.xai-cache/fetch-tweets-account-<handle>.json` | `.xai-cache/tweet-digest-<handle>.json` |
-| list | yesterday→today (+`enable_image_understanding`) | `.xai-cache/fetch-tweets-list-<LIST_ID>.json` | `.xai-cache/list-digest-<LIST_ID>.json` |
-| agent-buzz | 1 day ago→today | `.xai-cache/fetch-tweets-agent-buzz.json` | *(none — legacy did live curl)* |
+| mode | X-search window | cache file |
+|---|---|---|
+| keyword | yesterday→today | `.xai-cache/fetch-tweets.json` |
+| topic (single) | yesterday→today | `.xai-cache/fetch-tweets-topic.json` |
+| topic (multi) | yesterday→today | `.xai-cache/fetch-tweets-topic-<slug>.json` |
+| account (single) | yesterday→today | `.xai-cache/fetch-tweets-account.json` |
+| account (all) | last 3 days | `.xai-cache/fetch-tweets-account-<handle>.json` |
+| list | yesterday→today (+`enable_image_understanding`) | `.xai-cache/fetch-tweets-list-<LIST_ID>.json` |
+| agent-buzz | 1 day ago→today | `.xai-cache/fetch-tweets-agent-buzz.json` |
 
 The exact per-mode prompt each cache should hold is the Path B / fallback-chain curl body in that mode's branch above. A single `fetch-tweets)` case in `scripts/prefetch-xai.sh` can produce all of these by parsing `${var}` into `SOURCE`/`ARG` the same way this skill does.
 
