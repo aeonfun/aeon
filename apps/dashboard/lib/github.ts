@@ -73,6 +73,13 @@ function authHeaders(token: string) {
   }
 }
 
+// Parse a GitHub "list contents" response into its entry array. A 404 and a
+// non-array body (i.e. a single file, not a directory) both yield [] — an
+// absent-or-not-a-directory path is not an error for callers that list.
+async function parseContentsList(res: Response, path: string): Promise<GitHubContentEntry[]> {
+  return parseContentsList(res, path)
+}
+
 // --- Unified interface: local filesystem or GitHub API ---
 
 export async function getFileContent(path: string): Promise<{ content: string; sha: string }> {
@@ -187,10 +194,7 @@ export async function getDirectory(path: string): Promise<Array<{ name: string; 
     headers: authHeaders(token),
     cache: 'no-store',
   })
-  if (res.status === 404) return [] // legitimately-absent path
-  if (!res.ok) throw new Error(`GitHub API ${res.status} listing ${path}`)
-  const data = (await res.json()) as GitHubContentEntry[] | GitHubContentFile
-  return Array.isArray(data) ? data : []
+  return parseContentsList(res, path)
 }
 
 // --- Remote repo helpers (for importing skills) ---
@@ -208,10 +212,7 @@ export async function getRemoteDirectory(remoteRepo: string, path: string): Prom
     ? `${GITHUB_API}/repos/${remoteRepo}/contents/${path}`
     : `${GITHUB_API}/repos/${remoteRepo}/contents`
   const res = await fetch(url, { headers: remoteAuthHeaders(), cache: 'no-store' })
-  if (res.status === 404) return [] // legitimately-absent path
-  if (!res.ok) throw new Error(`GitHub API ${res.status} listing ${path}`)
-  const data = (await res.json()) as GitHubContentEntry[] | GitHubContentFile
-  return Array.isArray(data) ? data : []
+  return parseContentsList(res, path)
 }
 
 export async function getRemoteFileContent(remoteRepo: string, path: string): Promise<string | null> {
