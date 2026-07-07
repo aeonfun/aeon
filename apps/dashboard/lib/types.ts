@@ -187,6 +187,10 @@ export interface SyncResult {
   syncError?: string
 }
 
+// GET /api/soul/examples - the gallery people available to install.
+export interface SoulExample { key: string; label: string; blurb: string }
+export interface SoulExamplesResponse { examples: SoulExample[] }
+
 // POST /api/soul/examples - syncResult plus the installed file contents on
 // success, or { error } on the not-found / failure paths.
 export interface SoulExampleResponse extends SyncResult {
