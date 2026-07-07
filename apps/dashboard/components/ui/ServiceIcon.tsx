@@ -42,12 +42,7 @@ const DOMAINS: Record<string, string> = {
   VERCEL_TOKEN: 'vercel.com',
   REPLICATE_API_TOKEN: 'replicate.com',
   RESEND_API_KEY: 'resend.com',
-  LIQUIDPAD_API_KEY: 'liquidpad.site',
   ADMANAGE_API_KEY: 'admanage.ai',
-  CONGRESS_GOV_API_KEY: 'congress.gov',
-  DEVTO_API_KEY: 'dev.to',
-  NEYNAR_API_KEY: 'neynar.com',
-  NEYNAR_SIGNER_UUID: 'neynar.com',
   GH_GLOBAL: 'github.com',
   BASE_RPC_URL: 'base.org',
   // Observability
@@ -63,8 +58,6 @@ const GLYPHS: Record<string, 'mail' | 'key'> = {
 // Explicit logo overrides for services whose favicon is wrong/outdated. Vendored
 // into public/icons so they don't depend on a third-party host staying up.
 const ICON_URLS: Record<string, string> = {
-  NEYNAR_API_KEY: '/icons/neynar.jpg',
-  NEYNAR_SIGNER_UUID: '/icons/neynar.jpg',
 }
 
 // Same idea, keyed by DOMAIN — applies to group headers (which pass `domain`

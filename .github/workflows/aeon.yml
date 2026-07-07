@@ -350,9 +350,6 @@ jobs:
           ALCHEMY_API_KEY: ${{ secrets.ALCHEMY_API_KEY }}
           BANKR_API_KEY: ${{ secrets.BANKR_API_KEY }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
-          NEYNAR_API_KEY: ${{ secrets.NEYNAR_API_KEY }}
-          NEYNAR_SIGNER_UUID: ${{ secrets.NEYNAR_SIGNER_UUID }}
           BEAMR_GATEWAY_URL: ${{ secrets.BEAMR_GATEWAY_URL }}
           BEAMR_PAYER_KEY: ${{ secrets.BEAMR_PAYER_KEY }}
           BEAMR_NETWORK: ${{ vars.BEAMR_NETWORK }}
@@ -1086,9 +1083,6 @@ jobs:
           XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           REPLICATE_API_TOKEN: ${{ secrets.REPLICATE_API_TOKEN }}
-          DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
-          NEYNAR_API_KEY: ${{ secrets.NEYNAR_API_KEY }}
-          NEYNAR_SIGNER_UUID: ${{ secrets.NEYNAR_SIGNER_UUID }}
           # disclosure-emailer (scripts/postprocess-email.sh): outbound private vuln
           # disclosures to maintainers via Resend. RESEND_FROM must be a Resend-verified
           # (sub)domain; RESEND_REPLY_TO a human inbox. Unset => drafts stay queued in
