@@ -171,10 +171,14 @@ export function SkillDetail({ skill, runs, model, harness, secrets, mcpServers, 
             <span className="inline-flex items-center gap-2 text-[11px] font-mono uppercase tracking-[0.18em]">
               <span className={statusDot(st.color)} />
               <span className={statusTextCls}>{st.label}</span>
-              <span className="text-primary-35">·</span>
-              <span className="text-primary-50">
-                {!skill.enabled ? 'Paused' : isManual ? 'On demand' : `Runs ${cronLabel(skill.schedule)}`}
-              </span>
+              {skill.enabled && (
+                <>
+                  <span className="text-primary-35">·</span>
+                  <span className="text-primary-50">
+                    {isManual ? 'On demand' : `Runs ${cronLabel(skill.schedule)}`}
+                  </span>
+                </>
+              )}
             </span>
           </div>
           <h1 className="font-display uppercase leading-[0.92] tracking-tight text-aeon-fg break-words"
@@ -186,21 +190,26 @@ export function SkillDetail({ skill, runs, model, harness, secrets, mcpServers, 
           )}
 
           <div className="mt-7 flex items-center gap-4 flex-wrap">
-            <button
+            {/* Not a <button>: the target-cursor auto-frames button/a/select, which
+                would bracket the whole switch+label. A div with role="switch" keeps
+                a11y while letting `cursor-target` scope the brackets to just the pill. */}
+            <div
               role="switch"
               aria-checked={skill.enabled}
-              onClick={() => onToggle(skill.name, !skill.enabled)}
-              disabled={!!busy[skill.name]}
+              aria-disabled={!!busy[skill.name]}
+              tabIndex={0}
+              onClick={() => { if (!busy[skill.name]) onToggle(skill.name, !skill.enabled) }}
+              onKeyDown={(e) => { if ((e.key === 'Enter' || e.key === ' ') && !busy[skill.name]) { e.preventDefault(); onToggle(skill.name, !skill.enabled) } }}
               title={skill.enabled ? 'Enabled — click to turn off' : 'Disabled — click to turn on'}
-              className="inline-flex items-center gap-3 group disabled:opacity-50 cursor-target"
+              className={`inline-flex items-center gap-3 group select-none outline-none ${busy[skill.name] ? 'opacity-50 pointer-events-none' : 'cursor-pointer'}`}
             >
-              <span className={`relative w-12 h-[26px] rounded-full border transition-colors duration-200 ${skill.enabled ? 'bg-eva-green/25 border-eva-green' : 'bg-[rgba(250,250,250,0.05)] border-[rgba(250,250,250,0.22)] group-hover:border-[rgba(250,250,250,0.4)]'}`}>
+              <span className={`cursor-target relative w-12 h-[26px] rounded-full border transition-colors duration-200 group-focus-visible:ring-2 group-focus-visible:ring-eva-green/40 ${skill.enabled ? 'bg-eva-green/25 border-eva-green' : 'bg-[rgba(250,250,250,0.05)] border-[rgba(250,250,250,0.22)] group-hover:border-[rgba(250,250,250,0.4)]'}`}>
                 <span className={`absolute top-1/2 -translate-y-1/2 w-[18px] h-[18px] rounded-full transition-all duration-200 ${skill.enabled ? 'left-[26px] bg-eva-green' : 'left-[3px] bg-[rgba(250,250,250,0.5)]'}`} />
               </span>
               <span className={`font-display text-sm uppercase tracking-[0.14em] transition-colors ${skill.enabled ? 'text-eva-green' : 'text-primary-50'}`}>
                 {skill.enabled ? 'Enabled' : 'Disabled'}
               </span>
-            </button>
+            </div>
             <button
               onClick={() => onRun(skill.name, skill.var, skill.model)}
               disabled={!!busy[`r-${skill.name}`]}
@@ -240,7 +249,7 @@ export function SkillDetail({ skill, runs, model, harness, secrets, mcpServers, 
               {cronLabel(skill.schedule)}
             </span>
             <span className={`inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-[0.16em] px-2.5 py-1 border ${!skill.enabled ? 'text-eva-amber border-eva-amber/40' : isManual ? 'text-primary-50 border-[rgba(250,250,250,0.2)]' : 'text-eva-green border-eva-green/40'}`}>
-              {!skill.enabled ? 'Paused while disabled' : isManual ? 'Manual only' : 'Runs automatically'}
+              {!skill.enabled ? 'Disabled' : isManual ? 'Manual only' : 'Runs automatically'}
             </span>
           </div>
         )}
@@ -322,17 +331,7 @@ export function SkillDetail({ skill, runs, model, harness, secrets, mcpServers, 
         </Section>
       )}
 
-      <Section
-        label="Skill settings"
-        action={
-          <button
-            onClick={() => { setEditingVar(!editingVar); setVarDraft(skill.var) }}
-            className="btn-mini uppercase tracking-[0.18em]"
-          >
-            {editingVar ? 'Cancel' : 'Edit'}
-          </button>
-        }
-      >
+      <Section label="Skill settings">
         {editingVar ? (
           <div className="flex gap-2 flex-wrap">
             <input
@@ -345,9 +344,10 @@ export function SkillDetail({ skill, runs, model, harness, secrets, mcpServers, 
               className={inputCls}
             />
             <button onClick={() => { onUpdateVar(skill.name, varDraft); setEditingVar(false) }} className="btn-mini-go">Save</button>
+            <button onClick={() => setEditingVar(false)} className="btn-mini">Cancel</button>
           </div>
         ) : skill.var ? (
-          <button onClick={() => { setEditingVar(true); setVarDraft(skill.var) }} className="group flex items-center gap-3 text-left cursor-target" title="Click to edit this input">
+          <button onClick={() => { setEditingVar(true); setVarDraft(skill.var) }} className="group flex items-center gap-3 text-left cursor-target" title="Click to edit">
             <span className="font-display uppercase tracking-tight text-aeon-fg" style={{ fontSize: 'clamp(22px, 2.4vw, 30px)' }}>
               &ldquo;{skill.var}&rdquo;
             </span>
@@ -355,8 +355,8 @@ export function SkillDetail({ skill, runs, model, harness, secrets, mcpServers, 
           </button>
         ) : (
           <button onClick={() => { setEditingVar(true); setVarDraft('') }} className="group w-full flex items-center gap-3 border border-dashed border-[rgba(250,250,250,0.16)] px-4 py-4 hover:border-aeon-red/40 transition-colors cursor-target">
-            <span className="text-sm text-primary-40 font-mono uppercase tracking-[0.18em] group-hover:text-primary-70 transition-colors">Defaults settings · no custom input</span>
-            <span className="btn-mini-go ml-auto">+ Set input</span>
+            <span className="text-sm text-primary-40 font-mono uppercase tracking-[0.18em] group-hover:text-primary-70 transition-colors">Defaults settings · no custom var</span>
+            <span className="btn-mini-go ml-auto">+ Set var</span>
           </button>
         )}
       </Section>
