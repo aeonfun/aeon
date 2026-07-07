@@ -195,10 +195,10 @@ export function SkillDetail({ skill, runs, model, harness, secrets, mcpServers, 
               {busy[`r-${skill.name}`] ? '…' : 'Run now'}
             </button>
             <button
-              onClick={() => { if (confirm(`Remove ${displayName(skill.name)}?`)) onDelete(skill.name) }}
+              onClick={() => { if (confirm(`Delete ${displayName(skill.name)}?`)) onDelete(skill.name) }}
               className="btn-mini-danger ml-auto uppercase tracking-[0.18em]"
             >
-              Remove
+              Delete
             </button>
           </div>
         </div>
