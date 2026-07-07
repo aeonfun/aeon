@@ -47,13 +47,13 @@ For each unique token symbol, fetch the current price from CoinGecko.
 First, try the search endpoint to get the coin ID:
 ```bash
 curl -s "https://api.coingecko.com/api/v3/search?query=SYMBOL" \
-  ${COINGECKO_API_KEY:+-H "x-cg-pro-api-key: $COINGECKO_API_KEY"}
+  ${COINGECKO_API_KEY:+-H "x-cg-demo-api-key: $COINGECKO_API_KEY"}
 ```
 
 Then fetch the price:
 ```bash
 curl -s "https://api.coingecko.com/api/v3/simple/price?ids=COIN_ID&vs_currencies=usd&include_24hr_change=true" \
-  ${COINGECKO_API_KEY:+-H "x-cg-pro-api-key: $COINGECKO_API_KEY"}
+  ${COINGECKO_API_KEY:+-H "x-cg-demo-api-key: $COINGECKO_API_KEY"}
 ```
 
 **Fallback:** If curl fails, use WebFetch for the same URL (drop the API key header).

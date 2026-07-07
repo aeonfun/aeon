@@ -145,16 +145,16 @@ curl -fsS "https://yields.llama.fi/pools"                         > .tmp/pools.j
 # --- CoinGecko (macro majors, breadth, global, trending) ---
 # Simple price for BTC, ETH, SOL + 24h change + mcap
 curl -s "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana&vs_currencies=usd&include_24hr_change=true&include_market_cap=true" \
-  ${COINGECKO_API_KEY:+-H "x-cg-pro-api-key: $COINGECKO_API_KEY"}  > .tmp/cg_price.json
+  ${COINGECKO_API_KEY:+-H "x-cg-demo-api-key: $COINGECKO_API_KEY"}  > .tmp/cg_price.json
 # Top 20 by mcap (movers + trend, 24h & 7d)
 curl -s "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=20&page=1&sparkline=false&price_change_percentage=24h,7d" \
-  ${COINGECKO_API_KEY:+-H "x-cg-pro-api-key: $COINGECKO_API_KEY"}  > .tmp/cg_markets.json
+  ${COINGECKO_API_KEY:+-H "x-cg-demo-api-key: $COINGECKO_API_KEY"}  > .tmp/cg_markets.json
 # Global stats (total mcap, volume, dominance)
 curl -s "https://api.coingecko.com/api/v3/global" \
-  ${COINGECKO_API_KEY:+-H "x-cg-pro-api-key: $COINGECKO_API_KEY"}  > .tmp/cg_global.json
+  ${COINGECKO_API_KEY:+-H "x-cg-demo-api-key: $COINGECKO_API_KEY"}  > .tmp/cg_global.json
 # Trending coins
 curl -s "https://api.coingecko.com/api/v3/search/trending" \
-  ${COINGECKO_API_KEY:+-H "x-cg-pro-api-key: $COINGECKO_API_KEY"}  > .tmp/cg_trending.json
+  ${COINGECKO_API_KEY:+-H "x-cg-demo-api-key: $COINGECKO_API_KEY"}  > .tmp/cg_trending.json
 
 # --- Fear & Greed ---
 curl -s "https://api.alternative.me/fng/?limit=2"                > .tmp/fng.json

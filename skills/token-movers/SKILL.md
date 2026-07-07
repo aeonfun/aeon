@@ -56,13 +56,18 @@ Produce an **actionable** movers report. Plain % change lists are noise — the 
 Fetch market data and trending coins in parallel. Request multi-timeframe changes for context:
 
 ```bash
+# CoinGecko auth: a free/Demo key (the common case) authenticates on
+# api.coingecko.com with the `x-cg-demo-api-key` header — send it only when a key
+# is set; without one the same public endpoint still works at a lower rate limit.
+# (A paid Pro key instead uses pro-api.coingecko.com with `x-cg-pro-api-key`.)
+
 # Top 250 coins by market cap with 1h, 24h, and 7d % change
 curl -s "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=1&sparkline=false&price_change_percentage=1h,24h,7d" \
-  ${COINGECKO_API_KEY:+-H "x-cg-pro-api-key: $COINGECKO_API_KEY"}
+  ${COINGECKO_API_KEY:+-H "x-cg-demo-api-key: $COINGECKO_API_KEY"}
 
 # Trending searches (top coins people are searching for)
 curl -s "https://api.coingecko.com/api/v3/search/trending" \
-  ${COINGECKO_API_KEY:+-H "x-cg-pro-api-key: $COINGECKO_API_KEY"}
+  ${COINGECKO_API_KEY:+-H "x-cg-demo-api-key: $COINGECKO_API_KEY"}
 ```
 
 If curl fails or returns empty JSON, retry once with **WebFetch** against the same URL.

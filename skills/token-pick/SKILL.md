@@ -27,11 +27,11 @@ Produce ONE token call and ONE prediction-market call per day, each with a numer
 ```bash
 # Trending coins
 curl -s "https://api.coingecko.com/api/v3/search/trending" \
-  ${COINGECKO_API_KEY:+-H "x-cg-pro-api-key: $COINGECKO_API_KEY"}
+  ${COINGECKO_API_KEY:+-H "x-cg-demo-api-key: $COINGECKO_API_KEY"}
 
 # Top 250 by market cap with 24h and 7d changes
 curl -s "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=1&sparkline=false&price_change_percentage=24h,7d" \
-  ${COINGECKO_API_KEY:+-H "x-cg-pro-api-key: $COINGECKO_API_KEY"}
+  ${COINGECKO_API_KEY:+-H "x-cg-demo-api-key: $COINGECKO_API_KEY"}
 
 # BTC + ETH 24h/7d for relative-strength benchmark (extract from the markets call above; no extra request needed)
 
