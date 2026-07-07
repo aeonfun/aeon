@@ -24,6 +24,7 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 INSTALL_SCRIPT="$ROOT_DIR/bin/install-skill-pack"
 DOCS="$ROOT_DIR/docs/CAPABILITIES.md"
+source "$ROOT_DIR/scripts/lib/capabilities.sh"
 
 if [ ! -f "$INSTALL_SCRIPT" ]; then
   echo "::error::install-skill-pack not found at $INSTALL_SCRIPT" >&2
@@ -34,21 +35,8 @@ if [ ! -f "$DOCS" ]; then
   exit 2
 fi
 
-# (1) ALLOWED_CAPABILITIES=(... ) block from install-skill-pack.
-# Reads every non-empty, non-comment line between the opening "ALLOWED_CAPABILITIES=("
-# and the closing ")". Trims leading/trailing whitespace and strips trailing comments.
-extract_script_caps() {
-  awk '
-    /^ALLOWED_CAPABILITIES=\(/ { in_array=1; next }
-    in_array && /^\)/          { in_array=0; next }
-    in_array {
-      sub(/^[[:space:]]+/, "")
-      sub(/[[:space:]]+$/, "")
-      sub(/[[:space:]]*#.*$/, "")
-      if (length($0)) print
-    }
-  ' "$INSTALL_SCRIPT"
-}
+# (1) ALLOWED_CAPABILITIES=(... ) block from install-skill-pack (shared parser).
+extract_script_caps() { extract_allowed_capabilities "$INSTALL_SCRIPT"; }
 
 # (2) "## The taxonomy" table rows from docs/CAPABILITIES.md.
 # Each row is `| \`value\` | meaning |`; we extract the backtick-quoted value only.

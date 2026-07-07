@@ -41,6 +41,7 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 INSTALL_SCRIPT="$ROOT_DIR/bin/install-skill-pack"
+source "$ROOT_DIR/scripts/lib/capabilities.sh"
 
 PACK_DIR="."
 SUBPATH=""
@@ -99,16 +100,7 @@ ok()   { echo "  ✅ $1"; }
 # the validator correct automatically when the taxonomy changes.
 ALLOWED_CAPS=""
 if [[ -f "$INSTALL_SCRIPT" ]]; then
-  ALLOWED_CAPS=$(awk '
-    /^ALLOWED_CAPABILITIES=\(/ { in_array=1; next }
-    in_array && /^\)/          { in_array=0; next }
-    in_array {
-      sub(/^[[:space:]]+/, "")
-      sub(/[[:space:]]+$/, "")
-      sub(/[[:space:]]*#.*$/, "")
-      if (length($0)) print
-    }
-  ' "$INSTALL_SCRIPT" | tr '\n' ' ')
+  ALLOWED_CAPS=$(extract_allowed_capabilities "$INSTALL_SCRIPT" | tr '\n' ' ')
 fi
 
 is_allowed_cap() {
