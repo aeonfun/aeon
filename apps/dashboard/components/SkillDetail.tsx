@@ -303,7 +303,7 @@ export function SkillDetail({ skill, runs, model, harness, secrets, mcpServers, 
       )}
 
       <Section
-        label="Assignment brief"
+        label="Skill settings"
         action={
           <button
             onClick={() => { setEditingVar(!editingVar); setVarDraft(skill.var) }}
