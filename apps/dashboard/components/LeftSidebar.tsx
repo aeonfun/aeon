@@ -93,11 +93,11 @@ export function LeftSidebar({ view, setView, selectedSkill, skills, runs, secret
       {/* Team roster */}
       <div className="flex-1 overflow-y-auto">
         <div className="px-4 pt-4 pb-1 flex items-center justify-between">
-          <span className="text-label">Team</span>
-          <button onClick={onShowImport} className="text-[10px] font-mono uppercase tracking-[0.14em] text-primary-50 hover:text-eva-orange transition-colors cursor-target">+ Hire</button>
+          <span className="text-label">Skills</span>
+          <button onClick={onShowImport} className="text-[10px] font-mono uppercase tracking-[0.14em] text-primary-50 hover:text-eva-orange transition-colors cursor-target">+ Add</button>
         </div>
         <div className="px-3 pb-2">
-          <input type="text" value={skillSearch} onChange={(e) => setSkillSearch(e.target.value)} placeholder="Search members..." className="w-full bg-aeon-bg text-aeon-fg text-[11px] px-3 py-2 border border-[rgba(250,250,250,0.10)] outline-none font-mono focus:border-aeon-red transition-colors placeholder:text-primary-35 cursor-target" />
+          <input type="text" value={skillSearch} onChange={(e) => setSkillSearch(e.target.value)} placeholder="Search..." className="w-full bg-aeon-bg text-aeon-fg text-[11px] px-3 py-2 border border-[rgba(250,250,250,0.10)] outline-none font-mono focus:border-aeon-red transition-colors placeholder:text-primary-35 cursor-target" />
         </div>
 
         {/* Category filter */}
