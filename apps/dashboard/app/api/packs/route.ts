@@ -14,7 +14,7 @@ interface PacksManifest {
     color: string
     category: string | null
     default_enabled?: string[]
-    skills?: Array<{ slug: string; name: string; description: string; category: string }>
+    skills?: Array<Omit<PackSkill, 'enabled'>>
   }>
 }
 
