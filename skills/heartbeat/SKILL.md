@@ -55,12 +55,21 @@ Read `memory/cron-state.json`. **If the file is missing or empty** (e.g. a fresh
 }
 ```
 
+**Bootstrap grace (fresh / warming-up fleets).** Before flagging anything, decide whether the fleet has *completed* any run yet. A skill has **completed a run** if its entry has `total_runs ≥ 1` **or** a non-null `last_success`/`last_failed`. A skill that only ever shows `last_status: "dispatched"` (or has no entry) has **not** completed a run — it is *warming up*, the normal state right after a fork or after a skill is enabled, **not** a failure. The scheduler stamps `dispatched` at run *start* and the outcome only lands *after* the run finishes, so a just-dispatched skill legitimately has no outcome yet.
+- **If no skill has completed any run yet, the whole fleet is bootstrapping** — expected on a fresh fork. Do **not** flag warming-up skills as failed or stuck, do **not** fire a notification, and set the overall status to `🟢 OK` with a warming-up note (see [Overall status](#overall-status)). Still render the status page (skills show `⏳ warming up` / `not yet run`), then end.
+- **Otherwise** (some skills have completed runs) run the checks below, but keep the distinction: a skill that has *never completed a run* is never a 🔴 "stuck" — it belongs on the softer warming-up line.
+
+**Self-reference.** Heartbeat is, by definition, running *right now*, so its own entry is never evidence of a problem:
+- **Exclude heartbeat's own entry from the Stuck check.** Its `dispatched` watermark is just the current (or a prior in-flight) heartbeat run.
+- The Self-check below fires **only once heartbeat has succeeded at least once**. A never-succeeded heartbeat is bootstrap, not degradation — its first success only lands *after* this run finishes, so "no success yet" must never turn the page red.
+
 Flag these conditions:
-- **Failed skills**: any entry with `last_status: "failed"`. Report the skill name and when it failed.
-- **Stuck skills**: any entry with `last_status: "dispatched"` where `last_dispatch` is **>45 minutes ago**. The skill was dispatched but never reported back — likely hung or crashed before the state update step ran.
+- **Failed skills**: any entry with `last_status: "failed"`. Report the skill name and when it failed. (A skill whose only recorded outcome is a failure is still a completed run — report it; the severity rules decide whether it reddens the page.)
+- **Stuck skills**: any entry (**excluding heartbeat itself**) with `last_status: "dispatched"`, `last_dispatch` **>45 minutes ago**, that has **completed ≥1 run before** (`total_runs ≥ 1`) and whose `last_dispatch` is newer than `last_success`. The skill was working, then a later dispatch never reported back — a hang, or a lost outcome-write. If `last_success` is recent (within ~2h of the stale dispatch), lean toward a lost outcome-write (a 🟡 blip), not a hard hang.
+  - A skill dispatched >45min ago that has **never** completed a run is *warming up*, not stuck — put it on the warming-up line, not P0. Only if that first dispatch is **>24h** old, surface it as a 🟡 WATCH (`dispatched Nh ago, never completed — scheduler may not be wired up`); still not 🔴.
 - **API degradation**: any skill with `consecutive_failures >= 3`. This likely indicates an external API is down or rate-limiting. Report the skill, failure count, and `last_error`. If multiple skills share similar error signatures, flag the shared dependency.
 - **Chronic failures**: any skill with `success_rate < 0.5` (and `total_runs >= 5`). The skill is failing more than it succeeds.
-- **Self-check**: if heartbeat's own entry shows `last_success` is **>36 hours ago** (or missing), note that heartbeat itself may be unreliable.
+- **Self-check**: only if heartbeat's own entry has **≥1 success** (`total_successes ≥ 1`) **and** its `last_success` is **>36 hours ago**, note that heartbeat itself may be unreliable. If heartbeat has never succeeded, say nothing here — that's warming-up, covered by Bootstrap grace above.
 
 #### P1 — Stalled PRs & urgent issues
 
@@ -76,6 +85,8 @@ Flag these conditions:
 Read `aeon.yml` for enabled skills with schedules. Cross-reference with `memory/cron-state.json`:
 - If an enabled skill has **no entry at all** in the state file, it has never been dispatched by the scheduler.
 - If a skill's `last_success` is **>2x its schedule interval** old (e.g., a daily skill hasn't succeeded in >48h), flag it.
+
+**Skip P3 entirely on a bootstrapping fleet** (per [Bootstrap grace](#p0--failed--stuck-skills-check-first) — no skill has completed a run yet). On a fresh fork *every* skill is un-dispatched or warming up; that is expected, not a fleet of missing skills, and must not generate findings or a notification. Only run P3 once the fleet has warmed (at least one completed run), and even then a skill still in its very first dispatch window is warming up, not missing.
 
 Do NOT use `gh run list` for this — the state file is authoritative.
 
@@ -101,10 +112,14 @@ After the priority checks (even when everything is green — this step **always*
 - Latest `output/articles/token-report-*.md` (most recent by filename date) — optional; powers the Token Pulse section. Skipped silently when no file exists.
 
 #### Overall status
-Compute one of three overall states from the same signals used above. This verdict drives the **public, fork-facing** status page, so reserve 🔴 for skills that are *currently broken* — a single transient failure a skill has already recovered from must not flip the whole page red:
-- `🔴 DEGRADED` — a skill is **currently and persistently broken**: a stuck skill; `consecutive_failures ≥ 3`; chronic failures (`success_rate < 0.5` with `total_runs ≥ 5`); heartbeat self-check >36h stale; or a `last_status: "failed"` skill that has **not recovered since** (`last_failed` ≥ `last_success`) **and** `consecutive_failures ≥ 2`.
-- `🟡 WATCH` — a transient blip or watch-item: a `last_status: "failed"` skill that already recovered (`last_success` > `last_failed`); **or** any other `last_status: "failed"` skill that does not meet the 🔴 bar above (e.g. a first or isolated failure, `consecutive_failures ≤ 1`, including a skill whose only run so far failed) — a non-recovered failure must never read 🟢 OK; or any P1/P2/P3 flag (stalled PRs, urgent issues, flagged memory items, skills >2x their schedule interval old); or any open issue with severity `critical` or `high`.
-- `🟢 OK` — no flags at all.
+Compute one of three overall states from the same signals used above. This verdict drives the **public, fork-facing** status page, so reserve 🔴 for skills that are *currently broken* — a single transient failure a skill has already recovered from must not flip the whole page red, and a fresh fork whose skills simply haven't finished their first cycle must never read 🔴:
+
+**Bootstrap first.** If the fleet is *warming up* — no skill has completed a run yet (per [Bootstrap grace](#p0--failed--stuck-skills-check-first)) — the status is `🟢 OK`, annotated `🌱 warming up — N skill(s) dispatched, awaiting first completed run`. Skip the rest of this ladder. Warming-up skills (dispatched, never completed) never count toward 🔴 or 🟡 (except the >24h "may not be wired up" watch-item), and heartbeat's own entry never counts toward its own verdict.
+
+Otherwise:
+- `🔴 DEGRADED` — a skill is **currently and persistently broken**: a stuck skill (per the refined Stuck rule — completed ≥1 run before and a later dispatch has hung; **not** a warming-up first dispatch, **not** heartbeat's own entry); `consecutive_failures ≥ 3`; chronic failures (`success_rate < 0.5` with `total_runs ≥ 5`); heartbeat self-check >36h stale (only once heartbeat has ≥1 success); or a `last_status: "failed"` skill that has **not recovered since** (`last_failed` ≥ `last_success`) **and** `consecutive_failures ≥ 2`.
+- `🟡 WATCH` — a transient blip or watch-item: a `last_status: "failed"` skill that already recovered (`last_success` > `last_failed`); **or** any other `last_status: "failed"` skill that does not meet the 🔴 bar above (e.g. a first or isolated failure, `consecutive_failures ≤ 1`, including a skill whose only run so far failed) — a non-recovered failure must never read 🟢 OK; a stuck skill whose `last_success` is recent (likely a lost outcome-write, not a hang); a warming-up skill whose first dispatch is >24h old (possibly not wired up); or any P1/P2/P3 flag (stalled PRs, urgent issues, flagged memory items, skills >2x their schedule interval old); or any open issue with severity `critical` or `high`.
+- `🟢 OK` — no flags at all (a fully warmed, healthy fleet, or a bootstrapping fleet per the Bootstrap-first clause).
 
 This refines **only** the public status-page colour. It does **not** change the P0 notification rules above — a fresh `last_status: "failed"` still fires its notification (deduped per the rules above) so the operator is always told; the page just won't read 🔴 for a blip the fleet has already shrugged off.
 
@@ -161,7 +176,7 @@ _(if INDEX.md has any open rows, render them here; otherwise: "No open issues.")
 - Sort the skill table by last-run timestamp descending (most recent first); skills that have never run sink to the bottom.
 - Format timestamps as `YYYY-MM-DD HH:MM UTC` (strip seconds and the `Z`).
 - Success rate shows `total_successes / total_runs × 100` rounded to whole percent; display `—` when `total_runs == 0`.
-- Status column icons: `✅ success`, `❌ failed`, `⏳ dispatched` (if last_dispatch within 45min), `🕸 stuck` (if last_dispatch > 45min and last_status still dispatched), `—` (never run).
+- Status column icons: `✅ success`, `❌ failed`, `⏳ dispatched` (if last_dispatch within 45min), `🌱 warming up` (dispatched > 45min but the skill has **never completed a run** — `total_runs == 0` and no `last_success`/`last_failed`; this is a fresh dispatch, not a hang), `🕸 stuck` (dispatched > 45min, still `dispatched`, **and** the skill has completed ≥1 run before), `—` (never run). Heartbeat's own row, while its current run is in flight, shows `⏳ dispatched` — never `🕸 stuck`.
 - For the `Next scheduled run:` line, pick the enabled skill with the soonest upcoming cron time relative to now.
 - Dedup state: re-running heartbeat overwrites `docs/status.md` wholesale each time — do not append.
 - Never expose values from `.env`, secrets, or anything outside cron-state.json + issues/INDEX.md + aeon.yml + output/articles/token-report-*.md. This file is public.
@@ -186,6 +201,8 @@ The file lands on `main` through the workflow's auto-commit step — no explicit
 ### Output (ambient)
 
 If nothing needs attention, log "HEARTBEAT_OK" (plus the overall status page verdict, e.g. `HEARTBEAT_OK · STATUS_PAGE=OK`) and end your response.
+
+**A bootstrapping / warming-up fleet counts as "nothing needs attention".** Still regenerate `docs/status.md` (verdict `🟢 OK`, warming-up note), log `HEARTBEAT_OK · STATUS_PAGE=OK (warming up)`, and **send no notification** — a fresh fork should be quiet, not a red alert. Warming-up skills are not "findings".
 
 If something needs attention:
 1. Send a single concise notification via `./notify` (grouped by priority as above)
