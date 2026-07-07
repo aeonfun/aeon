@@ -39,8 +39,17 @@ export async function POST() {
 
     try {
       run('git commit -m "chore: update config from dashboard"')
-    } catch {
-      return NextResponse.json({ ok: true, message: 'Nothing to commit' })
+    } catch (e: unknown) {
+      // The empty-tree case already returned above, so reaching here is a real
+      // commit failure (missing git identity, failing hook, index lock) — unless a
+      // race cleaned the tree between the status check and the commit. Only the
+      // genuine "nothing to commit" is a no-op; surface everything else as a 500.
+      const io = e as { stdout?: unknown; stderr?: unknown }
+      const detail = `${e instanceof Error ? e.message : ''} ${io?.stdout ?? ''} ${io?.stderr ?? ''}`
+      if (/nothing to commit/i.test(detail)) {
+        return NextResponse.json({ ok: true, message: 'Nothing to commit' })
+      }
+      throw e
     }
 
     try {
