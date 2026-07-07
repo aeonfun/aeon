@@ -71,7 +71,7 @@ export function PacksPanel({ firstParty, community, skills, enabledPacks, loadin
     { label: 'Packs', value: visiblePacks.length },
     { label: 'Enabled', value: packsOn, tone: 'text-eva-green' },
     { label: 'Skills', value: totalSkills },
-    { label: 'On duty', value: onDuty, tone: 'text-eva-green' },
+    { label: 'Enabled', value: onDuty, tone: 'text-eva-green' },
   ]
 
   if (loading) {
@@ -174,7 +174,7 @@ export function PacksPanel({ firstParty, community, skills, enabledPacks, loadin
                       </div>
                       <div className="text-[11px] text-primary-40 font-mono mt-1 uppercase tracking-[0.14em]">
                         {pack.total} skill{pack.total === 1 ? '' : 's'}
-                        {pack.enabled > 0 && <span className="text-eva-green"> · {pack.enabled} on duty</span>}
+                        {pack.enabled > 0 && <span className="text-eva-green"> · {pack.enabled} enabled</span>}
                       </div>
                     </div>
                   </div>

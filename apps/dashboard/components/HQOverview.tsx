@@ -35,7 +35,7 @@ export function HQOverview({ skills, runs, enabledCount, workingCount, categoryF
 
   const stats: { label: string; value: number; tone?: string }[] = [
     { label: 'Team', value: skills.length },
-    { label: 'On duty', value: enabledCount, tone: 'text-eva-green' },
+    { label: 'Enabled', value: enabledCount, tone: 'text-eva-green' },
     { label: 'Working', value: workingCount, tone: 'text-eva-orange' },
     { label: 'Packs', value: cats.length },
   ]
@@ -51,7 +51,7 @@ export function HQOverview({ skills, runs, enabledCount, workingCount, categoryF
             <span className="text-aeon-red"><Scramble text="HQ" delay={180} /></span>
           </h1>
           <p className="mt-4 max-w-xl text-sm text-primary-70 leading-relaxed">
-            {enabledCount} skill{enabledCount === 1 ? '' : 's'} on duty across {cats.length} pack{cats.length === 1 ? '' : 's'}.{workingCount > 0 ? ` ${workingCount} currently working.` : ''}
+            {enabledCount} skill{enabledCount === 1 ? '' : 's'} enabled across {cats.length} pack{cats.length === 1 ? '' : 's'}.{workingCount > 0 ? ` ${workingCount} currently working.` : ''}
           </p>
         </div>
 
@@ -154,7 +154,7 @@ export function HQOverview({ skills, runs, enabledCount, workingCount, categoryF
       >
         {Array.from({ length: 2 }).map((_, k) => (
           <span key={k} aria-hidden={k === 1 ? 'true' : undefined} className="inline-block px-7">
-            AEON HQ <i className="not-italic text-aeon-red">★</i> {enabledCount} ON DUTY <i className="not-italic text-aeon-red">★</i> {cats.length} PACKS <i className="not-italic text-aeon-red">★</i> {runs.length} RUNS LOGGED <i className="not-italic text-aeon-red">★</i> NO BABYSITTING <i className="not-italic text-aeon-red">★</i>
+            AEON HQ <i className="not-italic text-aeon-red">★</i> {enabledCount} ENABLED <i className="not-italic text-aeon-red">★</i> {cats.length} PACKS <i className="not-italic text-aeon-red">★</i> {runs.length} RUNS LOGGED <i className="not-italic text-aeon-red">★</i> NO BABYSITTING <i className="not-italic text-aeon-red">★</i>
           </span>
         ))}
       </VelocityMarquee>

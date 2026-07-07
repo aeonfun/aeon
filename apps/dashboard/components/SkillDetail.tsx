@@ -184,7 +184,7 @@ export function SkillDetail({ skill, runs, model, harness, secrets, mcpServers, 
               disabled={!!busy[skill.name]}
               className={skill.enabled ? 'btn-ghost' : 'btn-solid'}
             >
-              {skill.enabled ? 'Off Duty' : 'On Duty'}
+              {skill.enabled ? 'Enabled' : 'Disabled'}
             </button>
             <button
               onClick={() => onRun(skill.name, skill.var, skill.model)}
@@ -203,6 +203,28 @@ export function SkillDetail({ skill, runs, model, harness, secrets, mcpServers, 
           </div>
         </div>
       </section>
+
+      <Section
+        label="Skill schedule"
+        action={
+          <button
+            onClick={() => setEditingSchedule(!editingSchedule)}
+            className="btn-mini uppercase tracking-[0.18em]"
+          >
+            {editingSchedule ? 'Cancel' : 'Edit'}
+          </button>
+        }
+      >
+        {editingSchedule ? (
+          <div className="border border-[rgba(250,250,250,0.10)] p-5 bg-aeon-panel">
+            <ScheduleEditor cron={skill.schedule} onSave={(c) => { onUpdateSchedule(skill.name, c); setEditingSchedule(false) }} />
+          </div>
+        ) : (
+          <div className="font-display uppercase tracking-tight text-aeon-fg" style={{ fontSize: 'clamp(24px, 3vw, 36px)' }}>
+            {cronLabel(skill.schedule)}
+          </div>
+        )}
+      </Section>
 
       {requires.length > 0 && (
         <Section label="API keys">
@@ -279,28 +301,6 @@ export function SkillDetail({ skill, runs, model, harness, secrets, mcpServers, 
           )}
         </Section>
       )}
-
-      <Section
-        label="Shift schedule"
-        action={
-          <button
-            onClick={() => setEditingSchedule(!editingSchedule)}
-            className="btn-mini uppercase tracking-[0.18em]"
-          >
-            {editingSchedule ? 'Cancel' : 'Edit'}
-          </button>
-        }
-      >
-        {editingSchedule ? (
-          <div className="border border-[rgba(250,250,250,0.10)] p-5 bg-aeon-panel">
-            <ScheduleEditor cron={skill.schedule} onSave={(c) => { onUpdateSchedule(skill.name, c); setEditingSchedule(false) }} />
-          </div>
-        ) : (
-          <div className="font-display uppercase tracking-tight text-aeon-fg" style={{ fontSize: 'clamp(24px, 3vw, 36px)' }}>
-            {cronLabel(skill.schedule)}
-          </div>
-        )}
-      </Section>
 
       <Section
         label="Assignment brief"

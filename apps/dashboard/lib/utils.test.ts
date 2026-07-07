@@ -245,15 +245,15 @@ describe("getSkillStatus", () => {
     assert.equal(result.color, "red");
   });
 
-  it("returns On duty for enabled skill with no matching runs", () => {
+  it("returns Enabled for enabled skill with no matching runs", () => {
     const result = getSkillStatus("test", true, []);
-    assert.equal(result.label, "On duty");
+    assert.equal(result.label, "Enabled");
     assert.equal(result.color, "green");
   });
 
-  it("returns Off duty for disabled skill with no matching runs", () => {
+  it("returns Disabled for disabled skill with no matching runs", () => {
     const result = getSkillStatus("test", false, []);
-    assert.equal(result.label, "Off duty");
+    assert.equal(result.label, "Disabled");
     assert.equal(result.color, "gray");
   });
 });

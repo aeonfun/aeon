@@ -65,7 +65,7 @@ export function LeftSidebar({ view, setView, selectedSkill, skills, runs, secret
               {repo ? repo.split('/').pop() : 'Aeon'} HQ
             </div>
             <div className="text-[10px] text-primary-40 font-mono uppercase tracking-[0.18em]">
-              {enabledCount} on duty
+              {enabledCount} enabled
               {workingCount > 0 ? <span className="text-eva-orange"> · {workingCount} working</span> : ''}
             </div>
           </div>
@@ -110,7 +110,7 @@ export function LeftSidebar({ view, setView, selectedSkill, skills, runs, secret
           </button>
           <button
             onClick={() => setEnabledOnly(v => !v)}
-            title="Show only skills on duty"
+            title="Show only enabled skills"
             className={`text-[10px] font-mono uppercase tracking-[0.1em] px-2 py-1 border flex items-center gap-1.5 transition-colors ${enabledOnly ? 'text-eva-green border-eva-green/50 bg-eva-green/10' : 'text-primary-40 border-[rgba(250,250,250,0.12)] hover:text-primary-70 hover:border-[rgba(250,250,250,0.22)]'}`}
           >
             <span className="w-1.5 h-1.5 rounded-full shrink-0 bg-eva-green" />
@@ -180,7 +180,7 @@ export function LeftSidebar({ view, setView, selectedSkill, skills, runs, secret
         {visibleCount === 0 && (
           <div className="px-4 py-10 text-center">
             <p className="text-[11px] font-mono uppercase tracking-[0.14em] text-primary-40">
-              {enabledOnly ? 'No skills on duty' : 'No skills match'}
+              {enabledOnly ? 'No skills enabled' : 'No skills match'}
             </p>
             {enabledOnly && (
               <button

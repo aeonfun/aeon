@@ -72,7 +72,7 @@ export function getSkillStatus(name: string, enabled: boolean, runs: Run[]) {
     if (sr[0].status === 'in_progress') return { label: 'Working', color: 'orange' }
     if (sr[0].conclusion === 'failure') return { label: 'Error', color: 'red' }
   }
-  return enabled ? { label: 'On duty', color: 'green' } : { label: 'Off duty', color: 'gray' }
+  return enabled ? { label: 'Enabled', color: 'green' } : { label: 'Disabled', color: 'gray' }
 }
 
 export function statusDot(color: string) {
