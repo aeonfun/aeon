@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { getRemoteDirectory, getRemoteFileContent, createFile, commitAndPush } from '@/lib/github'
 import { errorResponse, syncFields } from '@/lib/http'
 import { displayName } from '@/lib/utils'
-import type { SoulExample } from '@/lib/types'
+import type { SoulExample, SoulExamplesResponse } from '@/lib/types'
 
 // One-click install of a ready-made soul from the soul.md examples gallery into
 // the operator's own repo. GET lists the available example people; POST copies
@@ -23,9 +23,9 @@ export async function GET() {
     const examples: SoulExample[] = entries
       .filter(e => e.type === 'dir' && !e.name.startsWith('_') && !e.name.startsWith('.'))
       .map(d => ({ key: d.name, label: displayName(d.name), blurb: BLURBS[d.name] || '' }))
-    return NextResponse.json({ examples })
+    return NextResponse.json({ examples } satisfies SoulExamplesResponse)
   } catch {
-    return NextResponse.json({ examples: [] })
+    return NextResponse.json({ examples: [] } satisfies SoulExamplesResponse)
   }
 }
 
