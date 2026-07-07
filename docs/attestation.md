@@ -61,9 +61,9 @@ right after it — see [`docs/CORE.md`](CORE.md) for the full run loop:
         │
   Resolve attestation gate  → attest=true|false ← is THIS run attested?
         │
-  Build run manifest        → output/.attest-X.json ← model/mode/trigger + output digest
+  Build run manifest        → output/.attest/X-<run_id>.{md,json} ← immutable snapshot + metadata
         │
-  Attest skill execution    → Sigstore + Rekor  ← signs output + manifest (multi-subject)
+  Attest skill execution    → Sigstore + Rekor  ← signs the run-scoped snapshot + manifest
         │
   Analyze / notify-jsonrender / commit …        ← unchanged
 ```
@@ -160,11 +160,14 @@ Practical consequence worth remembering:
 
 ## Verifying an attestation
 
-Given the output bytes (checked out of `output/.chains/`, or downloaded from the
-feed), verify against the repo:
+Attestation targets an **immutable, run-scoped snapshot** of the output at
+`output/.attest/<skill>-<run_id>.{md,json}` — *not* the shared
+`output/.chains/<skill>.md` (see [Why a run-scoped snapshot](#why-a-run-scoped-snapshot)).
+Verify that snapshot (or its manifest) against the repo:
 
 ```bash
-gh attestation verify output/.chains/<skill>.md --repo <owner>/<repo>
+gh attestation verify output/.attest/<skill>-<run_id>.md --repo <owner>/<repo>
+# don't know the run_id? list them:  ls output/.attest/<skill>-*.md
 ```
 
 `gh attestation verify` exits `0` on success. Inspect the bound provenance with
@@ -191,23 +194,32 @@ Rekor log.
 
 ### The run manifest
 
-Every attested run also produces a small JSON **run manifest**
-(`output/.attest-${SKILL}.json`) that binds the Aeon-specific facts the raw
-provenance doesn't carry — **model, capability mode, trigger** — plus a `sha256`
-of the output. It's signed in the *same* attestation as the output (a
-multi-subject attestation), so it costs no extra Rekor entry and doesn't change
-the command above: `gh attestation verify output/.chains/<skill>.md` still works.
+Alongside the output snapshot, each attested run writes a small JSON **run
+manifest** (`output/.attest/<skill>-<run_id>.json`) that binds the Aeon-specific
+facts the raw provenance doesn't carry — **model, capability mode, trigger** —
+plus a `sha256` of the snapshot. It's signed in the *same* attestation as the
+snapshot (a multi-subject attestation), so it costs no extra Rekor entry.
 
-To read the richer metadata, verify the manifest instead and inspect its bytes
-(it's committed alongside the output):
+To read the richer metadata, verify the manifest and inspect its bytes:
 
 ```bash
-gh attestation verify output/.attest-<skill>.json --repo <owner>/<repo>
-cat output/.attest-<skill>.json
-# { "skill": "...", "model": "claude-opus-4-8", "mode": "write",
+gh attestation verify output/.attest/<skill>-<run_id>.json --repo <owner>/<repo>
+cat output/.attest/<skill>-<run_id>.json
+# { "skill": "...", "model": "claude-opus-4-8", "mode": "read-only",
 #   "trigger": "schedule", "commit": "<sha>", "run_id": "<id>",
-#   "output": { "path": "output/.chains/<skill>.md", "sha256": "<digest>" } }
+#   "output": { "path": "output/.attest/<skill>-<run_id>.md", "sha256": "<digest>" } }
 ```
+
+### Why a run-scoped snapshot
+
+The attested subject is a snapshot keyed by `${GITHUB_RUN_ID}`, not the shared
+`output/.chains/<skill>.md`. That shared path is rewritten every run and, when
+two runs push to `main` concurrently, the commit step's rebase-conflict resolver
+**marker-strips** `output/*` files — concatenating both sides into bytes that
+match *neither* run's attestation. Attesting a run-unique path sidesteps that
+entirely: no other run writes it, so the committed bytes are always exactly what
+was signed. (The shared `output/.chains/<skill>.md` is still produced as before
+for chain consumption — it's just not the attestation subject.)
 
 Because both are subjects of the one attestation, the manifest's `output.sha256`
 also lets you cross-check the output bytes without a second verify.
@@ -270,8 +282,9 @@ Fully reversible, zero skill impact:
 - **Private repos need a plan.** See [Prerequisites](#prerequisites) — Free/Pro
   private repos can't write to the attestation store; make the repo public or use
   Team/Enterprise.
-- **Read-only skills are fine.** `output/.chains/${SKILL}.md` is written by the
-  *workflow*, not the skill, so it survives the read-only post-run revert.
+- **Read-only skills are fine.** The attested snapshot in `output/.attest/` is
+  written by the *workflow*, not the skill, so it survives the read-only post-run
+  revert (which only reverts code/config the skill touched, not `output/`).
 - **The store outlives the file.** Attestations are keyed by digest in GitHub's
   store + Rekor and persist even if `output/` is later overwritten — but to
   *verify* you need the original bytes.

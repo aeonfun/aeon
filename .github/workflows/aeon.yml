@@ -719,15 +719,20 @@ jobs:
           SKILL_MODEL: ${{ steps.run.outputs.SKILL_MODEL }}
         run: |
           set -euo pipefail
-          # Bind Aeon-specific run facts (model, capability mode, trigger, commit)
-          # into a manifest that also hashes the output. Attested alongside the
-          # output itself (multi-subject), so `gh attestation verify <output>`
-          # still works AND the manifest carries the richer provenance.
+          # Attest an IMMUTABLE, run-scoped snapshot — never the shared
+          # output/.chains/${SKILL}.md. That shared path is rewritten by concurrent
+          # runs and the commit step's conflict resolver marker-strips output/* on a
+          # rebase conflict, so its committed bytes can differ from what we attest
+          # (breaking `gh attestation verify`). A ${GITHUB_RUN_ID}-scoped path is
+          # unique to this run: no other run touches it, so committed == attested.
           SKILL="${SKILL_NAME}"
-          OUT="output/.chains/${SKILL}.md"
+          SRC="output/.chains/${SKILL}.md"
           MODE="$(bash scripts/skill_mode.sh mode "$SKILL")"
-          DIGEST="$(sha256sum "$OUT" | cut -d' ' -f1)"
-          MANIFEST="output/.attest-${SKILL}.json"
+          DIGEST="$(sha256sum "$SRC" | cut -d' ' -f1)"
+          mkdir -p output/.attest
+          SNAPSHOT="output/.attest/${SKILL}-${GITHUB_RUN_ID}.md"
+          MANIFEST="output/.attest/${SKILL}-${GITHUB_RUN_ID}.json"
+          cp "$SRC" "$SNAPSHOT"
           jq -n \
             --arg skill   "$SKILL" \
             --arg model   "$SKILL_MODEL" \
@@ -735,26 +740,28 @@ jobs:
             --arg trigger "${GITHUB_EVENT_NAME:-}" \
             --arg commit  "${GITHUB_SHA:-}" \
             --arg run_id  "${GITHUB_RUN_ID:-}" \
-            --arg path    "$OUT" \
+            --arg path    "$SNAPSHOT" \
             --arg sha     "$DIGEST" \
             '{skill:$skill, model:$model, mode:$mode, trigger:$trigger,
               commit:$commit, run_id:$run_id,
               output:{path:$path, sha256:$sha}}' > "$MANIFEST"
-          echo "path=$MANIFEST" >> "$GITHUB_OUTPUT"
-          echo "::notice::run manifest for ${SKILL}: model=${SKILL_MODEL} mode=${MODE} output_sha256=${DIGEST}"
+          echo "snapshot=$SNAPSHOT" >> "$GITHUB_OUTPUT"
+          echo "manifest=$MANIFEST" >> "$GITHUB_OUTPUT"
+          echo "::notice::run manifest for ${SKILL}: model=${SKILL_MODEL} mode=${MODE} snapshot=${SNAPSHOT} sha256=${DIGEST}"
 
       - name: Attest skill execution
         if: steps.attest-gate.outputs.attest == 'true'
         # Pinned to the current major per this repo's supply-chain convention
         # (checkout@v7, setup-node@v6). Latest major confirmed at:
         # https://github.com/actions/attest-build-provenance/releases
-        # Multi-subject: one attestation covering both the output bytes and the
-        # run manifest (subject-path accepts a newline-separated list).
+        # Multi-subject: one attestation over both run-scoped artifacts (the output
+        # snapshot and its manifest). Both paths are ${GITHUB_RUN_ID}-unique, so the
+        # committed bytes always match what was attested.
         uses: actions/attest-build-provenance@v4
         with:
           subject-path: |
-            output/.chains/${{ steps.skill.outputs.name }}.md
-            output/.attest-${{ steps.skill.outputs.name }}.json
+            ${{ steps.manifest.outputs.snapshot }}
+            ${{ steps.manifest.outputs.manifest }}
 
       - name: Analyze skill output
         id: analyze
