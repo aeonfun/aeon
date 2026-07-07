@@ -235,7 +235,7 @@ export function SkillDetail({ skill, runs, model, harness, secrets, mcpServers, 
             onClick={() => setEditingSchedule(!editingSchedule)}
             className="btn-mini uppercase tracking-[0.18em]"
           >
-            {editingSchedule ? 'Cancel' : 'Edit'}
+            {editingSchedule ? 'Cancel' : 'Change schedule'}
           </button>
         }
       >
@@ -355,7 +355,7 @@ export function SkillDetail({ skill, runs, model, harness, secrets, mcpServers, 
           </button>
         ) : (
           <button onClick={() => { setEditingVar(true); setVarDraft('') }} className="group w-full flex items-center gap-3 border border-dashed border-[rgba(250,250,250,0.16)] px-4 py-4 hover:border-aeon-red/40 transition-colors cursor-target">
-            <span className="text-sm text-primary-40 font-mono uppercase tracking-[0.18em] group-hover:text-primary-70 transition-colors">Defaults settings · no custom var</span>
+            <span className="text-sm text-primary-40 font-mono uppercase tracking-[0.18em] group-hover:text-primary-70 transition-colors">No custom settings</span>
             <span className="btn-mini-go ml-auto">+ Set var</span>
           </button>
         )}
