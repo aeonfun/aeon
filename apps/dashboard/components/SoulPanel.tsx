@@ -180,7 +180,7 @@ export function SoulPanel({ soul, style, loading, saving, building, installing, 
             : <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-eva-green">configured</span>}
           <button
             onClick={() => setShowTemplates(v => !v)}
-            className="text-[10px] font-mono uppercase tracking-[0.14em] px-2 py-1 border border-[rgba(250,250,250,0.12)] text-primary-50 hover:text-primary-100 hover:border-[rgba(250,250,250,0.22)] transition-colors cursor-target"
+            className="btn-mini cursor-target"
           >
             {showTemplates ? 'Close' : 'Templates'}
           </button>
