@@ -163,6 +163,13 @@ jobs:
 
           # --- Discord (collect ALL unprocessed messages) ---
           if [ -n "${DISCORD_BOT_TOKEN:-}" ] && [ -n "${DISCORD_CHANNEL_ID:-}" ]; then
+            # Opt-in author allowlist (GHSA-252c F5): without DISCORD_ALLOWED_AUTHOR_ID
+            # the only gate below is is_bot, so any non-bot member of the polled channel
+            # can issue trusted agent commands. Non-breaking nudge, not fail-closed —
+            # forks that never set it keep working, but the risk is loud and actionable.
+            if [ -z "${DISCORD_ALLOWED_AUTHOR_ID:-}" ]; then
+              echo "::warning::Discord polling is active with no DISCORD_ALLOWED_AUTHOR_ID set — any non-bot member of the channel can trigger agent runs. Set DISCORD_ALLOWED_AUTHOR_ID (your Discord user ID) to restrict it."
+            fi
             RESPONSE=$(curl -s -H "Authorization: Bot $DISCORD_BOT_TOKEN" \
               "https://discord.com/api/v10/channels/$DISCORD_CHANNEL_ID/messages?limit=10")
             COUNT=$(echo "$RESPONSE" | jq 'if type == "array" then length else 0 end')
@@ -189,6 +196,13 @@ jobs:
 
           # --- Slack (collect ALL unprocessed messages) ---
           if [ -n "${SLACK_BOT_TOKEN:-}" ] && [ -n "${SLACK_CHANNEL_ID:-}" ]; then
+            # Opt-in user allowlist (GHSA-252c F5): without SLACK_ALLOWED_USER_ID the
+            # only gate below is bot_id, so any non-bot member of the polled channel
+            # can issue trusted agent commands. Non-breaking nudge, not fail-closed —
+            # forks that never set it keep working, but the risk is loud and actionable.
+            if [ -z "${SLACK_ALLOWED_USER_ID:-}" ]; then
+              echo "::warning::Slack polling is active with no SLACK_ALLOWED_USER_ID set — any non-bot member of the channel can trigger agent runs. Set SLACK_ALLOWED_USER_ID (your Slack user ID) to restrict it."
+            fi
             RESPONSE=$(curl -s -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
               "https://slack.com/api/conversations.history?channel=$SLACK_CHANNEL_ID&limit=10")
             COUNT=$(echo "$RESPONSE" | jq '.messages | length')
