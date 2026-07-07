@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+# Aeon CLI launcher. Runs the TypeScript CLI via the dashboard's tsx and points
+# the shared lib (apps/dashboard/lib) at the repo root regardless of cwd, so
+# `aeon` works from anywhere (incl. symlinked onto PATH via `npm link`).
+set -euo pipefail
+
+# Resolve this script's real location, following symlinks.
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ]; do
+  DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"
+  SOURCE="$(readlink "$SOURCE")"
+  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
+done
+DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"   # apps/cli
+REPO_ROOT="$(cd "$DIR/../.." && pwd)"
+
+# The shared lib computes REPO_ROOT from cwd (it's built for the dashboard, which
+# runs from apps/dashboard). Pin it explicitly so the CLI is cwd-independent.
+export AEON_REPO_ROOT="$REPO_ROOT"
+
+TSX="$DIR/node_modules/.bin/tsx"
+
+# The CLI carries its own minimal runtime (tsx + yaml, ~12MB) so it works without
+# installing the full dashboard app. First run populates it.
+if [ ! -x "$TSX" ]; then
+  echo "Installing Aeon CLI runtime (tsx, yaml — one-time, ~12MB)…" >&2
+  (cd "$DIR" && npm install) || { echo "npm install failed in $DIR" >&2; exit 1; }
+fi
+
+# Point tsx at our tsconfig so the `yaml` path-mapping (which lets the shared
+# dashboard lib resolve yaml from the CLI's own node_modules) is applied.
+export TSX_TSCONFIG_PATH="$DIR/tsconfig.json"
+
+exec "$TSX" "$DIR/src/index.ts" "$@"

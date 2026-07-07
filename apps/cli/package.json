@@ -1,0 +1,17 @@
+{
+  "name": "aeon-cli",
+  "version": "0.1.0",
+  "license": "MIT",
+  "private": true,
+  "description": "Non-interactive command-line control of an Aeon repo — the dashboard's features as commands. Reuses apps/dashboard/lib so both surfaces share one source of truth.",
+  "type": "module",
+  "bin": {
+    "aeon": "./aeon"
+  },
+  "dependencies": {
+    "yaml": "^2.9.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.22.5"
+  }
+}

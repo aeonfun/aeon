@@ -1,8 +1,13 @@
 import { execSync, execFileSync } from 'child_process'
 import { resolve } from 'path'
 
-// The dashboard runs from apps/dashboard/; the repo it manages is two levels up.
-export const REPO_ROOT = resolve(process.cwd(), '..', '..')
+// The dashboard runs from apps/dashboard/, so the repo it manages is two levels
+// up from cwd. Other consumers of this lib (e.g. the apps/cli command-line tool)
+// can't rely on that cwd, so an explicit `AEON_REPO_ROOT` overrides the guess.
+// Unset — the dashboard's case — keeps the original cwd-relative behaviour.
+export const REPO_ROOT = process.env.AEON_REPO_ROOT
+  ? resolve(process.env.AEON_REPO_ROOT)
+  : resolve(process.cwd(), '..', '..')
 
 // Whether the `gh` CLI is installed and authenticated.
 export function ghAvailable(): boolean {
