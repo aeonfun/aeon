@@ -330,7 +330,7 @@ export function SkillDetail({ skill, runs, model, harness, secrets, mcpServers, 
             &ldquo;{skill.var}&rdquo;
           </div>
         ) : (
-          <div className="text-sm text-primary-35 font-mono uppercase tracking-[0.18em]">No assignment - falls back to defaults</div>
+          <div className="text-sm text-primary-35 font-mono uppercase tracking-[0.18em]">Defaults settings</div>
         )}
       </Section>
 
