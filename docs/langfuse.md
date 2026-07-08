@@ -114,13 +114,14 @@ is a Langfuse-native cost *view*. Revisit only if upstream stays unaligned **and
 Langfuse becomes the primary cost surface across many repos. Model prices (with
 cache-token pricing) would also need adding in Langfuse's UI regardless.
 
-## Sandbox note
+## Network note
 
-No sandbox workaround is needed. The OTEL exporter runs **inside** the `claude`
+No workaround is needed. The OTEL exporter runs **inside** the `claude`
 process (the same process that already reaches the model API / gateways), not
-through Claude Code's Bash tool, so its egress to Langfuse is not subject to the
-bash network restrictions described in the README. No prefetch/postprocess hook is
-involved; export is inline and out of band.
+through Claude Code's Bash tool, so its egress to Langfuse never touches a command
+line and is unaffected by the Bash permission layer's secret-expansion block
+described in the README (there is no network sandbox). Export is inline and out of
+band — no `.pending-*/` postprocess hook involved.
 
 ## Verifying
 

@@ -268,7 +268,7 @@ Use WebSearch + WebFetch to collect **real customer pain signals**, not model pr
 
 Save 2+ permalinks per idea with a one-line quote of the pain. If a constraint/theme is set in `${var}`, scope the search to it. **Vary domains across runs** — if recent logs pitched crypto, go elsewhere this time.
 
-Sandbox fallback: if curl/WebFetch both fail for a source, note `[source unreachable]` inline and proceed with remaining sources. Never fabricate quotes.
+Fallback: if curl/WebFetch both fail for a source, note `[source unreachable]` inline and proceed with remaining sources. Never fabricate quotes.
 
 #### 3. Apply the tarpit filter (reject before generation)
 Pre-reject these categories unless the user has an overwhelming earned-secret advantage:

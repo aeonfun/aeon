@@ -166,7 +166,7 @@ Append symbol + market question on a single line for easy grep next-day dedup, e
 TOKEN_PICK_DEDUP: SYMBOL | "Will X happen by Y?"
 ```
 
-## Sandbox note
+## Network note
 
 There is no network sandbox — `curl` works, with **WebFetch** as the fallback for any URL fetch (CoinGecko, DexScreener, Polymarket all work without auth). For an auth'd API, call `./secretcurl` with a `{ENV_NAME}` placeholder (the key is injected via `requires:`). On total source failure, send the no-data notification rather than silent fail.
 

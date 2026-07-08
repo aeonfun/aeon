@@ -145,8 +145,8 @@ Append:
 
 Carrying loops forward in the log is what powers the 14-day novelty check and lets the next run see what's been deferred.
 
-## Sandbox note
+## Network note
 
-`gh pr list` works in the GitHub Actions sandbox via the `gh` CLI (handles auth internally). If `gh` is unavailable or returns empty, treat the open-PR loop source as `prs=0` and continue — do not block the whole run.
+`gh pr list` works in a GitHub Actions run via the `gh` CLI (handles auth internally, so no token touches the command line). If `gh` is unavailable or returns empty, treat the open-PR loop source as `prs=0` and continue — do not block the whole run.
 
 No outbound HTTP is required. All inputs are local files and `gh`. No new env vars.

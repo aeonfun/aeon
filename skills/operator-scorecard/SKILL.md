@@ -601,8 +601,8 @@ All three branches log under a single `### operator-scorecard` heading (the heal
 
 Append one block per run (never overwrite) so re-running the same branch on the same day shows drift.
 
-## Sandbox note
+## Network note
 
-- **scorecard branch:** Pure local file I/O — no curl, no `gh api`, no env-var-in-headers, no prefetch script. Works in the GitHub Actions sandbox without any of the network workarounds other branches need. The only outbound call is `./notify` itself, which is already sandbox-safe — it stages to `.pending-notify/` and the workflow re-delivers after the run.
-- **ops branch:** All inputs are local file reads (logs, issues index, cron-state). `gh pr list` runs through the GitHub CLI and is sandbox-friendly — if it fails, treat the source as unavailable and skip the PR-staleness check. `./notify` writes to `.pending-notify/` when outbound HTTP is blocked, so delivery is reliable.
-- **push branch:** `gh api` and `gh pr list` handle auth internally and work in the sandbox. If a call returns a rate-limit error (403 with `X-RateLimit-Remaining: 0`), record it in the source-status footer and continue with what you have. For large diffs where the `patch` field is `null`, fall back to filename + additions/deletions stats. Never use raw `curl` against the GitHub API — always `gh api`.
+- **scorecard branch:** Pure local file I/O — no curl, no `gh api`, no secrets on the command line. Works in a GitHub Actions run without any of the extra auth handling the other branches need. The only outbound call is `./notify` itself, which stages to `.pending-notify/` for the workflow to re-deliver after the run.
+- **ops branch:** All inputs are local file reads (logs, issues index, cron-state). `gh pr list` runs through the GitHub CLI (auth handled internally) — if it fails, treat the source as unavailable and skip the PR-staleness check. `./notify` stages to `.pending-notify/` for re-delivery after the run, so delivery is reliable.
+- **push branch:** `gh api` and `gh pr list` handle auth internally and work in a GitHub Actions run. If a call returns a rate-limit error (403 with `X-RateLimit-Remaining: 0`), record it in the source-status footer and continue with what you have. For large diffs where the `patch` field is `null`, fall back to filename + additions/deletions stats. Never use raw `curl` against the GitHub API — always `gh api`.

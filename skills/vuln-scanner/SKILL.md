@@ -252,7 +252,7 @@ gh api -X POST "/repos/$REPO/security-advisories/reports" \
   -H "X-GitHub-Api-Version: 2022-11-28" --input /tmp/pvr.json
 ```
 
-**Always POST via `--input <file>`, never a long inline heredoc / `-f description="$(cat …)"`** — the latter can trip the sandbox ("Unhandled node type: string"), and `vulnerabilities` is a nested array that `-f`/`-F` can't express cleanly. Write the full JSON payload (`{summary, description, severity, cwe_ids, vulnerabilities}` — `vulnerabilities` is **mandatory**, see the ⚠️ note above) to a temp file and `gh api -X POST … --input payload.json`.
+**Always POST via `--input <file>`, never a long inline heredoc / `-f description="$(cat …)"`** — the latter can trip Claude Code's Bash command analyzer ("Unhandled node type: string"), and `vulnerabilities` is a nested array that `-f`/`-F` can't express cleanly. Write the full JSON payload (`{summary, description, severity, cwe_ids, vulnerabilities}` — `vulnerabilities` is **mandatory**, see the ⚠️ note above) to a temp file and `gh api -X POST … --input payload.json`.
 
 Read the HTTP response code and branch accordingly. **Never** fall back to a public issue or a code-fix PR for an *unpatched* flaw (that publishes a zero-day):
 - **`201`** → reported. Record the report/advisory id and link it in the local report.
@@ -385,7 +385,7 @@ Expected responses:
 - `404` — Repo may have been deleted / renamed / made private. Flag as `not-found`.
 - `403` — Token lacks scope or it's a private repo. Flag as `access-denied`.
 
-**Sandbox note:** `gh` CLI handles auth internally — no token-in-URL needed. If `gh api` is blocked by the sandbox, fall back to:
+**Note:** `gh` CLI handles auth internally — no token-in-URL needed. If `gh api` is unavailable, fall back to:
 ```bash
 curl -s -H "Authorization: Bearer $GH_GLOBAL" \
   "https://api.github.com/repos/${REPO}/private-vulnerability-reporting" | grep -o '"enabled":[a-z]*'
@@ -494,7 +494,7 @@ Updated automatically by the vuln-scanner re-submit arm.
 
 ## Arm C — DISCLOSE (auto-send armed email disclosures)
 
-When Arm A finds an exploitable **code** flaw (not a public dep CVE) in a repo that has **neither PVR enabled nor a usable SECURITY.md/PR channel**, the only responsible disclosure path is a **private email to the maintainer**. Those drafts sit in `memory/pending-disclosures/` with `status: pending-operator-send`. This arm finds drafts **explicitly armed for auto-send**, composes the email, and queues it. The actual send happens in `scripts/postprocess-email.sh` (Resend API) because an authenticated outbound call can't run inside Claude's sandbox — see the Sandbox note.
+When Arm A finds an exploitable **code** flaw (not a public dep CVE) in a repo that has **neither PVR enabled nor a usable SECURITY.md/PR channel**, the only responsible disclosure path is a **private email to the maintainer**. Those drafts sit in `memory/pending-disclosures/` with `status: pending-operator-send`. This arm finds drafts **explicitly armed for auto-send**, composes the email, and queues it. The actual send happens in `scripts/postprocess-email.sh` (Resend API) because the disclosure email is an irreversible outbound side-effect, deferred to the on-success postprocess gate by design (not a network block) — see the Network note.
 
 This is **fully autonomous** (operator chose this): an armed draft is sent without waiting for a human. That makes the **arming gate the only safeguard**, so this arm is conservative — it queues *only* drafts that pass every check below, and the post-send notification tells the operator exactly what went out.
 
@@ -616,7 +616,7 @@ Log per the **Log** section below with `Mode: disclose`.
 
 Do **not** send a `./notify` in this arm — the authoritative "sent / failed" notification
 (with the Resend message id, and any failures to retry) comes from the postprocess
-*after* the send. Queuing without sending is the whole point of the sandbox split.
+*after* the send. Queuing without sending is the whole point of the postprocess split.
 
 ### Draft format (what Arm A emits for an auto-sendable email draft)
 
@@ -690,12 +690,12 @@ specific bullets.
 - DISCLOSURE_EMAILER_OK   (or DISCLOSURE_EMAILER_SKIP: <reason>)
 ```
 
-## Sandbox note
+## Network note
 
-**Arm A (scan).** Getting the scanners to run in the GitHub Actions sandbox takes **two** things:
+**Arm A (scan).** Getting the scanners to run under GitHub Actions takes **two** things:
 
 1. **Install** — the binaries (`semgrep`, `trufflehog`, `osv-scanner`, `slither`) are **not pre-installed**. Stage them **in-run** into `/tmp/bin` (step A3's preamble): the network is open, but `pip install` / `curl | sh` / `tar` aren't allow-listed, so use `python3 -m pip install …` (semgrep, slither) and `curl -o … && chmod +x` for the Go binaries (osv-scanner, trufflehog). Any tool that can't be staged is skipped by its `command -v` guard (`VULN_SCANNER_SKIPPED`); if **no** scanner is available, Arm A reports `SCAN_TOOLS_MISSING` and skips the scan cleanly rather than erroring the run.
-2. **Execute** — non-interactive `claude -p` runs under an `--allowedTools` allowlist, so any command not on it is **denied** ("requires approval") with no human to approve. The scanner *bare names* are granted in `scripts/skill_mode.sh` (write tier). This is why step A3 puts `/tmp/bin` on `PATH` and calls each tool by bare name (`semgrep …`, not `/tmp/bin/semgrep …`) — an absolute-path invocation would not match the allowlist pattern.
+2. **Execute** — non-interactive `claude -p` runs under an `--allowedTools` allowlist, so any command not on it is **denied** ("requires approval") with no human to approve. The scanner *bare names* (`semgrep`, `osv-scanner`, `trufflehog`, `slither`) must be listed in the **write tier** of `scripts/skill_mode.sh` for bare invocation to be permitted; if a name is missing it's denied and that scanner is skipped (the scan arm degrades to manual code review — a denial reads as "requires approval", **not** a network/sandbox block). This is why step A3 puts `/tmp/bin` on `PATH` and calls each tool by bare name (`semgrep …`, not `/tmp/bin/semgrep …`) — an absolute-path invocation would not match the allowlist pattern.
 
 This two-part fix resolves ISS-001 (binaries installed *and* runnable). If any scanner binary is still missing at runtime, log `VULN_SCANNER_SKIPPED: <tool> not available`, record `tool=fail` in `sources.txt`, and continue with the remaining scanners rather than aborting the whole run. An all-scanners-fail run must report **error**, not **clean**.
 

@@ -303,6 +303,6 @@ Both branches append to `memory/logs/${today}.md` under a **single `### heartbea
 - `mode: ambient` — the default fleet check. Log the status-page verdict, e.g. `STATUS_PAGE=OK`, or `HEARTBEAT_OK · STATUS_PAGE=OK` when nothing needed attention; on findings, log the findings and actions taken plus the `STATUS_PAGE=…` line.
 - `mode: brief` — the priority brief. Log the timestamp, the 3 focus items (one line each), the headline count, and any skills flagged from cron-state.
 
-## Sandbox note
+## Network note
 
-Applies to both branches. The sandbox may block outbound curl. Use **WebFetch** as a fallback for any URL fetch. For GitHub queries (both branches use `gh pr list` / `gh issue list`), use the `gh` CLI (handles auth internally) rather than curl. The priority-brief Resend POST carries `$RESEND_API_KEY`; if curl is blocked, retry the same request via WebFetch.
+Applies to both branches. `curl` works — there is no network sandbox. Use **WebFetch** as a fallback for a flaky public GET. For GitHub queries (both branches use `gh pr list` / `gh issue list`), use the `gh` CLI (handles auth internally) rather than curl. The priority-brief Resend POST carries the `RESEND_API_KEY` secret — a bare `$RESEND_API_KEY` on the command line is refused by the Bash permission layer, so send it with `./secretcurl` using a `{RESEND_API_KEY}` placeholder (WebFetch can't carry a secret).

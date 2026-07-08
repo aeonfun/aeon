@@ -12,9 +12,9 @@ Today is ${today}. Your task is to audit the last 30 days of token picks and sco
 
 Read memory/MEMORY.md for context.
 
-## Sandbox note
+## Network note
 
-curl may fail in the sandbox. For every curl call, if it fails or returns empty/error, use **WebFetch** for the same URL. WebFetch is reliable where curl isn't.
+`curl` works — there is no network sandbox. For every curl call, if it fails or returns empty/error, use **WebFetch** for the same URL as a fallback for a flaky public GET.
 
 ## Steps
 

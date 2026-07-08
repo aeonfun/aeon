@@ -591,9 +591,9 @@ Append to `memory/logs/${today}.md` under the `### github-monitor` heading (firs
 
 ---
 
-## Sandbox note
+## Network note
 
-- **`monitor`, `issues`, `prs` views** — use the `gh` CLI, which authenticates via the workflow's `GITHUB_TOKEN` / `GH_TOKEN` and works inside the sandbox (no curl fallback needed). `monitor` uses `gh pr/issue/release list`; `issues` uses `gh search issues` (fallback: per-repo `gh issue list`); `prs` uses `gh api graphql` (fallback: `gh search prs`). If a per-repo call errors in `monitor`, tag it `gh_error(<code>)` in the sources footer and continue — do not retry in a loop.
+- **`monitor`, `issues`, `prs` views** — use the `gh` CLI, which authenticates via the workflow's `GITHUB_TOKEN` / `GH_TOKEN` and works inside a GitHub Actions run (no curl fallback needed). `monitor` uses `gh pr/issue/release list`; `issues` uses `gh search issues` (fallback: per-repo `gh issue list`); `prs` uses `gh api graphql` (fallback: `gh search prs`). If a per-repo call errors in `monitor`, tag it `gh_error(<code>)` in the sources footer and continue — do not retry in a loop.
 - **`releases` view** — use `gh api "repos/{owner}/{repo}/releases?per_page=…"` for release data (the workflow's `GITHUB_TOKEN`/`GH_TOKEN` authenticates it internally and works in-run — same as the other views); **WebFetch** on the same URL is the fallback if a call fails. Tag a repo `gh_error(<code>)` in the sources footer and continue — do not retry in a loop.
 
 ## Environment Variables

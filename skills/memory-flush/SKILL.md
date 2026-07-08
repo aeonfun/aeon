@@ -54,7 +54,7 @@ Log what you promoted or removed.
 
 If nothing worth promoting or removing, log `MEMORY_FLUSH_OK` and end.
 
-## Sandbox note
+## Network note
 
 `gh pr list` uses the `gh` CLI's built-in auth — no curl env-var expansion. All other work is local file I/O against `memory/`.
 

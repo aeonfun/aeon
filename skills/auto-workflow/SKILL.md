@@ -470,7 +470,7 @@ Append to `memory/logs/${today}.md` under ONE `### auto-workflow` heading (the h
 
 ---
 
-## Sandbox note
+## Network note
 
 - **Analyze mode:** use `WebFetch` for untrusted URL content; `gh api` for GitHub (auth handled internally). CoinGecko/DexScreener confirmation of contracts uses `WebFetch`. If a URL is JS-only (SPA), fall back to `/sitemap.xml` or `gh api` equivalents — do not attempt a JS render.
 - **Enable mode:** all work is local file reads + `git`/`gh` CLI; no external HTTP. `gh` handles auth via the workflow's GITHUB_TOKEN (a **workflows-scope PAT is preferred — required for `aeon.yml` edits to land cleanly**; without `workflows` scope, the push fails at B5 and the branch exits with `SKILL_ENABLER_PUSH_FAILED`). If `gh pr create` itself fails (rate-limit, transient 5xx), retry once after 30s; persistent failure → log `SKILL_ENABLER_PR_FAILED` and notify with the error so the operator can open the PR manually from the pushed branch.

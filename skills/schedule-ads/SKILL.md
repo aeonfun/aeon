@@ -23,7 +23,7 @@ requires: [ADMANAGE_API_KEY]
 
 > **${var}** selects the flow. Empty/unset = **schedule** (launch ads into existing ad sets). `create` = **create-campaign** (provision Meta campaigns + ad sets). Both are config-driven, PAUSED-by-default, and never call the AdManage API directly — they queue intents that credentialed postprocess scripts pick up after Claude exits.
 
-Reads a declarative config, computes what to do, and drops JSON intent files under `.pending-admanage/`. The actual AdManage.ai API calls happen in `scripts/postprocess-admanage.sh` (schedule branch) and `scripts/postprocess-admanage-create.sh` (create branch) — outside the sandbox, with full env access. This skill never sees or touches `ADMANAGE_API_KEY`.
+Reads a declarative config, computes what to do, and drops JSON intent files under `.pending-admanage/`. The actual AdManage.ai API calls are an irreversible outbound side-effect (real ad spend), so they happen in `scripts/postprocess-admanage.sh` (schedule branch) and `scripts/postprocess-admanage-create.sh` (create branch) — on the on-success postprocess gate by design, with full env access. This skill never sees or touches `ADMANAGE_API_KEY`.
 
 ## Preamble (both branches)
 
@@ -50,9 +50,9 @@ This branch **spends real money on ad platforms**. Guardrails, in priority order
 4. **Config-only.** The branch does not invent campaigns, creative, or targeting. If there's no schedule for today, it exits cleanly with no API calls.
 5. **Single source of truth.** All ads/campaigns/targeting live in `config.yaml`. The branch never generates new creative on the fly.
 
-## Sandbox note (schedule)
+## Network note (schedule)
 
-AdManage requires `Authorization: Bearer $ADMANAGE_API_KEY` on every endpoint. The sandbox blocks env var expansion in curl headers, so this branch **cannot make the API calls directly**. Instead:
+Launching ads is an irreversible outbound side-effect (real ad spend), so this branch **does not make the AdManage API calls directly** — they go through the on-success postprocess gate by design (not a network block). Instead:
 
 - This branch writes launch intents to `.pending-admanage/launches/*.json` (one file per batch).
 - After Claude finishes, the workflow runs `scripts/postprocess-admanage.sh`, which has full env access. That script calls `POST /v1/launch`, polls `GET /v1/batch-status/{id}`, and notifies the result via `./notify`.
@@ -224,9 +224,9 @@ Same posture as the schedule branch:
 3. **Dry-run mode.** `DRY_RUN=true` or `config.dryRun: true` → payloads written to `.pending-admanage/dryrun-create/`, notified, no API calls.
 4. **Config-only.** No config file → exit silently. No invented campaigns, no autonomous provisioning.
 
-## Sandbox note (create)
+## Network note (create)
 
-Every `/manage/*` endpoint requires `Authorization: Bearer $ADMANAGE_API_KEY`. Sandbox blocks env-var expansion in curl headers, so this branch queues intents only:
+Provisioning campaigns and ad sets is an irreversible outbound side-effect, so this branch queues intents only and lets the on-success postprocess gate make the `/manage/*` calls by design (not a network block):
 
 - Branch writes: `.pending-admanage/creates/campaigns/<slug>.json` and `.pending-admanage/creates/adsets/<campaign-slug>__<adset-slug>.json`
 - After Claude exits, `scripts/postprocess-admanage-create.sh` runs with full env access, makes the API calls in the right order (campaigns first, then ad sets referencing returned campaign IDs), lands per-entity results in `.pending-admanage/creates-results/`, and writes IDs back to `.admanage-state/campaigns.json`.

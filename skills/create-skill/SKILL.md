@@ -112,7 +112,7 @@ Today is ${today}. Your task is to generate a complete, production-ready skill f
    - Fallback behavior defined for every optional secret.
    - Use only `${var}` and `${today}` template variables — no other invented variables.
    - No TODOs, no placeholders, no "fill in later".
-   - Mandatory `## Sandbox note` section.
+   - Mandatory `## Network note` section (accurate model — see the `## Network note` in this skill for the canonical wording; there is no network sandbox).
 
 7. **Quality enforcement (self-edit pass).** Score the draft 1-5 across:
 
@@ -123,7 +123,7 @@ Today is ${today}. Your task is to generate a complete, production-ready skill f
    | API calls complete | Curl + headers + jq, not pseudo-code |
    | Fallback behavior | Graceful degradation for every optional secret |
    | Output spec | Char limits, clickable URLs, format template explicit |
-   | Sandbox note | Present and matches the auth pattern of the API used |
+   | Network note | Present and matches the auth pattern of the API used (`./secretcurl` for auth'd, `gh api` for GitHub, WebFetch fallback for public) |
 
    Any criterion <4 → rewrite that section once. Still <4 after one rewrite → exit `CREATE_SKILL_VALIDATION_FAILED` with a notify listing failed criteria. **Do not ship a low-quality skill.**
 
@@ -133,7 +133,7 @@ Today is ${today}. Your task is to generate a complete, production-ready skill f
    - Every `${...}` template variable resolves to `${var}` or `${today}`.
    - At least one `./notify` invocation appears in the body.
    - At least one `memory/logs/${today}.md` write appears.
-   - `## Sandbox note` section exists.
+   - `## Network note` section exists.
 
    Any failure → delete the partial file and any other writes, exit `CREATE_SKILL_VALIDATION_FAILED` with a notify listing the failed checks. No partial state.
 
@@ -188,7 +188,7 @@ Today is ${today}. Your task is to generate a complete, production-ready skill f
     | API calls | X/5 |
     | Fallback behavior | X/5 |
     | Output spec | X/5 |
-    | Sandbox note | X/5 |
+    | Network note | X/5 |
 
     ## Trigger manually
     Workflow dispatch with `skill={skill-name}` and `var={example-var}`.
@@ -204,7 +204,7 @@ Today is ${today}. Your task is to generate a complete, production-ready skill f
     - Created: skills/{skill-name}/SKILL.md
     - Registered in aeon.yml: schedule={cron}, model={model}
     - Required secrets: {list or "none"}
-    - Quality scores: F/V/A/Fb/O/S = X/X/X/X/X/X
+    - Quality scores: F/V/A/Fb/O/N = X/X/X/X/X/X
     - PR: {url}
     - Exit: CREATE_SKILL_OK (or CREATE_SKILL_NEW_SECRET_REQUIRED)
     ```

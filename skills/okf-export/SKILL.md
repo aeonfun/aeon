@@ -69,7 +69,7 @@ Today is ${today}. Aeon's `memory/topics/` directory is a **native OKF (Open Kno
    Review the type: choices. PR: {url}
    ```
 
-## Sandbox note
+## Network note
 
 All work is local file I/O against `memory/topics/` plus the two Node scripts (`scripts/okf-index.mjs`, `scripts/okf-validate.mjs`) — no network. The PR uses the `gh` CLI's built-in auth (no curl / secret expansion). No API keys required.
 

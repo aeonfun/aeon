@@ -108,7 +108,7 @@ A PR merges only when every one of the following holds:
    - `Totals`: `merged=X qualified=Y considered=Z retry_capped=R`
    - If zero qualified, include a verdict breakdown: `AUTO_MERGE_SKIP: 0/Z qualifying (behind=B blocked=L failing=F draft=D author-blocked=A size-blocked=S retry-capped=R)`
 
-## Sandbox note
+## Network note
 
 `gh` authenticates via the workflow's GITHUB_TOKEN — no curl needed. If `gh pr merge` fails with `Resource not accessible by integration`, the workflow token lacks merge permission on that repo; log once and notify at most once per 7 days (check memory/logs/ for prior notification) to avoid alert spam.
 

@@ -37,7 +37,7 @@ If either secret is missing, log `DEPLOY_WATCH_NO_TOKEN` and exit cleanly — ne
      echo "DEPLOY_WATCH_FETCH_FAIL: $?"
    ```
 
-   If `$VERCEL_TOKEN` doesn't expand inside the sandbox, use the **post-process pattern**: write a `.pending-deploy-watch/check.json` request and add a `scripts/postprocess-deploy-watch.sh` that runs after the Claude step.
+   Make read-only status calls in-run with `./secretcurl` (write the key as `{VERCEL_TOKEN}` — a bare `$VERCEL_TOKEN` on the line is refused by the Bash permission layer). Reserve the **post-process pattern** — write a `.pending-deploy-watch/check.json` request and add a `scripts/postprocess-deploy-watch.sh` that runs after the Claude step — for the irreversible action (triggering a deploy), never for reads.
 
 3. **Parse and classify** — for each deploy, capture: `uid`, `state` (READY / ERROR / CANCELED / BUILDING / QUEUED), `url`, `target` (production / preview), `creator`, `createdAt`, `meta.githubCommitMessage`.
 
@@ -70,9 +70,9 @@ If either secret is missing, log `DEPLOY_WATCH_NO_TOKEN` and exit cleanly — ne
    - **Status**: DEPLOY_OK | DEPLOY_QUIET (no deploys) | DEPLOY_ALERT | DEPLOY_DEGRADED
    ```
 
-## Sandbox note
+## Network note
 
-The Vercel API requires `Authorization: Bearer $VERCEL_TOKEN` — env-var-in-headers patterns frequently fail inside the sandbox. Use the **post-process pattern** documented in CLAUDE.md: write request JSON to `.pending-deploy-watch/`, then add `scripts/postprocess-deploy-watch.sh` that runs after Claude with full env access.
+The Vercel API requires `Authorization: Bearer {VERCEL_TOKEN}`. A bare `$SECRET` on a command line is refused by the Bash permission layer, so make the **read-only** status calls in-run with `./secretcurl` (write the key as the `{VERCEL_TOKEN}` placeholder — it keeps the secret off the line). Reserve the **post-process pattern** in CLAUDE.md (write request JSON to `.pending-deploy-watch/`, then `scripts/postprocess-deploy-watch.sh` runs after Claude with full env) for any **irreversible** action like triggering a deploy — never for reads.
 
 ## Constraints
 

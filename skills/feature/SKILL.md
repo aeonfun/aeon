@@ -516,9 +516,9 @@ No eligible repos: `- REPO_REVIVE_SKIP: no eligible repos — all recently reviv
 
 Notify only on signal. The **watched** branch sends one rich per-repo message per shipped PR (skipped/failed repos send nothing; an all-skipped run sends nothing). The **external** branch sends one message per run. The **dormant** branch sends one message per revival via `./notify -f`. A clean/no-change run sends nothing.
 
-## Sandbox Note
+## Network Note
 
-All GitHub operations go through the `gh` CLI — it handles auth internally via `GITHUB_TOKEN`/`GH_GLOBAL`, so no env-var-authenticated curl from bash is needed. `./notify` / `./notify -f` deliver reliably even when the sandbox blocks outbound network. For the one public-network exception — `curl -o` of a governance-file body (§A6/§B4) — if `curl` fails intermittently, that specific fetch is the only case where you may retry; do NOT route governance-file bodies through WebFetch (see §A6 for why).
+All GitHub operations go through the `gh` CLI — it handles auth internally via `GITHUB_TOKEN`/`GH_GLOBAL`, so no env-var-authenticated curl from bash is needed. `./notify` / `./notify -f` deliver reliably. For the one public-network exception — `curl -o` of a governance-file body (§A6/§B4) — if `curl` fails intermittently, that specific fetch is the only case where you may retry; do NOT route governance-file bodies through WebFetch (see §A6 for why).
 
 **No compound bash — one operation per call.** Branches work inside per-repo temp dirs, so the natural reflex is `cd /tmp/feature-build-x && git grep ...`. The non-interactive sandbox **auto-denies** any call chaining `&&`, `||`, `;`, or pipes (`|`) — it's rejected before it runs, burning a turn each. The working directory **persists across Bash calls**, so:
 - Run `cd /tmp/feature-build-${repo-name}` (or `/tmp/external-work`, `/tmp/repo-revive-${name}`) as its own call, then run each subsequent command separately.

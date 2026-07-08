@@ -187,6 +187,6 @@ If skipped: `NARRATIVE_CONVERGENCE_SKIP: <reason>`.
 
 None. All reads from local `output/.chains/`, `memory/`, and `output/articles/` dirs.
 
-## Sandbox Note
+## Network Note
 
-No network calls required. All data comes from local files written by other skills. If `output/.chains/` is sparse (e.g. first morning run before skills have written), fall back to reading the last 3 memory logs directly — every skill appends a log entry, so the signal map can be reconstructed from logs alone. The only outbound call is `./notify`, which is already sandbox-safe.
+No network calls required. All data comes from local files written by other skills. If `output/.chains/` is sparse (e.g. first morning run before skills have written), fall back to reading the last 3 memory logs directly — every skill appends a log entry, so the signal map can be reconstructed from logs alone. The only outbound call is `./notify`, which works reliably.

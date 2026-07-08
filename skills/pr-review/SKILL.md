@@ -431,9 +431,9 @@ Append to `memory/logs/${today}.md` under the shared `### pr-review` heading wit
 
 ---
 
-## Sandbox note
+## Network note
 
-`gh` CLI handles GitHub auth internally — use it over raw `curl` with header expansion the sandbox blocks. Both branches route all outbound GitHub calls through `gh` / `gh api` (`GH_TOKEN`, or `GITHUB_TOKEN` in CI — provided by the runner, no new secret to provision). No prefetch/postprocess wrapper required. The only other outbound call is `./notify`, which is already sandbox-safe.
+`gh` CLI handles GitHub auth internally — use it over raw `curl`, which would put a bare `$SECRET` on the command line for the Bash permission layer to refuse. Both branches route all outbound GitHub calls through `gh` / `gh api` (`GH_TOKEN`, or `GITHUB_TOKEN` in CI — provided by the runner, no new secret to provision). No postprocess wrapper required. The only other outbound call is `./notify`, which stages for re-delivery after the run.
 
 - **REVIEW branch**: if `gh` fails at the repo level, log the error and continue to the next repo. As a last-resort fallback, use **WebFetch** on the raw PR URL to read the diff.
 - **SURVEY branch**: the `pulls` list endpoint is the floor (see step 2) — on failure, one-line failure notify + exit `API_FAIL`. A single PR's files-endpoint failure degrades that PR to `UNKNOWN` but keeps it in the digest.

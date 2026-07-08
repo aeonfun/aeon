@@ -407,9 +407,9 @@ Every run logs exactly one of these to memory:
 - `FLEET_DISPATCH_FAILED:<reason>` — dispatch produced 0 dispatches
 - `FLEET_SCORECARD_EMPTY` — collector produced no data (empty fleet / all repos unreadable); scorecard skipped without overwriting or notifying
 
-## Sandbox note
+## Network note
 
-**Control view (health / status / dispatch):** always use `gh api` over raw curl (handles auth and the sandbox env-var-in-headers issue). All cross-repo calls go through `gh api` or `gh workflow run`. No outbound HTTP needed beyond what `gh` does internally.
+**Control view (health / status / dispatch):** always use `gh api` over raw curl (it handles auth internally, so no `$SECRET` appears on the command line for the Bash permission layer to refuse). All cross-repo calls go through `gh api` or `gh workflow run`. No outbound HTTP needed beyond what `gh` does internally.
 
 **Scorecard view:** gathers its data **in-run** by executing `node scripts/fleet-scorecard.mjs` (step 0), which fetches workflow runs + token usage from the GitHub API and computes the tables into `/tmp/fleet-scorecard/`. The collector authenticates with `GH_READ_PAT` when set (a read-only PAT with cross-repo scope, declared in this skill's `requires:` and injected into the run) so **private** managed instances are readable; without it, only self + public repos resolve. It reads the token from `process.env` internally, so the secret never appears on a command line. A repo the token can't read is simply absent from the tables rather than crashing the collector.
 

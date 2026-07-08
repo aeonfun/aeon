@@ -25,9 +25,9 @@ Read `memory/topics/prediction-markets.md` if it exists for an optional `## Plat
 
 The keyword filter and locale table below are starting points — the operator can edit `memory/topics/prediction-markets.md` to add `## Keywords` and `## Locales` sections that override the defaults.
 
-## Sandbox note
+## Network note
 
-curl may fail in the sandbox. For every curl call, if it fails or returns empty, use **WebFetch** for the same URL. The Polymarket APIs above are public (no auth). For news searches, prefer **WebSearch** with locale-specific queries — it routes through the sandbox cleanly.
+`curl` works — there is no network sandbox. For every curl call, if it fails or returns empty, use **WebFetch** as a fallback for a flaky public GET. The Polymarket APIs above are public (no auth). For news searches, prefer **WebSearch** with locale-specific queries — a built-in Claude tool that needs no curl.
 
 ## Steps
 

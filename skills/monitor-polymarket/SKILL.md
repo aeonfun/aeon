@@ -147,9 +147,9 @@ Comments:
 
 Flag any market that moved more than **5 percentage points** in 24h — these are the ones worth paying attention to.
 
-## P5. Polymarket sandbox note
+## P5. Polymarket Network note
 
-The sandbox may block outbound curl. Use **WebFetch** as a fallback for any URL fetch:
+`curl` works — there is no network sandbox. Use **WebFetch** as a fallback for a flaky public GET:
 - `WebFetch("https://gamma-api.polymarket.com/events?slug=SLUG&limit=1")`
 - `WebFetch("https://clob.polymarket.com/prices-history?market=TOKEN_ID&interval=1d&fidelity=60")`
 - `WebFetch("https://gamma-api.polymarket.com/comments?parent_entity_type=Event&parent_entity_id=EVENT_ID&limit=10&order=reactionCount&ascending=false")`
@@ -294,9 +294,9 @@ Scan for events with high `volume_24h` (top 10) whose tickers are **not** in the
 - `MONITOR_KALSHI_NO_CONFIG` — empty watchlist and no single ticker; discovered trending events and notified with setup hint.
 - `MONITOR_KALSHI_ERROR` — events endpoint failed entirely or zero markets resolved; notify with the failure, don't fake a report.
 
-## K9. Kalshi sandbox note
+## K9. Kalshi Network note
 
-The sandbox may block outbound curl. Use **WebFetch** as a fallback for any URL fetch:
+`curl` works — there is no network sandbox. Use **WebFetch** as a fallback for a flaky public GET:
 - `WebFetch("https://api.elections.kalshi.com/trade-api/v2/events/EVENT_TICKER?with_nested_markets=true")`
 - `WebFetch("https://api.elections.kalshi.com/trade-api/v2/markets/candlesticks?tickers=...&start_ts=...&end_ts=...&period_interval=60")`
 - `WebFetch("https://api.elections.kalshi.com/trade-api/v2/markets/MARKET_TICKER/orderbook?depth=10")`
@@ -347,6 +347,6 @@ Append to `memory/logs/${today}.md` under a single `## Monitor Prediction Market
 
 If a market moved dramatically — Polymarket >5pp, or Kalshi >10pp on a non-thin book — or a new category/trend is heating up across multiple events, add a one-line note in `memory/MEMORY.md` (under a "Prediction market signals" section) for future reference.
 
-## Sandbox note
+## Network note
 
-Both branches only fetch **public** APIs (`mode: read-only`), so there are no secret-bearing calls. The sandbox may still block outbound curl — use **WebFetch** as a fallback for any URL fetch (per-platform endpoint lists are in the Polymarket sandbox note P5 and the Kalshi sandbox note K9). Never write to the repo beyond `memory/logs/` (and an optional `memory/MEMORY.md` note); produce all output via `./notify` and `memory/`.
+Both branches only fetch **public** APIs (`mode: read-only`), so there are no secret-bearing calls. `curl` works — there is no network sandbox; use **WebFetch** as a fallback for a flaky public GET (per-platform endpoint lists are in the Polymarket Network note P5 and the Kalshi Network note K9). Never write to the repo beyond `memory/logs/` (and an optional `memory/MEMORY.md` note); produce all output via `./notify` and `memory/`.

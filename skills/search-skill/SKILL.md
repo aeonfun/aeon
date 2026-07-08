@@ -141,9 +141,9 @@ Append:
 - **Notified:** <yes|no>
 ```
 
-## Sandbox note
+## Network note
 
-The sandbox may block outbound `curl` and `npx`. Fallbacks:
+`curl` works — there is no network sandbox. But `npx` may not be in the `--allowedTools` allowlist (a permission gate, not a network block), and a public GET can be flaky, so keep fallbacks ready:
 
 - If `npx skills find` hangs or errors, mark `npx=fail` and rely on `bin/add-skill --list` + WebFetch of skills.sh — neither requires `npx`.
 - `bin/add-skill` uses `curl` internally for GitHub tarballs. If tarball fetch fails, WebFetch the tarball URL directly as a last resort — only for the single winning candidate, not for pre-fetching every catalog.

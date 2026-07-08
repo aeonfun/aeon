@@ -163,7 +163,7 @@ Today is ${today}. Your task is to ship a small, self-contained prototype that s
 - `VERCEL_TOKEN` — Needed for the Vercel deploy (used by `scripts/postprocess-deploy.sh`, not by Claude).
 - `GH_GLOBAL` — Needed for GitHub repo creation in the postprocess step.
 
-Both are **postprocess-only** — neither is used during Claude's in-sandbox run, which always succeeds at file-writing and flags `DEPLOY_PROTOTYPE_NO_POSTPROCESS` when the deploy can't run. That graceful degrade is why both are declared optional (`?`); the deploy simply doesn't happen without them. Do not read them, do not embed them in any file.
+Both are **postprocess-only** — neither is used during Claude's run, which always succeeds at file-writing and flags `DEPLOY_PROTOTYPE_NO_POSTPROCESS` when the deploy can't run. That graceful degrade is why both are declared optional (`?`); the deploy simply doesn't happen without them. Do not read them, do not embed them in any file.
 
 ## Guidelines
 
@@ -172,8 +172,8 @@ Both are **postprocess-only** — neither is used during Claude's in-sandbox run
 - Max ~5 files (enforced at 20 in pre-flight).
 - Descriptive slugs. `aeon-prototype-market-heatmap`, not `aeon-prototype-1`.
 - Never hardcode secrets. If a public-auth endpoint isn't enough for the idea, drop the idea.
-- The actual GitHub repo creation, push, and Vercel deploy happen in `scripts/postprocess-deploy.sh` outside the sandbox. Your job: write files and metadata correctly so that script can run unattended.
+- The actual GitHub repo creation, push, and Vercel deploy happen in `scripts/postprocess-deploy.sh` after Claude's run — an irreversible repo/deploy side-effect that runs on the on-success postprocess gate by design. Your job: write files and metadata correctly so that script can run unattended.
 
-## Sandbox note
+## Network note
 
-All the skill's work happens inside the sandbox — file writes and notify only. No outbound network required during Claude's run. The deploy step runs post-sandbox from `scripts/postprocess-deploy.sh`, which reads `.pending-deploy/` and uses `VERCEL_TOKEN` + `GH_GLOBAL` directly. If that script is missing, flag it in the notify (exit mode `DEPLOY_PROTOTYPE_NO_POSTPROCESS`) — the skill still succeeds at its file-writing job, but the operator needs to add the postprocess script for deploys to actually happen.
+All the skill's work happens in-run — file writes and notify only. No outbound network required during Claude's run. The deploy is an irreversible side-effect, so it runs after Claude's run from `scripts/postprocess-deploy.sh` on the on-success postprocess gate (by design — not a network block), reading `.pending-deploy/` and using `VERCEL_TOKEN` + `GH_GLOBAL` directly. If that script is missing, flag it in the notify (exit mode `DEPLOY_PROTOTYPE_NO_POSTPROCESS`) — the skill still succeeds at its file-writing job, but the operator needs to add the postprocess script for deploys to actually happen.

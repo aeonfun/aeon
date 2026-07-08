@@ -66,7 +66,7 @@ Today is ${today}. Review external PRs on **[REPLACE: WATCHED_REPO]** with a foc
    - **Status**: REVIEW_OK | REVIEW_QUIET (no new PRs)
    ```
 
-## Sandbox note
+## Network note
 
 `gh` handles auth via the workflow's `GITHUB_TOKEN`. To comment on or label a PR in **[REPLACE: WATCHED_REPO]**, the token needs `pull-requests: write` and `issues: write` permission on that repo — verify the workflow grants those, or this skill will silently fail to write.
 

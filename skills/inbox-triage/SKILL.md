@@ -201,9 +201,9 @@ If skipped:
 
 None beyond `GITHUB_TOKEN`, which GitHub Actions sets automatically and `gh` uses internally.
 
-## Sandbox Note
+## Network Note
 
-Uses `gh api` for all GitHub calls — no curl, no env var expansion in headers. `gh api` works in the GitHub Actions sandbox. If `gh api /notifications` fails (rate limit, auth error), log the error and exit with `INBOX_TRIAGE_SKIP: api error`. Use WebFetch as a fallback only if `gh` is unavailable — the endpoint is `https://api.github.com/notifications` with `Authorization: Bearer $GITHUB_TOKEN` but that won't work in sandbox; prefer `gh`.
+Uses `gh api` for all GitHub calls — it handles auth internally, so no `$SECRET` ever appears on the command line for the Bash permission layer to refuse. `gh api` works in a GitHub Actions run. If `gh api /notifications` fails (rate limit, auth error), log the error and exit with `INBOX_TRIAGE_SKIP: api error`. Use WebFetch as a fallback only if `gh` is unavailable — the endpoint is `https://api.github.com/notifications` with `Authorization: Bearer $GITHUB_TOKEN`, but WebFetch can't carry that auth header; prefer `gh`.
 
 ## What this is NOT
 

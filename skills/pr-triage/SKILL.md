@@ -235,9 +235,9 @@ Terminal log lines:
 - Every repo failed data fetch → `PR_TRIAGE_ERROR source-status=<...>` (no notification)
 - `gh` unavailable entirely → `PR_TRIAGE_ERROR gh-unavailable` and exit
 
-## Sandbox note
+## Network note
 
-Use `gh` CLI for all GitHub operations — it handles auth internally and bypasses the curl env-var-expansion sandbox issue. If `gh` errors at the repo level, record `fail — <reason>` in source status and skip that repo; do not abort the whole run. WebFetch cannot substitute for write operations (auth required); a fully unavailable `gh` is a hard exit.
+Use `gh` CLI for all GitHub operations — it handles auth internally, so no bare `$SECRET` ever lands on the command line for the Bash permission layer to refuse. If `gh` errors at the repo level, record `fail — <reason>` in source status and skip that repo; do not abort the whole run. WebFetch cannot substitute for write operations (auth required); a fully unavailable `gh` is a hard exit.
 
 ## Constraints
 

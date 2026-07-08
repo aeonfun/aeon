@@ -607,6 +607,6 @@ The combined status rolls up the per-branch statuses (kept verbatim in A9 / B-st
 - The per-fork fingerprint is descriptive only — only aggregate signals drive recommendations.
 - Silent runs are **correct**, not failures. This skill is the divergence companion to `skill-gap` (popularity); avoid duplicating its headline metrics — focus on the code + config **divergence patterns** it doesn't surface.
 
-## Sandbox note
+## Network note
 
-Every GitHub call uses `gh api`, which authenticates via `GITHUB_TOKEN` automatically and works from the sandbox — no `curl`, no env-var expansion in headers, no secrets beyond the default `GITHUB_TOKEN`. Retry policy: on `429`/`5xx` (compare) back off per step A1; on `403` with `X-RateLimit-Remaining: 0` (tree/contents) sleep 60s and retry once, then mark that fork `rate_limited` and proceed with a partial fleet (the verdict and source-status footers surface the gap). If the initial `/forks` listing fails after retry, combined status = `FORK_DIVERGENCE_API_FAIL` with `forks_list=fail`.
+Every GitHub call uses `gh api`, which authenticates via `GITHUB_TOKEN` automatically — no `curl`, no `$SECRET` on the command line (so nothing for the Bash permission layer to refuse), no secrets beyond the default `GITHUB_TOKEN`. Retry policy: on `429`/`5xx` (compare) back off per step A1; on `403` with `X-RateLimit-Remaining: 0` (tree/contents) sleep 60s and retry once, then mark that fork `rate_limited` and proceed with a partial fleet (the verdict and source-status footers surface the gap). If the initial `/forks` listing fails after retry, combined status = `FORK_DIVERGENCE_API_FAIL` with `forks_list=fail`.

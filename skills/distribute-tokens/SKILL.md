@@ -135,7 +135,7 @@ Compute the ranking directly from GitHub — no upstream skill or article requir
 - **First-PR ✨** per ranked login — did they have any *prior* merged PR to the repo?
   `gh api -X GET search/issues -f q="repo:${REPO} is:pr is:merged author:${login} merged:<${WEEK_START}" --jq '.total_count'` → `0` means this is their first-ever merged PR (set `first_pr_marker = ✨`).
 - If zero merged PRs in the window → log `CONTRIBUTOR_REWARD_NO_MERGED_PRS — week ${TARGET_WEEK}` to `memory/logs/${today}.md`, exit silently (no notify). Nothing shipped, nothing to reward.
-- If the GitHub API is unreachable (see Sandbox note for the `gh api` → WebFetch fallback) → log `CONTRIBUTOR_REWARD_API_FAIL`, notify the operator, exit.
+- If the GitHub API is unreachable (see Network note for the `gh api` → WebFetch fallback) → log `CONTRIBUTOR_REWARD_API_FAIL`, notify the operator, exit.
 
 ### A3. Load plan idempotency state
 
@@ -468,10 +468,10 @@ Omit the block for whichever phase did not run.
 
 For `all:`, the terminal exit code is the send phase's code (or the Phase A early-exit code when the plan produced nothing to send).
 
-## Sandbox note
+## Network note
 
-- **Plan phase (A):** ranks contributors via `gh api search/issues` (`gh` handles GitHub auth internally — the sandbox permits it in write mode). If `gh api` fails, fall back to **WebFetch** on the public `https://api.github.com/search/issues?q=…` URL. Also reads/writes `memory/state/contributor-reward-state.json`, `memory/distributions.yml`, `memory/logs/${today}.md`. No prefetch/postprocess scripts required.
-- **Send phase (B):** outbound curl may fail in the GH Actions sandbox. For each GET curl call, on failure try **WebFetch** (no body for GET). For `/wallet/transfer` specifically — a write endpoint with auth headers — if curl fails, queue the request as a JSON file under `.pending-bankr/` and rely on a `scripts/postprocess-bankr.sh` runner if available; otherwise mark the row `FAILED` reason `SANDBOX_BLOCKED` and continue. **Never silently drop a transfer.**
+- **Plan phase (A):** ranks contributors via `gh api search/issues` (`gh` handles GitHub auth internally, so no secret ever lands on the command line). If `gh api` fails, fall back to **WebFetch** on the public `https://api.github.com/search/issues?q=…` URL. Also reads/writes `memory/state/contributor-reward-state.json`, `memory/distributions.yml`, `memory/logs/${today}.md`. No postprocess scripts required.
+- **Send phase (B):** `curl` reaches the network fine — there is no network sandbox; use **WebFetch** only as a fallback for a flaky unauthenticated GET (no body for GET). For an auth'd call, keep the secret off the command line — use `./secretcurl` with a `{ENV_NAME}` placeholder rather than a bare `$SECRET` (which the Bash permission layer refuses). `/wallet/transfer` is an irreversible money-movement write, so it goes through the on-success postprocess gate by design: queue the request as a JSON file under `.pending-bankr/` for a `scripts/postprocess-bankr.sh` runner; if that path is unavailable, mark the row `FAILED` reason `SANDBOX_BLOCKED` and continue. **Never silently drop a transfer.**
 
 ## Constraints
 

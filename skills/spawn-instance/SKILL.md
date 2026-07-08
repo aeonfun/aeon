@@ -356,9 +356,9 @@ Target: ${OWNER}/${REPO_NAME}
 Recovery: ${one-line recovery instruction}
 ```
 
-## Sandbox note
+## Network note
 
-This skill runs entirely through `gh` CLI, which handles auth and does not require bash env-var expansion in curl headers (no sandbox issues). No WebFetch fallback needed. If `gh` is missing or unauthenticated, the pre-flight step fails with `SPAWN_API_ERROR`.
+This skill runs entirely through `gh` CLI, which handles auth internally, so no bare `$SECRET` ever lands on the command line for the Bash permission layer to refuse. No WebFetch fallback needed. If `gh` is missing or unauthenticated, the pre-flight step fails with `SPAWN_API_ERROR`.
 
 ## Constraints
 
