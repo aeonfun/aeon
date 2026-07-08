@@ -73,7 +73,7 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 | <img src="https://pbs.twimg.com/profile_images/1993360165958303745/OQQCQNha_400x400.png" width="36" height="36" alt="Reppo logo"> | Reppo | [@reppo](https://x.com/reppo) · [reppo.xyz](https://reppo.xyz) |
 | <img src="https://pbs.twimg.com/profile_images/2020159691557335040/bSUQk1F2_400x400.jpg" width="36" height="36" alt="ResearchSwarm logo"> | ResearchSwarm | [@ResearchSwarmAI](https://x.com/ResearchSwarmAI) |
 | <img src="https://pbs.twimg.com/profile_images/2048174647171268608/2UsSB2GA_400x400.jpg" width="36" height="36" alt="Revault logo"> | Revault | [@revaultdrops](https://x.com/revaultdrops) |
-| <img src="https://pbs.twimg.com/profile_images/2055018961746399233/09lx9ZYV_400x400.jpg" width="36" height="36" alt="RootAi logo"> | RootAi | [@root_edge](https://x.com/root_edge) |
+| <img src="https://pbs.twimg.com/profile_images/2070604629688070144/xNwUGHgX_400x400.jpg" width="36" height="36" alt="RootAi logo"> | RootAi | [@root_edge](https://x.com/root_edge) |
 | <img src="https://pbs.twimg.com/profile_images/2056693584452300802/i6yxFLgW_400x400.jpg" width="36" height="36" alt="SAM logo"> | SAM | [@prmrsamm](https://x.com/prmrsamm) |
 | <img src="https://pbs.twimg.com/profile_images/2056009745040121856/SkTibyEJ_400x400.jpg" width="36" height="36" alt="Sentysis logo"> | Sentysis | [@Sentysislabs](https://x.com/Sentysislabs) |
 | <img src="https://pbs.twimg.com/profile_images/2056291951084032000/QJiBIXV-_400x400.jpg" width="36" height="36" alt="Signa logo"> | Signa | [@Signa_Agent](https://x.com/Signa_Agent) · [signaagent.xyz](https://www.signaagent.xyz) |
