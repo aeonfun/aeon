@@ -32,12 +32,19 @@ Then stop.
 
 ## Steps
 
-1. **Locate the fetched bundle.** `scripts/prefetch-okf.sh` runs before you (outside the sandbox) and shallow-clones the source to `.okf-cache/<slug>/`. Find that directory:
+1. **Fetch the bundle in-run.** Parse `${var}` → source URL: strip any `#subdir` suffix; a bare `owner/repo` becomes `https://github.com/owner/repo`. **Accept `https://` sources only** — refuse `ssh://` / `git://` / `file://` and anything exotic (log `OKF_INGEST_BAD_SOURCE`, notify, stop). Derive a sanitized `<slug>` from the URL (lowercase; runs of non-alphanumerics → `-`). Then shallow-clone it yourself — hooks disabled so nothing the remote ships can execute, single-branch, no tags/submodules:
    ```bash
-   ls -d .okf-cache/*/ 2>/dev/null
+   SRC="<the validated https URL>"; SLUG="<sanitized slug>"; DEST=".okf-cache/${SLUG}"
+   mkdir -p .okf-cache
+   if GIT_TERMINAL_PROMPT=0 git -c core.hooksPath=/dev/null clone --depth 1 --single-branch --no-tags "$SRC" "$DEST" 2>&1; then
+     echo "okf-ingest: cloned $SRC -> $DEST"; ls "$DEST"
+   else
+     echo "okf-ingest: clone failed for $SRC — using WebFetch fallback"
+   fi
    ```
-   - **Cache present** → that is your bundle root. If `${var}` had a `#subdir`, the bundle root is `.okf-cache/<slug>/<subdir>`.
-   - **Cache absent** (clone failed / raw URL) → **WebFetch fallback**: fetch the bundle's `index.md` (root) with the WebFetch tool, follow its listing to fetch each concept file's raw URL, and stage them under `.okf-cache/webfetch-<slug>/` preserving relative paths. Cap at **200 files** and skip any single file over ~256 KB — log what you skipped.
+   (`.okf-cache/` is gitignored via `.*-cache/`, so nothing fetched is ever committed. The clone only pulls bytes into that cache — it never executes remote code and never writes into `memory/`. `git clone` of a public URL is **not** blocked in-run; only a bare `$SECRET` on the command line is — and this carries none.)
+   - **Clone succeeded** → `$DEST` is your bundle root. If `${var}` had a `#subdir`, the bundle root is `$DEST/<subdir>`.
+   - **Clone failed / raw base URL** → **WebFetch fallback**: fetch the bundle's `index.md` (root) with the WebFetch tool, follow its listing to fetch each concept file's raw URL, and stage them under `.okf-cache/webfetch-<slug>/` preserving relative paths. Cap at **200 files** and skip any single file over ~256 KB — log what you skipped.
 
 2. **Validate conformance BEFORE reading deeply.** Run the validator against the bundle root:
    ```bash
@@ -126,9 +133,9 @@ Then stop.
 | `OKF_INGEST_NO_VAR` | `${var}` empty | Notify abort reason; stop |
 | `OKF_INGEST_INVALID` | Bundle fails `okf-validate` | Notify with validator output; stop (nothing written) |
 
-## Sandbox note
+## Network note
 
-`git clone` / `curl` are blocked inside the sandbox. The **pre-fetch** step (`scripts/prefetch-okf.sh`, invoked before the skill with full network access) shallow-clones the bundle to `.okf-cache/<slug>/` (https-only, no submodules, hooks disabled). If the clone is absent, use the built-in **WebFetch** tool (which bypasses the sandbox) to pull the bundle's `index.md` and each concept's raw file URL. All writes are local file I/O into the quarantine folder; the PR uses the `gh` CLI's built-in auth. No API keys required.
+The bundle is cloned **in-run** (step 1): a public `git clone` of an `https://` source works from inside the skill — there is no network sandbox; only a bare `$SECRET` on a command line is refused, and the clone carries none. `okf-ingest` handles **public** external bundles only (no auth), so no token is involved. Clone with hooks disabled (nothing the remote ships executes), single-branch, no submodules; `.okf-cache/` is gitignored so nothing fetched is committed. If the clone fails or the source is a raw base URL, fall back to the built-in **WebFetch** tool for `index.md` + each concept's raw file URL. All writes are local file I/O into the quarantine folder; the PR uses the `gh` CLI's built-in auth. No API keys required.
 
 ## Constraints
 

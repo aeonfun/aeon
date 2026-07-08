@@ -30,7 +30,7 @@ The fleet is **discovered at runtime, never hardcoded**: it is this repo ("self"
 
 4. **Route**:
    - **Health Check / Status / Dispatch** → run the **Control-view pre-flight** below, then the matching mode section. These modes make live `gh` calls.
-   - **Scorecard** → skip the control-view pre-flight entirely (it needs no `gh` and no live network — it reads prefetched files) and jump straight to **Scorecard Mode**.
+   - **Scorecard** → skip the control-view pre-flight entirely and jump straight to **Scorecard Mode**, which gathers its own data in-run via `node scripts/fleet-scorecard.mjs`.
 
 ---
 
@@ -379,7 +379,7 @@ Write a terse daily pulse to `/tmp/scorecard-notify.md` and send it with `./noti
 Append the scorecard entry under the consolidated `### fleet-control` heading in `memory/logs/${today}.md` (see **Log** section), noting the headline numbers (so future skills like self-improve/reflect see it).
 
 ### Scorecard notes
-- Numbers come only from the prefetched files — never invent or estimate figures yourself.
+- Numbers come only from the collector's output files (`/tmp/fleet-scorecard/*`) — never invent or estimate figures yourself.
 - The scorecard is cumulative/all-time; the deltas are what make the daily run useful.
 - GitHub Actions retains runs ~90 days, so the run history is a rolling window; the token CSVs are the durable record committed in each repo.
 
@@ -405,7 +405,7 @@ Every run logs exactly one of these to memory:
 - `FLEET_RATE_LIMITED:remaining=N` — abandoned to preserve quota (control view)
 - `FLEET_DISPATCH_OK:N/M` — dispatched N of M targets
 - `FLEET_DISPATCH_FAILED:<reason>` — dispatch produced 0 dispatches
-- `FLEET_SCORECARD_EMPTY` — prefetch missing/empty; scorecard skipped without overwriting or notifying
+- `FLEET_SCORECARD_EMPTY` — collector produced no data (empty fleet / all repos unreadable); scorecard skipped without overwriting or notifying
 
 ## Sandbox note
 
@@ -424,7 +424,7 @@ Every run logs exactly one of these to memory:
 - Never write secrets to logs or notifications.
 - Cap notification length at ~30 lines; truncate the per-instance list with `...and N more` when needed.
 - Health Check stays silent when nothing changed mid-day — the daily-rollup path handles the recurring "is everything fine?" question without spam.
-- Scorecard Mode never overwrites `memory/scorecard.md` when the prefetch is missing/empty, and appends (never rewrites) prior rows in `memory/scorecard-history.csv`.
+- Scorecard Mode never overwrites `memory/scorecard.md` when the collector output is missing/empty, and appends (never rewrites) prior rows in `memory/scorecard-history.csv`.
 - Do not change the skill's tags, var semantics, or schedule without strong justification.
 
 Write complete, working code. No TODOs or placeholders.
