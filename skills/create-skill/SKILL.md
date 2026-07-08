@@ -99,9 +99,9 @@ Today is ${today}. Your task is to generate a complete, production-ready skill f
    N. **Notify.** Send via `./notify`:
    {Output format template — specify ≤4000 chars, clickable URLs}
 
-   ## Sandbox note
+   ## Network note
 
-   {WebFetch fallback or pre-fetch/post-process pattern based on auth needs}
+   {How this skill reaches the network — ./secretcurl with an {ENV_NAME} placeholder for auth'd APIs, gh api for GitHub, curl + WebFetch fallback for public}
    ```
 
    Hard rules for the generated content:
@@ -230,9 +230,9 @@ Today is ${today}. Your task is to generate a complete, production-ready skill f
 | `CREATE_SKILL_INSUFFICIENT_RESEARCH` | Couldn't confirm ≥1 working data source after WebSearch + WebFetch | Notify with what was tried; stop |
 | `CREATE_SKILL_VALIDATION_FAILED` | Quality enforcement or post-write checks failed | Delete partial files; revert aeon.yml; notify with failed criteria; stop |
 
-## Sandbox note
+## Network note
 
-The sandbox may block outbound `curl`. Use **WebFetch** as a fallback for any URL fetch during research. For auth-required APIs the new skill will call, design pre-fetch (`scripts/prefetch-*.sh`) or post-process (`.pending-*/` + `scripts/postprocess-*.sh`) patterns into the generated SKILL.md (see CLAUDE.md).
+There is no network sandbox — `curl` works, with **WebFetch** as the fallback for a flaky public GET during research. For an auth'd API the new skill will call, route it through `./secretcurl` with a `{ENV_NAME}` placeholder (the key injected via the skill's `requires:`), and `gh api` for GitHub. Reserve the `.pending-*/` + `scripts/postprocess-*.sh` on-success gate for **irreversible side-effects** (email, spend, on-chain writes) — never for reads (see CLAUDE.md).
 
 ## Constraints
 

@@ -100,7 +100,7 @@ curl -sL -A "$UA" \
 
 ### 3. X / Twitter (30-day window)
 
-`XAI_API_KEY` is **injected into this skill's environment** (declared in `requires:`) and is present and valid. The **primary** X source is a direct `curl` to `https://api.x.ai/v1/responses` — there is no network sandbox, and the old `scripts/prefetch-xai.sh` / `.xai-cache/*.json` path is gone. See **## Fetching** for the full contract (timeout, HTTP capture, fallback taxonomy). WebSearch is a last-resort fallback only.
+`XAI_API_KEY` is **injected into this skill's environment** (declared in `requires:`) and is present and valid. The **primary** X source is a direct `curl` to `https://api.x.ai/v1/responses` — there is no network sandbox. See **## Fetching** for the full contract (timeout, HTTP capture, fallback taxonomy). WebSearch is a last-resort fallback only.
 
 **Path A — X.AI API (primary).** Confirm the key, then run the topic-window query. Set the Bash tool `timeout` to **≥180000** (x_search takes 30–120s); the curl carries `--max-time 150`. A slow curl is **not** a missing key — never treat a timeout as key-unavailable.
 
@@ -365,7 +365,7 @@ For `LAST30_EMPTY` or `LAST30_ERROR`, skip the verdict/narrative lines and inste
 
 ## Fetching
 
-`XAI_API_KEY` is **injected into this skill's environment** (declared in `requires:`) and is present and valid. The **primary** X/Twitter source is a direct `curl` to `https://api.x.ai/v1/responses` with `Authorization: Bearer {XAI_API_KEY}`, model `grok-4-1-fast`, `"tools":[{"type":"x_search"}]`. There is **no** network sandbox blocking this — an earlier version claimed the sandbox blocked env-var curl and routed X through a `scripts/prefetch-xai.sh` cache; that script is deleted and the claim was stale and false. Just make the call (see step 3).
+`XAI_API_KEY` is **injected into this skill's environment** (declared in `requires:`) and is present and valid. The **primary** X/Twitter source is a direct `curl` to `https://api.x.ai/v1/responses` with `Authorization: Bearer {XAI_API_KEY}`, model `grok-4-1-fast`, `"tools":[{"type":"x_search"}]`. There is **no** network sandbox blocking this — just make the call (see step 3).
 
 **You MUST attempt the direct curl before any fallback:**
 1. **Check, don't assume.** `[ -n "$XAI_API_KEY" ] && echo KEY_PRESENT || echo KEY_UNSET`. If `KEY_PRESENT` (it will be), Path A is required.
@@ -373,7 +373,7 @@ For `LAST30_EMPTY` or `LAST30_ERROR`, skip the verdict/narrative lines and inste
 3. **Capture the HTTP status** (`-o /tmp/xai-last30*.json -w '%{http_code}'`) so the fallback decision is fact-based. `HTTP=200` + non-empty body → use it. Parse with `jq -r '.output[]|select(.type=="message")|.content[]|select(.type=="output_text")|.text'`.
 4. **Fall back only on a real failure**, recording the true reason — `key-unset` (only if step 1 said `KEY_UNSET`), `http-<code>` (non-2xx), `empty` (200 but nothing parsed), or `timeout`. Never write "XAI_API_KEY unavailable" when the key was set.
 
-**WebSearch / WebFetch are last-resort fallbacks only** — lower quality (WebSearch favours old high-engagement tweets). Never reach for them while the key works. The old `.xai-cache/*.json` prefetch is gone — do not read it.
+**WebSearch / WebFetch are last-resort fallbacks only** — lower quality (WebSearch favours old high-engagement tweets). Never reach for them while the key works.
 
 **Public APIs (Reddit, HN, Polymarket, Kalshi — no auth):** curl may still fail on rate-limits or a missing User-Agent — always fall back to **WebFetch** on the same URL. This is unrelated to the X.AI key.
 

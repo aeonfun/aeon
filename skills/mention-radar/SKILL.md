@@ -129,7 +129,7 @@ Read the last 3 days of memory/logs/ to avoid re-surfacing already-noted mention
    Then parse `/tmp/xai-mr.json` with the standard `jq` extractor. `HTTP=200` with a non-empty body → use it (`X_SOURCE=api`).
 4. **Fall back only on a real failure**, and **record the true reason** — never write "XAI_API_KEY unavailable" when the key was set. Use one of: `key-unset` (only if step 1 said `KEY_UNSET`), `http-<code>` (non-2xx), `empty` (200 but no mentions parsed), `timeout` (curl exceeded `--max-time`).
 
-**WebSearch / WebFetch are last-resort fallbacks only** for X — lower quality (WebSearch favours old high-engagement tweets). They remain the primary tool for the non-X web surfaces (Reddit, HN, blogs, etc.). Never reach for the X WebSearch fallback while the key works. There is no `.xai-cache` prefetch — do not read one.
+**WebSearch / WebFetch are last-resort fallbacks only** for X — lower quality (WebSearch favours old high-engagement tweets). They remain the primary tool for the non-X web surfaces (Reddit, HN, blogs, etc.). Never reach for the X WebSearch fallback while the key works.
 
 ## Environment Variables
 

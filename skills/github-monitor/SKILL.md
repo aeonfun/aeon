@@ -594,7 +594,7 @@ Append to `memory/logs/${today}.md` under the `### github-monitor` heading (firs
 ## Sandbox note
 
 - **`monitor`, `issues`, `prs` views** — use the `gh` CLI, which authenticates via the workflow's `GITHUB_TOKEN` / `GH_TOKEN` and works inside the sandbox (no curl fallback needed). `monitor` uses `gh pr/issue/release list`; `issues` uses `gh search issues` (fallback: per-repo `gh issue list`); `prs` uses `gh api graphql` (fallback: `gh search prs`). If a per-repo call errors in `monitor`, tag it `gh_error(<code>)` in the sources footer and continue — do not retry in a loop.
-- **`releases` view** — use **WebFetch** for every GitHub API call; curl is unreliable from the sandbox, and WebFetch bypasses the block. Pass the `Authorization: Bearer $GITHUB_TOKEN` header via WebFetch when the token is present. If WebFetch is slow across the full watch list, create `scripts/prefetch-github-releases.sh` to cache responses into `.github-releases-cache/{owner}__{repo}.json` before Claude runs; the workflow executes all `scripts/prefetch-*.sh` with full env access.
+- **`releases` view** — use `gh api "repos/{owner}/{repo}/releases?per_page=…"` for release data (the workflow's `GITHUB_TOKEN`/`GH_TOKEN` authenticates it internally and works in-run — same as the other views); **WebFetch** on the same URL is the fallback if a call fails. Tag a repo `gh_error(<code>)` in the sources footer and continue — do not retry in a loop.
 
 ## Environment Variables
 

@@ -168,7 +168,7 @@ TOKEN_PICK_DEDUP: SYMBOL | "Will X happen by Y?"
 
 ## Sandbox note
 
-The sandbox may block outbound curl. Use **WebFetch** as a fallback for any URL fetch (CoinGecko, DexScreener, Polymarket all work without auth). For auth-required APIs, use the pre-fetch/post-process pattern (see CLAUDE.md). On total source failure, send the no-data notification rather than silent fail.
+There is no network sandbox — `curl` works, with **WebFetch** as the fallback for any URL fetch (CoinGecko, DexScreener, Polymarket all work without auth). For an auth'd API, call `./secretcurl` with a `{ENV_NAME}` placeholder (the key is injected via `requires:`). On total source failure, send the no-data notification rather than silent fail.
 
 ## Environment Variables
 - `COINGECKO_API_KEY` — CoinGecko API key (optional, increases rate limits)

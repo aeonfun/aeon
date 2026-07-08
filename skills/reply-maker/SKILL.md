@@ -363,7 +363,7 @@ If skipped: `ENGAGEMENT_ACT_SKIP: <reason>` (still under `### reply-maker`).
    Then parse `/tmp/xai-rm.json` with the standard `jq` extractor. `HTTP=200` with a non-empty body → use it (`xai=ok`).
 4. **Fall back only on a real failure**, and **record the true reason** — never write "XAI_API_KEY unavailable" when the key was set. Use one of: `key-unset` (only if step 1 said `KEY_UNSET`), `http-<code>` (non-2xx), `empty` (200 but no tweets parsed), `timeout` (curl exceeded `--max-time`).
 
-**WebSearch and the memory-log candidate pool are last-resort fallbacks only** — lower quality (WebSearch favours old high-engagement tweets). Never reach for them while the key works. The old `.xai-cache/reply-maker.json` prefetch is gone (`scripts/prefetch-xai.sh` was deleted) — do not read it. **Mode B** is fetch-free by design: it reads only local `memory/` files, so it makes no curl and no API call; `./notify -f` still handles delivery via `.pending-notify/` if needed.
+**WebSearch and the memory-log candidate pool are last-resort fallbacks only** — lower quality (WebSearch favours old high-engagement tweets). Never reach for them while the key works. **Mode B** is fetch-free by design: it reads only local `memory/` files, so it makes no curl and no API call; `./notify -f` still handles delivery via `.pending-notify/` if needed.
 
 ## Environment Variables Required
 

@@ -18,10 +18,10 @@ Today is ${today}. Monitor social mentions of **[REPLACE: KEYWORDS]** and produc
 2. **Search X** — for each keyword, use the X / xAI search path (project's standard pattern):
 
    ```bash
-   # Uses XAI_API_KEY via the prefetch helper. See scripts/prefetch-*.sh in this repo.
-   #
-   # If your fork uses a different X integration, swap this with the fetch-tweets
-   # path: read .x-cache/[keyword].json or call WebFetch on a Nitter mirror.
+   # Uses XAI_API_KEY in-run via ./secretcurl (the key is injected via requires:).
+   # Mirror the fetch-tweets skill: POST https://api.x.ai/v1/responses with
+   #   ./secretcurl -H "Authorization: Bearer {XAI_API_KEY}" -d @/tmp/payload.json
+   # WebFetch (or a Nitter mirror) is the last-resort fallback.
    ```
 
    Restrict to language `[REPLACE: LANGUAGE]` (e.g. `en`, `fr`, `any`). Drop posts with fewer than `[REPLACE: MIN_LIKES]` likes — that filter is what protects the channel from low-signal noise.
@@ -68,9 +68,9 @@ Today is ${today}. Monitor social mentions of **[REPLACE: KEYWORDS]** and produc
    - **Status**: SOCIAL_OK | SOCIAL_QUIET | SOCIAL_SPIKE (vol > 2x avg) | SOCIAL_DEGRADED
    ```
 
-## Sandbox note
+## Network note
 
-X / xAI requires `XAI_API_KEY` and won't work with raw `curl` from inside the sandbox — use the project's prefetch pattern (see `scripts/prefetch-*.sh`). Reddit's JSON endpoint is keyless but rate-limited per IP — `WebFetch` is the fallback when `curl` returns 429.
+X / xAI requires `XAI_API_KEY`; a bare `$XAI_API_KEY` on a `curl` line is refused by the Bash analyzer, so call `./secretcurl` with the `{XAI_API_KEY}` placeholder (the key is injected via `requires:`). Reddit's JSON endpoint is keyless but rate-limited per IP — `WebFetch` is the fallback when `curl` returns 429.
 
 ## Constraints
 

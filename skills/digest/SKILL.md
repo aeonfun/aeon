@@ -174,7 +174,7 @@ If the digest fails any check, fix it before sending. If after filtering you hav
 
 ## Fetching the X signal
 
-`XAI_API_KEY` is **injected into this skill's environment** (declared in `requires:`) and is **present and valid**. The primary way to pull the X/Twitter signal layer is a **direct `curl` to `https://api.x.ai/v1/responses`** with `Authorization: Bearer {XAI_API_KEY}` (see Phase 1 → Path A). There is **no network sandbox** blocking this. Older versions of this skill claimed the sandbox blocked env-var-authenticated curl and told you to read a `.xai-cache/digest.json` prefetch file — that is **stale and false**, and the prefetch script (`scripts/prefetch-xai.sh`) has been deleted, so no cache file ever exists. Do not read a cache; make the call.
+`XAI_API_KEY` is **injected into this skill's environment** (declared in `requires:`) and is **present and valid**. The primary way to pull the X/Twitter signal layer is a **direct `curl` to `https://api.x.ai/v1/responses`** with `Authorization: Bearer {XAI_API_KEY}` (see Phase 1 → Path A). There is **no network sandbox** blocking this — just make the call.
 
 Rules:
 

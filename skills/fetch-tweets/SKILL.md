@@ -496,7 +496,7 @@ No chain consumes this skill's output as of this commit (no `consume: [fetch-twe
    Then parse `/tmp/xai.json` with the standard `jq` extractor. `HTTP=200` with non-empty body → use it (`SOURCE_PATH=api`).
 4. **Fall back only on a real failure**, and **record the true reason** — never write "XAI_API_KEY unavailable" when the key was set. Use one of: `key-unset` (only if step 1 said `KEY_UNSET`), `http-<code>` (non-2xx), `empty` (200 but no tweets parsed), `timeout` (curl exceeded `--max-time`).
 
-**WebSearch / WebFetch are last-resort fallbacks only** — lower quality (WebSearch favours old high-engagement tweets). Never reach for them while the key works. The old `.xai-cache/*.json` prefetch is gone — do not read it.
+**WebSearch / WebFetch are last-resort fallbacks only** — lower quality (WebSearch favours old high-engagement tweets). Never reach for them while the key works.
 
 ## Environment Variables
 

@@ -92,10 +92,11 @@ cd "$(basename "$REPO")"
 
 Raw grep produces too many false positives. Use tools with dataflow reachability and verified-secret matching.
 
-The scanners are pre-installed by `scripts/prefetch-vuln-scanner.sh` (runs before
-Claude starts, with full network access — see the Sandbox note below). **Do not
-`pip install` / `curl | sh` here** — both the network and the permission layer
-block those inside the sandbox. Put the prefetch's bin dir on `PATH` and invoke
+Stage the scanners **in-run** into `/tmp/bin` (see the install preamble below). The
+network is open, but `pip install` / `curl | sh` / `tar` are **not** on the in-run
+capability allowlist — use the ones that are: `python3 -m pip install …` for the Python
+tools (semgrep, slither) and `curl -o … && chmod +x` for the Go binaries (osv-scanner,
+trufflehog). Put `/tmp/bin` on `PATH` and invoke
 each tool by **bare name** — the bare names (`semgrep`, `trufflehog`,
 `osv-scanner`, `slither`) are exactly what the capability allowlist
 (`scripts/skill_mode.sh`) grants, so `claude -p` is permitted to execute them. If
@@ -103,8 +104,15 @@ a binary is missing, log `VULN_SCANNER_SKIPPED` and continue (it records `fail`
 in `sources.txt` below) — never abort the whole run for one tool.
 
 ```bash
-mkdir -p /tmp/vuln-scan
-export PATH="/tmp/bin:$PATH"   # prefetch staged trufflehog/osv-scanner (+ semgrep symlink) here
+mkdir -p /tmp/vuln-scan /tmp/bin
+export PATH="/tmp/bin:$PATH"
+# Stage the scanners IN-RUN, best-effort, using ONLY allow-listed commands (network is
+# open, but `pip install` / `curl | sh` / `tar` are NOT allow-listed — `python3 -m pip`,
+# `curl -o`, `chmod`, `npm`/`npx`, `node` ARE). Wrap each in `|| true`; any tool that fails
+# to stage is skipped by the `command -v` guards below (records fail), never fatal:
+python3 -m pip install --quiet --disable-pip-version-check semgrep slither-analyzer 2>/dev/null || true
+curl -sSL -o /tmp/bin/osv-scanner "https://github.com/google/osv-scanner/releases/latest/download/osv-scanner_linux_amd64" 2>/dev/null && chmod +x /tmp/bin/osv-scanner || true
+# trufflehog: stage its release binary the same way if a raw asset exists; else it's skipped below.
 
 # --- SAST: Semgrep OSS ---
 if command -v semgrep >/dev/null 2>&1; then
@@ -686,16 +694,16 @@ specific bullets.
 
 **Arm A (scan).** Getting the scanners to run in the GitHub Actions sandbox takes **two** things:
 
-1. **Install** — the binaries (`semgrep`, `trufflehog`, `osv-scanner`, `slither`) are **not pre-installed**, and outbound `pip install` / `curl | sh` downloads are blocked. They must be staged before Claude starts by a `scripts/prefetch-vuln-scanner.sh` prefetch script (full network access — see CLAUDE.md prefetch pattern) into `/tmp/bin` (+ `semgrep` symlink). **This prefetch script is not shipped in the repo** — until the operator adds it, the scanner binaries are unavailable: Arm A must report `SCAN_TOOLS_MISSING` and skip the scan cleanly rather than erroring the run.
+1. **Install** — the binaries (`semgrep`, `trufflehog`, `osv-scanner`, `slither`) are **not pre-installed**. Stage them **in-run** into `/tmp/bin` (step A3's preamble): the network is open, but `pip install` / `curl | sh` / `tar` aren't allow-listed, so use `python3 -m pip install …` (semgrep, slither) and `curl -o … && chmod +x` for the Go binaries (osv-scanner, trufflehog). Any tool that can't be staged is skipped by its `command -v` guard (`VULN_SCANNER_SKIPPED`); if **no** scanner is available, Arm A reports `SCAN_TOOLS_MISSING` and skips the scan cleanly rather than erroring the run.
 2. **Execute** — non-interactive `claude -p` runs under an `--allowedTools` allowlist, so any command not on it is **denied** ("requires approval") with no human to approve. The scanner *bare names* are granted in `scripts/skill_mode.sh` (write tier). This is why step A3 puts `/tmp/bin` on `PATH` and calls each tool by bare name (`semgrep …`, not `/tmp/bin/semgrep …`) — an absolute-path invocation would not match the allowlist pattern.
 
 This two-part fix resolves ISS-001 (binaries installed *and* runnable). If any scanner binary is still missing at runtime, log `VULN_SCANNER_SKIPPED: <tool> not available`, record `tool=fail` in `sources.txt`, and continue with the remaining scanners rather than aborting the whole run. An all-scanners-fail run must report **error**, not **clean**.
 
-**Arm B (re-submit).** `gh api` uses the `GH_TOKEN` env var internally (the workflow wires `GH_GLOBAL` in). If the sandbox blocks `gh api`, use the `curl` fallback in step B2. No outbound auth-required calls except `gh api` — no pre-fetch needed.
+**Arm B (re-submit).** `gh api` uses the `GH_TOKEN` env var internally (the workflow wires `GH_GLOBAL` in). If `gh api` fails, use the `curl` fallback in step B2. No outbound auth-required calls except `gh api`.
 
-**Arm C (disclose).** The send is an **auth-required outbound call** (Resend key in the header), which CLAUDE.md says fails from inside the sandbox. So this arm **only writes `.pending-email/*.json`** — it must not attempt the HTTP POST itself. The workflow runs `scripts/postprocess-email.sh` *after* Claude finishes, with `RESEND_API_KEY` in env, to do the real send (post-process pattern, like `.pending-replicate/`). This arm needs **no network and no secrets** — pure local file reads + a queue write.
+**Arm C (disclose).** The send is an **irreversible** outbound call (a disclosure email). Irreversible side-effects go through the on-success gate, not the skill: this arm **only writes `.pending-email/*.json`** — it must not attempt the HTTP POST itself. The workflow runs `scripts/postprocess-email.sh` *after* Claude finishes, with `RESEND_API_KEY` in env, to do the real send (post-process pattern, like `.pending-replicate/`). This arm needs **no network and no secrets** — pure local file reads + a queue write.
 
-General sandbox rules: use **WebFetch** as a fallback for any plain URL fetch. For anything requiring a token, use `gh api` (handles auth internally) or the pre-fetch/post-process pattern (see CLAUDE.md).
+General network rules: `curl` works, with **WebFetch** as the fallback for a plain URL fetch. For anything requiring a token, use `gh api` (handles auth internally) or `./secretcurl` with a `{ENV_NAME}` placeholder; reserve `.pending-*/` + `scripts/postprocess-*.sh` for irreversible side-effects (see CLAUDE.md).
 
 ## Environment variables
 

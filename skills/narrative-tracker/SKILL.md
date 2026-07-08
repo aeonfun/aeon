@@ -138,7 +138,7 @@ Append a `### narrative-tracker` section with the full structured output (not ju
 
 ## Fetching
 
-`XAI_API_KEY` is **injected into this skill's environment** (declared in `requires:`). It is present and valid. **The primary fetch path is a direct `curl` to `https://api.x.ai/v1/responses` with `Authorization: Bearer {XAI_API_KEY}`** (model `grok-4-1-fast`, `"tools":[{"type":"x_search"}]`). There is **no network sandbox** blocking this — earlier versions of this skill claimed there was, and that is stale and false. There is also no `.xai-cache/*.json` prefetch any more (the prefetch step was removed); do not read it. Just make the call.
+`XAI_API_KEY` is **injected into this skill's environment** (declared in `requires:`). It is present and valid. **The primary fetch path is a direct `curl` to `https://api.x.ai/v1/responses` with `Authorization: Bearer {XAI_API_KEY}`** (model `grok-4-1-fast`, `"tools":[{"type":"x_search"}]`). There is **no network sandbox** blocking this — earlier versions of this skill claimed there was, and that is stale and false. Just make the call.
 
 Rules:
 1. **Check, don't assume.** Run `[ -n "${XAI_API_KEY:+x}" ] && echo KEY_PRESENT || echo KEY_UNSET` (the `${VAR:+x}` form, not bare `$XAI_API_KEY` — the bare form trips the secret-expansion analyzer and falsely reads as unset). If `KEY_PRESENT` (it will be), Path A (the curl in step 1a) is required before any fallback.

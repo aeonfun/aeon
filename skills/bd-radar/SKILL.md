@@ -73,7 +73,7 @@ gh search code  "<term>" --limit 30   # repos importing/referencing your product
 ```
 For ecosystem/extension repos, note the owner (potential partner).
 
-**X mentions — direct X.AI search.** `XAI_API_KEY` is injected into your env (declared in `requires:`) — present and valid; there is no sandbox blocking the call, and the old xAI prefetch cache is gone. Search product mentions directly, covering each **handle** and **term** from `memory/products.md` over a ~3-day window. The `x_search` call takes 30–120s, so run it with the Bash tool `timeout` set to **≥180000** — a slow call is not a missing key.
+**X mentions — direct X.AI search.** `XAI_API_KEY` is injected into your env (declared in `requires:`) — present and valid; there is no sandbox blocking the call. Search product mentions directly, covering each **handle** and **term** from `memory/products.md` over a ~3-day window. The `x_search` call takes 30–120s, so run it with the Bash tool `timeout` set to **≥180000** — a slow call is not a missing key.
 ```bash
 [ -n "$XAI_API_KEY" ] && echo KEY_PRESENT || echo KEY_UNSET   # will be KEY_PRESENT
 FROM_DATE=$(date -u -d "3 days ago" +%Y-%m-%d 2>/dev/null || date -u -v-3d +%Y-%m-%d)

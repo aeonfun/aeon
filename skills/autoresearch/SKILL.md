@@ -127,9 +127,9 @@ Log to `memory/logs/${today}.md`:
 - Runners-up: [brief scores]
 ```
 
-## Sandbox note
+## Network note
 
-The sandbox may block outbound curl. Use **WebFetch** as a fallback for any URL fetch. For auth-required APIs, use the pre-fetch/post-process pattern (see CLAUDE.md).
+There is no network sandbox — `curl` works, with **WebFetch** as the fallback for a flaky public GET. For an auth'd API, call `./secretcurl` with a `{ENV_NAME}` placeholder (the key is injected via `requires:`), never a bare `$SECRET`.
 
 ## Constraints
 

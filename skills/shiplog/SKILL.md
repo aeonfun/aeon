@@ -98,7 +98,7 @@ Read the prior snapshot `memory/state/shiplog-stars.json` (if present): `delta =
 
 ### 3. X activity (direct X.AI curl — primary)
 
-`XAI_API_KEY` is **injected into this skill's environment** (declared in `requires:`) and is the primary way to read X. **For each X source below the primary fetch is a direct `curl` to `https://api.x.ai/v1/responses` with `Authorization: Bearer {XAI_API_KEY}`**, using Grok's `x_search` tool. There is no network sandbox blocking this — an earlier version claimed one and read a prefetch cache instead, but `scripts/prefetch-xai.sh` was deleted, so `.xai-cache/shiplog-*.json` never exists. Just make the calls.
+`XAI_API_KEY` is **injected into this skill's environment** (declared in `requires:`) and is the primary way to read X. **For each X source below the primary fetch is a direct `curl` to `https://api.x.ai/v1/responses` with `Authorization: Bearer {XAI_API_KEY}`**, using Grok's `x_search` tool. There is no network sandbox blocking this — just make the calls.
 
 **Check the key and give the call room first:**
 ```bash
@@ -225,7 +225,7 @@ Append to `memory/logs/${TODAY}.md`:
 ## Fetching & sources
 
 - **GitHub**: every call uses `gh` (auth handled internally) — never curl the GitHub API. For cross-repo reach, prefer `GH_TOKEN="${GH_GLOBAL:-$GITHUB_TOKEN}"`; with only the built-in token you'll see this repo plus public repos, which still covers public flagships.
-- **X**: `XAI_API_KEY` is injected into this skill's env (it's in `requires:`), and the primary path for every X source is a direct `curl https://api.x.ai/v1/responses` with `Authorization: Bearer {XAI_API_KEY}` (Step 3). There is no network sandbox blocking this — earlier notes claimed one and pointed at a `scripts/prefetch-xai.sh` cache that has since been deleted; both are stale. Attempt the curl (`--max-time 150`, Bash tool `timeout` ≥180000) before any fallback, and on a real failure skip that source with the true reason (`key-unset` / `http-<code>` / `empty` / `timeout`) — WebFetch of the public `x.com/<handle>` profile is a lower-quality last resort only.
+- **X**: `XAI_API_KEY` is injected into this skill's env (it's in `requires:`), and the primary path for every X source is a direct `curl https://api.x.ai/v1/responses` with `Authorization: Bearer {XAI_API_KEY}` (Step 3). There is no network sandbox blocking this. Attempt the curl (`--max-time 150`, Bash tool `timeout` ≥180000) before any fallback, and on a real failure skip that source with the true reason (`key-unset` / `http-<code>` / `empty` / `timeout`) — WebFetch of the public `x.com/<handle>` profile is a lower-quality last resort only.
 - **Never abort on a single source failure** — note the gap in the digest and still write + notify.
 
 ## Constraints

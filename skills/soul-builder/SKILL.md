@@ -252,7 +252,7 @@ Append to `memory/logs/${today}.md`:
 
 ## Fetching the X account
 
-`XAI_API_KEY` is **injected into this skill's environment** (declared in `requires:`). When it is present, **the primary way to read the X account is a direct `curl` to `https://api.x.ai/v1/responses` with `Authorization: Bearer {XAI_API_KEY}`** (Grok's `x_search`, model `grok-4-1-fast`). There is no network sandbox blocking this — earlier versions of this skill claimed the sandbox blocked env-var `curl` and told you to read a `.xai-cache/soul-builder.json` prefetch file instead; that is stale and wrong, and that prefetch (`scripts/prefetch-xai.sh`) no longer exists, so the cache file never appears. Just make the call. The rules:
+`XAI_API_KEY` is **injected into this skill's environment** (declared in `requires:`). When it is present, **the primary way to read the X account is a direct `curl` to `https://api.x.ai/v1/responses` with `Authorization: Bearer {XAI_API_KEY}`** (Grok's `x_search`, model `grok-4-1-fast`). There is no network sandbox blocking this — just make the call. The rules:
 
 1. **Check, don't assume.** Run `[ -n "$XAI_API_KEY" ] && echo KEY_PRESENT || echo KEY_UNSET`. If `KEY_PRESENT` (it will be on a normal run), you are required to try Path A before any fallback.
 2. **Allow enough time.** The `x_search` call typically takes 30–120s (it searches X live). When you invoke the Bash tool for the curl, **set the tool's `timeout` to at least 180000 (180s)**, and the curl carries **`--max-time 150`** so it fails cleanly instead of hanging. A curl that is slow is **not** a missing key — never treat a timeout as "key unavailable".

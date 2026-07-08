@@ -112,7 +112,7 @@ Verdict assignment (first match wins, in this order):
 
 - **OUT-OF-SCOPE** — Scope check fails AND the touched paths are protected (`.github/workflows/`, `aeon`, `scripts/prefetch-*`, `scripts/postprocess-*`). External contributors cannot ship workflow / runtime changes; redirect them to file an issue.
 - **NEEDS-CHANGES** — Format check fails (SKILL.md missing required frontmatter), OR Originality check fails (skill name collides), OR PR body is empty AND additions > 50.
-- **DEFER** — Size check fails (>500 lines without `large-ok`), OR PR is marked as RFC / proposal-only in the body, OR the PR depends on an external service that requires a secret the maintainer has not provisioned (mentions of `*_API_KEY` in added code without a corresponding `scripts/prefetch-*.sh`).
+- **DEFER** — Size check fails (>500 lines without `large-ok`), OR PR is marked as RFC / proposal-only in the body, OR the PR depends on an external service that requires a secret the maintainer has not provisioned (mentions of `*_API_KEY` in added code without declaring it in the skill's `requires:`).
 - **ACCEPTED** — Otherwise. The PR passes every rubric check; ready for `pr-review` to take a depth pass.
 
 ### 6. Post the triage comment

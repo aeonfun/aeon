@@ -537,9 +537,9 @@ Append **one** entry under a single `### article` heading in `memory/logs/${toda
 
 Log **always — even on partial failure** (e.g. IMAGE_SKIPPED, REPO_ARTICLE_SKIPPED, aborted lens).
 
-## Sandbox note
+## Network note
 
-The sandbox may block outbound curl. Use **WebFetch** as a fallback for any URL fetch. For auth-required APIs, use the pre-fetch/post-process pattern (see CLAUDE.md). `gh api` handles GitHub auth internally — prefer it over raw curl for repo metadata.
+There is no network sandbox — `curl` works. For a flaky public GET, fall back to **WebFetch** on the same URL. For an auth'd API, call `./secretcurl` with a `{ENV_NAME}` placeholder (the key is injected via `requires:`) — never a bare `$SECRET` on the line. `gh api` handles GitHub auth internally — prefer it over raw curl for repo metadata.
 
 For the Replicate call (auth-required via env var), if the inline curl fails, write the request payload to `.pending-replicate/explainer-${today}.json` and rely on the post-process pattern documented in `CLAUDE.md` (`scripts/postprocess-replicate.sh` runs after Claude finishes with full env access). Continue down the no-image path so the article still ships. The deferred JSON uses the flat shape `scripts/postprocess-replicate.sh` reads: `{ "prompt": "...", "aspect_ratio": "16:9", "output_path": "output/images/${IMG_BASENAME}.jpg", "model": "google/nano-banana-pro" }`.
 

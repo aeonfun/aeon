@@ -240,11 +240,10 @@ own tools; do not abort when something does not match one-to-one:
 - When a skill relies on the gh CLI (e.g. `gh api`) and gh is unavailable, call the
   GitHub REST API directly over the web (https://api.github.com/...) — public for reads.
 - X/Twitter data: fetch it with your built-in WebSearch and WebFetch tools. A skill
-  step that reads a `.xai-cache/*.json` file, curls the xAI `x_search` API, or needs
-  XAI_API_KEY to pull posts is Claude-harness scaffolding — when that cache and key are
-  absent, get the same posts by searching the web for x.com results yourself and carry
-  on. Never skip a section, or emit a NO_KEY / NO_API_KEY / missing-cache status just
-  because XAI_API_KEY or the prefetch cache is absent; WebSearch covers it.
+  step that curls the xAI `x_search` API or needs XAI_API_KEY to pull posts is
+  Claude-harness scaffolding — when that key is absent, get the same posts by searching
+  the web for x.com results yourself and carry on. Never skip a section, or emit a
+  NO_KEY / NO_API_KEY status just because XAI_API_KEY is absent; WebSearch covers it.
 - If any tool is missing, denied, or returns unusable content, do NOT stop or end the
   turn. Try another route and finish the task; only surface a failure after you have
   exhausted the alternatives the skill names.

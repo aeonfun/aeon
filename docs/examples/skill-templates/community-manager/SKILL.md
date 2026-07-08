@@ -79,9 +79,10 @@ If the secrets for `[REPLACE: CHANNEL_PLATFORM]` aren't set, log `COMMUNITY_NO_T
    - **Status**: COMMUNITY_OK | COMMUNITY_QUIET | COMMUNITY_DEGRADED (api errors)
    ```
 
-## Sandbox note
+## Network note
 
-Telegram, Discord, and Slack all need their bot token in the `Authorization` header — `curl` with `$TOKEN` in headers fails inside the sandbox. Use the **prefetch pattern** documented in CLAUDE.md: `scripts/prefetch-[REPLACE: SKILL_NAME].sh` runs before Claude with full env access, writes the channel history to `.community-cache/${today}.json`, and Claude reads from disk.
+Telegram, Discord, and Slack all need their bot token in the `Authorization` header. A bare `$TOKEN` on a `curl` line is refused by the Bash permission analyzer — so call `./secretcurl` with a `{ENV_NAME}` placeholder instead. The token (injected via the skill's `requires:`) is substituted inside the helper and never appears on the command line:
+`./secretcurl -H "Authorization: Bearer {TELEGRAM_BOT_TOKEN}" "https://api.telegram.org/..."`.
 
 ## Constraints
 

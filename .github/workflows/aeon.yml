@@ -205,27 +205,6 @@ jobs:
           [ ${#MISSING[@]} -gt 0 ] && echo "::warning::Secrets not set: ${MISSING[*]} — skill may fail or produce incomplete results"
           exit 0
 
-      - name: Run pre-fetch scripts
-        if: steps.work.outputs.mode != ''
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          REPLICATE_API_TOKEN: ${{ secrets.REPLICATE_API_TOKEN }}
-          SKILL_VAR: ${{ inputs.var }}
-        run: |
-          # Run all scripts/prefetch-*.sh before Claude starts (outside sandbox).
-          # Each script receives the skill name and var as arguments.
-          # Scripts should check their own env vars and exit 0 if not configured.
-          # SKILL_VAR comes through env (not template interpolation) so embedded
-          # $TOKEN / $VAR references in the user input aren't eaten by bash.
-          SKILL="${{ steps.skill.outputs.name }}"
-          VAR="$SKILL_VAR"
-          for script in scripts/prefetch-*.sh; do
-            [ -f "$script" ] || continue
-            chmod +x "$script"
-            echo "Running $(basename "$script")..."
-            ./"$script" "$SKILL" "$VAR" || echo "::notice::$(basename "$script") skipped or failed (non-fatal)"
-          done
-
       # ──────────────────────────────────────────────────────────────────────
       # Fleet Watcher preflight (opt-in, fail-closed)
       #

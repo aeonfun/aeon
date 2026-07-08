@@ -62,9 +62,9 @@ mcp: [base]
 ```
 
 - **Be explicit and self-contained** — a skill runs unattended.
-- **Add a "Sandbox note"** with the right fallback (WebFetch for keyless public
-  APIs, `scripts/prefetch-*.sh` for auth'd APIs, `gh api` for GitHub). See
-  [`CLAUDE.md`](../CLAUDE.md#sandbox-limitations).
+- **Add a "Network note"** with the right path (`./secretcurl` with `{ENV_NAME}`
+  placeholders for auth'd APIs, `gh api` for GitHub, `curl` + **WebFetch** fallback
+  for keyless public APIs). See [`CLAUDE.md`](../CLAUDE.md#network--secrets).
 - **Notify through `./notify`** — never call a channel API directly.
 - **Don't monkey-patch Aeon internals** — a skill is a prompt, not a patch.
 - **Regenerate the catalog** after adding/recategorizing a skill, and commit both:
