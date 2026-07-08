@@ -40,6 +40,13 @@ BASE_TOOLS="$BASE_TOOLS,Bash(head:*),Bash(tail:*),Bash(wc:*),Bash(sort:*),Bash(g
 # Write tier additionally gets repo-mutation tools + python (an interpreter is itself
 # a write vector, so it stays out of the read-only base; skills' python helpers run here).
 WRITE_TOOLS="Write,Edit,Bash(gh:*),Bash(git:*),Bash(python3:*),Bash(python:*)"
+# Security-scanner bare-names for vuln-scanner (Arm A). The skill stages these in-run
+# (`python3 -m pip install` for semgrep/slither, `curl -o … && chmod +x` for the Go
+# binaries) and invokes them by bare name. Without this grant `claude -p` denies the
+# invocation ("requires approval") and the scan arm silently degrades to manual review —
+# a live-test showed the run logging that denial as "Blocked by sandbox". These are
+# read-only static-analysis tools (no repo/network mutation of their own).
+WRITE_TOOLS="$WRITE_TOOLS,Bash(semgrep:*),Bash(osv-scanner:*),Bash(trufflehog:*),Bash(slither:*)"
 
 resolve_mode() {
   local skill="$1" f="skills/$1/SKILL.md" m=""
@@ -97,7 +104,7 @@ write_tools() { echo "$BASE_TOOLS,$WRITE_TOOLS"; }
 # Bash command globs allowed on every tier (mirror BASE_TOOLS' Bash(...:*) set).
 GROK_BASE_BASH="curl jq ./notify ./notify-jsonrender mkdir ls cat chmod date echo node npm npx head tail wc sort grep"
 # Additional Bash command globs for the write tier (mirror WRITE_TOOLS).
-GROK_WRITE_BASH="gh git python3 python"
+GROK_WRITE_BASH="gh git python3 python semgrep osv-scanner trufflehog slither"
 
 grok_args() {
   local mode="$1"
