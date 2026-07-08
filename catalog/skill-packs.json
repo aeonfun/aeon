@@ -176,6 +176,27 @@
         "external_api",
         "writes_external_host"
       ]
+    },
+    {
+      "repo": "techdigger/aeon-skill-pack-agentlink",
+      "name": "AgentLink",
+      "description": "Give an aeon agent a verified, human-backed on-chain identity on Base via AgentLink — check link status, hand the owner a linker URL, then sign requests to free partner endpoints (XONA, WURK).",
+      "author": "techdigger",
+      "license": "MIT",
+      "homepage": "https://agentlink.id",
+      "category": "crypto",
+      "trust_level": "community",
+      "skills": [
+        "agentlink"
+      ],
+      "secrets_required": [
+        "AGENT_PRIVATE_KEY"
+      ],
+      "capabilities": [
+        "read_only",
+        "external_api",
+        "sends_notifications"
+      ]
     }
   ]
 }
