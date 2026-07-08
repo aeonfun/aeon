@@ -1196,9 +1196,19 @@ jobs:
             git diff --staged --quiet || git commit -m "chore($LABEL): auto-commit $(date +%Y-%m-%d)"
             git push --force-with-lease -u origin "$CURRENT_BRANCH" || true
 
-            # Switch back to main and cherry-pick memory/log changes if any
-            git checkout main
-            git pull --rebase origin main || true
+            # Switch back to main to record memory/log changes. main is only
+            # guaranteed present when the run STARTED on main (the normal
+            # scheduled / Run-now path). A run dispatched against a non-main ref
+            # gets a single-branch checkout with no local main, so `checkout main`
+            # would fail the step under `set -e` (and a blind rebase would
+            # conflict). The feature branch is already pushed above — just stop.
+            if git show-ref --verify --quiet refs/heads/main; then
+              git checkout main
+              git pull --rebase origin main || true
+            else
+              echo "main not present locally (non-main dispatch) — feature branch pushed, nothing to record on main"
+              exit 0
+            fi
           fi
 
           # Commit any remaining changes on main
@@ -1348,7 +1358,15 @@ jobs:
             fi
           }
 
-          # Ensure we're on main with latest
+          # Ensure we're on main with latest. main is only present locally when the
+          # run started on main; a non-main-ref dispatch has a single-branch checkout
+          # with no local main, and rebasing that divergent branch onto origin/main
+          # leaves unmerged files that break the commit below (exit 128). This step
+          # is non-fatal by design, so skip cleanly when main isn't here.
+          if ! git show-ref --verify --quiet refs/heads/main; then
+            echo "main not present locally (non-main dispatch) — skipping cron-state commit"
+            exit 0
+          fi
           git checkout main 2>/dev/null || true
           git pull --rebase origin main 2>/dev/null || true
 
