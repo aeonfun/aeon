@@ -15,9 +15,10 @@
 #   /tmp/fleet-scorecard/scorecard-body.md computed markdown tables (the numbers)
 #   /tmp/fleet-scorecard/metrics.json      key totals for delta tracking
 #
-# Runs on the GHA runner with GH_TOKEN/GITHUB_TOKEN in env. The token needs read
-# access to every repo in the fleet (self is always readable; managed instances
-# need a PAT with read scope if they are private).
+# Runs on the GHA runner. gh authenticates with GH_READ_PAT when set (a read-only PAT
+# with cross-repo read scope — REQUIRED to read PRIVATE managed instances, which the
+# default integration-scoped token 403/404s), else the workflow's default token (self +
+# public only). Set GH_READ_PAT as a repo secret to include private fleet members.
 #
 # Token mapping (Anthropic CSV cols -> OpenRouter usage shape):
 #   prompt_tokens = input + cache_read + cache_creation
@@ -28,6 +29,11 @@
 # Pricing matches skills/cost-report (direct Anthropic list price).
 
 set -uo pipefail
+
+# gh reads GH_TOKEN first, then GITHUB_TOKEN. Prefer the read-only GH_READ_PAT so
+# private fleet instances (which the default token 403s cross-repo) are readable;
+# fall back to the workflow's default token, else run unauthenticated (public only).
+export GH_TOKEN="${GH_READ_PAT:-${GH_TOKEN:-${GITHUB_TOKEN:-}}}"
 
 SKILL="${1:-}"
 VAR="${2:-}"

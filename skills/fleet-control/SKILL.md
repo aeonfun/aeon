@@ -5,6 +5,7 @@ category: core
 description: Operate managed Aeon instances from memory/instances.json - health-check, dispatch, and status snapshots (control), plus a fleet scorecard of runs, tokens, cost, and reliability (scorecard).
 var: ""
 tags: [dev, meta, fleet, report, cost]
+requires: [GH_READ_PAT?]
 cron: "0 9,15 * * *"
 ---
 <!-- autoresearch: variation B — sharper output: verdict line + delta vs prior + per-instance action column + state-change-gated notify -->
@@ -402,11 +403,11 @@ Every run logs exactly one of these to memory:
 
 **Control view (health / status / dispatch):** always use `gh api` over raw curl (handles auth and the sandbox env-var-in-headers issue). All cross-repo calls go through `gh api` or `gh workflow run`. No outbound HTTP needed beyond what `gh` does internally.
 
-**Scorecard view:** needs no network inside the sandbox — all `gh`/API work happens in `scripts/prefetch-fleet-scorecard.sh`, which runs in the workflow's prefetch phase with `gh` auth and stages its output under `/tmp/fleet-scorecard/`. If the prefetch's cross-repo reads fail for a managed instance, it's almost always the GitHub token scope (the token needs read access to that instance's repo; self is always readable). The prefetch degrades gracefully — a repo it can't read is simply absent from the tables rather than crashing the run.
+**Scorecard view:** needs no network inside the run — all `gh`/API work happens in `scripts/prefetch-fleet-scorecard.sh`, which runs in the workflow's prefetch phase and stages its output under `/tmp/fleet-scorecard/`. It authenticates with `GH_READ_PAT` when set (a read-only PAT with cross-repo scope, declared in this skill's `requires:`) so **private** managed instances are readable; without it, only self + public repos resolve. A repo the token can't read is simply absent from the tables rather than crashing the run.
 
 ## Required env vars
 
-None for the skill itself. `scripts/prefetch-fleet-scorecard.sh` uses `GH_TOKEN`/`GITHUB_TOKEN` (provided by the workflow) and reads `GITHUB_REPOSITORY` to resolve "self". The control view relies on the workflow-provided `GITHUB_TOKEN` for its live `gh` calls.
+`GH_READ_PAT` (optional, read-only) — used by `scripts/prefetch-fleet-scorecard.sh` to read private managed instances; it falls back to the workflow's default `GITHUB_TOKEN` (self + public only) when unset, and reads `GITHUB_REPOSITORY` to resolve "self". The control view relies on the workflow-provided `GITHUB_TOKEN` for its live `gh` calls.
 
 ## Constraints
 
