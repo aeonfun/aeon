@@ -209,7 +209,6 @@ jobs:
         if: steps.work.outputs.mode != ''
         env:
           GH_READ_PAT: ${{ secrets.GH_READ_PAT }}
-          XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           REPLICATE_API_TOKEN: ${{ secrets.REPLICATE_API_TOKEN }}
           SKILL_VAR: ${{ inputs.var }}
