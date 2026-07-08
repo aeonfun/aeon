@@ -296,14 +296,22 @@ Article: output/articles/fleet-status-${today}.md
 
 Publish the daily **fleet scorecard** to `memory/scorecard.md` and append a trend row to `memory/scorecard-history.csv`. (Ran daily at 13:00 UTC as its own dispatch when this skill is scheduled with `var: scorecard`.)
 
-All data has already been gathered by `scripts/prefetch-fleet-scorecard.sh` (which ran outside the sandbox with network/`gh` access). **This mode needs no network or `gh`** — work only from the prefetched files below.
+### 0. Gather the data in-run
 
-### Inputs (prefetched — read these)
+Run the committed collector — it discovers the fleet (self + non-archived `memory/instances.json`), fetches each repo's workflow runs + skill count + `token-usage.csv` from the GitHub API, computes the pricing/aggregation, and writes the tables. It reads its token from the environment (`GH_READ_PAT` — the read-only PAT declared in this skill's `requires:`, needed to read **private** fleet members — falling back to `GH_TOKEN`/`GITHUB_TOKEN`), so **no secret ever touches a command line**:
 
-- `/tmp/fleet-scorecard/scorecard-body.md` — the computed markdown tables (Fleet totals, Per-repo, Top skills by cost, Least reliable skills). These numbers are authoritative — **do not recompute or alter them.**
+```bash
+node scripts/fleet-scorecard.mjs   # → /tmp/fleet-scorecard/{scorecard-body.md,metrics.json}
+```
+
+The deterministic maths lives in the script (not this run) — do **not** recompute or alter its numbers. A repo the token can't read is simply absent from the tables rather than crashing the collector.
+
+### Inputs (produced by step 0 — read these)
+
+- `/tmp/fleet-scorecard/scorecard-body.md` — the computed markdown tables (Fleet totals, Per-repo, Top skills by cost, Least reliable skills). Authoritative — **do not recompute or alter them.**
 - `/tmp/fleet-scorecard/metrics.json` — today's key totals: `total_runs, total_failures, generations, prompt_tokens, cached_tokens, completion_tokens, total_tokens, est_cost_usd, cache_discount_usd`.
 
-If `/tmp/fleet-scorecard/scorecard-body.md` is missing or empty, the prefetch failed or resolved an empty fleet — write a one-line note to `/tmp/skill-result.txt` saying so and stop (do not overwrite the existing scorecard, do not notify).
+If `/tmp/fleet-scorecard/scorecard-body.md` is missing or empty, the collector failed or resolved an empty fleet — write a one-line note to `/tmp/skill-result.txt` saying so and stop (do not overwrite the existing scorecard, do not notify).
 
 ### Steps
 
@@ -403,11 +411,11 @@ Every run logs exactly one of these to memory:
 
 **Control view (health / status / dispatch):** always use `gh api` over raw curl (handles auth and the sandbox env-var-in-headers issue). All cross-repo calls go through `gh api` or `gh workflow run`. No outbound HTTP needed beyond what `gh` does internally.
 
-**Scorecard view:** needs no network inside the run — all `gh`/API work happens in `scripts/prefetch-fleet-scorecard.sh`, which runs in the workflow's prefetch phase and stages its output under `/tmp/fleet-scorecard/`. It authenticates with `GH_READ_PAT` when set (a read-only PAT with cross-repo scope, declared in this skill's `requires:`) so **private** managed instances are readable; without it, only self + public repos resolve. A repo the token can't read is simply absent from the tables rather than crashing the run.
+**Scorecard view:** gathers its data **in-run** by executing `node scripts/fleet-scorecard.mjs` (step 0), which fetches workflow runs + token usage from the GitHub API and computes the tables into `/tmp/fleet-scorecard/`. The collector authenticates with `GH_READ_PAT` when set (a read-only PAT with cross-repo scope, declared in this skill's `requires:` and injected into the run) so **private** managed instances are readable; without it, only self + public repos resolve. It reads the token from `process.env` internally, so the secret never appears on a command line. A repo the token can't read is simply absent from the tables rather than crashing the collector.
 
 ## Required env vars
 
-`GH_READ_PAT` (optional, read-only) — used by `scripts/prefetch-fleet-scorecard.sh` to read private managed instances; it falls back to the workflow's default `GITHUB_TOKEN` (self + public only) when unset, and reads `GITHUB_REPOSITORY` to resolve "self". The control view relies on the workflow-provided `GITHUB_TOKEN` for its live `gh` calls.
+`GH_READ_PAT` (optional, read-only) — declared in `requires:` and read from `process.env` by `scripts/fleet-scorecard.mjs` (scorecard view) to reach private managed instances; it falls back to `GH_TOKEN`/`GITHUB_TOKEN` (self + public only) when unset, and reads `GITHUB_REPOSITORY` to resolve "self". The control view relies on the workflow-provided `GITHUB_TOKEN` for its live `gh` calls.
 
 ## Constraints
 

@@ -81,7 +81,7 @@ Dispatch mode lets the parent trigger a skill on one child — or all healthy / 
 
 ### [`fleet-control`](../skills/fleet-control/SKILL.md) `scorecard` — fleet economics · daily 13:00
 
-The **scorecard view** of `fleet-control` (run with `var: scorecard`; folded in the former standalone `fleet-scorecard`). Discovers the fleet at runtime (self + every non-archived instance — never hardcoded). All data is gathered by `scripts/prefetch-fleet-scorecard.sh` *outside* the sandbox, so the skill just reads `/tmp/fleet-scorecard/*` and writes the report — no network needed.
+The **scorecard view** of `fleet-control` (run with `var: scorecard`; folded in the former standalone `fleet-scorecard`). Discovers the fleet at runtime (self + every non-archived instance — never hardcoded). Data is gathered **in-run** by `node scripts/fleet-scorecard.mjs`, which fetches each repo's runs + token usage from the GitHub API and computes the tables into `/tmp/fleet-scorecard/*`; it reads `GH_READ_PAT` (declared in the skill's `requires:`) from `process.env` so it can reach private fleet members without a secret ever hitting a command line.
 
 Aggregates runs / failures / generations / tokens / est. cost / cache discount (tokens in OpenRouter shape, cached ⊆ prompt), builds an Alerts block (any skill with ≥25% fail rate over 14d, cost spikes > 1.5× median daily delta, failure jumps > 10), writes `memory/scorecard.md` and appends a trend row to `scorecard-history.csv`.
 
