@@ -32,7 +32,7 @@ set -euo pipefail
 # fallback behind a WebFetch/curl primary, so they degrade gracefully, not break.)
 BASE_TOOLS="Read,Glob,Grep,WebFetch,WebSearch"
 BASE_TOOLS="$BASE_TOOLS,Bash(curl:*),Bash(jq:*)"
-BASE_TOOLS="$BASE_TOOLS,Bash(./notify:*),Bash(./notify-jsonrender:*)"
+BASE_TOOLS="$BASE_TOOLS,Bash(./notify:*),Bash(./notify-jsonrender:*),Bash(./secretcurl:*)"
 BASE_TOOLS="$BASE_TOOLS,Bash(mkdir:*),Bash(ls:*),Bash(cat:*),Bash(chmod:*)"
 BASE_TOOLS="$BASE_TOOLS,Bash(date:*),Bash(echo:*),Bash(node:*),Bash(npm:*),Bash(npx:*)"
 BASE_TOOLS="$BASE_TOOLS,Bash(head:*),Bash(tail:*),Bash(wc:*),Bash(sort:*),Bash(grep:*)"

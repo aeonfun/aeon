@@ -8,7 +8,7 @@ var: ""
 tags: [content, news]
 requires: [XAI_API_KEY?]
 ---
-<!-- autoresearch: variation B — curatorial discipline (filter → distill → structure → sanity-check) folded with sandbox-safe inputs and memory-aware dedup; RSS feed-reading + item-selection absorbed from rss-digest as an additional source class -->
+<!-- autoresearch: variation B — curatorial discipline (filter → distill → structure → sanity-check) folded with direct-curl xAI + web/RSS inputs and memory-aware dedup; RSS feed-reading + item-selection absorbed from rss-digest as an additional source class -->
 
 > **${var}** — Selects the digest's topic and which source classes feed it. Grammar:
 > - `""` (empty) → **digest's default sources** (WebSearch + xAI/Grok + aggregators), no topic filter — a broad daily digest.
@@ -53,10 +53,23 @@ Pull from the source classes selected by `${var}`. Never rely on a single one �
 1. **WebSearch** (built-in) — run 2 distinct queries:
    - `"${topic}" news ${today}` (broad). If `topic` is empty, run a general query for the day's notable stories in the operator's tracked areas (from `memory/MEMORY.md`).
    - One narrower query you choose based on `${topic}` (e.g. for "solana" → `"solana" launches OR funding OR exploit ${today}`; for "AI agents" → `"agent framework" OR "agentic" release ${today}`).
-2. **xAI x_search via Grok** — pulls the X/Twitter signal layer.
-   - **Preferred path (sandbox-safe):** read `.xai-cache/digest.json` if it exists. The workflow's `scripts/prefetch-xai.sh` populates it before Claude runs. If you find the cache empty or absent, log a one-line note and continue — do not retry curl in a loop.
-   - **Fallback:** if the cache is missing, attempt a WebFetch to a public X search URL like `https://x.com/search?q=${topic}&f=live` and extract a few top posts. Skip if that also returns nothing.
-   - If `XAI_API_KEY` is unset, skip entirely without erroring.
+2. **xAI x_search via Grok** — pulls the X/Twitter signal layer. `XAI_API_KEY` is injected into this skill's environment (declared in `requires:`) and is the **primary** path; see **Fetching the X signal** below for the full contract (attempt the curl before any fallback, set the Bash tool `timeout` ≥180000, record the true failure reason).
+
+   **Path A — X.AI API (primary):** a direct `curl` to the Responses API. First confirm the key with `[ -n "$XAI_API_KEY" ] && echo KEY_PRESENT || echo KEY_UNSET`; if `KEY_PRESENT` (it will be), this path is required. When you run the curl, set the Bash tool's `timeout` to at least `180000`.
+   ```bash
+   FROM_DATE=$(date -u -d "yesterday" +%Y-%m-%d 2>/dev/null || date -u -v-1d +%Y-%m-%d)
+   TO_DATE=$(date -u +%Y-%m-%d)
+   PROMPT="Search X for substantive, recent posts about: ${topic:-the most notable technology, AI, and crypto stories today}. Date range: $FROM_DATE to $TO_DATE. Return up to 10 high-signal posts — prioritize verifiable claims, launches, funding, releases, exploits, or hard data over hot takes. For EACH post return: @handle, the full text, date posted, exact engagement counts (likes, retweets, replies; 0 if unknown), and the direct link https://x.com/handle/status/ID. Return a numbered list."
+   jq -n --arg p "$PROMPT" --arg fd "$FROM_DATE" --arg td "$TO_DATE" \
+     '{model:"grok-4-1-fast", input:[{role:"user",content:$p}], tools:[{type:"x_search",from_date:$fd,to_date:$td}]}' \
+     > /tmp/xai-digest-payload.json
+   HTTP=$(./secretcurl -s -o /tmp/xai-digest.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
+     -H "Content-Type: application/json" -H "Authorization: Bearer {XAI_API_KEY}" -d @/tmp/xai-digest-payload.json)
+   echo "xai http=$HTTP bytes=$(wc -c </tmp/xai-digest.json)"
+   ```
+   On `HTTP=200` with a non-empty body, parse it with `jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text'` and feed each post (handle, text, engagement, permalink) into the web-candidate pool. A slow curl is **not** a missing key — do not treat a timeout as key-unavailable.
+
+   **Path B — WebFetch/WebSearch fallback (last resort, lower quality):** only if the key is `KEY_UNSET`, or Path A returned a non-2xx / empty body / timeout. Attempt a WebFetch to a public X search URL like `https://x.com/search?q=${topic}&f=live`, or a `site:x.com "<topic>" after:${FROM_DATE}` WebSearch; extract a few top posts and prefer results within the last 48h. Record the **true reason** (`key-unset` | `http-<code>` | `empty` | `timeout`) in the log — never "XAI_API_KEY unavailable" when the key was set. If this also returns nothing, skip the X source for this run.
 3. **WebFetch on a topic-relevant aggregator** (only if WebSearch returned thin results): e.g. `https://news.ycombinator.com/`, `https://www.reddit.com/r/<topic>/top/?t=day.json`, or a known feed for the topic.
 
 Aim for **~15 raw web candidates** at this stage. More is fine; fewer than 8 is a warning sign — broaden your queries before moving on.
@@ -65,7 +78,7 @@ Aim for **~15 raw web candidates** at this stage. More is fine; fewer than 8 is 
 
 Read `memory/feeds.yml` for the feed list. For **each feed** in `feeds.yml`:
 
-1. Fetch the RSS/Atom XML: `curl -sL "FEED_URL"`. If curl fails (sandbox), fall back to **WebFetch** on the same URL.
+1. Fetch the RSS/Atom XML: `curl -sL "FEED_URL"`. If curl fails, fall back to **WebFetch** on the same URL.
 2. Parse for entries published in the **last 24h** (check `<pubDate>` or `<updated>` tags).
 3. Extract **title, link, and description** for each new entry.
 
@@ -152,25 +165,31 @@ If the digest fails any check, fix it before sending. If after filtering you hav
    ```
    ### digest (${var})
    - Source mode: <web | rss | web+rss>
-   - Sources used: <list — e.g. WebSearch, xAI cache, feeds.yml (Feed A, Feed B)>
+   - Sources used: <list — e.g. WebSearch, xAI API (api|fallback:reason), feeds.yml (Feed A, Feed B)>
    - Raw candidates: <N> (web <Nw> / rss <Nr>), after filter: <M>, sent: <K>
    - Lead item: <title>
-   - Notes: <anything unusual — sandbox failure, thin day (DIGEST_THIN/DIGEST_FETCH_EMPTY), RSS_DIGEST_OK, dedup against prior log>
+   - Notes: <anything unusual — xAI fetch fallback + true reason (http-<code>/empty/timeout/key-unset), thin day (DIGEST_THIN/DIGEST_FETCH_EMPTY), RSS_DIGEST_OK, dedup against prior log>
    ```
 3. Update `memory/MEMORY.md` "Recent Digests" table with one row: date, topic (or `${var}`), key topics (3 short keywords).
 
-## Sandbox note
+## Fetching the X signal
 
-The GitHub Actions sandbox blocks outbound network from bash — especially `curl` calls that interpolate env vars in headers (the shape of a direct xAI call), and it may also block plain outbound curl for RSS feeds. Two safe paths apply here:
+`XAI_API_KEY` is **injected into this skill's environment** (declared in `requires:`) and is **present and valid**. The primary way to pull the X/Twitter signal layer is a **direct `curl` to `https://api.x.ai/v1/responses`** with `Authorization: Bearer {XAI_API_KEY}` (see Phase 1 → Path A). There is **no network sandbox** blocking this. Older versions of this skill claimed the sandbox blocked env-var-authenticated curl and told you to read a `.xai-cache/digest.json` prefetch file — that is **stale and false**, and the prefetch script (`scripts/prefetch-xai.sh`) has been deleted, so no cache file ever exists. Do not read a cache; make the call.
 
-- **xAI (secret-bearing):** **Do not** attempt `curl ... -H "Authorization: Bearer $XAI_API_KEY"` from this skill; it will fail silently or partially. Use the **pre-fetch** pattern — add a `digest)` case to `scripts/prefetch-xai.sh` so the workflow populates `.xai-cache/digest.json` before Claude runs; this skill reads that file, not the API directly.
-- **RSS feeds & public pages (no auth):** `curl -sL` may fail intermittently. The built-in **WebFetch** tool bypasses the sandbox for unauthenticated URLs — use it as the fallback for any feed URL, aggregator (HN, Reddit JSON, news sites), or article that curl couldn't fetch.
+Rules:
 
-If neither auth path works and you have only WebSearch + reachable RSS results, that's still a valid digest — say so in the log so health checks can spot the pattern.
+1. **Check, don't assume.** Run `[ -n "$XAI_API_KEY" ] && echo KEY_PRESENT || echo KEY_UNSET`. If `KEY_PRESENT` (it will be), Path A is required before any fallback.
+2. **Allow enough time.** Grok's `x_search` typically takes 30–120s (it searches X live). Set the Bash tool's `timeout` to at least **180000 (180s)** for the curl, and keep **`--max-time 150`** on the curl itself so it fails cleanly rather than hanging. A slow curl is **not** a missing key — never treat a timeout as key-unavailable.
+3. **Capture the HTTP status** and parse the body with the standard `jq` extractor (`jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text'`). `HTTP=200` + non-empty body → use it.
+4. **Fall back only on a real failure**, recording the **true reason**: `key-unset` (only if step 1 said `KEY_UNSET`), `http-<code>` (non-2xx), `empty` (200 but nothing parsed), or `timeout` (curl exceeded `--max-time`). Never log "XAI_API_KEY unavailable" when the key was set.
+
+WebFetch / WebSearch are **last-resort fallbacks only** for the X signal (lower quality — WebSearch favours older high-engagement posts). Never reach for them while the key works.
+
+**RSS feeds & public aggregators (no auth):** fetch with `curl -sL`; if that fails intermittently, the built-in **WebFetch** tool is a reliable fallback for any feed URL, aggregator (HN, Reddit JSON, news sites), or article. This is a convenience fallback for unauthenticated URLs, not a sandbox workaround. A digest built from WebSearch + reachable RSS alone is still valid — note it in the log so health checks can spot the pattern.
 
 ## Environment Variables Required
 
-- `XAI_API_KEY` — used by `scripts/prefetch-xai.sh` (optional; digest works on web + RSS sources alone).
+- `XAI_API_KEY` — X.AI API key for Grok's `x_search`. Declared in `requires:`, so it is **injected into this skill's environment** and is the primary path for the X signal layer (direct `curl`; see **Fetching the X signal**). Optional overall — digest still works on web + RSS sources alone if it is ever unset.
 - Notification channels configured via repo secrets (see CLAUDE.md).
 
 ## Constraints

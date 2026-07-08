@@ -68,30 +68,23 @@ Search X for tweets matching `ARG` and produce a curated digest grouped by sub-n
 
 1. **Build the search prompt.** Pass `ARG` to Grok **verbatim** as the query — do NOT narrow it to a single angle; broad coverage is the goal. Ask for **at least 15–20 candidate tweets** (you'll cull to ~7–10). Always require explicit engagement counts (likes, retweets, replies) so ranking is data-driven.
 
-2. **Fetch tweets.** Use whichever path is available; record `SOURCE_PATH=cache|api|websearch` for the log.
+2. **Fetch tweets.** Record `SOURCE_PATH=api|websearch` for the log.
 
-   **Path A — pre-fetched cache** (preferred): read the canonical file.
-   ```bash
-   cat .xai-cache/fetch-tweets.json 2>/dev/null \
-     | jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text'
-   ```
-
-   **Path B — X.AI API** (fallback, when `XAI_API_KEY` is set and cache is empty):
+   **Path A — X.AI API** (primary; see the **Fetching (all branches)** contract — attempt this, set the Bash tool `timeout` ≥180000, capture the HTTP status):
    ```bash
    FROM_DATE=$(date -u -d "yesterday" +%Y-%m-%d 2>/dev/null || date -u -v-1d +%Y-%m-%d)
    TO_DATE=$(date -u +%Y-%m-%d)
-   curl -s -X POST "https://api.x.ai/v1/responses" \
+   PROMPT="Search X for tweets about: ${ARG}. Date range: ${FROM_DATE} to ${TO_DATE}. Return at least 15-20 candidate tweets — mix of high-engagement posts and smaller accounts that add a distinct angle. For each tweet include: @handle, the full text, date posted, exact engagement counts (likes, retweets, replies — never N/A; if unknown, say 0), and the direct link (https://x.com/handle/status/ID). Return as a numbered list."
+   jq -n --arg p "$PROMPT" '{model:"grok-4-1-fast", input:[{role:"user",content:$p}], tools:[{type:"x_search"}]}' > /tmp/xai-ft-keyword.json
+   HTTP=$(./secretcurl -s -o /tmp/xai.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
      -H "Content-Type: application/json" \
-     -H "Authorization: Bearer $XAI_API_KEY" \
-     -d '{
-       "model": "grok-4-1-fast",
-       "input": [{"role": "user", "content": "Search X for tweets about: '"$ARG"'. Date range: '"$FROM_DATE"' to '"$TO_DATE"'. Return at least 15-20 candidate tweets — mix of high-engagement posts and smaller accounts that add a distinct angle. For each tweet include: @handle, the full text, date posted, exact engagement counts (likes, retweets, replies — never N/A; if unknown, say 0), and the direct link (https://x.com/handle/status/ID). Return as a numbered list."}],
-       "tools": [{"type": "x_search"}]
-     }'
+     -H "Authorization: Bearer {XAI_API_KEY}" \
+     -d @/tmp/xai-ft-keyword.json)
+   echo "xai http=$HTTP bytes=$(wc -c </tmp/xai.json)"
    ```
-   Parse with: `jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text'`
+   On `HTTP=200`, parse `/tmp/xai.json` with: `jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text'` and mark `SOURCE_PATH=api`.
 
-   **Path C — WebSearch fallback** (both cache and `XAI_API_KEY` unavailable): use the built-in WebSearch tool with `site:x.com "<query terms>" after:${FROM_DATE}`. Note at the top of the log: "XAI_API_KEY not available; results compiled via WebSearch — quality lower than usual". WebSearch favours high-engagement older tweets — **prioritise results dated within the last 48 hours**.
+   **Path B — WebSearch fallback** (only if the key is `KEY_UNSET`, or Path A gave a non-2xx / empty / timeout per the contract): use the built-in WebSearch tool with `site:x.com "<query terms>" after:${FROM_DATE}`. Note at the top of the log the **true reason** (`http-<code>` / `timeout` / `empty`, never "unavailable" when the key was set) and "results compiled via WebSearch — quality lower than usual". WebSearch favours high-engagement older tweets — **prioritise results dated within the last 48 hours**. Mark `SOURCE_PATH=websearch`.
 
 3. **Empty vs. error handling** (distinguish):
    - **Legitimate empty** (0 tweets): log `FETCH_TWEETS_EMPTY (source=${SOURCE_PATH})` and **stop — no notification**.
@@ -146,20 +139,22 @@ Gist of the latest X chatter on one or more configurable topics.
       - `crypto OR bitcoin OR DeFi`
       - `technology OR startups OR open source`
 
-2. **Fetch per topic** — track `SOURCE ∈ {cache, websearch, failed}` per topic.
+2. **Fetch per topic** — track `SOURCE ∈ {api, websearch, failed}` per topic.
 
-   **Path A — pre-fetched cache** (preferred):
-   - Single-topic mode: read `.xai-cache/fetch-tweets-topic.json`.
-   - Default/multi-topic mode: read any `.xai-cache/fetch-tweets-topic-*.json`, matching by slugified topic name if present.
+   **Path A — direct X.AI curl** (primary): for each topic, call Grok's `x_search`.
    ```bash
-   jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text' \
-     .xai-cache/fetch-tweets-topic*.json 2>/dev/null
+   FROM_DATE=$(date -u -d "yesterday" +%Y-%m-%d 2>/dev/null || date -u -v-1d +%Y-%m-%d)
+   TO_DATE=$(date -u +%Y-%m-%d)
+   PROMPT="Search X for recent tweets about: ${TOPIC}. Date range: ${FROM_DATE} to ${TO_DATE}. Return up to 8 substantive tweets. For each: @handle, full text, date, exact engagement counts (likes, retweets, replies; 0 if unknown), and the direct link https://x.com/handle/status/ID."
+   jq -n --arg p "$PROMPT" '{model:"grok-4-1-fast", input:[{role:"user",content:$p}], tools:[{type:"x_search"}]}' > /tmp/xai-ft-topic.json
+   ./secretcurl -s -o /tmp/xai-topic-out.json -X POST "https://api.x.ai/v1/responses" \
+     -H "Content-Type: application/json" \
+     -H "Authorization: Bearer {XAI_API_KEY}" \
+     -d @/tmp/xai-ft-topic.json
    ```
-   If parsing yields text, `SOURCE=cache`. Extract each tweet's `@handle`, text, engagement counts (if present), and permalink.
+   Parse with the standard `jq` extractor. If it yields text, `SOURCE=api`. Extract each tweet's `@handle`, text, engagement counts, and permalink.
 
-   **Path B — direct X.AI curl:** **Skipped.** The sandbox blocks env-var-authenticated curl; do not attempt it in topic mode.
-
-   **Path C — WebSearch fallback** (cache missing/empty): `site:x.com "<topic keywords>" after:<YESTERDAY>`. Always include the word "today" and `${today}` to force fresh results. Discard any result whose visible date is older than 48h. Collect up to 5 candidates per topic. Mark `SOURCE=websearch`. If both A and C return nothing, mark `SOURCE=failed`.
+   **Path B — WebSearch fallback** (only if `XAI_API_KEY` unset, or Path A errors/empty): `site:x.com "<topic keywords>" after:<YESTERDAY>`. Always include the word "today" and `${today}` to force fresh results. Discard any result whose visible date is older than 48h. Collect up to 5 candidates per topic. Mark `SOURCE=websearch`. If both paths return nothing, mark `SOURCE=failed`.
 
 3. **Score and filter.** Require: a known `@handle`; a `https://x.com/<handle>/status/<id>` URL (if missing, keep but mark "link unavailable"); posted within 48h; URL **not** in `SEEN_TWEETS`. Compute `signal_score = likes + 2×retweets + replies` (on WebSearch path with no counts, use result rank as a weak proxy). **Demote −50%**: replies to a parent tweet; near-duplicates of a higher-scoring tweet (>70% text overlap or same linked URL).
 
@@ -172,7 +167,7 @@ Gist of the latest X chatter on one or more configurable topics.
 5. **Notify.** If every topic dropped: log `TWEET_ROUNDUP_EMPTY` and **stop — no notify**. Otherwise send via `./notify` (≤4000 chars):
    ```
    *Tweet Roundup — ${today}*
-   _Source: cache:X websearch:Y failed:Z_
+   _Source: api:X websearch:Y failed:Z_
 
    *[Topic 1]* — _conversation shape_
    - x.com/handle — insight (signal: 12.3k) [View](https://x.com/handle/status/ID)
@@ -181,7 +176,7 @@ Gist of the latest X chatter on one or more configurable topics.
    *[Topic 2]* — _conversation shape_
    - x.com/handle — insight (signal: 8k) [View](https://x.com/handle/status/ID)
    ```
-   Show `signal: <score>` only when engagement counts were available (cache path); omit silently on WebSearch.
+   Show `signal: <score>` only when engagement counts were available (api path); omit silently on WebSearch.
 
 6. **Persist + log** (see Log). Append each reported URL (one per line) to `memory/tweet-roundup-seen.txt` (create if missing).
 
@@ -200,14 +195,18 @@ Two sub-modes: **single handle** (decision-ready gist of one account) vs. **all 
 1. **Normalize `ARG`.** Strip leading `@`, `https://x.com/`, `https://twitter.com/`, `https://nitter.net/`, trailing slash / `/status/...`. Lowercase. Reject if empty, contains whitespace, or >15 chars. On reject → `REFRESH_X_NO_VAR`: send `./notify "fetch-tweets: REFRESH_X_NO_VAR — set an X handle"` and exit 0. Store the cleaned handle as `ACCOUNT`.
 
 2. **Load tweets:**
-   - **Path A — prefetched cache** (preferred): read `.xai-cache/fetch-tweets-account.json`.
+   - **Path A — X.AI API** (primary): search this account's recent tweets via Grok's `x_search`.
      ```bash
-     jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text' \
-       .xai-cache/fetch-tweets-account.json 2>/dev/null
+     PROMPT="Search X for the latest tweets, replies, and quote tweets from @${ACCOUNT} in the last 2 days. Return each with full text, timestamp, type (original|reply|quote), what it replies to/quotes if any, exact engagement counts (likes, retweets, replies; 0 if unknown), and the permalink https://x.com/${ACCOUNT}/status/ID. Skip retweets of others. Return chronological."
+     jq -n --arg p "$PROMPT" '{model:"grok-4-1-fast", input:[{role:"user",content:$p}], tools:[{type:"x_search"}]}' > /tmp/xai-ft-account.json
+     ./secretcurl -m 30 -s -o /tmp/xai-account-out.json -X POST "https://api.x.ai/v1/responses" \
+       -H "Content-Type: application/json" \
+       -H "Authorization: Bearer {XAI_API_KEY}" \
+       -d @/tmp/xai-ft-account.json
      ```
-     Record `source=xai-cache`.
-   - **Path B — WebFetch fallback** (cache missing/empty, or parsed text has zero x.com status URLs): WebFetch `https://x.com/${ACCOUNT}` with prompt: *"List every tweet, reply, and quote tweet visible on this profile with its full text, timestamp, engagement counts (likes/retweets/replies) if shown, and the permalink https://x.com/handle/status/ID. Return a chronological list."* Record `source=webfetch`.
-   - **Path C — degraded**: if both fail or `XAI_API_KEY` unset and WebFetch returns nothing → skip to step 8 with status `REFRESH_X_NO_API_KEY` (key missing) or `REFRESH_X_ERROR` (key set but both paths failed).
+     Parse with the standard `jq` extractor. Record `source=api`.
+   - **Path B — WebFetch fallback** (only if `XAI_API_KEY` unset, or Path A errors / parsed text has zero x.com status URLs): WebFetch `https://x.com/${ACCOUNT}` with prompt: *"List every tweet, reply, and quote tweet visible on this profile with its full text, timestamp, engagement counts (likes/retweets/replies) if shown, and the permalink https://x.com/handle/status/ID. Return a chronological list."* Record `source=webfetch`.
+   - **Path C — degraded**: if `XAI_API_KEY` unset and WebFetch returns nothing → skip to step 8 with status `REFRESH_X_NO_API_KEY` (key missing) or `REFRESH_X_ERROR` (key set but both paths failed).
 
 3. **Parse into structured tweets:** `url`, `text`, `timestamp`, `type` (original/reply/quote), `reply_to`, `quoted_text`, `likes`, `retweets`, `replies`. Drop retweets of others. Missing counts → 0. Compute `signal_score = likes + 2*retweets + replies − (3 if type=reply else 0)`.
 
@@ -256,19 +255,17 @@ Use this to answer "what did *these specific people* post" across a watchlist.
    ```
 
 2. **Fetch recent tweets per account.** For each `handle`:
-   - **Path A — cache** (preferred): read `.xai-cache/fetch-tweets-account-<handle>.json`, parsed with the standard `jq` extractor.
-   - **Path B — live curl** (only outside the sandbox, when cache absent and `XAI_API_KEY` set):
+   - **Path A — live curl** (primary, `XAI_API_KEY` is injected and set):
      ```bash
-     curl -m 30 -s -X POST "https://api.x.ai/v1/responses" \
+     PROMPT="Search X for the latest tweets from:${HANDLE} in the last 3 days. Return the 5 most interesting or substantive tweets. For each: full text, date, direct link (https://x.com/${HANDLE}/status/ID). Skip retweets of others."
+     jq -n --arg p "$PROMPT" '{model:"grok-4-1-fast", input:[{role:"user",content:$p}], tools:[{type:"x_search"}]}' > /tmp/xai-ft-acct1.json
+     ./secretcurl -m 30 -s -o /tmp/xai-acct1-out.json -X POST "https://api.x.ai/v1/responses" \
        -H "Content-Type: application/json" \
-       -H "Authorization: Bearer $XAI_API_KEY" \
-       -d '{
-         "model": "grok-4-1-fast",
-         "input": [{"role": "user", "content": "Search X for the latest tweets from:'"$HANDLE"' in the last 3 days. Return the 5 most interesting or substantive tweets. For each: full text, date, direct link (https://x.com/'"$HANDLE"'/status/ID). Skip retweets of others."}],
-         "tools": [{"type": "x_search"}]
-       }'
+       -H "Authorization: Bearer {XAI_API_KEY}" \
+       -d @/tmp/xai-ft-acct1.json
      ```
-   If `XAI_API_KEY` is unset and no cache exists, log `TWEET_DIGEST_NO_KEY: skill requires XAI_API_KEY` and exit (no notification).
+     Parse with the standard `jq` extractor.
+   If `XAI_API_KEY` is unset, log `TWEET_DIGEST_NO_KEY: skill requires XAI_API_KEY` and exit (no notification).
    **Dedup:** drop any candidate URL already in `SEEN_URLS` (last 2 days of logs).
 
 3. **Group by theme, not by account.** Walk the full candidate set; identify 2–4 themes (e.g. "L2 design decisions", "macro / rates", "AI model releases", "regulation"). Each tweet maps to one theme; a `why:` label can seed theme naming for single-topic feeds.
@@ -316,30 +313,25 @@ Cross-list narrative resonance + signal-scored top tweets from tracked X lists i
      fi
    done
    ```
-   If `XAI_API_KEY` is unset and no cache exists, fall back to Path C. If no path returns data, log `LIST_DIGEST_NO_CONFIG: XAI_API_KEY required` and stop without notifying.
+   If `XAI_API_KEY` is unset, fall back to Path B. If no path returns data, log `LIST_DIGEST_NO_CONFIG: XAI_API_KEY required` and stop without notifying.
 
-2. **Fetch each list's top tweets (past 24h)** — prefer cache → API → WebSearch.
-   **Path A — cache** (preferred): read `.xai-cache/fetch-tweets-list-${LIST_ID}.json`.
-   ```bash
-   cat ".xai-cache/fetch-tweets-list-${LIST_ID}.json" 2>/dev/null \
-     | jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text'
-   ```
-   **Path B — X.AI Responses API:**
+2. **Fetch each list's top tweets (past 24h)** — API primary, WebSearch fallback.
+   **Path A — X.AI Responses API** (primary):
    ```bash
    FROM_DATE=$(date -u -d "yesterday" +%Y-%m-%d 2>/dev/null || date -u -v-1d +%Y-%m-%d)
    TO_DATE=$(date -u +%Y-%m-%d)
-   curl -s --max-time 180 -X POST "https://api.x.ai/v1/responses" \
+   PROMPT="Look at X list https://x.com/i/lists/${LIST_ID}. Step 1: report the list name and a one-line description. Step 2: identify the most engaging tweets posted by members of this list between ${FROM_DATE} and ${TO_DATE} UTC. Return the top 12 tweets ranked by engagement (likes, retweets, replies). For EACH tweet you MUST return: (a) @handle, (b) the full tweet text (not a paraphrase), (c) explicit engagement counts as separate fields — likes:N, retweets:N, replies:N, views:N if available, (d) the direct permalink in the form https://x.com/<handle>/status/<id>, (e) media type (image|video|none), (f) one-line context if it's a reply or quote tweet (who/what). Skip retweets of accounts NOT on this list. If a tweet has an image and you can analyze it, include a one-line image description."
+   jq -n --arg p "$PROMPT" --arg fd "$FROM_DATE" --arg td "$TO_DATE" \
+     '{model:"grok-4-1-fast", input:[{role:"user",content:$p}], tools:[{type:"x_search", from_date:$fd, to_date:$td, enable_image_understanding:true}]}' \
+     > /tmp/xai-ft-list.json
+   ./secretcurl -s -o /tmp/xai-list-out.json --max-time 180 -X POST "https://api.x.ai/v1/responses" \
      -H "Content-Type: application/json" \
-     -H "Authorization: Bearer $XAI_API_KEY" \
-     -d '{
-       "model": "grok-4-1-fast",
-       "input": [{"role": "user", "content": "Look at X list https://x.com/i/lists/'"$LIST_ID"'. Step 1: report the list name and a one-line description. Step 2: identify the most engaging tweets posted by members of this list between '"$FROM_DATE"' and '"$TO_DATE"' UTC. Return the top 12 tweets ranked by engagement (likes, retweets, replies). For EACH tweet you MUST return: (a) @handle, (b) the full tweet text (not a paraphrase), (c) explicit engagement counts as separate fields — likes:N, retweets:N, replies:N, views:N if available, (d) the direct permalink in the form https://x.com/<handle>/status/<id>, (e) media type (image|video|none), (f) one-line context if it'\''s a reply or quote tweet (who/what). Skip retweets of accounts NOT on this list. If a tweet has an image and you can analyze it, include a one-line image description."}],
-       "tools": [{"type": "x_search", "from_date": "'"$FROM_DATE"'", "to_date": "'"$TO_DATE"'", "enable_image_understanding": true}]
-     }'
+     -H "Authorization: Bearer {XAI_API_KEY}" \
+     -d @/tmp/xai-ft-list.json
    ```
    Parse with the standard `jq` extractor.
-   **Path C — WebSearch fallback** (both cache and key unavailable, OR Grok returns nothing): `site:x.com "i/lists/${LIST_ID}" OR list:${LIST_ID} after:${FROM_DATE}`. Lower quality; mark this list's source as `websearch`.
-   **Per-list outcome:** `ok` (≥3 tweets) | `quiet` (1–2) | `empty` (0, list found but no posts) | `error` (API/cache/access failure — note reason).
+   **Path B — WebSearch fallback** (only if `XAI_API_KEY` unset, OR Path A errors / returns nothing): `site:x.com "i/lists/${LIST_ID}" OR list:${LIST_ID} after:${FROM_DATE}`. Lower quality; mark this list's source as `websearch`.
+   **Per-list outcome:** `ok` (≥3 tweets) | `quiet` (1–2) | `empty` (0, list found but no posts) | `error` (API/access failure — note reason).
 
 3. **Build the candidate pool.** Record per tweet `{handle, text, likes, retweets, replies, views, url, list_ids_seen_on:[], list_names_seen_on:[], media, is_reply, is_quote}`. **Dedup by URL across lists** — same tweet on multiple lists → merge records, keep both `list_ids_seen_on` and `list_names_seen_on` (cross-list appearance is a signal). **Dedup against history** — drop URLs in `memory/list-digest-seen.txt` or the last 2 days of logs.
 
@@ -406,21 +398,19 @@ A topic-filtered preset: a curated, narrative-aware read on what the AI-agent sc
    FROM_DATE=$(date -u -d "1 day ago" +%Y-%m-%d 2>/dev/null || date -u -v-1d +%Y-%m-%d)
    TO_DATE=$(date -u +%Y-%m-%d)
    ```
-   **Path A — cache** (preferred): read `.xai-cache/fetch-tweets-agent-buzz.json` with the standard `jq` extractor. Record `source=xai-cache`.
-   **Fallback chain** (fire in order, stop at first success; record which source won for the footer):
-   1. curl to X.AI (the response for each tweet **must** include explicit engagement counts + follower count, or step 3 scoring can't run):
-      ```bash
-      curl -s -X POST "https://api.x.ai/v1/responses" \
-        -H "Content-Type: application/json" \
-        -H "Authorization: Bearer $XAI_API_KEY" \
-        -d '{
-          "model": "grok-4-1-fast",
-          "input": [{"role": "user", "content": "Search X from '"$FROM_DATE"' to '"$TO_DATE"' for tweets in the AI-agents conversation: autonomous agents, agent frameworks, MCP / agent protocols, agent products, agent benchmarks, agent research papers. Return up to 40 candidates. For EACH candidate you MUST return: @handle, follower_count (integer or null), role_guess (builder|founder|researcher|investor|commentator|anon), one-line claim (what they actually said — not a paraphrase, the thesis), likes (int), retweets (int), replies (int), posted_at (ISO), direct_link (https://x.com/username/status/ID). Prefer builders/founders/researchers. Skip obvious engagement-farming threads (\"RT if you agree\", reply-guy pileons, giveaways)."}],
-          "tools": [{"type": "x_search", "from_date": "'"$FROM_DATE"'", "to_date": "'"$TO_DATE"'"}]
-        }'
-      ```
-   2. WebFetch the same X.AI endpoint (bypasses sandbox env-var blocking for some requests).
-   3. WebSearch with a forced-fresh query: `"AI agents twitter today ${today}"` — discard anything >48h old, expect degraded metadata.
+   **Path A — X.AI API** (primary; the response for each tweet **must** include explicit engagement counts + follower count, or step 3 scoring can't run):
+   ```bash
+   PROMPT="Search X from ${FROM_DATE} to ${TO_DATE} for tweets in the AI-agents conversation: autonomous agents, agent frameworks, MCP / agent protocols, agent products, agent benchmarks, agent research papers. Return up to 40 candidates. For EACH candidate you MUST return: @handle, follower_count (integer or null), role_guess (builder|founder|researcher|investor|commentator|anon), one-line claim (what they actually said — not a paraphrase, the thesis), likes (int), retweets (int), replies (int), posted_at (ISO), direct_link (https://x.com/username/status/ID). Prefer builders/founders/researchers. Skip obvious engagement-farming threads (\"RT if you agree\", reply-guy pileons, giveaways)."
+   jq -n --arg p "$PROMPT" --arg fd "$FROM_DATE" --arg td "$TO_DATE" \
+     '{model:"grok-4-1-fast", input:[{role:"user",content:$p}], tools:[{type:"x_search", from_date:$fd, to_date:$td}]}' \
+     > /tmp/xai-ft-buzz.json
+   ./secretcurl -s -o /tmp/xai-buzz-out.json -X POST "https://api.x.ai/v1/responses" \
+     -H "Content-Type: application/json" \
+     -H "Authorization: Bearer {XAI_API_KEY}" \
+     -d @/tmp/xai-ft-buzz.json
+   ```
+   Parse with the standard `jq` extractor. Record `source=xai`.
+   **Path B — WebSearch fallback** (only if `XAI_API_KEY` unset, or Path A errors/empty): forced-fresh query `"AI agents twitter today ${today}"` — discard anything >48h old, expect degraded metadata. Record `source=websearch`.
 
    If `ARG` is set, also issue a second call constrained to that topic with the same schema; merge results.
 
@@ -454,11 +444,11 @@ A topic-filtered preset: a curated, narrative-aware read on what the AI-agent sc
    • @handle — <insight>
      <link>
 
-   <!-- _src: xai|webfetch|websearch · candidates: N → kept: M_ -->
+   <!-- _src: xai|websearch · candidates: N → kept: M_ -->
    ```
    Keep the footer — it's how future self-audits debug empty days. Never pad to hit 10. 6 good > 10 mid.
 
-**Status codes:** `AGENT_BUZZ_OK` (≥1 cluster notified) | `AGENT_BUZZ_EMPTY` (fetch succeeded, nothing survived — send `Agent Buzz — ${today}: quiet day, no survivors.`) | `AGENT_BUZZ_ERROR` (all three sources failed — notify `Agent Buzz — ${today}: all sources failed (${error summary}).` and log the per-source failure).
+**Status codes:** `AGENT_BUZZ_OK` (≥1 cluster notified) | `AGENT_BUZZ_EMPTY` (fetch succeeded, nothing survived — send `Agent Buzz — ${today}: quiet day, no survivors.`) | `AGENT_BUZZ_ERROR` (all sources failed — notify `Agent Buzz — ${today}: all sources failed (${error summary}).` and log the per-source failure).
 
 ---
 
@@ -489,24 +479,25 @@ On empty/no-new/error/no-config statuses, write the `### fetch-tweets` heading +
 
 No chain consumes this skill's output as of this commit (no `consume: [fetch-tweets]` references). If a downstream chain step starts consuming it, emit a flat list of URLs before the clustered/branch output so consumers aren't broken by cluster or narrative headers.
 
-## Sandbox note
+## Fetching (all branches)
 
-The sandbox blocks outbound curl that carries `$XAI_API_KEY` in a header. Every branch is cache-first — `scripts/prefetch-xai.sh` runs **before** Claude starts (with full env access) and writes `.xai-cache/*.json`; the skill reads those. Fallbacks that bypass the sandbox: **WebSearch** (keyword/topic/list/agent-buzz) and **WebFetch** (account single-handle against the public `x.com/${ACCOUNT}` profile; agent-buzz against the X.AI endpoint). Never rely on a live curl to `api.x.ai` succeeding inside the sandbox.
+`XAI_API_KEY` is **injected into your environment** for this skill (declared in `requires:`). It is present and valid. **The primary fetch path in every branch is a direct `curl` to `https://api.x.ai/v1/responses` with `Authorization: Bearer {XAI_API_KEY}`.** There is no network sandbox blocking this; earlier versions of this skill claimed there was — that is stale and wrong. Just make the call.
 
-**Cache filenames the prefetch must produce, per mode:**
+**You MUST attempt the direct curl before any fallback.** The rules:
 
-| mode | X-search window | cache file |
-|---|---|---|
-| keyword | yesterday→today | `.xai-cache/fetch-tweets.json` |
-| topic (single) | yesterday→today | `.xai-cache/fetch-tweets-topic.json` |
-| topic (multi) | yesterday→today | `.xai-cache/fetch-tweets-topic-<slug>.json` |
-| account (single) | yesterday→today | `.xai-cache/fetch-tweets-account.json` |
-| account (all) | last 3 days | `.xai-cache/fetch-tweets-account-<handle>.json` |
-| list | yesterday→today (+`enable_image_understanding`) | `.xai-cache/fetch-tweets-list-<LIST_ID>.json` |
-| agent-buzz | 1 day ago→today | `.xai-cache/fetch-tweets-agent-buzz.json` |
+1. **Check, don't assume.** Run `[ -n "$XAI_API_KEY" ] && echo KEY_PRESENT || echo KEY_UNSET`. If `KEY_PRESENT` (it will be), you are required to try Path A.
+2. **Allow enough time.** The `x_search` call typically takes 30–120s (it searches X live). When you invoke the Bash tool for the curl, **set the tool's `timeout` to at least 180000 (180s)**, and add **`--max-time 150`** to the curl itself so it fails cleanly rather than hanging. A curl that is slow is **not** a missing key — do not treat a timeout as "key unavailable".
+3. **Capture the HTTP status** so the fallback decision is based on fact, not assumption. Build the JSON body to a fixed file with `jq -n` first (as each branch above does), then send it with `-d @file` — every `./secretcurl` command must be 100% literal (no `$VAR`, or the permission layer blocks it):
+   ```bash
+   HTTP=$(./secretcurl -s -o /tmp/xai.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
+     -H "Content-Type: application/json" -H "Authorization: Bearer {XAI_API_KEY}" -d @/tmp/xai-ft-keyword.json)
+   echo "xai http=$HTTP bytes=$(wc -c </tmp/xai.json)"
+   ```
+   Then parse `/tmp/xai.json` with the standard `jq` extractor. `HTTP=200` with non-empty body → use it (`SOURCE_PATH=api`).
+4. **Fall back only on a real failure**, and **record the true reason** — never write "XAI_API_KEY unavailable" when the key was set. Use one of: `key-unset` (only if step 1 said `KEY_UNSET`), `http-<code>` (non-2xx), `empty` (200 but no tweets parsed), `timeout` (curl exceeded `--max-time`).
 
-The exact per-mode prompt each cache should hold is the Path B / fallback-chain curl body in that mode's branch above. A single `fetch-tweets)` case in `scripts/prefetch-xai.sh` can produce all of these by parsing `${var}` into `SOURCE`/`ARG` the same way this skill does.
+**WebSearch / WebFetch are last-resort fallbacks only** — lower quality (WebSearch favours old high-engagement tweets). Never reach for them while the key works. The old `.xai-cache/*.json` prefetch is gone — do not read it.
 
 ## Environment Variables
 
-- `XAI_API_KEY` — X.AI API key for Grok's `x_search` tool. **Optional** — every branch degrades to WebSearch/WebFetch when it's unset, at lower quality. The `account (all)` sub-mode is the only path that hard-exits without it *and* without a cache (`TWEET_DIGEST_NO_KEY`); all other modes still produce output via the sandbox-safe fallbacks.
+- `XAI_API_KEY` — X.AI API key for Grok's `x_search` tool. Declared in `requires:`, so it is **injected into this skill's environment** and is the primary fetch path for every branch. If it is ever unset, branches degrade to WebSearch/WebFetch at lower quality; the `account (all)` sub-mode instead hard-exits (`TWEET_DIGEST_NO_KEY`).

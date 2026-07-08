@@ -73,44 +73,62 @@ Goal: assemble **10–15 candidates** posted in the **last 6 hours** (the high-l
 
 For every candidate, capture: `@handle`, full tweet text, tweet URL, `posted_at` (ISO), engagement counts (likes, replies, retweets if available), and a one-line **why-this-tweet** note.
 
-**Path A — pre-fetched cache (preferred).** The workflow pre-fetches Grok x_search results to `.xai-cache/reply-maker.json` (via `scripts/prefetch-xai.sh`, which has full env access and runs outside the Claude sandbox). Read it first:
+**Path A — X.AI API (primary).** `XAI_API_KEY` is injected into this skill's environment (declared in `requires:`), so the direct `curl` to `https://api.x.ai/v1/responses` is the primary fetch path (full contract in **Fetching** at the bottom). Preflight the key, then call Grok's `x_search`, capturing the HTTP status so any fallback decision is fact-based. `x_search` searches X live and takes 30–120s — **set the Bash tool `timeout` to ≥180000 when you run this** (a slow curl is not a missing key).
 
 ```bash
-jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text' .xai-cache/reply-maker.json
+[ -n "$XAI_API_KEY" ] && echo KEY_PRESENT || echo KEY_UNSET
+TO_DATE=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+FROM_DATE=$(date -u -d "6 hours ago" +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -v-6H +%Y-%m-%dT%H:%M:%SZ)
 ```
 
-If parsing yields candidates, use them. The prefetch script already shapes the request based on `${var}` (numeric list ID, `@handle`, or topic) — see "Strategy depends on `${var}`" below for the contract it implements.
+If `KEY_PRESENT` (it will be), Path A is required. Build the payload **file** `/tmp/xai-rm-payload.json` per `${var}` (three shapes below — each branch writes the same fixed file), then:
 
-**Path B — direct curl:** Skipped. The sandbox blocks env-var-authenticated curl; do not attempt at runtime.
+```bash
+HTTP=$(./secretcurl -s -o /tmp/xai-rm.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
+  -H "Content-Type: application/json" -H "Authorization: Bearer {XAI_API_KEY}" -d @/tmp/xai-rm-payload.json)
+echo "xai http=$HTTP bytes=$(wc -c </tmp/xai-rm.json)"
+```
 
-Strategy depends on `${var}`:
+On `HTTP=200` with a non-empty body, parse `/tmp/xai-rm.json` and mark `xai=ok`:
+```bash
+jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text' /tmp/xai-rm.json
+```
+
+**The payload file `/tmp/xai-rm-payload.json` depends on `${var}`.** Whichever branch matches, build it with `jq -n --arg` (never a shell-interpolated string) and write it to that one fixed path — the `./secretcurl` call above then sends it with `-d @/tmp/xai-rm-payload.json`:
 
 **If `${var}` looks like an X list ID** (numeric):
 ```bash
-TO_DATE=$(date -u +%Y-%m-%dT%H:%M:%SZ)
-FROM_DATE=$(date -u -d "6 hours ago" +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -v-6H +%Y-%m-%dT%H:%M:%SZ)
 LIST_ID="${var}"
-
-curl -s -X POST "https://api.x.ai/v1/responses" \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $XAI_API_KEY" \
-  -d '{
-    "model": "grok-4-1-fast",
-    "input": [{"role": "user", "content": "Look at X list https://x.com/i/lists/'"$LIST_ID"'. Return the 12 most reply-worthy original posts (not retweets, not replies) by members of this list between '"$FROM_DATE"' and '"$TO_DATE"'. Reply-worthy = has a take, claim, question, or framing worth engaging — NOT pure self-promo, breaking news without analysis, or threads already past 500 replies. For each: @handle, full tweet text, tweet URL, posted_at ISO timestamp, like/reply/retweet counts."}],
-    "tools": [{"type": "x_search", "from_date": "'"$FROM_DATE"'", "to_date": "'"$TO_DATE"'"}]
-  }'
+jq -n --arg list_id "$LIST_ID" --arg from "$FROM_DATE" --arg to "$TO_DATE" '{
+  model: "grok-4-1-fast",
+  input: [{role: "user", content: ("Look at X list https://x.com/i/lists/" + $list_id + ". Return the 12 most reply-worthy original posts (not retweets, not replies) by members of this list between " + $from + " and " + $to + ". Reply-worthy = has a take, claim, question, or framing worth engaging — NOT pure self-promo, breaking news without analysis, or threads already past 500 replies. For each: @handle, full tweet text, tweet URL, posted_at ISO timestamp, like/reply/retweet counts.")}],
+  tools: [{type: "x_search", from_date: $from, to_date: $to}]
+}' > /tmp/xai-rm-payload.json
 ```
 
-**If `${var}` looks like a `@handle`**: same call, scoped to that handle's recent original posts.
+**If `${var}` looks like a `@handle`** — same query intent, scoped to that handle's recent original posts:
+```bash
+HANDLE="${var}"
+jq -n --arg handle "$HANDLE" --arg from "$FROM_DATE" --arg to "$TO_DATE" '{
+  model: "grok-4-1-fast",
+  input: [{role: "user", content: ("Look at recent original posts (not retweets, not replies) by " + $handle + " on X between " + $from + " and " + $to + ". Return the 12 most reply-worthy. Reply-worthy = has a take, claim, question, or framing worth engaging — NOT pure self-promo, breaking news without analysis, or threads already past 500 replies. For each: @handle, full tweet text, tweet URL, posted_at ISO timestamp, like/reply/retweet counts.")}],
+  tools: [{type: "x_search", from_date: $from, to_date: $to}]
+}' > /tmp/xai-rm-payload.json
+```
 
-**If `${var}` is a topic** (or empty): same call with `${var}` (or top 2–3 topics from `memory/MEMORY.md`) as the search query. When empty, also pull tweet candidates surfaced in the last 2 days of `tweet-roundup` and `list-digest` logs as a backup pool.
+**If `${var}` is a topic** (or empty) — same query intent with `${var}` (or the top 2–3 topics from `memory/MEMORY.md` when empty) as the search query. When empty, also pull tweet candidates surfaced in the last 2 days of `tweet-roundup` and `list-digest` logs as a backup pool.
+```bash
+TOPIC="${var}"   # when empty, substitute the top 2–3 topics from memory/MEMORY.md
+jq -n --arg topic "$TOPIC" --arg from "$FROM_DATE" --arg to "$TO_DATE" '{
+  model: "grok-4-1-fast",
+  input: [{role: "user", content: ("Search X for the 12 most reply-worthy original posts (not retweets, not replies) about " + $topic + " between " + $from + " and " + $to + ". Reply-worthy = has a take, claim, question, or framing worth engaging — NOT pure self-promo, breaking news without analysis, or threads already past 500 replies. For each: @handle, full tweet text, tweet URL, posted_at ISO timestamp, like/reply/retweet counts.")}],
+  tools: [{type: "x_search", from_date: $from, to_date: $to}]
+}' > /tmp/xai-rm-payload.json
+```
 
-**Fallback chain** (use in order until you have ≥3 candidates):
-1. Pre-fetched XAI cache at `.xai-cache/reply-maker.json` (Path A above)
-2. Recent `list-digest` + `tweet-roundup` outputs in `memory/logs/` — already have URLs and handles
-3. WebSearch for very recent posts on memory topics (filter: posted within last 6h, original post not reply)
-
-The memory logs are the most reliable source since they're already fetched — prefer them over retrying a blocked API.
+**Path B — memory logs + WebSearch (last-resort fallback only).** Reach here **only** on a real Path A failure, and record the **true reason** — `key-unset` | `http-<code>` | `empty` | `timeout` — never "XAI_API_KEY unavailable" when the key was set. Use in order until you have ≥3 candidates:
+1. Recent `list-digest` + `tweet-roundup` outputs in `memory/logs/` — already have URLs and handles.
+2. WebSearch for very recent posts on memory topics (filter: posted within last 6h, original post not reply). Lower quality — WebSearch favours older high-engagement tweets, so prioritise results dated within the last 6h.
 
 ### A2. Filter and select 5 tweets
 
@@ -193,7 +211,7 @@ Append to `memory/logs/${today}.md` under the shared `### reply-maker` heading (
 
 # Mode B — From-Logs Engagement
 
-Turn flagged engagement opportunities from recent logs into ready-to-post replies — read the last 7 days of logs, draft specific responses, send as copy-paste-ready output. **This mode makes no outbound API calls and ignores the `.xai-cache/reply-maker.json` prefetch** — it works purely from local `memory/` files.
+Turn flagged engagement opportunities from recent logs into ready-to-post replies — read the last 7 days of logs, draft specific responses, send as copy-paste-ready output. **This mode makes no outbound API calls** — no X.AI curl, no WebSearch — it works purely from local `memory/` files.
 
 **Projects-of-interest list:** if `memory/topics/projects-of-interest.md` exists, treat the project names listed there as the things to watch for mentions, cosigns, attributions, and fork moments. If the file is missing or empty, fall back to any project names that appear in recent logs or in MEMORY.md. If a filter token was passed (`from-logs @handle` or `from-logs <project>`), narrow the scan to opportunities involving that handle/project.
 
@@ -328,11 +346,25 @@ If skipped: `ENGAGEMENT_ACT_SKIP: <reason>` (still under `### reply-maker`).
 - **Notification:** sent
 ```
 
-## Sandbox note
+## Fetching
 
-- **Mode A:** the sandbox blocks outbound curl with `$XAI_API_KEY` in headers — always read the pre-fetched `.xai-cache/reply-maker.json` (populated by `scripts/prefetch-xai.sh`) or fall through to the memory/WebSearch fallback chain. Do not attempt direct curl to `api.x.ai` at runtime. Use **WebFetch** for any non-auth URL fetches.
-- **Mode B:** reads only local `memory/` files. No outbound network calls needed — no curl, no API. `./notify -f` handles delivery reliably even when the sandbox blocks curl (it writes to `.pending-notify/` as a fallback).
+`XAI_API_KEY` is **injected into this skill's environment** (declared in `requires:`). It is present and valid. **Mode A's primary fetch path is a direct `curl` to `https://api.x.ai/v1/responses` with `Authorization: Bearer {XAI_API_KEY}`.** There is no network sandbox blocking this; earlier versions of this skill claimed there was — that is stale and wrong. Just make the call.
+
+**You MUST attempt the direct curl before any fallback.** The rules:
+
+1. **Check, don't assume.** Run `[ -n "$XAI_API_KEY" ] && echo KEY_PRESENT || echo KEY_UNSET`. If `KEY_PRESENT` (it will be), you are required to try Path A.
+2. **Allow enough time.** The `x_search` call typically takes 30–120s (it searches X live). When you invoke the Bash tool for the curl, **set the tool's `timeout` to at least 180000 (180s)**, and add **`--max-time 150`** to the curl itself so it fails cleanly rather than hanging. A curl that is slow is **not** a missing key — do not treat a timeout as "key unavailable".
+3. **Capture the HTTP status** so the fallback decision is based on fact, not assumption. Build the payload to the fixed file `/tmp/xai-rm-payload.json` first (see the three `jq -n --arg` shapes in A1), then send it with `-d @/tmp/xai-rm-payload.json`:
+   ```bash
+   HTTP=$(./secretcurl -s -o /tmp/xai-rm.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
+     -H "Content-Type: application/json" -H "Authorization: Bearer {XAI_API_KEY}" -d @/tmp/xai-rm-payload.json)
+   echo "xai http=$HTTP bytes=$(wc -c </tmp/xai-rm.json)"
+   ```
+   Then parse `/tmp/xai-rm.json` with the standard `jq` extractor. `HTTP=200` with a non-empty body → use it (`xai=ok`).
+4. **Fall back only on a real failure**, and **record the true reason** — never write "XAI_API_KEY unavailable" when the key was set. Use one of: `key-unset` (only if step 1 said `KEY_UNSET`), `http-<code>` (non-2xx), `empty` (200 but no tweets parsed), `timeout` (curl exceeded `--max-time`).
+
+**WebSearch and the memory-log candidate pool are last-resort fallbacks only** — lower quality (WebSearch favours old high-engagement tweets). Never reach for them while the key works. The old `.xai-cache/reply-maker.json` prefetch is gone (`scripts/prefetch-xai.sh` was deleted) — do not read it. **Mode B** is fetch-free by design: it reads only local `memory/` files, so it makes no curl and no API call; `./notify -f` still handles delivery via `.pending-notify/` if needed.
 
 ## Environment Variables Required
 
-- `XAI_API_KEY` — X.AI API key for Grok x_search (**Mode A only, optional** — falls back to WebSearch + memory logs). **Mode B requires no environment variables** and uses only built-in memory files and `./notify`.
+- `XAI_API_KEY` — X.AI API key for Grok's `x_search` tool. Declared in `requires:`, so it is **injected into this skill's environment** and is **Mode A's primary fetch path**. If it is ever unset, Mode A degrades to the memory-log pool + WebSearch at lower quality. **Mode B requires no environment variables** and uses only local memory files and `./notify`.

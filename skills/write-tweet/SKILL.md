@@ -73,18 +73,16 @@ Otherwise, read today's `memory/logs/${today}.md` and pick the **single most twe
 
 If the topic needs fresher context, use WebSearch to verify or expand.
 
-If `XAI_API_KEY` is set, search X for what people are already saying about the topic:
+If `XAI_API_KEY` is set, search X for what people are already saying about the topic. A direct `curl` to the X.AI Responses API is the **primary** path for this X read (see **Fetching**; set the Bash tool `timeout` ≥180000):
 ```bash
-curl -s -X POST "https://api.x.ai/v1/responses" \
+jq -n '{model:"grok-4-1-fast", input:[{role:"user",content:"Search X for what people are saying about TOPIC in the last 24 hours. Return the 5 most notable tweets with @handle and summary."}], tools:[{type:"x_search"}]}' > /tmp/xai-wt-payload.json
+HTTP=$(./secretcurl -s -o /tmp/xai-wt.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $XAI_API_KEY" \
-  -d '{
-    "model": "grok-4-1-fast",
-    "input": [{"role": "user", "content": "Search X for what people are saying about TOPIC in the last 24 hours. Return the 5 most notable tweets with @handle and summary."}],
-    "tools": [{"type": "x_search"}]
-  }'
+  -H "Authorization: Bearer {XAI_API_KEY}" \
+  -d @/tmp/xai-wt-payload.json)
+echo "xai http=$HTTP bytes=$(wc -c </tmp/xai-wt.json)"
 ```
-This helps understand the existing conversation so you can add signal, not noise. `XAI_API_KEY` is **optional** for this branch — skip the search if it's unset.
+On `HTTP=200` with a non-empty body, parse `/tmp/xai-wt.json` with `jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text'`. This helps understand the existing conversation so you can add signal, not noise. `XAI_API_KEY` is **optional** for this branch — skip the X search only if it's `KEY_UNSET`; if the key is set but Path A truly fails (non-2xx / empty / timeout — record the real reason, never "unavailable" when the key was set), fall back to WebSearch (`site:x.com "<topic>"`, lower quality) as a last resort.
 
 ## Voice (drafts)
 
@@ -397,10 +395,7 @@ Otherwise, match the tone of the originals fetched in step 1.
 
 We over-fetch so the remixability pre-filter (step 2) has room to drop un-remixable candidates without reducing the output count below 10.
 
-**First, check the pre-fetch cache** (the workflow pre-fetches XAI results outside the sandbox):
-- Read `.xai-cache/remix-tweets.json`. If it exists and contains tweet content, parse it and skip to step 2. Log `cache=hit`.
-
-**If no cache**, resolve the time window (from the branch argument) and call the XAI API directly:
+**Fetch directly from the X.AI Responses API** — this is the primary path (see **Fetching**; set the Bash tool `timeout` ≥180000). Resolve the time window (from the branch argument) and call the API:
 
 ```bash
 TIME_WINDOW="${ARG:-180d}"   # ARG = the remix argument parsed from ${var}; default 180d
@@ -427,22 +422,24 @@ Run **two angled x_search queries** so the pre-filter has a diverse pool — don
 Each query must request for every tweet: full text, date posted, engagement stats (likes, retweets, replies), and the direct `https://x.com/HANDLE/status/ID` link. Ask explicitly for **original posts only** (not replies, not retweets, not quote tweets). Aim for ~15-20 tweets per query.
 
 ```bash
-# Replace HANDLE with the resolved handle
-curl -s -X POST "https://api.x.ai/v1/responses" \
+# Replace HANDLE with the resolved handle. Set the Bash tool timeout ≥180000 (see Fetching).
+Q1_PROMPT="Search X for original tweets (exclude replies, retweets, quote tweets) posted by @HANDLE from ${FROM_DATE} to ${TO_DATE}. I want OPINION/TAKE posts — tweets that state a view, principle, or observation (not news announcements, not project updates, not single-link posts). Return up to 15. For each: full tweet text, date (YYYY-MM-DD), likes, retweets, replies, direct link https://x.com/HANDLE/status/ID. Format as numbered list."
+jq -n --arg p "$Q1_PROMPT" --arg fd "$FROM_DATE" --arg td "$TO_DATE" \
+  '{model:"grok-4-1-fast", input:[{role:"user",content:$p}], tools:[{type:"x_search", allowed_x_handles:["HANDLE"], from_date:$fd, to_date:$td}]}' \
+  > /tmp/xai-wt-q1-payload.json
+HTTP=$(./secretcurl -s -o /tmp/xai-wt-q1.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $XAI_API_KEY" \
-  -d '{
-    "model": "grok-4-1-fast",
-    "input": [{"role": "user", "content": "Search X for original tweets (exclude replies, retweets, quote tweets) posted by @HANDLE from '"$FROM_DATE"' to '"$TO_DATE"'. I want OPINION/TAKE posts — tweets that state a view, principle, or observation (not news announcements, not project updates, not single-link posts). Return up to 15. For each: full tweet text, date (YYYY-MM-DD), likes, retweets, replies, direct link https://x.com/HANDLE/status/ID. Format as numbered list."}],
-    "tools": [{"type": "x_search", "allowed_x_handles": ["HANDLE"], "from_date": "'"$FROM_DATE"'", "to_date": "'"$TO_DATE"'"}]
-  }'
+  -H "Authorization: Bearer {XAI_API_KEY}" \
+  -d @/tmp/xai-wt-q1-payload.json)
+echo "xai q1 http=$HTTP bytes=$(wc -c </tmp/xai-wt-q1.json)"
 ```
+On `HTTP=200` with a non-empty body, parse `/tmp/xai-wt-q1.json` with the standard extractor `jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text'`.
 
-Then repeat with a second body varying the prompt to "top-engagement original tweets (highest likes+retweets) in the same window. Return up to 15."
+Then repeat with a second body `Q2` (write to `/tmp/xai-wt-q2.json`) varying the prompt to "top-engagement original tweets (highest likes+retweets) in the same window. Return up to 15."
 
 Deduplicate by tweet ID across both queries. Log `xai=ok` / `xai=partial` / `xai=fail` based on how many queries returned data.
 
-**Sandbox fallback**: if curl fails, use WebFetch against `https://api.x.ai/v1/responses` with the same POST body (the built-in WebFetch tool bypasses the sandbox).
+**Fallback (last resort only)**: the direct curl above is the primary path and works — there is no network sandbox (see **Fetching**). Only if a query genuinely fails (non-2xx / empty / timeout — record the true reason, never "unavailable" when the key was set) retry that same POST body via the built-in WebFetch tool against `https://api.x.ai/v1/responses` as a last resort.
 
 ### 2. Remixability pre-filter (drop before remixing)
 
@@ -519,7 +516,7 @@ Batch: [one-line strategy spread]. Drops: N.
 
 ... (all 10, or fewer if DEGRADED)
 
-source: cache=hit|miss, xai=ok|partial|fail, fetched=N, kept=N, drops=N
+source: xai=ok|partial|fail, fetched=N, kept=N, drops=N
 ```
 
 **Status branching** (prepend to the notify body as the first line instead of `Batch:`):
@@ -612,7 +609,7 @@ Append **one** entry to `memory/logs/${today}.md` under a single `### write-twee
 - **Format:** remix
 - **Status:** OK | DEGRADED | EMPTY | ERROR
 - **Source window:** FROM_DATE to TO_DATE
-- **Fetched:** N (cache=hit|miss, xai=ok|partial|fail)
+- **Fetched:** N (xai=ok|partial|fail)
 - **Kept after pre-filter:** N
 - **Remixes produced:** N (drops: N)
 - **Strategy spread:** e.g. Sharpen ×3, Flip ×2, Update ×2, Concretize ×2, Escalate ×1
@@ -621,8 +618,21 @@ Append **one** entry to `memory/logs/${today}.md` under a single `### write-twee
   2. ...
 ```
 
-## Sandbox note
+## Fetching
 
-The sandbox may block outbound curl.
-- **Drafts & remix (XAI x_search):** use **WebFetch** as a fallback for the `https://api.x.ai/v1/responses` call (the built-in WebFetch tool bypasses the sandbox). For remix, an auth pre-fetch cache is also written to `.xai-cache/remix-tweets.json` by `scripts/prefetch-*.sh` before Claude runs — read it first (step 1). For any other auth-required API, use the pre-fetch/post-process pattern (see CLAUDE.md).
-- **Thread:** uses only the built-in WebSearch tool for fresh context, which bypasses the sandbox — no fallback needed.
+`XAI_API_KEY` is **injected into this skill's environment** (declared in `requires:`). It is present and valid. **The primary way to fetch X/Twitter context — the DRAFTS "what people are saying" search and the REMIX tweet pull — is a direct `curl` to `https://api.x.ai/v1/responses` with `Authorization: Bearer {XAI_API_KEY}`, model `grok-4-1-fast`, and `"tools":[{"type":"x_search"}]`.** There is no network sandbox blocking this; earlier versions of this skill claimed there was — that is stale and wrong. Just make the call.
+
+**You MUST attempt the direct curl before any fallback.** The rules:
+
+1. **Check, don't assume.** Run `[ -n "$XAI_API_KEY" ] && echo KEY_PRESENT || echo KEY_UNSET`. If `KEY_PRESENT` (it will be), Path A is required. (Drafts treats the X search as optional enrichment — skip it entirely only when the key is `KEY_UNSET`, never because you assume curl won't work. Remix requires the key.)
+2. **Allow enough time.** The `x_search` call typically takes 30–120s (it searches X live). When you invoke the Bash tool for the curl, **set the tool's `timeout` to at least 180000 (180s)**, and add **`--max-time 150`** to the curl itself so it fails cleanly rather than hanging. A curl that is slow is **not** a missing key — do not treat a timeout as "key unavailable".
+3. **Capture the HTTP status** so the fallback decision is based on fact, not assumption. Build the JSON body to a fixed file with `jq -n` first (see the branch examples above), then send it with `-d @file` — the `./secretcurl` command must be 100% literal (no `$VAR`, or the permission layer blocks it):
+   ```bash
+   HTTP=$(./secretcurl -s -o /tmp/xai-wt.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
+     -H "Content-Type: application/json" -H "Authorization: Bearer {XAI_API_KEY}" -d @/tmp/xai-wt-payload.json)
+   echo "xai http=$HTTP bytes=$(wc -c </tmp/xai-wt.json)"
+   ```
+   When a branch loops (remix runs two queries), write each call to a unique file — `/tmp/xai-wt-q1.json`, `/tmp/xai-wt-q2.json`. Parse with the standard extractor `jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text'`. `HTTP=200` with a non-empty body → use it.
+4. **Fall back only on a real failure**, and **record the true reason** — never write "XAI_API_KEY unavailable" when the key was set. Use one of: `key-unset` (only if step 1 said `KEY_UNSET`), `http-<code>` (non-2xx), `empty` (200 but nothing parsed), `timeout` (curl exceeded `--max-time`).
+
+**WebSearch / WebFetch are last-resort fallbacks only** — lower quality, never a primary or co-equal path. Reach for them only after a real Path A failure. The old `.xai-cache/*.json` prefetch (written by the deleted `scripts/prefetch-xai.sh`) is gone — never read it. The **thread** branch's WebSearch use is for general fresh context, not an X-tweet fetch, and is unaffected.

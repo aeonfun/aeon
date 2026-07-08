@@ -64,7 +64,7 @@ Write the resolved entities to a scratch variable — you'll pin them into every
 
 ### 2. Reddit search (30-day window)
 
-**Sandbox note**: Reddit public `.json` works unauthenticated but caps at ~10 req/min per IP and **requires a descriptive User-Agent** or it returns empty `{}` 200s. If curl fails or returns empty, use **WebFetch** on the same URL.
+**Fetch note**: Reddit public `.json` works unauthenticated but caps at ~10 req/min per IP and **requires a descriptive User-Agent** or it returns empty `{}` 200s. If curl fails or returns empty, use **WebFetch** on the same URL.
 
 User-Agent format: `aeon-bot:last30:v1 (by /u/aeon-agent)`
 
@@ -98,24 +98,51 @@ curl -sL -A "$UA" \
 
 ---
 
-### 3. X / Twitter (30-day window) — prefetch pattern
+### 3. X / Twitter (30-day window)
 
-**Sandbox note**: direct `curl` to `api.x.ai` with `$XAI_API_KEY` in headers fails in the sandbox (env var expansion blocked). Data must be pre-fetched by `scripts/prefetch-xai.sh` before Claude starts.
+`XAI_API_KEY` is **injected into this skill's environment** (declared in `requires:`) and is present and valid. The **primary** X source is a direct `curl` to `https://api.x.ai/v1/responses` — there is no network sandbox, and the old `scripts/prefetch-xai.sh` / `.xai-cache/*.json` path is gone. See **## Fetching** for the full contract (timeout, HTTP capture, fallback taxonomy). WebSearch is a last-resort fallback only.
 
-**Consume prefetched data** from `.xai-cache/last30-topic.json` and (full mode) `.xai-cache/last30-handles.json`. If the files are missing, emit `LAST30_DEGRADED` for the X layer and continue with Reddit/HN/Web — do **not** attempt direct curl.
+**Path A — X.AI API (primary).** Confirm the key, then run the topic-window query. Set the Bash tool `timeout` to **≥180000** (x_search takes 30–120s); the curl carries `--max-time 150`. A slow curl is **not** a missing key — never treat a timeout as key-unavailable.
 
 ```bash
-XAI_TOPIC_FILE=".xai-cache/last30-topic.json"
-XAI_HANDLES_FILE=".xai-cache/last30-handles.json"
-X_STATUS="ok"
-if [ ! -f "$XAI_TOPIC_FILE" ]; then
-  X_STATUS="missing-prefetch"
-fi
+[ -n "$XAI_API_KEY" ] && echo KEY_PRESENT || echo KEY_UNSET   # prints KEY_PRESENT — Path A is required
+# Build the payload to a file with jq --arg (no heredoc into a var) so the ./secretcurl command stays 100% literal:
+jq -n --arg topic "$TOPIC" --arg variants "$SEARCH_VARIANTS" --arg fd "$FROM_DATE" --arg td "$TO_DATE" \
+  '{model:"grok-4-1-fast", input:[{role:"user",content:("Search X for tweets about: "+$topic+" (also try: "+$variants+"). Date range: "+$fd+" to "+$td+". Return 15-25 substantive tweets — mix high-engagement posts with smaller accounts that add a distinct angle. For each: @handle, full text, date posted, exact engagement counts (likes, retweets, replies; 0 if unknown), follower count if available, and the direct link https://x.com/handle/status/ID. Skip retweets and reply-guy near-duplicates.")}], tools:[{type:"x_search",from_date:$fd,to_date:$td}]}' \
+  > /tmp/xai-last30-topic-payload.json
+HTTP=$(./secretcurl -s -o /tmp/xai-last30-topic.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer {XAI_API_KEY}" \
+  -d @/tmp/xai-last30-topic-payload.json)
+echo "xai http=$HTTP bytes=$(wc -c </tmp/xai-last30-topic.json)"
 ```
 
-Extract from each tweet: `@handle`, full text, `date`, engagement (`likes`/`retweets`/`replies`), direct link. Discard reply-guys (near-duplicates of viral tweets, accounts with <100 followers per Grok output), news-bot reposts (identical text across ≥3 handles), and tweets where none of the topic terms or entity anchors appear in the text.
+On `HTTP=200` with a non-empty body, set `X_STATUS=api` and parse with the standard extractor:
+```bash
+jq -r '.output[]|select(.type=="message")|.content[]|select(.type=="output_text")|.text' /tmp/xai-last30-topic.json
+```
 
-**Required companion change** (NOT done by this skill — ships in the PR but executes out-of-band): add a `last30)` case to `scripts/prefetch-xai.sh` that calls `xai_search` with (a) a topic-window query and, in full mode, (b) a handle-restricted query using the resolved handles from step 1 via `allowed_x_handles`. Until that script is updated, this skill runs in `X_STATUS=missing-prefetch` mode — the report is still produced from the remaining platforms. This is surfaced in the source-status footer.
+**Full mode — handle-restricted second call.** Using the 2-3 X handles resolved in step 1, issue a second call scoped to them (the handles are named directly in the prompt; unique tmp filename so it doesn't clobber the topic call):
+```bash
+# Build the handle-restricted payload to its own file with jq --arg (keeps the ./secretcurl command literal):
+jq -n --arg topic "$TOPIC" --arg handles "$RESOLVED_HANDLES" --arg fd "$FROM_DATE" --arg td "$TO_DATE" \
+  '{model:"grok-4-1-fast", input:[{role:"user",content:("Search X for tweets from these accounts about "+$topic+": "+$handles+". Date range: "+$fd+" to "+$td+". For each: @handle, full text, date, engagement counts (likes, retweets, replies; 0 if unknown), and the direct link https://x.com/handle/status/ID.")}], tools:[{type:"x_search",from_date:$fd,to_date:$td}]}' \
+  > /tmp/xai-last30-handles-payload.json
+HTTP=$(./secretcurl -s -o /tmp/xai-last30-handles.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer {XAI_API_KEY}" \
+  -d @/tmp/xai-last30-handles-payload.json)
+echo "xai handles http=$HTTP bytes=$(wc -c </tmp/xai-last30-handles.json)"
+```
+Parse with the same `jq` extractor. **Quick mode** runs the topic call only.
+
+**Path B — WebSearch fallback (last resort only).** Reach here **only** on a real Path A failure — never while the key works. Record the **true reason** in `X_STATUS` (`key-unset` only if step 1 printed `KEY_UNSET`; `http-<code>` for a non-2xx; `empty` for 200-but-nothing-parsed; `timeout` for an exceeded `--max-time`) — never write "XAI_API_KEY unavailable" when the key was set. WebSearch quality is lower (it favours old high-engagement tweets), so prioritise results dated within the last 48h:
+```
+WebSearch: "${topic}" site:x.com OR site:twitter.com
+```
+If **both** paths fail entirely, emit `LAST30_DEGRADED` for the X layer and continue with Reddit/HN/Web. Set `X_STATUS` ∈ `api | websearch | key-unset | http-<code> | empty | timeout`; it is surfaced in the source-status footer.
+
+Extract from each tweet: `@handle`, full text, `date`, engagement (`likes`/`retweets`/`replies`), direct link. Discard reply-guys (near-duplicates of viral tweets, accounts with <100 followers per Grok output), news-bot reposts (identical text across ≥3 handles), and tweets where none of the topic terms or entity anchors appear in the text.
 
 ---
 
@@ -332,18 +359,27 @@ ${what_changed_oneline_or_blank}
 Report: output/articles/last30-${TOPIC_SLUG}-${TODAY}.md
 ```
 
-For `LAST30_EMPTY` or `LAST30_ERROR`, skip the verdict/narrative lines and instead list which source layers failed and why (e.g. `x=missing-prefetch, reddit=rate-limit-retry-failed`).
+For `LAST30_EMPTY` or `LAST30_ERROR`, skip the verdict/narrative lines and instead list which source layers failed and why with the **true reason** (e.g. `x=http-500, reddit=rate-limit-retry-failed` — never `x=XAI_API_KEY unavailable` when the key was set).
 
 ---
 
-## Sandbox note
+## Fetching
 
-- **Reddit, HN, Polymarket, Kalshi** (public, no auth): curl may fail — always have **WebFetch** as fallback on the same URL.
-- **X.AI** (auth required): direct curl with `$XAI_API_KEY` in the sandbox will fail. Uses the pre-fetch pattern — `scripts/prefetch-xai.sh` needs a `last30)` case that runs (a) a topic window query and (b) a handle-restricted query using `allowed_x_handles`. Until that script entry exists, this skill runs in `missing-prefetch` mode for the X layer and reports it in the source-status footer.
+`XAI_API_KEY` is **injected into this skill's environment** (declared in `requires:`) and is present and valid. The **primary** X/Twitter source is a direct `curl` to `https://api.x.ai/v1/responses` with `Authorization: Bearer {XAI_API_KEY}`, model `grok-4-1-fast`, `"tools":[{"type":"x_search"}]`. There is **no** network sandbox blocking this — an earlier version claimed the sandbox blocked env-var curl and routed X through a `scripts/prefetch-xai.sh` cache; that script is deleted and the claim was stale and false. Just make the call (see step 3).
+
+**You MUST attempt the direct curl before any fallback:**
+1. **Check, don't assume.** `[ -n "$XAI_API_KEY" ] && echo KEY_PRESENT || echo KEY_UNSET`. If `KEY_PRESENT` (it will be), Path A is required.
+2. **Allow enough time.** `x_search` typically takes 30–120s (it searches X live). Set the Bash tool `timeout` to **≥180000 (180s)** and keep **`--max-time 150`** on the curl. A slow curl is **not** a missing key — never treat a timeout as key-unavailable.
+3. **Capture the HTTP status** (`-o /tmp/xai-last30*.json -w '%{http_code}'`) so the fallback decision is fact-based. `HTTP=200` + non-empty body → use it. Parse with `jq -r '.output[]|select(.type=="message")|.content[]|select(.type=="output_text")|.text'`.
+4. **Fall back only on a real failure**, recording the true reason — `key-unset` (only if step 1 said `KEY_UNSET`), `http-<code>` (non-2xx), `empty` (200 but nothing parsed), or `timeout`. Never write "XAI_API_KEY unavailable" when the key was set.
+
+**WebSearch / WebFetch are last-resort fallbacks only** — lower quality (WebSearch favours old high-engagement tweets). Never reach for them while the key works. The old `.xai-cache/*.json` prefetch is gone — do not read it.
+
+**Public APIs (Reddit, HN, Polymarket, Kalshi — no auth):** curl may still fail on rate-limits or a missing User-Agent — always fall back to **WebFetch** on the same URL. This is unrelated to the X.AI key.
 
 ## Environment Variables
 
-- `XAI_API_KEY` — X.AI API key (prefetch only; not read directly by the skill)
+- `XAI_API_KEY` — X.AI API key for Grok's `x_search` tool. Declared in `requires:`, so it is **injected into this skill's environment** and is the **primary** fetch path for the X/Twitter layer. If it is ever unset, the X layer degrades to WebSearch at lower quality; the rest of the report (Reddit/HN/Polymarket/Web) still runs.
 
 ## Notes
 

@@ -436,6 +436,12 @@ jobs:
           cp scripts/notify.sh ./notify
           cp scripts/notify-jsonrender.sh ./notify-jsonrender
           chmod +x ./notify ./notify-jsonrender
+          # secretcurl: generic auth'd curl that substitutes {ENV_KEY} placeholders
+          # internally, so a secret never lands on the agent's Bash command line
+          # (the permission analyzer blocks $SECRET expansions). Allow-listed in
+          # scripts/skill_mode.sh as Bash(./secretcurl:*).
+          cp scripts/secretcurl.sh ./secretcurl
+          chmod +x ./secretcurl
 
           # Capability tier (hardening §6): the toolset is resolved per-skill from
           # scripts/skill_mode.sh. Default is `write` (backward compatible — a superset
