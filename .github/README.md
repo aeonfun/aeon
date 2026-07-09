@@ -586,7 +586,7 @@ Aeon is an AI agent system that runs unattended on GitHub Actions, self-heals wh
 
 ### Can I create custom skills?
 
-Yes. Bootstrap from [`docs/examples/skill-templates/`](../docs/examples/skill-templates/TEMPLATE.md) (`bin/new-from-template <template> <skill-name> --var KEY=VALUE...`), describe one to the `create-skill` skill, or label a GitHub issue `ai-build` and let Aeon build it.
+Yes — describe one to the `create-skill` skill, or scaffold and import your own. Full commands and every way to add skills are in [Add more skills](#add-more-skills).
 
 ### Troubleshooting
 
