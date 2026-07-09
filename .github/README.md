@@ -13,7 +13,7 @@
 
 <p align="center">
   <strong>The most autonomous agent framework.</strong><br>
-  Give it a direction and it gets the work done: ships features to your repos, finds and privately discloses real vulnerabilities, deploys live apps, runs deep research — and writes new skills for itself. No approval loops. No babysitting. Configure once, forget forever.
+  Give it a direction and it gets the work done: ships features to your repos, finds and privately discloses real vulnerabilities, deploys live apps, runs deep research - and writes new skills for itself. No approval loops. No babysitting. Configure once, forget forever.
 </p>
 
 <p align="center">
@@ -30,7 +30,7 @@ You need three things:
 2. **[GitHub CLI](https://cli.github.com/) (`gh`), authenticated** - the dashboard uses it for everything (secrets, workflows), and `./aeon` checks it before starting. Install: `brew install gh` (macOS), `winget install --id GitHub.cli` (Windows), [per-distro instructions](https://github.com/cli/cli/blob/trunk/docs/install_linux.md) (Linux). Then run `gh auth login` and follow the prompts.
 3. **Your own copy of this repo** - click **Use this template** at the top of [the repo page](https://github.com/aaronjmars/aeon) - keep it public, Actions minutes are free on public repos. CLI version: `gh repo fork aaronjmars/aeon --clone`.
 
-   <img src="../docs/assets/use-this-template.png" alt="The Use this template button at the top of the repo page" width="320" />
+   <img src="../docs/assets/use-template.png" alt="The Use this template button at the top of the repo page" width="240" />
 
 ```bash
 git clone https://github.com/<you>/aeon   # skip if you used `gh repo fork --clone`
@@ -39,7 +39,7 @@ cd aeon && ./aeon
 
 Open [http://localhost:5555](http://localhost:5555) and follow the four steps:
 
-1. **Authenticate** - connect your Claude Pro/Max subscription or your X account (for the [Grok harness](../docs/harnesses.md)), or paste an API key — Anthropic, Anthropic-compatible, or an [LLM gateway](../docs/CONFIGURATION.md#llm-gateways) key, routed automatically by prefix.
+1. **Authenticate** - connect your Claude Pro/Max subscription or your X account (for the [Grok harness](../docs/harnesses.md)), or paste an API key - Anthropic, Anthropic-compatible, or an [LLM gateway](../docs/CONFIGURATION.md#llm-gateways) key, routed automatically by prefix.
 2. **Add a channel** - [Telegram, Discord, Slack, or email](#notifications) so Aeon can talk to you.
 3. **Pick skills** - toggle what you want, set schedules. Each skill shows the API keys and MCP servers it needs, with one-click setup.
 4. **Run** - hit **Run now** on any skill to try it immediately; API keys and `var` values apply directly, no push needed. When you change config (schedules, toggles), **Push** commits it to GitHub in one click so Actions runs it on cron.
@@ -48,7 +48,7 @@ That's it - Aeon now runs unattended.
 
 Dashboard views, local dev, env vars, and remote access are documented in [`apps/dashboard/README.md`](../apps/dashboard/README.md).
 
-**Prefer the terminal?** Everything the dashboard does is also a command — `./aeon skills ls`, `./aeon skills enable <name>`, `./aeon secrets set …`, `./aeon runs logs <id>`. Same logic, no browser, scriptable with `--json`. See [Command line](../apps/cli/README.md).
+**Prefer the terminal?** Everything the dashboard does is also a command - `./aeon skills ls`, `./aeon skills enable <name>`, `./aeon secrets set …`, `./aeon runs logs <id>`. Same logic, no browser, scriptable with `--json`. See [Command line](../apps/cli/README.md).
 
 <details>
 <summary><strong>No admin rights / can't install <code>gh</code>?</strong></summary>
@@ -70,7 +70,7 @@ name: digest
 category: basics                 # which pack it belongs to
 description: Generate and send a digest on a configurable topic
 requires: [XAI_API_KEY?]         # ? = optional key, bare = required
-var: ""                          # per-run input — "solana", "rust", "AI agents"…
+var: ""                          # per-run input - "solana", "rust", "AI agents"…
 mode: write
 ---
 ```
@@ -78,7 +78,7 @@ mode: write
 >
 > The whole point of a digest is **signal, not volume**. A reader skimming for 60 seconds should walk away with three things they didn't know that morning and one of them should change a decision they'd make this week. Anything that doesn't clear that bar gets cut.
 
-The prompt *is* the skill, judgment and all. You schedule it, hand it a `var`, chain it into others, and Haiku rates every run. **Six packs ship in the box** — Core, Evolution, and Basics are on by default; enable the rest in the dashboard's **Packs** view (a visibility switch, it runs nothing). Full catalog below; how packs work: [`docs/skill-packs.md`](../docs/skill-packs.md).
+The prompt *is* the skill, judgment and all. You schedule it, hand it a `var`, chain it into others, and Haiku rates every run. **Six packs ship in the box** - Core, Evolution, and Basics are on by default; enable the rest in the dashboard's **Packs** view (a visibility switch, it runs nothing). Full catalog below; how packs work: [`docs/skill-packs.md`](../docs/skill-packs.md).
 
 | Pack | Key | Skills | Examples |
 | --- | --- | --- | --- |
@@ -120,7 +120,7 @@ Every skill output is automatically scored 1–5 by Haiku after each run. Scores
 
 Health skills file issues, repair skills close them. `heartbeat` is the only skill enabled by default: nothing to report → silent; something needs attention → one notification. Deep dive: [`docs/CORE.md`](../docs/CORE.md).
 
-**Votable health** (on by default — set the repo variable `HEALTH_ISSUES=0` to turn it off): when a skill regresses (a Haiku score of 1–2 or a failure flag), the loop opens or comments on a per-skill GitHub Issue titled `health: <skill>`; clean runs stay silent, so there's no issue spam. 👍/👎 the issue and `self-improve` / `skill-repair` triage the most-voted, worst-scoring skills first — a visible, conflict-free repair queue you can steer.
+**Votable health** (on by default - set the repo variable `HEALTH_ISSUES=0` to turn it off): when a skill regresses (a Haiku score of 1–2 or a failure flag), the loop opens or comments on a per-skill GitHub Issue titled `health: <skill>`; clean runs stay silent, so there's no issue spam. 👍/👎 the issue and `self-improve` / `skill-repair` triage the most-voted, worst-scoring skills first - a visible, conflict-free repair queue you can steer.
 
 ### It replicates
 
@@ -128,7 +128,7 @@ Aeon can spawn and manage copies of itself. `spawn-instance` forks the repo into
 
 ### It ships real work
 
-`feature` ships code unprompted — to your watched repos, or to any repo with `var: external:<owner/repo>`. `deploy-prototype` generates and deploys live web apps to Vercel. `vuln-scanner` finds real code vulnerabilities and reports them only through the maintainer's private channel — GitHub's advisory system or a private email, never a public issue — with drafts waiting for your review by default and any project that declines AI-authored reports skipped. `autoresearch` evolves existing skills through scored variations, and `create-skill` generates new ones from a sentence.
+`feature` ships code unprompted - to your watched repos, or to any repo with `var: external:<owner/repo>`. `deploy-prototype` generates and deploys live web apps to Vercel. `vuln-scanner` finds real code vulnerabilities and reports them only through the maintainer's private channel - GitHub's advisory system or a private email, never a public issue - with drafts waiting for your review by default and any project that declines AI-authored reports skipped. `autoresearch` evolves existing skills through scored variations, and `create-skill` generates new ones from a sentence.
 
 ### Add more skills
 
@@ -154,14 +154,14 @@ Aeon's skills ship to production. These numbers are live at **[aeon.fun](https:/
 
 | Skill | In production |
 |-------|---------------|
-| **`vuln-scanner`** | **54 open-source repos secured** — real vulnerabilities found, patched, and responsibly disclosed across projects with **~1.6M combined GitHub stars** (31 rated High/Critical). [Every disclosure →](https://www.aeon.fun/security) |
+| **`vuln-scanner`** | **54 open-source repos secured** - real vulnerabilities found, patched, and responsibly disclosed across projects with **~1.6M combined GitHub stars** (31 rated High/Critical). [Every disclosure →](https://www.aeon.fun/security) |
 | **ecosystem** | **72 products & agents** built on Aeon. [`ECOSYSTEM.md`](../docs/ECOSYSTEM.md) |
 | **`fork-fleet`** | **24 active forks** running their own Aeon instances. [`SHOWCASE.md`](../docs/SHOWCASE.md) |
 | **community** | **10 community skill packs** published to the registry. [`community-skill-packs.md`](../docs/community-skill-packs.md) |
 
 <sub>Security figures are a snapshot as of 2026-07-06; the live dashboard updates continuously.</sub>
 
-**One skill, end to end.** `vuln-scanner` clones a repo from your watchlist, runs Semgrep, OSV, and TruffleHog, then triages the hits hard — a finding ships only if it's exploitable, not theoretical, and you'd defend it to the maintainer's face. Most are discarded. What survives becomes a maintainer-ready report, sent through the repo's private advisory channel with a proposed patch pushed to your fork for the maintainer to cherry-pick. That loop, run across the open-source wild, is what the numbers above are made of.
+**One skill, end to end.** `vuln-scanner` clones a repo from your watchlist, runs Semgrep, OSV, and TruffleHog, then triages the hits hard - a finding ships only if it's exploitable, not theoretical, and you'd defend it to the maintainer's face. Most are discarded. What survives becomes a maintainer-ready report, sent through the repo's private advisory channel with a proposed patch pushed to your fork for the maintainer to cherry-pick. That loop, run across the open-source wild, is what the numbers above are made of.
 
 ---
 
@@ -241,14 +241,14 @@ skills:
 
 ### Authentication
 
-Aeon needs **at least one** way to reach a model. Add any of these in the dashboard's **Authenticate** modal — paste a key and the provider is auto-detected from its prefix (or picked from the dropdown). You can set several: each run resolves the highest-priority one whose key is present, so you don't have to choose just one.
+Aeon needs **at least one** way to reach a model. Add any of these in the dashboard's **Authenticate** modal - paste a key and the provider is auto-detected from its prefix (or picked from the dropdown). You can set several: each run resolves the highest-priority one whose key is present, so you don't have to choose just one.
 
 | How | Secret | Billing |
 |-----|--------|---------|
-| **Claude subscription** — one-click OAuth | `CLAUDE_CODE_OAUTH_TOKEN` | Included in your Pro/Max plan |
+| **Claude subscription** - one-click OAuth | `CLAUDE_CODE_OAUTH_TOKEN` | Included in your Pro/Max plan |
 | **Anthropic API** | `ANTHROPIC_API_KEY` | Pay-as-you-go · [console.anthropic.com](https://console.anthropic.com) |
-| **LLM gateway** — cheaper / crypto-settled | Bankr `bk_…` · OpenRouter `sk-or-…` · Surplus `inf_…` · Venice / UsePod | see [LLM Gateways](../docs/CONFIGURATION.md#llm-gateways) |
-| **Grok** — via your X account | `GROK_CREDENTIALS` or `XAI_API_KEY` | SuperGrok / X Premium+ · see [Harnesses](../docs/harnesses.md) |
+| **LLM gateway** - cheaper / crypto-settled | Bankr `bk_…` · OpenRouter `sk-or-…` · Surplus `inf_…` · Venice / UsePod | see [LLM Gateways](../docs/CONFIGURATION.md#llm-gateways) |
+| **Grok** - via your X account | `GROK_CREDENTIALS` or `XAI_API_KEY` | SuperGrok / X Premium+ · see [Harnesses](../docs/harnesses.md) |
 
 Prefer the CLI for the subscription token?
 
@@ -269,12 +269,12 @@ Set the secret → channel activates. No code changes needed.
 
 **Set up each channel:**
 
-- **Telegram** — create a bot with **[@BotFather](https://t.me/BotFather)**, then copy its token + your chat ID. Saving the token in the dashboard **auto-registers** the slash-command menu (`/skillname` dispatches instantly, no LLM); a **Re-register commands** button re-syncs it after you toggle skills. Every notification carries **Run again / Schedule weekly** buttons, deep links, and stateless follow-up questions. [Full guide →](../docs/telegram-commands.md)
-- **Discord** — *outbound:* Channel Settings → Integrations → Webhooks → **New Webhook**, copy the URL. *Inbound:* [discord.com/developers](https://discord.com/developers/applications) → your app → Bot → add the `channels:history` scope → copy the bot token + channel ID.
-- **Slack** — *outbound:* [api.slack.com/apps](https://api.slack.com/apps) → Create App → Incoming Webhooks → install → copy the URL. *Inbound:* add the `channels:history` + `reactions:write` scopes → copy the bot token + channel ID.
-- **Email** — [resend.com/api-keys](https://resend.com/api-keys) → Create API Key → set it as `RESEND_API_KEY`, and `NOTIFY_EMAIL_TO` to your inbox. Optional: `NOTIFY_EMAIL_FROM` (default `aeon@notifications.aeon.bot` — **must be a sender/domain verified in Resend**) and `NOTIFY_EMAIL_SUBJECT_PREFIX` (default `[Aeon]`). Same key as security disclosures, so one Resend key powers all outbound email.
+- **Telegram** - create a bot with **[@BotFather](https://t.me/BotFather)**, then copy its token + your chat ID. Saving the token in the dashboard **auto-registers** the slash-command menu (`/skillname` dispatches instantly, no LLM); a **Re-register commands** button re-syncs it after you toggle skills. Every notification carries **Run again / Schedule weekly** buttons, deep links, and stateless follow-up questions. [Full guide →](../docs/telegram-commands.md)
+- **Discord** - *outbound:* Channel Settings → Integrations → Webhooks → **New Webhook**, copy the URL. *Inbound:* [discord.com/developers](https://discord.com/developers/applications) → your app → Bot → add the `channels:history` scope → copy the bot token + channel ID.
+- **Slack** - *outbound:* [api.slack.com/apps](https://api.slack.com/apps) → Create App → Incoming Webhooks → install → copy the URL. *Inbound:* add the `channels:history` + `reactions:write` scopes → copy the bot token + channel ID.
+- **Email** - [resend.com/api-keys](https://resend.com/api-keys) → Create API Key → set it as `RESEND_API_KEY`, and `NOTIFY_EMAIL_TO` to your inbox. Optional: `NOTIFY_EMAIL_FROM` (default `aeon@notifications.aeon.bot` - **must be a sender/domain verified in Resend**) and `NOTIFY_EMAIL_SUBJECT_PREFIX` (default `[Aeon]`). Same key as security disclosures, so one Resend key powers all outbound email.
 
-**Restrict who can command the agent (inbound):** Telegram is already scoped to a single `TELEGRAM_CHAT_ID`. For Discord and Slack, set the optional repo variables `DISCORD_ALLOWED_AUTHOR_ID` / `SLACK_ALLOWED_USER_ID` (or same-named secrets) to the authorized sender's user ID — inbound messages from anyone else in the channel are then ignored. **Leaving them unset processes commands from any non-bot member of the channel**, so set them whenever the channel isn't private to you.
+**Restrict who can command the agent (inbound):** Telegram is already scoped to a single `TELEGRAM_CHAT_ID`. For Discord and Slack, set the optional repo variables `DISCORD_ALLOWED_AUTHOR_ID` / `SLACK_ALLOWED_USER_ID` (or same-named secrets) to the authorized sender's user ID - inbound messages from anyone else in the channel are then ignored. **Leaving them unset processes commands from any non-bot member of the channel**, so set them whenever the channel isn't private to you.
 
 Want ~1s Telegram replies instead of up-to-5-min polling? See [Telegram instant mode](../apps/webhook/README.md).
 
@@ -294,15 +294,15 @@ The dashboard surfaces this as an **API keys** panel on each skill (set/unset st
 
 Everything above gets you running. The deeper reference lives in [`docs/`](../docs) so this page stays short.
 
-- **[Configuration & advanced](../docs/CONFIGURATION.md)** — skill chaining, reactive triggers, scheduler frequency, capability modes, MCP in runs, cross-repo tokens, `STRATEGY.md` / soul, Fleet Watcher, remote dashboard, two-repo setup, Actions cost.
-- **[LLM gateways](../docs/CONFIGURATION.md#llm-gateways)** — eight ways to power Claude Code, resolved by an automatic fail-over cascade.
-- **[Harnesses](../docs/harnesses.md)** — run skills on Claude Code or the Grok CLI; token accounting and per-skill knobs.
-- **[Knowledge (OKF)](../docs/OKF.md)** — Aeon's memory is a portable Open Knowledge Format bundle other agents can read.
-- **[Use Aeon's skills from Claude](../apps/mcp-server/README.md)** — every skill as an `aeon-<name>` MCP tool in Claude Desktop and Code.
-- **[Command line](../apps/cli/README.md)** — the whole dashboard as scriptable `./aeon` commands.
-- **[Telegram instant mode](../apps/webhook/README.md)** — ~1s replies via a self-hosted Cloudflare Worker.
-- **[Observability](../docs/langfuse.md)** and **[provenance](../docs/attestation.md)** — optional Langfuse tracing and Sigstore attestation.
-- **[Project layout](CONTRIBUTING.md#project-layout)** — an annotated tour of the repo.
+- **[Configuration & advanced](../docs/CONFIGURATION.md)** - skill chaining, reactive triggers, scheduler frequency, capability modes, MCP in runs, cross-repo tokens, `STRATEGY.md` / soul, Fleet Watcher, remote dashboard, two-repo setup, Actions cost.
+- **[LLM gateways](../docs/CONFIGURATION.md#llm-gateways)** - eight ways to power Claude Code, resolved by an automatic fail-over cascade.
+- **[Harnesses](../docs/harnesses.md)** - run skills on Claude Code or the Grok CLI; token accounting and per-skill knobs.
+- **[Knowledge (OKF)](../docs/OKF.md)** - Aeon's memory is a portable Open Knowledge Format bundle other agents can read.
+- **[Use Aeon's skills from Claude](../apps/mcp-server/README.md)** - every skill as an `aeon-<name>` MCP tool in Claude Desktop and Code.
+- **[Command line](../apps/cli/README.md)** - the whole dashboard as scriptable `./aeon` commands.
+- **[Telegram instant mode](../apps/webhook/README.md)** - ~1s replies via a self-hosted Cloudflare Worker.
+- **[Observability](../docs/langfuse.md)** and **[provenance](../docs/attestation.md)** - optional Langfuse tracing and Sigstore attestation.
+- **[Project layout](CONTRIBUTING.md#project-layout)** - an annotated tour of the repo.
 
 ---
 
@@ -333,12 +333,12 @@ Either way the installer reads the pack's `skills-pack.json` manifest, runs the 
 | [signa](https://github.com/codexvritra/signa) (`--path aeon-skills`) | 20 | Full SIGNA suite - wallet-signed cross-platform agent messaging, multi-agent broadcast and delegate, encrypted rooms + ERC-8004 trust gate, plus Bankr resolver / launches, gitlawb, MiroShark, and **x402 receipts + bounded spend mandates** (a human grants a signed budget, the agent spends within it and asks for more) |
 | [Atrium Skills](https://github.com/Atrium-Hermes/aeon-atrium-skills) | 3 | Publish, monetize & discover agent skills on Atrium - the onchain skill marketplace on Base. atrium-publish (DID-signed, IPFS-pinned, USDC-earning), atrium-scout (rents skills matching open loops), atrium-earnings (tracks and withdraws creator USDC) |
 | [aeon-skill-pack-mneme](https://github.com/mnemedb/aeon-skill-pack-mneme) | 8 | Mneme as Aeon's persistent memory layer - vector recall across runs, entity/relation graph, live Base chain streams, async LLM "dream" reflections, and schema-aware /chat. One `MNEME_API_KEY`, zero infra. |
-| [clawhunter-skills](https://github.com/clawhunter/clawhunter-skills) | 2 | Aggregates and AI-triages crypto bounties across venues (Pump Fun GO, Atelier, EarnFi, tiny.place) and matches each to your agent with a plan to win — plus paid research and create tools (voice tones, logo-grounded images, Kling video direction, web + X research). Paid tools settle via x402 (USDC on Solana or Base). |
+| [clawhunter-skills](https://github.com/clawhunter/clawhunter-skills) | 2 | Aggregates and AI-triages crypto bounties across venues (Pump Fun GO, Atelier, EarnFi, tiny.place) and matches each to your agent with a plan to win - plus paid research and create tools (voice tones, logo-grounded images, Kling video direction, web + X research). Paid tools settle via x402 (USDC on Solana or Base). |
 | [Polymarket Trader by Simmer](https://github.com/SpartanLabsXyz/aeon-skill-pack-polymarket/tree/main/aeon-skill-pack) (`--path aeon-skill-pack`) | 3 | Signal, discovery, and real position-taking on **Polymarket** - the deepest prediction-market venue - powered by Simmer. Unlike monitor-only packs, polymarket-trade places actual orders (simulate-by-default, live opt-in, bounded) |
 | [Charon for AEON](https://github.com/CharonAI-code/charon/tree/main/skills/aeon) (`--path skills/aeon`) | 2 | Repo-local policy enforcement for AEON runs, with guided setup and natural-language policy management |
 | [aeon-skill-pack-agentlink](https://github.com/techdigger/aeon-skill-pack-agentlink) | 1 | Give an agent a verified, human-backed on-chain identity on Base via AgentLink - checks link status, hands the human owner a linker URL to biomap + sign, then signs requests to free partner endpoints (XONA, WURK). Read-only, on-demand. |
 
-**To list a pack here**, open a PR that adds a table row **and** a matching [`catalog/skill-packs.json`](../catalog/skill-packs.json) entry. The full checklist — public repo + license, a per-skill `SKILL.md`, a `skills-pack.json` manifest, the registry schema, and the trust model — is in [`docs/community-skill-packs.md`](../docs/community-skill-packs.md#pack-maintainers-publishing-checklist).
+**To list a pack here**, open a PR that adds a table row **and** a matching [`catalog/skill-packs.json`](../catalog/skill-packs.json) entry. The full checklist - public repo + license, a per-skill `SKILL.md`, a `skills-pack.json` manifest, the registry schema, and the trust model - is in [`docs/community-skill-packs.md`](../docs/community-skill-packs.md#pack-maintainers-publishing-checklist).
 
 ---
 
