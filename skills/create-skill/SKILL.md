@@ -232,7 +232,7 @@ Today is ${today}. Your task is to generate a complete, production-ready skill f
 
 ## Network note
 
-There is no network sandbox — `curl` works, with **WebFetch** as the fallback for a flaky public GET during research. For an auth'd API the new skill will call, route it through `./secretcurl` with a `{ENV_NAME}` placeholder (the key injected via the skill's `requires:`), and `gh api` for GitHub. Reserve the `.pending-*/` + `scripts/postprocess-*.sh` on-success gate for **irreversible side-effects** (email, spend, on-chain writes) — never for reads (see CLAUDE.md).
+There is no network sandbox — `curl` works, with **WebFetch** as the fallback for a flaky public GET during research. For an auth'd API the new skill will call, route it through `./secretcurl` with a `{ENV_NAME}` placeholder (the key injected via the skill's `requires:`), and `gh api` for GitHub. **Irreversible side-effects** (email, spend, on-chain writes, deploys) run **in-run** via `./secretcurl` as the skill's final, fail-closed action — there is no deferred/postprocess step, and never defer a read (see CLAUDE.md).
 
 ## Constraints
 

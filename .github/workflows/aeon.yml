@@ -1134,30 +1134,6 @@ jobs:
           done
           rm -rf .pending-notify
 
-      - name: Run post-process scripts
-        if: steps.work.outputs.mode != '' && steps.run.outcome == 'success'
-        # On-success gate for irreversible side-effects that genuinely can't run
-        # in-turn. Email (send-email / vuln-scanner Arm C), Replicate images
-        # (article), and AdManage launches/creates (schedule-ads) now run IN-RUN
-        # via ./secretcurl — they no longer have postprocess scripts. What remains
-        # here is the general mechanism for skills that ship an operator-provided
-        # postprocess script (e.g. deploy-prototype -> postprocess-deploy.sh with
-        # VERCEL_TOKEN; distribute-tokens -> postprocess-bankr.sh). The loop is a
-        # no-op when no scripts/postprocess-*.sh exist.
-        env:
-          XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-        run: |
-          # Run any scripts/postprocess-*.sh after Claude finishes.
-          # Each script handles its own .pending-{service}/ directory
-          # and checks its own env vars. Exit 0 if nothing to do.
-          for script in scripts/postprocess-*.sh; do
-            [ -f "$script" ] || continue
-            chmod +x "$script"
-            echo "Running $(basename "$script")..."
-            ./"$script" || echo "::notice::$(basename "$script") failed (non-fatal)"
-          done
-
       - name: Read-only capability guard
         if: steps.work.outputs.mode != '' && env.SKILL_MODE == 'read-only'
         run: |
