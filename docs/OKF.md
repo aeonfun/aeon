@@ -12,7 +12,7 @@ OKF is not a technology, it's an agreement: markdown files where **every non-res
 
 ## Scope — one file, self-describing
 
-Conformance covers the "knowledge + operational" roots declared in [`scripts/okf-config.json`](../scripts/okf-config.json): `memory/`, `output/articles/`, `skills/`, `docs/`. Every markdown file under them carries a `type:` **in place** — a leading frontmatter block is *additive*, so the parsers that key off these files (the LLM-read logs, the filename-based `compact_logs.py`, the field-based issue/skills readers) are unaffected.
+Conformance covers the "knowledge + operational" roots declared in [`scripts/okf-config.json`](../scripts/okf-config.json): `memory/`, `output/articles/`, `skills/`, `docs/`. Every markdown file under them carries a `type:` **in place** — a leading frontmatter block is *additive*, so the parsers that key off these files (the LLM-read logs and the field-based issue/skills readers) are unaffected.
 
 | Family | `type:` | Note |
 |---|---|---|

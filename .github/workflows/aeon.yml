@@ -256,8 +256,8 @@ jobs:
 
       # Materialize cron state (Issues backend, opt-in) — hardening §3 reader cutover.
       # With STATE_BACKEND=issues, runs APPEND immutable events to a pinned Issue
-      # (conflict-free, no commit/rebase). But readers (heartbeat, skill-health,
-      # prune_skills.py …) still read memory/cron-state.json — so before the skill runs,
+      # (conflict-free, no commit/rebase). But readers (heartbeat, skill-health
+      # …) still read memory/cron-state.json — so before the skill runs,
       # fold the Issue's events back into that file: readers work UNCHANGED and see a
       # fresh projection, not stale committed state. Commit results drops the projection
       # afterward so it isn't committed. No-op when STATE_BACKEND is unset.

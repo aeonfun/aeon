@@ -2,8 +2,8 @@ name: ci-tests
 
 # Runs the committed script test suites on every PR that touches scripts/ or aeon.yml.
 # These are the local tests authored alongside the hardening "easy wins" ported from
-# aeon-dev (notify formatting, log compaction, skill pruning) — same gate shape as the
-# other ci-*.yml. Keeps the extracted ./notify and the helper scripts honest.
+# aeon-dev (notify formatting, capability modes, config validation) — same gate shape
+# as the other ci-*.yml. Keeps the extracted ./notify and the helper scripts honest.
 
 on:
   pull_request:
@@ -34,10 +34,6 @@ jobs:
         run: bash scripts/tests/test_notify.sh
       - name: telegram router tests
         run: bash scripts/tests/test_telegram_route.sh
-      - name: log compaction tests
-        run: python3 scripts/tests/test_compact_logs.py
-      - name: prune analyzer tests
-        run: python3 scripts/tests/test_prune_skills.py
       - name: capability mode tests
         run: bash scripts/tests/test_skill_mode.sh
       - name: per-skill requires parse tests
@@ -54,5 +50,7 @@ jobs:
         run: python3 scripts/tests/test_health_triage.py
       - name: validate-config unit tests
         run: node --test scripts/validate-config.test.js
+      - name: validate-config aeon.yml structural check
+        run: node scripts/validate-config.js
       - name: cron-due scheduler decision tests
         run: bash scripts/tests/test_cron_due.sh
