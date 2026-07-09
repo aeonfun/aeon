@@ -65,12 +65,12 @@ Grab the `gh_*_macOS_arm64.zip` (or your platform's binary) from [github.com/cli
 
 | Pack | Key | Skills | Examples |
 | --- | --- | --- | --- |
-| 🧬 **Core** - fleet coordination, self-config, liveness; shown by default | `core` | 11 | `fleet-control`, `spawn-instance`, `auto-workflow` |
-| ♻️ **Evolution** - authors, evolves, installs & heals its own skills; shown by default | `evolution` | 7 | `create-skill`, `autoresearch`, `skill-repair` |
-| ⭐ **Basics** - simple, immediately-runnable skills; shown by default | `basics` | 13 | `digest`, `token-movers`, `pr-review` |
-| 💻 **Dev & Code** | `dev` | 8 | `github-monitor`, `feature`, `deploy-prototype` |
-| 📈 **Crypto & Markets** | `crypto` | 12 | `token-pick`, `defi-overview`, `ctrl` |
-| ✅ **Productivity** | `productivity` | 8 | `mention-radar`, `send-email`, `okf-export` |
+| **Core** - fleet coordination, self-config, liveness; shown by default | `core` | 11 | `fleet-control`, `spawn-instance`, `auto-workflow` |
+| **Evolution** - authors, evolves, installs & heals its own skills; shown by default | `evolution` | 7 | `create-skill`, `autoresearch`, `skill-repair` |
+| **Basics** - simple, immediately-runnable skills; shown by default | `basics` | 13 | `digest`, `token-movers`, `pr-review` |
+| **Dev & Code** | `dev` | 8 | `github-monitor`, `feature`, `deploy-prototype` |
+| **Crypto & Markets** | `crypto` | 12 | `token-pick`, `defi-overview`, `ctrl` |
+| **Productivity** | `productivity` | 8 | `mention-radar`, `send-email`, `okf-export` |
 
 <details>
 <summary><strong>Full catalog (all 59 skills by pack)</strong></summary>
@@ -95,8 +95,6 @@ Authoritative source: [`skills.json`](../catalog/skills.json) + [`packs.json`](.
 ![Anatomy of a skill run](../docs/assets/skill-run-aeon.jpg)
 
 Every skill output is automatically scored 1–5 by Haiku after each run. Scores and failure flags (`api_error`, `stale_data`, `rate_limited`) are tracked per skill in `memory/skill-health/` with a rolling 30-run history. When something breaks, the loop fixes it without you:
-
-![Self-healing architecture](../docs/assets/architecture-aeon.jpg)
 
 1. **`heartbeat`** (daily) - detects failed, stuck, or chronically broken skills
 2. **`skill-health`** - audits quality scores and flags API degradation patterns

@@ -19,6 +19,8 @@
 
 ### New skill
 
+> New skills ship as your own **community skill pack** — use *Community skill pack listing* below. This checklist is only for changes to the **core** catalog (maintainers).
+
 - [ ] `skills/<name>/SKILL.md` frontmatter has `name:`, `category:`, `description:`, `tags:` (plus `requires:` / `mcp:` if it needs keys or MCP servers)
 - [ ] Body is self-contained and includes a **Network note** with the right path (`./secretcurl` for auth'd APIs / `gh api` for GitHub / `curl` + WebFetch for public)
 - [ ] Notifies through `./notify`, never a channel API directly

@@ -6,12 +6,11 @@ reverse-engineer them from existing PRs.
 
 ## Ways to contribute
 
-Most contributions fall into one of four buckets, each with its own checklist below:
+Most contributions fall into one of three buckets, each with its own checklist below:
 
-- **A new skill** — a `skills/<name>/SKILL.md` prompt plus registration in `aeon.yml`.
+- **A new skill** — published as your own **community skill pack** (your repo), then listed here. New skills don't go into the core catalog.
 - **A new LLM gateway** — wiring a provider through the five files that resolve it.
-- **A community skill-pack listing** — adding your pack to the README + catalog.
-- **A core fix** — dashboard, scripts, workflows, or docs.
+- **A core fix** — dashboard, scripts, workflows, docs, or an improvement to an existing core skill.
 
 ## Before you start
 
@@ -41,11 +40,12 @@ for the dashboard app itself is documented in
 
 ### Contributing a skill
 
-Scaffold from a template or import from any repo:
+**New skills ship as your own community skill pack, not as a PR into the core catalog.** The core `skills/` set is curated by the maintainers to keep the default install lean — anyone extends Aeon by publishing a **community skill pack**: a small public repo of skills that users install in one click from the dashboard's **Packs** view. You keep ownership, licensing, and release cadence. (PRs that *fix or improve an existing core skill* are welcome as a normal PR — that's a core fix, not a new skill.)
+
+**1. Build the skill.** Scaffold from a template, then write its `SKILL.md`:
 
 ```bash
 bin/new-from-template <template> <skill-name> --category <pack>
-bin/add-skill <owner/repo> <skill> [skill...]
 ```
 
 Every `SKILL.md` opens with YAML frontmatter — the full contract is in
@@ -54,7 +54,7 @@ Every `SKILL.md` opens with YAML frontmatter — the full contract is in
 ```yaml
 ---
 name: my-skill
-category: dev                                  # single source of truth for the pack
+category: dev                                  # the pack it belongs to
 description: One-line description
 requires: [XAI_API_KEY, COINGECKO_API_KEY?]    # bare = required · `?` = optional
 mcp: [base]
@@ -67,11 +67,29 @@ mcp: [base]
   for keyless public APIs). See [`CLAUDE.md`](../CLAUDE.md#network--secrets).
 - **Notify through `./notify`** — never call a channel API directly.
 - **Don't monkey-patch Aeon internals** — a skill is a prompt, not a patch.
-- **Regenerate the catalog** after adding/recategorizing a skill, and commit both:
 
-  ```bash
-  bin/generate-skills-json && bin/generate-packs-json
-  ```
+**2. Package it as a pack.** In your own public repo, put each skill at `skills/<slug>/SKILL.md` and add a `skills-pack.json` manifest at the root declaring what installs:
+
+```json
+{
+  "name": "My Pack",
+  "version": "1.0",
+  "author": "your-github-handle",
+  "skills": [
+    { "slug": "my-skill", "path": "skills/my-skill" }
+  ]
+}
+```
+
+Give it a clear license, then validate before publishing:
+
+```bash
+./scripts/validate-pack.sh /path/to/your-pack-repo
+```
+
+The full manifest schema, field reference, trust model, and a worked example are in [`docs/community-skill-packs.md`](../docs/community-skill-packs.md).
+
+**3. List it in the registry.** With your pack repo public, open a PR here that adds **both**: a row to the **Community Skill Packs** table in the [README](README.md#community-skill-packs) **and** a matching entry in [`catalog/skill-packs.json`](../catalog/skill-packs.json). Full steps: the [publishing checklist](../docs/community-skill-packs.md#pack-maintainers-publishing-checklist).
 
 ### Contributing an LLM gateway
 
@@ -92,17 +110,6 @@ Then add a row to the gateway table in the [README](README.md#llm-gateways). To
 verify the full loop: paste a key in the dashboard (prefix should auto-detect, or
 pick it from the dropdown) and run any skill — the workflow log prints
 `::notice:: gateway=auto resolved to <slug>` followed by `::notice:: Routing through …`.
-
-### Listing a community skill pack
-
-Open a PR that adds **both** a README table row and a matching
-[`skill-packs.json`](../catalog/skill-packs.json) entry, links your public repo,
-and confirms the pack has a `skills-pack.json` manifest, a clear license, and a
-`SKILL.md` per skill. Validate first:
-
-```bash
-./scripts/validate-pack.sh /path/to/your-pack-dir
-```
 
 ## Project layout
 
