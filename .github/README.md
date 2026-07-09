@@ -13,7 +13,7 @@
 
 <p align="center">
   <strong>The most autonomous agent framework.</strong><br>
-  Give it a direction — it'll use 59 skills to get it done: ship features to your repos, find and disclose real vulnerabilities, deploy live apps, run deep research — even write new skills for itself. No approval loops. No babysitting. Configure once, forget forever.
+  Give it a direction and it gets the work done: ships features to your repos, finds and privately discloses real vulnerabilities, deploys live apps, runs deep research — and writes new skills for itself. No approval loops. No babysitting. Configure once, forget forever.
 </p>
 
 <p align="center">
@@ -61,7 +61,24 @@ Grab the `gh_*_macOS_arm64.zip` (or your platform's binary) from [github.com/cli
 
 ## What Aeon can do
 
-**59 skills, grouped into 6 packs.** By default the dashboard shows **Core**, **Evolution**, and **Basics**; everything else is hidden until you **enable its pack** in the **Packs** view - a visibility switch that reveals a pack's skills across the UI without running anything. Putting a skill on duty stays a per-skill toggle. Every skill is independently installable, schedulable, and chainable. How packs work: [`docs/skill-packs.md`](../docs/skill-packs.md).
+**A skill is a Markdown file: some frontmatter, then a prompt.** No plugin API, nothing to compile. Here's a real one, trimmed:
+
+```yaml
+# skills/digest/SKILL.md
+---
+name: digest
+category: basics                 # which pack it belongs to
+description: Generate and send a digest on a configurable topic
+requires: [XAI_API_KEY?]         # ? = optional key, bare = required
+var: ""                          # per-run input — "solana", "rust", "AI agents"…
+mode: write
+---
+```
+> Today is ${today}. Generate and send a daily **${var}** digest.
+>
+> The whole point of a digest is **signal, not volume**. A reader skimming for 60 seconds should walk away with three things they didn't know that morning and one of them should change a decision they'd make this week. Anything that doesn't clear that bar gets cut.
+
+The prompt *is* the skill, judgment and all. You schedule it, hand it a `var`, chain it into others, and Haiku rates every run. **Six packs ship in the box** — Core, Evolution, and Basics are on by default; enable the rest in the dashboard's **Packs** view (a visibility switch, it runs nothing). Full catalog below; how packs work: [`docs/skill-packs.md`](../docs/skill-packs.md).
 
 | Pack | Key | Skills | Examples |
 | --- | --- | --- | --- |
@@ -111,7 +128,7 @@ Aeon can spawn and manage copies of itself. `spawn-instance` forks the repo into
 
 ### It ships real work
 
-`feature` ships code unprompted — to your watched repos, or to any repo with `var: external:<owner/repo>`. `deploy-prototype` generates and deploys live web apps to Vercel. `vuln-scanner` finds real vulnerabilities and discloses them responsibly. `autoresearch` evolves existing skills through scored variations, and `create-skill` generates new ones from a sentence.
+`feature` ships code unprompted — to your watched repos, or to any repo with `var: external:<owner/repo>`. `deploy-prototype` generates and deploys live web apps to Vercel. `vuln-scanner` finds real code vulnerabilities and reports them only through the maintainer's private channel — GitHub's advisory system or a private email, never a public issue — with drafts waiting for your review by default and any project that declines AI-authored reports skipped. `autoresearch` evolves existing skills through scored variations, and `create-skill` generates new ones from a sentence.
 
 ### Add more skills
 
@@ -143,6 +160,8 @@ Aeon's skills ship to production. These numbers are live at **[aeon.fun](https:/
 | **community** | **10 community skill packs** published to the registry. [`community-skill-packs.md`](../docs/community-skill-packs.md) |
 
 <sub>Security figures are a snapshot as of 2026-07-06; the live dashboard updates continuously.</sub>
+
+**One skill, end to end.** `vuln-scanner` clones a repo from your watchlist, runs Semgrep, OSV, and TruffleHog, then triages the hits hard — a finding ships only if it's exploitable, not theoretical, and you'd defend it to the maintainer's face. Most are discarded. What survives becomes a maintainer-ready report, sent through the repo's private advisory channel with a proposed patch pushed to your fork for the maintainer to cherry-pick. That loop, run across the open-source wild, is what the numbers above are made of.
 
 ---
 
