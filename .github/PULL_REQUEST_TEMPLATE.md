@@ -29,7 +29,7 @@
 ### New LLM gateway
 
 - [ ] Wired through the five files (`gateway-registry.ts`, `AuthModal.tsx`, `secrets-catalog.ts`, `scripts/llm-gateway.sh`, `.github/workflows/*.yml`) — see [Contributing an LLM gateway](CONTRIBUTING.md#contributing-an-llm-gateway)
-- [ ] Added a row to the gateway table in the README
+- [ ] Added a row to the gateway table in [`docs/CONFIGURATION.md`](../docs/CONFIGURATION.md#llm-gateways)
 - [ ] Verified end to end — a run logs `gateway=auto resolved to <slug>`
 
 ### Community skill pack listing
