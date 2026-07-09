@@ -6,13 +6,13 @@ description: Manage paid ads on AdManage.ai from declarative config - default sc
 var: |
   Selects which flow runs (parse from ${var}):
   - empty / unset (default) → SCHEDULE branch: read config.yaml, pick schedule
-    entries matching today, queue ad launches to .pending-admanage/launches/*.json.
+    entries matching today, and launch those ads in-run via AdManage.ai.
     Launches PAUSED by default; dailySpendCap circuit-breaker; never auto-activates
-    live spend. (Original schedule-ads behavior, unchanged.)
+    live spend.
   - "create" → CREATE branch: read config.create.yaml, diff against
-    .admanage-state/campaigns.json, queue Meta campaign + ad-set creates to
-    .pending-admanage/creates/. On-demand; creates entities PAUSED; postprocess
-    writes returned IDs back into state so the schedule branch can launch into them.
+    .admanage-state/campaigns.json, and create the missing Meta campaigns + ad sets
+    in-run. On-demand; creates entities PAUSED; returned IDs are written back into
+    state so the schedule branch can launch into them.
 schedule: "0 8 * * *"
 commits: true
 permissions:
@@ -21,9 +21,9 @@ tags: [growth, ads]
 requires: [ADMANAGE_API_KEY]
 ---
 
-> **${var}** selects the flow. Empty/unset = **schedule** (launch ads into existing ad sets). `create` = **create-campaign** (provision Meta campaigns + ad sets). Both are config-driven, PAUSED-by-default, and never call the AdManage API directly — they queue intents that credentialed postprocess scripts pick up after Claude exits.
+> **${var}** selects the flow. Empty/unset = **schedule** (launch ads into existing ad sets). `create` = **create-campaign** (provision Meta campaigns + ad sets). Both are config-driven, PAUSED-by-default, and make the AdManage API calls **in-run** via `./secretcurl` (the `{ADMANAGE_API_KEY}` placeholder keeps the key off the command line), behind fail-closed spend guardrails.
 
-Reads a declarative config, computes what to do, and drops JSON intent files under `.pending-admanage/`. The actual AdManage.ai API calls are an irreversible outbound side-effect (real ad spend), so they happen in `scripts/postprocess-admanage.sh` (schedule branch) and `scripts/postprocess-admanage-create.sh` (create branch) — on the on-success postprocess gate by design, with full env access. This skill never sees or touches `ADMANAGE_API_KEY`.
+Reads a declarative config, computes what to do, and makes the AdManage.ai API calls **in-run** via `./secretcurl`. The calls are an irreversible outbound side-effect (real ad spend), so they are each branch's **final** actions and run only behind the guardrails below (PAUSED-by-default, `dailySpendCap` circuit-breaker, dry-run). `ADMANAGE_API_KEY` is injected in-run via this skill's `requires:` — always write it as the `{ADMANAGE_API_KEY}` placeholder, never a bare `$ADMANAGE_API_KEY` (the Bash permission layer refuses that).
 
 ## Preamble (both branches)
 
@@ -38,27 +38,25 @@ Reads a declarative config, computes what to do, and drops JSON intent files und
 
 # Schedule branch (default — empty `${var}`)
 
-Reads `skills/schedule-ads/config.yaml`, picks schedule entries matching today, and queues ad launches via AdManage.ai. Builds the launch payloads and drops them in `.pending-admanage/launches/`; `scripts/postprocess-admanage.sh` makes the calls.
+Reads `skills/schedule-ads/config.yaml`, picks schedule entries matching today, and launches those ads **in-run** via AdManage.ai (`POST /v1/launch` through `./secretcurl`), behind the spend guardrails below.
 
 ## Safety defaults (schedule)
 
 This branch **spends real money on ad platforms**. Guardrails, in priority order:
 
 1. **PAUSED by default.** Every launch request sets the entity to PAUSED. The operator has to resume manually in the AdManage dashboard before spend starts. `launchPaused: false` in config is the explicit opt-out.
-2. **Daily spend cap.** Before queueing any launches, postprocess checks `GET /v1/spend/daily` for today. If spend ≥ `dailySpendCap` in the config, all queued launches are skipped and a warning is notified. This is a circuit breaker, not a budget enforcer — platform budgets still apply.
+2. **Daily spend cap.** Before launching, the branch checks `GET /v1/spend/daily` for today. If spend ≥ `dailySpendCap` in the config, all launches are skipped and a warning is notified. If the spend figure can't be verified (malformed / empty response), **fail closed** — skip and notify, don't launch. This is a circuit breaker, not a budget enforcer — platform budgets still apply.
 3. **Dry-run mode.** If `DRY_RUN=true` in env or `dryRun: true` in config, the branch builds the payloads, writes them to `.pending-admanage/dryrun/`, notifies what *would* launch, and exits without calling the API.
 4. **Config-only.** The branch does not invent campaigns, creative, or targeting. If there's no schedule for today, it exits cleanly with no API calls.
 5. **Single source of truth.** All ads/campaigns/targeting live in `config.yaml`. The branch never generates new creative on the fly.
 
 ## Network note (schedule)
 
-Launching ads is an irreversible outbound side-effect (real ad spend), so this branch **does not make the AdManage API calls directly** — they go through the on-success postprocess gate by design (not a network block). Instead:
+Launching ads is an irreversible outbound side-effect (real ad spend), so it is the branch's **final** action and runs only after the guardrails above pass:
 
-- This branch writes launch intents to `.pending-admanage/launches/*.json` (one file per batch).
-- After Claude finishes, the workflow runs `scripts/postprocess-admanage.sh`, which has full env access. That script calls `POST /v1/launch`, polls `GET /v1/batch-status/{id}`, and notifies the result via `./notify`.
-- The branch never sees or touches the API key.
-
-If `scripts/postprocess-admanage.sh` is missing, the branch still queues correctly — the payloads just sit in `.pending-admanage/launches/` until the script exists. Log a warning and carry on.
+- Auth'd calls go through `./secretcurl` with the `{ADMANAGE_API_KEY}` placeholder — never a bare `$ADMANAGE_API_KEY` (the Bash permission layer refuses that). `ADMANAGE_API_KEY` is injected in-run via `requires:`.
+- The branch checks the daily spend cap (`GET /v1/spend/daily`), then per batch calls `POST /v1/launch`, polls `GET /v1/batch-status/{id}` to a terminal state, and reports via `./notify`.
+- If `ADMANAGE_API_KEY` is unset, or the launch/spend call fails, skip the launch and notify — do not retry blindly. There is no deferred postprocess fallback.
 
 ## Steps (schedule)
 
@@ -116,16 +114,27 @@ If `scripts/postprocess-admanage.sh` is missing, the branch still queues correct
    - Skip step 7.
    - This mode exists for the operator to sanity-check before arming real launches.
 
-7. **Queue for postprocess.** Write each launch payload to `.pending-admanage/launches/{schedule-name}-{timestamp}.json`:
-   ```json
-   {
-     "schedule": "<entry name>",
-     "queuedAt": "<iso timestamp>",
-     "dailySpendCap": <number | null>,
-     "payload": { "ads": [ ... ] }
-   }
-   ```
-   `postprocess-admanage.sh` will pick these up after Claude exits, run the API calls with real env, poll batch status, and fire its own notifications.
+7. **Launch in-run.** This is the branch's final action — spends real money, so run the guardrails first. Only `./secretcurl`, `jq`, `date`, `echo`, `mkdir`, `grep`, `python3`, and the `Write` tool are available.
+
+   a. **Config check.** `[ -n "${ADMANAGE_API_KEY:+x}" ]` (the `${VAR:+x}` form — a bare `$ADMANAGE_API_KEY` trips the secret-expansion analyzer and reads as unset). If unset → notify "ads computed but ADMANAGE_API_KEY missing — nothing launched" and stop.
+
+   b. **Daily spend circuit-breaker (once).** Take the strictest `dailySpendCap` (`CAP`) across today's payloads. If set, read today's spend and **fail closed** unless it's a clean number *below* the cap:
+      ```bash
+      SPEND=$(./secretcurl -sS --max-time 30 -H "Authorization: Bearer {ADMANAGE_API_KEY}" \
+        "https://api.admanage.ai/v1/spend/daily?startDate=$TODAY&endDate=$TODAY" | jq -r '.metadata.totalSpend // ""')
+      echo "$SPEND" | grep -qE '^[0-9]+(\.[0-9]+)?$' || { echo "spend unverifiable — fail closed"; exit 0; }
+      echo "$CAP"   | grep -qE '^[0-9]+(\.[0-9]+)?$' || { echo "dailySpendCap not numeric — fail closed"; exit 0; }
+      python3 -c "import sys; sys.exit(0 if float(sys.argv[1])>=float(sys.argv[2]) else 1)" "$SPEND" "$CAP" \
+        && { echo "daily spend cap tripped (today=$SPEND cap=$CAP) — launching nothing"; exit 0; }
+      ```
+   c. **Per batch: launch, then poll.** For each payload `{ ads: [ ... ] }`:
+      ```bash
+      RESP=$(./secretcurl -sS --max-time 60 -w 'http=%{http_code}\n' -X POST "https://api.admanage.ai/v1/launch" \
+        -H "Authorization: Bearer {ADMANAGE_API_KEY}" -H "Content-Type: application/json" -d "$PAYLOAD")
+      # success => .success==true and .adBatchId set; else record FAILED (.message/.error) and continue.
+      # Poll GET /v1/batch-status/$BATCH_ID (~90s, 5s interval) until .summaryStatus is success|error.
+      ```
+      Record each batch's outcome (ok / error / still-running-after-timeout) for the notify. Ads launch **PAUSED** (the payload sets it) unless `launchPaused: false`.
 
 8. **Write artifact to `output/.chains/schedule-ads.md`** so downstream chain consumers can read what was queued. Format:
    ```markdown
@@ -152,9 +161,9 @@ If `scripts/postprocess-admanage.sh` is missing, the branch still queues correct
    <if dry-run>
    no API calls made — remove DRY_RUN to arm.
    <else>
-   postprocess-admanage will call AdManage and report batch results.
+   launched via AdManage (PAUSED) — resume in the dashboard to start delivery.
    ```
-   If nothing was queued (no schedules matched), don't notify at all.
+   If nothing matched today (no launches), don't notify at all.
 
 10. **Log** — see the shared **Log** section below (discriminator: `schedule`).
 
@@ -201,7 +210,7 @@ schedules:
 
 # Create branch (`${var}=create`)
 
-Reads `skills/schedule-ads/config.create.yaml`, figures out which campaigns/ad sets don't exist yet, and queues create requests to `.pending-admanage/creates/`. The credentialed API calls happen in `scripts/postprocess-admanage-create.sh` after Claude finishes.
+Reads `skills/schedule-ads/config.create.yaml`, figures out which campaigns/ad sets don't exist yet, and creates them **in-run** via AdManage.ai (`/v1/manage/create-*` through `./secretcurl`) — campaigns first, then ad sets referencing the returned campaign IDs — writing the new IDs back to `.admanage-state/campaigns.json`.
 
 This branch is **on-demand** — invoke it manually when you want to provision new campaigns, then reference the returned IDs in `skills/schedule-ads/config.yaml` (schedule branch) to launch creatives into them.
 
@@ -226,12 +235,11 @@ Same posture as the schedule branch:
 
 ## Network note (create)
 
-Provisioning campaigns and ad sets is an irreversible outbound side-effect, so this branch queues intents only and lets the on-success postprocess gate make the `/manage/*` calls by design (not a network block):
+Provisioning campaigns and ad sets is an irreversible outbound side-effect, so it is the branch's **final** action and runs in-run only after the diff + validation pass:
 
-- Branch writes: `.pending-admanage/creates/campaigns/<slug>.json` and `.pending-admanage/creates/adsets/<campaign-slug>__<adset-slug>.json`
-- After Claude exits, `scripts/postprocess-admanage-create.sh` runs with full env access, makes the API calls in the right order (campaigns first, then ad sets referencing returned campaign IDs), lands per-entity results in `.pending-admanage/creates-results/`, and writes IDs back to `.admanage-state/campaigns.json`.
-
-If the postprocess script is missing, the branch still queues correctly — the payloads sit in `.pending-admanage/creates/` until the script exists.
+- Auth'd calls go through `./secretcurl` with the `{ADMANAGE_API_KEY}` placeholder — never a bare `$ADMANAGE_API_KEY`. The key is injected in-run via `requires:`.
+- **Order matters:** create all campaigns first (`POST /v1/manage/create-campaign`), keep a config-name → campaignId map, then create ad sets (`POST /v1/manage/create-adset`) substituting each parent's real campaign ID. Write every new ID back to `.admanage-state/campaigns.json` as you go (the workflow's Commit step persists it).
+- If `ADMANAGE_API_KEY` is unset, or a create call fails, record the failure and continue with the rest — never retry blindly, never invent IDs. An ad set whose parent campaign failed to create is skipped. There is no deferred postprocess fallback.
 
 ## Steps (create)
 
@@ -263,7 +271,7 @@ If the postprocess script is missing, the branch still queues correctly — the 
 4. **Compute diff.** For each campaign in config:
    - Match against state by exact `name`. If present, mark as `existing`.
    - If missing, mark as `new` and queue a campaign create.
-   - For each ad set under the campaign, match against the parent's `adSets[]` in state by name. If missing, queue an ad-set create (with a `parentCampaignConfigName` reference that postprocess will resolve to a real campaign ID).
+   - For each ad set under the campaign, match against the parent's `adSets[]` in state by name. If missing, mark it for creation (carrying a `parentCampaignConfigName` reference you resolve to a real campaign ID in-run, once the parent campaign create returns).
 
    If nothing is new, log `CREATE_CAMPAIGN_ALL_EXIST` and exit without notify.
 
@@ -302,7 +310,7 @@ If the postprocess script is missing, the branch still queues correctly — the 
    }
    ```
 
-   The `__RESOLVE_FROM_PARENT__` sentinel + `parentCampaignConfigName` tells postprocess to look up the campaign ID after the campaign create succeeds. If the parent campaign was *existing* (already in state), write the real campaign ID directly and drop the sentinel.
+   The `__RESOLVE_FROM_PARENT__` sentinel + `parentCampaignConfigName` marks an ad set whose `campaignId` you fill in-run, from the map built as each campaign create returns (step 9b). If the parent campaign was *existing* (already in state), write the real campaign ID directly and drop the sentinel.
 
 7. **Pre-flight validation.**
    - `adAccountId` must start with `act_` (this branch is Meta-only in v1).
@@ -313,11 +321,22 @@ If the postprocess script is missing, the branch still queues correctly — the 
 
 8. **Handle dry-run.** If `DRY_RUN=true` or `config.dryRun: true`: write payloads to `.pending-admanage/dryrun-create/` instead, notify with a `[DRY RUN]` prefix, skip step 9.
 
-9. **Queue for postprocess.** Write files into `.pending-admanage/creates/`:
-   - `campaigns/<slugify(name)>.json` — campaign create payload.
-   - `adsets/<slugify(campaign-name)>__<slugify(adset-name)>.json` — ad-set create payload.
+9. **Create in-run.** This is the branch's final action — provisions real entities, so run only after the diff + pre-flight pass. Only `./secretcurl`, `jq`, `date`, `echo`, `python3`, and the `Write` tool are available (no `mv`). Seed `.admanage-state/campaigns.json` to `{"campaigns":[]}` if missing.
 
-   The file-name convention matters: postprocess lexical-sorts `campaigns/` first, then `adsets/`, so campaigns always create before their children.
+   a. **Config check.** `[ -n "${ADMANAGE_API_KEY:+x}" ]` (the `${VAR:+x}` form — a bare `$ADMANAGE_API_KEY` trips the secret-expansion analyzer and reads as unset). If unset, notify "campaigns computed but ADMANAGE_API_KEY missing — nothing created" and stop (state unchanged).
+
+   b. **Campaigns first.** For each *new* campaign, `POST /v1/manage/create-campaign`:
+      ```bash
+      RESP=$(./secretcurl -sS --max-time 60 -w 'http=%{http_code}\n' -X POST \
+        "https://api.admanage.ai/v1/manage/create-campaign" \
+        -H "Authorization: Bearer {ADMANAGE_API_KEY}" -H "Content-Type: application/json" -d "$PAYLOAD")
+      # success => .success==true and .campaignId set.
+      ```
+      On success: remember `configName → campaignId` (for step 9c) and append `{configName, campaignId, adAccountId, createdAt, adSets:[]}` to `.admanage-state/campaigns.json`. On failure: record the error, skip this campaign's ad sets.
+
+   c. **Then ad sets.** For each new ad set, resolve `campaignId`: if it's `__RESOLVE_FROM_PARENT__`, look it up by `parentCampaignConfigName` in the map from 9b **or** existing state — if the parent isn't found (its create failed), skip the ad set with a warning. Then `POST /v1/manage/create-adset` (same `./secretcurl` shape). On success: append `{configName, adSetId, createdAt}` under the parent campaign in `.admanage-state/campaigns.json` (via `python3`/`Write` — no `mv`).
+
+   Ordering is explicit here (campaigns loop fully before the ad-sets loop), so children always reference a resolved parent ID.
 
 10. **Write artifact to `output/.chains/create-campaign.md`** so chain consumers can see what was queued:
     ```markdown
@@ -347,7 +366,7 @@ If the postprocess script is missing, the branch still queues correctly — the 
     <if dry-run>
     no API calls made — remove DRY_RUN to arm.
     <else>
-    postprocess-admanage-create will provision and write IDs to .admanage-state/campaigns.json.
+    created via AdManage (PAUSED); new IDs written to .admanage-state/campaigns.json.
     ```
     If nothing is new, don't notify at all.
 
@@ -385,12 +404,12 @@ campaigns:
 
 ## Interaction with the schedule branch
 
-After `postprocess-admanage-create.sh` writes to `.admanage-state/campaigns.json`, the IDs are yours to reference in `skills/schedule-ads/config.yaml` (schedule branch) under `adSets[].value`. The two flows are intentionally decoupled:
+The create branch writes new IDs to `.admanage-state/campaigns.json` **within the same run**; from there they're yours to reference in `skills/schedule-ads/config.yaml` (schedule branch) under `adSets[].value`. The two flows are intentionally decoupled:
 
 - **create branch** provisions structure (container).
 - **schedule branch** launches creative into that structure (contents).
 
-Running both in the same Claude cycle *won't* chain — the state file won't have IDs until postprocess runs. Pattern is: run `${var}=create` → wait for postprocess to log the new IDs → copy IDs into `config.yaml` → next default (schedule) run uses them.
+They still don't auto-chain — the schedule branch reads `config.yaml`, which you edit by hand. Pattern is: run `${var}=create` (provisions + writes IDs in-run) → read the new IDs from `.admanage-state/campaigns.json` / the create-run notify → copy them into `config.yaml` → next default (schedule) run launches into them.
 
 ## What the create branch does NOT do
 
@@ -411,22 +430,22 @@ Append to `memory/logs/${today}.md` under ONE `### schedule-ads` heading. First 
 ### schedule-ads
 - Branch: schedule
 - Schedules matching today: <names>
-- Payloads queued: <count> (dry-run: <bool>)
-- Files written: .pending-admanage/launches/*.json
+- Launches: <count> (dry-run: <bool>)
+- Batch results: <ok/error/timeout summary> (live) | dry-run preview in .pending-admanage/dryrun/
 ```
 
 **Create branch:**
 ```
 ### schedule-ads
 - Branch: create
-- New campaigns queued: <count>
-- New ad sets queued: <count>
-- Files: .pending-admanage/creates/**/*.json
+- New campaigns created: <count> (ok/fail)
+- New ad sets created: <count> (ok/fail)
+- State: new IDs written to .admanage-state/campaigns.json (live) | dry-run preview in .pending-admanage/dryrun-create/
 ```
 
 ## Environment Variables
 
-- `ADMANAGE_API_KEY` — required for `scripts/postprocess-admanage.sh` (schedule) and `scripts/postprocess-admanage-create.sh` (create). Never read by this skill.
+- `ADMANAGE_API_KEY` — the AdManage.ai API key, injected in-run via this skill's `requires:` and used by both branches for the `/v1/*` calls. Always pass it as the `{ADMANAGE_API_KEY}` placeholder to `./secretcurl`, never a bare `$ADMANAGE_API_KEY` on the command line.
 - `DRY_RUN` — optional. If `true`, forces dry-run mode regardless of config, in whichever branch runs.
 - Notification channels configured via repo secrets (see CLAUDE.md).
 

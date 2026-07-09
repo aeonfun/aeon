@@ -691,7 +691,6 @@ scripts/
   notify.sh              ← source for the ./notify command (multi-channel notifications)
   notify-jsonrender.sh   ← source for ./notify-jsonrender (feed cards via Haiku)
   secretcurl.sh          ← source for ./secretcurl (auth'd curl; {ENV} placeholders keep secrets off the command line)
-  postprocess-replicate.sh ← generate images via Replicate after Claude runs
   skill-runs             ← audit recent GitHub Actions skill runs
   okf-validate.mjs       ← assert OKF conformance (the ci-okf gate); okf-backfill.mjs stamps a missing type:
   okf-config.json        ← OKF scope: roots, exclusions, per-family types

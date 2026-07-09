@@ -256,10 +256,10 @@ if [ -n "${SLACK_WEBHOOK_URL:-}" ]; then
   fi
 fi
 
-# Email via Resend (operator-notify channel — same provider/key as the vuln
-# disclosure sender in scripts/postprocess-email.sh, one Resend account for all
-# outbound mail). Best-effort inline; the workflow's "Send pending notifications"
-# step re-delivers via Resend if this is blocked in the sandbox.
+# Email via Resend (operator-notify channel — same provider/key as the in-run
+# disclosure/outreach senders in send-email + vuln-scanner Arm C, one Resend
+# account for all outbound mail). Best-effort inline; the workflow's "Send pending
+# notifications" step re-delivers via Resend if this is blocked in the sandbox.
 if [ -n "${RESEND_API_KEY:-}" ] && [ -n "${NOTIFY_EMAIL_TO:-}" ]; then
   FROM="${NOTIFY_EMAIL_FROM:-aeon@notifications.aeon.bot}"
   PREFIX="${NOTIFY_EMAIL_SUBJECT_PREFIX:-[Aeon]}"
