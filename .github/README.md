@@ -13,7 +13,7 @@
 
 <p align="center">
   <strong>The most autonomous agent framework.</strong><br>
-  Give it a direction - it'll use 59 skills (deep research, PR reviews, market monitoring, Vercel deploys…) to get it done. No approval loops. No babysitting. Configure once, forget forever.
+  Give it a direction — it'll use 59 skills to get it done: ship features to your repos, find and disclose real vulnerabilities, deploy live apps, run deep research — even write new skills for itself. No approval loops. No babysitting. Configure once, forget forever.
 </p>
 
 <p align="center">
