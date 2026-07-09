@@ -6,7 +6,7 @@ description: Audit trending repos for real security vulnerabilities and disclose
 var: ""
 tags: [dev, security, meta]
 depends_on: [github-trending]
-requires: [GH_GLOBAL?, RESEND_API_KEY?]
+requires: [GH_GLOBAL?, RESEND_API_KEY?, RESEND_FROM?, RESEND_REPLY_TO?]
 ---
 <!-- autoresearch: variation B — responsible-disclosure-first: private reports for code vulns, public PRs only for already-disclosed dep CVEs -->
 
@@ -25,7 +25,7 @@ This is the **write / action arm of the vuln-disclosure loop** — one skill cov
 
 - **Scan** — a security scanner that dumps unpatched vulnerabilities into public PRs is a zero-day publisher, not a helper. This skill matches industry practice: **Private Vulnerability Reporting (PVR) for code flaws, public PRs only for dependency CVEs that are already public**. Bad disclosure burns credibility and puts users at risk.
 - **Re-submit** — when a scan finds a HIGH/CRITICAL issue in a repo with no PVR, no `SECURITY.md`, and no reachable contact, it has no safe channel — so it logs the finding as `"channel": "skipped"` in `memory/vuln-scanned.json` and stages a watchlist row. Without a weekly probe those findings silently age until the responsible-disclosure window closes. The re-submit arm closes that loop.
-- **Disclose** — when the only responsible path is a private email to the maintainer, drafts sit in `memory/pending-disclosures/` with `status: pending-operator-send`, waiting for a human. The disclose arm finds drafts **explicitly armed for auto-send**, composes the email, and queues it (the send itself happens in `scripts/postprocess-email.sh`).
+- **Disclose** — when the only responsible path is a private email to the maintainer, drafts sit in `memory/pending-disclosures/` with `status: pending-operator-send`, waiting for a human. The disclose arm finds drafts **explicitly armed for auto-send**, composes the email, and **sends it in-run** (Resend via `./secretcurl`) behind a set of fail-closed caps — the send is the arm's final action.
 
 ## Dispatch — parse `${var}`, then run one arm
 
@@ -258,7 +258,7 @@ Read the HTTP response code and branch accordingly. **Never** fall back to a pub
 - **`201`** → reported. Record the report/advisory id and link it in the local report.
 - **`403 "Repository does not have private vulnerability reporting enabled"`** → PVR is OFF on the repo. This is **not** a token-scope problem (classic `repo` scope is enough). **Critically: the GitHub advisory web form (`/security/advisories/new`) is the SAME PVR backend — it returns `404` to external reporters when PVR is off. Do NOT stage that URL as the channel even if `SECURITY.md` recommends it** (a `SECURITY.md` that only says "use the advisory form" is *not* a usable channel when PVR is disabled — confirmed on agent-reach and world-of-claudecraft, 2026-06-19). Resolve an **out-of-band** private contact instead, in this order: (1) `SECURITY.md` email / portal / vendor PSIRT; (2) README contact (email / Discord / X); (3) package metadata — `pyproject.toml` / `setup.py` author, `package.json` `author` + `bugs`; (4) the maintainer/owner's git commit email or GitHub profile. Stage a maintainer-ready report at `memory/pending-disclosures/<repo>-<timestamp>.md` in the **auto-send-ready format** (see below) so the **disclose arm** (Arm C) can send it, and add a row to `memory/security-watchlist.md` so the **re-submit arm** (Arm B) will re-check PVR status. Only if no out-of-band contact exists anywhere, log "no safe channel — skipped".
 
-  **Auto-send-ready draft format** (consumed by Arm C → `scripts/postprocess-email.sh`):
+  **Auto-send-ready draft format** (consumed by Arm C's in-run send):
 
   ```markdown
   ---
@@ -494,7 +494,7 @@ Updated automatically by the vuln-scanner re-submit arm.
 
 ## Arm C — DISCLOSE (auto-send armed email disclosures)
 
-When Arm A finds an exploitable **code** flaw (not a public dep CVE) in a repo that has **neither PVR enabled nor a usable SECURITY.md/PR channel**, the only responsible disclosure path is a **private email to the maintainer**. Those drafts sit in `memory/pending-disclosures/` with `status: pending-operator-send`. This arm finds drafts **explicitly armed for auto-send**, composes the email, and queues it. The actual send happens in `scripts/postprocess-email.sh` (Resend API) because the disclosure email is an irreversible outbound side-effect, deferred to the on-success postprocess gate by design (not a network block) — see the Network note.
+When Arm A finds an exploitable **code** flaw (not a public dep CVE) in a repo that has **neither PVR enabled nor a usable SECURITY.md/PR channel**, the only responsible disclosure path is a **private email to the maintainer**. Those drafts sit in `memory/pending-disclosures/` with `status: pending-operator-send`. This arm finds drafts **explicitly armed for auto-send**, composes each email, and **sends it in-run** via Resend (`./secretcurl`). The send is an irreversible outbound call, so it is the arm's **final** step and is **fail-closed**: it happens only behind every cap in C4 (kill-switch, daily budget, per-maintainer cooldown, dedup ledger, recipient sanity, secret tripwire) — any check that fails, is unset, or errors means *do not send*, never *send anyway*.
 
 This is **fully autonomous** (operator chose this): an armed draft is sent without waiting for a human. That makes the **arming gate the only safeguard**, so this arm is conservative — it queues *only* drafts that pass every check below, and the post-send notification tells the operator exactly what went out.
 
@@ -523,8 +523,7 @@ or a body still containing operator-only scaffolding (e.g. "Operator action requ
 "do not publish") inside the extracted region.
 
 If zero drafts are eligible → log `DISCLOSURE_EMAILER_SKIP: nothing armed` and stop.
-**No notification** (the post-send notification is fired by the postprocess only when
-something actually sends).
+**No notification** on an empty/nothing-armed run — only send the summary notify (C4) when something actually goes out.
 
 ### C1. Load the queue and the sent-ledger
 
@@ -571,52 +570,51 @@ the isolated body still contains operator-scaffolding phrases, **skip the draft 
 log it** — never risk emailing the preamble. Do not invent or rewrite the body; send
 exactly what the draft author staged.
 
-### C4. Prioritize, then queue (do NOT send here)
+### C4. Prioritize, then send in-run (fail-closed)
 
-The sender only dispatches **one email per day** (a deliberate drip — see Guidelines),
-so the order matters: the single slot must go to the **most important** pending
-disclosure. **Sort eligible drafts by severity (critical → high → medium → low), then
-oldest `detected_at` first.** Queue them with a zero-padded rank prefix so the sender —
-which processes `.pending-email/*.json` in sorted glob order — always spends its slot on
-rank `00` first:
+The arm dispatches at most **one email per day** (a deliberate drip — see Guidelines),
+so **sort eligible drafts by severity (critical → high → medium → low), then oldest
+`detected_at` first** — the single daily slot must go to the most important disclosure.
+Then send, in that order, applying every gate below. Any gate that fails, is unset, or
+errors ⇒ **do not send that draft** — leave it for a later run; never fall through to
+sending. Only `./secretcurl`, `jq`, `python3`, `grep`, `date`, `echo`, `mkdir`, and the
+`Write`/`Edit` tools are available (no `mv`/`awk`/`sha256sum`/`mktemp`).
 
-```bash
-mkdir -p .pending-email
-# rank = 00 for the most urgent, 01 next, … (queue ALL eligible; the sender caps itself)
-```
+**Global gates (once, before the loop):**
+1. **Kill-switch.** `$DISCLOSURE_EMAIL_PAUSED` in `1/true/yes/on` → log `DISCLOSURE_EMAILER_SKIP: paused`, stop.
+2. **Config.** Presence-check with the `${VAR:+x}` form — a **bare** `$RESEND_API_KEY` trips the secret-expansion analyzer and falsely reads as unset (idiom documented in `narrative-tracker`): `{ [ -n "${RESEND_API_KEY:+x}" ] && [ -n "${RESEND_FROM:+x}" ]; }`. If either is unset → log `DISCLOSURE_EMAILER_SKIP: resend not configured`, stop (drafts stay queued; nothing lost).
+3. **Budget.** Seed `memory/email-log.json` to `[]` if missing/corrupt. `SENT_TODAY = jq '[.[]|select((.sent_at//"")|startswith($TODAY))]|length'` — if that isn't a clean integer (ledger unreadable), **fail closed**: stop, send nothing. Else `BUDGET = min(${DISCLOSURE_EMAIL_MAX_PER_RUN:-1}, ${DISCLOSURE_EMAIL_DAILY_CAP:-1} - SENT_TODAY)`; if `BUDGET <= 0` → `DISCLOSURE_EMAILER_SKIP: daily cap`, stop.
 
-Write one JSON request per eligible draft to `.pending-email/<NN>-<slug>.json`:
+**Per draft (stop the loop once `BUDGET` sends have gone out):**
+4. **Dedup / status.** Skip if `slug` (repo with `/`→`-`) is already a row in `memory/email-log.json`, or the draft's own `status:` is already `email-sent`/`email-failed`.
+5. **Recipient sanity.** `to` must match `^[^@[:space:]]+@[^@[:space:]]+\.[^@[:space:]]+$` (`grep -qE`) — else skip + warn.
+6. **Cooldown.** If this `to` was emailed within `${DISCLOSURE_EMAIL_COOLDOWN_DAYS:-7}` days (latest `.to`→`.sent_at` in the ledger, `python3` datetime diff) → skip, leave queued, retry after the window. A cooled-down draft does **not** consume the budget — move to the next.
+7. **Secret tripwire.** If subject+body match `grep -qE '(sk-[A-Za-z0-9]{20}|re_[A-Za-z0-9]{8}[A-Za-z0-9_]{12}|gh[pousr]_[A-Za-z0-9]{20}|AKIA[0-9A-Z]{16}|AIza[0-9A-Za-z_-]{20}|-----BEGIN [A-Z ]*PRIVATE KEY-----)'` → **do not send**, log `BLOCKED: possible secret in body`, leave for operator review.
+8. **Build cc** = the draft's `cc` (array or comma-string) + `$RESEND_CC` (operator audit copy), minus blanks and the `to`, deduped (`jq`).
+9. **Build payload + send.** Build the JSON body with `python3`, reading `RESEND_FROM`/`RESEND_REPLY_TO` from `os.environ` (never a `--arg from "$RESEND_FROM"` on the line — that risks the analyzer block); pass only the non-secret `to`/`subject`/`body`/`cc` as argv. Then POST with `./secretcurl` (the `{RESEND_API_KEY}` header placeholder is substituted inside the script); the clean `slug` is the idempotency key:
+   ```bash
+   PAYLOAD=$(python3 - "$TO" "$SUBJECT" "$BODY" "$CC_JSON" <<'PY'
+   import os, sys, json
+   to, subject, text, cc = sys.argv[1], sys.argv[2], sys.argv[3], json.loads(sys.argv[4] or "[]")
+   p = {"from": os.environ["RESEND_FROM"], "to": [to], "subject": subject, "text": text}
+   if os.environ.get("RESEND_REPLY_TO"): p["reply_to"] = os.environ["RESEND_REPLY_TO"]
+   if cc: p["cc"] = cc
+   print(json.dumps(p))
+   PY
+   )
+   ./secretcurl -sS --max-time 30 -w 'http=%{http_code}\n' -X POST "https://api.resend.com/emails" \
+     -H "Authorization: Bearer {RESEND_API_KEY}" -H "Content-Type: application/json" \
+     -H "Idempotency-Key: $SLUG" -d "$PAYLOAD"
+   ```
+   Print `http=<code>`. Body has `.id` ⇒ **sent**; no `.id` / non-2xx ⇒ **failed**.
+10. **On send:** append `{slug,repo,to,subject,resend_id,sent_at}` to `memory/email-log.json` (via `python3`/`Write` — no `mv`), and flip the draft's frontmatter `status: email-sent` (+ `email_id`/`email_sent_at`/`email_to`) with `Edit`/`python3`. Decrement `BUDGET`.
+11. **On failure:** bump the draft's `send_attempts` in frontmatter; once it reaches `${DISCLOSURE_EMAIL_MAX_ATTEMPTS:-3}`, flip `status: email-failed` so it stops retrying and the operator can fix the contact. Leave the draft queued otherwise (retried next run). Do **not** decrement `BUDGET` on failure.
 
-```json
-{
-  "draft_path": "memory/pending-disclosures/<file>.md",
-  "repo": "owner/repo",
-  "slug": "owner-repo",
-  "to": "maintainer@example.com",
-  "cc": ["security@example.com"],
-  "subject": "<email_subject>",
-  "text": "<full extracted body>",
-  "severity": "medium"
-}
-```
+### C5. Notify + log
 
-`cc` carries the draft's required CC addresses (a JSON array; a comma-separated string
-is also accepted). Omit it or use `[]`/`""` when there are none — the sender always
-adds the operator audit copy regardless. The `slug` field stays clean (no rank
-prefix) — it's the dedup key. Use the Write tool
-(or `jq -n … > .pending-email/<NN>-<slug>.json`) so the multi-line body is encoded
-safely. `scripts/postprocess-email.sh` picks these up after you exit, sends the
-highest-rank one(s) within the daily budget, appends to `memory/email-log.json`, flips
-the sent draft to `status: email-sent`, CCs the operator, and fires the post-send
-notification. Drafts not reached today are re-queued next run.
+After the loop, if anything sent (or hard-failed), send **one** `./notify` summary — the drafts that went out (repo → to, with the Resend id) and any that gave up (`email-failed`, need operator). Nothing sent and nothing failed ⇒ no notification.
 
-### C5. Log the run
-
-Log per the **Log** section below with `Mode: disclose`.
-
-Do **not** send a `./notify` in this arm — the authoritative "sent / failed" notification
-(with the Resend message id, and any failures to retry) comes from the postprocess
-*after* the send. Queuing without sending is the whole point of the postprocess split.
+Then log per the **Log** section below with `Mode: disclose`.
 
 ### Draft format (what Arm A emits for an auto-sendable email draft)
 
@@ -686,7 +684,7 @@ specific bullets.
 - Drafts scanned: {N}
 - Eligible / queued: {M}  ({list of repo -> contact})
 - Skipped: {reasons — not-armed, already-sent, no-channel, unsafe-body}
-- Note: actual send + delivery status handled by postprocess-email.sh (see post-send notification)
+- Note: Arm C sends in-run via Resend (`./secretcurl`) behind the C4 caps; the summary notify reports what went out
 - DISCLOSURE_EMAILER_OK   (or DISCLOSURE_EMAILER_SKIP: <reason>)
 ```
 
@@ -701,15 +699,15 @@ This two-part fix resolves ISS-001 (binaries installed *and* runnable). If any s
 
 **Arm B (re-submit).** `gh api` uses the `GH_TOKEN` env var internally (the workflow wires `GH_GLOBAL` in). If `gh api` fails, use the `curl` fallback in step B2. No outbound auth-required calls except `gh api`.
 
-**Arm C (disclose).** The send is an **irreversible** outbound call (a disclosure email). Irreversible side-effects go through the on-success gate, not the skill: this arm **only writes `.pending-email/*.json`** — it must not attempt the HTTP POST itself. The workflow runs `scripts/postprocess-email.sh` *after* Claude finishes, with `RESEND_API_KEY` in env, to do the real send (post-process pattern, like `.pending-replicate/`). This arm needs **no network and no secrets** — pure local file reads + a queue write.
+**Arm C (disclose).** The send is an **irreversible** outbound call (a disclosure email), so it runs **in-run as the arm's final action, behind the C4 fail-closed caps**. Make the Resend POST with `./secretcurl` and the `{RESEND_API_KEY}` placeholder — a bare `$RESEND_API_KEY` on the command line is refused by the Bash permission layer. `RESEND_API_KEY` / `RESEND_FROM` / `RESEND_REPLY_TO` are injected in-run via this skill's `requires:`; `RESEND_CC` + the `DISCLOSURE_EMAIL_*` caps are read from the run env. There is no deferred/postprocess step — a failed send is logged (`email-failed` after the attempt cap), not queued to a later runner.
 
-General network rules: `curl` works, with **WebFetch** as the fallback for a plain URL fetch. For anything requiring a token, use `gh api` (handles auth internally) or `./secretcurl` with a `{ENV_NAME}` placeholder; reserve `.pending-*/` + `scripts/postprocess-*.sh` for irreversible side-effects (see CLAUDE.md).
+General network rules: `curl` works, with **WebFetch** as the fallback for a plain URL fetch. For anything requiring a token, use `gh api` (handles auth internally) or `./secretcurl` with a `{ENV_NAME}` placeholder. The deferred `.pending-*/` + `scripts/postprocess-*.sh` on-success gate is reserved for side-effects that genuinely cannot run in-turn (see CLAUDE.md) — Arm C's send is not one of them.
 
 ## Environment variables
 
 - `GH_TOKEN` / `GITHUB_TOKEN` — required for Arm A. Classic `repo` scope is sufficient, **including** private vulnerability reporting via the `/reports` endpoint (step A5b / B3). `repository_advisories:write` is only needed to *manage advisories on repos you own* — it is **not** required to report to third-party repos, and its absence is not the reason a report fails (see step A5b for the real failure modes: a **missing `vulnerabilities` array** → `500` (by far the most common — fixable in-band), PVR-disabled `403`, or a genuine GitHub API `5xx`).
 - `GH_GLOBAL` — GitHub PAT with `public_repo` + `repository_advisories:write` scope, used by Arm B (re-submit) for cross-repo `gh api` calls and the `curl` fallback. Same token family as Arm A. Optional (Arm B falls back to the ambient `gh` auth where present).
-- `RESEND_API_KEY` — Resend API key, consumed by the **postprocess** (not this skill), for Arm C sends. If unset, the postprocess skips and drafts stay queued (no send, no error). Optional.
+- `RESEND_API_KEY` — Resend API key, used **in-run** by Arm C's send (injected via `requires:`). If unset, Arm C skips the send and drafts stay queued (no send, no error). Optional.
 - `RESEND_FROM` — verified sender, e.g. `Security <disclosures@send.example.com>`.
   **Must be on a domain/subdomain verified in Resend** (SPF+DKIM+DMARC). A subdomain
   is recommended so disclosure mail can't damage the root domain's reputation.

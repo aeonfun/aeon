@@ -332,6 +332,17 @@ jobs:
           NOTIFY_EMAIL_FROM: ${{ vars.NOTIFY_EMAIL_FROM || 'aeon@notifications.aeon.bot' }}
           NOTIFY_EMAIL_SUBJECT_PREFIX: ${{ vars.NOTIFY_EMAIL_SUBJECT_PREFIX || '[Aeon]' }}
           GROK_CREDENTIALS: ${{ secrets.GROK_CREDENTIALS }}
+          # Send caps + audit CC for the IN-RUN email senders (send-email + vuln-scanner
+          # Arm C). RESEND_API_KEY / RESEND_FROM / RESEND_REPLY_TO are per-skill secrets
+          # injected via `requires:`; these are non-secret repo vars, bound here so the
+          # in-run send (and its fail-closed caps) can read them. Unset => sensible
+          # defaults in the skill (daily cap 1, cooldown 7d, not paused).
+          RESEND_CC: ${{ vars.RESEND_CC }}
+          DISCLOSURE_EMAIL_PAUSED: ${{ vars.DISCLOSURE_EMAIL_PAUSED }}
+          DISCLOSURE_EMAIL_MAX_PER_RUN: ${{ vars.DISCLOSURE_EMAIL_MAX_PER_RUN }}
+          DISCLOSURE_EMAIL_DAILY_CAP: ${{ vars.DISCLOSURE_EMAIL_DAILY_CAP }}
+          DISCLOSURE_EMAIL_MAX_ATTEMPTS: ${{ vars.DISCLOSURE_EMAIL_MAX_ATTEMPTS }}
+          DISCLOSURE_EMAIL_COOLDOWN_DAYS: ${{ vars.DISCLOSURE_EMAIL_COOLDOWN_DAYS }}
           # Per-skill least privilege: skill-facing API keys are NO LONGER injected
           # statically for every skill. Each skill now receives ONLY the keys it
           # declares in its `requires:` frontmatter — resolved from ALL_SECRETS in the
@@ -1125,25 +1136,19 @@ jobs:
 
       - name: Run post-process scripts
         if: steps.work.outputs.mode != '' && steps.run.outcome == 'success'
+        # On-success gate for irreversible side-effects that genuinely can't run
+        # in-turn. Email (send-email / vuln-scanner Arm C), Replicate images
+        # (article), and AdManage launches/creates (schedule-ads) now run IN-RUN
+        # via ./secretcurl — they no longer have postprocess scripts. What remains
+        # here is the general mechanism for skills that ship an operator-provided
+        # postprocess script (e.g. deploy-prototype -> postprocess-deploy.sh with
+        # VERCEL_TOKEN; distribute-tokens -> postprocess-bankr.sh). The loop is a
+        # no-op when no scripts/postprocess-*.sh exist.
         env:
           XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          REPLICATE_API_TOKEN: ${{ secrets.REPLICATE_API_TOKEN }}
-          # disclosure-emailer (scripts/postprocess-email.sh): outbound private vuln
-          # disclosures to maintainers via Resend. RESEND_FROM must be a Resend-verified
-          # (sub)domain; RESEND_REPLY_TO a human inbox. Unset => drafts stay queued in
-          # .pending-email/ and nothing is sent.
-          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-          RESEND_FROM: ${{ secrets.RESEND_FROM }}
-          RESEND_REPLY_TO: ${{ secrets.RESEND_REPLY_TO }}
-          RESEND_CC: ${{ vars.RESEND_CC }}
-          DISCLOSURE_EMAIL_PAUSED: ${{ vars.DISCLOSURE_EMAIL_PAUSED }}
-          DISCLOSURE_EMAIL_MAX_PER_RUN: ${{ vars.DISCLOSURE_EMAIL_MAX_PER_RUN }}
-          DISCLOSURE_EMAIL_DAILY_CAP: ${{ vars.DISCLOSURE_EMAIL_DAILY_CAP }}
-          DISCLOSURE_EMAIL_MAX_ATTEMPTS: ${{ vars.DISCLOSURE_EMAIL_MAX_ATTEMPTS }}
-          DISCLOSURE_EMAIL_COOLDOWN_DAYS: ${{ vars.DISCLOSURE_EMAIL_COOLDOWN_DAYS }}
         run: |
-          # Run all scripts/postprocess-*.sh after Claude finishes.
+          # Run any scripts/postprocess-*.sh after Claude finishes.
           # Each script handles its own .pending-{service}/ directory
           # and checks its own env vars. Exit 0 if nothing to do.
           for script in scripts/postprocess-*.sh; do
