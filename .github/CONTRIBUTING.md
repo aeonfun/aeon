@@ -89,7 +89,7 @@ Give it a clear license, then validate before publishing:
 
 The full manifest schema, field reference, trust model, and a worked example are in [`docs/community-skill-packs.md`](../docs/community-skill-packs.md).
 
-**3. List it in the registry.** With your pack repo public, open a PR here that adds **both**: a row to the **Community Skill Packs** table in the [README](README.md#community-skill-packs) **and** a matching entry in [`catalog/skill-packs.json`](../catalog/skill-packs.json). Full steps: the [publishing checklist](../docs/community-skill-packs.md#pack-maintainers-publishing-checklist).
+**3. List it in the registry.** With your pack repo public, open a PR here that adds **both**: a row to the **Community Packs** table in the [README](README.md#community-packs) **and** a matching entry in [`catalog/skill-packs.json`](../catalog/skill-packs.json). Full steps: the [publishing checklist](../docs/community-skill-packs.md#pack-maintainers-publishing-checklist).
 
 ### Contributing an LLM gateway
 
