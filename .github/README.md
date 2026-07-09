@@ -128,7 +128,11 @@ Aeon can spawn and manage copies of itself. `spawn-instance` forks the repo into
 
 ### It ships real work
 
-`feature` ships code unprompted - to your watched repos, or to any repo with `var: external:<owner/repo>`. `deploy-prototype` generates and deploys live web apps to Vercel. `vuln-scanner` finds real code vulnerabilities and reports them only through the maintainer's private channel - GitHub's advisory system or a private email, never a public issue - with drafts waiting for your review by default and any project that declines AI-authored reports skipped. `autoresearch` evolves existing skills through scored variations, and `create-skill` generates new ones from a sentence.
+- **`feature`** - ships code unprompted, to your watched repos or any repo with `var: external:<owner/repo>`.
+- **`deploy-prototype`** - generates and deploys live web apps to Vercel.
+- **`vuln-scanner`** - finds real code vulnerabilities and reports them only through the maintainer's private channel (GitHub's advisory system or a private email, never a public issue), with drafts waiting for your review by default and any project that declines AI-authored reports skipped.
+- **`autoresearch`** - evolves existing skills through scored variations.
+- **`create-skill`** - generates new ones from a sentence.
 
 ### Add more skills
 
@@ -144,7 +148,7 @@ Installed skills land in `skills/` and are added to `aeon.yml` disabled - flip `
 - **Build your own** from [`docs/examples/skill-templates/`](../docs/examples/skill-templates/TEMPLATE.md): `bin/new-from-template <template> <skill-name> --category <pack>` - the `--category` slots it into a pack (or set `category:` in the SKILL.md frontmatter). See [`docs/skill-packs.md`](../docs/skill-packs.md).
 - **Use one skill elsewhere** without forking: drop a portable workflow from [`docs/examples/workflow-templates/`](../docs/examples/workflow-templates) into any repo's `.github/workflows/`.
 - **Label any GitHub issue `ai-build`** - Claude reads the issue, implements it, and opens a PR
-- **Install community packs** - see [Community skill packs](#community-skill-packs)
+- **Install community packs** - see [Community Packs](#community-packs)
 
 ---
 
@@ -154,12 +158,9 @@ Aeon's skills ship to production. These numbers are live at **[aeon.fun](https:/
 
 | Skill | In production |
 |-------|---------------|
-| **`vuln-scanner`** | **54 open-source repos secured** - real vulnerabilities found, patched, and responsibly disclosed across projects with **~1.6M combined GitHub stars** (31 rated High/Critical). [Every disclosure →](https://www.aeon.fun/security) |
+| **`vuln-scanner`** | **~1.6M GitHub stars secured** - real vulnerabilities found, patched, and responsibly disclosed across 54 open-source projects (31 rated High/Critical). [Every disclosure →](https://www.aeon.fun/security) |
 | **ecosystem** | **72 products & agents** built on Aeon. [`ECOSYSTEM.md`](../docs/ECOSYSTEM.md) |
-| **`fork-fleet`** | **24 active forks** running their own Aeon instances. [`SHOWCASE.md`](../docs/SHOWCASE.md) |
 | **community** | **10 community skill packs** published to the registry. [`community-skill-packs.md`](../docs/community-skill-packs.md) |
-
-<sub>Security figures are a snapshot as of 2026-07-06; the live dashboard updates continuously.</sub>
 
 **One skill, end to end.** `vuln-scanner` clones a repo from your watchlist, runs Semgrep, OSV, and TruffleHog, then triages the hits hard - a finding ships only if it's exploitable, not theoretical, and you'd defend it to the maintainer's face. Most are discarded. What survives becomes a maintainer-ready report, sent through the repo's private advisory channel with a proposed patch pushed to your fork for the maintainer to cherry-pick. That loop, run across the open-source wild, is what the numbers above are made of.
 
@@ -290,23 +291,7 @@ The dashboard surfaces this as an **API keys** panel on each skill (set/unset st
 
 ---
 
-## Reference & advanced
-
-Everything above gets you running. The deeper reference lives in [`docs/`](../docs) so this page stays short.
-
-- **[Configuration & advanced](../docs/CONFIGURATION.md)** - skill chaining, reactive triggers, scheduler frequency, capability modes, MCP in runs, cross-repo tokens, `STRATEGY.md` / soul, Fleet Watcher, remote dashboard, two-repo setup, Actions cost.
-- **[LLM gateways](../docs/CONFIGURATION.md#llm-gateways)** - eight ways to power Claude Code, resolved by an automatic fail-over cascade.
-- **[Harnesses](../docs/harnesses.md)** - run skills on Claude Code or the Grok CLI; token accounting and per-skill knobs.
-- **[Knowledge (OKF)](../docs/OKF.md)** - Aeon's memory is a portable Open Knowledge Format bundle other agents can read.
-- **[Use Aeon's skills from Claude](../apps/mcp-server/README.md)** - every skill as an `aeon-<name>` MCP tool in Claude Desktop and Code.
-- **[Command line](../apps/cli/README.md)** - the whole dashboard as scriptable `./aeon` commands.
-- **[Telegram instant mode](../apps/webhook/README.md)** - ~1s replies via a self-hosted Cloudflare Worker.
-- **[Observability](../docs/langfuse.md)** and **[provenance](../docs/attestation.md)** - optional Langfuse tracing and Sigstore attestation.
-- **[Project layout](CONTRIBUTING.md#project-layout)** - an annotated tour of the repo.
-
----
-
-## Community skill packs
+## Community Packs
 
 ![Aeon Framework ecosystem map](../docs/assets/ecosystem-aeon.jpg)
 
@@ -327,16 +312,16 @@ Either way the installer reads the pack's `skills-pack.json` manifest, runs the 
 
 | Pack | Skills | Description |
 |------|--------|-------------|
-| [aeon-skills](https://github.com/AntFleet/aeon-skills) | 2 | Two-model-consensus PR review (Opus 4.7 + GPT-5) - channel drawdown for installed repos, x402 pay-per-call for public repos |
-| [aeon-skill-pack-liquidpad](https://github.com/liquidpadbot/aeon-skill-pack-liquidpad) | 4 | Track LiquidPad on Base - burn cycle alerts, new token launches with onchain provenance, daily protocol digest, and fee accrual tracking |
-| [aeon-skill-pack-mythosforge](https://github.com/ryjin111/aeon-skill-pack-mythosforge) | 5 | Read-only MythosForge monitoring - ops/backlog/jury/payout health, proof-of-creation integrity on Base, theme/round guard against silent relabels, jury-drift detection, and live gallery/proof-page QA |
-| [signa](https://github.com/codexvritra/signa) (`--path aeon-skills`) | 20 | Full SIGNA suite - wallet-signed cross-platform agent messaging, multi-agent broadcast and delegate, encrypted rooms + ERC-8004 trust gate, plus Bankr resolver / launches, gitlawb, MiroShark, and **x402 receipts + bounded spend mandates** (a human grants a signed budget, the agent spends within it and asks for more) |
-| [Atrium Skills](https://github.com/Atrium-Hermes/aeon-atrium-skills) | 3 | Publish, monetize & discover agent skills on Atrium - the onchain skill marketplace on Base. atrium-publish (DID-signed, IPFS-pinned, USDC-earning), atrium-scout (rents skills matching open loops), atrium-earnings (tracks and withdraws creator USDC) |
-| [aeon-skill-pack-mneme](https://github.com/mnemedb/aeon-skill-pack-mneme) | 8 | Mneme as Aeon's persistent memory layer - vector recall across runs, entity/relation graph, live Base chain streams, async LLM "dream" reflections, and schema-aware /chat. One `MNEME_API_KEY`, zero infra. |
-| [clawhunter-skills](https://github.com/clawhunter/clawhunter-skills) | 2 | Aggregates and AI-triages crypto bounties across venues (Pump Fun GO, Atelier, EarnFi, tiny.place) and matches each to your agent with a plan to win - plus paid research and create tools (voice tones, logo-grounded images, Kling video direction, web + X research). Paid tools settle via x402 (USDC on Solana or Base). |
-| [Polymarket Trader by Simmer](https://github.com/SpartanLabsXyz/aeon-skill-pack-polymarket/tree/main/aeon-skill-pack) (`--path aeon-skill-pack`) | 3 | Signal, discovery, and real position-taking on **Polymarket** - the deepest prediction-market venue - powered by Simmer. Unlike monitor-only packs, polymarket-trade places actual orders (simulate-by-default, live opt-in, bounded) |
-| [Charon for AEON](https://github.com/CharonAI-code/charon/tree/main/skills/aeon) (`--path skills/aeon`) | 2 | Repo-local policy enforcement for AEON runs, with guided setup and natural-language policy management |
-| [aeon-skill-pack-agentlink](https://github.com/techdigger/aeon-skill-pack-agentlink) | 1 | Give an agent a verified, human-backed on-chain identity on Base via AgentLink - checks link status, hands the human owner a linker URL to biomap + sign, then signs requests to free partner endpoints (XONA, WURK). Read-only, on-demand. |
+| [aeon-skills](https://github.com/AntFleet/aeon-skills) | 2 | Two-model-consensus PR review (Opus 4.7 + GPT-5), x402 pay-per-call for public repos. |
+| [aeon-skill-pack-liquidpad](https://github.com/liquidpadbot/aeon-skill-pack-liquidpad) | 4 | Track LiquidPad on Base: burn alerts, launches, digest, fee accrual. |
+| [aeon-skill-pack-mythosforge](https://github.com/ryjin111/aeon-skill-pack-mythosforge) | 5 | Read-only MythosForge monitoring: ops/jury/payout health and proof-of-creation integrity on Base. |
+| [signa](https://github.com/codexvritra/signa) (`--path aeon-skills`) | 20 | Wallet-signed cross-platform agent messaging, encrypted rooms, and x402 bounded-spend mandates. |
+| [Atrium Skills](https://github.com/Atrium-Hermes/aeon-atrium-skills) | 3 | Publish, rent, and earn from agent skills on Atrium, the onchain skill marketplace on Base. |
+| [aeon-skill-pack-mneme](https://github.com/mnemedb/aeon-skill-pack-mneme) | 8 | Persistent memory layer: vector recall, entity graph, and Base chain streams. One key, zero infra. |
+| [clawhunter-skills](https://github.com/clawhunter/clawhunter-skills) | 2 | Aggregates and AI-triages crypto bounties across venues; paid research/create tools settle via x402. |
+| [Polymarket Trader by Simmer](https://github.com/SpartanLabsXyz/aeon-skill-pack-polymarket/tree/main/aeon-skill-pack) (`--path aeon-skill-pack`) | 3 | Signal, discovery, and real order-placing on Polymarket (simulate-by-default, live opt-in). |
+| [Charon for AEON](https://github.com/CharonAI-code/charon/tree/main/skills/aeon) (`--path skills/aeon`) | 2 | Repo-local policy enforcement for AEON runs, with natural-language policy management. |
+| [aeon-skill-pack-agentlink](https://github.com/techdigger/aeon-skill-pack-agentlink) | 1 | Verified, human-backed on-chain identity on Base via AgentLink. Read-only, on-demand. |
 
 **To list a pack here**, open a PR that adds a table row **and** a matching [`catalog/skill-packs.json`](../catalog/skill-packs.json) entry. The full checklist - public repo + license, a per-skill `SKILL.md`, a `skills-pack.json` manifest, the registry schema, and the trust model - is in [`docs/community-skill-packs.md`](../docs/community-skill-packs.md#pack-maintainers-publishing-checklist).
 
@@ -347,3 +332,19 @@ Either way the installer reads the pack's `skills-pack.json` manifest, runs the 
 [![Star History Chart](https://api.star-history.com/svg?repos=aaronjmars/aeon&type=Date)](https://www.star-history.com/#aaronjmars/aeon&Date)
 
 Support the project : 0xbf8e8f0e8866a7052f948c16508644347c57aba3
+
+---
+
+## Reference & advanced
+
+Everything above gets you running. The deeper reference lives in [`docs/`](../docs) so this page stays short.
+
+- **[Configuration & advanced](../docs/CONFIGURATION.md)** - skill chaining, reactive triggers, scheduler frequency, capability modes, MCP in runs, cross-repo tokens, `STRATEGY.md` / soul, Fleet Watcher, remote dashboard, two-repo setup, Actions cost.
+- **[LLM gateways](../docs/CONFIGURATION.md#llm-gateways)** - eight ways to power Claude Code, resolved by an automatic fail-over cascade.
+- **[Harnesses](../docs/harnesses.md)** - run skills on Claude Code or the Grok CLI; token accounting and per-skill knobs.
+- **[Knowledge (OKF)](../docs/OKF.md)** - Aeon's memory is a portable Open Knowledge Format bundle other agents can read.
+- **[Use Aeon's skills from Claude](../apps/mcp-server/README.md)** - every skill as an `aeon-<name>` MCP tool in Claude Desktop and Code.
+- **[Command line](../apps/cli/README.md)** - the whole dashboard as scriptable `./aeon` commands.
+- **[Telegram instant mode](../apps/webhook/README.md)** - ~1s replies via a self-hosted Cloudflare Worker.
+- **[Observability](../docs/langfuse.md)** and **[provenance](../docs/attestation.md)** - optional Langfuse tracing and Sigstore attestation.
+- **[Project layout](CONTRIBUTING.md#project-layout)** - an annotated tour of the repo.
