@@ -39,12 +39,12 @@ cd aeon && ./aeon
 
 Open [http://localhost:5555](http://localhost:5555) and follow the four steps:
 
-1. **Authenticate** - connect your Claude Pro/Max subscription or your X account (for the [Grok harness](#harnesses)), or paste an API key: Anthropic, Anthropic-compatible, or a [gateway key](#llm-gateways) (Bankr, OpenRouter, UsePod, Venice, Surplus, Grok) - routed automatically.
+1. **Authenticate** - connect your Claude Pro/Max subscription or your X account (for the [Grok harness](#harnesses)), or paste an API key — Anthropic, Anthropic-compatible, or an [LLM gateway](#llm-gateways) key, routed automatically by prefix.
 2. **Add a channel** - [Telegram, Discord, Slack, or email](#notifications) so Aeon can talk to you.
 3. **Pick skills** - toggle what you want, set schedules. Each skill shows the API keys and MCP servers it needs, with one-click setup.
 4. **Run** - hit **Run now** on any skill to try it immediately; API keys and `var` values apply directly, no push needed. When you change config (schedules, toggles), **Push** commits it to GitHub in one click so Actions runs it on cron.
 
-That's it - Aeon now runs unattended. On a public repo, GitHub Actions minutes are **free**.
+That's it - Aeon now runs unattended.
 
 Dashboard views, local dev, env vars, and remote access are documented in [`apps/dashboard/README.md`](../apps/dashboard/README.md).
 
@@ -394,7 +394,7 @@ The built-in `GITHUB_TOKEN` is scoped to this repo only. For `github-monitor`, `
   <img src="../docs/assets/providers.png" alt="Eight AI providers supported: Claude subscription, Anthropic API, OpenRouter, Bankr, UsePod, Venice, Surplus, Grok" width="640" />
 </p>
 
-Aeon can power Claude Code **eight** ways. Two are **direct** to Anthropic; the other six route through a **gateway**. You add a credential in the dashboard's Authenticate modal - paste it and the provider is detected from its prefix (or picked from the dropdown) and saved as the secret below. (Separately, the [Grok Build harness](#harnesses) runs the `grok` CLI instead of Claude Code — that's a different axis from the gateways here.)
+Aeon can power Claude Code **eight** ways. Two are **direct** to Anthropic; the other six route through a **gateway**. Add a credential in the dashboard's Authenticate modal and it's saved as the secret below. (Separately, the [Grok Build harness](#harnesses) runs the `grok` CLI instead of Claude Code — that's a different axis from the gateways here.)
 
 **Routing is automatic.** `aeon.yml` ships `gateway: { provider: auto }`, and each run resolves the live provider from *whichever secrets are set*, in priority order - so adding or removing a key changes routing with no re-config:
 
@@ -407,12 +407,7 @@ It runs as a **cascade**: the highest-priority provider whose key is set goes fi
 
 Override the order with the repo variable **`GATEWAY_ORDER`** (space-separated names), or pin a single provider (which disables failover) by setting `gateway.provider` to `direct`/`bankr`/`openrouter`/`usepod`/`venice`/`surplus`/`grok` explicitly.
 
-**Direct (`provider: direct`)** - the official Anthropic API, no middleman:
-
-| Mode | Credential | Notes |
-|------|-----------|-------|
-| <img src="https://icons.duckduckgo.com/ip3/anthropic.com.ico" width="16" valign="middle"> Claude subscription | `CLAUDE_CODE_OAUTH_TOKEN` | Your Claude Pro/Max plan - **Connect** in the modal runs the OAuth flow; no per-token billing |
-| <img src="https://icons.duckduckgo.com/ip3/anthropic.com.ico" width="16" valign="middle"> Anthropic API | `ANTHROPIC_API_KEY` | Pay-as-you-go API key (or any Anthropic-compatible endpoint via `ANTHROPIC_BASE_URL`) |
+**Direct (`provider: direct`)** - the two Anthropic-native modes from [Authentication](#authentication) above (Claude subscription via `CLAUDE_CODE_OAUTH_TOKEN`, Anthropic API via `ANTHROPIC_API_KEY`), no middleman. Point `ANTHROPIC_API_KEY` at any Anthropic-compatible endpoint with the `ANTHROPIC_BASE_URL` variable.
 
 **Gateways** - route Claude through an alternative provider (cheaper Opus, crypto-settled, privacy-first…). Keys with a distinctive prefix are detected automatically; UsePod and Venice have no prefix, so pick them in the dropdown:
 
@@ -591,7 +586,7 @@ Aeon is an AI agent system that runs unattended on GitHub Actions, self-heals wh
 
 ### Can I create custom skills?
 
-Yes. Bootstrap from [`docs/examples/skill-templates/`](../docs/examples/skill-templates/TEMPLATE.md) (`bin/new-from-template <template> <skill-name> --var KEY=VALUE...`), describe one to the `create-skill` skill, or label a GitHub issue `ai-build` and let Aeon build it.
+Yes — describe one to the `create-skill` skill, or scaffold and import your own. Full commands and every way to add skills are in [Add more skills](#add-more-skills).
 
 ### Troubleshooting
 
