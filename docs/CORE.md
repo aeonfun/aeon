@@ -111,7 +111,7 @@ Hard rules: one enhancement per run, never push to main, no unrelated refactors,
 
 Scans `memory/topics/` and recent logs for a prototype-worthy signal, scores candidates on leverage / concreteness / novelty (must clear 9/15 or it exits `DEPLOY_PROTOTYPE_EMPTY`). Commits to a shape (slug, tagline, primary action, static-vs-API-vs-Next), then writes the files into `.pending-deploy/files/` against a strict quality bar: self-contained, sub-1s load, mobile-first, OG tags, real data from public no-auth endpoints (no lorem), light / dark via `prefers-color-scheme`, no secrets.
 
-Runs pre-flight checks (≤20 files, ≤4MB, slug regex, greps for leaked tokens and for TODO / placeholder), writes a prototype record + `prototypes.md` row. The actual GitHub-repo-create + Vercel deploy is handled by `scripts/postprocess-deploy.sh` (reads `.pending-deploy/`, uses `VERCEL_TOKEN` / `GH_GLOBAL`) — the skill flags `DEPLOY_PROTOTYPE_NO_POSTPROCESS` if that script is missing.
+Runs pre-flight checks (≤20 files, ≤4MB, slug regex, greps for leaked tokens and for TODO / placeholder), writes a prototype record + `prototypes.md` row, then deploys **in-run** as its final fail-closed action: the Vercel deployment via `./secretcurl` (`{VERCEL_TOKEN}`) plus an optional `gh` source mirror (ambient `GH_GLOBAL`). No `VERCEL_TOKEN` → build-only (`DEPLOY_PROTOTYPE_NO_TOKEN`); a failed API call → `DEPLOY_PROTOTYPE_DEPLOY_FAILED` with `.pending-deploy/` kept for retry.
 
 ### [`vuln-scanner`](../skills/vuln-scanner/SKILL.md) — finds real vulns and discloses responsibly
 

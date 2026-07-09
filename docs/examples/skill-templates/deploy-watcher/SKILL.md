@@ -37,7 +37,7 @@ If either secret is missing, log `DEPLOY_WATCH_NO_TOKEN` and exit cleanly — ne
      echo "DEPLOY_WATCH_FETCH_FAIL: $?"
    ```
 
-   Make read-only status calls in-run with `./secretcurl` (write the key as `{VERCEL_TOKEN}` — a bare `$VERCEL_TOKEN` on the line is refused by the Bash permission layer). Reserve the **post-process pattern** — write a `.pending-deploy-watch/check.json` request and add a `scripts/postprocess-deploy-watch.sh` that runs after the Claude step — for the irreversible action (triggering a deploy), never for reads.
+   Make every Vercel call in-run with `./secretcurl` (write the key as `{VERCEL_TOKEN}` — a bare `$VERCEL_TOKEN` on the line is refused by the Bash permission layer). Read-only status checks and any **irreversible action** (e.g. triggering a deploy) both run in-run — the irreversible one as the skill's final, fail-closed action. Never defer a read.
 
 3. **Parse and classify** — for each deploy, capture: `uid`, `state` (READY / ERROR / CANCELED / BUILDING / QUEUED), `url`, `target` (production / preview), `creator`, `createdAt`, `meta.githubCommitMessage`.
 
@@ -72,7 +72,7 @@ If either secret is missing, log `DEPLOY_WATCH_NO_TOKEN` and exit cleanly — ne
 
 ## Network note
 
-The Vercel API requires `Authorization: Bearer {VERCEL_TOKEN}`. A bare `$SECRET` on a command line is refused by the Bash permission layer, so make the **read-only** status calls in-run with `./secretcurl` (write the key as the `{VERCEL_TOKEN}` placeholder — it keeps the secret off the line). Reserve the **post-process pattern** in CLAUDE.md (write request JSON to `.pending-deploy-watch/`, then `scripts/postprocess-deploy-watch.sh` runs after Claude with full env) for any **irreversible** action like triggering a deploy — never for reads.
+The Vercel API requires `Authorization: Bearer {VERCEL_TOKEN}`. A bare `$SECRET` on a command line is refused by the Bash permission layer, so make **every** Vercel call in-run with `./secretcurl` (write the key as the `{VERCEL_TOKEN}` placeholder — it keeps the secret off the line). Both the read-only status checks and any **irreversible** action (like triggering a deploy) run in-run; the irreversible one goes last, as the skill's final fail-closed action. Never defer a read.
 
 ## Constraints
 

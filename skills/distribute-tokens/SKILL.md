@@ -296,7 +296,7 @@ Read `memory/state/distributions.json` (if present) for send idempotency state b
 If `BANKR_API_KEY` not set → `DISTRIBUTE_TOKENS_ERROR — BANKR_API_KEY not configured`, log, exit.
 
 ```bash
-ME=$(curl -fsS "https://api.bankr.bot/wallet/me" -H "X-API-Key: ${BANKR_API_KEY}")
+ME=$(./secretcurl -fsS "https://api.bankr.bot/wallet/me" -H "X-API-Key: {BANKR_API_KEY}")
 ```
 
 - HTTP 403 → `DISTRIBUTE_TOKENS_ERROR — API key is read-only; needs wallet write scope`, exit.
@@ -304,7 +304,7 @@ ME=$(curl -fsS "https://api.bankr.bot/wallet/me" -H "X-API-Key: ${BANKR_API_KEY}
 - Network failure → use **WebFetch** fallback. If still failing → `DISTRIBUTE_TOKENS_ERROR — Bankr /wallet/me unreachable`, exit.
 
 ```bash
-PORTFOLIO=$(curl -fsS "https://api.bankr.bot/wallet/portfolio?chain=base" -H "X-API-Key: ${BANKR_API_KEY}")
+PORTFOLIO=$(./secretcurl -fsS "https://api.bankr.bot/wallet/portfolio?chain=base" -H "X-API-Key: {BANKR_API_KEY}")
 ```
 
 Extract sender's balance for the target token. Compute `total_required` from the recipient list (sum of per-recipient amounts, applying overrides). If `balance < total_required * 1.05` (5% headroom for any failed retries) → `DISTRIBUTE_TOKENS_ERROR — insufficient balance: have X, need Y ${TOKEN}`, exit. Do not start a partial run.
@@ -317,12 +317,12 @@ For each recipient, build a row: `{key, type, amount, token, target_address, lab
 
 **Handle resolution** (`@username`): use Bankr Agent API to look up the linked wallet:
 ```bash
-JOB=$(curl -fsS -X POST "https://api.bankr.bot/agent/prompt" \
-  -H "X-API-Key: ${BANKR_API_KEY}" -H "Content-Type: application/json" \
+JOB=$(./secretcurl -fsS -X POST "https://api.bankr.bot/agent/prompt" \
+  -H "X-API-Key: {BANKR_API_KEY}" -H "Content-Type: application/json" \
   -d "{\"prompt\":\"What is the EVM address linked to ${HANDLE} on Base? Respond with only the address.\"}" | jq -r '.jobId')
 # Poll every 2s, max 30s
 for i in $(seq 1 15); do
-  R=$(curl -fsS "https://api.bankr.bot/agent/job/${JOB}" -H "X-API-Key: ${BANKR_API_KEY}")
+  R=$(./secretcurl -fsS "https://api.bankr.bot/agent/job/${JOB}" -H "X-API-Key: {BANKR_API_KEY}")
   S=$(echo "$R" | jq -r '.status')
   [ "$S" = "completed" ] || [ "$S" = "failed" ] && break
   sleep 2
@@ -353,8 +353,8 @@ If 0 rows are `READY` (everything deduped/failed) → notify the plan, log, exit
 For each `READY` row, send via `/wallet/transfer` (the only sanctioned transfer endpoint per Bankr docs):
 
 ```bash
-RESP=$(curl -fsS -X POST "https://api.bankr.bot/wallet/transfer" \
-  -H "X-API-Key: ${BANKR_API_KEY}" -H "Content-Type: application/json" \
+RESP=$(./secretcurl -fsS -X POST "https://api.bankr.bot/wallet/transfer" \
+  -H "X-API-Key: {BANKR_API_KEY}" -H "Content-Type: application/json" \
   -d "{\"recipientAddress\":\"${ADDR}\",\"tokenAddress\":\"${TOKEN_ADDR}\",\"amount\":\"${AMT}\",\"isNativeToken\":${IS_NATIVE}}")
 ```
 
@@ -471,7 +471,7 @@ For `all:`, the terminal exit code is the send phase's code (or the Phase A earl
 ## Network note
 
 - **Plan phase (A):** ranks contributors via `gh api search/issues` (`gh` handles GitHub auth internally, so no secret ever lands on the command line). If `gh api` fails, fall back to **WebFetch** on the public `https://api.github.com/search/issues?q=…` URL. Also reads/writes `memory/state/contributor-reward-state.json`, `memory/distributions.yml`, `memory/logs/${today}.md`. No postprocess scripts required.
-- **Send phase (B):** `curl` reaches the network fine — there is no network sandbox; use **WebFetch** only as a fallback for a flaky unauthenticated GET (no body for GET). For an auth'd call, keep the secret off the command line — use `./secretcurl` with a `{ENV_NAME}` placeholder rather than a bare `$SECRET` (which the Bash permission layer refuses). `/wallet/transfer` is an irreversible money-movement write, so it goes through the on-success postprocess gate by design: queue the request as a JSON file under `.pending-bankr/` for a `scripts/postprocess-bankr.sh` runner; if that path is unavailable, mark the row `FAILED` reason `SANDBOX_BLOCKED` and continue. **Never silently drop a transfer.**
+- **Send phase (B):** every Bankr call is auth'd, so make it with `./secretcurl` using the `{BANKR_API_KEY}` placeholder — never a bare `$BANKR_API_KEY` (the Bash permission layer refuses a secret on the command line) and never plain `curl`. `/wallet/transfer` is an irreversible money-movement write; it runs **in-run** as the executor's final action (Phase B4), behind the B2 balance preflight and the per-recipient idempotency in `memory/state/distributions.json` (persisted after every send, so re-runs never double-pay). There is **no** deferred/postprocess step — a failed transfer is recorded (`FAILED` with its reason) and the run continues to the next row. **Never silently drop a transfer.**
 
 ## Constraints
 

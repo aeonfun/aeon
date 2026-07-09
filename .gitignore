@@ -14,9 +14,9 @@
 .*-cache/
 .tg_cache/
 
-# Pending queues — postprocess scripts consume + delete these after the run
-# (.pending-notify, .pending-email, .pending-admanage, …),
-# plus the .pending-notify-temp scratch where skills stage notify bodies for `./notify -f`
+# Working scratch dirs some skills stage during a run, then clean up:
+# .pending-notify (notify re-delivery), .pending-deploy (deploy-prototype build),
+# plus .pending-notify-temp where skills stage notify bodies for `./notify -f`
 .pending-*/
 
 # Skill provenance lock (per-repo, not committed)

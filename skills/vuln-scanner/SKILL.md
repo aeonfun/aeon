@@ -701,7 +701,7 @@ This two-part fix resolves ISS-001 (binaries installed *and* runnable). If any s
 
 **Arm C (disclose).** The send is an **irreversible** outbound call (a disclosure email), so it runs **in-run as the arm's final action, behind the C4 fail-closed caps**. Make the Resend POST with `./secretcurl` and the `{RESEND_API_KEY}` placeholder — a bare `$RESEND_API_KEY` on the command line is refused by the Bash permission layer. `RESEND_API_KEY` / `RESEND_FROM` / `RESEND_REPLY_TO` are injected in-run via this skill's `requires:`; `RESEND_CC` + the `DISCLOSURE_EMAIL_*` caps are read from the run env. There is no deferred/postprocess step — a failed send is logged (`email-failed` after the attempt cap), not queued to a later runner.
 
-General network rules: `curl` works, with **WebFetch** as the fallback for a plain URL fetch. For anything requiring a token, use `gh api` (handles auth internally) or `./secretcurl` with a `{ENV_NAME}` placeholder. The deferred `.pending-*/` + `scripts/postprocess-*.sh` on-success gate is reserved for side-effects that genuinely cannot run in-turn (see CLAUDE.md) — Arm C's send is not one of them.
+General network rules: `curl` works, with **WebFetch** as the fallback for a plain URL fetch. For anything requiring a token, use `gh api` (handles auth internally) or `./secretcurl` with a `{ENV_NAME}` placeholder. Irreversible side-effects run in-run as a skill's final fail-closed action (see CLAUDE.md) — there is no deferred/postprocess gate, and Arm C's send already runs in-run.
 
 ## Environment variables
 
