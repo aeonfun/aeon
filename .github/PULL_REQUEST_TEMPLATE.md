@@ -26,7 +26,7 @@
 
 ### New LLM gateway
 
-- [ ] Wired through all five files (`types.ts`, `auth-provider.mjs`, `secrets/route.ts`, `scripts/llm-gateway.sh`, `.github/workflows/*.yml`) — see [Adding a gateway](README.md#adding-a-gateway)
+- [ ] Wired through the five files (`gateway-registry.ts`, `AuthModal.tsx`, `secrets-catalog.ts`, `scripts/llm-gateway.sh`, `.github/workflows/*.yml`) — see [Contributing an LLM gateway](CONTRIBUTING.md#contributing-an-llm-gateway)
 - [ ] Added a row to the gateway table in the README
 - [ ] Verified end to end — a run logs `gateway=auto resolved to <slug>`
 
