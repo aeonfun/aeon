@@ -118,7 +118,7 @@ Pack manifest:
   for the manifest schema.
 
 Community registry:
-  skill-packs.json at the repo root is the machine-readable index of known
+  catalog/skill-packs.json is the machine-readable index of known
   packs. Use --list (no repo arg) to enumerate it; the script reads the local
   file when available and falls back to the upstream raw URL otherwise.
 

@@ -5,13 +5,13 @@ set -eo pipefail
 # packs.config.json + skills.json.
 #
 # Usage:
-#   bin/generate-packs-json            Generate packs.json at repo root (compact)
+#   bin/generate-packs-json            Generate the catalog at catalog/packs.json (compact)
 #   bin/generate-packs-json --pretty   Pretty-print the output
 #
 # packs.json is the catalog the dashboard reads to group skills into installable
 # first-party packs. Membership is derived deterministically; every skill in
 # skills.json must land in exactly one pack or this script exits non-zero.
-# Community (external-repo) packs live separately in skill-packs.json.
+# Community (external-repo) packs live separately in catalog/skill-packs.json.
 #
 # A skill's pack IS its `category` (one grouping — see docs/skill-packs.md).
 # Precedence when assigning a skill to a pack:

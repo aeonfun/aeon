@@ -117,7 +117,7 @@ To make a skill *demand* provenance wherever it's installed, add to its
 
 ```yaml
 ---
-name: disclosure-emailer
+name: vuln-scanner
 category: security
 mode: write
 attest: true          # always attest this skill's output

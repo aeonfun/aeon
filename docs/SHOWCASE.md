@@ -47,7 +47,7 @@ Aeon is one of many ways to build agentic systems. Here's where it sits next to 
 | **Scheduling** | Cron, native to runtime | Caller decides | Caller decides | Built-in cron triggers | Caller decides |
 | **Skill format** | Plain Markdown (`SKILL.md`) | Python classes & agents | Python crews & tasks | Visual JSON nodes | Python `StateGraph` |
 | **Persistent memory** | File-based, version-controlled | Per-session unless wired | Per-session unless wired | Per-workflow execution state | Graph state per run |
-| **Self-healing** | Yes — `heartbeat` + `skill-repair` auto-patch failing skills | No | No | No (workflow re-runs) | No |
+| **Self-healing** | Yes — `skill-health` + `skill-repair` auto-patch failing skills | No | No | No (workflow re-runs) | No |
 | **Quality scoring** | Every run scored 1–5 by Haiku | No | No | No | No |
 | **Reactive triggers** | Yes — `schedule: "reactive"` fires on conditions | Event hooks (manual) | No | Webhook nodes | No |
 | **Setup floor** | `git clone` + secrets | `pip install` + write code | `pip install` + write code | Docker or hosted account | `pip install` + write code |

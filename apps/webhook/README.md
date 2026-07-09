@@ -32,7 +32,7 @@ npx wrangler deploy
 
 ## Configure
 
-The deploy button prompts for all four values during the wizard (declared in
+The deploy button prompts for all five values during the wizard (declared in
 [`.dev.vars.example`](.dev.vars.example)) and stores them as encrypted Worker
 secrets — the Worker comes out configured. Deploying from a clone instead? Set
 them via the CLI:
@@ -49,6 +49,7 @@ npx wrangler secret put GITHUB_TOKEN              # GitHub PAT (see scopes below
 |--------|----------|-------|
 | `TELEGRAM_BOT_TOKEN` | yes | From [@BotFather](https://t.me/BotFather). |
 | `TELEGRAM_CHAT_ID` | yes | Only messages from this chat are relayed; everything else is dropped. |
+| `TELEGRAM_WEBHOOK_SECRET` | yes | Random string; pass the **same** value to `setWebhook` as `secret_token`. The Worker rejects every update with `403` until it's set. |
 | `GITHUB_REPO` | yes | `owner/repo` of your Aeon fork, e.g. `aaronjmars/aeon` — not the worker repo the deploy button creates. |
 | `GITHUB_TOKEN` | yes | Fine-grained PAT scoped to your fork with **Contents: read/write** and **Actions: read/write**, or a classic token with `repo`. |
 

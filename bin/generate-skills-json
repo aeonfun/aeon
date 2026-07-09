@@ -4,7 +4,7 @@ set -eo pipefail
 # generate-skills-json — Build skills.json manifest from all skills/*/SKILL.md files
 #
 # Usage:
-#   bin/generate-skills-json              Generate skills.json at repo root
+#   bin/generate-skills-json              Generate the catalog at catalog/skills.json
 #   bin/generate-skills-json --pretty     Pretty-print the output
 #
 # The manifest enables one-command skill installation and marketplace discovery.

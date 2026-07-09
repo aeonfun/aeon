@@ -5,7 +5,7 @@ type: Reference
 Aeon — how to use me over Telegram
 
 • Type / to see every skill you have enabled, then tap one to run it.
-• /skillname runs a skill directly (e.g. /rss_digest). Add text after it to
+• /skillname runs a skill directly (e.g. /digest). Add text after it to
   pass an argument, e.g. /article quantum computing.
 • Just message me in plain English and I'll figure out what you want.
 • /settings lists the skills currently enabled.
