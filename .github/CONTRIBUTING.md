@@ -77,10 +77,15 @@ mcp: [base]
 
 A gateway is wired through **five files** — copy an entry of the same tier
 (*native*: speaks the Anthropic API; *sidecar*: OpenAI-compatible, bridged per
-run): `apps/dashboard/lib/types.ts`, `apps/dashboard/lib/auth-provider.mjs`,
-`apps/dashboard/app/api/secrets/route.ts`, `scripts/llm-gateway.sh`, and the
-workflow `env:`. Then add a row to the gateway table in the README and verify a
-run logs `gateway=auto resolved to <slug>`.
+run). `apps/dashboard/lib/gateway-registry.ts` is the **single source of truth**
+(it auto-flows into `lib/types.ts`, `lib/constants.ts`, the secrets route, and
+`lib/auth-provider.ts`), so the files you hand-edit are:
+`apps/dashboard/lib/gateway-registry.ts`, `apps/dashboard/components/AuthModal.tsx`,
+`apps/dashboard/lib/secrets-catalog.ts`, `scripts/llm-gateway.sh`, and the workflow
+`env:` (`.github/workflows/aeon.yml` + `messages.yml`). The README's
+[**Adding a gateway**](README.md#adding-a-gateway) section has the authoritative
+step-by-step. Then add a row to the gateway table in the README and verify a run
+logs `gateway=auto resolved to <slug>`.
 
 ### Listing a community skill pack
 
@@ -125,7 +130,7 @@ committing the regen — run both `generate-*` scripts and commit the result.
 ## Reporting bugs & requesting features
 
 Open an issue. For a bug, include the skill name, the relevant (redacted)
-`memory/logs/` entry, whether the failure was an API or sandbox issue, and whether
+`memory/logs/` entry, whether the failure was an API or permission/secret issue, and whether
 notifications came through. For a feature you'd like Aeon to build itself, label
 the issue `ai-build`.
 

@@ -6,7 +6,7 @@ The local web UI for running Aeon — enable skills, browse community packs, set
 
 A [Next.js](https://nextjs.org) app that runs on your machine and drives your Aeon fork through the GitHub CLI. Its `/api/*` routes shell out to `gh` for everything that touches your repo — reading and writing secrets, dispatching workflow runs, and committing config changes — so there's no separate backend and no credential custody: the dashboard holds nothing your `gh` login doesn't already grant.
 
-Every change you make in the UI maps to a file in the repo. Toggling a skill flips its `enabled` flag, editing a schedule rewrites its cron, pasting an API key sets a GitHub secret. **Push** commits those changes so Actions picks them up on the next run; **Run now** dispatches a workflow immediately without committing. It's the same `aeon.yml` / `skills.json` / secrets the cron runner reads — the dashboard is just the editor.
+Every change you make in the UI maps to a file in the repo. Toggling a skill flips its `enabled` flag, editing a schedule rewrites its cron, pasting an API key sets a GitHub secret. **Push** commits those changes so Actions picks them up on the next run; **Run now** dispatches a workflow immediately without committing. It's the same `aeon.yml` / `catalog/skills.json` / secrets the cron runner reads — the dashboard is just the editor.
 
 ## Quickstart
 
@@ -74,7 +74,7 @@ The gate also rejects state-changing requests whose `Origin` isn't allowlisted. 
 
 ## How it works
 
-- **Frontend:** Next.js App Router (`app/`) with React client components in `components/`. State is the repo itself — the UI reads `skills.json`, `packs.json`, `aeon.yml`, and `STRATEGY.md`, and writes back through the API.
+- **Frontend:** Next.js App Router (`app/`) with React client components in `components/`. State is the repo itself — the UI reads `catalog/skills.json`, `catalog/packs.json`, `aeon.yml`, and `STRATEGY.md`, and writes back through the API.
 - **API:** route handlers under `app/api/*` are the only place the dashboard touches your repo. They shell out to `gh` (`lib/gh.ts`) for secrets, workflow dispatch, and content reads, and run behind the loopback gate (`proxy.ts`).
 - **Skill output feed:** skill runs drop json-render specs into `outputs/`; the feed renders them as cards via [`@json-render`](https://github.com/json-render). `./notify-jsonrender` (a post-run workflow step) produces those specs.
 - **Deploy:** the repo auto-deploys `apps/dashboard/` to Vercel on push to `main` — no manual step. Most operators run it locally with `./aeon`; the hosted build is the same app.

@@ -4,13 +4,13 @@ Expose every Aeon skill as a [Model Context Protocol](https://modelcontextprotoc
 
 ## What it is
 
-The server reads `skills.json` at the repo root and advertises each skill as an MCP tool over stdio. When Claude calls a tool, it spawns `claude -p -` against the matching `skills/<slug>/SKILL.md`, waits for the run to finish (same ~10-minute budget as Actions), and hands the skill's output back as the tool result. It's the bridge that turns "Aeon runs on a schedule in CI" into "Aeon is a set of tools inside my Claude session."
+The server reads `catalog/skills.json` and advertises each skill as an MCP tool over stdio. When Claude calls a tool, it spawns `claude -p -` against the matching `skills/<slug>/SKILL.md`, waits for the run to finish (same ~10-minute budget as Actions), and hands the skill's output back as the tool result. It's the bridge that turns "Aeon runs on a schedule in CI" into "Aeon is a set of tools inside my Claude session."
 
 It's the local, push-button way to run any skill from a Claude client. It spawns the same skill prompt the GitHub Actions runner uses, so behaviour is identical across entry points (cron and Claude).
 
 ## Quickstart
 
-From the **repo root** (the server needs `skills.json` and the `skills/` directory beside it):
+From the **repo root** (the server needs `catalog/skills.json` and the `skills/` directory):
 
 ```bash
 bin/add-mcp                    # build + register with Claude Code
@@ -38,7 +38,7 @@ node dist/index.js           # stdio server; normally launched by the MCP client
 
 ## Tools
 
-Every entry in `skills.json` becomes one tool:
+Every entry in `catalog/skills.json` becomes one tool:
 
 | | |
 |---|---|
@@ -88,7 +88,7 @@ You should see the full `aeon-*` tool list followed by a real skill output. If t
 ## How it works
 
 - **Transport:** stdio (`StdioServerTransport`) using the official `@modelcontextprotocol/sdk`. The MCP client launches `node dist/index.js` as a subprocess and speaks JSON-RPC over stdin/stdout — diagnostics go to stderr (`[aeon-mcp] …`) so they never corrupt the protocol stream.
-- **Skill discovery:** `loadSkills()` parses `skills.json` from the repo root (resolved relative to the compiled file, three levels up from `dist/`). If the manifest is missing the server starts with zero tools rather than crashing.
+- **Skill discovery:** `loadSkills()` parses `catalog/skills.json` (resolved relative to the compiled file, three levels up from `dist/`). If the manifest is missing the server starts with zero tools rather than crashing.
 - **Execution:** each call spawns `claude -p - --output-format json` with `cwd` set to the repo root and a 600 000 ms (10-minute) timeout — the same budget GitHub Actions gives a skill. The JSON envelope is unwrapped to return `result`; raw output is returned as a fallback.
 - **Errors are returned, not thrown:** a missing skill, a missing `claude` CLI (`ENOENT` → install hint), or a non-zero exit all come back as readable tool text so Claude can react instead of the connection dropping.
 

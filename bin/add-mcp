@@ -79,8 +79,8 @@ if [[ ! -d "$MCP_DIR" ]]; then
   err "apps/mcp-server/ directory not found at $MCP_DIR"
 fi
 
-if [[ ! -f "$DIR/skills.json" ]]; then
-  err "skills.json not found at $DIR/skills.json. Run this script from the repo root."
+if [[ ! -f "$DIR/catalog/skills.json" ]]; then
+  err "catalog/skills.json not found at $DIR/catalog/skills.json. Run this script from the repo root."
 fi
 
 # ── Build ────────────────────────────────────────────────────────────────────
@@ -119,7 +119,7 @@ fi
 
 # ── Count skills ─────────────────────────────────────────────────────────────
 
-SKILL_COUNT=$(node -e "const s=JSON.parse(require('fs').readFileSync('$DIR/skills.json','utf8')); console.log(s.skills.length);" 2>/dev/null || echo "?")
+SKILL_COUNT=$(node -e "const s=JSON.parse(require('fs').readFileSync('$DIR/catalog/skills.json','utf8')); console.log(s.skills.length);" 2>/dev/null || echo "?")
 
 echo ""
 echo "┌──────────────────────────────────────────────────────────┐"

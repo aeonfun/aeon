@@ -56,9 +56,10 @@ again** and **📅 Schedule weekly** — keyed to the running skill (`$SKILL_NAM
 This is a global `notify` feature, not per-skill: `scripts/notify.sh` appends the
 row to any Telegram send. Tapping **Run again** re-dispatches the skill
 (`run:<skill>`); **Schedule weekly** enables it and sets a weekly cron in `aeon.yml`
-(`schedule:<skill>:weekly`), which the router commits. The row is skipped only when
-there is no skill context, or on a force-reply prompt (Telegram forbids inline
-buttons and `force_reply` on the same message).
+(`schedule:<skill>:weekly`), which the caller (the Messages workflow) commits. The
+row is skipped when there is no skill context, when the skill name is too long to
+fit the 64-byte `callback_data` budget, or on a force-reply prompt (Telegram forbids
+inline buttons and `force_reply` on the same message).
 
 ### Custom buttons (`--buttons`)
 
