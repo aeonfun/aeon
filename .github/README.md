@@ -220,18 +220,20 @@ skills:
 
 ### Authentication
 
-Set **one** of these - not both:
+Aeon needs **at least one** way to reach a model. Add any of these in the dashboard's **Authenticate** modal — paste a key and the provider is auto-detected from its prefix (or picked from the dropdown). You can set several: each run resolves the highest-priority one whose key is present, so you don't have to choose just one.
 
-| Secret | What it is | Billing |
-|--------|-----------|---------|
-| `CLAUDE_CODE_OAUTH_TOKEN` | OAuth token from your Claude Pro/Max subscription | Included in plan |
-| `ANTHROPIC_API_KEY` | API key from console.anthropic.com | Pay per token |
+| How | Secret | Billing |
+|-----|--------|---------|
+| **Claude subscription** — one-click OAuth | `CLAUDE_CODE_OAUTH_TOKEN` | Included in your Pro/Max plan |
+| **Anthropic API** | `ANTHROPIC_API_KEY` | Pay-as-you-go · [console.anthropic.com](https://console.anthropic.com) |
+| **LLM gateway** — cheaper / crypto-settled | Bankr `bk_…` · OpenRouter `sk-or-…` · Surplus `inf_…` · Venice / UsePod | see [LLM Gateways](#llm-gateways) |
+| **Grok** — via your X account | `GROK_CREDENTIALS` or `XAI_API_KEY` | SuperGrok / X Premium+ · see [Harnesses](#harnesses) |
+
+Prefer the CLI for the subscription token?
 
 ```bash
 claude setup-token   # opens browser → prints sk-ant-oat01-... (valid 1 year)
 ```
-
-The dashboard's Authenticate modal handles both - and routes gateway keys (Bankr `bk_…`, OpenRouter `sk-or-…`, Surplus `inf_…`, or Venice/UsePod via the dropdown) automatically (see [LLM Gateways](#llm-gateways)).
 
 ### Notifications
 
@@ -244,10 +246,12 @@ Set the secret → channel activates. No code changes needed.
 | Slack | `SLACK_WEBHOOK_URL` | `SLACK_BOT_TOKEN` + `SLACK_CHANNEL_ID` |
 | Email | `RESEND_API_KEY` + `NOTIFY_EMAIL_TO` | - |
 
-**Telegram:** Create a bot with @BotFather → get token + chat ID. Saving the bot token in the dashboard **auto-registers** the slash-command menu (`/skillname` dispatches instantly, no LLM) — no manual step; a **Re-register commands** button re-syncs it after you toggle skills, and every notification carries **Run again / Schedule weekly** quick-action buttons, deep links, and stateless follow-up questions. Full guide: [docs/telegram-commands.md](../docs/telegram-commands.md).
-**Discord:** Outbound: Channel → Integrations → Webhooks → Create. Inbound: discord.com/developers → bot → add `channels:history` scope → copy token + channel ID.
-**Slack:** api.slack.com → Create App → Incoming Webhooks → install → copy URL. Inbound: add `channels:history`, `reactions:write` scopes → copy bot token + channel ID.
-**Email:** resend.com/api-keys → Create API Key → add as `RESEND_API_KEY`, set `NOTIFY_EMAIL_TO` to your inbox. Optional repo variables: `NOTIFY_EMAIL_FROM` (default `aeon@notifications.aeon.bot` — **must be a domain/sender verified in Resend**), `NOTIFY_EMAIL_SUBJECT_PREFIX` (default `[Aeon]`). This is the same `RESEND_API_KEY` used for security disclosures, so one Resend key powers all of Aeon's outbound email.
+**Set up each channel:**
+
+- **Telegram** — create a bot with **[@BotFather](https://t.me/BotFather)**, then copy its token + your chat ID. Saving the token in the dashboard **auto-registers** the slash-command menu (`/skillname` dispatches instantly, no LLM); a **Re-register commands** button re-syncs it after you toggle skills. Every notification carries **Run again / Schedule weekly** buttons, deep links, and stateless follow-up questions. [Full guide →](../docs/telegram-commands.md)
+- **Discord** — *outbound:* Channel Settings → Integrations → Webhooks → **New Webhook**, copy the URL. *Inbound:* [discord.com/developers](https://discord.com/developers/applications) → your app → Bot → add the `channels:history` scope → copy the bot token + channel ID.
+- **Slack** — *outbound:* [api.slack.com/apps](https://api.slack.com/apps) → Create App → Incoming Webhooks → install → copy the URL. *Inbound:* add the `channels:history` + `reactions:write` scopes → copy the bot token + channel ID.
+- **Email** — [resend.com/api-keys](https://resend.com/api-keys) → Create API Key → set it as `RESEND_API_KEY`, and `NOTIFY_EMAIL_TO` to your inbox. Optional: `NOTIFY_EMAIL_FROM` (default `aeon@notifications.aeon.bot` — **must be a sender/domain verified in Resend**) and `NOTIFY_EMAIL_SUBJECT_PREFIX` (default `[Aeon]`). Same key as security disclosures, so one Resend key powers all outbound email.
 
 **Restrict who can command the agent (inbound):** Telegram is already scoped to a single `TELEGRAM_CHAT_ID`. For Discord and Slack, set the optional repo variables `DISCORD_ALLOWED_AUTHOR_ID` / `SLACK_ALLOWED_USER_ID` (or same-named secrets) to the authorized sender's user ID — inbound messages from anyone else in the channel are then ignored. **Leaving them unset processes commands from any non-bot member of the channel**, so set them whenever the channel isn't private to you.
 
