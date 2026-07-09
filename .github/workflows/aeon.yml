@@ -370,7 +370,7 @@ jobs:
           elif [ -n "$SKILL_MODEL" ]; then
             MODEL="$SKILL_MODEL"
           else
-            MODEL="${CONFIG_MODEL:-claude-opus-4-8}"
+            MODEL="${CONFIG_MODEL:-claude-sonnet-4-6}"
           fi
 
           # --- Harness resolution (which agent CLI runs the skill) ---
