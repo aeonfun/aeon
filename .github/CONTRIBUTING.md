@@ -75,17 +75,23 @@ mcp: [base]
 
 ### Contributing an LLM gateway
 
-A gateway is wired through **five files** — copy an entry of the same tier
-(*native*: speaks the Anthropic API; *sidecar*: OpenAI-compatible, bridged per
-run). `apps/dashboard/lib/gateway-registry.ts` is the **single source of truth**
-(it auto-flows into `lib/types.ts`, `lib/constants.ts`, the secrets route, and
-`lib/auth-provider.ts`), so the files you hand-edit are:
-`apps/dashboard/lib/gateway-registry.ts`, `apps/dashboard/components/AuthModal.tsx`,
-`apps/dashboard/lib/secrets-catalog.ts`, `scripts/llm-gateway.sh`, and the workflow
-`env:` (`.github/workflows/aeon.yml` + `messages.yml`). The README's
-[**Adding a gateway**](README.md#adding-a-gateway) section has the authoritative
-step-by-step. Then add a row to the gateway table in the README and verify a run
-logs `gateway=auto resolved to <slug>`.
+A gateway is wired through a handful of files, all following the existing
+pattern — so copy an entry of the same **tier**. There are two: **native** (the
+provider already speaks the Anthropic API — just point `ANTHROPIC_BASE_URL` at it,
+like Bankr/OpenRouter/UsePod/Grok) and **sidecar** (OpenAI-compatible — bridged
+per run by a [claude-code-router](https://github.com/musistudio/claude-code-router)
+sidecar, like Venice/Surplus).
+
+1. **`apps/dashboard/lib/gateway-registry.ts`** — add `slug: { label, secretName, prefixes, domain }` (empty `prefixes: []` = dropdown-only, no auto-detect). This is the **single source of truth**: it auto-flows to the `GatewayProvider` union (`lib/types.ts`), `CLAUDE_AUTH_SECRETS` (`lib/constants.ts`), the secrets route's gateway-key detection, the auth key-prefix detection (`lib/auth-provider.ts`), and the service-icon domain.
+2. **`apps/dashboard/components/AuthModal.tsx`** — add the slug to `PROVIDER_OPTIONS` (this dropdown list is **not** registry-derived).
+3. **`apps/dashboard/lib/secrets-catalog.ts`** — add a `BUILTIN_SECRETS` row (description only) so the secret shows in Settings (and in `aeon secrets ls`).
+4. **`scripts/llm-gateway.sh`** — add an `aeon_present()` case, add the slug to the auto-resolver's default `GATEWAY_ORDER`, and add a `case` branch (a **native** provider exports `ANTHROPIC_BASE_URL` + the auth token; a **sidecar** provider calls `start_ccr_sidecar <slug> <openai-url> <key> <model>`).
+5. **`.github/workflows/aeon.yml`** — pass the new secret (and any `*_MODEL` override **variables**) into the run's `env:` (also `messages.yml`), so the resolver can see it.
+
+Then add a row to the gateway table in the [README](README.md#llm-gateways). To
+verify the full loop: paste a key in the dashboard (prefix should auto-detect, or
+pick it from the dropdown) and run any skill — the workflow log prints
+`::notice:: gateway=auto resolved to <slug>` followed by `::notice:: Routing through …`.
 
 ### Listing a community skill pack
 
@@ -96,6 +102,68 @@ and confirms the pack has a `skills-pack.json` manifest, a clear license, and a
 
 ```bash
 ./scripts/validate-pack.sh /path/to/your-pack-dir
+```
+
+## Project layout
+
+```
+CLAUDE.md                ← agent identity (auto-loaded by Claude Code)
+STRATEGY.md              ← north-star: goal, priorities, audience, constraints (rides along every run)
+aeon.yml                 ← skill schedules, chains, reactive triggers, enabled flags
+aeon                     ← ./aeon launches the dashboard; ./aeon <command> runs the headless CLI
+notify                   ← multi-channel notify command (generated per-run from scripts/notify.sh)
+catalog/                 ← registries the dashboard reads (generated + hand-authored)
+  skills.json            ← machine-readable skill catalog (category per skill)
+  packs.config.json      ← first-party pack definitions (core allowlist + pack list)
+  packs.json             ← generated pack catalog
+  skill-packs.json       ← community skill-pack registry
+bin/                     ← operator + maintainer CLI (run from repo root, e.g. bin/add-skill)
+  onboard                ← validate the fork's setup (secrets, workflows, channels)
+  add-skill              ← import skills from GitHub repos (with security scanning)
+  add-mcp                ← register Aeon as an MCP server for Claude Desktop/Code
+  install-skill-pack     ← install a curated community skill pack
+  export-skill           ← package skills for standalone distribution
+  new-from-template      ← scaffold a skill from a template (--category sets its pack)
+  generate-skills-json   ← regenerate catalog/skills.json from SKILL.md files
+  generate-packs-json    ← regenerate catalog/packs.json from the two configs above
+docs/                    ← reference docs, community registries, adopter examples
+  CORE.md · CAPABILITIES.md · OKF.md · harnesses.md · skill-packs.md · telegram-* · help/status
+  ECOSYSTEM.md           ← products & agents built on Aeon (community-curated)
+  SHOWCASE.md            ← leaderboard of active forks
+  examples/              ← MCP quickstart, portable workflow templates, skill templates
+    workflow-templates/  ← GitHub Agentic Workflow .md (adopt a skill without forking)
+    skill-templates/     ← templates for building your own skills
+    mcp/                 ← MCP quickstart config + .mcp.json.example
+soul/                    ← optional identity files (SOUL.md, STYLE.md, examples/, data/)
+skills/                  ← each skill is a SKILL.md prompt file (`category:` = its pack)
+apps/                    ← standalone sub-projects, each with its own package.json
+  dashboard/             ← local web UI (Next.js + json-render feed)
+  cli/                   ← headless CLI (`./aeon <command>`) — the dashboard's features as commands
+  mcp-server/            ← MCP server — exposes skills as Claude tools
+  webhook/               ← Telegram instant-mode Cloudflare Worker (~1s delivery)
+memory/                  ← native OKF v0.1 bundle: every .md carries a type: (see docs/OKF.md)
+  MEMORY.md              ← goals, active topics, pointers (type: Index)
+  cron-state.json        ← per-skill execution metrics (status, success rate, quality)
+  skill-health/          ← rolling quality scores per skill (last 30 runs)
+  token-usage.csv        ← token cost tracking per run
+  issues/                ← structured issue tracker for skill failures (type: Issue)
+  topics/                ← OKF concepts by topic — tokens, protocols, narratives, repos…
+  logs/                  ← daily activity logs (YYYY-MM-DD.md; type: Log)
+output/                  ← everything skills produce, committed to the repo
+  articles/ · images/    ← published deliverables
+  .chains/               ← transient chain-step handoff (consumed by downstream steps)
+scripts/
+  notify.sh              ← source for the ./notify command (multi-channel notifications)
+  notify-jsonrender.sh   ← source for ./notify-jsonrender (feed cards via Haiku)
+  secretcurl.sh          ← source for ./secretcurl (auth'd curl; {ENV} placeholders keep secrets off the command line)
+  skill-runs             ← audit recent GitHub Actions skill runs
+  okf-validate.mjs       ← assert OKF conformance (the ci-okf gate); okf-backfill.mjs stamps a missing type:
+  okf-config.json        ← OKF scope: roots, exclusions, per-family types
+.github/workflows/
+  aeon.yml               ← skill runner (workflow_dispatch, issues, quality scoring)
+  chain-runner.yml       ← skill chain executor (parallel + sequential pipelines)
+  scheduler.yml          ← cron scheduler (dispatches due skills + chains */5)
+  messages.yml           ← message polling + routing (Telegram/Discord/Slack)
 ```
 
 ## Testing & CI

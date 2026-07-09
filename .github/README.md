@@ -265,31 +265,15 @@ mode: read-only   # may read the repo, fetch the web, and ./notify — but canno
 mode: write       # full access (the default): adds Write / Edit / git / gh / python3
 ```
 
-`read-only` runs the skill with a restricted Claude Code `--allowedTools` set (`Write`, `Edit`, `Bash(git:*)`, `Bash(gh:*)` are dropped), so a research-and-notify skill **physically can't** commit, push, edit code, or open a PR. Its legitimate output (memory, `output/`) is still saved on its behalf by a post-run guard — which also reverts any stray code/config a shell redirection slipped through. `write` is the default and a strict superset. Use `read-only` for pure read-and-notify skills; keep `write` for anything that writes code or scratch files. This is the *runtime* enforcement of the install-time [`capabilities:`](../docs/CAPABILITIES.md) hint.
+`read-only` strips the repo-mutation tools from Claude Code's `--allowedTools` (`Write`, `Edit`, `Bash(git:*)`, `Bash(gh:*)`), so a research-and-notify skill **physically can't** commit, push, or open a PR — a post-run guard still saves its `memory/` + `output/` and reverts any stray write. Use it for pure read-and-notify skills; `write` (the default, a strict superset) for anything that writes code. It's the runtime half of the install-time [`capabilities:`](../docs/CAPABILITIES.md) hint.
 
 ### Durable state without the churn
 
-Per-skill execution state (`memory/cron-state.json` — status, success rate, quality) is **dual-written** by default: each run commits the file *and* appends an immutable event to a machine-managed, append-only GitHub Issue (`aeon:cron-state`, kept closed so it never clutters your issue list). Canonical state is a pure fold of that issue's comments, so concurrent runs never race — no rewrite, force-push, or rebase-retry. Switch with the repo variable **`STATE_BACKEND`**:
-
-| `STATE_BACKEND` | Behaviour |
-|---|---|
-| unset / `dual` (default) | append to the Issue **and** commit the file — the file stays authoritative, so the Issue path can never stale a reader |
-| `issues` | append only; a pre-run *materialize* step projects the Issue → file so readers are unchanged, and the file is left uncommitted (zero state churn) |
-| `file` | legacy file-only |
-
-Chains record to the same ledger.
+Per-skill execution state (`memory/cron-state.json` — status, success rate, quality) is **dual-written** by default: each run commits the file *and* appends an immutable event to a closed, append-only GitHub Issue (`aeon:cron-state`), so concurrent runs never race — no rewrite, force-push, or rebase-retry. The repo variable **`STATE_BACKEND`** switches this: `dual` (default) · `issues` (append-only, zero file churn) · `file` (legacy file-only). Chains record to the same ledger.
 
 ### Knowledge (OKF)
 
-Aeon's knowledge is a native **[OKF](https://github.com/GoogleCloudPlatform/knowledge-catalog/tree/main/okf) (Open Knowledge Format) v0.1** bundle — a portable, self-describing markdown corpus other tools and agents can read straight from the repo. It's **in place, not a separate export**: the real files *are* the bundle. Every markdown file in scope carries a non-empty `type:` frontmatter field (OKF's one hard requirement, §9):
-
-| Scope | `type:` | |
-|---|---|---|
-| `memory/topics/**` | `Token` `Protocol` `Narrative` `Repo` `Metric` `Playbook` `Reference` | living concepts, updated in place (last-writer-wins) |
-| `output/articles/` · `skills/*/SKILL.md` · `docs/` | `Article` · `Skill` · `Reference` | publications, the catalog, docs |
-| `memory/logs/` · `MEMORY.md` · `memory/issues/` | `Log` · `Index` · `Issue` | operational records |
-
-Scope, exclusions, and per-family types live in one place — [`scripts/okf-config.json`](../scripts/okf-config.json). Tooling: `node scripts/okf-validate.mjs` asserts conformance (held at the spec's bar, never stricter) and the **`ci-okf`** check gates any PR that touches a root; `node scripts/okf-backfill.mjs` stamps a missing `type:`; `node scripts/okf-index.mjs` regenerates the bundle index. The Aeon **MCP server** also serves the bundle as read-only resources (`okf://index`, `okf://concept/{id}`, `okf://skill/{slug}`) so consumption agents can traverse it without cloning. Two optional, default-off skills round it out: **`okf-export`** (backfill existing notes) and **`okf-ingest`** (fetch + validate + quarantine an *external* bundle). Full guide: [`docs/OKF.md`](../docs/OKF.md).
+Aeon's knowledge is a native **[OKF](https://github.com/GoogleCloudPlatform/knowledge-catalog/tree/main/okf) (Open Knowledge Format) v0.1** bundle — a portable, self-describing markdown corpus other tools and agents can read straight from the repo. It's **in place, not a separate export**: the real files *are* the bundle, each carrying a `type:` frontmatter field. The Aeon **MCP server** serves it as read-only resources (`okf://index`, `okf://concept/{id}`, `okf://skill/{slug}`), and two optional skills — **`okf-export`** and **`okf-ingest`** — backfill notes and import external bundles. The scope, the `type:` vocabulary, and the `ci-okf` validation gate are in [`docs/OKF.md`](../docs/OKF.md).
 
 ### Skill chaining
 
@@ -339,23 +323,9 @@ Let skills **call** MCP servers (GitHub, a database, a paid API, your own) while
 cp docs/examples/mcp/.mcp.json.example .mcp.json   # then edit, commit, push
 ```
 
-The example ships two working servers - `github` (uses the runner's built-in `GITHUB_TOKEN`) and `sequential-thinking` (no-auth stdio). On the next run, the runner loads `.mcp.json` and auto-allows every server's tools, so a skill can just say *"use the github MCP server to …"*.
+The example ships two working servers — `github` (uses the runner's built-in `GITHUB_TOKEN`) and `sequential-thinking` (no-auth stdio). On the next run the runner loads `.mcp.json` and auto-allows every server's tools, so a skill can just say *"use the github MCP server to …"*. Reference a server's secret with `${VAR}` (never commit the value) and set it in the dashboard — the runner resolves it from the repo's secrets with zero workflow editing, and skips a server (with a warning) when its secret is missing rather than breaking the skill.
 
 Or skip the file entirely: the dashboard's **MCP** tab writes `.mcp.json` for you, lists **Featured** servers (e.g. [Base](https://mcp.base.org)) for one-click install, and tells you which secret each server needs.
-
-**Servers that need a secret** - reference it with `${VAR}`, never commit the value:
-
-```json
-"acme": {
-  "type": "http",
-  "url": "https://mcp.acme.dev/v1",
-  "headers": { "Authorization": "Bearer ${ACME_API_KEY}" }
-}
-```
-
-Then just **set the secret** (dashboard MCP tab inline, Settings → Add Credential, or `gh secret set ACME_API_KEY`) - the runner auto-resolves any `${VAR}` your `.mcp.json` references from the repo's secrets, with zero workflow editing. If a referenced secret isn't set, the runner skips MCP for that run and logs a warning instead of breaking the skill.
-
-Notes: scope is global (`.mcp.json` applies to every skill); add `"alwaysLoad": true` to force a server's tools into context every run; stdio servers run as local processes in the runner, HTTP/SSE servers are reached over the network.
 
 ### Use Aeon's skills from Claude (MCP)
 
@@ -404,7 +374,7 @@ The built-in `GITHUB_TOKEN` is scoped to this repo only. For `github-monitor`, `
 ### LLM Gateways
 
 <p align="center">
-  <img src="../docs/assets/providers.png" alt="Seven AI providers supported: Claude subscription, Anthropic API, OpenRouter, Bankr, UsePod, Venice, Surplus" width="640" />
+  <img src="../docs/assets/providers.png" alt="Eight AI providers supported: Claude subscription, Anthropic API, OpenRouter, Bankr, UsePod, Venice, Surplus, Grok" width="640" />
 </p>
 
 Aeon can power Claude Code **eight** ways. Two are **direct** to Anthropic; the other six route through a **gateway**. You add a credential in the dashboard's Authenticate modal - paste it and the provider is detected from its prefix (or picked from the dropdown) and saved as the secret below. (Separately, the [Grok Build harness](#harnesses) runs the `grok` CLI instead of Claude Code — that's a different axis from the gateways here.)
@@ -440,15 +410,7 @@ Override the order with the repo variable **`GATEWAY_ORDER`** (space-separated n
 
 #### Adding a gateway
 
-A gateway is wired through a handful of files, all following the existing pattern - so copy an entry of the same **tier**. There are two: **native** (the provider already speaks the Anthropic API - just point `ANTHROPIC_BASE_URL` at it, like Bankr/OpenRouter/UsePod/Grok) and **sidecar** (OpenAI-compatible - bridged per run by a [claude-code-router](https://github.com/musistudio/claude-code-router) sidecar, like Venice/Surplus).
-
-1. **`apps/dashboard/lib/gateway-registry.ts`** - add `slug: { label, secretName, prefixes, domain }` (empty `prefixes: []` = dropdown-only, no auto-detect). This is the **single source of truth**: it auto-flows to the `GatewayProvider` union (`lib/types.ts`), `CLAUDE_AUTH_SECRETS` (`lib/constants.ts`), the secrets route's gateway-key detection, the auth key-prefix detection (`lib/auth-provider.ts`), and the service-icon domain.
-2. **`apps/dashboard/components/AuthModal.tsx`** - add the slug to `PROVIDER_OPTIONS` (this dropdown list is **not** registry-derived).
-3. **`apps/dashboard/lib/secrets-catalog.ts`** - add a `BUILTIN_SECRETS` row (description only) so the secret shows in Settings (and in `aeon secrets ls`).
-4. **`scripts/llm-gateway.sh`** - add an `aeon_present()` case, add the slug to the auto-resolver's default `GATEWAY_ORDER`, and add a `case` branch (a **native** provider exports `ANTHROPIC_BASE_URL` + the auth token; a **sidecar** provider calls `start_ccr_sidecar <slug> <openai-url> <key> <model>`).
-5. **`.github/workflows/aeon.yml`** - pass the new secret (and any `*_MODEL` override **variables**) into the run's `env:` (also `messages.yml`), so the resolver can see it.
-
-Then add a row to the gateway table above. To verify the full loop: paste a key in the dashboard (prefix should auto-detect, or pick it from the dropdown) and run any skill - the workflow log prints `::notice:: gateway=auto resolved to <slug>` followed by `::notice:: Routing through …`.
+Wiring a new provider through the dashboard registry, resolver, and workflow `env:` is a contributor task — the step-by-step (native vs sidecar tiers, the five files, how to verify the loop) lives in [`CONTRIBUTING.md`](CONTRIBUTING.md#contributing-an-llm-gateway).
 
 ### Harnesses
 
@@ -476,37 +438,7 @@ skills:
 
 Prefer no browser flow? Paste an **`XAI_API_KEY`** in the same modal (also powers the Grok gateway) and grok authenticates with the API key directly.
 
-> Grok's `--output-format json` returns the result text but no token counts, so grok-harness runs report **0 tokens** in cost tracking. The captured OAuth session can expire — if unattended runs start failing on auth, click **Connect X account** again.
-
-Capability mode carries over unchanged: a `mode: read-only` skill maps to grok's `--sandbox read-only` with a read-only allowlist; `write` adds `Edit` + `git`/`gh`/`python` — the same drops as on Claude Code (`scripts/skill_mode.sh grok-args`). Enforcement is the explicit allowlist plus the read-only sandbox: a headless run has no prompt path, so any tool not on the allowlist and not a read-class fast-path is refused. Grok Build has no free tier — it needs a SuperGrok / X Premium+ subscription (OAuth) or xAI API credits (`XAI_API_KEY`).
-
-**Standing instructions.** Grok loads `CLAUDE.md` natively (it reads Claude Code's memory files), so the operating manual is **not** duplicated. `AGENTS.md` is generated by `scripts/gen-agents-md.js` and carries only `STRATEGY.md` — the one thing `CLAUDE.md` delivers via the Claude-only `@STRATEGY.md` import, which grok doesn't expand. That trims ~2.5k tokens of duplicate context per grok run vs. mirroring the whole manual.
-
-**MCP works on grok.** Grok discovers the project `.mcp.json` natively (walking cwd→git-root) and expands `${VAR}` from the environment — the same secrets the workflow's MCP preflight resolves. `scripts/run-grok.sh` adds one `--allow 'MCPTool(<server>__*)'` per server so the model can actually call the tools (MCP tools aren't auto-approved under a headless run). No `--mcp-config` flag or schema translation is needed. (On a dev machine grok additionally sees your user-global MCP servers from `~/.claude.json`/`~/.cursor/mcp.json`; CI runners are clean, so only the repo's `.mcp.json` applies.)
-
-**Newer grok knobs (opt-in per skill).** A skill's `SKILL.md` frontmatter can shape the grok run — ignored by the Claude harness:
-
-```yaml
-max_turns: 120     # agentic-turn cap (default 60; a runaway/cost guard) → --max-turns
-best_of_n: 3       # run the task 3 ways in parallel, keep the best      → --best-of-n
-verify: true       # append a self-verification loop before finishing    → --check
-effort: high       # low|medium|high|xhigh|max → --effort  (grok-build only)
-```
-
-`effort`/`reasoning_effort` map to the API's `reasoningEffort`, which the CI-default `grok-composer-2.5-fast` rejects — so they're applied only when a reasoning model (`grok-build`) is selected and skipped-with-a-notice otherwise. `best_of_n`/`verify` build on grok's subagents (so the harness drops `--no-subagents` for those runs); `verify` can't combine with structured output. `run-grok.sh` also understands `GROK_JSON_SCHEMA` for `--json-schema` structured output (reliably honoured by `grok-build`).
-
-**Every entry point runs on either harness.** The harness split isn't just the scheduled skill run — it's wired through every surface that launches the agent, so a grok-only fork (no Claude credentials) behaves identically everywhere:
-
-| Surface | How grok is selected | Notes |
-|---------|---------------------|-------|
-| Scheduled / manual skill run (`aeon.yml`) | dispatch **Harness** input → per-skill `harness:` → global `harness:` → `claude` | full flags + MCP + scorer |
-| Skill chains (`chain-runner.yml`) | inherits — each step dispatches `aeon.yml`, which resolves per-skill/global | |
-| Inbound messages (`messages.yml`, Telegram/Discord/Slack) | global `harness:` in `aeon.yml` | conversational reply in write mode |
-| Local MCP server (`apps/mcp-server`) | `AEON_HARNESS` env → global `harness:` | `resolveHarness()` in `skill-executor.ts` |
-| Webhook (`apps/webhook`) | relay only → dispatches `messages.yml` | harness-agnostic |
-| Post-run quality scorer (`aeon.yml`) | scores through the same harness the skill ran on | |
-
-Two surfaces stay Claude-only **by design**: the **AI gateway** (`scripts/llm-gateway.sh`) only reshapes the model behind Claude Code — grok has its own auth and bypasses it — and the **json-render feed** (`notify-jsonrender`) renders via `claude -p` and is skipped on grok (the feed is a display nicety; skill output, memory, and notifications are unaffected).
+**Advanced harness behavior** — token accounting (grok reports 0 tokens), how capability mode maps onto grok's sandbox, MCP on grok, per-skill grok knobs (`max_turns` / `best_of_n` / `verify` / `effort`), and how every entry point (chains, inbound messages, the MCP server, the scorer) picks a harness — is in [`docs/harnesses.md`](../docs/harnesses.md).
 
 ### Observability (Langfuse)
 
@@ -566,11 +498,7 @@ The gate also rejects state-changing requests whose `Origin` isn't allowlisted, 
 
 ### Fleet Watcher (authorization layer)
 
-Add inline ALLOW/BLOCK authorization in front of every skill run. Each workflow asks your self-hosted [Fleet Watcher](https://github.com/yourorg/fleet-watcher) control plane *"is this allowed?"* before Claude starts and reports the outcome after. BLOCK = workflow exits non-zero, Claude never runs, audit ref recorded.
-
-Already wired into `.github/workflows/aeon.yml` as two opt-in steps. To enable: stand up Fleet Watcher, mint a token via `POST /api/aeon/register`, and add two secrets - `FLEET_ENDPOINT` (base URL) and `FLEET_TOKEN` (the `agnt_…` token). Define your red lines (per-skill caps, counterparty allowlists, dangerous-string patterns) in its dashboard.
-
-If the secrets aren't set, both steps no-op - fully backward compatible. If Fleet is unreachable when they *are* set, the preflight fails closed (skill doesn't run); the postflight always runs so blocked skills are still recorded.
+Optional inline ALLOW/BLOCK authorization in front of every skill run: each workflow asks a self-hosted **Fleet Watcher** control plane *"is this allowed?"* before Claude starts (BLOCK = the run exits non-zero and Claude never runs, with an audit ref recorded). It's already wired into `aeon.yml` as two opt-in steps that no-op unless `FLEET_ENDPOINT` + `FLEET_TOKEN` are set — and fail **closed** (skill doesn't run) if Fleet is unreachable when they are. Define your red lines (per-skill caps, counterparty allowlists, dangerous-string patterns) in its dashboard; the postflight always runs so blocked skills are still recorded.
 
 ### Community skill packs
 
@@ -604,13 +532,7 @@ Either way the installer reads the pack's `skills-pack.json` manifest, runs the 
 | [Charon for AEON](https://github.com/CharonAI-code/charon/tree/main/skills/aeon) (`--path skills/aeon`) | 2 | Repo-local policy enforcement for AEON runs, with guided setup and natural-language policy management |
 | [aeon-skill-pack-agentlink](https://github.com/techdigger/aeon-skill-pack-agentlink) | 1 | Give an agent a verified, human-backed on-chain identity on Base via AgentLink - checks link status, hands the human owner a linker URL to biomap + sign, then signs requests to free partner endpoints (XONA, WURK). Read-only, on-demand. |
 
-**To list a pack here**, open a PR adding a row. Guidelines:
-
-- The pack must be in its own public repo with a clear license and a per-skill `SKILL.md`.
-- Skills should follow the conventions in [`add-skill`](../bin/add-skill) and the core catalog - no monkey-patching of Aeon internals, no skill that depends on private endpoints.
-- Add a `skills-pack.json` manifest at the pack root so `install-skill-pack` knows which skills the pack ships (see [docs](../docs/community-skill-packs.md) for the schema).
-- The README row should link to the repo, name the skill count, and one-line what the pack is for.
-- In the same PR, add a matching entry to [`skill-packs.json`](../catalog/skill-packs.json) - the machine-readable mirror of this table (registry schema in [the docs](../docs/community-skill-packs.md#skill-packsjson-community-registry)).
+**To list a pack here**, open a PR that adds a table row **and** a matching [`catalog/skill-packs.json`](../catalog/skill-packs.json) entry. The full checklist — public repo + license, a per-skill `SKILL.md`, a `skills-pack.json` manifest, the registry schema, and the trust model — is in [`docs/community-skill-packs.md`](../docs/community-skill-packs.md#pack-maintainers-publishing-checklist).
 
 ### Two-repo strategy
 
@@ -639,67 +561,8 @@ Private repos: Free plan = 2,000 min/mo, Pro/Team = 3,000 + $0.008/min overage. 
 
 ### Project structure
 
-![The Stack](../docs/assets/stack-aeon.jpg)
-
-```
-CLAUDE.md                ← agent identity (auto-loaded by Claude Code)
-STRATEGY.md              ← north-star: goal, priorities, audience, constraints (rides along every run)
-aeon.yml                 ← skill schedules, chains, reactive triggers, enabled flags
-aeon                     ← ./aeon launches the dashboard; ./aeon <command> runs the headless CLI
-notify                   ← multi-channel notify command (generated per-run from scripts/notify.sh)
-catalog/                 ← registries the dashboard reads (generated + hand-authored)
-  skills.json            ← machine-readable skill catalog (59 skills, category per skill)
-  packs.config.json      ← first-party pack definitions (core allowlist + pack list)
-  packs.json             ← generated pack catalog (6 packs)
-  skill-packs.json       ← community skill-pack registry
-bin/                     ← operator + maintainer CLI (run from repo root, e.g. bin/add-skill)
-  onboard                ← validate the fork's setup (secrets, workflows, channels)
-  add-skill              ← import skills from GitHub repos (with security scanning)
-  add-mcp                ← register Aeon as an MCP server for Claude Desktop/Code
-  install-skill-pack     ← install a curated community skill pack
-  export-skill           ← package skills for standalone distribution
-  new-from-template      ← scaffold a skill from a template (--category sets its pack)
-  generate-skills-json   ← regenerate catalog/skills.json from SKILL.md files
-  generate-packs-json    ← regenerate catalog/packs.json from the two configs above
-docs/                    ← reference docs, community registries, adopter examples
-  CORE.md · CAPABILITIES.md · OKF.md · skill-packs.md · telegram-* · help/status
-  ECOSYSTEM.md           ← products & agents built on Aeon (community-curated)
-  SHOWCASE.md            ← leaderboard of active forks
-  examples/              ← MCP quickstart, portable workflow templates, skill templates
-    workflow-templates/  ← GitHub Agentic Workflow .md (adopt a skill without forking)
-    skill-templates/     ← templates for building your own skills
-    mcp/                 ← MCP quickstart config + .mcp.json.example
-soul/                    ← optional identity files (SOUL.md, STYLE.md, examples/, data/)
-skills/                  ← each skill is a SKILL.md prompt file (59 total; `category:` = its pack)
-apps/                    ← standalone sub-projects, each with its own package.json
-  dashboard/             ← local web UI (Next.js + json-render feed)
-  cli/                   ← headless CLI (`./aeon <command>`) — the dashboard's features as commands
-  mcp-server/            ← MCP server - exposes skills as Claude tools
-  webhook/               ← Telegram instant-mode Cloudflare Worker (~1s delivery)
-memory/                  ← native OKF v0.1 bundle: every .md carries a type: (see docs/OKF.md)
-  MEMORY.md              ← goals, active topics, pointers (type: Index)
-  cron-state.json        ← per-skill execution metrics (status, success rate, quality)
-  skill-health/          ← rolling quality scores per skill (last 30 runs)
-  token-usage.csv        ← token cost tracking per run
-  issues/                ← structured issue tracker for skill failures (type: Issue)
-  topics/                ← OKF concepts by topic — tokens, protocols, narratives, repos…
-  logs/                  ← daily activity logs (YYYY-MM-DD.md; type: Log)
-output/                  ← everything skills produce, committed to the repo
-  articles/ · images/    ← published deliverables
-  .chains/               ← transient chain-step handoff (consumed by downstream steps)
-scripts/
-  notify.sh              ← source for the ./notify command (multi-channel notifications)
-  notify-jsonrender.sh   ← source for ./notify-jsonrender (feed cards via Haiku)
-  secretcurl.sh          ← source for ./secretcurl (auth'd curl; {ENV} placeholders keep secrets off the command line)
-  skill-runs             ← audit recent GitHub Actions skill runs
-  okf-validate.mjs       ← assert OKF conformance (the ci-okf gate); okf-backfill.mjs stamps a missing type:
-  okf-config.json        ← OKF scope: roots, exclusions, per-family types
-.github/workflows/
-  aeon.yml               ← skill runner (workflow_dispatch, issues, quality scoring)
-  chain-runner.yml       ← skill chain executor (parallel + sequential pipelines)
-  scheduler.yml          ← cron scheduler (dispatches due skills + chains */5)
-  messages.yml           ← message polling + routing (Telegram/Discord/Slack)
-```
+An annotated tour of the repo layout — every top-level directory and the key
+files in each — lives in [`CONTRIBUTING.md`](CONTRIBUTING.md#project-layout).
 
 ---
 
