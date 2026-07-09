@@ -37,7 +37,7 @@ That comment is why you can see it already ran across the library: `skill-repair
 
 ### [`skill-health`](../skills/skill-health/SKILL.md) — the detector · daily 18:00
 
-Audits every enabled skill from `cron-state.json` + per-run Haiku quality scores (`memory/skill-health/*.json`) + a `skill-runs` fallback for sandbox-blocked runs. Classifies each as CRITICAL / DEGRADED / FLAPPING / WARNING / HEALTHY / NO-DATA via first-matching-rule, computes a severity score, and detects **systemic patterns** (≥2 skills sharing an API host or error signature).
+Audits every enabled skill from `cron-state.json` + per-run Haiku quality scores (`memory/skill-health/*.json`) + a `skill-runs` fallback for runs that crashed before writing state. Classifies each as CRITICAL / DEGRADED / FLAPPING / WARNING / HEALTHY / NO-DATA via first-matching-rule, computes a severity score, and detects **systemic patterns** (≥2 skills sharing an API host or error signature).
 
 It files issues into `memory/issues/ISS-NNN.md`, resolves them when a skill recovers (drops it from `affected_skills`, flips status to resolved), and notifies only on state change. It won't touch the issue tracker unless the operator has opted in by creating `INDEX.md`.
 

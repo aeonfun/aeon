@@ -175,7 +175,7 @@ skills:
     var: "solana"               # topic for this skill
 ```
 
-Standard cron format, all times UTC. Supports `*`, `*/N`, exact values, comma lists. **Order matters** - the scheduler picks the first matching skill, so put day-specific skills before daily ones and `heartbeat` last.
+Standard cron format, all times UTC. Supports `*`, `*/N`, exact values, comma lists. On each tick the scheduler dispatches **every** enabled skill whose cron is due, and multiple due skills run in parallel. The only thing that orders dispatch is `depends_on:` (a skill's dependencies fire first); `heartbeat` is listed last purely by convention.
 
 ### The `var` field
 
@@ -301,9 +301,8 @@ chains:
     schedule: "0 7 * * *"
     on_error: fail-fast       # or: continue
     steps:
-      - parallel: [token-movers, hn-digest]  # run concurrently
-      - skill: digest                          # runs after parallel group
-        consume: [token-movers, hn-digest]   # gets their outputs injected
+      - parallel: [token-movers, github-trending]   # run concurrently
+      - skill: digest, consume: [token-movers, github-trending]   # runs after; outputs injected
 ```
 
 Each step runs as a separate workflow dispatch; outputs are saved to `output/.chains/{skill}.md` and injected into downstream steps that `consume:` them. `fail-fast` aborts on any failure, `continue` keeps going.
@@ -321,7 +320,7 @@ reactive:
 
 ### Scheduler frequency
 
-Edit `.github/workflows/messages.yml`:
+Edit `.github/workflows/scheduler.yml`:
 
 ```yaml
 schedule:
@@ -670,7 +669,7 @@ docs/                    ← reference docs, community registries, adopter examp
     skill-templates/     ← templates for building your own skills
     mcp/                 ← MCP quickstart config + .mcp.json.example
 soul/                    ← optional identity files (SOUL.md, STYLE.md, examples/, data/)
-skills/                  ← each skill is a SKILL.md prompt file (68 total; `category:` = its pack)
+skills/                  ← each skill is a SKILL.md prompt file (59 total; `category:` = its pack)
 apps/                    ← standalone sub-projects, each with its own package.json
   dashboard/             ← local web UI (Next.js + json-render feed)
   cli/                   ← headless CLI (`./aeon <command>`) — the dashboard's features as commands

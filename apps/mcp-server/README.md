@@ -19,7 +19,7 @@ bin/add-mcp --build-only       # compile without registering (useful for CI / Cl
 bin/add-mcp --uninstall        # remove the 'aeon' server from Claude Code
 ```
 
-`bin/add-mcp` checks Node, builds the TypeScript, and runs `claude mcp add aeon node <path>` so every skill is immediately available as an `aeon-*` tool in Claude Code. Restart your Claude session and ask: *"Use the aeon-hn-digest tool"* or *"Run aeon-token-movers with var=AEON"*.
+`bin/add-mcp` checks Node, builds the TypeScript, and runs `claude mcp add aeon node <path>` so every skill is immediately available as an `aeon-*` tool in Claude Code. Restart your Claude session and ask: *"Use the aeon-digest tool"* or *"Run aeon-token-movers with var=AEON"*.
 
 Or build this app directly:
 
@@ -42,7 +42,7 @@ Every entry in `skills.json` becomes one tool:
 
 | | |
 |---|---|
-| **Name** | `aeon-<slug>` — e.g. `aeon-deep-research`, `aeon-hn-digest`, `aeon-token-movers`. |
+| **Name** | `aeon-<slug>` — e.g. `aeon-digest`, `aeon-pr-review`, `aeon-token-movers`. |
 | **Description** | `[Aeon · <Category>] <skill description> (cron: <schedule>)` or `(on-demand)`, generated from the manifest so Claude can pick the right tool. |
 | **Input** | A single optional `var` (string) — the skill's `${var}` input. Its description is the skill's own `var` contract, or a sensible category default. Leave it empty to use the skill's default behaviour. |
 
@@ -79,11 +79,11 @@ Before wiring it into a client, confirm the server lists and runs tools with the
 ```bash
 bin/add-mcp --build-only                          # produce dist/index.js
 pip install mcp                                 # official Anthropic MCP client
-python docs/examples/mcp/test_connection.py          # lists every aeon-* tool, then calls aeon-cost-report
+python docs/examples/mcp/test_connection.py          # lists every aeon-* tool, then calls aeon-heartbeat
 python docs/examples/mcp/test_connection.py aeon-token-movers AEON   # call a specific tool with a var
 ```
 
-You should see the full `aeon-*` tool list followed by a real skill output. If that works, your Claude Desktop / Claude Code wiring will too. `aeon-cost-report` is the default because it's fast and needs no external API.
+You should see the full `aeon-*` tool list followed by a real skill output. If that works, your Claude Desktop / Claude Code wiring will too. `aeon-heartbeat` is the default because it's fast and needs no secrets.
 
 ## How it works
 

@@ -5,7 +5,7 @@ Sanity-check the Aeon MCP server end-to-end.
 What it does:
   1. Spawns `node apps/mcp-server/dist/index.js` as a stdio MCP server.
   2. Sends `tools/list` and prints every aeon-* tool that is registered.
-  3. Calls one tool (default: `aeon-cost-report`, fast and offline-safe)
+  3. Calls one tool (default: `aeon-heartbeat`, fast and needs no secrets)
      so you can confirm the full request/response cycle works.
 
 Why a separate Python script: the MCP SDK ships the JSON-RPC framing,
@@ -82,6 +82,6 @@ async def main(tool_name: str, var_value: str) -> int:
 
 
 if __name__ == "__main__":
-    tool = sys.argv[1] if len(sys.argv) > 1 else "aeon-cost-report"
+    tool = sys.argv[1] if len(sys.argv) > 1 else "aeon-heartbeat"
     var = sys.argv[2] if len(sys.argv) > 2 else ""
     sys.exit(asyncio.run(main(tool, var)))

@@ -37,8 +37,8 @@ populates and the message-field menu button points at it. Registration is automa
 Every path reads `TELEGRAM_BOT_TOKEN` server-side (where secrets are readable) and calls
 `setMyCommands` + `setChatMenuButton` — identical result, no browser token handling.
 
-Command names can only use `a-z`, `0-9`, `_` — so a skill dir `deep-research`
-becomes `/deep_research`. The router inverts `_`→`-` when it dispatches.
+Command names can only use `a-z`, `0-9`, `_` — so a skill dir `token-movers`
+becomes `/token_movers`. The router inverts `_`→`-` when it dispatches.
 
 - `/skillname [args]` dispatches the skill instantly (no Claude call). `args` become
   the skill's `var`, e.g. `/article quantum computing`.

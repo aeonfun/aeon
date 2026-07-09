@@ -109,7 +109,7 @@ export const CATEGORY_BY_KEY: Record<string, { label: string; color: string }> =
 // CATEGORIES list above, kept as one source of truth so the two can't drift.
 // A skill's pack comes from its `pack` field (joined from packs.json in
 // /api/skills); `lab` is the catch-all for uncategorized skills. Order drives the
-// dashboard's non-default pack order (Core + Basics render first via DEFAULT_VISIBLE_PACKS).
+// dashboard's non-default pack order (Core, Evolution + Basics render first via DEFAULT_VISIBLE_PACKS).
 const PACKS = CATEGORIES
 
 export const PACK_BY_KEY: Record<string, { label: string; color: string }> =
@@ -123,10 +123,10 @@ export const PACK_BY_KEY: Record<string, { label: string; color: string }> =
 export const FIRST_PARTY_KEYS = new Set(PACKS.map(p => p.key))
 
 // Packs shown by default on the dashboard and locked always-on (not hideable):
-// `core` (Aeon's differentiators — self-evolution, fleet, autonomous action) and
-// `basics` (simple, immediately-runnable skills). Every other first-party pack is
-// hidden until the operator reveals it. Purely a view preference — no effect on
-// what runs.
+// `core` (Aeon's differentiators — fleet, autonomous action), `evolution` (the
+// self-improvement loop), and `basics` (simple, immediately-runnable skills).
+// Every other first-party pack is hidden until the operator reveals it. Purely a
+// view preference — no effect on what runs.
 export const DEFAULT_VISIBLE_PACKS = new Set(['core', 'evolution', 'basics'])
 
 const COMMUNITY_COLOR = '#A1A1AA'
