@@ -5,7 +5,7 @@ category: basics
 description: Search and curate X/Twitter behind one selector - keyword, topic roundup, a single or tracked-account digest, an X list, or the AI-agent buzz preset - clustered into signal-scored sub-narratives.
 var: ""
 tags: [social]
-requires: [XAI_API_KEY?]
+requires: [XAI_API_KEY?, XQUIK_API_KEY?]
 ---
 <!-- autoresearch: variation B — sharper output via clustering + signal scoring + insight extraction. Merged HUB: absorbs tweet-digest, tweet-roundup, list-digest, refresh-x, agent-buzz behind a `source:` selector. -->
 > **${var}** — `<source>:<arg>` where `<source>` ∈ `keyword | topic | account | list | agent-buzz`. The `<arg>` is source-specific (a query, a topic, a handle, comma-separated list IDs, or an optional focus). If no `source:` prefix is given, the source is inferred from the shape of `<arg>` (see **Source selector**). **Required** for `keyword` and `list`; optional for `topic`, `account`, and `agent-buzz`.
@@ -53,6 +53,7 @@ Once `SOURCE` and `ARG` are set, jump to the matching branch below. Only one bra
    - Every surviving tweet gets a tappable Markdown link — `[View](url)` / `[View tweet](url)`. If a URL is unavailable, drop the link and say "(link unavailable)".
    - Never fabricate engagement counts. Missing → `0`, not a guess.
    - **Notify only on signal.** A legitimately empty or all-duplicate run logs its status and sends **nothing**.
+4. If `XAI_API_KEY` is unset or the X.AI path fails and `XQUIK_API_KEY` is set, try Xquik's read-only REST API before WebSearch/WebFetch. Use documented read endpoints only: `/api/v1/x/tweets/search` for keyword/topic, `/api/v1/x/users/{id}/tweets` for accounts, `/api/v1/x/lists/{id}/tweets` for lists, and `/api/v1/x/tweets/{id}/thread` when a thread permalink is already known. Normalize returned public fields into the branch shape (`url`, `text`, `timestamp`, `author`, `likes`, `retweets`, `replies`, `media`) and record `source=xquik`. Never call Xquik write, like, retweet, follow, DM, or account-management endpoints from this skill.
 
 ## Voice
 
@@ -68,7 +69,7 @@ Search X for tweets matching `ARG` and produce a curated digest grouped by sub-n
 
 1. **Build the search prompt.** Pass `ARG` to Grok **verbatim** as the query — do NOT narrow it to a single angle; broad coverage is the goal. Ask for **at least 15–20 candidate tweets** (you'll cull to ~7–10). Always require explicit engagement counts (likes, retweets, replies) so ranking is data-driven.
 
-2. **Fetch tweets.** Record `SOURCE_PATH=api|websearch` for the log.
+2. **Fetch tweets.** Record `SOURCE_PATH=api|xquik|websearch` for the log.
 
    **Path A — X.AI API** (primary; see the **Fetching (all branches)** contract — attempt this, set the Bash tool `timeout` ≥180000, capture the HTTP status):
    ```bash
@@ -84,7 +85,9 @@ Search X for tweets matching `ARG` and produce a curated digest grouped by sub-n
    ```
    On `HTTP=200`, parse `/tmp/xai.json` with: `jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text'` and mark `SOURCE_PATH=api`.
 
-   **Path B — WebSearch fallback** (only if the key is `KEY_UNSET`, or Path A gave a non-2xx / empty / timeout per the contract): use the built-in WebSearch tool with `site:x.com "<query terms>" after:${FROM_DATE}`. Note at the top of the log the **true reason** (`http-<code>` / `timeout` / `empty`, never "unavailable" when the key was set) and "results compiled via WebSearch — quality lower than usual". WebSearch favours high-engagement older tweets — **prioritise results dated within the last 48 hours**. Mark `SOURCE_PATH=websearch`.
+   **Path B — Xquik REST fallback** (only if X.AI is unset/failed and `XQUIK_API_KEY` is set): use `/api/v1/x/tweets/search`, normalize public tweet fields, dedup against `SEEN_TWEETS`, and mark `SOURCE_PATH=xquik`.
+
+   **Path C — WebSearch fallback** (only if the key is `KEY_UNSET`, or prior paths gave a non-2xx / empty / timeout per the contract): use the built-in WebSearch tool with `site:x.com "<query terms>" after:${FROM_DATE}`. Note at the top of the log the **true reason** (`http-<code>` / `timeout` / `empty`, never "unavailable" when the key was set) and "results compiled via WebSearch — quality lower than usual". WebSearch favours high-engagement older tweets — **prioritise results dated within the last 48 hours**. Mark `SOURCE_PATH=websearch`.
 
 3. **Empty vs. error handling** (distinguish):
    - **Legitimate empty** (0 tweets): log `FETCH_TWEETS_EMPTY (source=${SOURCE_PATH})` and **stop — no notification**.
@@ -265,7 +268,7 @@ Use this to answer "what did *these specific people* post" across a watchlist.
        -d @/tmp/xai-ft-acct1.json
      ```
      Parse with the standard `jq` extractor.
-   If `XAI_API_KEY` is unset, log `TWEET_DIGEST_NO_KEY: skill requires XAI_API_KEY` and exit (no notification).
+   If `XAI_API_KEY` is unset but `XQUIK_API_KEY` is set, use `/api/v1/x/users/{id}/tweets` for each tracked account, normalize the same fields, and record `source=xquik`. If both keys are unset, log `TWEET_DIGEST_NO_KEY: skill requires XAI_API_KEY or XQUIK_API_KEY` and exit (no notification).
    **Dedup:** drop any candidate URL already in `SEEN_URLS` (last 2 days of logs).
 
 3. **Group by theme, not by account.** Walk the full candidate set; identify 2–4 themes (e.g. "L2 design decisions", "macro / rates", "AI model releases", "regulation"). Each tweet maps to one theme; a `why:` label can seed theme naming for single-topic feeds.
@@ -313,7 +316,7 @@ Cross-list narrative resonance + signal-scored top tweets from tracked X lists i
      fi
    done
    ```
-   If `XAI_API_KEY` is unset, fall back to Path B. If no path returns data, log `LIST_DIGEST_NO_CONFIG: XAI_API_KEY required` and stop without notifying.
+   If `XAI_API_KEY` is unset, try Xquik when `XQUIK_API_KEY` is set, then fall back to WebSearch. If no path returns data, log `LIST_DIGEST_NO_CONFIG: XAI_API_KEY or XQUIK_API_KEY required` and stop without notifying.
 
 2. **Fetch each list's top tweets (past 24h)** — API primary, WebSearch fallback.
    **Path A — X.AI Responses API** (primary):
@@ -330,7 +333,8 @@ Cross-list narrative resonance + signal-scored top tweets from tracked X lists i
      -d @/tmp/xai-ft-list.json
    ```
    Parse with the standard `jq` extractor.
-   **Path B — WebSearch fallback** (only if `XAI_API_KEY` unset, OR Path A errors / returns nothing): `site:x.com "i/lists/${LIST_ID}" OR list:${LIST_ID} after:${FROM_DATE}`. Lower quality; mark this list's source as `websearch`.
+   **Path B — Xquik REST fallback** (only if X.AI is unset/failed and `XQUIK_API_KEY` is set): use `/api/v1/x/lists/{id}/tweets`, normalize public fields, and mark this list's source as `xquik`.
+   **Path C — WebSearch fallback** (only if prior paths are unset, error, or return nothing): `site:x.com "i/lists/${LIST_ID}" OR list:${LIST_ID} after:${FROM_DATE}`. Lower quality; mark this list's source as `websearch`.
    **Per-list outcome:** `ok` (≥3 tweets) | `quiet` (1–2) | `empty` (0, list found but no posts) | `error` (API/access failure — note reason).
 
 3. **Build the candidate pool.** Record per tweet `{handle, text, likes, retweets, replies, views, url, list_ids_seen_on:[], list_names_seen_on:[], media, is_reply, is_quote}`. **Dedup by URL across lists** — same tweet on multiple lists → merge records, keep both `list_ids_seen_on` and `list_names_seen_on` (cross-list appearance is a signal). **Dedup against history** — drop URLs in `memory/list-digest-seen.txt` or the last 2 days of logs.
@@ -410,7 +414,8 @@ A topic-filtered preset: a curated, narrative-aware read on what the AI-agent sc
      -d @/tmp/xai-ft-buzz.json
    ```
    Parse with the standard `jq` extractor. Record `source=xai`.
-   **Path B — WebSearch fallback** (only if `XAI_API_KEY` unset, or Path A errors/empty): forced-fresh query `"AI agents twitter today ${today}"` — discard anything >48h old, expect degraded metadata. Record `source=websearch`.
+   **Path B — Xquik REST fallback** (only if X.AI is unset/failed and `XQUIK_API_KEY` is set): use `/api/v1/x/tweets/search`, normalize public fields, and record `source=xquik`.
+   **Path C — WebSearch fallback** (only if prior paths are unset, error, or empty): forced-fresh query `"AI agents twitter today ${today}"` — discard anything >48h old, expect degraded metadata. Record `source=websearch`.
 
    If `ARG` is set, also issue a second call constrained to that topic with the same schema; merge results.
 
@@ -496,8 +501,11 @@ No chain consumes this skill's output as of this commit (no `consume: [fetch-twe
    Then parse `/tmp/xai.json` with the standard `jq` extractor. `HTTP=200` with non-empty body → use it (`SOURCE_PATH=api`).
 4. **Fall back only on a real failure**, and **record the true reason** — never write "XAI_API_KEY unavailable" when the key was set. Use one of: `key-unset` (only if step 1 said `KEY_UNSET`), `http-<code>` (non-2xx), `empty` (200 but no tweets parsed), `timeout` (curl exceeded `--max-time`).
 
-**WebSearch / WebFetch are last-resort fallbacks only** — lower quality (WebSearch favours old high-engagement tweets). Never reach for them while the key works.
+If the X.AI path is unavailable and `XQUIK_API_KEY` is set, use Xquik's documented read-only REST endpoints before WebSearch/WebFetch. Mark these results `SOURCE_PATH=xquik` or per-branch `source=xquik`, preserve missing metrics as `0`, and keep unsupported fields unknown.
+
+**WebSearch / WebFetch are last-resort fallbacks only** — lower quality (WebSearch favours old high-engagement tweets). Never reach for them while X.AI or Xquik read paths work.
 
 ## Environment Variables
 
 - `XAI_API_KEY` — X.AI API key for Grok's `x_search` tool. Declared in `requires:`, so it is **injected into this skill's environment** and is the primary fetch path for every branch. If it is ever unset, branches degrade to WebSearch/WebFetch at lower quality; the `account (all)` sub-mode instead hard-exits (`TWEET_DIGEST_NO_KEY`).
+- `XQUIK_API_KEY` — optional Xquik API key for read-only X REST endpoints. Use it only after the X.AI path is unset or has a true recorded failure, and only for tweet search, tweet read, thread read, account tweet, or list tweet reads.
