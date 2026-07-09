@@ -39,12 +39,12 @@ cd aeon && ./aeon
 
 Open [http://localhost:5555](http://localhost:5555) and follow the four steps:
 
-1. **Authenticate** - connect your Claude Pro/Max subscription, or paste an API key: Anthropic, Anthropic-compatible, or a [gateway key](#llm-gateways) (Bankr, OpenRouter, UsePod, Venice, Surplus) - routed automatically.
-2. **Add a channel** - [Telegram, Discord, or Slack](#notifications) so Aeon can talk to you.
+1. **Authenticate** - connect your Claude Pro/Max subscription or your X account (for the [Grok harness](#harnesses)), or paste an API key: Anthropic, Anthropic-compatible, or a [gateway key](#llm-gateways) (Bankr, OpenRouter, UsePod, Venice, Surplus, Grok) - routed automatically.
+2. **Add a channel** - [Telegram, Discord, Slack, or email](#notifications) so Aeon can talk to you.
 3. **Pick skills** - toggle what you want, set schedules. Each skill shows the API keys and MCP servers it needs, with one-click setup.
 4. **Run** - hit **Run now** on any skill to try it immediately; API keys and `var` values apply directly, no push needed. When you change config (schedules, toggles), **Push** commits it to GitHub in one click so Actions runs it on cron.
 
-That's it - Aeon now runs unattended. On a public repo, GitHub Actions minutes are **free**. Run `bin/onboard` anytime to verify your setup.
+That's it - Aeon now runs unattended. On a public repo, GitHub Actions minutes are **free**.
 
 Dashboard views, local dev, env vars, and remote access are documented in [`apps/dashboard/README.md`](../apps/dashboard/README.md).
 
@@ -53,7 +53,7 @@ Dashboard views, local dev, env vars, and remote access are documented in [`apps
 <details>
 <summary><strong>No admin rights / can't install <code>gh</code>?</strong></summary>
 
-Grab the `gh_*_macOS_arm64.zip` (or your platform's binary) from [github.com/cli/cli/releases](https://github.com/cli/cli/releases) and drop it on your `PATH` (e.g. `~/.local/bin`). No installer, no sudo. Then `gh auth login`.
+Grab the `gh_*_macOS_arm64.zip` (or your platform's binary) from [github.com/cli/cli/releases](https://github.com/cli/cli/releases) and drop it on your `PATH` (e.g. `~/.local/bin`). Then `gh auth login`.
 
 </details>
 
