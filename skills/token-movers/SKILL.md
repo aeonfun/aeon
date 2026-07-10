@@ -360,7 +360,7 @@ Then go to **Send the digest** and **stop**.
 
 ## Send the digest
 
-Send the movers digest with `./notify -f report.md`, then make the deep-dive offer below.
+Write the movers digest to `/tmp/token-movers-report.md` (keep it out of the repo root), send it with `./notify -f /tmp/token-movers-report.md`, then make the deep-dive offer below.
 
 ### Deep-dive offer (force-reply — movers runs only)
 
