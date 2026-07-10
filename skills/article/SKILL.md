@@ -476,7 +476,7 @@ Runs **only when `visual = true`**, after the article body is written and saved,
 
 4. **Persist locally** — Replicate CDN URLs expire. Download and commit (the CDN URL carries no secret, so plain `curl` is fine):
    ```bash
-   mkdir -p images
+   mkdir -p output/images
    IMAGE_URL=<extracted from response.output>
    EXT=$(echo "$IMAGE_URL" | grep -oE '\.(jpg|jpeg|png|webp)' | tail -1)
    EXT="${EXT:-.jpg}"

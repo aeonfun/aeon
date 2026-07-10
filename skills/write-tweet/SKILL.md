@@ -187,7 +187,7 @@ After all 10, add a one-line pick for **best overall** and **best per tier**.
 
 ## Notify (drafts)
 
-Send the drafts via `./notify`:
+Send the drafts via `./notify` — write the body to `/tmp/wt-drafts.md` first, then `./notify -f /tmp/wt-drafts.md` (keeps the long body off argv and out of the repo root):
 ```
 tweet drafts: [topic]
 
@@ -352,7 +352,7 @@ The payoff. The implication, the action, or the reframe. Should feel like the po
 
 ## Notify (thread)
 
-Send via `./notify`:
+Send via `./notify` — write the thread body to `/tmp/wt-thread.md` first, then `./notify -f /tmp/wt-thread.md` (keeps the long body off argv and out of the repo root):
 ```
 thread: [topic — 3-5 words]
 
@@ -503,7 +503,7 @@ Track drops in the log (step 7). If you drop more than 3, emit `REMIX_TWEETS_DEG
 
 Lead with a one-line **batch verdict** summarizing strategy spread (e.g., "3 sharpens, 2 flips, 2 updates, 2 concretizes, 1 escalate"). Keep the whole message ≤4000 chars. No leading indentation.
 
-Send via `./notify`:
+Send via `./notify` — write the message body to `/tmp/wt-remix.md` first, then `./notify -f /tmp/wt-remix.md` (keeps the long body off argv and out of the repo root):
 ```
 *Remix Tweets — ${today}*
 Batch: [one-line strategy spread]. Drops: N.

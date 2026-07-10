@@ -171,19 +171,19 @@ The Hugging Face Hub REST API is fully keyless for the list endpoints used here.
 curl -sf "https://huggingface.co/api/models?sort=trendingScore&direction=-1&limit=20" \
   -H "accept: application/json" \
   -H "user-agent: aeon/1.0 (+https://github.com/aaronjmars/aeon)" \
-  > .hf-models.json
+  > /tmp/hf-models.json
 
 # Datasets
 curl -sf "https://huggingface.co/api/datasets?sort=trendingScore&direction=-1&limit=15" \
   -H "accept: application/json" \
   -H "user-agent: aeon/1.0 (+https://github.com/aaronjmars/aeon)" \
-  > .hf-datasets.json
+  > /tmp/hf-datasets.json
 
 # Spaces
 curl -sf "https://huggingface.co/api/spaces?sort=trendingScore&direction=-1&limit=15" \
   -H "accept: application/json" \
   -H "user-agent: aeon/1.0 (+https://github.com/aaronjmars/aeon)" \
-  > .hf-spaces.json
+  > /tmp/hf-spaces.json
 ```
 
 If the sub-scope is `models` / `datasets` / `spaces`, fetch only that endpoint.
@@ -306,7 +306,7 @@ Append to `memory/logs/${today}.md` under a single `### github-trending` heading
 | `HF_TRENDING_ERROR` | Every source (models + datasets + spaces — or the single one selected by the sub-scope) failed both `curl` and the WebFetch fallback | Yes (the "sources unavailable" note) |
 | `HF_TRENDING_BAD_VAR` | `${var}` selected the HF branch but the sub-scope after `hf:` / `huggingface:` was non-empty and not one of `models` / `datasets` / `spaces` | No |
 
-**Cleanup.** After logging, delete `.hf-models.json`, `.hf-datasets.json`, `.hf-spaces.json` if they were written. They're throwaway intermediates.
+**Cleanup.** These live under `/tmp` (`/tmp/hf-models.json`, `/tmp/hf-datasets.json`, `/tmp/hf-spaces.json`) — throwaway intermediates outside the repo, so no cleanup is required.
 
 ---
 
