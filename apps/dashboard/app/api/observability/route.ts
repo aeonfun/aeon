@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { execFileSync } from 'child_process'
-import { ghAvailable, ghArgsRepo } from '@/lib/gh'
-import { errorResponse } from '@/lib/http'
+import { ghArgsRepo } from '@/lib/gh'
+import { errorResponse, requireGh } from '@/lib/http'
 
 // Langfuse region → OTLP host. The shim (scripts/langfuse-otel.sh) reads the
 // LANGFUSE_HOST repo VARIABLE and defaults to EU cloud when it's unset, so EU is
@@ -35,17 +35,15 @@ function readVar(name: string): string | null {
 }
 
 export async function GET() {
-  if (!ghAvailable()) {
-    return NextResponse.json({ error: 'GitHub CLI not authenticated. Run: gh auth login', ghReady: false }, { status: 503 })
-  }
+  const notReady = requireGh({ ghReady: false })
+  if (notReady) return notReady
   const host = readVar('LANGFUSE_HOST')
   return NextResponse.json({ ghReady: true, host, region: regionOf(host) })
 }
 
 export async function POST(request: Request) {
-  if (!ghAvailable()) {
-    return NextResponse.json({ error: 'GitHub CLI not authenticated' }, { status: 503 })
-  }
+  const notReady = requireGh()
+  if (notReady) return notReady
   const body = await request.json().catch(() => ({})) as { region?: string }
   const region: Region | null = body.region === 'us' ? 'us' : body.region === 'eu' ? 'eu' : null
   if (!region) {

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { ghAvailable } from '@/lib/gh'
+import { requireGh } from '@/lib/http'
 import { configureAuth } from '@/lib/auth'
 
 // The auth normalization, gh secret/variable writes, and `claude setup-token`
@@ -7,9 +7,8 @@ import { configureAuth } from '@/lib/auth'
 // identically.
 export async function POST(request: Request) {
   try {
-    if (!ghAvailable()) {
-      return NextResponse.json({ error: 'gh CLI not authenticated. Run: gh auth login' }, { status: 503 })
-    }
+    const notReady = requireGh()
+    if (notReady) return notReady
     const body = await request.json().catch(() => ({})) as { key?: string, baseUrl?: string, provider?: string }
     return NextResponse.json(await configureAuth(body))
   } catch (error: unknown) {

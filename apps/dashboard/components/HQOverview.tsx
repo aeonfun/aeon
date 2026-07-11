@@ -3,7 +3,7 @@
 import { useRef } from 'react'
 import type { Skill, Run } from '../lib/types'
 import { packGroups } from '../lib/constants'
-import { timeAgo } from '../lib/utils'
+import { timeAgo, runStatusColor } from '../lib/utils'
 import { Scramble, Flip, VelocityMarquee } from './ui/Animated'
 import { Section } from './ui/Section'
 
@@ -132,7 +132,7 @@ export function HQOverview({ skills, runs, enabledCount, workingCount, categoryF
               onClick={() => onViewRun(run)}
               className="w-full flex items-center gap-4 px-5 py-3 hover:bg-aeon-panel transition-colors text-left group"
             >
-              <span className={`text-sm w-4 shrink-0 ${run.conclusion === 'success' ? 'text-eva-green' : run.conclusion === 'failure' ? 'text-eva-red' : run.status === 'in_progress' ? 'text-eva-orange' : 'text-primary-35'}`}>
+              <span className={`text-sm w-4 shrink-0 ${runStatusColor(run)}`}>
                 {run.conclusion === 'success' ? '✓' : run.conclusion === 'failure' ? '✗' : run.status === 'in_progress' ? '◌' : '·'}
               </span>
               <span className="text-xs text-primary-70 truncate flex-1 font-mono group-hover:text-aeon-fg transition-colors">{run.workflow}</span>

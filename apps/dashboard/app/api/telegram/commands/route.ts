@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
-import { ghAvailable, dispatchCommandsWorkflow } from '@/lib/gh'
-import { errorResponse } from '@/lib/http'
+import { dispatchCommandsWorkflow } from '@/lib/gh'
+import { errorResponse, requireGh } from '@/lib/http'
 
 // Re-register the Telegram slash-command menu. Dispatches the Setup Telegram
 // Commands workflow, which reads TELEGRAM_BOT_TOKEN server-side and calls
@@ -8,9 +8,8 @@ import { errorResponse } from '@/lib/http'
 // also auto-register the moment the bot token is saved (see /api/secrets); this
 // route is the manual "re-sync after toggling skills" path behind the dashboard button.
 export async function POST() {
-  if (!ghAvailable()) {
-    return NextResponse.json({ error: 'GitHub CLI not authenticated' }, { status: 503 })
-  }
+  const notReady = requireGh()
+  if (notReady) return notReady
   try {
     dispatchCommandsWorkflow()
     return NextResponse.json({ ok: true })
