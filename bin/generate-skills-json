@@ -43,6 +43,16 @@ get_skill_updated() {
   git -C "$ROOT" log --follow --format="%as" -1 -- "skills/$slug/SKILL.md" 2>/dev/null || echo ""
 }
 
+# Read one frontmatter scalar (first '---' block) from a SKILL.md.
+#   fm <file> <field>        value after 'field:' (verbatim; no quote strip)
+#   fm <file> <field> strip  additionally strip all double-quotes (gsub /"/)
+fm() {
+  awk -v f="$2" -v q="${3:-}" '
+    /^---$/{n++; next}
+    n==1 && $0 ~ "^"f":" { sub("^"f": *", ""); if (q=="strip") gsub(/"/, ""); print; exit }
+  ' "$1"
+}
+
 # Start JSON output
 echo -n '{"version":"1.0","generated":"' > "$OUTPUT"
 echo -n "$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$OUTPUT"
@@ -57,15 +67,15 @@ for skill_dir in "$SKILLS_DIR"/*/; do
 
   slug=$(basename "$skill_dir")
 
-  # Parse frontmatter
-  name=$(awk '/^---$/{n++; next} n==1 && /^name:/{sub(/^name: */, ""); print; exit}' "$skill_file")
-  description=$(awk '/^---$/{n++; next} n==1 && /^description:/{sub(/^description: */, ""); print; exit}' "$skill_file")
-  var=$(awk '/^---$/{n++; next} n==1 && /^var:/{sub(/^var: */, ""); gsub(/"/, ""); print; exit}' "$skill_file")
+  # Parse frontmatter (fm reads one scalar; `strip` drops double-quotes)
+  name=$(fm "$skill_file" name)
+  description=$(fm "$skill_file" description)
+  var=$(fm "$skill_file" var strip)
 
   # Category is declared in each SKILL.md frontmatter — the single source of
   # truth. A skill with no category falls back to "other"; the packs generator
   # parks those in the Lab catch-all rather than failing.
-  category=$(awk '/^---$/{n++; next} n==1 && /^category:/{sub(/^category: */, ""); gsub(/"/, ""); print; exit}' "$skill_file")
+  category=$(fm "$skill_file" category strip)
   [[ -z "$category" ]] && category="other"
 
   # requires: [KEY, KEY2?]  →  [{"key":"KEY","optional":false},{"key":"KEY2","optional":true}]

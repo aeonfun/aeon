@@ -179,6 +179,25 @@ TOTAL_WARN=0
 TOTAL_FAIL=0
 JSON_RESULTS=""
 
+# scan_tier <file> <pattern>...  — emit one "L<n>: <content> [pattern: <p>]" line
+# per grep match across the tier's patterns. Bash 3.2-safe (no namerefs): the
+# caller collects stdout into its highs/mediums/lows array. Extracted from three
+# byte-identical per-tier loops.
+scan_tier() {
+  local file="$1"; shift
+  local pattern matches match line_num line_content
+  for pattern in "$@"; do
+    matches=$(grep -nE "$pattern" "$file" 2>/dev/null || true)
+    [[ -n "$matches" ]] || continue
+    while IFS= read -r match; do
+      line_num="${match%%:*}"
+      line_content="${match#*:}"
+      line_content="${line_content:0:120}"  # truncate
+      printf 'L%s: %s [pattern: %s]\n' "$line_num" "$line_content" "$pattern"
+    done <<< "$matches"
+  done
+}
+
 scan_file() {
   local file="$1"
   local skill_name
@@ -192,51 +211,12 @@ scan_file() {
   local content
   content=$(cat "$file")
 
-  local highs=()
-  local mediums=()
-  local lows=()
-
-  # Check HIGH patterns
-  for pattern in "${HIGH_PATTERNS[@]}"; do
-    local matches
-    matches=$(grep -nE "$pattern" "$file" 2>/dev/null || true)
-    if [[ -n "$matches" ]]; then
-      while IFS= read -r match; do
-        local line_num="${match%%:*}"
-        local line_content="${match#*:}"
-        line_content="${line_content:0:120}"  # truncate
-        highs+=("L${line_num}: ${line_content} [pattern: ${pattern}]")
-      done <<< "$matches"
-    fi
-  done
-
-  # Check MEDIUM patterns
-  for pattern in "${MEDIUM_PATTERNS[@]}"; do
-    local matches
-    matches=$(grep -nE "$pattern" "$file" 2>/dev/null || true)
-    if [[ -n "$matches" ]]; then
-      while IFS= read -r match; do
-        local line_num="${match%%:*}"
-        local line_content="${match#*:}"
-        line_content="${line_content:0:120}"
-        mediums+=("L${line_num}: ${line_content} [pattern: ${pattern}]")
-      done <<< "$matches"
-    fi
-  done
-
-  # Check LOW patterns
-  for pattern in "${LOW_PATTERNS[@]}"; do
-    local matches
-    matches=$(grep -nE "$pattern" "$file" 2>/dev/null || true)
-    if [[ -n "$matches" ]]; then
-      while IFS= read -r match; do
-        local line_num="${match%%:*}"
-        local line_content="${match#*:}"
-        line_content="${line_content:0:120}"
-        lows+=("L${line_num}: ${line_content} [pattern: ${pattern}]")
-      done <<< "$matches"
-    fi
-  done
+  # Collect matches per tier via scan_tier. Arrays start empty; a tier with no
+  # matches stays empty (0 elements) — preserved for the Bash-3.2 ${#arr[@]} gates below.
+  local highs=() mediums=() lows=() _line
+  while IFS= read -r _line; do highs+=("$_line");   done < <(scan_tier "$file" "${HIGH_PATTERNS[@]}")
+  while IFS= read -r _line; do mediums+=("$_line"); done < <(scan_tier "$file" "${MEDIUM_PATTERNS[@]}")
+  while IFS= read -r _line; do lows+=("$_line");    done < <(scan_tier "$file" "${LOW_PATTERNS[@]}")
 
   # Determine result
   local status="PASS"

@@ -49,15 +49,10 @@ WRITE_TOOLS="Write,Edit,Bash(gh:*),Bash(git:*),Bash(python3:*),Bash(python:*)"
 WRITE_TOOLS="$WRITE_TOOLS,Bash(semgrep:*),Bash(osv-scanner:*),Bash(trufflehog:*),Bash(slither:*)"
 
 resolve_mode() {
-  local skill="$1" f="skills/$1/SKILL.md" m=""
-  if [ -f "$f" ]; then
-    # value after 'mode:', stripping an inline '# comment', quotes, and surrounding ws
-    m=$(awk '/^---$/{n++; next}
-             n==1 && /^mode:/{
-               v=$0; sub(/^mode:[ \t]*/,"",v); sub(/[ \t]*#.*$/,"",v);
-               gsub(/^[ \t"]+|[ \t"]+$/,"",v); print v; exit
-             }' "$f")
-  fi
+  # `mode:` frontmatter scalar via the shared _fm reader (strips inline comment,
+  # quotes, and surrounding ws); absent file/field -> "" -> the write default.
+  local m
+  m=$(_fm "$1" mode)
   case "$m" in
     read-only|readonly|read_only) echo "read-only" ;;
     write|"")                     echo "write" ;;
