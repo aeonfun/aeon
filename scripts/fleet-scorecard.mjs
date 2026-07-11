@@ -97,7 +97,7 @@ for (const repo of repos) {
   } catch (e) { console.error(`fleet-scorecard: WARN token-usage.csv fetch failed for ${repo}: ${e}`); }
 }
 
-// ---- pricing + formatters (== scripts/prefetch-fleet-scorecard.sh AWK_LIB) --
+// ---- pricing + formatters ----
 function priceRate(model, kind) {
   let i, o, cw, cr;
   if (/opus/.test(model)) { i = 15; o = 75; cw = 18.75; cr = 1.50; }

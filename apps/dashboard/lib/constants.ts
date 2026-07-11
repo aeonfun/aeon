@@ -62,14 +62,13 @@ export function authSecretsForHarness(harness: string): string[] {
 // Credentials whose CAPABILITY a harness covers with its own built-in tools — so a
 // skill that `requires:` that key is runnable on that harness with the secret unset.
 // Grok Build fetches X/Twitter posts with its built-in WebSearch/WebFetch, which is
-// enough to run the skills that use XAI_API_KEY for the `x_search` prefetch (into
-// .xai-cache/) without the key — at web-search quality, NOT the premium xAI x_search
-// feed. So on the grok harness XAI_API_KEY is not required to get output; we drop the
-// dashboard's "needs key" gate there (only there — claude skills still declare it).
-// The runtime half lives in scripts/run-grok.sh, whose compat `--rules` tell the model
-// to fetch X via WebSearch when the cache + key are absent instead of hard-exiting.
-// The key stays fully settable either way — it powers the prefetch on BOTH harnesses
-// (premium data) and the grok gateway.
+// enough to run the skills that use XAI_API_KEY for `x_search` without the key — at
+// web-search quality, NOT the premium xAI x_search feed. So on the grok harness
+// XAI_API_KEY is not required to get output; we drop the dashboard's "needs key" gate
+// there (only there — claude skills still declare it). The runtime half lives in
+// scripts/run-grok.sh, whose compat `--rules` tell the model to fetch X via WebSearch
+// when the key is absent instead of hard-exiting. The key stays fully settable either
+// way — it powers the premium xAI x_search on BOTH harnesses and the grok gateway.
 export const HARNESS_NATIVE_KEYS: Record<string, string[]> = {
   grok: ['XAI_API_KEY'],
 }

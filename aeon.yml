@@ -53,7 +53,7 @@ skills:
 
   # --- Knowledge / OKF (memory/topics is a native OKF bundle; see docs/OKF.md) ---
   okf-export: { enabled: false, schedule: "workflow_dispatch", var: "" } # one-shot backfill — add type: frontmatter to existing memory/topics notes + open a PR. var: empty=all | <file.md>|<subdir>
-  okf-ingest: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — fetch+validate+QUARANTINE an EXTERNAL OKF bundle into memory/topics/ingested + open a PR (untrusted content; needs scripts/prefetch-okf.sh). var: git-url | owner/repo[#subdir]
+  okf-ingest: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — fetch+validate+QUARANTINE an EXTERNAL OKF bundle into memory/topics/ingested + open a PR (untrusted content; fetched in-run). var: git-url | owner/repo[#subdir]
 
   # --- X / social (5 PM UTC) ---
   fetch-tweets: { enabled: false, schedule: "0 17 * * *", var: "" } # curate X/Twitter. var: keyword:<q> | topic:<t> | account:<handle> (empty=digest tracked accounts) | list:<ids>[|topic] | agent-buzz[:<t>]. Optional XAI_API_KEY.

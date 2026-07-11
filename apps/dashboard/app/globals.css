@@ -29,15 +29,6 @@
   --aeon-rule-soft: rgba(250, 250, 250, 0.07);
   --aeon-rule-strong: rgba(250, 250, 250, 0.22);
 
-  /* ── Legacy eva-* tokens - preserved aliases, remapped values ── */
-  --color-orange: var(--aeon-red);          /* primary accent (was warm orange) */
-  --color-green: var(--aeon-green);         /* success state - unchanged */
-  --color-white: var(--aeon-fg);            /* light text */
-  --color-black: var(--aeon-bg);            /* dark surface */
-  --color-gray: var(--aeon-panel);          /* dark panel (was light gray) */
-  --color-amber: var(--aeon-amber);
-  --color-red: var(--aeon-red-alert);
-
   --background: var(--aeon-bg);
   --foreground: var(--aeon-fg);
 
@@ -60,9 +51,6 @@
   /* legacy aliases - components reference these heavily, keep them working */
   --color-eva-orange: var(--aeon-red);
   --color-eva-green: var(--aeon-green);
-  --color-eva-white: var(--aeon-fg);
-  --color-eva-black: var(--aeon-bg);
-  --color-eva-gray: var(--aeon-panel);
   --color-eva-red: var(--aeon-red-alert);
   --color-eva-amber: var(--aeon-amber);
 
