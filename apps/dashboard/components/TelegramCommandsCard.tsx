@@ -51,7 +51,7 @@ export function TelegramCommandsCard({ tokenSet }: TelegramCommandsCardProps) {
             <span className="text-primary-70">/skillname</span> runs instantly, no LLM call.
           </div>
           {status && (
-            <p className={`text-[11px] font-mono mt-2 ${status.ok ? 'text-eva-green' : 'text-eva-red/80'}`}>{status.msg}</p>
+            <p className={`text-[11px] font-mono mt-2 ${status.ok ? 'text-aeon-green' : 'text-aeon-red-alert/80'}`}>{status.msg}</p>
           )}
         </div>
         <button

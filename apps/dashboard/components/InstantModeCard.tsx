@@ -88,7 +88,7 @@ export function InstantModeCard({ repo, sessionBotToken }: InstantModeCardProps)
           </button>
           <button
             onClick={() => setEnabled(true)}
-            className={`text-[11px] font-mono px-3 py-1 border transition-colors ${enabled ? 'border-eva-green text-eva-green' : 'border-[rgba(250,250,250,0.16)] text-primary-40 hover:text-eva-green hover:border-eva-green/40'}`}
+            className={`text-[11px] font-mono px-3 py-1 border transition-colors ${enabled ? 'border-aeon-green text-aeon-green' : 'border-[rgba(250,250,250,0.16)] text-primary-40 hover:text-aeon-green hover:border-aeon-green/40'}`}
           >
             Yes
           </button>
@@ -124,7 +124,7 @@ export function InstantModeCard({ repo, sessionBotToken }: InstantModeCardProps)
                 <span className="text-primary-100">TELEGRAM_BOT_TOKEN</span>{' '}
                 <a href="https://t.me/BotFather" target="_blank" rel="noopener noreferrer"
                   title="Open BotFather in Telegram, send /newbot (or /token for an existing bot), copy the token it replies with"
-                  className="text-[10px] text-eva-orange/80 hover:text-eva-orange transition-colors">@BotFather ↗</a>
+                  className="text-[10px] text-aeon-red/80 hover:text-aeon-red transition-colors">@BotFather ↗</a>
               </li>
               <li>
                 <span className="text-primary-100">TELEGRAM_CHAT_ID</span>{' '}
@@ -133,7 +133,7 @@ export function InstantModeCard({ repo, sessionBotToken }: InstantModeCardProps)
               <li>
                 <span className="text-primary-100">GITHUB_REPO</span> = {deployRepo}{' '}
                 <button onClick={() => copy('repo', deployRepo)}
-                  className="text-[10px] text-primary-40 hover:text-eva-orange transition-colors">
+                  className="text-[10px] text-primary-40 hover:text-aeon-red transition-colors">
                   {copied === 'repo' ? 'copied' : 'copy'}
                 </button>
               </li>
@@ -141,7 +141,7 @@ export function InstantModeCard({ repo, sessionBotToken }: InstantModeCardProps)
                 <span className="text-primary-100">GITHUB_TOKEN</span>{' '}
                 <a href={patUrl} target="_blank" rel="noopener noreferrer"
                   title="Opens GitHub's token page with the repo scope and a name prefilled - generate and copy"
-                  className="text-[10px] text-eva-orange/80 hover:text-eva-orange transition-colors">create token ↗</a>
+                  className="text-[10px] text-aeon-red/80 hover:text-aeon-red transition-colors">create token ↗</a>
               </li>
             </ul>
             <p className="text-[11px] text-primary-35 mt-2 leading-relaxed">
@@ -160,7 +160,7 @@ export function InstantModeCard({ repo, sessionBotToken }: InstantModeCardProps)
                 onKeyDown={(e) => e.key === 'Enter' && registerWebhook()}
                 placeholder="aeon-telegram-webhook.<subdomain>.workers.dev" className={inputCls} />
               <button onClick={registerWebhook} disabled={!botToken.trim() || !fullWorkerUrl || whBusy}
-                className="bg-eva-green text-white text-[11px] px-4 py-2 font-mono hover:opacity-90 transition-opacity disabled:opacity-50 shrink-0">
+                className="bg-aeon-green text-white text-[11px] px-4 py-2 font-mono hover:opacity-90 transition-opacity disabled:opacity-50 shrink-0">
                 {whBusy ? 'Registering…' : 'Register'}
               </button>
             </div>
@@ -168,14 +168,14 @@ export function InstantModeCard({ repo, sessionBotToken }: InstantModeCardProps)
               The Worker URL is on its Overview tab in Cloudflare. The token only goes to api.telegram.org; nothing is stored.
             </p>
             {whStatus && (
-              <p className={`text-[11px] font-mono mt-2 ${whStatus.ok ? 'text-eva-green' : 'text-eva-red/80'}`}>{whStatus.msg}</p>
+              <p className={`text-[11px] font-mono mt-2 ${whStatus.ok ? 'text-aeon-green' : 'text-aeon-red-alert/80'}`}>{whStatus.msg}</p>
             )}
             <div className="flex items-start gap-2 mt-3">
               <code className="flex-1 bg-aeon-bg text-primary-70 text-[11px] px-3 py-2 border border-[rgba(250,250,250,0.10)] font-mono break-all">
                 {setWebhookCmd}
               </code>
               <button onClick={() => copy('cmd', setWebhookCmd)}
-                className="text-[11px] text-primary-40 font-mono hover:text-eva-orange transition-colors px-2 py-2 shrink-0">
+                className="text-[11px] text-primary-40 font-mono hover:text-aeon-red transition-colors px-2 py-2 shrink-0">
                 {copied === 'cmd' ? 'copied' : 'copy'}
               </button>
             </div>

@@ -35,8 +35,8 @@ export function HQOverview({ skills, runs, enabledCount, workingCount, categoryF
 
   const stats: { label: string; value: number; tone?: string }[] = [
     { label: 'Team', value: skills.length },
-    { label: 'Enabled', value: enabledCount, tone: 'text-eva-green' },
-    { label: 'Working', value: workingCount, tone: 'text-eva-orange' },
+    { label: 'Enabled', value: enabledCount, tone: 'text-aeon-green' },
+    { label: 'Working', value: workingCount, tone: 'text-aeon-red' },
     { label: 'Packs', value: cats.length },
   ]
 

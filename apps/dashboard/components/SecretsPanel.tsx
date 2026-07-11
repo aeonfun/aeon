@@ -121,16 +121,16 @@ export function SecretsPanel({ secrets, skills, busy, repo, harness, focusKey, o
             </div>
             <div className="border border-[rgba(250,250,250,0.10)] divide-y divide-[rgba(250,250,250,0.08)]">
               {gs.map(secret => (
-                <div key={secret.name} id={`secret-${secret.name}`} className={`group px-[var(--space-md)] py-[var(--space-sm)] scroll-mt-24 transition-colors ${editingSecret === secret.name ? 'bg-eva-orange/5' : ''}`}>
+                <div key={secret.name} id={`secret-${secret.name}`} className={`group px-[var(--space-md)] py-[var(--space-sm)] scroll-mt-24 transition-colors ${editingSecret === secret.name ? 'bg-aeon-red/5' : ''}`}>
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex items-start gap-3 min-w-0">
                       <ServiceIcon name={secret.name} className="mt-0.5" />
                       <div className="min-w-0">
-                      <div className="flex items-center gap-2"><span className="font-mono text-xs">{secret.name}</span><span className={`w-2 h-2 rounded-full ${secret.isSet ? 'bg-eva-green' : 'bg-[rgba(250,250,250,0.15)]'}`} /></div>
+                      <div className="flex items-center gap-2"><span className="font-mono text-xs">{secret.name}</span><span className={`w-2 h-2 rounded-full ${secret.isSet ? 'bg-aeon-green' : 'bg-[rgba(250,250,250,0.15)]'}`} /></div>
                       <div className="text-[11px] text-primary-40 font-mono">{linkify(secret.description)}</div>
                       {keyProvidedByHarness(secret.name, harness) && !secret.isSet && (
-                        <div className="text-[10px] text-eva-green/80 font-mono mt-1 flex items-center gap-1.5">
-                          <span className="w-1.5 h-1.5 rounded-full bg-eva-green shrink-0" />
+                        <div className="text-[10px] text-aeon-green/80 font-mono mt-1 flex items-center gap-1.5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-aeon-green shrink-0" />
                           Covered by the Grok Build harness (built-in web search) - optional here; set it for the premium xAI x_search feed, used by both harnesses.
                         </div>
                       )}
@@ -140,7 +140,7 @@ export function SecretsPanel({ secrets, skills, busy, repo, harness, focusKey, o
                           target="_blank"
                           rel="noopener noreferrer"
                           title="Opens BotFather in Telegram. Send /newbot and follow the prompts (or /token for an existing bot) - it replies with the bot token, e.g. 123456789:AAxx... Paste that here."
-                          className="inline-block text-[10px] font-mono text-eva-orange/80 hover:text-eva-orange transition-colors mt-1"
+                          className="inline-block text-[10px] font-mono text-aeon-red/80 hover:text-aeon-red transition-colors mt-1"
                         >
                           Get one from @BotFather ↗
                         </a>
@@ -193,7 +193,7 @@ export function SecretsPanel({ secrets, skills, busy, repo, harness, focusKey, o
           </section>
         )
       })}
-      <div>{addingSecret ? (<div className="space-y-2"><input type="text" value={newSecretName} onChange={(e) => setNewSecretName(e.target.value.toUpperCase().replace(/[^A-Z0-9_]/g, ''))} placeholder="SECRET_NAME" autoFocus className={inputCls} />{newSecretName && <div className="flex gap-2"><input type="password" value={secretValue} onChange={(e) => setSecretValue(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleSave(newSecretName)} placeholder="value..." className={inputCls} /><button onClick={() => handleSave(newSecretName)} disabled={!secretValue.trim()} className="btn-mini-go">Save</button></div>}<button onClick={() => { setAddingSecret(false); setNewSecretName(''); setSecretValue('') }} className="btn-mini">Cancel</button></div>) : <button onClick={() => setAddingSecret(true)} className="w-full text-sm font-mono uppercase tracking-[0.14em] text-primary-60 border border-dashed border-[rgba(250,250,250,0.16)] py-3.5 hover:text-eva-orange hover:border-eva-orange/40 transition-colors">+ Add Credential</button>}</div>
+      <div>{addingSecret ? (<div className="space-y-2"><input type="text" value={newSecretName} onChange={(e) => setNewSecretName(e.target.value.toUpperCase().replace(/[^A-Z0-9_]/g, ''))} placeholder="SECRET_NAME" autoFocus className={inputCls} />{newSecretName && <div className="flex gap-2"><input type="password" value={secretValue} onChange={(e) => setSecretValue(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleSave(newSecretName)} placeholder="value..." className={inputCls} /><button onClick={() => handleSave(newSecretName)} disabled={!secretValue.trim()} className="btn-mini-go">Save</button></div>}<button onClick={() => { setAddingSecret(false); setNewSecretName(''); setSecretValue('') }} className="btn-mini">Cancel</button></div>) : <button onClick={() => setAddingSecret(true)} className="w-full text-sm font-mono uppercase tracking-[0.14em] text-primary-60 border border-dashed border-[rgba(250,250,250,0.16)] py-3.5 hover:text-aeon-red hover:border-aeon-red/40 transition-colors">+ Add Credential</button>}</div>
     </div>
   )
 }

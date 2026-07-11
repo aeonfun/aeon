@@ -168,7 +168,7 @@ export function McpPanel({ servers, loading, saving, secrets, busy, onSave, onSe
                   <div className="text-[11px] text-primary-40 font-mono truncate">{f.url}</div>
                 </div>
                 {installed ? (
-                  <span className="text-[10px] font-mono uppercase tracking-[0.14em] text-eva-green shrink-0">✓ installed</span>
+                  <span className="text-[10px] font-mono uppercase tracking-[0.14em] text-aeon-green shrink-0">✓ installed</span>
                 ) : (
                   <button onClick={() => installFeatured(f)} disabled={saving} className="btn-mini-go shrink-0">Install</button>
                 )}
@@ -209,14 +209,14 @@ export function McpPanel({ servers, loading, saving, secrets, busy, onSave, onSe
                               const pending = !!busy[`sec-${r}`]
                               return (
                                 <div key={r} className="flex items-center gap-2">
-                                  <span className={`text-[10px] font-mono border px-1.5 py-0.5 shrink-0 ${ok ? 'text-eva-green border-eva-green/30' : 'text-eva-orange border-eva-orange/30'}`}>${'{'}{r}{'}'}</span>
+                                  <span className={`text-[10px] font-mono border px-1.5 py-0.5 shrink-0 ${ok ? 'text-aeon-green border-aeon-green/30' : 'text-aeon-red border-aeon-red/30'}`}>${'{'}{r}{'}'}</span>
                                   {ok ? (
-                                    <span className="text-[10px] font-mono text-eva-green">✓ set</span>
+                                    <span className="text-[10px] font-mono text-aeon-green">✓ set</span>
                                   ) : pending ? (
                                     <span className="text-[10px] font-mono text-primary-40">setting…</span>
                                   ) : (
                                     <>
-                                      <input type="password" value={secretDraft[r] ?? ''} onChange={e => setSecretDraft(d => ({ ...d, [r]: e.target.value }))} onKeyDown={e => e.key === 'Enter' && saveRowSecret(r)} placeholder="paste bearer token - saved to GitHub & wired in" className="flex-1 min-w-0 bg-aeon-bg border border-[rgba(250,250,250,0.10)] px-2 py-1 text-[11px] font-mono text-primary-100 outline-none focus:border-eva-orange transition-colors cursor-target" />
+                                      <input type="password" value={secretDraft[r] ?? ''} onChange={e => setSecretDraft(d => ({ ...d, [r]: e.target.value }))} onKeyDown={e => e.key === 'Enter' && saveRowSecret(r)} placeholder="paste bearer token - saved to GitHub & wired in" className="flex-1 min-w-0 bg-aeon-bg border border-[rgba(250,250,250,0.10)] px-2 py-1 text-[11px] font-mono text-primary-100 outline-none focus:border-aeon-red transition-colors cursor-target" />
                                       <button onClick={() => saveRowSecret(r)} disabled={!(secretDraft[r] ?? '').trim()} className="btn-mini-go shrink-0">Set</button>
                                     </>
                                   )}
@@ -268,14 +268,14 @@ export function McpPanel({ servers, loading, saving, secrets, busy, onSave, onSe
                   </div>
                 </div>
               ) : (
-                <button onClick={() => setAdding(true)} className="w-full text-sm font-mono uppercase tracking-[0.14em] text-primary-60 border border-dashed border-[rgba(250,250,250,0.16)] py-3.5 hover:text-eva-orange hover:border-eva-orange/40 transition-colors">+ Add server</button>
+                <button onClick={() => setAdding(true)} className="w-full text-sm font-mono uppercase tracking-[0.14em] text-primary-60 border border-dashed border-[rgba(250,250,250,0.16)] py-3.5 hover:text-aeon-red hover:border-aeon-red/40 transition-colors">+ Add server</button>
               )}
             </div>
 
             {/* Footer: secrets reminder + save */}
             {allRefs.some(r => !isSecretSet(r)) && (
               <p className="mt-5 text-[11px] text-primary-40 leading-relaxed">
-                <span className="text-eva-orange">Secrets:</span> paste each unset token in the box on its server above - it saves straight to GitHub
+                <span className="text-aeon-red">Secrets:</span> paste each unset token in the box on its server above - it saves straight to GitHub
                 and the runner wires it into every run automatically. Until set, runs skip MCP rather than fail.
               </p>
             )}

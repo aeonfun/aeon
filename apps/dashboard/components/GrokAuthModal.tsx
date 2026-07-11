@@ -33,7 +33,7 @@ export function GrokAuthModal({ loading, onClose, onGrokAuth }: GrokAuthModalPro
         <div className="my-[var(--space-md)] border-t border-[rgba(250,250,250,0.10)]" />
         <p className="text-xs text-primary-50 font-mono mb-[var(--space-md)]">Or use an xAI API key (no browser flow) - also powers the Grok gateway.</p>
         <input type="password" value={key} onChange={(e) => setKey(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && submitKey()} placeholder="xai-..." className={`${inputCls} mb-[var(--space-md)]`} />
-        <button onClick={submitKey} disabled={!key.trim() || loading} className="w-full bg-aeon-panel text-aeon-fg border border-[rgba(250,250,250,0.14)] text-sm py-3 font-mono uppercase tracking-[2px] hover:border-eva-orange transition-colors disabled:opacity-50">{loading ? '...' : 'Save xAI Key'}</button>
+        <button onClick={submitKey} disabled={!key.trim() || loading} className="w-full bg-aeon-panel text-aeon-fg border border-[rgba(250,250,250,0.14)] text-sm py-3 font-mono uppercase tracking-[2px] hover:border-aeon-red transition-colors disabled:opacity-50">{loading ? '...' : 'Save xAI Key'}</button>
       </div>
     </div>
   )

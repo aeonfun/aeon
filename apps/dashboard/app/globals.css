@@ -6,8 +6,8 @@
 /* ==========================================================================
    AEON DASHBOARD - restyled to match aeon.fun (the marketing site)
    Dark canvas + coral accent. Dela Gothic display, Inter body, Space Mono code.
-   The eva-* alias names are preserved (lots of components reference them)
-   but the underlying tokens are remapped to the new palette.
+   Colors are exposed as a single aeon-* token scheme (see @theme below):
+   surface tokens (bg/panel/fg/gray/rule) + status tokens (red/green/amber).
    ========================================================================== */
 
 :root {
@@ -48,19 +48,16 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
-  /* legacy aliases - components reference these heavily, keep them working */
-  --color-eva-orange: var(--aeon-red);
-  --color-eva-green: var(--aeon-green);
-  --color-eva-red: var(--aeon-red-alert);
-  --color-eva-amber: var(--aeon-amber);
-
-  /* new aliases - preferred for new code */
+  /* aeon color tokens — surface (bg/panel/fg/gray/rule) + status (red/green/amber) */
   --color-aeon-bg: var(--aeon-bg);
   --color-aeon-panel: var(--aeon-panel);
   --color-aeon-panel-2: var(--aeon-panel-2);
   --color-aeon-fg: var(--aeon-fg);
   --color-aeon-red: var(--aeon-red);
   --color-aeon-red-soft: var(--aeon-red-soft);
+  --color-aeon-red-alert: var(--aeon-red-alert);
+  --color-aeon-green: var(--aeon-green);
+  --color-aeon-amber: var(--aeon-amber);
   --color-aeon-gray: var(--aeon-gray);
   --color-aeon-gray-dim: var(--aeon-gray-dim);
   --color-aeon-rule: var(--aeon-rule);

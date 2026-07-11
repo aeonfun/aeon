@@ -8,7 +8,7 @@ import type { ReactNode } from 'react'
 const URL_RE = /((?:https?:\/\/)?(?:[a-z0-9-]+\.)+[a-z]{2,}(?:\/[^\s)]*)?)/gi
 
 const LINK_CLS =
-  'text-eva-orange/80 hover:text-eva-orange underline decoration-dotted underline-offset-2 transition-colors'
+  'text-aeon-red/80 hover:text-aeon-red underline decoration-dotted underline-offset-2 transition-colors'
 
 export function linkify(text: string): ReactNode {
   if (!text) return text

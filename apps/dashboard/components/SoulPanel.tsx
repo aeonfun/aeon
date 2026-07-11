@@ -176,8 +176,8 @@ export function SoulPanel({ soul, style, loading, saving, building, installing, 
           </div>
           <span className="flex-1 h-px bg-[rgba(250,250,250,0.10)]" />
           {blank
-            ? <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-eva-orange">empty</span>
-            : <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-eva-green">configured</span>}
+            ? <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-aeon-red">empty</span>
+            : <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-aeon-green">configured</span>}
           <button
             onClick={() => setShowTemplates(v => !v)}
             className="btn-mini cursor-target"

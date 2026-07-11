@@ -70,7 +70,7 @@ export function TelegramChatIdHelper({ defaultToken, onFound }: TelegramChatIdHe
       <button
         onClick={() => setOpen(true)}
         title="Paste your bot token and Aeon reads your chat ID from Telegram's getUpdates API"
-        className="text-[10px] font-mono text-eva-orange/80 hover:text-eva-orange transition-colors mt-1"
+        className="text-[10px] font-mono text-aeon-red/80 hover:text-aeon-red transition-colors mt-1"
       >
         Find my chat ID →
       </button>
@@ -96,7 +96,7 @@ export function TelegramChatIdHelper({ defaultToken, onFound }: TelegramChatIdHe
         <button
           onClick={findChatId}
           disabled={!trimmed || busy}
-          className="bg-eva-green text-white text-[11px] px-4 py-2 font-mono hover:opacity-90 transition-opacity disabled:opacity-50 shrink-0"
+          className="bg-aeon-green text-white text-[11px] px-4 py-2 font-mono hover:opacity-90 transition-opacity disabled:opacity-50 shrink-0"
         >
           {busy ? 'Fetching…' : 'Fetch'}
         </button>
@@ -108,7 +108,7 @@ export function TelegramChatIdHelper({ defaultToken, onFound }: TelegramChatIdHe
         </button>
       </div>
       {status && (
-        <p className={`text-[11px] font-mono ${status.ok ? 'text-eva-green' : 'text-eva-red/80'}`}>{status.msg}</p>
+        <p className={`text-[11px] font-mono ${status.ok ? 'text-aeon-green' : 'text-aeon-red-alert/80'}`}>{status.msg}</p>
       )}
       {getUpdatesUrl && (
         <a
@@ -116,7 +116,7 @@ export function TelegramChatIdHelper({ defaultToken, onFound }: TelegramChatIdHe
           target="_blank"
           rel="noopener noreferrer"
           title={'Opens getUpdates for your bot in a new tab - look for "chat":{"id":...} in the JSON. Empty result? Message your bot first.'}
-          className="inline-block text-[10px] font-mono text-primary-40 hover:text-eva-orange transition-colors"
+          className="inline-block text-[10px] font-mono text-primary-40 hover:text-aeon-red transition-colors"
         >
           or open getUpdates in a new tab ↗
         </a>

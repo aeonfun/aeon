@@ -15,7 +15,7 @@ export function ScheduleEditor({ cron, onSave }: { cron: string; onSave: (c: str
   const [days, setDays] = useState<number[]>(parsed.mode === 'time' ? parsed.days : [-1])
   const toggleDay = (v: number) => { setMode('time'); if (v === -1) { setDays([-1]); return }; const w = days.filter(d => d !== -1 && d !== v); setDays(days.includes(v) ? (w.length === 0 ? [-1] : w) : [...w, v]) }
 
-  const inputCls = "w-12 bg-aeon-panel text-aeon-fg text-xs px-2 py-1.5 border border-[rgba(250,250,250,0.10)] outline-none text-center font-mono focus:border-eva-orange transition-colors"
+  const inputCls = "w-12 bg-aeon-panel text-aeon-fg text-xs px-2 py-1.5 border border-[rgba(250,250,250,0.10)] outline-none text-center font-mono focus:border-aeon-red transition-colors"
 
   return (
     <div className="space-y-3">

@@ -43,7 +43,7 @@ export function TopBar({ skill, view, repo, model, harness, gateway, hasModelKey
       </div>
       <div className="flex items-center gap-2">
         {harness !== 'grok' && gateway !== 'direct' && gateway !== 'auto' && (
-          <span className="text-[10px] font-mono px-2 py-0.5 bg-aeon-red/10 text-eva-orange uppercase tracking-[0.18em] border border-aeon-red/30">{gateway}</span>
+          <span className="text-[10px] font-mono px-2 py-0.5 bg-aeon-red/10 text-aeon-red uppercase tracking-[0.18em] border border-aeon-red/30">{gateway}</span>
         )}
         {!hasModelKey && (
           <button onClick={onSetupAuth} disabled={authLoading} className="btn-solid-sm disabled:opacity-50">

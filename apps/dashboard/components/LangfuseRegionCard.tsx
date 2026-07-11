@@ -84,12 +84,12 @@ export function LangfuseRegionCard({ keysSet }: LangfuseRegionCardProps) {
                     ? 'Where your traces are sent. Default is EU cloud.'
                     : 'Where traces will be sent once the keys above are set. Default is EU cloud.'}
             </div>
-            {error && <div className="text-[11px] text-eva-orange font-mono mt-1">{error}</div>}
+            {error && <div className="text-[11px] text-aeon-red font-mono mt-1">{error}</div>}
           </div>
         </div>
         <div className="flex items-center gap-2 shrink-0">
           {saving && <span className="text-[10px] font-mono text-primary-35">saving…</span>}
-          {saved && <span className="text-[10px] font-mono text-eva-green">saved ✓</span>}
+          {saved && <span className="text-[10px] font-mono text-aeon-green">saved ✓</span>}
           <select
             value={region}
             onChange={(e) => choose(e.target.value as Region)}

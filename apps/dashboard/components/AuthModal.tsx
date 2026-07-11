@@ -50,7 +50,7 @@ export function AuthModal({ loading, onClose, onAuth }: AuthModalProps) {
           {PROVIDER_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
         </select>
         <input type="password" value={authKey} onChange={(e) => setAuthKey(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && submit()} placeholder="API key" className={`${inputCls} mb-[var(--space-md)]`} />
-        <button onClick={submit} disabled={!authKey.trim() || loading} className="w-full bg-aeon-panel text-aeon-fg border border-[rgba(250,250,250,0.14)] text-sm py-3 font-mono uppercase tracking-[2px] hover:border-eva-orange transition-colors disabled:opacity-50">{loading ? '...' : 'Save API Key'}</button>
+        <button onClick={submit} disabled={!authKey.trim() || loading} className="w-full bg-aeon-panel text-aeon-fg border border-[rgba(250,250,250,0.14)] text-sm py-3 font-mono uppercase tracking-[2px] hover:border-aeon-red transition-colors disabled:opacity-50">{loading ? '...' : 'Save API Key'}</button>
       </div>
     </div>
   )

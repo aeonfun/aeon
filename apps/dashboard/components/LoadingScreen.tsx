@@ -12,7 +12,7 @@ export function LoadingScreen() {
         </div>
         <div className="text-center space-y-1">
           <p className="font-display text-2xl uppercase tracking-wide text-aeon-fg">AEON HQ</p>
-          <p className="text-[11px] text-eva-orange font-mono uppercase tracking-[0.28em] animate-shimmer">Initializing</p>
+          <p className="text-[11px] text-aeon-red font-mono uppercase tracking-[0.28em] animate-shimmer">Initializing</p>
         </div>
         <div className="w-40 h-[2px] bg-[rgba(250,250,250,0.08)] overflow-hidden">
           <div className="h-full w-full bg-gradient-to-r from-transparent via-aeon-red to-transparent bg-[length:200%_100%] animate-shimmer-gradient" />

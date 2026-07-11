@@ -119,8 +119,8 @@ export function StrategyPanel({ content, loading, saving, building, onSave, onBu
           <span className="font-display text-[13px] tracking-[0.18em] text-aeon-red uppercase">STRATEGY.md</span>
           <span className="flex-1 h-px bg-[rgba(250,250,250,0.10)]" />
           {unconfigured
-            ? <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-eva-orange">template defaults</span>
-            : <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-eva-green">customized</span>}
+            ? <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-aeon-red">template defaults</span>
+            : <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-aeon-green">customized</span>}
           <button
             onClick={() => setShowTemplates(v => !v)}
             className="btn-mini cursor-target"

@@ -54,9 +54,9 @@ function KeyRow({ kref, secret, harness, onGoTo }: { kref: { key: string; option
   const desc = secret?.description || 'Third-party credential referenced by this skill.'
 
   // Status color: satisfied → green. Missing required → red. Missing "works better" → muted amber.
-  const dot = satisfied ? 'bg-eva-green' : kref.optional ? 'bg-eva-orange/60' : 'bg-eva-red'
+  const dot = satisfied ? 'bg-aeon-green' : kref.optional ? 'bg-aeon-red/60' : 'bg-aeon-red-alert'
   const tierLabel = kref.optional ? 'Works better' : 'Required'
-  const tierColor = kref.optional ? 'text-eva-orange/80' : 'text-aeon-red'
+  const tierColor = kref.optional ? 'text-aeon-red/80' : 'text-aeon-red'
   const statusText = isSet ? '· set' : providedByHarness ? '· covered by Grok Build' : '· not set'
 
   return (
@@ -65,7 +65,7 @@ function KeyRow({ kref, secret, harness, onGoTo }: { kref: { key: string; option
         <div className="min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
             <span className={`w-2 h-2 rounded-full shrink-0 ${dot}`} />
-            <button onClick={() => onGoTo(kref.key)} title="Open in Settings to set this key" className="font-mono text-xs text-aeon-fg hover:text-eva-orange underline decoration-dotted underline-offset-2 transition-colors">{kref.key}</button>
+            <button onClick={() => onGoTo(kref.key)} title="Open in Settings to set this key" className="font-mono text-xs text-aeon-fg hover:text-aeon-red underline decoration-dotted underline-offset-2 transition-colors">{kref.key}</button>
             <span className={`text-[9px] font-mono uppercase tracking-[0.18em] ${tierColor}`}>{tierLabel}</span>
             <span className="text-[9px] font-mono uppercase tracking-[0.18em] text-primary-35">{statusText}</span>
           </div>
@@ -91,9 +91,9 @@ function McpRow({ mref, installed, onGoTo }: { mref: SkillMcpRef; installed: boo
   const name = entry?.name || mref.slug
   const url = entry?.url || ''
   const desc = entry?.description || 'MCP server this skill calls during a run.'
-  const dot = installed ? 'bg-eva-green' : mref.optional ? 'bg-eva-orange/60' : 'bg-eva-red'
+  const dot = installed ? 'bg-aeon-green' : mref.optional ? 'bg-aeon-red/60' : 'bg-aeon-red-alert'
   const tierLabel = mref.optional ? 'Works better' : 'Required'
-  const tierColor = mref.optional ? 'text-eva-orange/80' : 'text-aeon-red'
+  const tierColor = mref.optional ? 'text-aeon-red/80' : 'text-aeon-red'
 
   return (
     <div className="px-[var(--space-md)] py-[var(--space-sm)]">
@@ -105,7 +105,7 @@ function McpRow({ mref, installed, onGoTo }: { mref: SkillMcpRef; installed: boo
             : <span className={`w-2 h-2 rounded-full shrink-0 mt-2 ${dot}`} />}
           <div className="min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
-              <button onClick={onGoTo} title="Manage on the MCP page" className="font-mono text-xs text-aeon-fg hover:text-eva-orange underline decoration-dotted underline-offset-2 transition-colors">{name}</button>
+              <button onClick={onGoTo} title="Manage on the MCP page" className="font-mono text-xs text-aeon-fg hover:text-aeon-red underline decoration-dotted underline-offset-2 transition-colors">{name}</button>
               <span className={`text-[9px] font-mono uppercase tracking-[0.18em] ${tierColor}`}>{tierLabel}</span>
               <span className="text-[9px] font-mono uppercase tracking-[0.18em] text-primary-35">{installed ? '· installed' : '· not installed'}</span>
             </div>
@@ -134,7 +134,7 @@ export function SkillDetail({ skill, runs, model, harness, secrets, mcpServers, 
   const st = getSkillStatus(skill.name, skill.enabled, runs)
   // "On demand" skills carry no cron — they only fire on a manual Run now / dispatch.
   const isManual = skill.schedule === 'workflow_dispatch'
-  const statusTextCls = st.color === 'green' ? 'text-eva-green' : st.color === 'orange' ? 'text-eva-amber' : st.color === 'red' ? 'text-eva-red' : 'text-primary-50'
+  const statusTextCls = st.color === 'green' ? 'text-aeon-green' : st.color === 'orange' ? 'text-aeon-amber' : st.color === 'red' ? 'text-aeon-red-alert' : 'text-primary-50'
 
   // Join the skill's declared `requires` against the central credential registry
   // (the same list shown in Settings → Access Keys) for descriptions + set state.
@@ -203,10 +203,10 @@ export function SkillDetail({ skill, runs, model, harness, secrets, mcpServers, 
               title={skill.enabled ? 'Enabled — click to turn off' : 'Disabled — click to turn on'}
               className={`inline-flex items-center gap-3 group select-none outline-none ${busy[skill.name] ? 'opacity-50 pointer-events-none' : 'cursor-pointer'}`}
             >
-              <span className={`cursor-target relative w-12 h-[26px] rounded-full border transition-colors duration-200 group-focus-visible:ring-2 group-focus-visible:ring-eva-green/40 ${skill.enabled ? 'bg-eva-green/25 border-eva-green' : 'bg-[rgba(250,250,250,0.05)] border-[rgba(250,250,250,0.22)] group-hover:border-[rgba(250,250,250,0.4)]'}`}>
-                <span className={`absolute top-1/2 -translate-y-1/2 w-[18px] h-[18px] rounded-full transition-all duration-200 ${skill.enabled ? 'left-[26px] bg-eva-green' : 'left-[3px] bg-[rgba(250,250,250,0.5)]'}`} />
+              <span className={`cursor-target relative w-12 h-[26px] rounded-full border transition-colors duration-200 group-focus-visible:ring-2 group-focus-visible:ring-aeon-green/40 ${skill.enabled ? 'bg-aeon-green/25 border-aeon-green' : 'bg-[rgba(250,250,250,0.05)] border-[rgba(250,250,250,0.22)] group-hover:border-[rgba(250,250,250,0.4)]'}`}>
+                <span className={`absolute top-1/2 -translate-y-1/2 w-[18px] h-[18px] rounded-full transition-all duration-200 ${skill.enabled ? 'left-[26px] bg-aeon-green' : 'left-[3px] bg-[rgba(250,250,250,0.5)]'}`} />
               </span>
-              <span className={`font-display text-sm uppercase tracking-[0.14em] transition-colors ${skill.enabled ? 'text-eva-green' : 'text-primary-50'}`}>
+              <span className={`font-display text-sm uppercase tracking-[0.14em] transition-colors ${skill.enabled ? 'text-aeon-green' : 'text-primary-50'}`}>
                 {skill.enabled ? 'Enabled' : 'Disabled'}
               </span>
             </div>
@@ -248,7 +248,7 @@ export function SkillDetail({ skill, runs, model, harness, secrets, mcpServers, 
             <span className={`font-display uppercase tracking-tight ${skill.enabled && !isManual ? 'text-aeon-fg' : 'text-primary-50'}`} style={{ fontSize: 'clamp(24px, 3vw, 36px)' }}>
               {cronLabel(skill.schedule)}
             </span>
-            <span className={`inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-[0.16em] px-2.5 py-1 border ${!skill.enabled ? 'text-eva-amber border-eva-amber/40' : isManual ? 'text-primary-50 border-[rgba(250,250,250,0.2)]' : 'text-eva-green border-eva-green/40'}`}>
+            <span className={`inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-[0.16em] px-2.5 py-1 border ${!skill.enabled ? 'text-aeon-amber border-aeon-amber/40' : isManual ? 'text-primary-50 border-[rgba(250,250,250,0.2)]' : 'text-aeon-green border-aeon-green/40'}`}>
               {!skill.enabled ? 'Disabled' : isManual ? 'Manual only' : 'Runs automatically'}
             </span>
           </div>
@@ -258,15 +258,15 @@ export function SkillDetail({ skill, runs, model, harness, secrets, mcpServers, 
       {requires.length > 0 && (
         <Section label="API keys">
           {missingRequired.length > 0 && (
-            <div className="mb-4 flex items-start gap-3 border border-eva-red/40 bg-eva-red/5 px-4 py-3">
-              <span className="text-eva-red text-sm leading-none mt-0.5">▲</span>
+            <div className="mb-4 flex items-start gap-3 border border-aeon-red-alert/40 bg-aeon-red-alert/5 px-4 py-3">
+              <span className="text-aeon-red-alert text-sm leading-none mt-0.5">▲</span>
               <p className="text-[12px] text-primary-70 font-mono leading-relaxed">
                 Missing {missingRequired.length} required key{missingRequired.length > 1 ? 's' : ''} -
                 this skill won&apos;t work until {missingRequired.length > 1 ? 'they are' : 'it is'} set:{' '}
                 {missingRequired.map((r, i) => (
                   <span key={r.key}>
                     {i > 0 && ', '}
-                    <button onClick={() => onGoToSecret(r.key)} title="Open in Settings to set this key" className="text-eva-red underline decoration-dotted underline-offset-2 hover:text-aeon-fg transition-colors">{r.key}</button>
+                    <button onClick={() => onGoToSecret(r.key)} title="Open in Settings to set this key" className="text-aeon-red-alert underline decoration-dotted underline-offset-2 hover:text-aeon-fg transition-colors">{r.key}</button>
                   </span>
                 ))}
               </p>
@@ -284,7 +284,7 @@ export function SkillDetail({ skill, runs, model, harness, secrets, mcpServers, 
           )}
           {worksBetterKeys.length > 0 && (
             <div>
-              <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-eva-orange/80 mb-2">Works better with</div>
+              <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-aeon-red/80 mb-2">Works better with</div>
               <div className="border border-[rgba(250,250,250,0.10)] divide-y divide-[rgba(250,250,250,0.08)]">
                 {worksBetterKeys.map(r => (
                   <KeyRow key={r.key} kref={r} secret={secretByName.get(r.key)} harness={harness} onGoTo={onGoToSecret} />
@@ -298,13 +298,13 @@ export function SkillDetail({ skill, runs, model, harness, secrets, mcpServers, 
       {mcp.length > 0 && (
         <Section label="MCP servers">
           {missingRequiredMcp.length > 0 && (
-            <div className="mb-4 flex items-start gap-3 border border-eva-red/40 bg-eva-red/5 px-4 py-3">
-              <span className="text-eva-red text-sm leading-none mt-0.5">▲</span>
+            <div className="mb-4 flex items-start gap-3 border border-aeon-red-alert/40 bg-aeon-red-alert/5 px-4 py-3">
+              <span className="text-aeon-red-alert text-sm leading-none mt-0.5">▲</span>
               <p className="text-[12px] text-primary-70 font-mono leading-relaxed">
                 Missing {missingRequiredMcp.length} required MCP server{missingRequiredMcp.length > 1 ? 's' : ''} -
                 this skill won&apos;t work until {missingRequiredMcp.length > 1 ? 'they are' : 'it is'} installed from the{' '}
-                <button onClick={onGoToMcp} className="text-eva-red underline decoration-dotted underline-offset-2 hover:text-aeon-fg transition-colors">MCP page</button>:{' '}
-                <span className="text-eva-red">{missingRequiredMcp.map(m => MCP_BY_SLUG[m.slug]?.name || m.slug).join(', ')}</span>
+                <button onClick={onGoToMcp} className="text-aeon-red-alert underline decoration-dotted underline-offset-2 hover:text-aeon-fg transition-colors">MCP page</button>:{' '}
+                <span className="text-aeon-red-alert">{missingRequiredMcp.map(m => MCP_BY_SLUG[m.slug]?.name || m.slug).join(', ')}</span>
               </p>
             </div>
           )}
@@ -320,7 +320,7 @@ export function SkillDetail({ skill, runs, model, harness, secrets, mcpServers, 
           )}
           {worksBetterMcp.length > 0 && (
             <div>
-              <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-eva-orange/80 mb-2">Works better with</div>
+              <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-aeon-red/80 mb-2">Works better with</div>
               <div className="border border-[rgba(250,250,250,0.10)] divide-y divide-[rgba(250,250,250,0.08)]">
                 {worksBetterMcp.map(m => (
                   <McpRow key={m.slug} mref={m} installed={isMcpInstalled(m.slug)} onGoTo={onGoToMcp} />

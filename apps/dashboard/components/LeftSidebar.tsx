@@ -66,7 +66,7 @@ export function LeftSidebar({ view, setView, selectedSkill, skills, runs, secret
             </div>
             <div className="text-[10px] text-primary-40 font-mono uppercase tracking-[0.18em]">
               {enabledCount} enabled
-              {workingCount > 0 ? <span className="text-eva-orange"> · {workingCount} working</span> : ''}
+              {workingCount > 0 ? <span className="text-aeon-red"> · {workingCount} working</span> : ''}
             </div>
           </div>
         </div>
@@ -94,7 +94,7 @@ export function LeftSidebar({ view, setView, selectedSkill, skills, runs, secret
       <div className="flex-1 overflow-y-auto">
         <div className="px-4 pt-4 pb-1 flex items-center justify-between">
           <span className="text-label">Skills</span>
-          <button onClick={onShowImport} className="text-[10px] font-mono uppercase tracking-[0.14em] text-primary-50 hover:text-eva-orange transition-colors cursor-target">+ Add</button>
+          <button onClick={onShowImport} className="text-[10px] font-mono uppercase tracking-[0.14em] text-primary-50 hover:text-aeon-red transition-colors cursor-target">+ Add</button>
         </div>
         <div className="px-3 pb-2">
           <input type="text" value={skillSearch} onChange={(e) => setSkillSearch(e.target.value)} placeholder="Search..." className="w-full bg-aeon-bg text-aeon-fg text-[11px] px-3 py-2 border border-[rgba(250,250,250,0.10)] outline-none font-mono focus:border-aeon-red transition-colors placeholder:text-primary-35 cursor-target" />
@@ -111,9 +111,9 @@ export function LeftSidebar({ view, setView, selectedSkill, skills, runs, secret
           <button
             onClick={() => setEnabledOnly(v => !v)}
             title="Show only enabled skills"
-            className={`text-[10px] font-mono uppercase tracking-[0.1em] px-2 py-1 border flex items-center gap-1.5 transition-colors ${enabledOnly ? 'text-eva-green border-eva-green/50 bg-eva-green/10' : 'text-primary-40 border-[rgba(250,250,250,0.12)] hover:text-primary-70 hover:border-[rgba(250,250,250,0.22)]'}`}
+            className={`text-[10px] font-mono uppercase tracking-[0.1em] px-2 py-1 border flex items-center gap-1.5 transition-colors ${enabledOnly ? 'text-aeon-green border-aeon-green/50 bg-aeon-green/10' : 'text-primary-40 border-[rgba(250,250,250,0.12)] hover:text-primary-70 hover:border-[rgba(250,250,250,0.22)]'}`}
           >
-            <span className="w-1.5 h-1.5 rounded-full shrink-0 bg-eva-green" />
+            <span className="w-1.5 h-1.5 rounded-full shrink-0 bg-aeon-green" />
             Enabled
           </button>
           {packGroups(skills).map(cat => {
@@ -166,7 +166,7 @@ export function LeftSidebar({ view, setView, selectedSkill, skills, runs, secret
                       </div>
                     </div>
                     {keyGap && (
-                      <span title="Enabled but a required API key is missing" className="shrink-0 text-eva-red" aria-label="Missing required API key">
+                      <span title="Enabled but a required API key is missing" className="shrink-0 text-aeon-red-alert" aria-label="Missing required API key">
                         <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z" /></svg>
                       </span>
                     )}
@@ -185,7 +185,7 @@ export function LeftSidebar({ view, setView, selectedSkill, skills, runs, secret
             {enabledOnly && (
               <button
                 onClick={() => setEnabledOnly(false)}
-                className="mt-2 text-[10px] font-mono uppercase tracking-[0.14em] text-primary-50 hover:text-eva-orange transition-colors cursor-target"
+                className="mt-2 text-[10px] font-mono uppercase tracking-[0.14em] text-primary-50 hover:text-aeon-red transition-colors cursor-target"
               >
                 Show all skills
               </button>
