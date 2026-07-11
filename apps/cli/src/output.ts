@@ -3,7 +3,6 @@
 
 let jsonMode = false
 export function setJsonMode(on: boolean) { jsonMode = on }
-export function isJsonMode() { return jsonMode }
 
 let dryRun = false
 export function setDryRun(on: boolean) { dryRun = on }

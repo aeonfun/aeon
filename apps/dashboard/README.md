@@ -76,7 +76,7 @@ The gate also rejects state-changing requests whose `Origin` isn't allowlisted. 
 
 - **Frontend:** Next.js App Router (`app/`) with React client components in `components/`. State is the repo itself — the UI reads `catalog/skills.json`, `catalog/packs.json`, `aeon.yml`, and `STRATEGY.md`, and writes back through the API.
 - **API:** route handlers under `app/api/*` are the only place the dashboard touches your repo. They shell out to `gh` (`lib/gh.ts`) for secrets, workflow dispatch, and content reads, and run behind the loopback gate (`proxy.ts`).
-- **Skill output feed:** skill runs drop json-render specs into `outputs/`; the feed renders them as cards via [`@json-render`](https://github.com/json-render). `./notify-jsonrender` (a post-run workflow step) produces those specs.
+- **Skill output feed:** skill runs drop json-render specs into `outputs/`; the feed renders them as cards with a small built-in spec renderer (`components/SpecNode.tsx`). `./notify-jsonrender` (a post-run workflow step) produces those specs.
 - **Deploy:** the repo auto-deploys `apps/dashboard/` to Vercel on push to `main` — no manual step. Most operators run it locally with `./aeon`; the hosted build is the same app.
 
 ## Sandbox / deployment note

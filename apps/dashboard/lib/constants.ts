@@ -101,9 +101,6 @@ export const CATEGORIES: { key: string; label: string; short: string; color: str
   { key: 'productivity',     label: 'Productivity',       short: 'Productivity', color: '#06B6D4' },
 ]
 
-export const CATEGORY_BY_KEY: Record<string, { label: string; color: string }> =
-  Object.fromEntries(CATEGORIES.map(c => [c.key, { label: c.label, color: c.color }]))
-
 // First-party packs — the organizing unit across the dashboard (sidebar groups,
 // HQ cards, Packs view). Because category == pack (one grouping), packs ARE the
 // CATEGORIES list above, kept as one source of truth so the two can't drift.
