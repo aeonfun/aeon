@@ -18,11 +18,22 @@ Options:
   --json      Machine-readable output`
 
 async function readServers(): Promise<McpServers> {
+  let content: string
   try {
-    const { content } = await getFileContent('.mcp.json')
-    const parsed = JSON.parse(content) as { mcpServers?: McpServers }
-    return parsed.mcpServers ?? {}
-  } catch { return {} }
+    content = (await getFileContent('.mcp.json')).content
+  } catch {
+    return {} // no .mcp.json yet — an empty server set is the correct default
+  }
+  // A present-but-corrupt file must NOT silently read as empty: `mcp add` would
+  // then overwrite it with only the new server, clobbering the existing config.
+  // Surface the parse error (main()'s catch renders it as a clean CLI error).
+  let parsed: { mcpServers?: McpServers }
+  try {
+    parsed = JSON.parse(content) as { mcpServers?: McpServers }
+  } catch (e) {
+    throw new Error(`.mcp.json is not valid JSON: ${e instanceof Error ? e.message : e}`)
+  }
+  return parsed.mcpServers ?? {}
 }
 
 async function writeServers(servers: McpServers, message: string) {

@@ -58,8 +58,8 @@ export async function GET() {
     )
 
     return NextResponse.json({ outputs: outputs.filter(Boolean) })
-  } catch {
-    return NextResponse.json({ outputs: [] })
+  } catch (e) {
+    return errorResponse(e)
   }
 }
 
