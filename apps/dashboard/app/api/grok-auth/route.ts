@@ -3,9 +3,9 @@ import { spawn, execFile, execFileSync } from 'child_process'
 import { existsSync } from 'fs'
 import { homedir } from 'os'
 import { join } from 'path'
-import { ghAvailable, ghArgsRepo } from '@/lib/gh'
+import { ghArgsRepo } from '@/lib/gh'
 import { syncGatewayProvider, syncHarness } from '@/lib/gateway'
-import { errorResponse } from '@/lib/http'
+import { errorResponse, requireGh } from '@/lib/http'
 
 // One-click "Connect X account" for the Grok Build (`grok`) harness — the exact
 // parallel to the Claude subscription flow (app/api/auth: run `claude
@@ -82,9 +82,8 @@ function grokLogin(): Promise<void> {
 
 export async function POST(request: Request) {
   try {
-    if (!ghAvailable()) {
-      return NextResponse.json({ error: 'gh CLI not authenticated. Run: gh auth login' }, { status: 503 })
-    }
+    const notReady = requireGh()
+    if (notReady) return notReady
 
     const body = (await request.json().catch(() => ({}))) as { key?: string }
     const key = typeof body.key === 'string' ? body.key.trim() : ''

@@ -79,6 +79,13 @@ export function statusDot(color: string) {
   return `w-2 h-2 rounded-full shrink-0 ${color === 'green' ? 'bg-eva-green' : color === 'orange' ? 'bg-eva-orange animate-pulse' : color === 'red' ? 'bg-eva-red' : 'bg-[rgba(250,250,250,0.22)]'}`
 }
 
+// Tailwind text-color class for a run's outcome, shared by the run lists in
+// HQOverview / RightPanel / SkillDetail (success→green, failure→red,
+// in-progress→orange, else muted).
+export function runStatusColor(run: Pick<Run, 'status' | 'conclusion'>) {
+  return run.conclusion === 'success' ? 'text-eva-green' : run.conclusion === 'failure' ? 'text-eva-red' : run.status === 'in_progress' ? 'text-eva-orange' : 'text-primary-35'
+}
+
 export const inputCls = "w-full bg-aeon-bg text-aeon-fg text-xs px-3 py-2 border border-[rgba(250,250,250,0.10)] outline-none font-mono focus:border-aeon-red transition-colors placeholder:text-primary-35 cursor-target"
 
 // Larger input variant shared by the Soul/Strategy builder panels (no w-full —

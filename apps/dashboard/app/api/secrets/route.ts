@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server'
-import { ghAvailable } from '@/lib/gh'
-import { errorResponse } from '@/lib/http'
+import { errorResponse, requireGh } from '@/lib/http'
 import { getSecrets, setSecret, deleteSecret, VALID_SECRET_NAME } from '@/lib/secrets-catalog'
 
 // The credential catalog (BUILTIN_SECRETS), VALID_SECRET_NAME, the set-state read,
@@ -20,9 +19,8 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  if (!ghAvailable()) {
-    return NextResponse.json({ error: 'GitHub CLI not authenticated' }, { status: 503 })
-  }
+  const notReady = requireGh()
+  if (notReady) return notReady
 
   const { name, value } = await request.json() as { name?: string; value?: string }
 
@@ -42,9 +40,8 @@ export async function POST(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  if (!ghAvailable()) {
-    return NextResponse.json({ error: 'GitHub CLI not authenticated' }, { status: 503 })
-  }
+  const notReady = requireGh()
+  if (notReady) return notReady
 
   const { name } = await request.json() as { name?: string }
 

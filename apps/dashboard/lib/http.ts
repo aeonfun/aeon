@@ -1,5 +1,19 @@
 import { NextResponse } from 'next/server'
 import type { CommitResult } from './github'
+import { ghAvailable } from './gh'
+
+/**
+ * 503 guard for routes that need the `gh` CLI authenticated. Returns a ready-to-
+ * return NextResponse when gh is unavailable, else null (proceed). Pass `extra`
+ * to merge fields into the error body (e.g. `{ ghReady: false }`).
+ */
+export function requireGh(extra?: Record<string, unknown>): NextResponse | null {
+  if (ghAvailable()) return null
+  return NextResponse.json(
+    { error: 'GitHub CLI not authenticated. Run: gh auth login', ...extra },
+    { status: 503 },
+  )
+}
 
 /**
  * Standard JSON error response for API routes. Surfaces `error.message` when the

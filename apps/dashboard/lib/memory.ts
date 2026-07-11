@@ -1,4 +1,5 @@
 import { readdir, readFile, stat } from 'fs/promises'
+import type { Stats } from 'fs'
 import { join, sep, normalize } from 'path'
 import { REPO_ROOT } from './gh'
 
@@ -34,6 +35,49 @@ export async function readMemoryIndex(): Promise<string | null> {
   }
 }
 
+// Shared scaffolding for the topic/log/issue readers and listers below — the
+// three of each differ only in directory, filename pattern, and result shape.
+
+// Read one memory file's content + mtime; null if absent, unreadable, or the
+// path escapes its base.
+async function readEntry(dir: string, filename: string): Promise<{ content: string; updatedAt: string } | null> {
+  const path = safeJoin(dir, filename)
+  if (!path) return null
+  try {
+    const [content, s] = await Promise.all([readFile(path, 'utf-8'), stat(path)])
+    return { content, updatedAt: s.mtime.toISOString() }
+  } catch {
+    return null
+  }
+}
+
+// List a memory directory, mapping each regular file to an entry (return null
+// to skip a name) and sorting the result. Missing dir → []; unreadable entries
+// are skipped.
+async function listEntries<T>(
+  dir: string,
+  map: (name: string, s: Stats) => T | null,
+  sort: (a: T, b: T) => number,
+): Promise<T[]> {
+  let names: string[]
+  try {
+    names = await readdir(dir)
+  } catch {
+    return []
+  }
+  const out: T[] = []
+  for (const name of names) {
+    try {
+      const s = await stat(join(dir, name))
+      if (!s.isFile()) continue
+      const item = map(name, s)
+      if (item) out.push(item)
+    } catch { /* skip unreadable */ }
+  }
+  out.sort(sort)
+  return out
+}
+
 export interface TopicFile {
   slug: string
   filename: string
@@ -41,45 +85,20 @@ export interface TopicFile {
   updatedAt: string
 }
 
-export async function listTopics(): Promise<TopicFile[]> {
-  let entries: string[]
-  try {
-    entries = await readdir(TOPICS_DIR)
-  } catch {
-    return []
-  }
-  const topics: TopicFile[] = []
-  for (const name of entries) {
-    if (!name.endsWith('.md')) continue
-    const full = join(TOPICS_DIR, name)
-    try {
-      const s = await stat(full)
-      if (!s.isFile()) continue
-      topics.push({
-        slug: name.replace(/\.md$/, ''),
-        filename: name,
-        size: s.size,
-        updatedAt: s.mtime.toISOString(),
-      })
-    } catch { /* skip unreadable */ }
-  }
-  topics.sort((a, b) => a.slug.localeCompare(b.slug))
-  return topics
+export function listTopics(): Promise<TopicFile[]> {
+  return listEntries(
+    TOPICS_DIR,
+    (name, s) => name.endsWith('.md')
+      ? { slug: name.replace(/\.md$/, ''), filename: name, size: s.size, updatedAt: s.mtime.toISOString() }
+      : null,
+    (a, b) => a.slug.localeCompare(b.slug),
+  )
 }
 
 export async function readTopic(slug: string): Promise<{ slug: string; content: string; updatedAt: string } | null> {
   if (!SLUG_PATTERN.test(slug)) return null
-  const path = safeJoin(TOPICS_DIR, `${slug}.md`)
-  if (!path) return null
-  try {
-    const [content, s] = await Promise.all([
-      readFile(path, 'utf-8'),
-      stat(path),
-    ])
-    return { slug, content, updatedAt: s.mtime.toISOString() }
-  } catch {
-    return null
-  }
+  const entry = await readEntry(TOPICS_DIR, `${slug}.md`)
+  return entry ? { slug, ...entry } : null
 }
 
 export interface LogDay {
@@ -89,46 +108,21 @@ export interface LogDay {
   updatedAt: string
 }
 
-export async function listLogs(): Promise<LogDay[]> {
-  let entries: string[]
-  try {
-    entries = await readdir(LOGS_DIR)
-  } catch {
-    return []
-  }
-  const logs: LogDay[] = []
-  for (const name of entries) {
-    const m = name.match(/^(\d{4}-\d{2}-\d{2})\.md$/)
-    if (!m) continue
-    const full = join(LOGS_DIR, name)
-    try {
-      const s = await stat(full)
-      if (!s.isFile()) continue
-      logs.push({
-        date: m[1],
-        filename: name,
-        size: s.size,
-        updatedAt: s.mtime.toISOString(),
-      })
-    } catch { /* skip unreadable */ }
-  }
-  logs.sort((a, b) => b.date.localeCompare(a.date))
-  return logs
+export function listLogs(): Promise<LogDay[]> {
+  return listEntries(
+    LOGS_DIR,
+    (name, s) => {
+      const m = name.match(/^(\d{4}-\d{2}-\d{2})\.md$/)
+      return m ? { date: m[1], filename: name, size: s.size, updatedAt: s.mtime.toISOString() } : null
+    },
+    (a, b) => b.date.localeCompare(a.date),
+  )
 }
 
 export async function readLog(date: string): Promise<{ date: string; content: string; updatedAt: string } | null> {
   if (!DATE_PATTERN.test(date)) return null
-  const path = safeJoin(LOGS_DIR, `${date}.md`)
-  if (!path) return null
-  try {
-    const [content, s] = await Promise.all([
-      readFile(path, 'utf-8'),
-      stat(path),
-    ])
-    return { date, content, updatedAt: s.mtime.toISOString() }
-  } catch {
-    return null
-  }
+  const entry = await readEntry(LOGS_DIR, `${date}.md`)
+  return entry ? { date, ...entry } : null
 }
 
 export interface IssueSummary {
@@ -137,45 +131,21 @@ export interface IssueSummary {
   updatedAt: string
 }
 
-export async function listIssues(): Promise<IssueSummary[]> {
-  let entries: string[]
-  try {
-    entries = await readdir(ISSUES_DIR)
-  } catch {
-    return []
-  }
-  const issues: IssueSummary[] = []
-  for (const name of entries) {
-    const m = name.match(/^(ISS-\d{3,})\.md$/)
-    if (!m) continue
-    const full = join(ISSUES_DIR, name)
-    try {
-      const s = await stat(full)
-      if (!s.isFile()) continue
-      issues.push({
-        id: m[1],
-        filename: name,
-        updatedAt: s.mtime.toISOString(),
-      })
-    } catch { /* skip unreadable */ }
-  }
-  issues.sort((a, b) => b.id.localeCompare(a.id))
-  return issues
+export function listIssues(): Promise<IssueSummary[]> {
+  return listEntries(
+    ISSUES_DIR,
+    (name, s) => {
+      const m = name.match(/^(ISS-\d{3,})\.md$/)
+      return m ? { id: m[1], filename: name, updatedAt: s.mtime.toISOString() } : null
+    },
+    (a, b) => b.id.localeCompare(a.id),
+  )
 }
 
 export async function readIssue(id: string): Promise<{ id: string; content: string; updatedAt: string } | null> {
   if (!ISSUE_PATTERN.test(id)) return null
-  const path = safeJoin(ISSUES_DIR, `${id}.md`)
-  if (!path) return null
-  try {
-    const [content, s] = await Promise.all([
-      readFile(path, 'utf-8'),
-      stat(path),
-    ])
-    return { id, content, updatedAt: s.mtime.toISOString() }
-  } catch {
-    return null
-  }
+  const entry = await readEntry(ISSUES_DIR, `${id}.md`)
+  return entry ? { id, ...entry } : null
 }
 
 export interface SearchHit {

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import type { Run, SkillOutput, AnalyticsData } from '../lib/types'
-import { timeAgo } from '../lib/utils'
+import { timeAgo, runStatusColor } from '../lib/utils'
 import { SpecNode } from './SpecNode'
 import { PanelError } from './PanelError'
 
@@ -109,7 +109,7 @@ export function RightPanel({ runs, outputs, feedLoading, feedError, analyticsDat
               runs.map(run => (
                 <button key={run.id} onClick={() => handleViewRun(run)}
                   className="w-full flex items-center gap-2.5 px-3 py-2.5 border-b border-[rgba(250,250,250,0.04)] hover:bg-aeon-bg transition-colors text-left">
-                  <span className={`text-xs ${run.conclusion === 'success' ? 'text-eva-green' : run.conclusion === 'failure' ? 'text-eva-red' : run.status === 'in_progress' ? 'text-eva-orange' : 'text-primary-35'}`}>
+                  <span className={`text-xs ${runStatusColor(run)}`}>
                     {run.conclusion === 'success' ? '\u2713' : run.conclusion === 'failure' ? '\u2717' : run.status === 'in_progress' ? '\u25cc' : '\u00b7'}
                   </span>
                   <span className="text-xs text-primary-70 truncate flex-1 font-mono">{run.workflow}</span>
@@ -151,7 +151,7 @@ export function RightPanel({ runs, outputs, feedLoading, feedError, analyticsDat
                 runs.map(run => (
                   <button key={run.id} onClick={() => viewRunLogs(run)}
                     className="w-full flex items-center gap-2.5 px-3 py-2.5 border-b border-[rgba(250,250,250,0.04)] hover:bg-aeon-bg transition-colors text-left">
-                    <span className={`text-xs ${run.conclusion === 'success' ? 'text-eva-green' : run.conclusion === 'failure' ? 'text-eva-red' : run.status === 'in_progress' ? 'text-eva-orange' : 'text-primary-35'}`}>
+                    <span className={`text-xs ${runStatusColor(run)}`}>
                       {run.conclusion === 'success' ? '\u2713' : run.conclusion === 'failure' ? '\u2717' : run.status === 'in_progress' ? '\u25cc' : '\u00b7'}
                     </span>
                     <span className="text-xs text-primary-70 truncate flex-1 font-mono">{run.workflow}</span>
