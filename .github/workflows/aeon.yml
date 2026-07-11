@@ -899,6 +899,10 @@ jobs:
 
           Flag any issues from: api_error, empty_output, low_quality, stale_data, generic_content, rate_limited
 
+          Flag strictly against the FINAL output above — not against sources or steps it merely mentions:
+          - empty_output: ONLY when the skill produced no usable result (no report, analysis, or draft). A legitimate no-op — an empty inbox, an empty watchlist, 'nothing met the threshold', a clean scan with no findings — is a COMPLETED task, not empty_output. A run that delivered its output is not empty_output even if its log notes an upstream source came back empty.
+          - api_error / rate_limited: ONLY when the error blocked the skill's output — not for a sub-call that was retried or fell back cleanly.
+
           Skill: $SKILL
           Output (truncated):
           $OUTPUT
