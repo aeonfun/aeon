@@ -184,7 +184,6 @@ export function addSkillToConfig(
   const skillsNode = doc.get('skills')
   if (!isMap(skillsNode)) return raw
 
-  // Check if already exists
   if (skillsNode.has(name)) return raw
 
   // Build the new skill entry as a flow mapping to match existing style
