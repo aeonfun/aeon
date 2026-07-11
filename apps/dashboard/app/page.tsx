@@ -121,7 +121,7 @@ export default function Dashboard() {
     let saved: string[] = []
     try {
       const raw = localStorage.getItem(`aeon.enabledPacks:${repo}`)
-      if (raw) { const arr = JSON.parse(raw); if (Array.isArray(arr)) saved = arr.filter((k: unknown): k is string => typeof k === 'string') }
+      if (raw) { const arr: unknown = JSON.parse(raw); if (Array.isArray(arr)) saved = arr.filter((k: unknown): k is string => typeof k === 'string') }
     } catch {}
     setEnabledPacks(Array.from(new Set([...DEFAULT_VISIBLE_PACKS, ...saved])))
   }, [repo])

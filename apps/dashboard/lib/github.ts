@@ -77,7 +77,10 @@ function authHeaders(token: string) {
 // non-array body (i.e. a single file, not a directory) both yield [] — an
 // absent-or-not-a-directory path is not an error for callers that list.
 async function parseContentsList(res: Response, path: string): Promise<GitHubContentEntry[]> {
-  return parseContentsList(res, path)
+  if (res.status === 404) return []
+  if (!res.ok) throw new Error(`GitHub API ${res.status}: failed to list ${path}`)
+  const body = await res.json()
+  return Array.isArray(body) ? (body as GitHubContentEntry[]) : []
 }
 
 // --- Unified interface: local filesystem or GitHub API ---
@@ -100,10 +103,10 @@ export async function getFileContent(path: string): Promise<{ content: string; s
   }
 }
 
-export async function updateFile(path: string, content: string, sha: string, _message: string): Promise<unknown> {
+export async function updateFile(path: string, content: string, sha: string, _message: string): Promise<void> {
   if (isLocal()) {
     await writeFile(join(REPO_ROOT, path), content, 'utf-8')
-    return { ok: true }
+    return
   }
   const { token, repo } = getConfig()
   const res = await fetch(`${GITHUB_API}/repos/${repo}/contents/${path}`, {
@@ -117,10 +120,9 @@ export async function updateFile(path: string, content: string, sha: string, _me
     cache: 'no-store',
   })
   if (!res.ok) throw new Error(`GitHub API ${res.status}: failed to update ${path}`)
-  return res.json()
 }
 
-export async function createFile(path: string, content: string, message: string): Promise<unknown> {
+export async function createFile(path: string, content: string, message: string): Promise<void> {
   if (path.startsWith('/') || path.includes('..')) {
     throw new Error(`invalid path: ${path}`)
   }
@@ -128,7 +130,7 @@ export async function createFile(path: string, content: string, message: string)
     const fullPath = join(REPO_ROOT, path)
     await mkdir(join(fullPath, '..'), { recursive: true })
     await writeFile(fullPath, content, 'utf-8')
-    return { ok: true }
+    return
   }
   const { token, repo } = getConfig()
   try {
@@ -147,7 +149,6 @@ export async function createFile(path: string, content: string, message: string)
     cache: 'no-store',
   })
   if (!res.ok) throw new Error(`GitHub API ${res.status}: failed to create ${path}`)
-  return res.json()
 }
 
 /**
