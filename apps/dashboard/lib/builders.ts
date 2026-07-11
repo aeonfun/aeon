@@ -59,12 +59,12 @@ export function buildStrategy(
   return { args, brief: { goal: goal || null, repo: repo || null, links } }
 }
 
-export interface SoulSources { handle: string | null; name: string | null; links: string[] }
+export interface SoulBrief { handle: string | null; name: string | null; links: string[] }
 
 export function buildSoul(
   input: { handle?: unknown; name?: unknown; links?: unknown; model?: unknown },
   opts: { dispatch?: boolean } = {},
-): { args: string[]; sources: SoulSources } {
+): { args: string[]; sources: SoulBrief } {
   const handle = normHandle(input.handle)
   const name = typeof input.name === 'string' && NAME_RE.test(input.name.trim()) ? input.name.trim() : ''
   const links = normLinks(input.links)
