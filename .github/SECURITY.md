@@ -11,7 +11,7 @@ report a problem privately.
 **Please don't open a public issue for a security problem.** Use GitHub's
 **Private Vulnerability Reporting (PVR)** instead:
 
-➡️ **[Report a vulnerability](https://github.com/aaronjmars/aeon/security/advisories/new)**
+➡️ **[Report a vulnerability](https://github.com/aeonfun/aeon/security/advisories/new)**
 
 (Repo → **Security** tab → **Report a vulnerability**.) This opens a private
 advisory that only the maintainers can see — never a public issue, so a fix can
@@ -41,7 +41,7 @@ rather stay anonymous.
 ## Supported versions
 
 Aeon ships as a public template that you fork. Security fixes land on the `main`
-branch of [`aaronjmars/aeon`](https://github.com/aaronjmars/aeon) only.
+branch of [`aeonfun/aeon`](https://github.com/aeonfun/aeon) only.
 
 | Version | Supported |
 |---------|-----------|
@@ -52,7 +52,7 @@ branch of [`aaronjmars/aeon`](https://github.com/aaronjmars/aeon) only.
 Forks are self-maintained. To stay current:
 
 ```bash
-git remote add upstream https://github.com/aaronjmars/aeon.git
+git remote add upstream https://github.com/aeonfun/aeon.git
 git fetch upstream && git merge upstream/main --no-edit
 ```
 

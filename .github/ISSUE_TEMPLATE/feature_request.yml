@@ -62,5 +62,5 @@ body:
     attributes:
       label: Before submitting
       options:
-        - label: I searched [existing issues](https://github.com/aaronjmars/aeon/issues) and this isn't already requested.
+        - label: I searched [existing issues](https://github.com/aeonfun/aeon/issues) and this isn't already requested.
           required: true

@@ -120,7 +120,7 @@ for wf in aeon.yml messages.yml chain-runner.yml; do
     emit pass "workflow .github/workflows/$wf" "present" ""
   else
     emit fail "workflow .github/workflows/$wf" "missing" \
-      "Re-sync from upstream: git remote add upstream https://github.com/aaronjmars/aeon.git && git fetch upstream && git checkout upstream/main -- .github/workflows/$wf"
+      "Re-sync from upstream: git remote add upstream https://github.com/aeonfun/aeon.git && git fetch upstream && git checkout upstream/main -- .github/workflows/$wf"
   fi
 done
 

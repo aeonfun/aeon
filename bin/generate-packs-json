@@ -139,7 +139,7 @@ if installed_src:
 result = {
     "version": "1.0",
     "generated": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-    "repo": catalog.get("repo", "aaronjmars/aeon"),
+    "repo": catalog.get("repo", "aeonfun/aeon"),
     "total_packs": len(out_packs),
     "total_skills": len(assigned),
     "packs": out_packs,

@@ -10,9 +10,9 @@ tags: [dev, community]
 
 > **${var}** — Selects the branch and scopes it.
 > - **Default (no `--survey`)** → per-PR deep review. `${var}` empty reviews every repo in `memory/watched-repos.md`; `${var}=owner/repo` scopes the review to a single repo.
-> - **`--survey`** (alias `survey`) → risk-tiered triage digest (the former `pr-merge`). In this branch the remaining tokens follow pr-merge's grammar: pass `dry-run` to skip notify (article + state still write), pass `owner/repo` to override the target repo, combine with a space (`--survey dry-run owner/repo`). Empty target = `aaronjmars/aeon`.
+> - **`--survey`** (alias `survey`) → risk-tiered triage digest (the former `pr-merge`). In this branch the remaining tokens follow pr-merge's grammar: pass `dry-run` to skip notify (article + state still write), pass `owner/repo` to override the target repo, combine with a space (`--survey dry-run owner/repo`). Empty target = `aeonfun/aeon`.
 >
-> Examples: `` (review every watched repo) · `owner/repo` (review one repo) · `--survey` (triage digest of aaronjmars/aeon) · `--survey dry-run` (refresh digest, no notify) · `--survey owner/repo` (triage a specific repo).
+> Examples: `` (review every watched repo) · `owner/repo` (review one repo) · `--survey` (triage digest of aeonfun/aeon) · `--survey dry-run` (refresh digest, no notify) · `--survey owner/repo` (triage a specific repo).
 
 ## Shared preamble (every run)
 
@@ -158,7 +158,7 @@ If no open PRs across all repos, log `PR_REVIEW_OK` and end.
 
 *(This is the former `pr-merge` skill, folded in verbatim. It surveys the queue and buckets by blast radius; it does **not** merge anything — `auto-merge` owns the actual-merge action behind its own author-allowlist + size-cap + branch-protection policy. This branch is the decision-support layer that lives *before* auto-merge, sized for the much larger pool of PRs auto-merge's safety policy intentionally skips.)*
 
-Today is ${today}. The open-PR queue on `aaronjmars/aeon` has crossed the threshold where a human reviewer working alone falls behind: yesterday (June 1) eighteen PRs were merged in a single 37-minute Monday catch-up window, but on every prior weekend day they stacked up untouched. As community skill packs become the primary contribution model and external contributors keep landing skill PRs every other day, the queue's *steady-state* size will keep climbing — `skill-scan` evaluates one inbound skill PR at a time, but no skill answers the operator's actual morning question: *"of the N open PRs right now, which N1 can I merge in one click and which N2 need real review?"*
+Today is ${today}. The open-PR queue on `aeonfun/aeon` has crossed the threshold where a human reviewer working alone falls behind: yesterday (June 1) eighteen PRs were merged in a single 37-minute Monday catch-up window, but on every prior weekend day they stacked up untouched. As community skill packs become the primary contribution model and external contributors keep landing skill PRs every other day, the queue's *steady-state* size will keep climbing — `skill-scan` evaluates one inbound skill PR at a time, but no skill answers the operator's actual morning question: *"of the N open PRs right now, which N1 can I merge in one click and which N2 need real review?"*
 
 This branch is that answer. It surveys every open PR on a target repo, categorises each by the files it touches, runs `scripts/skill-scan.sh` against every changed `SKILL.md` (same scanner `skill-scan` reuses verbatim), and emits one structured Telegram digest with four risk buckets sorted by PR age. The operator can fire-and-forget the FAST_TRACK bucket, glance at SKILL_PASS, and budget real attention for INFRA_REVIEW + SKILL_WARN_OR_BLOCK + CORE_REVIEW.
 
@@ -217,7 +217,7 @@ The `--survey`/`survey` token has already been consumed by the shared preamble. 
 - Tokens: `dry-run`, anything matching `^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$` (treated as `REPO_OVERRIDE`), anything else.
 - If any unknown token is present → log `PR_MERGE_QUEUE_BAD_VAR: ${var}` and exit (no writes, no notify).
 - `DRY_RUN=yes` if the `dry-run` token is present, else `no` (execute).
-- `TARGET_REPO=${REPO_OVERRIDE:-aaronjmars/aeon}`.
+- `TARGET_REPO=${REPO_OVERRIDE:-aeonfun/aeon}`.
 
 ### 2. Pull the open-PR list
 
@@ -231,7 +231,7 @@ If `gh api` fails (non-zero exit) → log `PR_MERGE_QUEUE_API_FAIL: pulls list`,
 
 Empty list → write the article + state with all buckets at zero, log `PR_MERGE_QUEUE_EMPTY`, **skip notify** (an empty queue is not news), exit `EMPTY`.
 
-Bot/trusted-author short-circuit: build `TRUSTED_LOGINS` from the `## Trusted Authors` section of `memory/watched-repos.md` (one login per `- ` bullet). Always include the bot logins `dependabot[bot]`, `renovate[bot]`, `github-actions[bot]`, plus `aeonframework` and `aaronjmars`. PRs whose `user_login` is in this set get categorised `TRUSTED_AUTHOR` and bypass the file-bucket logic in step 4 (auto-merge handles them; surfacing them in the operator's risk view would only add noise).
+Bot/trusted-author short-circuit: build `TRUSTED_LOGINS` from the `## Trusted Authors` section of `memory/watched-repos.md` (one login per `- ` bullet). Always include the bot logins `dependabot[bot]`, `renovate[bot]`, `github-actions[bot]`, plus `aeonframework` and `aeonfun`. PRs whose `user_login` is in this set get categorised `TRUSTED_AUTHOR` and bypass the file-bucket logic in step 4 (auto-merge handles them; surfacing them in the operator's risk view would only add noise).
 
 ### 3. Per-PR files fetch
 

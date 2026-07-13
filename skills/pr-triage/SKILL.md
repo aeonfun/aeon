@@ -15,7 +15,7 @@ External PRs that sit unanswered look unwelcoming. This skill is the **first tou
 Any PR whose author is **not** in the trusted set qualifies. The trusted set is, by precedence:
 
 1. Logins ending in `[bot]` (`dependabot[bot]`, `renovate[bot]`, `github-actions[bot]`, …) — these route to `auto-merge` / `pr-review`.
-2. The agent's own login: `aeonframework`, `aaronjmars`, and any login under a `## Trusted Authors` heading in `memory/watched-repos.md` (same allowlist convention used by `auto-merge`).
+2. The agent's own login: `aeonframework`, `aeonfun`, and any login under a `## Trusted Authors` heading in `memory/watched-repos.md` (same allowlist convention used by `auto-merge`).
 
 Everything else is **external** and gets triaged.
 
@@ -25,7 +25,7 @@ Everything else is **external** and gets triaged.
 
 ```markdown
 # Watched Repos
-- aaronjmars/aeon
+- aeonfun/aeon
 - aaronjmars/aeon-agent
 
 ## Trusted Authors
@@ -188,7 +188,7 @@ Append the triage record to `memory/triaged-prs.json`:
 
 ```json
 {
-  "aaronjmars/aeon": [
+  "aeonfun/aeon": [
     {"n": 143, "sha": "abc1234", "at": "2026-04-29", "verdict": "ACCEPTED"},
     {"n": 145, "sha": "def5678", "at": "2026-04-29", "verdict": "DEFER"}
   ]

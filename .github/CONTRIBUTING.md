@@ -15,7 +15,7 @@ Most contributions fall into one of three buckets, each with its own checklist b
 ## Before you start
 
 - **Fork or use the template.** This repo is a public template — click **Use this
-  template** (or `gh repo fork aaronjmars/aeon --clone`). Run your own instance as
+  template** (or `gh repo fork aeonfun/aeon --clone`). Run your own instance as
   a fork; open PRs back here for changes that benefit everyone.
 - **Branch from `main`.** Never push to `main`. Use a descriptive branch name
   (`feat/…`, `fix/…`, `docs/…`).

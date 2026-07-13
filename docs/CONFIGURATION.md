@@ -131,10 +131,10 @@ By default Aeon has no personality. The **Soul** tab gives it one - `soul/SOUL.m
 
 - **Write it** - edit SOUL.md / STYLE.md inline; Save commits and pushes.
 - **Templates** - start from a blank scaffold or an archetype (Founder, Researcher, Creator).
-- **Install a real soul** - one click pulls a complete example (Karpathy, Garry Tan, Steipete, Vivian Balakrishnan) from the [soul.md](https://github.com/aaronjmars/soul.md) gallery into your `soul/`.
+- **Install a real soul** - one click pulls a complete example (Karpathy, Garry Tan, Steipete, Vivian Balakrishnan) from the [soul.md](https://github.com/aeonfun/soul.md) gallery into your `soul/`.
 - **Build from your handle** - give the `soul-builder` skill any of an X handle, your full name (web search), or links (LinkedIn, site, blog, GitHub). It reads them and drafts SOUL.md + STYLE.md + voice examples in your style. Set `XAI_API_KEY` for the richest read of your actual X timeline - it falls back to web search without it.
 
-Prefer files? Fork [soul.md](https://github.com/aaronjmars/soul.md), fill in `SOUL.md` / `STYLE.md` / `examples/good-outputs.md` (10–20 calibration samples), and drop them under `soul/` - same result. The `## Voice` section of `CLAUDE.md` reads them automatically, so identity propagates to every skill.
+Prefer files? Fork [soul.md](https://github.com/aeonfun/soul.md), fill in `SOUL.md` / `STYLE.md` / `examples/good-outputs.md` (10–20 calibration samples), and drop them under `soul/` - same result. The `## Voice` section of `CLAUDE.md` reads them automatically, so identity propagates to every skill.
 
 **Quality check:** soul files work when they're specific enough to be wrong. *"I think most AI safety discourse is galaxy-brained cope"* is useful; *"I have nuanced views on AI safety"* is not.
 
@@ -158,7 +158,7 @@ The gate also rejects state-changing requests whose `Origin` isn't allowlisted, 
 This repo is a public template. Run your own instance as a **private fork** so memory, articles, and API keys stay private:
 
 ```bash
-git remote add upstream https://github.com/aaronjmars/aeon.git
+git remote add upstream https://github.com/aeonfun/aeon.git
 git fetch upstream
 git merge upstream/main --no-edit
 ```

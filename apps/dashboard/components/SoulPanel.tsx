@@ -21,7 +21,7 @@ interface SoulPanelProps {
   onInstallExample: (key: string) => void
 }
 
-const EXAMPLES_URL = 'https://github.com/aaronjmars/soul.md/tree/main/examples'
+const EXAMPLES_URL = 'https://github.com/aeonfun/soul.md/tree/main/examples'
 
 // Strip HTML comments, headings and whitespace - what's left is real authored
 // content. Empty ⇒ still the scaffold, so badge it "template".

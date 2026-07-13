@@ -18,7 +18,7 @@ This page documents the **install protocol** — the `skills-pack.json` manifest
 bin/install-skill-pack --list
 ```
 
-Prints every pack declared in `catalog/skill-packs.json` — repo, skill count, trust badge, one-line description. Trusted-source packs are marked with `*` (security scan skipped, format check still runs). The script reads the local `catalog/skill-packs.json` when present and falls back to fetching the file from `https://raw.githubusercontent.com/aaronjmars/aeon/main/catalog/skill-packs.json` when it isn't.
+Prints every pack declared in `catalog/skill-packs.json` — repo, skill count, trust badge, one-line description. Trusted-source packs are marked with `*` (security scan skipped, format check still runs). The script reads the local `catalog/skill-packs.json` when present and falls back to fetching the file from `https://raw.githubusercontent.com/aeonfun/aeon/main/catalog/skill-packs.json` when it isn't.
 
 Trusted AntFleet packs currently expose both `pr-review-antfleet` for
 installed repos with channel drawdown and `pr-review-antfleet-x402` for
@@ -177,7 +177,7 @@ The operator is always the trust boundary. The install script does not auto-trus
 4. `skills-pack.json` declares every skill the pack intends to install. Skills present in `skills/` but missing from the manifest are not installed.
 5. Optional but encouraged: a `README.md` that names each skill, explains scheduling assumptions, and lists any required environment variables.
 6. Run `./scripts/validate-pack.sh /path/to/your-pack-dir` (from an Aeon checkout) to pre-flight the pack locally — it runs the same structural invariants `install-skill-pack` enforces (valid `skills-pack.json`, clean slugs, no `..` in paths, present per-skill `SKILL.md`, locked-taxonomy capabilities) and exits non-zero on any blocking error. Add `--path <subdir>` if `skills-pack.json` is nested.
-7. Open a PR against `aaronjmars/aeon` that does **two** things in one diff: adds a row to the **Community Skill Packs** table in the project README, AND adds a matching entry to `catalog/skill-packs.json` (the machine-readable registry — see schema below).
+7. Open a PR against `aeonfun/aeon` that does **two** things in one diff: adds a row to the **Community Skill Packs** table in the project README, AND adds a matching entry to `catalog/skill-packs.json` (the machine-readable registry — see schema below).
 
 ---
 
@@ -237,4 +237,4 @@ Pack maintainers update both in the same PR so the two surfaces stay in lockstep
 
 ## Listed packs
 
-See the [Community Skill Packs section](https://github.com/aaronjmars/aeon#community-skill-packs) in the main README for the current registry.
+See the [Community Skill Packs section](https://github.com/aeonfun/aeon#community-skill-packs) in the main README for the current registry.

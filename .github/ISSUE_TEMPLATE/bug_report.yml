@@ -93,7 +93,7 @@ body:
     attributes:
       label: Before submitting
       options:
-        - label: I searched [existing issues](https://github.com/aaronjmars/aeon/issues) and this isn't a duplicate.
+        - label: I searched [existing issues](https://github.com/aeonfun/aeon/issues) and this isn't a duplicate.
           required: true
         - label: I removed all secrets (API keys, tokens, wallet/chat IDs) from the logs and text above.
           required: true

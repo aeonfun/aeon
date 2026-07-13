@@ -62,7 +62,7 @@ AEON_YML="$ROOT_DIR/aeon.yml"
 SCANNER="$ROOT_DIR/scripts/skill-scan.sh"
 TRUSTED_FILE="$ROOT_DIR/skills/security/trusted-sources.txt"
 REGISTRY_FILE="$ROOT_DIR/catalog/skill-packs.json"
-REGISTRY_URL="https://raw.githubusercontent.com/aaronjmars/aeon/main/catalog/skill-packs.json"
+REGISTRY_URL="https://raw.githubusercontent.com/aeonfun/aeon/main/catalog/skill-packs.json"
 TMP_DIR=$(mktemp -d)
 trap 'rm -rf "$TMP_DIR"' EXIT
 # shellcheck source=scripts/lib/skill-install.sh

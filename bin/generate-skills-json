@@ -56,7 +56,7 @@ fm() {
 # Start JSON output
 echo -n '{"version":"1.0","generated":"' > "$OUTPUT"
 echo -n "$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$OUTPUT"
-echo -n '","repo":"aaronjmars/aeon","total":0,"categories":{"core":"Core","evolution":"Evolution","basics":"Basics","dev":"Dev & Code","crypto":"Crypto & Markets","productivity":"Productivity"},"skills":[' >> "$OUTPUT"
+echo -n '","repo":"aeonfun/aeon","total":0,"categories":{"core":"Core","evolution":"Evolution","basics":"Basics","dev":"Dev & Code","crypto":"Crypto & Markets","productivity":"Productivity"},"skills":[' >> "$OUTPUT"
 
 TOTAL=0
 FIRST=true
@@ -128,12 +128,12 @@ for skill_dir in "$SKILLS_DIR"/*/; do
     echo -n ',' >> "$OUTPUT"
   fi
 
-  echo -n "{\"slug\":\"$slug\",\"name\":\"$name\",\"description\":\"$description\",\"category\":\"$category\",\"var\":\"$var\",\"requires\":$requires_json,\"mcp\":$mcp_json,\"files\":$extra_files,\"sha\":\"$sha\",\"updated\":\"$updated\",\"install\":\"bin/add-skill aaronjmars/aeon $slug\"}" >> "$OUTPUT"
+  echo -n "{\"slug\":\"$slug\",\"name\":\"$name\",\"description\":\"$description\",\"category\":\"$category\",\"var\":\"$var\",\"requires\":$requires_json,\"mcp\":$mcp_json,\"files\":$extra_files,\"sha\":\"$sha\",\"updated\":\"$updated\",\"install\":\"bin/add-skill aeonfun/aeon $slug\"}" >> "$OUTPUT"
 
   TOTAL=$((TOTAL + 1))
 done
 
-echo -n '],"install_all":"bin/add-skill aaronjmars/aeon --all","install_one":"bin/add-skill aaronjmars/aeon <skill-name>"}' >> "$OUTPUT"
+echo -n '],"install_all":"bin/add-skill aeonfun/aeon --all","install_one":"bin/add-skill aeonfun/aeon <skill-name>"}' >> "$OUTPUT"
 
 # Patch total count (macOS-compatible sed)
 if [[ "$(uname)" == "Darwin" ]]; then

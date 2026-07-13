@@ -4,7 +4,7 @@ type: Article
 
 # Changelog — Week of 2026-03-19
 
-## aaronjmars/aeon
+## aeonfun/aeon
 
 ### Features
 - Add local dashboard for managing skills, secrets, and runs — Next.js app with visual schedule picker, secret management, skill toggling, and workflow triggers (9b12614)

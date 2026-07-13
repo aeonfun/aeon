@@ -48,7 +48,7 @@ b. **Curated indexes** via `bin/add-skill <repo> --list` (iterate in this order)
    - `bin/add-skill vercel-labs/agent-skills --list`
    - `bin/add-skill anthropics/skills --list`
    - `bin/add-skill BankrBot/skills --list`
-   - `bin/add-skill aaronjmars/aeon --list` (this repo's inventory — informational, cannot re-install; any hit here signals a duplicate and confirms gap fit is probably wrong)
+   - `bin/add-skill aeonfun/aeon --list` (this repo's inventory — informational, cannot re-install; any hit here signals a duplicate and confirms gap fit is probably wrong)
 
    `bin/add-skill --list` prints lines in the shape `  <name>  <description>` plus an `(installed)` marker for duplicates — parse those.
 
