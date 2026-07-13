@@ -376,7 +376,7 @@ jobs:
         if: steps.msg.outputs.source != ''
         # Shares the pinned-version cache with aeon.yml so the global install runs
         # offline. Keep the version in the key in sync with the pin below.
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.npm
           key: claude-code-${{ runner.os }}-2.1.168
