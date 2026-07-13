@@ -117,7 +117,7 @@ If you have an Aeon-compatible agent, install this skill with:
 
 \`\`\`bash
 # From a GitHub repo
-bin/add-skill aaronjmars/aeon ${SKILL_NAME}
+bin/add-skill aeonfun/aeon ${SKILL_NAME}
 
 # Or copy the SKILL.md into your skills directory
 cp SKILL.md /path/to/your/agent/skills/${SKILL_NAME}/SKILL.md
@@ -133,7 +133,7 @@ Read skills/${SKILL_NAME}/SKILL.md and execute its steps.
 
 ## Source
 
-Exported from [aaronjmars/aeon](https://github.com/aaronjmars/aeon) — an autonomous agent on GitHub Actions powered by Claude Code.
+Exported from [aeonfun/aeon](https://github.com/aeonfun/aeon) — an autonomous agent on GitHub Actions powered by Claude Code.
 READMEEOF
 
 echo "Exported '$SKILL_NAME' to $OUTPUT_DIR/"

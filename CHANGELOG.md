@@ -40,5 +40,5 @@ but interfaces may still shift before 1.0.
 - **Community** — a public template repo with 10 community skill packs listed in
   the registry, installable in one click.
 
-[Unreleased]: https://github.com/aaronjmars/aeon/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/aaronjmars/aeon/releases/tag/v0.1.0
+[Unreleased]: https://github.com/aeonfun/aeon/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/aeonfun/aeon/releases/tag/v0.1.0

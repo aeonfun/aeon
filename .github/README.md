@@ -5,8 +5,8 @@
 <h1 align="center">AEON</h1>
 
 <p align="center">
-  <a href="https://github.com/aaronjmars/aeon/stargazers"><img src="https://img.shields.io/github/stars/aaronjmars/aeon?style=flat-square&logo=github" alt="GitHub stars"></a>
-  <a href="https://github.com/aaronjmars/aeon/network/members"><img src="https://img.shields.io/github/forks/aaronjmars/aeon?style=flat-square&logo=github" alt="GitHub forks"></a>
+  <a href="https://github.com/aeonfun/aeon/stargazers"><img src="https://img.shields.io/github/stars/aeonfun/aeon?style=flat-square&logo=github" alt="GitHub stars"></a>
+  <a href="https://github.com/aeonfun/aeon/network/members"><img src="https://img.shields.io/github/forks/aeonfun/aeon?style=flat-square&logo=github" alt="GitHub forks"></a>
   <a href="https://x.com/aeonframework"><img src="https://img.shields.io/badge/Follow-%40aeonframework-black?style=flat-square&logo=x&labelColor=000000" alt="Follow on X"></a>
   <a href="https://bankr.bot/discover/0xbf8e8f0e8866a7052f948c16508644347c57aba3"><img src="https://img.shields.io/badge/Aeon%20on-Bankr-orange?style=flat-square&labelColor=1a1a2e" alt="Aeon on Bankr"></a>
 </p>
@@ -28,7 +28,7 @@ You need three things:
 
 1. **Node.js 20+** - grab the LTS installer from [nodejs.org](https://nodejs.org/en/download), or use a package manager: `brew install node` (macOS), `winget install OpenJS.NodeJS.LTS` (Windows), [nvm](https://github.com/nvm-sh/nvm) or your distro's package manager (Linux). Already have it? `node -v` should print 20 or higher.
 2. **[GitHub CLI](https://cli.github.com/) (`gh`), authenticated** - the dashboard uses it for everything (secrets, workflows), and `./aeon` checks it before starting. Install: `brew install gh` (macOS), `winget install --id GitHub.cli` (Windows), [per-distro instructions](https://github.com/cli/cli/blob/trunk/docs/install_linux.md) (Linux). Then run `gh auth login` and follow the prompts.
-3. **Your own copy of this repo** - click **Use this template** at the top of [the repo page](https://github.com/aaronjmars/aeon) - keep it public, Actions minutes are free on public repos. CLI version: `gh repo fork aaronjmars/aeon --clone`.
+3. **Your own copy of this repo** - click **Use this template** at the top of [the repo page](https://github.com/aeonfun/aeon) - keep it public, Actions minutes are free on public repos. CLI version: `gh repo fork aeonfun/aeon --clone`.
 
    <img src="../docs/assets/use-template.png" alt="The Use this template button at the top of the repo page" width="240" />
 
@@ -103,7 +103,7 @@ Three packs are shown by default (**Core**, **Evolution**, **Basics**); the rest
 | **Crypto & Markets** (`crypto`, 12) | `base-mcp`,`ctrl`,`defi-overview`,`distribute-tokens`,`investigation-report`,`monitor-polymarket`,`narrative-tracker`,`onchain-monitor`,`picks-tracker`,`pm-manipulation`,`token-pick`,`unlock-monitor` |
 | **Productivity** (`productivity`, 8) | `idea-pipeline`,`mention-radar`,`okf-export`,`okf-ingest`,`operator-scorecard`,`reply-maker`,`schedule-ads`,`send-email` |
 
-Authoritative source: [`skills.json`](../catalog/skills.json) + [`packs.json`](../catalog/packs.json), the dashboard **Packs** view, or `bin/add-skill aaronjmars/aeon --list`. A skill's pack comes from its `category:` frontmatter - see [`docs/skill-packs.md`](../docs/skill-packs.md).
+Authoritative source: [`skills.json`](../catalog/skills.json) + [`packs.json`](../catalog/packs.json), the dashboard **Packs** view, or `bin/add-skill aeonfun/aeon --list`. A skill's pack comes from its `category:` frontmatter - see [`docs/skill-packs.md`](../docs/skill-packs.md).
 
 </details>
 
@@ -137,7 +137,7 @@ Aeon can spawn and manage copies of itself. `spawn-instance` forks the repo into
 ### Add more skills
 
 ```bash
-bin/add-skill aaronjmars/aeon --list        # browse the built-in catalog
+bin/add-skill aeonfun/aeon --list        # browse the built-in catalog
 bin/add-skill BankrBot/skills bankr hydrex  # install from any GitHub repo
 bin/add-skill BankrBot/skills --all         # install everything from a repo
 bin/export-skill token-movers               # package one for standalone use
@@ -329,7 +329,7 @@ Either way the installer reads the pack's `skills-pack.json` manifest, runs the 
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=aaronjmars/aeon&type=Date)](https://www.star-history.com/#aaronjmars/aeon&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=aeonfun/aeon&type=Date)](https://www.star-history.com/#aeonfun/aeon&Date)
 
 Support the project : 0xbf8e8f0e8866a7052f948c16508644347c57aba3
 

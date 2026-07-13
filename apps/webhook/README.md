@@ -16,9 +16,9 @@ Worker's secrets.
 
 ## Deploy
 
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/aaronjmars/aeon/tree/main/apps/webhook)
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/aeonfun/aeon/tree/main/apps/webhook)
 
-> Forked Aeon? Change `aaronjmars/aeon` in the button URL above to
+> Forked Aeon? Change `aeonfun/aeon` in the button URL above to
 > `your-username/your-fork` so it deploys from your repo. (The button requires a
 > **public** source repo.)
 
@@ -50,7 +50,7 @@ npx wrangler secret put GITHUB_TOKEN              # GitHub PAT (see scopes below
 | `TELEGRAM_BOT_TOKEN` | yes | From [@BotFather](https://t.me/BotFather). |
 | `TELEGRAM_CHAT_ID` | yes | Only messages from this chat are relayed; everything else is dropped. |
 | `TELEGRAM_WEBHOOK_SECRET` | yes | Random string; pass the **same** value to `setWebhook` as `secret_token`. The Worker rejects every update with `403` until it's set. |
-| `GITHUB_REPO` | yes | `owner/repo` of your Aeon fork, e.g. `aaronjmars/aeon` — not the worker repo the deploy button creates. |
+| `GITHUB_REPO` | yes | `owner/repo` of your Aeon fork, e.g. `aeonfun/aeon` — not the worker repo the deploy button creates. |
 | `GITHUB_TOKEN` | yes | Fine-grained PAT scoped to your fork with **Contents: read/write** and **Actions: read/write**, or a classic token with `repo`. |
 
 To edit values later: Cloudflare dashboard → Workers & Pages → your worker →

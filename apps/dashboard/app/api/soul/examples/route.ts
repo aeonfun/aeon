@@ -7,7 +7,7 @@ import type { SoulExample, SoulExamplesResponse } from '@/lib/types'
 // One-click install of a ready-made soul from the soul.md examples gallery into
 // the operator's own repo. GET lists the available example people; POST copies
 // one example's SOUL.md / STYLE.md / voice examples into soul/ and commits.
-const SOURCE_REPO = 'aaronjmars/soul.md'
+const SOURCE_REPO = 'aeonfun/soul.md'
 
 // Short blurbs for the known examples; unknown ones still list with just a name.
 const BLURBS: Record<string, string> = {

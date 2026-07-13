@@ -10,7 +10,7 @@ tags: [meta, productivity, dev]
 > **${var}** — Mode selector. The first token picks the branch; the remainder is branch-specific.
 > - **empty** → **operator scorecard** (default): synthesize the week into agent health + community growth + economic activity with a worst-of-three OK/WATCH/DEGRADED verdict. Also accepts `dry-run` (skip the notification — article + JSON spec still write) and/or an integer `N` to override the window in hours (default 168 = 7d, cap 720). Examples: `` , `dry-run`, `336`, `dry-run 336`.
 > - **`ops`** → **ops recap**: operational summary of one day — what shipped, what failed, what needs follow-up. Optional date override after the keyword (`ops 2026-06-30` or `ops:2026-06-30`); empty date = today (UTC).
-> - **`push`** → **push recap**: deep-dive recap of all pushes — reads diffs, ranks impact, separates user-visible shipments from internal work, delivers a verdict. Optional repo scope after the keyword (`push aaronjmars/aeon` or `push:owner/repo`); empty = all watched repos.
+> - **`push`** → **push recap**: deep-dive recap of all pushes — reads diffs, ranks impact, separates user-visible shipments from internal work, delivers a verdict. Optional repo scope after the keyword (`push aeonfun/aeon` or `push:owner/repo`); empty = all watched repos.
 
 <!-- merged: operator-scorecard (default branch, three-pillar synthesis) + ops-recap (`ops` branch, operational day-recap) + push-recap (`push` branch, diff-reading push deep-dive). Every distinct behaviour of all three is preserved below. -->
 
@@ -83,7 +83,7 @@ d. **Compute health verdict (paragraph 1):**
 
 ### 3. Collect community-growth signals
 
-a. **Stars + forks delta.** Sum every `output/articles/repo-pulse-*.md` file with date suffix in window. From each, extract the `New stars (24h)` count and `New forks (24h)` count for each watched repo. Aggregate per-repo totals across the window. The `aaronjmars/aeon` row is the headline; other repos go on a continuation line.
+a. **Stars + forks delta.** Sum every `output/articles/repo-pulse-*.md` file with date suffix in window. From each, extract the `New stars (24h)` count and `New forks (24h)` count for each watched repo. Aggregate per-repo totals across the window. The `aeonfun/aeon` row is the headline; other repos go on a continuation line.
 
 If the file format doesn't contain the canonical fields, fall back to scanning `memory/logs/*.md` for `## Repo Pulse` blocks (older format). If both fail for a given repo: `stars_added=null`, mark `growth_source=partial`.
 

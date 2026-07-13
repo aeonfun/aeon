@@ -23,7 +23,7 @@ export function InstantModeCard({ repo, sessionBotToken }: InstantModeCardProps)
 
   useEffect(() => { if (sessionBotToken) setBotToken(sessionBotToken) }, [sessionBotToken])
 
-  const deployRepo = repo || 'aaronjmars/aeon'
+  const deployRepo = repo || 'aeonfun/aeon'
   const deployUrl = `https://deploy.workers.cloudflare.com/?url=https://github.com/${deployRepo}/tree/main/apps/webhook`
   // Classic-token page supports prefilling scope + description; fine-grained doesn't.
   const patUrl = 'https://github.com/settings/tokens/new?scopes=repo&description=aeon-telegram-webhook'

@@ -170,19 +170,19 @@ The Hugging Face Hub REST API is fully keyless for the list endpoints used here.
 # Models — sort=trendingScore returns the same ranking that backs the HF front page
 curl -sf "https://huggingface.co/api/models?sort=trendingScore&direction=-1&limit=20" \
   -H "accept: application/json" \
-  -H "user-agent: aeon/1.0 (+https://github.com/aaronjmars/aeon)" \
+  -H "user-agent: aeon/1.0 (+https://github.com/aeonfun/aeon)" \
   > /tmp/hf-models.json
 
 # Datasets
 curl -sf "https://huggingface.co/api/datasets?sort=trendingScore&direction=-1&limit=15" \
   -H "accept: application/json" \
-  -H "user-agent: aeon/1.0 (+https://github.com/aaronjmars/aeon)" \
+  -H "user-agent: aeon/1.0 (+https://github.com/aeonfun/aeon)" \
   > /tmp/hf-datasets.json
 
 # Spaces
 curl -sf "https://huggingface.co/api/spaces?sort=trendingScore&direction=-1&limit=15" \
   -H "accept: application/json" \
-  -H "user-agent: aeon/1.0 (+https://github.com/aaronjmars/aeon)" \
+  -H "user-agent: aeon/1.0 (+https://github.com/aeonfun/aeon)" \
   > /tmp/hf-spaces.json
 ```
 

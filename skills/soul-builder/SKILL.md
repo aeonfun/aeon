@@ -14,7 +14,7 @@ requires: [XAI_API_KEY?]
 
 > **${var}** — a source brief. Two accepted shapes:
 > - **Structured (from the dashboard):** ` | `-separated `key=value` tokens — any of `x=<handle>`, `name=<full name>`, `links=<url1>,<url2>`. Example: `x=karpathy | name=Andrej Karpathy | links=https://karpathy.ai,https://github.com/karpathy`.
-> - **Bare handle (back-compat / scheduled runs):** just an X handle like `aaronjmars` (optionally `@`/URL).
+> - **Bare handle (back-compat / scheduled runs):** just an X handle like `aeonfun` (optionally `@`/URL).
 >
 > If `${var}` is empty, reuse the handle already referenced in `soul/SOUL.md`. If no source at all can be resolved, log `SOUL_BUILDER_SKIP: no source — set var (x=, name=, or links=)` and stop with no notification.
 
