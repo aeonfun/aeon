@@ -780,7 +780,12 @@ jobs:
           fi
 
           echo "attest=$ATTEST" >> "$GITHUB_OUTPUT"
-          echo "::notice::attestation gate for ${SKILL_NAME}: attest=$ATTEST"
+          # Only surface the gate when it's actually ON — attest=false is the quiet
+          # default and doesn't need a per-run notice. (if-block, not `[ ] &&`, so a
+          # false condition can't fail this step as its final command under set -e.)
+          if [ "$ATTEST" = "true" ]; then
+            echo "::notice::attestation gate active for ${SKILL_NAME} — signing run provenance"
+          fi
 
       - name: Build run manifest
         id: manifest
