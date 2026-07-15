@@ -56,6 +56,11 @@ export const MCP_CATALOG: McpCatalogEntry[] = [
     url: 'https://glim.sh/mcp',
     logo: 'https://raw.githubusercontent.com/glim-sh/glim-mcp/main/assets/icon-400.png',
     description: 'glim.sh - live data for AI agents: web search, full page extraction, Twitter/X, Reddit, GitHub, Amazon, YouTube transcripts. Pay-per-call with x402 (Base/Solana USDC) or MPP (Tempo), or sign in and draw from a prepaid account balance.',
+    // Standard OAuth (PRM https://glim.sh/api/auth → AS metadata + DCR). Request
+    // offline_access so the token endpoint returns a refresh token (durable headless
+    // auth); openid for identity. Skip profile/email — not needed for API access.
+    oauth: true,
+    oauthScopes: ['openid', 'offline_access'],
   },
 ]
 
