@@ -24,7 +24,7 @@ case $- in *e*) _mcp_oe_was_set=1 ;; *) _mcp_oe_was_set=0 ;; esac
 set +e
 
 _mcp_oauth_refresh_one() {
-  local oauth_var="$1" json="$2"
+  local oauth_var="$1" json="$2" pat="${3:-}"
   local token_var="${oauth_var%_OAUTH}_TOKEN"
   local ep cid csec rt
   ep=$(jq -r '.token_endpoint // empty' <<<"$json" 2>/dev/null)
@@ -59,7 +59,13 @@ _mcp_oauth_refresh_one() {
   fi
   access=$(jq -r '.access_token // empty' <<<"$resp" 2>/dev/null)
   if [ -z "$access" ]; then
-    echo "::warning::MCP OAuth: no access_token in the refresh response for $oauth_var — re-connect it in the dashboard"
+    # Surface the OAuth error (e.g. invalid_grant) so the failure is actionable —
+    # invalid_grant here almost always means an earlier run rotated/consumed the
+    # stored refresh token and could not save the replacement (see persistence
+    # note below). Never echoes the token itself.
+    local oerr
+    oerr=$(jq -r '[.error, .error_description] | map(select(. != null and . != "")) | join(": ")' <<<"$resp" 2>/dev/null)
+    echo "::warning::MCP OAuth: refresh failed for $oauth_var${oerr:+ ($oerr)} — the stored refresh token was likely rotated/consumed by an earlier run and not saved. Re-connect it in the dashboard, and set a secrets-write PAT (MCP_SECRETS_PAT) so future rotations persist. See docs/mcp-oauth.md."
     return 0
   fi
 
@@ -67,18 +73,27 @@ _mcp_oauth_refresh_one() {
   export "$token_var=$access"
   echo "::debug::MCP OAuth: refreshed $token_var"
 
-  # Rotated refresh token? Persist it so the NEXT run stays valid. Best-effort:
-  # writing a secret needs a secrets-scoped token (the default GITHUB_TOKEN can't),
-  # so a failure is a debug note, not a warning — most providers don't rotate.
+  # Rotated refresh token? Persist it so the NEXT run stays valid. Providers that
+  # rotate the refresh token on every refresh invalidate the old one immediately,
+  # so unless the replacement is saved, the next headless run's refresh fails ("no
+  # access_token"). Writing a secret needs a secrets-write credential — the default
+  # GITHUB_TOKEN CANNOT do this — so persistence uses the PAT the caller resolved
+  # (MCP_SECRETS_PAT / GH_GLOBAL). Failures here are LOUD (::warning::), not silent:
+  # an unpersisted rotation is exactly what silently breaks auth one run later.
   new_rt=$(jq -r '.refresh_token // empty' <<<"$resp" 2>/dev/null)
   if [ -n "$new_rt" ] && [ "$new_rt" != "$rt" ]; then
     local updated
     updated=$(jq -c --arg rt "$new_rt" '.refresh_token=$rt' <<<"$json" 2>/dev/null)
-    if [ -n "$updated" ] && command -v gh >/dev/null 2>&1 \
-       && printf '%s' "$updated" | gh secret set "$oauth_var" >/dev/null 2>&1; then
-      echo "::debug::MCP OAuth: persisted rotated refresh token for $oauth_var"
+    if [ -z "$updated" ]; then
+      echo "::warning::MCP OAuth: $oauth_var rotated its refresh token but the updated secret JSON could not be built — re-connect it in the dashboard."
+    elif [ -z "$pat" ]; then
+      echo "::warning::MCP OAuth: $oauth_var uses a ROTATING refresh token but no secrets-write credential is set, so the rotated token cannot be saved and the NEXT run's refresh WILL fail. Add a fine-grained PAT (Secrets: read/write) as repo secret MCP_SECRETS_PAT (or GH_GLOBAL), then re-connect $oauth_var in the dashboard."
+    elif ! command -v gh >/dev/null 2>&1; then
+      echo "::warning::MCP OAuth: $oauth_var rotated its refresh token but 'gh' is unavailable to persist it."
+    elif printf '%s' "$updated" | GH_TOKEN="$pat" gh secret set "$oauth_var" >/dev/null 2>&1; then
+      echo "MCP OAuth: persisted rotated refresh token for $oauth_var (durable refresh active)"
     else
-      echo "::debug::MCP OAuth: $oauth_var rotated its refresh token but it could not be persisted (needs a secrets-scoped token) — re-connect in the dashboard if auth later fails"
+      echo "::warning::MCP OAuth: $oauth_var rotated its refresh token but persisting it FAILED — MCP_SECRETS_PAT/GH_GLOBAL needs 'Secrets: read/write' on this repo. Re-connect in the dashboard once fixed."
     fi
   fi
   return 0
@@ -95,13 +110,19 @@ mcp_oauth_refresh() {
   local names
   names=$(jq -r 'keys[] | select(startswith("MCP_") and endswith("_OAUTH"))' <<<"$secrets" 2>/dev/null)
   [ -z "$names" ] && return 0
+  # Secrets-write credential used to persist ROTATED refresh tokens (see the
+  # persistence note in _mcp_oauth_refresh_one). A dedicated MCP_SECRETS_PAT wins;
+  # GH_GLOBAL is the repo-wide fallback. Masked so it never lands in a log.
+  local pat
+  pat=$(jq -r '.MCP_SECRETS_PAT // .GH_GLOBAL // empty' <<<"$secrets" 2>/dev/null)
+  [ -n "$pat" ] && echo "::add-mask::$pat"
   local n json
   while IFS= read -r n; do
     [ -z "$n" ] && continue
     # The secret VALUE is the OAuthSecret JSON *as a string*; -r unwraps it.
     json=$(jq -r --arg k "$n" '.[$k] // empty' <<<"$secrets" 2>/dev/null)
     [ -z "$json" ] && continue
-    _mcp_oauth_refresh_one "$n" "$json"
+    _mcp_oauth_refresh_one "$n" "$json" "$pat"
   done <<< "$names"
   return 0
 }

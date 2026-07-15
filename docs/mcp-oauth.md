@@ -58,9 +58,20 @@ store as repo secrets, refresh before every run.
 - **Dynamic Client Registration required for one-click.** A server without DCR
   needs a pre-registered `client_id` (set `oauthClientId` on the catalog entry).
 - **Rotating refresh tokens.** If a provider rotates the refresh token on each use,
-  the new one can't be persisted from a headless run (the default `GITHUB_TOKEN`
-  can't write secrets), so auth eventually breaks and you re-connect. Providers with
-  stable refresh tokens (the common case) work indefinitely.
+  the old one is invalidated the moment it's used, so unless the replacement is
+  saved the *next* headless run's refresh fails (`no access_token` / `invalid_grant`)
+  and auth breaks one run later. Persisting a secret needs a **secrets-write
+  credential** — the default `GITHUB_TOKEN` cannot write secrets. To make refresh
+  durable for rotating providers, add a fine-grained PAT with **Secrets: read/write**
+  on this repo as the secret **`MCP_SECRETS_PAT`** (or a repo-wide `GH_GLOBAL`);
+  `scripts/mcp-oauth-refresh.sh` then saves each rotated refresh token back to its
+  `MCP_<SLUG>_OAUTH` secret and warns loudly when it can't. **After adding the PAT,
+  re-connect the affected server once** to seed a valid refresh token — a refresh
+  token already consumed by a prior run can't be revived by the PAT alone. Providers
+  with stable refresh tokens (the common case) work indefinitely without a PAT.
+  (Note: concurrent runs that each refresh the same rotating token still race — for
+  many-server / high-parallelism setups, refresh centrally on a schedule so exactly
+  one run mints and persists per interval.)
 - **No offline scope, no refresh.** If the provider doesn't return a refresh token
   (e.g. it needs an explicit offline-access scope), only the access token is stored
   and it will expire — the panel warns when this happens.
