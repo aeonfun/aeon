@@ -322,6 +322,9 @@ Either way the installer reads the pack's `skills-pack.json` manifest, runs the 
 | [Polymarket Trader by Simmer](https://github.com/SpartanLabsXyz/aeon-skill-pack-polymarket/tree/main/aeon-skill-pack) (`--path aeon-skill-pack`) | 3 | Signal, discovery, and real order-placing on Polymarket (simulate-by-default, live opt-in). |
 | [Charon for AEON](https://github.com/CharonAI-code/charon/tree/main/skills/aeon) (`--path skills/aeon`) | 2 | Repo-local policy enforcement for AEON runs, with natural-language policy management. |
 | [aeon-skill-pack-agentlink](https://github.com/techdigger/aeon-skill-pack-agentlink) | 1 | Verified, human-backed on-chain identity on Base via AgentLink. Read-only, on-demand. |
+| [proof-of-loadout](https://github.com/sparkleware/proof-of-loadout) | 1 | Compose an Aeon loadout for a goal, flag USDC-per-call packs (Charon gate routed), preflight a MiroShark sim. Plan-only by default. |
+| [aeon-pulse](https://github.com/sparkleware/aeon-pulse) | 1 | Daily digest of Aeon upstream: recent commits, release freshness, open issues. Read-only, keyless. |
+| [eth-gas-watch](https://github.com/sparkleware/eth-gas-watch) | 1 | Etherscan gas oracle every 4h: traffic-light status, cheap-window alerts, trend from its own ledger. Read-only. |
 
 **To list a pack here**, open a PR that adds a table row **and** a matching [`catalog/skill-packs.json`](../catalog/skill-packs.json) entry. The full checklist - public repo + license, a per-skill `SKILL.md`, a `skills-pack.json` manifest, the registry schema, and the trust model - is in [`docs/community-skill-packs.md`](../docs/community-skill-packs.md#pack-maintainers-publishing-checklist).
 

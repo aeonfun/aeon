@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "updated": "2026-07-03",
+  "updated": "2026-07-15",
   "description": "Machine-readable registry of community skill packs installable via bin/install-skill-pack. Mirrors the human-readable table in README.md.",
   "packs": [
     {
@@ -191,6 +191,66 @@
       ],
       "secrets_required": [
         "AGENT_PRIVATE_KEY"
+      ],
+      "capabilities": [
+        "read_only",
+        "external_api",
+        "sends_notifications"
+      ]
+    },
+    {
+      "repo": "sparkleware/proof-of-loadout",
+      "name": "proof-of-loadout",
+      "description": "Compose an Aeon loadout for a goal from the Sparkleware registry, flag packs that settle real USDC per call (with a Charon policy gate routed), and preflight a MiroShark market simulation — plan-only by default; the $1 x402 run never fires on its own.",
+      "author": "sparkleware",
+      "license": "MIT",
+      "homepage": "https://sparkleware.fun",
+      "category": "dev",
+      "trust_level": "community",
+      "skills": [
+        "proof-of-loadout"
+      ],
+      "secrets_required": [],
+      "capabilities": [
+        "external_api",
+        "writes_external_host",
+        "onchain_writes",
+        "sends_notifications"
+      ]
+    },
+    {
+      "repo": "sparkleware/aeon-pulse",
+      "name": "aeon-pulse",
+      "description": "Daily one-screen digest of Aeon upstream activity — recent commits, release freshness, and open issues from aeonfun/aeon (or any repo passed as var). Read-only, keyless.",
+      "author": "sparkleware",
+      "license": "MIT",
+      "homepage": "https://sparkleware.fun",
+      "category": "dev",
+      "trust_level": "community",
+      "skills": [
+        "aeon-activity"
+      ],
+      "secrets_required": [],
+      "capabilities": [
+        "read_only",
+        "sends_notifications"
+      ]
+    },
+    {
+      "repo": "sparkleware/eth-gas-watch",
+      "name": "eth-gas-watch",
+      "description": "Ethereum gas status every 4 hours from the Etherscan gas oracle — traffic-light classification against your gwei threshold, cheap-window alerts, and a trend line computed from its own grep-able ledger.",
+      "author": "sparkleware",
+      "license": "MIT",
+      "homepage": "https://sparkleware.fun",
+      "category": "crypto",
+      "trust_level": "community",
+      "skills": [
+        "gas-status"
+      ],
+      "secrets_required": [],
+      "secrets_optional": [
+        "ETHERSCAN_API_KEY"
       ],
       "capabilities": [
         "read_only",
