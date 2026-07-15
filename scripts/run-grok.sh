@@ -19,7 +19,7 @@
 #   exit    — 0 on success, non-zero on any grok failure (caller falls to error)
 #
 # Inputs from the environment:
-#   MODEL                 resolved model id (default grok-build-0.1)
+#   MODEL                 resolved model id; empty ⇒ grok's own default (now grok-4.5)
 #   SKILL_MODE            read-only | write (maps to grok --allow/--deny/--sandbox
 #                         via scripts/skill_mode.sh grok-args)
 #   XAI_API_KEY           xAI API key auth (CI-friendly; the simple path)
@@ -50,7 +50,7 @@ set -uo pipefail   # NOT -e: we capture grok's exit code and output explicitly.
 
 # --- pin (single source of truth for the grok CLI version) ------------------
 # Keep this current the same way aeon.yml/messages.yml pin the claude CLI.
-GROK_CLI_VERSION="${GROK_CLI_VERSION:-0.2.82}"
+GROK_CLI_VERSION="${GROK_CLI_VERSION:-0.2.101}"
 
 log() { echo "$@" >&2; }
 
@@ -101,7 +101,7 @@ fi
 # --- 3. model + permission flags --------------------------------------------
 # Only pass --model for a real grok model id; for an empty value or a leftover
 # claude-* id (harness switched but model not), OMIT it so grok uses its own
-# current default (e.g. grok-composer-2.5-fast) rather than a hardcoded id.
+# current default (now grok-4.5) rather than a hardcoded id.
 MODEL="${MODEL:-}"
 SKILL_MODE="${SKILL_MODE:-write}"
 MODEL_FLAG=()
@@ -148,18 +148,19 @@ fi
 # --- 3c. run-shaping flags (structured output / effort / turns / verify) -----
 # Newer grok headless features, all opt-in via env (aeon.yml maps a skill's
 # frontmatter to these). Two hard-won constraints are enforced here, verified
-# against grok 0.2.82 with the CI-default model grok-composer-2.5-fast:
+# against grok 0.2.101:
 #   * --effort / --reasoning-effort map to the API's `reasoningEffort`, which
 #     composer REJECTS with a 400 ("does not support parameter reasoningEffort").
-#     They only work on a reasoning model (grok-build), so we gate them on MODEL
-#     and skip-with-warning on composer rather than hard-fail the run.
+#     They only work on a reasoning model (grok-4.5 / grok-build), so we gate them
+#     on MODEL and skip-with-warning on composer rather than hard-fail the run.
 #   * grok's own arg parser rejects some combinations; those are reconciled below
 #     and again where --no-subagents is chosen (see the run step).
 # Invalid values are warned-and-skipped, never passed through to fail the run.
 RUN_FLAGS=()
 
-# Is the resolved model reasoning-capable? Composer (the default, and the only
-# model that completes in the Actions sandbox) is not; grok-build is.
+# Is the resolved model reasoning-capable? Composer is not; grok-4.5 / grok-build are.
+# Empty MODEL means grok picks its own default (now grok-4.5, a reasoning model), but
+# we can't know that here, so treat empty as non-reasoning to stay 400-safe.
 MODEL_IS_REASONING=0
 case "$MODEL" in
   ""|default|claude-*|*composer*) ;;      # composer / unknown → NOT reasoning

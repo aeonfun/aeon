@@ -452,7 +452,7 @@ jobs:
           if [ "$HARNESS" != "grok" ]; then HARNESS="claude"; fi   # unknown → safe default
           # On grok a claude-* model id is meaningless — fall back to grok's default.
           if [ "$HARNESS" = "grok" ]; then
-            case "$MODEL" in claude-*|"") MODEL="grok-composer-2.5-fast" ;; esac
+            case "$MODEL" in claude-*|"") MODEL="grok-4.5" ;; esac
           fi
           echo "Using harness: $HARNESS  |  model: $MODEL"
 

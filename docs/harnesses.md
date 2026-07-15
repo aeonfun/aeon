@@ -58,16 +58,16 @@ harness:
 max_turns: 120     # agentic-turn cap (default 60; a runaway/cost guard) → --max-turns
 best_of_n: 3       # run the task 3 ways in parallel, keep the best      → --best-of-n
 verify: true       # append a self-verification loop before finishing    → --check
-effort: high       # low|medium|high|xhigh|max → --effort  (grok-build only)
+effort: high       # low|medium|high|xhigh|max → --effort  (reasoning models only)
 ```
 
-`effort`/`reasoning_effort` map to the API's `reasoningEffort`, which the
-CI-default `grok-composer-2.5-fast` rejects — so they're applied only when a
-reasoning model (`grok-build`) is selected and skipped-with-a-notice otherwise.
-`best_of_n`/`verify` build on grok's subagents (so the harness drops
+`effort`/`reasoning_effort` map to the API's `reasoningEffort`, which the fast
+`grok-composer-2.5-fast` rejects — so they're applied only when a reasoning model
+(`grok-4.5`, grok's default, or `grok-build`) is selected and skipped-with-a-notice
+otherwise. `best_of_n`/`verify` build on grok's subagents (so the harness drops
 `--no-subagents` for those runs); `verify` can't combine with structured output.
 `run-grok.sh` also understands `GROK_JSON_SCHEMA` for `--json-schema` structured
-output (reliably honoured by `grok-build`).
+output (reliably honoured by reasoning models like `grok-4.5` / `grok-build`).
 
 ## Every entry point runs on either harness
 
