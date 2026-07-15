@@ -218,7 +218,9 @@ case "${GATEWAY:-direct}" in
     export ANTHROPIC_BASE_URL="${XAI_ANTHROPIC_BASE_URL:-https://api.x.ai}"
     export ANTHROPIC_AUTH_TOKEN="$XAI_API_KEY"   # Bearer; API_KEY must be blank
     unset ANTHROPIC_API_KEY CLAUDE_CODE_OAUTH_TOKEN
-    # Pin every model slot to a grok coding model (GROK_MODEL overrides).
+    # Pin every model slot to a grok coding model. GROK_MODEL overrides — e.g. set it
+    # to grok-4.5 (xAI's current flagship, available on api.x.ai) instead of the
+    # conservative grok-build-0.1 default kept here for backward-compatible behavior.
     grok_model="${GROK_MODEL:-grok-build-0.1}"
     export ANTHROPIC_DEFAULT_OPUS_MODEL="$grok_model"
     export ANTHROPIC_DEFAULT_SONNET_MODEL="$grok_model"

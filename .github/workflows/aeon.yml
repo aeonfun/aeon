@@ -25,6 +25,7 @@ on:
           - claude-sonnet-5
           - claude-sonnet-4-6
           - claude-haiku-4-5-20251001
+          - grok-4.5
           - grok-composer-2.5-fast
           - grok-build
       harness:
@@ -387,10 +388,10 @@ jobs:
           fi
           if [ "$HARNESS" != "grok" ]; then HARNESS="claude"; fi   # unknown value → safe default (use `if`, not `&&`, under set -e)
           # On the grok harness a claude-* model id is meaningless — fall back to
-          # grok's default (grok-composer-2.5-fast) unless an explicit grok model
-          # was chosen. run-grok.sh omits --model for a non-grok value as a safety net.
+          # grok's current default (grok-4.5) unless an explicit grok model was
+          # chosen. run-grok.sh omits --model for a non-grok value as a safety net.
           if [ "$HARNESS" = "grok" ]; then
-            case "$MODEL" in claude-*|"") MODEL="grok-composer-2.5-fast" ;; esac
+            case "$MODEL" in claude-*|"") MODEL="grok-4.5" ;; esac
           fi
           echo "Using harness: $HARNESS  |  model: $MODEL"
           echo "SKILL_MODEL=$MODEL" >> "$GITHUB_OUTPUT"
@@ -914,13 +915,14 @@ jobs:
             # Score through the SAME harness the skill ran on. A grok-only repo has
             # no Claude credentials, so `claude -p` would just print "Not logged in";
             # run-grok.sh reuses the run's X-account/API-key auth and emits the same
-            # {result,usage} envelope. MODEL= → grok's default (grok-composer-2.5-fast,
-            # the only grok model that completes in CI). Its notices go to stderr.
+            # {result,usage} envelope. Pin grok-composer-2.5-fast explicitly — the
+            # cheap/fast model this robust parse is tuned for. (Don't rely on grok's
+            # own default here: it's now grok-4.5, the pricier flagship.) Notices→stderr.
             # NB: we deliberately do NOT pass grok's --json-schema here — composer
             # doesn't populate structured output (it leaves .structuredOutput null),
             # and the ANALYSIS_PROMPT already asks for a {score,assessment,flags}
             # object, so the robust parse below handles composer's JSON text fine.
-            if ! RAW=$(echo "$ANALYSIS_PROMPT" | MODEL= SKILL_MODE=read-only \
+            if ! RAW=$(echo "$ANALYSIS_PROMPT" | MODEL=grok-composer-2.5-fast SKILL_MODE=read-only \
                 bash "${GITHUB_WORKSPACE}/scripts/run-grok.sh" 2>/dev/null); then
               echo "::notice::Skill scoring skipped — grok scorer unavailable (non-fatal)"
               exit 0

@@ -91,6 +91,14 @@ if grep -qx -- "--model" "$ARGS_FILE"; then bad "omits --model for claude-* id";
 echo "p" | GROK_FAKE_OUT='{"text":"x"}' MODEL="" SKILL_MODE=write XAI_API_KEY=xai-test bash "$R" >/dev/null 2>&1
 if grep -qx -- "--model" "$ARGS_FILE"; then bad "omits --model for empty model"; else pass "omits --model for empty model"; fi
 
+# 4c. grok-4.5 (grok's current default) is a real grok id → --model is passed through,
+# and it's a reasoning model so GROK_EFFORT maps to --effort (unlike fast composer).
+echo "p" | GROK_FAKE_OUT='{"text":"x"}' MODEL=grok-4.5 SKILL_MODE=write XAI_API_KEY=xai-test GROK_EFFORT=high bash "$R" >/dev/null 2>&1
+grep -qx -- "--model" "$ARGS_FILE" && grep -qx "grok-4.5" "$ARGS_FILE" \
+  && pass "passes --model grok-4.5" || bad "passes --model grok-4.5"
+grep -qx -- "--effort" "$ARGS_FILE" && grep -qx "high" "$ARGS_FILE" \
+  && pass "grok-4.5 is reasoning → GROK_EFFORT maps to --effort" || bad "grok-4.5 reasoning effort"
+
 # 5. read-only mode adds --sandbox read-only
 echo "p" | GROK_FAKE_OUT='{"result":"x"}' MODEL=grok-build-0.1 SKILL_MODE=read-only XAI_API_KEY=xai-test bash "$R" >/dev/null 2>&1
 grep -qx -- "--sandbox" "$ARGS_FILE" && grep -qx "read-only" "$ARGS_FILE" \
