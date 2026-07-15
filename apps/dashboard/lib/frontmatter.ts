@@ -69,7 +69,7 @@ export function parseFrontmatter(content: string): Frontmatter {
   // `mcp:` declares the MCP servers a skill needs. Same shape/semantics as
   // `requires:` (trailing `?` = "works better with"), but slugs reference the
   // MCP catalog (lib/mcp-catalog.ts) surfaced on the dashboard's MCP page.
-  //   mcp: [base, ctrl?]
+  //   mcp: [base, glim?]
   const mcp: SkillMcpRef[] = parseList(block.match(/mcp:\s*\[([^\]]*)\]/)?.[1])
     .map(raw => {
       const optional = raw.endsWith('?')
