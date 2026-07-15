@@ -73,20 +73,18 @@ function wellKnown(base: string, suffix: string): string {
 
 // Given an MCP server URL, discover its authorization server + endpoints.
 export async function discover(mcpUrl: string): Promise<Discovery> {
-  // 1. Protected Resource Metadata (RFC 9728) — try path-scoped then origin-scoped.
+  const origin = new URL(mcpUrl).origin
+  // 1. Protected Resource Metadata (RFC 9728) — optional. Try path- then origin-scoped.
   let prm: { authorization_servers?: string[]; resource?: string } | undefined
-  for (const url of [wellKnown(mcpUrl, 'oauth-protected-resource'), `${new URL(mcpUrl).origin}/.well-known/oauth-protected-resource`]) {
+  for (const url of [wellKnown(mcpUrl, 'oauth-protected-resource'), `${origin}/.well-known/oauth-protected-resource`]) {
     try { prm = (await fetchJson(url)) as typeof prm; if (prm?.authorization_servers?.length) break } catch { /* try next */ }
   }
-  const authServer = prm?.authorization_servers?.[0]
-  const resource = prm?.resource ?? new URL(mcpUrl).origin
-  if (!authServer) {
-    throw new Error(
-      'This MCP server does not advertise OAuth Protected Resource Metadata ' +
-      '(/.well-known/oauth-protected-resource). It may use a static bearer token instead — ' +
-      'paste that token on the server row, or check the provider docs.',
-    )
-  }
+  // If PRM names an authorization server, use it. Otherwise fall back to the MCP
+  // server's OWN origin acting as its authorization server — the behavior compliant
+  // clients use for a self-issuing server that skips PRM (e.g. Base: issuer ==
+  // mcp.base.org, AS metadata at the origin well-known). Its metadata is loaded next.
+  const authServer = prm?.authorization_servers?.[0] ?? origin
+  const resource = prm?.resource ?? origin
 
   // 2. Authorization Server Metadata (RFC 8414), falling back to OIDC discovery.
   let meta: AsMetadata | undefined
@@ -100,7 +98,13 @@ export async function discover(mcpUrl: string): Promise<Discovery> {
       if (m?.authorization_endpoint && m?.token_endpoint) { meta = m; break }
     } catch { /* try next */ }
   }
-  if (!meta) throw new Error(`Could not load authorization-server metadata for ${authServer}`)
+  if (!meta) {
+    throw new Error(
+      `No OAuth metadata found for ${mcpUrl} — it advertises neither Protected Resource ` +
+      `Metadata nor Authorization Server Metadata. It likely uses a static bearer token; ` +
+      `paste one on the server row instead.`,
+    )
+  }
   return { resource, authServer, metadata: meta }
 }
 

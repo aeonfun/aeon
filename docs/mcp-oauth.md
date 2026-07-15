@@ -18,7 +18,9 @@ store as repo secrets, refresh before every run.
 1. **Connect (dashboard).** In the MCP panel, an OAuth-flagged featured server shows
    **Connect** instead of Install. Clicking it calls `POST /api/mcp-auth`, which:
    - discovers the server's auth endpoints — Protected Resource Metadata (RFC 9728)
-     → Authorization Server Metadata (RFC 8414 / OIDC),
+     → Authorization Server Metadata (RFC 8414 / OIDC). A **self-issuing** server that
+     skips PRM (e.g. Base, whose issuer *is* `mcp.base.org`) is handled by falling back
+     to AS metadata at the MCP origin's well-known — what compliant clients do,
    - registers a client via Dynamic Client Registration (RFC 7591), or uses a
      pinned `oauthClientId`,
    - opens your browser to authorize (Authorization Code + PKCE, RFC 7636),

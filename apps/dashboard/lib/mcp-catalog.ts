@@ -34,6 +34,13 @@ export const MCP_CATALOG: McpCatalogEntry[] = [
     url: 'https://mcp.base.org',
     logo: 'https://pbs.twimg.com/profile_images/2060695832840556549/R0s33fMN_400x400.jpg',
     description: 'Base Account access - wallet, portfolio, swaps, signing, x402 payments, and batched contract calls.',
+    // Base is its own OAuth authorization server: no Protected Resource Metadata,
+    // but full AS metadata (+ DCR) at https://mcp.base.org/.well-known/oauth-authorization-server.
+    // discover() falls back to the MCP origin, so Connect works one-click. We request
+    // only the least-privilege transact scope by default; `agent_wallet:escalate` is
+    // also offered by the server for elevated actions.
+    oauth: true,
+    oauthScopes: ['agent_wallet:transact'],
   },
   {
     slug: 'ctrl',
