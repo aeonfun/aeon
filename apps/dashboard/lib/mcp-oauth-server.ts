@@ -1,0 +1,80 @@
+// Server-only glue for the MCP OAuth flow: the shared pending-flow store (bridges
+// the POST that starts the flow and the GET callback), opening the operator's
+// browser, and persisting the captured tokens as repo secrets + wiring the server
+// into .mcp.json. Kept out of lib/mcp-oauth.ts so that module stays pure/fetch-only
+// and unit-testable; this one imports gh + the child_process/github helpers.
+import { execFile, execFileSync } from 'child_process'
+import { ghArgsRepo } from './gh'
+import type { McpServer } from './types'
+import { tokenVar, oauthVar, type TokenSet } from './mcp-oauth'
+
+export interface PendingFlow {
+  slug: string
+  name: string
+  url: string
+  tokenEndpoint: string
+  clientId: string
+  clientSecret?: string
+  verifier: string
+  redirectUri: string
+  resource: string
+  resolve: (t: TokenSet) => void
+  reject: (e: Error) => void
+  timer: ReturnType<typeof setTimeout>
+}
+
+// Module-level singleton, keyed by the OAuth `state`. The dashboard is local-first
+// and single-process (same assumption as app/api/grok-auth's spawn-based flow), so
+// the POST that opens the browser and the GET callback share this map. A
+// multi-instance/serverless deploy would need external state instead.
+export const pendingFlows = new Map<string, PendingFlow>()
+
+// Ample time for the operator to approve in the browser, under Node's request cap.
+export const OAUTH_TIMEOUT_MS = 240_000
+
+// Fire-and-forget browser open (identical approach to app/api/grok-auth). A
+// failure to auto-open isn't fatal — the auth URL is also returned to the panel.
+export function openBrowser(url: string): void {
+  const cmd = process.platform === 'darwin' ? 'open'
+    : process.platform === 'win32' ? 'cmd'
+    : 'xdg-open'
+  const args = process.platform === 'win32' ? ['/c', 'start', '', url] : [url]
+  execFile(cmd, args, () => {})
+}
+
+function ghSecretSet(name: string, value: string): void {
+  execFileSync('gh', ['secret', 'set', name, ...ghArgsRepo()], {
+    input: value,
+    stdio: ['pipe', 'pipe', 'pipe'],
+  })
+}
+
+// Persist the captured tokens as repo secrets and return the .mcp.json server
+// descriptor for the caller (the panel) to add via its normal save path — keeping
+// .mcp.json single-writer and the panel state in sync without a reload:
+//   - MCP_<SLUG>_TOKEN  = the (short-lived) access token, referenced by the header.
+//   - MCP_<SLUG>_OAUTH  = the refresh material scripts/mcp-oauth-refresh.sh needs.
+// The tokens themselves are stored server-side (they never reach the browser).
+// Returns whether durable (refresh-token) auth was captured, plus the server to add.
+export function storeSecrets(flow: PendingFlow, tokens: TokenSet): { durable: boolean; server: McpServer } {
+  ghSecretSet(tokenVar(flow.slug), tokens.access_token)
+
+  const durable = Boolean(tokens.refresh_token)
+  if (durable) {
+    ghSecretSet(oauthVar(flow.slug), JSON.stringify({
+      token_endpoint: flow.tokenEndpoint,
+      client_id: flow.clientId,
+      ...(flow.clientSecret ? { client_secret: flow.clientSecret } : {}),
+      refresh_token: tokens.refresh_token,
+      ...(tokens.scope ? { scope: tokens.scope } : {}),
+      slug: flow.slug,
+    }))
+  }
+
+  const server: McpServer = {
+    type: 'http',
+    url: flow.url,
+    headers: { Authorization: `Bearer \${${tokenVar(flow.slug)}}` },
+  }
+  return { durable, server }
+}

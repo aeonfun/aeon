@@ -16,6 +16,15 @@ export interface McpCatalogEntry {
   // header referencing this repo secret, and the MCP panel surfaces a paste-token
   // row for it. Omit for public / OAuth / x402 servers (the existing default).
   authSecret?: string
+  // When true, one-click install runs the dashboard OAuth flow (POST /api/mcp-auth)
+  // instead of wiring a static header: it opens the browser to authorize, captures
+  // the tokens into MCP_<slug>_TOKEN + MCP_<slug>_OAUTH, and scripts/mcp-oauth-
+  // refresh.sh mints a fresh access token before each headless run. Optionally pin
+  // oauthScopes / oauthClientId when the provider needs them (no dynamic client
+  // registration). Mutually exclusive with authSecret.
+  oauth?: boolean
+  oauthScopes?: string[]
+  oauthClientId?: string
 }
 
 export const MCP_CATALOG: McpCatalogEntry[] = [
@@ -53,6 +62,7 @@ export const MCP_CATALOG: McpCatalogEntry[] = [
     url: 'https://agent.robinhood.com/mcp/trading',
     logo: 'https://pbs.twimg.com/profile_images/1844399977482813442/1fTlYz2c_400x400.png',
     description: 'Robinhood Agentic Trading - read your portfolio, buying power, positions, and order history, and place trades from your agent. Remote HTTP MCP with OAuth; trades execute in a dedicated Agentic brokerage account you authorize. You are responsible for every order your agent places.',
+    oauth: true,
   },
   {
     slug: 'glim',

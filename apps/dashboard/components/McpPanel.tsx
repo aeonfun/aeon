@@ -66,6 +66,12 @@ export function McpPanel({ servers, loading, saving, secrets, busy, onSave, onSe
   const [command, setCommand] = useState('npx')
   const [args, setArgs] = useState('')
 
+  // OAuth connect (featured servers flagged `oauth`): the dashboard drives the
+  // browser flow server-side (POST /api/mcp-auth), which captures the tokens as
+  // secrets and returns the server descriptor to add. Per-slug busy + error.
+  const [oauthBusy, setOauthBusy] = useState<string | null>(null)
+  const [oauthError, setOauthError] = useState('')
+
   // The operator never types a secret name. They paste the bearer token (which
   // IS the secret); we derive the env-var to store it under from the server name.
   const slugify = (s: string) => s.trim().toLowerCase().replace(/[^a-z0-9_-]/g, '-').replace(/^-+|-+$/g, '')
@@ -113,12 +119,38 @@ export function McpPanel({ servers, loading, saving, secrets, busy, onSave, onSe
   const isFeaturedInstalled = (url: string) => Object.values(draft).some(s => s.url === url)
   const installFeatured = (f: typeof FEATURED[number]) => {
     if (isFeaturedInstalled(f.url)) return
+    if (f.oauth) { connectOAuth(f); return }
     const slug = draft[f.slug] ? `${f.slug}-mcp` : f.slug
     const server: McpServer = { type: f.transport ?? 'http', url: f.url }
     if (f.authSecret) server.headers = { Authorization: `Bearer \${${f.authSecret}}` }
     const next = { ...draft, [slug]: server }
     setDraft(next)
     onSave(next)
+  }
+
+  // Run the browser OAuth flow for a featured server, then add the returned
+  // descriptor via the normal save path. The tokens are captured + stored
+  // server-side; the panel never sees them.
+  const connectOAuth = async (f: typeof FEATURED[number]) => {
+    const slug = draft[f.slug] ? `${f.slug}-mcp` : f.slug
+    setOauthBusy(f.slug); setOauthError('')
+    try {
+      const res = await fetch('/api/mcp-auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ slug, url: f.url, name: f.name, scopes: f.oauthScopes, clientId: f.oauthClientId }),
+      })
+      const data = await res.json().catch(() => ({}))
+      if (!res.ok || !data.ok) throw new Error(data.error || `Connect failed (${res.status})`)
+      const next = { ...draft, [slug]: data.server as McpServer }
+      setDraft(next)
+      onSave(next)
+      if (data.warning) setOauthError(`Connected, but: ${data.warning}`)
+    } catch (e) {
+      setOauthError(e instanceof Error ? e.message : 'OAuth connect failed')
+    } finally {
+      setOauthBusy(null)
+    }
   }
 
   const removeServer = (n: string) => {
@@ -170,12 +202,15 @@ export function McpPanel({ servers, loading, saving, secrets, busy, onSave, onSe
                 {installed ? (
                   <span className="text-[10px] font-mono uppercase tracking-[0.14em] text-aeon-green shrink-0">✓ installed</span>
                 ) : (
-                  <button onClick={() => installFeatured(f)} disabled={saving} className="btn-mini-go shrink-0">Install</button>
+                  <button onClick={() => installFeatured(f)} disabled={saving || oauthBusy === f.slug} className="btn-mini-go shrink-0" title={f.oauth ? 'Opens your browser to authorize, then stores the tokens' : undefined}>
+                    {oauthBusy === f.slug ? 'Connecting…' : f.oauth ? 'Connect' : 'Install'}
+                  </button>
                 )}
               </div>
             )
           })}
         </div>
+        {oauthError && <p className="mt-3 text-[11px] font-mono text-aeon-red">{oauthError}</p>}
       </section>
 
       <section className="border-t border-[rgba(250,250,250,0.10)] pt-6">

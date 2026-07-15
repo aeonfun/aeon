@@ -524,6 +524,12 @@ jobs:
           # skip MCP with a warning rather than break the run on a parse failure.
           MCP_FLAGS=()
           if [ -f .mcp.json ] && jq -e '.mcpServers' .mcp.json >/dev/null 2>&1; then
+            # MCP OAuth (durable): refresh any captured OAuth access token BEFORE the
+            # ${VAR} loop (exports a live MCP_<SLUG>_TOKEN). Sourced; never fails the
+            # run. See scripts/mcp-oauth-refresh.sh.
+            if [ -f "${GITHUB_WORKSPACE}/scripts/mcp-oauth-refresh.sh" ]; then
+              source "${GITHUB_WORKSPACE}/scripts/mcp-oauth-refresh.sh" || true
+            fi
             MCP_MISSING=""
             # ALL_SECRETS is toJSON(secrets). Guard the empty case via a temp var —
             # NOT the inline ${ALL_SECRETS:-{}} form: bash closes ${...} at the first

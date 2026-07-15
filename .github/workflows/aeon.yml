@@ -465,6 +465,13 @@ jobs:
           # natively and expands them (run-grok.sh only adds the MCPTool allows).
           MCP_FLAGS=()
           if [ -f .mcp.json ] && jq -e '.mcpServers' .mcp.json >/dev/null 2>&1; then
+            # MCP OAuth (durable): mint a fresh access token from any captured refresh
+            # token (MCP_<SLUG>_OAUTH secret) and export MCP_<SLUG>_TOKEN BEFORE the
+            # ${VAR} loop, so its "already in env" check keeps the live token over the
+            # stored (stale) one. Sourced; never fails the run. See mcp-oauth-refresh.sh.
+            if [ -f "${GITHUB_WORKSPACE}/scripts/mcp-oauth-refresh.sh" ]; then
+              source "${GITHUB_WORKSPACE}/scripts/mcp-oauth-refresh.sh" || true
+            fi
             MCP_MISSING=""
             # ALL_SECRETS is toJSON(secrets). Guard the empty case via a temp var —
             # NOT the inline ${ALL_SECRETS:-{}} form: bash closes ${...} at the first
