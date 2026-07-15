@@ -43,27 +43,6 @@ export const MCP_CATALOG: McpCatalogEntry[] = [
     oauthScopes: ['agent_wallet:transact'],
   },
   {
-    slug: 'ctrl',
-    name: 'Ctrl',
-    url: 'https://www.ctrl.build/mcp',
-    logo: 'https://pbs.twimg.com/profile_images/2039734967681597440/Hh_-fXR8_400x400.jpg',
-    description: 'Ctrl MCP server.',
-  },
-  {
-    slug: 'rootai',
-    name: 'RootAI',
-    url: 'https://mcp.rootedge.ai/pro',
-    logo: 'https://pbs.twimg.com/profile_images/2070604629688070144/xNwUGHgX_400x400.jpg',
-    description: 'RootAI Edge MCP - crypto market intelligence across Hyperliquid, Base & Paradex: funding-arbitrage scans, cross-exchange spreads, and best-execution routing. Discovery and free tools are no-cost; premium tools settle per-call in USDC via x402.',
-  },
-  {
-    slug: 'blueagent',
-    name: 'BlueAgent',
-    url: 'https://blueagent.dev/api/mcp',
-    logo: 'https://pbs.twimg.com/profile_images/2047719472455438336/CFrEyoNZ_400x400.jpg',
-    description: 'BlueAgent - the AI founder console for Base builders: idea, build, audit, ship, and raise, from concept to deployment.',
-  },
-  {
     slug: 'robinhood-trading',
     name: 'Robinhood Trading',
     url: 'https://agent.robinhood.com/mcp/trading',
