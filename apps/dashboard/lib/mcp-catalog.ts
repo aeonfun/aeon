@@ -48,6 +48,15 @@ export const MCP_CATALOG: McpCatalogEntry[] = [
     url: 'https://agent.robinhood.com/mcp/trading',
     logo: 'https://pbs.twimg.com/profile_images/1844399977482813442/1fTlYz2c_400x400.png',
     description: 'Robinhood Agentic Trading - read your portfolio, buying power, positions, and order history, and place trades from your agent. Remote HTTP MCP with OAuth; trades execute in a dedicated Agentic brokerage account you authorize. You are responsible for every order your agent places.',
+    // Standard OAuth, self-issuing: PRM (well-known path) names the MCP URL itself
+    // as the authorization server, AS metadata at agent.robinhood.com/.well-known/
+    // oauth-authorization-server/mcp/trading. Supports authorization_code +
+    // refresh_token grants, PKCE S256, DCR (registration_endpoint), public client
+    // (auth method "none"). Its ONLY advertised scope is "internal" — do NOT request
+    // offline_access here (glim needs it, Robinhood doesn't have it and would reject
+    // it); refresh tokens come from the refresh_token grant by default. Durable
+    // refresh (rotated-token persistence via MCP_SECRETS_PAT) is handled generically
+    // by scripts/mcp-oauth-refresh.sh — see docs/mcp-oauth.md.
     oauth: true,
   },
   {

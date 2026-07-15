@@ -95,7 +95,7 @@ for skill_dir in "$SKILLS_DIR"/*/; do
   fi
   requires_json+="]"
 
-  # mcp: [base, ctrl?]  →  [{"slug":"base","optional":false},{"slug":"ctrl","optional":true}]
+  # mcp: [base, glim?]  →  [{"slug":"base","optional":false},{"slug":"glim","optional":true}]
   mcp_raw=$(awk '/^---$/{n++; next} n==1 && /^mcp:/{sub(/^mcp: *\[/, ""); sub(/\].*/, ""); print; exit}' "$skill_file")
   mcp_json="["
   if [[ -n "$mcp_raw" ]]; then

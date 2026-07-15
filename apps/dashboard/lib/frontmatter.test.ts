@@ -132,12 +132,12 @@ requires: [GOOD_KEY, , lowercase, 123BAD]
 name: Base MCP
 description: onchain
 tags: [crypto]
-mcp: [base, ctrl?]
+mcp: [base, glim?]
 ---`;
     const result = parseFrontmatter(content);
     assert.deepEqual(result.mcp, [
       { slug: "base", optional: false },
-      { slug: "ctrl", optional: true },
+      { slug: "glim", optional: true },
     ]);
   });
 
