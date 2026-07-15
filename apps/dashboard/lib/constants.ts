@@ -12,25 +12,20 @@ export const MODELS = [
   { id: 'claude-haiku-4-5-20251001', label: 'Haiku 4.5' },
 ]
 
-// Models offered when the Grok (`grok`) harness is selected.
+// Models offered when the Grok (`grok`) harness is selected — exactly the two the
+// X-account (GROK_CREDENTIALS) login exposes:
 // - grok-4.5 (grok's CURRENT default) — the flagship reasoning model that powers
-//   Grok Build. Multi-agent-capable, so run-grok.sh passes --no-subagents in CI
-//   (same mitigation as grok-build). This is the default new grok runs get.
+//   Grok Build. Multi-agent-capable, so run-grok.sh passes --no-subagents in CI.
 // - grok-composer-2.5-fast — fast, cheap single-agent; used for CI health scoring.
-// - grok-build — older reasoning/multi-agent coding model (API id grok-build-0.1).
-//   It used to Cancel every run in the Actions sandbox (its subagent-spawn tool was
-//   denied); run-grok.sh now passes --no-subagents by default, so it runs
-//   single-agent in CI. Skills that opt into best_of_n:/verify: get subagents back.
-//   NOTE: grok-build is reachable only via XAI_API_KEY on api.x.ai — the X-account
-//   (GROK_CREDENTIALS) login exposes only grok-4.5 + composer.
-// Use the bare CLI id (grok-build), not the API id (grok-build-0.1).
+// The older grok-build-0.1 is intentionally NOT offered here: it's reachable only via
+// XAI_API_KEY on api.x.ai (the gateway path — set the GROK_MODEL repo var), never on
+// the X-account login, so listing it as a harness option would be a dead click.
 // First entry is the default (modelsForHarness(...)[0] on harness switch). Keep this
 // list in sync with the workflow_dispatch `model` choice options in
 // .github/workflows/aeon.yml — a mismatch 422s at dispatch time.
 export const GROK_MODELS = [
   { id: 'grok-4.5', label: 'Grok 4.5' },
   { id: 'grok-composer-2.5-fast', label: 'Composer 2.5' },
-  { id: 'grok-build', label: 'Grok Build' },
 ]
 
 // Harnesses (agent CLIs). `claude` = Claude Code (default, uses the AI Gateway),

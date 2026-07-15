@@ -176,9 +176,8 @@ chains:
 # Default model for all skills. Override per-run via workflow_dispatch.
 # Options: claude-opus-4-8, claude-fable-5, claude-sonnet-5, claude-sonnet-4-6, claude-haiku-4-5-20251001
 # (Grok harness models: grok-4.5 — flagship reasoning model & grok's current default,
-#  run with --no-subagents in CI; grok-composer-2.5-fast — fast/cheap single-agent;
-#  grok-build — older coding model, XAI_API_KEY/api.x.ai only. Use the bare CLI id
-#  `grok-build`, not the API id `grok-build-0.1`.)
+#  run with --no-subagents in CI; grok-composer-2.5-fast — fast/cheap single-agent.
+#  The older grok-build-0.1 is gateway-only, via XAI_API_KEY + the GROK_MODEL var.)
 model: claude-sonnet-4-6
 
 # Agent harness — which coding-agent CLI runs your skills.

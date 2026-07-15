@@ -56,7 +56,7 @@ log() { echo "$@" >&2; }
 
 # --- 1. ensure the CLI ------------------------------------------------------
 if ! command -v grok >/dev/null 2>&1; then
-  log "::notice::grok CLI not found — installing @xai-official/grok@${GROK_CLI_VERSION}"
+  log "::debug::grok CLI not found — installing @xai-official/grok@${GROK_CLI_VERSION}"
   if ! npm install -g "@xai-official/grok@${GROK_CLI_VERSION}" >&2; then
     log "::error::failed to install @xai-official/grok@${GROK_CLI_VERSION}"
     exit 1
@@ -79,20 +79,20 @@ if [ -n "${GROK_CREDENTIALS:-}" ]; then
   # it as the raw auth.json.
   if tar tzf "$tmp_creds" >/dev/null 2>&1; then
     tar xzf "$tmp_creds" -C "$HOME" >&2 || { log "::error::failed to extract GROK_CREDENTIALS"; rm -f "$tmp_creds"; exit 1; }
-    log "::notice::restored grok OAuth session from GROK_CREDENTIALS (archive)"
+    log "::debug::restored grok OAuth session from GROK_CREDENTIALS (archive)"
   else
     dest="${GROK_CREDENTIALS_PATH:-$GROK_HOME/auth.json}"
     mkdir -p "$(dirname "$dest")"
     cp "$tmp_creds" "$dest"; chmod 600 "$dest" 2>/dev/null || true
-    log "::notice::restored grok OAuth session from GROK_CREDENTIALS to ${dest}"
+    log "::debug::restored grok OAuth session from GROK_CREDENTIALS to ${dest}"
   fi
   rm -f "$tmp_creds"
 elif [ -n "${XAI_API_KEY:-}" ]; then
   export XAI_API_KEY
-  log "::notice::authenticating grok with XAI_API_KEY"
+  log "::debug::authenticating grok with XAI_API_KEY"
 elif [ -f "$GROK_HOME/auth.json" ]; then
   # Already signed in on this machine (local run / mcp-server path) — use it.
-  log "::notice::using existing grok session at $GROK_HOME/auth.json"
+  log "::debug::using existing grok session at $GROK_HOME/auth.json"
 else
   log "::error::grok harness needs auth: set GROK_CREDENTIALS (X-account login via the dashboard) or XAI_API_KEY, or run 'grok login'"
   exit 1
@@ -134,7 +134,7 @@ if [ -f .mcp.json ] && jq -e '.mcpServers' .mcp.json >/dev/null 2>&1; then
   for srv in $MCP_SERVERS; do
     MCP_ALLOW+=(--allow "MCPTool(${srv}__*)")
   done
-  log "::notice::MCP: grok loads .mcp.json natively; allowing tools from: $(printf '%s ' $MCP_SERVERS)"
+  log "::debug::MCP: grok loads .mcp.json natively; allowing tools from: $(printf '%s ' $MCP_SERVERS)"
   # A referenced ${VAR} that isn't in the env expands empty → that one server
   # can't authenticate and grok logs a connect error, but the run and the other
   # servers are unaffected. Warn (don't fail) so it's visible without breaking.
@@ -188,7 +188,7 @@ add_effort() {
   if [ "$MODEL_IS_REASONING" = 1 ]; then
     RUN_FLAGS+=("$flag" "$val")
   else
-    log "::notice::ignoring $flag $val — model '${MODEL:-<default composer>}' doesn't support reasoning effort (use a grok-build model)"
+    log "::debug::ignoring $flag $val — model '${MODEL:-<grok default>}' doesn't support reasoning effort (use a reasoning model like grok-4.5)"
   fi
 }
 add_effort GROK_EFFORT --effort "${GROK_EFFORT:-}"

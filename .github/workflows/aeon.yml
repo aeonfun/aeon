@@ -27,7 +27,6 @@ on:
           - claude-haiku-4-5-20251001
           - grok-4.5
           - grok-composer-2.5-fast
-          - grok-build
       harness:
         description: 'Agent harness'
         required: false
@@ -202,7 +201,7 @@ jobs:
             fi
           done <<< "$SECRETS"
 
-          [ ${#OPTIONAL[@]} -gt 0 ] && echo "::notice::Optional secrets not set: ${OPTIONAL[*]} (skill will use fallbacks)"
+          [ ${#OPTIONAL[@]} -gt 0 ] && echo "::debug::Optional secrets not set: ${OPTIONAL[*]} (skill will use fallbacks)"
           [ ${#MISSING[@]} -gt 0 ] && echo "::warning::Secrets not set: ${MISSING[*]} — skill may fail or produce incomplete results"
           exit 0
 
