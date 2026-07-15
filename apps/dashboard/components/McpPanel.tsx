@@ -211,6 +211,22 @@ export function McpPanel({ servers, loading, saving, secrets, busy, onSave, onSe
           })}
         </div>
         {oauthError && <p className="mt-3 text-[11px] font-mono text-aeon-red">{oauthError}</p>}
+        {/* Durable-refresh note. A connected OAuth server mints a short-lived
+            access token each run; providers that ROTATE their refresh token also
+            need the rotation saved, which needs a secrets-write PAT. Without it,
+            auth breaks one run after Connect. Shown only once an OAuth server is
+            installed; turns green when MCP_SECRETS_PAT (or GH_GLOBAL) is set. */}
+        {FEATURED.some(f => f.oauth && isFeaturedInstalled(f.url)) && (
+          isSecretSet('MCP_SECRETS_PAT') || isSecretSet('GH_GLOBAL') ? (
+            <p className="mt-3 text-[11px] font-mono text-aeon-green">
+              ✓ Durable OAuth refresh active — rotated refresh tokens persist via {isSecretSet('MCP_SECRETS_PAT') ? 'MCP_SECRETS_PAT' : 'GH_GLOBAL'}.
+            </p>
+          ) : (
+            <p className="mt-3 text-[11px] text-primary-40 leading-relaxed">
+              <span className="text-aeon-red">Durable refresh:</span> a connected OAuth server mints a short-lived token each run. Providers that rotate their refresh token (e.g. <span className="text-primary-70">Base</span>, <span className="text-primary-70">glim</span>) need a secrets-write credential to save each rotation — without it, auth breaks one run after you Connect. Add a fine-grained PAT with <span className="text-primary-70">Secrets: read/write</span> on this repo as <span className="text-primary-70">MCP_SECRETS_PAT</span> (in Settings → Secrets), then re-connect the server once. See <span className="text-primary-70">docs/mcp-oauth.md</span>.
+            </p>
+          )
+        )}
       </section>
 
       <section className="border-t border-[rgba(250,250,250,0.10)] pt-6">

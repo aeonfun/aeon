@@ -56,5 +56,25 @@ out=$(ALL_SECRETS="$OAUTH_OK" CURL_OUT='{"access_token":"z"}' bash -c '
 ')
 echo "$out" | grep -qx 'ERREXIT_ON' && pass "errexit restored after sourcing" || bad "errexit restored (got: $out)"
 
+# 7. Rotated refresh token + a secrets-write PAT + stubbed gh → token still
+#    exported AND `gh secret set` invoked to persist the new refresh token.
+ROT_SECRET='{"MCP_SECRETS_PAT":"pat-xyz","MCP_FOO_OAUTH":"{\"token_endpoint\":\"https://as.example/token\",\"client_id\":\"cid\",\"refresh_token\":\"rt-1\"}"}'
+out=$(ALL_SECRETS="$ROT_SECRET" CURL_OUT='{"access_token":"fresh-9","refresh_token":"rt-2"}' GHMARK="$(mktemp)" bash -c '
+  curl() { printf "%s" "$CURL_OUT"; }
+  gh() { [ "$1" = "secret" ] && [ "$2" = "set" ] && { echo "GH_TOKEN=$GH_TOKEN NAME=$3" > "$GHMARK"; cat >/dev/null; }; return 0; }
+  export -f gh
+  source "'"$R"'" 2>/dev/null
+  printf "TOKEN=[%s]\n" "${MCP_FOO_TOKEN:-}"
+  printf "PERSIST=[%s]\n" "$(cat "$GHMARK")"
+  rm -f "$GHMARK"
+')
+echo "$out" | grep -qx 'TOKEN=\[fresh-9\]' && pass "rotated token: fresh access token still exported" || bad "rotated token export (got: $out)"
+echo "$out" | grep -q 'PERSIST=\[GH_TOKEN=pat-xyz NAME=MCP_FOO_OAUTH\]' && pass "rotated token: persisted via gh secret set using the PAT" || bad "rotated token persistence (got: $out)"
+
+# 8. Rotated refresh token but NO secrets-write PAT → access token still exported
+#    (run does not break), persistence simply skipped (warned on stderr).
+out=$(run_case "$OAUTH_OK" '{"access_token":"fresh-8","refresh_token":"rt-2"}')
+echo "$out" | grep -qx 'TOKEN=\[fresh-8\]' && pass "rotated token, no PAT: access token still exported" || bad "no-PAT rotation still exports token (got: $out)"
+
 echo "---"
 [ "$FAILED" = 0 ] && echo "ALL PASS" || { echo "SOME FAILED"; exit 1; }
