@@ -57,15 +57,6 @@ export const MCP_CATALOG: McpCatalogEntry[] = [
     logo: 'https://raw.githubusercontent.com/glim-sh/glim-mcp/main/assets/icon-400.png',
     description: 'glim.sh - live data for AI agents: web search, full page extraction, Twitter/X, Reddit, GitHub, Amazon, YouTube transcripts. Pay-per-call with x402 (Base/Solana USDC) or MPP (Tempo), or sign in and draw from a prepaid account balance.',
   },
-  {
-    slug: 'litebeam',
-    name: 'Litebeam',
-    url: 'https://mcp.litebeam.xyz',
-    logo: 'https://pbs.twimg.com/profile_images/2065063781042954241/zcTqmW5j_400x400.jpg',
-    description: 'Litebeam - one MCP connection to every microservice. An AI-microservice routing layer: discover and call paid services through a single endpoint, settled from your agent\'s wallet (managed Litebeam wallet or BYO via x402), with budget controls and HITL approvals.',
-    transport: 'sse',
-    authSecret: 'LITEBEAM_API_KEY',
-  },
 ]
 
 export const MCP_BY_SLUG: Record<string, McpCatalogEntry> =
