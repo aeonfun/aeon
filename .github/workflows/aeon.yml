@@ -1176,6 +1176,12 @@ jobs:
           git config user.email "aeonframework@proton.me"
           rm -f ./notify ./notify-jsonrender .notify-sent-hashes  # Remove generated notify scripts + dedup log before committing
 
+          # OKF: stamp `type:` frontmatter onto any in-scope markdown the run
+          # created bare (e.g. a fresh memory/logs/ day-file appended via bash by
+          # a read-only skill) — ci-okf gates conformance and the backfill is
+          # idempotent. Best-effort: never fails the commit.
+          [ -f scripts/okf-backfill.mjs ] && node scripts/okf-backfill.mjs || true
+
           # Issues-as-state (hardening §3): cron-state.json was materialized from the
           # pinned Issue for this run's readers — it's a projection, not source of truth.
           # Drop the working-tree change so it isn't committed (that churn is exactly
