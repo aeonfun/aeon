@@ -1,13 +1,13 @@
 ---
 type: Reference
 layout: default
-title: Developer Kit
+title: ADK — Aeon Developer Kit
 description: Build products on top of Aeon — authorize access to your users' instances with a GitHub App, drive skills over the GitHub API, and ship your own skills as a pack.
 ---
 
-# Developer Kit
+# ADK — Aeon Developer Kit
 
-This guide is for developers building **on top of** Aeon — a SaaS dashboard, a vertical agent product, a bot, or a service whose users each run their own Aeon instance. It covers the three integration surfaces:
+The **Aeon Developer Kit (ADK)** is for developers building **on top of** Aeon — a SaaS dashboard, a vertical agent product, a bot, or a service whose users each run their own Aeon instance. It covers the three integration surfaces:
 
 1. **The GitHub App pattern** — get authorized, revocable access to your users' instances (no PATs, no credential custody).
 2. **Driving skills** — discover, run, schedule, and credential skills over the GitHub API.
