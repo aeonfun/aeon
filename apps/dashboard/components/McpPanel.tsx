@@ -18,6 +18,7 @@ interface McpPanelProps {
   onSave: (servers: McpServers) => void
   onSetSecret: (name: string, value: string) => void
   onDeleteSecret: (name: string) => void
+  onGoToSecret: (name: string) => void
 }
 
 // The ${VAR} secret references a server needs at runtime.
@@ -43,7 +44,7 @@ function transportOf(server: McpServer): string {
   return typeof server.command === 'string' ? 'stdio' : 'http'
 }
 
-export function McpPanel({ servers, loading, saving, secrets, busy, onSave, onSetSecret, onDeleteSecret }: McpPanelProps) {
+export function McpPanel({ servers, loading, saving, secrets, busy, onSave, onSetSecret, onDeleteSecret, onGoToSecret }: McpPanelProps) {
   const [draft, setDraft] = useState<McpServers>(servers)
   useEffect(() => { setDraft(servers) }, [servers])
 
@@ -211,21 +212,20 @@ export function McpPanel({ servers, loading, saving, secrets, busy, onSave, onSe
           })}
         </div>
         {oauthError && <p className="mt-3 text-[11px] font-mono text-aeon-red">{oauthError}</p>}
-        {/* Durable-refresh note. A connected OAuth server mints a short-lived
-            access token each run; providers that ROTATE their refresh token also
-            need the rotation saved, which needs a secrets-write PAT. Without it,
-            auth breaks one run after Connect. Shown only once an OAuth server is
-            installed; turns green when MCP_SECRETS_PAT (or GH_GLOBAL) is set. */}
-        {FEATURED.some(f => f.oauth && isFeaturedInstalled(f.url)) && (
-          isSecretSet('MCP_SECRETS_PAT') || isSecretSet('GH_GLOBAL') ? (
-            <p className="mt-3 text-[11px] font-mono text-aeon-green">
-              ✓ Durable OAuth refresh active — rotated refresh tokens persist via {isSecretSet('MCP_SECRETS_PAT') ? 'MCP_SECRETS_PAT' : 'GH_GLOBAL'}.
+        {/* Secrets-PAT setup section. OAuth providers rotate their refresh token
+            on every run; the runner can only save each rotation back if a
+            secrets-write PAT is set. Without one, an OAuth MCP server works for
+            exactly one run after Connect and then its auth breaks. Shown until
+            MCP_SECRETS_PAT (or repo-wide GH_GLOBAL) exists; hidden once set. */}
+        {!(isSecretSet('MCP_SECRETS_PAT') || isSecretSet('GH_GLOBAL')) && (
+          <div className="mt-3 border border-[rgba(250,250,250,0.10)] bg-aeon-panel px-[var(--space-md)] py-[var(--space-sm)]">
+            <p className="text-[10px] font-mono uppercase tracking-[0.14em] text-aeon-red mb-1.5">⚠ OAuth MCP servers won&apos;t keep working without a secrets PAT</p>
+            <p className="text-[11px] text-primary-40 leading-relaxed">
+              Providers rotate their refresh token on every run, and the runner needs a secrets-write credential to save each rotation — without it a Connected server works once, then its auth breaks. To set it up: create a fine-grained PAT at <span className="text-primary-70">github.com/settings/personal-access-tokens</span>, add this repo under <span className="text-primary-70">Repository access</span>, grant <span className="text-primary-70">Secrets: Read and write</span>, and save it as{' '}
+              <button onClick={() => onGoToSecret('MCP_SECRETS_PAT')} title="Open in Settings to set this key" className="text-aeon-red-alert underline decoration-dotted underline-offset-2 hover:text-aeon-fg transition-colors">MCP_SECRETS_PAT</button>
+              {' '}in Settings. Already Connected a server? Re-connect it once after adding the PAT.
             </p>
-          ) : (
-            <p className="mt-3 text-[11px] text-primary-40 leading-relaxed">
-              <span className="text-aeon-red">Durable refresh:</span> a connected OAuth server mints a short-lived token each run. Providers that rotate their refresh token (e.g. <span className="text-primary-70">Base</span>, <span className="text-primary-70">glim</span>) need a secrets-write credential to save each rotation — without it, auth breaks one run after you Connect. Add a fine-grained PAT with <span className="text-primary-70">Secrets: read/write</span> on this repo as <span className="text-primary-70">MCP_SECRETS_PAT</span> (in Settings → Secrets), then re-connect the server once. See <span className="text-primary-70">docs/mcp-oauth.md</span>.
-            </p>
-          )
+          </div>
         )}
       </section>
 

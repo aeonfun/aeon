@@ -242,7 +242,7 @@ export default function Dashboard() {
           {view === 'mcp' && !selectedSkill && (
             mcpError
               ? <PanelError label="MCP servers" onRetry={() => { setMcpError(false); setMcpLoaded(false) }} />
-              : <McpPanel servers={mcpServers} loading={!mcpLoaded} saving={mcpSaving} secrets={secrets} busy={busy} onSave={saveMcp} onSetSecret={saveSecret} onDeleteSecret={deleteSecret} />
+              : <McpPanel servers={mcpServers} loading={!mcpLoaded} saving={mcpSaving} secrets={secrets} busy={busy} onSave={saveMcp} onSetSecret={saveSecret} onDeleteSecret={deleteSecret} onGoToSecret={goToSecret} />
           )}
           {view === 'soul' && !selectedSkill && (
             soulError
