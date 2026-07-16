@@ -60,6 +60,22 @@ export const MCP_CATALOG: McpCatalogEntry[] = [
     oauth: true,
   },
   {
+    slug: 'executor',
+    name: 'Executor',
+    url: 'https://executor.sh/mcp',
+    logo: 'https://executor.sh/favicon-192.png',
+    description: 'Executor Cloud - one MCP endpoint in front of all your integrations: add MCP servers, OpenAPI specs, and GraphQL APIs once and every tool joins a single policy-governed catalog. Credentials live in Executor, never in the agent; each tool call is allowed, approval-gated, or blocked by policy.',
+    // Standard OAuth, probed live 2026-07-16: the 401 carries a WWW-Authenticate
+    // resource_metadata pointer to PRM at /.well-known/oauth-protected-resource/mcp,
+    // which names AS https://signin.executor.sh (full metadata: authorization_code +
+    // refresh_token grants, PKCE S256, DCR registration_endpoint, public client via
+    // auth method "none"). Request offline_access so the token endpoint returns a
+    // refresh token (durable headless auth); openid for identity. Skip profile/email
+    // — not needed for API access (same shape as glim).
+    oauth: true,
+    oauthScopes: ['openid', 'offline_access'],
+  },
+  {
     slug: 'glim',
     name: 'glim.sh',
     url: 'https://glim.sh/mcp',
