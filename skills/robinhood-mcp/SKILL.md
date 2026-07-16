@@ -37,7 +37,7 @@ Operator-initiated only — never trade on a scheduled/default run, and never in
 
 ### 3. Notify
 
-This skill is on-demand — deliver the result via `./notify -f` (ordinary Markdown):
+This skill is on-demand — deliver the result via `./notify -f` (ordinary Markdown), **exactly one `./notify` call per run** (each call overwrites the `.pending-<skill>.md` file the chain artifact is captured from — a second ping would clobber the report):
 
 - **Report branches:** portfolio value + day change, buying power, a positions table, open orders, and one line of what stands out (concentration, a position moving hard). Keep it tight — signal, not a data dump.
 - **Trade branch:** the exact order placed (side, symbol, size, order id, status) — or, on refusal, exactly what was ambiguous and how to restate it. Severity `success` for a placed order, `warn` for a refusal.
