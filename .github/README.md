@@ -327,6 +327,18 @@ Either way the installer reads the pack's `skills-pack.json` manifest, runs the 
 
 ---
 
+## Integrate Aeon
+
+Building a product on top of Aeon - a dashboard, a vertical agent, a service your users connect? An Aeon instance is just a GitHub repo + Actions, so **GitHub's API is Aeon's API**: one GitHub App gives your app authorized, revocable access to your users' instances - no PATs, no credential custody, no agent runtime or LLM billing on your side.
+
+- **Drive instances** - log users in with GitHub, mint short-lived installation tokens, dispatch skills (`workflow_dispatch`), edit `aeon.yml`, write sealed Actions secrets.
+- **Ship your product as skills** - publish a [community skill pack](../docs/community-skill-packs.md) so every Aeon agent can call your API or MCP server.
+- **Close the loop** - your onboarding installs your pack, injects your API key into the user's repo secrets, and enables the skills; the agent reports into channels the user already uses.
+
+The full walkthrough - App permissions, the tenant-isolation check, dispatch gotchas, pack publishing - is the **[ADK (Aeon Developer Kit)](../docs/ADK.md)**, with [aeon-connect](https://github.com/aaronjmars/aeon-connect) as the reference implementation.
+
+---
+
 ## Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=aeonfun/aeon&type=Date)](https://www.star-history.com/#aeonfun/aeon&Date)
@@ -340,7 +352,7 @@ Support the project : 0xbf8e8f0e8866a7052f948c16508644347c57aba3
 Everything above gets you running. The deeper reference lives in [`docs/`](../docs) so this page stays short.
 
 - **[Configuration & advanced](../docs/CONFIGURATION.md)** - skill chaining, reactive triggers, scheduler frequency, capability modes, MCP in runs, cross-repo tokens, `STRATEGY.md` / soul, Fleet Watcher, remote dashboard, two-repo setup, Actions cost.
-- **[Developer Kit](../docs/DEVELOPER-KIT.md)** - build products on top of Aeon: authorize access to your users' instances with a GitHub App, drive skills over the GitHub API, and ship your own skills as a pack.
+- **[ADK (Aeon Developer Kit)](../docs/ADK.md)** - build products on top of Aeon: authorize access to your users' instances with a GitHub App, drive skills over the GitHub API, and ship your own skills as a pack.
 - **[LLM gateways](../docs/CONFIGURATION.md#llm-gateways)** - eight ways to power Claude Code, resolved by an automatic fail-over cascade.
 - **[Harnesses](../docs/harnesses.md)** - run skills on Claude Code or the Grok CLI; token accounting and per-skill knobs.
 - **[Knowledge (OKF)](../docs/OKF.md)** - Aeon's memory is a portable Open Knowledge Format bundle other agents can read.
