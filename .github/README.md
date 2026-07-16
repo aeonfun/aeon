@@ -340,6 +340,7 @@ Support the project : 0xbf8e8f0e8866a7052f948c16508644347c57aba3
 Everything above gets you running. The deeper reference lives in [`docs/`](../docs) so this page stays short.
 
 - **[Configuration & advanced](../docs/CONFIGURATION.md)** - skill chaining, reactive triggers, scheduler frequency, capability modes, MCP in runs, cross-repo tokens, `STRATEGY.md` / soul, Fleet Watcher, remote dashboard, two-repo setup, Actions cost.
+- **[Developer Kit](../docs/DEVELOPER-KIT.md)** - build products on top of Aeon: authorize access to your users' instances with a GitHub App, drive skills over the GitHub API, and ship your own skills as a pack.
 - **[LLM gateways](../docs/CONFIGURATION.md#llm-gateways)** - eight ways to power Claude Code, resolved by an automatic fail-over cascade.
 - **[Harnesses](../docs/harnesses.md)** - run skills on Claude Code or the Grok CLI; token accounting and per-skill knobs.
 - **[Knowledge (OKF)](../docs/OKF.md)** - Aeon's memory is a portable Open Knowledge Format bundle other agents can read.
