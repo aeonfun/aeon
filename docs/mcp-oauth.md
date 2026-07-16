@@ -38,6 +38,23 @@ store as repo secrets, refresh before every run.
    is sourced, never fails the run, and never prints a token (masked with
    `::add-mask::`). Covers both harnesses (Claude via `--mcp-config`, grok natively).
 
+## Current catalog
+
+The featured OAuth servers (all probed live; the catalog file carries per-server
+discovery notes) and their companion skills:
+
+| Server (slug) | MCP URL | Scopes requested | Rotates refresh token? | Skill |
+|---|---|---|---|---|
+| Base (`base`) | `mcp.base.org` | `agent_wallet:transact` | yes | `base-mcp` |
+| Robinhood Trading (`robinhood-trading`) | `agent.robinhood.com/mcp/trading` | *(default — no `offline_access`; it only advertises `internal`)* | unverified — assume yes | `robinhood-mcp` |
+| glim.sh (`glim`) | `glim.sh/mcp` | `openid offline_access` | yes — **verified live 2026-07-16** | `glim-mcp` |
+| Executor (`executor`) | `executor.sh/mcp` | `openid offline_access` | yes — **verified live 2026-07-16** | `executor-mcp` |
+
+The glim and Executor loops were verified end-to-end on a live instance
+(Connect → per-run refresh → PAT-persisted rotation → refresh off the persisted
+token, no re-connect): every catalog provider rotates, so treat `MCP_SECRETS_PAT`
+as **required** in practice, not optional.
+
 ## Code map
 
 | Piece | File |
