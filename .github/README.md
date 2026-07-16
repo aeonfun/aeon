@@ -339,9 +339,6 @@ The full walkthrough - App permissions, the tenant-isolation check, dispatch got
 
 ---
 
-## Star History
-
-
 Support the project : 0xbf8e8f0e8866a7052f948c16508644347c57aba3
 
 ---
