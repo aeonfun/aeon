@@ -331,15 +331,13 @@ Either way the installer reads the pack's `skills-pack.json` manifest, runs the 
 
 Building a product on top of Aeon - a dashboard, a vertical agent, a service your users connect? An Aeon instance is just a GitHub repo + Actions, so **GitHub's API is Aeon's API**: one GitHub App gives your app authorized, revocable access to your users' instances - no PATs, no credential custody, no agent runtime or LLM billing on your side.
 
+![aeon-connect, the reference integration](../docs/assets/aeon-connect.png)
+
 - **Drive instances** - log users in with GitHub, mint short-lived installation tokens, dispatch skills (`workflow_dispatch`), edit `aeon.yml`, write sealed Actions secrets.
 - **Ship your product as skills** - publish a [community skill pack](../docs/community-skill-packs.md) so every Aeon agent can call your API or MCP server.
 - **Close the loop** - your onboarding installs your pack, injects your API key into the user's repo secrets, and enables the skills; the agent reports into channels the user already uses.
 
 The full walkthrough - App permissions, the tenant-isolation check, dispatch gotchas, pack publishing - is the **[ADK (Aeon Developer Kit)](../docs/ADK.md)**, with [aeon-connect](https://github.com/aaronjmars/aeon-connect) as the reference implementation.
-
----
-
-Support the project : 0xbf8e8f0e8866a7052f948c16508644347c57aba3
 
 ---
 
@@ -357,3 +355,9 @@ Everything above gets you running. The deeper reference lives in [`docs/`](../do
 - **[Telegram instant mode](../apps/webhook/README.md)** - ~1s replies via a self-hosted Cloudflare Worker.
 - **[Observability](../docs/langfuse.md)** and **[provenance](../docs/attestation.md)** - optional Langfuse tracing and Sigstore attestation.
 - **[Project layout](CONTRIBUTING.md#project-layout)** - an annotated tour of the repo.
+
+---
+
+## Support the project
+
+`0xbf8e8f0e8866a7052f948c16508644347c57aba3`
