@@ -84,13 +84,13 @@ The prompt *is* the skill, judgment and all. You schedule it, hand it a `var`, c
 | --- | --- | --- | --- |
 | **Core** - fleet coordination, self-config, liveness; shown by default | `core` | 11 | `fleet-control`, `spawn-instance`, `auto-workflow` |
 | **Evolution** - authors, evolves, installs & heals its own skills; shown by default | `evolution` | 7 | `create-skill`, `autoresearch`, `skill-repair` |
-| **Basics** - simple, immediately-runnable skills; shown by default | `basics` | 13 | `digest`, `token-movers`, `pr-review` |
+| **Basics** - simple, immediately-runnable skills; shown by default | `basics` | 15 | `digest`, `token-movers`, `pr-review` |
 | **Dev & Code** | `dev` | 8 | `github-monitor`, `feature`, `deploy-prototype` |
-| **Crypto & Markets** | `crypto` | 12 | `token-pick`, `defi-overview`, `ctrl` |
+| **Crypto & Markets** | `crypto` | 12 | `token-pick`, `defi-overview`, `robinhood-mcp` |
 | **Productivity** | `productivity` | 8 | `mention-radar`, `send-email`, `okf-export` |
 
 <details>
-<summary><strong>Full catalog (all 59 skills by pack)</strong></summary>
+<summary><strong>Full catalog (all 61 skills by pack)</strong></summary>
 
 Three packs are shown by default (**Core**, **Evolution**, **Basics**); the rest are revealed on demand.
 
