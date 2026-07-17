@@ -13,7 +13,7 @@ The **Aeon Developer Kit (ADK)** is for developers building **on top of** Aeon -
 2. **Driving skills** - discover, run, schedule, and credential skills over the GitHub API.
 3. **Linking your product** - ship your own skills so every Aeon instance can talk to your service.
 
-The pattern is proven by [aeon-connect](https://github.com/aaronjmars/aeon-connect), a hosted multi-tenant dashboard built exactly this way - use it as the reference implementation throughout.
+The patterns here come from a production hosted multi-tenant dashboard built exactly this way - treat them as the reference implementation throughout.
 
 ---
 
@@ -122,7 +122,7 @@ Optionally filter to real Aeon instances: a repo qualifies if `.github/workflows
 
 ### 3.3 Tenant isolation - the most important check
 
-Store the operator's selection wherever you like (aeon-connect uses a cookie: `installationId|owner/repo|branch`). But **never trust that stored value**. On *every* request, before minting a token, re-verify with the *user's* token that they still have access:
+Store the operator's selection wherever you like (e.g. a cookie: `installationId|owner/repo|branch`). But **never trust that stored value**. On *every* request, before minting a token, re-verify with the *user's* token that they still have access:
 
 ```ts
 async function assertAccess(userToken, installationId, fullName) {
@@ -150,7 +150,7 @@ const octo = new Octokit({ auth: data.token })
 
 Mint per request and throw it away. Don't cache tokens across users; don't persist them.
 
-> **Implementation tip (from aeon-connect):** resolve `{ owner, repo, token, octokit }` once per request and stash it in `AsyncLocalStorage`. Every helper below then reads "the current tenant" implicitly - no repo/token parameter threading, and a single `withRepo(handler)` wrapper 401s any route that lacks a valid context. See [`lib/route-context.ts`](https://github.com/aaronjmars/aeon-connect/blob/main/lib/route-context.ts).
+> **Implementation tip:** resolve `{ owner, repo, token, octokit }` once per request and stash it in `AsyncLocalStorage`. Every helper below then reads "the current tenant" implicitly - no repo/token parameter threading, and a single `withRepo(handler)` wrapper 401s any route that lacks a valid context.
 
 ---
 
@@ -208,7 +208,7 @@ Identical to `gh workflow run aeon.yml -f skill=digest -f var=solana`.
 
 `workflow_dispatch` returns **204 with no run id**. Two options:
 
-- **Polling (fine for prototypes):** note the time, then poll `GET /repos/{owner}/{repo}/actions/runs?event=workflow_dispatch` for a run whose `created_at` ≥ your dispatch time. aeon-connect polls 8×1.5s and gives up gracefully ("check the Actions tab").
+- **Polling (fine for prototypes):** note the time, then poll `GET /repos/{owner}/{repo}/actions/runs?event=workflow_dispatch` for a run whose `created_at` ≥ your dispatch time. The reference implementation polls 8×1.5s and gives up gracefully ("check the Actions tab").
 - **Webhook (production):** subscribe your App to the `workflow_run` event. You get pushed `requested` / `in_progress` / `completed` payloads per run - no polling, exact correlation, and free run-status UI updates.
 
 Run output: `GET .../actions/runs/{id}/logs` returns a zip; the agent also appends a human-readable entry to `memory/logs/YYYY-MM-DD.md` and ends every run with a `## Summary` section in the log. Artifacts land under `output/` in the repo.
@@ -367,5 +367,5 @@ Total infrastructure on your side: one GitHub App and a session store. No agent 
 ## 7. Reference
 
 - **This repo:** [README](../.github/README.md) (quick start, packs) · [`CONFIGURATION.md`](CONFIGURATION.md) (chains, reactive, gateways, cross-repo tokens) · [`community-skill-packs.md`](community-skill-packs.md) (pack protocol & trust model) · [`CAPABILITIES.md`](CAPABILITIES.md) (capability taxonomy) · [`OKF.md`](OKF.md) (knowledge format).
-- **Reference integration:** [`aaronjmars/aeon-connect`](https://github.com/aaronjmars/aeon-connect) - the full GitHub App pattern in production shape: `lib/github-app.ts` (App auth, `assertAccess`, dispatch+poll), `lib/route-context.ts` (per-request token + tenant check), `lib/context.ts` (AsyncLocalStorage tenancy), `lib/gh-rest.ts` (sealed secrets), `lib/session-store.ts` (server-side sessions).
+- **Reference integration:** the full GitHub App pattern in production shape splits cleanly into modules - App auth (`assertAccess`, dispatch + poll), a per-request token + tenant-check layer, `AsyncLocalStorage` tenancy, sealed-secret writes, and server-side sessions.
 - **GitHub docs:** [GitHub Apps](https://docs.github.com/en/apps) · [workflow_dispatch](https://docs.github.com/en/rest/actions/workflows#create-a-workflow-dispatch-event) · [Actions secrets API](https://docs.github.com/en/rest/actions/secrets) · [`workflow_run` webhook](https://docs.github.com/en/webhooks/webhook-events-and-payloads#workflow_run).
