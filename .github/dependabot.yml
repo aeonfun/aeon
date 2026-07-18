@@ -42,6 +42,14 @@ updates:
       dashboard:
         patterns:
           - "*"
+    # Hold TypeScript on the 6.x line. TS 7 (the native/Go port) ships a different
+    # package layout that Next.js 16's build-time TS integration doesn't recognize
+    # yet: `next build` crashes ("The 'id' argument must be of type string") even
+    # though `tsc --noEmit` passes. Minor/patch bumps within 6.x still flow through.
+    # Revisit once Next.js ships TS7 support.
+    ignore:
+      - dependency-name: "typescript"
+        update-types: ["version-update:semver-major"]
 
   # MCP server — exposes Aeon skills as Claude tools.
   - package-ecosystem: "npm"
