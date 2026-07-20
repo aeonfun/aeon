@@ -38,6 +38,7 @@
 - [ ] Pack has a `skills-pack.json` manifest at its root and a `SKILL.md` per skill
 - [ ] Write / onchain / bet skills are `default_enabled: false`
 - [ ] This PR adds **both** a README table row and a matching `skill-packs.json` entry
+- [ ] `node scripts/validate-skill-packs.mjs` passes (registry shape + README parity, incl. the pack counter)
 - [ ] No monkey-patching of Aeon internals; no private or auth-walled endpoints required to run
 
 ### Core fix (dashboard / scripts / workflows / docs)
@@ -45,6 +46,7 @@
 - [ ] Change is focused — one concern, no unrelated refactor
 - [ ] Touched code follows the existing pattern in the file
 - [ ] Relevant CI gates pass locally (e.g. `bash scripts/check-skill-categories.sh`, `bash scripts/check-capabilities-parity.sh`)
+- [ ] Touched `apps/**`? That app typechecks, tests, and builds (dashboard: `npm run typecheck && npm test && npm run build`)
 
 ---
 

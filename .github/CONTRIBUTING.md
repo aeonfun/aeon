@@ -184,12 +184,24 @@ protect:
 | `ci-packs-json` | `packs.json` matches a fresh `bin/generate-packs-json` |
 | `ci-skill-category` | every `SKILL.md` declares a valid `category:` |
 | `ci-capabilities-parity` | the capabilities taxonomy stays in sync |
+| `ci-skill-packs` | `catalog/skill-packs.json` is well-formed **and** matches the README's Community Packs table |
+| `ci-apps` | each app in `apps/**` typechecks, tests, and builds |
+| `ci-tests` | the `scripts/tests/` suites pass |
+| `ci-okf` | the knowledge bundle stays OKF-conformant |
+| `ci-agents-md` | `AGENTS.md` is regenerated from `STRATEGY.md` |
 
 Run the checks locally before pushing:
 
 ```bash
 bash scripts/check-skill-categories.sh
 bash scripts/check-capabilities-parity.sh
+node scripts/validate-skill-packs.mjs          # listing a community pack
+```
+
+Touching `apps/**`? Run that app's own checks — for the dashboard:
+
+```bash
+cd apps/dashboard && npm ci && npm run typecheck && npm test && npm run build
 ```
 
 If `ci-skills-json`/`ci-packs-json` fails, you changed a generator input without

@@ -95,3 +95,15 @@ Exit code is non-zero on error.
   (git), `auth.ts` (auth flow), `packs.ts` (pack join). Ten routes now wrap these.
 - `apps/dashboard/lib/gh.ts` honours `AEON_REPO_ROOT` so the shared lib is
   location-independent (unset = the dashboard's original cwd-relative behaviour).
+
+## Typecheck
+
+```bash
+(cd ../dashboard && npm ci)   # the CLI borrows the dashboard's typescript + @types
+npm ci && npm run typecheck   # strict; compiles src/ plus the shared dashboard lib
+```
+
+Because `tsconfig.json` compiles `../dashboard/lib/**/*.ts` and points
+`typeRoots` at that app, the CLI has no `typescript` dependency of its own and
+cannot be typechecked without the dashboard's `node_modules`. CI does exactly
+the two installs above — see `.github/workflows/ci-apps.yml`.

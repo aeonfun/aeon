@@ -1,0 +1,142 @@
+name: ci-apps
+
+# apps/** was the largest untested surface in the repo: four shipped apps — the
+# Next.js dashboard, the CLI, the MCP server, and the Telegram Worker — with no
+# gate of any kind. The dashboard alone carries 156 committed unit tests
+# (apps/dashboard/lib/**/*.test.ts) that nothing ran, plus a strict-mode
+# TypeScript config nothing typechecked.
+#
+# That gap is not theoretical. Dependabot opens grouped monthly npm PRs against
+# apps/dashboard, apps/mcp-server, and apps/webhook (.github/dependabot.yml) —
+# every one of them landed with zero automated verification that the app still
+# compiles. The TypeScript-7 pin comment in dependabot.yml records a breakage
+# caught by hand: `next build` crashed while `tsc --noEmit` passed. That is why
+# the dashboard job runs BOTH — a typecheck alone would have missed it.
+#
+# One job per app so a red X names the broken surface, and so a slow dashboard
+# build never masks a fast Worker failure. The workflow-level path filter is
+# `apps/**` rather than per-job filters: keeping it native (no third-party
+# paths-filter action) is worth re-running a 30-second Worker job on a
+# dashboard-only PR.
+#
+# No secrets, no network beyond the registry: `next build` is fully static here
+# (every route is dynamic/server-rendered at request time) and `wrangler
+# --dry-run` bundles the Worker without touching a Cloudflare account, so this
+# workflow runs green on fork PRs.
+#
+# Run locally: see each app's README, or the same commands used below.
+
+on:
+  pull_request:
+    paths:
+      - 'apps/**'
+      - '.github/workflows/ci-apps.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# A force-push mid-review shouldn't leave a stale build burning a runner.
+concurrency:
+  group: ci-apps-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  dashboard:
+    name: dashboard — typecheck, test, build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/dashboard
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: apps/dashboard/package-lock.json
+      - name: Install deps
+        run: npm ci
+      - name: Typecheck (strict)
+        run: npm run typecheck
+      - name: Unit tests
+        run: npm test
+      # Kept separate from the typecheck on purpose — see the TS7 note above.
+      - name: Production build
+        run: npm run build
+
+  cli:
+    name: cli — typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: |
+            apps/cli/package-lock.json
+            apps/dashboard/package-lock.json
+      # The CLI deliberately shares one source of truth with the dashboard: its
+      # tsconfig compiles ../dashboard/lib/**/*.ts and borrows that app's
+      # typescript + @types (apps/cli/tsconfig.json `typeRoots`). So the CLI
+      # cannot be typechecked without the dashboard's node_modules — installing
+      # both here is what makes `npm run typecheck` resolve at all.
+      - name: Install dashboard deps (CLI borrows its typescript + @types)
+        run: npm ci
+        working-directory: apps/dashboard
+      - name: Install CLI deps
+        run: npm ci
+        working-directory: apps/cli
+      - name: Typecheck (strict, includes the shared dashboard lib)
+        run: npm run typecheck
+        working-directory: apps/cli
+
+  mcp-server:
+    name: mcp-server — build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/mcp-server
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+      # No package-lock.json is committed for this app, so `npm ci` is not
+      # available and the install floats within the package.json ranges.
+      - name: Install deps
+        run: npm install --no-audit --no-fund
+      # `npm run build` (tsc, emitting to dist/) rather than a bare --noEmit:
+      # dist/index.js is this package's published `bin`, so a build that cannot
+      # emit is a broken install for anyone running `aeon-mcp`.
+      - name: Build
+        run: npm run build
+
+  webhook:
+    name: webhook — worker bundle
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/webhook
+    env:
+      WRANGLER_SEND_METRICS: 'false'
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+      - name: Syntax check the Worker
+        run: node --check src/worker.js
+      # No lockfile committed for this app either — see mcp-server above.
+      - name: Install deps
+        run: npm install --no-audit --no-fund
+      # --dry-run validates wrangler.toml and bundles the Worker without any
+      # Cloudflare credentials, so a broken config or a bad import fails here
+      # instead of at deploy time.
+      - name: Bundle (wrangler --dry-run, no credentials needed)
+        run: npx wrangler deploy --dry-run --outdir "$RUNNER_TEMP/worker-dist"
