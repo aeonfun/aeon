@@ -835,7 +835,7 @@ jobs:
       - name: Attest skill execution
         if: steps.attest-gate.outputs.attest == 'true'
         # Pinned to the current major per this repo's supply-chain convention
-        # (checkout@v7, setup-node@v6). Latest major confirmed at:
+        # (checkout@v7, setup-node@v7). Latest major confirmed at:
         # https://github.com/actions/attest-build-provenance/releases
         # Multi-subject: one attestation over both run-scoped artifacts (the output
         # snapshot and its manifest). Both paths are ${GITHUB_RUN_ID}-unique, so the
