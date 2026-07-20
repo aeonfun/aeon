@@ -194,6 +194,15 @@ export function addSkillToConfig(
   // Set flow style to match inline format
   if (isMap(entry)) {
     entry.flow = true
+    // Force the cron to a double-quoted scalar. `0 12 * * *` is a perfectly
+    // valid plain YAML string, but the scheduler parses aeon.yml with a bash
+    // regex that REQUIRES the quotes:
+    //   [[ "$INLINE" =~ schedule:\ *\"([^\"]+)\" ]]   (.github/workflows/scheduler.yml)
+    // An unquoted cron leaves SKILL_SCHEDULE empty, and the empty-schedule
+    // guard then skips the skill — so it silently never fires. Every
+    // hand-written entry is quoted; generated ones must match.
+    const sched = entry.get('schedule', true)
+    if (isScalar(sched)) sched.type = 'QUOTE_DOUBLE'
   }
 
   // Find the fallback skill (heartbeat, last entry) and insert before it
@@ -210,6 +219,31 @@ export function addSkillToConfig(
   }
 
   return doc.toString()
+}
+
+/**
+ * Create the skill's entry if it's missing, then apply `updates` to it.
+ *
+ * `updateSkillInConfig` deliberately no-ops on an unknown skill (it returns
+ * `raw` unchanged), which is right for a blind edit but wrong for the
+ * enable/schedule/set path: skills are enumerated from disk, so a freshly
+ * created `skills/<name>/SKILL.md` has no aeon.yml entry yet and every attempt
+ * to turn it on silently did nothing — while the read path reported it as
+ * merely "disabled", because a missing entry defaults to `enabled: false`.
+ *
+ * Callers must confirm the skill exists on disk first; this will happily
+ * create an entry for a typo'd name.
+ */
+export function upsertSkillInConfig(
+  raw: string,
+  name: string,
+  updates: Partial<SkillConfig>,
+): string {
+  // addSkillToConfig is a no-op when the entry already exists, so composing the
+  // two is safe unconditionally. Seeding it with `updates` means a create lands
+  // the right enabled/schedule immediately rather than writing the defaults and
+  // overwriting them on the next line.
+  return updateSkillInConfig(addSkillToConfig(raw, name, updates), name, updates)
 }
 
 // --- Helpers ---

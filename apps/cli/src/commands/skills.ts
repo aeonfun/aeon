@@ -1,6 +1,6 @@
 import { parseArgs } from 'node:util'
 import { getSkills } from '../../../dashboard/lib/skills.ts'
-import { updateSkillInConfig, removeSkillFromConfig } from '../../../dashboard/lib/config.ts'
+import { updateSkillInConfig, upsertSkillInConfig, removeSkillFromConfig } from '../../../dashboard/lib/config.ts'
 import { getFileContent, saveFile, deleteDirectory, commitAndPush } from '../../../dashboard/lib/github.ts'
 import { runSkill, buildSkillRunArgs } from '../../../dashboard/lib/run-skill.ts'
 import type { Skill } from '../../../dashboard/lib/types.ts'
@@ -55,17 +55,36 @@ function requireName(args: string[]): string {
   return name
 }
 
+// Guard the upsert path: `upsertSkillInConfig` creates a missing entry, so a
+// typo'd name would otherwise write a bogus skill into aeon.yml. Skills are
+// enumerated from disk, so this is the authoritative check.
+async function requireInstalled(name: string) {
+  const { skills } = await getSkills()
+  if (!skills.some(s => s.name === name)) {
+    fail(`unknown skill: ${name} — no skills/${name}/SKILL.md. Run \`aeon skills ls\` to see what's installed.`)
+  }
+}
+
 async function toggle(args: string[], enabled: boolean) {
   const name = requireName(args)
-  const res = await applyConfig(raw => updateSkillInConfig(raw, name, { enabled }), `chore: ${enabled ? 'enable' : 'disable'} ${name}`)
-  reportConfig(res, `${enabled ? 'enable' : 'disable'} ${name}`)
+  // Enabling upserts (a new skill has no entry yet); disabling only edits an
+  // existing entry — no entry already means disabled, so there's nothing to write.
+  if (!enabled) {
+    const res = await applyConfig(raw => updateSkillInConfig(raw, name, { enabled }), `chore: disable ${name}`)
+    reportConfig(res, `disable ${name}`)
+    return
+  }
+  await requireInstalled(name)
+  const res = await applyConfig(raw => upsertSkillInConfig(raw, name, { enabled }), `chore: enable ${name}`)
+  reportConfig(res, `enable ${name}`)
 }
 
 async function schedule(args: string[]) {
   const name = requireName(args)
   const cron = args.filter(a => !a.startsWith('-') && a !== name)[0]
   if (!cron) fail('usage: aeon skills schedule <name> "<cron>"')
-  const res = await applyConfig(raw => updateSkillInConfig(raw, name, { schedule: cron }), `chore: schedule ${name}`)
+  await requireInstalled(name)
+  const res = await applyConfig(raw => upsertSkillInConfig(raw, name, { schedule: cron }), `chore: schedule ${name}`)
   reportConfig(res, `schedule ${name} → ${cron}`)
 }
 
@@ -82,7 +101,8 @@ async function setFields(args: string[]) {
   if (typeof values.model === 'string') updates.model = values.model
   if (typeof values.harness === 'string') updates.harness = values.harness
   if (Object.keys(updates).length === 0) fail('nothing to set — pass --var, --model, or --harness')
-  const res = await applyConfig(raw => updateSkillInConfig(raw, name, updates), `chore: update ${name} config`)
+  await requireInstalled(name)
+  const res = await applyConfig(raw => upsertSkillInConfig(raw, name, updates), `chore: update ${name} config`)
   reportConfig(res, `set ${name} ${Object.entries(updates).map(([k, v]) => `${k}=${v || '(clear)'}`).join(' ')}`)
 }
 
