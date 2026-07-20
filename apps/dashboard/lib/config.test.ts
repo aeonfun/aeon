@@ -18,6 +18,7 @@ import {
   updateJsonrenderInConfig,
   removeSkillFromConfig,
   addSkillToConfig,
+  upsertSkillInConfig,
 } from "./config";
 
 // ── Minimal valid config ─────────────────────────────────────────────
@@ -358,5 +359,88 @@ describe("round-trip config mutations", () => {
 
     // Model change should not affect skills
     assert.equal(config1.skills["heartbeat"].enabled, true);
+  });
+});
+
+// ── upsertSkillInConfig ──────────────────────────────────────────────
+
+describe("upsertSkillInConfig", () => {
+  it("creates and enables an entry that does not exist yet", () => {
+    // The regression: updateSkillInConfig no-ops here, so `aeon skills enable`
+    // silently did nothing for a freshly created SKILL.md.
+    assert.equal(
+      updateSkillInConfig(MINIMAL_YAML, "brand-new", { enabled: true }),
+      MINIMAL_YAML,
+    );
+
+    const yaml = upsertSkillInConfig(MINIMAL_YAML, "brand-new", { enabled: true });
+    assert.equal(parseConfig(yaml).skills["brand-new"].enabled, true);
+  });
+
+  it("creates with the given schedule rather than the default", () => {
+    const yaml = upsertSkillInConfig(MINIMAL_YAML, "brand-new", { schedule: "0 8 * * 1-5" });
+    const entry = parseConfig(yaml).skills["brand-new"];
+    assert.equal(entry.schedule, "0 8 * * 1-5");
+    // Scheduling alone must not turn the skill on.
+    assert.equal(entry.enabled, false);
+  });
+
+  it("updates an existing entry without duplicating it", () => {
+    const yaml = upsertSkillInConfig(FULL_YAML, "market-pulse", { schedule: "0 6 * * *" });
+    const config = parseConfig(yaml);
+    assert.equal(config.skills["market-pulse"].schedule, "0 6 * * *");
+    // Pre-existing fields survive, and the key appears exactly once.
+    assert.equal(config.skills["market-pulse"].model, "claude-sonnet-4-6");
+    assert.equal(yaml.match(/^\s*market-pulse:/gm)?.length, 1);
+  });
+
+  it("keeps heartbeat last when creating", () => {
+    const yaml = upsertSkillInConfig(MINIMAL_YAML, "brand-new", { enabled: true });
+    const names = [...yaml.matchAll(/^ {2}([a-z][a-z0-9-]*):/gm)].map(m => m[1]);
+    assert.equal(names[names.length - 1], "heartbeat");
+  });
+
+  it("is idempotent", () => {
+    const once = upsertSkillInConfig(MINIMAL_YAML, "brand-new", { enabled: true });
+    const twice = upsertSkillInConfig(once, "brand-new", { enabled: true });
+    assert.equal(once, twice);
+  });
+});
+
+// ── Scheduler parseability ───────────────────────────────────────────
+//
+// .github/workflows/scheduler.yml reads aeon.yml with a bash regex that only
+// matches a DOUBLE-QUOTED cron:
+//     [[ "$INLINE" =~ schedule:\ *\"([^\"]+)\" ]]
+// An unquoted `schedule: 0 12 * * *` is valid YAML but invisible to it, and the
+// empty-schedule guard then skips the skill — it silently never fires. Any
+// function that writes a schedule must emit the quoted form.
+
+describe("generated entries are readable by the scheduler", () => {
+  const SCHEDULER_INLINE_RE = /schedule: *"([^"]+)"/;
+
+  const scheduleLine = (yaml: string, name: string) =>
+    yaml.split("\n").find(l => l.trim().startsWith(`${name}:`)) ?? "";
+
+  it("addSkillToConfig quotes the default schedule", () => {
+    const line = scheduleLine(addSkillToConfig(MINIMAL_YAML, "brand-new"), "brand-new");
+    assert.match(line, SCHEDULER_INLINE_RE);
+  });
+
+  it("addSkillToConfig quotes an explicit schedule", () => {
+    const yaml = addSkillToConfig(MINIMAL_YAML, "brand-new", { schedule: "0 8 * * 1-5" });
+    const line = scheduleLine(yaml, "brand-new");
+    assert.match(line, SCHEDULER_INLINE_RE);
+    assert.equal(line.match(SCHEDULER_INLINE_RE)![1], "0 8 * * 1-5");
+  });
+
+  it("upsertSkillInConfig quotes on create", () => {
+    const yaml = upsertSkillInConfig(MINIMAL_YAML, "brand-new", { schedule: "*/30 * * * *" });
+    assert.match(scheduleLine(yaml, "brand-new"), SCHEDULER_INLINE_RE);
+  });
+
+  it("upsertSkillInConfig keeps the quotes when updating", () => {
+    const yaml = upsertSkillInConfig(FULL_YAML, "market-pulse", { schedule: "0 6 * * *" });
+    assert.match(scheduleLine(yaml, "market-pulse"), SCHEDULER_INLINE_RE);
   });
 });

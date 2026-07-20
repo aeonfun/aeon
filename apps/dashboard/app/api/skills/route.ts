@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { errorResponse, syncResult } from '@/lib/http'
 import { getFileContent, updateFile, commitAndPush } from '@/lib/github'
 import {
-  updateSkillInConfig,
+  upsertSkillInConfig,
   updateModelInConfig,
   updateHarnessInConfig,
   updateJsonrenderInConfig,
@@ -42,7 +42,10 @@ export async function PATCH(request: Request) {
     }
 
     if (name && (typeof enabled === 'boolean' || typeof schedule === 'string' || typeof skillVar === 'string' || typeof skillModel === 'string' || typeof skillHarness === 'string')) {
-      updated = updateSkillInConfig(updated, name, {
+      // upsert, not update: the skill list is built from disk, so the UI can
+      // toggle a skill that has no aeon.yml entry yet (a freshly added
+      // SKILL.md). A plain update would silently no-op on it.
+      updated = upsertSkillInConfig(updated, name, {
         ...(typeof enabled === 'boolean' ? { enabled } : {}),
         ...(typeof schedule === 'string' && schedule ? { schedule } : {}),
         ...(typeof skillVar === 'string' ? { var: skillVar } : {}),
