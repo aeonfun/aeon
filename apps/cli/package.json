@@ -8,6 +8,9 @@
   "bin": {
     "aeon": "./aeon"
   },
+  "scripts": {
+    "typecheck": "../dashboard/node_modules/.bin/tsc --noEmit -p tsconfig.json"
+  },
   "dependencies": {
     "yaml": "^2.9.0"
   },

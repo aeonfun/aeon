@@ -1,0 +1,56 @@
+name: ci-skill-packs
+
+# catalog/skill-packs.json is the community pack registry — and the one file in
+# this repo that is routinely hand-edited by people outside it. Every listing
+# arrives as an outside-contributor PR that must touch TWO surfaces in one diff
+# (docs/community-skill-packs.md publishing checklist): a row in the README's
+# Community Packs table and a matching registry entry. Nothing checked either.
+#
+# What shipping a bad edit costs: `bin/install-skill-pack --list` jq's this file
+# directly, and the dashboard's community-packs panel fetches it
+# (apps/dashboard/lib/packs.ts) — so one trailing comma breaks pack discovery for
+# every Aeon fork, not just this repo. A README row with no registry entry is
+# invisible to both. A `--path` flag that disagrees with the registry hands
+# browsers a copy-paste command that installs the wrong subtree.
+#
+# The validator also refuses a self-declared `trust_level: trusted` that is not
+# in skills/security/trusted-sources.txt: `--list` prints its trust badge from
+# the registry but the installer decides the real scan bypass from the trusted
+# file, so an unbacked claim advertises "security scan skipped" without earning
+# it. That check is why bin/install-skill-pack and trusted-sources.txt are
+# trigger paths here — the gate has to re-run when either side moves.
+#
+# Sibling of ci-packs-json.yml (first-party packs) and ci-skills-json.yml
+# (skill catalog); this covers the third, previously ungated, registry.
+#
+# Run locally: node scripts/validate-skill-packs.mjs
+
+on:
+  pull_request:
+    paths:
+      - 'catalog/skill-packs.json'
+      - '.github/README.md'
+      - 'bin/install-skill-pack'
+      - 'skills/security/trusted-sources.txt'
+      - 'scripts/validate-skill-packs.mjs'
+      - '.github/workflows/ci-skill-packs.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'catalog/skill-packs.json'
+      - '.github/README.md'
+      - 'bin/install-skill-pack'
+      - 'skills/security/trusted-sources.txt'
+      - 'scripts/validate-skill-packs.mjs'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Validate the community pack registry and its README parity
+        run: node scripts/validate-skill-packs.mjs

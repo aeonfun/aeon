@@ -233,6 +233,37 @@ The operator is always the trust boundary. The install script does not auto-trus
 
 Pack maintainers update both in the same PR so the two surfaces stay in lockstep.
 
+### CI validates both (run it before you open the PR)
+
+`ci-skill-packs` gates every PR that touches the registry or the README:
+
+```bash
+node scripts/validate-skill-packs.mjs
+```
+
+It fails the PR on registry shape (unparseable JSON, a `repo` that isn't
+`owner/repo`, an empty or duplicated `skills[]`, a `trust_level` outside
+`trusted|community`, a capability outside the [locked taxonomy](CAPABILITIES.md),
+a `secrets_required` entry that isn't an env var name) and on README parity (an
+entry with no table row or a row with no entry, a skill count that disagrees with
+`skills[]`, a `--path` flag that disagrees with the registry's `path`, and the
+`N community skill packs` counter in the README's Proof of work section).
+
+Two things to know:
+
+- **`trust_level: trusted` must be earned.** `--list` prints its trust badge from
+  this registry, but the installer decides the real scan bypass from
+  `skills/security/trusted-sources.txt`. A `trusted` entry that isn't in that
+  file advertises "security scan skipped" without ever getting it, so the gate
+  rejects it. Community packs use `trust_level: community`.
+- **A subdirectory pack needs its `--path` in the README row.** If your registry
+  entry sets `path`, the table row has to show the matching
+  (`` `--path <dir>` ``) flag — otherwise the command a reader copies out of the
+  README installs the wrong subtree.
+
+Missing recommended fields (`name`, `description`, `author`) and unrecognised
+fields warn rather than fail.
+
 ---
 
 ## Listed packs

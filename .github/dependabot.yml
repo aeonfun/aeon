@@ -67,6 +67,22 @@ updates:
         patterns:
           - "*"
 
+  # CLI — non-interactive control of an Aeon repo; shares apps/dashboard/lib.
+  - package-ecosystem: "npm"
+    directory: "/apps/cli"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 5
+    assignees:
+      - "aeonfun"
+    commit-message:
+      prefix: "chore(deps)"
+      prefix-development: "chore(deps-dev)"
+    groups:
+      cli:
+        patterns:
+          - "*"
+
   # Cloudflare Worker that relays Telegram messages to a fork.
   - package-ecosystem: "npm"
     directory: "/apps/webhook"
