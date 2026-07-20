@@ -5,6 +5,7 @@
 <h1 align="center">AEON</h1>
 
 <p align="center">
+  <a href="https://www.aeon.fun/docs"><img src="https://img.shields.io/badge/Documentation-aeon.fun-blue?style=flat-square&logo=gitbook&logoColor=white&labelColor=1a1a2e" alt="Documentation"></a>
   <a href="https://github.com/aeonfun/aeon/stargazers"><img src="https://img.shields.io/github/stars/aeonfun/aeon?style=flat-square&logo=github" alt="GitHub stars"></a>
   <a href="https://github.com/aeonfun/aeon/network/members"><img src="https://img.shields.io/github/forks/aeonfun/aeon?style=flat-square&logo=github" alt="GitHub forks"></a>
   <a href="https://x.com/aeonframework"><img src="https://img.shields.io/badge/Follow-%40aeonframework-black?style=flat-square&logo=x&labelColor=000000" alt="Follow on X"></a>
