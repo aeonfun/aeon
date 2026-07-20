@@ -492,8 +492,7 @@ fi
 # ════════════════════════════════════════════════════════════════════════════
 TMP17=$(mktemp -d)
 make_pack "$TMP17"
-# Manifest has license field but no file on disk — that's fine, just a warning
-# about the file. But let's test: manifest has no license field AND no file.
+# Manifest has no license field AND no LICENSE file on disk — both are warnings.
 cat > "$TMP17/skills-pack.json" <<'EOF'
 {
   "name": "test-pack",
@@ -515,10 +514,10 @@ else
   license_field_warn=false
   echo "$out" | grep -q "no LICENSE file" && license_file_warn=true
   echo "$out" | grep -q "no .license. field" && license_field_warn=true
-  if $license_file_warn || $license_field_warn; then
-    pass "missing license produces warning(s)"
+  if $license_file_warn && $license_field_warn; then
+    pass "missing license produces both warnings"
   else
-    bad "missing license not warned: $out"
+    bad "missing license not warned (file=$license_file_warn field=$license_field_warn): $out"
   fi
 fi
 
