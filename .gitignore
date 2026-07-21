@@ -9,10 +9,8 @@
 # Claude Code local state
 .claude/
 
-# Caches — prefetch scripts write these, skills read them; regenerated every run
-# (.xai-cache, .treasury-cache, .star-cache, .github-releases-cache, …)
+# Cache dirs skills create at run time; regenerated every run
 .*-cache/
-.tg_cache/
 
 # Working scratch dirs some skills stage during a run, then clean up:
 # .pending-notify (notify re-delivery), .pending-deploy (deploy-prototype build),
@@ -25,18 +23,11 @@ skills.lock
 # Scratch / temp files
 tmp_*
 *.tmp
-.tmp-*
-.pending-*.sh
-.run-*.sh
 .*-tmp.md
 .*-draft.md
 .*-msg.txt
 *_msg.txt
 *_raw.txt
-
-# Leaked creds scratch
-.xai_key
-.ghtoken
 
 # Python bytecode
 __pycache__/
@@ -44,7 +35,3 @@ __pycache__/
 
 # Node
 node_modules/
-
-# Stale artifacts
-.external-work
-.vuln-scan/

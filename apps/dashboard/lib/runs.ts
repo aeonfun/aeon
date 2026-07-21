@@ -27,7 +27,7 @@ export function listRuns(limit = 30): Run[] {
     ['run', 'list', ...ghArgsRepo(), '--json', 'databaseId,name,status,conclusion,createdAt,url,displayTitle,event', '--limit', String(limit)],
     { stdio: 'pipe', cwd: REPO_ROOT },
   ).toString()
-  const raw: GhRunListItem[] = JSON.parse(out)
+  const raw = JSON.parse(out) as GhRunListItem[]
   return raw
     // Keep only Aeon-launched runs; drop CI, Dependabot, and other managed noise.
     .filter((r) => AEON_EVENTS.has(r.event))
@@ -56,7 +56,7 @@ export function getRunLogs(id: string): RunLogs {
     ['run', 'view', id, ...repoArgs, '--json', 'status,conclusion,displayTitle,jobs'],
     { stdio: 'pipe', cwd: REPO_ROOT, timeout: 15000 },
   ).toString()
-  const info: GhRunView = JSON.parse(infoRaw)
+  const info = JSON.parse(infoRaw) as GhRunView
 
   // Get logs - use --log-failed for failed runs, --log for completed.
   let logs = ''

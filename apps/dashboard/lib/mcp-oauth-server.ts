@@ -1,9 +1,9 @@
 // Server-only glue for the MCP OAuth flow: the shared pending-flow store (bridges
-// the POST that starts the flow and the GET callback), opening the operator's
-// browser, and persisting the captured tokens as repo secrets + wiring the server
-// into .mcp.json. Kept out of lib/mcp-oauth.ts so that module stays pure/fetch-only
-// and unit-testable; this one imports gh + the child_process/github helpers.
-import { execFile, execFileSync } from 'child_process'
+// the POST that starts the flow and the GET callback) and persisting the captured
+// tokens as repo secrets + wiring the server into .mcp.json. Kept out of
+// lib/mcp-oauth.ts so that module stays pure/fetch-only and unit-testable; this
+// one imports gh + the child_process/github helpers.
+import { execFileSync } from 'child_process'
 import { ghArgsRepo } from './gh'
 import type { McpServer } from './types'
 import { tokenVar, oauthVar, type TokenSet } from './mcp-oauth'
@@ -31,16 +31,6 @@ export const pendingFlows = new Map<string, PendingFlow>()
 
 // Ample time for the operator to approve in the browser, under Node's request cap.
 export const OAUTH_TIMEOUT_MS = 240_000
-
-// Fire-and-forget browser open (identical approach to app/api/grok-auth). A
-// failure to auto-open isn't fatal — the auth URL is also returned to the panel.
-export function openBrowser(url: string): void {
-  const cmd = process.platform === 'darwin' ? 'open'
-    : process.platform === 'win32' ? 'cmd'
-    : 'xdg-open'
-  const args = process.platform === 'win32' ? ['/c', 'start', '', url] : [url]
-  execFile(cmd, args, () => {})
-}
 
 function ghSecretSet(name: string, value: string): void {
   execFileSync('gh', ['secret', 'set', name, ...ghArgsRepo()], {

@@ -49,7 +49,7 @@ export const BUILTIN_SECRETS: Omit<Secret, 'isSet'>[] = [
   { name: 'RESEND_API_KEY', group: 'Skill Keys', description: 'Resend API key - powers ALL outbound email: the operator email-notification channel (with NOTIFY_EMAIL_TO), emailed digests, and security disclosures (send-email, heartbeat, vuln-scanner). Create at resend.com' },
   { name: 'ADMANAGE_API_KEY', group: 'Skill Keys', description: 'AdManage API key - ad-campaign skill (schedule-ads). From admanage.ai/api-docs' },
   { name: 'GH_GLOBAL', group: 'Skill Keys', description: 'GitHub PAT with cross-repo WRITE access - cross-repo skills & deploys (changelog push-to, feature external, deploy-prototype, vuln-scanner). Auto-promoted to the run\'s GITHUB_TOKEN. Create one at github.com/settings/tokens' },
-  { name: 'GH_READ_PAT', group: 'Skill Keys', description: 'GitHub read-only PAT - optional. Used only by prefetch steps to enrich cross-repo / private-repo reads (bd-radar); kept separate from the write-capable GH_GLOBAL for least privilege. Without it those skills fall back to public data. Create a read-only token at github.com/settings/tokens' },
+  { name: 'GH_READ_PAT', group: 'Skill Keys', description: 'GitHub read-only PAT - optional. Enriches cross-repo / private-repo reads (bd-radar); kept separate from the write-capable GH_GLOBAL for least privilege. Without it those skills fall back to public data. Create a read-only token at github.com/settings/tokens' },
   { name: 'MCP_SECRETS_PAT', group: 'Skill Keys', description: 'Fine-grained GitHub PAT with Secrets: read/write on THIS repo - keeps OAuth-connected MCP servers working. Providers rotate the refresh token on every run; the runner needs this PAT to save each rotation back, otherwise auth breaks one run after Connect. Create at github.com/settings/personal-access-tokens: add this repo under Repository access (a PAT without it 404s) + Repository permissions > Secrets: Read and write. Then re-connect any already-connected server once' },
   { name: 'BASE_RPC_URL', group: 'Skill Keys', description: 'Custom Base RPC endpoint - onchain Base skills (investigation-report, token-movers). Optional: a public RPC is used by default; set a paid endpoint to lift rate limits. Find a provider at docs.base.org/chain/node-providers' },
 ]
@@ -59,18 +59,16 @@ export const BUILTIN_NAMES = new Set(BUILTIN_SECRETS.map(s => s.name))
 // Valid env var name pattern (builtins + custom secrets).
 export const VALID_SECRET_NAME = /^[A-Z][A-Z0-9_]{1,}$/
 
-// Names of the secrets currently set in the managed repo. Returns [] when gh is
-// unavailable or errors, so callers can render the catalog with all-unset state.
+// Names of the secrets currently set in the managed repo. Throws when `gh secret
+// list` fails (rate limit, lost repo permission, network) — an all-unset list
+// would be a lie the operator acts on by re-pasting live keys. The "gh not
+// authenticated" case is handled one layer up by getSecrets() via ghAvailable().
 export function listSecretNames(): string[] {
-  try {
-    const out = execFileSync('gh', ['secret', 'list', ...ghArgsRepo(), '--json', 'name', '-q', '.[].name'], {
-      stdio: 'pipe',
-      cwd: process.cwd(),
-    }).toString().trim()
-    return out ? out.split('\n').filter(Boolean) : []
-  } catch {
-    return []
-  }
+  const out = execFileSync('gh', ['secret', 'list', ...ghArgsRepo(), '--json', 'name', '-q', '.[].name'], {
+    stdio: 'pipe',
+    cwd: process.cwd(),
+  }).toString().trim()
+  return out ? out.split('\n').filter(Boolean) : []
 }
 
 // The full secret roster: every builtin (with its set/unset state) plus any

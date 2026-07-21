@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { getFileContent, updateFile, createFile, commitAndPush } from '@/lib/github'
+import { getFileContent, saveFile } from '@/lib/github'
 import { errorResponse, syncResult } from '@/lib/http'
 import type { McpServers } from '@/lib/types'
 
@@ -30,18 +30,10 @@ export async function PUT(request: Request) {
       return NextResponse.json({ error: 'servers (object) required' }, { status: 400 })
     }
     const content = JSON.stringify({ mcpServers: body.servers }, null, 2) + '\n'
-    let sha = ''
-    try {
-      sha = (await getFileContent(FILE)).sha
-    } catch {
-      // new file
-    }
-    if (sha) {
-      await updateFile(FILE, content, sha, 'chore: update .mcp.json from dashboard')
-    } else {
-      await createFile(FILE, content, 'chore: add .mcp.json from dashboard')
-    }
-    const sync = commitAndPush([FILE], 'chore: update .mcp.json from dashboard')
+    const sync = await saveFile(FILE, content, {
+      updateMsg: 'chore: update .mcp.json from dashboard',
+      createMsg: 'chore: add .mcp.json from dashboard',
+    })
     return NextResponse.json(syncResult(sync))
   } catch (error: unknown) {
     return errorResponse(error, 'Unknown error')

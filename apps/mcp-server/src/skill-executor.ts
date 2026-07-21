@@ -34,7 +34,7 @@ export function loadSkills(repoRoot: string, logPrefix = "[aeon]"): Skill[] {
     process.stderr.write(`${logPrefix} catalog/skills.json not found at ${manifestPath}\n`);
     return [];
   }
-  const manifest: SkillsManifest = JSON.parse(readFileSync(manifestPath, "utf-8"));
+  const manifest = JSON.parse(readFileSync(manifestPath, "utf-8")) as SkillsManifest;
   return manifest.skills ?? [];
 }
 

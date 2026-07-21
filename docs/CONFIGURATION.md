@@ -77,7 +77,7 @@ The built-in `GITHUB_TOKEN` is scoped to this repo only. For `github-monitor`, `
 
 ## Durable state without the churn
 
-Per-skill execution state (`memory/cron-state.json` — status, success rate, quality) is **dual-written** by default: each run commits the file *and* appends an immutable event to a closed, append-only GitHub Issue (`aeon:cron-state`), so concurrent runs never race — no rewrite, force-push, or rebase-retry. The repo variable **`STATE_BACKEND`** switches this: `dual` (default) · `issues` (append-only, zero file churn) · `file` (legacy file-only). Chains record to the same ledger.
+Per-skill execution state (`memory/cron-state.json` — status, success rate, quality) is committed as a file by default. The repo variable **`STATE_BACKEND`** switches this: `file` (default) · `issues` (each run appends an immutable event to a closed, append-only GitHub Issue `aeon:cron-state`, so concurrent runs never race — no rewrite, force-push, or rebase-retry; zero file churn) · `dual` (both, for migrating to `issues` without a cutover). Chains record to the same ledger.
 
 ## LLM Gateways
 

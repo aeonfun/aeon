@@ -1,8 +1,7 @@
 import { parseArgs } from 'node:util'
 import { getFileContent } from '../../../dashboard/lib/github.ts'
 import { buildSoul } from '../../../dashboard/lib/builders.ts'
-import { ghAvailable } from '../../../dashboard/lib/gh.ts'
-import { emit, c, fail, isDryRun } from '../output.ts'
+import { emit, c, fail, isDryRun, requireGh } from '../output.ts'
 
 const USAGE = `aeon soul — the operator's voice (soul/SOUL.md + STYLE.md)
 
@@ -47,7 +46,7 @@ function build(args: string[]) {
   if (isDryRun()) return emit({ dryRun: true, sources: result.sources, command: ['gh', ...result.args] }, () =>
     console.log(c.yellow('dry-run: ') + 'gh ' + result.args.join(' ')))
 
-  if (!ghAvailable()) fail('GitHub CLI not authenticated. Run: gh auth login')
+  requireGh()
   buildSoul(input, { dispatch: true })
   emit({ ok: true, sources: result.sources }, () => console.log(c.green('✓ ') + 'dispatched soul-builder — watch `aeon runs ls`'))
 }

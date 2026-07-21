@@ -1,8 +1,7 @@
 import { parseArgs } from 'node:util'
 import { configureAuth } from '../../../dashboard/lib/auth.ts'
 import { normalizeAuthConfig } from '../../../dashboard/lib/auth-provider.ts'
-import { ghAvailable } from '../../../dashboard/lib/gh.ts'
-import { emit, c, fail, isDryRun } from '../output.ts'
+import { emit, c, fail, isDryRun, requireGh } from '../output.ts'
 
 const USAGE = `aeon auth — set how Claude Code authenticates in CI
 
@@ -18,7 +17,7 @@ Options:
 
 export async function authCommand(argv: string[]) {
   if (argv.includes('-h') || argv.includes('--help')) { console.log(USAGE); return }
-  if (!ghAvailable()) fail('GitHub CLI not authenticated. Run: gh auth login')
+  requireGh()
 
   let values: { key?: string; provider?: string; 'base-url'?: string; oauth?: boolean }
   let positionals: string[]

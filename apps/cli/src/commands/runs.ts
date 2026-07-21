@@ -1,7 +1,6 @@
 import { parseArgs } from 'node:util'
 import { listRuns, getRunLogs } from '../../../dashboard/lib/runs.ts'
-import { ghAvailable } from '../../../dashboard/lib/gh.ts'
-import { emit, table, c, fail } from '../output.ts'
+import { emit, table, c, fail, requireGh } from '../output.ts'
 
 const USAGE = `aeon runs — recent Aeon-launched workflow runs
 
@@ -15,7 +14,7 @@ export async function runsCommand(argv: string[]) {
   const sub = argv[0] && !argv[0].startsWith('-') ? argv[0] : 'ls'
   if (sub === 'help' || argv.includes('-h') || argv.includes('--help')) { console.log(USAGE); return }
 
-  if (!ghAvailable()) fail('GitHub CLI not authenticated. Run: gh auth login')
+  requireGh()
 
   if (sub === 'ls') return listRunsCmd(argv.slice(argv[0] === 'ls' ? 1 : 0))
   if (sub === 'logs') return logsCmd(argv.slice(1))

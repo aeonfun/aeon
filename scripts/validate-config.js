@@ -248,7 +248,6 @@ function checkSkillRefs(lines) {
   }
 }
 
-// ---------------------------------------------------------------------------
 function main() {
   checkCheckoutOrdering();
 

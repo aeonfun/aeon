@@ -49,13 +49,13 @@ export function parseConfig(raw: string): AeonConfig {
 
   const model = String(doc.get('model') ?? 'claude-sonnet-4-6')
   const harnessRaw = String(doc.get('harness') ?? 'claude')
-  const harness: Harness = HARNESSES.includes(harnessRaw as Harness) ? (harnessRaw as Harness) : 'claude'
+  const harness: Harness = HARNESSES.find(h => h === harnessRaw) ?? 'claude'
 
   let gateway: GatewayConfig = { provider: 'auto' }
   const gatewayNode = doc.get('gateway')
   if (isMap(gatewayNode)) {
     const provider = String(getMapValue(gatewayNode, 'provider') ?? 'auto')
-    gateway = { provider: GATEWAY_PROVIDERS.includes(provider as GatewayProvider) ? (provider as GatewayProvider) : 'auto' }
+    gateway = { provider: GATEWAY_PROVIDERS.find(p => p === provider) ?? 'auto' }
   }
 
   let jsonrenderEnabled = false
@@ -191,7 +191,6 @@ export function addSkillToConfig(
     enabled: config.enabled ?? false,
     schedule: config.schedule ?? '0 12 * * *',
   })
-  // Set flow style to match inline format
   if (isMap(entry)) {
     entry.flow = true
     // Force the cron to a double-quoted scalar. `0 12 * * *` is a perfectly

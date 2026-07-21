@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server'
-import { spawn, execFile, execFileSync } from 'child_process'
+import { spawn, execFileSync } from 'child_process'
 import { existsSync } from 'fs'
 import { homedir } from 'os'
 import { join } from 'path'
 import { ghArgsRepo } from '@/lib/gh'
 import { syncGatewayProvider, syncHarness } from '@/lib/gateway'
 import { errorResponse, requireGh } from '@/lib/http'
+import { openBrowser } from '@/lib/open-browser'
 
 // One-click "Connect X account" for the Grok Build (`grok`) harness — the exact
 // parallel to the Claude subscription flow (app/api/auth: run `claude
@@ -29,15 +30,6 @@ const AUTH_FILE = `${GROK_DIR}/auth.json`
 // Matches both .../oauth2/device?user_code=XXXX and .../oauth2/device/consent?...
 const DEVICE_URL_RE = /https:\/\/accounts\.x\.ai\/oauth2\/device\S*/
 const LOGIN_TIMEOUT_MS = 240_000 // ample time to approve in the browser (< Node's 5-min request cap)
-
-function openBrowser(url: string) {
-  const cmd = process.platform === 'darwin' ? 'open'
-    : process.platform === 'win32' ? 'cmd'
-    : 'xdg-open'
-  const args = process.platform === 'win32' ? ['/c', 'start', '', url] : [url]
-  // Fire-and-forget; a failure to auto-open isn't fatal (grok also printed the URL).
-  execFile(cmd, args, () => {})
-}
 
 // Run `grok login --device-auth`, opening the browser at the verification URL as
 // soon as grok prints it. Resolves on approval (exit 0), rejects otherwise.

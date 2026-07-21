@@ -5,9 +5,10 @@ import type {
   Skill, Run, Secret, SkillOutput, GatewayProvider, Harness, UploadFile, AnalyticsData,
   SkillsResponse, RunsResponse, SecretsResponse, SyncStatusResponse, McpResponse,
   OutputsResponse, StrategyResponse, SoulResponse, SyncResult, SoulExampleResponse,
-  UploadResponse, ErrorResponse, PacksResponse, McpServers,
+  UploadResponse, ErrorResponse, PacksResponse, McpServers, SoulSources, StrategySources,
+  DashboardView,
 } from '../lib/types'
-import { postJson, putJson, patchJson, del, scheduleRunRefresh } from '../lib/api-client'
+import { getJson, postJson, putJson, patchJson, del, scheduleRunRefresh } from '../lib/api-client'
 import { MODELS, authSecretsForHarness, PACK_BY_KEY, FIRST_PARTY_KEYS, DEFAULT_VISIBLE_PACKS, HARNESSES, modelsForHarness } from '../lib/constants'
 import { displayName } from '../lib/utils'
 import TargetCursor from '../components/ui/TargetCursor'
@@ -18,8 +19,8 @@ import { TopBar } from '../components/TopBar'
 import { HQOverview } from '../components/HQOverview'
 import { SkillDetail } from '../components/SkillDetail'
 import { SecretsPanel } from '../components/SecretsPanel'
-import { StrategyPanel, type StrategySources } from '../components/StrategyPanel'
-import { SoulPanel, type SoulFile, type SoulSources } from '../components/SoulPanel'
+import { StrategyPanel } from '../components/StrategyPanel'
+import { SoulPanel, type SoulFile } from '../components/SoulPanel'
 import { McpPanel } from '../components/McpPanel'
 import { PacksPanel } from '../components/PacksPanel'
 import { RightPanel } from '../components/RightPanel'
@@ -29,7 +30,7 @@ import { GrokAuthModal } from '../components/GrokAuthModal'
 import { PanelError } from '../components/PanelError'
 
 export default function Dashboard() {
-  const [view, setView] = useState<'hq' | 'packs' | 'secrets' | 'strategy' | 'mcp' | 'soul'>('hq')
+  const [view, setView] = useState<DashboardView>('hq')
   const [selectedSkill, setSelectedSkill] = useState<string | null>(null)
   const [secretFocus, setSecretFocus] = useState<string | null>(null)
   // Shared with the sidebar's category chips - HQ category cards toggle it too.
@@ -126,11 +127,11 @@ export default function Dashboard() {
     setEnabledPacks(Array.from(new Set([...DEFAULT_VISIBLE_PACKS, ...saved])))
   }, [repo])
   useEffect(() => { const id = setInterval(refreshRuns, 10_000); return () => clearInterval(id) }, [refreshRuns])
-  useEffect(() => { setFeedLoading(true); setFeedError(false); fetch('/api/outputs').then(r => r.ok ? r.json() as Promise<OutputsResponse> : Promise.reject(new Error(`HTTP ${r.status}`))).then(d => setOutputs(d.outputs || [])).catch(() => setFeedError(true)).finally(() => setFeedLoading(false)) }, [feedKey])
-  useEffect(() => { if (view === 'strategy' && !strategyLoaded) { fetch('/api/strategy').then(r => r.ok ? r.json() as Promise<StrategyResponse> : Promise.reject(new Error(`HTTP ${r.status}`))).then(d => { setStrategy(d.content || ''); setStrategyLoaded(true) }).catch(() => { setStrategyError(true); setStrategyLoaded(true) }) } }, [view, strategyLoaded])
-  useEffect(() => { if (view === 'mcp' && !mcpLoaded) { fetch('/api/mcp').then(r => r.ok ? r.json() as Promise<McpResponse> : Promise.reject(new Error(`HTTP ${r.status}`))).then(d => { setMcpServers(d.servers || {}); setMcpLoaded(true) }).catch(() => { setMcpError(true); setMcpLoaded(true) }) } }, [view, mcpLoaded])
-  useEffect(() => { if (view === 'soul' && !soulLoaded) { fetch('/api/soul').then(r => r.ok ? r.json() as Promise<SoulResponse> : Promise.reject(new Error(`HTTP ${r.status}`))).then(d => { setSoul(d.soul?.content || ''); setSoulStyle(d.style?.content || ''); setSoulLoaded(true) }).catch(() => { setSoulError(true); setSoulLoaded(true) }) } }, [view, soulLoaded])
-  useEffect(() => { if (view === 'packs' && !packsLoaded) { fetch('/api/packs').then(r => r.ok ? r.json() as Promise<PacksResponse> : Promise.reject(new Error(`HTTP ${r.status}`))).then(d => { setPacks(d); setPacksLoaded(true) }).catch(() => { setPacksError(true); setPacksLoaded(true) }) } }, [view, packsLoaded])
+  useEffect(() => { setFeedLoading(true); setFeedError(false); getJson<OutputsResponse>('/api/outputs').then(d => setOutputs(d.outputs || [])).catch(() => setFeedError(true)).finally(() => setFeedLoading(false)) }, [feedKey])
+  useEffect(() => { if (view === 'strategy' && !strategyLoaded) { getJson<StrategyResponse>('/api/strategy').then(d => { setStrategy(d.content || ''); setStrategyLoaded(true) }).catch(() => { setStrategyError(true); setStrategyLoaded(true) }) } }, [view, strategyLoaded])
+  useEffect(() => { if (view === 'mcp' && !mcpLoaded) { getJson<McpResponse>('/api/mcp').then(d => { setMcpServers(d.servers || {}); setMcpLoaded(true) }).catch(() => { setMcpError(true); setMcpLoaded(true) }) } }, [view, mcpLoaded])
+  useEffect(() => { if (view === 'soul' && !soulLoaded) { getJson<SoulResponse>('/api/soul').then(d => { setSoul(d.soul?.content || ''); setSoulStyle(d.style?.content || ''); setSoulLoaded(true) }).catch(() => { setSoulError(true); setSoulLoaded(true) }) } }, [view, soulLoaded])
+  useEffect(() => { if (view === 'packs' && !packsLoaded) { getJson<PacksResponse>('/api/packs').then(d => { setPacks(d); setPacksLoaded(true) }).catch(() => { setPacksError(true); setPacksLoaded(true) }) } }, [view, packsLoaded])
   // Reset the main content scroll to the top whenever the active view or the
   // selected skill changes, so each screen (Soul, Strategy, a skill, …) opens at the top.
   useEffect(() => { mainScrollRef.current?.scrollTo({ top: 0 }) }, [view, selectedSkill])
@@ -144,7 +145,7 @@ export default function Dashboard() {
   // Switch the agent harness. If the current model doesn't belong to the new
   // harness's model set, snap it to that harness's default so the picker + runs
   // stay coherent (persisted in the same PATCH round-trip).
-  const updateHarness = async (h: string) => { const hh = (h === 'grok' ? 'grok' : 'claude') as Harness; setHarness(hh); const list = modelsForHarness(hh); const nextModel = list.some(x => x.id === model) ? undefined : list[0]?.id; if (nextModel) setModel(nextModel); try { const { data } = await patchJson<SyncResult>('/api/skills', { harness: hh, ...(nextModel ? { model: nextModel } : {}) }); flashSynced(`Harness: ${HARNESSES.find(x => x.id === hh)?.label || hh}`, data) } catch { flash('Network error') } }
+  const updateHarness = async (h: string) => { const hh: Harness = h === 'grok' ? 'grok' : 'claude'; setHarness(hh); const list = modelsForHarness(hh); const nextModel = list.some(x => x.id === model) ? undefined : list[0]?.id; if (nextModel) setModel(nextModel); try { const { data } = await patchJson<SyncResult>('/api/skills', { harness: hh, ...(nextModel ? { model: nextModel } : {}) }); flashSynced(`Harness: ${HARNESSES.find(x => x.id === hh)?.label || hh}`, data) } catch { flash('Network error') } }
   const deleteSkill = async (n: string) => { setBusy(b => ({ ...b, [`d-${n}`]: true })); try { const { ok, data } = await del<SyncResult>('/api/skills', { name: n }); if (ok) { setSkills(s => s.filter(x => x.name !== n)); setSelectedSkill(null); flashSynced(`${displayName(n)} removed`, data) } else { flash(`${displayName(n)} removal failed`) } } catch { flash('Network error') } finally { setBusy(b => ({ ...b, [`d-${n}`]: false })) } }
   const syncToGithub = async () => { setSyncing(true); try { const { ok } = await postJson('/api/sync'); if (ok) { flash('Synced'); setHasChanges(false) } else { flash('Sync failed') } } catch { flash('Network error') } finally { setSyncing(false) } }
   // Pull rebases origin/main onto the working tree, so the whole dashboard can be
@@ -271,9 +272,8 @@ export default function Dashboard() {
 
       <RightPanel
         runs={runs} outputs={outputs} feedLoading={feedLoading} feedError={feedError} analyticsData={analyticsData} analyticsError={analyticsError}
-        onViewRun={() => {}}
         onRefresh={() => { fetchData(); setFeedKey(k => k + 1); setAnalyticsData(null); setAnalyticsError(false) }}
-        onFetchAnalytics={() => { if (!analyticsData) { setAnalyticsError(false); fetch('/api/analytics').then(r => r.ok ? r.json() as Promise<AnalyticsData> : Promise.reject(new Error(`HTTP ${r.status}`))).then(d => setAnalyticsData(d)).catch(() => setAnalyticsError(true)) } }}
+        onFetchAnalytics={() => { if (!analyticsData) { setAnalyticsError(false); getJson<AnalyticsData>('/api/analytics').then(d => setAnalyticsData(d)).catch(() => setAnalyticsError(true)) } }}
       />
 
       {showImport && <ImportModal onClose={() => setShowImport(false)} onImport={importSkill} />}

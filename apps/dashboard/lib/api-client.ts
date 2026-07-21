@@ -23,6 +23,12 @@ async function request<T>(url: string, method: string, body?: unknown): Promise<
   return { ok: res.ok, status: res.status, data }
 }
 
+// Read helper for the view loaders: resolves the parsed body, rejects on a
+// non-2xx so callers keep their own `.catch(...)` error-state handling.
+export function getJson<T>(url: string): Promise<T> {
+  return fetch(url).then(r => r.ok ? r.json() as Promise<T> : Promise.reject(new Error(`HTTP ${r.status}`)))
+}
+
 export function postJson<T>(url: string, body?: unknown): Promise<JsonResult<T>> {
   return request<T>(url, 'POST', body)
 }

@@ -8,14 +8,18 @@ import { getSecrets, setSecret, deleteSecret, VALID_SECRET_NAME } from '@/lib/se
 // share one definition. This route is now a thin HTTP wrapper.
 
 export async function GET() {
-  const { secrets, ghReady } = getSecrets()
-  if (!ghReady) {
-    return NextResponse.json({
-      error: 'GitHub CLI not authenticated. Run: gh auth login',
-      ghReady: false,
-    }, { status: 503 })
+  try {
+    const { secrets, ghReady } = getSecrets()
+    if (!ghReady) {
+      return NextResponse.json({
+        error: 'GitHub CLI not authenticated. Run: gh auth login',
+        ghReady: false,
+      }, { status: 503 })
+    }
+    return NextResponse.json({ secrets, ghReady: true })
+  } catch (error: unknown) {
+    return errorResponse(error, 'Failed to read repo secrets')
   }
-  return NextResponse.json({ secrets, ghReady: true })
 }
 
 export async function POST(request: Request) {

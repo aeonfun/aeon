@@ -71,6 +71,9 @@ export const HARNESSES: Harness[] = ['claude', 'grok']
 
 export interface UploadFile { path: string; content: string }
 
+// The dashboard's top-level view, shared by the page shell, the top bar and the sidebar.
+export type DashboardView = 'hq' | 'packs' | 'secrets' | 'strategy' | 'mcp' | 'soul'
+
 // Client→server build briefs. The panels collect them; the build routes accept
 // them as Partial (every field is untrusted/optional on the wire).
 export interface SoulSources { handle: string; name: string; links: string }
@@ -96,12 +99,10 @@ export interface SkillMetrics {
   total: number
   success: number
   failure: number
-  cancelled: number
   inProgress: number
-  successRate: number
+  successRate: number // over completed runs only
   lastRun: string | null
   lastConclusion: string | null
-  avgDurationMin: number | null
   streak: number // positive = consecutive successes, negative = consecutive failures
 }
 
@@ -112,11 +113,7 @@ export interface Insight {
 
 interface AnalyticsSummary {
   totalRuns: number
-  totalSuccess: number
-  totalFailure: number
   overallSuccessRate: number
-  uniqueSkills: number
-  periodDays: number
 }
 
 export interface AnalyticsData {

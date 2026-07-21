@@ -13,12 +13,11 @@ interface RightPanelProps {
   feedError: boolean
   analyticsData: AnalyticsData | null
   analyticsError: boolean
-  onViewRun: (run: Run) => void
   onRefresh: () => void
   onFetchAnalytics: () => void
 }
 
-export function RightPanel({ runs, outputs, feedLoading, feedError, analyticsData, analyticsError, onViewRun, onRefresh, onFetchAnalytics }: RightPanelProps) {
+export function RightPanel({ runs, outputs, feedLoading, feedError, analyticsData, analyticsError, onRefresh, onFetchAnalytics }: RightPanelProps) {
   const [rightTab, setRightTab] = useState<'feed' | 'runs' | 'analytics'>('feed')
   const [selectedRun, setSelectedRun] = useState<Run | null>(null)
   const [runLogs, setRunLogs] = useState('')
@@ -41,11 +40,6 @@ export function RightPanel({ runs, outputs, feedLoading, feedError, analyticsDat
   const viewRunLogs = async (run: Run) => {
     setSelectedRun(run); setRunLogs(''); setRunSummary(''); setShowFullLogs(false); setLogsLoading(true); setRightTab('runs')
     try { const r = await fetch(`/api/runs/${run.id}/logs`); if (r.ok) { const d = await r.json(); setRunSummary(d.summary || ''); setRunLogs(d.logs || '') } } catch { setRunLogs('Failed') } finally { setLogsLoading(false) }
-  }
-
-  const handleViewRun = (run: Run) => {
-    viewRunLogs(run)
-    onViewRun(run)
   }
 
   // Collapsed: a thin rail with an expand control and a vertical label.
@@ -107,7 +101,7 @@ export function RightPanel({ runs, outputs, feedLoading, feedError, analyticsDat
           <div>
             {!runs.length ? <div className="px-4 py-12 text-center text-xs text-primary-35 font-mono">No activity yet</div> :
               runs.map(run => (
-                <button key={run.id} onClick={() => handleViewRun(run)}
+                <button key={run.id} onClick={() => viewRunLogs(run)}
                   className="w-full flex items-center gap-2.5 px-3 py-2.5 border-b border-[rgba(250,250,250,0.04)] hover:bg-aeon-bg transition-colors text-left">
                   <span className={`text-xs ${runStatusColor(run)}`}>
                     {run.conclusion === 'success' ? '\u2713' : run.conclusion === 'failure' ? '\u2717' : run.status === 'in_progress' ? '\u25cc' : '\u00b7'}

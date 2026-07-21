@@ -1,10 +1,8 @@
 #!/usr/bin/env node
 // fleet-scorecard — gather fleet run/token data and compute the scorecard IN-RUN.
 //
-// Ported from the retired scripts/prefetch-fleet-scorecard.sh so the fleet-control
-// `scorecard` view no longer needs a prefetch phase. The deterministic maths (pricing,
-// aggregation, table generation) stays in committed code — it just runs inside the skill
-// run now instead of before it.
+// Pricing, aggregation and table generation are deterministic, so they live in
+// committed code rather than being left to the model — the skill run just invokes this.
 //
 // Auth: reads its token from the environment — GH_READ_PAT (a read-only PAT injected via
 // the skill's `requires:`, needed to read PRIVATE managed instances) is preferred, else

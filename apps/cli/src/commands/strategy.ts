@@ -2,8 +2,7 @@ import { parseArgs } from 'node:util'
 import { readFileSync } from 'node:fs'
 import { getFileContent, saveFile } from '../../../dashboard/lib/github.ts'
 import { buildStrategy } from '../../../dashboard/lib/builders.ts'
-import { ghAvailable } from '../../../dashboard/lib/gh.ts'
-import { emit, c, fail, isDryRun } from '../output.ts'
+import { emit, c, fail, isDryRun, requireGh } from '../output.ts'
 import { printSync } from '../mutate.ts'
 
 const USAGE = `aeon strategy — the operator's north-star (STRATEGY.md)
@@ -57,7 +56,7 @@ function build(args: string[]) {
   if (isDryRun()) return emit({ dryRun: true, brief: result.brief, command: ['gh', ...result.args] }, () =>
     console.log(c.yellow('dry-run: ') + 'gh ' + result.args.join(' ')))
 
-  if (!ghAvailable()) fail('GitHub CLI not authenticated. Run: gh auth login')
+  requireGh()
   buildStrategy(input, { dispatch: true })
   emit({ ok: true, brief: result.brief }, () => console.log(c.green('✓ ') + 'dispatched strategy-builder — watch `aeon runs ls`'))
 }

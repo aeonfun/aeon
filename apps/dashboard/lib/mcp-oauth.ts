@@ -205,20 +205,6 @@ export async function exchangeCode(opts: {
   }), opts.clientSecret)
 }
 
-export async function refreshToken(opts: {
-  tokenEndpoint: string
-  refreshToken: string
-  clientId: string
-  clientSecret?: string
-}): Promise<TokenSet> {
-  return postToken(opts.tokenEndpoint, tokenForm({
-    grant_type: 'refresh_token',
-    refresh_token: opts.refreshToken,
-    client_id: opts.clientId,
-    client_secret: opts.clientSecret,
-  }), opts.clientSecret)
-}
-
 // The JSON blob persisted as the MCP_<SLUG>_OAUTH secret. Everything the runtime
 // refresh (scripts/mcp-oauth-refresh.sh) needs to mint a fresh access token, with
 // no interactive step. Note it carries refresh material — treat as a secret.

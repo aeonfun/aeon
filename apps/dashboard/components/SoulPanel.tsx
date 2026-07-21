@@ -7,7 +7,6 @@ import { editorCls, panelInputCls } from '../lib/utils'
 import type { SoulSources, SoulExample } from '../lib/types'
 
 export type SoulFile = 'soul' | 'style'
-export type { SoulSources }
 
 interface SoulPanelProps {
   soul: string
