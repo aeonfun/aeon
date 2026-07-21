@@ -21,12 +21,13 @@ interface CommunityManifest {
 // The first-party pack catalog (packs.json) joined with live enabled state from
 // aeon.yml, plus the community registry (skill-packs.json) joined with on-disk
 // installed state. Both manifests are optional; a missing file yields an empty
-// list. Shared by GET /api/packs and `aeon packs ls`.
+// list. aeon.yml is NOT optional — an unreadable config throws so the caller
+// surfaces the failure instead of rendering every skill as disabled.
+// Shared by GET /api/packs and `aeon packs ls`.
 export async function getPacks(): Promise<{ firstParty: Pack[]; community: CommunityPack[] }> {
-  const config = await getFileContent('aeon.yml')
-    .then(r => parseConfig(r.content))
-    .catch(() => null)
-  const enabledOf = (slug: string) => config?.skills[slug]?.enabled ?? false
+  const config = parseConfig((await getFileContent('aeon.yml')).content)
+  // `?.` still needed: a pack skill may simply not be listed in aeon.yml.
+  const enabledOf = (slug: string) => config.skills[slug]?.enabled ?? false
 
   let firstParty: Pack[] = []
   try {

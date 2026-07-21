@@ -59,18 +59,16 @@ export const BUILTIN_NAMES = new Set(BUILTIN_SECRETS.map(s => s.name))
 // Valid env var name pattern (builtins + custom secrets).
 export const VALID_SECRET_NAME = /^[A-Z][A-Z0-9_]{1,}$/
 
-// Names of the secrets currently set in the managed repo. Returns [] when gh is
-// unavailable or errors, so callers can render the catalog with all-unset state.
+// Names of the secrets currently set in the managed repo. Throws when `gh secret
+// list` fails (rate limit, lost repo permission, network) — an all-unset list
+// would be a lie the operator acts on by re-pasting live keys. The "gh not
+// authenticated" case is handled one layer up by getSecrets() via ghAvailable().
 export function listSecretNames(): string[] {
-  try {
-    const out = execFileSync('gh', ['secret', 'list', ...ghArgsRepo(), '--json', 'name', '-q', '.[].name'], {
-      stdio: 'pipe',
-      cwd: process.cwd(),
-    }).toString().trim()
-    return out ? out.split('\n').filter(Boolean) : []
-  } catch {
-    return []
-  }
+  const out = execFileSync('gh', ['secret', 'list', ...ghArgsRepo(), '--json', 'name', '-q', '.[].name'], {
+    stdio: 'pipe',
+    cwd: process.cwd(),
+  }).toString().trim()
+  return out ? out.split('\n').filter(Boolean) : []
 }
 
 // The full secret roster: every builtin (with its set/unset state) plus any
