@@ -1,4 +1,3 @@
 {
-  "$schema": "https://unpkg.com/knip@5/schema.json",
-  "entry": ["lib/catalog.ts!"]
+  "$schema": "https://unpkg.com/knip@5/schema.json"
 }

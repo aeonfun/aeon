@@ -177,15 +177,6 @@ body::before {
   .brand-mark, .brand-mark img { animation: none; }
 }
 
-/* Background grid - kept for the dashboard's surface texture but recolored to coral */
-.bg-grid {
-  background-color: var(--aeon-bg);
-  background-image:
-    linear-gradient(rgba(210, 75, 64, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(210, 75, 64, 0.04) 1px, transparent 1px);
-  background-size: 70px 70px;
-}
-
 /* ──────────────────────────────────────────────────────────
    TYPOGRAPHY - functional labels remain Space Mono
    ────────────────────────────────────────────────────────── */
@@ -219,30 +210,9 @@ body::before {
 }
 .card-hst:hover { border-color: var(--aeon-rule-strong); }
 .card-hst-orange:hover { border-color: var(--aeon-red); }
-.card-hst-green:hover { border-color: var(--aeon-green); }
 
 /* Selected indicator - coral left rail */
 .selected-indicator { box-shadow: inset 3px 0 0 0 var(--aeon-red); }
-
-/* Logo mark - coral ring with brand dot */
-.logo-mark {
-  width: 40px; height: 40px;
-  border: 1.5px solid var(--aeon-red);
-  display: flex; align-items: center; justify-content: center;
-  position: relative;
-  border-radius: 50%;
-}
-.logo-mark-inner {
-  position: absolute; inset: 4px;
-  border: 1px solid var(--aeon-rule-strong);
-  border-radius: 50%;
-}
-.logo-mark-letter {
-  font-family: var(--font-display-dela), 'Arial Black', sans-serif;
-  font-size: 18px;
-  color: var(--aeon-fg);
-  position: relative; z-index: 1;
-}
 
 /* Progress bar - coral fill on dark track */
 .progress-bar {
@@ -282,31 +252,10 @@ body::before {
   transform: translateY(-2px);
   box-shadow: 0 10px 30px rgba(210, 75, 64, 0.35);
 }
-.btn-ghost {
-  font-family: var(--font-display-dela), 'Arial Black', sans-serif;
-  font-size: 12px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--aeon-fg);
-  background: transparent;
-  padding: 10px 18px;
-  border: 1.5px solid var(--aeon-rule-strong);
-  transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1),
-              border-color 0.22s ease,
-              color 0.22s ease;
-  display: inline-flex; align-items: center; justify-content: center;
-}
-.btn-ghost:hover:not(:disabled) {
-  border-color: var(--aeon-fg);
-  color: var(--aeon-fg);
-  transform: translateY(-2px);
-}
-
 /* compact variants used in the topbar - same hover swagger,
    smaller padding to line up with the small select / icon
    buttons next to them */
-.btn-solid-sm,
-.btn-ghost-sm {
+.btn-solid-sm {
   font-family: var(--font-display-dela), 'Arial Black', sans-serif;
   font-size: 11px;
   letter-spacing: 0.14em;
@@ -334,17 +283,6 @@ body::before {
   transform: translateY(-1px);
   box-shadow: 0 6px 16px rgba(210, 75, 64, 0.3);
 }
-.btn-ghost-sm {
-  color: var(--aeon-fg);
-  background: transparent;
-  border-color: var(--aeon-rule-strong);
-}
-.btn-ghost-sm:hover:not(:disabled) {
-  border-color: var(--aeon-fg);
-  color: var(--aeon-fg);
-  transform: translateY(-1px);
-}
-
 /* Quiet outline button - for tertiary actions (GitHub, Pull,
    Push) where we want the same height as the others but a
    dimmer presence. */
@@ -373,8 +311,8 @@ body::before {
 
 /* ──────────────────────────────────────────────────────────
    COMPACT INLINE ACTIONS - Set / Edit / Remove / Cancel / Save
-   A compact take on .btn-ghost: transparent fill, a real border,
-   uppercase display type. Tertiary actions that used to be bare
+   Transparent fill, a real border, uppercase display type.
+   Tertiary actions that used to be bare
    text now read as buttons, with a subtle tinted hover per intent.
    ────────────────────────────────────────────────────────── */
 .btn-mini,
@@ -441,37 +379,11 @@ body::before {
 /* ──────────────────────────────────────────────────────────
    ANIMATIONS
    ────────────────────────────────────────────────────────── */
-@keyframes fade-in {
-  from { opacity: 0; transform: translateY(14px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.animate-fade-in { animation: fade-in 0.5s ease-out forwards; }
-
-@keyframes pulse-border {
-  0%, 100% { border-color: var(--aeon-red); }
-  50% { border-color: var(--aeon-red-soft); }
-}
-.animate-pulse-border { animation: pulse-border 2s ease-in-out infinite; }
-
 @keyframes shimmer {
   0%, 100% { opacity: 0.4; }
   50% { opacity: 1; }
 }
 .animate-shimmer { animation: shimmer 2s ease-in-out infinite; }
-
-@keyframes loading-bar {
-  0%, 100% { transform: scaleY(0.4); opacity: 0.4; }
-  50% { transform: scaleY(1); opacity: 1; }
-}
-.animate-loading-bar { animation: loading-bar 1s ease-in-out infinite; }
-
-@keyframes scan {
-  0%, 100% { transform: translateY(-50px); opacity: 0; }
-  10% { opacity: 0.6; }
-  50% { transform: translateY(50px); opacity: 0.6; }
-  90% { opacity: 0.6; }
-}
-.animate-scan { animation: scan 2s ease-in-out infinite; }
 
 @keyframes shimmer-gradient {
   0% { background-position: 200% 0; }
@@ -485,14 +397,7 @@ body::before {
 }
 .animate-aeon-spin { animation: aeon-spin 48s linear infinite reverse; }
 
-.stagger-1 { animation-delay: 0.1s; }
-.stagger-2 { animation-delay: 0.2s; }
-.stagger-3 { animation-delay: 0.3s; }
-.stagger-4 { animation-delay: 0.4s; }
-.stagger-5 { animation-delay: 0.5s; }
-
-/* Backwards-compat utility classes - still referenced in some components,
-   restyled here so they fit the new theme instead of being removed wholesale. */
+/* Utility classes used by ErrorScreen and SpecNode */
 .warning-stripes {
   height: 1px;
   background: var(--aeon-rule);
@@ -534,19 +439,3 @@ input[type='number'],
 }
 .spotlight:hover::before { opacity: 1; }
 .spotlight > * { position: relative; z-index: 1; }
-
-/* ──────────────────────────────────────────────────────────
-   MARQUEE - left-scrolling editorial band (matches the site's
-   bottom marquee).
-   ────────────────────────────────────────────────────────── */
-.aeon-marquee {
-  display: inline-block;
-  animation: aeonScroll 42s linear infinite;
-}
-@keyframes aeonScroll {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .aeon-marquee { animation: none; }
-}
