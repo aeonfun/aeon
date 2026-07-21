@@ -71,6 +71,9 @@ export const HARNESSES: Harness[] = ['claude', 'grok']
 
 export interface UploadFile { path: string; content: string }
 
+// The dashboard's top-level view, shared by the page shell, the top bar and the sidebar.
+export type DashboardView = 'hq' | 'packs' | 'secrets' | 'strategy' | 'mcp' | 'soul'
+
 // Client→server build briefs. The panels collect them; the build routes accept
 // them as Partial (every field is untrusted/optional on the wire).
 export interface SoulSources { handle: string; name: string; links: string }

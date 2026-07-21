@@ -10,13 +10,12 @@ type RunRecord = Pick<GhRunJson, 'name' | 'status' | 'conclusion' | 'createdAt' 
 
 export async function GET() {
   try {
-    // Fetch up to 200 recent runs from GitHub Actions
     const out = execFileSync(
       'gh',
       ['run', 'list', ...ghArgsRepo(), '--json', 'name,status,conclusion,createdAt,updatedAt', '--limit', '200'],
       { stdio: 'pipe', cwd: REPO_ROOT, timeout: 30000 },
     ).toString()
-    const raw: RunRecord[] = JSON.parse(out)
+    const raw = JSON.parse(out) as RunRecord[]
 
     // Group by skill name (extract from "skill: <name>" or "skill: <name> (<var>)")
     const bySkill = new Map<string, RunRecord[]>()
@@ -75,12 +74,10 @@ export async function GET() {
 
     skills.sort((a, b) => b.total - a.total)
 
-    // Generate insights
     const insights: Insight[] = []
     const now = Date.now()
     const threeDaysMs = 3 * 24 * 60 * 60 * 1000
 
-    // Check for skills with high failure rates
     for (const s of skills) {
       if (s.total >= 3 && s.successRate < 50) {
         insights.push({
@@ -90,7 +87,6 @@ export async function GET() {
       }
     }
 
-    // Check for skills on a failure streak
     for (const s of skills) {
       if (s.streak <= -3) {
         insights.push({
@@ -100,8 +96,6 @@ export async function GET() {
       }
     }
 
-    // Check for skills that haven't run recently
-    // Read aeon.yml to find enabled skills
     try {
       const ymlPath = resolve(REPO_ROOT, 'aeon.yml')
       const yml = readFileSync(ymlPath, 'utf-8')
@@ -133,7 +127,6 @@ export async function GET() {
       // aeon.yml not readable, skip enabled-skill insights
     }
 
-    // Highlight top performers
     for (const s of skills) {
       if (s.total >= 5 && s.successRate === 100) {
         insights.push({

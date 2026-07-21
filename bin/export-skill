@@ -68,7 +68,6 @@ fi
 SKILL_NAME="$1"
 shift
 
-# Parse flags
 OUTPUT_DIR=""
 CREATE_TAR=false
 
@@ -90,19 +89,14 @@ if [[ ! -d "$SKILL_SRC" ]] || [[ ! -f "$SKILL_SRC/SKILL.md" ]]; then
   exit 1
 fi
 
-# Set output directory
 if [[ -z "$OUTPUT_DIR" ]]; then
   OUTPUT_DIR="$EXPORTS_DIR/$SKILL_NAME"
 fi
 
-# Parse skill metadata
 SKILL_DISPLAY=$(sed -n '/^---$/,/^---$/{ /^name:/s/^name: *//p }' "$SKILL_SRC/SKILL.md")
 SKILL_DESC=$(sed -n '/^---$/,/^---$/{ /^description:/s/^description: *//p }' "$SKILL_SRC/SKILL.md")
 
-# Create output directory
 mkdir -p "$OUTPUT_DIR"
-
-# Copy all skill files
 cp -r "$SKILL_SRC"/* "$OUTPUT_DIR/"
 
 # Generate a README for the exported skill
@@ -139,7 +133,6 @@ READMEEOF
 echo "Exported '$SKILL_NAME' to $OUTPUT_DIR/"
 ls -la "$OUTPUT_DIR/"
 
-# Create tar archive if requested
 if [[ "$CREATE_TAR" == "true" ]]; then
   TAR_FILE="${OUTPUT_DIR}.tar.gz"
   tar -czf "$TAR_FILE" -C "$(dirname "$OUTPUT_DIR")" "$(basename "$OUTPUT_DIR")"

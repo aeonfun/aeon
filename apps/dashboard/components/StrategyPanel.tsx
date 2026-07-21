@@ -6,8 +6,6 @@ import { STRATEGY_SCAFFOLD, ARCHETYPES } from '../lib/strategy-templates'
 import { editorCls, panelInputCls } from '../lib/utils'
 import type { StrategySources } from '../lib/types'
 
-export type { StrategySources }
-
 interface StrategyPanelProps {
   content: string
   loading: boolean

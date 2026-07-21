@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import type { Skill, Run, Secret, SkillMcpRef, McpServers } from '../lib/types'
+import type { Skill, Run, Secret, SkillKeyRef, SkillMcpRef, McpServers } from '../lib/types'
 import { MODELS, keyProvidedByHarness } from '../lib/constants'
 import { MCP_BY_SLUG } from '../lib/mcp-catalog'
 import { displayName, getSkillStatus, cronLabel, statusDot, inputCls, runStatusColor } from '../lib/utils'
@@ -44,7 +44,7 @@ function Section({ label, action, children }: { label: string; action?: React.Re
 // A single declared credential. The key name and the right-hand action both
 // jump to Settings → Access Keys, scrolled to this key with its input open —
 // so the operator can paste the value in one click.
-function KeyRow({ kref, secret, harness, onGoTo }: { kref: { key: string; optional: boolean }; secret?: Secret; harness: string; onGoTo: (name: string) => void }) {
+function KeyRow({ kref, secret, harness, onGoTo }: { kref: SkillKeyRef; secret?: Secret; harness: string; onGoTo: (name: string) => void }) {
   const isSet = !!secret?.isSet
   // The harness may cover this key natively (Grok Build → XAI_API_KEY). Then the
   // row reads as satisfied even unset, but the key stays settable as an override

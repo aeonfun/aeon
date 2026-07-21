@@ -144,7 +144,6 @@ export async function POST(request: Request) {
       }, { status: 400 })
     }
 
-    // Write all files under skills/<name>/
     let filesWritten = 0
     for (const file of files) {
       // Strip the common prefix (folder containing SKILL.md) from paths
@@ -179,7 +178,6 @@ export async function POST(request: Request) {
       filesWritten++
     }
 
-    // Add to aeon.yml if not already present
     let configUpdated = true
     let configError: string | undefined
     try {

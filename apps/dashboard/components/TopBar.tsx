@@ -1,10 +1,10 @@
-import type { Skill, GatewayProvider, Harness } from '../lib/types'
+import type { Skill, GatewayProvider, Harness, DashboardView } from '../lib/types'
 import { PACK_BY_KEY, HARNESSES, modelsForHarness } from '../lib/constants'
 import { displayName } from '../lib/utils'
 
 interface TopBarProps {
   skill: Skill | null
-  view: 'hq' | 'packs' | 'secrets' | 'strategy' | 'mcp' | 'soul'
+  view: DashboardView
   repo: string
   model: string
   harness: Harness
