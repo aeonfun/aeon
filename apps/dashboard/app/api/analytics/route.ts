@@ -32,18 +32,9 @@ export async function GET() {
       const sorted = runs.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
       const success = sorted.filter(r => r.conclusion === 'success').length
       const failure = sorted.filter(r => r.conclusion === 'failure').length
-      const cancelled = sorted.filter(r => r.conclusion === 'cancelled').length
       const inProgress = sorted.filter(r => r.status === 'in_progress').length
       const total = sorted.length
-
-      let avgDurationMin: number | null = null
-      const completedRuns = sorted.filter(r => r.conclusion && r.createdAt && r.updatedAt)
-      if (completedRuns.length > 0) {
-        const totalMs = completedRuns.reduce((sum, r) => {
-          return sum + (new Date(r.updatedAt).getTime() - new Date(r.createdAt).getTime())
-        }, 0)
-        avgDurationMin = Math.round((totalMs / completedRuns.length / 60000) * 10) / 10
-      }
+      const completed = total - inProgress
 
       let streak = 0
       if (sorted.length > 0) {
@@ -62,12 +53,12 @@ export async function GET() {
         total,
         success,
         failure,
-        cancelled,
         inProgress,
-        successRate: total > 0 ? Math.round((success / (total - inProgress)) * 100) : 0,
+        // Rate over *completed* runs: a skill whose only runs are in-progress
+        // would otherwise divide by zero and render as NaN.
+        successRate: completed > 0 ? Math.round((success / completed) * 100) : 0,
         lastRun: sorted[0]?.createdAt || null,
         lastConclusion: sorted[0]?.conclusion || null,
-        avgDurationMin,
         streak,
       })
     }
@@ -138,7 +129,6 @@ export async function GET() {
 
     const totalRuns = skills.reduce((s, sk) => s + sk.total, 0)
     const totalSuccess = skills.reduce((s, sk) => s + sk.success, 0)
-    const totalFailure = skills.reduce((s, sk) => s + sk.failure, 0)
     const overallRate = totalRuns > 0 ? Math.round((totalSuccess / totalRuns) * 100) : 0
 
     return NextResponse.json({
@@ -146,13 +136,7 @@ export async function GET() {
       insights,
       summary: {
         totalRuns,
-        totalSuccess,
-        totalFailure,
         overallSuccessRate: overallRate,
-        uniqueSkills: skills.length,
-        periodDays: raw.length > 0
-          ? Math.ceil((now - new Date(raw[raw.length - 1].createdAt).getTime()) / (24 * 60 * 60 * 1000))
-          : 0,
       },
     })
   } catch (error: unknown) {

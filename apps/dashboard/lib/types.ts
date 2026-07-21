@@ -99,12 +99,10 @@ export interface SkillMetrics {
   total: number
   success: number
   failure: number
-  cancelled: number
   inProgress: number
-  successRate: number
+  successRate: number // over completed runs only
   lastRun: string | null
   lastConclusion: string | null
-  avgDurationMin: number | null
   streak: number // positive = consecutive successes, negative = consecutive failures
 }
 
@@ -115,11 +113,7 @@ export interface Insight {
 
 interface AnalyticsSummary {
   totalRuns: number
-  totalSuccess: number
-  totalFailure: number
   overallSuccessRate: number
-  uniqueSkills: number
-  periodDays: number
 }
 
 export interface AnalyticsData {

@@ -9,9 +9,10 @@
 export const GATEWAY_REGISTRY = {
   bankr: { label: 'Bankr', secretName: 'BANKR_LLM_KEY', prefixes: ['bk_'], domain: 'bankr.bot' },
   openrouter: { label: 'OpenRouter', secretName: 'OPENROUTER_API_KEY', prefixes: ['sk-or-'], domain: 'openrouter.ai' },
-  // UsePod and Venice have no distinctive key/token prefix, so they're selected
-  // explicitly via the dashboard's provider picker. (UsePod's token is embedded
-  // in the base URL by the workflow, not sent as a header.)
+  // UsePod and Venice have no distinctive key/token prefix, so they can't be
+  // detected from the key alone — they must be pinned explicitly (`aeon config
+  // set gateway <provider>`). (UsePod's token is embedded in the base URL by the
+  // workflow, not sent as a header.)
   usepod: { label: 'UsePod', secretName: 'USEPOD_TOKEN', prefixes: [], domain: 'usepod.ai' },
   venice: { label: 'Venice', secretName: 'VENICE_API_KEY', prefixes: [], domain: 'venice.ai' },
   surplus: { label: 'Surplus Intelligence', secretName: 'SURPLUS_API_KEY', prefixes: ['inf_'], domain: 'surplusintelligence.ai' },
