@@ -1,6 +1,8 @@
 // Output helpers shared by every command. A single `--json` switch flips all
 // human rendering to machine-parseable JSON so the CLI drops into scripts.
 
+import { ghAvailable } from '../../dashboard/lib/gh.ts'
+
 let jsonMode = false
 export function setJsonMode(on: boolean) { jsonMode = on }
 
@@ -55,4 +57,10 @@ export function fail(message: string, code = 1): never {
     console.error(c.red('error: ') + message)
   }
   process.exit(code)
+}
+
+// Guard for every command that shells out to `gh`. Sites that need to say what
+// specifically failed (e.g. `secrets ls`) keep their own `fail(...)` message.
+export function requireGh(): void {
+  if (!ghAvailable()) fail('GitHub CLI not authenticated. Run: gh auth login')
 }

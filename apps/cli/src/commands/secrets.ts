@@ -2,9 +2,8 @@ import { readFileSync } from 'node:fs'
 import {
   getSecrets, setSecret, deleteSecret, VALID_SECRET_NAME,
 } from '../../../dashboard/lib/secrets-catalog.ts'
-import { ghAvailable } from '../../../dashboard/lib/gh.ts'
 import type { Secret } from '../../../dashboard/lib/types.ts'
-import { emit, table, c, fail, isDryRun } from '../output.ts'
+import { emit, table, c, fail, isDryRun, requireGh } from '../output.ts'
 
 const USAGE = `aeon secrets — the credential vault (names + set-state, never values)
 
@@ -70,7 +69,7 @@ function requireSecretName(args: string[]): string {
 }
 
 async function setCmd(args: string[]) {
-  if (!ghAvailable()) fail('GitHub CLI not authenticated. Run: gh auth login')
+  requireGh()
   const name = requireSecretName(args)
   let value: string
   if (args.includes('--stdin')) {
@@ -91,7 +90,7 @@ async function setCmd(args: string[]) {
 }
 
 async function rmCmd(args: string[]) {
-  if (!ghAvailable()) fail('GitHub CLI not authenticated. Run: gh auth login')
+  requireGh()
   const name = requireSecretName(args)
   if (isDryRun()) {
     return emit({ label: `rm ${name}`, dryRun: true }, () =>

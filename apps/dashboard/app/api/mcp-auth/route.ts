@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server'
 import { requireGh, errorResponse } from '@/lib/http'
 import { discover, registerClient, makePkce, makeState, authorizeUrl, type TokenSet } from '@/lib/mcp-oauth'
-import { pendingFlows, openBrowser, storeSecrets, OAUTH_TIMEOUT_MS, type PendingFlow } from '@/lib/mcp-oauth-server'
+import { pendingFlows, storeSecrets, OAUTH_TIMEOUT_MS, type PendingFlow } from '@/lib/mcp-oauth-server'
+import { openBrowser } from '@/lib/open-browser'
 
 // POST /api/mcp-auth — start (and complete) the OAuth Authorization Code + PKCE
 // flow for an MCP server, mirroring app/api/grok-auth's one-click UX: discover the

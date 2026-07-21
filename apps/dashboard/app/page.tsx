@@ -7,7 +7,7 @@ import type {
   OutputsResponse, StrategyResponse, SoulResponse, SyncResult, SoulExampleResponse,
   UploadResponse, ErrorResponse, PacksResponse, McpServers,
 } from '../lib/types'
-import { postJson, putJson, patchJson, del, scheduleRunRefresh } from '../lib/api-client'
+import { getJson, postJson, putJson, patchJson, del, scheduleRunRefresh } from '../lib/api-client'
 import { MODELS, authSecretsForHarness, PACK_BY_KEY, FIRST_PARTY_KEYS, DEFAULT_VISIBLE_PACKS, HARNESSES, modelsForHarness } from '../lib/constants'
 import { displayName } from '../lib/utils'
 import TargetCursor from '../components/ui/TargetCursor'
@@ -126,11 +126,11 @@ export default function Dashboard() {
     setEnabledPacks(Array.from(new Set([...DEFAULT_VISIBLE_PACKS, ...saved])))
   }, [repo])
   useEffect(() => { const id = setInterval(refreshRuns, 10_000); return () => clearInterval(id) }, [refreshRuns])
-  useEffect(() => { setFeedLoading(true); setFeedError(false); fetch('/api/outputs').then(r => r.ok ? r.json() as Promise<OutputsResponse> : Promise.reject(new Error(`HTTP ${r.status}`))).then(d => setOutputs(d.outputs || [])).catch(() => setFeedError(true)).finally(() => setFeedLoading(false)) }, [feedKey])
-  useEffect(() => { if (view === 'strategy' && !strategyLoaded) { fetch('/api/strategy').then(r => r.ok ? r.json() as Promise<StrategyResponse> : Promise.reject(new Error(`HTTP ${r.status}`))).then(d => { setStrategy(d.content || ''); setStrategyLoaded(true) }).catch(() => { setStrategyError(true); setStrategyLoaded(true) }) } }, [view, strategyLoaded])
-  useEffect(() => { if (view === 'mcp' && !mcpLoaded) { fetch('/api/mcp').then(r => r.ok ? r.json() as Promise<McpResponse> : Promise.reject(new Error(`HTTP ${r.status}`))).then(d => { setMcpServers(d.servers || {}); setMcpLoaded(true) }).catch(() => { setMcpError(true); setMcpLoaded(true) }) } }, [view, mcpLoaded])
-  useEffect(() => { if (view === 'soul' && !soulLoaded) { fetch('/api/soul').then(r => r.ok ? r.json() as Promise<SoulResponse> : Promise.reject(new Error(`HTTP ${r.status}`))).then(d => { setSoul(d.soul?.content || ''); setSoulStyle(d.style?.content || ''); setSoulLoaded(true) }).catch(() => { setSoulError(true); setSoulLoaded(true) }) } }, [view, soulLoaded])
-  useEffect(() => { if (view === 'packs' && !packsLoaded) { fetch('/api/packs').then(r => r.ok ? r.json() as Promise<PacksResponse> : Promise.reject(new Error(`HTTP ${r.status}`))).then(d => { setPacks(d); setPacksLoaded(true) }).catch(() => { setPacksError(true); setPacksLoaded(true) }) } }, [view, packsLoaded])
+  useEffect(() => { setFeedLoading(true); setFeedError(false); getJson<OutputsResponse>('/api/outputs').then(d => setOutputs(d.outputs || [])).catch(() => setFeedError(true)).finally(() => setFeedLoading(false)) }, [feedKey])
+  useEffect(() => { if (view === 'strategy' && !strategyLoaded) { getJson<StrategyResponse>('/api/strategy').then(d => { setStrategy(d.content || ''); setStrategyLoaded(true) }).catch(() => { setStrategyError(true); setStrategyLoaded(true) }) } }, [view, strategyLoaded])
+  useEffect(() => { if (view === 'mcp' && !mcpLoaded) { getJson<McpResponse>('/api/mcp').then(d => { setMcpServers(d.servers || {}); setMcpLoaded(true) }).catch(() => { setMcpError(true); setMcpLoaded(true) }) } }, [view, mcpLoaded])
+  useEffect(() => { if (view === 'soul' && !soulLoaded) { getJson<SoulResponse>('/api/soul').then(d => { setSoul(d.soul?.content || ''); setSoulStyle(d.style?.content || ''); setSoulLoaded(true) }).catch(() => { setSoulError(true); setSoulLoaded(true) }) } }, [view, soulLoaded])
+  useEffect(() => { if (view === 'packs' && !packsLoaded) { getJson<PacksResponse>('/api/packs').then(d => { setPacks(d); setPacksLoaded(true) }).catch(() => { setPacksError(true); setPacksLoaded(true) }) } }, [view, packsLoaded])
   // Reset the main content scroll to the top whenever the active view or the
   // selected skill changes, so each screen (Soul, Strategy, a skill, …) opens at the top.
   useEffect(() => { mainScrollRef.current?.scrollTo({ top: 0 }) }, [view, selectedSkill])
@@ -273,7 +273,7 @@ export default function Dashboard() {
         runs={runs} outputs={outputs} feedLoading={feedLoading} feedError={feedError} analyticsData={analyticsData} analyticsError={analyticsError}
         onViewRun={() => {}}
         onRefresh={() => { fetchData(); setFeedKey(k => k + 1); setAnalyticsData(null); setAnalyticsError(false) }}
-        onFetchAnalytics={() => { if (!analyticsData) { setAnalyticsError(false); fetch('/api/analytics').then(r => r.ok ? r.json() as Promise<AnalyticsData> : Promise.reject(new Error(`HTTP ${r.status}`))).then(d => setAnalyticsData(d)).catch(() => setAnalyticsError(true)) } }}
+        onFetchAnalytics={() => { if (!analyticsData) { setAnalyticsError(false); getJson<AnalyticsData>('/api/analytics').then(d => setAnalyticsData(d)).catch(() => setAnalyticsError(true)) } }}
       />
 
       {showImport && <ImportModal onClose={() => setShowImport(false)} onImport={importSkill} />}
