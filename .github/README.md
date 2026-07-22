@@ -161,7 +161,7 @@ Aeon's skills ship to production. These numbers are live at **[aeon.fun](https:/
 |-------|---------------|
 | **`vuln-scanner`** | **~1.6M GitHub stars secured** - real vulnerabilities found, patched, and responsibly disclosed across 54 open-source projects (31 rated High/Critical). [Every disclosure →](https://www.aeon.fun/security) |
 | **ecosystem** | **72 products & agents** built on Aeon. [`ECOSYSTEM.md`](../docs/ECOSYSTEM.md) |
-| **community** | **10 community skill packs** published to the registry. [`community-skill-packs.md`](../docs/community-skill-packs.md) |
+| **community** | **13 community skill packs** published to the registry. [`community-skill-packs.md`](../docs/community-skill-packs.md) |
 
 **One skill, end to end.** `vuln-scanner` clones a repo from your watchlist, runs Semgrep, OSV, and TruffleHog, then triages the hits hard - a finding ships only if it's exploitable, not theoretical, and you'd defend it to the maintainer's face. Most are discarded. What survives becomes a maintainer-ready report, sent through the repo's private advisory channel with a proposed patch pushed to your fork for the maintainer to cherry-pick. That loop, run across the open-source wild, is what the numbers above are made of.
 
@@ -323,6 +323,9 @@ Either way the installer reads the pack's `skills-pack.json` manifest, runs the 
 | [Polymarket Trader by Simmer](https://github.com/SpartanLabsXyz/aeon-skill-pack-polymarket/tree/main/aeon-skill-pack) (`--path aeon-skill-pack`) | 3 | Signal, discovery, and real order-placing on Polymarket (simulate-by-default, live opt-in). |
 | [Charon for AEON](https://github.com/CharonAI-code/charon/tree/main/skills/aeon) (`--path skills/aeon`) | 2 | Repo-local policy enforcement for AEON runs, with natural-language policy management. |
 | [aeon-skill-pack-agentlink](https://github.com/techdigger/aeon-skill-pack-agentlink) | 1 | Verified, human-backed on-chain identity on Base via AgentLink. Read-only, on-demand. |
+| [proof-of-loadout](https://github.com/sparkleware/proof-of-loadout) | 1 | Compose an Aeon loadout for a goal, flag USDC-per-call packs (Charon gate routed), preflight a MiroShark sim. Plan-only by default. |
+| [aeon-pulse](https://github.com/sparkleware/aeon-pulse) | 1 | Daily digest of Aeon upstream: recent commits, release freshness, open issues. Read-only, keyless. |
+| [eth-gas-watch](https://github.com/sparkleware/eth-gas-watch) | 1 | Etherscan gas oracle every 4h: traffic-light status, cheap-window alerts, trend from its own ledger. Read-only. |
 
 **To list a pack here**, open a PR that adds a table row **and** a matching [`catalog/skill-packs.json`](../catalog/skill-packs.json) entry. The full checklist - public repo + license, a per-skill `SKILL.md`, a `skills-pack.json` manifest, the registry schema, and the trust model - is in [`docs/community-skill-packs.md`](../docs/community-skill-packs.md#pack-maintainers-publishing-checklist).
 
