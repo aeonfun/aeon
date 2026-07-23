@@ -51,6 +51,8 @@ Dashboard views, local dev, env vars, and remote access are documented in [`apps
 
 **Prefer the terminal?** Everything the dashboard does is also a command - `./aeon skills ls`, `./aeon skills enable <name>`, `./aeon secrets set …`, `./aeon runs logs <id>`. Same logic, no browser, scriptable with `--json`. See [Command line](../apps/cli/README.md).
 
+**Use Claude Code?** This repo ships a `/aeon` skill that sets up, schedules, edits, and debugs your instance from a chat - open the repo folder in [Claude Code](https://claude.com/claude-code) and type `/aeon` (it's already there, zero-install). See [the `/aeon` Claude Code skill](../docs/claude-code-skill.md).
+
 <details>
 <summary><strong>No admin rights / can't install <code>gh</code>?</strong></summary>
 
