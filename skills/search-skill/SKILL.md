@@ -131,7 +131,7 @@ Sources: npx=<ok|fail> vercel=<N> anthropics=<N> bankr=<N> skills.sh=<ok|fail>
 Append:
 
 ```
-## search-skill
+### search-skill
 - **Mode:** SEARCH_SKILL_<OK_INSTALLED|OK_CANDIDATES|NO_GAP|EMPTY|ERROR>
 - **Query:** "<query>" (source: <var|cron-state|issues|priorities|logs>)
 - **Catalogs:** npx=<ok|fail>, vercel=<N>, anthropics=<N>, bankr=<N>, skills.sh=<ok|fail>

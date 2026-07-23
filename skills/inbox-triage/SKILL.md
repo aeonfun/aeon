@@ -180,7 +180,7 @@ If nothing meets the threshold: skip notification. Log that no notification was 
 Append to `memory/logs/${today}.md`:
 
 ```markdown
-## Inbox Triage
+### inbox-triage
 - **Scanned:** {N} notifications
 - **Security:** {N}
 - **Vuln replies:** {N total} ({N_critical} critical, {N_aging} aging, {N_fresh} fresh)
@@ -193,7 +193,7 @@ Append to `memory/logs/${today}.md`:
 
 If skipped:
 ```markdown
-## Inbox Triage
+### inbox-triage
 - INBOX_TRIAGE_SKIP: {reason}
 ```
 

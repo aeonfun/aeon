@@ -96,7 +96,7 @@ Read the last 3 days of memory/logs/ to avoid re-surfacing already-noted mention
 
 9. **Log to memory/logs/${today}.md**:
    ```
-   ## Mention Radar
+   ### mention-radar
    - **{project}:** [N mentions / QUIET]
    (one line per target)
    - **Top find:** [best mention in one line, or "none"]

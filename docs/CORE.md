@@ -41,6 +41,12 @@ Audits every enabled skill from `cron-state.json` + per-run Haiku quality scores
 
 It files issues into `memory/issues/ISS-NNN.md`, resolves them when a skill recovers (drops it from `affected_skills`, flips status to resolved), and notifies only on state change. It won't touch the issue tracker unless the operator has opted in by creating `INDEX.md`.
 
+### [`aeon-doctor`](../skills/aeon-doctor/SKILL.md) — the config linter · weekly Mon 15:00 · opt-in
+
+The config-side complement to `skill-health`. Where `skill-health` reads *run outcomes*, `aeon-doctor` reads the **config itself** — before anything runs — for the silent-misconfig class that never produces a failed run to detect: an unquoted `schedule:` the scheduler regex skips (never fires, no error, nothing in the Actions tab), a duplicate `aeon.yml` key, a `mode:` typo that silently grants write, a `requires:` block list that injects no keys, an `.mcp.json` `${VAR}` that blacks out every MCP server, or a daily-log entry written under `## <Name>` instead of the contracted `### <slug>` the health loop keys on. Twelve static checks, all local file reads.
+
+It is **read-only by contract** — a diagnostic that inspects config must not mutate it. It surfaces precise findings (file, line, one-command fix) and points the fix at `skill-repair` / the `./aeon` CLI; it does **not** file issues or enter the repair loop below. Notifies only on findings, silent on a clean config. Disabled by default.
+
 ### [`skill-repair`](../skills/skill-repair/SKILL.md) — the fixer · reactive, `depends_on: skill-health`
 
 Phases: PREFLIGHT → TRIAGE → DIAGNOSE → REPAIR → VERIFY → LOG, with a one-shot exit taxonomy (`REPAIR_OK_FIXED`, `REPAIR_OK_SYSTEMIC`, `REPAIR_DIAGNOSED_NO_FIX`, `REPAIR_NO_TARGETS`, `REPAIR_DRY_RUN`, `REPAIR_BLOCKED`).

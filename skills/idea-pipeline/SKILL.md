@@ -29,7 +29,7 @@ Before any other work, inspect `${var}`. If it **starts with `pick:`**, this run
    - If nothing matches, or two rows tie with no clear winner, send a plain re-ask listing 3–5 candidate names and end: `./notify "Couldn't find an idea matching \"<sel>\". Reply with the exact name or backlog number. Candidates: <name1>, <name2>, <name3>."`
 5. **Mark it chosen-to-build** — the shared marking convention (identical in idea-forge): append ` ✓ selected ${today}` to the end of that row's `name` cell, keeping the table pipes intact. If the cell already carries a `✓ selected` marker, leave it (idempotent) — it's already queued.
 6. Confirm with a short `./notify` (keep it clean — no `test`/`trace`/`ping`/`debug` substrings): `./notify "Marked \"<idea name>\" as next to build — flagged in the backlog. Run /feature or /deploy-prototype on it when you're ready."` Do not auto-dispatch any skill — marking chosen is the safe action.
-7. Log to `memory/logs/${today}.md` under a `## Idea Pipeline` heading: `- IDEA_PIPELINE_PICK: marked "<idea name>" as chosen-to-build (from a pick: reply)`.
+7. Log to `memory/logs/${today}.md` under a `### idea-pipeline` heading: `- IDEA_PIPELINE_PICK: marked "<idea name>" as chosen-to-build (from a pick: reply)`.
 8. **End the run.** Do not proceed to step 1 or run the audit.
 
 ### 1. Load the idea backlog
@@ -208,7 +208,7 @@ Then record the `FORCE_REPLY_OFFERED: idea-pipeline::pick` marker in step 10. A 
 Append to `memory/logs/${today}.md`:
 
 ```markdown
-## Idea Pipeline
+### idea-pipeline
 - **Total ideas:** N_total
 - **Screened:** N_screened (by idea-validator)
 - **Executed:** N_executed (skill/prototype/PR match)

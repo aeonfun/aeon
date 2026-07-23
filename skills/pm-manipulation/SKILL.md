@@ -231,7 +231,7 @@ If status is **high-confidence (≥4)**, prepend `[URGENT] ` to the notification
 
 Append to `memory/logs/${today}.md`:
 ```
-## PM Manipulation
+### pm-manipulation
 - **Scanned:** N markets (past 3d)
 - **Suspicious (≥3):** K
 - **High-confidence (≥4):** J

@@ -174,7 +174,7 @@ Write a brief scorecard to `output/articles/picks-scorecard-${today}.md`:
 
 Append to `memory/logs/${today}.md`:
 ```
-## Picks Tracker
+### picks-tracker
 - **Window:** last 30 days (N picks)
 - **Score:** [WINS]W [HOLDS]H [LOSSES]L | avg [AVG]% | hit rate [HIT_RATE]%
 - **Best:** [SYMBOL] +[BEST]%
