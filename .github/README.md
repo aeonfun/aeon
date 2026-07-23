@@ -84,21 +84,21 @@ The prompt *is* the skill, judgment and all. You schedule it, hand it a `var`, c
 | Pack | Key | Skills | Examples |
 | --- | --- | --- | --- |
 | **Core** - fleet coordination, self-config, liveness; shown by default | `core` | 11 | `fleet-control`, `spawn-instance`, `auto-workflow` |
-| **Evolution** - authors, evolves, installs & heals its own skills; shown by default | `evolution` | 7 | `create-skill`, `autoresearch`, `skill-repair` |
+| **Evolution** - authors, evolves, installs & heals its own skills; shown by default | `evolution` | 8 | `create-skill`, `autoresearch`, `aeon-doctor` |
 | **Basics** - simple, immediately-runnable skills; shown by default | `basics` | 15 | `digest`, `token-movers`, `pr-review` |
 | **Dev & Code** | `dev` | 8 | `github-monitor`, `feature`, `deploy-prototype` |
 | **Crypto & Markets** | `crypto` | 12 | `token-pick`, `defi-overview`, `robinhood-mcp` |
 | **Productivity** | `productivity` | 8 | `mention-radar`, `send-email`, `okf-export` |
 
 <details>
-<summary><strong>Full catalog (all 61 skills by pack)</strong></summary>
+<summary><strong>Full catalog (all 62 skills by pack)</strong></summary>
 
 Three packs are shown by default (**Core**, **Evolution**, **Basics**); the rest are revealed on demand.
 
 | Pack | Skills |
 |------|--------|
 | **Core** (`core`, 11) | `auto-merge`,`auto-workflow`,`fleet-control`,`fork-fleet`,`heartbeat`,`memory-flush`,`narrative-convergence`,`shiplog`,`soul-builder`,`spawn-instance`,`strategy-builder` |
-| **Evolution** (`evolution`, 7) | `autoresearch`,`create-skill`,`install-skill`,`search-skill`,`self-improve`,`skill-health`,`skill-repair` |
+| **Evolution** (`evolution`, 8) | `aeon-doctor`,`autoresearch`,`create-skill`,`install-skill`,`search-skill`,`self-improve`,`skill-health`,`skill-repair` |
 | **Basics** (`basics`, 15) | `action-converter`,`article`,`bd-radar`,`digest`,`executor-mcp`,`fetch-tweets`,`github-trending`,`glim-mcp`,`idea-forge`,`last30`,`pr-review`,`price-alert`,`token-movers`,`tx-explain`,`write-tweet` |
 | **Dev & Code** (`dev`, 8) | `changelog`,`deploy-prototype`,`feature`,`github-monitor`,`inbox-triage`,`pr-triage`,`vuln-scanner`,`vuln-tracker` |
 | **Crypto & Markets** (`crypto`, 12) | `base-mcp`,`defi-overview`,`distribute-tokens`,`investigation-report`,`monitor-polymarket`,`narrative-tracker`,`onchain-monitor`,`picks-tracker`,`pm-manipulation`,`robinhood-mcp`,`token-pick`,`unlock-monitor` |
@@ -118,6 +118,8 @@ Every skill output is automatically scored 1–5 by Haiku after each run. Scores
 2. **`skill-health`** - audits quality scores and flags API degradation patterns
 3. **`skill-repair`** - diagnoses and patches failing skills automatically
 4. **`self-improve`** - evolves prompts, config, and workflows based on performance
+
+Alongside this run-quality loop, **`aeon-doctor`** (opt-in, weekly) lints the *config itself* for the silent-misconfig class that never produces a failed run to detect — an unquoted `schedule:` that never fires, a duplicate key, a `mode:` typo. It's read-only: it surfaces findings and points the fix at `skill-repair`, never mutating config itself.
 
 Health skills file issues, repair skills close them. `heartbeat` is the only skill enabled by default: nothing to report → silent; something needs attention → one notification. Deep dive: [`docs/CORE.md`](../docs/CORE.md).
 
