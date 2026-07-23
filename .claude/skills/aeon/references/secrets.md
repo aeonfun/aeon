@@ -83,7 +83,7 @@ Each is opt-in. Unset means the skills that want it skip or degrade.
 | `COINGECKO_API_KEY` | crypto price/market skills | coingecko.com/en/api |
 | `ALCHEMY_API_KEY` | on-chain RPC/data | dashboard.alchemy.com |
 | `ETHERSCAN_API_KEY` | `tx-explain`, `investigation-report`, `onchain-monitor` | etherscan.io/apis — V2 is one multichain key covering Ethereum + Base |
-| `BASESCAN_KEY` | `investigation-report` | Simplest is the **same value** as `ETHERSCAN_API_KEY` |
+| `BASESCAN_API_KEY` | `investigation-report` | Simplest is the **same value** as `ETHERSCAN_API_KEY` |
 | `BASE_RPC_URL` | Base on-chain skills | docs.base.org/chain/node-providers — a public RPC is used by default |
 | `BANKR_API_KEY` | `distribute-tokens` (real on-chain sends) | bankr.bot/api-keys — Wallet API, not the LLM key |
 | `VERCEL_TOKEN` | `deploy-prototype` | vercel.com/account/settings/tokens |
