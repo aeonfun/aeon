@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import type { Skill, Run, Secret, SkillKeyRef, SkillMcpRef, McpServers } from '../lib/types'
-import { MODELS, keyProvidedByHarness } from '../lib/constants'
+import { modelsForHarness, keyProvidedByHarness } from '../lib/constants'
 import { MCP_BY_SLUG } from '../lib/mcp-catalog'
 import { displayName, getSkillStatus, cronLabel, statusDot, inputCls, runStatusColor } from '../lib/utils'
 import { ScheduleEditor } from './ScheduleEditor'
@@ -125,7 +125,11 @@ function McpRow({ mref, installed, onGoTo }: { mref: SkillMcpRef; installed: boo
 }
 
 export function SkillDetail({ skill, runs, model, harness, secrets, mcpServers, busy, onToggle, onRun, onDelete, onUpdateSchedule, onUpdateVar, onUpdateModel, onGoToSecret, onGoToMcp, onViewRun }: SkillDetailProps) {
-  const modelOptions = MODELS
+  // Per-skill model-override options must track the active harness, like the
+  // global picker (TopBar/page.tsx) — otherwise a non-claude harness only offers
+  // Claude models here, so an operator can't pin a skill to e.g. kimi-k3 and
+  // picking a Claude id would bake a mismatched `model:` into the skill.
+  const modelOptions = modelsForHarness(harness)
   const [editingSchedule, setEditingSchedule] = useState(false)
   const [editingVar, setEditingVar] = useState(false)
   const [varDraft, setVarDraft] = useState('')
