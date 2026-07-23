@@ -6,8 +6,12 @@
 .env.local
 .env.*.local
 
-# Claude Code local state
-.claude/
+# Claude Code local state — ignored, EXCEPT the shipped operator skill
+# (`.claude/skills/aeon/` gives every fork the `/aeon` setup skill; see docs/aeon-setup.md)
+.claude/*
+!.claude/skills/
+.claude/skills/*
+!.claude/skills/aeon/
 
 # Cache dirs skills create at run time; regenerated every run
 .*-cache/
