@@ -36,7 +36,7 @@ const DOMAINS: Record<string, string> = {
   COINGECKO_API_KEY: 'coingecko.com',
   ALCHEMY_API_KEY: 'alchemy.com',
   ETHERSCAN_API_KEY: 'etherscan.io',
-  BASESCAN_KEY: 'basescan.org',
+  BASESCAN_API_KEY: 'basescan.org',
   BANKR_API_KEY: 'bankr.bot',
   VERCEL_TOKEN: 'vercel.com',
   REPLICATE_API_TOKEN: 'replicate.com',
