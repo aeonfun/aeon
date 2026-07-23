@@ -9,6 +9,45 @@ from or pin to; the template keeps serving latest `main` to new forks.
 
 ## [Unreleased]
 
+### Added
+
+- **Multi-harness support** — skills now run on any of six agent CLIs (Claude
+  Code, Grok, Codex, Pi, Vibe, Kimi) behind one `{result, usage, session_id}`
+  contract via the new `harness-adapter`'s `run-harness`. The four
+  OpenRouter-backed harnesses (`codex`/`pi`/`vibe`/`kimi`) share a single
+  `OPENROUTER_API_KEY` or run on their own native login; scoring, token
+  accounting, memory, and notifications are unchanged. All six were verified
+  end-to-end on GitHub Actions. Selectable from the dashboard top bar, the
+  workflow-dispatch **Harness** input, or `harness:` in `aeon.yml` (global or
+  per-skill). (#765, #767)
+- **`aeon-doctor` skill** — a static config-correctness linter that catches the
+  silent-failure class (unquoted schedules, duplicate keys, unconfigured skills,
+  mode typos, broken `requires`/MCP refs) no run-based health skill can see.
+  Read-only; notifies only on problems. (#761)
+- **`/aeon` setup skill shipped in-repo** — the operator-assistant skill that
+  configures an instance now lives at `.claude/skills/aeon/` (with references)
+  and is documented in `docs/aeon-setup.md`, which also names the coding agents
+  that can drive an install (Claude Code, Codex, Hermes, OpenClaw). (#762, #763)
+
+### Changed
+
+- **Secret rename** — `BASESCAN_KEY` → `BASESCAN_API_KEY`, to follow the
+  `<PROVIDER>_API_KEY` convention every sibling explorer/provider key uses.
+  Operators who set the old secret should re-add it under the new name (or rely
+  on `ETHERSCAN_API_KEY`, the same Etherscan v2 key). (#760)
+- **Dashboard: per-skill model picker tracks the active harness** — a skill's
+  detail panel now offers the selected harness's model ids. (#766)
+
+### Security
+
+- Patched two high-severity CVE classes in the dashboard — `sharp`/`libvips`,
+  and Next.js `16.2.10 → 16.2.11`. (#758, #759)
+
+### Maintenance
+
+- Repo-wide cleanup pass across 8 dimensions (dead code, weak types,
+  duplication, circular deps). (#757)
+
 ## [0.1.0] - 2026-07-09
 
 First tagged snapshot — a stable, fully documented point to fork from or pin to.
