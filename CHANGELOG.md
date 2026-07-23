@@ -5,7 +5,7 @@ All notable changes to Aeon are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 Aeon is a fork-and-configure template, so releases mark a stable point to fork
-from or pin to; the template keeps serving latest `main` to new forks.
+from or pin to; the template keeps serving the latest `main` to new forks.
 
 ## [Unreleased]
 
