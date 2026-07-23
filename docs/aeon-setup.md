@@ -8,7 +8,7 @@ description: The operator-facing agent skill that sets up, schedules, edits, and
 
 Aeon ships an **[Agent Skill](https://code.claude.com/docs/en/skills)** (`SKILL.md`) that turns *"how do I set up / schedule / fix this?"* into a guided chat. It's the fastest way to drive your instance — you describe what you want in plain language and it runs the right `./aeon` commands for you, with the silent-failure traps already baked in.
 
-It's a portable skill, not tied to one product: [Claude Code](https://claude.com/claude-code) is the primary host (it auto-loads skills from `.claude/skills/`, so it's zero-install there), but the skill is just a `SKILL.md` in the open Agent Skills format — any agent tool that supports skills can run it.
+It's a portable skill, not tied to one product: [Claude Code](https://claude.com/claude-code) is the primary host (it auto-loads skills from `.claude/skills/`, so it's zero-install there), but the skill is just a `SKILL.md` in the open Agent Skills format — it works with **Claude Code, Codex, Hermes, or OpenClaw**, and any other agent tool that supports skills.
 
 > **This is not an Aeon skill.** The 62 skills under [`skills/`](../skills) run unattended on GitHub Actions. **This** one runs inside *your* agent session on *your* machine — it's the operator's assistant for configuring the instance, not something that runs on a schedule. It doesn't appear in `aeon.yml`, the packs, or the catalog.
 
@@ -51,7 +51,7 @@ Then open **any** directory in Claude Code and type `/aeon`; point it at your in
 
 ### Option C — another agent tool
 
-The skill is a standard `SKILL.md` (plus a `references/` folder). Any agent that supports [Agent Skills](https://code.claude.com/docs/en/skills) can use it — drop `.claude/skills/aeon/` into that tool's skills location. Everything it does is plain `gh` + `./aeon` commands, so nothing about it is Claude-Code-specific beyond where the file is loaded from.
+The skill is a standard `SKILL.md` (plus a `references/` folder). Any agent that supports [Agent Skills](https://code.claude.com/docs/en/skills) — Claude Code, Codex, Hermes, OpenClaw, and others — can use it: drop `.claude/skills/aeon/` into that tool's skills location. Everything it does is plain `gh` + `./aeon` commands, so nothing about it is Claude-Code-specific beyond where the file is loaded from.
 
 ## How it relates to the dashboard & CLI
 
