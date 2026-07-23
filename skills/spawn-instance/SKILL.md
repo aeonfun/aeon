@@ -316,7 +316,7 @@ If `FORK_STATE == "exists"` at step 5, the final exit status is `SPAWN_FORK_EXIS
 
 Append to `memory/logs/${today}.md`:
 ```
-## spawn-instance
+### spawn-instance
 - Status: ${EXIT_CODE}
 - Instance: ${OWNER}/${REPO_NAME}
 - Purpose: ${PURPOSE}

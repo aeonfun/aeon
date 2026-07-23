@@ -102,6 +102,19 @@ Every skill's `category:` must be one of `core evolution basics dev crypto produ
 ```
 Report any offender as **warn**.
 
+### 12 · Daily-log heading not `### <slug>` — health loop can't key it (warn)
+`CLAUDE.md` mandates each skill append its daily-log entry under a **`### <slug>`** heading — "the health loop parses this shape", and `skill-health` / `heartbeat` key skills by **slug**. A skill that logs under `## <Display Name>` (wrong level *and* wrong identifier) still runs, but its narrative log is harder for the health view to attribute and for the cross-skill dedup ("read the last 3 days of logs") to match — a silent degrade, never an error.
+```bash
+for f in skills/*/SKILL.md; do
+  s=$(basename "$(dirname "$f")"); grep -qE 'memory/logs/\$\{today\}' "$f" || continue   # only log-writers
+  grep -qE '###[[:space:]]+'"$s"'\b' "$f" && continue                                     # compliant
+  name=$(awk -F': *' '/^name:/{print $2; exit}' "$f" | sed 's/ *$//')
+  hit=$(grep -oE '^##[[:space:]]+('"$s"'|'"${name:-$s}"')\b' "$f" | head -1)
+  [ -n "$hit" ] && echo "$s logs under '$hit' — should be '### $s'"
+done
+```
+Each hit → **warn**. Fix: change the Log-section heading (the instruction line *and* the example block) to `### <slug>`, and demote any sub-sections inside the block to `####`.
+
 ## Report
 
 - **No findings → send nothing and exit.** A clean config is the common case; silence is correct and keeps this channel trustworthy.

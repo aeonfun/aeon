@@ -39,7 +39,7 @@ This is **not** a bulk or cold-outreach tool. One deliberate recipient per run, 
      --force-reply --placeholder "e.g. make it warmer" \
      --context "send-email::revise"
    ```
-7. **Log** `- SEND_EMAIL_REVISED (draft re-staged for review, not sent)` under a `## Send Email` heading in `memory/logs/${today}.md`, then **end the run**.
+7. **Log** `- SEND_EMAIL_REVISED (draft re-staged for review, not sent)` under a `### send-email` heading in `memory/logs/${today}.md`, then **end the run**.
 
 Otherwise (no `revise:` prefix), run the normal flow:
 
@@ -108,7 +108,7 @@ The send is the skill's **final** action and is **fail-closed**: apply every che
 
 6. **Log** to `memory/logs/${today}.md`:
    ```
-   ## Send Email
+   ### send-email
    - **To:** <to>  (cc: <cc>)
    - **Subject:** <subject>
    - **Why:** <one line>

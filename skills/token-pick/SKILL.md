@@ -152,7 +152,7 @@ The `token-movers::deep-dive` marker routes the operator's reply to **token-move
 ### 7. Log to `memory/logs/${today}.md`
 
 ```
-## Token Pick
+### token-pick
 - **Token:** SYMBOL — $price (±X% 24h) — tier HIGH/MEDIUM/SKIP — score X/10
 - **Token thesis:** [one line, including catalyst]
 - **Market:** "Question?" — YES X¢ — tier HIGH/MEDIUM/SKIP — edge Xpp

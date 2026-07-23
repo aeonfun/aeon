@@ -133,7 +133,7 @@ Notification rules:
 
 Append:
 ```
-## Action Converter
+### action-converter
 - **Mode:** OK | BOOTSTRAP | THIN | NO_CONTEXT
 - **Focus:** <var or "general">
 - **Shape:** <today's shape line>

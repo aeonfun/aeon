@@ -85,7 +85,7 @@ Tx: https://basescan.org/tx/0xhash...12
 Append to `memory/logs/${today}.md`:
 
 ```
-## tx-explain
+### tx-explain
 - Tx: 0x… | status: success | action: swap (Aerodrome)
 - Net: -1.5 WETH / +4210 USDC for 0xabc…
 - Flags: none
