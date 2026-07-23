@@ -40,7 +40,7 @@ cd aeon && ./aeon
 
 Open [http://localhost:5555](http://localhost:5555) and follow the four steps:
 
-1. **Authenticate** - connect your Claude Pro/Max subscription or your X account (for the [Grok harness](../docs/harnesses.md)), or paste an API key - Anthropic, Anthropic-compatible, or an [LLM gateway](../docs/CONFIGURATION.md#llm-gateways) key, routed automatically by prefix.
+1. **Authenticate** - connect your Claude Pro/Max subscription or your X account (for the [Grok harness](../docs/harnesses.md)), or paste an API key - Anthropic, Anthropic-compatible, or an [LLM gateway](../docs/CONFIGURATION.md#llm-gateways) key, routed automatically by prefix. A single **OpenRouter** key also unlocks four more [agent harnesses](../docs/harnesses.md) - Codex, Pi, Vibe, and Kimi - each of which can alternatively run on its own native login.
 2. **Add a channel** - [Telegram, Discord, Slack, or email](#notifications) so Aeon can talk to you.
 3. **Pick skills** - toggle what you want, set schedules. Each skill shows the API keys and MCP servers it needs, with one-click setup.
 4. **Run** - hit **Run now** on any skill to try it immediately; API keys and `var` values apply directly, no push needed. When you change config (schedules, toggles), **Push** commits it to GitHub in one click so Actions runs it on cron.
@@ -245,6 +245,8 @@ skills:
   token-movers: { enabled: true, schedule: "30 12 * * *", model: "claude-sonnet-4-6" }
 ```
 
+> These ids apply to the **claude** harness. Each other [harness](../docs/harnesses.md) carries its own model list (Codex `openai/*`, Kimi `moonshotai/*`, Vibe `mistralai/*`, Pi `deepseek/*`), which the dashboard picker swaps in when you select that harness.
+
 ### Authentication
 
 Aeon needs **at least one** way to reach a model. Add any of these in the dashboard's **Authenticate** modal - paste a key and the provider is auto-detected from its prefix (or picked from the dropdown). You can set several: each run resolves the highest-priority one whose key is present, so you don't have to choose just one.
@@ -255,6 +257,9 @@ Aeon needs **at least one** way to reach a model. Add any of these in the dashbo
 | **Anthropic API** | `ANTHROPIC_API_KEY` | Pay-as-you-go · [console.anthropic.com](https://console.anthropic.com) |
 | **LLM gateway** - cheaper / crypto-settled | Bankr `bk_…` · OpenRouter `sk-or-…` · Surplus `inf_…` · Venice / UsePod | see [LLM Gateways](../docs/CONFIGURATION.md#llm-gateways) |
 | **Grok** - via your X account | `GROK_CREDENTIALS` or `XAI_API_KEY` | SuperGrok / X Premium+ · see [Harnesses](../docs/harnesses.md) |
+| **Codex / Pi / Vibe / Kimi** - four more harnesses | `OPENROUTER_API_KEY` (shared), or each harness's own native auth (`CODEX_AUTH`, `KIMI_AUTH`, `OPENAI_API_KEY`, `MOONSHOT_API_KEY`, `MISTRAL_API_KEY`) | OpenRouter or the provider · see [Harnesses](../docs/harnesses.md) |
+
+For the four OpenRouter-backed harnesses, capture a native login from the terminal with `aeon auth --harness codex|kimi|pi|vibe` (or the dashboard's **Connect** buttons); with none set they fall back to the shared `OPENROUTER_API_KEY`.
 
 Prefer the CLI for the subscription token?
 
@@ -355,7 +360,7 @@ Everything above gets you running. The deeper reference lives in [`docs/`](../do
 - **[Configuration & advanced](../docs/CONFIGURATION.md)** - skill chaining, reactive triggers, scheduler frequency, capability modes, MCP in runs, cross-repo tokens, `STRATEGY.md` / soul, Fleet Watcher, remote dashboard, two-repo setup, Actions cost.
 - **[ADK (Aeon Developer Kit)](../docs/ADK.md)** - build products on top of Aeon: authorize access to your users' instances with a GitHub App, drive skills over the GitHub API, and ship your own skills as a pack.
 - **[LLM gateways](../docs/CONFIGURATION.md#llm-gateways)** - eight ways to power Claude Code, resolved by an automatic fail-over cascade.
-- **[Harnesses](../docs/harnesses.md)** - run skills on Claude Code or the Grok CLI; token accounting and per-skill knobs.
+- **[Harnesses](../docs/harnesses.md)** - run skills on any of six agent CLIs (Claude Code, Grok, Codex, Pi, Vibe, Kimi) behind one contract via [`harness-adapter`](../harness-adapter/); auth, token accounting, per-skill knobs, and the live verification matrix.
 - **[Knowledge (OKF)](../docs/OKF.md)** - Aeon's memory is a portable Open Knowledge Format bundle other agents can read.
 - **[Use Aeon's skills from Claude](../apps/mcp-server/README.md)** - every skill as an `aeon-<name>` MCP tool in Claude Desktop and Code.
 - **[Command line](../apps/cli/README.md)** - the whole dashboard as scriptable `./aeon` commands.
