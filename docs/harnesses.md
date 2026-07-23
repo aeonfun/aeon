@@ -8,16 +8,122 @@ description: Deep reference for Aeon's harness axis (Claude Code vs Grok Build) 
 
 The **harness** is the coding-agent CLI that runs your skills. The README's
 [Harnesses](../.github/README.md#harnesses) section covers the basics — the two
-harnesses (`claude` default, `grok`), how to select one, and one-click X-account
-login. This page collects the deeper behavior for anyone running the `grok`
-harness in anger.
+first-class harnesses (`claude` default, `grok`), how to select one, and
+one-click X-account login. This page collects the deeper behavior for anyone
+running the `grok` harness in anger.
+
+## Additional harnesses via run-harness (`codex`, `pi`, `vibe`, `kimi`)
+
+Four more harnesses are selectable in the dashboard's harness dropdown and the
+`harness:` config: **codex** (OpenAI Codex CLI), **pi** (Pi Coding Agent),
+**vibe** (Mistral Vibe) and **kimi** (Moonshot Kimi). Unlike `claude`/`grok`
+they don't have a bespoke branch in the workflow — they run through
+[`harness-adapter`](../harness-adapter/)'s `run-harness`, which wraps each CLI in
+the same Claude-Code-shaped `{result, usage, session_id}` contract that
+`scripts/run-grok.sh` provides, so everything downstream (scoring, token
+accounting, memory, notifications) is unchanged.
+
+All four authenticate with a single **`OPENROUTER_API_KEY`** — set it in
+Settings and every one of them works. Their model picker offers OpenRouter ids
+rather than the `claude-*`/`grok-*` ids, and the model you pick is what actually
+runs. Each of these harnesses carries its own curated list (`CODEX_MODELS` /
+`VIBE_MODELS` / `PI_MODELS` / `KIMI_MODELS`): **codex**
+defaults to `openai/gpt-5-mini` (it fails on `gpt-5-nano`) and also offers the
+codex-tuned line (`gpt-5.1-codex-mini`, `gpt-5.3-codex`) and the general
+`gpt-5.6` family (`luna`, `terra`); **vibe**'s generic `ProviderConfig` drives any
+OpenRouter model, so it defaults to `mistralai/mistral-medium-3-5` and offers
+`deepseek/deepseek-v4-flash`; **pi** (litellm `openrouter/<slug>` routing) runs the
+DeepSeek V4 pair — `deepseek-v4-flash` (default) and `deepseek-v4-pro`; **kimi** is
+Moonshot, so it runs Moonshot's own Kimi family through OpenRouter —
+`moonshotai/kimi-k2.5` (default), `kimi-k3` (strongest, ~2× slower), and
+`kimi-k2.7-code`. The scorer
+routes through the same harness the skill
+ran on, so a repo with **no** Claude credentials still gets every run scored.
+
+### Native auth — run on your own provider account
+
+OpenRouter is the shared fallback; each harness can also run on its **own**
+provider, the same way `grok` runs on your X-account session. Two have real
+login flows captured for CI (the exact `GROK_CREDENTIALS` pattern — drive the
+login locally, store the session as a repo secret, restore it on the runner):
+
+| harness | native auth | how to set it |
+|---------|-------------|---------------|
+| `codex` | **ChatGPT** OAuth | `aeon auth --harness codex` (or dashboard **Connect ChatGPT**) → `CODEX_AUTH`. Or an OpenAI key: `--key sk-…` → `OPENAI_API_KEY` |
+| `kimi`  | **Moonshot** device login | `aeon auth --harness kimi` (or **Connect Kimi**) → `KIMI_AUTH`. Or `--key` → `MOONSHOT_API_KEY` |
+| `pi`    | provider API key | `aeon auth --harness pi --key <sk-ant-…\|sk-…>` → the matching `ANTHROPIC_API_KEY` / `OPENAI_API_KEY` (auto-detected) |
+| `vibe`  | Mistral key | `aeon auth --harness vibe --key <key>` → `MISTRAL_API_KEY` (vibe's default provider) |
+
+Which one runs is decided at dispatch by **which secret is set**, native first,
+OpenRouter last (`authSecretsForHarness` / the `HARNESS_AUTH` registry in
+`apps/dashboard/lib/harness-auth.ts`). On native auth the harness uses its **own
+default model** — the OpenRouter model picker only applies when the run falls
+back to `OPENROUTER_API_KEY` (an `openai/*` id would be the wrong provider
+otherwise). The workflow's *Install harness CLI* step restores/configures the
+selected provider; the CLI + dashboard flows share `lib/harness-auth-server.ts`.
+
+The full deployment runbook — the added/modified workflow steps, per-harness
+install and config, runner gotchas (AppArmor, the codex pin), and the measured
+reasons `opencode`/`copilot`/`agy` are excluded — is
+[`harness-adapter/docs/aeon-integration.md`](../harness-adapter/docs/aeon-integration.md).
+
+## Verification status
+
+All six harnesses were verified end-to-end through `run-harness` on **2026-07-22**
+— each dispatched live on GitHub Actions, exercising auth, read-only enforcement,
+token accounting, and the post-run health scorer:
+
+| harness | auth as-tested | read-only enforcement | token usage | live result |
+|---------|----------------|-----------------------|-------------|-------------|
+| `claude` | `CLAUDE_CODE_OAUTH_TOKEN` | allowlist-strip + post-run revert (`--no-sandbox`) | real | green, both modes |
+| `grok` | `GROK_CREDENTIALS` (X-OAuth) | allowlist-strip + post-run revert (`--no-sandbox`) | real | scored 4/5 |
+| `codex` | OpenRouter (`OPENROUTER_API_KEY`) | wrapper OS sandbox (codex's own sandbox off in read-only to avoid nesting) | real | 5/5 on `gpt-5-mini`, real fetch verified |
+| `pi` | OpenRouter | wrapper OS sandbox | real | 5/5 on `gpt-5-mini` |
+| `vibe` | OpenRouter | wrapper sandbox + `--disabled-tools write_file,edit` | char/4 estimate | 4/5 on `gpt-5-mini` |
+| `kimi` | OpenRouter | wrapper OS sandbox (its only read-only guard) | char/4 estimate | Kimi K3 5/5, K2.5 & K2.7-code 4/5 — slates verified real |
+
+Notes from the sweep:
+
+- **Model matters for the score.** `pi`/`vibe` scored 2/5 on `gpt-5-nano` (the model
+  punted / truncated) but 5/5 and 4/5 on `gpt-5-mini` — the harness scoring path is
+  sound; nano was just too weak for the task.
+- **Auth precedence is a trap.** codex resolves `CODEX_AUTH` → `OPENAI_API_KEY` →
+  OpenRouter and grok resolves `GROK_CREDENTIALS` → `XAI_API_KEY`, **native-first** —
+  so a stale or quota-dead native secret keeps failing even when a working fallback
+  is present. Delete the native secret to fall through. Deleting `CODEX_AUTH` is also
+  how you pin a cheap model: the OpenRouter path forwards `-f model=openai/gpt-5-*`,
+  while native auth uses the harness's own (pricier) default.
+- **The scorer grades stdout, not `./notify`.** A run that routes its deliverable
+  into a channel and leaves a thin final message is under-graded even though the
+  work was real (observed on codex/`gpt-5-mini`, which narrated pessimistically in
+  stdout while its full slate went to notify). Keep the substance in the run's final
+  message.
+
+Fixes shipped during the sweep: harness unification through `run-harness` (#2),
+codex read-only inline notify (#4), keep-substance-in-stdout guidance (#5),
+kimi/vibe token estimate (#6), grok scorer fallback to `grok-4.5` (#7), and
+codex read-only under the wrapper sandbox so fetches work (#14 — its native
+`--sandbox read-only` was also blocking the network).
 
 ## Token accounting
 
-Grok's `--output-format json` returns the result text but no token counts, so
-grok-harness runs report **0 tokens** in cost tracking. The captured OAuth
-session can expire — if unattended runs start failing on auth, click **Connect X
-account** again in the dashboard.
+Every harness runs through `run-harness`, which normalizes usage into the
+Claude-Code `{input, output, cache_read, cache_creation}` shape. What each CLI
+exposes differs:
+
+- **claude, grok, codex, pi** report **real** usage. grok's adapter uses
+  `--output-format streaming-json`, whose terminal `{"type":"end"}` event carries
+  input/output/cache tokens + cost (`harness-adapter/adapters/grok.sh`) — the older
+  `scripts/run-grok.sh` plain-`json` path reported 0, but the unified adapter does
+  not.
+- **kimi and vibe** expose **no** usage field (kimi's `stream-json` and vibe's
+  `--output json` carry none — verified live), so their adapters fall back to a
+  transparent `char/4` **estimate** of the assembled input + result rather than a
+  misleading `0/0/0`; real counts always win if a future build emits them.
+
+The captured OAuth sessions (grok's `GROK_CREDENTIALS`, codex's `CODEX_AUTH`) can
+expire — if unattended runs start failing on auth, re-capture via the dashboard
+(**Connect X account** / **Connect ChatGPT**) or switch to the API-key path.
 
 ## Capability mode carries over unchanged
 
@@ -61,13 +167,14 @@ verify: true       # append a self-verification loop before finishing    → --c
 effort: high       # low|medium|high|xhigh|max → --effort  (reasoning models only)
 ```
 
-`effort`/`reasoning_effort` map to the API's `reasoningEffort`, which the fast
-`grok-composer-2.5-fast` rejects — so they're applied only when a reasoning model
-(`grok-4.5`, grok's default, or `grok-build`) is selected and skipped-with-a-notice
-otherwise. `best_of_n`/`verify` build on grok's subagents (so the harness drops
-`--no-subagents` for those runs); `verify` can't combine with structured output.
-`run-grok.sh` also understands `GROK_JSON_SCHEMA` for `--json-schema` structured
-output (reliably honoured by reasoning models like `grok-4.5` / `grok-build`).
+`effort`/`reasoning_effort` map to the API's `reasoningEffort`, honoured by
+`grok-4.5` — a reasoning model, and the only model the X-account login exposes to
+the CLI (see [Verification status](#verification-status); other xAI model ids are
+api.x.ai strings the CLI rejects as "unknown model id"). `best_of_n`/`verify` build
+on grok's subagents (so the harness drops `--no-subagents` for those runs);
+`verify` can't combine with structured output. `run-grok.sh` also understands
+`GROK_JSON_SCHEMA` for `--json-schema` structured output (reliably honoured by
+`grok-4.5`).
 
 ## Every entry point runs on either harness
 

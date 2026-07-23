@@ -138,10 +138,20 @@ else
   PLAIN="$MSG"
 fi
 
-# Always save to .pending-notify/ for post-run delivery (sandbox fallback)
-mkdir -p .pending-notify
+# Try to save to .pending-notify/ for post-run re-delivery. This queue is the
+# fallback for the INVERSE sandbox — network blocked, FS writable (the old claude
+# wrapper case): notify can't reach the wire inline, so the workflow's "Send
+# pending notifications" step re-delivers post-run from here.
+#
+# Non-fatal by design: codex's native read-only sandbox is the MIRROR case — the
+# FS is blocked but the network is open — so this write fails while inline delivery
+# below works fine. A failed fallback write must NOT abort the primary path (this
+# script runs `set -e`, so an unguarded failure here would kill the whole notify
+# before a single channel is tried).
 TS=$(date -u +%s)
-printf '%s' "$PLAIN" > ".pending-notify/${TS}.md"
+if ! { mkdir -p .pending-notify && printf '%s' "$PLAIN" > ".pending-notify/${TS}.md"; } 2>/dev/null; then
+  echo "notify: .pending-notify unwritable (read-only FS) — delivering inline only" >&2
+fi
 
 DELIVERED=false
 
@@ -274,10 +284,15 @@ if [ -n "${RESEND_API_KEY:-}" ] && [ -n "${NOTIFY_EMAIL_TO:-}" ]; then
           '{from:$from, to:[$to], subject:$subject, html:$html, text:$text}')" > /dev/null 2>&1 && DELIVERED=true || true
 fi
 
-# json-render channel — save raw message for post-run conversion
+# json-render channel — save raw message for post-run conversion. Non-fatal for
+# the same reason as the .pending-notify/ queue above: on a read-only-FS harness
+# (codex) this write can't land, and it must not abort a run whose channel
+# delivery already succeeded inline. The feed entry is simply skipped.
 if [ "${JSONRENDER_ENABLED:-false}" = "true" ] && [ -n "${SKILL_NAME:-}" ]; then
-  mkdir -p apps/dashboard/outputs
-  printf '%s' "$PLAIN" > "apps/dashboard/outputs/.pending-${SKILL_NAME}.md"
+  if ! { mkdir -p apps/dashboard/outputs \
+       && printf '%s' "$PLAIN" > "apps/dashboard/outputs/.pending-${SKILL_NAME}.md"; } 2>/dev/null; then
+    echo "notify: json-render queue unwritable (read-only FS) — feed entry skipped" >&2
+  fi
 fi
 
 # Remove pending file if immediate delivery succeeded (prevents double-send)

@@ -184,6 +184,33 @@ else
 fi
 
 reset
+
+# 16. read-only cwd (codex-style FS-blocked / network-open sandbox): notify must
+#     fall through to inline delivery, NOT abort at the .pending-notify queue write.
+#     Regression guard for the set -e abort that made codex read-only skills silently
+#     drop every notification. See scripts/notify.sh "Non-fatal by design" comment.
+reset
+NOTIFY_ABS="$PWD/scripts/notify.sh"
+RO="$(mktemp -d)"
+chmod 555 "$RO"
+if ( cd "$RO" && : > .wtest ) 2>/dev/null; then
+  rm -f "$RO/.wtest"; chmod 755 "$RO"; rm -rf "$RO"
+  pass "read-only cwd fallthrough (skipped: cwd still writable, likely root)"
+else
+  ( cd "$RO" && bash "$NOTIFY_ABS" --severity critical \
+      "A real notification long enough to clear the probe and severity floors here" ) \
+      >/dev/null 2>"${RO}.err"
+  ec=$?
+  chmod 755 "$RO"; rm -rf "$RO"
+  if [ "$ec" -eq 0 ] && grep -q "read-only FS" "${RO}.err"; then
+    pass "read-only cwd -> inline fallthrough (exit 0, no set -e abort)"
+  else
+    bad "read-only cwd -> inline fallthrough (exit=$ec; err=$(tr '\n' '|' <"${RO}.err"))"
+  fi
+  rm -f "${RO}.err"
+fi
+
+reset
 echo "---"
 [ "$fail" = "0" ] && echo "ALL PASS" || echo "SOME FAILED"
 exit "$fail"

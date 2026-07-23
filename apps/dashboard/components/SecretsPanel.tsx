@@ -39,9 +39,15 @@ interface SecretsPanelProps {
   connecting?: boolean
   onConnectGrok: () => void
   grokConnecting?: boolean
+  onConnectHarness: (harness: string) => void
+  harnessConnecting?: boolean
 }
 
-export function SecretsPanel({ secrets, skills, busy, repo, harness, focusKey, onFocusHandled, onSave, onDelete, onSelectSkill, onConnectClaude, connecting, onConnectGrok, grokConnecting }: SecretsPanelProps) {
+// The OAuth-capture secrets (a tar of a login you can't paste) → the harness
+// whose native login sets them. Rendered with a Connect button, like Claude/Grok.
+const OAUTH_SECRET_HARNESS: Record<string, string> = { CODEX_AUTH: 'codex', KIMI_AUTH: 'kimi' }
+
+export function SecretsPanel({ secrets, skills, busy, repo, harness, focusKey, onFocusHandled, onSave, onDelete, onSelectSkill, onConnectClaude, connecting, onConnectGrok, grokConnecting, onConnectHarness, harnessConnecting }: SecretsPanelProps) {
   const [editingSecret, setEditingSecret] = useState<string | null>(null)
   const [secretValue, setSecretValue] = useState('')
   const [addingSecret, setAddingSecret] = useState(false)
@@ -173,7 +179,8 @@ export function SecretsPanel({ secrets, skills, busy, repo, harness, focusKey, o
                     <div className="flex gap-1.5 shrink-0">
                       {secret.name === 'CLAUDE_CODE_OAUTH_TOKEN' && !claudeAuthSet && <button onClick={onConnectClaude} disabled={connecting} title="Run the Claude Code OAuth flow - signs in with your Claude Pro/Max plan, no API key or manual token needed." className="text-[11px] text-aeon-bg bg-aeon-fg font-mono px-2.5 py-1 hover:opacity-90 transition-opacity disabled:opacity-50">{connecting ? '…' : 'Connect'}</button>}
                       {secret.name === 'GROK_CREDENTIALS' && <button onClick={onConnectGrok} disabled={grokConnecting} title="Run the Grok Build device-auth flow - opens your browser to approve on accounts.x.ai, then stores the session for CI. Use Reconnect if the session expires." className="text-[11px] text-aeon-bg bg-aeon-fg font-mono px-2.5 py-1 hover:opacity-90 transition-opacity disabled:opacity-50">{grokConnecting ? '…' : (secret.isSet ? 'Reconnect' : 'Connect')}</button>}
-                      {!secret.isSet && editingSecret !== secret.name && <button onClick={() => { setEditingSecret(secret.name); setSecretValue('') }} className="btn-mini">Set</button>}
+                      {OAUTH_SECRET_HARNESS[secret.name] && <button onClick={() => onConnectHarness(OAUTH_SECRET_HARNESS[secret.name])} disabled={harnessConnecting} title={`Run the ${OAUTH_SECRET_HARNESS[secret.name]} login flow - opens your browser to approve, then stores the session for CI. Use Reconnect if it expires.`} className="text-[11px] text-aeon-bg bg-aeon-fg font-mono px-2.5 py-1 hover:opacity-90 transition-opacity disabled:opacity-50">{harnessConnecting ? '…' : (secret.isSet ? 'Reconnect' : 'Connect')}</button>}
+                      {!secret.isSet && editingSecret !== secret.name && !OAUTH_SECRET_HARNESS[secret.name] && <button onClick={() => { setEditingSecret(secret.name); setSecretValue('') }} className="btn-mini">Set</button>}
                       {secret.isSet && <button onClick={() => onDelete(secret.name)} disabled={!!busy[`sec-${secret.name}`]} className="btn-mini-danger">Remove</button>}
                     </div>
                   </div>

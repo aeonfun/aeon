@@ -1,0 +1,13 @@
+*.log
+.DS_Store
+*.tmp
+node_modules/
+
+# vendored aeon (pinned; fetched on demand by test/lib/aeon-vendor.sh)
+test/aeon/
+
+# local secrets for the container / act runs — NEVER commit
+.secrets
+*.secrets
+test/act/.secrets
+test/docker/.secrets

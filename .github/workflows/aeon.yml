@@ -13,10 +13,14 @@ on:
         required: false
         type: choice
         default: '(config default)'
-        # Keep in sync with the dashboard's MODELS/GROK_MODELS (apps/dashboard/lib/
-        # constants.ts): the dashboard dispatches `-f model=<id>` and this is a
-        # `choice` input, so any id it offers that's missing here is rejected with
-        # HTTP 422 at dispatch time.
+        # Keep in sync with the dashboard's MODELS/GROK_MODELS/CODEX_MODELS/
+        # VIBE_MODELS/PI_MODELS/KIMI_MODELS (apps/dashboard/lib/constants.ts): the
+        # dashboard dispatches `-f model=<id>` and this is a `choice` input, so any id
+        # it offers that's missing here is rejected with HTTP 422 at dispatch time.
+        # Each harness runs its own native family: codex uses openai/* ids; kimi
+        # moonshotai/*; vibe mistralai/mistral-medium-3-5 (default) + deepseek/
+        # deepseek-v4-flash; pi deepseek/deepseek-v4-flash (default) + deepseek-v4-pro.
+        # "Resolve harness" forwards them verbatim as the harness model.
         options:
           - '(config default)'
           - claude-opus-4-8
@@ -26,7 +30,17 @@ on:
           - claude-sonnet-4-6
           - claude-haiku-4-5-20251001
           - grok-4.5
-          - grok-composer-2.5-fast
+          - openai/gpt-5-mini
+          - openai/gpt-5.1-codex-mini
+          - openai/gpt-5.3-codex
+          - openai/gpt-5.6-luna
+          - openai/gpt-5.6-terra
+          - mistralai/mistral-medium-3-5
+          - deepseek/deepseek-v4-flash
+          - deepseek/deepseek-v4-pro
+          - moonshotai/kimi-k2.5
+          - moonshotai/kimi-k3
+          - moonshotai/kimi-k2.7-code
       harness:
         description: 'Agent harness'
         required: false
@@ -36,6 +50,10 @@ on:
           - '(config default)'
           - claude
           - grok
+          - codex
+          - pi
+          - vibe
+          - kimi
       var:
         description: 'Variable (e.g. AI, bitcoin, owner/repo)'
         required: false
@@ -55,7 +73,7 @@ on:
         required: false
         type: string
       harness:
-        description: 'Agent harness override (claude | grok)'
+        description: 'Agent harness override (claude | grok | codex | pi | vibe | kimi)'
         required: false
         type: string
       var:
@@ -168,6 +186,355 @@ jobs:
         # (--prefer-offline uses the cached tarball above; keep the pin and the
         # cache key version in sync.)
         run: npm install -g @anthropic-ai/claude-code@2.1.168 --prefer-offline
+
+      # ──────────────────────────────────────────────────────────────────────
+      # Harness swap: resolve the harness HERE, not in "Run"
+      #
+      # Upstream resolves it inline in the Run step, which is fine when the only
+      # two values are claude (installed above) and grok (run-grok.sh installs
+      # itself). The four added harnesses need a CLI installed first, and an
+      # install step cannot read a value that does not exist yet.
+      #
+      # Gating the install on `inputs.harness` instead would silently break every
+      # CRON run: a cron carries no dispatch input, so a repo that sets
+      # `harness: codex` in aeon.yml would install nothing and fail inside Run.
+      # Resolution therefore moves up here and "Run" consumes this output.
+      #
+      # The resolution logic itself is upstream's, moved verbatim — same 3-tier
+      # precedence, same greps — so behaviour for claude/grok is unchanged.
+      # ──────────────────────────────────────────────────────────────────────
+      - name: Resolve harness
+        id: harness
+        if: steps.work.outputs.mode != ''
+        env:
+          INPUT_HARNESS: ${{ inputs.harness }}
+          INPUT_MODEL: ${{ inputs.model }}
+          SKILL_NAME: ${{ steps.skill.outputs.name }}
+          HARNESS_MODEL: ${{ vars.HARNESS_MODEL }}
+          # Native-auth secrets — used ONLY to detect which provider each harness
+          # should run on (native login/key > OpenRouter). Never echoed.
+          CODEX_AUTH: ${{ secrets.CODEX_AUTH }}
+          KIMI_AUTH: ${{ secrets.KIMI_AUTH }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          MOONSHOT_API_KEY: ${{ secrets.MOONSHOT_API_KEY }}
+          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_OAUTH_TOKEN: ${{ secrets.ANTHROPIC_OAUTH_TOKEN }}
+        run: |
+          # `|| true` on both greps: a repo with no top-level `harness:` key, or a
+          # skill absent from aeon.yml's skills map, makes grep exit 1, and under
+          # the runner's default `bash -e -o pipefail` that kills the step with NO
+          # message — the reader is left with a red "Resolve harness" and nothing
+          # to go on. Upstream carried the same two unguarded greps inside "Run";
+          # moving them here without the guard would have relocated a silent
+          # failure rather than fixed it. An empty result already means "not
+          # configured", which the defaults below handle, and a genuinely bad skill
+          # name now fails later where the error names the missing SKILL.md.
+          CONFIG_HARNESS=$(grep -E '^harness:' aeon.yml | sed 's/^harness: *//' | tr -d ' ' || true)
+          SKILL_HARNESS=$(grep "^  ${SKILL_NAME}:" aeon.yml | sed -n 's/.*harness: *"\([^"]*\)".*/\1/p' || true)
+          if [ -n "${INPUT_HARNESS:-}" ] && [ "$INPUT_HARNESS" != "(config default)" ]; then
+            HARNESS="$INPUT_HARNESS"
+          elif [ -n "$SKILL_HARNESS" ]; then
+            HARNESS="$SKILL_HARNESS"
+          else
+            HARNESS="${CONFIG_HARNESS:-claude}"
+          fi
+
+          # Allowlist. Upstream had a claude/grok binary, so ANY other value was
+          # silently rewritten to claude. These four are the ones measured end to
+          # end on a real runner (aaronjmars/harness-adapter, Tier 4).
+          # Deliberately NOT here, each for a measured reason:
+          #   opencode — its .result carried the agent's narration instead of the
+          #              deliverable (fixed in the adapter, but it still loops to
+          #              the wall-clock guard on research skills);
+          #   copilot  — no credential path without a Copilot-subscribed PAT;
+          #   agy      — its print mode runs tools outside $PWD, so it reports
+          #              success having written nothing to the workspace.
+          case "$HARNESS" in
+            claude|grok|codex|pi|vibe|kimi) ;;
+            *) echo "::warning::unknown harness '$HARNESS' — falling back to claude"
+               HARNESS="claude" ;;
+          esac
+
+          # Which PROVIDER does this harness run on? Decided by which auth secret is
+          # set, native first, OpenRouter last — the same ordered set the dashboard's
+          # authSecretsForHarness / HARNESS_AUTH registry expose, and the order the
+          # "Install harness CLI" step configures. `native-oauth` = a captured
+          # ChatGPT/Moonshot login restored below; `native-key` = a provider API key
+          # in env; `openrouter` = the shared key (the default). This matters for the
+          # MODEL: on native auth the OpenRouter openai/* ids are the WRONG provider,
+          # so we forward NO model and let the harness use its own default.
+          AUTH_MODE="openrouter"
+          case "$HARNESS" in
+            codex) if [ -n "${CODEX_AUTH:-}" ]; then AUTH_MODE="native-oauth"; elif [ -n "${OPENAI_API_KEY:-}" ]; then AUTH_MODE="native-key"; fi ;;
+            kimi)  if [ -n "${KIMI_AUTH:-}" ]; then AUTH_MODE="native-oauth"; elif [ -n "${MOONSHOT_API_KEY:-}" ]; then AUTH_MODE="native-key"; fi ;;
+            vibe)  if [ -n "${MISTRAL_API_KEY:-}" ]; then AUTH_MODE="native-key"; fi ;;
+            pi)    if [ -n "${ANTHROPIC_API_KEY:-}" ] || [ -n "${ANTHROPIC_OAUTH_TOKEN:-}" ] || [ -n "${OPENAI_API_KEY:-}" ]; then AUTH_MODE="native-key"; fi ;;
+          esac
+
+          # The harness model (HM), in priority order:
+          #   1. vars.HARNESS_MODEL         — a repo-wide override, handy for CI.
+          #   2. the model chosen in the dashboard (which writes `model:` into
+          #      aeon.yml) or a per-skill/dispatch model — WHEN it's an OpenRouter
+          #      id. This is what makes the dashboard's model picker actually
+          #      control what runs: modelsForHarness() offers OpenRouter ids for
+          #      these harnesses, so CONFIG_MODEL is one of them here.
+          #   3. a per-harness cheap default.
+          # aeon-native ids (claude-*/grok-*) mean nothing to an OpenRouter CLI, so
+          # they're treated as "unset" and fall through to the default — a repo that
+          # never touched the model picker (still `model: claude-sonnet-4-6`) still
+          # gets a working default instead of a dead id. The greps carry `|| true`
+          # for the same reason as the harness greps above (no key ≠ fatal).
+          # Each harness defaults to its own native family (the dashboard's
+          # per-harness list, modelsForHarness[0]). The generic `*)` fallback is
+          # gpt-5-mini — a universally safe id — NOT gpt-5-nano: codex fails
+          # DETERMINISTICALLY on nano (measured on a real runner the model emits a
+          # shell tool call with a duplicated `cmd` field, codex's strict parser
+          # rejects it, and codex, which has no --max-turns, spins to the 900s
+          # guard), and the same skill passes on gpt-5-mini in ~2m40s.
+          CONFIG_MODEL=$(grep -E '^model:' aeon.yml | sed 's/^model: *//' | tr -d ' ' || true)
+          SKILL_MODEL=$(grep "^  ${SKILL_NAME}:" aeon.yml | sed -n 's/.*model: *"\([^"]*\)".*/\1/p' || true)
+          if [ -n "${INPUT_MODEL:-}" ] && [ "$INPUT_MODEL" != "(config default)" ]; then
+            REQ_MODEL="$INPUT_MODEL"
+          elif [ -n "$SKILL_MODEL" ]; then
+            REQ_MODEL="$SKILL_MODEL"
+          else
+            REQ_MODEL="${CONFIG_MODEL:-}"
+          fi
+          case "$REQ_MODEL" in claude-*|grok-*|"") REQ_MODEL="" ;; esac   # aeon-native / unset → not an OpenRouter id
+          case "$HARNESS" in
+            codex) DEFAULT_HM="openai/gpt-5-mini" ;;
+            vibe)  DEFAULT_HM="mistralai/mistral-medium-3-5" ;;   # vibe's default (VIBE_MODELS[0])
+            pi)    DEFAULT_HM="deepseek/deepseek-v4-flash" ;;     # pi's default (PI_MODELS[0])
+            kimi)  DEFAULT_HM="moonshotai/kimi-k2.5" ;;          # kimi's default (KIMI_MODELS[0])
+            *)     DEFAULT_HM="openai/gpt-5-mini" ;;             # generic fallback: only claude/grok hit it (and don't consume it); mini is universally safe
+          esac
+          HM="${HARNESS_MODEL:-${REQ_MODEL:-$DEFAULT_HM}}"
+
+          # The --model run-harness should pass, or empty for "the harness's own
+          # staged config decides". aeon's model ids are always claude-*/grok-*,
+          # which mean nothing to an OpenRouter-backed CLI, so they are NOT
+          # forwarded: passing one leaves the harness on its default while every
+          # downstream record (token-usage.csv, the signed run manifest) names a
+          # model that never ran.
+          MODEL_ARG=""
+          if [ "$AUTH_MODE" = "openrouter" ]; then
+            case "$HARNESS" in
+              codex) MODEL_ARG="$HM" ;;                 # config.toml pins the provider; --model takes a bare id
+              pi)    MODEL_ARG="openrouter/$HM" ;;      # pi wants provider/model
+              # vibe and kimi resolve a config ALIAS rather than a raw id, so
+              # passing --model breaks them — their staged config decides.
+            esac
+          else
+            # Native auth (the operator's own ChatGPT/Moonshot/provider account):
+            # let the harness pick its own default model. HM is only a label here.
+            HM="(native:$AUTH_MODE)"
+          fi
+
+          echo "Harness: $HARNESS  |  auth: $AUTH_MODE  |  model: $HM  |  run-harness --model: ${MODEL_ARG:-<harness default>}"
+          echo "HARNESS=$HARNESS" >> "$GITHUB_OUTPUT"
+          echo "HARNESS_MODEL=$HM" >> "$GITHUB_OUTPUT"
+          echo "MODEL_ARG=$MODEL_ARG" >> "$GITHUB_OUTPUT"
+          echo "AUTH_MODE=$AUTH_MODE" >> "$GITHUB_OUTPUT"
+
+      # Install/stage the harness CLI for every harness except claude (which is
+      # installed above and needs no per-provider auth). grok is included now:
+      # the run itself goes through `run-harness grok`, so grok's CLI + auth must
+      # be staged here just like the other adapter harnesses. It reuses
+      # `run-grok.sh setup` — the single source of truth for grok's pin and the
+      # GROK_CREDENTIALS/XAI_API_KEY restore — so nothing is duplicated.
+      - name: Install harness CLI
+        if: steps.harness.outputs.HARNESS != '' && steps.harness.outputs.HARNESS != 'claude'
+        env:
+          H: ${{ steps.harness.outputs.HARNESS }}
+          HM: ${{ steps.harness.outputs.HARNESS_MODEL }}
+          AUTH_MODE: ${{ steps.harness.outputs.AUTH_MODE }}
+          # grok auth (staged via run-grok.sh setup): captured X-account OAuth or key.
+          GROK_CREDENTIALS: ${{ secrets.GROK_CREDENTIALS }}
+          XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
+          # Provider credentials. Whichever is set decided AUTH_MODE in "Resolve
+          # harness"; here we either RESTORE it (the ChatGPT/Moonshot OAuth
+          # captures, which a local `aeon auth --harness …` stored) or write it
+          # into the harness's config (provider keys). Everything lands in the
+          # runner's ephemeral $HOME and is never echoed.
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          CODEX_AUTH: ${{ secrets.CODEX_AUTH }}
+          KIMI_AUTH: ${{ secrets.KIMI_AUTH }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          MOONSHOT_API_KEY: ${{ secrets.MOONSHOT_API_KEY }}
+          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
+        run: |
+          set -euo pipefail
+          # bubblewrap is what harness-adapter/lib/sandbox.sh uses to make
+          # read-only mean "the workspace physically cannot be written" on Linux.
+          # grok is skipped: like claude it runs through run-harness with
+          # --no-sandbox (its own bypassPermissions + the post-run stray-write
+          # revert are its read-only guard), so it never invokes the wrapper.
+          if [ "$H" != "grok" ]; then
+            sudo apt-get update -qq && sudo apt-get install -y -qq bubblewrap
+            # Ubuntu 24.04 (including GitHub's ubuntu-latest) restricts unprivileged
+            # user namespaces via AppArmor, so bwrap dies with 'setting up uid map:
+            # Permission denied' and run-harness fails CLOSED on every read-only
+            # skill. Measured on this runner 2026-07-21. Re-enable them for the job.
+            sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0 || true
+            bwrap --dev-bind / / --ro-bind /tmp /tmp true && echo 'bwrap: userns OK' || echo '::warning::bwrap still blocked'
+          fi
+
+          # Each harness is configured for the provider AUTH_MODE selected:
+          #   native-oauth — restore the captured login (~/.codex, ~/.kimi-code);
+          #                  the harness then runs on its own default model.
+          #   native-key   — the provider's own API key (codex→OpenAI, kimi→Moonshot,
+          #                  vibe→Mistral, pi→Anthropic/OpenAI from env).
+          #   openrouter   — the shared OPENROUTER_API_KEY (the default; one key
+          #                  covers all four). $HM is the OpenRouter model here.
+          case "$H" in
+            grok)
+              # Install the pinned grok CLI + restore its auth (GROK_CREDENTIALS
+              # X-account OAuth, or XAI_API_KEY). run-grok.sh's `setup` subcommand
+              # runs ONLY those two steps and exits — the actual run then goes
+              # through run-harness grok in the Run step, on grok's own auth.
+              bash "${GITHUB_WORKSPACE}/scripts/run-grok.sh" setup
+              echo "grok: CLI + auth staged (auth: ${AUTH_MODE:-native})" ;;
+            codex)
+              # PINNED, like aeon pins claude-code. Unpinned, this step silently
+              # tracked latest: two cells that passed on 2026-07-21 failed hours
+              # later with an OpenRouter 400 and nothing in the repo had changed.
+              npm install -g @openai/codex@0.144.6
+              mkdir -p "$HOME/.codex"
+              case "$AUTH_MODE" in
+                native-oauth)
+                  # Restore the ChatGPT login captured by `aeon auth --harness codex`
+                  # (tar+base64 of ~/.codex/auth.json). codex refreshes the access
+                  # token from the refresh token at run start and uses its own
+                  # default model — no config needed, no OpenRouter.
+                  printf '%s' "$CODEX_AUTH" | base64 -d | tar xzf - -C "$HOME"
+                  chmod 600 "$HOME/.codex/auth.json" || true
+                  echo "codex: restored ChatGPT login" ;;
+                native-key)
+                  # OPENAI_API_KEY in env → codex's built-in `openai` provider (its
+                  # default), on codex's default model. No OpenRouter block.
+                  cat > "$HOME/.codex/config.toml" <<'TOML'
+          model_reasoning_effort = "medium"
+          TOML
+                  echo "codex: OpenAI API key" ;;
+                *)
+                  # wire_api MUST be "responses": codex 0.144.6 removed "chat"
+                  # ("no longer supported", a hard config-load error), and OpenRouter
+                  # does serve /api/v1/responses. Both verified 2026-07-21.
+                  cat > "$HOME/.codex/config.toml" <<TOML
+          model = "$HM"
+          model_provider = "openrouter"
+          # OpenRouter rejects a reasoning-disabled request to this endpoint:
+          # 400 "Reasoning is mandatory for this endpoint and cannot be disabled."
+          model_reasoning_effort = "medium"
+
+          [model_providers.openrouter]
+          name = "OpenRouter"
+          base_url = "https://openrouter.ai/api/v1"
+          env_key = "OPENROUTER_API_KEY"
+          wire_api = "responses"
+          TOML
+                  echo "codex: OpenRouter" ;;
+              esac
+              ;;
+            pi)
+              # PINNED (like codex/claude): an unpinned `-g` install silently tracks
+              # latest and would run whatever the registry serves in CI with the run's
+              # secrets in env. 0.80.9 is the version verified live 2026-07-22.
+              # --ignore-scripts: pi's postinstall is not needed headless.
+              npm install -g --ignore-scripts @earendil-works/pi-coding-agent@0.80.9
+              # pi picks its provider from whichever key is in env at RUN time
+              # (ANTHROPIC_API_KEY / OPENAI_API_KEY native, else OPENROUTER_API_KEY
+              # with --model openrouter/…). No config file either way.
+              echo "pi: $AUTH_MODE (env-driven)"
+              ;;
+            kimi)
+              # PINNED + --ignore-scripts: same supply-chain hardening as pi/codex.
+              # 0.28.0 is the version verified live 2026-07-22. If a future CI run
+              # shows kimi's install needs a postinstall binary fetch, drop
+              # --ignore-scripts (keep the pin).
+              npm install -g --ignore-scripts @moonshot-ai/kimi-code@0.28.0
+              mkdir -p "$HOME/.kimi-code"
+              case "$AUTH_MODE" in
+                native-oauth)
+                  # Restore the Moonshot device login captured by
+                  # `aeon auth --harness kimi`; kimi then runs on Moonshot by default.
+                  printf '%s' "$KIMI_AUTH" | base64 -d | tar xzf - -C "$HOME"
+                  echo "kimi: restored Moonshot login" ;;
+                native-key)
+                  # MOONSHOT_API_KEY → Moonshot provider. Model id is best-effort;
+                  # adjust to your Moonshot plan if it 404s.
+                  cat > "$HOME/.kimi-code/config.toml" <<TOML
+          default_model = "kimi-native"
+
+          [providers.moonshot]
+          type = "openai"
+          base_url = "https://api.moonshot.ai/v1"
+          api_key = "$MOONSHOT_API_KEY"
+
+          [models.kimi-native]
+          provider = "moonshot"
+          model = "kimi-k2-0711-preview"
+          max_context_size = 131072
+          TOML
+                  chmod 600 "$HOME/.kimi-code/config.toml"
+                  echo "kimi: Moonshot API key" ;;
+                *)
+                  # kimi resolves --model through ALIASES declared here and takes the
+                  # provider key inline. default_model set → run-harness passes no
+                  # --model at all, which is what we want.
+                  cat > "$HOME/.kimi-code/config.toml" <<TOML
+          default_model = "or-cheap"
+
+          [providers.openrouter]
+          type = "openai"
+          base_url = "https://openrouter.ai/api/v1"
+          api_key = "$OPENROUTER_API_KEY"
+
+          [models.or-cheap]
+          provider = "openrouter"
+          model = "$HM"
+          max_context_size = 400000
+          TOML
+                  chmod 600 "$HOME/.kimi-code/config.toml"
+                  echo "kimi: OpenRouter" ;;
+              esac
+              ;;
+            vibe)
+              # PINNED: 2.20.0 verified live 2026-07-22. (pipx/pip has no clean
+              # per-package --ignore-scripts equivalent, so the pin is the guard here.)
+              pipx install mistral-vibe==2.20.0
+              echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+              if [ "$AUTH_MODE" = "native-key" ]; then
+                # MISTRAL_API_KEY set → vibe's DEFAULT provider IS Mistral; it runs
+                # straight off the env key, no config. (The config below only exists
+                # because vibe hard-fails WITHOUT a Mistral key.)
+                echo "vibe: Mistral API key (default provider)"
+              else
+                # vibe's ProviderConfig is generic (api_base + api_key_env_var +
+                # api_style), so point it at OpenRouter.
+                mkdir -p "$HOME/.vibe"
+                cat > "$HOME/.vibe/config.toml" <<TOML
+          active_model = "or-cheap"
+
+          [[providers]]
+          name = "openrouter"
+          api_base = "https://openrouter.ai/api/v1"
+          api_key_env_var = "OPENROUTER_API_KEY"
+          api_style = "openai"
+
+          [[models]]
+          name = "$HM"
+          provider = "openrouter"
+          alias = "or-cheap"
+          TOML
+                echo "vibe: OpenRouter"
+              fi
+              ;;
+            *)
+              echo "::error::no install recipe for harness '$H'"; exit 1 ;;
+          esac
+          echo "installed harness CLI: $H  (auth: $AUTH_MODE)"
 
       - name: Validate skill secrets
         if: steps.work.outputs.mode != ''
@@ -296,6 +663,13 @@ jobs:
           ANTHROPIC_BASE_URL: ${{ vars.ANTHROPIC_BASE_URL }}
           BANKR_LLM_KEY: ${{ secrets.BANKR_LLM_KEY }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          # Native harness-provider keys — read at run time by the api-key auth
+          # paths (codex→OpenAI, pi→Anthropic/OpenAI, vibe→Mistral). The OAuth
+          # captures need nothing here: their creds are already on disk from install.
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_OAUTH_TOKEN: ${{ secrets.ANTHROPIC_OAUTH_TOKEN }}
+          MOONSHOT_API_KEY: ${{ secrets.MOONSHOT_API_KEY }}
+          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
           USEPOD_TOKEN: ${{ secrets.USEPOD_TOKEN }}
           VENICE_API_KEY: ${{ secrets.VENICE_API_KEY }}
           SURPLUS_API_KEY: ${{ secrets.SURPLUS_API_KEY }}
@@ -357,7 +731,8 @@ jobs:
           SKILL_VAR: ${{ inputs.var }}
           SKILL_NAME: ${{ steps.skill.outputs.name }}
           INPUT_MODEL: ${{ inputs.model }}
-          INPUT_HARNESS: ${{ inputs.harness }}
+          RESOLVED_HARNESS: ${{ steps.harness.outputs.HARNESS }}
+          RH_MODEL_ARG: ${{ steps.harness.outputs.MODEL_ARG }}
           INPUT_CHAIN_CTX: ${{ inputs.chain_context_file }}
         run: |
           TODAY=$(date -u +%Y-%m-%d)
@@ -374,18 +749,9 @@ jobs:
           fi
 
           # --- Harness resolution (which agent CLI runs the skill) ---
-          # Same 3-tier precedence as model: workflow_dispatch input → per-skill
-          # `harness:` in aeon.yml → top-level `harness:` → claude (default).
-          CONFIG_HARNESS=$(grep -E '^harness:' aeon.yml | sed 's/^harness: *//' | tr -d ' ')
-          SKILL_HARNESS=$(grep "^  ${SKILL_NAME}:" aeon.yml | sed -n 's/.*harness: *"\([^"]*\)".*/\1/p')
-          if [ -n "${INPUT_HARNESS:-}" ] && [ "$INPUT_HARNESS" != "(config default)" ]; then
-            HARNESS="$INPUT_HARNESS"
-          elif [ -n "$SKILL_HARNESS" ]; then
-            HARNESS="$SKILL_HARNESS"
-          else
-            HARNESS="${CONFIG_HARNESS:-claude}"
-          fi
-          if [ "$HARNESS" != "grok" ]; then HARNESS="claude"; fi   # unknown value → safe default (use `if`, not `&&`, under set -e)
+          # Resolved in the "Resolve harness" step above, which had to run before
+          # "Install harness CLI". Same 3-tier precedence as model, moved verbatim.
+          HARNESS="$RESOLVED_HARNESS"
           # On the grok harness a claude-* model id is meaningless — fall back to
           # grok's current default (grok-4.5) unless an explicit grok model was
           # chosen. run-grok.sh omits --model for a non-grok value as a safety net.
@@ -412,6 +778,12 @@ jobs:
             # call to xAI (Anthropic-compatible) when an API key is present, else
             # direct (scoring then just no-ops gracefully if no Anthropic creds).
             if [ -n "${XAI_API_KEY:-}" ]; then echo "GATEWAY=grok" >> "$GITHUB_OUTPUT"; else echo "GATEWAY=direct" >> "$GITHUB_OUTPUT"; fi
+          elif [ "$HARNESS" != "claude" ]; then
+            # Same reasoning as grok: the run-harness harnesses carry their own
+            # auth (staged in "Install harness CLI") and never touch the gateway.
+            # The scorer routes through run-harness too, so there is no `claude -p`
+            # call left to hint at — emit the output only so it is always defined.
+            echo "GATEWAY=$HARNESS" >> "$GITHUB_OUTPUT"
           else
             GATEWAY=$(grep -A1 '^gateway:' aeon.yml | grep 'provider:' | sed 's/.*provider:[[:space:]]*//' | sed "s/[\"' ]//g" || true)
             GATEWAY="${GATEWAY:-auto}"
@@ -549,64 +921,102 @@ jobs:
           Use this variable (override the default in the skill file):
           var=$VAR"
           fi
-          # Harness split: the grok path is a single guarded branch; the entire
-          # claude cascade below is unchanged. Both set CLAUDE_OUTPUT to a JSON
-          # envelope with .result / .usage.*, so everything downstream is shared.
+          # Unified execution: EVERY harness runs through the harness-adapter
+          # (harness-adapter/run-harness), which speaks one Claude-Code-shaped
+          # contract — prompt on stdin, a normalized {result,usage{...},session_id}
+          # envelope on stdout, diagnostics on stderr — so everything downstream
+          # (.result/.usage jq, scoring, token accounting) is identical for all six.
+          # There is no longer a native `claude -p` or `run-grok.sh` run path; the
+          # two features those paths carried are preserved AROUND the adapter call:
+          #   * claude  — wrapped in the multi-provider gateway cascade below, so it
+          #               keeps 8-provider failover + Langfuse tracing. --no-sandbox:
+          #               claude's own --allowedTools + the post-run stray-write
+          #               revert are its read-only guard, and it keeps .pending-notify
+          #               (inside the workspace) writable.
+          #   * grok    — GROK_* run-knobs from frontmatter (adapters/grok.sh maps
+          #               them); --no-sandbox for the same reason (bypassPermissions
+          #               + revert are its guard; its own --sandbox is a 0.2.101 no-op).
+          #   * codex/pi/vibe/kimi — the wrapper OS sandbox (bwrap) enforces read-only.
           CLAUDE_OK=0
-          if [ "$HARNESS" = "grok" ]; then
-            # --- Grok Build harness ---
-            # run-grok.sh installs/pins the grok CLI, restores the X-account OAuth
-            # session (or uses XAI_API_KEY), maps SKILL_MODE to grok's permission
-            # flags, discovers .mcp.json natively + allows its tools, runs `grok -p`,
-            # and emits the SAME normalized JSON envelope Claude Code's
-            # --output-format json produces. Its stdout is the JSON; diagnostics go
-            # to stderr (the step log), so capture stdout only.
-            # Opt-in per-skill run knobs (effort/max_turns/best_of_n/verify) come
-            # from SKILL.md frontmatter → GROK_* env for run-grok.sh to map to flags.
-            eval "$(bash "${GITHUB_WORKSPACE}/scripts/skill_mode.sh" grok-run-env "$SKILL_NAME")"
-            if CLAUDE_OUTPUT=$(
-              export MODEL="$BASE_MODEL" SKILL_MODE
-              echo "$PROMPT" | bash "${GITHUB_WORKSPACE}/scripts/run-grok.sh"
-            ); then
-              CLAUDE_OK=1
-            fi
-            if [ "$CLAUDE_OK" != "1" ]; then
-              echo "::error::grok harness failed. Last output: $(printf '%s' "$CLAUDE_OUTPUT" | tail -c 200 | tr '\n' ' ')"
-              printf '%s' "$CLAUDE_OUTPUT" | tail -c 500 | tr '\n' ' ' | cut -c1-200 > /tmp/skill-error.txt
-              exit 1
-            fi
-          else
-            # Cascade: try each provider in priority order; on ANY failure fall over
-            # to the next. Each attempt runs in a subshell so provider setup (env +
-            # any claude-code-router sidecar) is isolated and torn down on exit. The
-            # gateway script's notices go to stderr (>&2) so only Claude's JSON is captured.
+          RH="${GITHUB_WORKSPACE}/harness-adapter/run-harness"
+          RH_ARGS=(--mode "$SKILL_MODE" --allowed-tools "$ALLOWED" --timeout 900)
+          # Pass --mcp-config only when the MCP preflight actually ENABLED MCP (every
+          # required ${VAR} resolved) — MCP_FLAGS is set to the flags in that case and
+          # left empty otherwise, so it doubles as the "MCP on" gate. run-harness does
+          # its own ${VAR} expansion + per-harness translation from the same file.
+          if [ "${#MCP_FLAGS[@]}" -gt 0 ]; then RH_ARGS+=(--mcp-config .mcp.json); fi
+
+          if [ "$HARNESS" = "claude" ]; then
+            # Cascade: try each provider in priority order; fall over on ANY failure.
+            # Each attempt is an isolated subshell that sets up its provider env (+
+            # optional Langfuse), THEN runs `run-harness claude` (which invokes
+            # `claude -p` under that env). Gateway/Langfuse notices go to the step
+            # log (>&2); only run-harness's stdout envelope is captured. A hard
+            # gateway setup failure `exit 1`s the subshell → this attempt fails →
+            # fall over, exactly as the old inline `claude -p` cascade did.
             USED_GATEWAY=""
             for cand in $CANDIDATES; do
               echo "::notice::Routing attempt via '$cand'"
-              # No `set -e` here: the gateway script signals a hard setup failure with
-              # an explicit `exit 1` (which exits this subshell → fall over), and on
-              # success the subshell's status is Claude's own exit code. A benign
-              # non-zero from a trailing test in the gateway script is harmless — we
-              # only fall over on an explicit exit or a failed Claude call.
               if CLAUDE_OUTPUT=$(
                 GATEWAY="$cand"
                 MODEL="$BASE_MODEL"
                 source "$GW" >&2
                 source "$LF" >&2   # optional Langfuse tracing (no-op unless LANGFUSE_* set)
-                echo "$PROMPT" | claude -p - --model "$MODEL" --allowedTools "$ALLOWED" "${MCP_FLAGS[@]}" --output-format json 2>&1
+                echo "$PROMPT" | bash "$RH" claude --model "$MODEL" --no-sandbox "${RH_ARGS[@]}" 2>/tmp/harness-stderr.txt
               ); then
                 USED_GATEWAY="$cand"; CLAUDE_OK=1; break
               fi
-              echo "::warning::provider '$cand' failed — $(printf '%s' "$CLAUDE_OUTPUT" | tail -c 160 | tr '\n' ' ')"
+              echo "::warning::provider '$cand' failed — $(tail -c 160 /tmp/harness-stderr.txt 2>/dev/null | tr '\n' ' ')"
             done
             if [ "$CLAUDE_OK" != "1" ]; then
-              echo "::error::All gateway providers failed ($CANDIDATES). Last output: $CLAUDE_OUTPUT"
+              echo "::error::All gateway providers failed ($CANDIDATES). Last: $(tail -c 200 /tmp/harness-stderr.txt 2>/dev/null | tr '\n' ' ')"
               # Save error signature for quality tracking (cron-state step reads this)
-              echo "$CLAUDE_OUTPUT" | tail -c 500 | tr '\n' ' ' | cut -c1-200 > /tmp/skill-error.txt
+              tail -c 500 /tmp/harness-stderr.txt 2>/dev/null | tr '\n' ' ' | cut -c1-200 > /tmp/skill-error.txt
               exit 1
             fi
             [ "$USED_GATEWAY" != "${CANDIDATES%% *}" ] && echo "::notice::Skill ran via fallback provider '$USED_GATEWAY'"
             echo "GATEWAY=$USED_GATEWAY" >> "$GITHUB_OUTPUT"
+          else
+            # grok / codex / pi / vibe / kimi — one run-harness call each.
+            RH_MODEL_ARGS=()
+            if [ "$HARNESS" = "grok" ]; then
+              # Per-skill run-knobs (effort/max_turns/best_of_n/verify) → GROK_* env,
+              # consumed by adapters/grok.sh — the same frontmatter mapping the
+              # native path used. SKILL_MODEL was already set to grok's model above.
+              eval "$(bash "${GITHUB_WORKSPACE}/scripts/skill_mode.sh" grok-run-env "$SKILL_NAME")"
+              RH_ARGS+=(--no-sandbox)
+              # BASE_MODEL is grok-4.5 or an explicit grok id (forced above); pass
+              # only a real grok id — the adapter falls back to grok's default
+              # otherwise. (BASE_MODEL, not MODEL: identical here, but MODEL is the
+              # var the claude cascade rewrites in a subshell, so referencing it here
+              # would trip a spurious shellcheck SC2031.)
+              case "$BASE_MODEL" in grok-*) RH_MODEL_ARGS=(--model "$BASE_MODEL") ;; esac
+            else
+              # RH_MODEL_ARG is decided in "Resolve harness" (empty = let the
+              # harness's staged config choose). Never aeon's BASE_MODEL: that is
+              # always a claude-*/grok-* id these CLIs cannot resolve.
+              if [ -n "${RH_MODEL_ARG:-}" ]; then RH_MODEL_ARGS=(--model "$RH_MODEL_ARG"); fi
+              # Re-emit SKILL_MODEL with what ACTUALLY ran. It was written above from
+              # BASE_MODEL, before the harness was applied — leaving it would file
+              # these tokens under a model that never ran in memory/token-usage.csv,
+              # and put a false model into the run manifest that attestation signs.
+              # Later writes to $GITHUB_OUTPUT win, so this corrects every consumer.
+              EFFECTIVE_MODEL="${RH_MODEL_ARG:-$HARNESS-default}"   # no spaces: the notice is parsed by field
+              echo "SKILL_MODEL=$EFFECTIVE_MODEL" >> "$GITHUB_OUTPUT"
+              echo "::notice::effective model for $HARNESS: $EFFECTIVE_MODEL"
+            fi
+
+            if CLAUDE_OUTPUT=$(echo "$PROMPT" | bash "$RH" "$HARNESS" "${RH_MODEL_ARGS[@]}" "${RH_ARGS[@]}" 2>/tmp/harness-stderr.txt); then
+              CLAUDE_OK=1
+            fi
+            # run-harness's diagnostics are the only signal when a harness stalls;
+            # surface them in the step log either way, not just on failure.
+            tail -c 4000 /tmp/harness-stderr.txt >&2 || true
+            if [ "$CLAUDE_OK" != "1" ]; then
+              echo "::error::run-harness $HARNESS failed: $(tail -c 200 /tmp/harness-stderr.txt | tr '\n' ' ')"
+              tail -c 500 /tmp/harness-stderr.txt | tr '\n' ' ' | cut -c1-200 > /tmp/skill-error.txt
+              exit 1
+            fi
           fi
 
           # Extract and print the text result so logs still show skill output
@@ -703,7 +1113,16 @@ jobs:
       # Renders a table into the Actions run summary and appends a one-line footer to
       # today's memory log so the record lives in git. Never fails the run.
       - name: Under the hood (tool actions)
-        if: steps.work.outputs.mode != '' && steps.run.outcome == 'success' && steps.run.outputs.SESSION_ID != ''
+        # The HARNESS gate is load-bearing, not defensive. run-actions-summary.sh
+        # falls back to the NEWEST transcript under ~/.claude/projects when the
+        # session id does not resolve, and the run-harness harnesses emit a session
+        # id of their own — so without this gate a codex/pi/vibe/kimi run gets
+        # ANOTHER run's tool calls attributed to it and committed to memory/logs/.
+        # Verified on a real runner: the run logged `session_id present=YES
+        # harness=pi` while this step correctly skipped.
+        # (For claude-only repos this is a no-op: SESSION_ID != '' already implied
+        # the claude harness upstream.)
+        if: steps.work.outputs.mode != '' && steps.run.outcome == 'success' && steps.run.outputs.SESSION_ID != '' && steps.run.outputs.HARNESS == 'claude'
         env:
           SESSION_ID: ${{ steps.run.outputs.SESSION_ID }}
           SKILL_NAME: ${{ steps.skill.outputs.name }}
@@ -855,11 +1274,19 @@ jobs:
           ANTHROPIC_BASE_URL: ${{ vars.ANTHROPIC_BASE_URL }}
           BANKR_LLM_KEY: ${{ secrets.BANKR_LLM_KEY }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          # Native harness-provider keys — read at run time by the api-key auth
+          # paths (codex→OpenAI, pi→Anthropic/OpenAI, vibe→Mistral). The OAuth
+          # captures need nothing here: their creds are already on disk from install.
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_OAUTH_TOKEN: ${{ secrets.ANTHROPIC_OAUTH_TOKEN }}
+          MOONSHOT_API_KEY: ${{ secrets.MOONSHOT_API_KEY }}
+          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
           USEPOD_TOKEN: ${{ secrets.USEPOD_TOKEN }}
           VENICE_API_KEY: ${{ secrets.VENICE_API_KEY }}
           SURPLUS_API_KEY: ${{ secrets.SURPLUS_API_KEY }}
           XAI_API_KEY: ${{ secrets.XAI_API_KEY }}   # grok scorer: API-key auth path
           GROK_CREDENTIALS: ${{ secrets.GROK_CREDENTIALS }}   # grok scorer: X-account OAuth (restored by run-grok.sh)
+          RH_MODEL_ARG: ${{ steps.harness.outputs.MODEL_ARG }}   # run-harness scorer: same --model the run used
           OPENROUTER_MODEL: ${{ vars.OPENROUTER_MODEL }}
           OPENROUTER_MODEL_SONNET: ${{ vars.OPENROUTER_MODEL_SONNET }}
           OPENROUTER_MODEL_HAIKU: ${{ vars.OPENROUTER_MODEL_HAIKU }}
@@ -884,10 +1311,12 @@ jobs:
 
           HARNESS="${{ steps.run.outputs.HARNESS }}"
           # Route the scorer's claude call through the gateway (claude harness only).
-          # On grok we score via run-grok.sh below and don't touch the gateway, so
-          # skip the source entirely — otherwise it prints "Using direct Anthropic
-          # API" noise on a grok-only repo.
-          if [ "$HARNESS" != "grok" ]; then
+          # Every other harness scores through ITSELF below and doesn't touch the
+          # gateway, so skip the source entirely — otherwise it prints "Using
+          # direct Anthropic API" noise on a repo with no Anthropic creds.
+          # (Was `!= grok`; with only claude/grok upstream the two are identical,
+          # so this is a no-op there and correct for the added harnesses.)
+          if [ "$HARNESS" = "claude" ]; then
             GATEWAY="${{ steps.run.outputs.GATEWAY }}"
             source "${GITHUB_WORKSPACE}/scripts/llm-gateway.sh"
             AEON_OTEL_COMPONENT=scorer source "${GITHUB_WORKSPACE}/scripts/langfuse-otel.sh"
@@ -922,25 +1351,38 @@ jobs:
           JSON format: {\"score\": N, \"assessment\": \"one line\", \"flags\": []}"
 
           SCORE_MODEL="${ANTHROPIC_DEFAULT_HAIKU_MODEL:-claude-haiku-4-5-20251001}"
-          if [ "$HARNESS" = "grok" ]; then
-            # Score through the SAME harness the skill ran on. A grok-only repo has
-            # no Claude credentials, so `claude -p` would just print "Not logged in";
-            # run-grok.sh reuses the run's X-account/API-key auth and emits the same
-            # {result,usage} envelope. Pin grok-composer-2.5-fast explicitly — the
-            # cheap/fast model this robust parse is tuned for. (Don't rely on grok's
-            # own default here: it's now grok-4.5, the pricier flagship.) Notices→stderr.
-            # NB: we deliberately do NOT pass grok's --json-schema here — composer
-            # doesn't populate structured output (it leaves .structuredOutput null),
-            # and the ANALYSIS_PROMPT already asks for a {score,assessment,flags}
-            # object, so the robust parse below handles composer's JSON text fine.
-            if ! RAW=$(echo "$ANALYSIS_PROMPT" | MODEL=grok-composer-2.5-fast SKILL_MODE=read-only \
-                bash "${GITHUB_WORKSPACE}/scripts/run-grok.sh" 2>/dev/null); then
-              echo "::notice::Skill scoring skipped — grok scorer unavailable (non-fatal)"
-              exit 0
-            fi
-          elif ! RAW=$(echo "$ANALYSIS_PROMPT" | claude -p - \
-            --model "$SCORE_MODEL" --output-format json 2>&1); then
-            echo "::warning::Skill analysis failed (non-fatal). Raw: $(printf '%s' "$RAW" | head -c 800 | tr '\n' ' ')"
+          # Score through the SAME harness the skill ran on, ALWAYS via the
+          # harness-adapter — no native `claude -p` / `run-grok.sh` path remains.
+          # A repo authed for only one harness has no Claude creds, so a direct
+          # `claude -p` here would print "Not logged in" and every run would go
+          # unscored (skill-health / skill-analytics / cron-state quality signals
+          # silently empty while the workflow stays green — the silent-no-op class).
+          # read-only + --no-sandbox: scoring is a single text call needing no tools
+          # or workspace, so the wrapper sandbox would only add a failure mode; any
+          # stray write is reverted by the "Read-only capability guard" step.
+          # --timeout 300 = half the run guard. No --json-schema: ANALYSIS_PROMPT
+          # already asks for a {score,assessment,flags} object and the robust parse
+          # below is tuned for that (composer/pi/vibe/kimi lack a native schema flag).
+          RH="${GITHUB_WORKSPACE}/harness-adapter/run-harness"
+          SCORE_ARGS=(--mode read-only --no-sandbox --timeout 300)
+          case "$HARNESS" in
+            claude)
+              # Runs under the gateway env sourced above; SCORE_MODEL is the cheap
+              # scoring model (haiku by default).
+              SCORE_ARGS+=(--model "$SCORE_MODEL") ;;
+            grok)
+              # Pin grok-4.5 — the only model the X-account (GROK_CREDENTIALS) login
+              # exposes. grok-composer-2.5-fast was a phantom id: the grok CLI rejects
+              # it with "unknown model id" (verified live, run 29944263287), so pinning
+              # it made every grok scorer call fail-then-fall-back. Scoring is one short
+              # text call, so grok-4.5's cost is pennies.
+              SCORE_ARGS+=(--model grok-4.5) ;;
+            *)
+              # RH_MODEL_ARG is the same --model the run used (empty = harness default).
+              [ -n "${RH_MODEL_ARG:-}" ] && SCORE_ARGS+=(--model "$RH_MODEL_ARG") ;;
+          esac
+          if ! RAW=$(echo "$ANALYSIS_PROMPT" | bash "$RH" "$HARNESS" "${SCORE_ARGS[@]}" 2>/dev/null); then
+            echo "::notice::Skill scoring skipped — $HARNESS scorer unavailable (non-fatal)"
             exit 0
           fi
 
@@ -949,10 +1391,10 @@ jobs:
           # this call (seen twice on OpenRouter's haiku slug, while its opus
           # slug always returns text). Retry once on the run's main model —
           # llm-gateway.sh only sets MODEL here when the gateway remaps it.
-          # (claude harness only; grok already used its default.)
-          if [ "$HARNESS" != "grok" ] && [ -z "$ANALYSIS_TEXT" ] && [ -n "${MODEL:-}" ] && [ "$MODEL" != "$SCORE_MODEL" ]; then
+          # (claude harness only; every other harness already used its own model.)
+          if [ "$HARNESS" = "claude" ] && [ -z "$ANALYSIS_TEXT" ] && [ -n "${MODEL:-}" ] && [ "$MODEL" != "$SCORE_MODEL" ]; then
             echo "::warning::Empty analysis result from ${SCORE_MODEL} — retrying with ${MODEL}. Raw: $(printf '%s' "$RAW" | head -c 800 | tr '\n' ' ')"
-            if RAW=$(echo "$ANALYSIS_PROMPT" | claude -p - --model "$MODEL" --output-format json 2>&1); then
+            if RAW=$(echo "$ANALYSIS_PROMPT" | bash "$RH" claude --model "$MODEL" --mode read-only --no-sandbox --timeout 300 2>/dev/null); then
               ANALYSIS_TEXT=$(echo "$RAW" | jq -r '.result // empty')
             fi
           fi
@@ -1010,16 +1452,28 @@ jobs:
           echo "::notice::Skill quality — $SKILL: score=$SCORE, avg=$AVG — $ASSESSMENT"
 
       - name: Convert feed outputs
-        # Skipped on the grok harness: notify-jsonrender renders via `claude -p`, so
-        # on a grok-only repo (no Claude auth) it can only no-op with noise. The
-        # jsonrender feed is a Claude-Code-side feature.
-        if: steps.work.outputs.mode != '' && vars.JSONRENDER_ENABLED != 'false' && steps.run.outputs.HARNESS != 'grok'
+        # Claude harness only: notify-jsonrender renders via `claude -p`, so on a
+        # repo with no Claude auth it can only no-op with noise. The jsonrender
+        # feed is a Claude-Code-side feature.
+        # Was `!= grok`, which is identical upstream (claude/grok only) but would
+        # have let the four added harnesses through into a `claude -p` they cannot
+        # authenticate. Unlike scoring, this one is NOT worth routing through
+        # run-harness: it is a rendering convenience, not a quality signal, and
+        # skipping it costs the run nothing.
+        if: steps.work.outputs.mode != '' && vars.JSONRENDER_ENABLED != 'false' && steps.run.outputs.HARNESS == 'claude'
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           ANTHROPIC_BASE_URL: ${{ vars.ANTHROPIC_BASE_URL }}
           BANKR_LLM_KEY: ${{ secrets.BANKR_LLM_KEY }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          # Native harness-provider keys — read at run time by the api-key auth
+          # paths (codex→OpenAI, pi→Anthropic/OpenAI, vibe→Mistral). The OAuth
+          # captures need nothing here: their creds are already on disk from install.
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_OAUTH_TOKEN: ${{ secrets.ANTHROPIC_OAUTH_TOKEN }}
+          MOONSHOT_API_KEY: ${{ secrets.MOONSHOT_API_KEY }}
+          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
           USEPOD_TOKEN: ${{ secrets.USEPOD_TOKEN }}
           VENICE_API_KEY: ${{ secrets.VENICE_API_KEY }}
           SURPLUS_API_KEY: ${{ secrets.SURPLUS_API_KEY }}

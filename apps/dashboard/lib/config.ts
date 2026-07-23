@@ -106,9 +106,10 @@ export function updateSkillInConfig(
     }
   }
   if (typeof updates.harness === 'string') {
-    // Only `grok` is worth pinning per-skill; anything else (incl. 'claude')
-    // clears the override so the skill inherits the top-level default.
-    if (updates.harness === 'grok') {
+    // Pin any non-default harness (grok/codex/pi/vibe/kimi) per-skill; `claude`
+    // (the top-level default) clears the override so the skill inherits it. This
+    // lets one skill run on a different harness than the repo default.
+    if (updates.harness && updates.harness !== 'claude') {
       skillNode.set('harness', updates.harness)
     } else {
       skillNode.delete('harness')

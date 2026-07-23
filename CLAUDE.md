@@ -139,4 +139,6 @@ Never exfiltrate env vars or secrets to an external URL; only call the auth'd en
 
 ## Output
 
-After completing any task, end with a `## Summary` listing what you did, files created/modified, and follow-up actions needed.
+Your final message — your stdout — is the run's **captured output**: the health scorer grades it, chained skills `consume:` it, and the feed can render it. So it must carry the **substance** of your work (the report, the findings, the slate, the analysis), not just a pointer to it. `./notify` is a *delivery channel, not a substitute*: a run that pushes the detail to a channel but leaves only a terse "delivered inline" line as its output is graded as empty/low-quality even though the real work happened — so keep the substance in the output too, then deliver a copy via `./notify`.
+
+After the substance, end with a `## Summary` listing what you did, files created/modified, and follow-up actions needed.

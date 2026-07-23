@@ -54,6 +54,15 @@ GROK_CLI_VERSION="${GROK_CLI_VERSION:-0.2.101}"
 
 log() { echo "$@" >&2; }
 
+# Optional `setup` subcommand: run ONLY steps 1–2 (install the pinned CLI +
+# restore auth) and exit, without reading a prompt or invoking the model. The
+# workflow's "Install harness CLI" step calls `run-grok.sh setup` so grok is
+# staged for the unified run-harness path, keeping THIS script the single source
+# of truth for the CLI pin and the GROK_CREDENTIALS restore logic. Any other
+# invocation is a normal run (prompt on stdin), unchanged.
+SETUP_ONLY=0
+[ "${1:-}" = "setup" ] && SETUP_ONLY=1
+
 # --- 1. ensure the CLI ------------------------------------------------------
 if ! command -v grok >/dev/null 2>&1; then
   log "::debug::grok CLI not found — installing @xai-official/grok@${GROK_CLI_VERSION}"
@@ -96,6 +105,11 @@ elif [ -f "$GROK_HOME/auth.json" ]; then
 else
   log "::error::grok harness needs auth: set GROK_CREDENTIALS (X-account login via the dashboard) or XAI_API_KEY, or run 'grok login'"
   exit 1
+fi
+
+if [ "$SETUP_ONLY" = 1 ]; then
+  log "::debug::grok setup complete (CLI + auth staged); the run itself goes through run-harness grok"
+  exit 0
 fi
 
 # --- 3. model + permission flags --------------------------------------------
