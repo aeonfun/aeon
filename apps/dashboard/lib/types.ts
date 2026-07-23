@@ -65,9 +65,11 @@ export type GatewayProvider = 'auto' | 'direct' | GatewaySlug
 export const GATEWAY_PROVIDERS: GatewayProvider[] = ['auto', 'direct', ...GATEWAY_SLUGS]
 
 // Which agent CLI runs skills. `claude` = Claude Code (default, uses the gateway
-// above); `grok` = Grok Build CLI (own auth, own models). See scripts/run-grok.sh.
-export type Harness = 'claude' | 'grok'
-export const HARNESSES: Harness[] = ['claude', 'grok']
+// above); `grok` = Grok Build CLI (own auth, own models). The remaining four run
+// through harness-adapter's `run-harness` on one OPENROUTER_API_KEY (see
+// harness-adapter/docs/aeon-integration.md and scripts/run-grok.sh for the seam).
+export type Harness = 'claude' | 'grok' | 'codex' | 'pi' | 'vibe' | 'kimi'
+export const HARNESSES: Harness[] = ['claude', 'grok', 'codex', 'pi', 'vibe', 'kimi']
 
 export interface UploadFile { path: string; content: string }
 

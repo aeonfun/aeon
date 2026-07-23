@@ -29,7 +29,7 @@ chmod +x "$BIN/grok"
 export GROK_ARGS_FILE="$ARGS_FILE"
 export PATH="$BIN:$PATH"
 
-run() { echo "test prompt" | GROK_FAKE_OUT="$1" GROK_FAKE_RC="${2:-0}" MODEL="${3:-grok-composer-2.5-fast}" SKILL_MODE="${4:-write}" XAI_API_KEY=xai-test bash "$R" 2>/dev/null; }
+run() { echo "test prompt" | GROK_FAKE_OUT="$1" GROK_FAKE_RC="${2:-0}" MODEL="${3:-grok-4.5}" SKILL_MODE="${4:-write}" XAI_API_KEY=xai-test bash "$R" 2>/dev/null; }
 
 # 1. Claude-shaped JSON normalizes to result + usage
 OUT=$(run '{"result":"hi there","usage":{"input_tokens":11,"output_tokens":4}}')
@@ -78,7 +78,7 @@ grep -qx -- "--output-format" "$ARGS_FILE" && grep -qx "json" "$ARGS_FILE" \
   && pass "passes --output-format json" || bad "passes --output-format json"
 grep -qx -- "--no-auto-update" "$ARGS_FILE" && pass "passes --no-auto-update" || bad "passes --no-auto-update"
 grep -qx -- "--no-subagents" "$ARGS_FILE" && pass "passes --no-subagents" || bad "passes --no-subagents"
-grep -qx -- "--model" "$ARGS_FILE" && grep -qx "grok-composer-2.5-fast" "$ARGS_FILE" \
+grep -qx -- "--model" "$ARGS_FILE" && grep -qx "grok-4.5" "$ARGS_FILE" \
   && pass "passes --model for a real grok model" || bad "passes --model"
 grep -qx -- "--permission-mode" "$ARGS_FILE" && grep -qx "bypassPermissions" "$ARGS_FILE" \
   && pass "passes permission flags from skill_mode" || bad "passes permission flags"

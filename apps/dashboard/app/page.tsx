@@ -27,6 +27,8 @@ import { RightPanel } from '../components/RightPanel'
 import { ImportModal } from '../components/ImportModal'
 import { AuthModal } from '../components/AuthModal'
 import { GrokAuthModal } from '../components/GrokAuthModal'
+import { HarnessAuthModal } from '../components/HarnessAuthModal'
+import { HARNESS_AUTH } from '../lib/harness-auth'
 import { PanelError } from '../components/PanelError'
 
 export default function Dashboard() {
@@ -73,6 +75,7 @@ export default function Dashboard() {
   const [showImport, setShowImport] = useState(false)
   const [authLoading, setAuthLoading] = useState(false)
   const [grokLoading, setGrokLoading] = useState(false)
+  const [harnessAuthLoading, setHarnessAuthLoading] = useState(false)
   const [showAuthModal, setShowAuthModal] = useState(false)
 
   const [strategy, setStrategy] = useState('')
@@ -145,7 +148,7 @@ export default function Dashboard() {
   // Switch the agent harness. If the current model doesn't belong to the new
   // harness's model set, snap it to that harness's default so the picker + runs
   // stay coherent (persisted in the same PATCH round-trip).
-  const updateHarness = async (h: string) => { const hh: Harness = h === 'grok' ? 'grok' : 'claude'; setHarness(hh); const list = modelsForHarness(hh); const nextModel = list.some(x => x.id === model) ? undefined : list[0]?.id; if (nextModel) setModel(nextModel); try { const { data } = await patchJson<SyncResult>('/api/skills', { harness: hh, ...(nextModel ? { model: nextModel } : {}) }); flashSynced(`Harness: ${HARNESSES.find(x => x.id === hh)?.label || hh}`, data) } catch { flash('Network error') } }
+  const updateHarness = async (h: string) => { const hh: Harness = (HARNESSES.find(x => x.id === h)?.id ?? 'claude') as Harness; setHarness(hh); const list = modelsForHarness(hh); const nextModel = list.some(x => x.id === model) ? undefined : list[0]?.id; if (nextModel) setModel(nextModel); try { const { data } = await patchJson<SyncResult>('/api/skills', { harness: hh, ...(nextModel ? { model: nextModel } : {}) }); flashSynced(`Harness: ${HARNESSES.find(x => x.id === hh)?.label || hh}`, data) } catch { flash('Network error') } }
   const deleteSkill = async (n: string) => { setBusy(b => ({ ...b, [`d-${n}`]: true })); try { const { ok, data } = await del<SyncResult>('/api/skills', { name: n }); if (ok) { setSkills(s => s.filter(x => x.name !== n)); setSelectedSkill(null); flashSynced(`${displayName(n)} removed`, data) } else { flash(`${displayName(n)} removal failed`) } } catch { flash('Network error') } finally { setBusy(b => ({ ...b, [`d-${n}`]: false })) } }
   const syncToGithub = async () => { setSyncing(true); try { const { ok } = await postJson('/api/sync'); if (ok) { flash('Synced'); setHasChanges(false) } else { flash('Sync failed') } } catch { flash('Network error') } finally { setSyncing(false) } }
   // Pull rebases origin/main onto the working tree, so the whole dashboard can be
@@ -156,6 +159,10 @@ export default function Dashboard() {
   // Connect the grok harness: no arg captures the local X-account OAuth session
   // (GROK_CREDENTIALS); a key stores XAI_API_KEY instead.
   const setupGrokAuth = async (payload?: { key: string }) => { setGrokLoading(true); try { const { ok, data } = await postJson<ErrorResponse & { harness?: Harness; synced?: boolean }>('/api/grok-auth', payload || {}); if (ok) { if (data?.harness === 'grok') { setHarness('grok'); flashSynced('X account connected - harness set to grok', data) } else { flash(payload?.key ? 'XAI_API_KEY saved' : 'X account connected') } setShowAuthModal(false); fetchData() } else { flash(typeof data?.error === 'string' ? data.error : 'Grok connect failed') } } finally { setGrokLoading(false) } }
+  // Native auth for codex/pi/vibe/kimi (the /api/harness-auth parallel to grok):
+  // no arg = OAuth capture (codex→ChatGPT, kimi→device), which also switches the
+  // repo to that harness; {key} = a provider key stored under its own secret.
+  const setupHarnessAuth = async (targetHarness: string, payload?: { key: string }) => { setHarnessAuthLoading(true); try { const { ok, data } = await postJson<ErrorResponse & { harness?: Harness; method?: string; secret?: string; synced?: boolean }>('/api/harness-auth', { harness: targetHarness, ...(payload || {}) }); if (ok) { if (data?.method === 'oauth' && data?.harness) { setHarness(data.harness); flashSynced(`${data.harness} connected - harness set`, data) } else { flash(`${data?.secret || 'Key'} saved`) } setShowAuthModal(false); fetchData() } else { flash(typeof data?.error === 'string' ? data.error : 'Connect failed') } } finally { setHarnessAuthLoading(false) } }
   const saveSecret = async (n: string, value: string) => { setBusy(b => ({ ...b, [`sec-${n}`]: true })); try { const { ok } = await postJson('/api/secrets', { name: n, value }); if (ok) { setSecrets(s => { const e = s.some(x => x.name === n); if (e) return s.map(x => x.name === n ? { ...x, isSet: true } : x); return [...s, { name: n, group: 'Skill Keys', description: 'Custom', isSet: true }] }); flash(`${n} saved`) } } finally { setBusy(b => ({ ...b, [`sec-${n}`]: false })) } }
   const deleteSecret = async (n: string) => { setBusy(b => ({ ...b, [`sec-${n}`]: true })); try { const { ok } = await del('/api/secrets', { name: n }); if (ok) { setSecrets(s => s.map(x => x.name === n ? { ...x, isSet: false } : x)); flash(`${n} removed`) } } finally { setBusy(b => ({ ...b, [`sec-${n}`]: false })) } }
   const importSkill = async (files: UploadFile[], name?: string, category?: string) => { const { ok, data } = await postJson<UploadResponse>('/api/upload', { files, name, category }); if (ok) { flash(`${displayName(data.name)} added`); fetchData() } }
@@ -233,7 +240,7 @@ export default function Dashboard() {
 
         <div ref={mainScrollRef} className="flex-1 overflow-y-auto p-[var(--space-lg)]">
           {view === 'secrets' && !selectedSkill && (
-            <SecretsPanel secrets={secrets} skills={skills} busy={busy} repo={repo} harness={harness} focusKey={secretFocus} onFocusHandled={() => setSecretFocus(null)} onSave={saveSecret} onDelete={deleteSecret} onSelectSkill={(name) => { setSelectedSkill(name); setView('hq') }} onConnectClaude={() => setupAuth()} connecting={authLoading} onConnectGrok={() => setupGrokAuth()} grokConnecting={grokLoading} />
+            <SecretsPanel secrets={secrets} skills={skills} busy={busy} repo={repo} harness={harness} focusKey={secretFocus} onFocusHandled={() => setSecretFocus(null)} onSave={saveSecret} onDelete={deleteSecret} onSelectSkill={(name) => { setSelectedSkill(name); setView('hq') }} onConnectClaude={() => setupAuth()} connecting={authLoading} onConnectGrok={() => setupGrokAuth()} grokConnecting={grokLoading} onConnectHarness={(h) => setupHarnessAuth(h)} harnessConnecting={harnessAuthLoading} />
           )}
           {view === 'strategy' && !selectedSkill && (
             strategyError
@@ -279,6 +286,8 @@ export default function Dashboard() {
       {showImport && <ImportModal onClose={() => setShowImport(false)} onImport={importSkill} />}
       {showAuthModal && (harness === 'grok'
         ? <GrokAuthModal loading={grokLoading} onClose={() => setShowAuthModal(false)} onGrokAuth={(p) => setupGrokAuth(p)} />
+        : HARNESS_AUTH[harness]
+        ? <HarnessAuthModal harness={harness} loading={harnessAuthLoading} onClose={() => setShowAuthModal(false)} onHarnessAuth={(p) => setupHarnessAuth(harness, p)} />
         : <AuthModal loading={authLoading} onClose={() => setShowAuthModal(false)} onAuth={(auth) => setupAuth(auth)} />)}
     </div>
   )

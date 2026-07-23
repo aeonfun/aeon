@@ -15,7 +15,16 @@ export const BUILTIN_SECRETS: Omit<Secret, 'isSet'>[] = [
   { name: 'GROK_CREDENTIALS', group: 'Core', description: 'Grok Build (grok CLI) X-account OAuth session - base64 of your ~/.grok login, captured by "Connect X account" in AUTH. Lets the grok harness (harness: grok) run in CI on your SuperGrok / X Premium+ entitlement. Alternative: set XAI_API_KEY instead.' },
   { name: 'ANTHROPIC_API_KEY', group: 'Core', description: 'How Claude Code signs in - option 2 of 2. A pay-as-you-go Anthropic API key (sk-ant-...) billed via the Console, or any Anthropic-compatible key for a proxy. Create one at console.anthropic.com.', either: 'auth' },
   { name: 'BANKR_LLM_KEY', group: 'Core', description: 'Bankr Gateway API key (bk_...) - enable at bankr.bot/api-keys' },
-  { name: 'OPENROUTER_API_KEY', group: 'Core', description: 'OpenRouter API key (sk-or-...) - routes Claude through openrouter.ai. Create at openrouter.ai/keys' },
+  { name: 'OPENROUTER_API_KEY', group: 'Core', description: 'OpenRouter API key (sk-or-...) - dual purpose: (1) routes Claude Code through openrouter.ai (a gateway provider), and (2) the shared fallback auth for the codex, pi, vibe and kimi harnesses, which all run on OpenRouter via run-harness. One key covers all four. Create at openrouter.ai/keys' },
+  // Native harness auth - each of the run-harness harnesses can run on its OWN
+  // provider instead of the shared OpenRouter key. The two OAuth captures
+  // (CODEX_AUTH/KIMI_AUTH) are set by `aeon auth --harness <h>` or the dashboard's
+  // Connect button, which drive the CLI's login and store the captured session.
+  { name: 'CODEX_AUTH', group: 'Core', description: 'Codex (ChatGPT) login captured for CI - a base64 tar of ~/.codex/auth.json. Set it with `aeon auth --harness codex` or the dashboard "Connect ChatGPT" button (runs `codex login`, stores the session here). Runs the codex harness on your ChatGPT plan instead of OpenRouter.' },
+  { name: 'KIMI_AUTH', group: 'Core', description: 'Kimi (Moonshot) device login captured for CI - a base64 tar of ~/.kimi-code/credentials. Set it with `aeon auth --harness kimi` or the dashboard "Connect Kimi" button. Runs the kimi harness on your Moonshot account instead of OpenRouter.' },
+  { name: 'OPENAI_API_KEY', group: 'Core', description: 'OpenAI API key (sk-...) - API-key auth for the codex harness (alternative to the ChatGPT login) and a provider pi can use. Create at platform.openai.com/api-keys' },
+  { name: 'MOONSHOT_API_KEY', group: 'Core', description: 'Moonshot API key - API-key auth for the kimi harness (alternative to the device login). From platform.moonshot.ai' },
+  { name: 'MISTRAL_API_KEY', group: 'Core', description: "Mistral API key - native auth for the vibe harness (its default provider). vibe's own `vibe` sign-in stores its credential in the OS keychain (not a portable file, like Claude Code), so it can't be captured for CI - set the key here instead. Create at console.mistral.ai" },
   { name: 'USEPOD_TOKEN', group: 'Core', description: "UsePod proxy token - routes Claude through UsePod's gateway (token embedded in the base URL). Get one at usepod.ai" },
   { name: 'VENICE_API_KEY', group: 'Core', description: 'Venice API key - routes Claude through api.venice.ai via a local translator. Create at venice.ai/settings/api' },
   { name: 'SURPLUS_API_KEY', group: 'Core', description: 'Surplus Intelligence API key (inf_...) - routes Claude through surplusintelligence.ai via a local translator' },
@@ -42,7 +51,7 @@ export const BUILTIN_SECRETS: Omit<Secret, 'isSet'>[] = [
   { name: 'COINGECKO_API_KEY', group: 'Skill Keys', description: 'CoinGecko API key - crypto price/market skills. Get one at coingecko.com/en/api' },
   { name: 'ALCHEMY_API_KEY', group: 'Skill Keys', description: 'Alchemy API key - on-chain RPC/data skills. Create at dashboard.alchemy.com' },
   { name: 'ETHERSCAN_API_KEY', group: 'Skill Keys', description: 'Etherscan multichain (V2) API key - one key covers Ethereum + Base + other chains for on-chain skills (tx-explain, investigation-report, onchain-monitor); lifts rate limits. Get one at etherscan.io/apis' },
-  { name: 'BASESCAN_API_KEY', group: 'Skill Keys', description: 'Base explorer key for on-chain skills (investigation-report). Etherscan V2 is one multichain key, so the simplest setup is the SAME value as ETHERSCAN_API_KEY; a standalone basescan.org key also works. Optional - lifts Base rate limits. Keys at etherscan.io/apis' },
+  { name: 'BASESCAN_KEY', group: 'Skill Keys', description: 'Base explorer key for on-chain skills (investigation-report). Etherscan V2 is one multichain key, so the simplest setup is the SAME value as ETHERSCAN_API_KEY; a standalone basescan.org key also works. Optional - lifts Base rate limits. Keys at etherscan.io/apis' },
   { name: 'BANKR_API_KEY', group: 'Skill Keys', description: 'Bankr Wallet API key (X-API-Key) - token distribution skills (distribute-tokens). Enable at bankr.bot/api-keys' },
   { name: 'VERCEL_TOKEN', group: 'Skill Keys', description: 'Vercel access token - deploy skills (deploy-prototype). Create at vercel.com/account/settings/tokens' },
   { name: 'REPLICATE_API_TOKEN', group: 'Skill Keys', description: 'Replicate API token - hero image generation (article). Get one at replicate.com/account/api-tokens' },

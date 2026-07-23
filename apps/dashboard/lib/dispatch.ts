@@ -20,8 +20,8 @@ export function normLinks(input: unknown): string[] {
 /**
  * Reduce a model identifier to a safe charset — alphanumerics, underscore,
  * hyphen, and dot. The dot matters: grok model ids carry a version like
- * `grok-composer-2.5-fast`, and stripping it produced `grok-composer-25-fast`,
- * which the workflow's `model` choice input rejects with HTTP 422. Dispatch uses
+ * `grok-4.5`, and stripping it produced `grok-45`, which the workflow's `model`
+ * choice input rejects with HTTP 422. Dispatch uses
  * `execFileSync('gh', [...])` (argv array, no shell), so this is defense-in-depth
  * against odd input, not a shell-injection guard. Non-string input yields "".
  */

@@ -1,0 +1,172 @@
+#!/usr/bin/env bash
+# run-harness — one Claude Code-shaped contract, six coding-agent harnesses.
+#
+#   usage: run-harness <claude|grok|codex|pi|vibe|kimi> [options] < prompt.txt
+#
+#   options (mirroring Claude Code's headless flags):
+#     --model <id>                  model id (per-harness mapping; wrong-family ids fall to defaults)
+#     --allowed-tools "<list>"      Claude --allowedTools grammar, e.g. "Read,Grep,Bash(git:*)"
+#     --mode read-only|write        capability tier (derived from --allowed-tools if omitted; default write)
+#     --mcp-config <file>           Claude-style .mcp.json (${VAR}s expanded from env; translated per harness)
+#     --max-turns <n>               agentic-turn cap where supported (claude/grok); others rely on --timeout
+#     --json-schema '<schema>'      structured output (native on claude/grok/codex; prompt+validate+retry on pi/vibe/kimi)
+#     --append-system-prompt <txt>  extra standing instructions
+#     --timeout <seconds>           wall-clock guard (default 600)
+#     --no-sandbox                  skip the wrapper OS sandbox on read-only runs
+#     --no-compat-rules             skip the Claude-idiom compatibility preamble on non-claude harnesses
+#
+#   contract (stdout): {"result": "...", "usage": {input_tokens, output_tokens,
+#     cache_read_input_tokens, cache_creation_input_tokens}, [session_id], [total_cost_usd]}
+#   diagnostics on stderr; exit 0 ok / 3 abnormal-stop-with-no-output / other non-zero errors.
+#
+# Pattern generalized from aeonfun/aeon's scripts/run-grok.sh.
+set -uo pipefail
+
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+usage() {
+  sed -n '2,22p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//' >&2
+  exit 2
+}
+
+[ $# -ge 1 ] || usage
+HARNESS="$1"; shift
+[ -f "$HERE/adapters/$HARNESS.sh" ] || { echo "unknown harness '$HARNESS'" >&2; usage; }
+
+MODEL="" MODE="" ALLOWED="" MCP="" MAXT="" SCHEMA="" APPEND=""
+TIMEOUT=600 SANDBOX=auto COMPAT=auto
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --model)                MODEL="$2"; shift 2 ;;
+    --mode)                 MODE="$2"; shift 2 ;;
+    --allowed-tools | --allowedTools) ALLOWED="$2"; shift 2 ;;
+    --mcp-config)           MCP="$2"; shift 2 ;;
+    --max-turns)            MAXT="$2"; shift 2 ;;
+    --json-schema)          SCHEMA="$2"; shift 2 ;;
+    --append-system-prompt) APPEND="$2"; shift 2 ;;
+    --timeout)              TIMEOUT="$2"; shift 2 ;;
+    --no-sandbox)           SANDBOX=off; shift ;;
+    --no-compat-rules)      COMPAT=off; shift ;;
+    --output-format)        [ "$2" = "json" ] || { echo "only --output-format json is supported" >&2; exit 2; }; shift 2 ;;
+    *) echo "unknown option: $1" >&2; usage ;;
+  esac
+done
+
+case "$MODE" in "" | read-only | write) ;; *) echo "invalid --mode '$MODE' (read-only|write)" >&2; exit 2 ;; esac
+
+if [ -t 0 ]; then
+  echo "error: pipe the prompt on stdin (e.g. echo 'do X' | run-harness $HARNESS)" >&2
+  exit 2
+fi
+
+. "$HERE/lib/tools-grammar.sh"
+. "$HERE/lib/envelope.sh"
+
+# derive capability mode from the toolset when not given explicitly
+if [ -z "$MODE" ]; then
+  if [ -n "$ALLOWED" ] && ! tools_has_write "$ALLOWED"; then MODE=read-only; else MODE=write; fi
+fi
+
+RH_TMPDIR=$(mktemp -d "${TMPDIR:-/tmp}/run-harness.XXXXXX")
+trap 'rm -rf "$RH_TMPDIR"' EXIT
+cat > "$RH_TMPDIR/prompt.txt"
+
+# ${VAR}-expand .mcp.json once, for every adapter
+if [ -n "$MCP" ]; then
+  [ -f "$MCP" ] || { echo "mcp config not found: $MCP" >&2; exit 2; }
+  . "$HERE/lib/mcp-translate.sh"
+  MISSING=$(mcp_expand_vars "$MCP" "$RH_TMPDIR/mcp.json")
+  [ -n "$MISSING" ] && echo "warning: .mcp.json references unset var(s): $(echo "$MISSING" | tr '\n' ' ')" >&2
+  MCP="$RH_TMPDIR/mcp.json"
+fi
+
+# pre-expand CLAUDE.md @imports for harnesses that load it verbatim (all but claude)
+if [ "$HARNESS" != "claude" ]; then
+  . "$HERE/lib/imports.sh"
+  EXPANDED=$(expand_claude_md "$RH_TMPDIR/CLAUDE.expanded.md")
+  [ -n "$EXPANDED" ] && \
+    echo "notice: CLAUDE.md uses @imports (not expanded by $HARNESS) — expanded copy at $EXPANDED; consider carrying the delta in AGENTS.md" >&2
+fi
+
+# Claude-idiom compatibility preamble (skills/prompts authored for Claude Code)
+COMPAT_RULES=""
+if [ "$COMPAT" = "auto" ] && [ "$HARNESS" != "claude" ]; then
+  COMPAT_RULES="$(cat "$HERE/lib/compat-rules.md")"
+  # Read-only mode write-locks the WORKSPACE only — lib/sandbox.sh binds
+  # everything else rw, so $TMPDIR and $HOME stay writable by design. Agents were
+  # never told that, so an agent that reaches for a scratch file hits a denial
+  # inside the workspace and abandons the task. Measured on a real aeon runner:
+  # opencode ended two github-trending runs on "Let me use a Python script to
+  # parse the trending page directly:" and produced no report, while /tmp was
+  # writable the whole time. Mode-conditional because in write mode the workspace
+  # IS writable and saying otherwise would be a lie.
+  if [ "$MODE" = "read-only" ]; then
+    COMPAT_RULES="${COMPAT_RULES}- This run is READ-ONLY: the workspace cannot be written, but \$TMPDIR is fully writable. Put any scratch file, helper script, or intermediate download under \$TMPDIR. A refused write inside the workspace is expected — never abandon the task over it.
+- READ-ONLY DOES NOT MEAN OFFLINE. The network is available: your web fetch/search tools and shell commands like curl work normally. Do not assume otherwise, and never substitute invented, stubbed or placeholder data for a fetch you did not attempt — if a real fetch fails, say so plainly instead of fabricating a plausible-looking result.
+"
+  fi
+fi
+
+export RH_PROMPT_FILE="$RH_TMPDIR/prompt.txt"
+export RH_TMPDIR RH_LIB="$HERE/lib"
+export RH_MODEL="$MODEL" RH_MODE="$MODE" RH_ALLOWED_TOOLS="$ALLOWED"
+export RH_MCP_CONFIG="$MCP" RH_MAX_TURNS="$MAXT" RH_JSON_SCHEMA="$SCHEMA"
+export RH_APPEND_SYSTEM_PROMPT="$APPEND" RH_COMPAT_RULES="$COMPAT_RULES"
+export RH_TIMEOUT="$TIMEOUT"
+
+CMD=(bash "$HERE/adapters/$HARNESS.sh")
+
+# wall-clock guard — the harness-agnostic runaway backstop
+if command -v timeout >/dev/null 2>&1; then
+  CMD=(timeout "$TIMEOUT" "${CMD[@]}")
+elif command -v gtimeout >/dev/null 2>&1; then
+  CMD=(gtimeout "$TIMEOUT" "${CMD[@]}")
+else
+  echo "warning: no timeout(1)/gtimeout(1) found — running without a wall-clock guard" >&2
+fi
+
+# wrapper-level OS sandbox: uniform read-only enforcement. This wrapper binds the
+# workspace read-only but leaves the NETWORK open (lib/sandbox.sh), so every
+# harness relies on it for read-only. codex has its OWN kernel sandbox, but its
+# `--sandbox read-only` also kills the network — so codex.sh disables codex's
+# self-sandbox in read-only mode (danger-full-access) and lets THIS wrapper be the
+# sole enforcer. Only one FS sandbox may be active: nesting codex's landlock
+# inside bwrap's user namespace broke codex's file access entirely.
+# NOTE grok: its own --sandbox read-only is silently ignored on 0.2.101 (writes
+# still land); vibe/kimi ship no FS sandbox at all — so all of them
+# rely on the wrapper for read-only.
+if [ "$MODE" = "read-only" ] && [ "$SANDBOX" = "auto" ]; then
+  case "$HARNESS" in
+    claude | grok | codex | pi | vibe | kimi)
+      . "$HERE/lib/sandbox.sh"
+      SB=()
+      if PREFIX=$(sandbox_prefix "$RH_TMPDIR"); then
+        while IFS= read -r tok; do SB+=("$tok"); done <<<"$PREFIX"
+        CMD=("${SB[@]}" "${CMD[@]}")
+        echo "read-only: workspace write-locked via ${SB[0]}" >&2
+      else
+        echo "warning: no OS sandbox available — read-only is advisory for $HARNESS on this machine" >&2
+      fi
+      ;;
+  esac
+fi
+
+OUT="$RH_TMPDIR/envelope.json"
+"${CMD[@]}" > "$OUT"
+rc=$?
+if [ $rc -eq 124 ]; then
+  echo "error: harness run exceeded --timeout ${TIMEOUT}s" >&2
+  exit 124
+fi
+[ $rc -ne 0 ] && exit $rc
+
+if validate_envelope < "$OUT"; then
+  cat "$OUT"
+  # ensure exactly one trailing newline (if, not &&: a guard-style && here would
+  # become the script's exit status — the same pitfall aeon.yml warns about)
+  if [ -n "$(tail -c 1 "$OUT")" ]; then echo; fi
+else
+  echo "warning: adapter output failed contract validation — wrapping raw" >&2
+  wrap_raw_output < "$OUT"
+fi
+exit 0
