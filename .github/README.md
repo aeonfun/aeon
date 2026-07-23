@@ -51,7 +51,7 @@ Dashboard views, local dev, env vars, and remote access are documented in [`apps
 
 **Prefer the terminal?** Everything the dashboard does is also a command - `./aeon skills ls`, `./aeon skills enable <name>`, `./aeon secrets set …`, `./aeon runs logs <id>`. Same logic, no browser, scriptable with `--json`. See [Command line](../apps/cli/README.md).
 
-**Drive it from a chat?** This repo ships an **[Aeon setup skill](../docs/aeon-setup.md)** - an agent skill that sets up, schedules, edits, and debugs your instance in plain language. Open the repo folder in [Claude Code](https://claude.com/claude-code) and type `/aeon` (it's already there, zero-install); portable to any agent tool that supports [Agent Skills](https://code.claude.com/docs/en/skills).
+**Drive it from a chat?** This repo ships an **[Aeon setup skill](../docs/aeon-setup.md)** - an agent skill that sets up, schedules, edits, and debugs your instance in plain language. It's a standard [Agent Skill](https://code.claude.com/docs/en/skills), so it works with **Claude Code, Codex, Hermes, or OpenClaw** - open the repo folder in your agent and type `/aeon` (it's already there, zero-install).
 
 <details>
 <summary><strong>No admin rights / can't install <code>gh</code>?</strong></summary>
