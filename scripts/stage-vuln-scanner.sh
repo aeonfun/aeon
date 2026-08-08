@@ -98,5 +98,24 @@ else
   record slither skipped
 fi
 
+# --- cargo-fuzz (dynamic testing, A3.5) — only useful when the cloned repo
+#     already ships its own fuzz/fuzz_targets, but we don't know the target yet
+#     at staging time (Arm A picks it after this step runs). Stage it always,
+#     same tolerance as slither above: unconditional install, conditional use.
+#     GHA hosted runners already have stable Rust; this only adds nightly
+#     (cargo-fuzz needs it for sanitizer support) + the cargo-fuzz binary.
+if command -v cargo-fuzz >/dev/null 2>&1; then
+  log "cargo-fuzz already present"
+  record cargo-fuzz installed
+elif rustup toolchain install nightly --profile minimal >/dev/null 2>&1 \
+     && cargo install cargo-fuzz --locked >/dev/null 2>&1 \
+     && command -v cargo-fuzz >/dev/null 2>&1; then
+  log "cargo-fuzz installed ($(cargo-fuzz --version 2>/dev/null | head -1))"
+  record cargo-fuzz installed
+else
+  log "cargo-fuzz not installed (optional — only used for repos shipping fuzz/fuzz_targets)"
+  record cargo-fuzz skipped
+fi
+
 log "manifest (/tmp/vuln-scan/prefetch.txt):"
 cat "$MANIFEST"
