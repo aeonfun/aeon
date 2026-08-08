@@ -418,7 +418,11 @@ jobs:
         # workaround (there is no network sandbox). Installs semgrep/trufflehog/
         # osv-scanner/slither and appends /tmp/bin to the PATH file so the scanner
         # bare-names resolve in the later claude -p step and its per-call fresh shells
-        # (an in-run `export PATH` doesn't survive between Claude's Bash calls).
+        # (an in-run `export PATH` doesn't survive between Claude's Bash calls). Also
+        # installs a nightly Rust toolchain + cargo-fuzz for step A3.5 (dynamic
+        # testing) — unconditionally, like slither, since the scan target isn't known
+        # until Arm A runs; the skill's own command -v guard makes it a no-op when
+        # the picked repo doesn't ship its own fuzz/fuzz_targets.
         # Execution is separately gated by the write-tier grant in scripts/skill_mode.sh.
         # Best-effort: the script self-guards to vuln-scanner and never fails the run.
         if: steps.work.outputs.mode != '' && steps.skill.outputs.name == 'vuln-scanner'

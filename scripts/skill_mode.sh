@@ -49,6 +49,16 @@ WRITE_TOOLS="Write,Edit,Bash(gh:*),Bash(git:*),Bash(python3:*),Bash(python:*)"
 # a live-test showed the run logging that denial as "Blocked by sandbox". These are
 # read-only static-analysis tools (no repo/network mutation of their own).
 WRITE_TOOLS="$WRITE_TOOLS,Bash(semgrep:*),Bash(osv-scanner:*),Bash(trufflehog:*),Bash(slither:*)"
+# cargo (vuln-scanner Arm A, step A3.5 — dynamic testing). Staged by
+# scripts/stage-vuln-scanner.sh (nightly toolchain + cargo-fuzz, workflow step,
+# same reason as Foundry below — the sandbox denies toolchain installs in-run).
+# Unlike the scanners above, this is not narrow: `cargo fuzz run` compiles and
+# executes the cloned repo's own code, and `cargo` itself is a much wider surface
+# than a single-purpose analyzer. Accepted deliberately — see A3.5 in
+# skills/vuln-scanner/SKILL.md for the trust-boundary reasoning. The skill only
+# reaches for it when the clone already ships fuzz/fuzz_targets; the guard lives
+# in the skill, not here.
+WRITE_TOOLS="$WRITE_TOOLS,Bash(cargo:*)"
 # Foundry bare-names + the key-safe runner for deploy-uni-hook. Foundry is staged by
 # scripts/stage-deploy-uni-hook.sh (the sandbox denies in-run installs); the skill then
 # builds/simulates/broadcasts by bare name. `./hook-deploy.sh` hides the deployer key
