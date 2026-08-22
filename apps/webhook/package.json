@@ -6,7 +6,8 @@
   "description": "Cloudflare Worker that relays Telegram messages to an Aeon fork via GitHub repository_dispatch for ~1s response time.",
   "scripts": {
     "dev": "wrangler dev",
-    "deploy": "wrangler deploy"
+    "deploy": "wrangler deploy",
+    "test": "node test/replay-guard.test.mjs"
   },
   "cloudflare": {
     "bindings": {

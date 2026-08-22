@@ -34,7 +34,7 @@
 import { instrument } from "@microlabs/otel-cf-workers";
 
 const handler = {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     // Telegram only ever POSTs updates. Treat anything else as a health probe.
     if (request.method !== "POST") {
       return new Response("aeon telegram webhook: ok", { status: 200 });
@@ -56,67 +56,118 @@ const handler = {
       return new Response("bad request", { status: 400 });
     }
 
-    const owner = String(env.TELEGRAM_CHAT_ID);
-    // Owner *user* id. `owner` above gates the chat; this gates the tapping/sending
-    // user. Defaults to the chat id, which is exactly the owner's id in a 1:1 DM
-    // (chat.id == user.id there), so DM setups need no extra config. In a group the
-    // negative chat id never equals a positive user id, so buttons fail closed until
-    // TELEGRAM_ALLOWED_USER_ID is set — stopping any group member from commanding
-    // the bot just by tapping a posted button.
-    const ownerUid = String(env.TELEGRAM_ALLOWED_USER_ID || env.TELEGRAM_CHAT_ID);
-
-    // --- Inline button tap -------------------------------------------------
-    const cb = update?.callback_query;
-    if (cb) {
-      // Stop the client's spinner regardless of who sent it.
-      await answerCallback(env, cb.id);
-      if (String(cb.message?.chat?.id) !== owner || String(cb.from?.id) !== ownerUid) {
-        return new Response("ignored", { status: 200 });
-      }
-      return dispatch(env, "telegram-callback", {
-        data: cb.data,
-        from_id: cb.from?.id,
-        chat_id: cb.message?.chat?.id,
-        message_id: cb.message?.message_id,
-      });
+    // --- Replay guard -------------------------------------------------------
+    // Telegram redelivers an update (same update_id) when our previous response
+    // wasn't a prompt 200 — a slow dispatch, a transient 5xx from GitHub, a
+    // network blip on either side. Without a check here, every redelivery
+    // re-dispatches: a slash command runs twice, a button tap fires its action
+    // twice. `update_id` is present on every Update regardless of sub-type
+    // (message, callback_query, ...), so one cache keyed on it covers every
+    // path through this handler — despite the comment already in `dispatch()`
+    // below claiming this, nothing actually checked it before this change.
+    //
+    // Cache API, not KV/D1/DO: each operator deploys an isolated Worker with no
+    // provisioned storage (see wrangler.toml) and Cache API needs no binding —
+    // consistent with this file's own "no shared infrastructure" design.
+    // Verified live against a real *.workers.dev deployment (the default
+    // target in this project's own README quickstart, where historically some
+    // Cache API behavior was doc'd as unsupported): a cache.put() from one
+    // request round-tripped as a cache.match() HIT on a later request. It is
+    // per-colo, not a global or distributed store, so this closes the
+    // realistic single-region retry window rather than guaranteeing
+    // exactly-once delivery across every edge simultaneously — a documented
+    // tradeoff, not an oversold one.
+    const cache = caches.default;
+    const dedupeKey =
+      typeof update?.update_id === "number"
+        ? new Request(`https://aeon-webhook-dedupe.invalid/update/${update.update_id}`)
+        : null;
+    if (dedupeKey && (await cache.match(dedupeKey))) {
+      return new Response("duplicate", { status: 200 });
     }
 
-    // --- Messages ----------------------------------------------------------
-    const message = update?.message;
-    if (!message?.text) {
-      return new Response("ignored", { status: 200 });
-    }
-    if (String(message.chat?.id) !== owner || String(message.from?.id) !== ownerUid) {
-      // Keep the bot's reply rate high (BotFather flags "too few replies") without
-      // acting on strangers. Private chats only, to avoid replying into groups.
-      // The reply only goes out when the whole chat is a non-owner private DM — never
-      // to a non-owner member inside the owner's own group (that would be chat noise).
-      if (message.chat?.type === "private" && String(message.chat?.id) !== owner) {
-        await sendMessage(env, message.chat.id, "This bot is private.");
-      }
-      return new Response("ignored", { status: 200 });
-    }
+    const response = await handleUpdate(env, update);
 
-    const replyTo = message.reply_to_message?.text;
-    const base = { from_id: message.from?.id, chat_id: message.chat.id };
-
-    // Answer to a force_reply prompt (marker embedded as [skill::intent]).
-    if (replyTo && /\[[A-Za-z0-9_-]+::[A-Za-z0-9_-]+\]/.test(replyTo)) {
-      return dispatch(env, "telegram-reply", { ...base, reply_to_text: replyTo, text: message.text });
+    // Only remember a genuine success. A failed dispatch (502, see below) must
+    // stay un-cached so Telegram's own retry can still get through and succeed
+    // — caching a failure would turn a transient error into a permanently
+    // dropped update.
+    if (dedupeKey && response.status === 200) {
+      ctx.waitUntil(
+        cache.put(
+          dedupeKey,
+          new Response("1", { headers: { "Cache-Control": "max-age=300" } }),
+        ),
+      );
     }
-    // Slash command or /start deep link — routed with no LLM in the loop.
-    if (message.text.startsWith("/")) {
-      return dispatch(env, "telegram-command", { ...base, text: message.text });
-    }
-    // Plain text — the agent interprets it (messages.yml runs the configured
-    // harness: claude or grok).
-    return dispatch(env, "telegram-message", {
-      ...base,
-      message: message.text,
-      update_id: update.update_id,
-    });
+    return response;
   },
 };
+
+// Classify and act on one already-authenticated, already-parsed Update.
+// Split out of fetch() so the replay guard above can wrap every path (button
+// tap, message, ignored-sender) with one dedupe decision at a single point.
+async function handleUpdate(env, update) {
+  const owner = String(env.TELEGRAM_CHAT_ID);
+  // Owner *user* id. `owner` above gates the chat; this gates the tapping/sending
+  // user. Defaults to the chat id, which is exactly the owner's id in a 1:1 DM
+  // (chat.id == user.id there), so DM setups need no extra config. In a group the
+  // negative chat id never equals a positive user id, so buttons fail closed until
+  // TELEGRAM_ALLOWED_USER_ID is set — stopping any group member from commanding
+  // the bot just by tapping a posted button.
+  const ownerUid = String(env.TELEGRAM_ALLOWED_USER_ID || env.TELEGRAM_CHAT_ID);
+
+  // --- Inline button tap -------------------------------------------------
+  const cb = update?.callback_query;
+  if (cb) {
+    // Stop the client's spinner regardless of who sent it.
+    await answerCallback(env, cb.id);
+    if (String(cb.message?.chat?.id) !== owner || String(cb.from?.id) !== ownerUid) {
+      return new Response("ignored", { status: 200 });
+    }
+    return dispatch(env, "telegram-callback", {
+      data: cb.data,
+      from_id: cb.from?.id,
+      chat_id: cb.message?.chat?.id,
+      message_id: cb.message?.message_id,
+    });
+  }
+
+  // --- Messages ----------------------------------------------------------
+  const message = update?.message;
+  if (!message?.text) {
+    return new Response("ignored", { status: 200 });
+  }
+  if (String(message.chat?.id) !== owner || String(message.from?.id) !== ownerUid) {
+    // Keep the bot's reply rate high (BotFather flags "too few replies") without
+    // acting on strangers. Private chats only, to avoid replying into groups.
+    // The reply only goes out when the whole chat is a non-owner private DM — never
+    // to a non-owner member inside the owner's own group (that would be chat noise).
+    if (message.chat?.type === "private" && String(message.chat?.id) !== owner) {
+      await sendMessage(env, message.chat.id, "This bot is private.");
+    }
+    return new Response("ignored", { status: 200 });
+  }
+
+  const replyTo = message.reply_to_message?.text;
+  const base = { from_id: message.from?.id, chat_id: message.chat.id };
+
+  // Answer to a force_reply prompt (marker embedded as [skill::intent]).
+  if (replyTo && /\[[A-Za-z0-9_-]+::[A-Za-z0-9_-]+\]/.test(replyTo)) {
+    return dispatch(env, "telegram-reply", { ...base, reply_to_text: replyTo, text: message.text });
+  }
+  // Slash command or /start deep link — routed with no LLM in the loop.
+  if (message.text.startsWith("/")) {
+    return dispatch(env, "telegram-command", { ...base, text: message.text });
+  }
+  // Plain text — the agent interprets it (messages.yml runs the configured
+  // harness: claude or grok).
+  return dispatch(env, "telegram-message", {
+    ...base,
+    message: message.text,
+    update_id: update.update_id,
+  });
+}
 
 // --- OpenTelemetry (opt-in + no-op) ----------------------------------------
 // Mirrors scripts/langfuse-otel.sh: traces are exported only when the operator
@@ -165,8 +216,9 @@ async function dispatch(env, eventType, clientPayload) {
     },
     body: JSON.stringify({ event_type: eventType, client_payload: clientPayload }),
   });
-  // On failure return non-2xx so Telegram retries later (dedupe is by update_id /
-  // callback id). On success return 200 so the update is never redelivered.
+  // On failure return non-2xx so Telegram retries later. On success return 200
+  // — fetch()'s replay guard then caches this update_id, so a redelivery after
+  // a success is short-circuited instead of dispatching again.
   if (!res.ok) {
     return new Response(`dispatch failed: ${res.status}`, { status: 502 });
   }
