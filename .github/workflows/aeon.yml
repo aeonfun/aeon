@@ -102,7 +102,28 @@ env:
   FLEET_TOKEN:    ${{ secrets.FLEET_TOKEN }}
 
 concurrency:
-  group: aeon-${{ inputs.skill || github.event.action || github.run_id }}
+  # Keyed by skill name alone, `var` was ignored entirely: dispatching the
+  # same skill at two different explicit targets (e.g. vuln-scanner against
+  # two different owner/repo values, or digest against two different topics)
+  # collided into the same group. With cancel-in-progress:false, GitHub only
+  # keeps ONE run queued behind the currently-active one at a time -- so a
+  # burst of dispatches to the same skill with different targets silently
+  # cancelled every run except the first and whichever landed last. The ones
+  # in between never executed at all, with no error surfaced anywhere.
+  # Live-observed: 10 vuln-scanner dispatches, 8 silently cancelled, only 2
+  # ever ran. Appending inputs.var to the group key when it's set fixes that
+  # without changing behavior for the common case (var empty/unset):
+  # same-skill scheduled/manual runs with no target still serialize exactly
+  # as before, preserving the original guard against a genuine duplicate run.
+  #
+  # Known remaining gap, not fixed by this change: a skill invoked
+  # repeatedly with an EMPTY var that auto-selects a different target
+  # internally on each run (e.g. vuln-scanner's "auto-select a trending
+  # repo" mode) still collides, since the workflow trigger layer has no
+  # visibility into what the skill will pick once it's running -- that
+  # would need a client-side distinguishing value (e.g. a per-dispatch
+  # nonce), a separate, narrower change.
+  group: aeon-${{ inputs.skill || github.event.action || github.run_id }}${{ inputs.var && format('-{0}', inputs.var) || '' }}
   cancel-in-progress: false
 
 jobs:
