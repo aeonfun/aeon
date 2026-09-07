@@ -296,7 +296,7 @@ export const PUBLISHED_PR_NUMBERS = CHANGELOG.flatMap((e) => e.prs.map((p) => p.
 3. Add a **"Recent changes"** section to `app/docs/page.tsx`: import `CHANGELOG` from `../changelog-data` and render the latest 3 entries inline, with a "Full changelog →" link to `/changelog`. Place it near the top of the docs body, after the intro. Keep edits to that file minimal and self-contained.
 4. Add a **`changelog`** link to the primary nav in `app/site-chrome.tsx` (or wherever the site renders its nav — check the layout if there's no `site-chrome`).
 
-Match indentation, quote style, and naming of each repo exactly. After editing, if the site has a typecheck/lint/build available, run it (`npm run lint` / `npx tsc --noEmit` / `npm run build`) and fix any error your change introduced. If `npm` isn't available in the run, skip silently — note it in the PR body.
+Match indentation, quote style, and naming of each repo exactly. After editing, if the site has a formatter available, run it too so a `format:check` gate passes (`npm run format`, i.e. biome/prettier `--write`). If the site has a typecheck/lint/build available, run it (`npm run lint` / `npx tsc --noEmit` / `npm run build`) and fix any error your change introduced. If `npm` isn't available in the run, skip silently and note it in the PR body.
 
 ## B.5. Branch, commit, PR
 
