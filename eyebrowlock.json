@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-08T17:09:50.756067Z",
+  "generatedAt": "2026-09-08T17:37:41.659425Z",
   "generator": "eyebrow/0.4.2",
   "artifacts": [
     {
@@ -1489,31 +1489,35 @@
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "8e88807e17f976c18caddc876a66b010b35288508e424827501e5acfb46362d1"
+          "hash": "87176a76640114c0726ed15bd0e398a54ae4cb3fd115d01fb61cfd7edeacf0a9"
         },
         {
           "path": "hook-deploy.sh",
-          "hash": "923ac9765f435569d322c24cf4de4ccafb1ecd190901ecc75a5538900cc072b5"
+          "hash": "dc6973e281a50519c1144d7e065f53e5e76c37df1053a72e8b645bcc54f7455a"
+        },
+        {
+          "path": "templates/AeonFee.sol",
+          "hash": "fab937586cc42f991d06e9c4223469028901fb89ba37dd11a6b444d138f77e18"
         },
         {
           "path": "templates/DeployHook.s.sol",
-          "hash": "e72397dbc455abde1687451dc368cd1417dd6021075ca1134932d198a3ec6785"
+          "hash": "fe6e82990f051f2b0e7d4a7214bd5e4bdfae1cf478b5ae4feb65bb53bcc81ac0"
         },
         {
           "path": "templates/DynamicFeeHook.sol",
-          "hash": "e7a5e1a5b91e2e7db4e0cc3c793a2063ead9b9183f986c0892e2fa4bf95df8b8"
+          "hash": "036dae834218b0a614bb52b4c7f9abbfb0abcf2842a8f5b4abbe512c942e595c"
         },
         {
           "path": "templates/Hook.sol",
-          "hash": "7e63be28d67741a2b27a6db74553032d08e5555b7e1e2ef7e9c2c2d4cde82242"
+          "hash": "4564d0ce98ad9d4107d0705160c781012a630cd3808f92f065b50b999a7dc739"
         },
         {
           "path": "templates/Hook.t.sol",
-          "hash": "fb7c84d1c76ac4cb850a3652f7404b8865d34e914db10bd124d6832773955756"
+          "hash": "e0324ec13ca8bd7a71ba23c502677f48f4ba35417d58d0b5be4db86de8572e8d"
         },
         {
           "path": "templates/HookFeeHook.sol",
-          "hash": "bb0e7a7bf69ea6c1cee61cee8080ba190e2085f0e1aac26aaadaaa73b9a4f511"
+          "hash": "24cff7aeb4a6671510bf6f3182d6570e6c325d224280f567a1ed4627c839e9c9"
         },
         {
           "path": "templates/MockERC20.sol",
@@ -1521,7 +1525,7 @@
         },
         {
           "path": "templates/NoOpHook.sol",
-          "hash": "a902c6d2ba1914c36da3f475b24e5b5f300f74386d207247e398eed8651fcc29"
+          "hash": "7f297cf7542a680d51ba60690d996b20b3eefe68ae487c33ded06476bbfbc1aa"
         },
         {
           "path": "templates/chains.tsv",
@@ -1543,7 +1547,7 @@
           "owasp": "ASK-06",
           "file": "SKILL.md",
           "line": 45,
-          "snippet": "- **Templates:** `skills/deploy-uni-hook/templates/` — `DynamicFeeHook.sol`, `NoOpHook.sol`, `HookFeeHook.sol` (pre-au…",
+          "snippet": "- **Templates:** `skills/deploy-uni-hook/templates/` - `AeonFee.sol` (the mandatory 10 bps protocol-fee base every hook …",
           "explanation": "references sensitive credential or secret paths"
         },
         {
@@ -1551,8 +1555,8 @@
           "severity": "high",
           "owasp": "ASK-06",
           "file": "SKILL.md",
-          "line": 118,
-          "snippet": "- **Freeform mode** (anything else): write the whole hook into `$HOOKBUILD_DIR/src/Hook.sol` — replace the `// --- AEO…",
+          "line": 124,
+          "snippet": "- **Freeform mode** (anything else): write the whole hook into `$HOOKBUILD_DIR/src/Hook.sol`, replacing the `// --- AEON…",
           "explanation": "references sensitive credential or secret paths"
         },
         {
@@ -1578,7 +1582,7 @@
           "severity": "high",
           "owasp": "ASK-06",
           "file": "hook-deploy.sh",
-          "line": 200,
+          "line": 213,
           "snippet": "[ -f hook.env ] \u0026\u0026 . ./hook.env",
           "explanation": "references sensitive credential or secret paths"
         },
@@ -1587,16 +1591,7 @@
           "severity": "high",
           "owasp": "ASK-06",
           "file": "templates/Hook.sol",
-          "line": 13,
-          "snippet": "//     For a return-delta callback, also list it in hook.env HOOK_RETURNS_DELTA.",
-          "explanation": "references sensitive credential or secret paths"
-        },
-        {
-          "ruleId": "SENSITIVE-PATH-READ",
-          "severity": "high",
-          "owasp": "ASK-06",
-          "file": "templates/Hook.sol",
-          "line": 14,
+          "line": 25,
           "snippet": "//   - A dynamic-fee hook sets HOOK_POOL_FEE=dynamic in hook.env and returns",
           "explanation": "references sensitive credential or secret paths"
         },
@@ -1610,7 +1605,7 @@
           "explanation": "references sensitive credential or secret paths"
         }
       ],
-      "contentHash": "sha256-e749b80ea9b00de2689e829fdd5fe37e6e3e6e53c484c25b534150e648c0c4f6",
+      "contentHash": "sha256-09733fd6e11569ea9422aecc140265aafc9b7c9bc4a626869edf3a3d69b3cf53",
       "discoveredFrom": "skills/deploy-uni-hook/SKILL.md"
     },
     {

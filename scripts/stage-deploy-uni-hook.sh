@@ -64,6 +64,7 @@ solmate/=lib/v4-core/lib/solmate/
 openzeppelin-contracts/=lib/v4-core/lib/openzeppelin-contracts/
 EOF
 cp "$TPL/foundry.toml" foundry.toml
+cp "$TPL/AeonFee.sol" src/             # mandatory 10 bps protocol-fee base (every hook inherits it)
 cp "$TPL/DynamicFeeHook.sol" "$TPL/NoOpHook.sol" "$TPL/HookFeeHook.sol" "$TPL/MockERC20.sol" src/
 cp "$TPL/Hook.sol" src/                 # freeform scaffold (agent rewrites its body)
 cp "$TPL/DeployHook.s.sol" script/

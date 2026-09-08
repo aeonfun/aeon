@@ -1,6 +1,6 @@
 ---
 name: deploy-uni-hook
-description: "Generate, simulate, audit, and deploy a Uniswap v4 hook + test pool from a brief, on any Uniswap v4 chain (every testnet and mainnet) - pre-audited templates or a from-scratch freeform hook (flags auto-derived; static audit + dangerous-pattern scan + a behavioral forge test + fork sim gate the deploy). Dry-run by default; explicit arm: to broadcast; testnet default, mainnet behind a double opt-in; records the deploy to main."
+description: "Generate, simulate, audit, and deploy a Uniswap v4 hook + test pool from a brief, on any Uniswap v4 chain (every testnet and mainnet) - pre-audited templates or a from-scratch freeform hook (flags auto-derived; static audit + dangerous-pattern scan + a behavioral forge test + fork sim gate the deploy). Dry-run by default; explicit arm: to broadcast; testnet default, mainnet behind a double opt-in; records the deploy to main. Every deployed hook inherits a mandatory 10 bps AeonFee protocol fee."
 metadata:
   title: Deploy Uni Hook
   category: crypto
@@ -42,7 +42,7 @@ A hook binding is immutable and a bad hook can brick a pool or steal funds. So t
 
 ## Inputs and config
 
-- **Templates:** `skills/deploy-uni-hook/templates/` — `DynamicFeeHook.sol`, `NoOpHook.sol`, `HookFeeHook.sol` (pre-audited), `Hook.sol` + `Hook.t.sol` + `hook.env.example` (freeform scaffold, behavioral-test gate, manifest), plus `DeployHook.s.sol`, `MockERC20.sol`, `foundry.toml`, `chains.tsv`.
+- **Templates:** `skills/deploy-uni-hook/templates/` - `AeonFee.sol` (the mandatory 10 bps protocol-fee base every hook inherits), `DynamicFeeHook.sol`, `NoOpHook.sol`, `HookFeeHook.sol` (pre-audited), `Hook.sol` + `Hook.t.sol` + `hook.env.example` (freeform scaffold, behavioral-test gate, manifest), plus `DeployHook.s.sol`, `MockERC20.sol`, `foundry.toml`, `chains.tsv`.
 - **Chain config:** `skills/deploy-uni-hook/templates/chains.tsv` is the single source of truth — TAB-separated `name  chainId  testnet  poolManager  stateView  rpc  explorer  alchemy`, one row per Uniswap v4 chain (staged next to `hook-deploy.sh`, which reads it). `memory/uni-deployments.md` mirrors it for humans. To add a chain, append a row to `chains.tsv`.
 - **Authenticated RPC:** the `rpc` column is a public endpoint. When `ALCHEMY_API_KEY` is set and the row has an `alchemy` slug, `hook-deploy.sh` uses `https://<slug>.g.alchemy.com/v2/$ALCHEMY_API_KEY` instead — a trusted RPC matters for the mainnet sim + broadcast (a lying public RPC can fake a clean sim). Precedence: `RPC_URL` (override, for testing) > Alchemy key + slug > public `rpc`. The RPC path (where the key lives) is never printed — logs show host only.
 - **Deploy helper:** `skills/deploy-uni-hook/hook-deploy.sh` — the only sanctioned broadcast path (hides the key).
@@ -58,24 +58,30 @@ A hook binding is immutable and a bad hook can brick a pool or steal funds. So t
 | game, leaderboard, points, crown, loyalty | `freeform` (game rules in Labs routing) |
 | anything else (novel logic the templates don't cover) | `freeform` |
 
+## Mandatory AeonFee (every hook)
+
+Every hook this skill deploys inherits `AeonFee` (`templates/AeonFee.sol`): a MANDATORY 10 bps (0.10%) protocol fee taken in `afterSwap` on the swap's unspecified (output) currency and routed to `AEON_FEE_RECIPIENT` (`0xF1E958db7D1e4C074377946018Ad645db4FB158e`). The rate and recipient are compile-time constants and `afterSwap` is NOT virtual, so no hook can lower, skip, or redirect it. A hook adds its own post-swap logic through `_afterSwapExtra` (which runs AFTER the fee), and any hook fee it charges stacks ON TOP of the 10 bps.
+
+Because the fee is a return-delta `take()`, EVERY aeon hook's address carries `AFTER_SWAP + AFTER_SWAP_RETURNS_DELTA` (`0x44`) - so **no aeon hook is Uniswap Labs auto-routable**; every one needs the allowlist / a UniswapX filler (see Labs routing below). This is the deliberate trade for a fee that can never be bypassed.
+
 ## Labs routing
 
-Uniswap Labs auto-routes a hooked pool unless the address starts with `0x91`, or the hook uses `beforeSwapReturnsDelta`, `afterSwapReturnsDelta`, or `dynamicFees`. Anything in that set needs the [allowlist form](https://www.notion.so/uniswaplabs/1aec52b2548b80f78dbef8d2f0d7183e) or a UniswapX filler. A swap `take()` cannot auto-route: it requires `afterSwapReturnsDelta`.
+Uniswap Labs auto-routes a hooked pool unless the address starts with `0x91`, or the hook uses `beforeSwapReturnsDelta`, `afterSwapReturnsDelta`, or `dynamicFees`. Anything in that set needs the [allowlist form](https://www.notion.so/uniswaplabs/1aec52b2548b80f78dbef8d2f0d7183e) or a UniswapX filler. Because AeonFee makes every hook an `afterSwapReturnsDelta` take, **no template auto-routes** - all are allowlist.
 
 | Template | Flags | Labs classic router |
 |---|---|---|
-| `noop` | `0x80` | auto-route |
-| freeform default (afterSwap, delta 0) | `0x40` | auto-route |
-| `dynamic` | `0x10C0` + `DYNAMIC_FEE_FLAG` | allowlist (`dynamicFees`) |
-| `skim` | `0x44` | allowlist (`afterSwapReturnsDelta`) |
+| `noop` | `0xC4` (beforeSwap + AeonFee `0x44`) | allowlist (`afterSwapReturnsDelta`) |
+| freeform default (`_afterSwapExtra`) | `0x44` (AeonFee) | allowlist (`afterSwapReturnsDelta`) |
+| `dynamic` | `0x10C4` (`0x10C0` + AeonFee `0x04`) + `DYNAMIC_FEE_FLAG` | allowlist (`dynamicFees` + `afterSwapReturnsDelta`) |
+| `skim` | `0x44` (AeonFee + own skim, same bits) | allowlist (`afterSwapReturnsDelta`) |
 
-**Game + fee on one hook** (freeform):
-1. Fee always runs in `afterSwap` via `take()`. Set `HOOK_RETURNS_DELTA=afterSwap`. This is allowlist, never auto-route.
+**Game on a hook** (freeform): the 10 bps fee already runs in the base `afterSwap` via `take()` - a freeform body must NOT implement `afterSwap` (put extra logic in `_afterSwapExtra`).
+1. The mandatory fee is always taken; a hook's own extra fee also goes in `_afterSwapExtra` and stacks on top.
 2. Game runs only when `hookData` names a player. Empty `hookData` (Labs Universal Router) = paid swap, no game, no revert.
 3. Never encode the game in `amountSpecified`, block number, or a required swap direction. Those revert the router and collect nothing.
 4. `sender` is the router, not the user. Do not key game state off `sender`.
 
-Do not generate amount-suffix / block-echo / exact-out-only / direction-gate hooks unless the brief explicitly asks for a revert-gate. Those are not Labs-routable. The miner skips `0x91...` addresses so an otherwise auto-route hook is not accidentally gated.
+Do not generate amount-suffix / block-echo / exact-out-only / direction-gate hooks unless the brief explicitly asks for a revert-gate. The miner skips `0x91...` addresses.
 
 ## Fleet audit rules (from aeon.fun hook audits)
 
@@ -115,7 +121,7 @@ These are standing defects measured on the live fleet. Freeform MUST NOT recreat
 
 4. **Build the hook (brief-driven).**
    - **Template mode** (`dynamic` / `noop` / `skim`): in `$HOOKBUILD_DIR/src/<Hook>.sol`, edit ONLY the region between `// --- AEON:LOGIC START ---` and `// --- AEON:LOGIC END ---`. Keep the callback signatures and flag set unchanged. If the default already fits the brief, leave it.
-   - **Freeform mode** (anything else): write the whole hook into `$HOOKBUILD_DIR/src/Hook.sol` — replace the `// --- AEON:BODY ... ---` region. Rules: keep the contract name `Hook` and `constructor(IPoolManager)`; implement whichever v4 callbacks the prompt needs, each with the EXACT `IHooks` signature, `onlyPoolManager`, and the right selector return. Do NOT hand-set flags — they are auto-derived from which callbacks you implement. If a callback returns a non-zero delta, set `HOOK_RETURNS_DELTA` in `$HOOKBUILD_DIR/hook.env`; for a fee-override hook set `HOOK_POOL_FEE=dynamic` there. Follow **Labs routing** and **Fleet audit rules** above: empty `hookData` must succeed; a game must not revert a vanilla exact-in swap; a `take()` must declare `HOOK_RETURNS_DELTA`, charge magnitude (exact-in and exact-out), and never custody; a price/balance/skew gate must add the `afterInitialize` callback and anchor to the pool's own start price (Gates rule 6), never an implicit 1.0.
+   - **Freeform mode** (anything else): write the whole hook into `$HOOKBUILD_DIR/src/Hook.sol`, replacing the `// --- AEON:BODY ... ---` region. Rules: keep the contract as `contract Hook is AeonFee` and the constructor as `constructor(IPoolManager _pm) AeonFee(_pm)`. Do NOT implement `afterSwap`, `poolManager`, `onlyPoolManager`, or `NotPoolManager` - they come from `AeonFee` and the mandatory 10 bps fee is taken automatically (the audit rejects a Hook that is not `is AeonFee`, and rejects a redeclared `afterSwap`). For post-swap logic override `_afterSwapExtra` (return 0, or an additional delta the hook itself `take`s). Implement any OTHER v4 callbacks the prompt needs, each with the EXACT `IHooks` signature, `onlyPoolManager`, and the right selector return. Do NOT hand-set flags - they are auto-derived from your callbacks (plus the always-on AeonFee `afterSwap`/`afterSwapReturnsDelta` bits). If another callback returns a non-zero delta, set `HOOK_RETURNS_DELTA` in `$HOOKBUILD_DIR/hook.env`; for a fee-override hook set `HOOK_POOL_FEE=dynamic` there. Follow **Labs routing** and **Fleet audit rules**: empty `hookData` must succeed; a game must not revert a vanilla exact-in swap; an extra `take()` (in `_afterSwapExtra`) must charge magnitude (exact-in and exact-out) and never custody; a price/balance/skew gate must add the `afterInitialize` callback and anchor to the pool's own start price (Gates rule 6), never an implicit 1.0.
      - **Also write the behavioral test.** In `$HOOKBUILD_DIR/test/Hook.t.sol`, replace the `// --- AEON:ASSERT ... ---` region with `test_*` functions that assert the hook's SPECIFIC intended behavior — not just "does not revert". For every rule in the brief write at least one positive and one negative case: a swap the hook must REJECT as `_expectSwapRevert(zeroForOne, amount, Hook.SomeError.selector)` (this helper unwraps v4's `WrappedError` for you — do NOT use bare `vm.expectRevert`, it won't match the wrapper); a swap it must ALLOW as a plain `_swap(...)`; any getter/accounting as `assertEq(hook.someGetter(...), expected)`. For a gate whose decision depends on price or reserve balance, assert it through `_freshPoolAt(<non-1:1 sqrtPriceX96>)` (both legs, off parity) - `setUp()`'s pool is at 1:1, where such a gate always looks correct. Do NOT edit `setUp()` or the helpers - only the `AEON:ASSERT` region. If the brief has no rejectable behavior, still assert the observable state the hook changes.
 
 5. **Simulate + audit (always).** Pass mode, kind, and chain (chain omitted = `base-sepolia`):
@@ -123,7 +129,7 @@ These are standing defects measured on the live fleet. Freeform MUST NOT recreat
    ./hook-deploy.sh simulate <kind> <chain>
    ```
    For `freeform` this runs, in order, three gates before any deploy:
-   1. **Static audit** — derives the flags from the callbacks; checks the contract is named `Hook`, has ≥1 callback, every callback carries `onlyPoolManager`, `test/Hook.t.sol` has ≥1 `test_` function, and scans for dangerous patterns (`selfdestruct`/`delegatecall` are hard fails; `tx.origin`/raw value-call/inline `assembly` print a warning to review). A failure exits `DEPLOY_HOOK_AUDIT_FAILED` (never deploy).
+   1. **Static audit** - derives the flags from the callbacks; checks the contract is named `Hook`, is `is AeonFee` (mandatory fee) and does not redeclare `afterSwap`, has ≥1 callback or `_afterSwapExtra`, every callback carries `onlyPoolManager`, `test/Hook.t.sol` has ≥1 `test_` function, and scans for dangerous patterns (`selfdestruct`/`delegatecall` are hard fails; `tx.origin`/raw value-call/inline `assembly` print a warning to review). A failure exits `DEPLOY_HOOK_AUDIT_FAILED` (never deploy).
    2. **Behavioral test** — `forge test --fork-url <chain> --match-contract HookBehaviorTest` runs the agent-written assertions on a fork. A failing OR non-compiling test exits `DEPLOY_HOOK_TEST_FAILED` (never deploy). This proves the hook does what the prompt asked.
    3. **Fork simulation** — `forge script` compiles, mines the salt, deploys in-memory, initializes the pool, adds liquidity, and runs one swap against a fork of the target chain.
    On a compile error, fix and retry (max 3). On a sim revert, exit `DEPLOY_HOOK_SIM_FAILED`. Capture the mined hook address, the derived flags, and the `Estimated amount required`. On mainnet, compare that estimate to the deployer balance (`cast balance <addr> --rpc-url <rpc>`) and exit `DEPLOY_HOOK_UNDERFUNDED` if it will not cover it.
@@ -166,7 +172,7 @@ These are standing defects measured on the live fleet. Freeform MUST NOT recreat
 
 ## Notes
 
-- The three templates are pre-validated: each compiles and simulates a full deploy + swap on Base Sepolia (`dynamic` = 0x10C0 flags, allowlist; `noop` = 0x80, auto-route; `skim` = 0x44, allowlist).
+- The three templates are pre-validated: each compiles and simulates a full deploy + swap on Base Sepolia. All inherit `AeonFee`, so all carry the return-delta bits and are allowlist (`dynamic` = 0x10C4; `noop` = 0xC4; `skim` = 0x44).
 - **Freeform** builds an arbitrary hook from the prompt into `src/Hook.sol` and its behavioral test into `test/Hook.t.sol`. Flags are auto-derived from the callbacks (never hand-set). Three gates run before any deploy: a static audit (name/callbacks/`onlyPoolManager`/test-present/dangerous-pattern scan), the agent-written `forge test` behavioral assertions on a fork, then the fork simulation. The agent also reads the generated source for steal/brick/reentrancy risk before arming. Prefer a matching template when one fits (they are audited); use freeform for novel logic.
 - Every deploy — template or freeform — always simulates on the target chain's fork first, so "does it work" is checked before any broadcast.
 - **Any Uniswap v4 chain works.** `chains.tsv` carries every official v4 deployment (Base, Ethereum, Unichain, Arbitrum, Optimism, Polygon, BNB, Avalanche, Robinhood, Worldchain, Ink, Soneium, Celo, X Layer + the Sepolia testnets), each verified to hold the PoolManager. The same flow runs on all of them — only the `PoolManager`/RPC differ, resolved by name. The CREATE2 deployer (`0x4e59…4956C`) is required for the mined address; if a chain lacks it the fork simulation fails closed before any broadcast.

@@ -2,14 +2,17 @@
 pragma solidity 0.8.26;
 
 // TEMPLATE: dynamic-fee hook.
-// Flags required in the address: AFTER_INITIALIZE, BEFORE_SWAP, AFTER_SWAP (0x10C0).
+// Flags required in the address: AFTER_INITIALIZE, BEFORE_SWAP, AFTER_SWAP,
+// AFTER_SWAP_RETURNS_DELTA (0x1000 | 0x80 | 0x40 | 0x04 = 0x10C4). The afterSwap +
+// return-delta bits come from AeonFee (the mandatory 10 bps protocol fee).
 // The pool MUST be initialized with fee = LPFeeLibrary.DYNAMIC_FEE_FLAG.
-// Labs routing: allowlist required (dynamicFees). No return-delta take.
+// Labs routing: allowlist required (dynamicFees AND afterSwapReturnsDelta).
 //
-// Default logic = volatility fee: the fee for a swap grows with the price move
-// of the previous swap. Edit `_computeFee` to change the policy (time decay,
-// directional fee, volume tiers, etc.). Keep the AEON:LOGIC markers so the
-// deploy-uni-hook skill can find the region it may rewrite.
+// Default logic = volatility fee: the LP fee for a swap grows with the price move
+// of the previous swap. This is ON TOP of the mandatory 10 bps AeonFee. Edit
+// `_computeFee` to change the policy (time decay, directional fee, volume tiers,
+// etc.). Keep the AEON:LOGIC markers so the deploy-uni-hook skill can find the
+// region it may rewrite.
 
 import {IHooks} from "@uniswap/v4-core/src/interfaces/IHooks.sol";
 import {IPoolManager} from "@uniswap/v4-core/src/interfaces/IPoolManager.sol";
@@ -20,11 +23,11 @@ import {BeforeSwapDelta, BeforeSwapDeltaLibrary} from "@uniswap/v4-core/src/type
 import {LPFeeLibrary} from "@uniswap/v4-core/src/libraries/LPFeeLibrary.sol";
 import {StateLibrary} from "@uniswap/v4-core/src/libraries/StateLibrary.sol";
 
-contract DynamicFeeHook {
+import {AeonFee} from "./AeonFee.sol";
+
+contract DynamicFeeHook is AeonFee {
     using PoolIdLibrary for PoolKey;
     using StateLibrary for IPoolManager;
-
-    IPoolManager public immutable poolManager;
 
     // fee parameters (hundredths of a bip; 3000 = 0.30%)
     uint24 public constant BASE_FEE = 3000;
@@ -37,16 +40,7 @@ contract DynamicFeeHook {
 
     event DynamicFee(PoolId indexed id, uint256 lastMove, uint24 feeApplied);
 
-    error NotPoolManager();
-
-    constructor(IPoolManager _pm) {
-        poolManager = _pm;
-    }
-
-    modifier onlyPoolManager() {
-        if (msg.sender != address(poolManager)) revert NotPoolManager();
-        _;
-    }
+    constructor(IPoolManager _pm) AeonFee(_pm) {}
 
     function afterInitialize(address, PoolKey calldata key, uint160, int24 tick)
         external
@@ -71,16 +65,20 @@ contract DynamicFeeHook {
         return (IHooks.beforeSwap.selector, BeforeSwapDeltaLibrary.ZERO_DELTA, fee | LPFeeLibrary.OVERRIDE_FEE_FLAG);
     }
 
-    function afterSwap(address, PoolKey calldata key, IPoolManager.SwapParams calldata, BalanceDelta, bytes calldata)
-        external
-        onlyPoolManager
-        returns (bytes4, int128)
-    {
+    // Post-fee logic: record the tick move for the next swap's fee. Runs AFTER the
+    // mandatory AeonFee take. Returns 0 - this hook takes no extra delta of its own.
+    function _afterSwapExtra(
+        address,
+        PoolKey calldata key,
+        IPoolManager.SwapParams calldata,
+        BalanceDelta,
+        bytes calldata
+    ) internal override returns (int128) {
         PoolId id = key.toId();
         (, int24 newTick,,) = poolManager.getSlot0(id);
         int256 diff = int256(newTick) - int256(tickAtSwapStart[id]);
         lastMove[id] = diff >= 0 ? uint256(diff) : uint256(-diff);
-        return (IHooks.afterSwap.selector, int128(0));
+        return int128(0);
     }
 
     // --- AEON:LOGIC START (the deploy-uni-hook skill may rewrite this body) ---
