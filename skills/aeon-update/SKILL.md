@@ -159,37 +159,43 @@ bin/generate-skills-json && bin/generate-packs-json && bin/generate-skill-icons
 node scripts/gen-agents-md.js || true
 ```
 
-**Refresh the eyebrow integrity lock for any NEWLY-ADDED skill.** `ci-skill-integrity` fails a PR when a present skill's `skills/<slug>/SKILL.md` has no `"discoveredFrom": "skills/<slug>/SKILL.md"` entry in `eyebrowlock.json`. That entry is produced only by the `eyebrow` binary, which is **not preinstalled in this run** - so a CLEAN-ADD of a new skill would otherwise land the PR CI-red. Fetch the binary (the version `ci-skill-integrity.yml` pins - currently `v0.4.1` from `alexverify/eyebrow`), verifying the release asset against a **pinned SHA256** (the tag is mutable, and this runs in the full secret env), then rescan:
+**Refresh the eyebrow integrity lock for any NEWLY-ADDED skill.** `ci-skill-integrity` fails a PR when a present skill's `skills/<slug>/SKILL.md` has no `"discoveredFrom": "skills/<slug>/SKILL.md"` entry in `eyebrowlock.json`. That entry is produced only by the `eyebrow` binary, which is **not preinstalled in this run** - so a CLEAN-ADD of a new skill would otherwise land the PR CI-red. Fetch the binary at the **exact version `ci-skill-integrity.yml` pins**, parsed from that workflow's `alexverify/eyebrow/action@<sha> # vX.Y.Z` line so it can never drift from CI - a hardcoded version writes a lock that CI's (newer) `eyebrow verify` then rejects as drift, which is the recurring cause of red sync PRs. Verify the downloaded tarball against the release's own `checksums.txt` before running it (the same checksum-verified install the action does), then rescan:
 
 ```bash
 EYEBROW_OK=0
 EB=$(command -v eyebrow || true)
 if [ -z "$EB" ]; then
-  # SHA256-pin the release asset (trust-on-first-pin). The v0.4.1 tag is mutable -
-  # a re-uploaded asset would otherwise be fetched AND executed in this run's full
-  # secret env. Verify the tarball hash against the constant below BEFORE extract
-  # or exec; a mismatch means the tag moved, so do NOT run it - fall through to the
-  # fail-safe. Linux runner (ubuntu-latest) assumed; unknown arch => skip.
+  # Use the SAME eyebrow version ci-skill-integrity.yml pins, parsed from the
+  # workflow's `alexverify/eyebrow/action@<sha> # vX.Y.Z` comment. A hardcoded
+  # version silently drifts from CI (the lock this writes with an older binary
+  # then fails CI's newer `eyebrow verify` as drift - the recurring sync red);
+  # deriving it self-heals across action bumps. Fall back to v0.4.2 if unparsable.
+  EBV=$(grep -oE 'alexverify/eyebrow/action@[0-9a-f]+ *# *v[0-9]+\.[0-9]+\.[0-9]+' .github/workflows/ci-skill-integrity.yml | grep -oE 'v[0-9]+\.[0-9]+\.[0-9]+' | head -1)
+  EBV=${EBV:-v0.4.2}
+  # Linux runner (ubuntu-latest) assumed; unknown arch => skip to the fail-safe.
   case "$(uname -m)" in
-    x86_64)        A=amd64; EB_SHA=f1b6b88f80565082dfc37e3b91d3579c87dc6aaf0de70874ef41f461f711a48c ;;
-    aarch64|arm64) A=arm64; EB_SHA=a848055492dd545ad3f73890379098e103b5bed4f18009d81d3a4bbbf1f985b6 ;;
-    *)             A=; EB_SHA= ;;
+    x86_64)        A=amd64 ;;
+    aarch64|arm64) A=arm64 ;;
+    *)             A= ;;
   esac
-  TB="eyebrow_0.4.1_linux_${A}.tar.gz"
-  if [ -n "$EB_SHA" ] && gh release download v0.4.1 -R alexverify/eyebrow -p "$TB" -D "$WORK/eb" 2>/dev/null; then
-    GOT=$(sha256sum "$WORK/eb/$TB" | awk '{print $1}')
-    if [ "$GOT" = "$EB_SHA" ]; then
+  TB="eyebrow_${EBV#v}_linux_${A}.tar.gz"
+  # Download the tarball + the release's checksums.txt and verify the tarball
+  # against it BEFORE extract or exec (mirrors the action's checksum-verified
+  # install). A tampered or moved asset fails the check, so we do NOT run it and
+  # fall through to the fail-safe. --ignore-missing checks only the asset present.
+  if [ -n "$A" ] && gh release download "$EBV" -R alexverify/eyebrow -p "$TB" -p checksums.txt -D "$WORK/eb" 2>/dev/null; then
+    if (cd "$WORK/eb" && shasum -a 256 --check --ignore-missing --strict checksums.txt >/dev/null 2>&1); then
       tar xzf "$WORK/eb/$TB" -C "$WORK/eb" 2>/dev/null \
         && EB=$(find "$WORK/eb" -type f -name eyebrow | head -1) && chmod +x "$EB" 2>/dev/null || true
     else
-      echo "::warning::eyebrow $TB sha256 mismatch (got $GOT, pinned $EB_SHA) - tag moved, not executing"; EB=
+      echo "::warning::eyebrow $TB failed checksums.txt verification - not executing"; EB=
     fi
   fi
 fi
 # Run with a SCRUBBED env (allowlist PATH+HOME only). eyebrow scan is a local
 # file-hasher - it needs no secrets and no network - so denying it the run's
 # secret env (GH_GLOBAL + provider/notify keys) means even a bad binary that
-# slipped the SHA pin cannot read or exfiltrate them. If the scan fails, EYEBROW_OK
+# slipped the checksum cannot read or exfiltrate them. If the scan fails, EYEBROW_OK
 # stays 0 and the fail-safe below covers it.
 [ -n "$EB" ] && env -i PATH="$PATH" HOME="$HOME" "$EB" scan --path . --lockfile eyebrowlock.json 2>/dev/null && EYEBROW_OK=1
 ```
