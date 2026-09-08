@@ -1,0 +1,82 @@
+{
+  "_comment": "compute-resell is ONE skill that resells across three providers (bankr / aws / vertex). Each provider has its OWN optional config secret - COMPUTE_RESELL_CONFIG (bankr), AWS_COMPUTE_RESELL_CONFIG (aws), VERTEX_COMPUTE_RESELL_CONFIG (vertex) - set in the dashboard (Skill Keys). ALL are optional: an unset provider runs safe defaults (UNDERCUT mode = list just below the cheapest competitor => pure profit on free credit; models auto-discovered highest-value-first; offer count auto from daily_budget_usd; per-offer caps a flat even split). Below: (1) the SHARED tuning knobs, identical for every provider, then (2) a compact example per provider secret. Paste a one-line JSON as each secret's value; copy only the keys you need.",
+  "_shared_knobs": {
+    "_note": "Same meaning in every provider's config secret. Values shown are the DEFAULTS used when the key is omitted.",
+    "daily_budget_usd": "Total free credit to deploy per day across all this provider's offers. Split EVENLY across the listed models. Lower it to concentrate on fewer models. Default 10.",
+    "floor": "Unset => UNDERCUT mode (free credit, pure profit): list just below the cheapest competitor. SET only if you fund a real per-token cost: lowest price as a multiple of the cost basis C - 1.0 = never below cost, 0.6 = down to 60%. Cost basis C: bankr=/v1/prices, aws=bedrock_prices, vertex=vertex_prices.",
+    "max_discount": "OPTIONAL discount-rate guardrail off the DIRECT sticker. Unset => no cap. 0.80 = never deeper than 80% off, and skip models whose market already clears deeper (unwinnable at your rate). On free credit this is the USDC-per-token knob, not a loss guard.",
+    "discount_adaptive": "OPTIONAL self-tuning. false (default) => max_discount fixed. true => treat max_discount as a starting point and nudge the effective cap <= discount_step/run toward the revenue-max point within [discount_min, discount_max]: sold-out cap => TIGHTEN (shallower); cold run => LOOSEN (deeper); else hold. Guarded so a tighten never prices out a live earner. Persists in state.adaptive_discount.",
+    "discount_min": "Shallowest adaptive discount. Default 0.30 (only when discount_adaptive=true).",
+    "discount_max": "Deepest adaptive discount, a real rate wall. Default 0.90 (only when discount_adaptive=true).",
+    "discount_step": "Adaptive move per run. Default 0.05.",
+    "min_market_volume_usd": "THE selection liquidity gate (the only hard selection filter). Minimum 24h marketplace $-volume a model needs to be listed. Default 1.0; drops dead markets that trade ~$0. 0 disables.",
+    "cap_daily_usd": "Optional hard per-offer ceiling. Unset => each offer's cap = the even split max(1, daily_budget_usd / n). Set to cap any single offer below its share.",
+    "min_credit_days": "Low-credit WARNING (bankr only): warn when the real credit balance is under this many days of runway. Warn-only - never throttles spend. Default 3; 0 disables.",
+    "payout_address": "Optional Base address that receives USDC settlement for offers this provider creates. Unset => the seller wallet. Point bankr at a Bankr wallet for an auto-top-up flywheel. Applied at CREATE time only.",
+    "denied_models": "Hard denylist - never list these (Surplus market id OR mapped provider id). Also auto-learned from create/probe access errors. Seed with models the provider account can't serve (see each provider example).",
+    "model_map": "aws/vertex only: map Surplus market id -> the provider's serve id (and, vertex, a per-model region). Unmapped models fall back to a one-probe test-list."
+  },
+  "_bankr_example": {
+    "_secret": "COMPUTE_RESELL_CONFIG",
+    "daily_budget_usd": 50,
+    "max_discount": 0.65,
+    "discount_adaptive": true,
+    "min_credit_days": 3,
+    "_wiring": "bankr wiring is fixed: seller_base_url https://llm.bankr.bot/v1, credential BANKR_LLM_KEY (X-API-Key), cost basis /v1/prices - not config."
+  },
+  "_aws_example": {
+    "_secret": "AWS_COMPUTE_RESELL_CONFIG",
+    "daily_budget_usd": 50,
+    "_floor_note": "Unset for the free-credit default. Set floor + bedrock_prices only if you fund a real per-token Bedrock cost.",
+    "bedrock_prices": {
+      "claude-opus-4.5": {
+        "input": 15.0,
+        "output": 75.0
+      },
+      "claude-sonnet-4.5": {
+        "input": 3.0,
+        "output": 15.0
+      }
+    },
+    "model_map": {
+      "claude-opus-4.5": "anthropic.claude-opus-4-5-v1:0",
+      "claude-sonnet-4.5": "anthropic.claude-sonnet-4-5-v1:0"
+    },
+    "denied_models": [
+      "anthropic.claude-opus-4-8",
+      "openai.gpt-5.6-sol",
+      "xai.grok-4.6"
+    ],
+    "_denied_note": "Example shape - the models your AWS account has NO Bedrock access to (ACCESS_DENIED on invoke). Yours will differ; the skill also auto-learns them from create errors.",
+    "_wiring": "aws wiring is NOT config: api_key = BEDROCK_API_KEY secret, seller_base_url = the BEDROCK_BASE_URL repo variable."
+  },
+  "_vertex_example": {
+    "_secret": "VERTEX_COMPUTE_RESELL_CONFIG",
+    "daily_budget_usd": 50,
+    "_floor_note": "Unset for the free-credit default. Set floor + vertex_prices only if you fund a real per-token Vertex cost.",
+    "vertex_prices": {
+      "claude-opus-4.5": {
+        "input": 15.0,
+        "output": 75.0
+      },
+      "claude-sonnet-4.5": {
+        "input": 3.0,
+        "output": 15.0
+      }
+    },
+    "model_map": {
+      "claude-opus-4.5": {
+        "id": "claude-opus-4-5@20250514",
+        "location": "us-east5"
+      },
+      "gemini-2.5-flash": "gemini-2.5-flash"
+    },
+    "denied_models": [
+      "claude-opus-4.5",
+      "grok-4.6",
+      "deepseek-v3.1"
+    ],
+    "_denied_note": "Example shape - models NOT enabled in your project's Vertex Model Garden. Enable a model there and remove it here to list it (the skill also auto-learns). Never deny openai/gpt-oss-*-maas or gemini-3.1-pro-preview (those serve and earn).",
+    "_wiring": "vertex wiring is NOT config: api_key = the VERTEX_SERVICE_ACCOUNT_JSON secret (or VERTEX_API_KEY), seller_base_url is built from VERTEX_PROJECT_ID + VERTEX_LOCATION repo variables."
+  }
+}

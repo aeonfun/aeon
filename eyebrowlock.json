@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-06T16:38:59.492182Z",
+  "generatedAt": "2026-09-08T17:09:50.756067Z",
   "generator": "eyebrow/0.4.2",
   "artifacts": [
     {
@@ -968,10 +968,10 @@
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "963c9d733523db9f0d66f6db28f75f437a1a1d95ee5b1efdd9ab7cdab8f738ef"
+          "hash": "cb3cf34c2d9df22e91f4a1fd68fe05e31939093b1abce760dd20b3af00417899"
         }
       ],
-      "contentHash": "sha256-d3433068bf4a4a282db862cf93c2bc99b9d574c57fa406d4039a09699c8a4dda",
+      "contentHash": "sha256-01a65e1053807557f7ae0cdc1d4eaadb85ae1aeab32fc8fd714db1f8b834c035",
       "discoveredFrom": "skills/changelog/SKILL.md"
     },
     {
@@ -1770,6 +1770,103 @@
       ],
       "contentHash": "sha256-62b34c7ebab0b585675a5d10ae29eaf73dc39e4af53d1ca088747e1b359e9148",
       "discoveredFrom": "skills/article/SKILL.md"
+    },
+    {
+      "id": "b8b96a0f13ee55ec",
+      "tool": "aeon",
+      "scope": "project:.",
+      "type": "skill",
+      "name": "compute-resell",
+      "source": {
+        "kind": "local",
+        "ref": "skills/compute-resell"
+      },
+      "capabilities": {
+        "network": [
+          "api.surplusintelligence.ai",
+          "llm.bankr.bot",
+          "your-gateway.example.com"
+        ]
+      },
+      "files": [
+        {
+          "path": "SKILL.md",
+          "hash": "c730c1bf05fea1c05d89ecbeb1b5abe928b5ecc1b85999eb18e494fb5d94d021"
+        },
+        {
+          "path": "allocate_caps.py",
+          "hash": "883e576ee58b92db160f05ad7c451101f22805120c4dff59b4fc8f5b71a22192"
+        },
+        {
+          "path": "bootstrap-siwe.mjs",
+          "hash": "8a4f818178fc7374028d031dc37b155e9d47c58410ca7a2f7853e84a736d94d4"
+        },
+        {
+          "path": "claim_ledger.py",
+          "hash": "f8516d7cd26ca0ad4dc33cfb9de7e9f4068adecb752473783284b66ae027ffc0"
+        },
+        {
+          "path": "config.example.json",
+          "hash": "a3cc12a4e536195c27528fcc36396a840ede3b32829f4eb2c5c169561f1329ec"
+        },
+        {
+          "path": "price_models.py",
+          "hash": "ee6461024861866011539de77df073a56d0ffc50e1d01351aaf9bf1be3c4e749"
+        },
+        {
+          "path": "score_models.py",
+          "hash": "a485a24b53ec5340343fada7a2c7f63a9a2800df39f49d407ce07f8e16704f68"
+        }
+      ],
+      "findings": [
+        {
+          "ruleId": "WALLET-THEFT",
+          "severity": "high",
+          "owasp": "ASK-06",
+          "file": "SKILL.md",
+          "line": 81,
+          "snippet": "**Mint it - the dashboard (recommended).** Settings → Secrets → the provider's wallet secret → **Connect wallet**.…",
+          "explanation": "references cryptocurrency wallet or seed-phrase material"
+        },
+        {
+          "ruleId": "SENSITIVE-PATH-READ",
+          "severity": "high",
+          "owasp": "ASK-06",
+          "file": "bootstrap-siwe.mjs",
+          "line": 23,
+          "snippet": "const HOST = process.env.SURPLUS_HOST || 'https://api.surplusintelligence.ai';",
+          "explanation": "references sensitive credential or secret paths"
+        },
+        {
+          "ruleId": "SENSITIVE-PATH-READ",
+          "severity": "high",
+          "owasp": "ASK-06",
+          "file": "bootstrap-siwe.mjs",
+          "line": 24,
+          "snippet": "const LABEL = process.argv[2] || process.env.KEY_LABEL || 'compute-resell';",
+          "explanation": "references sensitive credential or secret paths"
+        },
+        {
+          "ruleId": "SENSITIVE-PATH-READ",
+          "severity": "high",
+          "owasp": "ASK-06",
+          "file": "bootstrap-siwe.mjs",
+          "line": 25,
+          "snippet": "const EXPIRES_AT = process.env.KEY_EXPIRES_AT || undefined;",
+          "explanation": "references sensitive credential or secret paths"
+        },
+        {
+          "ruleId": "SENSITIVE-PATH-READ",
+          "severity": "high",
+          "owasp": "ASK-06",
+          "file": "bootstrap-siwe.mjs",
+          "line": 27,
+          "snippet": "const pk = process.env.SELLER_WALLET_PRIVATE_KEY;",
+          "explanation": "references sensitive credential or secret paths"
+        }
+      ],
+      "contentHash": "sha256-6fac86cfd4e58a956747d06540c1bf5248ecd043701d5d375bb14a94ef7017a3",
+      "discoveredFrom": "skills/compute-resell/SKILL.md"
     },
     {
       "id": "b9020c5da66b44d0",
