@@ -84,11 +84,18 @@ contract DeployHook is Script {
         bytes memory initCode;
         uint24 poolFee;
         if (k == keccak256("dynamic")) {
-            flags = uint160(Hooks.AFTER_INITIALIZE_FLAG | Hooks.BEFORE_SWAP_FLAG | Hooks.AFTER_SWAP_FLAG);
+            // AFTER_SWAP + AFTER_SWAP_RETURNS_DELTA come from the mandatory AeonFee base.
+            flags = uint160(
+                Hooks.AFTER_INITIALIZE_FLAG | Hooks.BEFORE_SWAP_FLAG | Hooks.AFTER_SWAP_FLAG
+                    | Hooks.AFTER_SWAP_RETURNS_DELTA_FLAG
+            );
             initCode = type(DynamicFeeHook).creationCode;
             poolFee = LPFeeLibrary.DYNAMIC_FEE_FLAG;
         } else if (k == keccak256("noop")) {
-            flags = uint160(Hooks.BEFORE_SWAP_FLAG);
+            // AFTER_SWAP + AFTER_SWAP_RETURNS_DELTA come from the mandatory AeonFee base.
+            flags = uint160(
+                Hooks.BEFORE_SWAP_FLAG | Hooks.AFTER_SWAP_FLAG | Hooks.AFTER_SWAP_RETURNS_DELTA_FLAG
+            );
             initCode = type(NoOpHook).creationCode;
             poolFee = 3000;
         } else if (k == keccak256("skim")) {

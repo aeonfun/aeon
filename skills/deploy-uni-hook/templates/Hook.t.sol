@@ -177,14 +177,39 @@ contract HookBehaviorTest is Test {
         );
     }
 
+    /// @dev Combined balance of the AeonFee recipient across the pool's two tokens.
+    function _aeonFeeBalance() internal view returns (uint256) {
+        address r = hook.AEON_FEE_RECIPIENT();
+        return tA.balanceOf(r) + tB.balanceOf(r);
+    }
+
+    // --- FIXED invariant (do NOT edit or remove): every aeon hook inherits AeonFee, so
+    // the mandatory 10 bps protocol fee must be wired and the address must carry the
+    // return-delta flag. This is swap-independent, so it holds even for revert-gate hooks
+    // that reject a vanilla swap. hook-deploy.sh also refuses any Hook that is not
+    // `is AeonFee`, and afterSwap is non-virtual - so the fee cannot be removed.
+    function test_aeonProtocolFeeWired() public view {
+        assertEq(
+            hook.AEON_FEE_RECIPIENT(),
+            0xF1E958db7D1e4C074377946018Ad645db4FB158e,
+            "wrong AeonFee recipient"
+        );
+        assertEq(hook.AEON_FEE_BPS(), 10, "wrong AeonFee bps");
+        assertTrue(
+            uint160(address(hook)) & Hooks.AFTER_SWAP_RETURNS_DELTA_FLAG != 0,
+            "hook address missing afterSwapReturnsDelta flag"
+        );
+    }
+
     // --- AEON:ASSERT START (freeform: replace with behavioral tests for the prompt) ---
-    // Default scaffold matches the default Hook body (an afterSwap swap counter).
+    // Default scaffold matches the default Hook body (an _afterSwapExtra swap counter).
     // The generator MUST replace this with assertions specific to the generated hook:
     //   - a swap the hook is meant to REJECT -> _expectSwapRevert(zeroForOne, amount, Hook.SomeError.selector)
     //     (use the helper above, NOT bare vm.expectRevert: v4 wraps a hook revert in
     //      CustomRevert.WrappedError, so vm.expectRevert(selector) never matches)
     //   - a swap the hook is meant to ALLOW  -> _swap(...) with no revert
     //   - any getter / accounting -> assertEq(hook.someGetter(...), expected)
+    //   - a fee take -> assert the recipient balance grew (exact-in AND exact-out)
     //   - a PRICE / BALANCE / SKEW gate -> also assert it through _freshPoolAt(<non-1:1>):
     //     the leg that must stay open is NOT rejected and the leg that must close reverts,
     //     at a price away from parity. Only-at-1:1 is a false pass (see the header note).
@@ -193,6 +218,19 @@ contract HookBehaviorTest is Test {
         assertEq(hook.swapCount(key.toId()), 1, "counter did not increment");
         _swap(true, -1e15);
         assertEq(hook.swapCount(key.toId()), 2, "counter did not increment twice");
+    }
+
+    // The mandatory AeonFee is taken on a vanilla swap the default hook allows, on both
+    // exact-in and exact-out. (A revert-gate hook that rejects vanilla swaps would drop
+    // this test when it replaces the region; test_aeonProtocolFeeWired still guarantees
+    // the fee is wired regardless.)
+    function test_defaultAeonFeeTaken() public {
+        uint256 b0 = _aeonFeeBalance();
+        _swap(true, -1e18); // exact-in
+        uint256 b1 = _aeonFeeBalance();
+        assertGt(b1, b0, "AeonFee not taken on exact-in");
+        _swap(false, 1e15); // exact-out
+        assertGt(_aeonFeeBalance(), b1, "AeonFee not taken on exact-out");
     }
     // --- AEON:ASSERT END ---
 }

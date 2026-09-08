@@ -107,6 +107,10 @@ derive_flags() {
   case ",${HOOK_RETURNS_DELTA:-}," in *,afterSwap,*)            f=$((f | (1<<2)));; esac
   case ",${HOOK_RETURNS_DELTA:-}," in *,afterAddLiquidity,*)    f=$((f | (1<<1)));; esac
   case ",${HOOK_RETURNS_DELTA:-}," in *,afterRemoveLiquidity,*) f=$((f | (1<<0)));; esac
+  # Every hook inherits AeonFee: a mandatory afterSwap return-delta take. Those bits
+  # live in AeonFee.sol (not src/Hook.sol), so the greps above never see them - force
+  # AFTER_SWAP (1<<6) + AFTER_SWAP_RETURNS_DELTA (1<<2) on unconditionally.
+  f=$((f | (1<<6) | (1<<2)))
   printf '0x%x' "$f"
 }
 
@@ -167,11 +171,21 @@ audit_freeform() {
   local src="src/Hook.sol" fail=0
   echo "── audit: freeform Hook.sol ──"
   grep -qE 'contract[[:space:]]+Hook[[:space:]]' "$src" || { echo "  FAIL: contract must be named Hook"; fail=1; }
-  # count implemented callbacks
-  local cb
+  # every hook MUST inherit AeonFee (the mandatory 10 bps protocol fee). Without it
+  # the deployed hook is fee-free - refuse to deploy.
+  grep -qE 'contract[[:space:]]+Hook[[:space:]]+is[[:space:]].*AeonFee' "$src" \
+    || { echo "  FAIL: contract Hook must inherit AeonFee (mandatory protocol fee)"; fail=1; }
+  # the base afterSwap is non-virtual - a freeform body must not redeclare it (compile
+  # would fail anyway). Post-swap logic goes in _afterSwapExtra.
+  grep -qE 'function[[:space:]]+afterSwap[[:space:]]*\(' "$src" \
+    && { echo "  FAIL: do not implement afterSwap - it is AeonFee's; use _afterSwapExtra"; fail=1; }
+  # count implemented callbacks. The mandatory AeonFee afterSwap always exists (in the
+  # base), so a hook whose only logic is an _afterSwapExtra override is still valid.
+  local cb extra
   cb=$(grep -cE 'function[[:space:]]+(before|after)(Initialize|AddLiquidity|RemoveLiquidity|Swap|Donate)[[:space:]]*\(' "$src" || true)
-  echo "  callbacks implemented: $cb"
-  [ "$cb" -ge 1 ] || { echo "  FAIL: no hook callbacks found"; fail=1; }
+  extra=$(grep -cE 'function[[:space:]]+_afterSwapExtra[[:space:]]*\(' "$src" || true)
+  echo "  callbacks implemented: $cb (+ mandatory AeonFee afterSwap; _afterSwapExtra overrides: $extra)"
+  [ $((cb + extra)) -ge 1 ] || { echo "  FAIL: hook has no callbacks and no _afterSwapExtra"; fail=1; }
   # every callback must be guarded by onlyPoolManager. Count real guard sites: strip
   # // comments (whole-line + trailing), drop the modifier DEFINITION line, then count
   # the remaining `onlyPoolManager` tokens (one per guarded function). Robust to
@@ -189,10 +203,9 @@ audit_freeform() {
   echo "  behavioral test_ functions: $tests"
   [ "$tests" -ge 1 ] || { echo "  FAIL: test/Hook.t.sol has no test_ functions"; fail=1; }
   echo "  derived flags: $(derive_flags)"
-  case ",${HOOK_RETURNS_DELTA:-}," in
-    *,beforeSwap,*|*,afterSwap,*) echo "  WARN: return-delta set - Labs will not auto-route (allowlist)" ;;
-  esac
-  [ "${HOOK_POOL_FEE:-}" = "dynamic" ] && echo "  WARN: dynamicFees - Labs will not auto-route (allowlist)"
+  # AeonFee makes every hook an afterSwap return-delta take, so NO aeon hook auto-routes.
+  echo "  NOTE: AeonFee (afterSwapReturnsDelta) - Labs will not auto-route (allowlist)"
+  [ "${HOOK_POOL_FEE:-}" = "dynamic" ] && echo "  NOTE: dynamicFees - allowlist (already implied by AeonFee)"
   [ "$fail" -eq 0 ] && echo "  AUDIT PASS" || { echo "  AUDIT FAIL"; return 1; }
 }
 
