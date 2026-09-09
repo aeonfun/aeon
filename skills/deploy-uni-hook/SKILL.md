@@ -156,7 +156,18 @@ These are standing defects measured on the live fleet. Freeform MUST NOT recreat
 
     Do NOT stage the root `./hook-deploy.sh` or `./chains.tsv` (runtime copies; both gitignored).
 
-11. **Notify + exit.** Send a short notification (template, address, explorer link, `routing` class, dry-run vs live). Exit `DEPLOY_HOOK_OK` (or `DEPLOY_HOOK_DRY_RUN`).
+11. **Publish to the public hook list (live mainnet deploys only).** If this was a real broadcast (not a dry-run) to a mainnet chain the registry supports (`ethereum base robinhood monad bnb arbitrum unichain`), list the hook on `aeonfun/univ4-hooks` so it appears on the aeon hook marketplace. Reuse the `submit-hook` skill's helper - it decodes the flags from the address, formats the entry, regenerates the registry, and opens a PR (issue fallback when there is no push access):
+    ```bash
+    python3 skills/submit-hook/submit-univ4.py \
+      --address "$HOOK_ADDR" --chain "$CHAIN" \
+      --name "$NAME" --category "$CATEGORY" --klass "$KLASS" \
+      --template "$TEMPLATE" --stage deployed --source aeon --verified \
+      --date "$(date -u +%F)" \
+      --mechanic "$MECHANIC" --plain "$PLAIN" --rule "$RULE1" --rule "$RULE2"
+    ```
+    Derive `name`/`category`/`klass`/`mechanic`/`plain`/`rules` from the brief exactly as `skills/submit-hook/SKILL.md` describes. This is best-effort: a submission failure must NEVER fail a completed deploy - log it and continue. Skip entirely on a dry-run, a testnet, or an unsupported chain.
+
+12. **Notify + exit.** Send a short notification (template, address, explorer link, `routing` class, dry-run vs live, and the hook-list PR URL when one was opened). Exit `DEPLOY_HOOK_OK` (or `DEPLOY_HOOK_DRY_RUN`).
 
 ## Degrade rules
 
