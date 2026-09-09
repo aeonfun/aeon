@@ -104,6 +104,7 @@ If `$RAW` is non-empty, the targets are `$RAW` split on commas (trim each). If
 - https://rival.com/pricing
 - https://rival.com/changelog
 - https://othercompetitor.com/pricing
+- https://vendor.com/security/acknowledgements/ [rows]
 ```
 
 If the file is missing or empty **and** `$RAW` is empty, offer to seed it via a
@@ -137,6 +138,17 @@ fetches sequentially (polite; watch lists are short), follows redirects, and mar
 any page that failed with `"ok": false` + an `error` — it does not abort the run
 for one dead page. It exits non-zero only if **every** page failed.
 
+**Opt-in table-row tracking.** A watch-list entry ending in `[rows]` opts that
+page into table-row diffing. Pass it to the snapshot command with a `#rows`
+suffix on the url, e.g.
+`node scripts/competitor-monitor.mjs snapshot "https://vendor.com/security/acknowledgements/#rows" --out ...`.
+The snapshot then also records every `<table>` row on the page (as normalised
+`cell | cell` strings) and the diff reports `rows_added` / `rows_removed` against
+the previous run. Use it for pages whose signal IS the rows: a vendor's
+security-acknowledgements / CVE table, a status page's incident table, a
+customers/logos table. Leave it off for ordinary marketing pages, whose tables
+reshuffle every deploy and would only churn.
+
 ### 3. Diff against the previous run
 
 The baseline is the **newest snapshot that already exists** — i.e. the previous
@@ -169,6 +181,7 @@ Read those changes — do not re-derive them from the raw snapshots. Change type
 | `cta_added` / `cta_removed` | medium/low | button/CTA wording changed |
 | `og_title` | low | social-share title changed |
 | `copy` | low | body text changed with no structured signal (a plain copy edit) |
+| `rows_added` / `rows_removed` | high / low | (opt-in, `[rows]` pages only) a `<table>` row appeared or disappeared. On a list page like a security-acknowledgements or CVE table, a new row is a newly credited researcher or a new CVE. Payload in `detail.count` + `detail.items` (capped at 25). |
 
 `first_seen: true` on a page means it's newly on the watch list this run — treat
 it like a per-page baseline (no diff), not a change.

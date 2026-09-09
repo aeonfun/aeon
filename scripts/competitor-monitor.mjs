@@ -139,10 +139,27 @@ function internalLinks(html, baseUrl) {
   return [...out.entries()].map(([path, text]) => ({ path, text })).slice(0, 400)
 }
 
-function extract(url, finalUrl, html) {
+// Opt-in signal: the rows of every <table> on the page, one normalised
+// "cell | cell" string each, deduped. Off by default (marketing pages reshuffle
+// table layout constantly); enabled per-page with the [rows] marker so a list
+// page like a vendor's security-acknowledgements / CVE table diffs at the row
+// level, where a new row is a newly credited researcher or a new CVE.
+function tableRows(html) {
+  const out = []
+  for (const tbl of html.matchAll(/<table\b[\s\S]*?<\/table>/gi)) {
+    for (const tr of tbl[0].matchAll(/<tr\b[\s\S]*?<\/tr>/gi)) {
+      const cells = [...tr[0].matchAll(/<t[dh]\b[^>]*>([\s\S]*?)<\/t[dh]>/gi)]
+        .map((c) => stripTags(c[1])).filter(Boolean)
+      if (cells.length) out.push(clip(cells.join(' | '), 300))
+    }
+  }
+  return uniq(out).slice(0, 5000)
+}
+
+function extract(url, finalUrl, html, wantRows) {
   const clean = stripNoise(html)
   const bodyText = stripTags(clean)
-  return {
+  const sig = {
     url,
     final_url: finalUrl,
     title: stripTags(html.match(/<title[^>]*>([\s\S]*?)<\/title>/i)?.[1] || ''),
@@ -156,13 +173,15 @@ function extract(url, finalUrl, html) {
     word_count: bodyText ? bodyText.split(/\s+/).length : 0,
     content_hash: createHash('sha256').update(bodyText).digest('hex').slice(0, 16),
   }
+  if (wantRows) { const r = tableRows(clean); sig.rows = r; sig.rows_count = r.length }
+  return sig
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
 // fetch
 // ─────────────────────────────────────────────────────────────────────────────
 
-async function fetchPage(url) {
+async function fetchPage(url, wantRows) {
   const ac = new AbortController()
   const timer = setTimeout(() => ac.abort(), TIMEOUT_MS)
   try {
@@ -172,7 +191,7 @@ async function fetchPage(url) {
     if (!res.ok) return { ok: false, url, status: res.status, error: `HTTP ${res.status}` }
     if (!/html|xml|text/i.test(ct)) return { ok: false, url, status: res.status, error: `non-html content-type: ${ct}` }
     const html = await res.text()
-    const sig = extract(url, finalUrl, html)
+    const sig = extract(url, finalUrl, html, wantRows)
     return { ok: true, status: res.status, ...sig }
   } catch (e) {
     return { ok: false, url, status: 0, error: String(e && e.message || e) }
@@ -229,6 +248,14 @@ function diffPage(prev, cur) {
       { items: linksRemoved.slice(0, 20) })
   }
 
+  // opt-in table-row diff (only present when the page carries the [rows] marker):
+  // a new/removed row is the headline signal for a list page (acknowledgees, CVEs)
+  if ((prev.rows && prev.rows.length) || (cur.rows && cur.rows.length)) {
+    const rAdd = diffSet(prev.rows, cur.rows), rRem = diffSet(cur.rows, prev.rows)
+    if (rAdd.length) push('high', 'rows_added', `${rAdd.length} new table row(s)`, { items: rAdd.slice(0, 25), count: rAdd.length })
+    if (rRem.length) push('low', 'rows_removed', `${rRem.length} table row(s) removed`, { items: rRem.slice(0, 25), count: rRem.length })
+  }
+
   // content-body change with no structured signal above = plain copy edit
   if (prev.content_hash !== cur.content_hash && ch.length === 0) {
     const dw = cur.word_count - prev.word_count
@@ -261,6 +288,20 @@ function uniq(a) { return [...new Set(a)] }
 function clip(s, n) { s = (s || '').trim(); return s.length > n ? s.slice(0, n - 1) + '…' : s }
 function normUrl(u) { u = u.trim(); if (!u) return ''; return /^https?:\/\//i.test(u) ? u : 'https://' + u }
 
+// A watch-list target with an optional opt-in row-diff marker: a trailing
+// "#rows" fragment or " [rows]" suffix turns on table-row snapshotting/diffing
+// for that page. The marker is stripped before the url is fetched (a fragment
+// is never sent to the server anyway).
+function parseTarget(tok) {
+  tok = (tok || '').trim()
+  if (!tok) return null
+  let rows = false
+  const m = tok.match(/(?:#rows|\s*\[rows\])\s*$/i)
+  if (m) { rows = true; tok = tok.slice(0, m.index).trim() }
+  const url = normUrl(tok)
+  return url ? { url, rows } : null
+}
+
 // Pull a `--out PATH` pair out of the args; return [outPath|null, remainingArgs].
 function takeOut(args) {
   const i = args.indexOf('--out')
@@ -279,17 +320,25 @@ function emit(obj, outPath) {
 
 async function cmdSnapshot(argv) {
   const [outPath, args] = takeOut(argv)
-  let urls = []
+  let tokens = []
   if (args[0] === '--file') {
-    urls = readFileSync(args[1], 'utf8').split('\n').map((l) => l.replace(/#.*/, '').trim()).filter(Boolean)
+    // strip whole-line and space-prefixed comments, but keep a trailing #rows
+    // fragment (the opt-in row-diff marker) attached to a bare url
+    tokens = readFileSync(args[1], 'utf8').split('\n')
+      .map((l) => l.replace(/^\s*#.*/, '').replace(/\s+#.*/, '').trim()).filter(Boolean)
   } else {
-    urls = args
+    tokens = args
   }
-  urls = uniq(urls.map(normUrl).filter(Boolean))
-  if (!urls.length) { process.stderr.write('no urls given\n'); process.exit(2) }
+  const targets = []
+  const seen = new Set()
+  for (const t of tokens) {
+    const p = parseTarget(t)
+    if (p && !seen.has(p.url)) { seen.add(p.url); targets.push(p) }
+  }
+  if (!targets.length) { process.stderr.write('no urls given\n'); process.exit(2) }
 
   const competitors = []
-  for (const u of urls) competitors.push(await fetchPage(u)) // sequential = polite; competitor lists are short
+  for (const t of targets) competitors.push(await fetchPage(t.url, t.rows)) // sequential = polite; competitor lists are short
   const okCount = competitors.filter((c) => c.ok).length
   emit({ monitor_version: MONITOR_VERSION, generated: new Date().toISOString(), competitors }, outPath)
   process.exit(okCount === 0 ? 1 : 0)
