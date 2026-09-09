@@ -40,6 +40,8 @@ sandbox_prefix() {
 (version 1)
 (allow default)
 (deny file-write* (subpath "$ws"))
+(allow file-write* (subpath "$ws/memory"))
+(allow file-write* (subpath "$ws/output"))
 EOF
       printf '%s\n' sandbox-exec -f "$profile"
       ;;
@@ -47,6 +49,13 @@ EOF
       command -v bwrap >/dev/null 2>&1 || return 1
       # bind everything rw, then overlay the workspace read-only
       printf '%s\n' bwrap --dev-bind / / --ro-bind "$ws" "$ws"
+      # keep the two documented state dirs writable: read-only means cannot
+      # mutate code/config, not cannot persist state. memory/ (committed run
+      # state) + output/ (artifacts) are the exceptions read-only skills rely
+      # on (seo-audit, competitor-monitor). Re-bind rw after the ws ro-bind
+      # (binds apply left to right); guard existence, bwrap errors on missing.
+      [ -d "$ws/memory" ] && printf '%s\n' --bind "$ws/memory" "$ws/memory"
+      [ -d "$ws/output" ] && printf '%s\n' --bind "$ws/output" "$ws/output"
       # ...then layer the expanded config over the literal one. Order matters:
       # bwrap applies binds left to right, so this must follow the workspace bind.
       [ -n "$mcp" ] && [ -f "$mcp" ] && [ -f "$ws/.mcp.json" ] && \
