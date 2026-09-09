@@ -15,6 +15,8 @@ export const SKILL_ICONS: Record<string, string> = {
   "bd-radar": "<path d='M19.1 4.9A10 10 0 0 0 7 3.3'/><path d='M4 6h.01'/><path d='M2.3 9.6A10 10 0 1 0 21.3 8.4'/><path d='M16.2 7.8A6 6 0 1 0 8.2 16.7'/><circle cx='12' cy='12' r='2'/><path d='M13.4 10.6l5.7-5.7'/>",
   "changelog": "<path d='M3 12a9 9 0 1 0 9-9 9.8 9.8 0 0 0-6.7 2.7L3 8'/><path d='M3 3v5h5'/><path d='M12 7v5l4 2'/>",
   "competitor-monitor": "<path d='M5 3v3M9 3v3'/><rect x='3' y='6' width='6' height='13' rx='3'/><rect x='15' y='6' width='6' height='13' rx='3'/><path d='M9 12h6'/>",
+  "compute-resell": "<rect x='3' y='4' width='18' height='7' rx='2'/><rect x='3' y='13' width='18' height='7' rx='2'/><path d='M7 7.5h.01'/><path d='M7 16.5h.01'/>",
+  "cortx-reliability": "<path d='M22 12h-4l-3 9L9 3l-3 9H2'/>",
   "create-skill": "<path d='M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z'/><path d='M14 2v4a2 2 0 0 0 2 2h4'/><path d='M9 15h6'/><path d='M12 18v-6'/>",
   "defi-overview": "<circle cx='8' cy='8' r='6'/><path d='M18.1 10.4A6 6 0 1 1 10.3 18'/><path d='M7 6h1v4'/><path d='M16.7 13.9l.7.7-2.8 2.8'/>",
   "deploy-prototype": "<path d='M12 13v8'/><path d='M4 14.9A7 7 0 1 1 15.7 8h1.8a4.5 4.5 0 0 1 2.5 8.2'/><path d='M8 17l4-4 4 4'/>",

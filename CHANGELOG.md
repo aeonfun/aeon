@@ -9,6 +9,43 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ## [Unreleased]
 
+### Added
+
+- **New `compute-resell` skill (Crypto & Markets).** A disabled-by-default crypto
+  skill that resells free or low-cost provider compute (Bankr, AWS Bedrock, Google
+  Vertex) on the [Surplus Intelligence](https://surplusintelligence.ai) market. One
+  reactive engine runs per enabled provider, reads the live order book plus your
+  cost and usage, auto-lists your most-active models, and reactively prices each
+  offer within a floor/cap/health guardrail; a cross-provider claim ledger stops two
+  of your own providers undercutting each other. A provider is enabled only when its
+  wallet and credential secrets are both set. (#1036)
+- **New `submit-hook` skill (Crypto & Markets).** Ports the Uniswap v4 hook
+  marketplace publish path from `aeon-onchain` to canon: `deploy-uni-hook` step 11
+  now lists a live mainnet hook on the public `aeonfun/univ4-hooks` registry, opening
+  a PR (and filing a structured issue when there is no push access). All GitHub egress
+  stays inside the helper via the `gh` CLI. (#1040)
+
+### Changed
+
+- **`deploy-uni-hook` enforces the mandatory 10 bps AeonFee on every deployed hook.**
+  The audited `AeonFee` base is now ported into the skill's templates, so every hook
+  the live skill deploys inherits the mandatory protocol fee to `AEON_FEE_RECIPIENT`.
+  Hooks shipped through the skill were previously fee-free; only the hand-written
+  showcase hooks in `aeonfun/univ4-hooks` carried the fee. (#1035)
+
+### Fixed
+
+- **`aeon-update` derives the eyebrow version from CI.** The in-run `eyebrowlock.json`
+  rescan read the version from `.github/workflows/ci-skill-integrity.yml` instead of a
+  hardcoded pin, so sync PRs stop landing red on the `verify` check when CI has moved
+  ahead (was v0.4.1 in the skill vs v0.4.2 in CI). (#1037)
+- **Egress-audit artifact uploads no longer red on a proxied `FinalizeArtifact`.**
+  With `EGRESS_AUDIT` set, the audit-log upload steps kept the iron-proxy `HTTP(S)_PROXY`
+  env, so `upload-artifact`'s `FinalizeArtifact` call returned a 403 and failed an
+  otherwise-green run. Those steps now bypass the proxy. (#1038)
+- **The changelog skill formats the website changelog file after editing** so the
+  website `format:check` passes on generated output. (#1034)
+
 ### Changed
 
 - **`ci-skill-integrity` pins eyebrow v0.4.2.** The drift / rug-pull gate now
