@@ -640,7 +640,7 @@
           "owasp": "ASK-06",
           "file": "run.mjs",
           "line": 10,
-          "snippet": ".flatMap((key) =\u003e process.env[key] === undefined ? [] : [[key, process.env[key]]]),",
+          "snippet": ".flatMap((key) => process.env[key] === undefined ? [] : [[key, process.env[key]]]),",
           "explanation": "references sensitive credential or secret paths"
         }
       ],
@@ -1489,7 +1489,7 @@
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "87176a76640114c0726ed15bd0e398a54ae4cb3fd115d01fb61cfd7edeacf0a9"
+          "hash": "6d9e2cb969f7036b5c6c1e7b14f7c037a33b1338cff713dafc856230eccead27"
         },
         {
           "path": "hook-deploy.sh",
@@ -1583,7 +1583,7 @@
           "owasp": "ASK-06",
           "file": "hook-deploy.sh",
           "line": 213,
-          "snippet": "[ -f hook.env ] \u0026\u0026 . ./hook.env",
+          "snippet": "[ -f hook.env ] && . ./hook.env",
           "explanation": "references sensitive credential or secret paths"
         },
         {
@@ -2495,6 +2495,77 @@
       ],
       "contentHash": "sha256-a007b63e6ed5255fd62d39ed78dfa3bad9a20772f914e8d63115f4fadd508198",
       "discoveredFrom": "skills/aeon-update/SKILL.md"
+    },
+    {
+      "id": "568fc161dc3c135a",
+      "tool": "aeon",
+      "scope": "project:.",
+      "type": "skill",
+      "name": "submit-hook",
+      "source": {
+        "kind": "local",
+        "ref": "skills/submit-hook"
+      },
+      "capabilities": {},
+      "files": [
+        {
+          "path": "SKILL.md",
+          "hash": "669cda6057ecfa66cdb6b61c75e6cecb1311777866eea690b04746e5d10fde93"
+        },
+        {
+          "path": "submit-univ4.py",
+          "hash": "163c3e1d7e0347da784a8b0c5ba3a13edf971d9dc45259e6a00fa0dd273bbe5d"
+        }
+      ],
+      "findings": [
+        {
+          "ruleId": "EXEC-PRIMITIVE",
+          "severity": "medium",
+          "owasp": "ASK-03",
+          "file": "submit-univ4.py",
+          "line": 26,
+          "snippet": "import subprocess",
+          "explanation": "uses a process-execution primitive"
+        },
+        {
+          "ruleId": "EXEC-PRIMITIVE",
+          "severity": "medium",
+          "owasp": "ASK-03",
+          "file": "submit-univ4.py",
+          "line": 36,
+          "snippet": "return subprocess.run(",
+          "explanation": "uses a process-execution primitive"
+        },
+        {
+          "ruleId": "EXEC-PRIMITIVE",
+          "severity": "medium",
+          "owasp": "ASK-03",
+          "file": "submit-univ4.py",
+          "line": 38,
+          "snippet": "stdout=subprocess.PIPE if capture else None,",
+          "explanation": "uses a process-execution primitive"
+        },
+        {
+          "ruleId": "EXEC-PRIMITIVE",
+          "severity": "medium",
+          "owasp": "ASK-03",
+          "file": "submit-univ4.py",
+          "line": 39,
+          "snippet": "stderr=subprocess.STDOUT if capture else None,",
+          "explanation": "uses a process-execution primitive"
+        },
+        {
+          "ruleId": "EXEC-PRIMITIVE",
+          "severity": "medium",
+          "owasp": "ASK-03",
+          "file": "submit-univ4.py",
+          "line": 110,
+          "snippet": "except subprocess.CalledProcessError as e:",
+          "explanation": "uses a process-execution primitive"
+        }
+      ],
+      "contentHash": "sha256-9d35e9170df16a98c29da65b890841e5e8d56d914efece3574d894a1b526e284",
+      "discoveredFrom": "skills/submit-hook/SKILL.md"
     }
   ]
 }
