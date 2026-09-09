@@ -24,6 +24,11 @@ from or pin to; the template keeps serving the latest `main` to new forks.
   now lists a live mainnet hook on the public `aeonfun/univ4-hooks` registry, opening
   a PR (and filing a structured issue when there is no push access). All GitHub egress
   stays inside the helper via the `gh` CLI. (#1040)
+- **New `cortx-reliability` skill (Crypto & Markets).** Checks whether an x402
+  payment endpoint is reliably delivering value before you spend USDC on it, returning
+  paid delivery rate, active incidents, latency, and a clear proceed/warn/block
+  recommendation. It merged in a prior window but landed below the sync watermark and
+  was never documented; reconciled into the catalog and icon set here. (#954)
 
 ### Changed
 
