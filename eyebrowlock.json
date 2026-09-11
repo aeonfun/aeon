@@ -90,10 +90,10 @@
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "737e884def0b5bbda67d0d3cec8ebbde59abab4378c251cc2fcddee10586f8f5"
+          "hash": "4c930a5e7a5e0cbc5602e38a5d57d131f626ddada0cea686d820203150bb806e"
         }
       ],
-      "contentHash": "sha256-786e25aa588dbb5e938612020825b2471f8ef4227f5a9376f240bbeeaa359d58",
+      "contentHash": "sha256-70c1f531e6faefea7a911f5a8458772ef35223946d2269e4cb03c2f9042f89c4",
       "discoveredFrom": "skills/github-trending/SKILL.md"
     },
     {
@@ -117,7 +117,7 @@
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "d518b35f036300881bc862d50e86104f4c90ad9759a78c616c17e794a776475e"
+          "hash": "b7bb683299f312fd4864d43b53260493c29b8a4618972632d2cfe6a438a86c3c"
         },
         {
           "path": "riva.md",
@@ -130,7 +130,7 @@
           "severity": "critical",
           "owasp": "ASK-01",
           "file": "SKILL.md",
-          "line": 130,
+          "line": 138,
           "snippet": "network is open, but `pip install` / `curl | sh` / `tar` are **not** on the in-run",
           "explanation": "downloads and executes remote code via a pipe to a shell"
         },
@@ -139,7 +139,7 @@
           "severity": "critical",
           "owasp": "ASK-01",
           "file": "SKILL.md",
-          "line": 144,
+          "line": 152,
           "snippet": "# open, but `pip install` / `curl | sh` / `tar` are NOT allow-listed — `python3 -m pip`,",
           "explanation": "downloads and executes remote code via a pipe to a shell"
         },
@@ -148,7 +148,7 @@
           "severity": "medium",
           "owasp": "ASK-03",
           "file": "SKILL.md",
-          "line": 385,
+          "line": 393,
           "snippet": "- `exec` / `spawn` / `system` / `eval` sinks + subprocess with string interpolation (RCE)",
           "explanation": "uses a process-execution primitive"
         },
@@ -157,12 +157,12 @@
           "severity": "critical",
           "owasp": "ASK-01",
           "file": "SKILL.md",
-          "line": 1119,
+          "line": 1127,
           "snippet": "1. **Install** — the binaries (`semgrep`, `trufflehog`, `osv-scanner`, `slither`) are **not pre-installed**. Stage the…",
           "explanation": "downloads and executes remote code via a pipe to a shell"
         }
       ],
-      "contentHash": "sha256-7644b3e0890c12324618a5194417007d4216902c7aaff25e6030228004b6f736",
+      "contentHash": "sha256-30e4dd34d44cd10c648cccf99318d6dc50f14ea4f4278ea68fc1a87991b85e3d",
       "discoveredFrom": "skills/vuln-scanner/SKILL.md"
     },
     {

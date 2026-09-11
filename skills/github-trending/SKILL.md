@@ -141,6 +141,8 @@ sources: trending=ok|fail · gh_api=ok|fail · kept N/M
 
 Replace `Xt` with stars today, `Yk` with total stars in thousands, `[TAG]` with DEBUT/ACCELERATING/RETURNING/HOLDOVER.
 
+**Slate-integrity check (before you send).** The workflow captures this notify body verbatim to `output/.chains/github-trending.md`, which `vuln-scanner` reads for `owner/repo` scan targets. So every pick must stay a `[owner/repo](url)` line (a bare `https://github.com/owner/repo` permalink also parses). **Never** collapse the slate into a prose name list (e.g. "picks: OmniRoute, colibri, ...") - a bare repo name with no owner is unparseable and starves the scanner. Before sending, confirm the body carries one `[owner/repo](url)` line per surviving pick.
+
 ### A9. Log and exit
 
 Append to `memory/logs/${today}.md` under a single `### github-trending` heading, with a discriminator line `- branch: github` as the first bullet, followed by:

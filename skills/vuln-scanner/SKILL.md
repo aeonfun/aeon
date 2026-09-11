@@ -85,10 +85,18 @@ If `$TARGET` is set, use it. Otherwise:
 
 ```bash
 # Prefer chained output from github-trending skill
+CANDS=""
 if [ -s output/.chains/github-trending.md ]; then
-  # parse owner/repo lines; pick first that matches criteria below
-  :
-else
+  # Parse owner/repo targets. Accept BOTH the markdown form [owner/repo](url) and a
+  # bare github.com/owner/repo permalink (a feeder degraded under read-only can emit
+  # the latter). A repo name with no owner is NOT a candidate. Pick the first CANDS
+  # entry that matches the criteria below.
+  CANDS=$(grep -oE '\[[^]]+/[^]]+\]\(https?://[^)]+\)|https?://github\.com/[^/ )]+/[^/ )]+' output/.chains/github-trending.md \
+    | sed -E 's#.*github\.com/##; s#\).*##; s#^\[##; s#\].*##' | grep -E '^[^/ ]+/[^/ ]+$' | sort -u)
+fi
+# If the feed was absent OR present-but-unparseable (zero owner/repo lines, e.g. a
+# header-only / prose-only notify body), do NOT stop here - that starves the scan.
+if [ -z "$CANDS" ]; then
   # Shadow runs have no GitHub credentials by design. A bare shadow selector
   # may consume the chained trending output above, but otherwise must fail
   # closed and be retried as shadow:owner/repo.
