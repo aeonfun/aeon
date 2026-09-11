@@ -2570,6 +2570,26 @@
       ],
       "contentHash": "sha256-9d35e9170df16a98c29da65b890841e5e8d56d914efece3574d894a1b526e284",
       "discoveredFrom": "skills/submit-hook/SKILL.md"
+    },
+    {
+      "id": "e60d46343d70fb78",
+      "tool": "aeon",
+      "scope": "project:.",
+      "type": "skill",
+      "name": "miroshark-matchday",
+      "source": {
+        "kind": "local",
+        "ref": "skills/miroshark-matchday"
+      },
+      "capabilities": {},
+      "files": [
+        {
+          "path": "SKILL.md",
+          "hash": "8320551dac0ce3b6cd70aafc72c8a2dc9faccc982d6a00066524363ce6c958c2"
+        }
+      ],
+      "contentHash": "sha256-81fd4ca951c00c422fcd8535f67e27f5d1b59cc80850c84753325202691f4b05",
+      "discoveredFrom": "skills/miroshark-matchday/SKILL.md"
     }
   ]
 }

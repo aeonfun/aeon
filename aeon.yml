@@ -11,6 +11,7 @@ skills:
 
 
   # --- Mid-morning (9 AM UTC) ---
+  miroshark-matchday: { enabled: false, schedule: "0 9 * * 5", var: "" } # Friday — pays $1 USDC each (x402, Finance District wallet, $4/run cap) for one MiroShark matchday sim per league (PL, Serie A, La Liga); delivers share links + reports, renders videos on local runs. var: league subset (pl,seriea,laliga) or one custom scenario
   pr-triage: { enabled: false, schedule: "30 9 * * *", var: "" } # first-touch external-PR triage (verdict + label + welcoming comment); var: owner/repo or owner/repo#N for one-shot
   pr-review: { enabled: false, schedule: "0 9 * * *", var: "" } # var: empty/owner/repo=per-PR review (posts comments) | --survey [dry-run] [owner/repo]=risk-tiered PR triage digest (folds in pr-merge)
   auto-merge: { enabled: false, schedule: "0 14 * * *" } # merge green PRs daily at 2 PM UTC; max 3 per run
