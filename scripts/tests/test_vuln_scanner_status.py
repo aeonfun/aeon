@@ -24,7 +24,15 @@ class ScannerStatusContract(unittest.TestCase):
                     self.assertEqual(rows[-1], f"trufflehog-git={expected}")
 
     def test_filesystem_clean_empty_stream_is_ok(self):
-        row = next(line for line in SKILL.splitlines() if line.startswith('echo "trufflehog='))
+        # The filesystem trufflehog status is the RC-driven ok/fail echo. It now lives
+        # inside a timeout-aware if/else (the `=124` guard mirrors the git block), so it
+        # is indented and sits alongside a sibling `trufflehog=timeout` line - select it
+        # by its ok/fail expression and strip the indentation before running it.
+        row = next(
+            line.strip()
+            for line in SKILL.splitlines()
+            if line.strip().startswith('echo "trufflehog=') and "&& echo ok" in line
+        )
         with tempfile.TemporaryDirectory() as directory:
             for rc, expected in [(0, "ok"), (1, "fail")]:
                 subprocess.run(["bash", "-c", f"TRUFFLEHOG_RC={rc}\n" + row.replace("/tmp/vuln-scan", directory)], check=True)
