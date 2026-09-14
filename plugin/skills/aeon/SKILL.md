@@ -251,7 +251,7 @@ metadata:
 Today is ${today}. <the prompt — plain instructions, including judgment calls>
 
 ## Steps
-1. <the procedure — 43 of 81 skills lead with this>
+1. <the procedure - 44 of 81 skills lead with this>
 
 ## Network note
 <curl / WebFetch / `./secretcurl` / `gh api` — how this skill fetches>

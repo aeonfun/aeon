@@ -84,6 +84,9 @@ from or pin to; the template keeps serving the latest `main` to new forks.
   whose lock entry carries findings (a line-shift above a pinned finding trips
   `failOnCapabilityExpansion`), and the `changelog` skill runs the same formatter the CI gate
   runs. (#1061)
+- **`grok` auth no longer claims a staged credential after a failed refresh.** A failed
+  OAuth refresh was reporting success, so the next run assumed valid grok credentials and
+  failed downstream instead of re-authing. (#1060)
 - **Dependency and CI maintenance.** (#1044, #1046, #1047, #1048, #1049, #1050, #1057, #1058)
 - **`aeon-update` derives the eyebrow version from CI.** The in-run `eyebrowlock.json`
   rescan read the version from `.github/workflows/ci-skill-integrity.yml` instead of a
