@@ -11,6 +11,13 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Added
 
+- **New `miroshark-matchday` skill (Crypto & Markets).** A Friday bulk football-matchday
+  workflow on MiroShark: it builds one scenario per major league (Premier League, Serie A,
+  La Liga) from live fixtures, pays $1 USDC per sim via x402 through the Finance District
+  agent wallet (gasless EIP-3009 on Base, hard $4/run cap, retry-once-before-settlement),
+  launches all sims in parallel, collects share links and full reports, and renders one
+  1920x1080 video per sim locally (sandboxed CI ships a ready-to-run render pointer instead
+  so the paid step never repeats). Disabled by default. (#1056)
 - **New `compute-resell` skill (Crypto & Markets).** A disabled-by-default crypto
   skill that resells free or low-cost provider compute (Bankr, AWS Bedrock, Google
   Vertex) on the [Surplus Intelligence](https://surplusintelligence.ai) market. One
@@ -29,9 +36,19 @@ from or pin to; the template keeps serving the latest `main` to new forks.
   paid delivery rate, active incidents, latency, and a clear proceed/warn/block
   recommendation. It merged in a prior window but landed below the sync watermark and
   was never documented; reconciled into the catalog and icon set here. (#954)
+- **`vuln-scanner` gains an opt-in Riva research kernel.** A focused threat-model /
+  invariant scan selectable alongside the legacy scanner, with a shadow mode that runs
+  it side by side for comparison before switching over. It merged just after the prior
+  sync window but is numbered below that watermark, so it is reconciled here. (#1039)
 
 ### Changed
 
+- **`competitor-monitor` gains opt-in table-row diffing for list pages.** A watch-list
+  entry ending in `[rows]` opts that page in, so its snapshot also records every table row
+  as a normalised `cell | cell` string and the diff emits `rows_added` / `rows_removed`
+  with a capped item list. Off by default; ordinary pages never churn on table layout. Lets
+  the skill watch pages whose signal IS the rows (a vendor CVE / acknowledgements table, a
+  status-page incident table). (#1043)
 - **`deploy-uni-hook` enforces the mandatory 10 bps AeonFee on every deployed hook.**
   The audited `AeonFee` base is now ported into the skill's templates, so every hook
   the live skill deploys inherits the mandatory protocol fee to `AEON_FEE_RECIPIENT`.
@@ -40,6 +57,34 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Fixed
 
+- **Read-only skills keep `memory/` and `output/` writable in the sandbox.** The read-only
+  harness sandbox mounts the tree read-only except the state dirs, so a read-only skill can
+  still persist its `memory/` and `output/` between runs. (#1042)
+- **Read-only skills now record their `### <skill>` baseline in `memory/logs/`.** The
+  read-only capability guard logged only a content-free stub, so every read-only skill
+  (narrative-tracker, github-trending, aeon-doctor, and the rest) silently lost its
+  day-to-day baseline; it now appends the real captured run output under a `### <skill>`
+  heading for next-run dedup / diff. (#1051)
+- **A read-only skill's failure now leaves a log too.** The guard and commit steps were
+  implicitly gated on `success()`, so a failed read-only run left zero trace; a
+  `!cancelled()` guard plus a dedicated failure-log commit step fix it. (#1052)
+- **Chain runner distinguishes no-action from success.** A completed dev-loop that shipped
+  nothing now emits `CHAIN_STATUS=no-action` and is excluded from reliability bookkeeping,
+  so a no-op no longer inflates dev-loop success rates. (#1053)
+- **`vuln-scanner` bounds the trufflehog filesystem scan.** The filesystem pass is now
+  wrapped in `timeout 300` (matching the git-history pass) and scanners must not be
+  backgrounded, so a large monorepo checkout no longer burns the whole turn budget and
+  falsely reports `success`. (#1054)
+- **`github-trending` keeps its feed machine-parseable for `vuln-scanner`.** A header-only
+  notify that folded picks into a prose name list left the scanner zero parseable
+  `owner/repo` targets; the slate now requires one `[owner/repo](url)` line per pick, and
+  the scanner parses bare permalinks and falls back to search on an unparseable feed. (#1055)
+- **`aeon-update` and `changelog` close the gaps that landed downstream sync PRs CI-red.**
+  `aeon-update`'s eyebrow fail-safe now also defers a clean update/merge of an existing skill
+  whose lock entry carries findings (a line-shift above a pinned finding trips
+  `failOnCapabilityExpansion`), and the `changelog` skill runs the same formatter the CI gate
+  runs. (#1061)
+- **Dependency and CI maintenance.** (#1044, #1046, #1047, #1048, #1049, #1050, #1057, #1058)
 - **`aeon-update` derives the eyebrow version from CI.** The in-run `eyebrowlock.json`
   rescan read the version from `.github/workflows/ci-skill-integrity.yml` instead of a
   hardcoded pin, so sync PRs stop landing red on the `verify` check when CI has moved

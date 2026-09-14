@@ -43,6 +43,7 @@ export const SKILL_ICONS: Record<string, string> = {
   "last30": "<path d='M8 2v4M16 2v4'/><rect x='3' y='4' width='18' height='18' rx='2'/><path d='M3 10h18'/><path d='M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01'/>",
   "memory-flush": "<rect x='4' y='6' width='16' height='12' rx='2'/><path d='M8 6V3M12 6V3M16 6V3M8 21v-3M12 21v-3M16 21v-3'/><path d='M9 11h6'/><path d='M9 14h6'/>",
   "mention-radar": "<circle cx='12' cy='12' r='4'/><path d='M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8'/>",
+  "miroshark-matchday": "<circle cx='12' cy='12' r='9'/><path d='M12 6.2l4.5 3.3-1.7 5.3H9.2l-1.7-5.3z'/><path d='M12 6.2V2.5M16.5 9.5l3.6-1.1M14.8 14.8l2.2 3M9.2 14.8l-2.2 3M7.5 9.5L3.9 8.4'/>",
   "monitor-polymarket": "<path d='M16 16l3-8 3 8c-.9.7-1.9 1-3 1s-2.1-.3-3-1z'/><path d='M2 16l3-8 3 8c-.9.7-1.9 1-3 1s-2.1-.3-3-1z'/><path d='M7 21h10'/><path d='M12 3v18'/><path d='M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2'/>",
   "narrative-convergence": "<path d='M4 4l7 7'/><path d='M20 4l-7 7'/><path d='M12 11v9'/><circle cx='12' cy='11' r='1.6' fill='currentColor' stroke='none'/>",
   "narrative-tracker": "<path d='M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1'/><path d='M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1'/><path d='M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1'/>",
