@@ -1,0 +1,47 @@
+name: CI Gate
+on:
+  pull_request:
+permissions:
+  checks: read
+  contents: read
+concurrency:
+  group: ci-gate-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Require all CI checks to pass
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          # Grace period so sibling path-filtered workflows can register their check runs.
+          sleep 45
+          deadline=$(( $(date +%s) + 1500 ))
+          while :; do
+            runs=$(gh api "repos/$REPO/commits/$SHA/check-runs" --paginate \
+              -q '.check_runs[] | select(.name != "gate") | [.name, .status, (.conclusion // "")] | @tsv')
+            pending=$(printf '%s\n' "$runs" | awk -F'\t' 'NF>0 && $2!="completed"' || true)
+            if [ -n "$pending" ]; then
+              echo "Waiting on checks still running:"
+              printf '%s\n' "$pending"
+              if [ "$(date +%s)" -ge "$deadline" ]; then
+                echo "Timed out waiting for CI checks to complete."
+                exit 1
+              fi
+              sleep 15
+              continue
+            fi
+            break
+          done
+          failed=$(printf '%s\n' "$runs" | awk -F'\t' 'NF>0 && $3!="success" && $3!="skipped" && $3!="neutral"' || true)
+          if [ -n "$failed" ]; then
+            echo "These CI checks did not pass:"
+            printf '%s\n' "$failed"
+            exit 1
+          fi
+          echo "All CI checks are green (or skipped). Gate passes."
