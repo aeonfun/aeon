@@ -79,7 +79,6 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 | <img src="https://pbs.twimg.com/profile_images/2056536399864827904/sJpI8LLl_400x400.jpg" width="36" height="36" alt="Skim logo"> | Skim | [@skim402](https://x.com/skim402) · [skim402.com](https://skim402.com) |
 | <img src="https://pbs.twimg.com/profile_images/2074036017712320512/zeatSErP_400x400.jpg" width="36" height="36" alt="Solvr logo"> | Solvr | [@solvrbot](https://x.com/solvrbot) |
 | <img src="https://sparkleware.fun/logo.png" width="36" height="36" alt="Sparkleware logo"> | Sparkleware | [@sparklewarefun](https://x.com/sparklewarefun) · [sparkleware.fun](https://sparkleware.fun) |
-| <img src="https://pbs.twimg.com/profile_images/2059512048598548480/T3S4MoZ4_400x400.jpg" width="36" height="36" alt="Spoon logo"> | Spoon | [@Spoonautobot](https://x.com/Spoonautobot) |
 | <img src="https://pbs.twimg.com/profile_images/2077110134409469952/ZYgPG9di_400x400.jpg" width="36" height="36" alt="Tachi logo"> | Tachi | [@smolekoma](https://x.com/smolekoma) |
 | <img src="https://pbs.twimg.com/profile_images/2081554686981939200/WqnWbHND_400x400.jpg" width="36" height="36" alt="TaskMarket logo"> | TaskMarket | [@daydreamsagents](https://x.com/daydreamsagents) · [taskmarket.dev](https://taskmarket.dev) |
 | <img src="https://pbs.twimg.com/profile_images/2056143447829135360/GG04R1u8_400x400.jpg" width="36" height="36" alt="Venice Deity logo"> | Venice Deity | [@vvveity](https://x.com/vvveity) |
