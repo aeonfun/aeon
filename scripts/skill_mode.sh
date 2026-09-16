@@ -98,14 +98,34 @@ WRITE_TOOLS="$WRITE_TOOLS,Bash(./scripts/vuln-poc-gate.sh:*)"
 WRITE_TOOLS="$WRITE_TOOLS,Bash(forge:*),Bash(cast:*),Bash(./hook-deploy.sh:*)"
 
 resolve_mode() {
+  # var (the runtime selector, e.g. SKILL_VAR from aeon.yml/mcp-server) is
+  # optional and checked first: vuln-scanner's shadow/compare evaluation
+  # forces read-only regardless of the skill's own mode: frontmatter. This is
+  # the one place that check lives - every dispatch surface (aeon.yml via
+  # resolve-riva-capabilities.sh, apps/mcp-server/src/skill-executor.ts) must
+  # call in here rather than keep its own copy of the selector pattern.
+  local skill="$1" var="${2:-}"
+  if is_shadow_selector "$skill" "$var"; then
+    echo "read-only"
+    return
+  fi
   # `mode:` frontmatter scalar via the shared _fm reader (strips inline comment,
   # quotes, and surrounding ws); absent file/field -> "" -> the write default.
   local m
-  m=$(_fm "$1" mode)
+  m=$(_fm "$skill" mode)
   case "$m" in
     read-only|readonly|read_only) echo "read-only" ;;
     write|"")                     echo "write" ;;
     *) echo "write" ;;  # unknown value -> safe default, never silently over-restrict
+  esac
+}
+
+is_shadow_selector() {
+  local skill="$1" var="${2:-}"
+  [ "$skill" = "vuln-scanner" ] || return 1
+  case "$var" in
+    shadow|shadow:*|compare|compare:*) return 0 ;;
+    *) return 1 ;;
   esac
 }
 
@@ -172,12 +192,14 @@ grok_run_env() {
 }
 
 case "${1:-}" in
-  mode)          resolve_mode "${2:?skill name required}" ;;
+  mode)          resolve_mode "${2:?skill name required}" "${3:-}" ;;
   allowed-tools)
     case "${2:-write}" in
       read-only|readonly|read_only) echo "$BASE_TOOLS" ;;
       *)                            write_tools ;;
     esac ;;
   grok-run-env)  grok_run_env "${2:?skill name required}" ;;
-  *) echo "usage: skill_mode.sh {mode <skill>|allowed-tools <mode>|grok-run-env <skill>}" >&2; exit 2 ;;
+  is-shadow)
+    if is_shadow_selector "${2:?skill name required}" "${3:-}"; then echo true; else echo false; fi ;;
+  *) echo "usage: skill_mode.sh {mode <skill> [var]|allowed-tools <mode>|grok-run-env <skill>|is-shadow <skill> [var]}" >&2; exit 2 ;;
 esac

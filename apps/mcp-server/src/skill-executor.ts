@@ -104,17 +104,31 @@ export function resolveHarness(repoRoot: string, slug?: string): Harness {
  * sandbox_prefix on it), so getting this wrong silently drops the write boundary
  * for the skills that declare `mode: read-only`.
  *
+ * `varValue` is passed through so skill_mode.sh's shared selector check (e.g.
+ * vuln-scanner's Riva shadow/compare evaluation) applies on this dispatch path
+ * too, not only aeon.yml's. That check used to live only in a script aeon.yml
+ * sourced, so this path silently ran shadow evaluations at full write access
+ * with every ambient credential attached.
+ *
  * Returns null when the tier cannot be determined. Callers must fail rather than
  * assume `write`: guessing the permissive tier is exactly the mistake this
  * function exists to prevent.
  */
-function resolveMode(repoRoot: string, slug: string): { mode: string; allowedTools: string } | null {
+function resolveMode(
+  repoRoot: string,
+  slug: string,
+  varValue: string
+): { mode: string; allowedTools: string; isShadow: boolean } | null {
   const script = join(repoRoot, "scripts", "skill_mode.sh");
   if (!existsSync(script)) return null;
   const run = (...args: string[]) =>
     spawnSync("bash", [script, ...args], { cwd: repoRoot, encoding: "utf-8" });
 
-  const modeRes = run("mode", slug);
+  const shadowRes = run("is-shadow", slug, varValue);
+  if (shadowRes.status !== 0) return null;
+  const isShadow = (shadowRes.stdout || "").trim() === "true";
+
+  const modeRes = run("mode", slug, varValue);
   if (modeRes.status !== 0) return null;
   const mode = (modeRes.stdout || "").trim();
   if (mode !== "read-only" && mode !== "write") return null;
@@ -124,7 +138,29 @@ function resolveMode(repoRoot: string, slug: string): { mode: string; allowedToo
   const allowedTools = (toolsRes.stdout || "").trim();
   if (!allowedTools) return null;
 
-  return { mode, allowedTools };
+  return { mode, allowedTools, isShadow };
+}
+
+/**
+ * Shadow/compare evaluation runs are research-only: the harness must not carry
+ * disclosure-capable credentials. Mirrors the unset list in aeon.yml's shadow
+ * branch exactly, so both dispatch surfaces withhold the same set.
+ */
+const SHADOW_STRIPPED_ENV_VARS = [
+  "ALL_SECRETS",
+  "GH_GLOBAL",
+  "GH_TOKEN",
+  "GITHUB_TOKEN",
+  "RESEND_API_KEY",
+  "RESEND_FROM",
+  "RESEND_REPLY_TO",
+  "XAI_API_KEY",
+];
+
+function shadowSafeEnv(env: NodeJS.ProcessEnv): NodeJS.ProcessEnv {
+  const filtered = { ...env };
+  for (const key of SHADOW_STRIPPED_ENV_VARS) delete filtered[key];
+  return filtered;
 }
 
 // Single-flight queue. spawnSync used to serialize runs by freezing the event
@@ -264,7 +300,7 @@ async function runSkillInner(
     ].join("\n");
   }
 
-  const capability = resolveMode(repoRoot, slug);
+  const capability = resolveMode(repoRoot, slug, varValue);
   if (!capability) {
     return [
       `Error: could not resolve the capability tier for '${slug}'.`,
@@ -303,7 +339,7 @@ async function runSkillInner(
   const result = await spawnHarness(args, {
     input: prompt,
     cwd: repoRoot,
-    env: process.env,
+    env: capability.isShadow ? shadowSafeEnv(process.env) : process.env,
     timeout: 600_000, // 10 minutes - same as the GitHub Actions timeout
     maxBuffer: 10 * 1024 * 1024, // 10 MB
   });
