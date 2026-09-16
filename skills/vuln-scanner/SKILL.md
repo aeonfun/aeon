@@ -135,7 +135,7 @@ cd "$(basename "$REPO")"
 Raw grep produces too many false positives. Use tools with dataflow reachability and verified-secret matching.
 
 Stage the scanners **in-run** into `/tmp/bin` (see the install preamble below). The
-network is open, but `pip install` / `curl | sh` / `tar` are **not** on the in-run
+network is open, but `pip install` / a curl-piped-to-shell install / `tar` are **not** on the in-run
 capability allowlist — use the ones that are: `python3 -m pip install …` for the Python
 tools (semgrep, slither) and `curl -o … && chmod +x` for the Go binaries (osv-scanner,
 trufflehog). Put `/tmp/bin` on `PATH` and invoke
@@ -149,7 +149,7 @@ in `sources.txt` below) — never abort the whole run for one tool.
 mkdir -p /tmp/vuln-scan /tmp/bin
 export PATH="/tmp/bin:$PATH"
 # Stage the scanners IN-RUN, best-effort, using ONLY allow-listed commands (network is
-# open, but `pip install` / `curl | sh` / `tar` are NOT allow-listed — `python3 -m pip`,
+# open, but `pip install` / a curl-piped-to-shell install / `tar` are NOT allow-listed — `python3 -m pip`,
 # `curl -o`, `chmod`, `npm`/`npx`, `node` ARE). Wrap each in `|| true`; any tool that fails
 # to stage is skipped by the `command -v` guards below (records fail), never fatal:
 python3 -m pip install --quiet --disable-pip-version-check semgrep slither-analyzer 2>/dev/null || true
@@ -1124,7 +1124,7 @@ specific bullets.
 
 **Arm A (scan).** Getting the scanners to run under GitHub Actions takes **two** things:
 
-1. **Install** — the binaries (`semgrep`, `trufflehog`, `osv-scanner`, `slither`) are **not pre-installed**. Stage them **in-run** into `/tmp/bin` (step A3's preamble): the network is open, but `pip install` / `curl | sh` / `tar` aren't allow-listed, so use `python3 -m pip install …` (semgrep, slither) and `curl -o … && chmod +x` for the Go binaries (osv-scanner, trufflehog). Any tool that can't be staged is skipped by its `command -v` guard (`VULN_SCANNER_SKIPPED`); if **no** scanner is available, Arm A reports `SCAN_TOOLS_MISSING` and skips the scan cleanly rather than erroring the run.
+1. **Install** — the binaries (`semgrep`, `trufflehog`, `osv-scanner`, `slither`) are **not pre-installed**. Stage them **in-run** into `/tmp/bin` (step A3's preamble): the network is open, but `pip install` / a curl-piped-to-shell install / `tar` aren't allow-listed, so use `python3 -m pip install …` (semgrep, slither) and `curl -o … && chmod +x` for the Go binaries (osv-scanner, trufflehog). Any tool that can't be staged is skipped by its `command -v` guard (`VULN_SCANNER_SKIPPED`); if **no** scanner is available, Arm A reports `SCAN_TOOLS_MISSING` and skips the scan cleanly rather than erroring the run.
 2. **Execute** — non-interactive `claude -p` runs under an `--allowedTools` allowlist, so any command not on it is **denied** ("requires approval") with no human to approve. The scanner *bare names* (`semgrep`, `osv-scanner`, `trufflehog`, `slither`) must be listed in the **write tier** of `scripts/skill_mode.sh` for bare invocation to be permitted; if a name is missing it's denied and that scanner is skipped (the scan arm degrades to manual code review — a denial reads as "requires approval", **not** a network/sandbox block). This is why step A3 puts `/tmp/bin` on `PATH` and calls each tool by bare name (`semgrep …`, not `/tmp/bin/semgrep …`) — an absolute-path invocation would not match the allowlist pattern.
 
 This two-part fix resolves ISS-001 (binaries installed *and* runnable). If any scanner binary is still missing at runtime, log `VULN_SCANNER_SKIPPED: <tool> not available`, record `tool=fail` in `sources.txt`, and continue with the remaining scanners rather than aborting the whole run. An all-scanners-fail run must report **error**, not **clean**.
