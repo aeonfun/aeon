@@ -172,10 +172,7 @@ gh pr create -R owner/repo \
 - file1: what changed
 - file2: what changed
 
-${AEON_DISPATCH_ID:+<!-- aeon-dispatch:$AEON_DISPATCH_ID -->}
-
----
-*Built autonomously by Aeon*"
+${AEON_DISPATCH_ID:+<!-- aeon-dispatch:$AEON_DISPATCH_ID -->}"
 ```
 
 ### A9. Update memory
@@ -321,6 +318,12 @@ Use conventional commit types: `fix:`, `feat:`, `test:`, `docs:`, `chore:`. If f
 
 ### B7. Push and open a PR
 
+`$AEON_DISPATCH_ID` is only set when chain-runner dispatched this run. Today that
+means the `dev-loop` chain, i.e. an Aeon Engineer test/dogfood PR, not a normal
+production run. The "Built by Aeon" footer rides on the same condition as the
+dispatch marker for that reason: production external-branch PRs ship with no
+Aeon/AI attribution in the body, only test-chain PRs do.
+
 ```bash
 git push -u origin "$BRANCH"
 gh pr create --repo "$REPO" \
@@ -334,10 +337,10 @@ gh pr create --repo "$REPO" \
 ## Context
 [What prompted this — issue, TODO, code review finding, etc.]
 
-${AEON_DISPATCH_ID:+<!-- aeon-dispatch:$AEON_DISPATCH_ID -->}
+${AEON_DISPATCH_ID:+<!-- aeon-dispatch:$AEON_DISPATCH_ID -->}${AEON_DISPATCH_ID:+
 
 ---
-Built by [Aeon](https://github.com/aeon)"
+Built by [Aeon](https://github.com/aeon)}"
 ```
 
 ### B8. Notify
