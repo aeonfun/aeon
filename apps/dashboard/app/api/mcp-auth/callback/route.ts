@@ -6,13 +6,22 @@ import { pendingFlows } from '@/lib/mcp-oauth-server'
 // with the stored PKCE verifier, and resolves the waiting POST. Renders a tiny
 // self-contained page for the browser tab; the actual secret-storage + .mcp.json
 // wiring happens back in the POST handler once resolve() fires.
+
+// `title`/`detail` can carry attacker-controlled OAuth ?error/?error_description values
+// (GHSA-gh95-xx4q-qch8) or a token-endpoint's error body, so escape before interpolating.
+function escapeHtml(s: string): string {
+  return s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!)
+}
+
 function page(title: string, detail = '', status = 200): Response {
+  const safeTitle = escapeHtml(title)
+  const safeDetail = escapeHtml(detail)
   const html = `<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${title}</title>
+<title>${safeTitle}</title>
 <body style="font-family:ui-sans-serif,system-ui,sans-serif;background:#0a0a0a;color:#fafafa;display:grid;place-items:center;min-height:100vh;margin:0">
 <div style="text-align:center;max-width:32rem;padding:2rem">
-<h1 style="font-size:1.25rem;margin:0 0 .5rem">${title}</h1>
-<p style="color:#a3a3a3;font-size:.9rem;margin:0">${detail}</p>
+<h1 style="font-size:1.25rem;margin:0 0 .5rem">${safeTitle}</h1>
+<p style="color:#a3a3a3;font-size:.9rem;margin:0">${safeDetail}</p>
 </div></body>`
   return new Response(html, { status, headers: { 'Content-Type': 'text/html; charset=utf-8' } })
 }
