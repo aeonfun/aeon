@@ -17,6 +17,10 @@ if [ "$1" = api ] && [ "$2" = user ]; then
   printf 'aeonframework\n'
   exit 0
 fi
+if [ "$1" = api ] && [ "$2" = repos/acme/demo ]; then
+  printf '%s\n' "${TEST_PUSH:-true}"
+  exit 0
+fi
 [ "$1" = pr ]
 [ "$2" = list ]
 calls=$(cat "$TEST_GH_CALLS" 2>/dev/null || echo 0)
@@ -41,6 +45,12 @@ case "$TEST_GH_SCENARIO:$calls" in
 esac
 EOF
 chmod +x "$TMP/bin/gh"
+
+PATH="$TMP/bin:$PATH" bash "$CHECK" validate-owned-target external:acme/demo | grep -Fx 'acme/demo'
+if TEST_PUSH=false PATH="$TMP/bin:$PATH" bash "$CHECK" validate-owned-target external:acme/demo; then
+  echo 'repository without push access unexpectedly passed ownership gate' >&2
+  exit 1
+fi
 
 before="$TMP/before"
 calls="$TMP/calls"

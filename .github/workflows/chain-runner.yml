@@ -73,6 +73,11 @@ jobs:
               echo "CHAIN_STATUS=invalid-dispatch" >> "$GITHUB_ENV"
               exit 1
             fi
+            if ! bash scripts/dev-loop-pr.sh validate-owned-target "$CHAIN_TARGET" >/dev/null; then
+              echo "::error::dev-loop requires a repository where the authenticated operator has push access"
+              echo "CHAIN_STATUS=invalid-dispatch" >> "$GITHUB_ENV"
+              exit 1
+            fi
           fi
 
           # --- Helper: dispatch a skill and return its uniquely correlated run ID ---
@@ -262,6 +267,11 @@ jobs:
           FEATURE_PR=""
           FEATURE_OPEN_BEFORE=""
           FEATURE_DISPATCH_ID=""
+          REVIEW_SHA=""
+          REVIEW_RESULT=""
+          INITIAL_REVIEW_RUN_ID=""
+          REPAIR_RUN_ID=""
+          REREVIEW_RUN_ID=""
 
           # --- Execute steps sequentially ---
           for ((i=0; i<TOTAL_STEPS; i++)); do
@@ -349,6 +359,14 @@ jobs:
                 fi
               fi
 
+              if [ "$CHAIN" = "dev-loop" ] && [ "$skill" = "pr-review" ]; then
+                REVIEW_SHA=$(bash scripts/dev-loop-repair.sh head "$FEATURE_PR") || {
+                  echo "::error::dev-loop could not bind review to the current PR head"
+                  CHAIN_FAILED=true
+                  break
+                }
+              fi
+
               # Build context file if this step consumes outputs
               CTX_FILE=""
               if [ -n "$CONSUME" ]; then
@@ -393,6 +411,9 @@ jobs:
                 fi
               fi
               RUN_IDS+=("$RUN_ID")
+              if [ "$CHAIN" = "dev-loop" ] && [ "$skill" = "pr-review" ]; then
+                INITIAL_REVIEW_RUN_ID="$RUN_ID"
+              fi
               sleep 2  # Stagger dispatches
             done
 
@@ -422,14 +443,132 @@ jobs:
                   *) echo "::error::dev-loop could not verify feature's claimed PR"; CHAIN_FAILED=true; break ;;
                 esac
               fi
+
+              if [ "$CHAIN" = "dev-loop" ] && [ "$SKILLS" = "pr-review" ]; then
+                REVIEW_RESULT=$(bash scripts/dev-loop-review.sh verify "$FEATURE_PR" "$REVIEW_SHA") || {
+                  echo "::error::dev-loop could not verify the review receipt against GitHub"
+                  CHAIN_FAILED=true
+                  break
+                }
+                echo "  Verified review receipt: $REVIEW_RESULT"
+              fi
             fi
           done
+
+          # One bounded repair pass. Agent prose cannot trigger this path: the
+          # GitHub-posted review receipt must be valid, actionable, and bound to
+          # the PR's unchanged head SHA. After the writer pushes, GitHub must show
+          # a different SHA with completed successful checks before re-review.
+          if [ "$CHAIN" = "dev-loop" ] && [ "$CHAIN_FAILED" = "false" ] &&
+             [ -n "$REVIEW_RESULT" ] &&
+             [ "$(jq -r '.actionable' <<<"$REVIEW_RESULT")" = "true" ]; then
+            REPAIR_VAR=$(bash scripts/dev-loop-repair.sh repair-target "$FEATURE_PR" "$REVIEW_SHA") || {
+              echo "::error::dev-loop review became stale before repair"
+              CHAIN_FAILED=true
+            }
+
+            if [ "$CHAIN_FAILED" = "false" ]; then
+              REPAIR_CONTEXT="output/.chains/.chain-context-feature-repair.md"
+              mkdir -p output/.chains
+              bash scripts/dev-loop-review.sh body "$FEATURE_PR" "$REVIEW_SHA" > "$REPAIR_CONTEXT"
+              git add output/.chains/ 2>/dev/null || true
+              if ! git diff --staged --quiet 2>/dev/null; then
+                git commit -m "chore(chain): context for bounded repair"
+                git pull --rebase origin main 2>/dev/null || true
+                git push -u origin HEAD
+              fi
+
+              DISPATCH_COUNT=$((DISPATCH_COUNT + 1))
+              if [ "$DISPATCH_COUNT" -gt "$MAX_DISPATCHES" ]; then
+                echo "::error::dev-loop cannot dispatch repair: budget $MAX_DISPATCHES exhausted"
+                CHAIN_FAILED=true
+              else
+                REPAIR_OUTPUT=$(dispatch_skill feature "$REPAIR_VAR" "$REPAIR_CONTEXT")
+                REPAIR_RUN_ID=$(echo "$REPAIR_OUTPUT" | tail -1)
+                if [ -z "$REPAIR_RUN_ID" ] || ! wait_for_runs "$REPAIR_RUN_ID"; then
+                  echo "::error::dev-loop bounded repair run failed"
+                  CHAIN_FAILED=true
+                fi
+              fi
+            fi
+
+            if [ "$CHAIN_FAILED" = "false" ]; then
+              REPAIRED_SHA=$(bash scripts/dev-loop-repair.sh verify-change "$FEATURE_PR" "$REVIEW_SHA") || {
+                echo "::error::dev-loop repair did not produce a verifiable new PR head"
+                CHAIN_FAILED=true
+              }
+            fi
+
+            if [ "$CHAIN_FAILED" = "false" ]; then
+              CHECK_RESULT=""
+              for attempt in $(seq 1 60); do
+                CHECK_RC=0
+                CHECK_RESULT=$(bash scripts/dev-loop-repair.sh verify-checks "$FEATURE_PR" "$REPAIRED_SHA" 2>&1) || CHECK_RC=$?
+                if [ "$CHECK_RC" -eq 0 ]; then
+                  echo "  Verified repaired checks: $CHECK_RESULT"
+                  break
+                elif [ "$CHECK_RC" -ne 3 ]; then
+                  echo "::error::$CHECK_RESULT"
+                  CHAIN_FAILED=true
+                  break
+                fi
+                sleep 10
+              done
+              if [ "$CHAIN_FAILED" = "false" ] && [ -z "$CHECK_RESULT" ]; then
+                echo "::error::dev-loop timed out waiting for checks on repaired SHA"
+                CHAIN_FAILED=true
+              elif [ "$CHAIN_FAILED" = "false" ] && ! jq -e '.status == "passed"' <<<"$CHECK_RESULT" >/dev/null 2>&1; then
+                echo "::error::dev-loop checks never reached a verified passing state"
+                CHAIN_FAILED=true
+              fi
+            fi
+
+            if [ "$CHAIN_FAILED" = "false" ]; then
+              REREVIEW_CONTEXT=$(build_context pr-review feature)
+              git add output/.chains/ 2>/dev/null || true
+              if ! git diff --staged --quiet 2>/dev/null; then
+                git commit -m "chore(chain): context for re-review"
+                git pull --rebase origin main 2>/dev/null || true
+                git push -u origin HEAD
+              fi
+              DISPATCH_COUNT=$((DISPATCH_COUNT + 1))
+              if [ "$DISPATCH_COUNT" -gt "$MAX_DISPATCHES" ]; then
+                echo "::error::dev-loop cannot dispatch re-review: budget $MAX_DISPATCHES exhausted"
+                CHAIN_FAILED=true
+              else
+                REREVIEW_OUTPUT=$(dispatch_skill pr-review "$FEATURE_PR" "$REREVIEW_CONTEXT")
+                REREVIEW_RUN_ID=$(echo "$REREVIEW_OUTPUT" | tail -1)
+                if [ -z "$REREVIEW_RUN_ID" ] || ! wait_for_runs "$REREVIEW_RUN_ID"; then
+                  echo "::error::dev-loop re-review run failed"
+                  CHAIN_FAILED=true
+                fi
+              fi
+            fi
+
+            if [ "$CHAIN_FAILED" = "false" ]; then
+              FINAL_REVIEW=$(bash scripts/dev-loop-review.sh verify "$FEATURE_PR" "$REPAIRED_SHA") || {
+                echo "::error::dev-loop could not verify the re-review receipt"
+                CHAIN_FAILED=true
+              }
+              if [ "$CHAIN_FAILED" = "false" ] && [ "$(jq -r '.actionable' <<<"$FINAL_REVIEW")" = "true" ]; then
+                echo "::error::dev-loop stopped after one repair pass: re-review remains actionable"
+                CHAIN_FAILED=true
+              elif [ "$CHAIN_FAILED" = "false" ]; then
+                echo "  Verified re-review receipt: $FINAL_REVIEW"
+              fi
+            fi
+          fi
+
+          if [ "$CHAIN" = "dev-loop" ]; then
+            echo "dev-loop evidence: pr=${FEATURE_PR:-none} initial_review_run=${INITIAL_REVIEW_RUN_ID:-none} repair_run=${REPAIR_RUN_ID:-none} rereview_run=${REREVIEW_RUN_ID:-none}"
+          fi
 
           # --- Final status ---
           echo ""
           if [ "$CHAIN_FAILED" = "true" ]; then
             echo "::error::Chain '$CHAIN' completed with failures"
             echo "CHAIN_STATUS=failed" >> "$GITHUB_ENV"
+            exit 1
           elif [ "$CHAIN_NO_ACTION" = "true" ]; then
             echo "Chain '$CHAIN' completed without a review: feature produced no verified PR"
             echo "CHAIN_STATUS=no-action" >> "$GITHUB_ENV"

@@ -5,7 +5,7 @@
 set -euo pipefail
 
 usage() {
-  echo "usage: $0 validate-target <external:owner/repo[#issue]> | snapshot <target> | verify-new-pr <target> <before-file> <dispatch-id>" >&2
+  echo "usage: $0 validate-target|validate-owned-target <external:owner/repo[#issue]> | snapshot <target> | verify-new-pr <target> <before-file> <dispatch-id>" >&2
   exit 64
 }
 
@@ -22,6 +22,16 @@ case "${1:-}" in
   validate-target)
     [ "$#" -eq 2 ] || usage
     target_repo "$2"
+    ;;
+  validate-owned-target)
+    [ "$#" -eq 2 ] || usage
+    repo=$(target_repo "$2") || exit $?
+    can_push=$(gh api "repos/$repo" --jq '.permissions.push // false')
+    [ "$can_push" = true ] || {
+      echo "dev-loop: authenticated operator does not have push access to $repo" >&2
+      exit 1
+    }
+    printf '%s\n' "$repo"
     ;;
   snapshot)
     [ "$#" -eq 2 ] || usage

@@ -19,7 +19,7 @@ metadata:
 ---
 When the run prompt supplies a `Workflow correlation ID`, include the exact marker `<!-- aeon-dispatch:<ID> -->` in every PR body you create. This is a machine-checked chain receipt: do not alter, omit, or place it only in the final response.
 
-> **${var}** — Selector `target[:arg] [--fix-issues]`, `target ∈ {watched, external, dormant}`. Empty or `watched` = build a feature on every watched repo (one PR each); `external:<owner/repo>` = one best enhancement on that external repo; `dormant` = revive the highest-scoring dormant repo. A leading `build:<owner/repo | issue-url | free-text instruction>` — the shape the Telegram "ship which opportunity?" force-reply sends via `repo-scanner`'s offer — is intercepted **first** and routed into the **external** branch on that target/instruction. `--fix-issues` biases the chosen branch toward fixing an open GitHub issue. Full grammar below.
+> **${var}** — Selector `target[:arg] [--fix-issues]`, `target ∈ {watched, external, dormant}`. Empty or `watched` = build a feature on every watched repo (one PR each); `external:<owner/repo>` = one best enhancement on that external repo; `dormant` = revive the highest-scoring dormant repo. `repair:<owner/repo#N>@<sha>` is the dev-loop's bounded repair pass: update only that open PR at that exact reviewed SHA using the consumed review findings. A leading `build:<owner/repo | issue-url | free-text instruction>` — the shape the Telegram "ship which opportunity?" force-reply sends via `repo-scanner`'s offer — is intercepted **first** and routed into the **external** branch on that target/instruction. `--fix-issues` biases the chosen branch toward fixing an open GitHub issue. Full grammar below.
 
 This skill merges three repo-work modes behind one selector so no capability is lost:
 
@@ -33,7 +33,20 @@ Today is ${today}. Read `memory/MEMORY.md` and the last 7 days of `memory/logs/`
 
 ## Selector
 
-**Telegram force-reply interception — check this FIRST, before parsing anything else.** If `${var}` starts with `build:`, it is the "ship which opportunity?" force-reply that `repo-scanner` offers (routed here as `feature` with `var="build:<the operator's reply>"`). Strip the prefix with `${var#build:}` and treat the remainder as an **external build target/instruction** — route it straight into the **external** branch (§B), reusing that branch's existing logic (do **not** run the watched or dormant branches for a `build:` value, and do not duplicate §B). Normalize the remainder into a §B target:
+**Dev-loop repair interception — check before every normal selector.** If `${var}`
+matches `repair:<owner/repo#N>@<40-character-lowercase-sha>`, this is the one
+bounded repair pass authorized by a verified review receipt. Fetch that exact PR
+and fail closed unless it is still open and its current head SHA exactly matches
+the supplied SHA. Read the injected `pr-review` chain context, and require at least
+one `[CRITICAL]` or `[ISSUE]` finding whose receipt matches the same target and SHA.
+Checkout the PR's existing head branch; do not create a new branch or PR. Address
+only those actionable findings, run the repository's relevant tests, commit and
+push to the existing PR branch. If the target, SHA, receipt, branch permissions,
+or requested fix is ambiguous, make no change and report the blocker. One repair
+invocation is one pass: never recursively dispatch another agent or claim that a
+subsequent review passed.
+
+**Telegram force-reply interception — check this immediately after the repair interception, before parsing normal selectors.** If `${var}` starts with `build:`, it is the "ship which opportunity?" force-reply that `repo-scanner` offers (routed here as `feature` with `var="build:<the operator's reply>"`). Strip the prefix with `${var#build:}` and treat the remainder as an **external build target/instruction** — route it straight into the **external** branch (§B), reusing that branch's existing logic (do **not** run the watched or dormant branches for a `build:` value, and do not duplicate §B). Normalize the remainder into a §B target:
 
 - `owner/repo` → run §B as if `external:owner/repo` (B2 "clone that repo").
 - an issue URL (`https://github.com/owner/repo/issues/N`) or `owner/repo#N` → run §B as if `external:owner/repo#N` (B2 "fetch that issue").

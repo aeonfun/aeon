@@ -139,6 +139,8 @@ jobs:
         run: bash scripts/tests/test_dev_loop_handoff.sh
       - name: dev-loop review contract tests
         run: bash scripts/tests/test_dev_loop_review.sh
+      - name: dev-loop bounded repair gate tests
+        run: bash scripts/tests/test_dev_loop_repair.sh
       - name: skill-scan calibration (fires on sinks, not benign syntax)
         run: bash scripts/tests/test_skill_scan_calibration.sh
       - name: audit-log redaction tests

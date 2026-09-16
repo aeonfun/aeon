@@ -199,7 +199,7 @@ chains:
   dev-loop:
     schedule: "workflow_dispatch"
     on_error: fail-fast
-    max_dispatches: 2
+    max_dispatches: 4
     steps:
       - { skill: feature, var: "$chain_target" }
       - { skill: pr-review, var: "$feature_pr", consume: [feature] }

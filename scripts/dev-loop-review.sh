@@ -3,7 +3,7 @@
 set -euo pipefail
 
 usage() {
-  echo "usage: $0 parse <owner/repo#pr> <40-char-head-sha> <review-body-file> | verify <owner/repo#pr> <40-char-head-sha>" >&2
+  echo "usage: $0 parse <owner/repo#pr> <40-char-head-sha> <review-body-file> | verify|body <owner/repo#pr> <40-char-head-sha>" >&2
   exit 64
 }
 
@@ -72,41 +72,55 @@ parse_body() {
     '{schema:1,target:$target,sha:$sha,verdict:$verdict,critical:$critical,issues:$issues,actionable:($critical > 0 or $issues > 0)}'
 }
 
+fetch_verified_body() {
+  local target="$1" sha="$2" repo number actor current_sha reviews count
+  validate_target "$target" || return $?
+  [[ "$sha" =~ ^[0-9a-f]{40}$ ]] || {
+    echo "dev-loop review: expected sha must be 40 lowercase hex characters" >&2
+    return 2
+  }
+  repo=${target%#*}
+  number=${target##*#}
+  actor=$(gh api user --jq .login)
+  [ -n "$actor" ] || { echo "dev-loop review: could not determine review actor" >&2; return 1; }
+  current_sha=$(gh api "repos/$repo/pulls/$number" --jq .head.sha)
+  [ "$current_sha" = "$sha" ] || {
+    echo "dev-loop review: PR head changed after review dispatch (expected $sha, found ${current_sha:-missing})" >&2
+    return 1
+  }
+  reviews=$(mktemp)
+  gh api "repos/$repo/pulls/$number/reviews" > "$reviews"
+  count=$(jq -r --arg actor "$actor" --arg sha "$sha" '
+    [.[] | select(.user.login == $actor and .commit_id == $sha) |
+     .body // empty | select(contains("<!-- aeon-review:"))] | length
+  ' "$reviews")
+  [ "$count" -eq 1 ] || {
+    echo "dev-loop review: expected exactly one receipt-bearing GitHub review, found $count" >&2
+    return 1
+  }
+  jq -r --arg actor "$actor" --arg sha "$sha" '
+    [.[] | select(.user.login == $actor and .commit_id == $sha) |
+     .body // empty | select(contains("<!-- aeon-review:"))][0]
+  ' "$reviews"
+}
+
 case "${1:-}" in
   parse)
     [ "$#" -eq 4 ] || usage
     parse_body "$2" "$3" "$4"
     ;;
-  verify)
+  verify|body)
     [ "$#" -eq 3 ] || usage
     target="$2"
     sha="$3"
-    validate_target "$target" || exit $?
-    repo=${target%#*}
-    number=${target##*#}
-    actor=$(gh api user --jq .login)
-    [ -n "$actor" ] || { echo "dev-loop review: could not determine review actor" >&2; exit 1; }
-    current_sha=$(gh api "repos/$repo/pulls/$number" --jq .head.sha)
-    [ "$current_sha" = "$sha" ] || {
-      echo "dev-loop review: PR head changed after review dispatch (expected $sha, found ${current_sha:-missing})" >&2
-      exit 1
-    }
-    reviews=$(mktemp)
     bodies=$(mktemp)
-    gh api "repos/$repo/pulls/$number/reviews" > "$reviews"
-    receipt_review_count=$(jq -r --arg actor "$actor" --arg sha "$sha" '
-      [.[] | select(.user.login == $actor and .commit_id == $sha) |
-       .body // empty | select(contains("<!-- aeon-review:"))] | length
-    ' "$reviews")
-    [ "$receipt_review_count" -eq 1 ] || {
-      echo "dev-loop review: expected exactly one receipt-bearing GitHub review, found $receipt_review_count" >&2
-      exit 1
-    }
-    jq -r --arg actor "$actor" --arg sha "$sha" '
-      [.[] | select(.user.login == $actor and .commit_id == $sha) |
-       .body // empty | select(contains("<!-- aeon-review:"))][0]
-    ' "$reviews" > "$bodies"
-    parse_body "$target" "$sha" "$bodies"
+    fetch_verified_body "$target" "$sha" > "$bodies"
+    parse_body "$target" "$sha" "$bodies" >/dev/null
+    if [ "$1" = body ]; then
+      cat "$bodies"
+    else
+      parse_body "$target" "$sha" "$bodies"
+    fi
     ;;
   *) usage ;;
 esac

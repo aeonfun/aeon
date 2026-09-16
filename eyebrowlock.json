@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-10T14:20:13.126277Z",
-  "generator": "eyebrow/0.4.2",
+  "generatedAt": "2026-09-16T14:30:26.134462Z",
+  "generator": "eyebrow/0.4.1",
   "artifacts": [
     {
       "id": "019b953b97c439b3",
@@ -117,7 +117,7 @@
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "b7bb683299f312fd4864d43b53260493c29b8a4618972632d2cfe6a438a86c3c"
+          "hash": "6dea253cf02dac684963b47c016e047508412fbf9f77638e034abaf0994ebb16"
         },
         {
           "path": "riva.md",
@@ -126,24 +126,6 @@
       ],
       "findings": [
         {
-          "ruleId": "RCE-PIPE-EXEC",
-          "severity": "critical",
-          "owasp": "ASK-01",
-          "file": "SKILL.md",
-          "line": 138,
-          "snippet": "network is open, but `pip install` / `curl | sh` / `tar` are **not** on the in-run",
-          "explanation": "downloads and executes remote code via a pipe to a shell"
-        },
-        {
-          "ruleId": "RCE-PIPE-EXEC",
-          "severity": "critical",
-          "owasp": "ASK-01",
-          "file": "SKILL.md",
-          "line": 152,
-          "snippet": "# open, but `pip install` / `curl | sh` / `tar` are NOT allow-listed — `python3 -m pip`,",
-          "explanation": "downloads and executes remote code via a pipe to a shell"
-        },
-        {
           "ruleId": "EXEC-PRIMITIVE",
           "severity": "medium",
           "owasp": "ASK-03",
@@ -151,18 +133,9 @@
           "line": 393,
           "snippet": "- `exec` / `spawn` / `system` / `eval` sinks + subprocess with string interpolation (RCE)",
           "explanation": "uses a process-execution primitive"
-        },
-        {
-          "ruleId": "RCE-PIPE-EXEC",
-          "severity": "critical",
-          "owasp": "ASK-01",
-          "file": "SKILL.md",
-          "line": 1127,
-          "snippet": "1. **Install** — the binaries (`semgrep`, `trufflehog`, `osv-scanner`, `slither`) are **not pre-installed**. Stage the…",
-          "explanation": "downloads and executes remote code via a pipe to a shell"
         }
       ],
-      "contentHash": "sha256-30e4dd34d44cd10c648cccf99318d6dc50f14ea4f4278ea68fc1a87991b85e3d",
+      "contentHash": "sha256-450aa19196779d008ae6d8dc3af213f4812737381353bbdf36594620ec491eb2",
       "discoveredFrom": "skills/vuln-scanner/SKILL.md"
     },
     {
@@ -401,7 +374,7 @@
         },
         {
           "path": "project/package-lock.json",
-          "hash": "c491727498df4bfb43cf230d10070fa84a339c881258b1cfb074555a3ad60685"
+          "hash": "4663beda1c811b582553473aa10dc662351eeced67d372ce127ee89c2d5f3724"
         },
         {
           "path": "project/package.json",
@@ -455,7 +428,7 @@
           "explanation": "contains consent-bypass or prompt-injection language"
         }
       ],
-      "contentHash": "sha256-951f973d8b89f0fcf8b5ca0022e189451f3a2a68f38e59df7767f1ce8110c7f2",
+      "contentHash": "sha256-096415b65e8a55a7a2a7ffa328ffe4ac3060e7645555f70722fdcf9a6ea11f3f",
       "discoveredFrom": "skills/remotion/SKILL.md"
     },
     {
@@ -644,7 +617,7 @@
           "owasp": "ASK-06",
           "file": "run.mjs",
           "line": 10,
-          "snippet": ".flatMap((key) => process.env[key] === undefined ? [] : [[key, process.env[key]]]),",
+          "snippet": ".flatMap((key) =\u003e process.env[key] === undefined ? [] : [[key, process.env[key]]]),",
           "explanation": "references sensitive credential or secret paths"
         }
       ],
@@ -829,6 +802,77 @@
       "discoveredFrom": "skills/inbox-triage/SKILL.md"
     },
     {
+      "id": "568fc161dc3c135a",
+      "tool": "aeon",
+      "scope": "project:.",
+      "type": "skill",
+      "name": "submit-hook",
+      "source": {
+        "kind": "local",
+        "ref": "skills/submit-hook"
+      },
+      "capabilities": {},
+      "files": [
+        {
+          "path": "SKILL.md",
+          "hash": "669cda6057ecfa66cdb6b61c75e6cecb1311777866eea690b04746e5d10fde93"
+        },
+        {
+          "path": "submit-univ4.py",
+          "hash": "163c3e1d7e0347da784a8b0c5ba3a13edf971d9dc45259e6a00fa0dd273bbe5d"
+        }
+      ],
+      "findings": [
+        {
+          "ruleId": "EXEC-PRIMITIVE",
+          "severity": "medium",
+          "owasp": "ASK-03",
+          "file": "submit-univ4.py",
+          "line": 26,
+          "snippet": "import subprocess",
+          "explanation": "uses a process-execution primitive"
+        },
+        {
+          "ruleId": "EXEC-PRIMITIVE",
+          "severity": "medium",
+          "owasp": "ASK-03",
+          "file": "submit-univ4.py",
+          "line": 36,
+          "snippet": "return subprocess.run(",
+          "explanation": "uses a process-execution primitive"
+        },
+        {
+          "ruleId": "EXEC-PRIMITIVE",
+          "severity": "medium",
+          "owasp": "ASK-03",
+          "file": "submit-univ4.py",
+          "line": 38,
+          "snippet": "stdout=subprocess.PIPE if capture else None,",
+          "explanation": "uses a process-execution primitive"
+        },
+        {
+          "ruleId": "EXEC-PRIMITIVE",
+          "severity": "medium",
+          "owasp": "ASK-03",
+          "file": "submit-univ4.py",
+          "line": 39,
+          "snippet": "stderr=subprocess.STDOUT if capture else None,",
+          "explanation": "uses a process-execution primitive"
+        },
+        {
+          "ruleId": "EXEC-PRIMITIVE",
+          "severity": "medium",
+          "owasp": "ASK-03",
+          "file": "submit-univ4.py",
+          "line": 110,
+          "snippet": "except subprocess.CalledProcessError as e:",
+          "explanation": "uses a process-execution primitive"
+        }
+      ],
+      "contentHash": "sha256-9d35e9170df16a98c29da65b890841e5e8d56d914efece3574d894a1b526e284",
+      "discoveredFrom": "skills/submit-hook/SKILL.md"
+    },
+    {
       "id": "5737063e000eb258",
       "tool": "aeon",
       "scope": "project:.",
@@ -846,10 +890,10 @@
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "b9a7d47326648ec745a35419c2e0b67521d58020fb1eef4959f58df4be09f5f3"
+          "hash": "b71672ed11a7624534585a03f1b359acc13befba0d4e3d79de75002e8034b3fd"
         }
       ],
-      "contentHash": "sha256-3ffc12f919716a0035c0594849f176a844ba4b56ba0f71d6bf1152a2f1aaaaea",
+      "contentHash": "sha256-e0993ed63c3067cf8496e18eb2e2d70882ac1ee3cc37f6bbcb770fcb295cf415",
       "discoveredFrom": "skills/feature/SKILL.md"
     },
     {
@@ -972,10 +1016,10 @@
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "cb3cf34c2d9df22e91f4a1fd68fe05e31939093b1abce760dd20b3af00417899"
+          "hash": "2b0991c38bf51e2ef602edaf99afcb9b4ec5b0fcaa680bd1d0dd710bd0e2393f"
         }
       ],
-      "contentHash": "sha256-01a65e1053807557f7ae0cdc1d4eaadb85ae1aeab32fc8fd714db1f8b834c035",
+      "contentHash": "sha256-9560813e46d3be92b7d962ec29f0db681fcd3403bbfcf7fc3a25ba75d43f610f",
       "discoveredFrom": "skills/changelog/SKILL.md"
     },
     {
@@ -1587,7 +1631,7 @@
           "owasp": "ASK-06",
           "file": "hook-deploy.sh",
           "line": 213,
-          "snippet": "[ -f hook.env ] && . ./hook.env",
+          "snippet": "[ -f hook.env ] \u0026\u0026 . ./hook.env",
           "explanation": "references sensitive credential or secret paths"
         },
         {
@@ -1609,7 +1653,7 @@
           "explanation": "references sensitive credential or secret paths"
         }
       ],
-      "contentHash": "sha256-09733fd6e11569ea9422aecc140265aafc9b7c9bc4a626869edf3a3d69b3cf53",
+      "contentHash": "sha256-a54ca0b83d5713fd0b17d40886ff87c5b800d7b5f668b2aa3fb365536ab86855",
       "discoveredFrom": "skills/deploy-uni-hook/SKILL.md"
     },
     {
@@ -1930,10 +1974,10 @@
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "ff2d1681a378aee7d312a81db58968bd2db2f87d2003ecbaa0b2675a0d3415db"
+          "hash": "0b4cb0f9817bfdca9d09c08bfb0faa413832c6b10ca728fd35ce565d005f0eaf"
         }
       ],
-      "contentHash": "sha256-6066b1ce857a45e03ed0b13260800438555b5d941980c7ed47fd5e2071c9c3ff",
+      "contentHash": "sha256-df865d28e52b7b8f71bc71ef69d5005ff1a46b1f0d165bc0bc2bcbaf2c7e7d36",
       "discoveredFrom": "skills/competitor-monitor/SKILL.md"
     },
     {
@@ -2167,7 +2211,7 @@
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "ee643687f351dbd256b18477706860852689592786aeef358b74f04fca2310c8"
+          "hash": "2f3d9c010f7925a8fcdfee593a05979e3ffc6af060a47b7c6de72429b7893f54"
         },
         {
           "path": "references/ci.md",
@@ -2179,11 +2223,11 @@
         },
         {
           "path": "references/layout.md",
-          "hash": "087f9a34009dfa38dd8745c36c1d0e2e79a293f2f156fea0a9d343531d4e3373"
+          "hash": "630cc41e820f4815717c5175d37803f4aea0ef2af38c790aacc59fb0a332f5c9"
         },
         {
           "path": "references/mcp.md",
-          "hash": "58c74b3a95abaaf1328568b873892a014a8f802f2d0e732acaa1ca3935d72875"
+          "hash": "085a6d0b6a4d6aab7189fa87c3b6f4ecd6dbf021708641817c554aaa43b97085"
         },
         {
           "path": "references/secrets.md",
@@ -2191,14 +2235,14 @@
         },
         {
           "path": "references/skill-anatomy.md",
-          "hash": "009f52527d7407ad8b388209c573fac29cd07190d99a2ea52b0bbc4512f60d3d"
+          "hash": "c9518f55a99fca7ed06cb5deb68230f1a12add7abacd99f974b85978dbdd5f8a"
         },
         {
           "path": "scripts/mine-history.mjs",
           "hash": "0edc7445542a21cb5518e813a6ae462a1d469636601a799efc1bec86b4058c5a"
         }
       ],
-      "contentHash": "sha256-4e9c576b6d6c7cad1e17df815ac9519e4af1dd7a827e3b06a5314675ca1478ce",
+      "contentHash": "sha256-8ad68a29a5b043e9c5882bf11a89bc7d750b96b0055b1de43788c459c0d573ea",
       "discoveredFrom": ".claude/skills/aeon/SKILL.md"
     },
     {
@@ -2317,6 +2361,26 @@
       ],
       "contentHash": "sha256-7ac53da2da887244206f23174dc9641cb93b02eec0d5f88bf746de17ada84c77",
       "discoveredFrom": "skills/monitor-polymarket/SKILL.md"
+    },
+    {
+      "id": "e60d46343d70fb78",
+      "tool": "aeon",
+      "scope": "project:.",
+      "type": "skill",
+      "name": "miroshark-matchday",
+      "source": {
+        "kind": "local",
+        "ref": "skills/miroshark-matchday"
+      },
+      "capabilities": {},
+      "files": [
+        {
+          "path": "SKILL.md",
+          "hash": "dc6879cbb6857f415d1af7b222c70b7e7bcfd9461ba28b129acb4bf339a4a498"
+        }
+      ],
+      "contentHash": "sha256-1d26b76f471aa797941893c968a1dd87574248bb227e011761b88670df48ad89",
+      "discoveredFrom": "skills/miroshark-matchday/SKILL.md"
     },
     {
       "id": "ecab2cfa234086b7",
@@ -2483,7 +2547,7 @@
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "40852bbefff47692506db1b4bb38c655aef6b57b2d3de37b3b0fdf8ba1eb272a"
+          "hash": "3f99975cadb2163512661a10eebc6b2890ac5acb1f67b8e846e4838d8b48cde5"
         }
       ],
       "findings": [
@@ -2497,99 +2561,8 @@
           "explanation": "references sensitive credential or secret paths"
         }
       ],
-      "contentHash": "sha256-a007b63e6ed5255fd62d39ed78dfa3bad9a20772f914e8d63115f4fadd508198",
+      "contentHash": "sha256-cbc52e97f6c5391dadb47d3b61ee88090fd47ad0637fab1c1a25c82c9bd7b9ed",
       "discoveredFrom": "skills/aeon-update/SKILL.md"
-    },
-    {
-      "id": "568fc161dc3c135a",
-      "tool": "aeon",
-      "scope": "project:.",
-      "type": "skill",
-      "name": "submit-hook",
-      "source": {
-        "kind": "local",
-        "ref": "skills/submit-hook"
-      },
-      "capabilities": {},
-      "files": [
-        {
-          "path": "SKILL.md",
-          "hash": "669cda6057ecfa66cdb6b61c75e6cecb1311777866eea690b04746e5d10fde93"
-        },
-        {
-          "path": "submit-univ4.py",
-          "hash": "163c3e1d7e0347da784a8b0c5ba3a13edf971d9dc45259e6a00fa0dd273bbe5d"
-        }
-      ],
-      "findings": [
-        {
-          "ruleId": "EXEC-PRIMITIVE",
-          "severity": "medium",
-          "owasp": "ASK-03",
-          "file": "submit-univ4.py",
-          "line": 26,
-          "snippet": "import subprocess",
-          "explanation": "uses a process-execution primitive"
-        },
-        {
-          "ruleId": "EXEC-PRIMITIVE",
-          "severity": "medium",
-          "owasp": "ASK-03",
-          "file": "submit-univ4.py",
-          "line": 36,
-          "snippet": "return subprocess.run(",
-          "explanation": "uses a process-execution primitive"
-        },
-        {
-          "ruleId": "EXEC-PRIMITIVE",
-          "severity": "medium",
-          "owasp": "ASK-03",
-          "file": "submit-univ4.py",
-          "line": 38,
-          "snippet": "stdout=subprocess.PIPE if capture else None,",
-          "explanation": "uses a process-execution primitive"
-        },
-        {
-          "ruleId": "EXEC-PRIMITIVE",
-          "severity": "medium",
-          "owasp": "ASK-03",
-          "file": "submit-univ4.py",
-          "line": 39,
-          "snippet": "stderr=subprocess.STDOUT if capture else None,",
-          "explanation": "uses a process-execution primitive"
-        },
-        {
-          "ruleId": "EXEC-PRIMITIVE",
-          "severity": "medium",
-          "owasp": "ASK-03",
-          "file": "submit-univ4.py",
-          "line": 110,
-          "snippet": "except subprocess.CalledProcessError as e:",
-          "explanation": "uses a process-execution primitive"
-        }
-      ],
-      "contentHash": "sha256-9d35e9170df16a98c29da65b890841e5e8d56d914efece3574d894a1b526e284",
-      "discoveredFrom": "skills/submit-hook/SKILL.md"
-    },
-    {
-      "id": "e60d46343d70fb78",
-      "tool": "aeon",
-      "scope": "project:.",
-      "type": "skill",
-      "name": "miroshark-matchday",
-      "source": {
-        "kind": "local",
-        "ref": "skills/miroshark-matchday"
-      },
-      "capabilities": {},
-      "files": [
-        {
-          "path": "SKILL.md",
-          "hash": "8320551dac0ce3b6cd70aafc72c8a2dc9faccc982d6a00066524363ce6c958c2"
-        }
-      ],
-      "contentHash": "sha256-81fd4ca951c00c422fcd8535f67e27f5d1b59cc80850c84753325202691f4b05",
-      "discoveredFrom": "skills/miroshark-matchday/SKILL.md"
     }
   ]
 }

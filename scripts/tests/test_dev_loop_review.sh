@@ -92,6 +92,9 @@ STUB
 chmod +x "$TMP/bin/gh"
 jq -e '.verdict == "discussion-needed" and .actionable == true' \
   <<<"$(PATH="$TMP/bin:$PATH" bash "$CHECK" verify "$TARGET" "$SHA")" >/dev/null
+PATH="$TMP/bin:$PATH" bash "$CHECK" body "$TARGET" "$SHA" > "$TMP/verified-body.md"
+grep -Fq -- '- [ISSUE] src/cache.ts:19 — stale entries survive invalidation.' "$TMP/verified-body.md"
+grep -Fq '<!-- aeon-review:{"schema":1,"target":"acme/demo#42"' "$TMP/verified-body.md"
 
 if TEST_HEAD_SHA=ffffffffffffffffffffffffffffffffffffffff \
   PATH="$TMP/bin:$PATH" bash "$CHECK" verify "$TARGET" "$SHA"; then
