@@ -1726,6 +1726,46 @@
       "discoveredFrom": "skills/reply-maker/SKILL.md"
     },
     {
+      "id": "a5d57a2363a5378d",
+      "tool": "aeon",
+      "scope": "project:.",
+      "type": "skill",
+      "name": "sc-audit",
+      "source": {
+        "kind": "local",
+        "ref": "skills/sc-audit"
+      },
+      "capabilities": {
+        "network": [
+          "registry.npmjs.org"
+        ]
+      },
+      "files": [
+        {
+          "path": "SKILL.md",
+          "hash": "c21b3df3582cfab66f5f24895318ac8dcf7b194669d3b0a1fea8b05c025f3d81"
+        },
+        {
+          "path": "fixtures/README.md",
+          "hash": "e85fcce9c2d32d778e0818ade64a467daedf29b5c9ce8e889c4b2bde759974b3"
+        },
+        {
+          "path": "fixtures/vault/foundry.toml",
+          "hash": "1cc646035ef05066e19d13738fd97494c17506339a62438d7e8da07beb9d1b78"
+        },
+        {
+          "path": "fixtures/vault/src/Vault.sol",
+          "hash": "eae6b5d9a6524c603714aa9b117ab110208ae1d55e2ab539274fa807d5ff118f"
+        },
+        {
+          "path": "references/hook-checklist.md",
+          "hash": "2300653056e64107c579d22d52f2fcfb5ecbd7f5996b8fc636747d5e6e78ba41"
+        }
+      ],
+      "contentHash": "sha256-150abc4feac75df5f6062fc6655826505fc7763dbca438665aefafe1b8a2e4e1",
+      "discoveredFrom": "skills/sc-audit/SKILL.md"
+    },
+    {
       "id": "b097177e9f39efa5",
       "tool": "aeon",
       "scope": "project:.",

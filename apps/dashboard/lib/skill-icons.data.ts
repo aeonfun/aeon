@@ -60,6 +60,7 @@ export const SKILL_ICONS: Record<string, string> = {
   "reply-maker": "<path d='M9 17l-5-5 5-5'/><path d='M20 18v-2a4 4 0 0 0-4-4H4'/>",
   "rightstack": "<path d='M12 3l8 4.5-8 4.5-8-4.5z'/><path d='M4 12l8 4.5 8-4.5'/><path d='M4 16.5l8 4.5 8-4.5'/>",
   "robinhood-mcp": "<path d='M12.7 19a2 2 0 0 0 1.4-.6l6.2-6.2a6 6 0 0 0-8.5-8.5L5.6 9.9A2 2 0 0 0 5 11.3V18a1 1 0 0 0 1 1z'/><path d='M16 8 2 22'/><path d='M17.5 15H9'/>",
+  "sc-audit": "<path d='M12 2 5 5v6c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V5z'/><path d='M13 10a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0'/><path d='M12.4 11.8 15 14.4'/>",
   "schedule-ads": "<path d='M3 11l18-5v12L3 14z'/><path d='M11.6 16.8a3 3 0 1 1-5.8-1.6'/>",
   "search-skill": "<circle cx='11' cy='11' r='8'/><path d='M21 21l-4.3-4.3'/>",
   "self-improve": "<path d='M3 12a9 9 0 0 1 9-9 9.8 9.8 0 0 1 6.7 2.7L21 8'/><path d='M21 3v5h-5'/><path d='M21 12a9 9 0 0 1-9 9 9.8 9.8 0 0 1-6.7-2.7L3 16'/><path d='M8 16H3v5'/>",
