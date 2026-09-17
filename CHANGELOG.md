@@ -11,6 +11,23 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Added
 
+- **New `sc-audit` skill (Dev & Code).** A deep smart-contract audit skill: point it at a
+  Solidity GitHub repo, a live on-chain address (`<chain>:0x...`, with verified-source fetch
+  plus proxy/owner/funds-at-risk context), or a bundled fixture. It models the protocol
+  invariants and trust boundaries first, runs Slither best-effort, then a bounded agentic pass
+  that hunts a path breaking each invariant, triages, adversarially verifies, proves survivors
+  with a fuzzer (Echidna/Medusa), and routes each finding through `vuln-scanner`'s shared
+  responsible-disclosure machinery. The contract arm split out of `vuln-scanner`; on-chain
+  findings are operator-gated. Catalog 81 to 82. (#1072)
+- **`dev-loop` gains one verified repair pass.** The Aeon Engineer self-test chain can now fix
+  an actionable review finding, re-verify checks, and re-review before recording, instead of
+  stopping at a human handoff. The repair dispatch is authorized only by a fresh review receipt
+  bound to the PR's exact head SHA and fails closed on any mismatch; it runs at most once and
+  never loops. (#1070)
+- **`miroshark-matchday` vertical 9:16 render path.** The local video step now also renders each
+  sim to a `<out>-9x16.mp4` short-form cut (Shorts/TikTok/Reels) after the 16:9 batch, a reflow
+  rather than a center-crop; a failed vertical render is reported and never blocks the 16:9
+  delivery or re-runs anything paid. (#1062)
 - **New `miroshark-matchday` skill (Crypto & Markets).** A Friday bulk football-matchday
   workflow on MiroShark: it builds one scenario per major league (Premier League, Serie A,
   La Liga) from live fixtures, pays $1 USDC per sim via x402 through the Finance District
@@ -43,6 +60,18 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Changed
 
+- **`vuln-scanner` disclosure routing hardened.** A new SECURITY.md-first intake step resolves
+  the repo's designated channel (vendor PSIRT / bug-bounty portal, then security email, then an
+  explicit GitHub PVR, including the org-level `{owner}/.github` fallback) before the finding-type
+  matrix, so a code flaw is no longer filed on a GitHub PVR queue a vendor never reads. A PVR
+  preflight now reads the HTTP status code, so a 404 (private / missing / renamed) no longer
+  misreads as enabled. (#1073)
+- **Aeon PR watermark scoped to self-test runs.** The "Built by Aeon" / "Built autonomously by
+  Aeon" PR footer is now gated on `$AEON_DISPATCH_ID`, set only when the dev-loop chain
+  dispatches a run, so real external contributions ship without AI-attribution branding. (#1069)
+- **Maintenance.** Always-on CI Gate job added for branch protection (#1065); three
+  `curl`-piped-to-shell mentions in `vuln-scanner`'s prose rephrased to clear the eyebrow RCE
+  gate with no behavior change (#1068).
 - **`competitor-monitor` gains opt-in table-row diffing for list pages.** A watch-list
   entry ending in `[rows]` opts that page in, so its snapshot also records every table row
   as a normalised `cell | cell` string and the diff emits `rows_added` / `rows_removed`
@@ -57,6 +86,19 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Fixed
 
+- **Reflected XSS in the dashboard MCP OAuth callback (GHSA-gh95-xx4q-qch8).** `GET
+  /api/mcp-auth/callback` interpolated attacker-controlled `error` / `error_description` query
+  params into its response HTML unescaped; `page()` now HTML-escapes title and detail for every
+  caller. Same-origin script could otherwise reach the dashboard's loopback-gated `/api/*`
+  surface (write secrets, run or install skills). (#1066)
+- **Riva shadow-mode isolation gap on the MCP dispatch path.** The shadow/compare selector that
+  forces read-only mode and strips disclosure credentials lived only in the workflow's
+  `resolve-riva-capabilities.sh`, so dispatching a shadow run through `apps/mcp-server` got full
+  write tools and every live credential. The check moves into `scripts/skill_mode.sh` as one
+  enforcement point both paths consult. (#1067)
+- **Broken partner avatars on aeon.fun/ecosystem.** Refreshed the HivemindOS X avatar (old pinned
+  URL 404'd) and removed the dead Spoon row (handle gone), so neither renders a broken logo.
+  (#1071)
 - **Read-only skills keep `memory/` and `output/` writable in the sandbox.** The read-only
   harness sandbox mounts the tree read-only except the state dirs, so a read-only skill can
   still persist its `memory/` and `output/` between runs. (#1042)

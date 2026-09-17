@@ -74,8 +74,8 @@ Pack key = category. Six packs, no empties; three are shown by default.
 | **Core** (`core`) | Fleet coordination, self-configuration, liveness, memory + reporting. Shown by default; not removable. | 12 |
 | **Evolution** (`evolution`) | The self-improvement loop — authors, evolves, installs, and heals its own skills. Shown by default. | 9 |
 | **Basics** (`basics`) | Simple, immediately-runnable skills — one approachable entry per area. Shown by default. | 18 |
-| **Dev & Code** (`dev`) | PR/issue triage, review, merges, changelogs, repo monitoring, security scanning, app deploys, cloud-cost analysis. | 12 |
-| **Crypto & Markets** (`crypto`) | Token/DeFi/prediction-market monitoring, narrative tracking, on-chain forensics + automation, compute reselling, Uniswap v4 hook deploys. | 17 |
+| **Dev & Code** (`dev`) | PR/issue triage, review, merges, changelogs, repo monitoring, security scanning, app deploys, cloud-cost analysis. | 13 |
+| **Crypto & Markets** (`crypto`) | Token/DeFi/prediction-market monitoring, narrative tracking, on-chain forensics + automation, compute reselling, Uniswap v4 hook deploys. | 19 |
 | **Productivity** (`productivity`) | Personal + social ops: routines, ideas, retrospectives, mentions, replies, ads, email, competitor watch, media + video generation. | 11 |
 
 ### Core + Evolution + Basics — what a fresh fork shows
