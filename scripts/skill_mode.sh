@@ -96,6 +96,13 @@ WRITE_TOOLS="$WRITE_TOOLS,Bash(./scripts/vuln-poc-gate.sh:*)"
 # builds/simulates/broadcasts by bare name. `./hook-deploy.sh` hides the deployer key
 # from the command line (secretcurl pattern). Without this grant the invocation is denied.
 WRITE_TOOLS="$WRITE_TOOLS,Bash(forge:*),Bash(cast:*),Bash(./hook-deploy.sh:*)"
+# sc-audit's optional fuzz arm (SKILL.md S6.5) bare-names solc-select (pick the target
+# pragma), crytic-compile (drives the build for slither/echidna/medusa), and the fuzzers
+# themselves - medusa is invoked bare (`medusa init`), echidna runs under the timeout
+# wrapper (already granted). Staged by scripts/stage-sc-audit.sh (the sandbox denies
+# in-run binary installs). slither/forge/cast/timeout are already granted above. Without
+# these the fuzz arm degrades to skipped and sc-audit falls back to the agentic pass.
+WRITE_TOOLS="$WRITE_TOOLS,Bash(solc-select:*),Bash(crytic-compile:*),Bash(echidna:*),Bash(medusa:*)"
 
 resolve_mode() {
   # var (the runtime selector, e.g. SKILL_VAR from aeon.yml/mcp-server) is
