@@ -73,6 +73,8 @@ if [ "${RH_MODE:-write}" = "read-only" ]; then
   ARGS+=(--sandbox danger-full-access)
 else
   ARGS+=(--sandbox workspace-write -c 'sandbox_workspace_write.network_access=true')
+  # aeon stages notifications outside the checkout so post-run delivery survives.
+  [ -n "${AEON_PENDING_DIR:-}" ] && ARGS+=(--add-dir "$AEON_PENDING_DIR")
 fi
 ARGS+=(-c 'approval_policy="never"')
 ARGS+=(-c 'project_doc_fallback_filenames=["CLAUDE.md"]')

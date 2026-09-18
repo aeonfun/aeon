@@ -1904,7 +1904,8 @@ jobs:
         # this step's `git add -A` covers write-mode skills too and running it
         # unconditionally would risk committing a partial/broken mid-edit state
         # from a genuinely failed write-mode run.)
-        if: steps.work.outputs.mode != ''
+        # proof runs must not move the immutable branch head they attest.
+        if: steps.work.outputs.mode != '' && steps.skill.outputs.name != 'create-prove' && !startsWith(inputs.dispatch_id, 'prove-')
         env:
           STATE_BACKEND: ${{ vars.STATE_BACKEND }}
         run: |

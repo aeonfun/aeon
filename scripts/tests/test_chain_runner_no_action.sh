@@ -20,14 +20,15 @@ awk '
   on && /^          STATE_FILE="memory\/cron-state\.json"$/ { exit }
   on { print }
 ' "$WORKFLOW" | sed 's/^          //' > "$TMP/guard.sh"
-grep -q 'invalid-dispatch' "$TMP/guard.sh" && grep -q 'no-action' "$TMP/guard.sh" \
+grep -q 'invalid-dispatch' "$TMP/guard.sh" && grep -q 'no-action' "$TMP/guard.sh" && grep -q 'proof-missing' "$TMP/guard.sh" \
   || { echo "FAIL: cron-state extraction anchor drifted" >&2; exit 1; }
 printf 'echo REACHED_STATE_WRITE\n' >> "$TMP/guard.sh"
 
 run_status() {
-  local failed="$1" no_action="$2" env_file="$TMP/env"
+  local failed="$1" no_action="$2" proof_missing="${3:-false}" env_file="$TMP/env"
   : > "$env_file"
   CHAIN="dev-loop" CHAIN_FAILED="$failed" CHAIN_NO_ACTION="$no_action" \
+    CHAIN_PROOF_MISSING="$proof_missing" \
     GITHUB_ENV="$env_file" bash "$TMP/status.sh"
   STATUS_RESULT="$(sed -n 's/^CHAIN_STATUS=//p' "$env_file" | tail -1)"
 }
@@ -55,6 +56,14 @@ out=$(run_guard "$STATUS_RESULT")
 echo "$out" | grep -q 'REACHED_STATE_WRITE' \
   && pass "failure still reaches cron-state write" \
   || bad "failure did not reach cron-state write"
+
+run_status false false true
+[ "$STATUS_RESULT" = "proof-missing" ] && pass "missing proof emits its own status" \
+  || bad "missing proof emitted $STATUS_RESULT"
+out=$(run_guard "$STATUS_RESULT")
+echo "$out" | grep -q 'REACHED_STATE_WRITE' \
+  && bad "proof-missing reached cron-state write" \
+  || pass "proof-missing skips cron-state reliability write"
 
 run_status false false
 [ "$STATUS_RESULT" = "success" ] && pass "success status is unchanged" \

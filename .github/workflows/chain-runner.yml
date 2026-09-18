@@ -264,6 +264,7 @@ jobs:
           echo "Chain has $TOTAL_STEPS step(s)"
           CHAIN_FAILED=false
           CHAIN_NO_ACTION=false
+          CHAIN_PROOF_MISSING=false
           FEATURE_PR=""
           FEATURE_OPEN_BEFORE=""
           FEATURE_DISPATCH_ID=""
@@ -272,6 +273,8 @@ jobs:
           INITIAL_REVIEW_RUN_ID=""
           REPAIR_RUN_ID=""
           REREVIEW_RUN_ID=""
+          PROOF_RUN_ID=""
+          PROOF_RESULT=""
 
           # --- Execute steps sequentially ---
           for ((i=0; i<TOTAL_STEPS; i++)); do
@@ -559,8 +562,38 @@ jobs:
             fi
           fi
 
+          # a clean review proves only the diff, so success also requires a changed
+          # skill to execute at the immutable pr head and post a sha-bound receipt.
+          if [ "$CHAIN" = "dev-loop" ] && [ "$CHAIN_FAILED" = "false" ] &&
+             [ "$CHAIN_NO_ACTION" = "false" ]; then
+            PROOF_SHA="${REPAIRED_SHA:-$REVIEW_SHA}"
+            PROOF_VAR="$FEATURE_PR@$PROOF_SHA"
+            DISPATCH_COUNT=$((DISPATCH_COUNT + 1))
+            if [ "$DISPATCH_COUNT" -gt "$MAX_DISPATCHES" ]; then
+              echo "::error::dev-loop cannot dispatch behavioral proof: budget $MAX_DISPATCHES exhausted"
+              CHAIN_PROOF_MISSING=true
+            else
+              PROOF_OUTPUT=$(dispatch_skill create-prove "$PROOF_VAR")
+              PROOF_RUN_ID=$(echo "$PROOF_OUTPUT" | tail -1)
+              if [ -z "$PROOF_RUN_ID" ] || ! wait_for_runs "$PROOF_RUN_ID"; then
+                echo "::error::dev-loop live behavioral proof run failed or produced no run ID"
+                CHAIN_PROOF_MISSING=true
+              fi
+            fi
+
+            if [ "$CHAIN_PROOF_MISSING" = "false" ]; then
+              PROOF_RESULT=$(bash scripts/dev-loop-proof.sh verify "$FEATURE_PR" "$PROOF_SHA") || {
+                echo "::error::dev-loop has no verified live behavioral proof for $FEATURE_PR@$PROOF_SHA"
+                CHAIN_PROOF_MISSING=true
+              }
+              if [ "$CHAIN_PROOF_MISSING" = "false" ]; then
+                echo "  Verified live behavioral proof: $PROOF_RESULT"
+              fi
+            fi
+          fi
+
           if [ "$CHAIN" = "dev-loop" ]; then
-            echo "dev-loop evidence: pr=${FEATURE_PR:-none} initial_review_run=${INITIAL_REVIEW_RUN_ID:-none} repair_run=${REPAIR_RUN_ID:-none} rereview_run=${REREVIEW_RUN_ID:-none}"
+            echo "dev-loop evidence: pr=${FEATURE_PR:-none} initial_review_run=${INITIAL_REVIEW_RUN_ID:-none} repair_run=${REPAIR_RUN_ID:-none} rereview_run=${REREVIEW_RUN_ID:-none} proof_run=${PROOF_RUN_ID:-none}"
           fi
 
           # --- Final status ---
@@ -568,6 +601,10 @@ jobs:
           if [ "$CHAIN_FAILED" = "true" ]; then
             echo "::error::Chain '$CHAIN' completed with failures"
             echo "CHAIN_STATUS=failed" >> "$GITHUB_ENV"
+            exit 1
+          elif [ "$CHAIN_PROOF_MISSING" = "true" ]; then
+            echo "::error::Chain '$CHAIN' completed review but has no verified live behavioral proof"
+            echo "CHAIN_STATUS=proof-missing" >> "$GITHUB_ENV"
             exit 1
           elif [ "$CHAIN_NO_ACTION" = "true" ]; then
             echo "Chain '$CHAIN' completed without a review: feature produced no verified PR"
@@ -593,14 +630,19 @@ jobs:
           NOW_ISO=$(date -u +%FT%TZ)
           STATUS="${CHAIN_STATUS:-failed}"
 
-          # Invalid dispatch never started a real run; no-action completed but
-          # produced no verified PR. Neither is functional success or failure,
-          # so exclude both from the lifetime ratio skill-health reads.
-          if [ "$STATUS" = "invalid-dispatch" ] || [ "$STATUS" = "no-action" ]; then
+          # Invalid dispatch never started a real run, no-action completed but
+          # produced no verified PR, and proof-missing means create-prove's narrow
+          # v1 scope (single skills/<slug>/SKILL.md PRs only) declined an
+          # out-of-scope but otherwise well-reviewed PR. None of the three is
+          # functional success or failure, so exclude all from the lifetime ratio
+          # skill-health reads.
+          if [ "$STATUS" = "invalid-dispatch" ] || [ "$STATUS" = "no-action" ] || [ "$STATUS" = "proof-missing" ]; then
             if [ "$STATUS" = "invalid-dispatch" ]; then
               echo "Chain '$CHAIN' was rejected before any skill ran (missing/invalid target) — not recording as a functional failure"
-            else
+            elif [ "$STATUS" = "no-action" ]; then
               echo "Chain '$CHAIN' completed with no verified PR — not recording as a functional success or failure"
+            else
+              echo "Chain '$CHAIN' completed review but create-prove declined an out-of-scope target — not recording as a functional failure"
             fi
             exit 0
           fi

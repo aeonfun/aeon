@@ -84,8 +84,8 @@ grep -Fq 'stopped after one repair pass: re-review remains actionable' "$WORKFLO
 grep -A4 'if \[ "$CHAIN_FAILED" = "true" \]; then' "$WORKFLOW" | grep -Fq 'exit 1'
 grep -Fq 'dev-loop-review.sh body "$FEATURE_PR" "$REVIEW_SHA"' "$WORKFLOW"
 grep -Fq 'repair:<owner/repo#N>@<40-character-lowercase-sha>' "$FEATURE"
-if ! sed -n '/^  dev-loop:/,/^  # routine:/p' "$CONFIG" | grep -Fq 'max_dispatches: 4'; then
-  echo 'dev-loop dispatch budget is not exactly four (feature, review, repair, re-review)' >&2
+if ! sed -n '/^  dev-loop:/,/^  # routine:/p' "$CONFIG" | grep -Fq 'max_dispatches: 5'; then
+  echo 'dev-loop dispatch budget is not exactly five (feature, review, repair, re-review, proof)' >&2
   exit 1
 fi
 
