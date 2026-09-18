@@ -50,6 +50,8 @@ jobs:
         run: bash scripts/tests/test_notify.sh
       - name: telegram router tests
         run: bash scripts/tests/test_telegram_route.sh
+      - name: idea-pipeline dev-loop offer contract tests
+        run: bash scripts/tests/test_idea_pipeline_dev_loop_offer.sh
       - name: capability mode tests
         run: bash scripts/tests/test_skill_mode.sh
       - name: vuln-scanner status contract tests
