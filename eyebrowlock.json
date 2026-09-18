@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-16T14:30:26.134462Z",
+  "generatedAt": "2026-09-18T14:52:45.027344Z",
   "generator": "eyebrow/0.4.1",
   "artifacts": [
     {
@@ -117,7 +117,7 @@
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "6dea253cf02dac684963b47c016e047508412fbf9f77638e034abaf0994ebb16"
+          "hash": "f774d8bd3dfd7c8b508bd9c24dcb5876cad8e2653bc8d4456d8232191ccce3b4"
         },
         {
           "path": "riva.md",
@@ -135,7 +135,7 @@
           "explanation": "uses a process-execution primitive"
         }
       ],
-      "contentHash": "sha256-450aa19196779d008ae6d8dc3af213f4812737381353bbdf36594620ec491eb2",
+      "contentHash": "sha256-d813614e795d3221f7838a01807012dfcc4a062667edee9b988178cbdea2236c",
       "discoveredFrom": "skills/vuln-scanner/SKILL.md"
     },
     {
@@ -2097,6 +2097,26 @@
       "discoveredFrom": "skills/install-skill/SKILL.md"
     },
     {
+      "id": "c636e1b4782ecd09",
+      "tool": "aeon",
+      "scope": "project:.",
+      "type": "skill",
+      "name": "create-prove",
+      "source": {
+        "kind": "local",
+        "ref": "skills/create-prove"
+      },
+      "capabilities": {},
+      "files": [
+        {
+          "path": "SKILL.md",
+          "hash": "c9d80641f15dd9ade5cabe1b2c20b1d53e7add146c1ad6a11a4e31005a1b8ca3"
+        }
+      ],
+      "contentHash": "sha256-3c87cd1273adbc7fa8fffb570ff9f69f00166e885c4a4f256b7c3cec9f996f58",
+      "discoveredFrom": "skills/create-prove/SKILL.md"
+    },
+    {
       "id": "c87437853e0ee112",
       "tool": "aeon",
       "scope": "project:.",
@@ -2251,7 +2271,7 @@
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "2f3d9c010f7925a8fcdfee593a05979e3ffc6af060a47b7c6de72429b7893f54"
+          "hash": "bb0e9be128d2caaad48595f92db313deb6ed0b8e8d628b4ffdf19538219a8978"
         },
         {
           "path": "references/ci.md",
@@ -2263,11 +2283,11 @@
         },
         {
           "path": "references/layout.md",
-          "hash": "630cc41e820f4815717c5175d37803f4aea0ef2af38c790aacc59fb0a332f5c9"
+          "hash": "14fbfc71f656737d5983c436bc088ee93fd1b636aac60dd5ecea8010ca6aa921"
         },
         {
           "path": "references/mcp.md",
-          "hash": "085a6d0b6a4d6aab7189fa87c3b6f4ecd6dbf021708641817c554aaa43b97085"
+          "hash": "08583d066f0dc7683478e9c3b41af42059c1643b87e4d9a3c882fbd33ccc344b"
         },
         {
           "path": "references/secrets.md",
@@ -2275,14 +2295,14 @@
         },
         {
           "path": "references/skill-anatomy.md",
-          "hash": "c9518f55a99fca7ed06cb5deb68230f1a12add7abacd99f974b85978dbdd5f8a"
+          "hash": "31571144efd025a5dbb9eea196c1435ce5e726888394738e093e5b7c0a88fcac"
         },
         {
           "path": "scripts/mine-history.mjs",
           "hash": "0edc7445542a21cb5518e813a6ae462a1d469636601a799efc1bec86b4058c5a"
         }
       ],
-      "contentHash": "sha256-8ad68a29a5b043e9c5882bf11a89bc7d750b96b0055b1de43788c459c0d573ea",
+      "contentHash": "sha256-8d7d90609c4bb78f72c32e99e2941f43c7d81de66b479ce30402e74db826d658",
       "discoveredFrom": ".claude/skills/aeon/SKILL.md"
     },
     {
