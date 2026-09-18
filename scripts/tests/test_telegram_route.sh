@@ -127,6 +127,25 @@ if ! grep -q "workflow run" "$GH_LOG"; then
   pass "reply without marker -> no dispatch"
 else bad "reply without marker -> no dispatch"; fi
 
+reset
+run reply "[dev-loop::ship] Which owned repository should I work on?" "owner/repo"
+if grep -q "workflow run chain-runner.yml -f chain=dev-loop -f target=external:owner/repo" "$GH_LOG" \
+   && ! grep -q "workflow run aeon.yml" "$GH_LOG"; then
+  pass "dev-loop reply marker -> chain dispatch"
+else bad "dev-loop reply marker -> chain dispatch"; fi
+
+reset
+run reply "[dev-loop::ship] Which issue should I ship?" "https://github.com/owner/repo/issues/42"
+if grep -q "workflow run chain-runner.yml -f chain=dev-loop -f target=external:owner/repo#42" "$GH_LOG"; then
+  pass "dev-loop issue url -> normalized chain target"
+else bad "dev-loop issue url -> normalized chain target"; fi
+
+reset
+run reply "[dev-loop::ship] Which owned repository should I work on?" "fix whatever looks broken"
+if ! grep -q "workflow run" "$GH_LOG" && grep -qi "owned repository" "$CURL_LOG"; then
+  pass "dev-loop free text -> rejected before dispatch"
+else bad "dev-loop free text -> rejected before dispatch"; fi
+
 # 13. path-traversal skill name is rejected
 reset
 run callback "run:../../etc:x"

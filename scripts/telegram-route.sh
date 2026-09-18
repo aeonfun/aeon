@@ -69,6 +69,32 @@ dispatch_skill() {
   fi
 }
 
+# A [dev-loop::ship] reply routes into chain-runner.yml instead of aeon.yml - a
+# different workflow with its own chain/target inputs nothing else populates
+# from a Telegram reply. Accepts an owned owner/repo, a GitHub issue URL, or an
+# already-prefixed external:owner/repo[#N] - anything else is rejected before
+# dispatch rather than guessed at.
+dispatch_dev_loop() {
+  local input="${1:-}" target=""
+  case "$input" in
+    external:*) target="$input" ;;
+    https://github.com/*/issues/[0-9]*)
+      target="external:${input#https://github.com/}"
+      target="${target/\/issues\//#}"
+      ;;
+    [a-zA-Z0-9_.-]*/[a-zA-Z0-9_.-]* | [a-zA-Z0-9_.-]*/[a-zA-Z0-9_.-]*#[0-9]*)
+      target="external:$input"
+      ;;
+  esac
+  if ! [[ "$target" =~ ^external:[a-zA-Z0-9_.-]+/[a-zA-Z0-9_.-]+(#[0-9]+)?$ ]]; then
+    log "rejected dev-loop target: '$input'"
+    send_tg "Reply with an owned repository like owner/repo or a GitHub issue URL."
+    return 1
+  fi
+  log "dispatching chain=dev-loop target='$target'"
+  gh workflow run chain-runner.yml -f chain=dev-loop -f target="$target" >/dev/null 2>&1
+}
+
 # Schedule a skill from a "Schedule weekly" button tap: enable it and set a weekly
 # cron in aeon.yml (the CALLER commits aeon.yml). $1 skill, $2 cadence (weekly|daily).
 # Edits only the one inline `name: { ... }` line, preserving every other field and
@@ -240,6 +266,10 @@ route_reply() {
   local reply_to="$1" user_input="${2:-}"
   if [[ "$reply_to" =~ \[([a-zA-Z0-9_-]+)::([a-zA-Z0-9_-]+)\] ]]; then
     local skill="${BASH_REMATCH[1]}" intent="${BASH_REMATCH[2]}"
+    if [ "$skill" = "dev-loop" ] && [ "$intent" = "ship" ]; then
+      dispatch_dev_loop "$user_input"
+      return $?
+    fi
     dispatch_skill "$skill" "${intent}:${user_input}"
     return $?
   fi
