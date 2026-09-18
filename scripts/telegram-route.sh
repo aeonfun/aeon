@@ -12,7 +12,8 @@
 #   callback "<callback_data>"                inline-button tap (action:skill:arg1:arg2)
 #   reply    "<reply_to_text>" "<user text>"  reply to a force_reply prompt
 #
-# Side effects: dispatches skills via `gh workflow run aeon.yml`, appends to
+# Side effects: dispatches skills via `gh workflow run aeon.yml` (or a dev-loop
+# chain via `chain-runner.yml` for a [dev-loop::ship] reply), appends to
 # memory/{snoozes,mutes}.log or memory/saved.md, edits a skill's schedule in
 # aeon.yml on a `schedule` callback (the CALLER commits all of these), and sends
 # canned replies via the Telegram Bot API. Never mutates the repo history.
@@ -86,7 +87,7 @@ dispatch_dev_loop() {
       target="external:$input"
       ;;
   esac
-  if ! [[ "$target" =~ ^external:[a-zA-Z0-9_.-]+/[a-zA-Z0-9_.-]+(#[0-9]+)?$ ]]; then
+  if ! [[ "$target" =~ ^external:[a-zA-Z0-9_.-]+/[a-zA-Z0-9_.-]+(#[1-9][0-9]*)?$ ]]; then
     log "rejected dev-loop target: '$input'"
     send_tg "Reply with an owned repository like owner/repo or a GitHub issue URL."
     return 1

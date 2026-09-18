@@ -1884,8 +1884,11 @@ jobs:
         # the memory/logs/ entry "Read-only capability guard" (previous step)
         # just staged — this step stages that path and nothing else, so by
         # construction it can't ship code, and it never fires for write-mode
-        # skills regardless (SKILL_MODE == 'read-only' gate).
-        if: ${{ !cancelled() && steps.work.outputs.mode != '' && env.SKILL_MODE == 'read-only' && steps.run.outcome != 'success' }}
+        # skills regardless (SKILL_MODE == 'read-only' gate). It is also skipped
+        # for proof runs (dispatch_id prefix 'prove-'): a proof re-runs a skill on
+        # the PR's attested head branch, so committing a failure log here would push
+        # a stray commit onto the very head the proof must not move.
+        if: ${{ !cancelled() && steps.work.outputs.mode != '' && env.SKILL_MODE == 'read-only' && steps.run.outcome != 'success' && !startsWith(inputs.dispatch_id, 'prove-') }}
         run: |
           git config user.name "aeonframework"
           git config user.email "aeonframework@proton.me"

@@ -146,6 +146,14 @@ if ! grep -q "workflow run" "$GH_LOG" && grep -qi "owned repository" "$CURL_LOG"
   pass "dev-loop free text -> rejected before dispatch"
 else bad "dev-loop free text -> rejected before dispatch"; fi
 
+reset
+# a #0 / zero-padded issue ref must be rejected at the router edge, matching the
+# workflow validator (dev-loop-pr.sh: #[1-9][0-9]*) so it can't waste an Actions run
+run reply "[dev-loop::ship] Which issue should I ship?" "owner/repo#0"
+if ! grep -q "workflow run" "$GH_LOG" && grep -qi "owned repository" "$CURL_LOG"; then
+  pass "dev-loop invalid issue ref (#0) -> rejected before dispatch"
+else bad "dev-loop invalid issue ref (#0) -> rejected before dispatch"; fi
+
 # 13. path-traversal skill name is rejected
 reset
 run callback "run:../../etc:x"

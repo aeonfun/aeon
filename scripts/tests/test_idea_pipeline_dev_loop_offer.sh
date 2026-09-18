@@ -32,7 +32,7 @@ fi
 
 # the pick: path must not independently send its own force-reply prompt any more -
 # offer: (checked above) already owns that, gated and delivery-verified.
-if sed -n '/^Otherwise, if \${var} starts with `pick:`/,/^### 1\. Load the idea backlog/p' "$SKILL" \
+if sed -n '/^Otherwise, if `\${var}` starts with `pick:`/,/^### 1\. Load the idea backlog/p' "$SKILL" \
   | grep -Fq -- '--force-reply'; then
   echo 'pick: must not send its own force-reply prompt - it should point to offer: instead' >&2
   exit 1
