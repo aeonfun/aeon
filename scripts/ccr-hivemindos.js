@@ -42,6 +42,58 @@ const KEEP_REASONING_OFF = String(process.env.HIVEMINDOS_REASONING || '').toLowe
 // is the endpoint's own per-completion ceiling.
 const MAX_TOKENS = process.env.HIVEMINDOS_MAX_TOKENS === undefined ? 4096 : Number(process.env.HIVEMINDOS_MAX_TOKENS)
 
+// HIVEMINDOS_PROMPT_CACHE=off stops marking the stable prefix as cacheable. On a model whose
+// provider caches (measured: anthropic/* through this endpoint reads back 7,002 cached tokens
+// on a repeat, 0.0088 USD -> 0.00073 USD), this is most of a long run's bill, because an agent
+// resends its whole system prompt every turn. Providers that do not cache accept and ignore
+// the marker (measured on deepseek), so it is on by default.
+const MARK_CACHEABLE = String(process.env.HIVEMINDOS_PROMPT_CACHE || '').toLowerCase() !== 'off'
+
+// The endpoint refuses a body beyond its ceiling, and an agent's conversation grows every turn
+// because each turn resends it. Rather than let a long run die on a 413 having already spent
+// real money, the oldest tool output is trimmed until the body fits.
+const MAX_BODY_CHARS = Number(process.env.HIVEMINDOS_MAX_BODY_CHARS || 4_000_000)
+
+/** Mark the stable prefix (the system prompt) so a caching provider can read it back. */
+function markCacheable(body) {
+  const first = Array.isArray(body.messages) ? body.messages.find((message) => message && message.role === 'system') : null
+  if (!first) return
+  if (typeof first.content === 'string') {
+    if (!first.content.trim()) return
+    first.content = [{ type: 'text', text: first.content, cache_control: { type: 'ephemeral' } }]
+    return
+  }
+  if (!Array.isArray(first.content) || !first.content.length) return
+  const last = first.content[first.content.length - 1]
+  if (last && typeof last === 'object' && last.type === 'text' && !last.cache_control) {
+    last.cache_control = { type: 'ephemeral' }
+  }
+}
+
+/** Trim the oldest tool output until the body fits. Returns how many messages were trimmed. */
+function trimToFit(body, limit) {
+  if (!Array.isArray(body.messages)) return 0
+  let trimmed = 0
+  for (const message of body.messages) {
+    if (JSON.stringify(body).length <= limit) break
+    // Never touch the system prompt or the newest turn: the first is the instructions and
+    // the second is what the agent is answering right now.
+    if (!message || message.role === 'system' || message === body.messages[body.messages.length - 1]) continue
+    if (typeof message.content === 'string' && message.content.length > 2_000) {
+      message.content = `${message.content.slice(0, 2_000)}\n\n[… ${message.content.length - 2_000} characters trimmed: this conversation reached the endpoint's size limit …]`
+      trimmed += 1
+    } else if (Array.isArray(message.content)) {
+      for (const part of message.content) {
+        if (part && part.type === 'text' && typeof part.text === 'string' && part.text.length > 2_000) {
+          part.text = `${part.text.slice(0, 2_000)}\n\n[… ${part.text.length - 2_000} characters trimmed …]`
+          trimmed += 1
+        }
+      }
+    }
+  }
+  return trimmed
+}
+
 /** One OpenAI-shaped completion → the SSE frames a streaming client expects. */
 function replayAsStream(completion) {
   const base = {
@@ -104,6 +156,14 @@ module.exports = class HivemindOS {
     // real money per in-flight call (measured: ~0.32 USD held per request, net ~0.014).
     // HivemindOS Models caps a completion at 4096 anyway, so asking for more buys nothing.
     if (MAX_TOKENS > 0 && Number(body.max_tokens) > MAX_TOKENS) body.max_tokens = MAX_TOKENS
+    if (MARK_CACHEABLE) {
+      body.messages = Array.isArray(body.messages) ? body.messages.map((message) => ({ ...message })) : body.messages
+      markCacheable(body)
+    }
+    if (MAX_BODY_CHARS > 0 && JSON.stringify(body).length > MAX_BODY_CHARS) {
+      const trimmed = trimToFit(body, MAX_BODY_CHARS)
+      if (trimmed) console.error(`[hivemindos] conversation trimmed (${trimmed} message(s)) to fit the endpoint's size limit`)
+    }
     return { body, config: { headers: { 'Idempotency-Key': randomUUID() } } }
   }
 

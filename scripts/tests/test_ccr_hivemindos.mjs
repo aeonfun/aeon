@@ -55,6 +55,36 @@ await check("the completion budget is capped, so a call holds what it can spend"
   assert.equal(small.body.max_tokens, 500, "a modest ask is left alone");
 });
 
+await check("the stable prefix is marked cacheable, so a caching provider can read it back", async () => {
+  const { body } = await transformer.transformRequestIn({ model: "m", messages: [{ role: "system", content: "You are careful." }, { role: "user", content: "hi" }] });
+  assert.deepEqual(body.messages[0].content, [{ type: "text", text: "You are careful.", cache_control: { type: "ephemeral" } }]);
+  assert.equal(body.messages[1].content, "hi", "only the prefix is marked");
+  // The caller's own array shape is respected, and an existing marker is left alone.
+  const already = await transformer.transformRequestIn({ model: "m", messages: [{ role: "system", content: [{ type: "text", text: "a", cache_control: { type: "persistent" } }] }] });
+  assert.deepEqual(already.body.messages[0].content[0].cache_control, { type: "persistent" });
+});
+
+await check("a conversation past the size ceiling is trimmed, not abandoned", async () => {
+  const huge = "x".repeat(300_000);
+  const messages = [
+    { role: "system", content: "instructions" },
+    { role: "user", content: `first ${huge}` },
+    { role: "assistant", content: `tool output ${huge}` },
+    { role: "user", content: `latest ${huge}` },
+  ];
+  process.env.HIVEMINDOS_MAX_BODY_CHARS = "400000";
+  const module = require.resolve("../ccr-hivemindos.js");
+  delete require.cache[module];
+  const Trimming = require("../ccr-hivemindos.js");
+  delete process.env.HIVEMINDOS_MAX_BODY_CHARS;
+  delete require.cache[module];
+  const { body } = await new Trimming().transformRequestIn({ model: "m", messages });
+  assert.ok(JSON.stringify(body).length <= 400_000, `still too large: ${JSON.stringify(body).length}`);
+  assert.match(JSON.stringify(body.messages[2].content), /characters trimmed/);
+  assert.equal(JSON.stringify(body.messages[0].content).includes("instructions"), true, "the system prompt survives");
+  assert.ok(String(body.messages[3].content).length > 200_000, "the newest turn is never trimmed");
+});
+
 await check("a non-streaming client gets the upstream answer untouched", async () => {
   const response = new Response(JSON.stringify({ choices: [] }), { headers: { "Content-Type": "application/json" } });
   assert.equal(await transformer.transformResponseOut(response, { req: { body: { stream: false } } }), response);
