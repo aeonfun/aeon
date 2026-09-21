@@ -55,6 +55,29 @@ await check("the completion budget is capped, so a call holds what it can spend"
   assert.equal(small.body.max_tokens, 500, "a modest ask is left alone");
 });
 
+await check("an unset repo variable still caps the budget (GitHub passes '', not undefined)", async () => {
+  // `HIVEMINDOS_MAX_TOKENS: ${{ vars.HIVEMINDOS_MAX_TOKENS }}` sets the EMPTY STRING when the
+  // variable does not exist, and Number('') is 0, which is this knob's "no cap" value. That
+  // silently disabled the cap on every workflow run until it was read as "not set".
+  const module = require.resolve("../ccr-hivemindos.js");
+  delete require.cache[module];
+  process.env.HIVEMINDOS_MAX_TOKENS = "";
+  const Unset = require("../ccr-hivemindos.js");
+  delete process.env.HIVEMINDOS_MAX_TOKENS;
+  delete require.cache[module];
+  const { body } = await new Unset().transformRequestIn({ model: "m", messages: [], max_tokens: 32000 });
+  assert.equal(body.max_tokens, 4096, "an empty variable must mean the default, not 'uncapped'");
+
+  // An explicit 0 is still the operator asking for no cap at all.
+  delete require.cache[module];
+  process.env.HIVEMINDOS_MAX_TOKENS = "0";
+  const Off = require("../ccr-hivemindos.js");
+  delete process.env.HIVEMINDOS_MAX_TOKENS;
+  delete require.cache[module];
+  const uncapped = await new Off().transformRequestIn({ model: "m", messages: [], max_tokens: 32000 });
+  assert.equal(uncapped.body.max_tokens, 32000, "an explicit 0 still disables the cap");
+});
+
 await check("the stable prefix is marked cacheable, so a caching provider can read it back", async () => {
   const { body } = await transformer.transformRequestIn({ model: "m", messages: [{ role: "system", content: "You are careful." }, { role: "user", content: "hi" }] });
   assert.deepEqual(body.messages[0].content, [{ type: "text", text: "You are careful.", cache_control: { type: "ephemeral" } }]);

@@ -40,7 +40,13 @@ const KEEP_REASONING_OFF = String(process.env.HIVEMINDOS_REASONING || '').toLowe
 
 // HIVEMINDOS_MAX_TOKENS caps what each call may ask for (0 disables the cap). The default
 // is the endpoint's own per-completion ceiling.
-const MAX_TOKENS = process.env.HIVEMINDOS_MAX_TOKENS === undefined ? 4096 : Number(process.env.HIVEMINDOS_MAX_TOKENS)
+// An UNSET GitHub repo variable arrives as the EMPTY STRING, not undefined — the workflow
+// writes `HIVEMINDOS_MAX_TOKENS: ${{ vars.HIVEMINDOS_MAX_TOKENS }}` either way — and Number('')
+// is 0, which is this knob's "no cap" value. So the default was silently disabled on every run
+// through the workflow, which is the opposite of what it says, and each in-flight call went back
+// to holding against Claude Code's full 32k ask. Measured on run 35612650907.
+const MAX_TOKENS_ASKED = String(process.env.HIVEMINDOS_MAX_TOKENS ?? '').trim()
+const MAX_TOKENS = MAX_TOKENS_ASKED === '' ? 4096 : Number(MAX_TOKENS_ASKED)
 
 // HIVEMINDOS_PROMPT_CACHE=off stops marking the stable prefix as cacheable. On a model whose
 // provider caches (measured: anthropic/* through this endpoint reads back 7,002 cached tokens
