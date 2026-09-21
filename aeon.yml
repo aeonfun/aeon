@@ -252,7 +252,7 @@ harness: claude
 # OpenAI-compatible endpoint billed to a credit balance rather than to a provider
 # account of your own: set the secret HIVEMINDOS_CREDIT_TOKEN, and optionally the
 # repo variables HIVEMINDOS_MODEL (a catalog id such as anthropic/claude-sonnet-5;
-# default deepseek/deepseek-v4.1-flash) and HIVEMINDOS_BASE_URL. On a model that
+# default inclusionai/ling-3.0-flash) and HIVEMINDOS_BASE_URL. On a model that
 # honours it, HIVEMINDOS_REASONING=keep drops the reasoning tokens an unattended
 # run does not need.
 # grok routes Claude Code at xAI's Anthropic-compatible api.x.ai (XAI_API_KEY) —

@@ -89,10 +89,10 @@ hm_src() {
     *"url=https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/paid-agents/default/chat/completions"*\
 ) ;; *) exit 1 ;;
   esac
-  case "$line" in *"model=deepseek/deepseek-v4.1-flash"*) ;; *) exit 1 ;; esac
+  case "$line" in *"model=inclusionai/ling-3.0-flash"*) ;; *) exit 1 ;; esac
   case "$line" in *'"hivemindos"'*) ;; *) exit 1 ;; esac
-) && pass "defaults → public endpoint, deepseek-v4.1-flash, hivemindos transformer" \
-  || bad "defaults → public endpoint, deepseek-v4.1-flash, hivemindos transformer"
+) && pass "defaults → public endpoint, ling-3.0-flash, hivemindos transformer" \
+  || bad "defaults → public endpoint, ling-3.0-flash, hivemindos transformer"
 
 # 9. A catalog id passes straight through; an aeon-native id does not (it names
 #    no HivemindOS model, so it would 404 the run).
@@ -103,7 +103,7 @@ hm_src() {
 
 ( export HIVEMINDOS_CREDIT_TOKEN=test-token MODEL=claude-opus-4-8
   unset HIVEMINDOS_MODEL
-  case "$(hm_src)" in *"model=deepseek/deepseek-v4.1-flash"*) ;; *) exit 1 ;; esac
+  case "$(hm_src)" in *"model=inclusionai/ling-3.0-flash"*) ;; *) exit 1 ;; esac
 ) && pass "aeon-native id → the default model" || bad "aeon-native id → the default model"
 
 # 10. Repo variables override both.

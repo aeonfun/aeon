@@ -32,7 +32,7 @@
 # the step by design (mirrors aeon's existing behavior).
 
 CCR_PORT="${CCR_PORT:-3456}"
-HIVEMINDOS_DEFAULT_MODEL="deepseek/deepseek-v4.1-flash"
+HIVEMINDOS_DEFAULT_MODEL="inclusionai/ling-3.0-flash"
 
 require_secret() {
   if [ -z "${!1:-}" ]; then
@@ -347,9 +347,12 @@ X-Title: ${OPENROUTER_APP_TITLE:-Aeon}"
     # HIVEMINDOS_BASE_URL points at another deployment (same override pattern as
     # VENICE_BASE_URL).
     #
-    # The default is deepseek-v4.1-flash: cheap per token, strong on tool use, and
-    # it honours a reasoning-off flag, which is where an unattended run's bill
-    # actually goes. hivemindos/auto (let the endpoint route) is one override away.
+    # The default is picked from what the endpoint actually serves, not from a
+    # familiar name: of its ids that support tools AND price a cached read,
+    # ling-3.0-flash is the cheapest per agent turn and the quickest to answer
+    # (measured 2026-09-21 through this arm: 1.5s warm, 6,720 tokens read back
+    # from cache, 0.00003 USD for a turn that costs 0.0017 on a model that does
+    # not cache). hivemindos/auto, or any catalog id, is one variable away.
     require_secret HIVEMINDOS_CREDIT_TOKEN
     hivemindos_model="${HIVEMINDOS_MODEL:-${MODEL:-$HIVEMINDOS_DEFAULT_MODEL}}"
     case "$hivemindos_model" in claude-*|grok-*|"") hivemindos_model="$HIVEMINDOS_DEFAULT_MODEL" ;; esac
