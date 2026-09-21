@@ -6,15 +6,19 @@
 # call in the same shell. Place at: scripts/llm-gateway.sh
 #
 # Inputs already present in the step environment:
-#   $GATEWAY                    auto | direct | bankr | openrouter | usepod | surplus | venice | grok | glm
+#   $GATEWAY                    auto | direct | bankr | openrouter | usepod | surplus | venice | grok | glm | hivemindos
 #                               (auto = resolve at run time from which secrets are set)
 #   $MODEL                      aeon's resolved model id (may be rewritten here)
 #   <PROVIDER> secret           the secret for the selected gateway (see below)
 #   vars.ANTHROPIC_BASE_URL     optional Anthropic-compatible endpoint (direct path)
+#   HIVEMINDOS_REASONING        'keep' sends Claude Code's reasoning-off flag as asked
+#                               (cheaper on models that honour it; default drops it)
+#   HIVEMINDOS_MAX_TOKENS       per-call completion cap (default 4096, 0 disables): a
+#                               credit-billed endpoint holds against what a call asks for
 #
 # Two routing tiers:
 #   NATIVE (no proxy): bankr, openrouter, usepod, grok, glm  -> set base URL + auth, done.
-#   SIDECAR (wrapper): surplus, venice            -> start claude-code-router on
+#   SIDECAR (wrapper): surplus, venice, hivemindos -> start claude-code-router on
 #                                                    127.0.0.1 to translate
 #                                                    Anthropic <-> OpenAI.
 #
@@ -28,6 +32,7 @@
 # the step by design (mirrors aeon's existing behavior).
 
 CCR_PORT="${CCR_PORT:-3456}"
+HIVEMINDOS_DEFAULT_MODEL="deepseek/deepseek-v4.1-flash"
 
 require_secret() {
   if [ -z "${!1:-}" ]; then
@@ -58,6 +63,17 @@ start_ccr_sidecar() {
   local transformers='"sanitize-empty-text", "anthropic"'
   if [ -n "$extra_tf" ]; then transformers="\"sanitize-empty-text\", \"anthropic\", \"${extra_tf}\""; fi
 
+  # AEON_GATEWAY_DRY_RUN prints what this sidecar WOULD run and returns, so the
+  # routing of a sidecar arm can be tested without installing or starting ccr
+  # (scripts/tests/test_llm_gateway.sh). Never set in a real run.
+  if [ -n "${AEON_GATEWAY_DRY_RUN:-}" ]; then
+    echo "ccr-sidecar name=${name} url=${base_url} model=${model} transformers=[${transformers}]"
+    export ANTHROPIC_BASE_URL="http://127.0.0.1:${CCR_PORT}"
+    export ANTHROPIC_API_KEY="sk-ccr-local"
+    unset ANTHROPIC_AUTH_TOKEN CLAUDE_CODE_OAUTH_TOKEN
+    return 0
+  fi
+
   if ! command -v ccr >/dev/null 2>&1; then
     if ! npm install -g @musistudio/claude-code-router@2.0.0 >/dev/null 2>&1; then
       echo "::error::failed to install @musistudio/claude-code-router@2.0.0" >&2
@@ -75,7 +91,8 @@ start_ccr_sidecar() {
   "LOG": ${CCR_LOG:-false},
   "API_TIMEOUT_MS": 600000,
   "transformers": [
-    { "path": "${script_dir}/ccr-sanitize.js" }
+    { "path": "${script_dir}/ccr-sanitize.js" },
+    { "path": "${script_dir}/ccr-hivemindos.js" }
   ],
   "Providers": [
     {
@@ -125,6 +142,7 @@ JSON
 #   claude     Claude Code subscription    (CLAUDE_CODE_OAUTH_TOKEN)
 #   anthropic  pay-as-you-go Anthropic API (ANTHROPIC_API_KEY)
 #   openrouter bankr usepod venice surplus  — gateway keys
+#   hivemindos HivemindOS Models             (HIVEMINDOS_CREDIT_TOKEN)
 #
 # `claude` and `anthropic` are NATIVE direct-API tiers (handled by the case
 # below). `direct` is the implicit final fallback (errors later if no usable key).
@@ -139,13 +157,14 @@ aeon_present() {  # is the secret for provider $1 set?
     surplus)    [ -n "${SURPLUS_API_KEY:-}" ] ;;
     grok)       [ -n "${XAI_API_KEY:-}" ] ;;
     glm)        [ -n "${GLM_API_KEY:-${ZAI_API_KEY:-}}" ] ;;
+    hivemindos) [ -n "${HIVEMINDOS_CREDIT_TOKEN:-}" ] ;;
     *) false ;;
   esac
 }
 if [ -z "${GATEWAY:-}" ] || [ "${GATEWAY}" = "auto" ]; then
   # Ordered list of every provider whose secret is set (priority via GATEWAY_ORDER).
   AEON_CANDIDATES=""
-  for provider in ${GATEWAY_ORDER:-claude anthropic openrouter bankr usepod venice surplus grok glm}; do
+  for provider in ${GATEWAY_ORDER:-claude anthropic openrouter bankr usepod venice surplus grok glm hivemindos}; do
     if aeon_present "$provider"; then AEON_CANDIDATES="${AEON_CANDIDATES:+$AEON_CANDIDATES }$provider"; fi
   done
   [ -z "$AEON_CANDIDATES" ] && AEON_CANDIDATES="direct"
@@ -313,6 +332,31 @@ X-Title: ${OPENROUTER_APP_TITLE:-Aeon}"
       "${VENICE_BASE_URL:-https://api.venice.ai/api/v1/chat/completions}" \
       "$VENICE_API_KEY" "$venice_model" "${VENICE_CLEANCACHE:+cleancache}"
     echo "::notice::Routing through Venice via claude-code-router (${venice_model} @ ${VENICE_BASE_URL:-https://api.venice.ai/api/v1/chat/completions})"
+    ;;
+
+  hivemindos)  # SIDECAR — HivemindOS Models: OpenAI-compatible, billed to a credit balance
+    # No provider account of your own: the credit token IS the credential, and
+    # every call is deducted from that balance. The endpoint refuses a paid
+    # request it cannot safely retry, so the hivemindos transformer gives
+    # each one a fresh key, and replays the non-streamed answer as the SSE frames
+    # Claude Code expects (scripts/ccr-hivemindos.js).
+    #
+    # The catalog is addressed by its own ids (vendor/model, e.g.
+    # anthropic/claude-sonnet-5), so aeon's native claude-*/grok-* ids mean
+    # nothing here and fall back to the default below. HIVEMINDOS_MODEL pins one;
+    # HIVEMINDOS_BASE_URL points at another deployment (same override pattern as
+    # VENICE_BASE_URL).
+    #
+    # The default is deepseek-v4.1-flash: cheap per token, strong on tool use, and
+    # it honours a reasoning-off flag, which is where an unattended run's bill
+    # actually goes. hivemindos/auto (let the endpoint route) is one override away.
+    require_secret HIVEMINDOS_CREDIT_TOKEN
+    hivemindos_model="${HIVEMINDOS_MODEL:-${MODEL:-$HIVEMINDOS_DEFAULT_MODEL}}"
+    case "$hivemindos_model" in claude-*|grok-*|"") hivemindos_model="$HIVEMINDOS_DEFAULT_MODEL" ;; esac
+    start_ccr_sidecar hivemindos \
+      "${HIVEMINDOS_BASE_URL:-https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/paid-agents/default}/chat/completions" \
+      "$HIVEMINDOS_CREDIT_TOKEN" "$hivemindos_model" "hivemindos"
+    echo "::notice::Routing through HivemindOS Models via claude-code-router (${hivemindos_model})"
     ;;
 
   direct|"")  # NATIVE — Anthropic API or an Anthropic-compatible endpoint

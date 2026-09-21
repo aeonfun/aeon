@@ -521,6 +521,7 @@ jobs:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           USEPOD_TOKEN: ${{ secrets.USEPOD_TOKEN }}
           VENICE_API_KEY: ${{ secrets.VENICE_API_KEY }}
+          HIVEMINDOS_CREDIT_TOKEN: ${{ secrets.HIVEMINDOS_CREDIT_TOKEN }}
           SURPLUS_API_KEY: ${{ secrets.SURPLUS_API_KEY }}
           OPENROUTER_MODEL: ${{ vars.OPENROUTER_MODEL }}
           OPENROUTER_MODEL_SONNET: ${{ vars.OPENROUTER_MODEL_SONNET }}
@@ -530,6 +531,10 @@ jobs:
           USEPOD_MODEL_HAIKU: ${{ vars.USEPOD_MODEL_HAIKU }}
           VENICE_MODEL: ${{ vars.VENICE_MODEL }}
           VENICE_BASE_URL: ${{ vars.VENICE_BASE_URL }}
+          HIVEMINDOS_BASE_URL: ${{ vars.HIVEMINDOS_BASE_URL }}
+          HIVEMINDOS_MODEL: ${{ vars.HIVEMINDOS_MODEL }}
+          HIVEMINDOS_REASONING: ${{ vars.HIVEMINDOS_REASONING }}
+          HIVEMINDOS_MAX_TOKENS: ${{ vars.HIVEMINDOS_MAX_TOKENS }}
           VENICE_CLEANCACHE: ${{ vars.VENICE_CLEANCACHE }}
           SURPLUS_MODEL: ${{ vars.SURPLUS_MODEL }}
           GLM_MODEL: ${{ vars.GLM_MODEL }}

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Tests for the glm arm of scripts/llm-gateway.sh.
+# Tests for the glm and hivemindos arms of scripts/llm-gateway.sh.
 # The shim is SOURCED by the workflow, so these tests source it too. Each case
 # runs in a subshell so exported CLAUDE_CODE_* / ANTHROPIC_* vars don't leak.
 # Run: bash scripts/tests/test_llm_gateway.sh
@@ -64,6 +64,64 @@ glm_src() {
 ) && pass "sourcing under bash -e does not abort caller" \
   || bad "sourcing under bash -e does not abort caller"
 
+# --- hivemindos arm --------------------------------------------------------
+# A sidecar arm, so AEON_GATEWAY_DRY_RUN stands in for ccr: it prints the
+# sidecar line these cases assert on and never touches the network.
+hm_src() {
+  export AEON_GATEWAY_DRY_RUN=1 GATEWAY=hivemindos
+  # shellcheck disable=SC1090
+  source "$GW" 2>/dev/null | grep '^ccr-sidecar '
+}
+
+# 7. The credit token is the credential; without it the arm refuses.
+( export AEON_GATEWAY_DRY_RUN=1 GATEWAY=hivemindos MODEL=claude-sonnet-5
+  unset HIVEMINDOS_CREDIT_TOKEN
+  # shellcheck disable=SC1090
+  source "$GW" >/dev/null 2>&1
+) && bad "no HIVEMINDOS_CREDIT_TOKEN → refuse" \
+  || pass "no HIVEMINDOS_CREDIT_TOKEN → refuse"
+
+# 8. Defaults: the public endpoint, hivemindos/auto, and a per-request key.
+( export HIVEMINDOS_CREDIT_TOKEN=test-token MODEL=claude-sonnet-5
+  unset HIVEMINDOS_MODEL HIVEMINDOS_BASE_URL
+  line="$(hm_src)"
+  case "$line" in
+    *"url=https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/paid-agents/default/chat/completions"*\
+) ;; *) exit 1 ;;
+  esac
+  case "$line" in *"model=deepseek/deepseek-v4.1-flash"*) ;; *) exit 1 ;; esac
+  case "$line" in *'"hivemindos"'*) ;; *) exit 1 ;; esac
+) && pass "defaults → public endpoint, deepseek-v4.1-flash, hivemindos transformer" \
+  || bad "defaults → public endpoint, deepseek-v4.1-flash, hivemindos transformer"
+
+# 9. A catalog id passes straight through; an aeon-native id does not (it names
+#    no HivemindOS model, so it would 404 the run).
+( export HIVEMINDOS_CREDIT_TOKEN=test-token MODEL=anthropic/claude-sonnet-5
+  unset HIVEMINDOS_MODEL
+  case "$(hm_src)" in *"model=anthropic/claude-sonnet-5"*) ;; *) exit 1 ;; esac
+) && pass "catalog id passes through" || bad "catalog id passes through"
+
+( export HIVEMINDOS_CREDIT_TOKEN=test-token MODEL=claude-opus-4-8
+  unset HIVEMINDOS_MODEL
+  case "$(hm_src)" in *"model=deepseek/deepseek-v4.1-flash"*) ;; *) exit 1 ;; esac
+) && pass "aeon-native id → the default model" || bad "aeon-native id → the default model"
+
+# 10. Repo variables override both.
+( export HIVEMINDOS_CREDIT_TOKEN=test-token MODEL=claude-sonnet-5 \
+    HIVEMINDOS_MODEL=openai/gpt-5-mini HIVEMINDOS_BASE_URL=https://example.test/api/paid-agents/mine
+  line="$(hm_src)"
+  case "$line" in *"model=openai/gpt-5-mini"*) ;; *) exit 1 ;; esac
+  case "$line" in *"url=https://example.test/api/paid-agents/mine/chat/completions"*) ;; *) exit 1 ;; esac
+) && pass "HIVEMINDOS_MODEL / HIVEMINDOS_BASE_URL override" \
+  || bad "HIVEMINDOS_MODEL / HIVEMINDOS_BASE_URL override"
+
+# 11. gateway=auto picks it up when the credit token is the only credential set.
+( export AEON_GATEWAY_DRY_RUN=1 GATEWAY=auto AEON_LIST_CANDIDATES=1 HIVEMINDOS_CREDIT_TOKEN=test-token
+  unset CLAUDE_CODE_OAUTH_TOKEN ANTHROPIC_API_KEY OPENROUTER_API_KEY BANKR_LLM_KEY USEPOD_TOKEN VENICE_API_KEY SURPLUS_API_KEY XAI_API_KEY GLM_API_KEY ZAI_API_KEY
+  [ "$(bash "$GW")" = "hivemindos" ]
+) && pass "gateway=auto resolves to hivemindos on the credit token alone" \
+  || bad "gateway=auto resolves to hivemindos on the credit token alone"
+
 echo
-if [ "$fail" -eq 0 ]; then echo "All llm-gateway glm effort tests passed."; else echo "Some tests FAILED."; fi
+if [ "$fail" -eq 0 ]; then echo "All llm-gateway tests passed."; else echo "Some tests FAILED."; fi
 exit "$fail"

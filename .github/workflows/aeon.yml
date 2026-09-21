@@ -398,7 +398,7 @@ jobs:
           SECRETS=$(grep -oE '\$\{?[A-Z][A-Z0-9_]{2,}\}?' "$SKILL_FILE" 2>/dev/null | \
             sed 's/[${}]//g' | \
             grep -E '_(API_KEY|KEY|TOKEN|SECRET|WEBHOOK_URL)$' | \
-            grep -vE '^(GITHUB_TOKEN|GH_TOKEN|ANTHROPIC_API_KEY|CLAUDE_CODE_OAUTH_TOKEN|BANKR_LLM_KEY|OPENROUTER_API_KEY|USEPOD_TOKEN|VENICE_API_KEY|SURPLUS_API_KEY|TELEGRAM_|DISCORD_|SLACK_)' | \
+            grep -vE '^(GITHUB_TOKEN|GH_TOKEN|ANTHROPIC_API_KEY|CLAUDE_CODE_OAUTH_TOKEN|BANKR_LLM_KEY|OPENROUTER_API_KEY|USEPOD_TOKEN|VENICE_API_KEY|SURPLUS_API_KEY|HIVEMINDOS_CREDIT_TOKEN|TELEGRAM_|DISCORD_|SLACK_)' | \
             sort -u) || true
 
           [ -z "$SECRETS" ] && exit 0
@@ -677,6 +677,7 @@ jobs:
           VERCEL_OIDC_TOKEN: ${{ secrets.VERCEL_OIDC_TOKEN }}
           USEPOD_TOKEN: ${{ secrets.USEPOD_TOKEN }}
           VENICE_API_KEY: ${{ secrets.VENICE_API_KEY }}
+          HIVEMINDOS_CREDIT_TOKEN: ${{ secrets.HIVEMINDOS_CREDIT_TOKEN }}
           SURPLUS_API_KEY: ${{ secrets.SURPLUS_API_KEY }}
           # Optional gateway model overrides + sidecar debug (defaults live in scripts/llm-gateway.sh)
           OPENROUTER_MODEL: ${{ vars.OPENROUTER_MODEL }}
@@ -687,6 +688,10 @@ jobs:
           USEPOD_MODEL_HAIKU: ${{ vars.USEPOD_MODEL_HAIKU }}
           VENICE_MODEL: ${{ vars.VENICE_MODEL }}
           VENICE_BASE_URL: ${{ vars.VENICE_BASE_URL }}
+          HIVEMINDOS_BASE_URL: ${{ vars.HIVEMINDOS_BASE_URL }}
+          HIVEMINDOS_MODEL: ${{ vars.HIVEMINDOS_MODEL }}
+          HIVEMINDOS_REASONING: ${{ vars.HIVEMINDOS_REASONING }}
+          HIVEMINDOS_MAX_TOKENS: ${{ vars.HIVEMINDOS_MAX_TOKENS }}
           VENICE_CLEANCACHE: ${{ vars.VENICE_CLEANCACHE }}
           SURPLUS_MODEL: ${{ vars.SURPLUS_MODEL }}
           GLM_MODEL: ${{ vars.GLM_MODEL }}
@@ -1454,6 +1459,7 @@ jobs:
           VERCEL_OIDC_TOKEN: ${{ secrets.VERCEL_OIDC_TOKEN }}
           USEPOD_TOKEN: ${{ secrets.USEPOD_TOKEN }}
           VENICE_API_KEY: ${{ secrets.VENICE_API_KEY }}
+          HIVEMINDOS_CREDIT_TOKEN: ${{ secrets.HIVEMINDOS_CREDIT_TOKEN }}
           SURPLUS_API_KEY: ${{ secrets.SURPLUS_API_KEY }}
           XAI_API_KEY: ${{ secrets.XAI_API_KEY }}   # grok scorer: API-key auth path
           GROK_CREDENTIALS: ${{ secrets.GROK_CREDENTIALS }}   # grok scorer: X-account OAuth (restored by run-grok.sh)
@@ -1470,6 +1476,10 @@ jobs:
           USEPOD_MODEL_HAIKU: ${{ vars.USEPOD_MODEL_HAIKU }}
           VENICE_MODEL: ${{ vars.VENICE_MODEL }}
           VENICE_BASE_URL: ${{ vars.VENICE_BASE_URL }}
+          HIVEMINDOS_BASE_URL: ${{ vars.HIVEMINDOS_BASE_URL }}
+          HIVEMINDOS_MODEL: ${{ vars.HIVEMINDOS_MODEL }}
+          HIVEMINDOS_REASONING: ${{ vars.HIVEMINDOS_REASONING }}
+          HIVEMINDOS_MAX_TOKENS: ${{ vars.HIVEMINDOS_MAX_TOKENS }}
           VENICE_CLEANCACHE: ${{ vars.VENICE_CLEANCACHE }}
           SURPLUS_MODEL: ${{ vars.SURPLUS_MODEL }}
           GLM_MODEL: ${{ vars.GLM_MODEL }}
@@ -1727,6 +1737,7 @@ jobs:
           VERCEL_OIDC_TOKEN: ${{ secrets.VERCEL_OIDC_TOKEN }}
           USEPOD_TOKEN: ${{ secrets.USEPOD_TOKEN }}
           VENICE_API_KEY: ${{ secrets.VENICE_API_KEY }}
+          HIVEMINDOS_CREDIT_TOKEN: ${{ secrets.HIVEMINDOS_CREDIT_TOKEN }}
           SURPLUS_API_KEY: ${{ secrets.SURPLUS_API_KEY }}
           OPENROUTER_MODEL: ${{ vars.OPENROUTER_MODEL }}
           OPENROUTER_MODEL_SONNET: ${{ vars.OPENROUTER_MODEL_SONNET }}
@@ -1736,6 +1747,10 @@ jobs:
           USEPOD_MODEL_HAIKU: ${{ vars.USEPOD_MODEL_HAIKU }}
           VENICE_MODEL: ${{ vars.VENICE_MODEL }}
           VENICE_BASE_URL: ${{ vars.VENICE_BASE_URL }}
+          HIVEMINDOS_BASE_URL: ${{ vars.HIVEMINDOS_BASE_URL }}
+          HIVEMINDOS_MODEL: ${{ vars.HIVEMINDOS_MODEL }}
+          HIVEMINDOS_REASONING: ${{ vars.HIVEMINDOS_REASONING }}
+          HIVEMINDOS_MAX_TOKENS: ${{ vars.HIVEMINDOS_MAX_TOKENS }}
           VENICE_CLEANCACHE: ${{ vars.VENICE_CLEANCACHE }}
           SURPLUS_MODEL: ${{ vars.SURPLUS_MODEL }}
           GLM_MODEL: ${{ vars.GLM_MODEL }}
