@@ -4,6 +4,26 @@
   "generator": "eyebrow/0.4.1",
   "artifacts": [
     {
+      "id": "564d8f38dcfa4c55",
+      "tool": "aeon",
+      "scope": "project:.",
+      "type": "skill",
+      "name": "arc-studio",
+      "source": {
+        "kind": "local",
+        "ref": "skills/arc-studio"
+      },
+      "capabilities": {},
+      "files": [
+        {
+          "path": "SKILL.md",
+          "hash": "e6cafd6d3caa262668d29bab727a4cc3f988a62cb8b0e37b1d63327213289df1"
+        }
+      ],
+      "contentHash": "sha256-c29c74d8c0499f7798d0c664a67853fee619ddb8cf05311713eba059a2fd98d3",
+      "discoveredFrom": "skills/arc-studio/SKILL.md"
+    },
+    {
       "id": "019b953b97c439b3",
       "tool": "aeon",
       "scope": "project:.",

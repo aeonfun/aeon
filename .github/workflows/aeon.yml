@@ -559,6 +559,36 @@ jobs:
         if: steps.work.outputs.mode != '' && steps.skill.outputs.name == 'deploy-uni-hook'
         run: bash scripts/stage-deploy-uni-hook.sh "${{ steps.skill.outputs.name }}"
 
+      - name: Cache Arc Studio CLI
+        # Own prefix, not ~/.npm. The Claude Code cache above already owns
+        # ~/.npm and does not save again after a hit, so this package would
+        # re-download every run. The key includes the CLI pin and the Node
+        # major from Setup Node.js. Bump both together. No restore-keys: an
+        # older install is the wrong binary.
+        if: steps.work.outputs.mode != '' && steps.skill.outputs.name == 'arc-studio'
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+        with:
+          path: ~/arc-studio-cli
+          key: arc-studio-cli-${{ runner.os }}-node22-1.1.3
+
+      - name: Install Arc Studio CLI (arc-studio)
+        # Same reason Foundry is staged above: the sandbox denies an in-run
+        # toolchain install, and a PATH export dies with that shell. A cache
+        # hit already has the prefix; a miss installs into it and the cache
+        # step saves the prefix at the end of the job. Fail if the binary
+        # does not run, so a later step cannot go green and do nothing.
+        if: steps.work.outputs.mode != '' && steps.skill.outputs.name == 'arc-studio'
+        run: |
+          PREFIX="$HOME/arc-studio-cli"
+          if [ ! -x "$PREFIX/bin/arc-studio" ] || ! "$PREFIX/bin/arc-studio" --version | grep -qx '1.1.3'; then
+            echo "arc-studio CLI cache miss, installing 1.1.3"
+            npm install -g --prefix "$PREFIX" @circle-fin/arc-studio-cli@1.1.3 --prefer-offline
+          else
+            echo "arc-studio CLI cache hit ($PREFIX)"
+          fi
+          echo "$PREFIX/bin" >> "$GITHUB_PATH"
+          "$PREFIX/bin/arc-studio" --version
+
       - name: Cache remotion toolchain
         # The remotion skill renders MP4s with a bundled Remotion project. Its
         # node_modules (incl. node_modules/.remotion, the ~90 MB chrome-headless-shell)

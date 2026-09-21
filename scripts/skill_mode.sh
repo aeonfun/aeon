@@ -64,6 +64,11 @@ BASE_TOOLS="$BASE_TOOLS,Bash(head:*),Bash(tail:*),Bash(wc:*),Bash(sort:*),Bash(g
 # deliberately withholds: a read-only skill gets audited GitHub run data with no
 # write capability.
 BASE_TOOLS="$BASE_TOOLS,Bash(./scripts/skill-runs:*)"
+# Arc Studio CLI. The workflow installs the binary only when the running skill
+# is arc-studio, before the harness starts. Other skills do not have it on
+# PATH, so this grant is a no-op for them. It has to live on the read-only
+# tier: arc-studio is mode read-only and must not gain Write/Edit.
+BASE_TOOLS="$BASE_TOOLS,Bash(arc-studio:*)"
 
 # Write tier additionally gets repo-mutation tools + python (an interpreter is itself
 # a write vector, so it stays out of the read-only base; skills' python helpers run here).

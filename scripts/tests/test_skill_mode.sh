@@ -60,6 +60,7 @@ echo "$RT" | grep -q "Read" && echo "$RT" | grep -q "WebFetch" \
 # after the cd was itself allowlisted — see the comment in skill_mode.sh).
 echo "$WT" | grep -q "Bash(cd:\*)" && pass "write tier includes cd" || bad "write tier includes cd"
 echo "$RT" | grep -q "Bash(cd:\*)" && pass "read-only tier includes cd" || bad "read-only tier includes cd"
+echo "$RT" | grep -q "Bash(arc-studio:\*)" && pass "read-only tier includes arc-studio" || bad "read-only tier includes arc-studio"
 
 echo "$WT" | grep -q "Bash(./scripts/vuln-poc-gate.sh:\*)" \
   && pass "write tier includes the vuln PoC verifier" || bad "write tier missing vuln PoC verifier"
