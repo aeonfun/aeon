@@ -30,18 +30,16 @@ write_registry() {
 EOF
 }
 
-# write_readme <dir> <count-claimed> <table-rows>
+# write_readme <dir> <table-rows>
 write_readme() {
   cat > "$1/README.md" <<EOF
 # Test README
-
-| **community** | **$2 community skill packs** published to the registry. |
 
 ## Community Packs
 
 | Pack | Skills | Description |
 |------|--------|-------------|
-$3
+$2
 EOF
 }
 
@@ -76,7 +74,7 @@ new_fixture() {
   local d="$TMP/$1"
   mkdir -p "$d"
   write_registry "$d" "$ONE_PACK"
-  write_readme "$d" 1 "$ONE_ROW"
+  write_readme "$d" "$ONE_ROW"
   write_installer "$d"
   write_trusted "$d"
   echo "$d"
@@ -173,7 +171,7 @@ expect_ok "$d" "capabilities inside the taxonomy pass"
 # ── Trust model ─────────────────────────────────────────────────────────────
 d=$(new_fixture untrusted)
 write_registry "$d" '[{"repo":"randomowner/pack","name":"P","description":"d","author":"a","skills":["alpha","beta"],"trust_level":"trusted"}]'
-write_readme "$d" 1 '| [P](https://github.com/randomowner/pack) | 2 | d |'
+write_readme "$d" '| [P](https://github.com/randomowner/pack) | 2 | d |'
 expect_fail "$d" "not in skills/security/trusted-sources.txt" "self-declared \`trusted\` without a trusted-sources entry is rejected"
 
 d=$(new_fixture trusted)
@@ -186,17 +184,17 @@ expect_fail "$d" "trust_level\` must be one of" "an unknown \`trust_level\` is r
 
 # ── README parity ───────────────────────────────────────────────────────────
 d=$(new_fixture noreadmerow)
-write_readme "$d" 1 '| [Other](https://github.com/other/pack) | 1 | Other. |'
-expect_fail "$d" "no row in the README" "a registry entry with no README row is rejected"
+write_readme "$d" '| [Other](https://github.com/other/pack) | 1 | Other. |'
+expect_fail "$d" "no row in the Community Packs table" "a registry entry with no README row is rejected"
 
 d=$(new_fixture noregentry)
-write_readme "$d" 1 "$ONE_ROW
+write_readme "$d" "$ONE_ROW
 | [Ghost](https://github.com/ghost/pack) | 1 | Not in the registry. |"
 expect_fail "$d" "no entry in catalog/skill-packs.json" "a README row with no registry entry is rejected"
 
 d=$(new_fixture countmismatch)
-write_readme "$d" 1 '| [Good Pack](https://github.com/goodowner/good-pack) | 7 | A pack. |'
-expect_fail "$d" "README says 7 skill(s) but the registry lists 2" "a skill-count mismatch is rejected"
+write_readme "$d" '| [Good Pack](https://github.com/goodowner/good-pack) | 7 | A pack. |'
+expect_fail "$d" "table says 7 skill(s) but the registry lists 2" "a skill-count mismatch is rejected"
 
 d=$(new_fixture missingpathflag)
 write_registry "$d" '[{"repo":"goodowner/good-pack","name":"Good Pack","description":"A pack.","author":"goodowner","path":"aeon-skills","skills":["alpha","beta"]}]'
@@ -204,12 +202,12 @@ expect_fail "$d" "would install the wrong subtree" "a subdirectory pack whose RE
 
 d=$(new_fixture pathok)
 write_registry "$d" '[{"repo":"goodowner/good-pack","name":"Good Pack","description":"A pack.","author":"goodowner","path":"aeon-skills","skills":["alpha","beta"]}]'
-write_readme "$d" 1 '| [Good Pack](https://github.com/goodowner/good-pack/tree/main/aeon-skills) (`--path aeon-skills`) | 2 | A pack. |'
+write_readme "$d" '| [Good Pack](https://github.com/goodowner/good-pack/tree/main/aeon-skills) (`--path aeon-skills`) | 2 | A pack. |'
 expect_ok "$d" "a subdirectory pack with a matching \`--path\` row passes"
 
 d=$(new_fixture pathmismatch)
 write_registry "$d" '[{"repo":"goodowner/good-pack","name":"Good Pack","description":"A pack.","author":"goodowner","path":"aeon-skills","skills":["alpha","beta"]}]'
-write_readme "$d" 1 '| [Good Pack](https://github.com/goodowner/good-pack) (`--path other-dir`) | 2 | A pack. |'
+write_readme "$d" '| [Good Pack](https://github.com/goodowner/good-pack) (`--path other-dir`) | 2 | A pack. |'
 expect_fail "$d" "registry \`path\` is" "a \`--path\` that disagrees with the registry is rejected"
 
 # A monorepo may publish two packs from different subdirectories — two registry
@@ -219,32 +217,26 @@ write_registry "$d" '[
   {"repo":"goodowner/good-pack","name":"One","description":"d","author":"a","path":"packs/one","skills":["alpha"]},
   {"repo":"goodowner/good-pack","name":"Two","description":"d","author":"a","path":"packs/two","skills":["beta","gamma"]}
 ]'
-write_readme "$d" 2 '| [One](https://github.com/goodowner/good-pack) (`--path packs/one`) | 1 | d |
+write_readme "$d" '| [One](https://github.com/goodowner/good-pack) (`--path packs/one`) | 1 | d |
 | [Two](https://github.com/goodowner/good-pack) (`--path packs/two`) | 2 | d |'
 expect_ok "$d" "one repo publishing two packs from different paths passes"
 
 d=$(new_fixture monorepo_unlisted)
 write_registry "$d" '[{"repo":"goodowner/good-pack","name":"One","description":"d","author":"a","path":"packs/one","skills":["alpha"]}]'
-write_readme "$d" 1 '| [One](https://github.com/goodowner/good-pack) (`--path packs/one`) | 1 | d |
+write_readme "$d" '| [One](https://github.com/goodowner/good-pack) (`--path packs/one`) | 1 | d |
 | [Two](https://github.com/goodowner/good-pack) (`--path packs/two`) | 2 | d |'
 expect_fail "$d" "no entry for this repo at path" "a second row from the same repo with no registry entry is rejected"
 
 d=$(new_fixture duperow)
-write_readme "$d" 1 "$ONE_ROW
+write_readme "$d" "$ONE_ROW
 $ONE_ROW"
-expect_fail "$d" "listed twice in the README" "the same pack listed twice in the README is rejected"
-
-d=$(new_fixture counter)
-write_readme "$d" 9 "$ONE_ROW"
-expect_fail "$d" "9 community skill packs" "a stale README pack counter is rejected"
+expect_fail "$d" "listed twice in the Community Packs table" "the same pack listed twice in the README is rejected"
 
 # The first-party packs table earlier in the real README is also `| Pack | Skills |`;
 # the parser must anchor on the Community Packs section, not the first match.
 d=$(new_fixture twotables)
 cat > "$d/README.md" <<EOF
 # Test README
-
-| **community** | **1 community skill packs** published to the registry. |
 
 ## Packs
 
@@ -259,6 +251,30 @@ cat > "$d/README.md" <<EOF
 $ONE_ROW
 EOF
 expect_ok "$d" "the first-party two-column packs table is not mistaken for the registry table"
+
+# The real table lives under "## Listed packs" in docs/community-skill-packs.md
+# (#845); the parser must anchor there too.
+d=$(new_fixture listedpacks)
+cat > "$d/README.md" <<EOF
+# Community Skill Packs
+
+## Listed packs
+
+| Pack | Skills | Description |
+|------|--------|-------------|
+$ONE_ROW
+EOF
+expect_ok "$d" "a table under a \"Listed packs\" heading is parsed"
+
+# A missing table used to warn "parity unchecked" and exit 0, which is how the
+# check went silent in CI after #845 moved it. Both cases must now fail.
+d=$(new_fixture notable)
+printf '# Community Skill Packs\n\nNo table here.\n' > "$d/README.md"
+expect_fail "$d" "registry parity cannot be checked" "a table file with no packs table is rejected"
+
+d=$(new_fixture notablefile)
+rm "$d/README.md"
+expect_fail "$d" "table file not found" "a missing table file is rejected"
 
 # ── Warnings do not fail the gate ───────────────────────────────────────────
 d=$(new_fixture unknownfield)
@@ -281,8 +297,8 @@ fi
 
 # ── The committed registry itself ───────────────────────────────────────────
 out="$(node "$V" 2>&1)"; rc=$?
-if [[ $rc -eq 0 ]]; then pass "the committed catalog/skill-packs.json conforms and matches the README"
-else bad "the committed catalog/skill-packs.json conforms and matches the README"; echo "$out" | sed 's/^/       /'; fi
+if [[ $rc -eq 0 ]]; then pass "the committed catalog/skill-packs.json conforms and matches docs/community-skill-packs.md"
+else bad "the committed catalog/skill-packs.json conforms and matches docs/community-skill-packs.md"; echo "$out" | sed 's/^/       /'; fi
 
 echo ""
 if [[ $fail -eq 0 ]]; then echo "test_validate_skill_packs: ALL PASS"; else echo "test_validate_skill_packs: FAILURES"; fi

@@ -1428,10 +1428,10 @@
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "5e5e5a92042525a0a6d31b848883a61b0310102d590499cd2fdfcf1426f6820b"
+          "hash": "606fe9225d783026992c86de771834219144fbbc953ec220ef94785456c636aa"
         }
       ],
-      "contentHash": "sha256-cf926d867b47cf47c406ff2071d54619e67b2860e3f70fb5bb39eb91bddf18c2",
+      "contentHash": "sha256-ba1b83efde596e83afd5a6db3f2f499822394203a080eb97abdd9860cf0c730d",
       "discoveredFrom": "skills/pack-submit/SKILL.md"
     },
     {

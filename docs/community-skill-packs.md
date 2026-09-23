@@ -182,13 +182,13 @@ The operator is always the trust boundary. The install script does not auto-trus
 4. `skills-pack.json` declares every skill the pack intends to install. Skills present in `skills/` but missing from the manifest are not installed.
 5. Optional but encouraged: a `README.md` that names each skill, explains scheduling assumptions, and lists any required environment variables.
 6. Run `./scripts/validate-pack.sh /path/to/your-pack-dir` (from an Aeon checkout) to pre-flight the pack locally — it runs the same structural invariants `install-skill-pack` enforces (valid `skills-pack.json`, clean slugs, no `..` in paths, present per-skill `SKILL.md`, locked-taxonomy capabilities) and exits non-zero on any blocking error. Add `--path <subdir>` if `skills-pack.json` is nested.
-7. Open a PR against `aeonfun/aeon` that does **two** things in one diff: adds a row to the **Community Skill Packs** table in the project README, AND adds a matching entry to `catalog/skill-packs.json` (the machine-readable registry — see schema below).
+7. Open a PR against `aeonfun/aeon` that does **two** things in one diff: adds a row to the [Listed packs](#listed-packs) table at the bottom of this file, AND adds a matching entry to `catalog/skill-packs.json` (the machine-readable registry - see schema below).
 
 ---
 
 ## skill-packs.json (community registry)
 
-`catalog/skill-packs.json` is the machine-readable mirror of the README's Community Skill Packs table. `bin/install-skill-pack --list` reads it; future tooling (dashboards, third-party indexers) can read it without scraping the README.
+`catalog/skill-packs.json` is the machine-readable mirror of the [Listed packs](#listed-packs) table below. `bin/install-skill-pack --list` reads it; future tooling (dashboards, third-party indexers) can read it without scraping the README.
 
 ### Registry schema
 
@@ -231,16 +231,16 @@ The operator is always the trust boundary. The install script does not auto-trus
 | `secrets_required` | string[] | optional | Aggregated list of env vars the pack's skills declare as required. Drives the `bin/install-skill-pack --list --no-secrets` filter, which hides any pack with a non-empty `secrets_required`. Keep this in sync with the union of `skills[].secrets_required` in the pack's own `skills-pack.json`. |
 | `capabilities` | string[] | optional | Aggregated blast-radius hints across the pack's skills. **Locked taxonomy** — see [docs/CAPABILITIES.md](CAPABILITIES.md) for the six allowed values and how to choose. List-only metadata: surfaces as `[caps: ...]` on `bin/install-skill-pack --list` and is taxonomy-validated at print time; not read by install (per-skill `skills[].capabilities` in the pack's own `skills-pack.json` is the source of truth at install time). Keep this in sync with the union of `skills[].capabilities`. |
 
-### Why two files (README table + skill-packs.json)?
+### Why two files (Listed packs table + skill-packs.json)?
 
-- The README table is for humans browsing GitHub.
+- The Listed packs table is for humans browsing GitHub.
 - `skill-packs.json` is for tooling: `bin/install-skill-pack --list`, dashboard widgets, third-party crawlers, future package-resolver tooling.
 
 Pack maintainers update both in the same PR so the two surfaces stay in lockstep.
 
 ### CI validates both (run it before you open the PR)
 
-`ci-skill-packs` gates every PR that touches the registry or the README:
+`ci-skill-packs` gates every PR that touches the registry or this file:
 
 ```bash
 node scripts/validate-skill-packs.mjs
@@ -249,10 +249,11 @@ node scripts/validate-skill-packs.mjs
 It fails the PR on registry shape (unparseable JSON, a `repo` that isn't
 `owner/repo`, an empty or duplicated `skills[]`, a `trust_level` outside
 `trusted|community`, a capability outside the [locked taxonomy](CAPABILITIES.md),
-a `secrets_required` entry that isn't an env var name) and on README parity (an
-entry with no table row or a row with no entry, a skill count that disagrees with
-`skills[]`, a `--path` flag that disagrees with the registry's `path`, and the
-`N community skill packs` counter in the README's Proof of work section).
+a `secrets_required` entry that isn't an env var name) and on table parity with
+the [Listed packs](#listed-packs) table in this file (an entry with no table row
+or a row with no entry, a skill count that disagrees with `skills[]`, a `--path`
+flag that disagrees with the registry's `path`). A missing table fails the gate
+too, rather than skipping the parity check.
 
 Two things to know:
 
@@ -261,10 +262,10 @@ Two things to know:
   `skills/security/trusted-sources.txt`. A `trusted` entry that isn't in that
   file advertises "security scan skipped" without ever getting it, so the gate
   rejects it. Community packs use `trust_level: community`.
-- **A subdirectory pack needs its `--path` in the README row.** If your registry
+- **A subdirectory pack needs its `--path` in the table row.** If your registry
   entry sets `path`, the table row has to show the matching
-  (`` `--path <dir>` ``) flag — otherwise the command a reader copies out of the
-  README installs the wrong subtree.
+  (`` `--path <dir>` ``) flag, otherwise the command a reader copies out of the
+  table installs the wrong subtree.
 
 Missing recommended fields (`name`, `description`, `author`) and unrecognised
 fields warn rather than fail.

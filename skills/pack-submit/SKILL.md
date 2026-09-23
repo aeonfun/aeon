@@ -31,11 +31,11 @@ If `${var}` is empty, exit `PACK_SUBMIT_NO_VAR`:
 ```
 Then stop.
 
-Today is ${today}. Your task is to take the **existing** skill named in `${var}`, wrap it in a standalone community-pack repo (its own GitHub repo with a `skills-pack.json` manifest), and **submit it to the aeon community registry** — a PR against `aeonfun/aeon` that adds both surfaces the registry demands in one diff: a row in the README's **Community Packs** table AND a matching entry in `catalog/skill-packs.json`. This is the inverse of `install-skill`: instead of pulling a community pack in, it pushes one of your own skills out for every other Aeon agent to install with `bin/install-skill-pack`.
+Today is ${today}. Your task is to take the **existing** skill named in `${var}`, wrap it in a standalone community-pack repo (its own GitHub repo with a `skills-pack.json` manifest), and **submit it to the aeon community registry** - a PR against `aeonfun/aeon` that adds both surfaces the registry demands in one diff: a row in the **Listed packs** table in `docs/community-skill-packs.md` AND a matching entry in `catalog/skill-packs.json`. This is the inverse of `install-skill`: instead of pulling a community pack in, it pushes one of your own skills out for every other Aeon agent to install with `bin/install-skill-pack`.
 
 ## What a community pack is (so you build the right thing)
 
-A community pack is a **public GitHub repo** that holds one or more skills plus a `skills-pack.json` manifest that names and versions them. `bin/install-skill-pack owner/repo` reads that manifest and installs the skills. To be **discoverable** (listed by `bin/install-skill-pack --list` and the dashboard's Community Packs panel), the pack must also be registered in `aeonfun/aeon`'s `catalog/skill-packs.json` + README table. So publishing is two moves: **(a)** stand up the pack repo, **(b)** open the registry PR. This skill does both. Full protocol: `docs/community-skill-packs.md`.
+A community pack is a **public GitHub repo** that holds one or more skills plus a `skills-pack.json` manifest that names and versions them. `bin/install-skill-pack owner/repo` reads that manifest and installs the skills. To be **discoverable** (listed by `bin/install-skill-pack --list` and the dashboard's Community Packs panel), the pack must also be registered in `aeonfun/aeon`'s `catalog/skill-packs.json` + the Listed packs table in `docs/community-skill-packs.md`. So publishing is two moves: **(a)** stand up the pack repo, **(b)** open the registry PR. This skill does both. Full protocol: `docs/community-skill-packs.md`.
 
 ## Steps
 
@@ -119,7 +119,7 @@ A community pack is a **public GitHub repo** that holds one or more skills plus 
    ```
    Capture the resulting `owner/repo` (`FULL_REPO=$(gh repo view "$PACK_REPO" --json nameWithOwner --jq .nameWithOwner)`). If repo creation fails (permission/name), exit `PACK_SUBMIT_REPO_FAILED`, notify with the `gh` error's shortest decisive line, and stop.
 
-6. **Submit the registry PR against `aeonfun/aeon`** (skip this whole step if `--no-register` was passed — then jump to step 7 reporting only the pack repo). The registry lives in the canonical repo, so work against a fork, not this instance's checkout — this instance's `catalog/skill-packs.json` can be stale, and the README counter must be accurate:
+6. **Submit the registry PR against `aeonfun/aeon`** (skip this whole step if `--no-register` was passed - then jump to step 7 reporting only the pack repo). The registry lives in the canonical repo, so work against a fork, not this instance's checkout - this instance's `catalog/skill-packs.json` and `docs/community-skill-packs.md` can be stale:
    ```bash
    WORK=$(mktemp -d)
    gh repo fork aeonfun/aeon --clone=true --default-branch-only 2>/dev/null || true
@@ -140,33 +140,31 @@ A community pack is a **public GitHub repo** that holds one or more skills plus 
    ```
    Add `secrets_required` / `capabilities` keys to that object only when the skill declares them (keep it in sync with the pack manifest). Do **not** use `trust_level: trusted` — that requires the repo to be in `skills/security/trusted-sources.txt`, and the validator rejects an unearned `trusted`.
 
-   **(b) `.github/README.md`** — add a table row under the `| Pack | Skills | Description |` header in the **Community Packs** section, and bump the `**N community skill packs**` counter (the Proof-of-work line). The row format, matching the existing rows exactly:
+   **(b) `docs/community-skill-packs.md`** - add a table row under the `| Pack | Skills | Description |` header in the **Listed packs** section (the last section of the file). The table moved there from `.github/README.md` in #845; do not edit the README. The row format, matching the existing rows exactly:
    ```
    | [<pack-repo-name>](https://github.com/<FULL_REPO>) | 1 | <one-line description, ≤110 chars>. |
    ```
-   Use `python3` for a surgical insert. **The row must land inside the table's contiguous block** — insert it immediately *after the last existing `| [` row*, not after the blank line that ends the table and not before the `**To list a pack here**` paragraph. The parity validator parses rows only until the first non-`|` line, so a row placed past the blank line is invisible to it and the PR fails CI with "in the registry but has no row in the README table". Then increment the integer in the `**N community skill packs**` counter by 1. Verify with a re-read that the row sits among the other rows and the counter moved:
+   Use `python3` for a surgical insert. **The row must land inside the table's contiguous block** - insert it immediately *after the last existing `| [` row*, never after a blank line or other text. The parity validator parses rows only until the first non-`|` line, so a row placed past the table is invisible to it and the PR fails CI with "in the registry but has no row in the Community Packs table". Verify with a re-read that the row sits among the other rows:
    ```python
    import re
-   lines = open(".github/README.md").read().split("\n")
-   sec = next(i for i,l in enumerate(lines) if re.match(r'^#+\s+Community Packs\s*$', l))
+   lines = open("docs/community-skill-packs.md").read().split("\n")
+   sec = next(i for i,l in enumerate(lines) if re.match(r'^#+\s+Listed packs\s*$', l))
    hdr = next(i for i in range(sec,len(lines)) if re.match(r'^\|\s*Pack\s*\|\s*Skills\s*\|\s*Description\s*\|', lines[i]))
    i = hdr + 2; last = i
    while i < len(lines) and lines[i].startswith("|"): last = i; i += 1   # last data row
    lines.insert(last + 1, f"| [{PACK_NAME}](https://github.com/{FULL_REPO}) | 1 | {DESC} |")
-   txt = re.sub(r'\*\*(\d+)\s+community skill packs\*\*',
-                lambda m: f"**{int(m.group(1))+1} community skill packs**", "\n".join(lines), count=1)
-   open(".github/README.md","w").write(txt)
+   open("docs/community-skill-packs.md","w").write("\n".join(lines))
    ```
 
    **Validate parity before committing** — this is the exact CI gate the PR will hit:
    ```bash
    node scripts/validate-skill-packs.mjs
    ```
-   A non-zero exit → fix the reported mismatch (skill count, a missing row, or the counter) and re-run until it prints `validate-skill-packs: OK`. Never open the PR on a red validator.
+   A non-zero exit → fix the reported mismatch (skill count, a missing row, or a `--path` flag) and re-run until it prints `validate-skill-packs: OK`. Never open the PR on a red validator.
 
    Then commit both files together, push the branch to your fork, and open the PR against the canonical repo:
    ```bash
-   git add catalog/skill-packs.json .github/README.md
+   git add catalog/skill-packs.json docs/community-skill-packs.md
    git commit -m "feat: list $TITLE community pack ($FULL_REPO)"
    git push -u origin "pack-submit/$SLUG"
    PR_URL=$(gh pr create --repo aeonfun/aeon --title "feat: list $TITLE community pack" --body "$(cat <<BODY
@@ -176,7 +174,7 @@ A community pack is a **public GitHub repo** that holds one or more skills plus 
    **Skill:** \`$SLUG\` — $DESC
    **Author:** @$OWNER · **License:** MIT · **Category:** $CATEGORY
 
-   Adds a row to the README Community Packs table and a matching \`catalog/skill-packs.json\` entry (both in this diff, per the publishing checklist). \`node scripts/validate-skill-packs.mjs\` passes locally.
+   Adds a row to the Listed packs table in \`docs/community-skill-packs.md\` and a matching \`catalog/skill-packs.json\` entry (both in this diff, per the publishing checklist). \`node scripts/validate-skill-packs.mjs\` passes locally.
 
    Install once merged:
    \`\`\`
@@ -229,5 +227,5 @@ There is no network sandbox — `git` and `gh` reach GitHub directly. `gh` is au
 - **The pack repo must be public** — the installer fetches its tarball; a private pack is uninstallable by others.
 - **Never** register with `trust_level: trusted` — that is earned via `skills/security/trusted-sources.txt`, and the validator rejects a self-declared `trusted`. Community packs use `trust_level: community`.
 - **Never** open the registry PR on a red `validate-skill-packs.mjs` — a broken registry entry takes down `bin/install-skill-pack --list` and the dashboard panel for everyone.
-- **Keep the two registry surfaces in lockstep** — the README row and the `skill-packs.json` entry ship in one diff, with matching skill counts and the counter bumped. That is what the CI gate enforces.
+- **Keep the two registry surfaces in lockstep** - the Listed packs row in `docs/community-skill-packs.md` and the `skill-packs.json` entry ship in one diff, with matching skill counts. That is what the CI gate enforces.
 - **Don't leak secret values.** The manifest lists secret **names** only (from the skill's `requires:`), never values.

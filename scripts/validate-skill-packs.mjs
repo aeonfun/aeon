@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 // validate-skill-packs.mjs — conformance checker for catalog/skill-packs.json,
-// the community pack registry, and its parity with the README's Community Packs
-// table.
+// the community pack registry, and its parity with the Listed packs table in
+// docs/community-skill-packs.md (moved out of .github/README.md in #845).
 //
 // Why this gate exists: skill-packs.json is the ONE file in the repo that is
 // routinely edited by people outside it — every pack listing lands as an
 // outside-contributor PR that hand-edits JSON (see docs/community-skill-packs.md
 // "publishing checklist"). Nothing validated it. A trailing comma, a `skill:`
-// typo, or a README row without a registry entry ships to main and breaks
+// typo, or a table row without a registry entry ships to main and breaks
 // `bin/install-skill-pack --list` (it jq's this file) and the dashboard's
 // community-packs panel (apps/dashboard/lib/packs.ts) for everyone.
 //
@@ -19,11 +19,14 @@
 //      (read out of bin/install-skill-pack so it can never drift from the
 //      installer — cf. scripts/check-capabilities-parity.sh, Issue #301).
 //
-//   2. README PARITY — every registry entry has a table row and vice versa,
+//   2. TABLE PARITY - every registry entry has a table row and vice versa,
 //      with matching skill counts and matching `--path` flags. The publishing
 //      checklist asks for both surfaces in one diff; this is what enforces it.
 //      A row whose `--path` is missing hands browsers a copy-paste CLI command
 //      that installs the wrong subtree, so path parity is an error, not a nit.
+//      A missing table file or a file with no table is also an error: after
+//      #845 moved the table, the old "parity unchecked" warning let this check
+//      skip silently in CI.
 //
 // One security-relevant check: `trust_level: trusted` is only honest if the repo
 // is actually in skills/security/trusted-sources.txt. `--list` prints its badge
@@ -38,13 +41,14 @@
 //
 // Usage:
 //   node scripts/validate-skill-packs.mjs
-//   node scripts/validate-skill-packs.mjs --registry <path> --readme <path> \
+//   node scripts/validate-skill-packs.mjs --registry <path> --table <path> \
 //        --installer <path> --trusted <path>     # fixture overrides, for tests
+//   (`--readme <path>` is still accepted as an alias of `--table`.)
 //
 // Exit 1 on any violation; exit 0 (with `validate-skill-packs: OK`) otherwise.
 
 import { readFileSync, existsSync } from 'node:fs'
-import { resolve, dirname } from 'node:path'
+import { resolve, dirname, relative, basename } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..')
@@ -56,7 +60,10 @@ const opt = (flag, fallback) => {
   return i !== -1 && args[i + 1] ? args[i + 1] : fallback
 }
 const REGISTRY = opt('--registry', resolve(ROOT, 'catalog/skill-packs.json'))
-const README = opt('--readme', resolve(ROOT, '.github/README.md'))
+// The human-readable table lives in docs/community-skill-packs.md (#845).
+// `--readme` is kept as an alias so older fixture invocations keep working.
+const TABLE = opt('--table', opt('--readme', resolve(ROOT, 'docs/community-skill-packs.md')))
+const T = basename(TABLE) // prefix for file:line references in messages
 const INSTALLER = opt('--installer', resolve(ROOT, 'bin/install-skill-pack'))
 const TRUSTED = opt('--trusted', resolve(ROOT, 'skills/security/trusted-sources.txt'))
 
@@ -108,16 +115,16 @@ function loadTrusted() {
 }
 const isTrusted = (trusted, repo) => trusted.has(repo) || trusted.has(repo.split('/')[0])
 
-// ---- README Community Packs table ----
+// ---- Community Packs table (docs/community-skill-packs.md) ----
 // Rows look like:
 //   | [name](https://github.com/owner/repo) | 2 | Description. |
 //   | [name](https://github.com/owner/repo/tree/main/sub) (`--path sub`) | 3 | … |
-// Anchored to the "## Community Packs" heading and the 3-column header, because
-// the README also carries a 2-column `| Pack | Skills |` table for the
-// first-party packs earlier in the file.
-function parseReadmeTable(text) {
+// Anchored to the "## Listed packs" (or legacy "## Community Packs") heading and
+// the 3-column header, so a 2-column `| Pack | Skills |` first-party table
+// earlier in the file is never mistaken for it.
+function parseTable(text) {
   const lines = text.split(/\r?\n/)
-  const section = lines.findIndex((l) => /^#+\s+Community Packs\s*$/i.test(l))
+  const section = lines.findIndex((l) => /^#+\s+(Community Packs|Listed packs)\s*$/i.test(l))
   const from = section === -1 ? 0 : section
   const found = lines.slice(from).findIndex((l) => /^\|\s*Pack\s*\|\s*Skills\s*\|\s*Description\s*\|/i.test(l))
   if (found === -1) return null
@@ -133,7 +140,7 @@ function parseReadmeTable(text) {
     const [pack, count] = cells
     const link = pack.match(/https:\/\/github\.com\/([A-Za-z0-9._-]+\/[A-Za-z0-9._-]+)((?:\/tree\/[^/)\s]+\/([^)\s]+))?)/)
     if (!link) {
-      err(`README: Community Packs row has no github.com/<owner>/<repo> link — "${pack}"`)
+      err(`${T}: Community Packs row has no github.com/<owner>/<repo> link - "${pack}"`)
       continue
     }
     const flag = pack.match(/--path\s+([^\s`)]+)/)
@@ -283,21 +290,23 @@ registry.packs.forEach((pack, i) => {
   }
 })
 
-// ---- README parity ----
-if (!existsSync(README)) {
-  warn(`README not found at ${README} — parity unchecked`)
+// ---- table parity ----
+// Both of these are hard failures: a warning here is how the check went quiet
+// in CI for every PR after #845 moved the table out of .github/README.md.
+if (!existsSync(TABLE)) {
+  err(`Community Packs table file not found at ${TABLE} - point --table at the file that holds the "| Pack | Skills | Description |" table`)
 } else {
-  const readmeText = readFileSync(README, 'utf8')
-  const rows = parseReadmeTable(readmeText)
+  const tableText = readFileSync(TABLE, 'utf8')
+  const rows = parseTable(tableText)
 
   if (rows === null) {
-    warn('README has no "| Pack | Skills | Description |" table — parity unchecked')
+    err(`${TABLE} has no "| Pack | Skills | Description |" table - registry parity cannot be checked`)
   } else {
     // A repo may legitimately appear more than once (a monorepo publishing two
     // packs from different subdirectories), so rows are matched on repo+path
     // first and fall back to the repo when it has exactly one row — that
     // fallback is what lets the path checks below report a useful mismatch
-    // instead of a bare "no README row".
+    // instead of a bare "no table row".
     const rowsByRepo = new Map()
     for (const r of rows) {
       if (!rowsByRepo.has(r.repo)) rowsByRepo.set(r.repo, [])
@@ -306,7 +315,7 @@ if (!existsSync(README)) {
     for (const [repo, group] of rowsByRepo) {
       const paths = new Set(group.map((r) => r.path))
       if (paths.size !== group.length) {
-        err(`${repo}: listed twice in the README Community Packs table with the same path (README:${group.map((r) => r.line).join(', ')})`)
+        err(`${repo}: listed twice in the Community Packs table with the same path (${T}:${group.map((r) => r.line).join(', ')})`)
       }
     }
 
@@ -321,22 +330,22 @@ if (!existsSync(README)) {
       const row = group.find((r) => r.path === wantPath) ?? (group.length === 1 ? group[0] : undefined)
       if (row) claimed.add(row)
       if (!row) {
-        err(`${pack.repo}: in the registry but has no row in the README Community Packs table — the publishing checklist asks for both in one diff`)
+        err(`${pack.repo}: in the registry but has no row in the Community Packs table - the publishing checklist asks for both in one diff`)
         continue
       }
       const count = Array.isArray(pack.skills) ? pack.skills.length : null
       if (row.count === null) {
-        err(`${pack.repo}: README row Skills column is not a number ("${row.rawCount}", README:${row.line})`)
+        err(`${pack.repo}: table row Skills column is not a number ("${row.rawCount}", ${T}:${row.line})`)
       } else if (count !== null && row.count !== count) {
-        err(`${pack.repo}: README says ${row.count} skill(s) but the registry lists ${count} (README:${row.line})`)
+        err(`${pack.repo}: table says ${row.count} skill(s) but the registry lists ${count} (${T}:${row.line})`)
       }
 
       if (wantPath && !row.hasFlag) {
-        err(`${pack.repo}: registry \`path: "${wantPath}"\` but the README row shows no (\`--path ${wantPath}\`) — the copy-paste command would install the wrong subtree (README:${row.line})`)
+        err(`${pack.repo}: registry \`path: "${wantPath}"\` but the table row shows no (\`--path ${wantPath}\`) - the copy-paste command would install the wrong subtree (${T}:${row.line})`)
       } else if (wantPath !== row.path) {
-        err(`${pack.repo}: registry \`path\` is ${JSON.stringify(wantPath)} but the README row says ${JSON.stringify(row.path)} (README:${row.line})`)
+        err(`${pack.repo}: registry \`path\` is ${JSON.stringify(wantPath)} but the table row says ${JSON.stringify(row.path)} (${T}:${row.line})`)
       } else if (row.treePath && row.treePath !== wantPath) {
-        err(`${pack.repo}: README link points into /tree/…/${row.treePath} but the registry \`path\` is ${JSON.stringify(wantPath)} (README:${row.line})`)
+        err(`${pack.repo}: table link points into /tree/…/${row.treePath} but the registry \`path\` is ${JSON.stringify(wantPath)} (${T}:${row.line})`)
       }
     }
 
@@ -345,18 +354,9 @@ if (!existsSync(README)) {
     for (const row of rows) {
       if (claimed.has(row)) continue
       const hint = registryRepos.has(row.repo) ? ` — the registry has no entry for this repo at path ${JSON.stringify(row.path)}` : ''
-      err(`${row.repo}: has a README Community Packs row but no entry in catalog/skill-packs.json (README:${row.line})${hint} — \`bin/install-skill-pack --list\` and the dashboard would not show it`)
-    }
-
-    // The proof-of-work counter drifts every time a pack lands. Only enforced
-    // when the sentence is present and parseable, so a reword can't false-fail.
-    const counter = readmeText.match(/\*\*(\d+)\s+community skill packs\*\*/)
-    if (!counter) {
-      warn('README has no "**N community skill packs**" counter — count parity unchecked')
-    } else if (Number(counter[1]) !== registry.packs.length) {
-      err(`README claims "${counter[1]} community skill packs" but the registry lists ${registry.packs.length} — update the Proof of work line`)
+      err(`${row.repo}: has a Community Packs table row but no entry in catalog/skill-packs.json (${T}:${row.line})${hint} - \`bin/install-skill-pack --list\` and the dashboard would not show it`)
     }
   }
 }
 
-done(`${registry.packs.length} pack(s) in the registry conform and match the README table`)
+done(`${registry.packs.length} pack(s) in the registry conform and match the table in ${relative(ROOT, TABLE) || TABLE}`)

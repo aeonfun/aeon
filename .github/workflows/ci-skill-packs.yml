@@ -3,13 +3,14 @@ name: ci-skill-packs
 # catalog/skill-packs.json is the community pack registry — and the one file in
 # this repo that is routinely hand-edited by people outside it. Every listing
 # arrives as an outside-contributor PR that must touch TWO surfaces in one diff
-# (docs/community-skill-packs.md publishing checklist): a row in the README's
-# Community Packs table and a matching registry entry. Nothing checked either.
+# (docs/community-skill-packs.md publishing checklist): a row in the Listed packs
+# table in docs/community-skill-packs.md (moved out of .github/README.md in #845)
+# and a matching registry entry. Nothing checked either.
 #
 # What shipping a bad edit costs: `bin/install-skill-pack --list` jq's this file
 # directly, and the dashboard's community-packs panel fetches it
 # (apps/dashboard/lib/packs.ts) — so one trailing comma breaks pack discovery for
-# every Aeon fork, not just this repo. A README row with no registry entry is
+# every Aeon fork, not just this repo. A table row with no registry entry is
 # invisible to both. A `--path` flag that disagrees with the registry hands
 # browsers a copy-paste command that installs the wrong subtree.
 #
@@ -29,7 +30,7 @@ on:
   pull_request:
     paths:
       - 'catalog/skill-packs.json'
-      - '.github/README.md'
+      - 'docs/community-skill-packs.md'
       - 'bin/install-skill-pack'
       - 'skills/security/trusted-sources.txt'
       - 'scripts/validate-skill-packs.mjs'
@@ -38,7 +39,7 @@ on:
     branches: [main]
     paths:
       - 'catalog/skill-packs.json'
-      - '.github/README.md'
+      - 'docs/community-skill-packs.md'
       - 'bin/install-skill-pack'
       - 'skills/security/trusted-sources.txt'
       - 'scripts/validate-skill-packs.mjs'
@@ -58,5 +59,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - name: Validate the community pack registry and its README parity
+      - name: Validate the community pack registry and its docs table parity
         run: node scripts/validate-skill-packs.mjs

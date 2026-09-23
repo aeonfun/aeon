@@ -38,7 +38,7 @@
 - [ ] Pack has a `skills-pack.json` manifest at its root and a `SKILL.md` per skill
 - [ ] Write / onchain / bet skills are `default_enabled: false`
 - [ ] This PR adds **both** a README table row and a matching `skill-packs.json` entry
-- [ ] `node scripts/validate-skill-packs.mjs` passes (registry shape + README parity, incl. the pack counter)
+- [ ] `node scripts/validate-skill-packs.mjs` passes (registry shape + parity with the Listed packs table in docs/community-skill-packs.md)
 - [ ] No monkey-patching of Aeon internals; no private or auth-walled endpoints required to run
 
 ### Core fix (dashboard / scripts / workflows / docs)

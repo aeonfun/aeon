@@ -13,7 +13,7 @@ Eight `ci-*.yml` workflows. Every one is **path-filtered** and fires on `pull_re
 | `ci-packs-json` | `catalog/packs.config.json`, **`catalog/skills.json`**, `bin/generate-packs-json`, `catalog/packs.json` | pack catalog == fresh regen; every skill in exactly one pack | `bin/generate-packs-json` |
 | `ci-tests` | `scripts/**`, `aeon.yml` | the 13 `scripts/tests/` suites + config validation | see below |
 | `ci-capabilities-parity` | `bin/install-skill-pack`, `docs/CAPABILITIES.md` | capabilities taxonomy in sync across both | `bash scripts/check-capabilities-parity.sh` |
-| `ci-skill-packs` | `catalog/skill-packs.json`, `.github/README.md`, `bin/install-skill-pack`, `skills/security/trusted-sources.txt` | community registry well-formed + matches README table; no unbacked `trust_level: trusted` | `node scripts/validate-skill-packs.mjs` |
+| `ci-skill-packs` | `catalog/skill-packs.json`, `docs/community-skill-packs.md`, `bin/install-skill-pack`, `skills/security/trusted-sources.txt` | community registry well-formed + matches the Listed packs table in `docs/community-skill-packs.md`; no unbacked `trust_level: trusted` | `node scripts/validate-skill-packs.mjs` |
 | `ci-agents-md` | `STRATEGY.md`, `AGENTS.md`, `scripts/gen-agents-md.js` | `AGENTS.md` regenerated from `STRATEGY.md` | `node scripts/gen-agents-md.js --check` |
 | `ci-apps` | `apps/**` | dashboard typecheck+test+build, cli typecheck, mcp-server build, webhook bundle | per app, see below |
 
