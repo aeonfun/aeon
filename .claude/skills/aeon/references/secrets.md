@@ -43,6 +43,7 @@ The first two are the direct-to-Anthropic options; the rest are gateways. Settin
 | `USEPOD_TOKEN` | usepod.ai — token is embedded in the base URL, treat as secret |
 | `VENICE_API_KEY` | venice.ai/settings/api — routed through a local translator sidecar |
 | `SURPLUS_API_KEY` | surplusintelligence.ai — `inf_…`, settles USDC on Base. Fund the wallet and `approve()` once before first use |
+| `HIVEMINDOS_CREDIT_TOKEN` | HivemindOS Models - a credit token billed to a balance, not a provider account. Routed through a local translator sidecar. Not in the dashboard modal yet; set it with `gh secret set` |
 | `XAI_API_KEY` | console.x.ai — `xai-…`. Triple duty: X/tweet skills, the Grok gateway, and API-key auth for the grok harness |
 | `GROK_CREDENTIALS` | Dashboard → AUTH → **Connect X account**. Base64 of your `~/.grok` session; runs the grok harness on a SuperGrok / X Premium+ entitlement. No CLI path for this one |
 
@@ -126,3 +127,7 @@ Set with `gh variable set NAME "value"`.
 | `LANGFUSE_LOG_CONTENT` | `0` = metadata only, no prompt bodies |
 | `DISCORD_ALLOWED_AUTHOR_ID` / `SLACK_ALLOWED_USER_ID` | Restrict who can command the agent inbound |
 | `VENICE_BASE_URL` | Point Venice at a compatible endpoint |
+| `HIVEMINDOS_MODEL` | HivemindOS catalog id (default `inclusionai/ling-3.0-flash`); native `claude-*`/`grok-*` ids fall back to the default |
+| `HIVEMINDOS_BASE_URL` | Point HivemindOS at another deployment |
+| `HIVEMINDOS_MAX_TOKENS` | Per-call completion cap on the HivemindOS gateway (default 4096, `0` disables; empty = default) |
+| `HIVEMINDOS_REASONING` | `keep` sends Claude Code's reasoning-off flag as asked, on a model that honours it |

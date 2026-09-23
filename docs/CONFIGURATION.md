@@ -165,18 +165,18 @@ Per-skill execution state (`memory/cron-state.json` — status, success rate, qu
   <img src="../docs/assets/providers.jpg" alt="9 ways to power Claude Code: Claude subscription, Anthropic API, OpenRouter, Bankr, UsePod, Venice, Surplus, Grok, GLM" width="640" />
 </p>
 
-Aeon can power Claude Code **nine** ways. Two are **direct** to Anthropic; the other seven route through a **gateway**. Add a credential in the dashboard's Authenticate modal and it's saved as the secret below. (Separately, the [Grok Build harness](harnesses.md) runs the `grok` CLI instead of Claude Code - that's a different axis from the gateways here.)
+Aeon can power Claude Code **ten** ways. Two are **direct** to Anthropic; the other eight route through a **gateway**. Add a credential in the dashboard's Authenticate modal and it's saved as the secret below (HivemindOS is not in the modal yet - set `HIVEMINDOS_CREDIT_TOKEN` as a repo secret directly). (Separately, the [Grok Build harness](harnesses.md) runs the `grok` CLI instead of Claude Code - that's a different axis from the gateways here.)
 
 **Routing is automatic.** `aeon.yml` ships `gateway: { provider: auto }`, and each run resolves the live provider from *whichever secrets are set*, in priority order - so adding or removing a key changes routing with no re-config:
 
 ```
 claude (CLAUDE_CODE_OAUTH_TOKEN) → anthropic (ANTHROPIC_API_KEY) →
-openrouter → bankr → usepod → venice → surplus → grok → glm → direct (fallback)
+openrouter → bankr → usepod → venice → surplus → grok → glm → hivemindos → direct (fallback)
 ```
 
 It runs as a **cascade**: the highest-priority provider whose key is set goes first, and on **any** failure (no credits, rate limit, outage, dud response) the run automatically falls over to the next provider whose key is set - so a dead provider degrades gracefully instead of failing the run, and it only errors out if *every* provider fails. The log prints `Routing attempt via '<provider>'` per hop (and `ran via fallback provider …` when it recovers).
 
-Override the order with the repo variable **`GATEWAY_ORDER`** (space-separated names), or pin a single provider (which disables failover) by setting `gateway.provider` to `direct`/`bankr`/`openrouter`/`usepod`/`venice`/`surplus`/`grok`/`glm` explicitly.
+Override the order with the repo variable **`GATEWAY_ORDER`** (space-separated names), or pin a single provider (which disables failover) by setting `gateway.provider` to `direct`/`bankr`/`openrouter`/`usepod`/`venice`/`surplus`/`grok`/`glm`/`hivemindos` explicitly.
 
 **Direct (`provider: direct`)** - the two Anthropic-native modes from [Authentication](../.github/README.md#authentication) in the README (Claude subscription via `CLAUDE_CODE_OAUTH_TOKEN`, Anthropic API via `ANTHROPIC_API_KEY`), no middleman. Point `ANTHROPIC_API_KEY` at any Anthropic-compatible endpoint with the `ANTHROPIC_BASE_URL` variable.
 
@@ -191,6 +191,7 @@ Override the order with the repo variable **`GATEWAY_ORDER`** (space-separated n
 | <img src="https://icons.duckduckgo.com/ip3/surplusintelligence.ai.ico" width="16" valign="middle"> [Surplus](https://surplusintelligence.ai) | `SURPLUS_API_KEY` | Routed via The Bridge; settles in USDC on Base - fund the wallet + `approve()` once before use |
 | <img src="https://icons.duckduckgo.com/ip3/x.ai.ico" width="16" valign="middle"> [Grok (xAI)](https://x.ai/api) | `XAI_API_KEY` | Anthropic-native passthrough to `api.x.ai`; the `xai-…` key is auto-detected. Set the model with the `GROK_MODEL` repo variable. Same key also powers the [grok harness](harnesses.md) |
 | <img src="https://icons.duckduckgo.com/ip3/z.ai.ico" width="16" valign="middle"> [GLM (Z.AI)](https://z.ai) | `GLM_API_KEY` | Anthropic-native passthrough to `api.z.ai/api/anthropic`. No key prefix - pick GLM in Authenticate. Alias `ZAI_API_KEY`. Set the model with `GLM_MODEL` (default `glm-5.2`). Pin reasoning depth with `GLM_REASONING_EFFORT` (`low` / `high` / `max`, default `high`). Pin with `gateway.provider: glm`. `harness: glm` is a dead name. |
+| <img src="https://icons.duckduckgo.com/ip3/hivemindos.liamvisionary.com.ico" width="16" valign="middle"> [HivemindOS Models](https://hivemindos.liamvisionary.com) | `HIVEMINDOS_CREDIT_TOKEN` | Billed to a **credit balance** instead of a provider account of your own, so an engine can be handed to someone who holds no provider keys. OpenAI-compatible, bridged via the claude-code-router sidecar plus `scripts/ccr-hivemindos.js` (per-request `Idempotency-Key`, JSON answer replayed as SSE). Set the model with `HIVEMINDOS_MODEL` (default `inclusionai/ling-3.0-flash`; native `claude-*`/`grok-*` ids fall back to it), point at another deployment with `HIVEMINDOS_BASE_URL`, cap each call with `HIVEMINDOS_MAX_TOKENS` (default 4096, `0` disables; an empty variable means the default), and `HIVEMINDOS_REASONING=keep` on a model that honours reasoning-off. Pin with `gateway.provider: hivemindos`; under `auto` the token alone resolves, last in the cascade. Not in the dashboard Authenticate modal yet - set the secret directly. |
 
 #### Adding a gateway
 

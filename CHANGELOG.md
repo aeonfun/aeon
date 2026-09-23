@@ -11,6 +11,42 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Added
 
+- **New `create-prove` skill (Dev & Code): `dev-loop` now needs live behavioral proof.** A clean
+  review only proves the diff. After review (and the bounded repair pass, if one ran) comes back
+  clean, `create-prove` dispatches the changed skill for real at the PR's immutable head, waits for
+  a completed run, and requires a SHA-bound `aeon-proof` receipt before the chain reports success;
+  with no receipt the chain records `chain_status=proof-missing` (excluded from skill-health's
+  lifetime ratio). v1 scope is narrow on purpose: Aeon-shaped PRs that change exactly one
+  `skills/<slug>/SKILL.md`; unsupported shapes fail closed. `dev-loop`'s `max_dispatches` goes 4 to
+  5, and the codex adapter can now write to the notification staging dir. A same-day follow-up
+  closes the review gaps: the failure-log commit step is skipped for `prove-*` dispatches so a proof
+  run never pushes onto the head it is proving. Catalog 82 to 83. (#1075, #1078)
+- **New `arc-studio` skill (Dev & Code).** Drives Circle Arc Studio from a headless runner: start
+  one Arc testnet turn detached, poll it on a later run, answer `needs_input`, and notify on finish.
+  Read-only tier, needs `ARC_STUDIO_TOKEN`; the pinned `@circle-fin/arc-studio-cli` is cached and
+  installed only when this skill runs, and a one-shot driver owns the `memory/arc-studio.json` state
+  write. A missing or invalid token fails the run instead of going green. Disabled by default.
+  Catalog 83 to 84. (#1082)
+- **HivemindOS Models gateway (`gateway.provider: hivemindos`).** Runs Claude Code on a credit
+  balance instead of a provider account: set `HIVEMINDOS_CREDIT_TOKEN` and each run is billed to it.
+  A sidecar arm like `surplus` and `venice`, plus a `scripts/ccr-hivemindos.js` transformer that adds
+  a per-request `Idempotency-Key` and replays the endpoint's JSON answer as SSE. Tunables:
+  `HIVEMINDOS_MODEL` (default `inclusionai/ling-3.0-flash`; native `claude-*`/`grok-*` ids fall back
+  to it), `HIVEMINDOS_BASE_URL`, `HIVEMINDOS_MAX_TOKENS` (default 4096, `0` disables),
+  `HIVEMINDOS_REASONING=keep`. Under `auto` the token alone resolves, last in the cascade. Not in the
+  dashboard Authenticate modal yet, so set the secret directly. (#1079)
+- **Telegram `[dev-loop::ship]` reply starts the `dev-loop` chain.** The force-reply router now
+  sends a `[dev-loop::ship]` reply to `chain-runner.yml -f chain=dev-loop` instead of a single
+  `aeon.yml` skill dispatch. It accepts an owned `owner/repo`, a GitHub issue URL, or
+  `external:owner/repo[#N]`, and rejects anything else before dispatch. (#1076, #1078)
+- **`idea-pipeline` gains an `offer:<owner/repo or issue-url>` entry point.** It confirms push
+  access, sends a real force-reply prompt that routes into `dev-loop`, and only claims the offer was
+  made when the queued payload really carries `force_reply`. `pick:` is unchanged but now points the
+  operator at `offer:`. (#1077)
+- **Claim Audit community pack listed.** `richard7463/aeon-skill-pack-claim-audit` adds one meta
+  skill, `claim-audit`, that audits whether the claims in an instance's own notifications are true
+  against the sources behind them. (#1085)
+
 - **New `sc-audit` skill (Dev & Code).** A deep smart-contract audit skill: point it at a
   Solidity GitHub repo, a live on-chain address (`<chain>:0x...`, with verified-source fetch
   plus proxy/owner/funds-at-risk context), or a bundled fixture. It models the protocol
@@ -60,6 +96,16 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Changed
 
+- **Pack installers normalize non-cron schedules.** A pack declaring `"schedule": "daily"` used to
+  install a skill that never ran (the scheduler needs 5 cron fields). `install-skill-pack`,
+  `add-skill` and `install-from-atrium` now map `hourly`/`daily`/`weekly`/`monthly`/`yearly` (and
+  `@daily` style) to their standard cron, fall back to `0 12 * * *` for anything else, and print a
+  warning whenever they rewrite a schedule. `validate-pack.sh` reuses the same helper. (#1087)
+- **Community pack parity check points at the real table.** `scripts/validate-skill-packs.mjs` now
+  reads `docs/community-skill-packs.md` (new `--table` flag; `--readme` kept as an alias), and a
+  missing table is a hard failure instead of a silent warning. The check had been skipped since
+  the table moved out of the README. (#1086)
+
 - **`vuln-scanner` disclosure routing hardened.** A new SECURITY.md-first intake step resolves
   the repo's designated channel (vendor PSIRT / bug-bounty portal, then security email, then an
   explicit GitHub PVR, including the org-level `{owner}/.github` fallback) before the finding-type
@@ -85,6 +131,14 @@ from or pin to; the template keeps serving the latest `main` to new forks.
   showcase hooks in `aeonfun/univ4-hooks` carried the fee. (#1035)
 
 ### Fixed
+
+- **`HIVEMINDOS_MAX_TOKENS` unset now means the 4096 default, not "no cap".** The workflow passes
+  an unset repo variable through as an empty string, which read as `0` and removed the cap on every
+  run, raising each call's credit hold. Empty or whitespace now means "not set"; an explicit `0`
+  still disables the cap. (#1080)
+- **`hunter-22` no longer reports expired bounties.** `POST /match` has no `hideExpired` option, so
+  match responses now pass through a deterministic expiration gate before triage; expired or
+  malformed deadlines are dropped and malformed responses fail closed. (#1084)
 
 - **Reflected XSS in the dashboard MCP OAuth callback (GHSA-gh95-xx4q-qch8).** `GET
   /api/mcp-auth/callback` interpolated attacker-controlled `error` / `error_description` query

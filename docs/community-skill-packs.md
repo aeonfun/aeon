@@ -87,7 +87,7 @@ The manifest lives at the pack root (or under `--path <subdir>` if the pack is n
 | `skills[].path` | string | optional | Path to the skill's **directory** inside the pack repo (relative). Defaults to `skills/<slug>`. May not contain `..`. A path ending in `/SKILL.md` is accepted and its parent directory used, but write the directory. |
 | `skills[].description` | string | optional | Falls back to the SKILL.md frontmatter `description:`. |
 | `skills[].category` | string | optional | One of `research`, `dev`, `crypto`, `social`, `productivity`. Defaults to `research` in `skills.json`. |
-| `skills[].schedule` | string | optional | Cron string written into `aeon.yml`. Default `0 12 * * *`. |
+| `skills[].schedule` | string | optional | Cron string written into `aeon.yml`. Default `0 12 * * *`. Must be 5 cron fields, `workflow_dispatch`, or `reactive`: the installer rewrites `hourly`/`daily`/`weekly`/`monthly`/`yearly` (and `@daily` style) to their standard cron and anything else to the default, with a warning, and `validate-pack.sh` flags both. |
 | `skills[].default_enabled` | boolean | optional | If `true`, the skill is added to `aeon.yml` with `enabled: true`. Default `false` (operator opts in explicitly). |
 | `skills[].secrets_required` | string[] | optional | Env vars the skill **cannot run without** (e.g. API keys). `install-skill-pack` warns loudly when any are unset before the first scheduled run, but does **not** gate the install — an operator may install dry-run or wire the secret afterward. |
 | `skills[].secrets_optional` | string[] | optional | Env vars that tune behaviour but aren't required (e.g. a model override). Surfaced at install for visibility; informational only. |
