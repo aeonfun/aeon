@@ -292,3 +292,4 @@ Community skill packs live in their own repos and install as one bundle. The aut
 | [CultOS Aeon Skills](https://github.com/thesmithdao/cultos-aeon-skills) | 1 | Read-only exact-commit pull-request reviews for CultOS ACP jobs. |
 | [aeon-skill-pack-farcaster](https://github.com/amritmirch/aeon-skill-pack-farcaster) | 1 | Publish to Farcaster via Neynar: drafted for review, posted behind a kill-switch, daily cap, dedup ledger, and a 1024-byte protocol check. |
 | [aeon-skill-pack-spoolis](https://github.com/jsfranklin221/aeon-skill-pack-spoolis) | 1 | Verify delivered work against acceptance criteria: signed Outcome Receipt, per-unit earned value, chain verdict. Keyless sandbox. |
+| [aeon-skill-pack-claim-audit](https://github.com/richard7463/aeon-skill-pack-claim-audit) | 1 | Check whether what your instance reported is true: re-verify every claim at its source, grade E0-E4. |

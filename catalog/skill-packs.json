@@ -274,6 +274,23 @@
       "skills": [
         "spoolis-outcome-gate"
       ]
+    },
+    {
+      "repo": "richard7463/aeon-skill-pack-claim-audit",
+      "name": "Claim Audit",
+      "description": "Truth-of-what-was-said for an unattended instance: extract the checkable claims from recent run logs, re-verify each at its own authoritative source, grade the evidence E0-E4, and contradict the ones that do not survive. Notifies only on a contradiction or a state change.",
+      "author": "richard7463",
+      "license": "MIT",
+      "homepage": "https://github.com/richard7463/aeon-skill-pack-claim-audit",
+      "category": "dev",
+      "trust_level": "community",
+      "skills": [
+        "claim-audit"
+      ],
+      "capabilities": [
+        "external_api",
+        "sends_notifications"
+      ]
     }
   ]
 }
