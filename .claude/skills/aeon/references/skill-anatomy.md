@@ -1,10 +1,10 @@
 # How Aeon skills are actually written
 
-Surveyed across all 84 skills in `aeonfun/aeon`. Frequencies are real counts — match the dominant convention unless there's a reason not to. Bodies run 133–757 lines (~306 median); a skill is a prompt, not a config file, and reads as prose.
+Surveyed across all 84 skills in `aeonfun/aeon`. Frequencies are real counts - match the dominant convention unless there's a reason not to. Bodies run 14–1228 lines (~221 median); a skill is a prompt, not a config file, and reads as prose.
 
 ## Frontmatter
 
-Universal — **all 84 skills** carry these five:
+Near-universal - **all 84 skills** carry `name`, `description`, `category`, and `tags`; 76 also carry `title` (the other 8 fall back to the slug):
 
 ```yaml
 name: my-skill       # the slug (matches the skills/<slug>/ directory)
@@ -19,14 +19,14 @@ Then, in descending real-world use:
 
 | Field | Used by | Meaning |
 |---|---|---|
-| `var:` | 56 | the operator-tunable knob (topic, filter, mode). Default value; `./aeon skills set <name> --var` overrides at run time |
-| `requires:` | 28 | API keys to inject. **This is an allowlist** — see the trap below |
-| `mode:` | 17 | `read-only` (10) or `write` (7). **Absent = `write`** |
-| `permissions:` | 12 | GitHub token scopes, e.g. `contents:write`, `pull-requests:write` |
-| `commits:` | 12 | `true` (9) / `false` (3) — whether the run may commit |
-| `capabilities:` | 10 | declared blast radius, e.g. `external_api`, `sends_notifications`. Taxonomy locked by `ci-capabilities-parity` |
-| `mcp:` | 4 | MCP servers the skill needs — **catalog metadata only, gates nothing at run time** (`references/mcp.md`) |
-| `depends_on:` | 3 | other skills, for chain ordering |
+| `var:` | 79 | the operator-tunable knob (topic, filter, mode). Default value; `./aeon skills set <name> --var` overrides at run time |
+| `requires:` | 40 | API keys to inject. **This is an allowlist** - see the trap below |
+| `mode:` | 36 | `read-only` (20) or `write` (16). **Absent = `write`** |
+| `capabilities:` | 27 | declared blast radius, e.g. `external_api`, `sends_notifications`. Taxonomy locked by `ci-capabilities-parity` |
+| `commits:` | 13 | `true` (9) / `false` (4) - whether the run may commit |
+| `permissions:` | 10 | GitHub token scopes, e.g. `contents:write`, `pull-requests:write` |
+| `mcp:` | 8 | MCP servers the skill needs - **catalog metadata only, gates nothing at run time** (`references/mcp.md`) |
+| `depends_on:` | 4 | other skills, for chain ordering |
 
 ### Trap 1 — `requires:` injects only names that pass the filter
 
@@ -47,7 +47,7 @@ This is **least-privilege secret injection**: the run exports only the keys list
 
 ### Trap 3 — `schedule:` / `cron:` in frontmatter does nothing
 
-10 skills carry one (`schedule: "0 14 * * *"`, `cron: "0 9,15 * * *"`). Nothing reads it. `.github/workflows/scheduler.yml` parses **`aeon.yml` only** (`done < aeon.yml`). Those lines are stale documentation. Never set a schedule by editing `SKILL.md`, and don't trust one you find there — check `aeon.yml`.
+13 skills carry one (`schedule: "0 14 * * *"`, `cron: "0 9,15 * * *"`). Nothing reads it. `.github/workflows/scheduler.yml` parses **`aeon.yml` only** (`done < aeon.yml`). Those lines are stale documentation. Never set a schedule by editing `SKILL.md`, and don't trust one you find there - check `aeon.yml`.
 
 ## Body structure
 
@@ -55,13 +55,13 @@ The dominant shape, by heading frequency:
 
 | Heading | Skills | Purpose |
 |---|---|---|
-| `## Steps` | 40 | the numbered procedure — the core of the skill |
-| `## Network note` | 39 | how to fetch: curl vs WebFetch vs `./secretcurl` vs `gh api` |
-| `## Constraints` | 29 | judgment rules, what not to do |
-| `## Log` | 14 | the exact `memory/logs/` shape to append |
-| `## Environment Variables` | 11 | one line per key in `requires:`, saying what degrades without it |
-| `## Why this skill exists` | 9 | intent, so later edits don't erode it |
-| `## Exit taxonomy` | 6 | the named ways it can end (incl. silent exits) |
+| `## Network note` | 53 | how to fetch: curl vs WebFetch vs `./secretcurl` vs `gh api` |
+| `## Steps` | 52 | the numbered procedure - the core of the skill |
+| `## Constraints` | 40 | judgment rules, what not to do |
+| `## Log` | 22 | the exact `memory/logs/` shape to append |
+| `## Environment Variables` | 19 | one line per key in `requires:`, saying what degrades without it |
+| `## Exit taxonomy` | 13 | the named ways it can end (incl. silent exits) |
+| `## Why this skill exists` | 10 | intent, so later edits don't erode it |
 
 Open with the date/var line, close with notify + log:
 
@@ -87,14 +87,14 @@ var=<value>
 
 ## Calling external scripts
 
-**These do not exist in the repo.** The workflow copies them to the repo root before each run (`.github/workflows/aeon.yml:435-444`), which is why `ls` shows no `notify` but 61 skills call `./notify`. Don't "fix" the missing file, and don't expect them locally.
+**These do not exist in the repo.** The workflow copies them to the repo root before each run (`.github/workflows/aeon.yml:904-913`), which is why `ls` shows no `notify` but 75 skills call `./notify`. Don't "fix" the missing file, and don't expect them locally.
 
 | Call | Skills | Notes |
 |---|---|---|
-| `./notify "msg"` / `./notify -f body.md` | 57 | `-f` for anything multi-line. Structured form: `--title`, `--severity {info,success,warn,critical}`, `--link`. Falls back to `.pending-notify/` when the sandbox blocks outbound curl |
-| `WebFetch` | 41 | preferred fallback for a flaky public GET |
-| `./secretcurl` | 28 | authenticated curl — **the only safe way to use a key** |
-| `gh api` | 24 | handles GitHub auth internally; prefer over raw curl for repo metadata |
+| `./notify "msg"` / `./notify -f body.md` | 75 | `-f` for anything multi-line. Structured form: `--title`, `--severity {info,success,warn,critical}`, `--link`. Falls back to `.pending-notify/` when the sandbox blocks outbound curl |
+| `WebFetch` | 45 | preferred fallback for a flaky public GET |
+| `./secretcurl` | 34 | authenticated curl - **the only safe way to use a key** |
+| `gh api` | 34 | handles GitHub auth internally; prefer over raw curl for repo metadata |
 
 ### `./secretcurl` and the `{ENV_NAME}` placeholder
 
@@ -113,7 +113,7 @@ There is **no network sandbox** — plain `curl` works for unauthenticated GETs.
 
 `memory/` is the durable state that survives between runs. Four conventions, in order of how often skills touch them:
 
-### `memory/logs/${today}.md` — the run log (66 of 84 skills)
+### `memory/logs/${today}.md` - the run log (68 of 84 skills)
 
 Every skill appends what it did, under **one** heading that is exactly its slug:
 
@@ -128,7 +128,7 @@ The `### <skill-name>` shape is load-bearing — the health/heartbeat loop parse
 
 This is also the **dedup substrate**. The standard rule, and the one to add to any new skill: *read the last 3 days of `memory/logs/` and skip anything already reported.* Without it a daily skill re-reports the same item until it's muted.
 
-### `memory/MEMORY.md` — the durable index (87 references)
+### `memory/MEMORY.md` - the durable index (137 references across 58 skills)
 
 Long-lived facts, not run history. Skills read it for context; the `memory-flush` skill promotes important log lines into it and prunes stale ones. Don't append per-run noise here — that's what `logs/` is for.
 
@@ -136,6 +136,6 @@ Long-lived facts, not run history. Skills read it for context; the `memory-flush
 
 Skills that track things across runs own a file: `memory/watched-repos.md`, `memory/products.md`, `memory/instances.json`, `memory/on-chain-watches`, `memory/pending-disclosures/`, `memory/issues/INDEX.md`. Read-modify-write the one your skill owns; don't invent a parallel store.
 
-### Not for skills: `memory/cron-state.json`
+### Read-only for skills: `memory/cron-state.json`
 
-Scheduler bookkeeping, written by `scripts/state_store.sh` (append-only via GitHub Issue comments, folded by `state_reduce.py`). **Zero skills call it directly** — it's infrastructure. Leave it alone.
+Scheduler bookkeeping, written by `scripts/state_store.sh` (append-only via GitHub Issue comments, folded by `state_reduce.py`). **No skill updates it** - it's infrastructure. 10 health and reporting skills read it (`heartbeat`, `skill-health`, `skill-repair`, `operator-scorecard`, and others), and `spawn-instance` only seeds an empty `{}` in a new instance. Read it if you need run health; never write it.
