@@ -251,7 +251,7 @@ the harness is already executing as the agent's workspace.
 
 **Other harnesses.** MCP is not grok-only: `claude`, `codex`, `vibe` and `kimi`
 all call live MCP tools too (codex and kimi needed their own dispatcher fixes —
-see the [harness-adapter README](../harness-adapter/README.md#the-ten-harnesses)).
+see the [harness-adapter README](../harness-adapter/README.md#the-nine-harnesses)).
 `pi` is the one harness that cannot: it rejects MCP by design, so its adapter
 warns and skips every configured server, and the dashboard's MCP panel disables
 itself when `pi` is the selected harness.

@@ -28,7 +28,7 @@ Site: https://aeon.fun
 
 ## Harnesses and integrations
 
-- [docs/harnesses.md](https://raw.githubusercontent.com/aeonfun/aeon/main/docs/harnesses.md): Advanced harness behavior across the ten supported coding-agent CLIs.
+- [docs/harnesses.md](https://raw.githubusercontent.com/aeonfun/aeon/main/docs/harnesses.md): Advanced harness behavior across the nine supported coding-agent CLIs.
 - [harness-adapter/README.md](https://raw.githubusercontent.com/aeonfun/aeon/main/harness-adapter/README.md): The single dispatch path that translates one tool grammar to every harness.
 - [docs/mcp-oauth.md](https://raw.githubusercontent.com/aeonfun/aeon/main/docs/mcp-oauth.md): Durable dashboard OAuth for OAuth-gated MCP servers.
 - [docs/telegram-commands.md](https://raw.githubusercontent.com/aeonfun/aeon/main/docs/telegram-commands.md): The inbound Telegram command surface.
