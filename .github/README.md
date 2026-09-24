@@ -16,6 +16,8 @@
   <strong>No approval loops. No babysitting. Configure once, forget forever.</strong>
 </p>
 
+<p align="center"><sub>Aeon is an independent open-source project by Aeon Inc, public since March 2026. Not affiliated with OpenAI (including its Aeon agent), AEON (payments) or aeon-toolkit (time-series ML). <a href="https://www.aeon.fun/blog/aeon-vs-openai-aeon">Aeon vs OpenAI's Aeon</a></sub></p>
+
 > **🤖 Using a coding agent?** Point it here: **read https://www.aeon.fun/skills/aeon.md and follow the instructions to set up your Aeon agent.**
 
 <div align="center">
