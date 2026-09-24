@@ -1,6 +1,6 @@
 ---
 name: you-web-search
-description: Web search using You.com Search API with high-quality, cited results and optional real-time web crawling
+description: Web search using You.com Search API with high-quality, cited results — runs keyless out of the box; YDC_API_KEY unlocks higher limits and real-time web crawling
 metadata:
   title: You.com Web Search
   mode: read-only
@@ -11,7 +11,7 @@ metadata:
     - search
     - research
   requires:
-    - YDC_API_KEY
+    - YDC_API_KEY?
 ---
 
 > **${var}** — Search query or topic. When empty, uses a general search for current notable developments across tracked areas.
@@ -23,27 +23,33 @@ Today is ${today}. Perform web search using You.com's Search API to find current
 This skill provides web search functionality via You.com's Search API, offering several advantages over basic WebSearch:
 
 - **Higher quality results** with relevance ranking and citation extraction
-- **Real-time web crawling** for fresh content when `livecrawl=web` is enabled
+- **Works with zero configuration** — no key, wallet, or sign-up needed for the keyless tier
+- **Real-time web crawling** for fresh content when `livecrawl=web` is enabled (keyed tier)
 - **Structured result format** with titles, URLs, snippets, and publication dates
 - **Optional livecrawl control** through `YOUCOM_LIVECRAWL` when a full page fetch is useful
 
+### Auth modes
+
+| Mode | When | Endpoint | Limits |
+| --- | --- | --- | --- |
+| `keyless` | `YDC_API_KEY` unset | `https://api.you.com/v1/agents/search` | 100 searches/day per IP, no livecrawl |
+| `keyed` | `YDC_API_KEY` set | `https://api.you.com/v1/search` | Your plan's limits, livecrawl available |
+
 ## Phase 1 — Execute Search
 
-### Authentication Check
+### Auth Mode
 
-Check if `YDC_API_KEY` is available:
+Check whether the key is set via `${VAR:+x}` — a bare `$YDC_API_KEY` trips the secret-expansion analyzer:
 ```bash
-[ -n "${YDC_API_KEY:-}" ] && echo "KEY_PRESENT" || echo "KEY_UNSET"
+if [ -n "${YDC_API_KEY:+x}" ]; then AUTH_MODE="keyed"; else AUTH_MODE="keyless"; fi
+echo "youcom auth_mode=$AUTH_MODE"
 ```
 
-If it is unset, stop immediately with a clear error:
-```bash
-[ -n "${YDC_API_KEY:-}" ] || { echo "YDC_API_KEY is required for this skill"; exit 1; }
-```
+A missing key is **not** an error — the skill runs on the keyless tier.
 
 ### API Call
 
-**Primary path:** Direct authenticated `curl` to You.com Search API:
+Both modes call the same REST contract through `./secretcurl`. In `keyed` mode the `{YDC_API_KEY}` placeholder is substituted inside the helper; in `keyless` mode no key header is sent at all.
 
 ```bash
 QUERY="${var:-current notable developments in AI, crypto, and technology}"
@@ -51,20 +57,32 @@ COUNT="10"
 
 FRESHNESS="${YOUCOM_FRESHNESS:-week}"
 LIVECRAWL="${YOUCOM_LIVECRAWL:-}"
-SEARCH_URL="https://ydc-index.io/v1/search?query=$(echo "$QUERY" | jq -Rr @uri)&count=$COUNT&safesearch=strict&freshness=$(echo "$FRESHNESS" | jq -Rr @uri)"
+PARAMS="query=$(echo "$QUERY" | jq -Rr @uri)&count=$COUNT&safesearch=strict&freshness=$(echo "$FRESHNESS" | jq -Rr @uri)"
 
-if [ -n "${LIVECRAWL:+x}" ]; then
-  SEARCH_URL="$SEARCH_URL&livecrawl=$(echo "$LIVECRAWL" | jq -Rr @uri)"
+if [ "$AUTH_MODE" = "keyed" ]; then
+  SEARCH_URL="https://api.you.com/v1/search?$PARAMS"
+  # livecrawl is a keyed-tier feature; the keyless endpoint answers it with 402.
+  if [ -n "${LIVECRAWL:+x}" ]; then
+    SEARCH_URL="$SEARCH_URL&livecrawl=$(echo "$LIVECRAWL" | jq -Rr @uri)"
+  fi
+  HTTP=$(./secretcurl -s -o /tmp/youcom-search.json -w '%{http_code}' \
+    --max-time 30 -X GET \
+    "$SEARCH_URL" \
+    -H "X-API-Key: {YDC_API_KEY}" \
+    -H "User-Agent: youdotcom-integration/aeonfun-aeon")
+else
+  SEARCH_URL="https://api.you.com/v1/agents/search?$PARAMS"
+  [ -n "${LIVECRAWL:+x}" ] && echo "youcom livecrawl=skipped reason=keyless (set YDC_API_KEY to enable)"
+  HTTP=$(./secretcurl -s -o /tmp/youcom-search.json -w '%{http_code}' \
+    --max-time 30 -X GET \
+    "$SEARCH_URL" \
+    -H "User-Agent: youdotcom-integration/aeonfun-aeon")
 fi
 
-HTTP=$(./secretcurl -s -o /tmp/youcom-search.json -w '%{http_code}' \
-  --max-time 30 -X GET \
-  "$SEARCH_URL" \
-  -H "X-API-Key: {YDC_API_KEY}" \
-  -H "User-Agent: youdotcom-integration/aeonfun-aeon")
-
-echo "youcom http=$HTTP bytes=$(wc -c </tmp/youcom-search.json)"
+echo "youcom http=$HTTP auth_mode=$AUTH_MODE bytes=$(wc -c </tmp/youcom-search.json)"
 ```
+
+Never send the key to the keyless endpoint, and never call the keyed endpoint without a key (it answers with a `402` payment challenge rather than results).
 
 ### Response Processing
 
@@ -139,8 +157,8 @@ API Status: ${http_status} | Auth: ${auth_mode} | Quality: ${quality_score}/5
 Send formatted results via `./notify`:
 - Include query, result count, and source attribution
 - Highlight most relevant results (top 5-7)  
-- Note authentication mode (`authenticated`)
-- Include livecrawl info when enabled
+- Note the auth mode actually used (`keyless` or `keyed`)
+- Include livecrawl info when enabled (or that it was skipped on the keyless tier)
 
 ### Memory Integration  
 
@@ -150,7 +168,7 @@ Log the search for future reference:
    ```
    ### you-web-search
    - Query: "${var}"
-   - Source: You.com API (authenticated)
+   - Source: You.com API (${auth_mode})
    - Results: N found, M delivered  
    - Status: HTTP ${code}
    - Quality score: X/5 (relevance, freshness, diversity)
@@ -164,8 +182,9 @@ Log the search for future reference:
 
 Handle common failure modes gracefully:
 
-- **Rate limits (429)**: Log rate limit hit, suggest checking the API quota or key
-- **Invalid key (401)**: Clear error about checking `YDC_API_KEY`
+- **Rate limits (429)**: Log rate limit hit. In `keyless` mode this is usually the 100/day per-IP cap — suggest setting `YDC_API_KEY` (get one at https://you.com/platform?utm_source=aeonfun-aeon&utm_medium=oss_integration&utm_campaign=2026-09-oss-integrations&utm_content=error-message). In `keyed` mode, suggest checking the plan quota
+- **Payment required (402)**: The request needs the keyed tier (e.g. livecrawl without a key) — suggest setting `YDC_API_KEY`
+- **Invalid key (401/403)**: Clear error about checking `YDC_API_KEY` (keyed mode only)
 - **Network failures**: Surface the API failure and exit cleanly
 - **Malformed responses**: Validate JSON structure, handle parsing errors
 - **Empty results**: Suggest query refinement, try broader terms
@@ -174,15 +193,20 @@ Handle common failure modes gracefully:
 
 Record failure reasons for debugging:
 - `youcom-api-unavailable` — API endpoint unreachable
-- `youcom-rate-limited` — Hit plan limits
+- `youcom-rate-limited` — Hit plan limits or the keyless daily cap
+- `youcom-payment-required` — Keyed-tier feature requested without a key
 - `youcom-auth-invalid` — API key rejected
 - `youcom-parse-error` — Response format unexpected
 
+## Network
+
+Both modes go through `./secretcurl` so one code path covers them: keyed calls carry the `{YDC_API_KEY}` placeholder (never a bare `$YDC_API_KEY` on the line); keyless calls carry no placeholder and are passed through unchanged. Every request sends `User-Agent: youdotcom-integration/aeonfun-aeon`.
+
 ## Environment Variables
 
-- **`YDC_API_KEY`** (required) — You.com API key for authenticated access.
+- **`YDC_API_KEY`** (optional) — You.com API key. Unset: the skill runs on the free keyless tier (100 searches/day per IP, no livecrawl). Set: keyed Search API with your plan's limits and livecrawl. Get a key at https://you.com/platform?utm_source=aeonfun-aeon&utm_medium=oss_integration&utm_campaign=2026-09-oss-integrations&utm_content=docs.
 - **`YOUCOM_FRESHNESS`** (optional) — Freshness filter (`day`, `week`, `month`, `year`, or a date range).
-- **`YOUCOM_LIVECRAWL`** (optional) — Pass through to `livecrawl` when you want full page content (`web`, `news`, or `all`).
+- **`YOUCOM_LIVECRAWL`** (optional, keyed only) — Pass through to `livecrawl` when you want full page content (`web`, `news`, or `all`). Ignored on the keyless tier.
 
 ## Constraints
 
@@ -197,7 +221,7 @@ Record failure reasons for debugging:
 
 ### Relationship to Built-in WebSearch
 
-This skill **complements** Aeon's built-in WebSearch, but it is a separate authenticated Search API path:
+This skill **complements** Aeon's built-in WebSearch, but it is a separate Search API path (keyless by default, keyed when `YDC_API_KEY` is set):
 
 - **You.com advantages**: Higher quality results, real-time crawling, better relevance ranking
 - **WebSearch advantages**: No API dependency, always available, deeply integrated
@@ -209,7 +233,7 @@ This skill **complements** Aeon's built-in WebSearch, but it is a separate authe
 - **On-demand**: Manual execution for specific research needs
 - **Low frequency**: Daily or less frequent automatic searches to respect quotas  
 - **Research workflows**: Chain with other skills that need web context
-- **Avoid high-frequency**: Don't schedule more than hourly to preserve API quotas
+- **Avoid high-frequency**: Don't schedule more than hourly to preserve API quotas — the keyless tier is capped at 100 searches/day per IP
 
 ### Skills Integration
 
