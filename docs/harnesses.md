@@ -6,17 +6,18 @@ description: Deep reference for Aeon's harness axis (the nine agent CLIs behind 
 # Harnesses — advanced behavior
 
 The **harness** is the coding-agent CLI that runs your skills. The README's
-[Harnesses](../.github/README.md#harnesses) section covers the basics — the two
-first-class harnesses (`claude` default, `grok`), how to select one, and
-one-click X-account login. This page collects the deeper behavior for anyone
+[harnesses](../.github/README.md#support-nine-harnesses-claude-grok-codex-pi-vibe-kimi-fx-cursor-hermes)
+section covers the basics - nine agent CLIs behind one `run-harness` contract,
+with `claude` as the default and `grok` as the other bespoke path. This page collects the deeper behavior for anyone
 running the `grok` harness in anger.
 
 ## Additional harnesses via run-harness (`codex`, `pi`, `vibe`, `kimi`, `fx`, `cursor`, `hermes`)
 
 Seven more harnesses are selectable in the dashboard's harness dropdown and the
 `harness:` config: **codex** (OpenAI Codex CLI), **pi** (Pi Coding Agent),
-**vibe** (Mistral Vibe), **kimi** (Moonshot Kimi), and **fx** (Vercel's fx —
-[fx.sh](https://fx.sh), a minimal native Zig coding agent). Unlike `claude`/`grok`
+**vibe** (Mistral Vibe), **kimi** (Moonshot Kimi), **fx** (Vercel's fx -
+[fx.sh](https://fx.sh), a minimal native Zig coding agent), **cursor** (Cursor
+CLI), and **hermes** (Nous Research Hermes Agent). Unlike `claude`/`grok`
 they don't have a bespoke branch in the workflow — they run through
 [`harness-adapter`](../harness-adapter/)'s `run-harness`, which wraps each CLI in
 the same Claude-Code-shaped `{result, usage, session_id}` contract that

@@ -38,7 +38,7 @@
 ## Quick start
 
 <p align="center">
-  <img src="../docs/assets/quickstart-aeon.jpg" alt="Quick start in four steps: 1 Fork - Use this template to get your own repo copy. 2 Connect - add a Telegram, Discord, or email channel. 3 Pick skills - toggle skills on and set their cron schedule. 4 Runs itself - Aeon runs unattended on GitHub Actions." width="100%" />
+  <img src="../docs/assets/quickstart-aeon.jpg" alt="Quick start in four steps: 1 Fork - Use this template to get your own repo copy. 2 Connect - add a Telegram, Discord, Slack, or email channel. 3 Pick skills - toggle skills on and set their cron schedule. 4 Runs itself - Aeon runs unattended on GitHub Actions." width="100%" />
 </p>
 
 You need **Node.js 20+**, the **[GitHub CLI](https://cli.github.com/) (`gh`)** authenticated (`gh auth login`), and **your own copy** - click **Use this template** on [the repo page](https://github.com/aeonfun/aeon) (keep it public; Actions minutes are free), or `gh repo fork aeonfun/aeon --clone`.
@@ -71,15 +71,18 @@ Grab the `gh_*_macOS_arm64.zip` (or your platform's binary) from [github.com/cli
 # skills/digest/SKILL.md
 ---
 name: digest
-category: basics                 # which pack it belongs to
 description: Generate and send a digest on a configurable topic
-requires: [XAI_API_KEY?]         # ? = optional key, bare = required
-var: ""                          # per-run input - "solana", "rust", "AI agents"…
-mode: write
+metadata:
+  title: Digest
+  mode: write
+  category: basics               # which pack it belongs to
+  var: ""                        # per-run input - "solana", "rust", "AI agents"…
+  requires:
+    - XAI_API_KEY?               # ? = optional key, bare = required
 ---
 ```
 
-The prompt *is* the skill. You schedule it, hand it a `var`, chain it into others, and Haiku rates every run. How packs work: [`docs/skill-packs.md`](../docs/skill-packs.md).
+The prompt *is* the skill. You schedule it, hand it a `var`, chain it into others, and a cheap model rates every run (Haiku on Claude). How packs work: [`docs/skill-packs.md`](../docs/skill-packs.md).
 
 <p align="center">
   <img src="../docs/assets/packs-aeon.jpg" alt="Six skill packs, 60+ skills total: Core (fleet coordination, self-config, liveness), Evolution (authors and heals its own skills), Basics (simple runnable skills), Dev & Code, Crypto & Markets, and Productivity." width="100%" />
@@ -108,10 +111,10 @@ Full comparison vs Claude Code, Hermes, and OpenClaw: [`SHOWCASE.md`](../docs/SH
 ## Proof of work
 
 <p align="center">
-  <img src="../docs/assets/proof-aeon.jpg" alt="Proof of work, live at aeon.fun: 2M GitHub stars secured across 69 open-source repos, 68 products and agents built on Aeon, and 13 community skill packs." width="100%" />
+  <img src="../docs/assets/proof-aeon.jpg" alt="Proof of work, live at aeon.fun: 4.7M GitHub stars secured across 100+ open-source repos, 70+ products and agents built on Aeon, and 15+ community skill packs." width="100%" />
 </p>
 
-Live at **[aeon.fun](https://www.aeon.fun)**: **2M GitHub stars secured** - real vulnerabilities found, patched, and responsibly disclosed across 69 open-source repos (**Alibaba**, **Tencent**, **Vercel**, and more), many rated High or Critical. **68 products built on top of Aeon.**
+Live at **[aeon.fun](https://www.aeon.fun)**: **4.7M GitHub stars secured** - real vulnerabilities found, patched, and responsibly disclosed across 100+ open-source repos (**Alibaba**, **Tencent**, **Vercel**, and more), many rated High or Critical. **70+ products built on top of Aeon.**
 
 [Every disclosure →](https://www.aeon.fun/security) · [ecosystem](../docs/ECOSYSTEM.md) · [community packs](../docs/community-skill-packs.md#listed-packs)
 

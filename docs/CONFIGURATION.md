@@ -178,7 +178,7 @@ It runs as a **cascade**: the highest-priority provider whose key is set goes fi
 
 Override the order with the repo variable **`GATEWAY_ORDER`** (space-separated names), or pin a single provider (which disables failover) by setting `gateway.provider` to `direct`/`bankr`/`openrouter`/`usepod`/`venice`/`surplus`/`grok`/`glm`/`hivemindos` explicitly.
 
-**Direct (`provider: direct`)** - the two Anthropic-native modes from [Authentication](../.github/README.md#authentication) in the README (Claude subscription via `CLAUDE_CODE_OAUTH_TOKEN`, Anthropic API via `ANTHROPIC_API_KEY`), no middleman. Point `ANTHROPIC_API_KEY` at any Anthropic-compatible endpoint with the `ANTHROPIC_BASE_URL` variable.
+**Direct (`provider: direct`)** - the two Anthropic-native modes from [Authentication](#authentication) (Claude subscription via `CLAUDE_CODE_OAUTH_TOKEN`, Anthropic API via `ANTHROPIC_API_KEY`), no middleman. Point `ANTHROPIC_API_KEY` at any Anthropic-compatible endpoint with the `ANTHROPIC_BASE_URL` variable.
 
 **Gateways** - route Claude through an alternative provider (cheaper Opus, crypto-settled, privacy-first…). Keys with a distinctive prefix are detected automatically; UsePod and Venice have no prefix, so pick them in the dropdown:
 

@@ -319,7 +319,7 @@ acme/aeon-acme-pack
 
 - `capabilities` is a **locked taxonomy** ([`CAPABILITIES.md`](CAPABILITIES.md)) - honest blast-radius hints shown at install.
 - Pre-flight locally with `./scripts/validate-pack.sh /path/to/pack` from an Aeon checkout.
-- **Get listed:** one PR against `aeonfun/aeon` adding a row to the README's [Community Packs table](../.github/README.md#community-packs) **and** a matching entry in [`catalog/skill-packs.json`](../catalog/skill-packs.json).
+- **Get listed:** one PR against `aeonfun/aeon` adding a row to the [Listed packs table](community-skill-packs.md#listed-packs) **and** a matching entry in [`catalog/skill-packs.json`](../catalog/skill-packs.json).
 
 Operators then install with one click from the dashboard's Packs view, or:
 
