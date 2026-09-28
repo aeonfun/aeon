@@ -125,6 +125,7 @@ skills:
 
   # Dev & repo
   feature: { enabled: false, schedule: "0 10 * * 6", var: "" } # build a feature + open PR. var: watched (default) | external:<owner/repo> | dormant[:<owner/repo>], append --fix-issues (folds in external-feature/repo-revive). GH_GLOBAL for external.
+  feedback-builder: { enabled: false, schedule: "0 */6 * * *", var: "" } # read agent reports from a service's /feedback endpoint, triage + cluster, build the top accepted one as a PR. Sources in memory/feedback-sources.md or var "<feedback-url> <owner/repo>"; dry-run: prefix; --max N. Optional FEEDBACK_TOKEN.
 
   # Research & content
   write-tweet: { enabled: false, schedule: "0 21 * * *", var: "" } # tweet studio. var: empty=drafts (10×5 tiers) | thread [topic] | remix [window]. Optional XAI_API_KEY (required for remix).
