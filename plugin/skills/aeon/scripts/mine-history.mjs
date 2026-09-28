@@ -44,10 +44,13 @@ const JSON_OUT = flag('--json');
 // Coding-agent transcript roots. Claude Code writes
 // ~/.claude/projects/<encoded-cwd>/<session>.jsonl; Codex writes
 // ~/.codex/sessions/YYYY/MM/DD/rollout-*.jsonl. Scan whichever exist.
+// maxDepth = directory levels below the root where sessions live. Claude keeps
+// top-level sessions exactly one level down; deeper files are subagent
+// sidechains (<session>/subagents/agent-*.jsonl) and must not count.
 const ROOTS = [
-  path.join(os.homedir(), '.claude', 'projects'),
-  path.join(os.homedir(), '.codex', 'sessions'),
-].filter((d) => fs.existsSync(d));
+  { dir: path.join(os.homedir(), '.claude', 'projects'), maxDepth: 1 },
+  { dir: path.join(os.homedir(), '.codex', 'sessions'), maxDepth: Infinity },
+].filter((r) => fs.existsSync(r.dir));
 if (!ROOTS.length) {
   console.error('No coding-agent history found under ~/.claude/projects or ~/.codex/sessions — nothing to mine (this is normal off a local machine).');
   process.exit(2);
@@ -260,19 +263,19 @@ function listFiles() {
   const files = [];
   // Claude nests one level (projects/<cwd>/*.jsonl); Codex nests by date
   // (sessions/YYYY/MM/DD/*.jsonl), so walk each root recursively.
-  const walk = (dir) => {
+  const walk = (dir, depth, maxDepth) => {
     let entries;
     try { entries = fs.readdirSync(dir, { withFileTypes: true }); } catch { return; }
     for (const ent of entries) {
       const fp = path.join(dir, ent.name);
-      if (ent.isDirectory()) { walk(fp); continue; }
+      if (ent.isDirectory()) { if (depth < maxDepth) walk(fp, depth + 1, maxDepth); continue; }
       if (!ent.name.endsWith('.jsonl')) continue;
       let fst; try { fst = fs.statSync(fp); } catch { continue; }
       if (fst.mtimeMs < CUTOFF_MS) continue;
       files.push(fp);
     }
   };
-  for (const root of ROOTS) walk(root);
+  for (const root of ROOTS) walk(root.dir, 0, root.maxDepth);
   return files;
 }
 
