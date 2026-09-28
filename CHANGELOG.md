@@ -11,6 +11,17 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Added
 
+- **New `feedback-builder` skill (Dev & Code): build what agents asked for.** Point an agent at
+  a service's `/feedback` endpoint (sources in `memory/feedback-sources.md`, or
+  `var="<feedback-url> <owner/repo>"`). Each run reads what agents reported, clusters reports that
+  ask for the same change, gives each cluster one verdict (`BUILD`, `ALREADY-DONE`, `DUPLICATE`,
+  `NEEDS-INFO`, `OUT-OF-SCOPE`, `UNSAFE`, `DECLINED`) and drafts the top accepted one as a
+  `feedback/<cluster>` PR with the redacted reports and the triage reasoning. A human merges; the
+  skill never does. Feedback is treated as untrusted data, changes that touch auth, secrets, rate
+  limits, payments or CI are refused, each repo gets at most 3 open `feedback/*` PRs, and a PR
+  closed unmerged is never rebuilt. Optional `FEEDBACK_TOKEN` (now in the `ALL_SECRETS` allowlist)
+  authenticates private endpoints. (#1096)
+
 - **New `create-prove` skill (Dev & Code): `dev-loop` now needs live behavioral proof.** A clean
   review only proves the diff. After review (and the bounded repair pass, if one ran) comes back
   clean, `create-prove` dispatches the changed skill for real at the PR's immutable head, waits for
@@ -96,6 +107,10 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Changed
 
+- **Docs refresh.** README stats refreshed and dead README links fixed (#1092), docs say Aeon is
+  not affiliated with OpenAI (#1091), the stale "ten" harness count in `llms.txt` is corrected
+  (#1090), and the ecosystem list drops AeThree and updates the ClawHunter logo (#1089).
+
 - **Pack installers normalize non-cron schedules.** A pack declaring `"schedule": "daily"` used to
   install a skill that never ran (the scheduler needs 5 cron fields). `install-skill-pack`,
   `add-skill` and `install-from-atrium` now map `hourly`/`daily`/`weekly`/`monthly`/`yearly` (and
@@ -131,6 +146,14 @@ from or pin to; the template keeps serving the latest `main` to new forks.
   showcase hooks in `aeonfun/univ4-hooks` carried the fee. (#1035)
 
 ### Fixed
+
+- **`aeon-update` keeps instance CI green on two sync paths.** `catalog/skill-packs.json` now
+  syncs as one unit with `docs/community-skill-packs.md`, its validator, test and CI workflow (the
+  registry had frozen on instances while the doc table kept syncing, turning `ci-skill-packs` red
+  after #1086), and a failed post-sync validator holds the whole unit. An updated skill whose
+  upstream `eyebrowlock.json` capabilities changed is now held, or carries upstream's lock entry
+  when the skill tree matches upstream exactly, so a `SKILL.md` never ships against a stale lock
+  entry. (#1095)
 
 - **`HIVEMINDOS_MAX_TOKENS` unset now means the 4096 default, not "no cap".** The workflow passes
   an unset repo variable through as an empty string, which read as `0` and removed the cap on every

@@ -91,13 +91,25 @@ Classify every entry in `.files` by path. A file is **OPERATOR-owned** (surfaced
 ```
 aeon.yml            STRATEGY.md         soul/**             memory/**
 output/**           .mcp.json           .env*               aeon.db
-skills.lock         eyebrowlock.json    catalog/*.json      .claude/**  (except .claude/skills/aeon/**)
+skills.lock         eyebrowlock.json    .claude/**  (except .claude/skills/aeon/**)
+catalog/*.json  (except catalog/skill-packs.json)
 apps/dashboard/outputs/**
 ```
 
-Everything else is **OWNED** (a candidate for auto-apply): `skills/**`, `scripts/**`, `bin/**`, `harness-adapter/**`, `.github/**`, `apps/**` (except `apps/dashboard/outputs/**`), `CLAUDE.md`, `AGENTS.md`, `docs/**`, `.github/README.md`, `LICENSE`, `CHANGELOG.md`, `.gitignore`, `eyebrow.policy.json`, and tracked root helpers (`aeon`, ...).
+Everything else is **OWNED** (a candidate for auto-apply): `skills/**`, `scripts/**`, `bin/**`, `harness-adapter/**`, `.github/**`, `apps/**` (except `apps/dashboard/outputs/**`), `CLAUDE.md`, `AGENTS.md`, `docs/**`, `.github/README.md`, `LICENSE`, `CHANGELOG.md`, `.gitignore`, `eyebrow.policy.json`, `catalog/skill-packs.json`, and tracked root helpers (`aeon`, ...).
 
 `catalog/*.json` and `eyebrowlock.json` are OPERATOR-owned here **only** so they are never blindly copied - they are **regenerated** from the synced sources in S7, which is the correct way to reconcile them.
+
+**`catalog/skill-packs.json` is the exception: it is OWNED and synced, not regenerated.** `skills.json`, `packs.json` and `skill-icons.json` each have a `bin/generate-*` script; the community pack registry has none. It is hand-maintained as a pair with the Listed packs table in `docs/community-skill-packs.md`, and `scripts/validate-skill-packs.mjs` (`ci-skill-packs`) hard-fails when the two disagree. Filing it under "regenerate" meant it was never synced at all, so an instance's copy froze while the synced doc table moved on, and CI went red once the validator started enforcing parity (aeon-agent#232). Treat these paths as one **pack-registry unit**:
+
+```
+catalog/skill-packs.json    docs/community-skill-packs.md    scripts/validate-skill-packs.mjs
+scripts/tests/test_validate_skill_packs.sh                   .github/workflows/ci-skill-packs.yml
+```
+
+- If `.files` touches any member, add every member to the S6 set (as `modified` when `.files` does not list it) so the unit is classified together. Always add `catalog/skill-packs.json` itself, even when this range did not touch it, so a copy frozen by the old rule gets caught up.
+- **All or nothing:** if any member ends up **CONFLICT**, demote the unit's other members to CONFLICT with reason `skill-packs-unit`, so the registry and the table never land out of step.
+- **Stale, not customized:** if local `catalog/skill-packs.json` would go to a 3-way MERGE but lists no pack that upstream HEAD lacks (every `jq -r '.packs[].repo'` of the local copy is also in HEAD's), it is a frozen copy, not an operator edit - **CLEAN-UPDATE** it to the HEAD blob.
 
 ### S6. 3-way classify each OWNED file
 
@@ -159,6 +171,14 @@ bin/generate-skills-json && bin/generate-packs-json && bin/generate-skill-icons
 node scripts/gen-agents-md.js || true
 ```
 
+**Pack-registry parity check.** If any pack-registry unit member (S5) was applied, run the validator against the final tree:
+
+```bash
+node scripts/validate-skill-packs.mjs
+```
+
+A non-zero exit means the branch would turn `ci-skill-packs` red. Revert the unit's applied members (`git checkout ${UP_DEFAULT} -- <member>`, or `git rm --cached` for an add), re-classify them **CONFLICT** with reason `skill-packs-parity`, and include the validator output in S9 so the operator can fix the registry and the table in one edit.
+
 **Refresh the eyebrow integrity lock for any NEWLY-ADDED skill.** `ci-skill-integrity` fails a PR when a present skill's `skills/<slug>/SKILL.md` has no `"discoveredFrom": "skills/<slug>/SKILL.md"` entry in `eyebrowlock.json`. That entry is produced only by the `eyebrow` binary, which is **not preinstalled in this run** - so a CLEAN-ADD of a new skill would otherwise land the PR CI-red. Fetch the binary at the **exact version `ci-skill-integrity.yml` pins**, parsed from that workflow's `alexverify/eyebrow/action@<sha> # vX.Y.Z` line so it can never drift from CI - a hardcoded version writes a lock that CI's (newer) `eyebrow verify` then rejects as drift, which is the recurring cause of red sync PRs. Verify the downloaded tarball against the release's own `checksums.txt` before running it (the same checksum-verified install the action does), then rescan:
 
 ```bash
@@ -200,10 +220,33 @@ fi
 [ -n "$EB" ] && env -i PATH="$PATH" HOME="$HOME" "$EB" scan --path . --lockfile eyebrowlock.json 2>/dev/null && EYEBROW_OK=1
 ```
 
-**Fail-safe - guarantees a green PR without the binary.** If `EYEBROW_OK` is still `0` (binary unavailable or scan failed), do not ship any skill whose `eyebrowlock.json` entry this run would invalidate: revert it from the branch (`git rm -r --cached skills/<slug>` for a new skill, or `git checkout ${UP_DEFAULT} -- skills/<slug>/SKILL.md` to drop an edit to an existing one) and re-classify it as **CONFLICT** with reason `needs-eyebrowlock-scan`. S9 surfaces each with the exact operator command (`eyebrow scan --path . --lockfile eyebrowlock.json` then commit). Two cases invalidate the lock:
+**Fail-safe - guarantees a green PR without the binary.** If `EYEBROW_OK` is still `0` (binary unavailable or scan failed), never ship a skill against a stale `eyebrowlock.json` entry. For each skill this run would invalidate, first try to **carry upstream's entry** (below); if that is not possible, revert it from the branch (`git rm -r --cached skills/<slug>` for a new skill, or `git checkout ${UP_DEFAULT} -- skills/<slug>/SKILL.md` to drop an edit to an existing one) and re-classify it as **CONFLICT** with reason `needs-eyebrowlock-scan`. S9 surfaces each with the exact operator command (`eyebrow scan --path . --lockfile eyebrowlock.json` then commit). Two cases invalidate the lock:
 
 - **CLEAN-ADD of a `skills/**` SKILL.md** - a brand-new skill has no lock entry, so `ci-skill-integrity`'s coverage precheck fails outright.
-- **CLEAN-UPDATE / CLEAN-MERGE of an existing skill's `SKILL.md` that already has one or more findings in `eyebrowlock.json`.** This is NOT safe to keep unscanned. `eyebrow.policy.json` sets `failOnCapabilityExpansion: true`, and an edit that changes the line count *above* a pinned finding relocates that finding to a new line - which `eyebrow verify --ci` reports as an expanded capability and fails, **even though `allowContentDrift: true`** (byte-level drift is allowed; a finding surfacing at a new location is not). This is the recurring cause of red sync PRs on prose-only edits. Detect it: the slug has a `"discoveredFrom": "skills/<slug>/SKILL.md"` entry in `eyebrowlock.json` **and** that entry's `findings` array is non-empty. An existing skill with **zero** lock findings is safe to keep (no finding to relocate; pure content drift).
+- **CLEAN-UPDATE / CLEAN-MERGE of an existing skill's `SKILL.md` that already has one or more findings in `eyebrowlock.json`.** This is NOT safe to keep unscanned. `eyebrow.policy.json` sets `failOnCapabilityExpansion: true`, and an edit that changes the line count *above* a pinned finding relocates that finding to a new line - which `eyebrow verify --ci` reports as an expanded capability and fails, **even though `allowContentDrift: true`** (byte-level drift is allowed; a finding surfacing at a new location is not). This is the recurring cause of red sync PRs on prose-only edits. Detect it: the slug has a `"discoveredFrom": "skills/<slug>/SKILL.md"` entry in `eyebrowlock.json` **and** that entry's `findings` array is non-empty. Zero findings alone does not make an edit safe - see the next case.
+- **CLEAN-UPDATE / CLEAN-MERGE of an existing skill whose upstream lock entry `capabilities` changed between BASELINE and HEAD.** A skill with zero findings can still gain reach: upstream 46d1836 taught `hunter-22` to call `clawhunter.fun`, an unscanned sync shipped the new SKILL.md against the old lock entry, and `eyebrow verify --ci` failed with `policy: capability expansion - hunter-22 gained network: clawhunter.fun` (miroshark-aeon#183). Upstream's own `eyebrowlock.json` already records the change, so detect it with no binary by diffing the slug's entry at the two commits:
+
+```bash
+lockcaps() { fetch eyebrowlock.json "$1" | jq -cS --arg d "skills/$2/SKILL.md" '[.artifacts[] | select(.discoveredFrom == $d) | .capabilities]'; }   # $1=ref $2=slug
+[ "$(lockcaps "$BASELINE" "$slug")" != "$(lockcaps "$HEAD_SHA" "$slug")" ] && echo "$slug: capabilities changed upstream"
+```
+
+**Carry upstream's entry before holding.** For any of these cases, if the skill's final tree on the branch is byte-identical to upstream HEAD's (same blob SHAs, so no operator customization), upstream's HEAD lock entry for that slug is exactly what upstream's own CI verified against those bytes. Splice it in instead of reverting:
+
+```bash
+up=$(gh api "repos/${UPSTREAM}/git/trees/${HEAD_SHA}?recursive=1" | jq -r --arg p "skills/$slug/" '.tree[] | select(.type == "blob" and (.path | startswith($p))) | "\(.sha) \(.path)"' | sort)
+loc=$(git add -A "skills/$slug" && git ls-files -s "skills/$slug" | awk '{print $2" "$4}' | sort)
+if [ -n "$up" ] && [ "$up" = "$loc" ]; then
+  fetch eyebrowlock.json "$HEAD_SHA" > "$WORK/uplock.json"
+  jq --slurpfile up "$WORK/uplock.json" --arg d "skills/$slug/SKILL.md" '
+    ($up[0].artifacts | map(select(.discoveredFrom == $d))) as $e
+    | if ($e | length) != 1 then error("no upstream lock entry")
+      elif any(.artifacts[]; .discoveredFrom == $d) then .artifacts |= map(if .discoveredFrom == $d then $e[0] else . end)
+      else .artifacts += $e end' eyebrowlock.json > "$WORK/lock.new" && mv "$WORK/lock.new" eyebrowlock.json
+fi
+```
+
+If the trees differ (the operator customized the skill, e.g. a CLEAN-MERGE) or the splice errors, upstream's entry does not describe these bytes - hold the skill as above.
 
 After any such revert, re-run the S7 catalog regeneration (`bin/generate-skills-json && bin/generate-packs-json`) so `skills.json`/`packs.json` reflect the final tree, not the reverted-out file. This trades deferring a rescan-needing change (rare) for never landing a red PR; the change still arrives, just as a one-line manual step in the PR.
 
@@ -326,7 +369,7 @@ Pass `--mute-key "aeon-update:${HEAD7}"` so a muted sync doesn't re-ping for the
 ## Constraints
 
 - **Never** push to `main` or auto-write an OPERATOR-owned path (`aeon.yml`, `soul/`, `memory/`, `STRATEGY.md`, `.mcp.json`, `output/`).
-- **Never** delete a fork-only skill, and **never** copy `catalog/*.json` / `eyebrowlock.json` from upstream - regenerate them.
+- **Never** delete a fork-only skill, and **never** copy `catalog/*.json` / `eyebrowlock.json` from upstream - regenerate them. Two exceptions: `catalog/skill-packs.json` has no generator and is synced as part of the pack-registry unit (S5), and a single skill's lock entry may be carried from upstream when that skill's tree matches upstream HEAD exactly (S7 fail-safe).
 - **Never** advance `baseline_sha` without carrying unresolved conflicts forward in `pending_conflicts`.
 - Cross-repo compare caps at 300 files - note `files_truncated=true` and let a follow-up run pick up the rest.
 - A clean, in-sync run is **correct**, not a failure - it notifies nothing.
