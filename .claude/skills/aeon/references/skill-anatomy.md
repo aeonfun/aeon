@@ -1,10 +1,10 @@
 # How Aeon skills are actually written
 
-Surveyed across all 84 skills in `aeonfun/aeon`. Frequencies are real counts - match the dominant convention unless there's a reason not to. Bodies run 14–1228 lines (~221 median); a skill is a prompt, not a config file, and reads as prose.
+Surveyed across all 85 skills in `aeonfun/aeon`. Frequencies are real counts - match the dominant convention unless there's a reason not to. Bodies run 14–1228 lines (~221 median); a skill is a prompt, not a config file, and reads as prose.
 
 ## Frontmatter
 
-Near-universal - **all 84 skills** carry `name`, `description`, `category`, and `tags`; 76 also carry `title` (the other 8 fall back to the slug):
+Near-universal - **all 85 skills** carry `name`, `description`, `category`, and `tags`; 77 also carry `title` (the other 8 fall back to the slug):
 
 ```yaml
 name: my-skill       # the slug (matches the skills/<slug>/ directory)
@@ -19,12 +19,12 @@ Then, in descending real-world use:
 
 | Field | Used by | Meaning |
 |---|---|---|
-| `var:` | 79 | the operator-tunable knob (topic, filter, mode). Default value; `./aeon skills set <name> --var` overrides at run time |
-| `requires:` | 40 | API keys to inject. **This is an allowlist** - see the trap below |
-| `mode:` | 36 | `read-only` (20) or `write` (16). **Absent = `write`** |
-| `capabilities:` | 27 | declared blast radius, e.g. `external_api`, `sends_notifications`. Taxonomy locked by `ci-capabilities-parity` |
-| `commits:` | 13 | `true` (9) / `false` (4) - whether the run may commit |
-| `permissions:` | 10 | GitHub token scopes, e.g. `contents:write`, `pull-requests:write` |
+| `var:` | 80 | the operator-tunable knob (topic, filter, mode). Default value; `./aeon skills set <name> --var` overrides at run time |
+| `requires:` | 41 | API keys to inject. **This is an allowlist** - see the trap below |
+| `mode:` | 37 | `read-only` (20) or `write` (17). **Absent = `write`** |
+| `capabilities:` | 28 | declared blast radius, e.g. `external_api`, `sends_notifications`. Taxonomy locked by `ci-capabilities-parity` |
+| `commits:` | 14 | `true` (10) / `false` (4) - whether the run may commit |
+| `permissions:` | 11 | GitHub token scopes, e.g. `contents:write`, `pull-requests:write` |
 | `mcp:` | 8 | MCP servers the skill needs - **catalog metadata only, gates nothing at run time** (`references/mcp.md`) |
 | `depends_on:` | 4 | other skills, for chain ordering |
 
@@ -87,13 +87,13 @@ var=<value>
 
 ## Calling external scripts
 
-**These do not exist in the repo.** The workflow copies them to the repo root before each run (`.github/workflows/aeon.yml:904-913`), which is why `ls` shows no `notify` but 75 skills call `./notify`. Don't "fix" the missing file, and don't expect them locally.
+**These do not exist in the repo.** The workflow copies them to the repo root before each run (`.github/workflows/aeon.yml:904-913`), which is why `ls` shows no `notify` but 76 skills call `./notify`. Don't "fix" the missing file, and don't expect them locally.
 
 | Call | Skills | Notes |
 |---|---|---|
-| `./notify "msg"` / `./notify -f body.md` | 75 | `-f` for anything multi-line. Structured form: `--title`, `--severity {info,success,warn,critical}`, `--link`. Falls back to `.pending-notify/` when the sandbox blocks outbound curl |
+| `./notify "msg"` / `./notify -f body.md` | 76 | `-f` for anything multi-line. Structured form: `--title`, `--severity {info,success,warn,critical}`, `--link`. Falls back to `.pending-notify/` when the sandbox blocks outbound curl |
 | `WebFetch` | 45 | preferred fallback for a flaky public GET |
-| `./secretcurl` | 34 | authenticated curl - **the only safe way to use a key** |
+| `./secretcurl` | 35 | authenticated curl - **the only safe way to use a key** |
 | `gh api` | 34 | handles GitHub auth internally; prefer over raw curl for repo metadata |
 
 ### `./secretcurl` and the `{ENV_NAME}` placeholder
@@ -113,7 +113,7 @@ There is **no network sandbox** — plain `curl` works for unauthenticated GETs.
 
 `memory/` is the durable state that survives between runs. Four conventions, in order of how often skills touch them:
 
-### `memory/logs/${today}.md` - the run log (68 of 84 skills)
+### `memory/logs/${today}.md` - the run log (69 of 85 skills)
 
 Every skill appends what it did, under **one** heading that is exactly its slug:
 
@@ -128,7 +128,7 @@ The `### <skill-name>` shape is load-bearing — the health/heartbeat loop parse
 
 This is also the **dedup substrate**. The standard rule, and the one to add to any new skill: *read the last 3 days of `memory/logs/` and skip anything already reported.* Without it a daily skill re-reports the same item until it's muted.
 
-### `memory/MEMORY.md` - the durable index (137 references across 58 skills)
+### `memory/MEMORY.md` - the durable index (138 references across 59 skills)
 
 Long-lived facts, not run history. Skills read it for context; the `memory-flush` skill promotes important log lines into it and prunes stale ones. Don't append per-run noise here — that's what `logs/` is for.
 

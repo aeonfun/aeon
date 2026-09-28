@@ -91,6 +91,7 @@ Each is opt-in. Unset means the skills that want it skip or degrade.
 | `BASE_RPC_URL` | Base on-chain skills | docs.base.org/chain/node-providers — a public RPC is used by default |
 | `BANKR_API_KEY` | `distribute-tokens` (real on-chain sends) | bankr.bot/api-keys — Wallet API, not the LLM key |
 | `VERCEL_TOKEN` | `deploy-prototype` | vercel.com/account/settings/tokens |
+| `FEEDBACK_TOKEN` | `feedback-builder` (bearer token for a private `/feedback` endpoint) | issued by the service you point it at - leave unset for public endpoints |
 | `REPLICATE_API_TOKEN` | `article --visual` hero images | replicate.com/account/api-tokens |
 | `ADMANAGE_API_KEY` | `schedule-ads` | admanage.ai/api-docs |
 | `RESEND_API_KEY` | `send-email`, `vuln-scanner` disclosures | resend.com |
