@@ -2647,6 +2647,26 @@
       ],
       "contentHash": "sha256-0dd10ae2c152e8fcc690ad02bad0cf54f5d9c246694c4ee9130e0c941345787e",
       "discoveredFrom": "skills/aeon-update/SKILL.md"
+    },
+    {
+      "id": "8b2f9a3eba6aecc6",
+      "tool": "aeon",
+      "scope": "project:.",
+      "type": "skill",
+      "name": "feedback-builder",
+      "source": {
+        "kind": "local",
+        "ref": "skills/feedback-builder"
+      },
+      "capabilities": {},
+      "files": [
+        {
+          "path": "SKILL.md",
+          "hash": "cbe22fc5bddfc704ad2970051bc20fff620a858d05db00776fdc24f00479a79f"
+        }
+      ],
+      "contentHash": "sha256-349ae83cfa9c3c1bc1d2da278ece86db40ae6c6be73c2a494f22517b3c9c8845",
+      "discoveredFrom": "skills/feedback-builder/SKILL.md"
     }
   ]
 }
