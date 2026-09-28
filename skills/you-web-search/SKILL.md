@@ -91,24 +91,30 @@ On `HTTP=200` with non-empty body, parse the response:
 ```bash
 if [ "$HTTP" = "200" ] && [ -s /tmp/youcom-search.json ]; then
   # Extract web and news results using the documented Search API shape.
-  jq -r '
+  if jq -r '
     [
       (.results.web[]?  | ["web",  (.title // ""), (.url // ""), ((.snippets // []) | join(" ")), (.page_age // "recent")]),
       (.results.news[]? | ["news", (.title // ""), (.url // ""), ((.snippets // []) | join(" ")), (.page_age // "recent")])
     ] | .[] | @tsv
-  ' /tmp/youcom-search.json > /tmp/youcom-results.txt
+  ' /tmp/youcom-search.json > /tmp/youcom-results.txt; then
+    PARSE_OK=1
+  else
+    PARSE_OK=0
+    : > /tmp/youcom-results.txt
+  fi
   
   # Count results
   RESULT_COUNT=$(wc -l < /tmp/youcom-results.txt)
   echo "Extracted $RESULT_COUNT search results"
 else
+  PARSE_OK=1
   RESULT_COUNT=0
 fi
 
 # Any non-200 (or a 200 with nothing usable) hands the run to the built-in WebSearch.
 if [ "$RESULT_COUNT" -eq 0 ]; then
   case "$HTTP" in
-    200) REASON="EMPTY" ;;
+    200) if [ "$PARSE_OK" = "1" ]; then REASON="EMPTY"; else REASON="PARSE"; fi ;;
     000) REASON="NETWORK" ;;
     *)   REASON="HTTP_$HTTP" ;;
   esac
@@ -127,7 +133,7 @@ When `SOURCE_PATH=websearch`, don't end the run empty. Run the same query (`$QUE
 youcom fallback=websearch reason=HTTP_401 auth_mode=keyless
 ```
 
-Typical triggers are a keyless `401` (see [Error Handling](#error-handling)), the keyless `429` daily cap (shared GitHub Actions runner IPs can hit it even on light usage), `5xx`, a network timeout (`reason=NETWORK`), or zero results (`reason=EMPTY`). Only fall back once per run. If WebSearch also returns nothing, report that neither source returned results.
+Typical triggers are a keyless `401` (see [Error Handling](#error-handling)), the keyless `429` daily cap (shared GitHub Actions runner IPs can hit it even on light usage), `5xx`, a network timeout (`reason=NETWORK`), an unparseable body (`reason=PARSE`), or zero results (`reason=EMPTY`). Only fall back once per run. If WebSearch also returns nothing, report that neither source returned results.
 
 ## Phase 2 — Format Results  
 
@@ -157,7 +163,7 @@ Structure the output for easy consumption:
 *You.com Web Search Results — ${today}*
 
 Query: "${var}"
-Source: You.com Search API (${auth_mode}) | or: WebSearch (fallback: ${reason})
+Source: ${source}
 Results: ${result_count} found
 
 1. **[Title](URL)**  
@@ -171,6 +177,8 @@ Results: ${result_count} found
 ---
 API Status: ${http_status} | Auth: ${auth_mode} | Quality: ${quality_score}/5
 ```
+
+`${source}` is exactly one of `You.com Search API (${auth_mode})` or `WebSearch (fallback: ${reason})`, matching `SOURCE_PATH`. Never print both.
 
 ## Phase 3 — Delivery and Logging
 
@@ -191,7 +199,7 @@ Log the search for future reference:
    ```
    ### you-web-search
    - Query: "${var}"
-   - Source: You.com API (${auth_mode}) | WebSearch (fallback: ${reason})
+   - Source: ${source}
    - Results: N found, M delivered  
    - Status: HTTP ${code}
    - Quality score: X/5 (relevance, freshness, diversity)
@@ -211,8 +219,8 @@ Every failure below ends in the [WebSearch fallback](#websearch-fallback), so a 
 - **Invalid key (401/403, keyed mode)**: Clear error about checking `YDC_API_KEY`
 - **Server errors (5xx)**: Transient. Fall back and log `reason=HTTP_<code>` (e.g. `HTTP_503`)
 - **Network failures**: Fall back and log `reason=NETWORK`
-- **Malformed responses**: Validate JSON structure, handle parsing errors
-- **Empty results**: Suggest query refinement, try broader terms
+- **Malformed responses**: A `200` whose body `jq` can't parse. Fall back and log `reason=PARSE`
+- **Empty results**: A `200` with zero results. Fall back and log `reason=EMPTY`. If WebSearch is also empty, suggest query refinement or broader terms
 
 ### Logging Failures  
 
