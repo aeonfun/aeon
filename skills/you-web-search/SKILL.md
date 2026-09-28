@@ -102,10 +102,32 @@ if [ "$HTTP" = "200" ] && [ -s /tmp/youcom-search.json ]; then
   RESULT_COUNT=$(wc -l < /tmp/youcom-results.txt)
   echo "Extracted $RESULT_COUNT search results"
 else
-  echo "API call failed: HTTP=$HTTP"
   RESULT_COUNT=0
 fi
+
+# Any non-200 (or a 200 with nothing usable) hands the run to the built-in WebSearch.
+if [ "$RESULT_COUNT" -eq 0 ]; then
+  case "$HTTP" in
+    200) REASON="EMPTY" ;;
+    000) REASON="NETWORK" ;;
+    *)   REASON="HTTP_$HTTP" ;;
+  esac
+  SOURCE_PATH="websearch"
+  echo "youcom fallback=websearch reason=$REASON auth_mode=$AUTH_MODE"
+else
+  SOURCE_PATH="youcom"
+fi
 ```
+
+### WebSearch Fallback
+
+When `SOURCE_PATH=websearch`, don't end the run empty. Run the same query (`$QUERY`) through the built-in **WebSearch** tool and continue to Phase 2 with those results. The log line above is the record of why:
+
+```
+youcom fallback=websearch reason=HTTP_401 auth_mode=keyless
+```
+
+Typical triggers are a keyless `401` (see [Error Handling](#error-handling)), the keyless `429` daily cap (shared GitHub Actions runner IPs can hit it even on light usage), `5xx`, a network timeout (`reason=NETWORK`), or zero results (`reason=EMPTY`). Only fall back once per run. If WebSearch also returns nothing, report that neither source returned results.
 
 ## Phase 2 — Format Results  
 
@@ -135,7 +157,7 @@ Structure the output for easy consumption:
 *You.com Web Search Results — ${today}*
 
 Query: "${var}"
-Source: You.com Search API (${auth_mode}) 
+Source: You.com Search API (${auth_mode}) | or: WebSearch (fallback: ${reason})
 Results: ${result_count} found
 
 1. **[Title](URL)**  
@@ -158,6 +180,7 @@ Send formatted results via `./notify`:
 - Include query, result count, and source attribution
 - Highlight most relevant results (top 5-7)  
 - Note the auth mode actually used (`keyless` or `keyed`)
+- When the fallback ran, say so and give the reason (e.g. "via WebSearch — You.com returned HTTP 401")
 - Include livecrawl info when enabled (or that it was skipped on the keyless tier)
 
 ### Memory Integration  
@@ -168,7 +191,7 @@ Log the search for future reference:
    ```
    ### you-web-search
    - Query: "${var}"
-   - Source: You.com API (${auth_mode})
+   - Source: You.com API (${auth_mode}) | WebSearch (fallback: ${reason})
    - Results: N found, M delivered  
    - Status: HTTP ${code}
    - Quality score: X/5 (relevance, freshness, diversity)
@@ -180,12 +203,14 @@ Log the search for future reference:
 
 ### API Failure Recovery
 
-Handle common failure modes gracefully:
+Every failure below ends in the [WebSearch fallback](#websearch-fallback), so a run always has results. The notes say what to tell the operator:
 
+- **Keyless 401**: In `keyless` mode no key is sent, so a `401` is **not** a credential problem. Some locations currently get `401` from the keyless endpoint with a body like `{"detail":"'ascii' codec can't encode characters ..."}`. This is a known server-side issue with non-ASCII region names (e.g. `Île-de-France`), and `country`/`language` parameters don't avoid it. Fall back and log `reason=HTTP_401`. Setting `YDC_API_KEY` uses the keyed endpoint, which is unaffected
 - **Rate limits (429)**: Log rate limit hit. In `keyless` mode this is usually the 100/day per-IP cap — suggest setting `YDC_API_KEY` (get one at https://you.com/platform?utm_source=aeonfun-aeon&utm_medium=oss_integration&utm_campaign=2026-09-oss-integrations&utm_content=error-message). In `keyed` mode, suggest checking the plan quota
 - **Payment required (402)**: The request needs the keyed tier (e.g. livecrawl without a key) — suggest setting `YDC_API_KEY`
-- **Invalid key (401/403)**: Clear error about checking `YDC_API_KEY` (keyed mode only)
-- **Network failures**: Surface the API failure and exit cleanly
+- **Invalid key (401/403, keyed mode)**: Clear error about checking `YDC_API_KEY`
+- **Server errors (5xx)**: Transient. Fall back and log `reason=HTTP_<code>` (e.g. `HTTP_503`)
+- **Network failures**: Fall back and log `reason=NETWORK`
 - **Malformed responses**: Validate JSON structure, handle parsing errors
 - **Empty results**: Suggest query refinement, try broader terms
 
@@ -195,7 +220,8 @@ Record failure reasons for debugging:
 - `youcom-api-unavailable` — API endpoint unreachable
 - `youcom-rate-limited` — Hit plan limits or the keyless daily cap
 - `youcom-payment-required` — Keyed-tier feature requested without a key
-- `youcom-auth-invalid` — API key rejected
+- `youcom-auth-invalid` — API key rejected (keyed mode)
+- `youcom-keyless-401` — Keyless endpoint returned 401 with no key sent
 - `youcom-parse-error` — Response format unexpected
 
 ## Network
@@ -215,7 +241,8 @@ Both modes go through `./secretcurl` so one code path covers them: keyed calls c
 - **Respect rate limits** — handle 429 responses gracefully
 - **Validate all URLs** — ensure results contain real, accessible links
 - **Keep results relevant** — filter low-quality or off-topic results
-- **Fail clearly** — if the API is unavailable, report it instead of pretending a fallback ran
+- **Never end a run empty** — on any You.com failure, fall back to WebSearch and log `youcom fallback=websearch reason=<REASON>`
+- **Report the path honestly** — say whether results came from You.com or the WebSearch fallback, never present fallback results as You.com results
 
 ## Integration Notes  
 
@@ -224,7 +251,7 @@ Both modes go through `./secretcurl` so one code path covers them: keyed calls c
 This skill **complements** Aeon's built-in WebSearch, but it is a separate Search API path (keyless by default, keyed when `YDC_API_KEY` is set):
 
 - **You.com advantages**: Higher quality results, real-time crawling, better relevance ranking
-- **WebSearch advantages**: No API dependency, always available, deeply integrated
+- **WebSearch advantages**: No API dependency, always available, deeply integrated. It is also this skill's fallback whenever the You.com call fails
 - **Use You.com for**: Research tasks, fact-checking, current events, specific queries
 - **Use WebSearch for**: Built-in search flows elsewhere in Aeon
 
