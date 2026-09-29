@@ -5,8 +5,6 @@
 Repo: https://github.com/aeonfun/aeon
 Site: https://www.aeon.fun
 
-Aeon is an independent open-source project by Aeon Inc, public since March 2026. Not affiliated with OpenAI (including its Aeon agent), AEON (payments) or aeon-toolkit (time-series ML). See https://www.aeon.fun/blog/aeon-vs-openai-aeon
-
 ## Core entry points
 
 - [AGENTS.md](https://raw.githubusercontent.com/aeonfun/aeon/main/AGENTS.md): Start here. The instance operating manual an Aeon agent reads at runtime - how Aeon works, strategy, voice/soul hierarchy, memory, tools, capability mode, skill chaining, notifications, network/secrets, security.
