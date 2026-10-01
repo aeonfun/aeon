@@ -260,15 +260,6 @@ if [ "$(uname -s)" = Linux ] && command -v bwrap >/dev/null 2>&1 \
   else
     bad "live bwrap: could not start the leftover-process probe"
   fi
-  # TEMP DIAGNOSTIC (removed before merge): can a sandboxed run rename the
-  # PARENT of a ro-bound path and plant a replacement at the original path?
-  mkdir -p "$TMP/probe/parent/locked"; echo orig > "$TMP/probe/parent/locked/f"
-  probe=()
-  while IFS= read -r tok; do probe+=("$tok"); done < <(cd "$REPO" && . "$ROOT/harness-adapter/lib/sandbox.sh" \
-      && HOME="$H" AEON_HARNESS_CONFIG_SNAPSHOT="$TMP/probe/parent/locked" GITHUB_ENV="" GITHUB_PATH="" GITHUB_OUTPUT="" \
-         GITHUB_STEP_SUMMARY="" GITHUB_STATE="" RUNNER_TOOL_CACHE="" RUNNER_WORKSPACE="" sandbox_prefix "$TMP/scratch")
-  ( cd "$REPO" && HOME="$H" "${probe[@]}" sh -c 'mv "$1/parent" "$1/parent.moved" && mkdir -p "$1/parent/locked" && echo planted > "$1/parent/locked/f"' sh "$TMP/probe" ) 2>&1 | sed 's/^/note - probe stderr: /'
-  echo "note - DIAG parent-rename of a ro-bound dir: host sees f=$(cat "$TMP/probe/parent/locked/f" 2>/dev/null) moved=$([ -e "$TMP/probe/parent.moved" ] && echo yes || echo no)"
 elif [ "${AEON_REQUIRE_LIVE_BWRAP:-}" = 1 ]; then
   bad "live bwrap checks required (AEON_REQUIRE_LIVE_BWRAP=1) but bwrap is missing or cannot create a user namespace"
 else
