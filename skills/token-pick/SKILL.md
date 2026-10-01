@@ -30,13 +30,15 @@ Produce ONE token call and ONE prediction-market call per day, each with a numer
 ### 1. Fetch token data
 
 ```bash
+# Optional demo key rides ./secretcurl's {COINGECKO_API_KEY} placeholder (never a bare
+# $SECRET on the line); without a key the same public endpoint works at a lower rate limit.
+CG_HDR=(); [ -n "${COINGECKO_API_KEY:+x}" ] && CG_HDR=(-H "x-cg-demo-api-key: {COINGECKO_API_KEY}")
+
 # Trending coins
-curl -s "https://api.coingecko.com/api/v3/search/trending" \
-  ${COINGECKO_API_KEY:+-H "x-cg-demo-api-key: $COINGECKO_API_KEY"}
+./secretcurl -s "${CG_HDR[@]}" "https://api.coingecko.com/api/v3/search/trending"
 
 # Top 250 by market cap with 24h and 7d changes
-curl -s "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=1&sparkline=false&price_change_percentage=24h,7d" \
-  ${COINGECKO_API_KEY:+-H "x-cg-demo-api-key: $COINGECKO_API_KEY"}
+./secretcurl -s "${CG_HDR[@]}" "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=1&sparkline=false&price_change_percentage=24h,7d"
 
 # BTC + ETH 24h/7d for relative-strength benchmark (extract from the markets call above; no extra request needed)
 

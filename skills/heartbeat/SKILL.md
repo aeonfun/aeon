@@ -209,7 +209,7 @@ If nothing needs attention, log "HEARTBEAT_OK" (plus the overall status page ver
 **A bootstrapping / warming-up fleet counts as "nothing needs attention".** Still regenerate `docs/status.md` (verdict `🟢 OK`, warming-up note), log `HEARTBEAT_OK · STATUS_PAGE=OK (warming up)`, and **send no notification** — a fresh fork should be quiet, not a red alert. Warming-up skills are not "findings".
 
 If something needs attention:
-1. Send a single concise notification via `./notify` (grouped by priority as above)
+1. Write a single concise notification (grouped by priority as above) to a file such as `/tmp/heartbeat.md` and send it with `./notify -f /tmp/heartbeat.md`
 2. Log the findings and actions taken to memory/logs/${today}.md (under the shared `### heartbeat` heading — see [Log](#log) — with a `mode: ambient` discriminator line)
 3. Log one line with the status-page verdict, e.g. `STATUS_PAGE=DEGRADED — wrote docs/status.md`
 
@@ -275,16 +275,16 @@ Style rules:
 
 ### 4. Send via `./notify` and email
 
-- Send the formatted brief with `./notify "..."`.
+- Write the formatted brief to a file (e.g. `/tmp/brief.md`) and send it with `./notify -f /tmp/brief.md` (never a long inline `./notify "..."`; multi-line argv trips the sandbox).
 - Send email via Resend (**optional — skip cleanly when unconfigured**):
-  - **Preflight:** if `$RESEND_API_KEY` is empty/unset **or** `$BRIEF_RECIPIENTS` has no addresses, **skip the email step entirely** — the `./notify` send above already delivered the brief. Note the skip in the log (`email: skipped (no RESEND_API_KEY)`) and continue; do **not** fail the run. `RESEND_API_KEY` is an optional dependency.
+  - **Preflight:** check presence with `[ -n "${RESEND_API_KEY:+x}" ]` (a bare `$RESEND_API_KEY` is a secret expansion the Bash permission layer refuses); if it is unset **or** `$BRIEF_RECIPIENTS` has no addresses, **skip the email step entirely** — the `./notify` send above already delivered the brief. Note the skip in the log (`email: skipped (no RESEND_API_KEY)`) and continue; do **not** fail the run. `RESEND_API_KEY` is an optional dependency.
   - When configured:
     - Build the brief as HTML (wrap each section in `<h2>` headers, `<ul>/<li>` bullets)
     - Also keep a plain-text copy (the `./notify` content above, as-is)
     - Parse `$BRIEF_RECIPIENTS` as a comma-separated list of addresses
-    - POST to `https://api.resend.com/emails`:
+    - POST to `https://api.resend.com/emails` with `./secretcurl` (the key goes in as the literal `{RESEND_API_KEY}` placeholder, never `$RESEND_API_KEY`):
       ```
-      Authorization: Bearer $RESEND_API_KEY
+      Authorization: Bearer {RESEND_API_KEY}
       Content-Type: application/json
 
       {

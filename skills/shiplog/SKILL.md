@@ -62,18 +62,18 @@ SINCE_DATE="${SINCE%%T*}"
 
 ### 2. GitHub activity (the bytes)
 
-Cross-repo PR/commit visibility needs the global token — the built-in `GITHUB_TOKEN` only sees this repo. Prefer `GH_GLOBAL` when set:
+Cross-repo PR/commit visibility needs the global token. When `GH_GLOBAL` is set the workflow already exports it as `gh`'s `GH_TOKEN`, so plain `gh` calls reach every repo it can see; don't put the token on the command line (a `$SECRET` expansion is refused):
 
 ```bash
-GHT="${GH_GLOBAL:-$GITHUB_TOKEN}"   # gh reads GH_TOKEN from env; falls back to the repo-scoped token
-OPERATOR=$(GH_TOKEN="$GHT" gh api user --jq .login 2>/dev/null)
+# gh reads GH_TOKEN from the environment (GH_GLOBAL when set, else the repo-scoped token)
+OPERATOR=$(gh api user --jq .login 2>/dev/null)
 ```
 
 Track success/failure per source in a `sources` map; on a single endpoint failure log `fail` and continue — never abort the whole skill.
 
 **a) Operator PRs across all repos in the window** (grouped by repo + totals):
 ```bash
-GH_TOKEN="$GHT" gh search prs --author "$OPERATOR" --created ">=$SINCE_DATE" \
+gh search prs --author "$OPERATOR" --created ">=$SINCE_DATE" \
   --json number,title,repository,state,createdAt,url --limit 100 \
   --jq 'group_by(.repository.nameWithOwner)[] | {repo: .[0].repository.nameWithOwner, count: length,
          prs: [.[] | {date: .createdAt[0:10], state, number, title}]}'
@@ -83,9 +83,9 @@ If 100 rows come back, note the result may be truncated.
 **b) Flagship headline numbers** — for each `flagship_repos` entry, count commits + merged PRs in the window (the numbers the audience cares about):
 ```bash
 for REPO in $FLAGSHIP_REPOS; do
-  GH_TOKEN="$GHT" gh api "repos/${REPO}/commits" -X GET -f since="$SINCE" \
+  gh api "repos/${REPO}/commits" -X GET -f since="$SINCE" \
     --jq "\"$REPO commits: \" + ([.[] | .sha] | length | tostring)" 2>/dev/null
-  GH_TOKEN="$GHT" gh api "repos/${REPO}/pulls" -X GET -f state=closed -f sort=updated -f direction=desc \
+  gh api "repos/${REPO}/pulls" -X GET -f state=closed -f sort=updated -f direction=desc \
     --jq "\"$REPO merged PRs: \" + ([.[] | select(.merged_at != null and .merged_at > \"$SINCE\")] | length | tostring)" 2>/dev/null
 done
 ```
@@ -96,7 +96,7 @@ done
 ```bash
 mkdir -p memory/state
 for REPO in $FLAGSHIP_REPOS; do
-  GH_TOKEN="$GHT" gh api "repos/${REPO}" --jq '.stargazers_count'   # current total for $REPO
+  gh api "repos/${REPO}" --jq '.stargazers_count'   # current total for $REPO
 done
 ```
 Read the prior snapshot `memory/state/shiplog-stars.json` (if present): `delta = current_total − last_total` per repo. After computing, overwrite the snapshot with `{ "<repo>": {"count": N, "date": "${TODAY}"}, ... }`. If no prior snapshot exists, report totals only and note "no baseline yet — deltas start next run." Do NOT fabricate a delta.
@@ -229,7 +229,7 @@ Append to `memory/logs/${TODAY}.md`:
 
 ## Fetching & sources
 
-- **GitHub**: every call uses `gh` (auth handled internally) — never curl the GitHub API. For cross-repo reach, prefer `GH_TOKEN="${GH_GLOBAL:-$GITHUB_TOKEN}"`; with only the built-in token you'll see this repo plus public repos, which still covers public flagships.
+- **GitHub**: every call uses `gh` (auth handled internally) — never curl the GitHub API. For cross-repo reach set `GH_GLOBAL` (the workflow exports it as `GH_TOKEN`; never pass it inline); with only the built-in token you'll see this repo plus public repos, which still covers public flagships.
 - **X**: `XAI_API_KEY` is injected into this skill's env (it's in `requires:`), and the primary path for every X source is a direct `curl https://api.x.ai/v1/responses` with `Authorization: Bearer {XAI_API_KEY}` (Step 3). There is no network sandbox blocking this. Attempt the curl (`--max-time 150`, Bash tool `timeout` ≥180000) before any fallback, and on a real failure skip that source with the true reason (`key-unset` / `http-<code>` / `empty` / `timeout`) — WebFetch of the public `x.com/<handle>` profile is a lower-quality last resort only.
 - **Never abort on a single source failure** — note the gap in the digest and still write + notify.
 

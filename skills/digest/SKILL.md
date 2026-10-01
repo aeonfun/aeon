@@ -59,7 +59,7 @@ Pull from the source classes selected by `${var}`. Never rely on a single one �
    - One narrower query you choose based on `${topic}` (e.g. for "solana" → `"solana" launches OR funding OR exploit ${today}`; for "AI agents" → `"agent framework" OR "agentic" release ${today}`).
 2. **xAI x_search via Grok** — pulls the X/Twitter signal layer. `XAI_API_KEY` is injected into this skill's environment (declared in `requires:`) and is the **primary** path; see **Fetching the X signal** below for the full contract (attempt the curl before any fallback, set the Bash tool `timeout` ≥180000, record the true failure reason).
 
-   **Path A — X.AI API (primary):** a direct `curl` to the Responses API. First confirm the key with `[ -n "$XAI_API_KEY" ] && echo KEY_PRESENT || echo KEY_UNSET`; if `KEY_PRESENT` (it will be), this path is required. When you run the curl, set the Bash tool's `timeout` to at least `180000`.
+   **Path A — X.AI API (primary):** a direct `curl` to the Responses API. First confirm the key with `[ -n "${XAI_API_KEY:+x}" ] && echo KEY_PRESENT || echo KEY_UNSET` (a bare `$XAI_API_KEY` is a secret expansion the Bash permission layer refuses); if `KEY_PRESENT` (it will be), this path is required. When you run the curl, set the Bash tool's `timeout` to at least `180000`.
    ```bash
    FROM_DATE=$(date -u -d "yesterday" +%Y-%m-%d 2>/dev/null || date -u -v-1d +%Y-%m-%d)
    TO_DATE=$(date -u +%Y-%m-%d)
@@ -164,7 +164,7 @@ If the digest fails any check, fix it before sending. If after filtering you hav
 
 ## Phase 5 — Send and log
 
-1. Send via `./notify "<digest body>"`.
+1. Write the digest body to a file (e.g. `/tmp/digest.md`) and send it with `./notify -f /tmp/digest.md` (a long multi-line argv trips the sandbox; `-f` keeps it short).
 2. Append to `memory/logs/${today}.md` under **one** `### digest` heading:
    ```
    ### digest (${var})
@@ -182,7 +182,7 @@ If the digest fails any check, fix it before sending. If after filtering you hav
 
 Rules:
 
-1. **Check, don't assume.** Run `[ -n "$XAI_API_KEY" ] && echo KEY_PRESENT || echo KEY_UNSET`. If `KEY_PRESENT` (it will be), Path A is required before any fallback.
+1. **Check, don't assume.** Run `[ -n "${XAI_API_KEY:+x}" ] && echo KEY_PRESENT || echo KEY_UNSET`. If `KEY_PRESENT` (it will be), Path A is required before any fallback.
 2. **Allow enough time.** Grok's `x_search` typically takes 30–120s (it searches X live). Set the Bash tool's `timeout` to at least **180000 (180s)** for the curl, and keep **`--max-time 150`** on the curl itself so it fails cleanly rather than hanging. A slow curl is **not** a missing key — never treat a timeout as key-unavailable.
 3. **Capture the HTTP status** and parse the body with the standard `jq` extractor (`jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text'`). `HTTP=200` + non-empty body → use it.
 4. **Fall back only on a real failure**, recording the **true reason**: `key-unset` (only if step 1 said `KEY_UNSET`), `http-<code>` (non-2xx), `empty` (200 but nothing parsed), or `timeout` (curl exceeded `--max-time`). Never log "XAI_API_KEY unavailable" when the key was set.

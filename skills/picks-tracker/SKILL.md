@@ -49,16 +49,15 @@ If zero picks are found in the window, log `PICKS_TRACKER_SKIP: no picks in last
 
 For each unique token symbol, fetch the current price from CoinGecko.
 
-First, try the search endpoint to get the coin ID:
+First, try the search endpoint to get the coin ID. The optional demo key rides `./secretcurl`'s `{COINGECKO_API_KEY}` placeholder (never a bare `$SECRET` on the line); the header is only sent when a key is set:
 ```bash
-curl -s "https://api.coingecko.com/api/v3/search?query=SYMBOL" \
-  ${COINGECKO_API_KEY:+-H "x-cg-demo-api-key: $COINGECKO_API_KEY"}
+CG_HDR=(); [ -n "${COINGECKO_API_KEY:+x}" ] && CG_HDR=(-H "x-cg-demo-api-key: {COINGECKO_API_KEY}")
+./secretcurl -s "${CG_HDR[@]}" "https://api.coingecko.com/api/v3/search?query=SYMBOL"
 ```
 
 Then fetch the price:
 ```bash
-curl -s "https://api.coingecko.com/api/v3/simple/price?ids=COIN_ID&vs_currencies=usd&include_24hr_change=true" \
-  ${COINGECKO_API_KEY:+-H "x-cg-demo-api-key: $COINGECKO_API_KEY"}
+./secretcurl -s "${CG_HDR[@]}" "https://api.coingecko.com/api/v3/simple/price?ids=COIN_ID&vs_currencies=usd&include_24hr_change=true"
 ```
 
 **Fallback:** If curl fails, use WebFetch for the same URL (drop the API key header).
