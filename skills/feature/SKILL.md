@@ -104,17 +104,19 @@ All branches read operator-controlled files under `memory/` (runtime config — 
 
 ---
 
-## Before any branch: is this already open?
+## Before building: is this already open?
 
-A scheduled run can pick the same work it picked yesterday: an issue stays open until its PR merges, and yesterday's PR may still be in review. Right before creating a branch (A7, B6, C4), ask GitHub, not memory:
+A scheduled run can pick the same work it picked yesterday: an issue stays open until its PR merges, and yesterday's PR may still be in review. As soon as a work item is picked and its branch name is set (A3, B4, C4), and before any clone or build for it, ask GitHub, not memory:
 
 ```bash
-./scripts/feature-open-pr.sh covered "$REPO" "<branch you are about to create>" [<issue number, when building an issue>]
+./scripts/feature-open-pr.sh covered "$REPO" "$BRANCH" [<issue number, when building an issue>]
 ```
 
-- exit `0`: an open PR from this account already covers it (same head branch, or it references that issue), or the branch already exists on the remote. Log `FEATURE_SKIP: <repo> — already open: <printed URL or branch>`, send no notification, move on.
-- exit `2`: GitHub could not be read. Treat it as covered and skip; never open a PR blind.
-- exit `1`: nothing covers it. Go ahead.
+- exit `0`: an open PR from this account already covers it (same head branch, or it references that issue), or the branch already exists on the remote. Log `FEATURE_SKIP: <repo> - already open: <printed URL or branch>`, send no notification, drop that work item and pick the next candidate (A3, B4). Skip the repo only when no candidate is left.
+- exit `2`: GitHub could not be read. Treat it as covered and skip the repo (the next candidate would hit the same error); never open a PR blind.
+- exit `1`: nothing covers it. Build it, and create exactly `$BRANCH` later.
+
+Run it once per work item, at pick time. There is no second check at branch time: scheduled runs of this skill serialize on the workflow concurrency group, and a push to a branch that appeared in the meantime is rejected by git instead of opening a duplicate.
 
 This only decides whether to open something new. It never pushes to an existing PR; the repair interception above is the only path that does.
 
@@ -142,6 +144,8 @@ If `${var}` is `watched:<feature-spec>`, restrict the list to **the first repo o
 
 A failure on one repo must NOT stop the others — catch the failure, log it, continue. Use a fresh working directory per repo (e.g. `/tmp/feature-build-${repo-name}`).
 
+Set `REPO` to the repo being processed (`REPO="owner/repo"`); the steps below and the shared checks above use it.
+
 ### A3. Pick what to build for this repo
 
 In this priority order:
@@ -150,19 +154,21 @@ a. **If `${var}` is `watched:<feature-spec>` AND this is the first repo**, build
 b. **Check yesterday's `repo-actions` output** in `output/articles/repo-actions-*.md` (most recent file) for ideas scoped to THIS repo. Pick the highest-impact idea that's autonomously implementable.
 c. **Check open GitHub issues labelled `ai-build`** on this repo:
    ```bash
-   gh issue list -R owner/repo --label ai-build --state open
+   gh issue list -R "$REPO" --label ai-build --state open
    ```
 d. **Check `memory/MEMORY.md`** for planned features or next priorities tied to this repo.
 e. **If none of the above yields anything for this repo**, log `FEATURE_SKIP: <repo> — no suitable feature found` and **skip to the next repo. Do NOT send a notification for skipped repos.**
 
 **With `--fix-issues`:** promote step (c) — open `ai-build` issues — to the top priority ahead of (a)/(b), and only build from an open issue. If this repo has no open `ai-build` issue, log `FEATURE_SKIP: <repo> — no open ai-build issue` and skip it.
 
+**Then, before cloning,** set `BRANCH="feat/<short-feature-name>"` for the picked item and run the open-PR check (see "Before building"), with the issue number when the item is an issue. On exit `0`, drop that item and take the next candidate from this list (the next `ai-build` issue, the next idea), checking each the same way; when none is left, skip the repo as in (e). On exit `2`, skip the repo.
+
 ### A4. Clone the repo
 
 Into a per-repo temp directory:
 
 ```bash
-gh repo clone owner/repo /tmp/feature-build-${repo-name}
+gh repo clone "$REPO" /tmp/feature-build-${repo-name}
 cd /tmp/feature-build-${repo-name}
 ```
 
@@ -187,19 +193,19 @@ Write clean, complete code. No TODOs or placeholders. Match the existing code st
 
 ### A7. Branch and push
 
-Run the open-PR check first (see "Before any branch"), with `feat/<short-feature-name>` and the issue number when step A3 picked an issue.
+Use the `$BRANCH` that passed the open-PR check in A3.
 
 ```bash
-git checkout -b feat/<short-feature-name>
+git checkout -b "$BRANCH"
 git add -A
 git commit -m "feat: <description of what was built>"
-git push -u origin feat/<short-feature-name>
+git push -u origin "$BRANCH"
 ```
 
 ### A8. Open a PR
 
 ```bash
-gh pr create -R owner/repo \
+gh pr create -R "$REPO" \
   --title "feat: <short description>" \
   --body "## What
 <Description of the feature>
@@ -336,6 +342,8 @@ Pick the highest-impact, lowest-risk change. One change per run.
 
 If generating a governance/policy file (`CODE_OF_CONDUCT.md`, abuse/harassment docs), follow the **content-filter-sensitive documents** procedure in §A6 — `curl -o` the canonical body straight to disk, never free-generate it.
 
+**Before writing any code,** set the branch for it (`BRANCH="ai/SHORT-DESCRIPTION"`) and run the open-PR check (see "Before building"), with the issue number when you picked an issue. On exit `0`, drop that item and pick the next one from the list above, checking it the same way; if the run named a specific `#N` (B2) or nothing workable is left, log the skip and exit without a PR. On exit `2`, exit without a PR.
+
 ### B5. Implement it
 
 Write clean, production-ready code:
@@ -346,10 +354,9 @@ Write clean, production-ready code:
 
 ### B6. Create a branch and commit
 
-Run the open-PR check first (see "Before any branch"), with `$BRANCH` and the issue number when B4 picked an issue.
+Use the `$BRANCH` that passed the open-PR check in B4.
 
 ```bash
-BRANCH="ai/SHORT-DESCRIPTION"
 git checkout -b "$BRANCH"
 git add -A
 git commit -m "TYPE: [description]
@@ -479,7 +486,7 @@ Do NOT attempt:
 
 ### C4. Make the improvement
 
-Clone, branch, change, commit, push, PR. Run the open-PR check first (see "Before any branch") with the branch `'chore/revive-*'`, which matches a revival PR from any earlier day, so a dormant repo picked again does not get a second one.
+Clone, branch, change, commit, push, PR. Run the open-PR check first (see "Before building"), passing `'chore/revive-*'` as the branch, which matches a revival PR from any earlier day, so a dormant repo picked again does not get a second one.
 
 ```bash
 gh repo clone "$REPO" "/tmp/repo-revive-${REPO##*/}"

@@ -11,8 +11,14 @@ trap 'rm -rf "$TMP"' EXIT
 mkdir -p "$TMP/bin"
 cat > "$TMP/bin/gh" <<'STUB'
 #!/usr/bin/env bash
+if [ "$1" = api ] && [ "$2" = user ]; then
+  [ -n "${TEST_USER:-}" ] || exit 1
+  printf '%s\n' "$TEST_USER"
+  exit 0
+fi
 if [ "$1" = pr ] && [ "$2" = list ]; then
   [ -n "${TEST_PR_LIST_FAIL:-}" ] && exit 1
+  printf '%s\n' "$*" > "$TEST_ARGS"
   printf '%s\n' "${TEST_PRS:-[]}"
   exit 0
 fi
@@ -34,6 +40,7 @@ exit 1
 STUB
 chmod +x "$TMP/bin/gh"
 export PATH="$TMP/bin:$PATH"
+export TEST_ARGS="$TMP/pr-list-args"
 
 fail() { echo "FAIL: $*" >&2; exit 1; }
 expect() { # expect <exit-code> <cmd...>
@@ -62,6 +69,14 @@ TEST_BRANCH_CODE=200 expect 0 bash "$CHECK" covered acme/demo feat/new
 # GitHub unreadable: exit 2, the skill skips instead of opening blind
 TEST_PR_LIST_FAIL=1 expect 2 bash "$CHECK" covered acme/demo feat/new 43
 TEST_BRANCH_CODE=502 expect 2 bash "$CHECK" covered acme/demo feat/new
+# the PR list is scoped to the token's own login, never "@me" (which needs /user)
+TEST_USER=aeon-bot expect 1 bash "$CHECK" covered acme/demo feat/new
+grep -q -- '--author aeon-bot ' "$TEST_ARGS" || fail "author not the resolved login: $(cat "$TEST_ARGS")"
+# a token that cannot read /user (Actions GITHUB_TOKEN) falls back to the Actions bot
+# instead of failing the list and skipping every run
+expect 1 bash "$CHECK" covered acme/demo feat/new
+grep -q -- '--author github-actions\[bot\] ' "$TEST_ARGS" || fail "no bot fallback: $(cat "$TEST_ARGS")"
+if grep -q '@me' "$TEST_ARGS"; then fail "still passes @me"; fi
 # bad input is refused
 expect 2 bash "$CHECK" covered 'acme/demo;rm' feat/new
 expect 2 bash "$CHECK" covered acme/demo feat/new 4a

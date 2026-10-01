@@ -8,8 +8,10 @@
 #     covers the work: same head branch, or its title/body references #issue.
 #     A branch ending in * matches any head branch with that prefix (for names
 #     that carry a date). For an exact name, also exit 0 (printing the branch)
-#     when the branch already exists on the remote. exit 1 when nothing covers it. exit 2 when GitHub could not be
-#     read: the caller must treat that as covered and skip, never open blind.
+#     when the branch already exists on the remote. exit 1 when nothing covers
+#     it. exit 2 when GitHub could not be read: the caller must treat that as
+#     covered and skip, never open blind. "This account" is the token's login
+#     from /user, or github-actions[bot] when the token cannot read /user.
 #
 #   feature-open-pr.sh issue-open <owner/repo> <issue-number>
 #     exit 0 when #N is an open issue (not a pull request). exit 1 otherwise,
@@ -32,7 +34,12 @@ covered)
   valid_repo "$repo" || usage
   [ -n "$branch" ] || usage
   [ -z "$issue" ] || valid_num "$issue" || usage
-  if ! prs=$(gh pr list -R "$repo" --state open --author "@me" --limit 100 --json number,url,title,body,headRefName 2>/dev/null); then
+  # Resolve the token's own login explicitly instead of passing "@me": "@me"
+  # needs /user, which 403s for the Actions GITHUB_TOKEN, and that would turn
+  # every run into exit 2 (skip). Same fallback as scripts/state_store.sh.
+  actor=$(gh api user --jq .login 2>/dev/null || true)
+  [ -n "$actor" ] || actor="github-actions[bot]"
+  if ! prs=$(gh pr list -R "$repo" --state open --author "$actor" --limit 100 --json number,url,title,body,headRefName 2>/dev/null); then
     echo "could not list open PRs on $repo" >&2
     exit 2
   fi
