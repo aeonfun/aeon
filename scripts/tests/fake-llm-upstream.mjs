@@ -14,6 +14,14 @@
 // (method, path, headers, body) to $FAKE_LLM_LOG so a test can assert on what
 // the CLI actually sent.
 //
+// Tool round-trip (chat completions only, opt-in): with FAKE_LLM_TOOL=<name>
+// set, a request that DECLARES a function tool of that name and carries no tool
+// result yet gets a tool call to it (arguments {}) instead of the reply; once
+// the conversation carries a tool result, the reply is REPLY plus that result's
+// text. A request that does not declare the tool still gets the plain REPLY, so
+// a CLI that never saw the tool fails the caller's "result reached .result"
+// check. Unset (the default), every harness sees the fixed reply as before.
+//
 // Usage: node fake-llm-upstream.mjs <port>    (prints "listening <port>" when up)
 import http from "node:http";
 import fs from "node:fs";
@@ -21,6 +29,7 @@ import fs from "node:fs";
 const port = Number(process.argv[2] || process.env.FAKE_LLM_PORT || 0);
 const LOG = process.env.FAKE_LLM_LOG || "";
 const REPLY = process.env.FAKE_LLM_REPLY || "AEON_SMOKE_OK";
+const TOOL = process.env.FAKE_LLM_TOOL || "";
 const USAGE = { input: 11, output: 7, cached: 3 };
 const now = () => Math.floor(Date.now() / 1000);
 
@@ -37,20 +46,40 @@ function json(res, status, body) {
   res.end(JSON.stringify(body));
 }
 
+// Text of the last tool result in an OpenAI chat conversation ("" when none).
+function lastToolResult(body) {
+  const tool = (body.messages || []).filter(m => m && m.role === "tool").pop();
+  if (!tool) return "";
+  const c = tool.content;
+  if (typeof c === "string") return c;
+  if (Array.isArray(c)) return c.map(p => (p && p.text) || "").join("");
+  return JSON.stringify(c ?? "");
+}
+const declaresTool = (body, name) =>
+  (body.tools || []).some(t => (t && t.function && t.function.name) === name);
+
 function chatCompletions(res, body) {
   const id = "chatcmpl-smoke", model = body.model || "smoke-model";
   const usage = { prompt_tokens: USAGE.input, completion_tokens: USAGE.output, total_tokens: USAGE.input + USAGE.output,
     prompt_tokens_details: { cached_tokens: USAGE.cached } };
+  const toolResult = TOOL ? lastToolResult(body) : "";
+  const callTool = TOOL && !toolResult && declaresTool(body, TOOL);
+  const text = toolResult ? `${REPLY} ${toolResult}` : REPLY;
+  const call = { id: "call_smoke", type: "function", function: { name: TOOL, arguments: "{}" } };
   if (!body.stream) {
+    const message = callTool ? { role: "assistant", content: null, tool_calls: [call] } : { role: "assistant", content: text };
     return json(res, 200, { id, object: "chat.completion", created: now(), model,
-      choices: [{ index: 0, message: { role: "assistant", content: REPLY }, finish_reason: "stop" }], usage });
+      choices: [{ index: 0, message, finish_reason: callTool ? "tool_calls" : "stop" }], usage });
   }
   const chunk = (delta, finish = null, extra = {}) =>
     ["", { id, object: "chat.completion.chunk", created: now(), model, choices: [{ index: 0, delta, finish_reason: finish }], ...extra }];
+  const frames = callTool
+    ? [chunk({ role: "assistant", content: null, tool_calls: [{ index: 0, ...call, function: { name: TOOL, arguments: "" } }] }),
+       chunk({ tool_calls: [{ index: 0, function: { arguments: "{}" } }] }),
+       chunk({}, "tool_calls")]
+    : [chunk({ role: "assistant", content: "" }), chunk({ content: text }), chunk({}, "stop")];
   sse(res, [
-    chunk({ role: "assistant", content: "" }),
-    chunk({ content: REPLY }),
-    chunk({}, "stop"),
+    ...frames,
     ["", { id, object: "chat.completion.chunk", created: now(), model, choices: [], usage }],
     ["", "[DONE]"],
   ]);

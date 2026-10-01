@@ -21,6 +21,12 @@
 #                 scripts/tests/fake-llm-upstream.mjs, a local fake model server,
 #                 and the envelope must carry the fake reply. No API key and no
 #                 real model call: the provider config is pointed at 127.0.0.1.
+#   6. mcp (pi) - --mcp-config runs with scripts/tests/fake-mcp-server.mjs: the
+#                 fake model calls mcp__probe__echo on turn 1 and the tool's
+#                 result must reach .result on turn 2, for a fast server and a
+#                 2s-slow one (read-only, so under the wrapper sandbox); an `sse`
+#                 entry is skipped with a warning; the user's own
+#                 ~/.pi/agent/mcp.json is neither read nor changed.
 #
 # It installs global CLIs, so it is meant for a throwaway CI runner, not a laptop.
 set -uo pipefail
@@ -87,9 +93,10 @@ start_fake_upstream() {
 }
 
 # run_harness ARGS... -> run-harness envelope on stdout, stderr kept in $WORK/rh.err
+# (SMOKE_MODE picks --mode; write unless set)
 run_harness() {
   ( cd "$WORK/ws" && echo "Reply with the single word OK and nothing else." \
-      | bash "$RH" "$H" --mode write --timeout 180 "$@" ) 2>"$WORK/rh.err"
+      | bash "$RH" "$H" --mode "${SMOKE_MODE:-write}" --timeout 180 "$@" ) 2>"$WORK/rh.err"
 }
 
 check_envelope() {  # check_envelope ENVELOPE_FILE WANT_USAGE(1|0)
@@ -210,7 +217,76 @@ if [ "$H" != ccr ]; then
   done < <(hidden_flags "$H")
 fi
 
+# --- 6. pi MCP: the fake model calls a fake stdio MCP server's tool ---------------
+# pi_mcp_run NAME DELAY_MS MODE -> one run-harness call with a .mcp.json holding
+# the fake server as `probe` (plus a skipped `sse` entry). The fake upstream calls
+# mcp__probe__echo when the request declares it and answers "<reply> <result>"
+# once the tool result is back, so .result proves the round trip. The result
+# string comes in through a ${VAR} and carries a literal `$HOME`, which pi must
+# not expand a second time.
+pi_mcp_run() {
+  local name="$1" delay="$2" mode="$3" cfg="$WORK/mcp-$1.json" env="$WORK/env-mcp-$1.json"
+  local mlog="$WORK/mcp-$1.jsonl" want first
+  : > "$mlog"; : > "$FAKE_LOG"
+  export AEON_SMOKE_MCP_RESULT="MCP_${name}_OK\$HOME"
+  want="$REPLY_TEXT MCP_${name}_OK\$HOME"
+  jq -n --arg srv "$ROOT/scripts/tests/fake-mcp-server.mjs" --arg delay "$delay" --arg log "$mlog" '{mcpServers: {
+      probe:  {command: "node", args: [$srv],
+               env: {FAKE_MCP_DELAY_MS: $delay, FAKE_MCP_RESULT: "${AEON_SMOKE_MCP_RESULT}", FAKE_MCP_LOG: $log}},
+      legacy: {type: "sse", url: "https://example.invalid/sse"}}}' > "$cfg"
+  SMOKE_MODE="$mode" run_harness --model openrouter/smoke-model --mcp-config "$cfg" > "$env"
+  if jq -e --arg w "$want" '.result == $w' "$env" >/dev/null 2>&1; then
+    pass "mcp/$name ($mode, server start ${delay}ms): the MCP tool result reached .result"
+  else
+    bad "mcp/$name: .result '$(jq -r '.result // empty' "$env" 2>/dev/null | head -c 300)', want '$want' (stderr: $(tail -c 1500 "$WORK/rh.err" | tr '\n' ' '))"
+  fi
+  grep -q '"method":"tools/call"' "$mlog" \
+    && pass "mcp/$name: pi called the server's tool (tools/call seen by the fake MCP server)" \
+    || bad "mcp/$name: the fake MCP server never saw tools/call: $(tr '\n' ' ' < "$mlog" | head -c 600)"
+  first=$(jq -sc '[.[0].body.tools[]?.function.name]' "$FAKE_LOG")
+  jq -e 'index("mcp__probe__echo") != null' <<<"$first" >/dev/null \
+    && pass "mcp/$name: the first model request already declared mcp__probe__echo (no startup race)" \
+    || bad "mcp/$name: the first model request did not declare the MCP tool: $first"
+  if [ "$mode" = read-only ]; then
+    jq -e 'index("write") == null and index("edit") == null' <<<"$first" >/dev/null \
+      && pass "mcp/$name: read-only still drops write/edit" \
+      || bad "mcp/$name: read-only declared write/edit: $first"
+    grep -q 'read-only: workspace write-locked via ' "$WORK/rh.err" \
+      && pass "mcp/$name: ran under the wrapper OS sandbox ($(sed -n 's/.*write-locked via //p' "$WORK/rh.err" | head -1))" \
+      || bad "mcp/$name: read-only run was not sandboxed: $(grep -m1 'read-only' "$WORK/rh.err")"
+  fi
+  grep -q 'warning: pi MCP: skipping server legacy: legacy SSE transport' "$WORK/rh.err" \
+    && pass "mcp/$name: the sse entry was skipped with a warning" \
+    || bad "mcp/$name: no skip warning for the sse entry (stderr: $(tail -c 800 "$WORK/rh.err" | tr '\n' ' '))"
+}
+
+pi_mcp_checks() {
+  local real="$HOME/.pi/agent" sentinel="$WORK/sentinel-ran" own=0 before after lsb lsa
+  # A user-level mcp.json the run must neither read (its server would leave a
+  # marker file) nor change.
+  if [ ! -e "$real/mcp.json" ]; then
+    own=1
+    jq -n --arg m "$sentinel" '{mcpServers: {sentinel: {command: "sh", args: ["-c", "touch \"$0\"", $m]}}}' > "$real/mcp.json"
+  fi
+  before=$(cksum < "$real/mcp.json"); lsb=$(ls -A "$real" | tr '\n' ' ')
+  pi_mcp_run FAST 0 write
+  pi_mcp_run SLOW 2000 read-only
+  after=$(cksum < "$real/mcp.json"); lsa=$(ls -A "$real" | tr '\n' ' ')
+  [ "$before" = "$after" ] && pass "mcp: ~/.pi/agent/mcp.json unchanged" \
+    || bad "mcp: ~/.pi/agent/mcp.json changed: $(head -c 400 "$real/mcp.json")"
+  [ "$lsb" = "$lsa" ] && pass "mcp: nothing new written into ~/.pi/agent ($lsa)" \
+    || bad "mcp: ~/.pi/agent changed from '$lsb' to '$lsa'"
+  if [ "$own" = 1 ]; then
+    [ -e "$sentinel" ] && bad "mcp: pi started the user's own mcp.json server" \
+      || pass "mcp: the user's own mcp.json server was never started"
+    rm -f "$real/mcp.json"
+  fi
+}
+
 # --- 5. run through the adapter against a fake upstream -------------------------
+# pi also drives a tool round trip (step 6): the fake model calls this tool when a
+# request declares it. Other harnesses never declare it, so their runs are unchanged.
+[ "$H" = pi ] && export FAKE_LLM_TOOL=mcp__probe__echo
 start_fake_upstream
 ENV_OUT="$WORK/envelope.json"
 case "$H" in
@@ -241,7 +317,8 @@ case "$H" in
     mkdir -p "$HOME/.pi/agent"
     printf '{"providers":{"openrouter":{"baseUrl":"%s/api/v1"}}}\n' "$FAKE_URL" > "$HOME/.pi/agent/models.json"
     run_harness --model openrouter/smoke-model > "$ENV_OUT"
-    check_envelope "$ENV_OUT" 1 ;;
+    check_envelope "$ENV_OUT" 1
+    pi_mcp_checks ;;
   grok)
     # grok 1.x reads its API base from GROK_XAI_API_BASE_URL; with an API key it
     # lists models, then streams chat completions from the fake.

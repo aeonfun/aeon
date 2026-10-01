@@ -47,7 +47,7 @@ output **fails the run** — partial or empty results are never emitted as succe
 | Token usage | ✅ + cost | ✅ + cost¹ | ✅ | ✅ + cost | 0² | 0² |
 | Read-only enforcement | ✅ sandbox | ✅ sandbox³ | ✅ native | ✅ sandbox | ✅ sandbox⁴ | ✅ sandbox⁴ |
 | Structured output | native | native | native | shim⁵ | shim⁵ | shim⁵ |
-| MCP tool call (live) | ✅ | ✅ needs `--trust`⁷ | ✅⁶ | n/a — warn+skip | ✅ | ✅ needs overlay⁸ |
+| MCP tool call (live) | ✅ | ✅ needs `--trust`⁷ | ✅⁶ | ✅ CI (fake model)⁹ | ✅ | ✅ needs overlay⁸ |
 | Native provider auth | Claude Pro/Max OAuth | X account · `XAI_API_KEY` | ChatGPT OAuth · `OPENAI_API_KEY` | provider env key | Mistral key | Moonshot OAuth · key |
 
 The six in this table round-trip the contract on real CLIs (claude ≥2.1, grok 0.2.101,
@@ -101,6 +101,20 @@ silently never started and no `mcp__<srv>__*` tool exists.
 expanded secret. `lib/sandbox.sh` overlays the expanded copy onto the workspace
 file inside the bwrap sandbox. Linux-only: on macOS (`sandbox-exec`, no
 bind-mounts) kimi still reads the literal `${VAR}`s.
+⁹ pi 0.99 ships built-in MCP (stdio + streamable HTTP) read from `mcp.json` in its
+agent dir. The adapter writes the translated config into a temp
+`PI_CODING_AGENT_DIR` whose other entries link to the real `~/.pi/agent`, and
+declares every server's tools directly (`"exposure": "direct"`): pi's default
+`codemode` exposure hides MCP tools behind a script tool, and the first model
+request waits only for servers with direct tools. That wait is capped at a
+hard-coded 10s in pi (`dist/extensions/mcp/index.js`, `DEFAULT_STARTUP_WAIT_MS`),
+so a direct server that needs longer misses turn 1 and joins later turns. `sse`
+entries, other types and names outside `[A-Za-z0-9_-]` are warned about and
+skipped. `env`/`headers` values are escaped so pi does not expand `$VAR` or run a
+leading `!` a second time. Tool names turn `-` into `_` (`mcp__my_srv__tool`).
+`--approve` trusts a workspace `.pi/mcp.json`, whose entries win over the staged
+ones by name. Proven in CI against a fake model and a fake stdio server (fast,
+2s-slow, plus a skipped `sse` entry); not yet on a live model.
 
 ## Flags
 
@@ -125,7 +139,7 @@ bind-mounts) kimi still reads the literal `${VAR}`s.
 | Result | envelope passthrough | `type=="text"` chunks (never `thought`) | last `agent_message` | last assistant `message_end` | last assistant `content` (never `reasoning_content`) | last assistant `content` |
 | Usage | native + cost | streaming `end` event → cost | sum of `turn.completed.usage` | per-message usage + cost | none → 0 | none → 0 |
 | Read-only | `--allowedTools` + wrapper sandbox | `bypassPermissions` + wrapper sandbox | `--sandbox read-only` (native) | `--tools` subset + wrapper sandbox | wrapper sandbox only | wrapper sandbox only |
-| MCP | `--mcp-config` | native `.mcp.json` + `MCPTool(...)` allows + `--trust`⁷ | `-c mcp_servers.*` (TOML inline tables⁶) | unsupported by design → warn+skip | `config.toml [[mcp_servers]]` in temp `VIBE_HOME` | `{mcpServers}` in temp `KIMI_CODE_HOME` + sandbox overlay⁸ |
+| MCP | `--mcp-config` | native `.mcp.json` + `MCPTool(...)` allows + `--trust`⁷ | `-c mcp_servers.*` (TOML inline tables⁶) | `{mcpServers}` + `exposure: direct` in temp `PI_CODING_AGENT_DIR`⁹ | `config.toml [[mcp_servers]]` in temp `VIBE_HOME` | `{mcpServers}` in temp `KIMI_CODE_HOME` + sandbox overlay⁸ |
 | CLAUDE.md | native + `@imports` | native (no imports) | via `project_doc_fallback_filenames` | native | native | native |
 
 ### Design notes
@@ -158,13 +172,13 @@ carrying just the delta in `AGENTS.md`, which every other harness reads.
 - **Read-only really holds**: codex answered *"this workspace is read-only"*; pi
   lost write/edit/bash to `--tools` subsetting; vibe/kimi are held by the wrapper
   sandbox — no stray files, on any harness.
-- **Every harness but pi calls live MCP tools** (2026-07-27 sweep, glim.sh over
-  streamable HTTP). Three of them needed a dispatcher fix first, and each failed
+- **Every harness then in the sweep but pi called live MCP tools** (2026-07-27
+  sweep, glim.sh over streamable HTTP; pi gained built-in MCP in 0.99, see ⁹). Three of them needed a dispatcher fix first, and each failed
   *silently* — the agent just reported the server "not connected" and quietly fell
   back to raw HTTP, which reads as a working run: codex crashed on config load
   (footnote ⁶), grok never started the server in an untrusted checkout (⁷), and
   kimi sent unexpanded `${VAR}` placeholders (⁸). vibe worked untouched; pi
-  warns-and-skips by design. **Verify MCP by what the tool returned, not by whether
+  had no MCP at the time. **Verify MCP by what the tool returned, not by whether
   the run went green.**
 - **Pi's minimalism is measurable**: the same one-line prompt consumed ~2.4k input
   tokens on pi vs ~12k on codex — its sub-1k system prompt holds up.

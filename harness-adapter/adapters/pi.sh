@@ -11,8 +11,19 @@
 #     --exclude-tools write,edit; the dispatcher's wrapper OS sandbox is the real
 #     guard. pi has read/bash/edit/write and NO web tool, so bash is its only
 #     route to the network — never allow-list it away on read-only runs.
-#   * MCP is deliberately unsupported -> warn and skip (pi's answer: wrap MCP
-#     servers as CLI tools with READMEs, or add an extension).
+#   * MCP: built-in since 0.99 (stdio + streamable HTTP), read from mcp.json in
+#     pi's agent dir. The run's config is translated (lib/mcp-translate.sh
+#     mcp_to_pi_json) into a temp PI_CODING_AGENT_DIR whose other entries link
+#     to the real ~/.pi/agent, so auth/models/settings still apply and nothing
+#     touches the user's mcp.json or the workspace. Entries pi rejects (sse,
+#     other types, bad names) are warned about and skipped. Tools are declared
+#     directly (`exposure: "direct"`) so the model sees mcp__<server>__<tool>,
+#     with `-` in the server name turned into `_` (pi's tool naming).
+#   * MCP startup: pi connects servers in the background and the first model
+#     request waits ONLY for servers with direct tools, capped at a hard-coded
+#     10s (dist/extensions/mcp/index.js:39, :869-895; no setting or flag). A
+#     direct server that connects within 10s is declared on turn 1, verified in
+#     CI with a 2s-slow server; a slower one misses turn 1 and joins later turns.
 #   * reads AGENTS.md or CLAUDE.md natively (global -> parents -> cwd); Claude's
 #     @imports are NOT expanded (dispatcher pre-expands when needed).
 #   * no structured-output flag -> prompt-with-schema + validate + one retry.
@@ -28,7 +39,7 @@
 #   "cost": true,
 #   "read_only": "sandbox",
 #   "structured_output": "shim",
-#   "mcp": "unsupported",
+#   "mcp": "native",
 #   "max_turns": "timeout",
 #   "claude_md": "native",
 #   "auth": { "native_oauth": [], "native_key": ["ANTHROPIC_API_KEY", "OPENAI_API_KEY"], "openrouter": true },
@@ -39,6 +50,7 @@ set -uo pipefail
 . "$RH_LIB/envelope.sh"
 . "$RH_LIB/tools-grammar.sh"
 . "$RH_LIB/schema-retry.sh"
+. "$RH_LIB/mcp-translate.sh"
 
 command -v pi >/dev/null 2>&1 || {
   echo "pi CLI not found (npm i -g --ignore-scripts @earendil-works/pi-coding-agent)" >&2; exit 1; }
@@ -69,9 +81,32 @@ if [ -n "${RH_APPEND_SYSTEM_PROMPT:-}" ]; then
 fi
 [ -n "$SYS" ] && ARGS+=(--append-system-prompt "$SYS")
 
+# MCP: pi reads mcp.json from its agent dir (PI_CODING_AGENT_DIR, default
+# ~/.pi/agent; dist/config.js:435-455). Stage a temp agent dir holding the
+# translated config and a symlink to every other entry of the real one: auth.json
+# writes (OAuth refresh, writeFileSync) follow the link back, models.json and
+# settings.json still apply, and the user's own mcp.json is neither read nor
+# touched. Read-only keeps MCP tools, as on the other harnesses; the wrapper OS
+# sandbox is the guard.
 if [ -n "${RH_MCP_CONFIG:-}" ] && [ -f "${RH_MCP_CONFIG:-}" ]; then
-  SRVS=$(jq -r '.mcpServers // {} | keys | join(", ")' "$RH_MCP_CONFIG")
-  [ -n "$SRVS" ] && echo "warning: pi does not support MCP by design — skipping server(s): $SRVS" >&2
+  PA="$RH_TMPDIR/pi-agent"; mkdir -p "$PA"
+  SRC="${PI_CODING_AGENT_DIR:-$HOME/.pi/agent}"
+  SRC="${SRC/#\~/$HOME}"   # pi expands a leading ~ in it too
+  if [ -d "$SRC" ]; then
+    for f in "$SRC"/* "$SRC"/.[!.]*; do
+      [ -e "$f" ] || [ -L "$f" ] || continue
+      [ "${f##*/}" = mcp.json ] && continue
+      ln -s "$f" "$PA/${f##*/}"
+    done
+  fi
+  if SKIPPED=$(mcp_to_pi_json "$RH_MCP_CONFIG" "$PA/mcp.json"); then
+    while IFS= read -r line; do
+      [ -n "$line" ] && echo "warning: pi MCP: skipping server $line" >&2
+    done <<<"$SKIPPED"
+    export PI_CODING_AGENT_DIR="$PA"
+  else
+    echo "warning: pi MCP: could not translate $RH_MCP_CONFIG; running without MCP" >&2
+  fi
 fi
 
 [ -n "${RH_MAX_TURNS:-}" ] && \

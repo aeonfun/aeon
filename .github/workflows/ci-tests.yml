@@ -109,6 +109,8 @@ jobs:
         run: bash scripts/tests/test_hermes_adapter.sh
       - name: cursor adapter tests
         run: bash scripts/tests/test_cursor_adapter.sh
+      - name: pi adapter MCP tests
+        run: bash scripts/tests/test_pi_adapter_mcp.sh
       - name: harness capability manifest tests
         run: bash scripts/tests/test_generate_harnesses_json.sh
       - name: harness resolution tests

@@ -31,6 +31,7 @@ on:
       - '.github/workflows/messages.yml'
       - 'scripts/tests/harness_cli_smoke.sh'
       - 'scripts/tests/fake-llm-upstream.mjs'
+      - 'scripts/tests/fake-mcp-server.mjs'
       - '.github/workflows/ci-harness-cli.yml'
   push:
     branches: [main]
@@ -44,6 +45,7 @@ on:
       - '.github/workflows/messages.yml'
       - 'scripts/tests/harness_cli_smoke.sh'
       - 'scripts/tests/fake-llm-upstream.mjs'
+      - 'scripts/tests/fake-mcp-server.mjs'
       - '.github/workflows/ci-harness-cli.yml'
   workflow_dispatch:
 
@@ -71,5 +73,18 @@ jobs:
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: '22'
+      # pi's smoke also runs an MCP prompt in --mode read-only, which puts pi and
+      # its stdio MCP server under the wrapper OS sandbox (lib/sandbox.sh) the way
+      # aeon.yml runs read-only skills. Same setup as aeon.yml's "Install
+      # bubblewrap (read-only sandbox)" step; fail here if bwrap still cannot run.
+      - name: Install bubblewrap (pi read-only MCP run)
+        if: matrix.harness == 'pi'
+        timeout-minutes: 5
+        run: |
+          set -euo pipefail
+          APT_OPTS="-o DPkg::Lock::Timeout=120"
+          sudo apt-get $APT_OPTS update -qq && sudo apt-get $APT_OPTS install -y -qq bubblewrap
+          sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0 || true
+          bwrap --dev-bind / / --ro-bind /tmp /tmp true && echo 'bwrap: userns OK'
       - name: Install, version, flags, and fake-upstream round trip
         run: bash scripts/tests/harness_cli_smoke.sh "${{ matrix.harness }}"

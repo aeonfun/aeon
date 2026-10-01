@@ -259,9 +259,16 @@ the harness is already executing as the agent's workspace.
 **Other harnesses.** MCP is not grok-only: `claude`, `codex`, `vibe` and `kimi`
 all call live MCP tools too (codex and kimi needed their own dispatcher fixes —
 see the [harness-adapter README](../harness-adapter/README.md#the-nine-harnesses)).
-`pi` is the one harness that cannot: it rejects MCP by design, so its adapter
-warns and skips every configured server, and the dashboard's MCP panel disables
-itself when `pi` is the selected harness.
+`pi` joined them with its built-in MCP support (0.99+): the adapter translates
+`.mcp.json` into pi's `mcp.json` inside a temp `PI_CODING_AGENT_DIR` (the user's
+own `~/.pi/agent/mcp.json` is never read or written) and declares each server's
+tools directly as `mcp__<server>__<tool>`, with `-` in the server name turned into
+`_`. pi waits for those servers before the first model request, but only up to a
+hard-coded 10s; a server slower than that misses the first turn. pi rejects the
+legacy `sse` transport, so `sse` entries are skipped with a warning (as are other
+types and server names outside letters, digits, `_` and `-`); the run itself goes
+on. See footnote 9 in the
+[harness-adapter README](../harness-adapter/README.md#the-nine-harnesses).
 
 ## Newer grok knobs (opt-in per skill)
 

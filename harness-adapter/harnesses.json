@@ -9,7 +9,7 @@
       "124": "timeout"
     }
   },
-  "generated": "2026-10-01T19:39:55Z",
+  "generated": "2026-10-01T20:03:33Z",
   "count": 9,
   "harnesses": [
     {
@@ -217,7 +217,7 @@
       "cost": true,
       "read_only": "sandbox",
       "structured_output": "shim",
-      "mcp": "unsupported",
+      "mcp": "native",
       "max_turns": "timeout",
       "claude_md": "native",
       "auth": {
