@@ -10,7 +10,7 @@ metadata:
 ---
 > **${var}** — Optional. Pass one or more `target_price` levels (comma-separated USD numbers, scientific notation allowed) to fire a one-time alert when the price crosses any of them. Empty = only ATH and sharp-move gates run. Pass `dry-run` to skip notify (state still updates). Pass `set-target:<price>` — the shape the Telegram force-reply sends (step 7) — to register a target and get a one-line confirmation.
 
-Today is ${today}. `repo-pulse` reports star/fork deltas once a day, and the other scheduled digests run at fixed hours. None of them tell the operator "the price just hit a new high" or "the token moved 28% in the last hour" — both are events that warrant attention the moment they happen, not 14 hours later in a daily digest. This skill closes that window.
+Today is ${today}. The scheduled digests (`digest`, `token-movers`, ...) run at fixed hours. None of them tell the operator "the price just hit a new high" or "the token moved 28% in the last hour" — both are events that warrant attention the moment they happen, not 14 hours later in a daily digest. This skill closes that window.
 
 ## Why this exists
 
@@ -244,10 +244,10 @@ Cap `state.targets` to 20 most-recent entries (LRU by `first_seen_below_at`) so 
 
 ### 9. Log
 
-Append to `memory/logs/${today}.md`:
+Append to `memory/logs/${today}.md` under a `### price-alert` heading:
 
 ```
-## Price Threshold Alert
+### price-alert
 - **Skill**: price-alert
 - **Token**: ${SYMBOL} (${CONTRACT})
 - **Current**: $X.XXXXe-N | 1h: ±W.W% | 24h: ±Z.Z%

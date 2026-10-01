@@ -14,7 +14,7 @@ Today is ${today}. Read `memory/MEMORY.md` before starting. If `soul/SOUL.md` + 
 
 ## Why this skill exists
 
-`idea-validator` evaluates ideas. Nothing tracks execution. Backlogs of dozens of ideas accumulate — some validated, most unscreened — with zero visibility into which ones have been acted on vs which are rotting. This skill gives that view: pipeline size, execution rate, and the 3 ideas closest to being buildable right now.
+`idea-forge validate` evaluates ideas. Nothing tracks execution. Backlogs of dozens of ideas accumulate — some validated, most unscreened — with zero visibility into which ones have been acted on vs which are rotting. This skill gives that view: pipeline size, execution rate, and the 3 ideas closest to being buildable right now.
 
 ## Steps
 
@@ -92,11 +92,11 @@ Read `memory/topics/market-context.md` if present for current narrative keywords
 
 Read recent logs for any narrative signals (last 3 days).
 
-Compile a list of 8–12 active narrative keywords (e.g. "agent payments", "RWA", "prediction markets", "privacy coins"). If no market-context source exists, derive keywords from recent `digest`, `hacker-news`, or `github-trending` outputs.
+Compile a list of 8–12 active narrative keywords (e.g. "agent payments", "RWA", "prediction markets", "privacy coins"). If no market-context source exists, derive keywords from recent `digest`, `narrative-tracker`, or `github-trending` outputs.
 
 ### 5b. Load builder-ecosystem signal
 
-Read `memory/topics/ecosystem.md` if it exists (written by `builder-map`). This is the second-stream feed — "who's adopting the watched stack" becomes idea fodder.
+Read `memory/topics/ecosystem.md` if it exists (written by the retired `builder-map` skill, so usually absent; skip this step when it is). This is the second-stream feed — "who's adopting the watched stack" becomes idea fodder.
 
 Extract two things:
 
@@ -157,7 +157,7 @@ Ideas already shipped (skill/prototype/PR match found):
 - ...
 
 ## High-Potential Unscreened
-Top 3 ideas not yet screened by idea-validator that look most promising by keyword signal alone:
+Top 3 ideas not yet screened by `idea-forge validate` that look most promising by keyword signal alone:
 - [idea] — [one-liner]
 - ...
 
@@ -223,11 +223,11 @@ Append to `memory/logs/${today}.md`:
 ```markdown
 ### idea-pipeline
 - **Total ideas:** N_total
-- **Screened:** N_screened (by idea-validator)
+- **Screened:** N_screened (by `idea-forge validate`)
 - **Executed:** N_executed (skill/prototype/PR match)
 - **Gap:** N_gap unexecuted ideas
 - **Top pick:** [idea name] — [priority score]
-- **Ecosystem feed:** [available / unavailable] — [N underserved categories, M adjacent verticals] (from builder-map ecosystem.md, last run [date])
+- **Ecosystem feed:** [available / unavailable] — [N underserved categories, M adjacent verticals] (from ecosystem.md, last written [date])
 - **Filter:** [var value or "none"]
 - **Notification:** sent
 - **Force-reply offer:** [offered / skipped — already offered in last 2 days / skipped — no picks]
@@ -241,4 +241,4 @@ None. Uses local file reads and `gh` CLI (authenticated via GITHUB_TOKEN in work
 
 ## Network Note
 
-No external network calls in the main logic. `gh pr list` uses the `gh` CLI which handles auth internally (no curl + token pattern needed). WebSearch not required — narrative context comes from `memory/topics/market-context.md` if a `market-context` skill has populated it.
+No external network calls in the main logic. `gh pr list` uses the `gh` CLI which handles auth internally (no curl + token pattern needed). WebSearch not required — narrative context comes from `memory/topics/market-context.md` if present (no shipped skill writes it any more; it is operator-maintained).

@@ -24,7 +24,7 @@ The north-star is **builders shipping on your products**. BD signal — a fork t
 
 ## Config — `memory/products.md`
 
-Shared config (see `product-pulse` for the full format). `bd-radar` uses, per product: the **repos** (to find forks/issues), the **handles** (to find mentions/quote-tweets), and the **terms** (the product-name / tagline strings to search GitHub, X, HN, Reddit). If `memory/products.md` is missing or empty, log `BD_RADAR_NO_PRODUCTS_CONFIG` and fall back to `memory/watched-repos.md` for repos + `STRATEGY.md` for the wedge; X/term search is skipped with no config.
+Shared config (the field reference is in the comment block inside `memory/products.md`). `bd-radar` uses, per product: the **repos** (to find forks/issues), the **handles** (to find mentions/quote-tweets), and the **terms** (the product-name / tagline strings to search GitHub, X, HN, Reddit). If `memory/products.md` is missing or empty, log `BD_RADAR_NO_PRODUCTS_CONFIG` and fall back to `memory/watched-repos.md` for repos + `STRATEGY.md` for the wedge; X/term search is skipped with no config.
 
 ## What counts as a BD lead (signal taxonomy)
 

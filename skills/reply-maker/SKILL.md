@@ -25,8 +25,8 @@ metadata:
 Read `memory/MEMORY.md` for context on active projects and open engagement follow-ups.
 
 Then read `memory/logs/` — the window depends on the mode:
-- **Mode A:** the last 2 days of `memory/logs/` for recent `list-digest`, `tweet-roundup`, and prior `reply-maker` outputs (used as a candidate pool and for reply de-duplication).
-- **Mode B:** the last 7 days of `memory/logs/` for engagement opportunities flagged by other skills (`project-pulse`, `refresh-x`, `reply-maker`, `channel-recap`) or noted in MEMORY.md "Known Follow-ups".
+- **Mode A:** the last 2 days of `memory/logs/` for recent `fetch-tweets`, `narrative-tracker`, and prior `reply-maker` outputs (used as a candidate pool and for reply de-duplication).
+- **Mode B:** the last 7 days of `memory/logs/` for engagement opportunities flagged by other skills (`mention-radar`, `fetch-tweets`, `reply-maker`) or noted in MEMORY.md "Known Follow-ups".
 
 **Parse `${var}` to pick the branch** (trim whitespace, compare case-insensitively):
 - If `${var}` starts with `revise:` — run the **Revise branch** (below) and stop. This is the shape `scripts/telegram-route.sh` sends when the operator replies to a "refine these replies?" force-reply prompt; catch it before mode parsing.
@@ -119,7 +119,7 @@ jq -n --arg handle "$HANDLE" --arg from "$FROM_DATE" --arg to "$TO_DATE" '{
 }' > /tmp/xai-rm-payload.json
 ```
 
-**If `${var}` is a topic** (or empty) — same query intent with `${var}` (or the top 2–3 topics from `memory/MEMORY.md` when empty) as the search query. When empty, also pull tweet candidates surfaced in the last 2 days of `tweet-roundup` and `list-digest` logs as a backup pool.
+**If `${var}` is a topic** (or empty) — same query intent with `${var}` (or the top 2–3 topics from `memory/MEMORY.md` when empty) as the search query. When empty, also pull tweet candidates surfaced in the last 2 days of `fetch-tweets` logs as a backup pool.
 ```bash
 TOPIC="${var}"   # when empty, substitute the top 2–3 topics from memory/MEMORY.md
 jq -n --arg topic "$TOPIC" --arg from "$FROM_DATE" --arg to "$TO_DATE" '{
@@ -130,7 +130,7 @@ jq -n --arg topic "$TOPIC" --arg from "$FROM_DATE" --arg to "$TO_DATE" '{
 ```
 
 **Path B — memory logs + WebSearch (last-resort fallback only).** Reach here **only** on a real Path A failure, and record the **true reason** — `key-unset` | `http-<code>` | `empty` | `timeout` — never "XAI_API_KEY unavailable" when the key was set. Use in order until you have ≥3 candidates:
-1. Recent `list-digest` + `tweet-roundup` outputs in `memory/logs/` — already have URLs and handles.
+1. Recent `fetch-tweets` outputs in `memory/logs/` — already have URLs and handles.
 2. WebSearch for very recent posts on memory topics (filter: posted within last 6h, original post not reply). Lower quality — WebSearch favours older high-engagement tweets, so prioritise results dated within the last 6h.
 
 ### A2. Filter and select 5 tweets
@@ -225,7 +225,7 @@ Read `memory/logs/` for the last 7 days. Look for:
 - Any person who cosigned, mentioned, or attributed one of the operator's projects-of-interest
 - GitHub attribution or fork moments not yet acknowledged
 - Entries in MEMORY.md "Known Follow-ups" explicitly flagging engagement opps
-- Cosigns or mentions surfaced in `refresh-x`, `reply-maker`, or `channel-recap` runs
+- Cosigns or mentions surfaced in `mention-radar`, `fetch-tweets`, or `reply-maker` runs
 
 Build a list: `{ person/account, context, what_they_did, link_if_known, days_ago }`
 

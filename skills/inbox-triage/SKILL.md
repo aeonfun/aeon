@@ -16,9 +16,9 @@ Today is ${today}. Read `memory/MEMORY.md` before starting.
 
 ## Why this skill exists
 
-`followup-patrol` reads manually tracked items in MEMORY.md. `disclosure-tracker` handles `memory/pending-disclosures/`. `vuln-tracker` tracks the operator's vuln PRs by scanning branch names. None of these read from the actual GitHub notification inbox. When a maintainer replies to a vuln PR — or a security advisory opens on a watched repo — it sits unread until someone manually checks GitHub. This skill reads the inbox and routes what needs action.
+Hand-tracked follow-ups live in MEMORY.md. `vuln-tracker` tracks the operator's vuln PRs by scanning branch names and ages the `memory/pending-disclosures/` queue. Neither reads from the actual GitHub notification inbox. When a maintainer replies to a vuln PR — or a security advisory opens on a watched repo — it sits unread until someone manually checks GitHub. This skill reads the inbox and routes what needs action.
 
-`pr-tracker` covers merged/closed operator PRs. `vuln-tracker` covers lifecycle by branch. This skill covers the **notification layer** — inbound responses, review requests, security alerts, mentions.
+`vuln-tracker` covers PR and disclosure lifecycle by branch and draft state. This skill covers the **notification layer** — inbound responses, review requests, security alerts, mentions.
 
 ## Steps
 
@@ -211,6 +211,6 @@ Uses `gh api` for all GitHub calls — it handles auth internally, so no `$SECRE
 
 ## What this is NOT
 
-- Not a duplicate of `followup-patrol` — followup-patrol reads manually curated items in MEMORY.md. This reads the raw GitHub inbox.
+- Not a replacement for hand-tracked follow-ups in MEMORY.md. This reads the raw GitHub inbox.
 - Not a duplicate of `vuln-tracker` — vuln-tracker tracks lifecycle by branch name. This catches inbound maintainer replies via notifications.
-- Not a duplicate of `disclosure-tracker` — disclosure-tracker manages `memory/pending-disclosures/` advisory drafts. This reads GitHub security alerts and PR responses.
+- Not a duplicate of `vuln-tracker`'s disclosure-queue aging - that manages `memory/pending-disclosures/` advisory drafts. This reads GitHub security alerts and PR responses.

@@ -21,7 +21,7 @@ metadata:
 
 One skill, three recap views over Aeon's own activity. They share a preamble (read memory, compute the date, parse the selector) then branch into fully distinct logic — do not blend them:
 
-- **scorecard** (default): a **synthesis-only** weekly rollup. Every number it prints is sourced from a file another skill already wrote (`skill-health`'s analytics view, `heartbeat`, `tweet-allocator`, `repo-pulse`). Three paragraphs — agent health / community growth / economic activity — each with its own verdict, rolled up to a worst-of-three overall verdict. Answers the operator-level question: *given everything that happened, was this week worth it?*
+- **scorecard** (default): a **synthesis-only** weekly rollup. Every number it prints is sourced from a file another skill already wrote (`skill-health`'s analytics view, `heartbeat`, plus legacy `tweet-allocator` / `repo-pulse` articles when an instance still has them; both skills were retired, so those paragraphs degrade to "no data" on a fresh instance). Three paragraphs — agent health / community growth / economic activity — each with its own verdict, rolled up to a worst-of-three overall verdict. Answers the operator-level question: *given everything that happened, was this week worth it?*
 - **ops** (`ops`): an **operational day-recap**. Reads today's activity log + `memory/cron-state.json` + the issues index, deduplicates repeat runs, demands a URL on every shipped item, surfaces the calls that need a human, and leads with a one-sentence TL;DR verdict. Never a log dump.
 - **push** (`push`): a **diff-reading push deep-dive**. Fetches push events, commits, and merged PRs per watched repo, reads the diffs, classifies each commit user-visible vs internal vs infra, ranks by impact, and leads with a one-line verdict — with significance gating so quiet days send nothing.
 
@@ -43,7 +43,7 @@ Today is ${today}. Synthesize the last 7 days of agent activity into a single pl
 
 ## Why this exists
 
-Every signal needed to answer that question already lives in the repo — `skill-health`'s analytics view ranks pass rates, `heartbeat` issues per-run verdicts, `tweet-allocator` totals weekly $AEON spend, `repo-pulse` records star/fork deltas. But each lives in its own article, on its own cadence, in its own format. A new operator (or a returning one) opens four files to assemble the weekly picture. This branch assembles it once on Monday morning and pushes it to the notification channel so the picture is delivered, not fetched.
+Every signal needed to answer that question already lives in the repo — `skill-health`'s analytics view ranks pass rates, `heartbeat` issues per-run verdicts, the retired `tweet-allocator` / `repo-pulse` skills used to total weekly $AEON spend and star/fork deltas (their past articles are still read when present). But each lives in its own article, on its own cadence, in its own format. A new operator (or a returning one) opens four files to assemble the weekly picture. This branch assembles it once on Monday morning and pushes it to the notification channel so the picture is delivered, not fetched.
 
 It is deliberately a synthesis view, not a measurement view — every number it prints is sourced from a file another skill already wrote. It introduces zero new APIs, zero new secrets, zero new cron-state. If an upstream skill didn't run, the matching paragraph degrades gracefully ("no data this week") rather than fabricating numbers.
 
@@ -53,8 +53,8 @@ No new config. No new secrets. Reads:
 
 - `output/articles/skill-analytics-*.md` — most recent file in window for fleet pass rate + anomaly count (written by `skill-health`'s analytics view — the former `skill-analytics` skill, now the analytics view of `skill-health`)
 - `output/articles/heartbeat-*.md` (or `memory/logs/*.md` heartbeat sections) — P0–P3 verdict tally
-- `output/articles/tweet-allocator-*.md` — weekly distributed totals + recipient counts
-- `output/articles/repo-pulse-*.md` — daily star/fork delta entries summed across the window
+- `output/articles/tweet-allocator-*.md` (legacy; the skill was retired, so usually absent) - weekly distributed totals + recipient counts
+- `output/articles/repo-pulse-*.md` (legacy; the skill was retired, so usually absent) - daily star/fork delta entries summed across the window
 - `memory/MEMORY.md` — last consolidation date + "Skills Built" recent rows for the activity-pulse line
 - `memory/issues/INDEX.md` (optional) — open issue count if present
 

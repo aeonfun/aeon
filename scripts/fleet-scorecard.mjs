@@ -11,7 +11,7 @@
 // script, so no secret ever touches a command line (the caller runs a bare `node scripts/fleet-scorecard.mjs`).
 //
 // Writes /tmp/fleet-scorecard/{scorecard-body.md,metrics.json} — the same shape the
-// fleet-control scorecard view consumes. Token mapping + pricing match skills/cost-report:
+// fleet-control scorecard view consumes. Token mapping + pricing match the retired cost-report skill:
 //   prompt = input + cache_read + cache_creation ; cached = cache_read ; completion = output
 //   cost   = input·in + output·out + cache_creation·cw + cache_read·cr  (per-1M list price)
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';

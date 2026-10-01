@@ -52,9 +52,8 @@ BASE_TOOLS="$BASE_TOOLS,Bash(mkdir:*),Bash(ls:*),Bash(cat:*),Bash(chmod:*)"
 BASE_TOOLS="$BASE_TOOLS,Bash(cd:*)"
 BASE_TOOLS="$BASE_TOOLS,Bash(date:*),Bash(echo:*),Bash(node:*),Bash(npm:*),Bash(npx:*)"
 BASE_TOOLS="$BASE_TOOLS,Bash(head:*),Bash(tail:*),Bash(wc:*),Bash(sort:*),Bash(grep:*)"
-# The run-audit wrapper. Five skills (skill-health, heartbeat, cost-report,
-# retrospective, self-review) document ./scripts/skill-runs as a primary data
-# source, but no tier granted it, so every documented call was denied. That was
+# The run-audit wrapper. skill-health documents ./scripts/skill-runs as a primary
+# data source (so did several since-retired skills), but no tier granted it, so every documented call was denied. That was
 # the trigger for ISS-001 on aeon-compute: skill-health, unable to reach its own
 # data source, burned turns working around the denial and hit the 30m GH Actions
 # job timeout on two consecutive runs. Safe in the base tier: the script only
@@ -158,7 +157,7 @@ write_tools() { echo "$BASE_TOOLS,$WRITE_TOOLS"; }
 #   * grok's own `--sandbox read-only` is silently ignored on grok 0.2.101 (writes
 #     still land) and nest-conflicts with the wrapper sandbox.
 #
-# So read-only on grok — as on all seven harnesses — is enforced by the dispatcher's
+# So read-only on grok - as on all nine harnesses - is enforced by the dispatcher's
 # OS sandbox (harness-adapter/lib/sandbox.sh: bwrap / sandbox-exec write-locks the
 # workspace) plus the workflow's post-run revert. Nothing about that is expressible
 # in this file, which is why the mapping is gone instead of rewritten.

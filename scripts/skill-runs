@@ -9,7 +9,7 @@
 #   ./scripts/skill-runs --failures   # only show failed runs
 #
 # Output: skill run statistics — counts, pass/fail rates, duplicates, anomalies.
-# Used by: heartbeat, skill-health, cost-report, retrospective, self-review.
+# Used by: skill-health (any skill may call it; it is in the read-only tool base).
 # Dependencies: gh (GitHub CLI), jq, date
 
 set -euo pipefail
