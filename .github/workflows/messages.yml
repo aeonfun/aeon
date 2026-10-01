@@ -849,25 +849,13 @@ jobs:
           git config user.email "aeonframework@proton.me"
           rm -f ./notify
 
-          CURRENT_BRANCH=$(git branch --show-current)
           SOURCE="$_COMMIT_SOURCE"
-
-          if [ "$CURRENT_BRANCH" != "main" ] && [ -n "$CURRENT_BRANCH" ]; then
-            echo "On feature branch: $CURRENT_BRANCH"
-            git add -A
-            git diff --staged --quiet || git commit -m "chore($SOURCE): auto-commit $(date +%Y-%m-%d)"
-            git push --force-with-lease -u origin "$CURRENT_BRANCH" || true
-
-            git checkout -f main
-            git pull --rebase origin main || true
-          fi
-
-          git add -A
-          git diff --staged --quiet && exit 0
-          git commit -m "chore($SOURCE): auto-commit $(date +%Y-%m-%d)"
           JITTER=$((RANDOM % 10))
           echo "Waiting ${JITTER}s jitter before push..."
           sleep "$JITTER"
-          # Shared rebase + conflict-resolve + push loop (same fleet-safe policy as
-          # aeon.yml's commit steps) instead of a drifting inline copy.
-          bash scripts/git-push-retry.sh
+          # Shared feature-branch/main split (scripts/commit-run-results.sh): the
+          # PR branch gets only the agent's change, post-run state is committed
+          # on main via git-push-retry.sh. Run the copy from the run's starting
+          # commit so an agent edit to the script can't change its own commit.
+          git show "$GITHUB_SHA:scripts/commit-run-results.sh" > "$RUNNER_TEMP/commit-run-results.sh"
+          bash "$RUNNER_TEMP/commit-run-results.sh" "$SOURCE"

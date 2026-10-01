@@ -1978,94 +1978,13 @@ jobs:
             git checkout -- memory/cron-state.json 2>/dev/null || rm -f memory/cron-state.json
           fi
 
-          CURRENT_BRANCH=$(git branch --show-current)
           LABEL="${{ steps.work.outputs.label }}"
-
-          # A failed feature-branch push still records this run's state on main
-          # below, then fails the step so the lost PR work is visible.
-          BRANCH_PUSH_FAILED=false
-          finish() {
-            if [ "$BRANCH_PUSH_FAILED" = "true" ]; then
-              echo "::error::Feature branch $CURRENT_BRANCH failed to push - its commits never reached the remote"
-              exit 1
-            fi
-            exit "$1"
-          }
-
-          # If Claude created a feature branch, push it then switch back to main
-          if [ "$CURRENT_BRANCH" != "main" ] && [ -n "$CURRENT_BRANCH" ]; then
-            echo "On feature branch: $CURRENT_BRANCH"
-            # main is only guaranteed present when the run STARTED on main (the
-            # normal scheduled / Run-now path). A run dispatched against a
-            # non-main ref gets a single-branch checkout with no local main, so
-            # that branch stays the only home for everything, as before.
-            HAS_MAIN=false
-            git show-ref --verify --quiet refs/heads/main && HAS_MAIN=true
-
-            # Post-run state written by the skill and by this workflow's own steps
-            # (memory/logs, token-usage.csv, skill-health, output/.chains,
-            # output/.attest, the dashboard feed) belongs on main, not in the PR.
-            # Stash it before the branch commit so `git add -A` only ships the
-            # skill's real change, then pop it back on main below.
-            # Only paths that exist: one unmatched pathspec makes `stash push -u`
-            # save the stash and then die halfway through cleaning the tree.
-            STATE_PATHS=()
-            for p in memory output apps/dashboard/outputs; do
-              if [ -e "$p" ] || [ -n "$(git ls-files -- "$p")" ]; then STATE_PATHS+=("$p"); fi
-            done
-            STASHED=false
-            if [ "$HAS_MAIN" = "true" ] && [ "${#STATE_PATHS[@]}" -gt 0 ] && [ -n "$(git status --porcelain -- "${STATE_PATHS[@]}" 2>/dev/null)" ]; then
-              git stash push --include-untracked -m "aeon post-run state" -- "${STATE_PATHS[@]}"
-              STASHED=true
-            fi
-
-            git add -A
-            git diff --staged --quiet || git commit -m "chore($LABEL): auto-commit $(date +%Y-%m-%d)"
-            if ! git push --force-with-lease -u origin "$CURRENT_BRANCH"; then
-              echo "::warning::Push of feature branch $CURRENT_BRANCH failed; recording run state on main, then failing the step"
-              BRANCH_PUSH_FAILED=true
-            fi
-
-            if [ "$HAS_MAIN" != "true" ]; then
-              echo "main not present locally (non-main dispatch) - nothing to record on main"
-              finish 0
-            fi
-            # No pull here: the stash was taken against the run's starting main, so
-            # it pops cleanly onto local main, and git-push-retry.sh below rebases
-            # onto the remote with its state-file conflict policy.
-            git checkout main
-            if [ "$STASHED" = "true" ] && ! git stash pop; then
-              # Only when Claude's own branch commits touched these paths. Restore
-              # this run's end-of-run copy of the stashed paths from the stash
-              # itself (tracked part, then the untracked part in ^3).
-              echo "::warning::post-run state conflicted with main on pop; keeping this run's copy"
-              for p in "${STATE_PATHS[@]}"; do
-                git checkout 'stash@{0}' -- "$p" 2>/dev/null || true
-              done
-              if git rev-parse -q --verify 'stash@{0}^3' >/dev/null; then
-                git checkout 'stash@{0}^3' -- . 2>/dev/null || true
-              fi
-              git reset -q
-              git stash drop -q || true
-            fi
-          fi
-
-          # Commit any remaining changes on main
-          git add -A
-          if git diff --staged --quiet; then
-            # Nothing new to commit - but Claude may have committed during its run.
-            # Check for unpushed commits and push them if any exist.
-            if [ "$(git rev-list origin/main..HEAD --count 2>/dev/null)" = "0" ]; then
-              echo "No changes to commit or push"
-              finish 0
-            fi
-            echo "No new changes, but found unpushed commits - pushing"
-          else
-            git commit -m "chore($LABEL): auto-commit $(date +%Y-%m-%d)"
-          fi
-          PUSH_RC=0
-          bash scripts/git-push-retry.sh || PUSH_RC=$?
-          finish "$PUSH_RC"
+          # Shared feature-branch/main split (scripts/commit-run-results.sh): the
+          # PR branch gets only the agent's change, post-run state is committed
+          # on main via git-push-retry.sh. Run the copy from the run's starting
+          # commit so an agent edit to the script can't change its own commit.
+          git show "$GITHUB_SHA:scripts/commit-run-results.sh" > "$RUNNER_TEMP/commit-run-results.sh"
+          bash "$RUNNER_TEMP/commit-run-results.sh" "$LABEL"
 
       - name: Update cron state
         if: always() && steps.skill.outputs.name != ''
