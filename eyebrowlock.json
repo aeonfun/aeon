@@ -390,7 +390,7 @@
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "e86a72644b8cf2415d117f517c311906e13f1c852e57f1e36c2ff27873d5cbec"
+          "hash": "ae068018af8d90d9a14efa6afe5d3d47fee2a3dddfb7ce993239bc21ad13045f"
         },
         {
           "path": "project/package-lock.json",
@@ -448,7 +448,7 @@
           "explanation": "contains consent-bypass or prompt-injection language"
         }
       ],
-      "contentHash": "sha256-096415b65e8a55a7a2a7ffa328ffe4ac3060e7645555f70722fdcf9a6ea11f3f",
+      "contentHash": "sha256-ea519c97254d612547650098a4cbe4911ef203ff432c78cb3d3f5546a3d47cc3",
       "discoveredFrom": "skills/remotion/SKILL.md"
     },
     {
@@ -2558,7 +2558,7 @@
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "cc13c31e385dddad1989d982be4ecb4ce2c2441788091465cdb9128124eedcfc"
+          "hash": "cac8aa854d1f54530ee568765a35662cdfee02000ac60296b4d4128aa43c1f4e"
         },
         {
           "path": "render_card.py",
@@ -2594,7 +2594,7 @@
           "explanation": "uses a process-execution primitive"
         }
       ],
-      "contentHash": "sha256-2d785a54ea1f892cae6655cbd6da1e5d0f968c0a0a41a2042d30a7e248deade6",
+      "contentHash": "sha256-90caa5e951cd61b9397599facc12be14af83cee537e13a233cc45ee07361b72f",
       "discoveredFrom": "skills/weekly-aeoncard/SKILL.md"
     },
     {

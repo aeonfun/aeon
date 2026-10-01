@@ -38,7 +38,10 @@ concurrency:
 jobs:
   schedule:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    # 10 min: a big catch-up tick (many owed slots after a delivery gap) does one
+    # gh call + a 1s spacer per dispatch and persists state once at the end, so a
+    # 5-min cap could cancel it mid-way and lose every stamp (all re-fire).
+    timeout-minutes: 10
 
     steps:
       - name: Checkout repo
@@ -117,62 +120,84 @@ jobs:
           # "dispatched" event -> last_dispatch (scripts/state_reduce.py) so the
           # watermark survives without a file commit. Memoizes the issue number and
           # no-ops in file mode. Used for both skills ("$SKILL") and chains
-          # ("chain:$CH"). $NOW_ISO / $BACKEND are in scope from above.
+          # ("chain:$CH"). An optional 2nd arg records the source skill that tripped
+          # a reactive handler. $NOW_ISO / $BACKEND are in scope from above.
           STATE_ISSUE=""
           STATE_ISSUE_TRIED=false
           append_dispatch_event() {
-            local key="$1" ev
+            local key="$1" src="${2:-}" ev
             [ "$BACKEND" = "file" ] && return 0
             if [ "$STATE_ISSUE_TRIED" = "false" ]; then
               STATE_ISSUE_TRIED=true
               STATE_ISSUE=$(GH_REPO="$GITHUB_REPOSITORY" bash scripts/state_store.sh ensure "aeon:cron-state" 2>/dev/null | tr -d '[:space:]' || true)
             fi
             [ -z "$STATE_ISSUE" ] && return 0
-            ev=$(jq -cn --arg s "$key" --arg ts "$NOW_ISO" '{skill:$s,status:"dispatched",ts:$ts}')
+            ev=$(jq -cn --arg s "$key" --arg ts "$NOW_ISO" --arg src "$src" \
+              '{skill:$s,status:"dispatched",ts:$ts} + (if $src != "" then {source:$src} else {} end)')
             GH_REPO="$GITHUB_REPOSITORY" bash scripts/state_store.sh append "$STATE_ISSUE" "$ev" \
               || echo "::warning::dispatch-event append failed for $key (backend=$BACKEND)"
           }
 
+          # Record an accepted dispatch: stamp last_dispatch in STATE, remember the
+          # key so the persist retry below can re-apply it on top of upstream's
+          # cron-state, and mirror it to the Issue ledger. Keys are skills, chain-
+          # covered skills, and "chain:<name>". An optional source (reactive
+          # handlers) is kept in .<handler>.reactive_sources[<source>].
+          STAMPED=()
+          REACTIVE_STAMPED=()
+          stamp() {
+            local key="$1" src="${2:-}"
+            STAMPED+=("$key")
+            STATE=$(echo "$STATE" | jq --arg s "$key" --arg ts "$NOW_ISO" \
+              '.[$s].last_dispatch = $ts | .[$s].last_status = "dispatched"')
+            if [ -n "$src" ]; then
+              REACTIVE_STAMPED+=("$key $src")
+              STATE=$(echo "$STATE" | jq --arg s "$key" --arg src "$src" --arg ts "$NOW_ISO" \
+                '.[$s].reactive_sources[$src] = $ts')
+            fi
+            append_dispatch_event "$key" "$src"
+          }
+          # stdin cron-state JSON -> stdout with every stamp of this tick applied.
+          apply_stamps() {
+            local json key pair
+            json=$(cat)
+            for key in "${STAMPED[@]}"; do
+              json=$(echo "$json" | jq --arg s "$key" --arg ts "$NOW_ISO" \
+                '.[$s].last_dispatch = $ts | .[$s].last_status = "dispatched"')
+            done
+            for pair in "${REACTIVE_STAMPED[@]}"; do
+              json=$(echo "$json" | jq --arg s "${pair%% *}" --arg src "${pair#* }" --arg ts "$NOW_ISO" \
+                '.[$s].reactive_sources[$src] = $ts')
+            done
+            echo "$json"
+          }
+
           # --- Parse aeon.yml ---
-          declare -A SKILL_ENABLED SKILL_SCHEDULE SKILL_VAR
+          # scripts/parse-aeon-config.sh reads aeon.yml with a real YAML parser
+          # (yq) and emits one record per skill, chain, and reactive trigger, taken
+          # only from the top-level skills: / chains: / reactive: keys and never
+          # from comments (the old inline line-regex parsers registered chain and
+          # channel keys as skills and read commented chain examples). Fixture
+          # tests: scripts/tests/test_parse_aeon_config.sh. Invalid YAML fails the
+          # tick loudly instead of dispatching from a half-parsed config.
+          if ! CONFIG_RECORDS=$(bash scripts/parse-aeon-config.sh aeon.yml); then
+            echo "::error::could not parse aeon.yml (see above); nothing dispatched this tick"
+            exit 1
+          fi
+          declare -A SKILL_ENABLED SKILL_SCHEDULE SKILL_VAR CHAIN_SCHEDULE CHAIN_SKILLS REACTIVE_TRIGGERS
           SKILL_ORDER=()
-          CURRENT_SKILL=""
-          while IFS= read -r line; do
-            # Inline format: skill-name: { enabled: true, schedule: "..." }
-            if [[ "$line" =~ ^\ \ ([a-zA-Z0-9_-]+):\ *\{(.+)\} ]]; then
-              CURRENT_SKILL="${BASH_REMATCH[1]}"
-              INLINE="${BASH_REMATCH[2]}"
-              SKILL_ORDER+=("$CURRENT_SKILL")
-              [[ "$INLINE" =~ enabled:\ *true ]] && SKILL_ENABLED["$CURRENT_SKILL"]="true" || SKILL_ENABLED["$CURRENT_SKILL"]="false"
-              [[ "$INLINE" =~ schedule:\ *\"([^\"]+)\" ]] && SKILL_SCHEDULE["$CURRENT_SKILL"]="${BASH_REMATCH[1]}"
-              [[ "$INLINE" =~ var:\ *\"([^\"]+)\" ]] && SKILL_VAR["$CURRENT_SKILL"]="${BASH_REMATCH[1]}"
-              CURRENT_SKILL=""
-              continue
-            fi
-            # Multi-line format — covers both block-mapping (name: then 4-space
-            # fields) and split flow maps an editor/formatter may produce (name:
-            # then a lone "{", then deeper-indented "enabled:"/"schedule:" fields,
-            # then "}"). The optional trailing "{" also catches "name: {" on one
-            # line. Field regexes accept 3+ spaces so 4- and 6-space indents both
-            # parse — otherwise a reformatted *enabled* skill silently loses its
-            # schedule and is never dispatched (the default below is enabled=true).
-            if [[ "$line" =~ ^\ \ ([a-zA-Z0-9_-]+):\ *\{?\ *$ ]]; then
-              CURRENT_SKILL="${BASH_REMATCH[1]}"
-              SKILL_ORDER+=("$CURRENT_SKILL")
-              SKILL_ENABLED["$CURRENT_SKILL"]="true"
-              SKILL_SCHEDULE["$CURRENT_SKILL"]=""
-              SKILL_VAR["$CURRENT_SKILL"]=""
-            fi
-            if [[ "$line" =~ ^\ \ \ +enabled:\ *false ]] && [ -n "$CURRENT_SKILL" ]; then
-              SKILL_ENABLED["$CURRENT_SKILL"]="false"
-            fi
-            if [[ "$line" =~ ^\ \ \ +schedule:\ *\"([^\"]+)\" ]] && [ -n "$CURRENT_SKILL" ]; then
-              SKILL_SCHEDULE["$CURRENT_SKILL"]="${BASH_REMATCH[1]}"
-            fi
-            if [[ "$line" =~ ^\ \ \ +var:\ *\"([^\"]+)\" ]] && [ -n "$CURRENT_SKILL" ]; then
-              SKILL_VAR["$CURRENT_SKILL"]="${BASH_REMATCH[1]}"
-            fi
-          done < aeon.yml
+          CHAIN_ORDER=()
+          while IFS=$'\x1f' read -r KIND F1 F2 F3 F4; do
+            case "$KIND" in
+              skill)
+                [ -n "${SKILL_ENABLED[$F1]+x}" ] || SKILL_ORDER+=("$F1")
+                SKILL_ENABLED["$F1"]="$F2"; SKILL_SCHEDULE["$F1"]="$F3"; SKILL_VAR["$F1"]="$F4" ;;
+              chain)
+                CHAIN_ORDER+=("$F1"); CHAIN_SCHEDULE["$F1"]="$F2"; CHAIN_SKILLS["$F1"]="$F3" ;;
+              reactive)
+                REACTIVE_TRIGGERS["$F1"]+="${F2}:${F3};" ;;
+            esac
+          done <<< "$CONFIG_RECORDS"
 
           # --- Match skills ---
           MATCHED=()
@@ -272,38 +297,8 @@ jobs:
           done
           ORDERED=("${DEPS_FIRST[@]}" "${DEPS_LAST[@]}")
 
-          # --- Parse chains from aeon.yml ---
-          declare -A CHAIN_SCHEDULE CHAIN_SKILLS
-          CHAIN_ORDER=()
+          # --- Chains (parsed above with the skills) ---
           CHAIN_COVERED_SKILLS=()
-          IN_CHAINS=false
-          CURRENT_CHAIN=""
-          IN_STEPS=false
-          while IFS= read -r line; do
-            if [[ "$line" =~ ^chains: ]]; then
-              IN_CHAINS=true
-              continue
-            fi
-            $IN_CHAINS && [[ "$line" =~ ^[a-z] ]] && IN_CHAINS=false
-            $IN_CHAINS || continue
-
-            if [[ "$line" =~ ^\ \ ([a-zA-Z0-9_-]+): ]]; then
-              CURRENT_CHAIN="${BASH_REMATCH[1]}"
-              CHAIN_ORDER+=("$CURRENT_CHAIN")
-              IN_STEPS=false
-              continue
-            fi
-            [ -z "$CURRENT_CHAIN" ] && continue
-            if [[ "$line" =~ schedule:\ *\"([^\"]+)\" ]]; then
-              CHAIN_SCHEDULE["$CURRENT_CHAIN"]="${BASH_REMATCH[1]}"
-            fi
-            if [[ "$line" =~ parallel:\ *\[([^\]]+)\] ]]; then
-              CHAIN_SKILLS["$CURRENT_CHAIN"]+="$(echo "${BASH_REMATCH[1]}" | tr -d ' '),"
-            elif [[ "$line" =~ skill:\ *([a-zA-Z0-9_-]+) ]]; then
-              CHAIN_SKILLS["$CURRENT_CHAIN"]+="${BASH_REMATCH[1]},"
-            fi
-          done < aeon.yml
-
           # Match chains against current time
           MATCHED_CHAINS=()
           for CH in "${CHAIN_ORDER[@]}"; do
@@ -318,10 +313,6 @@ jobs:
             bash scripts/cron-due.sh "$SCHED" "$NOW_EPOCH" "$LAST_DISPATCH_EPOCH" "$CATCHUP_HOURS" >/dev/null || continue
 
             MATCHED_CHAINS+=("$CH")
-            IFS=',' read -ra CH_SKILLS <<< "${CHAIN_SKILLS[$CH]}"
-            for s in "${CH_SKILLS[@]}"; do
-              [ -n "$s" ] && CHAIN_COVERED_SKILLS+=("$s")
-            done
             echo "Matched chain: $CH (schedule: $SCHED)"
           done
 
@@ -331,14 +322,18 @@ jobs:
             # Same exit-code guard + Issue-ledger mirror as the per-skill dispatch:
             # only record a dispatch GitHub accepted, so a rejected one retries next
             # tick instead of being silently marked done.
+            # Only an accepted chain covers its skills; if it was rejected, they still
+            # run standalone this tick.
             if gh workflow run chain-runner.yml -f chain="$CH"; then
-              STATE=$(echo "$STATE" | jq --arg s "chain:$CH" --arg ts "$NOW_ISO" \
-                '.[$s].last_dispatch = $ts | .[$s].last_status = "dispatched"')
-              append_dispatch_event "chain:$CH"
+              stamp "chain:$CH"
+              IFS=',' read -ra CH_SKILLS <<< "${CHAIN_SKILLS[$CH]}"
+              for s in "${CH_SKILLS[@]}"; do
+                [ -n "$s" ] && CHAIN_COVERED_SKILLS+=("$s")
+              done
             else
               echo "::warning::chain dispatch failed for $CH — leaving state untouched so the next tick retries"
             fi
-            sleep 2
+            sleep 1
           done
 
           # --- Filter standalone skills: skip if covered by a chain dispatching now ---
@@ -348,6 +343,9 @@ jobs:
             for covered in "${CHAIN_COVERED_SKILLS[@]}"; do
               if [ "$SKILL" = "$covered" ]; then
                 echo "Skipping standalone $SKILL (covered by chain)"
+                # The chain run pays this slot: stamp it, or the skill stays owed
+                # and runs standalone on the next tick anyway.
+                stamp "$SKILL"
                 SKIP=true
                 break
               fi
@@ -356,35 +354,21 @@ jobs:
           done
           ORDERED=("${FILTERED_ORDERED[@]}")
 
-          # --- Evaluate reactive triggers ---
-          # Parse reactive section from aeon.yml
-          IN_REACTIVE=false
-          REACTIVE_SKILL=""
-          declare -A REACTIVE_TRIGGERS
-          while IFS= read -r line; do
-            if [[ "$line" =~ ^reactive: ]]; then
-              IN_REACTIVE=true
-              continue
-            fi
-            $IN_REACTIVE && [[ "$line" =~ ^[a-z] ]] && ! [[ "$line" =~ ^[[:space:]] ]] && IN_REACTIVE=false
-            $IN_REACTIVE || continue
-            [[ "$line" =~ ^\ *# ]] && continue
-            if [[ "$line" =~ ^\ \ ([a-zA-Z0-9_-]+): ]]; then
-              REACTIVE_SKILL="${BASH_REMATCH[1]}"
-              continue
-            fi
-            # Accept both quoted and unquoted `on:` values (`on: "digest"` and
-            # `on: digest`). The docs' own examples use the unquoted form, so the
-            # strict quoted-only regex silently dropped a trigger written that way.
-            if [ -n "$REACTIVE_SKILL" ] && [[ "$line" =~ on:\ *\"?([^\",\}\ ]+)\"?.*when:\ *\"([^\"]+)\" ]]; then
-              ON="${BASH_REMATCH[1]}"
-              WHEN="${BASH_REMATCH[2]}"
-              REACTIVE_TRIGGERS["$REACTIVE_SKILL"]+="${ON}:${WHEN};"
-            fi
-          done < aeon.yml
-
+          # --- Evaluate reactive triggers (parsed above with the skills) ---
+          # A wildcard (`on: "*"`) handler rotates across failing sources: a
+          # source it was already dispatched for within this window is passed
+          # over, so one stuck skill (e.g. inside skill-repair's own 24h repair
+          # cooldown) can't monopolize the handler while others never get a turn.
+          # Matches skill-repair's 24h cooldown; tune here.
+          REACTIVE_SOURCE_COOLDOWN_MIN=1440
+          declare -A REACTIVE_SOURCE
           # Check reactive triggers against cron state
           for RSKILL in "${!REACTIVE_TRIGGERS[@]}"; do
+            # A handler switched off in its own skills: entry stays off.
+            if [ "${SKILL_ENABLED[$RSKILL]:-}" = "false" ]; then
+              echo "Skipping reactive $RSKILL (enabled: false in its skills: entry)"
+              continue
+            fi
             IFS=';' read -ra RULES <<< "${REACTIVE_TRIGGERS[$RSKILL]}"
             for rule in "${RULES[@]}"; do
               [ -z "$rule" ] && continue
@@ -393,9 +377,12 @@ jobs:
 
               # Check condition against all skills (or specific source skill)
               TRIGGERED=false
+              MATCHED_SOURCE=""
               for CHECK_SKILL in "${SKILL_ORDER[@]}"; do
                 [ "${SKILL_ENABLED[$CHECK_SKILL]}" = "false" ] && continue
                 [ "$ON" != "*" ] && [ "$ON" != "$CHECK_SKILL" ] && continue
+                # A wildcard handler never triggers on its own state.
+                [ "$ON" = "*" ] && [ "$CHECK_SKILL" = "$RSKILL" ] && continue
 
                 # Condition evaluation lives in scripts/reactive_when.sh so it can be
                 # unit-tested (scripts/tests/test_reactive_when.sh) and so all three
@@ -406,6 +393,15 @@ jobs:
                 WRC=0
                 printf '%s' "$SKILL_STATE" | bash scripts/reactive_when.sh "$WHEN" || WRC=$?
                 if [ "$WRC" -eq 0 ]; then
+                  if [ "$ON" = "*" ]; then
+                    SRC_LAST=$(echo "$STATE" | jq -r --arg h "$RSKILL" --arg s "$CHECK_SKILL" \
+                      '.[$h].reactive_sources[$s] // "1970-01-01T00:00:00Z"')
+                    SRC_AGE=$(( (NOW_EPOCH - $(date -u -d "$SRC_LAST" +%s 2>/dev/null || echo 0)) / 60 ))
+                    if [ "$SRC_AGE" -lt "$REACTIVE_SOURCE_COOLDOWN_MIN" ]; then
+                      echo "Reactive $RSKILL: $CHECK_SKILL matched but was handled ${SRC_AGE}m ago; trying the next source"
+                      continue
+                    fi
+                  fi
                   echo "Reactive trigger: $RSKILL (${CHECK_SKILL} matched: ${WHEN})"
                   TRIGGERED=true
                   MATCHED_SOURCE="$CHECK_SKILL"   # the skill that tripped this trigger
@@ -423,6 +419,7 @@ jobs:
                 MINUTES_SINCE=$(( (NOW_EPOCH - LAST_DISPATCH_EPOCH) / 60 ))
                 if [ "$MINUTES_SINCE" -ge 90 ]; then
                   ORDERED+=("$RSKILL")
+                  REACTIVE_SOURCE["$RSKILL"]="$MATCHED_SOURCE"
                   # Hand the handler the skill that tripped it, so a reactive handler
                   # (e.g. skill-repair on `on: "*"`) knows WHICH skill to act on. Only
                   # when the handler declares no var of its own -- an explicit var wins.
@@ -440,7 +437,6 @@ jobs:
 
           # --- Dispatch ---
           DISPATCHED_DEPS=false
-          DISPATCHED=()   # skills whose dispatch GitHub accepted; state is stamped only for these
           for SKILL in "${ORDERED[@]}"; do
             if [ -n "${SKILL_DEPS[$SKILL]:-}" ] && [ "$DISPATCHED_DEPS" = "false" ]; then
               DISPATCHED_DEPS=true
@@ -464,15 +460,14 @@ jobs:
             # old behaviour that stamped "dispatched" regardless and let the dedup
             # window bury a silent drop.
             if [ "$DISPATCH_OK" = "true" ]; then
-              DISPATCHED+=("$SKILL")
-              STATE=$(echo "$STATE" | jq --arg s "$SKILL" --arg ts "$NOW_ISO" \
-                '.[$s].last_dispatch = $ts | .[$s].last_status = "dispatched"')
-              append_dispatch_event "$SKILL"
+              stamp "$SKILL" "${REACTIVE_SOURCE[$SKILL]:-}"
             else
               echo "::warning::dispatch failed for $SKILL — leaving cron state untouched so the next tick retries"
             fi
 
-            sleep 2
+            # Spacer against the workflow_dispatch secondary rate limit; kept short
+            # so a large catch-up tick fits in the job timeout.
+            sleep 1
           done
 
           # --- Persist state ---
@@ -498,22 +493,24 @@ jobs:
                 echo "State committed on attempt $i"
                 break
               fi
+              # Lost the race. Start over from upstream's cron-state and re-apply
+              # this tick's stamps (skills, chain-covered skills, chain:<name>,
+              # reactive sources). The old reset --soft + checkout -- file restored
+              # OUR copy from the index, so every retry replayed the same conflict
+              # and the stamps were lost (double dispatch next tick).
               git rebase --abort 2>/dev/null || true
-              git reset --soft HEAD~1 2>/dev/null || true
-              git checkout -- "$STATE_FILE" 2>/dev/null || true
-              git pull origin main 2>/dev/null || true
+              if ! git fetch origin main 2>/dev/null; then
+                sleep "$i"
+                continue
+              fi
+              git reset --hard FETCH_HEAD
 
               if [ -f "$STATE_FILE" ] && jq empty "$STATE_FILE" 2>/dev/null; then
                 MERGED=$(cat "$STATE_FILE")
               else
                 MERGED='{}'
               fi
-              for SKILL in "${DISPATCHED[@]}"; do
-                [ -n "$SKILL" ] || continue
-                MERGED=$(echo "$MERGED" | jq --arg s "$SKILL" --arg ts "$NOW_ISO" \
-                  '.[$s].last_dispatch = $ts | .[$s].last_status = "dispatched"')
-              done
-              echo "$MERGED" | jq '.' > "$STATE_FILE"
+              echo "$MERGED" | apply_stamps | jq '.' > "$STATE_FILE"
               git add "$STATE_FILE"
               git diff --staged --quiet && { echo "State already up to date after merge"; break; }
               git commit -m "chore(scheduler): update cron state"

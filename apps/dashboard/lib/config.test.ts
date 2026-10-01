@@ -122,12 +122,12 @@ describe("updateSkillInConfig", () => {
 
   it("changes the schedule", () => {
     const updated = updateSkillInConfig(MINIMAL_YAML, "heartbeat", { schedule: "0 9 * * 1" });
-    assert.ok(updated.includes("schedule: '0 9 * * 1'") || updated.includes('schedule: "0 9 * * 1"'));
+    assert.ok(updated.includes('schedule: "0 9 * * 1"'));
   });
 
   it("sets a var on a skill", () => {
     const updated = updateSkillInConfig(MINIMAL_YAML, "heartbeat", { var: "test-value" });
-    assert.ok(updated.includes("var: test-value") || updated.includes("var: 'test-value'"));
+    assert.ok(updated.includes('var: "test-value"'));
   });
 
   it("clears a var when empty string", () => {
@@ -139,7 +139,7 @@ describe("updateSkillInConfig", () => {
 
   it("sets a model override on a skill", () => {
     const updated = updateSkillInConfig(MINIMAL_YAML, "heartbeat", { model: "claude-sonnet-5" });
-    assert.ok(updated.includes("model: claude-sonnet-5") || updated.includes("model: 'claude-sonnet-5'"));
+    assert.ok(updated.includes('model: "claude-sonnet-5"'));
   });
 
   it("returns original yaml for non-existent skill", () => {
@@ -462,5 +462,30 @@ describe("generated entries are readable by the scheduler", () => {
   it("upsertSkillInConfig keeps the quotes when updating", () => {
     const yaml = upsertSkillInConfig(FULL_YAML, "market-pulse", { schedule: "0 6 * * *" });
     assert.match(scheduleLine(yaml, "market-pulse"), SCHEDULER_INLINE_RE);
+  });
+
+  // The other CI readers (chain-runner var, resolve-harness.sh harness, aeon.yml
+  // model) also only match `key: "value"`. A key the entry did not have yet used
+  // to be written plain, so a dashboard/CLI edit was silently ignored in CI.
+  it("updateSkillInConfig double-quotes new var/model/harness keys", () => {
+    const line = scheduleLine(
+      updateSkillInConfig(MINIMAL_YAML, "heartbeat", {
+        var: "brief", model: "claude-opus-4-8", harness: "grok",
+      }),
+      "heartbeat",
+    );
+    assert.match(line, /var: "brief"/);
+    assert.match(line, /model: "claude-opus-4-8"/);
+    assert.match(line, /harness: "grok"/);
+  });
+
+  it("updateSkillInConfig re-quotes a hand-written plain scalar", () => {
+    const yaml = `skills:\n  heartbeat: { enabled: true, schedule: 0 12 * * *, model: claude-sonnet-5 }\n`;
+    const line = scheduleLine(
+      updateSkillInConfig(yaml, "heartbeat", { schedule: "0 9 * * *", model: "claude-opus-4-8" }),
+      "heartbeat",
+    );
+    assert.match(line, SCHEDULER_INLINE_RE);
+    assert.match(line, /model: "claude-opus-4-8"/);
   });
 });

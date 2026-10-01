@@ -32,11 +32,12 @@ EOF
 done
 # fx installs via curl|bash, not a package manager — fake curl so this test
 # never hits the real network, and fake bash-via-pipe is just "record and exit
-# 0" since install-harness.sh doesn't parse curl's output.
-cat > "$BIN/curl" <<EOF
+# 0" since install-harness.sh doesn't parse curl's output. The served "installer"
+# also records which GitHub credentials it could see (section 6).
+cat > "$BIN/curl" <<'EOF'
 #!/usr/bin/env bash
-printf 'curl %s\n' "\$*" >> "\$PKG_LOG"
-echo "echo fake-fx-installed"
+printf 'curl %s\n' "$*" >> "$PKG_LOG"
+echo 'echo "installer-gh=[${GH_GLOBAL:-}|${GH_SECRETS_PAT:-}|${GH_TOKEN:-}|${GITHUB_TOKEN:-}]" >> "$PKG_LOG"; echo fake-fx-installed'
 EOF
 chmod +x "$BIN/curl"
 
@@ -173,6 +174,25 @@ else
   grep -q "needs CODEX_AUTH" "$H_DIR/out.txt" \
     && pass "missing OAuth capture: error names the secret" || bad "CODEX_AUTH error message"
 fi
+
+# --- 6. curl | bash installers never see a GitHub credential ----------------
+# The step env holds GH_GLOBAL / GH_SECRETS_PAT (grok's secret rotation); a
+# third-party install script must not inherit them.
+GH_ENV=(GH_GLOBAL=ghp_global GH_SECRETS_PAT=ghp_pat GH_TOKEN=ghs_tok GITHUB_TOKEN=ghs_wf)
+for spec in "fx AI_GATEWAY_API_KEY=sk-test AUTH_MODE=native-key" \
+            "cursor CURSOR_API_KEY=ck-test" \
+            "hermes OPENROUTER_API_KEY=sk-test AUTH_MODE=openrouter"; do
+  read -r -a parts <<<"$spec"
+  if run "${parts[0]}" "${GH_ENV[@]}" "${parts[@]:1}"; then
+    if grep -qx 'installer-gh=\[|||\]' "$PKG_LOG"; then
+      pass "${parts[0]}: installer script runs without GitHub credentials"
+    else
+      bad "${parts[0]}: installer saw a GitHub credential ($(grep installer-gh "$PKG_LOG"))"
+    fi
+  else
+    bad "${parts[0]}: install failed ($(tail -1 "$H_DIR/out.txt"))"
+  fi
+done
 
 echo "---"
 [ "$fail" = "0" ] && echo "ALL PASS" || echo "SOME FAILED"

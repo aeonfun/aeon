@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Tests for the glm and hivemindos arms of scripts/llm-gateway.sh.
+# Tests for the glm, openrouter and hivemindos arms of scripts/llm-gateway.sh.
 # The shim is SOURCED by the workflow, so these tests source it too. Each case
 # runs in a subshell so exported CLAUDE_CODE_* / ANTHROPIC_* vars don't leak.
 # Run: bash scripts/tests/test_llm_gateway.sh
@@ -63,6 +63,32 @@ glm_src() {
   echo "still-running" >/dev/null
 ) && pass "sourcing under bash -e does not abort caller" \
   || bad "sourcing under bash -e does not abort caller"
+
+# --- openrouter arm --------------------------------------------------------
+# Native arm, no sidecar: the run's resolved model id picks the slot by tier.
+or_model() {  # $1 = run model id; prints the MODEL the arm resolves
+  ( unset OPENROUTER_MODEL OPENROUTER_MODEL_SONNET OPENROUTER_MODEL_HAIKU
+    export GATEWAY=openrouter OPENROUTER_API_KEY=test-key MODEL="$1"
+    # shellcheck disable=SC1090
+    source "$GW" >/dev/null
+    printf '%s' "$MODEL" )
+}
+[ "$(or_model claude-sonnet-5)" = "anthropic/claude-sonnet-5" ] \
+  && pass "openrouter: sonnet-tier run stays on the sonnet slug" \
+  || bad "openrouter: sonnet-tier run stays on the sonnet slug (got $(or_model claude-sonnet-5))"
+[ "$(or_model claude-opus-4-8)" = "anthropic/claude-opus-4.8" ] \
+  && pass "openrouter: opus-pinned run gets the opus slug" \
+  || bad "openrouter: opus-pinned run gets the opus slug"
+[ "$(or_model claude-haiku-4-5-20251001)" = "anthropic/claude-haiku-4.5" ] \
+  && pass "openrouter: haiku-tier run gets the haiku slug" \
+  || bad "openrouter: haiku-tier run gets the haiku slug"
+( export GATEWAY=openrouter OPENROUTER_API_KEY=test-key MODEL=claude-sonnet-5 \
+    OPENROUTER_MODEL=x/opus OPENROUTER_MODEL_SONNET=x/sonnet
+  # shellcheck disable=SC1090
+  source "$GW" >/dev/null
+  [ "$MODEL" = "x/sonnet" ] && [ "$ANTHROPIC_DEFAULT_OPUS_MODEL" = "x/opus" ]
+) && pass "openrouter: per-tier repo vars override the slugs" \
+  || bad "openrouter: per-tier repo vars override the slugs"
 
 # --- hivemindos arm --------------------------------------------------------
 # A sidecar arm, so AEON_GATEWAY_DRY_RUN stands in for ccr: it prints the

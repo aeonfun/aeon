@@ -17,6 +17,11 @@
 # analyzed command line. Works for any key and any placement (auth header,
 # custom header, URL path, query param). The secret is never printed.
 set -euo pipefail
+# bash 5.2+ expands an unquoted & in a ${a//pat/rep} replacement to the matched
+# text, which would corrupt any secret containing &. Quoting the replacement is
+# not portable (bash 3.2 keeps the quotes literally), so turn the feature off;
+# older bash has no such option, hence the guard.
+shopt -u patsub_replacement 2>/dev/null || true
 
 # Substitute {ENV_NAME} placeholders with the env var's value. Only credential-
 # shaped, currently-set vars are substituted, so JSON/prose braces (e.g. lower-
@@ -42,17 +47,25 @@ for a in "$@"; do args+=("$(subst "$a")"); done
 # process on the box via `ps`/`/proc/<pid>/cmdline`) if handed to curl directly
 # -- defeating the whole point of substituting inside this script rather than in
 # the caller's command line. Route them through curl's -K/--config instead: a
-# config file (or, here, stdin) is the one form of curl invocation where secret
-# values never appear in argv at all.
+# config file is the one form of curl invocation where secret values never
+# appear in argv at all. The config is handed over as a process-substitution
+# pipe (curl -K /dev/fd/N), NOT on stdin: with `-K -` a caller's
+# `--data-binary @-` would send the config text itself (substituted secret
+# included) as the request body, and stdin could not carry a real body.
 #
 # cfg_quote: -K's double-quoted strings only recognize \\, \", \t, \n, \r, \v as
 # real escapes -- backslash before anything else is dropped verbatim -- so a
 # literal backslash must become \\ before a value goes in quotes, or arbitrary
-# content is corrupted.
+# content is corrupted. A raw newline/CR would end the config line and let the
+# rest of the value be parsed as a new curl option (e.g. `output = ...`), so
+# those are escaped too, plus tab for symmetry.
 cfg_quote() {
   local v="$1"
   v="${v//\\/\\\\}"
   v="${v//\"/\\\"}"
+  v="${v//$'\n'/\\n}"
+  v="${v//$'\r'/\\r}"
+  v="${v//$'\t'/\\t}"
   printf '"%s"' "$v"
 }
 is_url() { case "$1" in http://*|https://*) return 0 ;; *) return 1 ;; esac; }
@@ -72,6 +85,12 @@ build_config() {
       printf 'url = %s\n' "$(cfg_quote "$tok")"
       i=$((i + 1))
     elif [[ "$tok" == -* ]]; then
+      # The flag itself is written unquoted, so it must be a plain option name:
+      # whitespace or a newline in it would inject extra config lines.
+      if ! [[ "$tok" =~ ^-[-A-Za-z0-9]+$ ]]; then
+        echo "secretcurl: refusing a malformed option (must be a bare -x / --name; not echoed, may hold a secret)" >&2
+        return 1
+      fi
       local next=$((i + 1))
       if [ "$next" -lt "$n" ] && [[ "${a[$next]}" != -* ]] && ! is_url "${a[$next]}"; then
         printf '%s %s\n' "$tok" "$(cfg_quote "${a[$next]}")"
@@ -81,7 +100,8 @@ build_config() {
         i=$((i + 1))
       fi
     else
-      echo "secretcurl: cannot classify argument '$tok' (not a flag, not a URL) -- refusing to guess" >&2
+      # Not echoed: it is the post-substitution value and may hold a secret.
+      echo "secretcurl: cannot classify argument $((i + 1)) (not a flag, not a URL) -- refusing to guess" >&2
       return 1
     fi
   done
@@ -119,7 +139,7 @@ run_xai_search() {
   while [ "$attempt" -le "$max_attempts" ]; do
     stdout_file="$(mktemp)"
     set +e
-    printf '%s' "$CONFIG" | curl -K - >"$stdout_file"
+    curl -K <(printf '%s' "$CONFIG") >"$stdout_file"
     rc=$?
     set -e
     http=""
@@ -188,7 +208,7 @@ if [ -n "${AEON_AUDIT_LOG:-}" ]; then
   if is_xai_search "${args[@]}"; then
     run_xai_search "${args[@]}"
   else
-    printf '%s' "$CONFIG" | curl -K -
+    curl -K <(printf '%s' "$CONFIG")
   fi
   _RC=$?
   set -e
@@ -202,4 +222,4 @@ if is_xai_search "${args[@]}"; then
   run_xai_search "${args[@]}"
   exit $?
 fi
-printf '%s' "$CONFIG" | curl -K -
+curl -K <(printf '%s' "$CONFIG")

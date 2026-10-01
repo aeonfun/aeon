@@ -27,7 +27,11 @@ concurrency:
 jobs:
   run:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    # Each step waits up to wait_for_runs' cap (60 min) for one aeon.yml run, and
+    # dev-loop chains five of them back to back (feature, review, repair,
+    # re-review, proof). 60 here killed any chain mid-wait; 360 is the hosted
+    # runner maximum and covers that worst case. The job mostly sleeps on polls.
+    timeout-minutes: 360
 
     steps:
       - name: Checkout repo
@@ -97,7 +101,10 @@ jobs:
             expected_title+=" [dispatch: $dispatch_id]"
 
             echo "  Dispatching: $skill"
-            gh workflow run aeon.yml "${args[@]}"
+            if ! gh workflow run aeon.yml "${args[@]}"; then
+              echo "::error::gh workflow run failed for skill: $skill"
+              return 1
+            fi
 
             # Poll for the run to appear (up to 60s). Match the exact run-name
             # containing this dispatch ID; never fall back to a newer skill run.
@@ -128,7 +135,10 @@ jobs:
 
           # --- Helper: wait for a set of run IDs to complete ---
           wait_for_runs() {
-            local timeout=1800  # 30 min
+            # Must outlast one aeon.yml run: its job timeout-minutes (50) plus
+            # slack for queueing behind a same-skill run and runner startup. At
+            # 30 min the chain gave up on skills that were still legitimately running.
+            local timeout=3600  # 60 min
             local start=$(date +%s)
             local run_ids=("$@")
 
@@ -396,10 +406,13 @@ jobs:
                 break 2
               fi
 
-              RUN_OUTPUT=$(dispatch_skill "$skill" "$VAR" "$CTX_FILE")
-              DISPATCH_EXIT=$?
+              # `|| DISPATCH_EXIT=$?`: under set -e a bare failing assignment
+              # exits the whole step here, so on_error: continue never ran.
+              DISPATCH_EXIT=0
+              RUN_OUTPUT=$(dispatch_skill "$skill" "$VAR" "$CTX_FILE") || DISPATCH_EXIT=$?
               RUN_ID=$(echo "$RUN_OUTPUT" | tail -1)
               if [ $DISPATCH_EXIT -ne 0 ] || [ -z "$RUN_ID" ]; then
+                printf '%s\n' "$RUN_OUTPUT"
                 echo "::error::Failed to dispatch skill: $skill"
                 CHAIN_FAILED=true
                 [ "$ON_ERROR" = "fail-fast" ] && break
@@ -486,7 +499,8 @@ jobs:
                 echo "::error::dev-loop cannot dispatch repair: budget $MAX_DISPATCHES exhausted"
                 CHAIN_FAILED=true
               else
-                REPAIR_OUTPUT=$(dispatch_skill feature "$REPAIR_VAR" "$REPAIR_CONTEXT")
+                # On failure the captured text is the error, not a run ID.
+                REPAIR_OUTPUT=$(dispatch_skill feature "$REPAIR_VAR" "$REPAIR_CONTEXT") || REPAIR_OUTPUT=""
                 REPAIR_RUN_ID=$(echo "$REPAIR_OUTPUT" | tail -1)
                 if [ -z "$REPAIR_RUN_ID" ] || ! wait_for_runs "$REPAIR_RUN_ID"; then
                   echo "::error::dev-loop bounded repair run failed"
@@ -539,7 +553,7 @@ jobs:
                 echo "::error::dev-loop cannot dispatch re-review: budget $MAX_DISPATCHES exhausted"
                 CHAIN_FAILED=true
               else
-                REREVIEW_OUTPUT=$(dispatch_skill pr-review "$FEATURE_PR" "$REREVIEW_CONTEXT")
+                REREVIEW_OUTPUT=$(dispatch_skill pr-review "$FEATURE_PR" "$REREVIEW_CONTEXT") || REREVIEW_OUTPUT=""
                 REREVIEW_RUN_ID=$(echo "$REREVIEW_OUTPUT" | tail -1)
                 if [ -z "$REREVIEW_RUN_ID" ] || ! wait_for_runs "$REREVIEW_RUN_ID"; then
                   echo "::error::dev-loop re-review run failed"
@@ -573,7 +587,7 @@ jobs:
               echo "::error::dev-loop cannot dispatch behavioral proof: budget $MAX_DISPATCHES exhausted"
               CHAIN_PROOF_MISSING=true
             else
-              PROOF_OUTPUT=$(dispatch_skill create-prove "$PROOF_VAR")
+              PROOF_OUTPUT=$(dispatch_skill create-prove "$PROOF_VAR") || PROOF_OUTPUT=""
               PROOF_RUN_ID=$(echo "$PROOF_OUTPUT" | tail -1)
               if [ -z "$PROOF_RUN_ID" ] || ! wait_for_runs "$PROOF_RUN_ID"; then
                 echo "::error::dev-loop live behavioral proof run failed or produced no run ID"
@@ -668,13 +682,20 @@ jobs:
           fi
 
           git checkout main 2>/dev/null || true
-          git pull --rebase origin main 2>/dev/null || true
+          git pull --rebase --autostash origin main 2>/dev/null || git rebase --abort 2>/dev/null || true
 
-          if [ -f "$STATE_FILE" ] && jq empty "$STATE_FILE" 2>/dev/null; then
-            STATE=$(cat "$STATE_FILE")
-          else
-            STATE='{}'
-          fi
+          # A garbled working copy falls back to the committed copy instead of {},
+          # which would wipe every skill's state on commit.
+          read_state() {
+            if [ -f "$STATE_FILE" ] && jq -e 'type == "object"' "$STATE_FILE" >/dev/null 2>&1; then
+              STATE=$(cat "$STATE_FILE")
+            elif git show "HEAD:$STATE_FILE" 2>/dev/null | jq -e 'type == "object"' >/dev/null 2>&1; then
+              STATE=$(git show "HEAD:$STATE_FILE")
+            else
+              STATE='{}'
+            fi
+          }
+          read_state
 
           # Store chain state with "chain:" prefix to distinguish from skills
           STATE=$(echo "$STATE" | jq --arg s "chain:$CHAIN" --arg st "$STATUS" --arg ts "$NOW_ISO" \
@@ -691,20 +712,23 @@ jobs:
 
           git commit -m "chore(chain): $CHAIN $STATUS"
           for i in 1 2 3 4 5; do
-            if git pull --rebase origin main 2>/dev/null && git push -u origin HEAD 2>/dev/null; then
+            if git pull --rebase --autostash origin main 2>/dev/null && git push -u origin HEAD 2>/dev/null; then
               echo "Chain state updated: $CHAIN=$STATUS"
               exit 0
             fi
+            # Lost the race: drop our commit, take UPSTREAM's file and re-apply the
+            # chain stamp to it (`checkout -- file` restored our own staged copy, so
+            # the following pull refused and every retry failed).
             git rebase --abort 2>/dev/null || true
             git reset --soft HEAD~1 2>/dev/null || true
-            git checkout -- "$STATE_FILE" 2>/dev/null || true
-            git pull origin main 2>/dev/null || true
-
-            if [ -f "$STATE_FILE" ] && jq empty "$STATE_FILE" 2>/dev/null; then
-              STATE=$(cat "$STATE_FILE")
-            else
-              STATE='{}'
+            git checkout HEAD -- "$STATE_FILE" 2>/dev/null || { git rm -q --cached --ignore-unmatch -- "$STATE_FILE"; rm -f "$STATE_FILE"; }
+            if ! git pull --rebase --autostash origin main 2>/dev/null; then
+              git rebase --abort 2>/dev/null || true
+              git fetch origin main 2>/dev/null || true
+              git checkout origin/main -- "$STATE_FILE" 2>/dev/null || true
             fi
+
+            read_state
             STATE=$(echo "$STATE" | jq --arg s "chain:$CHAIN" --arg st "$STATUS" --arg ts "$NOW_ISO" \
               '.[$s].last_status = $st | .[$s]["last_" + $st] = $ts')
             echo "$STATE" | jq '.' > "$STATE_FILE"

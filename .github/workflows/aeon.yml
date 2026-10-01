@@ -265,8 +265,6 @@ jobs:
           KIMI_AUTH: ${{ secrets.KIMI_AUTH }}
           HERMES_AUTH: ${{ secrets.HERMES_AUTH }}
           CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
-          GLM_API_KEY: ${{ secrets.GLM_API_KEY }}
-          ZAI_API_KEY: ${{ secrets.ZAI_API_KEY }}
           AI_GATEWAY_API_KEY: ${{ secrets.AI_GATEWAY_API_KEY }}
           VERCEL_OIDC_TOKEN: ${{ secrets.VERCEL_OIDC_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -348,8 +346,6 @@ jobs:
           KIMI_AUTH: ${{ secrets.KIMI_AUTH }}
           HERMES_AUTH: ${{ secrets.HERMES_AUTH }}
           CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
-          GLM_API_KEY: ${{ secrets.GLM_API_KEY }}
-          ZAI_API_KEY: ${{ secrets.ZAI_API_KEY }}
           AI_GATEWAY_API_KEY: ${{ secrets.AI_GATEWAY_API_KEY }}
           VERCEL_OIDC_TOKEN: ${{ secrets.VERCEL_OIDC_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -617,10 +613,10 @@ jobs:
 
       - name: Stage weekly-aeoncard rasterizer
         # weekly-aeoncard renders an SVG card and needs a rasterizer to also emit a PNG
-        # for inline Telegram delivery (sendPhoto). apt needs root and the agent
-        # allowlist blocks in-run pip/apt, so install librsvg2-bin (rsvg-convert) here —
-        # render_card.py's fallback picks it up. Best-effort: never fails the run; without
-        # it the skill degrades to the SVG + a text notify.
+        # copy (committed next to the SVG; the notify is text + link). apt needs root and
+        # the agent allowlist blocks in-run pip/apt, so install librsvg2-bin
+        # (rsvg-convert) here - render_card.py's fallback picks it up. Best-effort: never
+        # fails the run; without it the skill ships the SVG alone.
         if: steps.work.outputs.mode != '' && steps.skill.outputs.name == 'weekly-aeoncard'
         # Best-effort, but `|| true` only catches a non-zero exit, not a hang on the
         # dpkg lock, so bound the lock wait too and an apt stall can't eat the job wall.
@@ -687,10 +683,11 @@ jobs:
           # the secret names its .mcp.json references into this blob (see
           # apps/dashboard/lib/workflow-secrets.ts). To expose a NEW secret to a
           # skill's `requires:`, add its name here by hand (and set it in the
-          # dashboard).
+          # dashboard); scripts/tests/test_all_secrets_allowlist.sh fails CI on a
+          # `requires:` key missing from this list.
           # Consumed by the MCP/requires loops below, then unset before Claude runs.
           ALL_SECRETS: >-
-            {"ADMANAGE_API_KEY":${{ toJSON(secrets.ADMANAGE_API_KEY) }},"AI_GATEWAY_API_KEY":${{ toJSON(secrets.AI_GATEWAY_API_KEY) }},"ALCHEMY_API_KEY":${{ toJSON(secrets.ALCHEMY_API_KEY) }},"ANTHROPIC_API_KEY":${{ toJSON(secrets.ANTHROPIC_API_KEY) }},"ANTHROPIC_OAUTH_TOKEN":${{ toJSON(secrets.ANTHROPIC_OAUTH_TOKEN) }},"BANKR_API_KEY":${{ toJSON(secrets.BANKR_API_KEY) }},"BANKR_LLM_KEY":${{ toJSON(secrets.BANKR_LLM_KEY) }},"BASESCAN_API_KEY":${{ toJSON(secrets.BASESCAN_API_KEY) }},"BASE_RPC_URL":${{ toJSON(secrets.BASE_RPC_URL) }},"BEDROCK_API_KEY":${{ toJSON(secrets.BEDROCK_API_KEY) }},"CLAUDE_CODE_OAUTH_TOKEN":${{ toJSON(secrets.CLAUDE_CODE_OAUTH_TOKEN) }},"CODEX_AUTH":${{ toJSON(secrets.CODEX_AUTH) }},"COINGECKO_API_KEY":${{ toJSON(secrets.COINGECKO_API_KEY) }},"ETHERSCAN_API_KEY":${{ toJSON(secrets.ETHERSCAN_API_KEY) }},"FEEDBACK_TOKEN":${{ toJSON(secrets.FEEDBACK_TOKEN) }},"FLEET_ENDPOINT":${{ toJSON(secrets.FLEET_ENDPOINT) }},"FLEET_TOKEN":${{ toJSON(secrets.FLEET_TOKEN) }},"GH_GLOBAL":${{ toJSON(secrets.GH_GLOBAL) }},"GH_READ_PAT":${{ toJSON(secrets.GH_READ_PAT) }},"GH_SECRETS_PAT":${{ toJSON(secrets.GH_SECRETS_PAT) }},"GITHUB_TOKEN":${{ toJSON(secrets.GITHUB_TOKEN) }},"GROK_CREDENTIALS":${{ toJSON(secrets.GROK_CREDENTIALS) }},"HOOK_DEPLOYER_PRIVATE_KEY":${{ toJSON(secrets.HOOK_DEPLOYER_PRIVATE_KEY) }},"KIMI_AUTH":${{ toJSON(secrets.KIMI_AUTH) }},"LANGFUSE_PUBLIC_KEY":${{ toJSON(secrets.LANGFUSE_PUBLIC_KEY) }},"LANGFUSE_SECRET_KEY":${{ toJSON(secrets.LANGFUSE_SECRET_KEY) }},"MISTRAL_API_KEY":${{ toJSON(secrets.MISTRAL_API_KEY) }},"MOONSHOT_API_KEY":${{ toJSON(secrets.MOONSHOT_API_KEY) }},"OPENAI_API_KEY":${{ toJSON(secrets.OPENAI_API_KEY) }},"OPENROUTER_API_KEY":${{ toJSON(secrets.OPENROUTER_API_KEY) }},"PAGESPEED_API_KEY":${{ toJSON(secrets.PAGESPEED_API_KEY) }},"REPLICATE_API_TOKEN":${{ toJSON(secrets.REPLICATE_API_TOKEN) }},"RESEND_API_KEY":${{ toJSON(secrets.RESEND_API_KEY) }},"RESEND_FROM":${{ toJSON(secrets.RESEND_FROM) }},"RESEND_REPLY_TO":${{ toJSON(secrets.RESEND_REPLY_TO) }},"SURPLUS_API_KEY":${{ toJSON(secrets.SURPLUS_API_KEY) }},"SURPLUS_SELLER_KEY":${{ toJSON(secrets.SURPLUS_SELLER_KEY) }},"SURPLUS_SELLER_AWS_KEY":${{ toJSON(secrets.SURPLUS_SELLER_AWS_KEY) }},"SURPLUS_SELLER_VERTEX_KEY":${{ toJSON(secrets.SURPLUS_SELLER_VERTEX_KEY) }},"USEPOD_TOKEN":${{ toJSON(secrets.USEPOD_TOKEN) }},"VENICE_API_KEY":${{ toJSON(secrets.VENICE_API_KEY) }},"VERTEX_API_KEY":${{ toJSON(secrets.VERTEX_API_KEY) }},"VERTEX_SERVICE_ACCOUNT_JSON":${{ toJSON(secrets.VERTEX_SERVICE_ACCOUNT_JSON) }},"VERCEL_OIDC_TOKEN":${{ toJSON(secrets.VERCEL_OIDC_TOKEN) }},"VERCEL_TOKEN":${{ toJSON(secrets.VERCEL_TOKEN) }},"XAI_API_KEY":${{ toJSON(secrets.XAI_API_KEY) }},"YDC_API_KEY":${{ toJSON(secrets.YDC_API_KEY) }}}
+            {"ADMANAGE_API_KEY":${{ toJSON(secrets.ADMANAGE_API_KEY) }},"AI_GATEWAY_API_KEY":${{ toJSON(secrets.AI_GATEWAY_API_KEY) }},"ALCHEMY_API_KEY":${{ toJSON(secrets.ALCHEMY_API_KEY) }},"ANTHROPIC_API_KEY":${{ toJSON(secrets.ANTHROPIC_API_KEY) }},"ANTHROPIC_OAUTH_TOKEN":${{ toJSON(secrets.ANTHROPIC_OAUTH_TOKEN) }},"ARC_STUDIO_TOKEN":${{ toJSON(secrets.ARC_STUDIO_TOKEN) }},"AWS_COMPUTE_RESELL_CONFIG":${{ toJSON(secrets.AWS_COMPUTE_RESELL_CONFIG) }},"BANKR_API_KEY":${{ toJSON(secrets.BANKR_API_KEY) }},"BANKR_LLM_KEY":${{ toJSON(secrets.BANKR_LLM_KEY) }},"BASESCAN_API_KEY":${{ toJSON(secrets.BASESCAN_API_KEY) }},"BASE_RPC_URL":${{ toJSON(secrets.BASE_RPC_URL) }},"BEDROCK_API_KEY":${{ toJSON(secrets.BEDROCK_API_KEY) }},"BLOCKSCOUT_API_KEY":${{ toJSON(secrets.BLOCKSCOUT_API_KEY) }},"CLAUDE_CODE_OAUTH_TOKEN":${{ toJSON(secrets.CLAUDE_CODE_OAUTH_TOKEN) }},"CODEX_AUTH":${{ toJSON(secrets.CODEX_AUTH) }},"COINGECKO_API_KEY":${{ toJSON(secrets.COINGECKO_API_KEY) }},"COMPUTE_RESELL_CONFIG":${{ toJSON(secrets.COMPUTE_RESELL_CONFIG) }},"ETHERSCAN_API_KEY":${{ toJSON(secrets.ETHERSCAN_API_KEY) }},"FEEDBACK_TOKEN":${{ toJSON(secrets.FEEDBACK_TOKEN) }},"FLEET_ENDPOINT":${{ toJSON(secrets.FLEET_ENDPOINT) }},"FLEET_TOKEN":${{ toJSON(secrets.FLEET_TOKEN) }},"GH_GLOBAL":${{ toJSON(secrets.GH_GLOBAL) }},"GH_READ_PAT":${{ toJSON(secrets.GH_READ_PAT) }},"GH_SECRETS_PAT":${{ toJSON(secrets.GH_SECRETS_PAT) }},"GITHUB_TOKEN":${{ toJSON(secrets.GITHUB_TOKEN) }},"GROK_CREDENTIALS":${{ toJSON(secrets.GROK_CREDENTIALS) }},"HOOK_DEPLOYER_PRIVATE_KEY":${{ toJSON(secrets.HOOK_DEPLOYER_PRIVATE_KEY) }},"KIMI_AUTH":${{ toJSON(secrets.KIMI_AUTH) }},"LANGFUSE_PUBLIC_KEY":${{ toJSON(secrets.LANGFUSE_PUBLIC_KEY) }},"LANGFUSE_SECRET_KEY":${{ toJSON(secrets.LANGFUSE_SECRET_KEY) }},"MIROSHARK_AFFILIATE":${{ toJSON(secrets.MIROSHARK_AFFILIATE) }},"MISTRAL_API_KEY":${{ toJSON(secrets.MISTRAL_API_KEY) }},"MOONSHOT_API_KEY":${{ toJSON(secrets.MOONSHOT_API_KEY) }},"NEON_API_KEY":${{ toJSON(secrets.NEON_API_KEY) }},"OPENAI_API_KEY":${{ toJSON(secrets.OPENAI_API_KEY) }},"OPENROUTER_API_KEY":${{ toJSON(secrets.OPENROUTER_API_KEY) }},"PAGESPEED_API_KEY":${{ toJSON(secrets.PAGESPEED_API_KEY) }},"RAILWAY_TOKEN":${{ toJSON(secrets.RAILWAY_TOKEN) }},"REPLICATE_API_TOKEN":${{ toJSON(secrets.REPLICATE_API_TOKEN) }},"RESEND_API_KEY":${{ toJSON(secrets.RESEND_API_KEY) }},"RESEND_FROM":${{ toJSON(secrets.RESEND_FROM) }},"RESEND_REPLY_TO":${{ toJSON(secrets.RESEND_REPLY_TO) }},"SURPLUS_API_KEY":${{ toJSON(secrets.SURPLUS_API_KEY) }},"SURPLUS_SELLER_AWS_KEY":${{ toJSON(secrets.SURPLUS_SELLER_AWS_KEY) }},"SURPLUS_SELLER_KEY":${{ toJSON(secrets.SURPLUS_SELLER_KEY) }},"SURPLUS_SELLER_VERTEX_KEY":${{ toJSON(secrets.SURPLUS_SELLER_VERTEX_KEY) }},"TASKMARKET_API_KEY":${{ toJSON(secrets.TASKMARKET_API_KEY) }},"TASKMARKET_WORKER_ADDRESS":${{ toJSON(secrets.TASKMARKET_WORKER_ADDRESS) }},"USEPOD_TOKEN":${{ toJSON(secrets.USEPOD_TOKEN) }},"VENICE_API_KEY":${{ toJSON(secrets.VENICE_API_KEY) }},"VERCEL_OIDC_TOKEN":${{ toJSON(secrets.VERCEL_OIDC_TOKEN) }},"VERCEL_TOKEN":${{ toJSON(secrets.VERCEL_TOKEN) }},"VERTEX_API_KEY":${{ toJSON(secrets.VERTEX_API_KEY) }},"VERTEX_COMPUTE_RESELL_CONFIG":${{ toJSON(secrets.VERTEX_COMPUTE_RESELL_CONFIG) }},"VERTEX_SERVICE_ACCOUNT_JSON":${{ toJSON(secrets.VERTEX_SERVICE_ACCOUNT_JSON) }},"XAI_API_KEY":${{ toJSON(secrets.XAI_API_KEY) }},"YDC_API_KEY":${{ toJSON(secrets.YDC_API_KEY) }}}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           ANTHROPIC_BASE_URL: ${{ vars.ANTHROPIC_BASE_URL }}
@@ -782,6 +779,18 @@ jobs:
           # nothing sensitive on its own (the burner key is the real secret), so a
           # plaintext variable is correct.
           HOOK_MAINNET_OK: ${{ vars.HOOK_MAINNET_OK }}
+          # Other non-secret repo VARIABLES that skills document and read from env
+          # (unset => the skill's own default). Not secrets, so not in ALL_SECRETS:
+          # deploy-uni-hook gas cap + float warning, compute-resell aws/vertex
+          # wiring, heartbeat brief email recipients, you-web-search tuning.
+          MAX_GAS_GWEI: ${{ vars.MAX_GAS_GWEI }}
+          HOOK_MAX_FLOAT_ETH: ${{ vars.HOOK_MAX_FLOAT_ETH }}
+          BEDROCK_BASE_URL: ${{ vars.BEDROCK_BASE_URL }}
+          VERTEX_PROJECT_ID: ${{ vars.VERTEX_PROJECT_ID }}
+          VERTEX_LOCATION: ${{ vars.VERTEX_LOCATION }}
+          BRIEF_RECIPIENTS: ${{ vars.BRIEF_RECIPIENTS }}
+          YOUCOM_FRESHNESS: ${{ vars.YOUCOM_FRESHNESS }}
+          YOUCOM_LIVECRAWL: ${{ vars.YOUCOM_LIVECRAWL }}
           SKILL_VAR: ${{ inputs.var }}
           SKILL_NAME: ${{ steps.skill.outputs.name }}
           INPUT_MODEL: ${{ inputs.model }}
@@ -799,15 +808,9 @@ jobs:
           #   block         name:
           #                   { enabled: true,
           #                     model: "x", ... }
-          # The old single-line grep only read the "  name:" header, so a block
-          # entry's model: (on a later line) was missed and the skill silently fell
-          # back to the top-level model. Capture the whole entry (header line to the
-          # block's closing brace), strip comments, then read the quoted model value.
-          SKILL_MODEL=$(awk -v s="$SKILL_NAME" '
-            $0 ~ "^  " s ":" {f=1}
-            f {print}
-            f && /}/ {exit}
-          ' aeon.yml | sed 's/#.*//' | sed -n 's/.*model:[[:space:]]*"\([^"]*\)".*/\1/p' | head -1)
+          # scripts/skill_entry.sh captures the whole entry (shared with
+          # resolve-harness.sh), so a block entry's model: is not missed.
+          SKILL_MODEL=$(bash scripts/skill_entry.sh "$SKILL_NAME" | sed -n 's/.*model:[[:space:]]*"\([^"]*\)".*/\1/p' | head -1)
           if [ -n "$INPUT_MODEL" ] && [ "$INPUT_MODEL" != "(config default)" ]; then
             MODEL="$INPUT_MODEL"
           elif [ -n "$SKILL_MODEL" ]; then
@@ -1044,8 +1047,10 @@ jobs:
           if [ "${#MCP_FLAGS[@]}" -gt 0 ]; then RH_ARGS+=(--mcp-config .mcp.json); fi
 
           if [ "$HARNESS" = "claude" ]; then
-            # Cascade: try each provider in priority order; fall over on ANY failure.
-            # Each attempt is an isolated subshell that sets up its provider env (+
+            # Cascade: try each provider in priority order; fall over only on a
+            # provider-shaped failure, never a timeout or skill-side failure (a
+            # retry re-runs the whole skill; scripts/gateway-failover.sh). Each
+            # attempt is an isolated subshell that sets up its provider env (+
             # optional Langfuse), THEN runs `run-harness claude` (which invokes
             # `claude -p` under that env). Gateway/Langfuse notices go to the step
             # log (>&2); only run-harness's stdout envelope is captured. A hard
@@ -1054,13 +1059,15 @@ jobs:
             USED_GATEWAY=""
             for cand in $CANDIDATES; do
               echo "::notice::Routing attempt via '$cand'"
-              if CLAUDE_OUTPUT=$(
+              rm -f /tmp/harness-stderr.txt; RC=0
+              CLAUDE_OUTPUT=$(
                 GATEWAY="$cand"
                 MODEL="$BASE_MODEL"
                 source "$GW" >&2
                 source "$LF" >&2   # optional Langfuse tracing (no-op unless LANGFUSE_* set)
                 echo "$PROMPT" | bash "$RH" claude --model "$MODEL" "${RH_ARGS[@]}" 2>/tmp/harness-stderr.txt
-              ); then
+              ) || RC=$?
+              if [ "$RC" -eq 0 ]; then
                 USED_GATEWAY="$cand"; CLAUDE_OK=1; break
               fi
               # Full diagnostic goes to the step log unconditionally (matches the
@@ -1074,6 +1081,7 @@ jobs:
               # keeps the boilerplate and drops the actual error).
               tail -c 4000 /tmp/harness-stderr.txt >&2 || true
               echo "::warning::provider '$cand' failed — $(tail -c 160 /tmp/harness-stderr.txt 2>/dev/null | tr '\n' ' ')"
+              bash scripts/gateway-failover.sh "$RC" /tmp/harness-stderr.txt || { echo "::warning::exit $RC is not a provider failure; not failing over"; break; }
             done
             if [ "$CLAUDE_OK" != "1" ]; then
               echo "::error::All gateway providers failed ($CANDIDATES). Last: $(tail -c 200 /tmp/harness-stderr.txt 2>/dev/null | tr '\n' ' ')"
@@ -1376,11 +1384,12 @@ jobs:
           if [ "${ATTEST_ENABLED}" = "true" ]; then
             SKILL="${SKILL_NAME}"
 
-            # Tier 1 — per-skill override in aeon.yml (operator config, one line,
-            # no skill file touched). Same grep idiom as model:/harness:, but with
-            # ERE alternation (sed -nE) so (true|false) is portable across BSD/GNU sed.
-            SKILL_ATTEST=$(grep "^  ${SKILL}:" aeon.yml \
-              | sed -nE 's/.*attest:[[:space:]]*(true|false).*/\1/p' || true)
+            # Tier 1 - per-skill override in aeon.yml (operator config, no skill
+            # file touched). Same whole-entry reader as model:/harness: (block
+            # entries too), with ERE alternation (sed -nE) so (true|false) is
+            # portable across BSD/GNU sed.
+            SKILL_ATTEST=$(bash scripts/skill_entry.sh "$SKILL" \
+              | sed -nE 's/.*attest:[[:space:]]*(true|false).*/\1/p' | head -1 || true)
 
             # Tier 2 — SKILL.md frontmatter (author intent, travels with the skill).
             # Accepts legacy top-level `attest:` or the Agent Skills spec form
@@ -1972,42 +1981,91 @@ jobs:
           CURRENT_BRANCH=$(git branch --show-current)
           LABEL="${{ steps.work.outputs.label }}"
 
+          # A failed feature-branch push still records this run's state on main
+          # below, then fails the step so the lost PR work is visible.
+          BRANCH_PUSH_FAILED=false
+          finish() {
+            if [ "$BRANCH_PUSH_FAILED" = "true" ]; then
+              echo "::error::Feature branch $CURRENT_BRANCH failed to push - its commits never reached the remote"
+              exit 1
+            fi
+            exit "$1"
+          }
+
           # If Claude created a feature branch, push it then switch back to main
           if [ "$CURRENT_BRANCH" != "main" ] && [ -n "$CURRENT_BRANCH" ]; then
             echo "On feature branch: $CURRENT_BRANCH"
+            # main is only guaranteed present when the run STARTED on main (the
+            # normal scheduled / Run-now path). A run dispatched against a
+            # non-main ref gets a single-branch checkout with no local main, so
+            # that branch stays the only home for everything, as before.
+            HAS_MAIN=false
+            git show-ref --verify --quiet refs/heads/main && HAS_MAIN=true
+
+            # Post-run state written by the skill and by this workflow's own steps
+            # (memory/logs, token-usage.csv, skill-health, output/.chains,
+            # output/.attest, the dashboard feed) belongs on main, not in the PR.
+            # Stash it before the branch commit so `git add -A` only ships the
+            # skill's real change, then pop it back on main below.
+            # Only paths that exist: one unmatched pathspec makes `stash push -u`
+            # save the stash and then die halfway through cleaning the tree.
+            STATE_PATHS=()
+            for p in memory output apps/dashboard/outputs; do
+              if [ -e "$p" ] || [ -n "$(git ls-files -- "$p")" ]; then STATE_PATHS+=("$p"); fi
+            done
+            STASHED=false
+            if [ "$HAS_MAIN" = "true" ] && [ "${#STATE_PATHS[@]}" -gt 0 ] && [ -n "$(git status --porcelain -- "${STATE_PATHS[@]}" 2>/dev/null)" ]; then
+              git stash push --include-untracked -m "aeon post-run state" -- "${STATE_PATHS[@]}"
+              STASHED=true
+            fi
+
             git add -A
             git diff --staged --quiet || git commit -m "chore($LABEL): auto-commit $(date +%Y-%m-%d)"
-            git push --force-with-lease -u origin "$CURRENT_BRANCH" || true
+            if ! git push --force-with-lease -u origin "$CURRENT_BRANCH"; then
+              echo "::warning::Push of feature branch $CURRENT_BRANCH failed; recording run state on main, then failing the step"
+              BRANCH_PUSH_FAILED=true
+            fi
 
-            # Switch back to main to record memory/log changes. main is only
-            # guaranteed present when the run STARTED on main (the normal
-            # scheduled / Run-now path). A run dispatched against a non-main ref
-            # gets a single-branch checkout with no local main, so `checkout main`
-            # would fail the step under `set -e` (and a blind rebase would
-            # conflict). The feature branch is already pushed above — just stop.
-            if git show-ref --verify --quiet refs/heads/main; then
-              git checkout main
-              git pull --rebase origin main || true
-            else
-              echo "main not present locally (non-main dispatch) — feature branch pushed, nothing to record on main"
-              exit 0
+            if [ "$HAS_MAIN" != "true" ]; then
+              echo "main not present locally (non-main dispatch) - nothing to record on main"
+              finish 0
+            fi
+            # No pull here: the stash was taken against the run's starting main, so
+            # it pops cleanly onto local main, and git-push-retry.sh below rebases
+            # onto the remote with its state-file conflict policy.
+            git checkout main
+            if [ "$STASHED" = "true" ] && ! git stash pop; then
+              # Only when Claude's own branch commits touched these paths. Restore
+              # this run's end-of-run copy of the stashed paths from the stash
+              # itself (tracked part, then the untracked part in ^3).
+              echo "::warning::post-run state conflicted with main on pop; keeping this run's copy"
+              for p in "${STATE_PATHS[@]}"; do
+                git checkout 'stash@{0}' -- "$p" 2>/dev/null || true
+              done
+              if git rev-parse -q --verify 'stash@{0}^3' >/dev/null; then
+                git checkout 'stash@{0}^3' -- . 2>/dev/null || true
+              fi
+              git reset -q
+              git stash drop -q || true
             fi
           fi
 
           # Commit any remaining changes on main
           git add -A
           if git diff --staged --quiet; then
-            # Nothing new to commit — but Claude may have committed during its run.
+            # Nothing new to commit - but Claude may have committed during its run.
             # Check for unpushed commits and push them if any exist.
             if [ "$(git rev-list origin/main..HEAD --count 2>/dev/null)" = "0" ]; then
               echo "No changes to commit or push"
-              exit 0
+              finish 0
             fi
-            echo "No new changes, but found unpushed commits — pushing"
+            echo "No new changes, but found unpushed commits - pushing"
           else
             git commit -m "chore($LABEL): auto-commit $(date +%Y-%m-%d)"
           fi
-          bash scripts/git-push-retry.sh
+          PUSH_RC=0
+          bash scripts/git-push-retry.sh || PUSH_RC=$?
+          finish "$PUSH_RC"
 
       - name: Update cron state
         if: always() && steps.skill.outputs.name != ''
@@ -2119,14 +2177,24 @@ jobs:
             exit 0
           fi
           git checkout main 2>/dev/null || true
-          git pull --rebase origin main 2>/dev/null || true
+          # --autostash: a failed write-mode run skips "Commit results" and leaves a
+          # dirty tree, which makes a plain `pull --rebase` refuse, so the failure
+          # would never be recorded (breaker/retry blind to it).
+          git pull --rebase --autostash origin main 2>/dev/null || git rebase --abort 2>/dev/null || true
 
-          # Read current state
-          if [ -f "$STATE_FILE" ] && jq empty "$STATE_FILE" 2>/dev/null; then
-            STATE=$(cat "$STATE_FILE")
-          else
-            STATE='{}'
-          fi
+          # Read current state. A garbled working copy (e.g. an autostash pop that
+          # conflicted) falls back to the committed copy instead of {}, which would
+          # wipe every other skill's state on commit.
+          read_state() {
+            if [ -f "$STATE_FILE" ] && jq -e 'type == "object"' "$STATE_FILE" >/dev/null 2>&1; then
+              STATE=$(cat "$STATE_FILE")
+            elif git show "HEAD:$STATE_FILE" 2>/dev/null | jq -e 'type == "object"' >/dev/null 2>&1; then
+              STATE=$(git show "HEAD:$STATE_FILE")
+            else
+              STATE='{}'
+            fi
+          }
+          read_state
 
           apply_state_update
 
@@ -2141,21 +2209,24 @@ jobs:
 
           git commit -m "chore(cron): $SKILL $CRON_STATUS"
           for i in 1 2 3 4 5 6 7 8 9 10; do
-            if git pull --rebase origin main 2>/dev/null && git push -u origin HEAD 2>/dev/null; then
+            if git pull --rebase --autostash origin main 2>/dev/null && git push -u origin HEAD 2>/dev/null; then
               echo "Cron state updated: $SKILL=$CRON_STATUS"
               exit 0
             fi
-            # On conflict, take theirs and re-apply our update
+            # Lost the race: drop our commit, take UPSTREAM's file and re-apply this
+            # run's update to it. (`checkout -- file` restores from the index, i.e.
+            # our own staged copy after the soft reset, so the old loop re-applied
+            # onto stale state and the following pull refused every time.)
             git rebase --abort 2>/dev/null || true
             git reset --soft HEAD~1 2>/dev/null || true
-            git checkout -- "$STATE_FILE" 2>/dev/null || true
-            git pull origin main 2>/dev/null || true
-
-            if [ -f "$STATE_FILE" ] && jq empty "$STATE_FILE" 2>/dev/null; then
-              STATE=$(cat "$STATE_FILE")
-            else
-              STATE='{}'
+            git checkout HEAD -- "$STATE_FILE" 2>/dev/null || { git rm -q --cached --ignore-unmatch -- "$STATE_FILE"; rm -f "$STATE_FILE"; }
+            if ! git pull --rebase --autostash origin main 2>/dev/null; then
+              git rebase --abort 2>/dev/null || true
+              git fetch origin main 2>/dev/null || true
+              git checkout origin/main -- "$STATE_FILE" 2>/dev/null || true
             fi
+
+            read_state
             apply_state_update
             echo "$STATE" | jq '.' > "$STATE_FILE"
             git add "$STATE_FILE"
@@ -2173,17 +2244,28 @@ jobs:
         if: always() && steps.skill.outputs.name != ''
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Step outputs go through env, never inline ${{ }} in the script: FLAGS is
+          # judge output derived from untrusted skill output, and a quote in it would
+          # break out of the shell string in a step that holds a write token.
+          HEALTH_ISSUES: ${{ vars.HEALTH_ISSUES }}
+          SKILL: ${{ steps.skill.outputs.name }}
+          SCORE_IN: ${{ steps.analyze.outputs.QUALITY_SCORE }}
+          FLAGS_IN: ${{ steps.analyze.outputs.FLAGS }}
+          RUN_OUTCOME: ${{ steps.run.outcome }}
         run: |
           # §7 is default-ON; disable only with repo var HEALTH_ISSUES=0. The toggle is
           # checked HERE in bash, NOT in the step `if:`. A GitHub Actions `if:` comparison
           # like `vars.HEALTH_ISSUES != '0'` does numeric coercion, and an UNSET var (null)
           # coerces to 0 — so `!= '0'` is FALSE when unset, silently skipping the step by
           # default (the opposite of "default-on"). Bash string comparison has no such trap.
-          if [ "${{ vars.HEALTH_ISSUES }}" = "0" ]; then echo "votable health disabled (HEALTH_ISSUES=0)"; exit 0; fi
-          SKILL="${{ steps.skill.outputs.name }}"
-          SCORE="${{ steps.analyze.outputs.QUALITY_SCORE }}"; [ -z "$SCORE" ] && SCORE=0
-          FLAGS='${{ steps.analyze.outputs.FLAGS }}'; [ -z "$FLAGS" ] && FLAGS='[]'
-          if [ "${{ steps.run.outcome }}" != "success" ]; then SCORE=1; FLAGS='["run_failed"]'; fi
+          if [ "$HEALTH_ISSUES" = "0" ]; then echo "votable health disabled (HEALTH_ISSUES=0)"; exit 0; fi
+          SCORE="$SCORE_IN"; [[ "$SCORE" =~ ^[0-9]+$ ]] || SCORE=0
+          # Accept FLAGS only as a JSON array of strings; anything else is dropped.
+          FLAGS='[]'
+          if [ -n "$FLAGS_IN" ] && printf '%s' "$FLAGS_IN" | jq -e 'type == "array" and all(.[]; type == "string")' >/dev/null 2>&1; then
+            FLAGS=$(printf '%s' "$FLAGS_IN" | jq -c '.')
+          fi
+          if [ "$RUN_OUTCOME" != "success" ]; then SCORE=1; FLAGS='["run_failed"]'; fi
           REC=$(jq -cn --arg s "$SKILL" --argjson sc "$SCORE" --argjson fl "$FLAGS" '{skill:$s,score:$sc,flags:$fl}')
           NEEDS=$(printf '%s' "$REC" | python3 -c "import sys,json; sys.path.insert(0,'scripts'); import health_triage as h; print('yes' if h.needs_comment(json.load(sys.stdin)) else 'no')" 2>/dev/null || echo no)
           if [ "$NEEDS" = "yes" ]; then

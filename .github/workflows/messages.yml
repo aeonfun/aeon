@@ -433,8 +433,6 @@ jobs:
           KIMI_AUTH: ${{ secrets.KIMI_AUTH }}
           HERMES_AUTH: ${{ secrets.HERMES_AUTH }}
           CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
-          GLM_API_KEY: ${{ secrets.GLM_API_KEY }}
-          ZAI_API_KEY: ${{ secrets.ZAI_API_KEY }}
           AI_GATEWAY_API_KEY: ${{ secrets.AI_GATEWAY_API_KEY }}
           VERCEL_OIDC_TOKEN: ${{ secrets.VERCEL_OIDC_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -472,8 +470,6 @@ jobs:
           KIMI_AUTH: ${{ secrets.KIMI_AUTH }}
           HERMES_AUTH: ${{ secrets.HERMES_AUTH }}
           CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
-          GLM_API_KEY: ${{ secrets.GLM_API_KEY }}
-          ZAI_API_KEY: ${{ secrets.ZAI_API_KEY }}
           AI_GATEWAY_API_KEY: ${{ secrets.AI_GATEWAY_API_KEY }}
           VERCEL_OIDC_TOKEN: ${{ secrets.VERCEL_OIDC_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -510,7 +506,7 @@ jobs:
           # ${NAME} with no per-name env wiring. Consumed by the MCP preflight
           # below, then unset before Claude runs so it never reaches skill code.
           ALL_SECRETS: >-
-            {"ADMANAGE_API_KEY":${{ toJSON(secrets.ADMANAGE_API_KEY) }},"AI_GATEWAY_API_KEY":${{ toJSON(secrets.AI_GATEWAY_API_KEY) }},"ALCHEMY_API_KEY":${{ toJSON(secrets.ALCHEMY_API_KEY) }},"ANTHROPIC_API_KEY":${{ toJSON(secrets.ANTHROPIC_API_KEY) }},"ANTHROPIC_OAUTH_TOKEN":${{ toJSON(secrets.ANTHROPIC_OAUTH_TOKEN) }},"BANKR_API_KEY":${{ toJSON(secrets.BANKR_API_KEY) }},"BANKR_LLM_KEY":${{ toJSON(secrets.BANKR_LLM_KEY) }},"BASESCAN_API_KEY":${{ toJSON(secrets.BASESCAN_API_KEY) }},"BASE_RPC_URL":${{ toJSON(secrets.BASE_RPC_URL) }},"BEAMR_GATEWAY_URL":${{ toJSON(secrets.BEAMR_GATEWAY_URL) }},"BEAMR_PAYER_KEY":${{ toJSON(secrets.BEAMR_PAYER_KEY) }},"CLAUDE_CODE_OAUTH_TOKEN":${{ toJSON(secrets.CLAUDE_CODE_OAUTH_TOKEN) }},"CODEX_AUTH":${{ toJSON(secrets.CODEX_AUTH) }},"COINGECKO_API_KEY":${{ toJSON(secrets.COINGECKO_API_KEY) }},"DISCORD_BOT_TOKEN":${{ toJSON(secrets.DISCORD_BOT_TOKEN) }},"DISCORD_CHANNEL_ID":${{ toJSON(secrets.DISCORD_CHANNEL_ID) }},"DISCORD_WEBHOOK_URL":${{ toJSON(secrets.DISCORD_WEBHOOK_URL) }},"ETHERSCAN_API_KEY":${{ toJSON(secrets.ETHERSCAN_API_KEY) }},"FEEDBACK_TOKEN":${{ toJSON(secrets.FEEDBACK_TOKEN) }},"FLEET_ENDPOINT":${{ toJSON(secrets.FLEET_ENDPOINT) }},"FLEET_TOKEN":${{ toJSON(secrets.FLEET_TOKEN) }},"GH_GLOBAL":${{ toJSON(secrets.GH_GLOBAL) }},"GH_READ_PAT":${{ toJSON(secrets.GH_READ_PAT) }},"GH_SECRETS_PAT":${{ toJSON(secrets.GH_SECRETS_PAT) }},"GITHUB_TOKEN":${{ toJSON(secrets.GITHUB_TOKEN) }},"GROK_CREDENTIALS":${{ toJSON(secrets.GROK_CREDENTIALS) }},"HOOK_DEPLOYER_PRIVATE_KEY":${{ toJSON(secrets.HOOK_DEPLOYER_PRIVATE_KEY) }},"KIMI_AUTH":${{ toJSON(secrets.KIMI_AUTH) }},"LANGFUSE_PUBLIC_KEY":${{ toJSON(secrets.LANGFUSE_PUBLIC_KEY) }},"LANGFUSE_SECRET_KEY":${{ toJSON(secrets.LANGFUSE_SECRET_KEY) }},"MISTRAL_API_KEY":${{ toJSON(secrets.MISTRAL_API_KEY) }},"MOONSHOT_API_KEY":${{ toJSON(secrets.MOONSHOT_API_KEY) }},"NOTIFY_EMAIL_TO":${{ toJSON(secrets.NOTIFY_EMAIL_TO) }},"OPENAI_API_KEY":${{ toJSON(secrets.OPENAI_API_KEY) }},"OPENROUTER_API_KEY":${{ toJSON(secrets.OPENROUTER_API_KEY) }},"PAGESPEED_API_KEY":${{ toJSON(secrets.PAGESPEED_API_KEY) }},"REPLICATE_API_TOKEN":${{ toJSON(secrets.REPLICATE_API_TOKEN) }},"RESEND_API_KEY":${{ toJSON(secrets.RESEND_API_KEY) }},"RESEND_FROM":${{ toJSON(secrets.RESEND_FROM) }},"RESEND_REPLY_TO":${{ toJSON(secrets.RESEND_REPLY_TO) }},"SLACK_BOT_TOKEN":${{ toJSON(secrets.SLACK_BOT_TOKEN) }},"SLACK_CHANNEL_ID":${{ toJSON(secrets.SLACK_CHANNEL_ID) }},"SLACK_WEBHOOK_URL":${{ toJSON(secrets.SLACK_WEBHOOK_URL) }},"SURPLUS_API_KEY":${{ toJSON(secrets.SURPLUS_API_KEY) }},"TELEGRAM_BOT_TOKEN":${{ toJSON(secrets.TELEGRAM_BOT_TOKEN) }},"TELEGRAM_CHAT_ID":${{ toJSON(secrets.TELEGRAM_CHAT_ID) }},"USEPOD_TOKEN":${{ toJSON(secrets.USEPOD_TOKEN) }},"VENICE_API_KEY":${{ toJSON(secrets.VENICE_API_KEY) }},"VERCEL_OIDC_TOKEN":${{ toJSON(secrets.VERCEL_OIDC_TOKEN) }},"VERCEL_TOKEN":${{ toJSON(secrets.VERCEL_TOKEN) }},"XAI_API_KEY":${{ toJSON(secrets.XAI_API_KEY) }},"YDC_API_KEY":${{ toJSON(secrets.YDC_API_KEY) }}}
+            {"ADMANAGE_API_KEY":${{ toJSON(secrets.ADMANAGE_API_KEY) }},"AI_GATEWAY_API_KEY":${{ toJSON(secrets.AI_GATEWAY_API_KEY) }},"ALCHEMY_API_KEY":${{ toJSON(secrets.ALCHEMY_API_KEY) }},"ANTHROPIC_API_KEY":${{ toJSON(secrets.ANTHROPIC_API_KEY) }},"ANTHROPIC_OAUTH_TOKEN":${{ toJSON(secrets.ANTHROPIC_OAUTH_TOKEN) }},"ARC_STUDIO_TOKEN":${{ toJSON(secrets.ARC_STUDIO_TOKEN) }},"AWS_COMPUTE_RESELL_CONFIG":${{ toJSON(secrets.AWS_COMPUTE_RESELL_CONFIG) }},"BANKR_API_KEY":${{ toJSON(secrets.BANKR_API_KEY) }},"BANKR_LLM_KEY":${{ toJSON(secrets.BANKR_LLM_KEY) }},"BASESCAN_API_KEY":${{ toJSON(secrets.BASESCAN_API_KEY) }},"BASE_RPC_URL":${{ toJSON(secrets.BASE_RPC_URL) }},"BEDROCK_API_KEY":${{ toJSON(secrets.BEDROCK_API_KEY) }},"BLOCKSCOUT_API_KEY":${{ toJSON(secrets.BLOCKSCOUT_API_KEY) }},"CLAUDE_CODE_OAUTH_TOKEN":${{ toJSON(secrets.CLAUDE_CODE_OAUTH_TOKEN) }},"CODEX_AUTH":${{ toJSON(secrets.CODEX_AUTH) }},"COINGECKO_API_KEY":${{ toJSON(secrets.COINGECKO_API_KEY) }},"COMPUTE_RESELL_CONFIG":${{ toJSON(secrets.COMPUTE_RESELL_CONFIG) }},"DISCORD_BOT_TOKEN":${{ toJSON(secrets.DISCORD_BOT_TOKEN) }},"DISCORD_CHANNEL_ID":${{ toJSON(secrets.DISCORD_CHANNEL_ID) }},"DISCORD_WEBHOOK_URL":${{ toJSON(secrets.DISCORD_WEBHOOK_URL) }},"ETHERSCAN_API_KEY":${{ toJSON(secrets.ETHERSCAN_API_KEY) }},"FEEDBACK_TOKEN":${{ toJSON(secrets.FEEDBACK_TOKEN) }},"FLEET_ENDPOINT":${{ toJSON(secrets.FLEET_ENDPOINT) }},"FLEET_TOKEN":${{ toJSON(secrets.FLEET_TOKEN) }},"GH_GLOBAL":${{ toJSON(secrets.GH_GLOBAL) }},"GH_READ_PAT":${{ toJSON(secrets.GH_READ_PAT) }},"GH_SECRETS_PAT":${{ toJSON(secrets.GH_SECRETS_PAT) }},"GITHUB_TOKEN":${{ toJSON(secrets.GITHUB_TOKEN) }},"GROK_CREDENTIALS":${{ toJSON(secrets.GROK_CREDENTIALS) }},"HOOK_DEPLOYER_PRIVATE_KEY":${{ toJSON(secrets.HOOK_DEPLOYER_PRIVATE_KEY) }},"KIMI_AUTH":${{ toJSON(secrets.KIMI_AUTH) }},"LANGFUSE_PUBLIC_KEY":${{ toJSON(secrets.LANGFUSE_PUBLIC_KEY) }},"LANGFUSE_SECRET_KEY":${{ toJSON(secrets.LANGFUSE_SECRET_KEY) }},"MIROSHARK_AFFILIATE":${{ toJSON(secrets.MIROSHARK_AFFILIATE) }},"MISTRAL_API_KEY":${{ toJSON(secrets.MISTRAL_API_KEY) }},"MOONSHOT_API_KEY":${{ toJSON(secrets.MOONSHOT_API_KEY) }},"NEON_API_KEY":${{ toJSON(secrets.NEON_API_KEY) }},"NOTIFY_EMAIL_TO":${{ toJSON(secrets.NOTIFY_EMAIL_TO) }},"OPENAI_API_KEY":${{ toJSON(secrets.OPENAI_API_KEY) }},"OPENROUTER_API_KEY":${{ toJSON(secrets.OPENROUTER_API_KEY) }},"PAGESPEED_API_KEY":${{ toJSON(secrets.PAGESPEED_API_KEY) }},"RAILWAY_TOKEN":${{ toJSON(secrets.RAILWAY_TOKEN) }},"REPLICATE_API_TOKEN":${{ toJSON(secrets.REPLICATE_API_TOKEN) }},"RESEND_API_KEY":${{ toJSON(secrets.RESEND_API_KEY) }},"RESEND_FROM":${{ toJSON(secrets.RESEND_FROM) }},"RESEND_REPLY_TO":${{ toJSON(secrets.RESEND_REPLY_TO) }},"SLACK_BOT_TOKEN":${{ toJSON(secrets.SLACK_BOT_TOKEN) }},"SLACK_CHANNEL_ID":${{ toJSON(secrets.SLACK_CHANNEL_ID) }},"SLACK_WEBHOOK_URL":${{ toJSON(secrets.SLACK_WEBHOOK_URL) }},"SURPLUS_API_KEY":${{ toJSON(secrets.SURPLUS_API_KEY) }},"SURPLUS_SELLER_AWS_KEY":${{ toJSON(secrets.SURPLUS_SELLER_AWS_KEY) }},"SURPLUS_SELLER_KEY":${{ toJSON(secrets.SURPLUS_SELLER_KEY) }},"SURPLUS_SELLER_VERTEX_KEY":${{ toJSON(secrets.SURPLUS_SELLER_VERTEX_KEY) }},"TASKMARKET_API_KEY":${{ toJSON(secrets.TASKMARKET_API_KEY) }},"TASKMARKET_WORKER_ADDRESS":${{ toJSON(secrets.TASKMARKET_WORKER_ADDRESS) }},"TELEGRAM_BOT_TOKEN":${{ toJSON(secrets.TELEGRAM_BOT_TOKEN) }},"TELEGRAM_CHAT_ID":${{ toJSON(secrets.TELEGRAM_CHAT_ID) }},"USEPOD_TOKEN":${{ toJSON(secrets.USEPOD_TOKEN) }},"VENICE_API_KEY":${{ toJSON(secrets.VENICE_API_KEY) }},"VERCEL_OIDC_TOKEN":${{ toJSON(secrets.VERCEL_OIDC_TOKEN) }},"VERCEL_TOKEN":${{ toJSON(secrets.VERCEL_TOKEN) }},"VERTEX_API_KEY":${{ toJSON(secrets.VERTEX_API_KEY) }},"VERTEX_COMPUTE_RESELL_CONFIG":${{ toJSON(secrets.VERTEX_COMPUTE_RESELL_CONFIG) }},"VERTEX_SERVICE_ACCOUNT_JSON":${{ toJSON(secrets.VERTEX_SERVICE_ACCOUNT_JSON) }},"XAI_API_KEY":${{ toJSON(secrets.XAI_API_KEY) }},"YDC_API_KEY":${{ toJSON(secrets.YDC_API_KEY) }}}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           ANTHROPIC_BASE_URL: ${{ vars.ANTHROPIC_BASE_URL }}
@@ -538,6 +534,9 @@ jobs:
           VENICE_CLEANCACHE: ${{ vars.VENICE_CLEANCACHE }}
           SURPLUS_MODEL: ${{ vars.SURPLUS_MODEL }}
           GLM_MODEL: ${{ vars.GLM_MODEL }}
+          GLM_MODEL_SONNET: ${{ vars.GLM_MODEL_SONNET }}
+          GLM_MODEL_OPUS: ${{ vars.GLM_MODEL_OPUS }}
+          GLM_MODEL_HAIKU: ${{ vars.GLM_MODEL_HAIKU }}
           GLM_REASONING_EFFORT: ${{ vars.GLM_REASONING_EFFORT }}
           CCR_LOG: ${{ vars.CCR_LOG }}
           # Optional Langfuse observability — traces the conversational-reply run
@@ -869,29 +868,6 @@ jobs:
           JITTER=$((RANDOM % 10))
           echo "Waiting ${JITTER}s jitter before push..."
           sleep "$JITTER"
-          for i in 1 2 3 4 5; do
-            if git pull --rebase origin main; then
-              git push -u origin HEAD && exit 0
-            else
-              echo "Rebase conflict on attempt $i, auto-resolving..."
-              for f in $(git diff --name-only --diff-filter=U); do
-                if [[ "$f" == memory/logs/* ]] || [[ "$f" == memory/topics/* ]] || [[ "$f" == memory/MEMORY.md ]]; then
-                  sed -i '/^<<<<<<< /d; /^=======/d; /^>>>>>>> /d' "$f"
-                  git add "$f"
-                else
-                  git checkout --theirs "$f"
-                  git add "$f"
-                fi
-              done
-              if git diff --cached --quiet; then
-                git rebase --skip
-              else
-                GIT_EDITOR=true git rebase --continue
-              fi
-            fi
-            BACKOFF=$(( (2 ** i) + RANDOM % 5 ))
-            echo "Push attempt $i failed, retrying in ${BACKOFF}s..."
-            sleep "$BACKOFF"
-          done
-          echo "Failed to push after 5 attempts"
-          exit 1
+          # Shared rebase + conflict-resolve + push loop (same fleet-safe policy as
+          # aeon.yml's commit steps) instead of a drifting inline copy.
+          bash scripts/git-push-retry.sh

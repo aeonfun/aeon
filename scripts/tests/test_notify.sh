@@ -47,6 +47,27 @@ reset
 bash "$NOTIFY" "quick test ping" >/dev/null 2>&1
 [ -z "$(payload)" ] && pass "probe message suppressed" || bad "probe message suppressed"
 
+# 2b. probe filter matches the WHOLE message only: real short alerts that merely
+#     contain test/ping/trace as a substring are delivered (latest, testnet,
+#     shipping, mapping, attestation), and so is anything with --title or warn.
+for m in "Latest release shipped" "Testnet deploy ok" "Shipping v2 now" \
+         "Attestation verified" "Mapping updated" "test passed: 42/42 checks green ok"; do
+  reset
+  bash "$NOTIFY" "$m" >/dev/null 2>&1
+  [ -n "$(payload)" ] && pass "real short message delivered: $m" || bad "real short message delivered: $m"
+done
+for m in "test" "Ping" "hello" "debug: 1" "testing 123"; do
+  reset
+  bash "$NOTIFY" "$m" >/dev/null 2>&1
+  [ -z "$(payload)" ] && pass "bare probe suppressed: $m" || bad "bare probe suppressed: $m"
+done
+reset
+bash "$NOTIFY" --title "Canary" "test" >/dev/null 2>&1
+[ -n "$(payload)" ] && pass "--title message never treated as a probe" || bad "--title message never treated as a probe"
+reset
+bash "$NOTIFY" --severity critical "ping" >/dev/null 2>&1
+[ -n "$(payload)" ] && pass "critical severity never treated as a probe" || bad "critical severity never treated as a probe"
+
 # 3. dedup - identical message twice produces a single payload
 reset
 bash "$NOTIFY" "Deployment finished successfully on prod cluster" >/dev/null 2>&1

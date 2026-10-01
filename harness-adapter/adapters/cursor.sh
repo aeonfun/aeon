@@ -11,7 +11,7 @@ CURSOR_HOME="$RH_TMPDIR/cursor-home"; mkdir -p "$CURSOR_HOME/.cursor"; export HO
 if [ -n "${RH_MCP_CONFIG:-}" ] && [ -f "${RH_MCP_CONFIG:-}" ]; then cp "$RH_MCP_CONFIG" "$HOME/.cursor/mcp.json"; fi
 PROMPT="$(cat "$RH_PROMPT_FILE")"; PREFIX="${RH_COMPAT_RULES:-}"
 [ -n "${RH_APPEND_SYSTEM_PROMPT:-}" ] && PREFIX="${PREFIX:+$PREFIX$'\n'}${RH_APPEND_SYSTEM_PROMPT}"
-[ -n "$PREFIX" ] && PROMPT="${PREFIX}\n\n${PROMPT}"
+[ -n "$PREFIX" ] && PROMPT="${PREFIX}"$'\n\n'"${PROMPT}"
 [ -n "${RH_JSON_SCHEMA:-}" ] && PROMPT="${PROMPT}$(schema_prompt_suffix "$RH_JSON_SCHEMA")"
 ARGS=(-p --output-format json)
 [ -n "${RH_MODEL:-}" ] && [ "$RH_MODEL" != "default" ] && ARGS+=(--model "$RH_MODEL")

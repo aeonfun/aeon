@@ -332,7 +332,10 @@ async function runSkillInner(
     "--allowed-tools", capability.allowedTools,
     "--timeout", "600",
   ];
-  if (existsSync(join(repoRoot, ".mcp.json"))) {
+  // Shadow runs get no MCP servers, matching aeon.yml (`SHADOW_MODE != 1` gates
+  // its MCP block): an MCP server is a credentialed side channel that
+  // shadowSafeEnv's stripped env would not cover.
+  if (!capability.isShadow && existsSync(join(repoRoot, ".mcp.json"))) {
     args.push("--mcp-config", join(repoRoot, ".mcp.json"));
   }
 

@@ -45,8 +45,13 @@ SKILL_NAME="${1:-}"
 # kills the caller with NO message, leaving a red step and nothing to go on. An
 # empty result already means "not configured", which the defaults below handle.
 CONFIG_HARNESS=$(grep -E '^harness:' aeon.yml | sed 's/^harness: *//' | tr -d ' ' || true)
-SKILL_HARNESS=""
-[ -n "$SKILL_NAME" ] && SKILL_HARNESS=$(grep "^  ${SKILL_NAME}:" aeon.yml | sed -n 's/.*harness: *"\([^"]*\)".*/\1/p' || true)
+# Per-skill keys come from the WHOLE entry (single-line or block shape), via the
+# same reader aeon.yml uses for model:. A header-line grep missed a block entry's
+# harness:/model: on a later line, so the skill silently ran on the defaults.
+HERE_RH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SKILL_ENTRY=""
+[ -n "$SKILL_NAME" ] && SKILL_ENTRY=$(bash "$HERE_RH/skill_entry.sh" "$SKILL_NAME" || true)
+SKILL_HARNESS=$(printf '%s\n' "$SKILL_ENTRY" | sed -n 's/.*harness: *"\([^"]*\)".*/\1/p' | head -1)
 
 if [ -n "${INPUT_HARNESS:-}" ] && [ "$INPUT_HARNESS" != "(config default)" ]; then
   HARNESS="$INPUT_HARNESS"
@@ -117,8 +122,7 @@ esac
 # `cmd` field, codex's strict parser rejects it, and codex, which has no
 # --max-turns, spins to the 900s guard); the same skill passes on gpt-5-mini.
 CONFIG_MODEL=$(grep -E '^model:' aeon.yml | sed 's/^model: *//' | tr -d ' ' || true)
-SKILL_MODEL=""
-[ -n "$SKILL_NAME" ] && SKILL_MODEL=$(grep "^  ${SKILL_NAME}:" aeon.yml | sed -n 's/.*model: *"\([^"]*\)".*/\1/p' || true)
+SKILL_MODEL=$(printf '%s\n' "$SKILL_ENTRY" | sed -n 's/.*model: *"\([^"]*\)".*/\1/p' | head -1)
 
 if [ -n "${INPUT_MODEL:-}" ] && [ "$INPUT_MODEL" != "(config default)" ]; then
   REQ_MODEL="$INPUT_MODEL"

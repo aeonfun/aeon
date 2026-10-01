@@ -7,7 +7,7 @@ name: ci-capabilities-parity
 # Runs on every PR or push that touches:
 #   - install-skill-pack            (ALLOWED_CAPABILITIES + header comment)
 #   - docs/CAPABILITIES.md          ("The taxonomy" table)
-#   - the parity script itself
+#   - the parity script itself + scripts/lib/capabilities.sh (which it sources)
 #   - this workflow file
 #
 # The check is also wired to workflow_dispatch so a maintainer can re-run it
@@ -19,6 +19,7 @@ on:
       - 'bin/install-skill-pack'
       - 'docs/CAPABILITIES.md'
       - 'scripts/check-capabilities-parity.sh'
+      - 'scripts/lib/capabilities.sh'
       - '.github/workflows/ci-capabilities-parity.yml'
   push:
     branches: [main]
@@ -26,6 +27,7 @@ on:
       - 'bin/install-skill-pack'
       - 'docs/CAPABILITIES.md'
       - 'scripts/check-capabilities-parity.sh'
+      - 'scripts/lib/capabilities.sh'
       - '.github/workflows/ci-capabilities-parity.yml'
   workflow_dispatch:
 

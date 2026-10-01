@@ -78,7 +78,7 @@ class TestReduce(unittest.TestCase):
             "consecutive_failures", "success_rate",
             "last_quality_score", "last_error",
         }
-        x = sr.reduce_events([{"skill": "x", "status": "success", "ts": "t"}])["x"]
+        x = sr.reduce_events([{"skill": "x", "status": "success", "ts": "2026-06-17T10:00:00Z"}])["x"]
         self.assertEqual(set(x.keys()), EXPECTED)
         # _blank() (the zero-event shape) must carry the same keys too.
         self.assertEqual(set(sr._blank().keys()), EXPECTED)
@@ -128,6 +128,40 @@ class TestParse(unittest.TestCase):
 
     def test_accepts_array_lines(self):
         self.assertEqual(len(sr.parse_jsonl('[{"skill":"a","status":"success"}]')), 1)
+
+
+class TestUntrustedEvents(unittest.TestCase):
+    NOW = sr.datetime(2026, 10, 1, 12, 0, tzinfo=sr.timezone.utc)
+
+    def test_future_ts_is_dropped(self):
+        # A forged far-future dispatch would otherwise pin last_dispatch forever.
+        st = sr.reduce_events([
+            {"skill": "x", "status": "success", "ts": "2026-10-01T11:00:00Z"},
+            {"skill": "x", "status": "dispatched", "ts": "2099-01-01T00:00:00Z"},
+        ], now=self.NOW)
+        self.assertEqual(st["x"]["last_status"], "success")
+        self.assertIsNone(st["x"]["last_dispatch"])
+
+    def test_small_clock_skew_is_kept(self):
+        st = sr.reduce_events([{"skill": "x", "status": "dispatched", "ts": "2026-10-01T12:05:00Z"}], now=self.NOW)
+        self.assertEqual(st["x"]["last_dispatch"], "2026-10-01T12:05:00Z")
+
+    def test_unparseable_ts_is_dropped(self):
+        st = sr.reduce_events([
+            {"skill": "x", "status": "failed", "ts": "zzzz"},
+            {"skill": "y", "status": "success", "ts": "2026-10-01T10:00:00Z"},
+        ], now=self.NOW)
+        self.assertNotIn("x", st)
+        self.assertIn("y", st)
+
+    def test_reactive_source_is_folded(self):
+        st = sr.reduce_events([
+            {"skill": "skill-repair", "status": "dispatched", "ts": "2026-10-01T09:00:00Z", "source": "a"},
+            {"skill": "skill-repair", "status": "dispatched", "ts": "2026-10-01T10:30:00Z", "source": "b"},
+        ], now=self.NOW)
+        self.assertEqual(st["skill-repair"]["reactive_sources"],
+                         {"a": "2026-10-01T09:00:00Z", "b": "2026-10-01T10:30:00Z"})
+        self.assertEqual(st["skill-repair"]["last_dispatch"], "2026-10-01T10:30:00Z")
 
 
 if __name__ == "__main__":

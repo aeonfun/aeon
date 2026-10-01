@@ -85,22 +85,26 @@ export function updateSkillInConfig(
   const skillNode = skillsNode.get(name)
   if (!isMap(skillNode)) return raw
 
+  // String fields are written double-quoted, like addSkillToConfig's schedule:
+  // the scheduler, chain-runner, resolve-harness.sh and aeon.yml's model read
+  // all parse aeon.yml with bash/awk patterns that only match `key: "value"`, so
+  // an unquoted value (what yaml emits for a NEW key) was silently ignored in CI.
   if (typeof updates.enabled === 'boolean') {
     skillNode.set('enabled', updates.enabled)
   }
   if (typeof updates.schedule === 'string' && updates.schedule) {
-    skillNode.set('schedule', updates.schedule)
+    setQuoted(doc, skillNode, 'schedule', updates.schedule)
   }
   if (typeof updates.var === 'string') {
     if (updates.var) {
-      skillNode.set('var', updates.var)
+      setQuoted(doc, skillNode, 'var', updates.var)
     } else {
       skillNode.delete('var')
     }
   }
   if (typeof updates.model === 'string') {
     if (updates.model) {
-      skillNode.set('model', updates.model)
+      setQuoted(doc, skillNode, 'model', updates.model)
     } else {
       skillNode.delete('model')
     }
@@ -110,7 +114,7 @@ export function updateSkillInConfig(
     // (the top-level default) clears the override so the skill inherits it. This
     // lets one skill run on a different harness than the repo default.
     if (updates.harness && updates.harness !== 'claude') {
-      skillNode.set('harness', updates.harness)
+      setQuoted(doc, skillNode, 'harness', updates.harness)
     } else {
       skillNode.delete('harness')
     }
@@ -247,6 +251,19 @@ export function upsertSkillInConfig(
 }
 
 // --- Helpers ---
+
+// Set `key` to a double-quoted string scalar (see updateSkillInConfig). Passing a
+// node, not a raw string, also replaces an existing plain scalar's style.
+function setQuoted(
+  doc: ReturnType<typeof parseDocument>,
+  map: { set(key: unknown, value: unknown): void },
+  key: string,
+  value: string,
+): void {
+  const node = doc.createNode(value)
+  if (isScalar(node)) node.type = 'QUOTE_DOUBLE'
+  map.set(key, node)
+}
 
 // Serialize a parsed doc back to YAML with folding OFF. The yaml lib defaults to
 // lineWidth: 80, so a save would reserialize the whole file and wrap long scalar

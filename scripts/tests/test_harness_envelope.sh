@@ -106,6 +106,16 @@ fi
 grep -q 'rh-wrap-fallback:' "$RH_TMPDIR/rh.err" \
   && ok "marker reaches run-harness stderr" \
   || bad "marker reaches run-harness stderr"
+# A harness that ignores TERM is still stopped: timeout -k escalates to KILL, and
+# run-harness reports that as the timeout (124), not a bare 137.
+printf 'trap "" TERM\nsleep 30\n' > "$HA/adapters/stubhang.sh"
+t0=$SECONDS
+echo "prompt" | RH_KILL_AFTER=1 bash "$HA/run-harness" stubhang --mode write --timeout 1 >/dev/null 2>"$RH_TMPDIR/hang.err"
+rc=$?
+[ $rc -eq 124 ] && [ $((SECONDS - t0)) -lt 15 ] \
+  && ok "TERM-ignoring harness is killed and reported as timeout 124" \
+  || bad "TERM-ignoring harness: expected 124 within 15s, got rc=$rc after $((SECONDS - t0))s"
+
 echo "---"
 [ $fail -eq 0 ] && echo "All harness envelope tests passed." || echo "FAILURES"
 exit $fail
