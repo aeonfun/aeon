@@ -850,9 +850,9 @@ Expected responses:
 - `404` — Repo may have been deleted / renamed / made private. Flag as `not-found`.
 - `403` — Token lacks scope or it's a private repo. Flag as `access-denied`.
 
-**Note:** `gh` CLI handles auth internally — no token-in-URL needed. If `gh api` is unavailable, fall back to:
+**Note:** `gh` CLI handles auth internally - no token-in-URL needed. If `gh api` is unavailable, fall back to `./secretcurl` with the `{GH_TOKEN}` placeholder (the workflow sets `GH_TOKEN` from `GH_GLOBAL`; never a raw `curl` with `$GH_GLOBAL`):
 ```bash
-curl -s -H "Authorization: Bearer $GH_GLOBAL" \
+./secretcurl -s -H "Authorization: Bearer {GH_TOKEN}" \
   "https://api.github.com/repos/${REPO}/private-vulnerability-reporting" | grep -o '"enabled":[a-z]*'
 ```
 
@@ -903,7 +903,7 @@ Do NOT attempt a blind submission. Instead, flag the entry as `pvr-enabled-needs
 
 Rewrite `memory/security-watchlist.md` with updated `last-checked` and `status` for every entry. Status values: `pvr-disabled` | `pvr-enabled-pending-submit` | `submitted` | `not-found` | `access-denied` | `pvr-enabled-needs-reresearch`.
 
-Remove entries where `status: submitted` AND the submission happened more than 30 days ago (they're done; lifecycle tracking is handled by `pvr-triage` from there).
+Remove entries where `status: submitted` AND the submission happened more than 30 days ago (they're done; lifecycle tracking is handled by `vuln-tracker` Arm B from there).
 
 ### B5. Decide whether to notify
 
@@ -1183,7 +1183,7 @@ verdict to the finding JSON hash and audited git commit, and writes raw output o
 a redacted `forge [redacted]` execution record; it must never log the private test path
 or arguments.
 
-**Arm B (re-submit).** `gh api` uses the `GH_TOKEN` env var internally (the workflow wires `GH_GLOBAL` in). If `gh api` fails, use the `curl` fallback in step B2. No outbound auth-required calls except `gh api`.
+**Arm B (re-submit).** `gh api` uses the `GH_TOKEN` env var internally (the workflow wires `GH_GLOBAL` in). If `gh api` fails, use the `./secretcurl` fallback in step B2. No outbound auth-required calls except `gh api`.
 
 **Arm C (disclose).** The send is an **irreversible** outbound call (a disclosure email), so it runs **in-run as the arm's final action, behind the C4 fail-closed caps**. Make the Resend POST with `./secretcurl` and the `{RESEND_API_KEY}` placeholder — a bare `$RESEND_API_KEY` on the command line is refused by the Bash permission layer. `RESEND_API_KEY` / `RESEND_FROM` / `RESEND_REPLY_TO` are injected in-run via this skill's `requires:`; `RESEND_CC` + the `DISCLOSURE_EMAIL_*` caps are read from the run env. There is no deferred/postprocess step — a failed send is logged (`email-failed` after the attempt cap), not queued to a later runner.
 
@@ -1192,7 +1192,7 @@ General network rules: `curl` works, with **WebFetch** as the fallback for a pla
 ## Environment variables
 
 - `GH_TOKEN` / `GITHUB_TOKEN` — required for Arm A. Classic `repo` scope is sufficient, **including** private vulnerability reporting via the `/reports` endpoint (step A5b / B3). `repository_advisories:write` is only needed to *manage advisories on repos you own* — it is **not** required to report to third-party repos, and its absence is not the reason a report fails (see step A5b for the real failure modes: a **missing `vulnerabilities` array** → `500` (by far the most common — fixable in-band), PVR-disabled `403`, or a genuine GitHub API `5xx`).
-- `GH_GLOBAL` — GitHub PAT with `public_repo` + `repository_advisories:write` scope, used by Arm B (re-submit) for cross-repo `gh api` calls and the `curl` fallback. Same token family as Arm A. Optional (Arm B falls back to the ambient `gh` auth where present).
+- `GH_GLOBAL` — GitHub PAT with `public_repo` + `repository_advisories:write` scope, used by Arm B (re-submit) for cross-repo `gh api` calls (and, as `GH_TOKEN`, the `./secretcurl` fallback). Same token family as Arm A. Optional (Arm B falls back to the ambient `gh` auth where present).
 - `RESEND_API_KEY` — Resend API key, used **in-run** by Arm C's send (injected via `requires:`). If unset, Arm C skips the send and drafts stay queued (no send, no error). Optional.
 - `RESEND_FROM` — verified sender, e.g. `Security <disclosures@send.example.com>`.
   **Must be on a domain/subdomain verified in Resend** (SPF+DKIM+DMARC). A subdomain
