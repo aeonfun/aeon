@@ -39,7 +39,7 @@
     "@opentelemetry/api": "^1.9.1"
   },
   "overrides": {
-    "undici": "^7.29.0",
+    "undici": "^7.30.0",
     "@opentelemetry/core": ">=2.8.0",
     "sharp": "^0.35.4"
   }
