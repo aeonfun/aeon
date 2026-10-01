@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
-cfg=$(cat)
+# secretcurl hands its config over as `-K <file>` (a /dev/fd pipe), not stdin.
+cfg=""
+while [ "$#" -gt 0 ]; do
+  if [ "$1" = "-K" ] && [ "$#" -gt 1 ]; then cfg=$(cat "$2"); shift; fi
+  shift
+done
 state=${FAKE_CURL_STATE:?FAKE_CURL_STATE is required}
 attempt=0
 [ -f "$state" ] && attempt=$(cat "$state")

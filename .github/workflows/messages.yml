@@ -868,29 +868,6 @@ jobs:
           JITTER=$((RANDOM % 10))
           echo "Waiting ${JITTER}s jitter before push..."
           sleep "$JITTER"
-          for i in 1 2 3 4 5; do
-            if git pull --rebase origin main; then
-              git push -u origin HEAD && exit 0
-            else
-              echo "Rebase conflict on attempt $i, auto-resolving..."
-              for f in $(git diff --name-only --diff-filter=U); do
-                if [[ "$f" == memory/logs/* ]] || [[ "$f" == memory/topics/* ]] || [[ "$f" == memory/MEMORY.md ]]; then
-                  sed -i '/^<<<<<<< /d; /^=======/d; /^>>>>>>> /d' "$f"
-                  git add "$f"
-                else
-                  git checkout --theirs "$f"
-                  git add "$f"
-                fi
-              done
-              if git diff --cached --quiet; then
-                git rebase --skip
-              else
-                GIT_EDITOR=true git rebase --continue
-              fi
-            fi
-            BACKOFF=$(( (2 ** i) + RANDOM % 5 ))
-            echo "Push attempt $i failed, retrying in ${BACKOFF}s..."
-            sleep "$BACKOFF"
-          done
-          echo "Failed to push after 5 attempts"
-          exit 1
+          # Shared rebase + conflict-resolve + push loop (same fleet-safe policy as
+          # aeon.yml's commit steps) instead of a drifting inline copy.
+          bash scripts/git-push-retry.sh

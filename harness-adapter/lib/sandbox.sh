@@ -60,6 +60,37 @@ EOF
       # bwrap applies binds left to right, so this must follow the workspace bind.
       [ -n "$mcp" ] && [ -f "$mcp" ] && [ -f "$ws/.mcp.json" ] && \
         printf '%s\n' --ro-bind "$mcp" "$ws/.mcp.json"
+      # Close the paths a read-only run could use to poison LATER workflow steps,
+      # which run outside the sandbox holding GH_GLOBAL: the runner's file-command
+      # dir ($GITHUB_ENV / $GITHUB_PATH / $GITHUB_OUTPUT / $GITHUB_STEP_SUMMARY /
+      # $GITHUB_STATE), global git config (hooksPath / credential.helper /
+      # insteadOf), and the cached action checkouts under _actions.
+      local p seen=""
+      for p in "${GITHUB_ENV:-}" "${GITHUB_PATH:-}" "${GITHUB_OUTPUT:-}" \
+               "${GITHUB_STEP_SUMMARY:-}" "${GITHUB_STATE:-}"; do
+        [ -n "$p" ] || continue
+        p="${p%/*}"
+        case " $seen " in *" $p "*) continue ;; esac
+        seen="$seen $p"
+        [ -d "$p" ] && printf '%s\n' --ro-bind "$p" "$p"
+      done
+      if [ -n "${HOME:-}" ] && [ -d "$HOME" ]; then
+        # A missing ~/.gitconfig could be CREATED inside the sandbox and then read
+        # by later git steps, so make sure it exists (empty = no config) and lock it.
+        [ -e "$HOME/.gitconfig" ] || : > "$HOME/.gitconfig" 2>/dev/null || true
+        [ -f "$HOME/.gitconfig" ] && printf '%s\n' --ro-bind "$HOME/.gitconfig" "$HOME/.gitconfig"
+        p="${XDG_CONFIG_HOME:-$HOME/.config}/git"
+        [ -d "$p" ] || mkdir -p "$p" 2>/dev/null || true
+        [ -d "$p" ] && printf '%s\n' --ro-bind "$p" "$p"
+      fi
+      if [ -n "${RUNNER_WORKSPACE:-}" ]; then
+        p="${RUNNER_WORKSPACE%/*}/_actions"
+        [ -d "$p" ] && printf '%s\n' --ro-bind "$p" "$p"
+      fi
+      # ...and drop the file-command vars so the adapter never even sees them.
+      for p in GITHUB_ENV GITHUB_PATH GITHUB_OUTPUT GITHUB_STEP_SUMMARY GITHUB_STATE; do
+        printf '%s\n' --unsetenv "$p"
+      done
       printf '%s\n' --die-with-parent
       ;;
     *) return 1 ;;

@@ -49,40 +49,88 @@ format_epoch() {
   fi
 }
 
-IFS=' ' read -r C_MIN C_HOUR C_DOM C_MONTH C_DOW <<< "$SCHED"
 # Malformed / non-time schedule (e.g. "workflow_dispatch", "reactive", empty) → never due.
-[ -n "${C_DOW:-}" ] || exit 1
 case "$SCHED" in *workflow_dispatch*|*reactive*) exit 1 ;; esac
+IFS=' ' read -r C_MIN C_HOUR C_DOM C_MONTH C_DOW C_EXTRA <<< "$SCHED"
 
-# Cron field matcher — supports: *, N, N-M (ranges), N,M (lists), */N, N/step,
-# N-M/step (steps). This script is the single source of the match logic; the
-# scheduler.yml "Determine and dispatch" step calls it (no inline copy).
+invalid() {
+  echo "cron-due: invalid schedule '$SCHED': $1 (treated as never due)" >&2
+  exit 1
+}
+[ -n "${C_DOW:-}" ] || invalid "expected 5 fields"
+[ -z "${C_EXTRA:-}" ] || invalid "expected 5 fields"
+
+# Month and day-of-week names (JAN-DEC, SUN-SAT, any case) -> numbers, so a
+# named schedule fires instead of silently never matching.
+upper() { printf '%s' "$1" | tr '[:lower:]' '[:upper:]'; }
+C_MONTH=$(upper "$C_MONTH"); C_DOW=$(upper "$C_DOW")
+i=1
+for n in JAN FEB MAR APR MAY JUN JUL AUG SEP OCT NOV DEC; do
+  C_MONTH="${C_MONTH//$n/$i}"; i=$((i + 1))
+done
+i=0
+for n in SUN MON TUE WED THU FRI SAT; do
+  C_DOW="${C_DOW//$n/$i}"; i=$((i + 1))
+done
+
+# Validate one field: a comma list of `*`, `N` or `N-M`, each optionally
+# `/STEP` (STEP >= 1), every number within [lo, hi]. Rejecting here (instead of
+# letting arithmetic blow up) is what keeps `*/0` or `61` from crashing the tick.
+validate_field() {
+  local name="$1" field="$2" lo="$3" hi="$4" el base step a b ELS
+  IFS=',' read -ra ELS <<< "$field"
+  [ "${#ELS[@]}" -gt 0 ] || invalid "empty $name field"
+  for el in "${ELS[@]}"; do
+    [[ "$el" =~ ^(\*|[0-9]+(-[0-9]+)?)(/[0-9]+)?$ ]] || invalid "bad $name element '$el'"
+    base="${el%%/*}"
+    if [[ "$el" == */* ]]; then
+      step=$((10#${el#*/}))
+      [ "$step" -ge 1 ] || invalid "$name step must be >= 1 in '$el'"
+    fi
+    [ "$base" = "*" ] && continue
+    a=$((10#${base%-*})); b=$((10#${base#*-}))
+    { [ "$a" -ge "$lo" ] && [ "$b" -le "$hi" ] && [ "$a" -le "$b" ]; } \
+      || invalid "$name value out of range $lo-$hi in '$el'"
+  done
+}
+validate_field minute       "$C_MIN"   0 59
+validate_field hour         "$C_HOUR"  0 23
+validate_field day-of-month "$C_DOM"   1 31
+validate_field month        "$C_MONTH" 1 12
+validate_field day-of-week  "$C_DOW"   0 7
+
+# Cron field matcher: cron_match <field> <value> <lo> <hi>. Supports *, N, N-M,
+# lists, and /STEP on any element (`*/N`, `N/S`, `N-M/S`). A step counts from
+# the element's own start, so `*/2` on day-of-month (lo=1) is 1,3,5,... like
+# cron, not the even days. Numbers are read base-10 so `08` is 8, not octal.
+# This script is the single source of the match logic; the scheduler.yml
+# "Determine and dispatch" step calls it (no inline copy).
 cron_match() {
-  local field="$1" value="$2"
-  [ "$field" = "*" ] && return 0
-  if [[ "$field" == */* ]]; then
-    local base="${field%/*}" interval="${field#*/}"
+  local field="$1" value="$2" lo="$3" hi="$4" el base step start end ELS
+  IFS=',' read -ra ELS <<< "$field"
+  for el in "${ELS[@]}"; do
+    base="${el%%/*}"; step=""
+    [[ "$el" == */* ]] && step=$((10#${el#*/}))
     if [ "$base" = "*" ]; then
-      [ $((value % interval)) -eq 0 ] && return 0
+      start=$lo; end=$hi
     elif [[ "$base" == *-* ]]; then
-      local lo="${base%-*}" hi="${base#*-}"
-      [ "$value" -ge "$lo" ] && [ "$value" -le "$hi" ] && [ $(( (value - lo) % interval )) -eq 0 ] && return 0
+      start=$((10#${base%-*})); end=$((10#${base#*-}))
     else
-      [ "$value" -ge "$base" ] && [ $(( (value - base) % interval )) -eq 0 ] && return 0
+      start=$((10#$base))
+      # `N/S` means N through the field max, every S (Vixie).
+      if [ -n "$step" ]; then end=$hi; else end=$start; fi
     fi
-    return 1
-  fi
-  local v lo hi
-  IFS=',' read -ra VALS <<< "$field"
-  for v in "${VALS[@]}"; do
-    if [[ "$v" == *-* ]]; then
-      lo="${v%-*}"; hi="${v#*-}"
-      [ "$value" -ge "$lo" ] && [ "$value" -le "$hi" ] && return 0
-    else
-      [ "$v" = "$value" ] && return 0
-    fi
+    [ "$value" -ge "$start" ] && [ "$value" -le "$end" ] || continue
+    [ -z "$step" ] && return 0
+    [ $(( (value - start) % step )) -eq 0 ] && return 0
   done
   return 1
+}
+
+# Day-of-week: 0 and 7 are both Sunday.
+dow_match() {
+  cron_match "$C_DOW" "$1" 0 7 && return 0
+  [ "$1" -eq 0 ] && cron_match "$C_DOW" 7 0 7
 }
 
 # Top of the current UTC hour (UTC has no DST, so hour boundaries are exact).
@@ -98,20 +146,21 @@ DUE_SLOT=-1
 for (( h=0; h<=CATCHUP_HOURS; h++ )); do
   BUCKET_TOP=$(( HOUR_TOP - h * 3600 ))
   read -r B_HOUR B_DOM B_MON B_DOW <<< "$(format_epoch "$BUCKET_TOP" +'%-H %-d %-m %w')"
-  cron_match "$C_HOUR"  "$B_HOUR" || continue
-  cron_match "$C_MONTH" "$B_MON"  || continue
-  # Standard cron day rule: when BOTH day-of-month and day-of-week are restricted
-  # (neither is "*"), the day matches if EITHER matches; otherwise it's a plain
-  # AND (the "*" field matches anything). NB: this is the POSIX/Vixie-cron rule —
-  # the old scheduler ANDed the two unconditionally.
-  if [ "$C_DOM" != "*" ] && [ "$C_DOW" != "*" ]; then
-    cron_match "$C_DOM" "$B_DOM" || cron_match "$C_DOW" "$B_DOW" || continue
+  cron_match "$C_HOUR"  "$B_HOUR" 0 23 || continue
+  cron_match "$C_MONTH" "$B_MON"  1 12 || continue
+  # Standard cron day rule: when BOTH day-of-month and day-of-week are restricted,
+  # the day matches if EITHER matches; otherwise it's a plain AND. NB: this is the
+  # POSIX/Vixie-cron rule (the old scheduler ANDed the two unconditionally), and
+  # like Vixie a field that STARTS with "*" (e.g. "*/2") counts as unrestricted
+  # for this choice while still filtering by its own step.
+  if [[ "$C_DOM" != \** ]] && [[ "$C_DOW" != \** ]]; then
+    cron_match "$C_DOM" "$B_DOM" 1 31 || dow_match "$B_DOW" || continue
   else
-    cron_match "$C_DOM" "$B_DOM" || continue
-    cron_match "$C_DOW" "$B_DOW" || continue
+    cron_match "$C_DOM" "$B_DOM" 1 31 || continue
+    dow_match "$B_DOW" || continue
   fi
   for (( m=0; m<60; m++ )); do
-    cron_match "$C_MIN" "$m" || continue
+    cron_match "$C_MIN" "$m" 0 59 || continue
     SLOT=$(( BUCKET_TOP + m * 60 ))
     [ "$SLOT" -gt "$NOW_MIN_EPOCH" ] && continue    # slot hasn't happened yet
     [ "$SLOT" -gt "$DUE_SLOT" ] && DUE_SLOT=$SLOT    # keep the most recent

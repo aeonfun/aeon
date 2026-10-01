@@ -1,0 +1,6 @@
+# Append-only run ledgers. Concurrent runs each append rows/entries to the same
+# file, so a rebase conflict between them is always "keep both sides". The
+# built-in union driver merges them without a conflict; scripts/git-push-retry.sh
+# applies the same policy for any file this attribute doesn't cover.
+memory/token-usage.csv merge=union
+memory/logs/*.md merge=union

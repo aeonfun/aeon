@@ -17,6 +17,7 @@ on:
       - 'scripts/check-skill-categories.sh'
       - 'docs/examples/skill-templates/**'
       - 'bin/new-from-template'
+      - '.github/workflows/ci-skill-category.yml'
   push:
     branches: [main]
     paths:
@@ -24,6 +25,7 @@ on:
       - 'scripts/check-skill-categories.sh'
       - 'docs/examples/skill-templates/**'
       - 'bin/new-from-template'
+      - '.github/workflows/ci-skill-category.yml'
   workflow_dispatch:
 
 permissions:

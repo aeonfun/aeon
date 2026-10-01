@@ -211,8 +211,8 @@ chains:
   #   schedule: "0 7 * * *"
   #   on_error: fail-fast
   #   steps:
-  #     - parallel: [token-movers, hn-digest, issue-triage, github-trending]
-  #     - skill: routine, consume: [token-movers, hn-digest, issue-triage, github-trending]
+  #     - { parallel: [token-movers, hn-digest, issue-triage, github-trending] }
+  #     - { skill: routine, consume: [token-movers, hn-digest, issue-triage, github-trending] }
 
 # Default model for all skills. Override per-run via workflow_dispatch.
 # Options: claude-sonnet-5, claude-opus-4-8, claude-haiku-4-5-20251001

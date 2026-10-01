@@ -31,7 +31,17 @@ gh() {
     esac
   done
   case "${args[0]:-} ${args[1]:-}" in
+    "api user")
+      # `gh api user --jq .login`: GITHUB_TOKEN can't read /user, so GH_USER
+      # unset models that (non-zero exit, no login).
+      [ -n "${GH_USER:-}" ] || return 1
+      echo "$GH_USER"
+      ;;
+    "api repos/"*"/comments")
+      cat "${COMMENTS_FILE:?}"
+      ;;
     "issue list")
+      if [ -n "${LIST_FAIL:-}" ]; then echo "HTTP 502: Bad Gateway" >&2; return 1; fi
       local calls=0
       [ -f "$STORE.calls" ] && calls=$(cat "$STORE.calls")
       calls=$((calls + 1)); echo "$calls" > "$STORE.calls"
@@ -140,6 +150,79 @@ if [ -n "$A2" ] && [ "$A2" = "$B2" ]; then
 else
   bad "fixed _ensure did not converge (got #$A2 / #$B2)"
 fi
+
+# --- offline: a failed issue search is fatal, never a fresh ledger (B18) ------
+STORE_F="$(mktemp -u)"; : > "$STORE_F"
+if ( export GH_REPO="fake/fake" STORE="$STORE_F" LIST_FAIL=1
+     source "$GH_FAKE_LIB"
+     bash "$S" ensure "aeon:cron-state" ) >/dev/null 2>&1; then
+  bad "ensure succeeded although the issue search failed"
+elif [ -s "$STORE_F" ]; then
+  bad "ensure created a new ledger issue after a failed search"
+else
+  pass "failed issue search -> ensure exits non-zero and creates nothing"
+fi
+rm -f "$STORE_F" "$STORE_F.calls"
+
+# --- offline: materialize + read against a fake ledger -----------------------
+# One existing ledger issue (#1); COMMENTS_FILE is the comments API payload.
+WORK="$(mktemp -d)"
+printf '1\taeon:cron-state\tclosed\n' > "$WORK/store"
+materialize() {  # materialize <comments-json> <out-file> [gh-user]
+  printf '%s' "$1" > "$WORK/comments.json"
+  ( export GH_REPO="fake/fake" STORE="$WORK/store" COMMENTS_FILE="$WORK/comments.json" GH_USER="${3:-}"
+    source "$GH_FAKE_LIB"
+    bash "$S" materialize "aeon:cron-state" "$2" ) 2>/dev/null
+}
+
+# An empty fold must not wipe a populated cron-state file.
+echo '{"digest":{"last_dispatch":"2026-09-30T08:00:00Z"}}' > "$WORK/state.json"
+cp "$WORK/state.json" "$WORK/state.orig"
+if materialize '[]' "$WORK/state.json"; then
+  bad "materialize overwrote a non-empty state file with an empty fold"
+elif cmp -s "$WORK/state.json" "$WORK/state.orig"; then
+  pass "empty fold leaves a non-empty state file untouched (non-zero exit)"
+else
+  bad "materialize changed the state file despite failing"
+fi
+
+# A brand-new install (no state yet) still materializes {}.
+rm -f "$WORK/fresh.json"
+if materialize '[]' "$WORK/fresh.json" && [ "$(jq -c . "$WORK/fresh.json")" = "{}" ]; then
+  pass "empty fold with no prior state materializes {}"
+else
+  bad "empty fold with no prior state did not materialize {}"
+fi
+
+# Only trusted authors are folded (A6): the token's own login, github-actions[bot],
+# and OWNER/MEMBER/COLLABORATOR. A drive-by commenter's events are ignored.
+ev() { jq -cn --arg s "$1" --arg st "$2" --arg ts "$3" '{skill:$s,status:$st,ts:$ts}'; }
+cm() { jq -cn --arg l "$1" --arg a "$2" --arg b "$3" '{user:{login:$l},author_association:$a,body:$b}'; }
+COMMENTS=$(jq -cs . <<EOF
+$(cm "github-actions[bot]" NONE "$(ev a success 2026-09-30T08:00:00Z)")
+$(cm "aeonbot" NONE "$(ev b success 2026-09-30T08:00:00Z)")
+$(cm "owner-user" OWNER "$(ev c success 2026-09-30T08:00:00Z)")
+$(cm "drive-by" NONE "$(ev a dispatched 2026-09-30T09:00:00Z)")
+$(cm "drive-by" CONTRIBUTOR "$(ev d failed 2026-09-30T09:00:00Z)")
+EOF
+)
+rm -f "$WORK/trust.json"
+if materialize "$COMMENTS" "$WORK/trust.json" "aeonbot" \
+  && [ "$(jq -c 'keys' "$WORK/trust.json")" = '["a","b","c"]' ] \
+  && [ "$(jq -r '.a.last_status' "$WORK/trust.json")" = "success" ]; then
+  pass "read folds only trusted comment authors (drive-by events ignored)"
+else
+  bad "author filter: got $(jq -c 'with_entries(.value |= .last_status)' "$WORK/trust.json" 2>/dev/null)"
+fi
+# With GITHUB_TOKEN (/user unreadable) the bot + collaborators still count.
+rm -f "$WORK/trust.json"
+if materialize "$COMMENTS" "$WORK/trust.json" "" \
+  && [ "$(jq -c 'keys' "$WORK/trust.json")" = '["a","c"]' ]; then
+  pass "read without a resolvable /user login still trusts github-actions[bot] + OWNER"
+else
+  bad "author filter (no /user): got $(jq -c 'keys' "$WORK/trust.json" 2>/dev/null)"
+fi
+rm -rf "$WORK"
 rm -f "$ORIG_S" "$GH_FAKE_LIB"
 
 # --- live integration (requires gh auth + explicit opt-in) ------------------
