@@ -96,8 +96,8 @@ pack is revealed on demand):
   per area, little or no setup: `digest`, `article`, `token-movers`, `tx-explain`,
   `write-tweet`, `pr-review`, `github-trending`, `last30`, `price-alert`, and more.
 
-`heartbeat` (Core) and `digest` (Basics) are enabled by default; the rest ship
-present but on-demand. To move a skill into any pack, set its `category:` to that
+`heartbeat` (Core) is the only skill enabled by default; the rest ship present
+but off until you turn them on. To move a skill into any pack, set its `category:` to that
 pack's key. Change `DEFAULT_VISIBLE_PACKS` in `apps/dashboard/lib/constants.ts`
 to change which packs show by default.
 
@@ -142,7 +142,7 @@ By default the dashboard shows **Core**, **Evolution**, and **Basics** — their
 skills appear in the sidebar and HQ, and nothing else does. Enable packs to reveal
 more.
 
-The **Packs** view (`/api/packs`):
+The dashboard **Packs** view (backed by `/api/packs`):
 
 - **Your packs** — a card per first-party pack. Hit **Enable pack** to reveal
   that pack's skills across the sidebar and HQ (**Core**, **Evolution**, and
@@ -154,7 +154,9 @@ The **Packs** view (`/api/packs`):
   pack. The sidebar's **Enabled** chip is an optional filter (off by default)
   that narrows the roster to skills on duty.
 - **Community packs** — browse the registry with author, trust level, required
-  secrets/capabilities, and a copy-paste `bin/install-skill-pack <repo>` command.
+  secrets/capabilities. **Install pack** runs the security-scanned installer and
+  opens a PR into your fork (skills land disabled), or copy the
+  `bin/install-skill-pack <repo>` command to run it yourself.
 
 ---
 

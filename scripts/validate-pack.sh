@@ -116,7 +116,7 @@ is_allowed_cap() {
 }
 
 # Documented per-skill category vocabulary (docs/community-skill-packs.md).
-KNOWN_CATEGORIES="research dev crypto social productivity"
+KNOWN_CATEGORIES="core evolution basics dev crypto productivity"
 
 echo "Validating pack: $PACK_DIR${SUBPATH:+ (manifest under $SUBPATH/)}"
 echo ""

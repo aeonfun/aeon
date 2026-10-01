@@ -1,6 +1,6 @@
 # Aeon integration examples
 
-Aeon ships an [MCP server](../apps/mcp-server/) so any Claude client can call its 85 skills. The scripts here are the shortest possible "first call works" demos - build the server, run `python <file>`, get a real Aeon output back.
+Aeon ships an [MCP server](../../apps/mcp-server/) so any Claude client can call its 85 skills. The scripts here are the shortest possible "first call works" demos - build the server, run `python <file>`, get a real Aeon output back.
 
 | File | Stack | Skill called | What it shows |
 |------|-------|--------------|---------------|
@@ -26,8 +26,8 @@ You should see the full list of `aeon-*` tools followed by a real `aeon-heartbea
 - `aeon-article` (`var="your topic"`) — long-running; expect several minutes
 - `aeon-fetch-tweets` (`var="your topic"`) — needs `XAI_API_KEY` in the Aeon repo's environment
 
-Skills that hit external APIs need the same secrets the Aeon GitHub Actions runner uses. Drop them into a `.env` file at the Aeon repo root before you start the MCP server.
+Skills that hit external APIs need the same secrets the Aeon GitHub Actions runner uses. Export them in the environment that launches the MCP server (your shell, or the `env` block of the client's MCP config); the spawned skill inherits that environment. Nothing reads a `.env` file.
 
 ## What the server is doing under the hood
 
-Every Aeon skill is a markdown prompt at `skills/<slug>/SKILL.md`. The MCP server spawns `claude -p -` with the same prompt the GitHub Actions runner uses — so a skill behaves identically whether it fires on a cron, from your terminal, or from a Claude client. No re-implementation, no drift.
+Every Aeon skill is a markdown prompt at `skills/<slug>/SKILL.md`. The MCP server runs it through `harness-adapter/run-harness` (the configured harness, Claude Code by default) with the same prompt and capability mode the GitHub Actions runner uses — so a skill behaves identically whether it fires on a cron, from your terminal, or from a Claude client. No re-implementation, no drift.

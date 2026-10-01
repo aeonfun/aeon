@@ -10,13 +10,13 @@ Site: https://www.aeon.fun
 - [AGENTS.md](https://raw.githubusercontent.com/aeonfun/aeon/main/AGENTS.md): Start here. The instance operating manual an Aeon agent reads at runtime - how Aeon works, strategy, voice/soul hierarchy, memory, tools, capability mode, skill chaining, notifications, network/secrets, security.
 - [CLAUDE.md](https://raw.githubusercontent.com/aeonfun/aeon/main/CLAUDE.md): The same operating manual, Claude Code loads it automatically.
 - [STRATEGY.md](https://raw.githubusercontent.com/aeonfun/aeon/main/STRATEGY.md): The instance north-star: priorities, audience, hard constraints, what to optimize for and avoid.
-- [aeon.yml](https://raw.githubusercontent.com/aeonfun/aeon/main/aeon.yml): The GitHub Actions workflow that dispatches every scheduled run. What runs, when, and with which secrets.
+- [aeon.yml](https://raw.githubusercontent.com/aeonfun/aeon/main/aeon.yml): The operator config: which skills are enabled, their schedules, vars, per-skill model/harness overrides, chains, and reactive triggers. The workflow that runs them is `.github/workflows/aeon.yml`.
 
 ## Setup and configuration
 
 - [docs/aeon-setup.md](https://raw.githubusercontent.com/aeonfun/aeon/main/docs/aeon-setup.md): The setup skill - get an instance running from scratch.
 - [docs/CONFIGURATION.md](https://raw.githubusercontent.com/aeonfun/aeon/main/docs/CONFIGURATION.md): Configuration and advanced reference.
-- [docs/CORE.md](https://raw.githubusercontent.com/aeonfun/aeon/main/docs/CORE.md): The Core - the run loop and engine internals.
+- [docs/CORE.md](https://raw.githubusercontent.com/aeonfun/aeon/main/docs/CORE.md): The Core - the ~15 load-bearing skills (self-evolution, self-healing, fleet) that make Aeon autonomous rather than just scheduled.
 - [docs/CAPABILITIES.md](https://raw.githubusercontent.com/aeonfun/aeon/main/docs/CAPABILITIES.md): Skill capabilities taxonomy - read-only vs write vs capability mode.
 
 ## Skills and packs

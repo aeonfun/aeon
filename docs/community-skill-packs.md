@@ -61,7 +61,7 @@ The manifest lives at the pack root (or under `--path <subdir>` if the pack is n
       "slug": "skill-name",
       "path": "skills/skill-name",
       "description": "What this skill does",
-      "category": "research",
+      "category": "basics",
       "schedule": "0 12 * * *",
       "default_enabled": false,
       "secrets_required": ["VENICE_API_KEY"],
@@ -86,7 +86,7 @@ The manifest lives at the pack root (or under `--path <subdir>` if the pack is n
 | `skills[].slug` | string | **required** | Aeon skill slug. Must match `[A-Za-z0-9_-]+`. Used as the directory name under `skills/`. |
 | `skills[].path` | string | optional | Path to the skill's **directory** inside the pack repo (relative). Defaults to `skills/<slug>`. May not contain `..`. A path ending in `/SKILL.md` is accepted and its parent directory used, but write the directory. |
 | `skills[].description` | string | optional | Falls back to the SKILL.md frontmatter `description:`. |
-| `skills[].category` | string | optional | One of `research`, `dev`, `crypto`, `social`, `productivity`. Defaults to `research` in `skills.json`. |
+| `skills[].category` | string | optional | One of `core`, `evolution`, `basics`, `dev`, `crypto`, `productivity` (the vocabulary `scripts/check-skill-categories.sh` enforces). Defaults to `other` (the catch-all) in `skills.json`. |
 | `skills[].schedule` | string | optional | Cron string written into `aeon.yml`. Default `0 12 * * *`. Must be 5 cron fields, `workflow_dispatch`, or `reactive`: the installer rewrites `hourly`/`daily`/`weekly`/`monthly`/`yearly` (and `@daily` style) to their standard cron and anything else to the default, with a warning, and `validate-pack.sh` flags both. |
 | `skills[].default_enabled` | boolean | optional | If `true`, the skill is added to `aeon.yml` with `enabled: true`. Default `false` (operator opts in explicitly). |
 | `skills[].secrets_required` | string[] | optional | Env vars the skill **cannot run without** (e.g. API keys). `install-skill-pack` warns loudly when any are unset before the first scheduled run, but does **not** gate the install — an operator may install dry-run or wire the secret afterward. |
@@ -101,7 +101,7 @@ The manifest lives at the pack root (or under `--path <subdir>` if the pack is n
 
 ### Fallback when no manifest exists
 
-If the pack repo has no `skills-pack.json`, `install-skill-pack` falls back to scanning `skills/*/SKILL.md` and installs each discovered skill with the defaults above (`schedule = "0 12 * * *"`, `default_enabled = false`, `category = "research"`). This means existing repos that follow the `skills/<name>/SKILL.md` convention work out of the box — adding a manifest is an optional upgrade that lets the pack maintainer name and version the bundle.
+If the pack repo has no `skills-pack.json`, `install-skill-pack` falls back to scanning `skills/*/SKILL.md` and installs each discovered skill with the defaults above (`schedule = "0 12 * * *"`, `default_enabled = false`, `category = "other"`). This means existing repos that follow the `skills/<name>/SKILL.md` convention work out of the box — adding a manifest is an optional upgrade that lets the pack maintainer name and version the bundle.
 
 ---
 
@@ -133,13 +133,13 @@ With this manifest:
     {
       "slug": "arxiv-watcher",
       "description": "arXiv digest filtered by interest profile",
-      "category": "research",
+      "category": "basics",
       "schedule": "0 8 * * *"
     },
     {
       "slug": "citation-graph",
       "description": "Walks BFS over citations from a seed paper",
-      "category": "research",
+      "category": "basics",
       "schedule": "0 9 * * 1"
     }
   ]
@@ -205,7 +205,7 @@ The operator is always the trust boundary. The install script does not auto-trus
       "author": "github-handle-or-name",
       "license": "MIT",
       "homepage": "https://...",
-      "category": "research|dev|crypto|social|productivity",
+      "category": "dev",
       "trust_level": "trusted|community",
       "skills": ["slug-1", "slug-2"],
       "secrets_required": ["VENICE_API_KEY"],
@@ -225,7 +225,7 @@ The operator is always the trust boundary. The install script does not auto-trus
 | `author` | string | recommended | Maintainer handle or org. |
 | `license` | string | optional | SPDX identifier. |
 | `homepage` | string | optional | Project page or docs link. |
-| `category` | string | optional | Same vocabulary as per-skill category. |
+| `category` | string | optional | Free-form discovery tag for the pack (e.g. `dev`, `crypto`, `research`); not validated. Per-skill categories are what group skills into packs. |
 | `trust_level` | string | optional | `trusted` (also requires the source in `skills/security/trusted-sources.txt`) or `community`. Default `community`. Listing here is a discovery hint — the actual scan-bypass behaviour is decided by the trusted-sources file. |
 | `skills[]` | array | **required** | Slugs the pack ships. Mirror the pack's own `skills-pack.json`. |
 | `secrets_required` | string[] | optional | Aggregated list of env vars the pack's skills declare as required. Drives the `bin/install-skill-pack --list --no-secrets` filter, which hides any pack with a non-empty `secrets_required`. Keep this in sync with the union of `skills[].secrets_required` in the pack's own `skills-pack.json`. |

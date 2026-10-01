@@ -13,9 +13,6 @@
 .claude/skills/*
 !.claude/skills/aeon/
 
-# Cache dirs skills create at run time; regenerated every run
-.*-cache/
-
 # Working scratch dirs some skills stage during a run, then clean up:
 # .pending-notify (notify re-delivery), .pending-deploy (deploy-prototype build),
 # plus .pending-notify-temp where skills stage notify bodies for `./notify -f`
@@ -31,7 +28,7 @@ apps/dashboard/outputs/.pending-*.md
 # Audit log staged into the workspace only to be uploaded as a run artifact
 # (scripts/audit.sh). The authoritative copy lives outside the repo in
 # $AEON_PENDING_DIR; this staged copy must never be committed.
-audit-artifact/
+/audit-artifact/
 # Dry-run gate verdicts (scripts/dry-run.sh) are ephemeral run artifacts, not source.
 output/.dry-run/
 
@@ -42,16 +39,16 @@ output/.dry-run/
 /chains.tsv
 
 # Skill provenance lock (per-repo, not committed)
-skills.lock
+/skills.lock
 
 # Scratch / temp files
-tmp_*
+/tmp_*
 *.tmp
 .*-tmp.md
 .*-draft.md
 .*-msg.txt
-*_msg.txt
-*_raw.txt
+/*_msg.txt
+/*_raw.txt
 
 # Python bytecode
 __pycache__/

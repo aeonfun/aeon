@@ -43,7 +43,9 @@ You need **Node.js 20+**, the **[GitHub CLI](https://cli.github.com/) (`gh`)** a
 
 ```bash
 git clone https://github.com/<you>/aeon   # skip if you used `gh repo fork --clone`
-cd aeon && ./aeon
+cd aeon
+gh repo set-default <you>/aeon            # a fork defaults to upstream aeonfun/aeon otherwise
+./aeon
 ```
 
 Open [localhost:5555](http://localhost:5555) and follow the dashboard: **Authenticate** (any of nine [harnesses](../docs/harnesses.md)) → **add a channel** → **pick skills** → **Run**. That's it - Aeon runs unattended. Everything is also an `./aeon` command ([CLI](../apps/cli/README.md)) or a `/aeon` chat command ([setup skill](../docs/aeon-setup.md), installable as a [Claude Code or Codex plugin](../docs/aeon-setup.md#install)).

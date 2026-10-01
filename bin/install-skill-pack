@@ -35,7 +35,7 @@ set -euo pipefail
 #         "slug": "skill-name",
 #         "path": "skills/skill-name",                         (defaults to skills/<slug>)
 #         "description": "What the skill does",                (optional, falls back to SKILL.md frontmatter)
-#         "category": "research|dev|crypto|social|productivity", (optional)
+#         "category": "core|evolution|basics|dev|crypto|productivity", (optional)
 #         "schedule": "0 12 * * *",                            (optional, default 0 12 * * *)
 #         "default_enabled": false,                             (optional, default false)
 #         "secrets_required": ["VENICE_API_KEY"],               (optional — env vars the skill cannot run without)
@@ -698,7 +698,7 @@ update_skills_json() {
     --arg slug "$slug" \
     --arg name "$slug" \
     --arg description "$desc" \
-    --arg category "${category:-research}" \
+    --arg category "${category:-other}" \
     --arg sha "$sha7" \
     --arg updated "$today" \
     --arg install "$install_cmd" \

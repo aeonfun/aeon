@@ -43,7 +43,7 @@ tied to one coding agent beyond where the skill file is loaded from.
 
 ## Privacy and support
 
-- Privacy Policy: https://aeon.fun/privacy
+- Privacy Policy: https://www.aeon.fun/privacy
 - Support: email aaron@aeon.fun, or open an issue at https://github.com/aeonfun/aeon/issues
 - Security: see [`SECURITY.md`](./SECURITY.md)
 

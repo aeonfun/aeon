@@ -107,9 +107,10 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Changed
 
-- **Docs refresh.** README stats refreshed and dead README links fixed (#1092), docs say Aeon is
-  not affiliated with OpenAI (#1091), the stale "ten" harness count in `llms.txt` is corrected
-  (#1090), and the ecosystem list drops AeThree and updates the ClawHunter logo (#1089).
+- **Docs refresh.** README stats refreshed and dead README links fixed (#1092), the stale "ten"
+  harness count in `llms.txt` is corrected (#1090), and the ecosystem list drops AeThree and
+  updates the ClawHunter logo (#1089). (A "not affiliated with OpenAI" line added in #1091 was
+  reverted in #1101.)
 
 - **Pack installers normalize non-cron schedules.** A pack declaring `"schedule": "daily"` used to
   install a skill that never ran (the scheduler needs 5 cron fields). `install-skill-pack`,
