@@ -134,6 +134,13 @@ EOF
       if [ -n "${RUNNER_TOOL_CACHE:-}" ] && [ -d "$RUNNER_TOOL_CACHE" ]; then
         sandbox_lock "$RUNNER_TOOL_CACHE"
       fi
+      # The pre-run harness-config snapshot (scripts/harness-config-snapshot.sh)
+      # that aeon.yml puts back before the scorer re-runs the harness outside the
+      # sandbox. Restore also checks its sha256 against a step output; locking it
+      # here keeps a run from spoiling it (which would only skip the scoring).
+      if [ -n "${AEON_HARNESS_CONFIG_SNAPSHOT:-}" ] && [ -d "$AEON_HARNESS_CONFIG_SNAPSHOT" ]; then
+        sandbox_lock "$AEON_HARNESS_CONFIG_SNAPSHOT"
+      fi
       if [ -n "${RUNNER_WORKSPACE:-}" ]; then
         p="${RUNNER_WORKSPACE%/*}/_actions"
         [ -d "$p" ] && printf '%s\n' --ro-bind "$p" "$p"

@@ -125,6 +125,15 @@ jobs:
         env:
           AEON_REQUIRE_LIVE_BWRAP: '1'
         run: bash scripts/tests/test_run_harness_sandbox_gate.sh
+      # aeon.yml snapshots the harness config before the skill runs and restores it
+      # before the scorer re-runs the harness unsandboxed. Live half needs bwrap
+      # (installed above): snapshot read-only in the sandbox, leftover process reaped.
+      - name: harness config isolation tests
+        env:
+          AEON_REQUIRE_LIVE_BWRAP: '1'
+        run: bash scripts/tests/test_harness_config_isolation.sh
+      - name: pi adapter usage tests
+        run: bash scripts/tests/test_pi_adapter.sh
       # Both hermetic (stub curl / sourced in subshells, no network). They shipped
       # with the scripts they cover and docs/mcp-oauth.md + docs/langfuse.md cite
       # them as that coverage, but nothing ran them until now.

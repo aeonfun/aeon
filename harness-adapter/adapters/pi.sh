@@ -112,6 +112,11 @@ fi
 [ -n "${RH_MAX_TURNS:-}" ] && \
   echo "notice: pi has no --max-turns; the dispatcher wall-clock timeout is the guard" >&2
 
+pi_cost_fmt() {
+  # pi_cost_fmt NUMBER -> fixed-point decimal with trailing zeros trimmed
+  awk -v c="$1" 'BEGIN { s = sprintf("%.10f", c); sub(/0+$/, "", s); sub(/\.$/, "", s); print s }'
+}
+
 run_once() {
   # run_once PROMPT -> sets TEXT/TIN/TOUT/TCR/TCC/COST/SID; returns pi's rc
   local prompt="$1"
@@ -130,16 +135,29 @@ run_once() {
               elif type == "array" then (map(.text // "") | join(""))
               else tostring end)]
     | last // ""' "$clean")
+  # Usage is per LLM call: pi puts it on EVERY assistant message_end (one per
+  # turn of the agent loop), so the run's total is the SUM over all of them.
+  # Taking only the last one reported a single turn's tokens and cost for a
+  # multi-turn run. Field names stay probed defensively (pi's own camelCase
+  # first, then snake/alt spellings), and a non-numeric value counts as 0.
   local usage
   usage=$(jq -cs '
+    def num: if type == "number" then . elif type == "string" then (tonumber? // 0) else 0 end;
     [.[] | select(.type == "message_end") | (.message // {})
-         | select((.role // "") == "assistant") | (.usage // {})]
-    | last // {}' "$clean")
-  TIN=$(jq -r '.input // .input_tokens // .inputTokens // 0' <<<"$usage")
-  TOUT=$(jq -r '.output // .output_tokens // .outputTokens // 0' <<<"$usage")
-  TCR=$(jq -r '.cacheRead // .cache_read // 0' <<<"$usage")
-  TCC=$(jq -r '.cacheWrite // .cache_write // 0' <<<"$usage")
-  COST=$(jq -r '.cost.total // empty' <<<"$usage")
+         | select((.role // "") == "assistant") | (.usage // {}) | objects]
+    | {input:  (map((.input // .input_tokens // .inputTokens // 0) | num) | add // 0),
+       output: (map((.output // .output_tokens // .outputTokens // 0) | num) | add // 0),
+       cacheRead:  (map((.cacheRead // .cache_read // 0) | num) | add // 0),
+       cacheWrite: (map((.cacheWrite // .cache_write // 0) | num) | add // 0),
+       cost: ([.[] | (.cost? | objects | .total) | numbers] | if length > 0 then add else null end)}' "$clean")
+  TIN=$(jq -r '.input | floor' <<<"$usage")
+  TOUT=$(jq -r '.output | floor' <<<"$usage")
+  TCR=$(jq -r '.cacheRead | floor' <<<"$usage")
+  TCC=$(jq -r '.cacheWrite | floor' <<<"$usage")
+  # Fixed-point, not jq's number printing: jq 1.7 can print a sum like 0.000012
+  # as 1.2e-05, which emit_envelope's decimal check drops as "no cost".
+  COST=$(jq -r '.cost // empty' <<<"$usage")
+  [ -n "$COST" ] && COST=$(pi_cost_fmt "$COST")
   SID=$(jq -rs '[.[] | select(.type == "session") | (.id // empty)] | first // ""' "$clean")
   DONE=$(jq -s '[.[] | select(.type == "agent_end")] | length' "$clean")
   return $rc
@@ -164,7 +182,13 @@ if [ -n "${RH_JSON_SCHEMA:-}" ]; then
   TEXT="$(schema_extract_json "$TEXT")"
   if ! schema_validate "$RH_JSON_SCHEMA" "$TEXT"; then
     echo "structured output failed validation — retrying once" >&2
+    # The retry is a second billed pi run: add its usage to the first one's.
+    P_TIN=$TIN P_TOUT=$TOUT P_TCR=$TCR P_TCC=$TCC P_COST=$COST
     run_once "${PROMPT}$(schema_retry_suffix)" || true
+    TIN=$((P_TIN + TIN)) TOUT=$((P_TOUT + TOUT)) TCR=$((P_TCR + TCR)) TCC=$((P_TCC + TCC))
+    if [ -n "$P_COST" ] || [ -n "$COST" ]; then
+      COST=$(pi_cost_fmt "$(awk -v a="${P_COST:-0}" -v b="${COST:-0}" 'BEGIN { printf "%.10f", a + b }')")
+    fi
     TEXT="$(schema_extract_json "$TEXT")"
     if ! schema_validate "$RH_JSON_SCHEMA" "$TEXT"; then
       echo "structured output still invalid after retry" >&2

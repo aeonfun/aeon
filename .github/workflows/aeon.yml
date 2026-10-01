@@ -680,6 +680,29 @@ jobs:
           skill: ${{ steps.skill.outputs.name }}
           mode: ${{ vars.EGRESS_MODE || 'audit' }}
 
+      # Snapshot the harness config a skill run must not be able to change. A
+      # read-only skill runs sandboxed, but the harness's own $HOME state stays
+      # writable in the sandbox (sessions, token refresh), and that state includes
+      # config that makes a harness EXECUTE things: MCP servers, hooks, plugins,
+      # provider settings. "Restore harness config" puts this copy back before the
+      # scorer and the feed render run a harness again, outside the sandbox and
+      # holding the LLM keys. The archive's sha256 rides on this step's output,
+      # which nothing later can rewrite. Per-harness path list and the auth files
+      # kept live: scripts/harness-config-snapshot.sh. continue-on-error: a failed
+      # snapshot must not stop the skill; restore then fails closed and the
+      # post-run harness calls are skipped.
+      - name: Snapshot harness config
+        id: harness_config
+        if: steps.work.outputs.mode != ''
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          SNAP="$RUNNER_TEMP/aeon-harness-config"
+          DIGEST=$(AEON_HARNESS_CONFIG_SNAPSHOT="$SNAP" bash scripts/harness-config-snapshot.sh snapshot)
+          # Exported so lib/sandbox.sh also binds the snapshot read-only in the run.
+          echo "AEON_HARNESS_CONFIG_SNAPSHOT=$SNAP" >> "$GITHUB_ENV"
+          echo "digest=$DIGEST" >> "$GITHUB_OUTPUT"
+
       # The Run script must stay well below GitHub's 21,000-character expression
       # ceiling after interpolation. Keep explanatory prose at YAML level rather
       # than inside the run scalar; scripts/tests/test_workflow_harness_choices.sh
@@ -1499,9 +1522,31 @@ jobs:
             ${{ steps.manifest.outputs.snapshot }}
             ${{ steps.manifest.outputs.manifest }}
 
+      # Put back the pre-run harness config (see "Snapshot harness config") before
+      # anything runs a harness again: "Analyze skill output" re-runs the skill's
+      # harness with --no-sandbox and the LLM keys, and "Convert feed outputs"
+      # runs `claude -p`. Whatever MCP server, hook or plugin the skill run added
+      # to the harness's $HOME config is dropped here, and processes the sandboxed
+      # run left behind are killed so they cannot rewrite it afterwards. Placed
+      # after "Under the hood", which still reads this run's ~/.claude transcript.
+      # The script is piped from the run's starting commit (like "Commit
+      # results") so a skill edit to it cannot change its own restore, and no
+      # file is written that a leftover process could swap before it runs. Both
+      # harness steps below require this step's success: a missing or modified
+      # snapshot skips them (non-fatal) instead of running on unknown config.
+      - name: Restore harness config
+        id: harness_config_restore
+        if: steps.work.outputs.mode != ''
+        continue-on-error: true
+        env:
+          SNAPSHOT_DIGEST: ${{ steps.harness_config.outputs.digest }}
+        run: |
+          set -euo pipefail
+          git show "$GITHUB_SHA:scripts/harness-config-snapshot.sh" | bash -s -- restore "$SNAPSHOT_DIGEST"
+
       - name: Analyze skill output
         id: analyze
-        if: steps.work.outputs.mode != '' && steps.run.outcome == 'success'
+        if: steps.work.outputs.mode != '' && steps.run.outcome == 'success' && steps.harness_config_restore.outcome == 'success'
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
@@ -1657,6 +1702,8 @@ jobs:
           # read-only + --no-sandbox: scoring is a single text call needing no tools
           # or workspace, so the wrapper sandbox would only add a failure mode; any
           # stray write is reverted by the "Read-only capability guard" step.
+          # --no-sandbox is safe only because "Restore harness config" already put
+          # back the pre-run harness config, so nothing the skill wrote to it runs here.
           # --timeout 300 = half the run guard. No --json-schema: ANALYSIS_PROMPT
           # already asks for a {score,assessment,flags} object and the robust parse
           # below is tuned for that (composer/pi/vibe/kimi lack a native schema flag).
@@ -1781,7 +1828,7 @@ jobs:
         # authenticate. Unlike scoring, this one is NOT worth routing through
         # run-harness: it is a rendering convenience, not a quality signal, and
         # skipping it costs the run nothing.
-        if: steps.work.outputs.mode != '' && vars.JSONRENDER_ENABLED != 'false' && steps.run.outputs.HARNESS == 'claude'
+        if: steps.work.outputs.mode != '' && vars.JSONRENDER_ENABLED != 'false' && steps.run.outputs.HARNESS == 'claude' && steps.harness_config_restore.outcome == 'success'
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
