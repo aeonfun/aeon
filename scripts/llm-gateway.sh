@@ -203,7 +203,7 @@ case "${GATEWAY:-direct}" in
     echo "::notice::Routing through Bankr Gateway (https://llm.bankr.bot)"
     ;;
 
-  openrouter)  # NATIVE — Anthropic "skin", carries Opus 4.8
+  openrouter)  # NATIVE - Anthropic "skin", carries Opus 4.8 + Sonnet + Haiku
     require_secret OPENROUTER_API_KEY
     export ANTHROPIC_BASE_URL="https://openrouter.ai/api"   # NOT /api/v1
     export ANTHROPIC_AUTH_TOKEN="$OPENROUTER_API_KEY"       # Bearer; API_KEY must be blank
@@ -212,7 +212,14 @@ case "${GATEWAY:-direct}" in
     export ANTHROPIC_DEFAULT_OPUS_MODEL="${OPENROUTER_MODEL:-anthropic/claude-opus-4.8}"
     export ANTHROPIC_DEFAULT_SONNET_MODEL="${OPENROUTER_MODEL_SONNET:-anthropic/claude-sonnet-5}"
     export ANTHROPIC_DEFAULT_HAIKU_MODEL="${OPENROUTER_MODEL_HAIKU:-anthropic/claude-haiku-4.5}"
-    MODEL="$ANTHROPIC_DEFAULT_OPUS_MODEL"
+    # Tiered mapping, same as the glm arm: the run's resolved model id picks the
+    # slot, so sonnet-tier skills (and the scorer) stay on sonnet instead of every
+    # run being billed as Opus.
+    case "${MODEL:-}" in
+      *opus*)  MODEL="$ANTHROPIC_DEFAULT_OPUS_MODEL" ;;
+      *haiku*) MODEL="$ANTHROPIC_DEFAULT_HAIKU_MODEL" ;;
+      *)       MODEL="$ANTHROPIC_DEFAULT_SONNET_MODEL" ;;
+    esac
     # App attribution: HTTP-Referer + X-Title make aeon's OpenRouter traffic show
     # up on openrouter.ai's public app leaderboard. Claude Code forwards
     # ANTHROPIC_CUSTOM_HEADERS (one "Name: Value" per line) to the upstream even on

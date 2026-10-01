@@ -9,6 +9,7 @@ mkdir -p "$TMP/bin"
 cat > "$TMP/bin/agent" <<'SH'
 #!/usr/bin/env bash
 printf '%s\n' "$@" > "$AGENT_ARGS"
+cat > "$AGENT_ARGS.stdin"
 printf '%s\n' '{"result":"ok","usage":{},"session_id":"cursor-test"}'
 SH
 chmod +x "$TMP/bin/agent"
@@ -39,5 +40,16 @@ fi
 run_adapter write
 grep -qx -- '--trust' "$TMP/write.args" || { echo 'write cursor run omitted --trust' >&2; exit 1; }
 grep -qx -- '--force' "$TMP/write.args" || { echo 'write cursor run omitted --force' >&2; exit 1; }
+
+# The compat-rules prefix is joined to the prompt with REAL newlines, not a
+# literal backslash-n pair.
+mkdir -p "$TMP/prefix-tmp"
+AGENT_ARGS="$TMP/prefix.args" PATH="$TMP/bin:$PATH" RH_LIB="$ROOT/harness-adapter/lib" \
+  RH_TMPDIR="$TMP/prefix-tmp" RH_PROMPT_FILE="$TMP/prompt" RH_MODE=write \
+  RH_COMPAT_RULES='- rule one' bash "$ROOT/harness-adapter/adapters/cursor.sh" >/dev/null
+[ "$(cat "$TMP/prefix.args.stdin")" = "$(printf -- '- rule one\n\ninspect this workspace')" ] || {
+  echo "cursor prompt prefix not newline-joined: $(cat "$TMP/prefix.args.stdin")" >&2
+  exit 1
+}
 
 echo 'cursor adapter trust tests passed'

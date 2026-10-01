@@ -11,6 +11,14 @@ interface InstantModeCardProps {
   sessionBotToken?: string
 }
 
+// 32 random bytes as hex: inside Telegram's secret_token alphabet
+// ([A-Za-z0-9_-], 1-256 chars).
+function newWebhookSecret(): string {
+  const bytes = new Uint8Array(32)
+  crypto.getRandomValues(bytes)
+  return Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('')
+}
+
 // Rendered as a row inside the Telegram credentials list: a one-liner with a
 // Yes/No choice when collapsed, the full Cloudflare Worker walkthrough when on.
 export function InstantModeCard({ repo, sessionBotToken }: InstantModeCardProps) {
@@ -20,6 +28,10 @@ export function InstantModeCard({ repo, sessionBotToken }: InstantModeCardProps)
   const [workerUrl, setWorkerUrl] = useState('')
   const [whBusy, setWhBusy] = useState(false)
   const [whStatus, setWhStatus] = useState<TelegramStatus | null>(null)
+  // Shared secret the Worker checks on every update (TELEGRAM_WEBHOOK_SECRET);
+  // Telegram echoes it back only when setWebhook was called with secret_token.
+  // Without it the Worker 403s every update and inbound Telegram goes dead.
+  const [webhookSecret, setWebhookSecret] = useState('')
 
   useEffect(() => { if (sessionBotToken) setBotToken(sessionBotToken) }, [sessionBotToken])
 
@@ -34,8 +46,9 @@ export function InstantModeCard({ repo, sessionBotToken }: InstantModeCardProps)
     ? trimmedWorker.startsWith('http') ? trimmedWorker
       : `https://${trimmedWorker.includes('.') ? trimmedWorker : `aeon-telegram-webhook.${trimmedWorker}.workers.dev`}`
     : ''
+  const secret = webhookSecret.trim()
   const setWebhookCmd =
-    `curl "https://api.telegram.org/bot${botToken.trim() || '<YOUR_BOT_TOKEN>'}/setWebhook?url=${fullWorkerUrl || 'https://<your-worker>.workers.dev'}"`
+    `curl "https://api.telegram.org/bot${botToken.trim() || '<YOUR_BOT_TOKEN>'}/setWebhook?url=${fullWorkerUrl || 'https://<your-worker>.workers.dev'}&secret_token=${secret || '<YOUR_WEBHOOK_SECRET>'}"`
 
   const copy = async (key: string, text: string) => {
     try {
@@ -49,11 +62,11 @@ export function InstantModeCard({ repo, sessionBotToken }: InstantModeCardProps)
   // the browser - same trick as the chat-ID helper. The token never leaves the
   // page except to api.telegram.org.
   const registerWebhook = async () => {
-    if (!botToken.trim() || !fullWorkerUrl) return
+    if (!botToken.trim() || !fullWorkerUrl || !secret) return
     setWhBusy(true)
     setWhStatus(null)
     try {
-      const res = await fetch(`https://api.telegram.org/bot${botToken.trim()}/setWebhook?url=${encodeURIComponent(fullWorkerUrl)}`)
+      const res = await fetch(`https://api.telegram.org/bot${botToken.trim()}/setWebhook?url=${encodeURIComponent(fullWorkerUrl)}&secret_token=${encodeURIComponent(secret)}`)
       const data = await res.json() as { ok: boolean; description?: string }
       setWhStatus(data.ok
         ? { ok: true, msg: 'Webhook set - replies now arrive in ~1s. The poller backs off automatically.' }
@@ -87,7 +100,9 @@ export function InstantModeCard({ repo, sessionBotToken }: InstantModeCardProps)
             No
           </button>
           <button
-            onClick={() => setEnabled(true)}
+            // The secret is generated client-side on opt-in (the walkthrough only
+            // renders after this click), so server render and hydration agree.
+            onClick={() => { setEnabled(true); setWebhookSecret((cur) => cur || newWebhookSecret()) }}
             className={`text-[11px] font-mono px-3 py-1 border transition-colors ${enabled ? 'border-aeon-green text-aeon-green' : 'border-[rgba(250,250,250,0.16)] text-primary-40 hover:text-aeon-green hover:border-aeon-green/40'}`}
           >
             Yes
@@ -131,6 +146,22 @@ export function InstantModeCard({ repo, sessionBotToken }: InstantModeCardProps)
                 <span className="text-[10px] text-primary-35">- use the &quot;Find my chat ID&quot; helper above, before registering the webhook (it stops getUpdates)</span>
               </li>
               <li>
+                <span className="text-primary-100">TELEGRAM_WEBHOOK_SECRET</span> ={' '}
+                <input type="text" value={webhookSecret} spellCheck={false}
+                  onChange={(e) => setWebhookSecret(e.target.value.replace(/[^A-Za-z0-9_-]/g, '').slice(0, 256))}
+                  aria-label="Telegram webhook secret"
+                  className="bg-transparent border-b border-[rgba(250,250,250,0.16)] text-primary-70 text-[11px] font-mono w-[22ch] focus:outline-none" />{' '}
+                <button onClick={() => copy('secret', webhookSecret)}
+                  className="text-[10px] text-primary-40 hover:text-aeon-red transition-colors">
+                  {copied === 'secret' ? 'copied' : 'copy'}
+                </button>{' '}
+                <button onClick={() => setWebhookSecret(newWebhookSecret())}
+                  className="text-[10px] text-primary-40 hover:text-aeon-red transition-colors">
+                  new
+                </button>{' '}
+                <span className="text-[10px] text-primary-35">- random, generated here; step 3 sends the same value to Telegram (paste yours if the Worker already has one)</span>
+              </li>
+              <li>
                 <span className="text-primary-100">GITHUB_REPO</span> = {deployRepo}{' '}
                 <button onClick={() => copy('repo', deployRepo)}
                   className="text-[10px] text-primary-40 hover:text-aeon-red transition-colors">
@@ -159,7 +190,7 @@ export function InstantModeCard({ repo, sessionBotToken }: InstantModeCardProps)
               <input type="text" value={workerUrl} onChange={(e) => setWorkerUrl(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && registerWebhook()}
                 placeholder="aeon-telegram-webhook.<subdomain>.workers.dev" className={inputCls} />
-              <button onClick={registerWebhook} disabled={!botToken.trim() || !fullWorkerUrl || whBusy}
+              <button onClick={registerWebhook} disabled={!botToken.trim() || !fullWorkerUrl || !secret || whBusy}
                 className="bg-aeon-green text-white text-[11px] px-4 py-2 font-mono hover:opacity-90 transition-opacity disabled:opacity-50 shrink-0">
                 {whBusy ? 'Registering…' : 'Register'}
               </button>

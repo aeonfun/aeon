@@ -22,10 +22,9 @@ cd "$WS" || exit 1
 # A fixture aeon.yml in aeon's REAL shape: repo-global keys at column 0, and a
 # skills map whose entries are inline flow-mappings on ONE line, two spaces in —
 #   dash-name: { enabled: false, schedule: "...", harness: "vibe" }
-# The per-skill greps (`^  <skill>:` then sed for harness:/model: on that line)
-# only work on that one-line form, the same constraint aeon.yml documents for
-# `chains:`. A block-style fixture passes YAML but silently resolves nothing, so
-# it would have tested the fallback path while looking like it tested overrides.
+# Block-style entries (header line, flow map on the following lines) are covered
+# separately in section 5b: the per-skill read now goes through
+# scripts/skill_entry.sh, which captures the whole entry, not just the header.
 mkfixture() {  # mkfixture [global-harness] [global-model]
   { echo "model: ${2:-claude-sonnet-5}"
     [ -n "${1:-}" ] && echo "harness: $1"
@@ -158,6 +157,31 @@ mkfixture codex openai/gpt-5
   && pass "per-skill model reaches HARNESS_MODEL" || bad "per-skill model (got '$(get HARNESS_MODEL odd-one)')"
 [ -z "$(get MODEL_ARG odd-one)" ] \
   && pass "per-skill model still not forwarded to vibe" || bad "vibe must not receive --model"
+
+# --- 5b. block-style entries ------------------------------------------------
+# aeon.yml's comment documents the block shape for model:; harness:/model: on a
+# continuation line used to be invisible here (header-line grep), so the skill
+# silently ran on the defaults. Also: a comment is not a value, and a chain of the
+# same name further down is not the skill's entry.
+{ echo "model: claude-sonnet-5"
+  echo "skills:"
+  echo '  block-one:'
+  echo '    { enabled: true, schedule: "0 9 * * *",'
+  echo '      harness: "vibe", model: "openai/gpt-5" }'
+  echo '  commented: { enabled: true, var: "fix #12" } # harness: "kimi" model: "x/y"'
+  echo '  after: { enabled: true, harness: "pi" }'
+  echo 'chains:'
+  echo '  block-one:'
+  echo '    harness: "kimi"'
+} > aeon.yml
+[ "$(get HARNESS block-one)" = "vibe" ] \
+  && pass "block entry: harness on a continuation line is honoured" || bad "block harness (got '$(get HARNESS block-one)')"
+[ "$(get HARNESS_MODEL block-one)" = "openai/gpt-5" ] \
+  && pass "block entry: model on a continuation line is honoured" || bad "block model (got '$(get HARNESS_MODEL block-one)')"
+[ "$(get HARNESS commented)" = "claude" ] \
+  && pass "a trailing comment is not read as a per-skill key" || bad "comment leaked (got '$(get HARNESS commented)')"
+[ "$(get HARNESS after)" = "pi" ] \
+  && pass "single-line entry after a block entry still resolves" || bad "single-line after block (got '$(get HARNESS after)')"
 
 # --- 6. output contract -----------------------------------------------------
 # Callers append this straight to $GITHUB_OUTPUT, so stdout must be exactly the

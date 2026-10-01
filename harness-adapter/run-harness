@@ -118,11 +118,13 @@ export RH_TIMEOUT="$TIMEOUT"
 
 CMD=(bash "$HERE/adapters/$HARNESS.sh")
 
-# wall-clock guard — the harness-agnostic runaway backstop
+# wall-clock guard - the harness-agnostic runaway backstop. -k: a harness that
+# traps or ignores the TERM is KILLed 30s later (RH_KILL_AFTER), so the guard
+# always fires.
 if command -v timeout >/dev/null 2>&1; then
-  CMD=(timeout "$TIMEOUT" "${CMD[@]}")
+  CMD=(timeout -k "${RH_KILL_AFTER:-30}" "$TIMEOUT" "${CMD[@]}")
 elif command -v gtimeout >/dev/null 2>&1; then
-  CMD=(gtimeout "$TIMEOUT" "${CMD[@]}")
+  CMD=(gtimeout -k "${RH_KILL_AFTER:-30}" "$TIMEOUT" "${CMD[@]}")
 else
   echo "warning: no timeout(1)/gtimeout(1) found — running without a wall-clock guard" >&2
 fi
@@ -155,9 +157,13 @@ fi
 
 OUT="$RH_TMPDIR/envelope.json"
 RH_SPAN_START=$(_rh_now)
+RH_T0=$SECONDS
 "${CMD[@]}" > "$OUT"
 rc=$?
 RH_SPAN_END=$(_rh_now)
+# timeout -k reports 137 when the TERM was ignored and it had to KILL; that is
+# still the wall-clock guard firing, so report it as the timeout (124) callers key on.
+if [ $rc -eq 137 ] && [ $((SECONDS - RH_T0)) -ge "$TIMEOUT" ]; then rc=124; fi
 if [ $rc -eq 124 ]; then
   echo "error: harness run exceeded --timeout ${TIMEOUT}s" >&2
   exit 124

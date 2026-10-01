@@ -97,7 +97,7 @@ Confirm it exists and is non-trivial: `[ -s "$OUT" ]`. Note the size in MB for t
 
 ### 5. Build the delivery URL (durable, no external host)
 
-The clip is delivered **two ways** (step 7): the rendered MP4 is uploaded **straight to Telegram** with `./notify --video "$OUT"` so it plays **inline in the chat immediately** (no commit-wait, no repo login), and a durable GitHub URL to the committed copy rides in the caption as a fallback + direct-download link. The workflow's *Commit results* step (which runs after this) commits `output/**` and pushes to `main`, so that URL goes live within ~1 minute. Build it from the repo name — never hard-code the owner/repo:
+The clip is delivered as a **link** (step 7): `./notify` is text-only (it has no media-upload flag), so the notify carries a durable GitHub URL to the committed copy, which plays in the GitHub UI. The workflow's *Commit results* step (which runs after this) commits `output/**` and pushes to `main`, so that URL goes live within ~1 minute. Build it from the repo name - never hard-code the owner/repo:
 
 ```bash
 REPO=$(gh repo view --json nameWithOwner -q .nameWithOwner)   # e.g. your-org/your-instance
@@ -122,26 +122,26 @@ Copy the storyboard for reference: `cp skills/remotion/project/props.json memory
 
 ### 7. Notify
 
-On-demand skill → a completed run always notifies. Deliver via `./notify` (one call) with the **rendered MP4 attached** so it plays inline in Telegram — write the body to a file, then:
+On-demand skill → a completed run always notifies. Deliver via `./notify -f` (one call, text + the links below). Never pass `--video`/`--photo`: `./notify` has no media flags, rejects them with exit 2 and sends nothing. Write the body to a file, then:
 
 ```bash
-./notify --video "$OUT" --severity success -f notify-body.md
+./notify --severity success -f notify-body.md
 ```
 
-- The body of `notify-body.md` becomes the **Telegram video caption**, so keep it **≤ ~1000 chars** — Telegram caps a video caption at 1024, and anything longer degrades to truncated plaintext. This is the one place to keep it tight (the plain text-only channels — Discord/Slack/email — ignore `--video` and just get the text + links, so they're not length-bound here).
-- If the upload fails (or Telegram isn't configured), `--video` silently falls through to a normal text send that still carries the URLs below — so the links must be in the body regardless.
+- Keep `notify-body.md` short (≤ ~1000 chars): it is a plain text message on every channel, and the links are the whole payload.
+- The links are the only way to reach the clip, so they must be in the body.
 
 Body template:
 
 ```
 *Remotion — <short title>*
 <one-line description of the video>
-▶︎ plays above · repo copy: <blob URL>
+▶︎ watch: <blob URL>
 direct: <raw URL>
 <orientation> · <N> scenes · ~<S>s · <size>MB · repo link goes live ~1 min after this run's commit (opens for repo members)
 ```
 
-The attached video plays **now**; only the repo URL waits on the commit. On failure/degradation use severity `warn` and say exactly what happened + the one operator action.
+The repo link goes live once this run's commit lands (~1 min). On failure/degradation use severity `warn` and say exactly what happened + the one operator action.
 
 ### 8. Log
 
@@ -157,7 +157,7 @@ Append to `memory/logs/${today}.md`:
 
 ## Network note
 
-There is no network sandbox — `curl` works, with **WebFetch** as the fallback for a flaky public GET during research. **The MP4 is not uploaded to any third-party host** — it's committed into this repo under `output/remotion/` (the workflow's *Commit results* step pushes it to `main`) and delivered as a durable GitHub URL, so nothing routes through `./secretcurl` and there is no expiring host. The one place the bytes leave the repo is the **inline Telegram upload** (`./notify --video`), which goes over the operator's own already-configured notify channel (the bot token `notify` already holds) — that's delivery to the operator, not exfiltration. The render itself is fully local (Remotion + a bundled headless-chrome, staged by the workflow). This skill declares **no** new secrets.
+There is no network sandbox - `curl` works, with **WebFetch** as the fallback for a flaky public GET during research. **The MP4 is not uploaded to any third-party host** - it's committed into this repo under `output/remotion/` (the workflow's *Commit results* step pushes it to `main`) and delivered as a durable GitHub URL, so nothing routes through `./secretcurl` and there is no expiring host. The bytes never leave the repo: `./notify` sends text + links only, over the operator's own already-configured notify channel. The render itself is fully local (Remotion + a bundled headless-chrome, staged by the workflow). This skill declares **no** new secrets.
 
 ## Constraints
 

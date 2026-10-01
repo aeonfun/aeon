@@ -51,7 +51,7 @@ Today is ${today}. Turn this instance's own token ledger (`memory/token-usage.cs
 4. **Render the card + artifacts.** One call writes the SVG (canonical image), a best-effort PNG, the markdown report, the dashboard spec, and appends the run log. It prints a one-line JSON summary on stdout — capture it.
    ```bash
    mkdir -p output/images output/articles apps/dashboard/outputs
-   # The PNG (for inline Telegram) needs a rasterizer. The workflow stages `rsvg-convert`
+   # The PNG (a raster copy committed next to the SVG) needs a rasterizer. The workflow stages `rsvg-convert`
    # (librsvg2-bin) for this skill before the run — the agent allowlist blocks in-run
    # pip/apt. render_card.py uses cairosvg if importable, else rsvg-convert, else SVG-only.
    SUMMARY="$(python3 skills/weekly-aeoncard/render_card.py \
@@ -68,7 +68,7 @@ Today is ${today}. Turn this instance's own token ledger (`memory/token-usage.cs
      exit 0
    fi
    ```
-   All writes land under `output/` and `apps/dashboard/outputs/` — paths the run commits. The PNG is a raster copy for inline Telegram delivery (needs `cairosvg` or `rsvg-convert`); if neither is available the SVG stands alone as the canonical image and the notify degrades to a text recap + link.
+   All writes land under `output/` and `apps/dashboard/outputs/` - paths the run commits. The PNG is a raster copy committed next to the SVG (needs `cairosvg` or `rsvg-convert`); if neither is available the SVG stands alone as the canonical image. Either way the notify is a text recap + link.
 
 5. **Read the numbers back.** Parse `$SUMMARY` for the notification (it holds `week_human`, `week_runs`, `life_human`, `life_runs`, `since`, `cache_read_pct`, `top_week`):
    ```bash
@@ -81,23 +81,22 @@ Today is ${today}. Turn this instance's own token ledger (`memory/token-usage.cs
 
 6. **Log.** The render step already appended a `### weekly-aeoncard` block to `memory/logs/${today}.md` (window, weekly + all-time totals, top skills, image path, `WEEKLY_AEONCARD_OK`). Do not duplicate it.
 
-7. **Notify.** If `MODE` is `dry-run`, skip this step (log `WEEKLY_AEONCARD_DRY_RUN` and stop — the image, report, and dashboard spec are already written). Otherwise send the recap via `./notify`. When a PNG rendered, pass it with `--photo` so the card shows **inline** on Telegram (the caption carries the numbers); the SVG link stays in the body for the crisp vector. When no PNG rendered, the same call without `--photo` degrades to the text recap + link:
+7. **Notify.** If `MODE` is `dry-run`, skip this step (log `WEEKLY_AEONCARD_DRY_RUN` and stop - the image, report, and dashboard spec are already written). Otherwise send the recap + the committed card link via `./notify -f`. `./notify` is text-only: it has no `--photo`/`--video` flag (an unknown flag exits 2 and sends nothing), so never attach the image:
    ```bash
    [ "$MODE" = dry-run ] && exit 0
    BODY="This week (${WINDOW_DAYS}d): ${WK} tokens · ${WKR} runs
    All-time: ${LF} tokens · ${LFR} runs (since ${SINCE})
    Top this week: ${TOP}
    Card: ${IMG_LINK}"
-   if [ -n "$PNG" ] && [ -s "$PNG" ]; then
-     ./notify --title "Weekly Aeon Card — ${INSTANCE}" --photo "$PNG" "$BODY"
-   else
-     ./notify --title "Weekly Aeon Card — ${INSTANCE}" "$BODY"
-   fi
+   # Body from a file (any length); the card itself ships as the IMG_LINK in the body.
+   NOTE_FILE="${TMPDIR:-/tmp}/weekly-aeoncard-notify.md"
+   echo "$BODY" > "$NOTE_FILE"
+   ./notify --title "Weekly Aeon Card - ${INSTANCE}" -f "$NOTE_FILE"
    ```
 
 ## Network note
 
-The skill issues no `gh api` and puts no secrets on the command line. Stats are read from `memory/token-usage.csv`; the card is rendered by `skills/weekly-aeoncard/render_card.py` using only the Python standard library (deterministic — `${today}` is passed in, never read from the clock). To also emit a raster PNG it uses `cairosvg` (best-effort `pip install`) or an `rsvg-convert` fallback — both optional; without them the run still succeeds with the SVG as the image. The image link is built from `git remote get-url origin` (a local read). Delivery goes through `./notify`, which owns the only outbound calls: Telegram `sendPhoto` (when `--photo` is set) or `sendMessage`, and stages to `.pending-notify/` for post-run redelivery.
+The skill issues no `gh api` and puts no secrets on the command line. Stats are read from `memory/token-usage.csv`; the card is rendered by `skills/weekly-aeoncard/render_card.py` using only the Python standard library (deterministic - `${today}` is passed in, never read from the clock). To also emit a raster PNG it uses `cairosvg` (best-effort `pip install`) or an `rsvg-convert` fallback - both optional; without them the run still succeeds with the SVG as the image. The image link is built from `git remote get-url origin` (a local read). Delivery goes through `./notify`, a text-only queue-writer (the post-run notify step owns the channel tokens and does the send).
 
 ## Constraints
 

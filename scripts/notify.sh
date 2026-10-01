@@ -108,15 +108,19 @@ if [ -n "$MUTE_KEY" ]; then
   fi
 fi
 
-# Suppress obvious diagnostic probes (short test/trace/ping/debug pings)
+# Suppress obvious diagnostic probes (short test/trace/ping/debug pings). Only when
+# the WHOLE message is a probe word plus at most a short tail ("test", "ping 2",
+# "quick test ping"): the old substring match dropped real short alerts that merely
+# contained latest/testnet/shipping/mapping/attestation. A --title or warn/critical
+# severity marks a deliberate message, so those are never treated as probes.
 MSG_LEN=${#MSG}
-if [ "$MSG_LEN" -lt 120 ]; then
+PROBE_RE='^[[:space:]]*((quick|just a|a)[[:space:]]+)?(test|testing|ping|debug|trace|hello|hi)([^a-z0-9].{0,20})?$'
+if [ -z "$TITLE" ] && [ "$(rank "$SEVERITY")" -eq 0 ]; then
   MSG_LOWER=$(printf '%s' "$MSG" | tr '[:upper:]' '[:lower:]')
-  case "$MSG_LOWER" in
-    *test*|*trace*|*ping*|*debug*|hello|hi)
-      echo "notify: suppressing trace/test message ($MSG_LEN chars): $MSG" >&2
-      exit 0 ;;
-  esac
+  if [[ "$MSG_LOWER" =~ $PROBE_RE ]]; then
+    echo "notify: suppressing trace/test message ($MSG_LEN chars): $MSG" >&2
+    exit 0
+  fi
 fi
 
 # Append link as a trailing line if provided
