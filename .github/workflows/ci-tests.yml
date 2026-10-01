@@ -51,6 +51,19 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: Install deps
         run: pip install pyyaml==6.0.2
+      # The run-harness sandbox-gate test has a LIVE half that only runs where bwrap
+      # can create a user namespace. Same setup as aeon.yml's "Install bubblewrap
+      # (read-only sandbox)" step: install it, lift Ubuntu 24.04's AppArmor userns
+      # restriction, then fail HERE if bwrap still cannot run, so the live checks
+      # never silently skip on CI (the test step also requires them, below).
+      - name: Install bubblewrap (live read-only sandbox test)
+        timeout-minutes: 5
+        run: |
+          set -euo pipefail
+          APT_OPTS="-o DPkg::Lock::Timeout=120"
+          sudo apt-get $APT_OPTS update -qq && sudo apt-get $APT_OPTS install -y -qq bubblewrap
+          sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0 || true
+          bwrap --dev-bind / / --ro-bind /tmp /tmp true && echo 'bwrap: userns OK'
       - name: notify_format unit tests
         run: python3 scripts/tests/test_notify_format.py
       - name: notify integration tests
@@ -102,6 +115,8 @@ jobs:
       - name: harness install/config tests
         run: bash scripts/tests/test_install_harness.sh
       - name: run-harness sandbox-gate tests
+        env:
+          AEON_REQUIRE_LIVE_BWRAP: '1'
         run: bash scripts/tests/test_run_harness_sandbox_gate.sh
       # Both hermetic (stub curl / sourced in subshells, no network). They shipped
       # with the scripts they cover and docs/mcp-oauth.md + docs/langfuse.md cite

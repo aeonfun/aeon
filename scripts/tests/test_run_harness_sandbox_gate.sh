@@ -70,7 +70,8 @@ echo "$out" | grep -q "unknown harness" \
 SBX=$(mktemp -d)
 trap 'rm -rf "$SBX"' EXIT
 mkdir -p "$SBX/bin" "$SBX/home" "$SBX/work/_temp/_runner_file_commands" \
-  "$SBX/work/_actions" "$SBX/work/repo/repo/memory" "$SBX/work/repo/repo/output"
+  "$SBX/work/_actions" "$SBX/work/repo/repo/memory" "$SBX/work/repo/repo/output" \
+  "$SBX/home/.foundry/bin" "$SBX/home/.local/share/pipx" "$SBX/toolcache/node/bin"
 printf '#!/bin/sh\nexit 0\n' > "$SBX/bin/bwrap"; chmod +x "$SBX/bin/bwrap"
 FC="$SBX/work/_temp/_runner_file_commands"
 prefix=$(
@@ -79,10 +80,10 @@ prefix=$(
   uname() { echo Linux; }
   # shellcheck source=harness-adapter/lib/sandbox.sh
   . "$OLDPWD/harness-adapter/lib/sandbox.sh"
-  PATH="$SBX/bin:$PATH" HOME="$SBX/home" XDG_CONFIG_HOME="" \
+  PATH="$SBX/bin:$SBX/home/.local/bin:$SBX/home/.foundry/bin:$SBX/toolcache/node/bin:$PATH" HOME="$SBX/home" XDG_CONFIG_HOME="" \
     GITHUB_ENV="$FC/set_env_x" GITHUB_PATH="$FC/add_path_x" GITHUB_OUTPUT="$FC/set_output_x" \
     GITHUB_STEP_SUMMARY="$FC/step_summary_x" GITHUB_STATE="$FC/save_state_x" \
-    RUNNER_WORKSPACE="$SBX/work/repo" sandbox_prefix "$SBX"
+    RUNNER_WORKSPACE="$SBX/work/repo" RUNNER_TOOL_CACHE="$SBX/toolcache" sandbox_prefix "$SBX"
 )
 WS=$(cd "$SBX/work/repo/repo" && pwd -P)
 TOK=()
@@ -108,6 +109,36 @@ has_pair --ro-bind "$SBX/home/.config/git" && pass "sandbox_prefix: ~/.config/gi
   || bad "sandbox_prefix: ~/.config/git not locked"
 has_pair --ro-bind "$SBX/work/_actions" && pass "sandbox_prefix: runner _actions dir ro-bound" \
   || bad "sandbox_prefix: _actions not locked"
+# $HOME paths a later (unsandboxed) step executes or reads config from. The
+# missing ones must be created first, or the run could plant them.
+for rel in .local/bin .local/lib .config/gh .ssh .npmrc; do
+  has_pair --ro-bind "$SBX/home/$rel" && [ -e "$SBX/home/$rel" ] \
+    && pass "sandbox_prefix: ~/$rel created and ro-bound" || bad "sandbox_prefix: ~/$rel not locked"
+done
+has_pair --ro-bind "$SBX/home/.local/share/pipx" && pass "sandbox_prefix: existing pipx venvs ro-bound" \
+  || bad "sandbox_prefix: ~/.local/share/pipx not locked"
+has_pair --ro-bind "$SBX/home/.foundry/bin" && pass "sandbox_prefix: PATH dir under \$HOME ro-bound" \
+  || bad "sandbox_prefix: ~/.foundry/bin (on PATH) not locked"
+has_pair --ro-bind "$SBX/toolcache" && pass "sandbox_prefix: runner tool cache (npm -g prefix) ro-bound" \
+  || bad "sandbox_prefix: RUNNER_TOOL_CACHE not locked"
+printf '%s\n' "$prefix" | grep -qx -- "$SBX/bin" \
+  && bad "sandbox_prefix: locked a PATH dir outside \$HOME" || pass "sandbox_prefix: PATH dirs outside \$HOME left alone"
+[ "$(printf '%s\n' "$prefix" | grep -cx -- "$SBX/home/.local/bin")" = 2 ] \
+  && pass "sandbox_prefix: ~/.local/bin bound once (PATH + explicit lock deduped)" \
+  || bad "sandbox_prefix: ~/.local/bin not bound exactly once"
+# A PATH dir that CONTAINS the workspace must not be locked: an ro-bind over it
+# after the memory/ + output/ rebinds would take their write access away.
+prefix2=$(
+  cd "$SBX/work/repo/repo" || exit 1
+  # shellcheck disable=SC2329  # invoked indirectly by sandbox_prefix
+  uname() { echo Linux; }
+  # shellcheck source=harness-adapter/lib/sandbox.sh
+  . "$OLDPWD/harness-adapter/lib/sandbox.sh"
+  PATH="$SBX/bin:$SBX/work/repo:$PATH" HOME="$SBX/work" XDG_CONFIG_HOME="" sandbox_prefix "$SBX"
+)
+printf '%s\n' "$prefix2" | grep -qx -- "$SBX/work/repo" \
+  && bad "sandbox_prefix: locked a PATH dir that holds the workspace" \
+  || pass "sandbox_prefix: PATH dir holding the workspace is skipped"
 for v in GITHUB_ENV GITHUB_PATH GITHUB_OUTPUT GITHUB_STEP_SUMMARY GITHUB_STATE; do
   printf '%s\n' "$prefix" | grep -A1 -x -- --unsetenv | grep -qx "$v" \
     && pass "sandbox_prefix: unsets $v" || bad "sandbox_prefix: does not unset $v"
@@ -115,24 +146,45 @@ done
 [ "$(printf '%s\n' "$prefix" | tail -1)" = "--die-with-parent" ] \
   && pass "sandbox_prefix: options end before the command" || bad "sandbox_prefix: last token is not --die-with-parent"
 
-# Live check where a working bwrap exists (Linux CI with userns): a write to the
-# file-command dir fails, a write to memory/ lands, and GITHUB_ENV is gone.
+# Live check where a working bwrap exists (Linux with unprivileged userns; ci-tests
+# installs bwrap and lifts Ubuntu's AppArmor userns restriction, then sets
+# AEON_REQUIRE_LIVE_BWRAP=1 so a broken setup fails here instead of skipping).
+# Inside the real sandbox the workspace, the runner file-command dir, ~/.gitconfig
+# and ~/.local/bin must reject writes, memory/ + output/ must take them, and
+# GITHUB_ENV must be gone.
 if [ "$(uname -s)" = Linux ] && command -v bwrap >/dev/null 2>&1 \
    && bwrap --dev-bind / / true >/dev/null 2>&1; then
+  echo "live - running live bwrap sandbox checks ($(bwrap --version 2>/dev/null))"
+  RW="$SBX/work/repo/repo"
   live=()
   while IFS= read -r tok; do live+=("$tok"); done < <(
-    cd "$SBX/work/repo/repo" && . "$OLDPWD/harness-adapter/lib/sandbox.sh" \
+    cd "$RW" && . "$OLDPWD/harness-adapter/lib/sandbox.sh" \
       && HOME="$SBX/home" GITHUB_ENV="$FC/set_env_x" RUNNER_WORKSPACE="$SBX/work/repo" sandbox_prefix "$SBX")
-  ( cd "$SBX/work/repo/repo" && GITHUB_ENV="$FC/set_env_x" "${live[@]}" sh -c \
-      'echo X=1 >> "'"$FC"'/set_env_x"' ) 2>/dev/null \
-    && bad "live bwrap: wrote into the runner file-command dir" \
-    || pass "live bwrap: runner file-command dir is read-only"
-  ( cd "$SBX/work/repo/repo" && "${live[@]}" sh -c 'echo ok > memory/probe' ) 2>/dev/null \
-    && [ -f "$SBX/work/repo/repo/memory/probe" ] \
-    && pass "live bwrap: memory/ still writable" || bad "live bwrap: memory/ write failed"
-  out=$(cd "$SBX/work/repo/repo" && GITHUB_ENV="$FC/set_env_x" "${live[@]}" sh -c 'echo "[${GITHUB_ENV:-unset}]"' 2>&1)
+  # denied LABEL FILE -> the sandboxed append to FILE must fail and leave no trace
+  denied() {
+    if ( cd "$RW" && "${live[@]}" sh -c 'echo planted >> "$1"' sh "$2" ) 2>/dev/null \
+       || grep -qs planted "$2"; then
+      bad "live bwrap: $1 is writable inside the sandbox"
+    else
+      pass "live bwrap: $1 is read-only"
+    fi
+  }
+  # allowed LABEL FILE -> the sandboxed write to FILE must land
+  allowed() {
+    ( cd "$RW" && "${live[@]}" sh -c 'echo ok > "$1"' sh "$2" ) 2>/dev/null && grep -qs ok "$2" \
+      && pass "live bwrap: $1 still writable" || bad "live bwrap: $1 write failed"
+  }
+  denied "workspace" "$RW/planted.txt"
+  denied "runner file-command dir" "$FC/set_env_x"
+  denied "\$HOME/.gitconfig" "$SBX/home/.gitconfig"
+  denied "\$HOME/.local/bin" "$SBX/home/.local/bin/gh"
+  allowed "memory/" "$RW/memory/probe"
+  allowed "output/" "$RW/output/probe"
+  out=$(cd "$RW" && GITHUB_ENV="$FC/set_env_x" "${live[@]}" sh -c 'echo "[${GITHUB_ENV:-unset}]"' 2>&1)
   [ "$out" = "[unset]" ] && pass "live bwrap: GITHUB_ENV unset inside sandbox" \
     || bad "live bwrap: GITHUB_ENV visible inside sandbox ($out)"
+elif [ "${AEON_REQUIRE_LIVE_BWRAP:-}" = 1 ]; then
+  bad "live bwrap checks required (AEON_REQUIRE_LIVE_BWRAP=1) but bwrap is missing or cannot create a user namespace"
 else
   echo "skip - live bwrap checks (no working bwrap on this machine)"
 fi

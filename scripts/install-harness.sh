@@ -46,10 +46,74 @@ need() {  # need VAR_NAME "what to set"
   fi
 }
 
-# Third-party installer scripts (curl | bash) run arbitrary remote code, and this
-# step's env carries GH_GLOBAL / GH_SECRETS_PAT (for grok's secret rotation).
-# None of the installers needs a GitHub credential, so run them without one.
-no_gh() { env -u GH_GLOBAL -u GH_SECRETS_PAT -u GH_TOKEN -u GITHUB_TOKEN "$@"; }
+# Third-party installers (fx, cursor, hermes) are not on a package registry, so
+# they used to be `curl ... | bash`: whatever the vendor served that minute ran in
+# a step whose env holds GH_GLOBAL / GH_SECRETS_PAT and the provider keys. Each
+# is now PINNED to one release and its bytes are sha256-checked BEFORE anything
+# is extracted or run, so a changed artifact fails closed with a named error
+# instead of executing. fx and cursor are plain release tarballs (we unpack them
+# the way the vendor script would, no vendor shell runs at all); hermes's
+# installer is fetched from its pinned commit and run with --commit <pin>.
+# Bump: download the new artifact, verify it, update the version + sha256 here.
+# Same env-override shape as run-grok.sh's GROK_CLI_VERSION, but an override
+# must also set the matching *_SHA256, or the guard refuses it.
+FX_PIN=v0.0.12
+CURSOR_PIN=2026.10.01-14929f9
+HERMES_PIN=f97608f178d1ffeca59860195ab7da295f7c8e5f   # hermes-agent release v2026.9.24
+FX_VERSION="${FX_VERSION:-$FX_PIN}"
+CURSOR_VERSION="${CURSOR_VERSION:-$CURSOR_PIN}"
+HERMES_COMMIT="${HERMES_COMMIT:-$HERMES_PIN}"
+
+# pin_platform -> "<os> <arch>" as linux|darwin x86_64|aarch64, or fail closed.
+pin_platform() {
+  local os arch
+  case "$(uname -s)" in Linux) os=linux ;; Darwin) os=darwin ;; *) os="" ;; esac
+  case "$(uname -m)" in x86_64|amd64) arch=x86_64 ;; arm64|aarch64) arch=aarch64 ;; *) arch="" ;; esac
+  if [ -z "$os" ] || [ -z "$arch" ]; then
+    echo "::error::$H: no pinned build for $(uname -s)/$(uname -m)" >&2
+    exit 1
+  fi
+  echo "$os $arch"
+}
+
+sha256_of() {
+  if command -v sha256sum >/dev/null 2>&1; then sha256sum "$1" | cut -d' ' -f1
+  else shasum -a 256 "$1" | cut -d' ' -f1; fi
+}
+
+# fetch_pinned URL SHA256 DEST -> download, then fail closed unless the bytes match.
+fetch_pinned() {
+  local url="$1" want="$2" dest="$3" got
+  if [ -z "$want" ]; then
+    echo "::error::$H: no pinned sha256 for $url (set the matching *_SHA256 with any version override)" >&2
+    exit 1
+  fi
+  curl -fsSL --retry 3 "$url" -o "$dest" || { echo "::error::$H: download failed: $url" >&2; exit 1; }
+  got="$(sha256_of "$dest")"
+  if [ "$got" != "$want" ]; then
+    rm -f "$dest"
+    echo "::error::$H: sha256 mismatch for $url (expected $want, got $got). Refusing to install an unverified artifact; if the vendor shipped a new release, verify it and bump the pin in scripts/install-harness.sh." >&2
+    exit 1
+  fi
+}
+
+PIN_TMP=""
+pin_tmp() {
+  PIN_TMP="$(mktemp -d "${RUNNER_TEMP:-${TMPDIR:-/tmp}}/install-harness.XXXXXX")"
+  trap 'rm -rf "$PIN_TMP"' EXIT
+}
+
+# Run a third-party installer with a minimal env: none of them needs a GitHub
+# token or a provider key to install, so neither GH_GLOBAL / GH_SECRETS_PAT nor
+# OPENROUTER_API_KEY / CURSOR_API_KEY / HERMES_AUTH / ... reach vendor code.
+clean_env() {
+  local keep=() v
+  for v in PATH HOME USER LOGNAME SHELL LANG LC_ALL TERM TMPDIR RUNNER_TEMP CI GITHUB_ACTIONS \
+           HTTP_PROXY HTTPS_PROXY NO_PROXY http_proxy https_proxy no_proxy; do
+    [ -n "${!v+x}" ] && keep+=("$v=${!v}")
+  done
+  env -i ${keep[@]+"${keep[@]}"} "$@"
+}
 
 # Each harness is configured for the provider AUTH_MODE selected:
 #   native-oauth — restore the captured login (~/.codex, ~/.kimi-code); the
@@ -228,11 +292,28 @@ TOML
     fi
     ;;
   fx)
-    # curl-installed native binary (Zig, ~10MB), no package manager. fx ships no
-    # pinned-version install path as of 0.0.5 — it's brand-new/experimental per
-    # its own README, so this tracks whatever fx.sh/setup.sh currently serves.
-    # Revisit if/when fx publishes pinned release artifacts.
-    curl -fsSL https://fx.sh/setup.sh | no_gh bash
+    # Native binary (Zig, ~10MB), no package manager. fx.sh/setup.sh only maps
+    # the platform and unpacks releases.fx.sh/<version>/fx-<os>-<arch>.tar.gz
+    # into ~/.local/bin, so do that directly from the pinned release instead of
+    # running the vendor script. Checksums = the vendor's published *.sha256.
+    plat="$(pin_platform)"; read -r os arch <<<"$plat"
+    [ "$os" = darwin ] && os=macos
+    fx_sha=""
+    case "$os-$arch" in
+      linux-x86_64)   fx_sha=c510956b92404a00f3054b4be0d378188f9f5217497555048de353b8f0e52d80 ;;
+      linux-aarch64)  fx_sha=7265ecebf881ec4050d24fa4fac660ed86dfd11395fcde47b491dc084be1e61e ;;
+      macos-x86_64)   fx_sha=bca035a0ff0239e983e12b0131f6962bbe3b85ad86576a10297eb8bf1000d7ef ;;
+      macos-aarch64)  fx_sha=c59dae590fd1244af5f02d3bfaf86a83f9d738e1f3dfb8d0bfab7ff15fb8ce20 ;;
+    esac
+    [ "$FX_VERSION" = "$FX_PIN" ] || fx_sha=""
+    pin_tmp
+    fetch_pinned "https://releases.fx.sh/$FX_VERSION/fx-$os-$arch.tar.gz" \
+      "${FX_SHA256:-$fx_sha}" "$PIN_TMP/fx.tar.gz"
+    tar -xzf "$PIN_TMP/fx.tar.gz" -C "$PIN_TMP" fx
+    mkdir -p "$HOME/.local/bin"
+    mv "$PIN_TMP/fx" "$HOME/.local/bin/fx"
+    chmod +x "$HOME/.local/bin/fx"
+    echo "fx: installed $FX_VERSION (sha256 verified)"
     [ -n "${GITHUB_PATH:-}" ] && echo "$HOME/.local/bin" >> "$GITHUB_PATH"
     # fx has NO OpenRouter path (confirmed: no mention anywhere in its docs —
     # see resolve-harness.sh's fx case for the same note). Every other harness
@@ -248,12 +329,46 @@ TOML
     fi
     ;;
   cursor)
-    curl -fsSL https://cursor.com/install | no_gh bash
+    # cursor.com/install hardcodes one build per day and downloads
+    # downloads.cursor.com/lab/<version>/<os>/<arch>/agent-cli-package.tar.gz
+    # (older builds stay downloadable), then links agent + cursor-agent into
+    # ~/.local/bin. Do exactly that from a pinned build. Cursor publishes no
+    # checksum, so these are the sha256s of the build as downloaded 2026-10-01.
+    plat="$(pin_platform)"; read -r os arch <<<"$plat"
+    cur_arch=""; cur_sha=""
+    case "$os-$arch" in
+      linux-x86_64)   cur_arch=x64;   cur_sha=ba9a855f8f813c91b9f2707127572d2dc9ae5a62818e1c36719625d0fb8bd452 ;;
+      linux-aarch64)  cur_arch=arm64; cur_sha=c31ef0ba6b827fdf8053919de57abae4a7bd71afefdf2cab061e276faac42b3a ;;
+      darwin-x86_64)  cur_arch=x64;   cur_sha=8930008f9902a4d02d3185c0d34071e0536bac3426439b55bcfd48b78765a3dd ;;
+      darwin-aarch64) cur_arch=arm64; cur_sha=778d04e542adc5c8b6760fda3ebe0757f903b1764f2792c232ef9a35e6e2151b ;;
+    esac
+    [ "$CURSOR_VERSION" = "$CURSOR_PIN" ] || cur_sha=""
+    pin_tmp
+    fetch_pinned "https://downloads.cursor.com/lab/$CURSOR_VERSION/$os/$cur_arch/agent-cli-package.tar.gz" \
+      "${CURSOR_SHA256:-$cur_sha}" "$PIN_TMP/cursor.tar.gz"
+    cur_dir="$HOME/.local/share/cursor-agent/versions/$CURSOR_VERSION"
+    rm -rf "$cur_dir"
+    mkdir -p "$cur_dir" "$HOME/.local/bin"
+    tar --strip-components=1 -xzf "$PIN_TMP/cursor.tar.gz" -C "$cur_dir"
+    [ -x "$cur_dir/cursor-agent" ] || { echo "::error::cursor: cursor-agent missing from the $CURSOR_VERSION package" >&2; exit 1; }
+    ln -sf "$cur_dir/cursor-agent" "$HOME/.local/bin/agent"
+    ln -sf "$cur_dir/cursor-agent" "$HOME/.local/bin/cursor-agent"
+    echo "cursor: installed $CURSOR_VERSION (sha256 verified)"
     [ -n "${GITHUB_PATH:-}" ] && echo "$HOME/.local/bin" >> "$GITHUB_PATH"
     need CURSOR_API_KEY "a Cursor API key for headless CLI runs"
     echo "cursor: API key staged via CURSOR_API_KEY" ;;
   hermes)
-    curl -fsSL https://hermes-agent.nousresearch.com/install.sh | no_gh bash
+    # hermes-agent.nousresearch.com/install.sh serves main's installer, which
+    # clones main HEAD. Instead take scripts/install.sh from the pinned release
+    # commit (a commit-addressed URL, plus our own sha256 check) and pass
+    # --commit so the checkout it installs is that same commit. --skip-setup:
+    # the setup wizard is interactive (it already self-skipped with no TTY).
+    hermes_sha=2017ddf0cc7bc6cfb70d40dc9fba1d916f47dbcccf5fe73bdee2cf93a11262af
+    [ "$HERMES_COMMIT" = "$HERMES_PIN" ] || hermes_sha=""
+    pin_tmp
+    fetch_pinned "https://raw.githubusercontent.com/NousResearch/hermes-agent/$HERMES_COMMIT/scripts/install.sh" \
+      "${HERMES_INSTALLER_SHA256:-$hermes_sha}" "$PIN_TMP/hermes-install.sh"
+    clean_env bash "$PIN_TMP/hermes-install.sh" --commit "$HERMES_COMMIT" --skip-setup </dev/null
     [ -n "${GITHUB_PATH:-}" ] && echo "$HOME/.local/bin" >> "$GITHUB_PATH"
     mkdir -p "$HOME/.hermes"
     if [ "$AUTH_MODE" = "native-oauth" ]; then
