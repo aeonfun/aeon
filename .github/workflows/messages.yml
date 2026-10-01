@@ -409,7 +409,7 @@ jobs:
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
         with:
           path: ~/.npm
-          key: claude-code-${{ runner.os }}-2.1.168
+          key: claude-code-${{ runner.os }}-2.1.287
           restore-keys: |
             claude-code-${{ runner.os }}-
 
@@ -417,7 +417,7 @@ jobs:
         if: steps.msg.outputs.source != ''
         # Pinned for supply-chain safety — keep in sync with aeon.yml's pin
         # (and the cache key version above).
-        run: npm install -g @anthropic-ai/claude-code@2.1.168 --prefer-offline
+        run: npm install -g @anthropic-ai/claude-code@2.1.287 --prefer-offline
 
       # Inbound messaging isn't a per-skill run, so no skill name is passed and
       # the repo-global `harness:`/`model:` keys decide — the same script aeon.yml

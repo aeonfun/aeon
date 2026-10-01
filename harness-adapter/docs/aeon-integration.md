@@ -206,10 +206,10 @@ exists for it (see §2/§3 below), so it needs its own `AI_GATEWAY_API_KEY`.
 
 | harness | install | model default | `--model` passed | config notes |
 |---|---|---|---|---|
-| **codex** | `npm i -g @openai/codex@0.144.6` | `openai/gpt-6-luna` | bare id | `~/.codex/config.toml`: `wire_api = "responses"` (0.144.6 removed `"chat"`), `model_reasoning_effort = "medium"` (OpenRouter 400s on reasoning-disabled) |
-| **pi** | `npm i -g --ignore-scripts @earendil-works/pi-coding-agent` | `deepseek/deepseek-v4-flash` | `openrouter/<model>` | reads `OPENROUTER_API_KEY` from env |
-| **vibe** | `pipx install mistral-vibe` | `mistralai/mistral-medium-3-5` | none (config alias) | `~/.vibe/config.toml`: provider `api_style=openai`, `api_key_env_var` |
-| **kimi** | `npm i -g @moonshot-ai/kimi-code` | `moonshotai/kimi-k2.6` | none (config alias) | `~/.kimi-code/config.toml`: key **inline** (no env indirection), `default_model` set |
+| **codex** | `npm i -g --ignore-scripts @openai/codex@0.159.3` | `openai/gpt-6-luna` | bare id | `~/.codex/config.toml`: `wire_api = "responses"` (0.144.6 removed `"chat"`), `model_reasoning_effort = "medium"` (OpenRouter 400s on reasoning-disabled) |
+| **pi** | `npm i -g --ignore-scripts @earendil-works/pi-coding-agent@0.99.2` | `deepseek/deepseek-v4-flash` | `openrouter/<model>` | reads `OPENROUTER_API_KEY` from env |
+| **vibe** | `pipx install mistral-vibe==2.25.8` | `mistralai/mistral-medium-3-5` | none (config alias) | `~/.vibe/config.toml`: provider `api_style=openai`, `api_key_env_var` |
+| **kimi** | `npm i -g --ignore-scripts @moonshot-ai/kimi-code@2.1.1` | `moonshotai/kimi-k2.6` | none (config alias) | `~/.kimi-code/config.toml`: key **inline** (no env indirection), `default_model` set |
 | **fx** | pinned `releases.fx.sh/<version>/fx-<os>-<arch>.tar.gz`, sha256-checked | fx's own default (no `--model` forwarded on native auth) | env only (`FX_MODEL`) - no `--model` flag on `fx ask` | no config file; `AI_GATEWAY_API_KEY`/`VERCEL_OIDC_TOKEN` read straight from env. `install-harness.sh` fails closed if neither is set - no fallback to stage |
 
 **codex needs `≥ gpt-5-mini`.** On `gpt-5-nano` it fails *deterministically* on

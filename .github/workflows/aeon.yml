@@ -242,7 +242,7 @@ jobs:
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
         with:
           path: ~/.npm
-          key: claude-code-${{ runner.os }}-2.1.168
+          key: claude-code-${{ runner.os }}-2.1.287
           restore-keys: |
             claude-code-${{ runner.os }}-
 
@@ -253,7 +253,7 @@ jobs:
         # the release notes: https://github.com/anthropics/claude-code/releases
         # (--prefer-offline uses the cached tarball above; keep the pin and the
         # cache key version in sync.)
-        run: npm install -g @anthropic-ai/claude-code@2.1.168 --prefer-offline
+        run: npm install -g @anthropic-ai/claude-code@2.1.287 --prefer-offline
 
       # ──────────────────────────────────────────────────────────────────────
       # Harness swap: resolve the harness HERE, not in "Run"

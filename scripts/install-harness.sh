@@ -156,7 +156,7 @@ case "$H" in
     # fetch, so blocking lifecycle scripts is safe and denies a compromised
     # release an auto-run install hook in the run's secret env. If a future pin
     # needs a postinstall binary fetch, drop this flag (keep the pin).
-    npm install -g --ignore-scripts @openai/codex@0.144.6
+    npm install -g --ignore-scripts @openai/codex@0.159.3
     mkdir -p "$HOME/.codex"
     case "$AUTH_MODE" in
       native-oauth)
@@ -198,9 +198,11 @@ TOML
   pi)
     # PINNED (like codex/claude): an unpinned `-g` install silently tracks latest
     # and would run whatever the registry serves in CI with the run's secrets in
-    # env. 0.80.9 is the version verified live 2026-07-22.
+    # env. 0.80.9 was verified live 2026-07-22; 0.99.2 (2026-10-01) keeps every
+    # flag and the json event shape the adapter reads, and its new deps carry no
+    # install scripts (ci-harness-cli.yml runs it through the adapter).
     # --ignore-scripts: pi's postinstall is not needed headless.
-    npm install -g --ignore-scripts @earendil-works/pi-coding-agent@0.80.9
+    npm install -g --ignore-scripts @earendil-works/pi-coding-agent@0.99.2
     # pi picks its provider from whichever key is in env at RUN time
     # (ANTHROPIC_API_KEY / OPENAI_API_KEY native, else OPENROUTER_API_KEY with
     # --model openrouter/…). No config file either way.
@@ -208,9 +210,13 @@ TOML
     ;;
   kimi)
     # PINNED + --ignore-scripts: same supply-chain hardening as pi/codex. 0.28.0
-    # is the version verified live 2026-07-22. If a future CI run shows kimi's
-    # install needs a postinstall binary fetch, drop --ignore-scripts (keep the pin).
-    npm install -g --ignore-scripts @moonshot-ai/kimi-code@0.28.0
+    # was verified live 2026-07-22; 2.1.1 (2026-10-01) keeps the flags, the
+    # stream-json shape and this config schema (its 2.0 "major" was a desktop-app
+    # change), and its postinstall only renames an old Python `kimi` shim, so
+    # --ignore-scripts stays safe. ci-harness-cli.yml runs it through the adapter
+    # against a fake upstream. If a future pin needs a postinstall binary fetch,
+    # drop --ignore-scripts (keep the pin).
+    npm install -g --ignore-scripts @moonshot-ai/kimi-code@2.1.1
     mkdir -p "$HOME/.kimi-code"
     case "$AUTH_MODE" in
       native-oauth)
@@ -261,9 +267,11 @@ TOML
     esac
     ;;
   vibe)
-    # PINNED: 2.20.0 verified live 2026-07-22. (pipx/pip has no clean per-package
+    # PINNED: 2.20.0 verified live 2026-07-22; 2.25.8 since 2026-10-01 (it ships
+    # only cp312 abi3 wheels, manylinux_2_28 on Linux, no sdist: fine on
+    # ubuntu-latest's Python 3.12). (pipx/pip has no clean per-package
     # --ignore-scripts equivalent, so the pin is the guard here.)
-    pipx install mistral-vibe==2.20.0
+    pipx install mistral-vibe==2.25.8
     [ -n "${GITHUB_PATH:-}" ] && echo "$HOME/.local/bin" >> "$GITHUB_PATH"
     if [ "$AUTH_MODE" = "native-key" ]; then
       # MISTRAL_API_KEY set → vibe's DEFAULT provider IS Mistral; it runs straight

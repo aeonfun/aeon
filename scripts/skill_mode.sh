@@ -170,8 +170,8 @@ write_tools() { echo "$BASE_TOOLS,$WRITE_TOOLS"; }
 #   effort: high            # low|medium|high|xhigh|max  -> --effort
 #   reasoning_effort: high  # same set                   -> --reasoning-effort
 #   max_turns: 60           # agentic-turn cap           -> --max-turns
-#   best_of_n: 3            # run N ways, keep the best   -> --best-of-n
-#   verify: true            # append a self-check loop    -> --check
+#   best_of_n: 3            # was --best-of-n; grok 1.x removed it (adapter ignores, with a notice)
+#   verify: true            # was --check; grok 1.x removed it (adapter ignores, with a notice)
 #
 # Output is `export GROK_X=...` lines for exactly the fields present, so unset
 # fields fall through to the adapter's defaults. aeon.yml's grok branch evals this.

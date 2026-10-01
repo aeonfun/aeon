@@ -270,17 +270,17 @@ harness:
 
 ```yaml
 max_turns: 120     # agentic-turn cap (default 60; a runaway/cost guard) → --max-turns
-best_of_n: 3       # run the task 3 ways in parallel, keep the best      → --best-of-n
-verify: true       # append a self-verification loop before finishing    → --check
 effort: high       # low|medium|high|xhigh|max → --effort  (reasoning models only)
 ```
 
 `effort`/`reasoning_effort` map to the API's `reasoningEffort`, honoured by
 `grok-4.7` (the default), `grok-4.6` and `grok-4.5`: the reasoning models the
 X-account login exposes to the CLI (see [Verification status](#verification-status);
-older xAI model ids are api.x.ai strings the CLI rejects as "unknown model id"). `best_of_n`/`verify` build
-on grok's subagents (so the harness drops `--no-subagents` for those runs);
-`verify` can't combine with structured output.
+older xAI model ids are api.x.ai strings the CLI rejects as "unknown model id").
+
+`best_of_n` and `verify` used to map to `--best-of-n` / `--check`. grok 1.x
+removed both flags (1.0.46 rejects them as "unexpected argument"), so the adapter
+now ignores those two keys with a notice and always runs with `--no-subagents`.
 
 These knobs are read by `harness-adapter/adapters/grok.sh`, ported from
 `run-grok.sh` §3c.

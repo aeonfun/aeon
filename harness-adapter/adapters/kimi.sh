@@ -4,7 +4,8 @@
 # kimi quirks this adapter absorbs:
 #   * `kimi -p <text> --output-format stream-json` emits a JSONL stream of
 #     {role,content} messages + a trailing {role:"meta"} resume hint -> .result
-#     is the last assistant message's content.
+#     is the last assistant message's content. (2.x adds a leading
+#     {role:"meta",type:"system.version"} line; meta lines are never read as text.)
 #   * stream-json exposes no token usage -> counts normalize to 0.
 #   * model is an alias resolved from config.toml providers; install-harness.sh
 #     stages `or-cheap` (the OpenRouter model aeon resolved) or `kimi-native`
@@ -22,7 +23,7 @@
 # {
 #   "id": "kimi",
 #   "label": "Kimi Code",
-#   "cli": { "install": "", "bin": "kimi", "min_version": "0.28.0" },
+#   "cli": { "install": "", "bin": "kimi", "min_version": "2.1.1" },
 #   "invoke": "kimi -p --output-format stream-json",
 #   "round_trip": true,
 #   "token_usage": "none",
@@ -42,6 +43,10 @@ set -uo pipefail
 
 command -v kimi >/dev/null 2>&1 || { echo "kimi CLI not found" >&2; exit 1; }
 
+# kimi checks a CDN for a newer build at startup and can self-install it; keep the
+# pinned version (scripts/install-harness.sh) for the whole run.
+export KIMI_CODE_NO_AUTO_UPDATE=1
+
 ARGS=(--output-format stream-json)
 [ -n "${RH_MODEL:-}" ] && [ "${RH_MODEL}" != "default" ] && ARGS+=(--model "$RH_MODEL")
 
@@ -60,6 +65,10 @@ if [ -n "${RH_MCP_CONFIG:-}" ] && [ -f "${RH_MCP_CONFIG:-}" ]; then
   KH="$RH_TMPDIR/kimi-home"; mkdir -p "$KH"
   SRC="${KIMI_CODE_HOME:-$HOME/.kimi-code}"
   [ -d "$SRC" ] && find "$SRC" -maxdepth 1 -type f -exec cp {} "$KH/" \; 2>/dev/null
+  # The OAuth login (KIMI_AUTH) lives in credentials/, which the top-level copy
+  # above skips: native-oauth + MCP then failed "no credential configured".
+  # Linked, not copied, so a token refresh writes back to the real home.
+  [ -d "$SRC/credentials" ] && ln -s "$SRC/credentials" "$KH/credentials"
   cp "$RH_MCP_CONFIG" "$KH/mcp.json"
   export KIMI_CODE_HOME="$KH"
 fi

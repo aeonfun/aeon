@@ -450,4 +450,4 @@ Tell them up front:
 - The X OAuth session expires. If unattended runs start failing on auth, reconnect.
 - `mode: read-only` still applies (the wrapper OS sandbox write-locks the workspace on every harness), and MCP works.
 
-Per-skill grok knobs, in `SKILL.md` frontmatter (ignored on the Claude harness): `max_turns` (default 60), `best_of_n`, `verify`, and `effort` (`low|medium|high|xhigh|max`, reasoning models only; non-reasoning models reject it).
+Per-skill grok knobs, in `SKILL.md` frontmatter (ignored on the Claude harness): `max_turns` (default 60) and `effort` (`low|medium|high|xhigh|max`, reasoning models only; non-reasoning models reject it).

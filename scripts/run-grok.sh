@@ -52,7 +52,7 @@ set -uo pipefail   # NOT -e: every step below handles its own failure explicitly
 
 # --- pin (single source of truth for the grok CLI version) ------------------
 # Keep this current the same way aeon.yml/messages.yml pin the claude CLI.
-GROK_CLI_VERSION="${GROK_CLI_VERSION:-0.2.101}"
+GROK_CLI_VERSION="${GROK_CLI_VERSION:-1.0.46}"
 
 log() { echo "$@" >&2; }
 

@@ -1,0 +1,75 @@
+name: ci-harness-cli
+
+# Installs every pinned harness CLI at the version this repo pins and proves its
+# adapter still drives it - so a pin bump (majors included) is checked against the
+# real CLI here, instead of on the first scheduled run that happens to use it.
+#
+# One job per harness runs scripts/tests/harness_cli_smoke.sh, which reads the pin
+# from the install site the workflows use (aeon.yml, run-grok.sh,
+# install-harness.sh, llm-gateway.sh), installs through that same site, then checks
+# `--version` == pin, that `--help` still lists every flag the adapter passes
+# (scraped from adapters/<h>.sh, so the list cannot drift), and runs a prompt
+# through harness-adapter/run-harness against a local fake model server
+# (scripts/tests/fake-llm-upstream.mjs). The ccr job starts claude-code-router the
+# way llm-gateway.sh does and sends an Anthropic request through it to the fake.
+#
+# No secrets and no real model calls: every provider config is pointed at
+# 127.0.0.1. ci-gate.yml's `gate` waits on this workflow like any other sibling.
+#
+# fx, cursor and hermes are not covered here: they install from pinned vendor
+# release artifacts (scripts/install-harness.sh), not npm/PyPI.
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/install-harness.sh'
+      - 'scripts/run-grok.sh'
+      - 'scripts/llm-gateway.sh'
+      - 'scripts/ccr-*.js'
+      - 'harness-adapter/**'
+      - '.github/workflows/aeon.yml'
+      - '.github/workflows/messages.yml'
+      - 'scripts/tests/harness_cli_smoke.sh'
+      - 'scripts/tests/fake-llm-upstream.mjs'
+      - '.github/workflows/ci-harness-cli.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/install-harness.sh'
+      - 'scripts/run-grok.sh'
+      - 'scripts/llm-gateway.sh'
+      - 'scripts/ccr-*.js'
+      - 'harness-adapter/**'
+      - '.github/workflows/aeon.yml'
+      - '.github/workflows/messages.yml'
+      - 'scripts/tests/harness_cli_smoke.sh'
+      - 'scripts/tests/fake-llm-upstream.mjs'
+      - '.github/workflows/ci-harness-cli.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Cancel a superseded in-progress run when a newer commit is pushed to the same PR
+# (reclaims runner-minutes on stacked PR pushes). Never cancels push/main/tag runs.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  smoke:
+    name: smoke (${{ matrix.harness }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        harness: [claude, grok, codex, pi, kimi, vibe, ccr]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      # Same Node major as aeon.yml / messages.yml, where these CLIs really run.
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: '22'
+      - name: Install, version, flags, and fake-upstream round trip
+        run: bash scripts/tests/harness_cli_smoke.sh "${{ matrix.harness }}"

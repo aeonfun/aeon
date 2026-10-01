@@ -18,7 +18,7 @@
 # {
 #   "id": "codex",
 #   "label": "OpenAI Codex CLI",
-#   "cli": { "install": "npm i -g @openai/codex", "bin": "codex", "min_version": "0.144.6" },
+#   "cli": { "install": "npm i -g @openai/codex", "bin": "codex", "min_version": "0.159.3" },
 #   "invoke": "codex exec --json -",
 #   "round_trip": true,
 #   "token_usage": "full",
@@ -39,7 +39,11 @@ set -uo pipefail
 command -v codex >/dev/null 2>&1 || {
   echo "codex CLI not found (npm i -g @openai/codex)" >&2; exit 1; }
 
-ARGS=(exec --json --skip-git-repo-check --ephemeral)
+# --disable unbounded_connection_retries: codex 0.148+ retries an unreachable
+# provider FOREVER ("Reconnecting... waiting for network", 5-60s backoff), so a
+# gateway outage burned the whole dispatcher timeout. With the feature off it
+# fails after 5 retries with turn.failed and a non-zero exit.
+ARGS=(exec --json --skip-git-repo-check --ephemeral --disable unbounded_connection_retries)
 
 # model: only pass ids codex can serve; a claude-*/grok-* leftover -> codex default
 case "${RH_MODEL:-}" in
@@ -154,13 +158,15 @@ if [ "${FAILED:-0}" -gt 0 ] && [ -z "$RESULT" ]; then
 fi
 [ "${FAILED:-0}" -gt 0 ] && echo "warning: codex reported $FAILED failed-turn/error event(s) — retaining output" >&2
 
-# usage: sum across turns; map cached_input_tokens -> cache_read (codex has no
-# cache_creation concept and no cost field)
-read -r TIN TOUT TCR <<<"$(jq -rs '
+# usage: sum across turns; map cached_input_tokens -> cache_read and
+# cache_write_input_tokens -> cache_creation (codex has no cost field)
+# (0.159+ also reports cache_write_input_tokens -> cache_creation.)
+read -r TIN TOUT TCR TCW <<<"$(jq -rs '
   [.[] | select(.type == "turn.completed") | (.usage // {})] |
   [ ([.[].input_tokens // 0] | add // 0),
     ([.[].output_tokens // 0] | add // 0),
-    ([.[].cached_input_tokens // 0] | add // 0) ] | @tsv' "$CLEAN")"
+    ([.[].cached_input_tokens // 0] | add // 0),
+    ([.[].cache_write_input_tokens // 0] | add // 0) ] | @tsv' "$CLEAN")"
 SID=$(jq -rs '[.[] | select(.type == "thread.started") | (.thread_id // empty)] | first // ""' "$CLEAN")
 
-emit_envelope "$RESULT" "${TIN:-0}" "${TOUT:-0}" "${TCR:-0}" 0 "" "$SID"
+emit_envelope "$RESULT" "${TIN:-0}" "${TOUT:-0}" "${TCR:-0}" "${TCW:-0}" "" "$SID"

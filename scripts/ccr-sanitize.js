@@ -7,7 +7,7 @@
 //    Strict Anthropic-validating upstreams reject these with "text content
 //    blocks must contain non-whitespace text" (musistudio/claude-code-router#1328).
 //
-// 2. ccr 2.0.0 serializes messages in a hybrid shape: OpenAI envelope, but
+// 2. ccr 2.0.0 serialized messages in a hybrid shape: OpenAI envelope, but
 //    content as Anthropic-style part arrays carrying `cache_control`. Naive
 //    OpenAI bridges (observed with Surplus) read `content` expecting a string,
 //    extract nothing, and forward EMPTY system blocks to their Anthropic
@@ -16,10 +16,11 @@
 //    cache_control, which is non-standard OpenAI) gives bridges the shape they
 //    actually parse.
 //
-// Registered by scripts/llm-gateway.sh via config.json:
-//   "transformers": [{ "path": ".../scripts/ccr-sanitize.js" }]
-// ccr instantiates `new (require(path))()` and skips the transformer
-// gracefully if it fails to load.
+// ccr 3.x dropped custom transformer classes, so this is now a plain function.
+// scripts/ccr-aeon-gateway.mjs (the core-gateway plugin llm-gateway.sh registers)
+// runs it on every request before routing. ccr 3.x already drops blank text
+// blocks and flattens text parts on its own when it translates to an OpenAI
+// upstream; this stays as the belt to that brace, because a 400 here costs a run.
 
 const isTextPart = (part) => part && part.type === 'text'
 const isEmptyTextPart = (part) =>
@@ -46,51 +47,51 @@ const normalizeContent = (content) => {
   return parts
 }
 
-module.exports = class SanitizeEmptyText {
-  name = 'sanitize-empty-text'
+// sanitizeRequest(request) -> the same object, cleaned in place. Takes the
+// Anthropic-side request Claude Code sent (system + messages + tools).
+function sanitizeRequest(request) {
+  if (!request || typeof request !== 'object') return request
 
-  async transformRequestIn(request) {
-    if (!request || typeof request !== 'object') return request
-
-    // System prompt: Anthropic shape is a string or an array of text blocks.
-    if (typeof request.system === 'string' && request.system.trim() === '') {
-      delete request.system
-    } else if (Array.isArray(request.system)) {
-      const system = normalizeContent(request.system)
-      if (system.length === 0) delete request.system
-      else request.system = system
-    }
-
-    if (Array.isArray(request.messages)) {
-      request.messages = request.messages
-        .map((msg) => {
-          if (!msg || !Array.isArray(msg.content)) return msg
-          const content = normalizeContent(msg.content)
-          // OpenAI-shape assistant messages carry tool_calls outside content;
-          // null content is valid there, an empty array often is not.
-          if (content.length === 0 && hasToolCalls(msg)) return { ...msg, content: null }
-          return { ...msg, content }
-        })
-        .filter((msg) => {
-          if (!msg) return false
-          if (typeof msg.content === 'string') return msg.content.trim() !== '' || hasToolCalls(msg)
-          if (Array.isArray(msg.content)) return msg.content.length > 0 || hasToolCalls(msg)
-          return true // null/undefined content (e.g. tool_calls-only) — leave as-is
-        })
-    }
-
-    // Anthropic marks tool definitions with cache_control too — non-standard
-    // for OpenAI endpoints, so scrub it there as well.
-    if (Array.isArray(request.tools)) {
-      request.tools = request.tools.map((t) => {
-        if (t && typeof t === 'object' && 'cache_control' in t) {
-          const { cache_control, ...rest } = t
-          return rest
-        }
-        return t
-      })
-    }
-
-    return request
+  // System prompt: Anthropic shape is a string or an array of text blocks.
+  if (typeof request.system === 'string' && request.system.trim() === '') {
+    delete request.system
+  } else if (Array.isArray(request.system)) {
+    const system = normalizeContent(request.system)
+    if (system.length === 0) delete request.system
+    else request.system = system
   }
+
+  if (Array.isArray(request.messages)) {
+    request.messages = request.messages
+      .map((msg) => {
+        if (!msg || !Array.isArray(msg.content)) return msg
+        const content = normalizeContent(msg.content)
+        // OpenAI-shape assistant messages carry tool_calls outside content;
+        // null content is valid there, an empty array often is not.
+        if (content.length === 0 && hasToolCalls(msg)) return { ...msg, content: null }
+        return { ...msg, content }
+      })
+      .filter((msg) => {
+        if (!msg) return false
+        if (typeof msg.content === 'string') return msg.content.trim() !== '' || hasToolCalls(msg)
+        if (Array.isArray(msg.content)) return msg.content.length > 0 || hasToolCalls(msg)
+        return true // null/undefined content (e.g. tool_calls-only) - leave as-is
+      })
+  }
+
+  // Anthropic marks tool definitions with cache_control too - non-standard
+  // for OpenAI endpoints, so scrub it there as well.
+  if (Array.isArray(request.tools)) {
+    request.tools = request.tools.map((t) => {
+      if (t && typeof t === 'object' && 'cache_control' in t) {
+        const { cache_control, ...rest } = t
+        return rest
+      }
+      return t
+    })
+  }
+
+  return request
 }
+
+module.exports = { sanitizeRequest, normalizeContent }

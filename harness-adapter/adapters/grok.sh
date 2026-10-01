@@ -13,7 +13,8 @@
 #     but only streaming-json's terminal `{"type":"end"}` event carries usage
 #     (input/output/cache_read/reasoning tokens), total_cost_usd, sessionId AND
 #     structuredOutput. The plain `json` envelope has no usage field at all —
-#     which is why grok counts used to normalize to 0. Verified on 0.2.101.
+#     which is why grok counts used to normalize to 0. Verified on 0.2.101, and
+#     on 1.0.46 against a local fake upstream (ci-harness-cli.yml).
 #   * .thought (chain-of-thought) must NEVER leak into .result. streaming-json
 #     interleaves {"type":"thought"} chunks with {"type":"text"} chunks, so the
 #     firewall here is structural: .result is built ONLY from type=="text".
@@ -22,7 +23,7 @@
 # {
 #   "id": "grok",
 #   "label": "Grok Build",
-#   "cli": { "install": "npm i -g @xai-official/grok", "bin": "grok", "min_version": "0.2.101" },
+#   "cli": { "install": "npm i -g @xai-official/grok", "bin": "grok", "min_version": "1.0.46" },
 #   "invoke": "grok -p --output-format streaming-json",
 #   "round_trip": true,
 #   "token_usage": "full",
@@ -66,8 +67,7 @@ esac
 # script are preserved (verified against grok 0.2.101):
 #   * --effort/--reasoning-effort hit the API's reasoningEffort, which composer
 #     400s on — gate them on a reasoning model, skip-with-warning otherwise.
-#   * grok's parser refuses --no-subagents alongside --best-of-n/--check (both
-#     are built ON subagents) — so those opt OUT of --no-subagents.
+#     (In 1.x --effort is an alias of --reasoning-effort; both still parse.)
 MODEL_IS_REASONING=0
 case "${RH_MODEL:-}" in
   "" | default | claude-* | *composer*) ;;   # composer / unknown / empty → NOT reasoning (400-safe)
@@ -100,28 +100,23 @@ add_effort() {
 add_effort GROK_EFFORT --effort "${GROK_EFFORT:-}"
 add_effort GROK_REASONING_EFFORT --reasoning-effort "${GROK_REASONING_EFFORT:-}"
 
-# --best-of-n (N>=2) and --check are built ON subagents, so they flip the
-# subagent switch on (grok won't combine either with --no-subagents).
-GROK_WANTS_SUBAGENTS=0
+# --best-of-n / --check: REMOVED from the CLI in grok 1.x (1.0.46 rejects both
+# with "unexpected argument", exit 2, so passing them would fail every run of a
+# skill that set best_of_n/verify). There is no replacement flag. The frontmatter
+# still maps to GROK_BEST_OF_N / GROK_CHECK (scripts/skill_mode.sh), so say they
+# are ignored rather than silently dropping an operator's knob.
 case "${GROK_BEST_OF_N:-}" in
   "" | 0 | 1) ;;
-  *[!0-9]*) echo "warning: ignoring non-integer GROK_BEST_OF_N='${GROK_BEST_OF_N}'" >&2 ;;
-  *) ARGS+=(--best-of-n "$GROK_BEST_OF_N"); GROK_WANTS_SUBAGENTS=1 ;;
+  *) echo "notice: ignoring best_of_n=${GROK_BEST_OF_N}: grok 1.x removed --best-of-n" >&2 ;;
 esac
 case "${GROK_CHECK:-}" in
-  1 | true | yes | on)
-    if [ -n "${RH_JSON_SCHEMA:-}" ]; then
-      echo "warning: ignoring --check: grok can't combine it with --json-schema (structured output wins)" >&2
-    else
-      ARGS+=(--check); GROK_WANTS_SUBAGENTS=1
-    fi ;;
+  1 | true | yes | on) echo "notice: ignoring verify: grok 1.x removed --check" >&2 ;;
 esac
 
-# --no-subagents by default: a headless skill run is one focused agent; the
+# --no-subagents always: a headless skill run is one focused agent; the
 # multi-agent models otherwise delegate to a Task/spawn tool that isn't
 # allowlisted, and the denial aborts the whole turn (stopReason=Cancelled).
-# Skip it only when best-of-n/check explicitly asked for subagents above.
-[ "$GROK_WANTS_SUBAGENTS" = 0 ] && ARGS+=(--no-subagents)
+ARGS+=(--no-subagents)
 
 # structured output: reliably honoured by reasoning models (grok-4.x/grok-build);
 # composer leaves .structuredOutput null and just emits JSON text — both handled below.
@@ -153,7 +148,7 @@ fi
 #
 # Trusting is sound here: the folder is the operator's own checked-out repo, which
 # the harness is already executing as the agent's workspace. The flag is hidden on
-# --help but accepted (grok 0.2.101+); it is passed ONLY when an MCP config is in
+# --help but accepted (grok 0.2.101 and 1.0.46); passed ONLY when an MCP config is in
 # play, so a non-MCP run keeps the default untrusted posture.
 if [ -n "${RH_MCP_CONFIG:-}" ] && [ -f "${RH_MCP_CONFIG:-}" ]; then
   ARGS+=(--trust)
@@ -161,6 +156,10 @@ if [ -n "${RH_MCP_CONFIG:-}" ] && [ -f "${RH_MCP_CONFIG:-}" ]; then
     ARGS+=(--allow "MCPTool(${srv}__*)")
   done
 fi
+
+# Headless CI: no self-update and no product telemetry. --no-auto-update covers
+# the update check for this call; the env vars are grok 1.x's process-wide knobs.
+export GROK_DISABLE_AUTOUPDATER=1 GROK_TELEMETRY_ENABLED=0
 
 OUT="$RH_TMPDIR/grok-out.jsonl"
 grok -p "$(cat "$RH_PROMPT_FILE")" "${ARGS[@]}" > "$OUT"
@@ -197,8 +196,11 @@ if [ -s "$CLEAN" ]; then
 
   # grok exits 0 even on a Cancelled/aborted run — that is a FAILED run, not an
   # empty-but-successful one. A clean EndTurn with empty text passes through.
+  # grok 1.x spells stopReason in snake_case (end_turn, max_tokens,
+  # max_turn_requests, refusal, cancelled); 0.2.x used EndTurn/Cancelled. Hitting
+  # the turn or token cap with NO text is a failed run too.
   case "$STOP" in
-    Cancelled|cancelled|Aborted|aborted|Interrupted|interrupted|Error|error|Failed|failed|Refusal|refusal)
+    Cancelled|cancelled|Aborted|aborted|Interrupted|interrupted|Error|error|Failed|failed|Refusal|refusal|max_turn_requests|MaxTurnRequests|max_tokens|MaxTokens)
       if [ -z "$RESULT_TEXT" ]; then
         echo "grok terminated abnormally (stopReason=$STOP) with no output" >&2
         exit 3

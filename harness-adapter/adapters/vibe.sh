@@ -3,11 +3,12 @@
 #
 # vibe quirks this adapter absorbs:
 #   * `vibe -p <text> --output json` prints a JSON ARRAY of all session messages
-#     at the end -> .result is the last assistant message's `content` (never its
-#     `reasoning_content`).
+#     at the end -> .result is the last assistant message's text content (a
+#     string on 2.20, an array of {type:"text"} parts on 2.25; never reasoning).
 #   * json mode exposes no token usage -> counts normalize to 0 (vibe meters cost
 #     internally for --max-price but does not emit it here).
-#   * native --max-turns is honored; reads repo AGENTS.md natively.
+#   * native --max-turns is honored. vibe loads the repo AGENTS.md only for a
+#     trusted folder (`--trust`), which this adapter does not pass today.
 #   * NO native FS sandbox -> read-only relies on the dispatcher's wrapper OS
 #     sandbox plus --disabled-tools write_file,edit. --auto-approve is passed in
 #     BOTH modes: it gates PROMPTING, not writing, so withholding it headless
@@ -21,7 +22,7 @@
 # {
 #   "id": "vibe",
 #   "label": "Mistral Vibe",
-#   "cli": { "install": "", "bin": "vibe", "min_version": "2.20.0" },
+#   "cli": { "install": "", "bin": "vibe", "min_version": "2.25.8" },
 #   "invoke": "vibe -p --output json",
 #   "round_trip": true,
 #   "token_usage": "none",
@@ -42,8 +43,16 @@ set -uo pipefail
 
 command -v vibe >/dev/null 2>&1 || { echo "vibe CLI not found" >&2; exit 1; }
 
-ARGS=(--output json)
-[ -n "${RH_MODEL:-}" ] && [ "${RH_MODEL}" != "default" ] && ARGS+=(--model "$RH_MODEL")
+# --legacy-harness: 2.25 can switch programmatic runs to its native "Unified
+# Harness" from a cached feature-flag rollout (it needs a Mistral key, so the
+# native-key path is the one exposed); pin the Python harness the adapter's output
+# parsing is written against.
+ARGS=(--output json --legacy-harness)
+# vibe has no --model flag (neither 2.20 nor 2.25; argparse exits 2 on it). The
+# model is a config alias, selected through vibe's VIBE_* env settings layer.
+if [ -n "${RH_MODEL:-}" ] && [ "${RH_MODEL}" != "default" ]; then
+  export VIBE_ACTIVE_MODEL="$RH_MODEL"
+fi
 # --auto-approve in BOTH modes. It means "approve all tool calls without
 # prompting" — withholding it headless does not restrict writes, it strands
 # EVERY tool call (read and web included) on a prompt nobody answers. Measured on
@@ -87,10 +96,16 @@ run_once() {  # run_once PROMPT -> sets RESULT/BADSHAPE; returns vibe's rc
   vibe -p "$1" "${ARGS[@]}" > "$RH_TMPDIR/vibe-out.json" 2>"$RH_TMPDIR/vibe.err"
   local rc=$?
   if jq -e 'type == "array"' "$RH_TMPDIR/vibe-out.json" >/dev/null 2>&1; then
+    # 2.20 dumped {role, content:"<string>"}; 2.25 dumps history entries
+    # {type:"message", role, content:[{type:"text", text}], sessionId, ...}.
+    # Only text parts become .result (never reasoning).
     RESULT=$(jq -r '
       [.[] | select((.role // "") == "assistant")
-           | (.content | if type == "string" then . else tostring end)]
+           | (.content | if type == "string" then .
+                         elif type == "array" then (map(select((.type // "text") == "text") | (.text // "")) | join("\n\n"))
+                         else tostring end)]
       | map(select(. != "")) | last // ""' "$RH_TMPDIR/vibe-out.json")
+    SID=$(jq -r '[.[] | (.sessionId // .session_id // empty)] | first // ""' "$RH_TMPDIR/vibe-out.json")
     BADSHAPE=0
   else
     RESULT=""; BADSHAPE=1
@@ -145,4 +160,4 @@ if [ "${VIN:-0}" = "0" ] && [ "${VOUT:-0}" = "0" ]; then
   VIN=$(( ${#BASE} / 4 )); VOUT=$(( ${#RESULT} / 4 ))
   echo "note: vibe exposes no token usage — reporting a char/4 estimate (in~$VIN out~$VOUT)" >&2
 fi
-emit_envelope "$RESULT" "$VIN" "$VOUT" 0 0 "" ""
+emit_envelope "$RESULT" "$VIN" "$VOUT" 0 0 "" "${SID:-}"
