@@ -31,7 +31,6 @@ on:
       - '.github/workflows/messages.yml'
       - 'scripts/tests/harness_cli_smoke.sh'
       - 'scripts/tests/fake-llm-upstream.mjs'
-      - 'scripts/tests/fake-mcp-server.mjs'
       - '.github/workflows/ci-harness-cli.yml'
   push:
     branches: [main]
@@ -45,7 +44,6 @@ on:
       - '.github/workflows/messages.yml'
       - 'scripts/tests/harness_cli_smoke.sh'
       - 'scripts/tests/fake-llm-upstream.mjs'
-      - 'scripts/tests/fake-mcp-server.mjs'
       - '.github/workflows/ci-harness-cli.yml'
   workflow_dispatch:
 
@@ -73,12 +71,15 @@ jobs:
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: '22'
-      # pi's smoke also runs an MCP prompt in --mode read-only, which puts pi and
-      # its stdio MCP server under the wrapper OS sandbox (lib/sandbox.sh) the way
-      # aeon.yml runs read-only skills. Same setup as aeon.yml's "Install
-      # bubblewrap (read-only sandbox)" step; fail here if bwrap still cannot run.
-      - name: Install bubblewrap (pi read-only MCP run)
-        if: matrix.harness == 'pi'
+      # The smoke script runs a second, READ-ONLY leg through the wrapper OS
+      # sandbox (harness-adapter/lib/sandbox.sh) to prove each harness still
+      # starts and writes its own state once the host fs is read-only by default.
+      # Install bubblewrap and lift Ubuntu 24.04's AppArmor userns restriction the
+      # same way aeon.yml and ci-tests.yml do. Skipped for ccr (not a sandboxable
+      # harness: it is claude in front of the gateway sidecar, exercised in write
+      # mode). On a dev laptop the read-only leg self-skips when bwrap is absent.
+      - name: Install bubblewrap (read-only sandbox smoke)
+        if: matrix.harness != 'ccr'
         timeout-minutes: 5
         run: |
           set -euo pipefail

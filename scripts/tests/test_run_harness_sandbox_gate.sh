@@ -67,13 +67,27 @@ echo "$out" | grep -q "unknown harness" \
 # workflow steps (runner file-command dir, global git config, _actions) and drop
 # the GITHUB_ENV-family vars, while keeping memory/ + output/ writable. Exercised
 # with a stub `uname`/`bwrap` so it runs the same on macOS and Linux CI.
-SBX=$(mktemp -d)
+# The mock tree must live OUTSIDE every path the sandbox adds back read-write
+# (/tmp, $TMPDIR, $RUNNER_TEMP, the run tmpdir, $HOME state dirs), or the ro-root
+# model under test would make the whole tree writable and every ro / escape-refusal
+# assertion would be vacuous. $HOME is that place: it is read-only by default (only
+# specific $HOME subdirs are added back rw), and the mock tree is a plain child of
+# it. Each build below pins TMPDIR to $TMP and RUNNER_TEMP to the mock _temp so the
+# lib binds those (not the operator's real dirs) when it runs. The run's own tmpdir
+# ($TMP, the lib's first arg) and the mock $RUNNER_TEMP ($SBX/work/_temp) ARE rw;
+# the mock HOME + workspace sit elsewhere under $SBX, so they stay read-only.
+SBX=$(mktemp -d "${HOME:-/tmp}/sbxgate.XXXXXX")
 trap 'rm -rf "$SBX"' EXIT
+TMP="$SBX/runtmp"
+RT="$SBX/work/_temp"
 mkdir -p "$SBX/bin" "$SBX/home" "$SBX/work/_temp/_runner_file_commands" \
   "$SBX/work/_actions" "$SBX/work/repo/repo/memory" "$SBX/work/repo/repo/output" \
-  "$SBX/home/.foundry/bin" "$SBX/home/.local/share/pipx" "$SBX/toolcache/node/bin"
+  "$SBX/home/.foundry/bin" "$SBX/home/.local/bin" "$SBX/home/.local/share/pipx" \
+  "$SBX/toolcache/node/bin" "$SBX/work/_temp/snap" "$SBX/work/_temp/aeon-pending" "$TMP"
 printf '#!/bin/sh\nexit 0\n' > "$SBX/bin/bwrap"; chmod +x "$SBX/bin/bwrap"
 FC="$SBX/work/_temp/_runner_file_commands"
+SNAP="$SBX/work/_temp/snap"
+PEND="$SBX/work/_temp/aeon-pending"
 prefix=$(
   cd "$SBX/work/repo/repo" || exit 1
   # shellcheck disable=SC2329  # invoked indirectly by sandbox_prefix
@@ -83,7 +97,8 @@ prefix=$(
   PATH="$SBX/bin:$SBX/home/.local/bin:$SBX/home/.foundry/bin:$SBX/toolcache/node/bin:$PATH" HOME="$SBX/home" XDG_CONFIG_HOME="" \
     GITHUB_ENV="$FC/set_env_x" GITHUB_PATH="$FC/add_path_x" GITHUB_OUTPUT="$FC/set_output_x" \
     GITHUB_STEP_SUMMARY="$FC/step_summary_x" GITHUB_STATE="$FC/save_state_x" \
-    RUNNER_WORKSPACE="$SBX/work/repo" RUNNER_TOOL_CACHE="$SBX/toolcache" sandbox_prefix "$SBX"
+    RUNNER_WORKSPACE="$SBX/work/repo" RUNNER_TOOL_CACHE="$SBX/toolcache" RUNNER_TEMP="$RT" \
+    AEON_HARNESS_CONFIG_SNAPSHOT="$SNAP" AEON_PENDING_DIR="$PEND" TMPDIR="$TMP" sandbox_prefix "$TMP"
 )
 WS=$(cd "$SBX/work/repo/repo" && pwd -P)
 TOK=()
@@ -96,49 +111,56 @@ has_pair() {
   done
   return 1
 }
-has_pair --ro-bind "$WS" && pass "sandbox_prefix: workspace ro-bound" || bad "sandbox_prefix: workspace not ro-bound ($prefix)"
+# has_opt OPT ARG -> argv carries `OPT ARG` consecutively (two-token option)
+has_opt() {
+  local i
+  for ((i = 0; i + 1 < ${#TOK[@]}; i++)); do
+    [ "${TOK[i]}" = "$1" ] && [ "${TOK[i+1]}" = "$2" ] && return 0
+  done
+  return 1
+}
+# Read-only root: the whole fs is ro by default, with a working /dev + /proc.
+[ "${TOK[0]}" = bwrap ] && pass "sandbox_prefix: prefix starts with bwrap" || bad "sandbox_prefix: first token is not bwrap (${TOK[0]})"
+has_pair --ro-bind / && pass "sandbox_prefix: host fs ro-bound at / (read-only root)" || bad "sandbox_prefix: root not ro-bound ($prefix)"
+has_opt --dev /dev && pass "sandbox_prefix: fresh /dev" || bad "sandbox_prefix: no --dev /dev"
+has_opt --proc /proc && pass "sandbox_prefix: fresh /proc" || bad "sandbox_prefix: no --proc /proc"
+# The workspace itself is NOT a separate mount: it is read-only via the root, so
+# there is no bind to rename aside (that was the escape).
+has_pair --ro-bind "$WS" || has_pair --bind "$WS" \
+  && bad "sandbox_prefix: workspace is a separate mount (should be ro via root)" \
+  || pass "sandbox_prefix: workspace has no separate mount (read-only via root)"
+# ...but its two documented state dirs are added back rw.
 has_pair --bind "$WS/memory" && pass "sandbox_prefix: memory/ stays rw" || bad "sandbox_prefix: memory/ not re-bound rw"
 has_pair --bind "$WS/output" && pass "sandbox_prefix: output/ stays rw" || bad "sandbox_prefix: output/ not re-bound rw"
-[ "$(printf '%s\n' "$prefix" | grep -cx -- "$FC")" = 2 ] && has_pair --ro-bind "$FC" \
-  && pass "sandbox_prefix: runner file-command dir ro-bound once" \
-  || bad "sandbox_prefix: runner file-command dir not ro-bound exactly once"
-has_pair --ro-bind "$SBX/home/.gitconfig" && [ -f "$SBX/home/.gitconfig" ] \
-  && pass "sandbox_prefix: missing ~/.gitconfig created empty and ro-bound" \
-  || bad "sandbox_prefix: ~/.gitconfig not locked"
-has_pair --ro-bind "$SBX/home/.config/git" && pass "sandbox_prefix: ~/.config/git ro-bound" \
-  || bad "sandbox_prefix: ~/.config/git not locked"
-has_pair --ro-bind "$SBX/work/_actions" && pass "sandbox_prefix: runner _actions dir ro-bound" \
-  || bad "sandbox_prefix: _actions not locked"
-# $HOME paths a later (unsandboxed) step executes or reads config from. The
-# missing ones must be created first, or the run could plant them.
-for rel in .local/bin .local/lib .config/gh .ssh .npmrc; do
-  has_pair --ro-bind "$SBX/home/$rel" && [ -e "$SBX/home/$rel" ] \
-    && pass "sandbox_prefix: ~/$rel created and ro-bound" || bad "sandbox_prefix: ~/$rel not locked"
+# Scratch stays writable: this run's tmpdir, /tmp, and the pending/notify queue.
+has_pair --bind "$TMP" && pass "sandbox_prefix: run tmpdir rw" || bad "sandbox_prefix: run tmpdir not rw-bound"
+has_pair --bind /tmp && pass "sandbox_prefix: /tmp rw" || bad "sandbox_prefix: /tmp not rw-bound"
+has_pair --bind "$PEND" && pass "sandbox_prefix: AEON_PENDING_DIR rw" || bad "sandbox_prefix: pending/notify queue not rw-bound"
+has_pair --bind "$RT" && pass "sandbox_prefix: \$RUNNER_TEMP scratch rw" || bad "sandbox_prefix: \$RUNNER_TEMP not rw-bound"
+# Harness state dirs under $HOME are rw (created first; bwrap needs them to exist).
+for rel in .claude .codex .grok .kimi-code .vibe .pi .cache .npm; do
+  has_pair --bind "$SBX/home/$rel" && [ -d "$SBX/home/$rel" ] \
+    && pass "sandbox_prefix: ~/$rel created and rw-bound" || bad "sandbox_prefix: ~/$rel not rw-bound"
 done
-has_pair --ro-bind "$SBX/home/.local/share/pipx" && pass "sandbox_prefix: existing pipx venvs ro-bound" \
-  || bad "sandbox_prefix: ~/.local/share/pipx not locked"
-has_pair --ro-bind "$SBX/home/.foundry/bin" && pass "sandbox_prefix: PATH dir under \$HOME ro-bound" \
-  || bad "sandbox_prefix: ~/.foundry/bin (on PATH) not locked"
-has_pair --ro-bind "$SBX/toolcache" && pass "sandbox_prefix: runner tool cache (npm -g prefix) ro-bound" \
-  || bad "sandbox_prefix: RUNNER_TOOL_CACHE not locked"
-printf '%s\n' "$prefix" | grep -qx -- "$SBX/bin" \
-  && bad "sandbox_prefix: locked a PATH dir outside \$HOME" || pass "sandbox_prefix: PATH dirs outside \$HOME left alone"
-[ "$(printf '%s\n' "$prefix" | grep -cx -- "$SBX/home/.local/bin")" = 2 ] \
-  && pass "sandbox_prefix: ~/.local/bin bound once (PATH + explicit lock deduped)" \
-  || bad "sandbox_prefix: ~/.local/bin not bound exactly once"
-# A PATH dir that CONTAINS the workspace must not be locked: an ro-bind over it
-# after the memory/ + output/ rebinds would take their write access away.
-prefix2=$(
-  cd "$SBX/work/repo/repo" || exit 1
-  # shellcheck disable=SC2329  # invoked indirectly by sandbox_prefix
-  uname() { echo Linux; }
-  # shellcheck source=harness-adapter/lib/sandbox.sh
-  . "$OLDPWD/harness-adapter/lib/sandbox.sh"
-  PATH="$SBX/bin:$SBX/work/repo:$PATH" HOME="$SBX/work" XDG_CONFIG_HOME="" sandbox_prefix "$SBX"
-)
-printf '%s\n' "$prefix2" | grep -qx -- "$SBX/work/repo" \
-  && bad "sandbox_prefix: locked a PATH dir that holds the workspace" \
-  || pass "sandbox_prefix: PATH dir holding the workspace is skipped"
+has_pair --bind "$SBX/home/.claude.json" && [ -f "$SBX/home/.claude.json" ] \
+  && pass "sandbox_prefix: ~/.claude.json created and rw-bound" || bad "sandbox_prefix: ~/.claude.json not rw-bound"
+# Paths a later unsandboxed step executes or reads config from must NOT be rw.
+# They are read-only via the root (no explicit per-path bind), which is what closes
+# the poisoning + parent-rename escape.
+for rel in .local/bin .local/lib .gitconfig .config/gh .ssh .npmrc .foundry/bin; do
+  has_pair --bind "$SBX/home/$rel" \
+    && bad "sandbox_prefix: ~/$rel is rw (must stay read-only via the root)" \
+    || pass "sandbox_prefix: ~/$rel not rw (read-only via root)"
+done
+has_pair --bind "$SBX/toolcache" && bad "sandbox_prefix: RUNNER_TOOL_CACHE is rw (must stay ro)" \
+  || pass "sandbox_prefix: RUNNER_TOOL_CACHE read-only via root"
+# The runner file-command dir and the harness-config snapshot are re-asserted ro
+# (so they stay protected even when they sit under an rw scratch ancestor). Once each.
+[ "$(printf '%s\n' "$prefix" | grep -cx -- "$FC")" = 2 ] && has_pair --ro-bind "$FC" \
+  && pass "sandbox_prefix: runner file-command dir re-asserted ro once" \
+  || bad "sandbox_prefix: runner file-command dir not ro exactly once"
+has_pair --ro-bind "$SNAP" && pass "sandbox_prefix: harness-config snapshot re-asserted ro" \
+  || bad "sandbox_prefix: harness-config snapshot not re-asserted ro"
 for v in GITHUB_ENV GITHUB_PATH GITHUB_OUTPUT GITHUB_STEP_SUMMARY GITHUB_STATE; do
   printf '%s\n' "$prefix" | grep -A1 -x -- --unsetenv | grep -qx "$v" \
     && pass "sandbox_prefix: unsets $v" || bad "sandbox_prefix: does not unset $v"
@@ -159,7 +181,8 @@ if [ "$(uname -s)" = Linux ] && command -v bwrap >/dev/null 2>&1 \
   live=()
   while IFS= read -r tok; do live+=("$tok"); done < <(
     cd "$RW" && . "$OLDPWD/harness-adapter/lib/sandbox.sh" \
-      && HOME="$SBX/home" GITHUB_ENV="$FC/set_env_x" RUNNER_WORKSPACE="$SBX/work/repo" sandbox_prefix "$SBX")
+      && HOME="$SBX/home" GITHUB_ENV="$FC/set_env_x" RUNNER_WORKSPACE="$SBX/work/repo" \
+         RUNNER_TEMP="$RT" TMPDIR="$TMP" sandbox_prefix "$TMP")
   # denied LABEL FILE -> the sandboxed append to FILE must fail and leave no trace
   denied() {
     if ( cd "$RW" && "${live[@]}" sh -c 'echo planted >> "$1"' sh "$2" ) 2>/dev/null \
@@ -227,7 +250,7 @@ if [ "$(uname -s)" = Linux ] && command -v bwrap >/dev/null 2>&1 \
   while IFS= read -r tok; do SB_PRE+=("$tok"); done < <(
     cd "$RW" && . "$OLDPWD/harness-adapter/lib/sandbox.sh" \
       && HOME="$SBX/home" GITHUB_ENV="$FC/set_env_x" RUNNER_WORKSPACE="$SBX/work/repo" \
-         AEON_HARNESS_CONFIG_SNAPSHOT="$SBX/snap/dir" sandbox_prefix "$SBX")
+         RUNNER_TEMP="$RT" AEON_HARNESS_CONFIG_SNAPSHOT="$SBX/snap/dir" TMPDIR="$TMP" sandbox_prefix "$TMP")
   check_escape "workspace" "$SBX/work/repo" "$RW"
   check_escape "\$HOME/.local (parent of ro ~/.local/bin)" "$SBX/home/.local" "$SBX/home/.local/bin"
   check_escape "runner file-command dir" "$SBX/work/_temp" "$FC"
@@ -239,7 +262,7 @@ if [ "$(uname -s)" = Linux ] && command -v bwrap >/dev/null 2>&1 \
     SB_PRE=()
     while IFS= read -r tok; do SB_PRE+=("$tok"); done < <(
       cd "$RW" && . "$OLDPWD/harness-adapter/lib/sandbox.sh" \
-        && GITHUB_ENV="" RUNNER_WORKSPACE="" RUNNER_TOOL_CACHE="" sandbox_prefix "$SBX")
+        && GITHUB_ENV="" RUNNER_WORKSPACE="" RUNNER_TOOL_CACHE="" RUNNER_TEMP="" TMPDIR="$TMP" sandbox_prefix "$TMP")
     check_escape "real \$HOME/.local" "$HOME/.local" "$HOME/.local/bin"
   fi
   [ "$escape_any" = 1 ] \

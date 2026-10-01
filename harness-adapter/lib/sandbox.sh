@@ -11,17 +11,20 @@
 # the network stays open — read-only is about the repo, not egress).
 # This mirrors aeon's semantic: "a read-only skill physically cannot mutate the
 # repo" — and makes it mean the same thing on all seven harnesses.
-# On Linux it also locks what a LATER, unsandboxed workflow step would execute or
-# read config from (runner file-command dir, git/gh/ssh/npm config, PATH dirs
-# under $HOME, installed harness CLIs); the harness's own state dirs stay rw.
-
-# sandbox_lock PATH -> print `--ro-bind PATH PATH`, once per sandbox_prefix call
-# (dedup via sandbox_prefix's local $seen; bash locals are dynamically scoped).
-sandbox_lock() {
-  case " $seen " in *" $1 "*) return 0 ;; esac
-  seen="$seen $1"
-  printf '%s\n' --ro-bind "$1" "$1"
-}
+# On Linux the whole host filesystem is mounted READ-ONLY by default and only the
+# paths that must be writable are added back rw. This is deliberate: a --ro-bind
+# only pins the exact path it names, so with a writable root (the old
+# --dev-bind / /) a run could rename the PARENT of a protected path, moving the ro
+# mount aside, then recreate the original path with attacker content that a LATER,
+# unsandboxed workflow step (same shared fs, different mount namespace, holding
+# GH_GLOBAL) would read or execute — a planted ~/.local/bin on PATH, a fake
+# workspace the "Commit results" step operates on, a poisoned config snapshot. A
+# read-only root closes that: every parent sits on the ro root (rename -> EROFS)
+# and a bind's own mount point cannot be renamed (EBUSY). What a later step
+# executes or reads config from (runner file-command dir, git/gh/ssh/npm config,
+# PATH dirs under $HOME, installed harness CLIs, the harness-config snapshot) is
+# therefore read-only automatically; only the harness's own state dirs and scratch
+# are added back writable.
 
 sandbox_prefix() {
   # sandbox_prefix TMPDIR [EXPANDED_MCP] -> prints prefix argv tokens (one per
@@ -58,93 +61,90 @@ EOF
       ;;
     Linux)
       command -v bwrap >/dev/null 2>&1 || return 1
-      # bind everything rw, then overlay the workspace read-only
-      printf '%s\n' bwrap --dev-bind / / --ro-bind "$ws" "$ws"
-      # keep the two documented state dirs writable: read-only means cannot
-      # mutate code/config, not cannot persist state. memory/ (committed run
-      # state) + output/ (artifacts) are the exceptions read-only skills rely
-      # on (seo-audit, competitor-monitor). Re-bind rw after the ws ro-bind
-      # (binds apply left to right); guard existence, bwrap errors on missing.
-      [ -d "$ws/memory" ] && printf '%s\n' --bind "$ws/memory" "$ws/memory"
-      [ -d "$ws/output" ] && printf '%s\n' --bind "$ws/output" "$ws/output"
-      # ...then layer the expanded config over the literal one. Order matters:
-      # bwrap applies binds left to right, so this must follow the workspace bind.
+      # Host fs READ-ONLY by default (see the header): everything is mounted ro,
+      # then ONLY the paths that must be writable are added back rw. --dev /dev and
+      # --proc /proc give the sandbox a working /dev (null, urandom, shm, pts) and
+      # /proc that the old --dev-bind / / used to carry from the host.
+      printf '%s\n' bwrap --ro-bind / / --dev /dev --proc /proc
+
+      local p seen=""
+      # rw_bind PATH: create PATH if missing, then rw-bind it onto itself, once.
+      # bwrap needs the target to exist; on a ro root it cannot be created inside.
+      rw_bind() {
+        [ -n "$1" ] || return 0
+        case " $seen " in *" $1 "*) return 0 ;; esac
+        [ -d "$1" ] || mkdir -p "$1" 2>/dev/null || true
+        [ -d "$1" ] || return 0
+        seen="$seen $1"
+        printf '%s\n' --bind "$1" "$1"
+      }
+
+      # Scratch that must stay writable (it was all writable under --dev-bind / /):
+      # this run's own tmpdir, /tmp and $TMPDIR (the compat-rules preamble promises
+      # agents $TMPDIR is writable), the runner's ephemeral $RUNNER_TEMP (scratch +
+      # the pending/notify + audit queue ./notify appends to outside the workspace),
+      # and $AEON_PENDING_DIR when it is set elsewhere. The two sensitive dirs that
+      # live UNDER $RUNNER_TEMP (the file-command dir and the harness-config
+      # snapshot) are re-asserted read-only below, after these rw binds.
+      rw_bind "$tmp"
+      rw_bind /tmp
+      rw_bind "${TMPDIR:-}"
+      rw_bind "${RUNNER_TEMP:-}"
+      rw_bind "${AEON_PENDING_DIR:-}"
+
+      # The two documented workspace state dirs: read-only means cannot mutate
+      # code/config, not cannot persist state. memory/ (committed run state) +
+      # output/ (artifacts) are the exceptions read-only skills rely on (seo-audit,
+      # competitor-monitor). Added rw after the ro root; guard existence.
+      [ -d "$ws/memory" ] && rw_bind "$ws/memory"
+      [ -d "$ws/output" ] && rw_bind "$ws/output"
+
+      # Each harness writes its own state/auth/session under $HOME at runtime;
+      # read-only is about the repo, not the harness's own config. claude writes
+      # ~/.claude (incl. the transcript the scorer reads) + ~/.claude.json; codex
+      # ~/.codex; grok ~/.grok; kimi ~/.kimi-code; vibe ~/.vibe; pi ~/.pi; all of
+      # them ~/.cache + ~/.npm. (fx/cursor/hermes run under a scratch HOME inside
+      # RH_TMPDIR, already rw above, so they need nothing here.) Everything else
+      # under $HOME — ~/.gitconfig, ~/.config/{git,gh}, ~/.ssh, ~/.npmrc,
+      # ~/.local/{bin,lib}, pipx venvs, other PATH dirs — stays read-only from the
+      # ro root, which is what kept a later unsandboxed step from being poisoned.
+      if [ -n "${HOME:-}" ] && [ -d "$HOME" ]; then
+        for p in "$HOME/.claude" "$HOME/.codex" "$HOME/.grok" "$HOME/.kimi-code" \
+                 "$HOME/.vibe" "$HOME/.pi" "$HOME/.cache" "$HOME/.npm" \
+                 "${XDG_CACHE_HOME:-}"; do
+          rw_bind "$p"
+        done
+        # ~/.claude.json is a FILE claude rewrites every run; bwrap needs it to
+        # exist to bind it, and a ro root cannot create it inside the sandbox.
+        [ -e "$HOME/.claude.json" ] || printf '{}' > "$HOME/.claude.json" 2>/dev/null || true
+        [ -f "$HOME/.claude.json" ] && printf '%s\n' --bind "$HOME/.claude.json" "$HOME/.claude.json"
+      fi
+
+      # Layer the expanded .mcp.json over the literal one. After the ro root so it
+      # wins (bwrap applies binds left to right); the target exists in the repo.
       [ -n "$mcp" ] && [ -f "$mcp" ] && [ -f "$ws/.mcp.json" ] && \
         printf '%s\n' --ro-bind "$mcp" "$ws/.mcp.json"
-      # Close the paths a read-only run could use to poison LATER workflow steps,
-      # which run outside the sandbox holding GH_GLOBAL: the runner's file-command
-      # dir ($GITHUB_ENV / $GITHUB_PATH / $GITHUB_OUTPUT / $GITHUB_STEP_SUMMARY /
-      # $GITHUB_STATE), global git config (hooksPath / credential.helper /
-      # insteadOf), and the cached action checkouts under _actions.
-      local p seen=""
+
+      # Re-assert read-only on the two paths that a later, GH_GLOBAL-holding step
+      # reads back and that could otherwise fall UNDER an rw scratch bind above
+      # (e.g. when $TMPDIR == $RUNNER_TEMP, the runner file-command dir and the
+      # harness-config snapshot are siblings of the pending queue). Emitted LAST so
+      # the ro-bind wins over any rw ancestor. All the other old explicit ro-binds
+      # (workspace, git/gh/ssh/npm config, ~/.local/*, _actions, tool cache, PATH
+      # dirs) are now covered by the read-only root with no per-path handling.
+      local roseen=""
       for p in "${GITHUB_ENV:-}" "${GITHUB_PATH:-}" "${GITHUB_OUTPUT:-}" \
-               "${GITHUB_STEP_SUMMARY:-}" "${GITHUB_STATE:-}"; do
+               "${GITHUB_STEP_SUMMARY:-}" "${GITHUB_STATE:-}" ; do
         [ -n "$p" ] || continue
         p="${p%/*}"
-        case " $seen " in *" $p "*) continue ;; esac
-        seen="$seen $p"
+        case " $roseen " in *" $p "*) continue ;; esac
+        roseen="$roseen $p"
         [ -d "$p" ] && printf '%s\n' --ro-bind "$p" "$p"
       done
-      if [ -n "${HOME:-}" ] && [ -d "$HOME" ]; then
-        # A missing ~/.gitconfig could be CREATED inside the sandbox and then read
-        # by later git steps, so make sure it exists (empty = no config) and lock it.
-        [ -e "$HOME/.gitconfig" ] || : > "$HOME/.gitconfig" 2>/dev/null || true
-        [ -f "$HOME/.gitconfig" ] && printf '%s\n' --ro-bind "$HOME/.gitconfig" "$HOME/.gitconfig"
-        p="${XDG_CONFIG_HOME:-$HOME/.config}/git"
-        [ -d "$p" ] || mkdir -p "$p" 2>/dev/null || true
-        [ -d "$p" ] && printf '%s\n' --ro-bind "$p" "$p"
-        # Same create-then-lock for the $HOME paths later steps EXECUTE or read
-        # config from (a planted file there runs outside the sandbox):
-        #   ~/.local/bin  on the runner PATH (install-harness also GITHUB_PATHs it)
-        #   ~/.local/lib  python's user site: a dropped *.pth runs in every python3
-        #   ~/.config/gh  gh config (aliases, http_unix_socket) for later gh calls
-        #   ~/.ssh        ssh config (ProxyCommand) for any later ssh / git+ssh
-        #   ~/.npmrc      npm config (registry, script-shell) for later npm / npx
-        # Shell rc files are left alone: Actions runs steps with
-        # `bash --noprofile --norc`, so nothing later sources them.
-        for p in "$HOME/.local/bin" "$HOME/.local/lib" "${XDG_CONFIG_HOME:-$HOME/.config}/gh" "$HOME/.ssh"; do
-          [ -d "$p" ] || mkdir -p "$p" 2>/dev/null || true
-          [ -d "$p" ] && sandbox_lock "$p"
-        done
-        [ -e "$HOME/.npmrc" ] || : > "$HOME/.npmrc" 2>/dev/null || true
-        [ -f "$HOME/.npmrc" ] && sandbox_lock "$HOME/.npmrc"
-        # Harness installs that "Analyze skill output" re-runs OUTSIDE the sandbox
-        # (vibe's pipx venv, cursor's build, hermes's checkout). cursor and hermes
-        # run under a scratch HOME in RH_TMPDIR, so nothing writes here at runtime.
-        for p in "$HOME/.local/share/pipx" "$HOME/.local/pipx" \
-                 "$HOME/.local/share/cursor-agent" "$HOME/.hermes"; do
-          [ -d "$p" ] && sandbox_lock "$p"
-        done
-        # Any other PATH dir under $HOME (~/.foundry/bin, ~/.cargo/bin, ...): later
-        # steps resolve commands there. Skip $HOME itself and any dir holding the
-        # workspace or this run's scratch dir; those keep their own binds.
-        local real
-        while IFS= read -r -d : p; do
-          p="${p%/}"
-          case "$p" in "$HOME"/*) ;; *) continue ;; esac
-          [ -d "$p" ] && [ -w "$p" ] || continue
-          real="$(cd "$p" 2>/dev/null && pwd -P)" || continue
-          case "$ws/" in "$p"/*|"$real"/*) continue ;; esac
-          case "$tmp/" in "$p"/*|"$real"/*) continue ;; esac
-          sandbox_lock "$p"
-        done <<<"${PATH:-}:"
-      fi
-      # The runner tool cache holds setup-node's prefix, i.e. every `npm i -g`
-      # harness (claude, codex, pi, kimi, grok) the scorer step re-runs unsandboxed.
-      if [ -n "${RUNNER_TOOL_CACHE:-}" ] && [ -d "$RUNNER_TOOL_CACHE" ]; then
-        sandbox_lock "$RUNNER_TOOL_CACHE"
-      fi
-      # The pre-run harness-config snapshot (scripts/harness-config-snapshot.sh)
-      # that aeon.yml puts back before the scorer re-runs the harness outside the
-      # sandbox. Restore also checks its sha256 against a step output; locking it
-      # here keeps a run from spoiling it (which would only skip the scoring).
       if [ -n "${AEON_HARNESS_CONFIG_SNAPSHOT:-}" ] && [ -d "$AEON_HARNESS_CONFIG_SNAPSHOT" ]; then
-        sandbox_lock "$AEON_HARNESS_CONFIG_SNAPSHOT"
+        printf '%s\n' --ro-bind "$AEON_HARNESS_CONFIG_SNAPSHOT" "$AEON_HARNESS_CONFIG_SNAPSHOT"
       fi
-      if [ -n "${RUNNER_WORKSPACE:-}" ]; then
-        p="${RUNNER_WORKSPACE%/*}/_actions"
-        [ -d "$p" ] && printf '%s\n' --ro-bind "$p" "$p"
-      fi
+
       # ...and drop the file-command vars so the adapter never even sees them.
       for p in GITHUB_ENV GITHUB_PATH GITHUB_OUTPUT GITHUB_STEP_SUMMARY GITHUB_STATE; do
         printf '%s\n' --unsetenv "$p"

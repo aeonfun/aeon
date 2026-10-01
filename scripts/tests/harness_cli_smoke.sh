@@ -99,6 +99,32 @@ run_harness() {
       | bash "$RH" "$H" --mode "${SMOKE_MODE:-write}" --timeout 180 "$@" ) 2>"$WORK/rh.err"
 }
 
+# Is a working read-only OS sandbox available? ci-harness-cli.yml installs
+# bubblewrap and lifts the AppArmor userns restriction for the sandboxable
+# harnesses; on a dev laptop (no bwrap) the read-only leg is skipped.
+RO_OK=0
+if [ "$(uname -s)" = Linux ] && command -v bwrap >/dev/null 2>&1 \
+   && bwrap --dev-bind / / --ro-bind /tmp /tmp true >/dev/null 2>&1; then RO_OK=1; fi
+
+# run_harness_ro ARGS... -> run the SAME prompt in --mode read-only, under the
+# wrapper OS sandbox, against the same fake upstream. Proves the harness still
+# starts, writes its own state (config/session under $HOME, scratch under
+# $TMPDIR) and returns a reply once the host fs is read-only by default. Call
+# with the same provider env the write run used.
+run_harness_ro() {
+  if [ "$RO_OK" != 1 ]; then pass "read-only sandbox leg skipped (no working bwrap on this machine)"; return; fi
+  local env_ro="$WORK/envelope-ro.json" r
+  ( cd "$WORK/ws" && echo "Reply with the single word OK and nothing else." \
+      | bash "$RH" "$H" --mode read-only --timeout 180 "$@" ) >"$env_ro" 2>"$WORK/rh-ro.err"
+  grep -q "read-only: workspace write-locked via bwrap" "$WORK/rh-ro.err" \
+    && pass "read-only: ran under the bwrap OS sandbox" \
+    || bad "read-only: sandbox was not applied (stderr: $(tail -c 900 "$WORK/rh-ro.err" | tr '\n' ' '))"
+  r=$(jq -r '.result // ""' "$env_ro" 2>/dev/null | tr -d '\r' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+  [ "$r" = "$REPLY_TEXT" ] \
+    && pass "read-only: harness still starts + returns the reply under the read-only-root sandbox" \
+    || bad "read-only: unexpected .result '$(printf '%.200s' "$r")' (stderr: $(tail -c 900 "$WORK/rh-ro.err" | tr '\n' ' '))"
+}
+
 check_envelope() {  # check_envelope ENVELOPE_FILE WANT_USAGE(1|0)
   local env="$1" want_usage="$2" result tin
   if ! jq -e 'type == "object"' "$env" >/dev/null 2>&1; then
@@ -294,23 +320,29 @@ case "$H" in
     ANTHROPIC_BASE_URL="$FAKE_URL" ANTHROPIC_API_KEY=sk-ant-smoke-not-a-real-key \
       CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 DISABLE_AUTOUPDATER=1 \
       run_harness --max-turns 2 > "$ENV_OUT"
-    check_envelope "$ENV_OUT" 1 ;;
+    check_envelope "$ENV_OUT" 1
+    ANTHROPIC_BASE_URL="$FAKE_URL" ANTHROPIC_API_KEY=sk-ant-smoke-not-a-real-key \
+      CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 DISABLE_AUTOUPDATER=1 \
+      run_harness_ro --max-turns 2 ;;
   codex)
     # The generated config points at OpenRouter; aim the same config at the fake.
     sed -i.bak "s#https://openrouter.ai/api/v1#$FAKE_URL/api/v1#" "$HOME/.codex/config.toml"
     grep -q "$FAKE_URL" "$HOME/.codex/config.toml" || die "could not repoint the codex config"
     run_harness > "$ENV_OUT"
-    check_envelope "$ENV_OUT" 1 ;;
+    check_envelope "$ENV_OUT" 1
+    run_harness_ro ;;
   kimi)
     sed -i.bak "s#https://openrouter.ai/api/v1#$FAKE_URL/api/v1#" "$HOME/.kimi-code/config.toml"
     grep -q "$FAKE_URL" "$HOME/.kimi-code/config.toml" || die "could not repoint the kimi config"
     run_harness > "$ENV_OUT"
-    check_envelope "$ENV_OUT" 0 ;;
+    check_envelope "$ENV_OUT" 0
+    run_harness_ro ;;
   vibe)
     sed -i.bak "s#https://openrouter.ai/api/v1#$FAKE_URL/api/v1#" "$HOME/.vibe/config.toml"
     grep -q "$FAKE_URL" "$HOME/.vibe/config.toml" || die "could not repoint the vibe config"
     run_harness > "$ENV_OUT"
-    check_envelope "$ENV_OUT" 0 ;;
+    check_envelope "$ENV_OUT" 0
+    run_harness_ro ;;
   pi)
     # pi's models.json can override a built-in provider's base URL; aeon runs pi
     # on OpenRouter as --model openrouter/<id>.
@@ -318,13 +350,18 @@ case "$H" in
     printf '{"providers":{"openrouter":{"baseUrl":"%s/api/v1"}}}\n' "$FAKE_URL" > "$HOME/.pi/agent/models.json"
     run_harness --model openrouter/smoke-model > "$ENV_OUT"
     check_envelope "$ENV_OUT" 1
+    # pi_mcp_checks (#1131) already runs pi in --mode read-only under the wrapper
+    # OS sandbox (pi_mcp_run SLOW ... read-only), so it IS pi's read-only sandbox
+    # leg under the new ro-root model; no separate run_harness_ro needed here.
     pi_mcp_checks ;;
   grok)
     # grok 1.x reads its API base from GROK_XAI_API_BASE_URL; with an API key it
     # lists models, then streams chat completions from the fake.
     XAI_API_KEY=xai-smoke-not-a-real-key GROK_XAI_API_BASE_URL="$FAKE_URL/v1" \
       run_harness --max-turns 3 > "$ENV_OUT"
-    check_envelope "$ENV_OUT" 1 ;;
+    check_envelope "$ENV_OUT" 1
+    XAI_API_KEY=xai-smoke-not-a-real-key GROK_XAI_API_BASE_URL="$FAKE_URL/v1" \
+      run_harness_ro --max-turns 3 ;;
   ccr)
     # Each arm runs in a subshell: start_ccr_sidecar's EXIT trap stops ccr there.
     ccr_arm() {  # ccr_arm <gateway> -> sources llm-gateway.sh for that arm, then probes it
