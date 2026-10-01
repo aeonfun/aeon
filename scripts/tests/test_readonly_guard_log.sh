@@ -31,17 +31,29 @@ pass() { echo "ok   - $1"; }
 bad() { echo "FAIL - $1"; fail=1; }
 
 run_guard() {
-  # $1 = steps.skill.outputs.name, $2 = steps.run.outcome
+  # $1 = steps.skill.outputs.name, $2 = steps.run.outcome, $3 = captured
+  # output/.chains/<skill>.md, $4 = the harness final output (/tmp/skill-result.txt),
+  # $5 = today's log as committed at checkout (makes the workdir a git repo),
+  # $6 = text the skill itself appended to today's log during the run.
   local skill="$1" outcome="$2"
   local workdir="$TMP/run-$RANDOM"
+  local log
+  log="memory/logs/$(date -u +%Y-%m-%d).md"
   mkdir -p "$workdir/memory/logs" "$workdir/output/.chains"
   if [ -n "${3:-}" ]; then printf '%s' "$3" > "$workdir/output/.chains/${skill}.md"; fi
+  if [ -n "${4:-}" ]; then printf '%s' "$4" > "$workdir/skill-result.txt"; fi
+  if [ -n "${5:-}" ]; then
+    printf '%s' "$5" > "$workdir/$log"
+    git -C "$workdir" init -q && git -C "$workdir" add "$log" \
+      && git -C "$workdir" -c user.name=t -c user.email=t@t commit -qm seed
+  fi
+  if [ -n "${6:-}" ]; then printf '%s' "$6" >> "$workdir/$log"; fi
   (
     cd "$workdir" || exit 1
-    sed "s|\${{ steps.skill.outputs.name }}|$skill|; s|\${{ steps.run.outcome }}|$outcome|" "$TMP/guard.sh" > guard.sh
+    sed "s|\${{ steps.skill.outputs.name }}|$skill|; s|\${{ steps.run.outcome }}|$outcome|; s|/tmp/skill-result.txt|$workdir/skill-result.txt|" "$TMP/guard.sh" > guard.sh
     bash guard.sh
   )
-  cat "$workdir/memory/logs/$(date -u +%Y-%m-%d).md" 2>/dev/null
+  cat "$workdir/$log" 2>/dev/null
 }
 
 # Successful run with real captured output → the log entry carries the real
@@ -81,6 +93,43 @@ echo "$out" | grep -q '^### narrative-tracker$' && echo "$out" | grep -q 'no out
 out=$(run_guard narrative-tracker success '_No output captured._')
 echo "$out" | grep -q '_No output captured\._' && bad "placeholder: must not be logged as if it were real content" \
   || pass "placeholder: '_No output captured._' is treated as empty, not real output"
+
+# Notify payload captured, but the skill put its log record in the final
+# output -> both land under ONE heading; the record's own "### <skill>" line
+# is dropped so the entry never carries a nested duplicate heading.
+out=$(run_guard executor-mcp success '*Executor* - task done' '### executor-mcp
+- Result: EXEC_OK')
+echo "$out" | grep -q 'task done' && echo "$out" | grep -q 'Result: EXEC_OK' \
+  && pass "final output: log record appended after the notify payload" \
+  || bad "final output: notify payload and final-output record should both be logged"
+[ "$(echo "$out" | grep -c '^### executor-mcp$')" -eq 1 ] && pass "final output: exactly one '### <skill>' heading" \
+  || bad "final output: expected exactly one '### executor-mcp' heading"
+
+# No notify: CAPTURED is a copy of the final output -> logged once, not twice.
+out=$(run_guard tx-explain success 'TX_EXPLAIN_OK' 'TX_EXPLAIN_OK')
+[ "$(echo "$out" | grep -c 'TX_EXPLAIN_OK')" -eq 1 ] && pass "no notify: final output logged once" \
+  || bad "no notify: identical captured/final output must not be logged twice"
+
+# Stray self-log: the skill appended its own "### <skill>" entry during the run
+# (today's log had one from an EARLIER run at checkout) -> guard must not add a
+# second entry for this run.
+prior='
+### narrative-tracker
+earlier run
+'
+out=$(run_guard narrative-tracker success 'captured body' '' "$prior" '
+### narrative-tracker
+self-logged body
+')
+[ "$(echo "$out" | grep -c '^### narrative-tracker$')" -eq 2 ] && ! echo "$out" | grep -q 'captured body' \
+  && pass "self-log: guard skips appending a duplicate entry" \
+  || bad "self-log: guard must not double up a self-written '### <skill>' entry"
+
+# Earlier same-day entry only (no self-log this run) -> guard still appends.
+out=$(run_guard narrative-tracker success 'captured body' '' "$prior")
+[ "$(echo "$out" | grep -c '^### narrative-tracker$')" -eq 2 ] && echo "$out" | grep -q 'captured body' \
+  && pass "earlier entry: an entry from a prior run does not suppress this run's log" \
+  || bad "earlier entry: guard must still append when the only '### <skill>' was committed before the run"
 
 echo "---"
 [ "$fail" -eq 0 ] && echo "ALL PASS" || echo "SOME FAILED"

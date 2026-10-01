@@ -1910,11 +1910,25 @@ jobs:
           RUN_OUTCOME="${{ steps.run.outcome }}"
           TODAY=$(date -u +%Y-%m-%d)
           mkdir -p memory/logs
+          LOG="memory/logs/${TODAY}.md"
           CAPTURED="output/.chains/${SKILL}.md"
-          if [ "$RUN_OUTCOME" = "success" ] && [ -s "$CAPTURED" ] && [ "$(cat "$CAPTURED")" != "_No output captured._" ]; then
-            { printf '\n### %s\n' "$SKILL"; cat "$CAPTURED"; printf '\n'; } >> "memory/logs/${TODAY}.md"
+          RESULT=/tmp/skill-result.txt
+          HEADING="^### ${SKILL}[[:space:]]*$"
+          # Never double-log: a stray self-written "### <skill>" entry from this
+          # run (more such headings now than in the checked-out file) is kept as is.
+          BEFORE=$(git show "HEAD:${LOG}" 2>/dev/null | grep -cE "$HEADING" || true)
+          NOW=$(grep -cE "$HEADING" "$LOG" 2>/dev/null || true)
+          if [ "${NOW:-0}" -gt "${BEFORE:-0}" ]; then
+            echo "read-only guard: $SKILL already logged itself this run; not appending a duplicate"
+          elif [ "$RUN_OUTCOME" = "success" ] && [ -s "$CAPTURED" ] && [ "$(cat "$CAPTURED")" != "_No output captured._" ]; then
+            # CAPTURED is the notify payload when the skill notified, so the final
+            # output (where read-only skills put their log record) is appended too
+            # when it differs. Inner "### <skill>" lines are dropped: one heading.
+            { printf '\n### %s\n' "$SKILL"
+              { cat "$CAPTURED"; if [ -s "$RESULT" ] && ! cmp -s "$RESULT" "$CAPTURED"; then printf '\n'; cat "$RESULT"; fi; } | grep -vE "$HEADING" || true
+              printf '\n'; } >> "$LOG"
           else
-            printf '\n### %s\nRun outcome=%s at %s UTC - no output captured; nothing to log.\n' "$SKILL" "$RUN_OUTCOME" "$(date -u +%FT%TZ)" >> "memory/logs/${TODAY}.md"
+            printf '\n### %s\nRun outcome=%s at %s UTC - no output captured; nothing to log.\n' "$SKILL" "$RUN_OUTCOME" "$(date -u +%FT%TZ)" >> "$LOG"
           fi
           CODE_PATHS="skills .github apps/mcp-server apps/webhook apps/dashboard/app apps/dashboard/lib apps/dashboard/components scripts docs catalog bin *.md *.json *.yml aeon"
           git checkout -- $CODE_PATHS 2>/dev/null || true
