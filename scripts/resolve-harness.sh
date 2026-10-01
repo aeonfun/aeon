@@ -113,7 +113,7 @@ esac
 #   3. a per-harness cheap default.
 # aeon-native ids (claude-*/grok-*) mean nothing to an OpenRouter CLI, so they're
 # treated as "unset" and fall through to the default — a repo that never touched
-# the model picker (still `model: claude-sonnet-5`) still gets a working default
+# the model picker (still `model: claude-sonnet-5-5`) still gets a working default
 # instead of a dead id.
 # Each harness defaults to its own native family (the dashboard's per-harness
 # list, modelsForHarness[0]). The generic `*)` fallback is gpt-5-mini — a
@@ -131,22 +131,24 @@ elif [ -n "$SKILL_MODEL" ]; then
 else
   REQ_MODEL="${CONFIG_MODEL:-}"
 fi
-case "$REQ_MODEL" in claude-*|grok-*|"") REQ_MODEL="" ;; esac   # aeon-native / unset → not an OpenRouter id
+# `default` is the hermes dashboard pick ("use Hermes' configured model"); for
+# every harness it means "no override", so it falls through to DEFAULT_HM too.
+case "$REQ_MODEL" in claude-*|grok-*|default|"") REQ_MODEL="" ;; esac   # aeon-native / unset → not an OpenRouter id
 
 # NOTE: changing any per-harness DEFAULT_HM below also requires updating the
 # expected values in scripts/tests/test_resolve_harness.sh (a stale codex pin
 # there broke CI once; fixed in #896). If the same model-pin pass edits skill
 # bodies, run `eyebrow scan` and commit the refreshed eyebrowlock.json too.
 case "$HARNESS" in
-  codex) DEFAULT_HM="openai/gpt-5.1-codex-mini" ;;
+  codex) DEFAULT_HM="openai/gpt-6-luna" ;;              # codex's default (CODEX_MODELS[0])
   vibe)  DEFAULT_HM="mistralai/mistral-medium-3-5" ;;   # vibe's default (VIBE_MODELS[0])
   pi)    DEFAULT_HM="deepseek/deepseek-v4-flash" ;;     # pi's default (PI_MODELS[0])
-  kimi)  DEFAULT_HM="moonshotai/kimi-k2.5" ;;           # kimi's default (KIMI_MODELS[0])
+  kimi)  DEFAULT_HM="moonshotai/kimi-k2.6" ;;           # kimi's default (KIMI_MODELS[0])
   # Hermes' native provider and model are restored from HERMES_AUTH/config.yaml.
   # Passing a hardcoded model can switch the CLI to a different provider and
   # bypass the Nous Portal subscription, so let Hermes use its configured default.
   hermes) DEFAULT_HM="default" ;;
-  cursor) DEFAULT_HM="gpt-5.1" ;;
+  cursor) DEFAULT_HM="auto" ;;                         # Cursor's router (CURSOR_MODELS[0])
   *)     DEFAULT_HM="openai/gpt-5-mini" ;;              # generic fallback: only claude/grok hit it (and don't consume it)
 esac
 HM="${HARNESS_MODEL:-${REQ_MODEL:-$DEFAULT_HM}}"

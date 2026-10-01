@@ -46,7 +46,7 @@ export default function Dashboard() {
   // "couldn't read the vault" (GitHub API 503 / gh not authenticated) so the
   // run-gate can't blame a missing key when the truth is an unreadable vault.
   const [secretsReadOk, setSecretsReadOk] = useState(false)
-  const [model, setModel] = useState('claude-sonnet-5')
+  const [model, setModel] = useState('claude-sonnet-5-5')
   const [harness, setHarness] = useState<Harness>('claude')
   const [gateway, setGateway] = useState<GatewayProvider>('auto')
   const [repo, setRepo] = useState('')

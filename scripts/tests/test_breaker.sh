@@ -6,10 +6,10 @@ set -uo pipefail
 SCRIPT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/breaker.sh"
 
 pass=0; fail=0
-# check <desc> <consecutive_failures> <minutes_since> <threshold> <cooldown_min> <expect: closed|probe|open>
+# check <desc> <consecutive_failures> <minutes_since> <threshold> <cooldown_min> <expect: closed|probe|open> [slot_owed]
 check() {
   local desc="$1" consec="$2" mins="$3" thr="$4" cool="$5" expect="$6" out
-  out=$(bash "$SCRIPT" "$consec" "$mins" "$thr" "$cool" 2>/dev/null || echo "ERR")
+  out=$(bash "$SCRIPT" "$consec" "$mins" "$thr" "$cool" ${7:+"$7"} 2>/dev/null || echo "ERR")
   if [ "$out" = "$expect" ]; then
     pass=$((pass+1))
   else
@@ -38,6 +38,15 @@ check "custom threshold 5, probe"      5  400  5 360 probe
 # --- cooldown tuning ---
 check "short cooldown, still open"     3  59   3 60  open
 check "short cooldown, probe"          3  60   3 60  probe
+
+# --- cadence: a probe only runs for a slot the schedule owes (slot_owed) ---
+# A weekly skill 7h into an outage: the cooldown is up, but its next slot is
+# days away, so it stays open instead of probing ~4x/day.
+check "cooldown up, no slot owed"      3  420  3 360 open   0
+check "cooldown up, slot owed"         3  420  3 360 probe  1
+check "slot owed, cooldown not up"     3  60   3 360 open   1
+check "long-idle weekly, slot owed"    5  10080 3 360 probe 1
+check "below threshold ignores slot"   2  10   3 360 closed 0
 
 # --- disabled (threshold 0) always closed ---
 check "disabled, high failures"        50 0    0 360 closed

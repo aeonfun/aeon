@@ -26,7 +26,7 @@ cd "$WS" || exit 1
 # separately in section 5b: the per-skill read now goes through
 # scripts/skill_entry.sh, which captures the whole entry, not just the header.
 mkfixture() {  # mkfixture [global-harness] [global-model]
-  { echo "model: ${2:-claude-sonnet-5}"
+  { echo "model: ${2:-claude-sonnet-5-5}"
     [ -n "${1:-}" ] && echo "harness: $1"
     echo "skills:"
     echo '  daily-brief: { enabled: true, schedule: "0 9 * * *" }'
@@ -98,7 +98,7 @@ mkfixture glm
 [ "$(get HARNESS)" = "claude" ] \
   && pass "glm: dead harness name → claude" || bad "glm dead name (got '$(get HARNESS)')"
 mkfixture cursor
-[ "$(get MODEL_ARG "" CURSOR_API_KEY=xx)" = "gpt-5.1" ] \
+[ "$(get MODEL_ARG "" CURSOR_API_KEY=xx)" = "auto" ] \
   && pass "cursor: native model override forwarded" || bad "cursor model forwarding"
 mkfixture hermes
 [ "$(get MODEL_ARG "" HERMES_AUTH=xx)" = "default" ] \
@@ -115,7 +115,7 @@ mkfixture fx
 # nothing at all. Passing a raw id to vibe/kimi breaks them (they resolve an ALIAS
 # declared in the staged config), so empty is the correct answer, not a fallback.
 mkfixture codex
-[ "$(get MODEL_ARG)" = "openai/gpt-5.1-codex-mini" ] \
+[ "$(get MODEL_ARG)" = "openai/gpt-6-luna" ] \
   && pass "codex: MODEL_ARG is a bare OpenRouter id" || bad "codex MODEL_ARG"
 mkfixture pi
 [ "$(get MODEL_ARG)" = "openrouter/deepseek/deepseek-v4-flash" ] \
@@ -137,14 +137,22 @@ esac
 
 # --- 5. model precedence ----------------------------------------------------
 # An aeon-native id is NOT an OpenRouter id: a repo that never touched the model
-# picker still reads `model: claude-sonnet-5`, and forwarding that would pin the
+# picker still reads `model: claude-sonnet-5-5`, and forwarding that would pin the
 # run to a dead id while every downstream record named it.
-mkfixture codex claude-sonnet-5
-[ "$(get MODEL_ARG)" = "openai/gpt-5.1-codex-mini" ] \
+mkfixture codex claude-sonnet-5-5
+[ "$(get MODEL_ARG)" = "openai/gpt-6-luna" ] \
   && pass "claude-* config model ignored → per-harness default" || bad "claude-* model passthrough"
 mkfixture codex grok-4.5
-[ "$(get MODEL_ARG)" = "openai/gpt-5.1-codex-mini" ] \
+[ "$(get MODEL_ARG)" = "openai/gpt-6-luna" ] \
   && pass "grok-* config model ignored → per-harness default" || bad "grok-* model passthrough"
+# `default` (the hermes dashboard pick, "Hermes' configured model") is "no
+# override" for every harness: codex must not receive --model default.
+mkfixture codex default
+[ "$(get MODEL_ARG)" = "openai/gpt-6-luna" ] \
+  && pass "default config model → per-harness default" || bad "default model passthrough (got '$(get MODEL_ARG)')"
+mkfixture hermes default
+[ "$(get HARNESS_MODEL "" HERMES_AUTH=xx)" = "default" ] \
+  && pass "hermes: default config model stays default" || bad "hermes default model"
 mkfixture codex openai/gpt-5
 [ "$(get MODEL_ARG)" = "openai/gpt-5" ] \
   && pass "OpenRouter config model is forwarded" || bad "OpenRouter model passthrough"
@@ -163,7 +171,7 @@ mkfixture codex openai/gpt-5
 # continuation line used to be invisible here (header-line grep), so the skill
 # silently ran on the defaults. Also: a comment is not a value, and a chain of the
 # same name further down is not the skill's entry.
-{ echo "model: claude-sonnet-5"
+{ echo "model: claude-sonnet-5-5"
   echo "skills:"
   echo '  block-one:'
   echo '    { enabled: true, schedule: "0 9 * * *",'

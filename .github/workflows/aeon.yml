@@ -13,20 +13,32 @@ on:
         required: false
         type: choice
         default: '(config default)'
-        # Keep in sync with the dashboard's MODELS/GROK_MODELS/CODEX_MODELS/
-        # VIBE_MODELS/PI_MODELS/KIMI_MODELS (apps/dashboard/lib/constants.ts): the
-        # dashboard dispatches `-f model=<id>` and this is a `choice` input, so any id
-        # it offers that's missing here is rejected with HTTP 422 at dispatch time.
+        # Keep in sync with every dashboard model list (MODELS/GROK_MODELS/
+        # CODEX_MODELS/VIBE_MODELS/PI_MODELS/KIMI_MODELS/CURSOR_MODELS/HERMES_MODELS
+        # in apps/dashboard/lib/constants.ts): the dashboard dispatches
+        # `-f model=<id>` and this is a `choice` input, so any id it offers that's
+        # missing here is rejected with HTTP 422 at dispatch time.
+        # scripts/tests/test_dashboard_model_choices.sh enforces it.
         # Each harness runs its own native family: codex uses openai/* ids; kimi
         # moonshotai/*; vibe mistralai/mistral-medium-3-5 (default) + deepseek/
-        # deepseek-v4-flash; pi deepseek/deepseek-v4-flash (default) + deepseek-v4-pro.
-        # "Resolve harness" forwards them verbatim as the harness model.
+        # deepseek-v4-flash; pi deepseek/deepseek-v4-flash (default) + deepseek-v4-pro
+        # + deepseek-v4.1-flash; cursor its own ids (`auto` default; `gpt-5.1` is the
+        # retired default, kept so existing configs still dispatch); hermes `default` (its configured provider) or an
+        # OpenRouter-style override. "Resolve harness" forwards them verbatim as the
+        # harness model (`default` means no override).
         options:
           - '(config default)'
+          - claude-sonnet-5-5
+          - claude-opus-5-5
+          - claude-haiku-4-5-20251001
           - claude-sonnet-5
           - claude-opus-4-8
-          - claude-haiku-4-5-20251001
+          - grok-4.7
+          - grok-4.6
           - grok-4.5
+          - openai/gpt-6-luna
+          - openai/gpt-6-sol
+          - openai/gpt-6.1-sol
           - openai/gpt-5-mini
           - openai/gpt-5.1-codex-mini
           - openai/gpt-5.3-codex
@@ -35,10 +47,18 @@ on:
           - mistralai/mistral-medium-3-5
           - deepseek/deepseek-v4-flash
           - deepseek/deepseek-v4-pro
-          - moonshotai/kimi-k2.5
+          - deepseek/deepseek-v4.1-flash
+          - moonshotai/kimi-k2.6
           - moonshotai/kimi-k3
           - moonshotai/kimi-k2.7-code
+          - moonshotai/kimi-k2.5
+          - auto
           - gpt-5.1
+          - default
+          - anthropic/claude-sonnet-5.5
+          - anthropic/claude-sonnet-4.6
+          - openai/gpt-5.4
+          - google/gemini-2.5-pro
       harness:
         description: 'Agent harness'
         required: false
@@ -222,7 +242,7 @@ jobs:
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
         with:
           path: ~/.npm
-          key: claude-code-${{ runner.os }}-2.1.168
+          key: claude-code-${{ runner.os }}-2.1.287
           restore-keys: |
             claude-code-${{ runner.os }}-
 
@@ -233,7 +253,7 @@ jobs:
         # the release notes: https://github.com/anthropics/claude-code/releases
         # (--prefer-offline uses the cached tarball above; keep the pin and the
         # cache key version in sync.)
-        run: npm install -g @anthropic-ai/claude-code@2.1.168 --prefer-offline
+        run: npm install -g @anthropic-ai/claude-code@2.1.287 --prefer-offline
 
       # ──────────────────────────────────────────────────────────────────────
       # Harness swap: resolve the harness HERE, not in "Run"
@@ -725,6 +745,7 @@ jobs:
           GLM_MODEL_SONNET: ${{ vars.GLM_MODEL_SONNET }}
           GLM_MODEL_OPUS: ${{ vars.GLM_MODEL_OPUS }}
           GLM_MODEL_HAIKU: ${{ vars.GLM_MODEL_HAIKU }}
+          GROK_MODEL: ${{ vars.GROK_MODEL }}
           GLM_REASONING_EFFORT: ${{ vars.GLM_REASONING_EFFORT }}
           CCR_LOG: ${{ vars.CCR_LOG }}
           # Optional Langfuse observability — set both keys to stream Claude Code's
@@ -816,18 +837,18 @@ jobs:
           elif [ -n "$SKILL_MODEL" ]; then
             MODEL="$SKILL_MODEL"
           else
-            MODEL="${CONFIG_MODEL:-claude-sonnet-5}"
+            MODEL="${CONFIG_MODEL:-claude-sonnet-5-5}"
           fi
 
           # --- Harness resolution (which agent CLI runs the skill) ---
           # Resolved in the "Resolve harness" step above, which had to run before
           # "Install harness CLI". Same 3-tier precedence as model, moved verbatim.
           HARNESS="$RESOLVED_HARNESS"
-          # On the grok harness a claude-* model id is meaningless — fall back to
-          # grok's current default (grok-4.5) unless an explicit grok model was
+          # On the grok harness a claude-* model id is meaningless, so fall back to
+          # grok's current default (grok-4.7) unless an explicit grok model was
           # chosen. The grok adapter omits --model for a non-grok value as a safety net.
           if [ "$HARNESS" = "grok" ]; then
-            case "$MODEL" in claude-*|"") MODEL="grok-4.5" ;; esac
+            case "$MODEL" in claude-*|default|"") MODEL="grok-4.7" ;; esac
           fi
           # Banner must name the model that ACTUALLY runs. For claude/grok that is
           # $MODEL (their native id). For the adapter harnesses (codex/pi/vibe/kimi)
@@ -1099,7 +1120,7 @@ jobs:
               # consumed by adapters/grok.sh — the same frontmatter mapping the
               # native path used. SKILL_MODEL was already set to grok's model above.
               eval "$(bash "${GITHUB_WORKSPACE}/scripts/skill_mode.sh" grok-run-env "$SKILL_NAME")"
-              # BASE_MODEL is grok-4.5 or an explicit grok id (forced above); pass
+              # BASE_MODEL is grok-4.7 or an explicit grok id (forced above); pass
               # only a real grok id — the adapter falls back to grok's default
               # otherwise. (BASE_MODEL, not MODEL: identical here, but MODEL is the
               # var the claude cascade rewrites in a subshell, so referencing it here
@@ -1525,6 +1546,7 @@ jobs:
           GLM_MODEL_SONNET: ${{ vars.GLM_MODEL_SONNET }}
           GLM_MODEL_OPUS: ${{ vars.GLM_MODEL_OPUS }}
           GLM_MODEL_HAIKU: ${{ vars.GLM_MODEL_HAIKU }}
+          GROK_MODEL: ${{ vars.GROK_MODEL }}
           GLM_REASONING_EFFORT: ${{ vars.GLM_REASONING_EFFORT }}
           CCR_LOG: ${{ vars.CCR_LOG }}
           LANGFUSE_PUBLIC_KEY: ${{ secrets.LANGFUSE_PUBLIC_KEY }}
@@ -1646,12 +1668,13 @@ jobs:
               # scoring model (haiku by default).
               SCORE_ARGS+=(--model "$SCORE_MODEL") ;;
             grok)
-              # Pin grok-4.5 — the only model the X-account (GROK_CREDENTIALS) login
-              # exposes. grok-composer-2.5-fast was a phantom id: the grok CLI rejects
+              # Pin grok-4.7, the grok harness default and a model the X-account
+              # (GROK_CREDENTIALS) login exposes (`grok models`, verified 2026-10-01).
+              # grok-composer-2.5-fast was a phantom id: the grok CLI rejects
               # it with "unknown model id" (verified live, run 29944263287), so pinning
               # it made every grok scorer call fail-then-fall-back. Scoring is one short
-              # text call, so grok-4.5's cost is pennies.
-              SCORE_ARGS+=(--model grok-4.5) ;;
+              # text call, so grok-4.7's cost is pennies.
+              SCORE_ARGS+=(--model grok-4.7) ;;
             *)
               # RH_MODEL_ARG is the same --model the run used (empty = harness default).
               [ -n "${RH_MODEL_ARG:-}" ] && SCORE_ARGS+=(--model "$RH_MODEL_ARG") ;;
@@ -1796,6 +1819,7 @@ jobs:
           GLM_MODEL_SONNET: ${{ vars.GLM_MODEL_SONNET }}
           GLM_MODEL_OPUS: ${{ vars.GLM_MODEL_OPUS }}
           GLM_MODEL_HAIKU: ${{ vars.GLM_MODEL_HAIKU }}
+          GROK_MODEL: ${{ vars.GROK_MODEL }}
           GLM_REASONING_EFFORT: ${{ vars.GLM_REASONING_EFFORT }}
           GLM_API_KEY: ${{ secrets.GLM_API_KEY }}
           ZAI_API_KEY: ${{ secrets.ZAI_API_KEY }}
@@ -1910,11 +1934,25 @@ jobs:
           RUN_OUTCOME="${{ steps.run.outcome }}"
           TODAY=$(date -u +%Y-%m-%d)
           mkdir -p memory/logs
+          LOG="memory/logs/${TODAY}.md"
           CAPTURED="output/.chains/${SKILL}.md"
-          if [ "$RUN_OUTCOME" = "success" ] && [ -s "$CAPTURED" ] && [ "$(cat "$CAPTURED")" != "_No output captured._" ]; then
-            { printf '\n### %s\n' "$SKILL"; cat "$CAPTURED"; printf '\n'; } >> "memory/logs/${TODAY}.md"
+          RESULT=/tmp/skill-result.txt
+          HEADING="^### ${SKILL}[[:space:]]*$"
+          # Never double-log: a stray self-written "### <skill>" entry from this
+          # run (more such headings now than in the checked-out file) is kept as is.
+          BEFORE=$(git show "HEAD:${LOG}" 2>/dev/null | grep -cE "$HEADING" || true)
+          NOW=$(grep -cE "$HEADING" "$LOG" 2>/dev/null || true)
+          if [ "${NOW:-0}" -gt "${BEFORE:-0}" ]; then
+            echo "read-only guard: $SKILL already logged itself this run; not appending a duplicate"
+          elif [ "$RUN_OUTCOME" = "success" ] && [ -s "$CAPTURED" ] && [ "$(cat "$CAPTURED")" != "_No output captured._" ]; then
+            # CAPTURED is the notify payload when the skill notified, so the final
+            # output (where read-only skills put their log record) is appended too
+            # when it differs. Inner "### <skill>" lines are dropped: one heading.
+            { printf '\n### %s\n' "$SKILL"
+              { cat "$CAPTURED"; if [ -s "$RESULT" ] && ! cmp -s "$RESULT" "$CAPTURED"; then printf '\n'; cat "$RESULT"; fi; } | grep -vE "$HEADING" || true
+              printf '\n'; } >> "$LOG"
           else
-            printf '\n### %s\nRun outcome=%s at %s UTC - no output captured; nothing to log.\n' "$SKILL" "$RUN_OUTCOME" "$(date -u +%FT%TZ)" >> "memory/logs/${TODAY}.md"
+            printf '\n### %s\nRun outcome=%s at %s UTC - no output captured; nothing to log.\n' "$SKILL" "$RUN_OUTCOME" "$(date -u +%FT%TZ)" >> "$LOG"
           fi
           CODE_PATHS="skills .github apps/mcp-server apps/webhook apps/dashboard/app apps/dashboard/lib apps/dashboard/components scripts docs catalog bin *.md *.json *.yml aeon"
           git checkout -- $CODE_PATHS 2>/dev/null || true
@@ -1978,94 +2016,13 @@ jobs:
             git checkout -- memory/cron-state.json 2>/dev/null || rm -f memory/cron-state.json
           fi
 
-          CURRENT_BRANCH=$(git branch --show-current)
           LABEL="${{ steps.work.outputs.label }}"
-
-          # A failed feature-branch push still records this run's state on main
-          # below, then fails the step so the lost PR work is visible.
-          BRANCH_PUSH_FAILED=false
-          finish() {
-            if [ "$BRANCH_PUSH_FAILED" = "true" ]; then
-              echo "::error::Feature branch $CURRENT_BRANCH failed to push - its commits never reached the remote"
-              exit 1
-            fi
-            exit "$1"
-          }
-
-          # If Claude created a feature branch, push it then switch back to main
-          if [ "$CURRENT_BRANCH" != "main" ] && [ -n "$CURRENT_BRANCH" ]; then
-            echo "On feature branch: $CURRENT_BRANCH"
-            # main is only guaranteed present when the run STARTED on main (the
-            # normal scheduled / Run-now path). A run dispatched against a
-            # non-main ref gets a single-branch checkout with no local main, so
-            # that branch stays the only home for everything, as before.
-            HAS_MAIN=false
-            git show-ref --verify --quiet refs/heads/main && HAS_MAIN=true
-
-            # Post-run state written by the skill and by this workflow's own steps
-            # (memory/logs, token-usage.csv, skill-health, output/.chains,
-            # output/.attest, the dashboard feed) belongs on main, not in the PR.
-            # Stash it before the branch commit so `git add -A` only ships the
-            # skill's real change, then pop it back on main below.
-            # Only paths that exist: one unmatched pathspec makes `stash push -u`
-            # save the stash and then die halfway through cleaning the tree.
-            STATE_PATHS=()
-            for p in memory output apps/dashboard/outputs; do
-              if [ -e "$p" ] || [ -n "$(git ls-files -- "$p")" ]; then STATE_PATHS+=("$p"); fi
-            done
-            STASHED=false
-            if [ "$HAS_MAIN" = "true" ] && [ "${#STATE_PATHS[@]}" -gt 0 ] && [ -n "$(git status --porcelain -- "${STATE_PATHS[@]}" 2>/dev/null)" ]; then
-              git stash push --include-untracked -m "aeon post-run state" -- "${STATE_PATHS[@]}"
-              STASHED=true
-            fi
-
-            git add -A
-            git diff --staged --quiet || git commit -m "chore($LABEL): auto-commit $(date +%Y-%m-%d)"
-            if ! git push --force-with-lease -u origin "$CURRENT_BRANCH"; then
-              echo "::warning::Push of feature branch $CURRENT_BRANCH failed; recording run state on main, then failing the step"
-              BRANCH_PUSH_FAILED=true
-            fi
-
-            if [ "$HAS_MAIN" != "true" ]; then
-              echo "main not present locally (non-main dispatch) - nothing to record on main"
-              finish 0
-            fi
-            # No pull here: the stash was taken against the run's starting main, so
-            # it pops cleanly onto local main, and git-push-retry.sh below rebases
-            # onto the remote with its state-file conflict policy.
-            git checkout main
-            if [ "$STASHED" = "true" ] && ! git stash pop; then
-              # Only when Claude's own branch commits touched these paths. Restore
-              # this run's end-of-run copy of the stashed paths from the stash
-              # itself (tracked part, then the untracked part in ^3).
-              echo "::warning::post-run state conflicted with main on pop; keeping this run's copy"
-              for p in "${STATE_PATHS[@]}"; do
-                git checkout 'stash@{0}' -- "$p" 2>/dev/null || true
-              done
-              if git rev-parse -q --verify 'stash@{0}^3' >/dev/null; then
-                git checkout 'stash@{0}^3' -- . 2>/dev/null || true
-              fi
-              git reset -q
-              git stash drop -q || true
-            fi
-          fi
-
-          # Commit any remaining changes on main
-          git add -A
-          if git diff --staged --quiet; then
-            # Nothing new to commit - but Claude may have committed during its run.
-            # Check for unpushed commits and push them if any exist.
-            if [ "$(git rev-list origin/main..HEAD --count 2>/dev/null)" = "0" ]; then
-              echo "No changes to commit or push"
-              finish 0
-            fi
-            echo "No new changes, but found unpushed commits - pushing"
-          else
-            git commit -m "chore($LABEL): auto-commit $(date +%Y-%m-%d)"
-          fi
-          PUSH_RC=0
-          bash scripts/git-push-retry.sh || PUSH_RC=$?
-          finish "$PUSH_RC"
+          # Shared feature-branch/main split (scripts/commit-run-results.sh): the
+          # PR branch gets only the agent's change, post-run state is committed
+          # on main via git-push-retry.sh. Run the copy from the run's starting
+          # commit so an agent edit to the script can't change its own commit.
+          git show "$GITHUB_SHA:scripts/commit-run-results.sh" > "$RUNNER_TEMP/commit-run-results.sh"
+          bash "$RUNNER_TEMP/commit-run-results.sh" "$LABEL"
 
       - name: Update cron state
         if: always() && steps.skill.outputs.name != ''

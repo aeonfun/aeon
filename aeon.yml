@@ -29,7 +29,7 @@ skills:
   # --- Hound onchain investigation (on-demand; var = address / tx hash) ---
   investigation-report: { enabled: false, schedule: "workflow_dispatch", var: "" } # var: <token-address> [--checks=rug,contract,deployer,holders,honeypot,lp] [--depth=quick|deep] — composite investigation (folds in rug-scan/contract-audit/deployer-trace/holder-concentration/honeypot-check/lp-lock). read-only
   tx-explain: { enabled: false, schedule: "workflow_dispatch", var: "" } # var: tx hash — plain-English decode
-  deploy-uni-hook: { enabled: false, schedule: "workflow_dispatch", harness: "claude", model: "claude-opus-4-8", var: "" } # generate+audit+simulate+deploy a Uniswap v4 hook + test pool on any v4 chain. var: [arm:][template:dynamic|noop|skim] [chain:base-sepolia] <brief>. Dry-run by default; arm: to broadcast (needs HOOK_DEPLOYER_PRIVATE_KEY burner). Testnet default; mainnet behind arm:+explicit chain:+HOOK_MAINNET_OK=1. Opus-pinned: freeform hook-gen is hard.
+  deploy-uni-hook: { enabled: false, schedule: "workflow_dispatch", harness: "claude", model: "claude-opus-5-5", var: "" } # generate+audit+simulate+deploy a Uniswap v4 hook + test pool on any v4 chain. var: [arm:][template:dynamic|noop|skim] [chain:base-sepolia] <brief>. Dry-run by default; arm: to broadcast (needs HOOK_DEPLOYER_PRIVATE_KEY burner). Testnet default; mainnet behind arm:+explicit chain:+HOOK_MAINNET_OK=1. Opus-pinned: freeform hook-gen is hard.
   arc-studio: { enabled: false, schedule: "workflow_dispatch", var: "" } # Drive Arc Studio on Arc testnet. var: empty/poll=attach an in-flight turn, else silent | <prompt>=one detached turn | answer:<json array or sentence>=reply to needs_input. Needs ARC_STUDIO_TOKEN. One turn at a time. On-demand until you set a cron to poll.
 
   monitor-polymarket: { enabled: false, schedule: "30 12 * * *", var: "" } # prediction-market monitor (Polymarket + Kalshi) — 24h moves, volume, comments, conviction alerts. var: empty=both | polymarket | kalshi | polymarket:<slug> | kalshi:<ticker>
@@ -50,7 +50,7 @@ skills:
   # --- Late afternoon (4 PM UTC) ---
   changelog: { enabled: false, schedule: "0 16 * * *", var: "" } # changelog from recent commits/PRs. var: empty/owner/repo=in-repo | push-to:owner/website-repo=cross-repo changelog PR (needs GH_GLOBAL)
   vuln-scanner: { enabled: false, schedule: "0 16 * * 6", var: "" } # security scan + disclose. var: empty/owner/repo=scan | resubmit[:owner/repo]=PVR re-submit | disclose=queue armed emails (folds in pvr-watchlist/disclosure-emailer). RESEND_* for email.
-  sc-audit: { enabled: false, schedule: "workflow_dispatch", model: "claude-opus-4-8", var: "" } # deep smart-contract audit (Slither best-effort + agentic invariant/access-control/oracle pass + optional Echidna/Medusa fuzz) of a Solidity repo OR live onchain contract. var: empty=auto-select fresh Solidity feed | owner/repo | <chain>:0x<addr> (onchain, operator-gated, never auto-filed) | fixture:<name>. Contract arm split out of vuln-scanner; routes findings through its shared disclosure machinery. ETHERSCAN/BLOCKSCOUT/RESEND_* optional. Opus-pinned: invariant reasoning is hard.
+  sc-audit: { enabled: false, schedule: "workflow_dispatch", model: "claude-opus-5-5", var: "" } # deep smart-contract audit (Slither best-effort + agentic invariant/access-control/oracle pass + optional Echidna/Medusa fuzz) of a Solidity repo OR live onchain contract. var: empty=auto-select fresh Solidity feed | owner/repo | <chain>:0x<addr> (onchain, operator-gated, never auto-filed) | fixture:<name>. Contract arm split out of vuln-scanner; routes findings through its shared disclosure machinery. ETHERSCAN/BLOCKSCOUT/RESEND_* optional. Opus-pinned: invariant reasoning is hard.
   deploy-prototype: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — build app and deploy to Vercel
   base-mcp: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — Base Account access via the Base MCP server (mcp.base.org)
   robinhood-mcp: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — Robinhood Agentic Trading via the Robinhood MCP (agent.robinhood.com, OAuth Connect in the dashboard). var: empty=portfolio report | orders[:N] | trade:<explicit one-order instruction> (only writing branch; refuses ambiguous orders)
@@ -229,16 +229,17 @@ chains:
   #     - { skill: digest, consume: [token-movers, github-trending] }
 
 # Default model for all skills. Override per-run via workflow_dispatch.
-# Options: claude-sonnet-5, claude-opus-4-8, claude-haiku-4-5-20251001
-# (Grok harness model: grok-4.5, the flagship reasoning model and grok's current
-#  default, run with --no-subagents in CI. It's the only id the grok CLI accepts on an
-#  X-account login, and it's the gateway default too. The older coding ids
+# Options: claude-sonnet-5-5, claude-opus-5-5, claude-haiku-4-5-20251001
+# (older claude-sonnet-5 / claude-opus-4-8 still accepted)
+# (Grok harness model: grok-4.7, the flagship reasoning model and grok's current
+#  default, run with --no-subagents in CI; grok-4.6 and grok-4.5 are also accepted on
+#  an X-account login. grok-4.7 is the gateway default too. The older coding ids
 #  (grok-build-0.1, grok-composer-2.5-fast, grok-4.3) are gateway-only, reachable via
 #  XAI_API_KEY + the GROK_MODEL var.)
 # The non-claude harnesses use their OWN model ids (codex openai/*, kimi moonshotai/*,
 # vibe mistralai/*, pi deepseek/*) — surfaced in the dashboard picker per harness; see
 # docs/harnesses.md. The value below only applies to the claude/grok harnesses.
-model: claude-sonnet-5
+model: claude-sonnet-5-5
 
 # Agent harness — which coding-agent CLI runs your skills.
 #   claude (default)  — Claude Code (`claude -p`); uses the AI Gateway below.

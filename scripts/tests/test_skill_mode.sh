@@ -67,6 +67,8 @@ echo "$WT" | grep -q "Bash(./scripts/vuln-poc-gate.sh:\*)" \
 echo "$WT" | grep -q "Bash(./scripts/feature-open-pr.sh:\*)" \
   && pass "write tier includes the feature open-PR check" || bad "write tier missing feature open-PR check"
 echo "$RT" | grep -q "feature-open-pr" && bad "read-only tier must not include the feature open-PR check" || pass "read-only tier excludes the feature open-PR check"
+echo "$WT" | grep -q "Bash(./scripts/dev-loop-review.sh:\*)" \
+  && pass "write tier includes the review receipt check" || bad "write tier missing review receipt check"
 
 # grok-args is DELETED and must stay deleted. It emitted grok `--allow` rules that
 # never gated anything (adapters/grok.sh runs --permission-mode bypassPermissions,

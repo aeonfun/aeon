@@ -132,5 +132,5 @@ Each hit → **warn**. Fix: change the Log-section heading (the instruction line
 
 ## Log
 
-Append to `memory/logs/${today}.md` under a `### aeon-doctor` heading (the health loop parses this shape), as bullets: checks run, findings by severity (or `clean`), and whether a notification was sent.
+This skill is `read-only`, so the workflow's read-only guard writes its `### aeon-doctor` log entry from your captured output; a self-written entry would be a duplicate. Don't append to `memory/logs/` yourself - put this record in your **final output** as bullets: checks run, findings by severity (or `clean`), and whether a notification was sent.
 End-states: `AEON_DOCTOR_CLEAN`, `AEON_DOCTOR_FINDINGS`, `AEON_DOCTOR_ERROR`.

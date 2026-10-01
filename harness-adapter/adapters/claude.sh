@@ -6,7 +6,7 @@
 # {
 #   "id": "claude",
 #   "label": "Claude Code",
-#   "cli": { "install": "npm i -g @anthropic-ai/claude-code", "bin": "claude", "min_version": "2.1" },
+#   "cli": { "install": "npm i -g @anthropic-ai/claude-code", "bin": "claude", "min_version": "2.1.287" },
 #   "invoke": "claude -p - --output-format json",
 #   "round_trip": true,
 #   "token_usage": "full",
@@ -26,7 +26,12 @@ set -uo pipefail
 command -v claude >/dev/null 2>&1 || {
   echo "claude CLI not found (npm i -g @anthropic-ai/claude-code)" >&2; exit 1; }
 
-ARGS=(-p - --output-format json)
+# --permission-mode default: Claude Code 2.1.285+ starts `-p` in AUTO mode when no
+# mode is set and it runs behind a custom ANTHROPIC_BASE_URL (every gateway arm in
+# scripts/llm-gateway.sh) or with telemetry off. In auto mode a classifier may
+# APPROVE a tool outside --allowedTools; default mode denies it, which is what
+# the read-only / allowlist tiers rely on and what 2.1.168 did.
+ARGS=(-p - --output-format json --permission-mode default)
 [ -n "${RH_MODEL:-}" ] && ARGS+=(--model "$RH_MODEL")
 [ -n "${RH_ALLOWED_TOOLS:-}" ] && ARGS+=(--allowedTools "$RH_ALLOWED_TOOLS")
 if [ -n "${RH_MCP_CONFIG:-}" ] && [ -f "${RH_MCP_CONFIG:-}" ]; then
@@ -35,6 +40,14 @@ fi
 [ -n "${RH_MAX_TURNS:-}" ] && ARGS+=(--max-turns "$RH_MAX_TURNS")
 [ -n "${RH_JSON_SCHEMA:-}" ] && ARGS+=(--json-schema "$RH_JSON_SCHEMA")
 [ -n "${RH_APPEND_SYSTEM_PROMPT:-}" ] && ARGS+=(--append-system-prompt "$RH_APPEND_SYSTEM_PROMPT")
+
+# 2.1.285+ also assumes a model's 1M context window behind a custom
+# ANTHROPIC_BASE_URL. A gateway that stops at 200K would then fail a long run
+# instead of compacting it, so keep the 200K window there (as 2.1.168 did) unless
+# the operator set CLAUDE_CODE_DISABLE_1M_CONTEXT themselves.
+if [ -n "${ANTHROPIC_BASE_URL:-}" ]; then
+  export CLAUDE_CODE_DISABLE_1M_CONTEXT="${CLAUDE_CODE_DISABLE_1M_CONTEXT:-1}"
+fi
 
 OUT="$RH_TMPDIR/claude-out.json"
 claude "${ARGS[@]}" < "$RH_PROMPT_FILE" > "$OUT"

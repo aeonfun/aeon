@@ -1,8 +1,9 @@
 name: ci-tests
 
 # Runs the committed script test suites on every PR that touches scripts/, bin/,
-# harness-adapter/ (run-harness + lib/sandbox.sh included), skills/, aeon.yml, or
-# the aeon/chain-runner workflows the tests assert against.
+# harness-adapter/ (run-harness + lib/sandbox.sh included), skills/, aeon.yml, the
+# dashboard model lists (apps/dashboard/lib/constants.ts), or the
+# aeon/chain-runner workflows the tests assert against.
 # These are the local tests authored alongside the hardening "easy wins" ported from
 # aeon-dev (notify formatting, capability modes, config validation) — same gate shape
 # as the other ci-*.yml. Keeps the extracted ./notify and the helper scripts honest.
@@ -19,6 +20,7 @@ on:
       - 'harness-adapter/**'
       - '.github/workflows/chain-runner.yml'
       - 'skills/**'
+      - 'apps/dashboard/lib/constants.ts'
       - '.github/workflows/ci-tests.yml'
   push:
     branches: [main]
@@ -32,6 +34,7 @@ on:
       - 'harness-adapter/**'
       - '.github/workflows/chain-runner.yml'
       - 'skills/**'
+      - 'apps/dashboard/lib/constants.ts'
       - '.github/workflows/ci-tests.yml'
   workflow_dispatch:
 
@@ -51,6 +54,19 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: Install deps
         run: pip install pyyaml==6.0.2
+      # The run-harness sandbox-gate test has a LIVE half that only runs where bwrap
+      # can create a user namespace. Same setup as aeon.yml's "Install bubblewrap
+      # (read-only sandbox)" step: install it, lift Ubuntu 24.04's AppArmor userns
+      # restriction, then fail HERE if bwrap still cannot run, so the live checks
+      # never silently skip on CI (the test step also requires them, below).
+      - name: Install bubblewrap (live read-only sandbox test)
+        timeout-minutes: 5
+        run: |
+          set -euo pipefail
+          APT_OPTS="-o DPkg::Lock::Timeout=120"
+          sudo apt-get $APT_OPTS update -qq && sudo apt-get $APT_OPTS install -y -qq bubblewrap
+          sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0 || true
+          bwrap --dev-bind / / --ro-bind /tmp /tmp true && echo 'bwrap: userns OK'
       - name: notify_format unit tests
         run: python3 scripts/tests/test_notify_format.py
       - name: notify integration tests
@@ -99,9 +115,13 @@ jobs:
         run: bash scripts/tests/test_resolve_harness.sh
       - name: workflow harness choice tests
         run: bash scripts/tests/test_workflow_harness_choices.sh
+      - name: dashboard model lists vs workflow model choices + harness defaults
+        run: bash scripts/tests/test_dashboard_model_choices.sh
       - name: harness install/config tests
         run: bash scripts/tests/test_install_harness.sh
       - name: run-harness sandbox-gate tests
+        env:
+          AEON_REQUIRE_LIVE_BWRAP: '1'
         run: bash scripts/tests/test_run_harness_sandbox_gate.sh
       # Both hermetic (stub curl / sourced in subshells, no network). They shipped
       # with the scripts they cover and docs/mcp-oauth.md + docs/langfuse.md cite
@@ -176,6 +196,8 @@ jobs:
         run: bash scripts/tests/test_audit.sh
       - name: dry-run gate (synthetic secrets, no real leak, pass criteria)
         run: bash scripts/tests/test_dry_run.sh
+      - name: dry-run harness/model dispatch boundary tests
+        run: bash scripts/tests/test_dry_run_dispatch.sh
       - name: secretcurl argv-exposure tests
         run: bash scripts/tests/test_secretcurl.sh
       - name: secretcurl xai retry tests

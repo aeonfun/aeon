@@ -1,38 +1,37 @@
-/** Tests for scripts/ccr-hivemindos.js, the transformer the hivemindos gateway arm uses.
+/** Tests for scripts/ccr-hivemindos.js (request shaping for the hivemindos gateway arm)
+ *  and scripts/ccr-aeon-gateway.mjs, the claude-code-router 3.x plugin that applies it.
  *  Run: node scripts/tests/test_ccr_hivemindos.mjs */
 import assert from "node:assert/strict";
 import { createRequire } from "node:module";
 
 const require = createRequire(import.meta.url);
-const Transformer = require("../ccr-hivemindos.js");
-const transformer = new Transformer();
+const hivemindos = require("../ccr-hivemindos.js");
+const { default: createGatewayPlugin } = await import("../ccr-aeon-gateway.mjs");
 
 let passed = 0;
 const check = async (name, run) => {
   try { await run(); passed += 1; console.log(`ok   - ${name}`); }
   catch (error) { console.log(`FAIL - ${name}`); throw error; }
 };
-const streaming = { req: { body: { stream: true } } };
-const frames = text => text.trim().split("\n\n").map(line => line.replace(/^data: /, ""));
 
 await check("every request carries a fresh Idempotency-Key", async () => {
-  const one = await transformer.transformRequestIn({ model: "m", messages: [] });
-  const two = await transformer.transformRequestIn({ model: "m", messages: [] });
-  assert.match(one.config.headers["Idempotency-Key"], /^[0-9a-f-]{36}$/);
-  assert.notEqual(one.config.headers["Idempotency-Key"], two.config.headers["Idempotency-Key"]);
+  const one = await hivemindos.prepareRequest({ model: "m", messages: [] });
+  const two = await hivemindos.prepareRequest({ model: "m", messages: [] });
+  assert.match(one.headers["Idempotency-Key"], /^[0-9a-f-]{36}$/);
+  assert.notEqual(one.headers["Idempotency-Key"], two.headers["Idempotency-Key"]);
 });
 
 await check("the request goes upstream non-streamed", async () => {
-  const { body } = await transformer.transformRequestIn({ model: "m", messages: [], stream: true, stream_options: { include_usage: true } });
+  const { body } = await hivemindos.prepareRequest({ model: "m", messages: [], stream: true, stream_options: { include_usage: true } });
   assert.equal(body.stream, false);
   assert.equal("stream_options" in body, false);
 });
 
 await check("a reasoning block that only disables reasoning is dropped", async () => {
-  const off = await transformer.transformRequestIn({ model: "m", messages: [], reasoning: { effort: "high", enabled: false } });
+  const off = await hivemindos.prepareRequest({ model: "m", messages: [], reasoning: { effort: "high", enabled: false } });
   assert.equal("reasoning" in off.body, false);
   // An explicit ask is the operator's, and is left alone.
-  const on = await transformer.transformRequestIn({ model: "m", messages: [], reasoning: { effort: "low" } });
+  const on = await hivemindos.prepareRequest({ model: "m", messages: [], reasoning: { effort: "low" } });
   assert.deepEqual(on.body.reasoning, { effort: "low" });
 });
 
@@ -44,14 +43,14 @@ await check("HIVEMINDOS_REASONING=keep leaves the flag alone, for models that ho
   const Keep = require("../ccr-hivemindos.js");
   delete process.env.HIVEMINDOS_REASONING;
   delete require.cache[module];
-  const kept = await new Keep().transformRequestIn({ model: "m", messages: [], reasoning: { effort: "high", enabled: false } });
+  const kept = await Keep.prepareRequest({ model: "m", messages: [], reasoning: { effort: "high", enabled: false } });
   assert.deepEqual(kept.body.reasoning, { effort: "high", enabled: false });
 });
 
 await check("the completion budget is capped, so a call holds what it can spend", async () => {
-  const { body } = await transformer.transformRequestIn({ model: "m", messages: [], max_tokens: 32000 });
+  const { body } = await hivemindos.prepareRequest({ model: "m", messages: [], max_tokens: 32000 });
   assert.equal(body.max_tokens, 4096);
-  const small = await transformer.transformRequestIn({ model: "m", messages: [], max_tokens: 500 });
+  const small = await hivemindos.prepareRequest({ model: "m", messages: [], max_tokens: 500 });
   assert.equal(small.body.max_tokens, 500, "a modest ask is left alone");
 });
 
@@ -65,7 +64,7 @@ await check("an unset repo variable still caps the budget (GitHub passes '', not
   const Unset = require("../ccr-hivemindos.js");
   delete process.env.HIVEMINDOS_MAX_TOKENS;
   delete require.cache[module];
-  const { body } = await new Unset().transformRequestIn({ model: "m", messages: [], max_tokens: 32000 });
+  const { body } = await Unset.prepareRequest({ model: "m", messages: [], max_tokens: 32000 });
   assert.equal(body.max_tokens, 4096, "an empty variable must mean the default, not 'uncapped'");
 
   // An explicit 0 is still the operator asking for no cap at all.
@@ -74,16 +73,16 @@ await check("an unset repo variable still caps the budget (GitHub passes '', not
   const Off = require("../ccr-hivemindos.js");
   delete process.env.HIVEMINDOS_MAX_TOKENS;
   delete require.cache[module];
-  const uncapped = await new Off().transformRequestIn({ model: "m", messages: [], max_tokens: 32000 });
+  const uncapped = await Off.prepareRequest({ model: "m", messages: [], max_tokens: 32000 });
   assert.equal(uncapped.body.max_tokens, 32000, "an explicit 0 still disables the cap");
 });
 
 await check("the stable prefix is marked cacheable, so a caching provider can read it back", async () => {
-  const { body } = await transformer.transformRequestIn({ model: "m", messages: [{ role: "system", content: "You are careful." }, { role: "user", content: "hi" }] });
+  const { body } = await hivemindos.prepareRequest({ model: "m", messages: [{ role: "system", content: "You are careful." }, { role: "user", content: "hi" }] });
   assert.deepEqual(body.messages[0].content, [{ type: "text", text: "You are careful.", cache_control: { type: "ephemeral" } }]);
   assert.equal(body.messages[1].content, "hi", "only the prefix is marked");
   // The caller's own array shape is respected, and an existing marker is left alone.
-  const already = await transformer.transformRequestIn({ model: "m", messages: [{ role: "system", content: [{ type: "text", text: "a", cache_control: { type: "persistent" } }] }] });
+  const already = await hivemindos.prepareRequest({ model: "m", messages: [{ role: "system", content: [{ type: "text", text: "a", cache_control: { type: "persistent" } }] }] });
   assert.deepEqual(already.body.messages[0].content[0].cache_control, { type: "persistent" });
 });
 
@@ -101,53 +100,52 @@ await check("a conversation past the size ceiling is trimmed, not abandoned", as
   const Trimming = require("../ccr-hivemindos.js");
   delete process.env.HIVEMINDOS_MAX_BODY_CHARS;
   delete require.cache[module];
-  const { body } = await new Trimming().transformRequestIn({ model: "m", messages });
+  const { body } = await Trimming.prepareRequest({ model: "m", messages });
   assert.ok(JSON.stringify(body).length <= 400_000, `still too large: ${JSON.stringify(body).length}`);
   assert.match(JSON.stringify(body.messages[2].content), /characters trimmed/);
   assert.equal(JSON.stringify(body.messages[0].content).includes("instructions"), true, "the system prompt survives");
   assert.ok(String(body.messages[3].content).length > 200_000, "the newest turn is never trimmed");
 });
 
-await check("a non-streaming client gets the upstream answer untouched", async () => {
-  const response = new Response(JSON.stringify({ choices: [] }), { headers: { "Content-Type": "application/json" } });
-  assert.equal(await transformer.transformResponseOut(response, { req: { body: { stream: false } } }), response);
+// The SSE replay this file used to do is built into claude-code-router 3.x (a JSON
+// answer to a streaming client comes back as Anthropic SSE); ci-harness-cli.yml's ccr
+// job checks it against the real router. What is left to test here is the plugin.
+await check("the gateway plugin pins every request to the sidecar's one model", async () => {
+  const hooks = createGatewayPlugin({ plugin: { config: { pinModel: "vendor/model-a" } } });
+  const [pin] = hooks.requestTransforms;
+  assert.equal(pin.stage, "beforeRouting");
+  const out = pin.transform({ requestBody: { model: "claude-haiku-4-5", messages: [{ role: "user", content: "hi" }] } });
+  assert.equal(out.requestBody.model, "vendor/model-a");
+  assert.equal(hooks.providerPlugins, undefined, "no hivemindos hook unless asked");
 });
 
-await check("a streaming client gets the answer replayed as SSE", async () => {
-  const completion = {
-    id: "chatcmpl-1", created: 42, model: "m",
-    choices: [{ index: 0, message: { role: "assistant", content: "hello" }, finish_reason: "stop" }],
-    usage: { prompt_tokens: 1, completion_tokens: 2, total_tokens: 3 },
-  };
-  const out = await transformer.transformResponseOut(new Response(JSON.stringify(completion), { headers: { "Content-Type": "application/json" } }), streaming);
-  assert.equal(out.headers.get("Content-Type"), "text/event-stream");
-  const parts = frames(await out.text());
-  assert.equal(parts.at(-1), "[DONE]");
-  const content = parts.slice(0, -1).map(part => JSON.parse(part)).filter(part => part.choices?.[0]?.delta?.content).map(part => part.choices[0].delta.content);
-  assert.deepEqual(content, ["hello"]);
-  assert.equal(parts.map(part => part === "[DONE]" ? null : JSON.parse(part)).find(part => part?.choices?.[0]?.finish_reason)?.choices[0].finish_reason, "stop");
-  const chunks = parts.map(part => part === "[DONE]" ? null : JSON.parse(part));
-  assert.ok(chunks.some(part => part?.usage?.total_tokens === 3), "usage is carried through");
-  // A client that only reads the finish chunk recorded a free run before this.
-  assert.equal(chunks.find(part => part?.choices?.[0]?.finish_reason)?.usage?.total_tokens, 3, "usage rides the finish frame too");
+await check("the gateway plugin drops blank text blocks before routing", async () => {
+  const [pin] = createGatewayPlugin({ plugin: { config: {} } }).requestTransforms;
+  const out = pin.transform({ requestBody: {
+    model: "m",
+    system: [{ type: "text", text: "  " }, { type: "text", text: "sys" }],
+    messages: [{ role: "user", content: [{ type: "text", text: " " }] }, { role: "user", content: [{ type: "text", text: "hi" }] }],
+  } });
+  assert.equal(out.requestBody.system, "sys");
+  assert.deepEqual(out.requestBody.messages, [{ role: "user", content: "hi" }]);
+  assert.equal(out.requestBody.model, "m", "no pin configured -> model untouched");
 });
 
-await check("tool calls survive the replay, which is what an agent acts on", async () => {
-  const completion = {
-    id: "chatcmpl-2", created: 42, model: "m",
-    choices: [{ index: 0, message: { role: "assistant", content: null, tool_calls: [{ id: "call_1", type: "function", function: { name: "Bash", arguments: '{"command":"ls"}' } }] }, finish_reason: "tool_calls" }],
-  };
-  const out = await transformer.transformResponseOut(new Response(JSON.stringify(completion), { headers: { "Content-Type": "application/json" } }), streaming);
-  const calls = frames(await out.text()).filter(part => part !== "[DONE]").map(part => JSON.parse(part)).flatMap(part => part.choices?.[0]?.delta?.tool_calls ?? []);
-  assert.equal(calls.length, 1);
-  assert.deepEqual([calls[0].index, calls[0].id, calls[0].function.name, calls[0].function.arguments], [0, "call_1", "Bash", '{"command":"ls"}']);
-});
-
-await check("an upstream error is passed through, never replayed as a valid answer", async () => {
-  const response = new Response(JSON.stringify({ error: "nope" }), { status: 402, headers: { "Content-Type": "application/json" } });
-  assert.equal(await transformer.transformResponseOut(response, streaming), response);
-  const sse = new Response("data: {}\n\n", { headers: { "Content-Type": "text/event-stream" } });
-  assert.equal(await transformer.transformResponseOut(sse, streaming), sse, "an endpoint that does stream is left alone");
+await check("on hivemindos the plugin reshapes the upstream call and adds a fresh Idempotency-Key", async () => {
+  const hooks = createGatewayPlugin({ plugin: { config: { hivemindos: true } } });
+  const [hook] = hooks.providerPlugins;
+  const upstreamRequest = { url: "https://x/chat/completions", headers: { authorization: "Bearer k" },
+    body: { model: "m", stream: true, stream_options: { include_usage: true }, max_tokens: 32000, messages: [] } };
+  const one = hook.transformRequest({ upstreamRequest });
+  const two = hook.transformRequest({ upstreamRequest });
+  assert.equal(one.ok, true);
+  assert.equal(one.value.body.stream, false);
+  assert.equal("stream_options" in one.value.body, false);
+  assert.equal(one.value.body.max_tokens, 4096);
+  assert.equal(one.value.headers.authorization, "Bearer k", "the provider's own auth header survives");
+  assert.match(one.value.headers["Idempotency-Key"], /^[0-9a-f-]{36}$/);
+  assert.notEqual(one.value.headers["Idempotency-Key"], two.value.headers["Idempotency-Key"]);
+  assert.equal(upstreamRequest.body.stream, true, "the caller's request object is not mutated");
 });
 
 console.log(`\nAll ccr-hivemindos tests passed (${passed}).`);

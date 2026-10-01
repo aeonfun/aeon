@@ -10,6 +10,10 @@
 #   - an `on: "*"` handler rotates past a source it handled recently
 #   - the persist retry rebuilds on upstream's cron-state after losing a race
 #     and keeps every stamp, including chain:<name>
+#   - failed-run retries and breaker probes respect the skill's own cadence: a
+#     weekly skill gets its quick retries, but is never re-run ~4x/day by the
+#     probe or every 30 min with the breaker off; workflow_dispatch skills are
+#     never retried or probed
 # Run:  bash scripts/tests/test_scheduler_tick.sh
 # Needs bash 4+ (the step uses associative arrays), GNU date, yq, jq, git; skips
 # otherwise (e.g. macOS system bash). CI runs it on ubuntu-latest.
@@ -68,6 +72,9 @@ skills:
   fixer: { enabled: true, schedule: "reactive" }
   broken-a: { enabled: true, schedule: "0 3 * * *" }
   broken-b: { enabled: true, schedule: "0 3 * * *" }
+  weekly-down: { enabled: true, schedule: "0 9 * * 1" }
+  weekly-flaky: { enabled: true, schedule: "0 5 * * 2" }
+  manual: { enabled: true, schedule: "workflow_dispatch" }
 
 reactive:
   skill-repair:
@@ -96,14 +103,20 @@ channels:
   jsonrender:
     enabled: true
 EOF
-# 2026-07-07 06:05 UTC. broken-a/b are failing with an open breaker (dispatched
-# an hour ago); fixer handled broken-a 2h ago, so it must rotate to broken-b.
+# 2026-07-07 06:05 UTC (a Tuesday). broken-a/b are failing with an open breaker
+# (dispatched an hour ago); fixer handled broken-a 2h ago, so it must rotate to
+# broken-b. weekly-down (Mondays 09:00) is in an outage, last run 7h ago: the
+# probe cooldown is up but its next slot is days away. weekly-flaky failed its
+# 05:00 slot once, so it is owed a quick retry. manual is workflow_dispatch only.
 cat > memory/cron-state.json <<'EOF'
 {
   "digest": { "last_status": "success", "last_dispatch": "2026-07-06T06:00:00Z" },
   "solo": { "last_status": "success", "last_dispatch": "2026-07-06T06:00:00Z" },
   "broken-a": { "last_status": "failed", "last_dispatch": "2026-07-07T05:05:00Z", "consecutive_failures": 5 },
   "broken-b": { "last_status": "failed", "last_dispatch": "2026-07-07T05:05:00Z", "consecutive_failures": 4 },
+  "weekly-down": { "last_status": "failed", "last_dispatch": "2026-07-06T23:00:00Z", "consecutive_failures": 5 },
+  "weekly-flaky": { "last_status": "failed", "last_dispatch": "2026-07-07T05:00:00Z", "consecutive_failures": 1 },
+  "manual": { "last_status": "failed", "last_dispatch": "2026-07-01T00:00:00Z", "consecutive_failures": 1 },
   "fixer": { "last_status": "success", "last_dispatch": "2026-07-07T04:05:00Z",
              "reactive_sources": { "broken-a": "2026-07-07T04:05:00Z" } }
 }
@@ -120,10 +133,11 @@ jq '.digest.last_status = "failed" | .other = {"last_status": "success"}' memory
   && mv m.tmp memory/cron-state.json
 git commit -qam "chore(cron): digest failed" && git push -q origin main 2>/dev/null
 
-run_tick() {  # run_tick <now-iso>
+run_tick() {  # run_tick <now-iso> [breaker-threshold]
   : > "$TMP/gh.log"
   ( cd "$TMP/work" && PATH="$TMP/bin:$PATH" GH_LOG="$TMP/gh.log" \
       FAKE_NOW="$("$REAL_DATE" -u -d "$1" +%s)" GITHUB_REPOSITORY=fake/fake GH_TOKEN=x STATE_BACKEND="" \
+      BREAKER_THRESHOLD_OVERRIDE="${2:-}" \
       bash --noprofile --norc -eo pipefail "$TMP/tick.sh" ) > "$TMP/tick.out" 2>&1
 }
 dispatched() { grep -qxF -- "$1" "$TMP/gh.log"; }
@@ -139,6 +153,11 @@ grep -qE 'skill=(dev-loop|morning|jsonrender|feature)( |$)' "$TMP/gh.log" && bad
 grep -q 'skill=skill-repair' "$TMP/gh.log" && bad "disabled reactive handler dispatched" || ok "reactive handler with enabled: false not dispatched"
 dispatched "workflow run aeon.yml -f skill=fixer -f var=broken-b" && ok "wildcard handler rotated to broken-b" \
   || bad "fixer not dispatched for broken-b: $(grep fixer "$TMP/gh.log")"
+grep -q 'skill=weekly-down' "$TMP/gh.log" && bad "weekly skill probed off-cadence (cooldown up, no slot owed)" \
+  || ok "breaker probe waits for the weekly skill's next slot"
+dispatched "workflow run aeon.yml -f skill=weekly-flaky" && ok "weekly skill still gets a quick retry for its failed slot" \
+  || bad "weekly-flaky not quick-retried"
+grep -q 'skill=manual' "$TMP/gh.log" && bad "workflow_dispatch-only skill auto-retried" || ok "workflow_dispatch skill never retried"
 
 STATE="$(git -C "$TMP/origin.git" show main:memory/cron-state.json)"
 NOW=2026-07-07T06:05:00Z
@@ -154,6 +173,21 @@ NOW=2026-07-07T06:05:00Z
 git -C "$TMP/work" pull -q origin main 2>/dev/null
 if run_tick 2026-07-07T06:10:00Z; then ok "tick 2 exits 0"; else bad "tick 2 failed: $(tail -5 "$TMP/tick.out")"; fi
 grep -qE 'skill=(digest|solo)|chain=morning' "$TMP/gh.log" && bad "tick 2 re-dispatched: $(cat "$TMP/gh.log")" || ok "tick 2 dispatches nothing already paid"
+
+# --- tick 3: breaker off, a long failure streak is not retried every 30 min ------
+# broken-a/b and weekly-down are 3+ failures deep and past the 30-min mark, but
+# their quick retries are spent and no slot is owed, so nothing runs.
+if run_tick 2026-07-07T06:40:00Z 0; then ok "tick 3 (breaker off) exits 0"; else bad "tick 3 failed: $(tail -5 "$TMP/tick.out")"; fi
+grep -qE 'skill=(broken-a|broken-b|weekly-down|manual)( |$)' "$TMP/gh.log" \
+  && bad "breaker off: exhausted failures retried off-cadence: $(cat "$TMP/gh.log")" \
+  || ok "breaker off: quick retries are bounded, failures wait for their slot"
+
+# --- tick 4: weekly-down's next Monday slot pays the probe ----------------------
+git -C "$TMP/work" pull -q origin main 2>/dev/null
+if run_tick 2026-07-13T09:05:00Z; then ok "tick 4 exits 0"; else bad "tick 4 failed: $(tail -5 "$TMP/tick.out")"; fi
+dispatched "workflow run aeon.yml -f skill=weekly-down" && ok "weekly skill probed at its own next slot" \
+  || bad "weekly-down not probed at its slot: $(cat "$TMP/gh.log")"
+grep -q 'skill=manual' "$TMP/gh.log" && bad "workflow_dispatch-only skill probed" || ok "workflow_dispatch skill never probed"
 
 echo "---"
 echo "PASS: $pass   FAIL: $fail"

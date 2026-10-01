@@ -94,12 +94,12 @@ if grep -q "MCPTool(" "$ARGS_FILE"; then bad "MCPTool rules leaked into a non-MC
 # --- 3. model + run-shaping knobs -------------------------------------------
 # Only a real grok id is forwarded; a leftover claude-* id would otherwise pin the
 # run to a model that does not exist and every downstream record would name it.
-: > "$ARGS_FILE"; run_in "$WS" --model claude-sonnet-5 >/dev/null
+: > "$ARGS_FILE"; run_in "$WS" --model claude-sonnet-5-5 >/dev/null
 if grep -Fqx -- "--model" "$ARGS_FILE"; then bad "--model should be omitted for a claude-* id"; else
   pass "--model omitted for a leftover claude-* id"; fi
-: > "$ARGS_FILE"; run_in "$WS" --model grok-4.5 >/dev/null
-{ grep -Fqx -- "--model" "$ARGS_FILE" && grep -Fqx "grok-4.5" "$ARGS_FILE"; } \
-  && pass "--model forwarded for a real grok id" || bad "--model grok-4.5 not forwarded"
+: > "$ARGS_FILE"; run_in "$WS" --model grok-4.7 >/dev/null
+{ grep -Fqx -- "--model" "$ARGS_FILE" && grep -Fqx "grok-4.7" "$ARGS_FILE"; } \
+  && pass "--model forwarded for a real grok id" || bad "--model grok-4.7 not forwarded"
 
 # GROK_* frontmatter knobs (aeon.yml exports these) reach the adapter.
 : > "$ARGS_FILE"
@@ -116,6 +116,34 @@ if ( cd "$WS" && echo p | GROK_FAKE_OUT='{"type":"end","stopReason":"Cancelled"}
 else
   pass "abnormal stop with no output fails instead of emitting an empty result"
 fi
+
+# grok 1.x spells stopReason in snake_case; a turn cap hit with no text is a
+# failed run, and a clean end_turn still passes through.
+if ( cd "$WS" && echo p | GROK_FAKE_OUT='{"type":"end","stopReason":"max_turn_requests"}' \
+     bash "$RH" grok --mode write --no-sandbox >/dev/null 2>&1 ); then
+  bad "max_turn_requests with no output should fail"
+else
+  pass "1.x snake_case max_turn_requests with no output fails"
+fi
+OUT=$(cd "$WS" && echo p | GROK_FAKE_OUT='{"type":"text","data":"done"}
+{"type":"end","stopReason":"end_turn","usage":{"input_tokens":3,"output_tokens":1}}' \
+  bash "$RH" grok --mode write --no-sandbox 2>/dev/null)
+[ "$(jq -r '.result' <<<"$OUT")" = "done" ] \
+  && pass "1.x snake_case end_turn passes through" || bad "end_turn envelope (got: $OUT)"
+
+# --- 5. knobs grok 1.x removed ------------------------------------------------
+# grok 1.0.46 rejects --best-of-n and --check ("unexpected argument", exit 2), so
+# a skill with best_of_n/verify must still run: the knobs are ignored with a
+# notice and --no-subagents stays on.
+: > "$ARGS_FILE"
+ERR=$( ( cd "$WS" && echo p | GROK_FAKE_OUT="$STREAM" GROK_BEST_OF_N=3 GROK_CHECK=true \
+    bash "$RH" grok --mode write --no-sandbox ) 2>&1 >/dev/null )
+{ ! grep -Fqx -- "--best-of-n" "$ARGS_FILE" && ! grep -Fqx -- "--check" "$ARGS_FILE" \
+  && grep -Fqx -- "--no-subagents" "$ARGS_FILE"; } \
+  && pass "best_of_n/verify are not passed to grok 1.x; --no-subagents stays" \
+  || bad "removed knobs leaked into argv (args: $(tr '\n' ' ' < "$ARGS_FILE"))"
+grep -q "grok 1.x removed --best-of-n" <<<"$ERR" && grep -q "grok 1.x removed --check" <<<"$ERR" \
+  && pass "ignored knobs are reported, not silently dropped" || bad "no notice for ignored knobs (stderr: $ERR)"
 
 rm -rf "$WS" "$MCPDIR"
 echo "---"

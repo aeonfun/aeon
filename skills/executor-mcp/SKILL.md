@@ -51,7 +51,7 @@ Deliver via `./notify -f` (ordinary Markdown): what the task produced, which int
 
 ### 4. Log
 
-Append to `memory/logs/${today}.md`:
+This skill is `read-only`, so the workflow's read-only guard writes its `### executor-mcp` log entry from your captured output; a self-written entry would be a duplicate. Don't append to `memory/logs/` yourself - put this record in your **final output**:
 
 ```
 ### executor-mcp

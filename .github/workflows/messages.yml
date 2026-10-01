@@ -409,7 +409,7 @@ jobs:
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
         with:
           path: ~/.npm
-          key: claude-code-${{ runner.os }}-2.1.168
+          key: claude-code-${{ runner.os }}-2.1.287
           restore-keys: |
             claude-code-${{ runner.os }}-
 
@@ -417,7 +417,7 @@ jobs:
         if: steps.msg.outputs.source != ''
         # Pinned for supply-chain safety — keep in sync with aeon.yml's pin
         # (and the cache key version above).
-        run: npm install -g @anthropic-ai/claude-code@2.1.168 --prefer-offline
+        run: npm install -g @anthropic-ai/claude-code@2.1.287 --prefer-offline
 
       # Inbound messaging isn't a per-skill run, so no skill name is passed and
       # the repo-global `harness:`/`model:` keys decide — the same script aeon.yml
@@ -537,6 +537,7 @@ jobs:
           GLM_MODEL_SONNET: ${{ vars.GLM_MODEL_SONNET }}
           GLM_MODEL_OPUS: ${{ vars.GLM_MODEL_OPUS }}
           GLM_MODEL_HAIKU: ${{ vars.GLM_MODEL_HAIKU }}
+          GROK_MODEL: ${{ vars.GROK_MODEL }}
           GLM_REASONING_EFFORT: ${{ vars.GLM_REASONING_EFFORT }}
           CCR_LOG: ${{ vars.CCR_LOG }}
           # Optional Langfuse observability — traces the conversational-reply run
@@ -598,7 +599,7 @@ jobs:
         run: |
           TODAY=$(date -u +%Y-%m-%d)
           CONFIG_MODEL=$(grep -E '^model:' aeon.yml | sed 's/^model: *//' | tr -d ' ')
-          MODEL="${CONFIG_MODEL:-claude-sonnet-5}"
+          MODEL="${CONFIG_MODEL:-claude-sonnet-5-5}"
 
           # HARNESS / AUTH_MODE / MODEL_ARG come from the "Resolve harness" step
           # (scripts/resolve-harness.sh), and the CLI was staged by "Install harness
@@ -607,7 +608,7 @@ jobs:
           # with a ::warning::, because nothing on this workflow could install them.
           # On grok a claude-* model id is meaningless — fall back to grok's default.
           if [ "$HARNESS" = "grok" ]; then
-            case "$MODEL" in claude-*|"") MODEL="grok-4.5" ;; esac
+            case "$MODEL" in claude-*|default|"") MODEL="grok-4.7" ;; esac
           fi
           echo "Using harness: $HARNESS  |  auth: $AUTH_MODE  |  model: ${MODEL_ARG:-$MODEL}"
 
@@ -849,25 +850,13 @@ jobs:
           git config user.email "aeonframework@proton.me"
           rm -f ./notify
 
-          CURRENT_BRANCH=$(git branch --show-current)
           SOURCE="$_COMMIT_SOURCE"
-
-          if [ "$CURRENT_BRANCH" != "main" ] && [ -n "$CURRENT_BRANCH" ]; then
-            echo "On feature branch: $CURRENT_BRANCH"
-            git add -A
-            git diff --staged --quiet || git commit -m "chore($SOURCE): auto-commit $(date +%Y-%m-%d)"
-            git push --force-with-lease -u origin "$CURRENT_BRANCH" || true
-
-            git checkout -f main
-            git pull --rebase origin main || true
-          fi
-
-          git add -A
-          git diff --staged --quiet && exit 0
-          git commit -m "chore($SOURCE): auto-commit $(date +%Y-%m-%d)"
           JITTER=$((RANDOM % 10))
           echo "Waiting ${JITTER}s jitter before push..."
           sleep "$JITTER"
-          # Shared rebase + conflict-resolve + push loop (same fleet-safe policy as
-          # aeon.yml's commit steps) instead of a drifting inline copy.
-          bash scripts/git-push-retry.sh
+          # Shared feature-branch/main split (scripts/commit-run-results.sh): the
+          # PR branch gets only the agent's change, post-run state is committed
+          # on main via git-push-retry.sh. Run the copy from the run's starting
+          # commit so an agent edit to the script can't change its own commit.
+          git show "$GITHUB_SHA:scripts/commit-run-results.sh" > "$RUNNER_TEMP/commit-run-results.sh"
+          bash "$RUNNER_TEMP/commit-run-results.sh" "$SOURCE"

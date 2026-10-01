@@ -99,6 +99,9 @@ WRITE_TOOLS="$WRITE_TOOLS,Bash(./scripts/vuln-poc-gate.sh:*)"
 # "Closes #N" names a real open issue, before it opens or reports a PR. Read-only
 # gh calls with validated arguments; the decision is the script's, not the model's.
 WRITE_TOOLS="$WRITE_TOOLS,Bash(./scripts/feature-open-pr.sh:*)"
+# pr-review asks GitHub whether it already reviewed a PR at its head commit, with
+# the same receipt count the dev-loop gate uses, before posting another review.
+WRITE_TOOLS="$WRITE_TOOLS,Bash(./scripts/dev-loop-review.sh:*)"
 # Foundry bare-names + the key-safe runner for deploy-uni-hook. Foundry is staged by
 # scripts/stage-deploy-uni-hook.sh (the sandbox denies in-run installs); the skill then
 # builds/simulates/broadcasts by bare name. `./hook-deploy.sh` hides the deployer key
@@ -174,8 +177,8 @@ write_tools() { echo "$BASE_TOOLS,$WRITE_TOOLS"; }
 #   effort: high            # low|medium|high|xhigh|max  -> --effort
 #   reasoning_effort: high  # same set                   -> --reasoning-effort
 #   max_turns: 60           # agentic-turn cap           -> --max-turns
-#   best_of_n: 3            # run N ways, keep the best   -> --best-of-n
-#   verify: true            # append a self-check loop    -> --check
+#   best_of_n: 3            # was --best-of-n; grok 1.x removed it (adapter ignores, with a notice)
+#   verify: true            # was --check; grok 1.x removed it (adapter ignores, with a notice)
 #
 # Output is `export GROK_X=...` lines for exactly the fields present, so unset
 # fields fall through to the adapter's defaults. aeon.yml's grok branch evals this.

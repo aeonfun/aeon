@@ -11,6 +11,17 @@
 # the network stays open — read-only is about the repo, not egress).
 # This mirrors aeon's semantic: "a read-only skill physically cannot mutate the
 # repo" — and makes it mean the same thing on all seven harnesses.
+# On Linux it also locks what a LATER, unsandboxed workflow step would execute or
+# read config from (runner file-command dir, git/gh/ssh/npm config, PATH dirs
+# under $HOME, installed harness CLIs); the harness's own state dirs stay rw.
+
+# sandbox_lock PATH -> print `--ro-bind PATH PATH`, once per sandbox_prefix call
+# (dedup via sandbox_prefix's local $seen; bash locals are dynamically scoped).
+sandbox_lock() {
+  case " $seen " in *" $1 "*) return 0 ;; esac
+  seen="$seen $1"
+  printf '%s\n' --ro-bind "$1" "$1"
+}
 
 sandbox_prefix() {
   # sandbox_prefix TMPDIR [EXPANDED_MCP] -> prints prefix argv tokens (one per
@@ -82,6 +93,46 @@ EOF
         p="${XDG_CONFIG_HOME:-$HOME/.config}/git"
         [ -d "$p" ] || mkdir -p "$p" 2>/dev/null || true
         [ -d "$p" ] && printf '%s\n' --ro-bind "$p" "$p"
+        # Same create-then-lock for the $HOME paths later steps EXECUTE or read
+        # config from (a planted file there runs outside the sandbox):
+        #   ~/.local/bin  on the runner PATH (install-harness also GITHUB_PATHs it)
+        #   ~/.local/lib  python's user site: a dropped *.pth runs in every python3
+        #   ~/.config/gh  gh config (aliases, http_unix_socket) for later gh calls
+        #   ~/.ssh        ssh config (ProxyCommand) for any later ssh / git+ssh
+        #   ~/.npmrc      npm config (registry, script-shell) for later npm / npx
+        # Shell rc files are left alone: Actions runs steps with
+        # `bash --noprofile --norc`, so nothing later sources them.
+        for p in "$HOME/.local/bin" "$HOME/.local/lib" "${XDG_CONFIG_HOME:-$HOME/.config}/gh" "$HOME/.ssh"; do
+          [ -d "$p" ] || mkdir -p "$p" 2>/dev/null || true
+          [ -d "$p" ] && sandbox_lock "$p"
+        done
+        [ -e "$HOME/.npmrc" ] || : > "$HOME/.npmrc" 2>/dev/null || true
+        [ -f "$HOME/.npmrc" ] && sandbox_lock "$HOME/.npmrc"
+        # Harness installs that "Analyze skill output" re-runs OUTSIDE the sandbox
+        # (vibe's pipx venv, cursor's build, hermes's checkout). cursor and hermes
+        # run under a scratch HOME in RH_TMPDIR, so nothing writes here at runtime.
+        for p in "$HOME/.local/share/pipx" "$HOME/.local/pipx" \
+                 "$HOME/.local/share/cursor-agent" "$HOME/.hermes"; do
+          [ -d "$p" ] && sandbox_lock "$p"
+        done
+        # Any other PATH dir under $HOME (~/.foundry/bin, ~/.cargo/bin, ...): later
+        # steps resolve commands there. Skip $HOME itself and any dir holding the
+        # workspace or this run's scratch dir; those keep their own binds.
+        local real
+        while IFS= read -r -d : p; do
+          p="${p%/}"
+          case "$p" in "$HOME"/*) ;; *) continue ;; esac
+          [ -d "$p" ] && [ -w "$p" ] || continue
+          real="$(cd "$p" 2>/dev/null && pwd -P)" || continue
+          case "$ws/" in "$p"/*|"$real"/*) continue ;; esac
+          case "$tmp/" in "$p"/*|"$real"/*) continue ;; esac
+          sandbox_lock "$p"
+        done <<<"${PATH:-}:"
+      fi
+      # The runner tool cache holds setup-node's prefix, i.e. every `npm i -g`
+      # harness (claude, codex, pi, kimi, grok) the scorer step re-runs unsandboxed.
+      if [ -n "${RUNNER_TOOL_CACHE:-}" ] && [ -d "$RUNNER_TOOL_CACHE" ]; then
+        sandbox_lock "$RUNNER_TOOL_CACHE"
       fi
       if [ -n "${RUNNER_WORKSPACE:-}" ]; then
         p="${RUNNER_WORKSPACE%/*}/_actions"

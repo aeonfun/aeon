@@ -39,7 +39,7 @@ describe("withFileLock", () => {
   it("prevents a read-modify-write race from silently clobbering a field", async () => {
     // Simulates the real bug: two requests each read the same starting
     // "file", patch one field in memory, then overwrite the whole file.
-    let file = { model: "claude-sonnet-5", harness: "pi" };
+    let file = { model: "claude-sonnet-5-5", harness: "pi" };
 
     async function patchModel(model: string) {
       return withFileLock("aeon.yml", async () => {
@@ -58,10 +58,10 @@ describe("withFileLock", () => {
 
     // Fire harness first, model second - mirrors clicking the harness picker
     // then immediately the model picker.
-    await Promise.all([patchHarness("fx"), patchModel("claude-opus-4-8")]);
+    await Promise.all([patchHarness("fx"), patchModel("claude-opus-5-5")]);
 
     assert.equal(file.harness, "fx");
-    assert.equal(file.model, "claude-opus-4-8");
+    assert.equal(file.model, "claude-opus-5-5");
   });
 
   it("does not serialize critical sections on different paths", async () => {

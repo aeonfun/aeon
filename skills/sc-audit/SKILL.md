@@ -538,7 +538,28 @@ When you write the advisory/report body, obey `STRATEGY.md`: lead with the findi
 Mandatory on every **`MODE=repo`** and **`MODE=onchain`** run (clean, skip, or finding), written to the **absolute** `$WORKDIR` path - a bare `memory/...` lands in the throwaway clone. **`MODE=fixture` writes NO ledger row** (fixtures must stay re-runnable - a row would dedup-block the next regression run); record the fixture result only in the log (§S9). The coverage manifest below is still worth writing for a fixture (use slug `fixture-$FIXTURE`).
 
 - Append to `$WORKDIR/memory/vuln-scanned.json` the same row shape as vuln-scanner §A6: `{"repo","scanned_at","findings":<N>,"channel":"pvr|portal|email|pending-disclosure|public-pr|clean|skipped"}`. For `MODE=onchain` the `repo` key is `onchain:$CHAIN:$ADDR` (the same key S1 dedups on). A `no-solidity` / `no-solidity-target` / on-chain `unverified` exit still writes a `clean` (or `skipped`) row so it isn't re-picked tomorrow.
-- Write the coverage manifest exactly as vuln-scanner §A6.5 (`$WORKDIR/memory/coverage/<slug>-${today}.json`; slug = repo with `/`->`-`, or `onchain-$CHAIN-$ADDR` for on-chain), with `tools_run` mirroring `$SCRATCH/sources.txt` (`slither`, `agentic`, and `fuzz` when S6.5 ran; on-chain adds `source: etherscan|sourcify`), `entrypoints_reviewed`/`entrypoints_total` from the S5 inventory (the N-cap means these often differ - report the honest `partial`), and `invariants_modeled` (the count from S5.0's `threat-model.json`) so the report shows the audit had an explicit spec. Drop a one-line "Scope of review" into the report and any advisory: `Reviewed N/M contracts across F .sol files (L LOC); modeled K invariants; tools: slither(<status>), agentic, fuzz(<status>).`
+- Write the coverage manifest to `$WORKDIR/memory/coverage/<slug>-${today}.json` (slug = repo with `/`->`-`, or `onchain-$CHAIN-$ADDR` for on-chain). Coverage is non-sensitive (it names what was reviewed, not how to exploit it), so it ships even when finding detail is redacted, and it is the baseline a future rescan diffs against. Shape:
+
+  ```json
+  {
+    "repo": "owner/repo",
+    "scanned_at": "<ISO-8601>",
+    "commit": "<git rev-parse HEAD>",
+    "files_in_scope": 0, "loc_in_scope": 0, "languages": ["sol"],
+    "tools_run": {"slither": "ok", "agentic": "ok", "fuzz": "skipped"},
+    "source": "etherscan|sourcify",
+    "entrypoints_total": 0, "entrypoints_reviewed": 0,
+    "entrypoints": [{"file": "src/Vault.sol", "kind": "external-state-changing", "reviewed": true}],
+    "skipped_paths": [{"path": "lib/", "reason": "third-party dependency"}],
+    "invariants_modeled": 0,
+    "verification": {"candidates": 0, "confirmed": 0, "refuted": 0,
+      "refuted_reasons": [{"file": "src/Vault.sol", "line": 10, "reason": "onlyOwner guard"}]},
+    "coverage_confidence": "high|partial|low",
+    "report": "memory/reports/<slug>-${today}.md"
+  }
+  ```
+
+  `repo` uses the same key as the ledger row above. `tools_run` mirrors `$SCRATCH/sources.txt` (`slither`, `agentic`, and `fuzz` when S6.5 ran); `source` is on-chain only. `entrypoints_reviewed`/`entrypoints_total` come from the S5 inventory (the N-cap means these often differ - that is the honest signal), `invariants_modeled` is the count from S5.0's `threat-model.json` so the report shows the audit had an explicit spec, and `verification` is the S6 tally. `coverage_confidence`: **high** = every entrypoint reviewed and every applicable tool ran; **partial** = some entrypoints `reviewed: false` (incl. past the S5 `N` budget) or a tool `skipped`/`fail`ed; **low** = most tools failed or the surface was too large/opaque to review. Never inflate it. Drop a one-line "Scope of review" into the report and any advisory: `Reviewed N/M contracts across F .sol files (L LOC); modeled K invariants; tools: slither(<status>), agentic, fuzz(<status>).`
 - **Write the human report (§S9.0) too.** This manifest is the machine ledger; §S9.0's `$WORKDIR/memory/reports/<slug>-${today}.md` is its readable professional-audit sibling, written on the same runs (repo / onchain / fixture, clean or finding). Add a `"report": "memory/reports/<slug>-${today}.md"` field to this manifest so the two cross-link.
 
 ## S9. Report and notify

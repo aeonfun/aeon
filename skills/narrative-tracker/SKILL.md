@@ -42,7 +42,7 @@ TO_DATE=$(date -u +%Y-%m-%d)
 # The `>` redirect to /tmp is fine in read-only mode (it is not a repo path; nothing reverts it).
 PROMPT="Search X for the dominant crypto and tech narratives from ${FROM_DATE} to ${TO_DATE}. Return 12-15 distinct narrative threads. For each: 1) short label, 2) 3-5 representative @handles driving it, 3) 2-3 tweet permalinks, 4) rough mention-volume descriptor (niche / growing / saturating / cooling), 5) the strongest one-line bear case against it."
 jq -n --arg p "$PROMPT" --arg fd "$FROM_DATE" --arg td "$TO_DATE" \
-  '{model:"grok-4.6", input:[{role:"user",content:$p}], tools:[{type:"x_search",from_date:$fd,to_date:$td}]}' \
+  '{model:"grok-4.7", input:[{role:"user",content:$p}], tools:[{type:"x_search",from_date:$fd,to_date:$td}]}' \
   > /tmp/xai-nt-payload.json
 HTTP=$(./secretcurl -s -o /tmp/xai-nt.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
   -H "Content-Type: application/json" \
@@ -52,7 +52,7 @@ echo "xai http=$HTTP bytes=$(wc -c </tmp/xai-nt.json)"
 ```
 Run that block **verbatim** (do not hand-reassemble the JSON — the `jq -n` builder exists precisely so quoting/expansion can't break; keep the jq and the `./secretcurl` as two separate commands). The `echo "xai http=$HTTP ..."` line **must appear in your output** — it is your proof the call ran. On `HTTP=200` with a non-empty body, parse `/tmp/xai-nt.json` with `jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text'` and use that as the primary narrative signal (`SOURCE=api`).
 
-**b. WebSearch / WebFetch fallback (last-resort only).** You may reach for this **only after** you have shown an `xai http=<code>` line proving Path A actually ran and returned a non-2xx code (or an empty body, or timed out). If you have no `xai http=` line, you did not run the call — go back and run it. Reach for the fallback **only** when Path A genuinely fails — `KEY_UNSET`, a non-2xx HTTP code, an empty parse, or a timeout. It is lower quality (WebSearch favours old high-engagement posts) and is **never co-equal** with Path A. Log the fetch failure to `memory/logs/${today}.md` recording the **true reason** — `key-unset` | `http-<code>` | `empty` | `timeout` — never "XAI_API_KEY unavailable" when the key was set (a slow curl is a `timeout`, not a missing key). Then compile narratives via WebSearch (`crypto narrative ${TO_DATE}`, `AI agent crypto trend this week`) and WebFetch on individual tweet URLs; discard anything older than the 3-day window.
+**b. WebSearch / WebFetch fallback (last-resort only).** You may reach for this **only after** you have shown an `xai http=<code>` line proving Path A actually ran and returned a non-2xx code (or an empty body, or timed out). If you have no `xai http=` line, you did not run the call - go back and run it. Reach for the fallback **only** when Path A genuinely fails - `KEY_UNSET`, a non-2xx HTTP code, an empty parse, or a timeout. It is lower quality (WebSearch favours old high-engagement posts) and is **never co-equal** with Path A. Record the fetch failure in your final output with the **true reason** - `key-unset` | `http-<code>` | `empty` | `timeout` - never "XAI_API_KEY unavailable" when the key was set (a slow curl is a `timeout`, not a missing key). Then compile narratives via WebSearch (`crypto narrative ${TO_DATE}`, `AI agent crypto trend this week`) and WebFetch on individual tweet URLs; discard anything older than the 3-day window.
 
 **c. Quantitative reference points (supplement).** Independently of the fetch path, cross-check mindshare against external quantitative benchmarks with one WebSearch: `DefiLlama narrative tracker` OR `Kaito mindshare leaderboard`. Pull 1-2 concrete numbers (project name, metric, link) to calibrate the mindshare scores in step 2. This is a calibration cross-check, **not** a narrative source. Do not paraphrase — extract facts.
 
@@ -126,9 +126,9 @@ If absolutely nothing new or notable (no transitions, no reflexivity, no FRONT-R
 
 ### 6. Send via `./notify`
 
-### 7. Log to `memory/logs/${today}.md`
+### 7. Log record
 
-Append a `### narrative-tracker` section with the full structured output (not just the notification — include all narratives considered, even IGNOREd ones, so future diffs work). If a full run produced nothing actionable, log `NARRATIVE_TRACKER_OK` with the narrative labels seen (so tomorrow's diff still has a baseline).
+This skill is `read-only`, so the workflow's read-only guard writes its `### narrative-tracker` log entry from your captured output; a self-written entry would be a duplicate. Don't append to `memory/logs/` yourself - put this record in your **final output**: the full structured output (not just the notification - include all narratives considered, even IGNOREd ones, so future diffs work). If a full run produced nothing actionable, record `NARRATIVE_TRACKER_OK` with the narrative labels seen (so tomorrow's diff still has a baseline).
 
 ## Guidelines
 
@@ -142,7 +142,7 @@ Append a `### narrative-tracker` section with the full structured output (not ju
 
 ## Fetching
 
-`XAI_API_KEY` is **injected into this skill's environment** (declared in `requires:`). It is present and valid. **The primary fetch path is a direct `curl` to `https://api.x.ai/v1/responses` with `Authorization: Bearer {XAI_API_KEY}`** (model `grok-4.6`, `"tools":[{"type":"x_search"}]`). There is **no network sandbox** blocking this — earlier versions of this skill claimed there was, and that is stale and false. Just make the call.
+`XAI_API_KEY` is **injected into this skill's environment** (declared in `requires:`). It is present and valid. **The primary fetch path is a direct `curl` to `https://api.x.ai/v1/responses` with `Authorization: Bearer {XAI_API_KEY}`** (model `grok-4.7`, `"tools":[{"type":"x_search"}]`). There is **no network sandbox** blocking this - earlier versions of this skill claimed there was, and that is stale and false. Just make the call.
 
 Rules:
 1. **Check, don't assume.** Run `[ -n "${XAI_API_KEY:+x}" ] && echo KEY_PRESENT || echo KEY_UNSET` (the `${VAR:+x}` form, not bare `$XAI_API_KEY` — the bare form trips the secret-expansion analyzer and falsely reads as unset). If `KEY_PRESENT` (it will be), Path A (the curl in step 1a) is required before any fallback.

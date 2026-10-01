@@ -9,7 +9,7 @@
       "124": "timeout"
     }
   },
-  "generated": "2026-08-30T18:51:46Z",
+  "generated": "2026-10-01T19:39:55Z",
   "count": 9,
   "harnesses": [
     {
@@ -18,7 +18,7 @@
       "cli": {
         "install": "npm i -g @anthropic-ai/claude-code",
         "bin": "claude",
-        "min_version": "2.1"
+        "min_version": "2.1.287"
       },
       "invoke": "claude -p - --output-format json",
       "round_trip": true,
@@ -46,7 +46,7 @@
       "cli": {
         "install": "npm i -g @openai/codex",
         "bin": "codex",
-        "min_version": "0.144.6"
+        "min_version": "0.159.3"
       },
       "invoke": "codex exec --json -",
       "round_trip": true,
@@ -127,7 +127,7 @@
       "cli": {
         "install": "npm i -g @xai-official/grok",
         "bin": "grok",
-        "min_version": "0.2.101"
+        "min_version": "1.0.46"
       },
       "invoke": "grok -p --output-format streaming-json",
       "round_trip": true,
@@ -181,7 +181,7 @@
       "cli": {
         "install": "",
         "bin": "kimi",
-        "min_version": "0.28.0"
+        "min_version": "2.1.1"
       },
       "invoke": "kimi -p --output-format stream-json",
       "round_trip": true,
@@ -209,7 +209,7 @@
       "cli": {
         "install": "npm i -g --ignore-scripts @earendil-works/pi-coding-agent",
         "bin": "pi",
-        "min_version": "0.80.9"
+        "min_version": "0.99.2"
       },
       "invoke": "pi -p --mode json",
       "round_trip": true,
@@ -236,9 +236,9 @@
       "cli": {
         "install": "",
         "bin": "vibe",
-        "min_version": "2.20.0"
+        "min_version": "2.25.8"
       },
-      "invoke": "vibe -p --output json",
+      "invoke": "vibe -p --trust --output json",
       "round_trip": true,
       "token_usage": "none",
       "cost": false,

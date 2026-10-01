@@ -51,7 +51,12 @@ output **fails the run** — partial or empty results are never emitted as succe
 | Native provider auth | Claude Pro/Max OAuth | X account · `XAI_API_KEY` | ChatGPT OAuth · `OPENAI_API_KEY` | provider env key | Mistral key | Moonshot OAuth · key |
 
 The six in this table round-trip the contract on real CLIs (claude ≥2.1, grok 0.2.101,
-codex-cli 0.144.6, pi 0.80.9, vibe 2.20.0, kimi 0.28.0). aeon runs all nine through
+codex-cli 0.144.6, pi 0.80.9, vibe 2.20.0, kimi 0.28.0; live runs on real models). The
+current pins (claude 2.1.287, grok 1.0.46, codex-cli 0.159.3, pi 0.99.2, vibe 2.25.8,
+kimi 2.1.1) are checked on every change by `.github/workflows/ci-harness-cli.yml`:
+each CLI is installed at its pin, its `--help` must still list every flag its
+adapter passes, and a prompt goes through `run-harness` against a local fake model
+server (no real model call). aeon runs all nine through
 this adapter; claude's call is additionally wrapped in the AI-gateway failover
 cascade.
 
@@ -116,7 +121,7 @@ bind-mounts) kimi still reads the literal `${VAR}`s.
 
 | Layer | claude | grok | codex | pi | vibe | kimi |
 |---|---|---|---|---|---|---|
-| Invoke | `claude -p -` | `grok -p --output-format streaming-json` | `codex exec --json -` | `pi -p --mode json` | `vibe -p --output json` | `kimi -p --output-format stream-json` |
+| Invoke | `claude -p -` | `grok -p --output-format streaming-json` | `codex exec --json -` | `pi -p --mode json` | `vibe -p --trust --output json` | `kimi -p --output-format stream-json` |
 | Result | envelope passthrough | `type=="text"` chunks (never `thought`) | last `agent_message` | last assistant `message_end` | last assistant `content` (never `reasoning_content`) | last assistant `content` |
 | Usage | native + cost | streaming `end` event → cost | sum of `turn.completed.usage` | per-message usage + cost | none → 0 | none → 0 |
 | Read-only | `--allowedTools` + wrapper sandbox | `bypassPermissions` + wrapper sandbox | `--sandbox read-only` (native) | `--tools` subset + wrapper sandbox | wrapper sandbox only | wrapper sandbox only |
@@ -170,12 +175,12 @@ Only the harnesses you actually dispatch need to be installed.
 
 | Harness | Install | Auth |
 |---|---|---|
-| Claude Code | `npm i -g @anthropic-ai/claude-code` | `claude login` (Pro/Max or API key) |
-| Grok Build | `npm i -g @xai-official/grok@0.2.101` | `grok login` (SuperGrok / X Premium+) or `XAI_API_KEY` |
-| Codex CLI | `brew install codex` or `npm i -g @openai/codex@0.144.6` | `codex login` (any ChatGPT plan) or `OPENAI_API_KEY` |
-| Pi | `npm i -g --ignore-scripts @earendil-works/pi-coding-agent` | provider env keys or `/login` OAuth in the TUI |
-| Mistral Vibe | Vibe installer → `~/.local/bin/vibe` | `vibe --setup` (Mistral API key) |
-| Kimi Code | `brew install kimi-code` | `kimi login` (Moonshot) or a provider in `~/.config/kimi` |
+| Claude Code | `npm i -g @anthropic-ai/claude-code@2.1.287` | `claude login` (Pro/Max or API key) |
+| Grok Build | `npm i -g @xai-official/grok@1.0.46` | `grok login` (SuperGrok / X Premium+) or `XAI_API_KEY` |
+| Codex CLI | `brew install codex` or `npm i -g @openai/codex@0.159.3` | `codex login` (any ChatGPT plan) or `OPENAI_API_KEY` |
+| Pi | `npm i -g --ignore-scripts @earendil-works/pi-coding-agent@0.99.2` | provider env keys or `/login` OAuth in the TUI |
+| Mistral Vibe | `pipx install mistral-vibe==2.25.8` (or the Vibe installer → `~/.local/bin/vibe`) | `vibe --setup` (Mistral API key) |
+| Kimi Code | `npm i -g --ignore-scripts @moonshot-ai/kimi-code@2.1.1` (or `brew install kimi-code`) | `kimi login` (Moonshot) or a provider in `~/.kimi-code/config.toml` |
 | Cursor CLI | `curl -fsSL https://cursor.com/install | bash` | `CURSOR_API_KEY` for headless runs |
 | Hermes Agent | `curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash` | `hermes setup --portal`; archive as `HERMES_AUTH` for CI |
 

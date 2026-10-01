@@ -30,16 +30,40 @@ printf '%s\n' "\$@" >> "\$PKG_LOG"
 EOF
   chmod +x "$BIN/$tool"
 done
-# fx installs via curl|bash, not a package manager — fake curl so this test
-# never hits the real network, and fake bash-via-pipe is just "record and exit
-# 0" since install-harness.sh doesn't parse curl's output. The served "installer"
-# also records which GitHub credentials it could see (section 6).
+# fx / cursor / hermes are pinned downloads (curl -o, then a sha256 check), so a
+# fake curl serves local fixtures instead of the network and records each URL.
+FIX="$BIN/fixtures"; export FIX
+mkdir -p "$FIX/fx" "$FIX/cursor/dist-package"
+printf '#!/bin/sh\necho fake-fx\n' > "$FIX/fx/fx"
+printf '#!/bin/sh\necho fake-cursor\n' > "$FIX/cursor/dist-package/cursor-agent"
+chmod +x "$FIX/fx/fx" "$FIX/cursor/dist-package/cursor-agent"
+tar -czf "$FIX/fx.tar.gz" -C "$FIX/fx" fx
+tar -czf "$FIX/cursor.tar.gz" -C "$FIX/cursor" dist-package
+# The fake hermes installer records its argv and which credentials it could see.
+# It writes under $HOME because its env is scrubbed (no PKG_LOG in there).
+cat > "$FIX/hermes-install.sh" <<'EOF'
+echo "installer-args=$*" >> "$HOME/installer.log"
+echo "installer-env=[${GH_GLOBAL:-}|${GH_SECRETS_PAT:-}|${GH_TOKEN:-}|${GITHUB_TOKEN:-}|${OPENROUTER_API_KEY:-}|${HERMES_AUTH:-}|${ANTHROPIC_API_KEY:-}]" >> "$HOME/installer.log"
+EOF
 cat > "$BIN/curl" <<'EOF'
 #!/usr/bin/env bash
-printf 'curl %s\n' "$*" >> "$PKG_LOG"
-echo 'echo "installer-gh=[${GH_GLOBAL:-}|${GH_SECRETS_PAT:-}|${GH_TOKEN:-}|${GITHUB_TOKEN:-}]" >> "$PKG_LOG"; echo fake-fx-installed'
+out="" url=""
+while [ $# -gt 0 ]; do
+  case "$1" in -o|--retry) [ "$1" = -o ] && out="$2"; shift 2 ;; -*) shift ;; *) url="$1"; shift ;; esac
+done
+printf 'curl %s\n' "$url" >> "$PKG_LOG"
+case "$url" in
+  https://releases.fx.sh/*) cp "$FIX/fx.tar.gz" "$out" ;;
+  https://downloads.cursor.com/*) cp "$FIX/cursor.tar.gz" "$out" ;;
+  https://raw.githubusercontent.com/NousResearch/hermes-agent/*/scripts/install.sh) cp "$FIX/hermes-install.sh" "$out" ;;
+  *) exit 22 ;;
+esac
 EOF
 chmod +x "$BIN/curl"
+sha() { if command -v sha256sum >/dev/null 2>&1; then sha256sum "$1" | cut -d' ' -f1; else shasum -a 256 "$1" | cut -d' ' -f1; fi; }
+FX_SUM="FX_SHA256=$(sha "$FIX/fx.tar.gz")"
+CURSOR_SUM="CURSOR_SHA256=$(sha "$FIX/cursor.tar.gz")"
+HERMES_SUM="HERMES_INSTALLER_SHA256=$(sha "$FIX/hermes-install.sh")"
 
 # run <harness> [env...] -> stages into a fresh $HOME; sets H_DIR and PKG_LOG
 run() {
@@ -62,14 +86,14 @@ if run banana; then bad "unknown harness must fail"; else
 fi
 
 # --- 2. codex config generation --------------------------------------------
-run codex HM=openai/gpt-5-mini AUTH_MODE=openrouter OPENROUTER_API_KEY=sk-test
+run codex HM=openai/gpt-6-luna AUTH_MODE=openrouter OPENROUTER_API_KEY=sk-test
 CFG="$H_DIR/.codex/config.toml"
 if [ -f "$CFG" ]; then
   # wire_api MUST be "responses": codex 0.144.6 removed "chat" as a hard
   # config-load error, which kills the run before the model is ever reached.
   grep -q 'wire_api = "responses"' "$CFG" \
     && pass "codex/openrouter: wire_api is responses" || bad "codex wire_api"
-  grep -q 'model = "openai/gpt-5-mini"' "$CFG" \
+  grep -q 'model = "openai/gpt-6-luna"' "$CFG" \
     && pass "codex/openrouter: HM lands in the config" || bad "codex model"
   # OpenRouter 400s a reasoning-disabled request to /responses.
   grep -q 'model_reasoning_effort' "$CFG" \
@@ -89,20 +113,26 @@ if [ -f "$CFG" ]; then
 else bad "codex/native-key: no config written"; fi
 
 # --- 3. kimi + vibe config generation --------------------------------------
-run kimi HM=moonshotai/kimi-k2.5 AUTH_MODE=openrouter OPENROUTER_API_KEY=sk-test
+run kimi HM=moonshotai/kimi-k2.6 AUTH_MODE=openrouter OPENROUTER_API_KEY=sk-test
 CFG="$H_DIR/.kimi-code/config.toml"
 if [ -f "$CFG" ]; then
   # kimi resolves --model through an ALIAS, so default_model must be the alias and
   # the real id lives under [models.<alias>]. run-harness then passes no --model.
   grep -q 'default_model = "or-cheap"' "$CFG" \
     && pass "kimi: default_model is the alias" || bad "kimi alias"
-  grep -q 'model = "moonshotai/kimi-k2.5"' "$CFG" \
+  grep -q 'model = "moonshotai/kimi-k2.6"' "$CFG" \
     && pass "kimi: HM lands under the alias" || bad "kimi model"
   # The config holds a live provider key.
   PERM=$(ls -l "$CFG" | cut -c1-10)
   [ "$PERM" = "-rw-------" ] \
     && pass "kimi: config is chmod 600 (holds a provider key)" || bad "kimi config perms ($PERM)"
 else bad "kimi: no config written"; fi
+
+# Moonshot key: the kimi-native alias pins Moonshot's own model id.
+run kimi HM=moonshotai/kimi-k2.6 AUTH_MODE=native-key MOONSHOT_API_KEY=sk-test
+CFG="$H_DIR/.kimi-code/config.toml"
+{ grep -q 'default_model = "kimi-native"' "$CFG" && grep -q 'model = "kimi-k2.6"' "$CFG"; } 2>/dev/null \
+  && pass "kimi/native-key: kimi-native alias pins kimi-k2.6" || bad "kimi native-key model"
 
 run vibe HM=mistralai/mistral-medium-3-5 AUTH_MODE=openrouter OPENROUTER_API_KEY=sk-test
 CFG="$H_DIR/.vibe/config.toml"
@@ -118,13 +148,13 @@ run vibe AUTH_MODE=native-key
 # harness here there's no config-generation branch to test — just: does the
 # native-key path succeed and stage nothing, and does a missing credential fail
 # closed instead of installing a CLI that's guaranteed to fail later.
-if run fx AUTH_MODE=native-key AI_GATEWAY_API_KEY=sk-test; then
-  grep -q "curl.*fx.sh/setup.sh" "$H_DIR/pkg.log" \
-    && pass "fx/native-key: installer invoked" || bad "fx installer not invoked"
+if run fx AUTH_MODE=native-key AI_GATEWAY_API_KEY=sk-test "$FX_SUM"; then
+  [ -x "$H_DIR/.local/bin/fx" ] \
+    && pass "fx/native-key: verified binary installed to ~/.local/bin" || bad "fx binary not installed"
 else
-  bad "fx/native-key with AI_GATEWAY_API_KEY should succeed"
+  bad "fx/native-key with AI_GATEWAY_API_KEY should succeed ($(tail -1 "$H_DIR/out.txt"))"
 fi
-if run fx AUTH_MODE=openrouter; then
+if run fx AUTH_MODE=openrouter "$FX_SUM"; then
   bad "fx with no credential and no OpenRouter fallback should fail closed"
 else
   grep -q "AI_GATEWAY_API_KEY or VERCEL_OIDC_TOKEN" "$H_DIR/out.txt" \
@@ -175,24 +205,52 @@ else
     && pass "missing OAuth capture: error names the secret" || bad "CODEX_AUTH error message"
 fi
 
-# --- 6. curl | bash installers never see a GitHub credential ----------------
-# The step env holds GH_GLOBAL / GH_SECRETS_PAT (grok's secret rotation); a
-# third-party install script must not inherit them.
-GH_ENV=(GH_GLOBAL=ghp_global GH_SECRETS_PAT=ghp_pat GH_TOKEN=ghs_tok GITHUB_TOKEN=ghs_wf)
-for spec in "fx AI_GATEWAY_API_KEY=sk-test AUTH_MODE=native-key" \
-            "cursor CURSOR_API_KEY=ck-test" \
+# --- 6. third-party installers: pinned, checksum-gated, credential-free -------
+# fx / cursor / hermes are not on a registry; they used to be `curl | bash` of
+# whatever the vendor served. Each must fetch ONE pinned artifact, refuse it on a
+# sha256 mismatch (before extracting or running anything), and run vendor code
+# with no GitHub token and no provider key in env.
+run fx AI_GATEWAY_API_KEY=sk-test AUTH_MODE=native-key "$FX_SUM"
+grep -Eq '^curl https://releases\.fx\.sh/v[0-9][^/]*/fx-(linux|macos)-(x86_64|aarch64)\.tar\.gz$' "$PKG_LOG" \
+  && pass "fx: downloads a version-pinned release tarball" || bad "fx: not pinned ($(cat "$PKG_LOG"))"
+run cursor CURSOR_API_KEY=ck-test "$CURSOR_SUM"
+grep -Eq '^curl https://downloads\.cursor\.com/lab/[0-9]{4}\.[0-9]{2}\.[0-9]{2}-[0-9a-f]+/(linux|darwin)/(x64|arm64)/agent-cli-package\.tar\.gz$' "$PKG_LOG" \
+  && pass "cursor: downloads a version-pinned build" || bad "cursor: not pinned ($(cat "$PKG_LOG"))"
+[ -x "$H_DIR/.local/bin/agent" ] && "$H_DIR/.local/bin/agent" | grep -q fake-cursor \
+  && pass "cursor: ~/.local/bin/agent links the verified build" || bad "cursor: agent link missing"
+GH_ENV=(GH_GLOBAL=ghp_global GH_SECRETS_PAT=ghp_pat GH_TOKEN=ghs_tok GITHUB_TOKEN=ghs_wf ANTHROPIC_API_KEY=sk-ant)
+if run hermes "${GH_ENV[@]}" OPENROUTER_API_KEY=sk-test AUTH_MODE=openrouter "$HERMES_SUM"; then
+  pin=$(sed -n 's|^curl https://raw.githubusercontent.com/NousResearch/hermes-agent/\([0-9a-f]\{40\}\)/scripts/install.sh$|\1|p' "$PKG_LOG")
+  [ -n "$pin" ] && pass "hermes: installer fetched from a pinned commit" || bad "hermes: installer not pinned ($(cat "$PKG_LOG"))"
+  grep -q -- "^installer-args=--commit $pin " "$H_DIR/installer.log" \
+    && pass "hermes: installer checks out that same commit (--commit)" || bad "hermes: --commit missing ($(cat "$H_DIR/installer.log"))"
+  grep -qx 'installer-env=\[||||||\]' "$H_DIR/installer.log" \
+    && pass "hermes: installer runs without GitHub or provider credentials" \
+    || bad "hermes: installer saw a credential ($(grep installer-env "$H_DIR/installer.log"))"
+else
+  bad "hermes: install failed ($(tail -1 "$H_DIR/out.txt"))"
+fi
+# Fail closed: the fixtures are not the real artifacts, so the built-in pins
+# reject them, nothing is installed or run, and the error says why.
+for spec in "fx AI_GATEWAY_API_KEY=sk-test AUTH_MODE=native-key" "cursor CURSOR_API_KEY=ck-test" \
             "hermes OPENROUTER_API_KEY=sk-test AUTH_MODE=openrouter"; do
   read -r -a parts <<<"$spec"
-  if run "${parts[0]}" "${GH_ENV[@]}" "${parts[@]:1}"; then
-    if grep -qx 'installer-gh=\[|||\]' "$PKG_LOG"; then
-      pass "${parts[0]}: installer script runs without GitHub credentials"
-    else
-      bad "${parts[0]}: installer saw a GitHub credential ($(grep installer-gh "$PKG_LOG"))"
-    fi
+  if run "${parts[0]}" "${parts[@]:1}"; then
+    bad "${parts[0]}: installed an artifact whose sha256 does not match the pin"
+  elif grep -q "sha256 mismatch" "$H_DIR/out.txt" && [ ! -e "$H_DIR/.local/bin/fx" ] \
+       && [ ! -e "$H_DIR/.local/bin/agent" ] && [ ! -e "$H_DIR/installer.log" ]; then
+    pass "${parts[0]}: changed artifact fails closed before install"
   else
-    bad "${parts[0]}: install failed ($(tail -1 "$H_DIR/out.txt"))"
+    bad "${parts[0]}: mismatch not reported or something ran ($(tail -1 "$H_DIR/out.txt"))"
   fi
 done
+# A version override without its checksum is refused, not run unverified.
+if run fx FX_VERSION=v9.9.9 AI_GATEWAY_API_KEY=sk-test; then
+  bad "fx: version override without FX_SHA256 should fail"
+else
+  grep -q "no pinned sha256" "$H_DIR/out.txt" \
+    && pass "fx: version override without a checksum is refused" || bad "fx override error ($(tail -1 "$H_DIR/out.txt"))"
+fi
 
 echo "---"
 [ "$fail" = "0" ] && echo "ALL PASS" || echo "SOME FAILED"

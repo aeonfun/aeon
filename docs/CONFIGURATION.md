@@ -100,14 +100,16 @@ Claude only installs and runs when a skill actually matches - non-matching ticks
 
 ## Circuit breaker (outage protection)
 
-The scheduler trips a per-skill circuit breaker once a skill logs **3 consecutive failures** (`consecutive_failures` in `memory/cron-state.json`). While tripped it stops dispatching that skill every tick - so a dead upstream API or a revoked key can't burn a run every `*/5` for hours - and instead lets **one probe run through every 6 hours** (half-open). A probe that succeeds resets the counter and the skill resumes its normal schedule automatically; a probe that fails re-arms the 6h cooldown. It is auto-recovering, not a kill switch, so an outage self-heals with no operator action. `skill-health` already reports CRITICAL at the same threshold, so a tripped breaker is visible.
+The scheduler trips a per-skill circuit breaker once a skill logs **3 consecutive failures** (`consecutive_failures` in `memory/cron-state.json`). While tripped it stops dispatching that skill every tick - so a dead upstream API or a revoked key can't burn a run every `*/5` for hours - and instead lets **one probe run through every 6 hours** (half-open), but never more often than the skill's own schedule: a probe also waits for the skill's next scheduled slot, so a weekly skill in an outage is probed weekly, not 4 times a day. A probe that succeeds resets the counter and the skill resumes its normal schedule automatically; a probe that fails re-arms the cooldown. It is auto-recovering, not a kill switch, so an outage self-heals with no operator action. `skill-health` already reports CRITICAL at the same threshold, so a tripped breaker is visible.
 
 Tune with repo variables (both optional):
 
 ```
 BREAKER_THRESHOLD      failures in a row before tripping (default 3; 0 disables)
-BREAKER_COOLDOWN_MIN   minutes between half-open probes while tripped (default 360)
+BREAKER_COOLDOWN_MIN   minimum minutes between half-open probes while tripped (default 360)
 ```
+
+Before the breaker trips, a failed run gets **quick retries** 30 minutes apart, until the skill has failed `BREAKER_THRESHOLD` times in a row (3 with the breaker off), so 2 retries for the slot that failed by default. After that the skill only runs on its own schedule. Skills with `schedule: "workflow_dispatch"` or `"reactive"` are never retried or probed by the scheduler.
 
 The decision logic lives in `scripts/breaker.sh` (unit-tested in `scripts/tests/test_breaker.sh`); the scheduler calls it, no inline copy. To hard-disable a skill instead, set `enabled: false` in `aeon.yml`.
 
@@ -191,9 +193,9 @@ Override the order with the repo variable **`GATEWAY_ORDER`** (space-separated n
 | <img src="https://icons.duckduckgo.com/ip3/usepod.ai.ico" width="16" valign="middle"> [UsePod](https://usepod.ai) | `USEPOD_TOKEN` | Solana marketplace; token is embedded in the base URL, keep it secret |
 | <img src="https://icons.duckduckgo.com/ip3/venice.ai.ico" width="16" valign="middle"> [Venice](https://venice.ai) | `VENICE_API_KEY` | Privacy-first; OpenAI-compatible, bridged via a per-run [claude-code-router](https://github.com/musistudio/claude-code-router) sidecar. Point it at any Venice-compatible endpoint with the `VENICE_BASE_URL` repo variable |
 | <img src="https://icons.duckduckgo.com/ip3/surplusintelligence.ai.ico" width="16" valign="middle"> [Surplus](https://surplusintelligence.ai) | `SURPLUS_API_KEY` | Routed via The Bridge; settles in USDC on Base - fund the wallet + `approve()` once before use |
-| <img src="https://icons.duckduckgo.com/ip3/x.ai.ico" width="16" valign="middle"> [Grok (xAI)](https://x.ai/api) | `XAI_API_KEY` | Anthropic-native passthrough to `api.x.ai`; the `xai-…` key is auto-detected. Set the model with the `GROK_MODEL` repo variable. Same key also powers the [grok harness](harnesses.md) |
-| <img src="https://icons.duckduckgo.com/ip3/z.ai.ico" width="16" valign="middle"> [GLM (Z.AI)](https://z.ai) | `GLM_API_KEY` | Anthropic-native passthrough to `api.z.ai/api/anthropic`. No key prefix - pick GLM in Authenticate. Alias `ZAI_API_KEY`. Set the model with `GLM_MODEL` (default `glm-5.2`). Pin reasoning depth with `GLM_REASONING_EFFORT` (`low` / `high` / `max`, default `high`). Pin with `gateway.provider: glm`. `harness: glm` is a dead name. |
-| <img src="https://icons.duckduckgo.com/ip3/hivemindos.liamvisionary.com.ico" width="16" valign="middle"> [HivemindOS Models](https://hivemindos.liamvisionary.com) | `HIVEMINDOS_CREDIT_TOKEN` | Billed to a **credit balance** instead of a provider account of your own, so an engine can be handed to someone who holds no provider keys. OpenAI-compatible, bridged via the claude-code-router sidecar plus `scripts/ccr-hivemindos.js` (per-request `Idempotency-Key`, JSON answer replayed as SSE). Set the model with `HIVEMINDOS_MODEL` (default `inclusionai/ling-3.0-flash`; native `claude-*`/`grok-*` ids fall back to it), point at another deployment with `HIVEMINDOS_BASE_URL`, cap each call with `HIVEMINDOS_MAX_TOKENS` (default 4096, `0` disables; an empty variable means the default), and `HIVEMINDOS_REASONING=keep` on a model that honours reasoning-off. Pin with `gateway.provider: hivemindos`; under `auto` the token alone resolves, last in the cascade. Not in the dashboard Authenticate modal yet - set the secret directly. |
+| <img src="https://icons.duckduckgo.com/ip3/x.ai.ico" width="16" valign="middle"> [Grok (xAI)](https://x.ai/api) | `XAI_API_KEY` | Anthropic-native passthrough to `api.x.ai`; the `xai-…` key is auto-detected. Set the model with the `GROK_MODEL` repo variable (default `grok-4.7`). Same key also powers the [grok harness](harnesses.md) |
+| <img src="https://icons.duckduckgo.com/ip3/z.ai.ico" width="16" valign="middle"> [GLM (Z.AI)](https://z.ai) | `GLM_API_KEY` | Anthropic-native passthrough to `api.z.ai/api/anthropic`. No key prefix - pick GLM in Authenticate. Alias `ZAI_API_KEY`. Set the model with `GLM_MODEL` (default `glm-5.3`, `glm-5.3-flash` for the haiku tier; per-tier `GLM_MODEL_OPUS` / `GLM_MODEL_SONNET` / `GLM_MODEL_HAIKU`). Pin reasoning depth with `GLM_REASONING_EFFORT` (`low` / `high` / `max`, default `high`). Pin with `gateway.provider: glm`. `harness: glm` is a dead name. |
+| <img src="https://icons.duckduckgo.com/ip3/hivemindos.liamvisionary.com.ico" width="16" valign="middle"> [HivemindOS Models](https://hivemindos.liamvisionary.com) | `HIVEMINDOS_CREDIT_TOKEN` | Billed to a **credit balance** instead of a provider account of your own, so an engine can be handed to someone who holds no provider keys. OpenAI-compatible, bridged via the claude-code-router sidecar plus `scripts/ccr-hivemindos.js` (per-request `Idempotency-Key`, sent non-streamed; the router replays the JSON answer as SSE). Set the model with `HIVEMINDOS_MODEL` (default `inclusionai/ling-3.0-flash`; native `claude-*`/`grok-*` ids fall back to it), point at another deployment with `HIVEMINDOS_BASE_URL`, cap each call with `HIVEMINDOS_MAX_TOKENS` (default 4096, `0` disables; an empty variable means the default), and `HIVEMINDOS_REASONING=keep` on a model that honours reasoning-off. Pin with `gateway.provider: hivemindos`; under `auto` the token alone resolves, last in the cascade. Not in the dashboard Authenticate modal yet - set the secret directly. |
 
 #### Adding a gateway
 
@@ -281,10 +283,10 @@ Set several and each run resolves the highest-priority one whose key is present,
 The default model for all skills is set in `aeon.yml` (or from the dashboard header dropdown):
 
 ```yaml
-model: claude-sonnet-5
+model: claude-sonnet-5-5
 ```
 
-Options: `claude-sonnet-5` (default), `claude-opus-4-8`, `claude-haiku-4-5-20251001`. Per-run overrides are available via workflow dispatch, and individual skills can override to optimize cost:
+Options: `claude-sonnet-5-5` (default), `claude-opus-5-5`, `claude-haiku-4-5-20251001` (the older `claude-sonnet-5` and `claude-opus-4-8` are still accepted). Per-run overrides are available via workflow dispatch, and individual skills can override to optimize cost:
 
 ```yaml
 skills:

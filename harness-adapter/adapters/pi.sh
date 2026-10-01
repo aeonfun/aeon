@@ -21,7 +21,7 @@
 # {
 #   "id": "pi",
 #   "label": "Pi",
-#   "cli": { "install": "npm i -g --ignore-scripts @earendil-works/pi-coding-agent", "bin": "pi", "min_version": "0.80.9" },
+#   "cli": { "install": "npm i -g --ignore-scripts @earendil-works/pi-coding-agent", "bin": "pi", "min_version": "0.99.2" },
 #   "invoke": "pi -p --mode json",
 #   "round_trip": true,
 #   "token_usage": "full",
@@ -82,7 +82,9 @@ run_once() {
   local prompt="$1"
   local events="$RH_TMPDIR/pi-events.jsonl"
   local clean="$RH_TMPDIR/pi-events.clean.jsonl"
-  pi -p "${ARGS[@]}" "$prompt" > "$events"
+  # stdin </dev/null: pi blocks until the timeout while stdin is an open pipe.
+  # `--` ends option parsing (0.99+), so a prompt that starts with "-" is text.
+  pi -p "${ARGS[@]}" -- "$prompt" < /dev/null > "$events"
   local rc=$?
   jq -cR 'fromjson? // empty' "$events" > "$clean"
   TEXT=$(jq -rs '
