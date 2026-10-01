@@ -183,6 +183,68 @@ if [ "$(uname -s)" = Linux ] && command -v bwrap >/dev/null 2>&1 \
   out=$(cd "$RW" && GITHUB_ENV="$FC/set_env_x" "${live[@]}" sh -c 'echo "[${GITHUB_ENV:-unset}]"' 2>&1)
   [ "$out" = "[unset]" ] && pass "live bwrap: GITHUB_ENV unset inside sandbox" \
     || bad "live bwrap: GITHUB_ENV visible inside sandbox ($out)"
+
+  # --- parent-rename sandbox-escape probes ---------------------------------------
+  # A ro-bind only pins the exact path it names. If the whole host fs is writable
+  # (the old --dev-bind / /), a sandboxed run can rename the PARENT of a protected
+  # path so the ro mount moves aside with it, then create a fresh dir/file at the
+  # ORIGINAL location holding attacker content. The sandbox's mount namespace is
+  # private but the filesystem is shared with the host, so a LATER, unsandboxed
+  # workflow step (which does not share the mount namespace) then reads/executes
+  # the attacker content at the original path: a planted ~/.local/bin on PATH, a
+  # fake workspace the "Commit results" step operates on, a spoofed config-snapshot
+  # dir, a poisoned GITHUB_ENV file-command dir. The fix makes the host fs
+  # read-only by default (--ro-bind / /), under which renaming a parent on the ro
+  # root fails (EROFS) and a ro/rw bind's own mount point cannot be renamed (EBUSY).
+  # These probes must all be REFUSED. Each restores the layout it touched, guarded
+  # on the moved copy so a refused rename never deletes the real path.
+  escape_any=0
+  sb_try() {  # sb_try PARENT PROTECTED -> prints ESCAPED iff the host's PROTECTED now holds attacker content
+    local parent="$1" prot="$2" marker="SBX_PWNED_$$_$RANDOM" escaped=0
+    ( cd "$RW" && "${SB_PRE[@]}" sh -c '
+        mv "$1" "$1.sbxmoved" 2>/dev/null || exit 0
+        mkdir -p "$2" 2>/dev/null
+        printf %s "$3" > "$2/.sbx_pwned" 2>/dev/null
+      ' sh "$parent" "$prot" "$marker" ) >/dev/null 2>&1
+    [ "$(cat "$prot/.sbx_pwned" 2>/dev/null)" = "$marker" ] && escaped=1
+    if [ -e "$parent.sbxmoved" ]; then
+      rm -rf "$parent" 2>/dev/null
+      mv "$parent.sbxmoved" "$parent" 2>/dev/null
+    fi
+    [ "$escaped" = 1 ] && echo ESCAPED
+  }
+  check_escape() {  # check_escape LABEL PARENT PROTECTED
+    if [ "$(sb_try "$2" "$3")" = ESCAPED ]; then
+      bad "live bwrap ESCAPE: renamed parent of $1 ($2) -> the host's $3 now holds attacker content"
+      escape_any=1
+    else
+      pass "live bwrap: parent-rename escape of $1 refused ($3 stays protected)"
+    fi
+  }
+  # One comprehensive synthetic prefix so every synthetic target is protected.
+  mkdir -p "$SBX/snap/dir"
+  SB_PRE=()
+  while IFS= read -r tok; do SB_PRE+=("$tok"); done < <(
+    cd "$RW" && . "$OLDPWD/harness-adapter/lib/sandbox.sh" \
+      && HOME="$SBX/home" GITHUB_ENV="$FC/set_env_x" RUNNER_WORKSPACE="$SBX/work/repo" \
+         AEON_HARNESS_CONFIG_SNAPSHOT="$SBX/snap/dir" sandbox_prefix "$SBX")
+  check_escape "workspace" "$SBX/work/repo" "$RW"
+  check_escape "\$HOME/.local (parent of ro ~/.local/bin)" "$SBX/home/.local" "$SBX/home/.local/bin"
+  check_escape "runner file-command dir" "$SBX/work/_temp" "$FC"
+  check_escape "harness-config snapshot dir" "$SBX/snap" "$SBX/snap/dir"
+  # Also on the REAL runner $HOME (disposable CI VM): ~/.local is the parent of the
+  # ro ~/.local/bin that install-harness puts on PATH; pyyaml etc. live under it,
+  # so the guarded restore matters for the steps that run after this one.
+  if [ -n "${HOME:-}" ] && [ -d "$HOME" ]; then
+    SB_PRE=()
+    while IFS= read -r tok; do SB_PRE+=("$tok"); done < <(
+      cd "$RW" && . "$OLDPWD/harness-adapter/lib/sandbox.sh" \
+        && GITHUB_ENV="" RUNNER_WORKSPACE="" RUNNER_TOOL_CACHE="" sandbox_prefix "$SBX")
+    check_escape "real \$HOME/.local" "$HOME/.local" "$HOME/.local/bin"
+  fi
+  [ "$escape_any" = 1 ] \
+    && echo "live bwrap: SANDBOX ESCAPE CONFIRMED (parent-directory rename moves the ro mount aside)" \
+    || echo "live bwrap: no parent-rename escape (host fs is read-only by default)"
 elif [ "${AEON_REQUIRE_LIVE_BWRAP:-}" = 1 ]; then
   bad "live bwrap checks required (AEON_REQUIRE_LIVE_BWRAP=1) but bwrap is missing or cannot create a user namespace"
 else
