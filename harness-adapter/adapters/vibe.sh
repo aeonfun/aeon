@@ -8,7 +8,8 @@
 #   * json mode exposes no token usage -> counts normalize to 0 (vibe meters cost
 #     internally for --max-price but does not emit it here).
 #   * native --max-turns is honored. vibe loads the repo AGENTS.md only for a
-#     trusted folder (`--trust`), which this adapter does not pass today.
+#     trusted folder, so the adapter passes `--trust` (this invocation only, not
+#     persisted to trusted_folders.toml).
 #   * NO native FS sandbox -> read-only relies on the dispatcher's wrapper OS
 #     sandbox plus --disabled-tools write_file,edit. --auto-approve is passed in
 #     BOTH modes: it gates PROMPTING, not writing, so withholding it headless
@@ -23,7 +24,7 @@
 #   "id": "vibe",
 #   "label": "Mistral Vibe",
 #   "cli": { "install": "", "bin": "vibe", "min_version": "2.25.8" },
-#   "invoke": "vibe -p --output json",
+#   "invoke": "vibe -p --trust --output json",
 #   "round_trip": true,
 #   "token_usage": "none",
 #   "cost": false,
@@ -48,6 +49,12 @@ command -v vibe >/dev/null 2>&1 || { echo "vibe CLI not found" >&2; exit 1; }
 # native-key path is the one exposed); pin the Python harness the adapter's output
 # parsing is written against.
 ARGS=(--output json --legacy-harness)
+# --trust: vibe gates every project-level file on folder trust, including the repo
+# AGENTS.md (the generated copy of CLAUDE.md that non-claude harnesses read).
+# Untrusted, vibe ran with no operating manual at all. Trust also enables a repo
+# .vibe/ dir and .agents/skills/, neither of which aeon ships; it grants no write
+# access (the wrapper OS sandbox and --disabled-tools still apply).
+ARGS+=(--trust)
 # vibe has no --model flag (neither 2.20 nor 2.25; argparse exits 2 on it). The
 # model is a config alias, selected through vibe's VIBE_* env settings layer.
 if [ -n "${RH_MODEL:-}" ] && [ "${RH_MODEL}" != "default" ]; then

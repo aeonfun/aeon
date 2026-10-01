@@ -9,7 +9,7 @@
       "124": "timeout"
     }
   },
-  "generated": "2026-10-01T19:02:14Z",
+  "generated": "2026-10-01T19:39:55Z",
   "count": 9,
   "harnesses": [
     {
@@ -238,7 +238,7 @@
         "bin": "vibe",
         "min_version": "2.25.8"
       },
-      "invoke": "vibe -p --output json",
+      "invoke": "vibe -p --trust --output json",
       "round_trip": true,
       "token_usage": "none",
       "cost": false,

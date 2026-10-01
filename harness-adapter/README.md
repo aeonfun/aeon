@@ -121,7 +121,7 @@ bind-mounts) kimi still reads the literal `${VAR}`s.
 
 | Layer | claude | grok | codex | pi | vibe | kimi |
 |---|---|---|---|---|---|---|
-| Invoke | `claude -p -` | `grok -p --output-format streaming-json` | `codex exec --json -` | `pi -p --mode json` | `vibe -p --output json` | `kimi -p --output-format stream-json` |
+| Invoke | `claude -p -` | `grok -p --output-format streaming-json` | `codex exec --json -` | `pi -p --mode json` | `vibe -p --trust --output json` | `kimi -p --output-format stream-json` |
 | Result | envelope passthrough | `type=="text"` chunks (never `thought`) | last `agent_message` | last assistant `message_end` | last assistant `content` (never `reasoning_content`) | last assistant `content` |
 | Usage | native + cost | streaming `end` event → cost | sum of `turn.completed.usage` | per-message usage + cost | none → 0 | none → 0 |
 | Read-only | `--allowedTools` + wrapper sandbox | `bypassPermissions` + wrapper sandbox | `--sandbox read-only` (native) | `--tools` subset + wrapper sandbox | wrapper sandbox only | wrapper sandbox only |
