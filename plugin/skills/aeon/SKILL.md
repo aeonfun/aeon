@@ -79,7 +79,7 @@ Goal: one real notification in their phone, fast. Do not configure a schedule fi
    ```
 
    Everything after this step is identical either way.
-2. **Auth a model.** At least one is required. Fastest is `./aeon auth --oauth` (Claude Pro/Max, opens a browser), or `./aeon auth --key <key>`, which detects the provider **from the key prefix** — `sk-ant-oat` (OAuth), `sk-or-` (OpenRouter), `bk_` (Bankr), `inf_` (Surplus), `xai-` (Grok); anything else lands in `ANTHROPIC_API_KEY`.
+2. **Auth a model.** At least one is required. Fastest is `./aeon auth --harness claude-code` (Claude Pro/Max, opens a browser), or `./aeon auth --key <key>`, which detects the provider **from the key prefix** — `sk-ant-oat` (OAuth), `sk-or-` (OpenRouter), `bk_` (Bankr), `inf_` (Surplus), `xai-` (Grok); anything else lands in `ANTHROPIC_API_KEY`.
 
    **UsePod and Venice keys have no prefix** and are undetectable, so a bare `--key` files them as a plain Anthropic key and the run fails later with a confusing auth error. They must be named:
 

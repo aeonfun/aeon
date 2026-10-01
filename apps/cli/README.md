@@ -69,7 +69,7 @@ runs pick the change up), call `gh` (secrets/auth), or dispatch a workflow.
 | `aeon skills rm <name> --yes` | delete the skill dir + config entry |
 | `aeon skills run <name> [--var\|--model]` | dispatch a run (`gh workflow run aeon.yml`) |
 | `aeon secrets set <NAME> --stdin` · `aeon secrets rm <NAME>` | manage secrets via `gh` |
-| `aeon auth --oauth \| --key <k> [--provider\|--base-url]` | set Claude auth |
+| `aeon auth --harness claude-code \| --key <k> [--provider\|--base-url]` | set Claude auth (`--oauth` still works) |
 | `aeon sync [--status]` | commit + push local changes |
 | `aeon config set model\|harness\|gateway <v>` | set top-level config |
 | `aeon strategy set --stdin\|--file` · `aeon strategy build "<goal>"` | write / regenerate STRATEGY.md |

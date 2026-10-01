@@ -62,5 +62,5 @@ export async function configureAuth(
 
   ghSecretSet('CLAUDE_CODE_OAUTH_TOKEN', token)
   await syncGatewayProvider()
-  return { ok: true, method: 'oauth' }
+  return { ok: true, method: 'oauth', secret: 'CLAUDE_CODE_OAUTH_TOKEN' }
 }

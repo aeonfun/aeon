@@ -25,7 +25,7 @@ TSX="$DIR/node_modules/.bin/tsx"
 # installing the full dashboard app. First run populates it.
 if [ ! -x "$TSX" ]; then
   echo "Installing Aeon CLI runtime (tsx, yaml — one-time, ~12MB)…" >&2
-  (cd "$DIR" && npm install) || { echo "npm install failed in $DIR" >&2; exit 1; }
+  (cd "$DIR" && npm install --ignore-scripts --no-audit --no-fund) || { echo "npm install failed in $DIR" >&2; exit 1; }
 fi
 
 # Point tsx at our tsconfig so the `yaml` path-mapping (which lets the shared

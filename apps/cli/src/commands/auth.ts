@@ -9,7 +9,7 @@ import { emit, c, fail, isDryRun, requireGh } from '../output.ts'
 const USAGE = `aeon auth — set how the agent authenticates in CI
 
 Claude harness (default):
-  aeon auth --oauth                 Mint a Claude OAuth token via \`claude setup-token\`
+  aeon auth --harness claude-code   Mint a Claude OAuth token via \`claude setup-token\` (alias: --oauth)
   aeon auth --key <sk-ant-…|bk_…|…>  Set an Anthropic / gateway key (provider auto-detected)
   aeon auth <token>                 Same as --key (positional)
   aeon auth --github                Copy this machine's gh token into GH_GLOBAL
@@ -26,12 +26,14 @@ Other harnesses (--harness codex|kimi|pi|vibe|fx|cursor|hermes):
   (codex, kimi, pi, vibe and hermes also run on the shared OPENROUTER_API_KEY - set that in Settings.)
 
 Options:
-  --harness <h>       codex | kimi | pi | vibe | fx | cursor | hermes (omit for the Claude harness)
+  --harness <h>       claude-code | codex | kimi | pi | vibe | fx | cursor | hermes (omit for claude-code)
   --github            Copy \`gh auth token\` into GH_GLOBAL
   --provider <slug>   Force a gateway (bankr, openrouter, venice, …) — Claude only
   --base-url <url>    Custom HTTPS base URL (API-key auth only) — Claude only
   --dry-run           Show what would be set, without calling gh/the CLI
   --json              Machine-readable output`
+
+const CLAUDE_HARNESS = new Set(['claude-code', 'claude'])
 
 export async function authCommand(argv: string[]) {
   if (argv.includes('-h') || argv.includes('--help')) { console.log(USAGE); return }
@@ -56,10 +58,11 @@ export async function authCommand(argv: string[]) {
     return emit(result, () => console.log(c.green('✓ ') + `GitHub: copied gh token as ${result.secret}`))
   }
   // --- Non-Claude harnesses: native OAuth capture or a provider key ---
-  if (values.harness) {
+  // `--harness claude-code` (or `claude`) falls through to the Claude path below.
+  if (values.harness && !CLAUDE_HARNESS.has(values.harness)) {
     const harness = values.harness
     const spec = HARNESS_AUTH[harness]
-    if (!spec) fail(`unknown harness '${harness}'. Native auth is available for: ${Object.keys(HARNESS_AUTH).join(', ')}`)
+    if (!spec) fail(`unknown harness '${harness}'. Native auth is available for: claude-code, ${Object.keys(HARNESS_AUTH).join(', ')}`)
     const key = (values.key ?? positionals[0] ?? '').trim()
 
     // A key was given (or the harness only supports keys) → store it.
