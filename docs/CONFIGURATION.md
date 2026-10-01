@@ -17,13 +17,13 @@ chains:
     schedule: "0 7 * * *"
     on_error: fail-fast       # or: continue
     steps:
-      - parallel: [token-movers, github-trending]   # run concurrently
-      - skill: digest, consume: [token-movers, github-trending]   # runs after; outputs injected
+      - { parallel: [token-movers, github-trending] }   # run concurrently
+      - { skill: digest, consume: [token-movers, github-trending] }   # runs after; outputs injected
 ```
 
 Each step runs as a separate workflow dispatch; outputs are saved to `output/.chains/{skill}.md` and injected into downstream steps that `consume:` them. `fail-fast` aborts on any failure, `continue` keeps going.
 
-> **Note:** a real (uncommented) chain step with multiple keys must use flow-brace form -- `- { skill: review, consume: [draft], when: "score > 3" }` -- not the bare `- skill: review, consume: [...]` shown in the commented examples. The bare form is convenient in a comment but is not valid YAML once uncommented (the second `:` trips the parser). The chain runner reads either form.
+> **Note:** write every multi-key chain step in flow-brace form on one line - `- { skill: review, consume: [draft], when: "score > 3" }` - as in the examples here and in `aeon.yml`. The bare `- skill: review, consume: [...]` form is not valid YAML (the second `:` trips the parser, including the dashboard's), so keep it out of comments too, where it gets copied and uncommented.
 
 ### Conditional routing (`when:`)
 
@@ -35,10 +35,10 @@ chains:
     schedule: "0 9 * * *"
     max_dispatches: 10           # optional; hard-caps total dispatches (default 10)
     steps:
-      - skill: draft
-      - skill: review, consume: [draft]
-      - skill: polish,  consume: [review], when: "score > 3"    # good draft -> polish
-      - skill: rewrite, consume: [review], when: "score <= 3"   # weak draft -> rewrite
+      - { skill: draft }
+      - { skill: review, consume: [draft] }
+      - { skill: polish,  consume: [review], when: "score > 3" }    # good draft -> polish
+      - { skill: rewrite, consume: [review], when: "score <= 3" }   # weak draft -> rewrite
 ```
 
 - **Operators:** `== != < > <= >=`. Equality compares as strings; ordering (`< <= > >=`) requires an integer on both sides and fails loudly otherwise (no `"10" < "9"` surprises).
@@ -118,7 +118,7 @@ mode: read-only   # may read the repo, fetch the web, and ./notify — but canno
 mode: write       # full access (the default): adds Write / Edit / git / gh / python3
 ```
 
-`read-only` strips the repo-mutation tools from Claude Code's `--allowedTools` (`Write`, `Edit`, `Bash(git:*)`, `Bash(gh:*)`) **and** the OS sandbox write-locks the whole workspace for the run (see [Capabilities → enforcement layers](CAPABILITIES.md)), so a research-and-notify skill **physically can't** commit, push, open a PR, or write anywhere in the checkout — `memory/` and `output/` included. Don't write those directly; route persistence through your **final message** (the run's captured output) and `./notify`. After the run, outside the sandbox, the workflow persists your captured output to `output/.chains/`, appends a `memory/logs/` run entry on your behalf, and reverts any stray write that slipped through. Use it for pure read-and-notify skills; `write` (the default, a strict superset) for anything that writes code. It's the runtime half of the install-time [`capabilities:`](../docs/CAPABILITIES.md) hint.
+`read-only` strips the repo-mutation tools from Claude Code's `--allowedTools` (`Write`, `Edit`, `Bash(git:*)`, `Bash(gh:*)`, python) **and** the OS sandbox write-locks the workspace for the run (see [Capabilities → enforcement layers](CAPABILITIES.md)), so a research-and-notify skill **physically can't** commit, push, open a PR, or change code or config. The two state dirs are the exception: `memory/` and `output/` stay writable (via a shell redirection or `node`) so a read-only skill can keep its own state and artifacts (since #1042). Route the run's result through your **final message** (the run's captured output) and `./notify`. After the run the workflow persists your captured output to `output/.chains/`, **appends the `### <skill>` entry to `memory/logs/` on your behalf** (so read-only skills should not self-log, or the entry appears twice), and reverts any stray write outside `memory/` and `output/`. Use it for pure read-and-notify skills; `write` (the default, a strict superset) for anything that writes code. It's the runtime half of the install-time [`capabilities:`](../docs/CAPABILITIES.md) hint.
 
 ## Dry-run gate for self-authored skills
 
@@ -126,7 +126,7 @@ mode: write       # full access (the default): adds Write / Edit / git / gh / py
 
 Before either skill opens its PR, it dry-runs the candidate through `scripts/dry-run.sh`:
 
-- **Synthetic secrets.** Every key the skill declares in `requires:` gets a fake but well-formed value (marked `DRYRUN`), never the real one. `ANTHROPIC_API_KEY` is the sole exception -- the run needs a live model -- and it is never written into the synthetic env (asserted, not eyeballed). The inherited channel/GitHub tokens are faked too, so a rogue push or notify can't reach a real repo or channel.
+- **Synthetic secrets.** Every key the skill declares in `requires:` gets a fake but well-formed value (marked `DRYRUN`), never the real one. The model credentials are the only exceptions - `ANTHROPIC_API_KEY`, `ANTHROPIC_OAUTH_TOKEN`, `CLAUDE_CODE_OAUTH_TOKEN`, `OPENAI_API_KEY`, `CODEX_AUTH` - because the run needs a live model, and they are never written into the synthetic env (asserted, not eyeballed). The inherited channel/GitHub tokens are faked too, so a rogue push or notify can't reach a real repo or channel.
 - **Structural pass criteria:** exit 0, non-empty output, no write outside the declared `mode`, no secret used outside `requires:`. Content is **not** re-scored here -- the Haiku scorer already does that, after the fact.
 - **Gate on it.** `passed: false` blocks the PR (exit `CREATE_SKILL_DRYRUN_FAILED` / revert-and-stop); the verdict JSON goes in the PR body either way.
 
@@ -245,7 +245,7 @@ git fetch upstream
 git merge upstream/main --no-edit
 ```
 
-Your `memory/`, `output/`, and personal config won't conflict - they're in files that don't exist in the template.
+The template ships a few starter files under `memory/` (e.g. `MEMORY.md`, `watched-repos.md`, `products.md`), `output/`, `soul/`, `STRATEGY.md`, and `aeon.yml`, so a merge can conflict where you edited one of those; keep your side (`git checkout --ours <path>`). Files you created that the template doesn't have (your logs, topics, articles) never conflict.
 
 ## GitHub Actions cost
 
@@ -319,10 +319,10 @@ Set the secret → channel activates. No code changes needed.
 **Set up each channel:**
 
 - **Telegram** - create a bot with **[@BotFather](https://t.me/BotFather)**, then copy its token + your chat ID. Saving the token in the dashboard **auto-registers** the slash-command menu (`/skillname` dispatches instantly, no LLM); a **Re-register commands** button re-syncs it after you toggle skills. Every notification carries **Run again / Schedule weekly** buttons, deep links, and stateless follow-up questions. Outbound sends reply to that skill's previous Telegram message by default ([reply-to-previous](telegram-commands.md#6-reply-to-previous-outbound)); set repo variable `TELEGRAM_REPLY_TO_PREVIOUS=0` to turn that off. [Full guide →](telegram-commands.md)
-- **Discord** - *outbound:* a channel webhook URL. *Inbound:* a bot token + channel ID, with the `channels:history` scope. ([discord.com/developers](https://discord.com/developers/applications))
+- **Discord** - *outbound:* a channel webhook URL. *Inbound:* a bot token + channel ID. Turn on the bot's **Message Content** privileged intent (Developer Portal -> Bot), and give it **View Channel**, **Read Message History**, and **Add Reactions** in that channel. ([discord.com/developers](https://discord.com/developers/applications))
 - **Slack** - *outbound:* an Incoming Webhook URL. *Inbound:* a bot token + channel ID, with the `channels:history` + `reactions:write` scopes. ([api.slack.com/apps](https://api.slack.com/apps))
 - **Email** - [resend.com/api-keys](https://resend.com/api-keys) → Create API Key → set it as `RESEND_API_KEY`, and `NOTIFY_EMAIL_TO` to your inbox. Optional: `NOTIFY_EMAIL_FROM` (default `aeon@notifications.aeon.bot` - **must be a sender/domain verified in Resend**) and `NOTIFY_EMAIL_SUBJECT_PREFIX` (default `[Aeon]`). Same key as security disclosures, so one Resend key powers all outbound email.
-- **Buzz** - [Buzz](https://buzz.xyz) is Block's open, self-hostable workspace where humans and agents are first-class members ([github.com/block/buzz](https://github.com/block/buzz)). *Outbound:* set `BUZZ_PRIVATE_KEY` (the agent's `nsec` keypair), `BUZZ_CHANNEL_ID` (target channel UUID from `buzz channels list`), and `BUZZ_RELAY_URL` (your relay; defaults to `http://localhost:3000`). Aeon posts Markdown as itself via the [`buzz` CLI](https://github.com/block/buzz/tree/main/crates/buzz-cli), which signs (NIP-98) and publishes each message over the relay. The CLI must be staged in the run (no prebuilt binary yet - `cargo install --path crates/buzz-cli`); the channel skips silently until it is. Inbound (agent-as-participant) is a later phase.
+- **Buzz** - [Buzz](https://buzz.xyz) is Block's open, self-hostable workspace where humans and agents are first-class members ([github.com/block/buzz](https://github.com/block/buzz)). *Outbound:* set `BUZZ_PRIVATE_KEY` (the agent's `nsec` keypair), `BUZZ_CHANNEL_ID` (target channel UUID from `buzz channels list`), and `BUZZ_RELAY_URL` (your relay; defaults to `http://localhost:3000`). Aeon posts Markdown as itself via the [`buzz` CLI](https://github.com/block/buzz/tree/main/crates/buzz-cli), which signs (NIP-98) and publishes each message over the relay. The workflow stages the CLI automatically whenever `BUZZ_PRIVATE_KEY` is set (`scripts/install-buzz-cli.sh`): by default it builds from source with `cargo` (slow; pin the ref with the `BUZZ_CLI_REF` repo variable), or set the `BUZZ_CLI_URL` repo variable to a prebuilt binary to skip the build. The channel skips silently while the CLI is missing. Inbound (agent-as-participant) is a later phase.
 
 **Restrict who can command the agent (inbound):** Telegram is scoped to a single `TELEGRAM_CHAT_ID`. That's enough for a **1:1 DM** (there the chat ID *is* your user ID). For a **group/public chat**, also set `TELEGRAM_ALLOWED_USER_ID` to your numeric user ID (from [@userinfobot](https://t.me/userinfobot)) - otherwise any group member can command the bot, including by tapping a **Run again / Schedule weekly** button on a posted notification (Telegram delivers those taps even with group-privacy mode on). Left unset in a group, taps and messages **fail closed**. For Discord and Slack, set the optional repo variables `DISCORD_ALLOWED_AUTHOR_ID` / `SLACK_ALLOWED_USER_ID` (or same-named secrets) to the authorized sender's user ID - inbound messages from anyone else in the channel are then ignored. **Leaving those unset processes commands from any non-bot member of the channel**, so set them whenever the channel isn't private to you.
 
