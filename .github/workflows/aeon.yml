@@ -21,16 +21,24 @@ on:
         # scripts/tests/test_dashboard_model_choices.sh enforces it.
         # Each harness runs its own native family: codex uses openai/* ids; kimi
         # moonshotai/*; vibe mistralai/mistral-medium-3-5 (default) + deepseek/
-        # deepseek-v4-flash; pi deepseek/deepseek-v4-flash (default) + deepseek-v4-pro;
-        # cursor its own ids; hermes `default` (its configured provider) or an
+        # deepseek-v4-flash; pi deepseek/deepseek-v4-flash (default) + deepseek-v4-pro
+        # + deepseek-v4.1-flash; cursor its own ids (`auto` default; `gpt-5.1` is the
+        # retired default, kept so existing configs still dispatch); hermes `default` (its configured provider) or an
         # OpenRouter-style override. "Resolve harness" forwards them verbatim as the
         # harness model (`default` means no override).
         options:
           - '(config default)'
+          - claude-sonnet-5-5
+          - claude-opus-5-5
+          - claude-haiku-4-5-20251001
           - claude-sonnet-5
           - claude-opus-4-8
-          - claude-haiku-4-5-20251001
+          - grok-4.7
+          - grok-4.6
           - grok-4.5
+          - openai/gpt-6-luna
+          - openai/gpt-6-sol
+          - openai/gpt-6.1-sol
           - openai/gpt-5-mini
           - openai/gpt-5.1-codex-mini
           - openai/gpt-5.3-codex
@@ -39,11 +47,15 @@ on:
           - mistralai/mistral-medium-3-5
           - deepseek/deepseek-v4-flash
           - deepseek/deepseek-v4-pro
-          - moonshotai/kimi-k2.5
+          - deepseek/deepseek-v4.1-flash
+          - moonshotai/kimi-k2.6
           - moonshotai/kimi-k3
           - moonshotai/kimi-k2.7-code
+          - moonshotai/kimi-k2.5
+          - auto
           - gpt-5.1
           - default
+          - anthropic/claude-sonnet-5.5
           - anthropic/claude-sonnet-4.6
           - openai/gpt-5.4
           - google/gemini-2.5-pro
@@ -825,18 +837,18 @@ jobs:
           elif [ -n "$SKILL_MODEL" ]; then
             MODEL="$SKILL_MODEL"
           else
-            MODEL="${CONFIG_MODEL:-claude-sonnet-5}"
+            MODEL="${CONFIG_MODEL:-claude-sonnet-5-5}"
           fi
 
           # --- Harness resolution (which agent CLI runs the skill) ---
           # Resolved in the "Resolve harness" step above, which had to run before
           # "Install harness CLI". Same 3-tier precedence as model, moved verbatim.
           HARNESS="$RESOLVED_HARNESS"
-          # On the grok harness a claude-* model id is meaningless — fall back to
-          # grok's current default (grok-4.5) unless an explicit grok model was
+          # On the grok harness a claude-* model id is meaningless, so fall back to
+          # grok's current default (grok-4.7) unless an explicit grok model was
           # chosen. The grok adapter omits --model for a non-grok value as a safety net.
           if [ "$HARNESS" = "grok" ]; then
-            case "$MODEL" in claude-*|default|"") MODEL="grok-4.5" ;; esac
+            case "$MODEL" in claude-*|default|"") MODEL="grok-4.7" ;; esac
           fi
           # Banner must name the model that ACTUALLY runs. For claude/grok that is
           # $MODEL (their native id). For the adapter harnesses (codex/pi/vibe/kimi)
@@ -1108,7 +1120,7 @@ jobs:
               # consumed by adapters/grok.sh — the same frontmatter mapping the
               # native path used. SKILL_MODEL was already set to grok's model above.
               eval "$(bash "${GITHUB_WORKSPACE}/scripts/skill_mode.sh" grok-run-env "$SKILL_NAME")"
-              # BASE_MODEL is grok-4.5 or an explicit grok id (forced above); pass
+              # BASE_MODEL is grok-4.7 or an explicit grok id (forced above); pass
               # only a real grok id — the adapter falls back to grok's default
               # otherwise. (BASE_MODEL, not MODEL: identical here, but MODEL is the
               # var the claude cascade rewrites in a subshell, so referencing it here
@@ -1656,12 +1668,13 @@ jobs:
               # scoring model (haiku by default).
               SCORE_ARGS+=(--model "$SCORE_MODEL") ;;
             grok)
-              # Pin grok-4.5 — the only model the X-account (GROK_CREDENTIALS) login
-              # exposes. grok-composer-2.5-fast was a phantom id: the grok CLI rejects
+              # Pin grok-4.7, the grok harness default and a model the X-account
+              # (GROK_CREDENTIALS) login exposes (`grok models`, verified 2026-10-01).
+              # grok-composer-2.5-fast was a phantom id: the grok CLI rejects
               # it with "unknown model id" (verified live, run 29944263287), so pinning
               # it made every grok scorer call fail-then-fall-back. Scoring is one short
-              # text call, so grok-4.5's cost is pennies.
-              SCORE_ARGS+=(--model grok-4.5) ;;
+              # text call, so grok-4.7's cost is pennies.
+              SCORE_ARGS+=(--model grok-4.7) ;;
             *)
               # RH_MODEL_ARG is the same --model the run used (empty = harness default).
               [ -n "${RH_MODEL_ARG:-}" ] && SCORE_ARGS+=(--model "$RH_MODEL_ARG") ;;

@@ -599,7 +599,7 @@ jobs:
         run: |
           TODAY=$(date -u +%Y-%m-%d)
           CONFIG_MODEL=$(grep -E '^model:' aeon.yml | sed 's/^model: *//' | tr -d ' ')
-          MODEL="${CONFIG_MODEL:-claude-sonnet-5}"
+          MODEL="${CONFIG_MODEL:-claude-sonnet-5-5}"
 
           # HARNESS / AUTH_MODE / MODEL_ARG come from the "Resolve harness" step
           # (scripts/resolve-harness.sh), and the CLI was staged by "Install harness
@@ -608,7 +608,7 @@ jobs:
           # with a ::warning::, because nothing on this workflow could install them.
           # On grok a claude-* model id is meaningless — fall back to grok's default.
           if [ "$HARNESS" = "grok" ]; then
-            case "$MODEL" in claude-*|default|"") MODEL="grok-4.5" ;; esac
+            case "$MODEL" in claude-*|default|"") MODEL="grok-4.7" ;; esac
           fi
           echo "Using harness: $HARNESS  |  auth: $AUTH_MODE  |  model: ${MODEL_ARG:-$MODEL}"
 

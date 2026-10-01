@@ -205,14 +205,14 @@ case "${GATEWAY:-direct}" in
     echo "::notice::Routing through Bankr Gateway (https://llm.bankr.bot)"
     ;;
 
-  openrouter)  # NATIVE - Anthropic "skin", carries Opus 4.8 + Sonnet + Haiku
+  openrouter)  # NATIVE - Anthropic "skin", carries Opus 5.5 + Sonnet 5.5 + Haiku
     require_secret OPENROUTER_API_KEY
     export ANTHROPIC_BASE_URL="https://openrouter.ai/api"   # NOT /api/v1
     export ANTHROPIC_AUTH_TOKEN="$OPENROUTER_API_KEY"       # Bearer; API_KEY must be blank
     unset ANTHROPIC_API_KEY CLAUDE_CODE_OAUTH_TOKEN
     # Map EVERY model slot Claude Code uses to OpenRouter slugs (opus/sonnet/haiku).
-    export ANTHROPIC_DEFAULT_OPUS_MODEL="${OPENROUTER_MODEL:-anthropic/claude-opus-4.8}"
-    export ANTHROPIC_DEFAULT_SONNET_MODEL="${OPENROUTER_MODEL_SONNET:-anthropic/claude-sonnet-5}"
+    export ANTHROPIC_DEFAULT_OPUS_MODEL="${OPENROUTER_MODEL:-anthropic/claude-opus-5.5}"
+    export ANTHROPIC_DEFAULT_SONNET_MODEL="${OPENROUTER_MODEL_SONNET:-anthropic/claude-sonnet-5.5}"
     export ANTHROPIC_DEFAULT_HAIKU_MODEL="${OPENROUTER_MODEL_HAIKU:-anthropic/claude-haiku-4.5}"
     # Tiered mapping, same as the glm arm: the run's resolved model id picks the
     # slot, so sonnet-tier skills (and the scorer) stay on sonnet instead of every
@@ -237,8 +237,8 @@ X-Title: ${OPENROUTER_APP_TITLE:-Aeon}"
     export ANTHROPIC_BASE_URL="https://api.usepod.ai/proxy/${USEPOD_TOKEN}"
     export ANTHROPIC_AUTH_TOKEN="unused"    # UsePod auths via the path token
     unset ANTHROPIC_API_KEY CLAUDE_CODE_OAUTH_TOKEN
-    # UsePod mirrors the upstream Anthropic surface, so aeon's claude-opus-4-8 id
-    # is passed through by default. If UsePod needs marketplace-specific ids, set
+    # UsePod mirrors the upstream Anthropic surface, so aeon's own claude-* ids
+    # (e.g. claude-opus-5-5) are passed through by default. If UsePod needs marketplace-specific ids, set
     # USEPOD_MODEL (+ _SONNET / _HAIKU) to override.
     if [ -n "${USEPOD_MODEL:-}" ]; then MODEL="$USEPOD_MODEL"; fi
     if [ -n "${USEPOD_MODEL_SONNET:-}" ]; then export ANTHROPIC_DEFAULT_SONNET_MODEL="$USEPOD_MODEL_SONNET"; fi
@@ -254,13 +254,13 @@ X-Title: ${OPENROUTER_APP_TITLE:-Aeon}"
     export ANTHROPIC_BASE_URL="${XAI_ANTHROPIC_BASE_URL:-https://api.x.ai}"
     export ANTHROPIC_AUTH_TOKEN="$XAI_API_KEY"   # Bearer; API_KEY must be blank
     unset ANTHROPIC_API_KEY CLAUDE_CODE_OAUTH_TOKEN
-    # Pin every model slot to a grok coding model. Defaults to grok-4.5, xAI's current
-    # flagship and the same id the grok harness offers (GROK_MODELS in the dashboard's
+    # Pin every model slot to a grok coding model. Defaults to grok-4.7, xAI's current
+    # flagship and the grok harness default (GROK_MODELS[0] in the dashboard's
     # constants.ts), so the gateway and CLI paths name the same model. GROK_MODEL
     # overrides: the older coding ids (grok-build-0.1, grok-composer-2.5-fast,
     # grok-4.3) are api.x.ai model strings that still work here, even though the grok
     # CLI rejects them on an X-account OAuth login.
-    grok_model="${GROK_MODEL:-grok-4.5}"
+    grok_model="${GROK_MODEL:-grok-4.7}"
     export ANTHROPIC_DEFAULT_OPUS_MODEL="$grok_model"
     export ANTHROPIC_DEFAULT_SONNET_MODEL="$grok_model"
     export ANTHROPIC_DEFAULT_HAIKU_MODEL="$grok_model"
@@ -287,15 +287,14 @@ X-Title: ${OPENROUTER_APP_TITLE:-Aeon}"
     export CLAUDE_CODE_EFFORT_LEVEL="${GLM_REASONING_EFFORT:-high}"
     export CLAUDE_CODE_ALWAYS_ENABLE_EFFORT=1
     # Tiered mapping: the run's resolved model id picks the GLM id. With no repo
-    # vars set every tier runs glm-5.2; set GLM_MODEL_SONNET / GLM_MODEL_HAIKU
-    # (e.g. to a flash id) to run cheaper tiers on a faster model while
-    # opus-pinned skills keep the full one. Per-tier var wins over GLM_MODEL
-    # (same precedence as the OpenRouter arm); GLM_MODEL still pins every tier
-    # when set alone.
+    # vars set, opus and sonnet tiers run glm-5.3 and the haiku tier (the scorer,
+    # haiku-pinned skills) runs the cheaper glm-5.3-flash. Per-tier var wins over
+    # GLM_MODEL (same precedence as the OpenRouter arm); GLM_MODEL still pins
+    # every tier when set alone.
     case "${MODEL:-}" in
-      *opus*)  glm_model="${GLM_MODEL_OPUS:-${GLM_MODEL:-glm-5.2}}" ;;
-      *haiku*) glm_model="${GLM_MODEL_HAIKU:-${GLM_MODEL:-glm-5.2}}" ;;
-      *)       glm_model="${GLM_MODEL_SONNET:-${GLM_MODEL:-glm-5.2}}" ;;
+      *opus*)  glm_model="${GLM_MODEL_OPUS:-${GLM_MODEL:-glm-5.3}}" ;;
+      *haiku*) glm_model="${GLM_MODEL_HAIKU:-${GLM_MODEL:-glm-5.3-flash}}" ;;
+      *)       glm_model="${GLM_MODEL_SONNET:-${GLM_MODEL:-glm-5.3}}" ;;
     esac
     export ANTHROPIC_DEFAULT_OPUS_MODEL="$glm_model"
     export ANTHROPIC_DEFAULT_SONNET_MODEL="$glm_model"
@@ -309,25 +308,27 @@ X-Title: ${OPENROUTER_APP_TITLE:-Aeon}"
     # The sidecar pins ONE model across every ccr slot, so derive it from aeon's
     # resolved $MODEL (the UI / aeon.yml choice) instead of hardcoding one. Surplus
     # uses dot-form ids: drop any trailing -YYYYMMDD date, then convert each
-    # <digit>-<digit> to <digit>.<digit>. SURPLUS_MODEL overrides; opus-4.8 is the
-    # fallback when $MODEL is unset.
-    surplus_model="${SURPLUS_MODEL:-$(printf '%s' "${MODEL:-claude-opus-4-8}" | sed -E 's/-[0-9]{8}$//; s/([0-9])-([0-9])/\1.\2/g')}"
+    # <digit>-<digit> to <digit>.<digit> (claude-opus-5-5 -> claude-opus-5.5).
+    # SURPLUS_MODEL overrides; opus-5.5 is the fallback when $MODEL is unset.
+    # Surplus served claude-opus-5.5 and claude-sonnet-5.5 on 2026-10-01
+    # (/api/inference/v1/models).
+    surplus_model="${SURPLUS_MODEL:-$(printf '%s' "${MODEL:-claude-opus-5-5}" | sed -E 's/-[0-9]{8}$//; s/([0-9])-([0-9])/\1.\2/g')}"
     start_ccr_sidecar surplus \
       "https://www.surplusintelligence.ai/api/inference/v1/chat/completions" \
       "$SURPLUS_API_KEY" "$surplus_model"
     echo "::notice::Routing through Surplus via claude-code-router (${surplus_model})"
     ;;
 
-  venice)  # SIDECAR — OpenAI-compatible (dash-form ids); carries Opus 4.8, no haiku
+  venice)  # SIDECAR - OpenAI-compatible (dash-form ids); carries Opus 5.5, no haiku
     require_secret VENICE_API_KEY
     # Set VENICE_CLEANCACHE=1 to add the cleancache transformer (1h TTL, avoids
     # the shared 4-block prompt-cache limit) if you hit cache errors.
     # The sidecar pins ONE model, so track aeon's $MODEL. Venice names models with
     # aeon's own dash-form ids, so the picker's ids pass straight through (date
     # suffix stripped) when Venice carries them. It carries NO haiku at all, so
-    # haiku, and anything else off-catalog, falls back to sonnet-5 rather than
+    # haiku, and anything else off-catalog, falls back to sonnet-5-5 rather than
     # 404ing on a model Venice never had. VENICE_MODEL overrides.
-    # Allowlist verified against api.venice.ai/api/v1/models on 2026-07-24.
+    # Allowlist verified against api.venice.ai/api/v1/models on 2026-10-01.
     # VENICE_BASE_URL (repo variable) points the sidecar at any Venice-compatible
     # endpoint — a self-hosted relay, a billing proxy, a regional mirror — same
     # override pattern as VENICE_MODEL. Defaults to Venice's public API.
@@ -335,8 +336,8 @@ X-Title: ${OPENROUTER_APP_TITLE:-Aeon}"
     if [ -z "$venice_model" ]; then
       m="$(printf '%s' "${MODEL:-}" | sed -E 's/-[0-9]{8}$//')"
       case "$m" in
-        claude-opus-4-8|claude-sonnet-5) venice_model="$m" ;;
-        *) venice_model="claude-sonnet-5" ;;
+        claude-opus-5-5|claude-sonnet-5-5|claude-opus-4-8|claude-sonnet-5) venice_model="$m" ;;
+        *) venice_model="claude-sonnet-5-5" ;;
       esac
     fi
     start_ccr_sidecar venice \

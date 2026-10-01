@@ -104,13 +104,13 @@ function knownHarnessForModel(model, modelHints) {
   // Family aliases follow what each harness actually writes as its model
   // (EFFECTIVE_MODEL = resolve-harness.sh's MODEL_ARG): codex forwards a bare
   // OpenRouter id (openai/...), pi prefixes it with openrouter/, cursor forwards
-  // its own bare ids (gpt-5.1), and hermes forwards `default` (its configured
-  // provider). vibe/kimi never forward an id (they write `<harness>-default`),
+  // its own bare ids (`auto`, its default router, or older gpt-5.1 rows), and
+  // hermes forwards `default` (its configured provider). vibe/kimi never forward an id (they write `<harness>-default`),
   // so deepseek/* only reaches the csv through pi.
   if (/(^|\/)gpt-[^/]*-codex/.test(model)) return 'codex';
   if (/^openai\/gpt-/.test(model)) return 'codex';
   if (/^openrouter\//.test(model) || /^deepseek\//.test(model)) return 'pi';
-  if (/^gpt-/.test(model)) return 'cursor';
+  if (/^gpt-/.test(model) || model === 'auto') return 'cursor';
   if (model === 'default') return 'hermes';
   if (/^grok-/.test(model)) return 'grok';
   if (/^moonshotai\//.test(model)) return 'kimi';

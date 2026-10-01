@@ -94,12 +94,12 @@ if grep -q "MCPTool(" "$ARGS_FILE"; then bad "MCPTool rules leaked into a non-MC
 # --- 3. model + run-shaping knobs -------------------------------------------
 # Only a real grok id is forwarded; a leftover claude-* id would otherwise pin the
 # run to a model that does not exist and every downstream record would name it.
-: > "$ARGS_FILE"; run_in "$WS" --model claude-sonnet-5 >/dev/null
+: > "$ARGS_FILE"; run_in "$WS" --model claude-sonnet-5-5 >/dev/null
 if grep -Fqx -- "--model" "$ARGS_FILE"; then bad "--model should be omitted for a claude-* id"; else
   pass "--model omitted for a leftover claude-* id"; fi
-: > "$ARGS_FILE"; run_in "$WS" --model grok-4.5 >/dev/null
-{ grep -Fqx -- "--model" "$ARGS_FILE" && grep -Fqx "grok-4.5" "$ARGS_FILE"; } \
-  && pass "--model forwarded for a real grok id" || bad "--model grok-4.5 not forwarded"
+: > "$ARGS_FILE"; run_in "$WS" --model grok-4.7 >/dev/null
+{ grep -Fqx -- "--model" "$ARGS_FILE" && grep -Fqx "grok-4.7" "$ARGS_FILE"; } \
+  && pass "--model forwarded for a real grok id" || bad "--model grok-4.7 not forwarded"
 
 # GROK_* frontmatter knobs (aeon.yml exports these) reach the adapter.
 : > "$ARGS_FILE"

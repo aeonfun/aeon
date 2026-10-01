@@ -123,7 +123,7 @@ esac
 # Skip it only when best-of-n/check explicitly asked for subagents above.
 [ "$GROK_WANTS_SUBAGENTS" = 0 ] && ARGS+=(--no-subagents)
 
-# structured output: reliably honoured by reasoning models (grok-4.5/grok-build);
+# structured output: reliably honoured by reasoning models (grok-4.x/grok-build);
 # composer leaves .structuredOutput null and just emits JSON text — both handled below.
 [ -n "${RH_JSON_SCHEMA:-}" ] && ARGS+=(--json-schema "$RH_JSON_SCHEMA")
 

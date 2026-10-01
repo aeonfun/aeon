@@ -233,7 +233,7 @@ api_key = "$MOONSHOT_API_KEY"
 
 [models.kimi-native]
 provider = "moonshot"
-model = "kimi-k2.5"
+model = "kimi-k2.6"
 max_context_size = 131072
 TOML
         chmod 600 "$HOME/.kimi-code/config.toml"

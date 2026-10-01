@@ -27,7 +27,8 @@ constants = open(f"{root}/apps/dashboard/lib/constants.ts", encoding="utf-8").re
 workflow = yaml.safe_load(open(f"{root}/.github/workflows/aeon.yml", encoding="utf-8"))
 # PyYAML parses the bare `on:` key as boolean True.
 dispatch = (workflow.get("on") or workflow.get(True))["workflow_dispatch"]["inputs"]
-options = set(dispatch["model"]["options"])
+option_list = dispatch["model"]["options"]
+options = set(option_list)
 resolve = open(f"{root}/scripts/resolve-harness.sh", encoding="utf-8").read()
 
 LISTS = {
@@ -43,6 +44,9 @@ LISTS = {
 
 errors = []
 lists = {}
+dupes = sorted({o for o in option_list if option_list.count(o) > 1})
+if dupes:
+    errors.append(f"aeon.yml: duplicated workflow_dispatch model options: {', '.join(dupes)}")
 for name in LISTS:
     m = re.search(rf"^export const {name} = \[(.*?)\]", constants, re.S | re.M)
     if not m:

@@ -35,15 +35,16 @@ vibe, and kimi at once. Their model picker offers OpenRouter ids rather than the
 `claude-*`/`grok-*` ids, and the model you pick is what actually runs. Each of
 these harnesses carries its own curated list (`CODEX_MODELS` /
 `VIBE_MODELS` / `PI_MODELS` / `KIMI_MODELS`): **codex**
-defaults to the codex-tuned `openai/gpt-5.1-codex-mini` (it fails on `gpt-5-nano`)
-and also offers `gpt-5-mini` (the prior default), `gpt-5.3-codex`, and the
-general `gpt-5.6` family (`luna`, `terra`); **vibe**'s generic `ProviderConfig` drives any
+defaults to `openai/gpt-6-luna` (newer and cheaper than the prior default) and also
+offers `gpt-6-sol` and `gpt-6.1-sol` for quality, plus the older
+`gpt-5.1-codex-mini`, `gpt-5-mini`, `gpt-5.3-codex`, and the `gpt-5.6` family
+(`luna`, `terra`); it fails on `gpt-5-nano`; **vibe**'s generic `ProviderConfig` drives any
 OpenRouter model, so it defaults to `mistralai/mistral-medium-3-5` and offers
 `deepseek/deepseek-v4-flash`; **pi** (litellm `openrouter/<slug>` routing) runs the
-DeepSeek V4 pair — `deepseek-v4-flash` (default) and `deepseek-v4-pro`; **kimi** is
-Moonshot, so it runs Moonshot's own Kimi family through OpenRouter —
-`moonshotai/kimi-k2.5` (default), `kimi-k3` (strongest, ~2× slower), and
-`kimi-k2.7-code`. The scorer
+DeepSeek V4 pair: `deepseek-v4-flash` (default) and `deepseek-v4-pro`, plus
+`deepseek-v4.1-flash`; **kimi** is Moonshot, so it runs Moonshot's own Kimi family
+through OpenRouter: `moonshotai/kimi-k2.6` (default), `kimi-k3` (strongest, ~2×
+slower), `kimi-k2.7-code`, and the older `kimi-k2.5`. The scorer
 routes through the same harness the skill
 ran on, so a repo with **no** Claude credentials still gets every run scored.
 
@@ -275,9 +276,9 @@ effort: high       # low|medium|high|xhigh|max → --effort  (reasoning models o
 ```
 
 `effort`/`reasoning_effort` map to the API's `reasoningEffort`, honoured by
-`grok-4.5` — a reasoning model, and the only model the X-account login exposes to
-the CLI (see [Verification status](#verification-status); other xAI model ids are
-api.x.ai strings the CLI rejects as "unknown model id"). `best_of_n`/`verify` build
+`grok-4.7` (the default), `grok-4.6` and `grok-4.5`: the reasoning models the
+X-account login exposes to the CLI (see [Verification status](#verification-status);
+older xAI model ids are api.x.ai strings the CLI rejects as "unknown model id"). `best_of_n`/`verify` build
 on grok's subagents (so the harness drops `--no-subagents` for those runs);
 `verify` can't combine with structured output.
 

@@ -41,12 +41,13 @@ printf '%s\n' \
   '2026-08-27,family-check,openrouter/deepseek/deepseek-v4-flash,10,1,20,0' \
   '2026-08-27,family-check,deepseek/deepseek-v4-pro,10,1,20,0' \
   '2026-08-27,family-check,gpt-5.1,10,1,20,0' \
+  '2026-08-27,family-check,auto,10,1,20,0' \
   '2026-08-27,family-check,default,10,1,20,0' \
   > "$TMP/memory/token-usage.csv"
 FAMILY_OUT=$(cd "$TMP" && node "$ROOT/scripts/skill-health-routing.mjs" family-check)
 grep -q '^  codex: 3 rows,' <<<"$FAMILY_OUT" || { echo "openai/* rows not attributed to codex" >&2; echo "$FAMILY_OUT" >&2; exit 1; }
 grep -q '^  pi: 2 rows,' <<<"$FAMILY_OUT" || { echo "deepseek rows not attributed to pi" >&2; echo "$FAMILY_OUT" >&2; exit 1; }
-grep -q '^  cursor: 1 rows,' <<<"$FAMILY_OUT" || { echo "bare gpt-* row not attributed to cursor" >&2; echo "$FAMILY_OUT" >&2; exit 1; }
+grep -q '^  cursor: 2 rows,' <<<"$FAMILY_OUT" || { echo "bare gpt-* / auto rows not attributed to cursor" >&2; echo "$FAMILY_OUT" >&2; exit 1; }
 grep -q '^  hermes: 1 rows,' <<<"$FAMILY_OUT" || { echo "default row not attributed to hermes" >&2; echo "$FAMILY_OUT" >&2; exit 1; }
 
 if [ ! -f memory/skill-health/github-trending.json ]; then

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Tests for the glm, openrouter, grok and hivemindos arms of scripts/llm-gateway.sh.
+# Tests for the glm, openrouter, grok, surplus, venice and hivemindos arms of scripts/llm-gateway.sh.
 # The shim is SOURCED by the workflow, so these tests source it too. Each case
 # runs in a subshell so exported CLAUDE_CODE_* / ANTHROPIC_* vars don't leak.
 # Run: bash scripts/tests/test_llm_gateway.sh
@@ -64,6 +64,51 @@ glm_src() {
 ) && pass "sourcing under bash -e does not abort caller" \
   || bad "sourcing under bash -e does not abort caller"
 
+# 7. Tiered GLM ids: opus/sonnet run glm-5.3, haiku (scorer) runs glm-5.3-flash.
+glm_tier() {  # $1 = run model id; prints the GLM id the arm resolves
+  ( unset GLM_MODEL GLM_MODEL_OPUS GLM_MODEL_SONNET GLM_MODEL_HAIKU
+    export GATEWAY=glm GLM_API_KEY=test-key MODEL="$1"
+    # shellcheck disable=SC1090
+    source "$GW" >/dev/null
+    printf '%s' "$MODEL" )
+}
+[ "$(glm_tier claude-opus-5-5)" = "glm-5.3" ] \
+  && pass "glm: opus tier → glm-5.3" || bad "glm: opus tier → glm-5.3 (got $(glm_tier claude-opus-5-5))"
+[ "$(glm_tier claude-sonnet-5-5)" = "glm-5.3" ] \
+  && pass "glm: sonnet tier → glm-5.3" || bad "glm: sonnet tier → glm-5.3 (got $(glm_tier claude-sonnet-5-5))"
+[ "$(glm_tier claude-haiku-4-5-20251001)" = "glm-5.3-flash" ] \
+  && pass "glm: haiku tier → glm-5.3-flash" || bad "glm: haiku tier → glm-5.3-flash (got $(glm_tier claude-haiku-4-5-20251001))"
+( export GATEWAY=glm GLM_API_KEY=test-key MODEL=claude-haiku-4-5-20251001 GLM_MODEL=glm-x
+  unset GLM_MODEL_HAIKU
+  # shellcheck disable=SC1090
+  source "$GW" >/dev/null
+  [ "$MODEL" = "glm-x" ]
+) && pass "glm: GLM_MODEL alone pins every tier" || bad "glm: GLM_MODEL alone pins every tier"
+
+# --- surplus + venice arms (sidecar; AEON_GATEWAY_DRY_RUN stands in for ccr) --
+sidecar_model() {  # $1 = gateway, $2 = run model id ("" = unset); prints model=
+  ( unset SURPLUS_MODEL VENICE_MODEL MODEL
+    export AEON_GATEWAY_DRY_RUN=1 GATEWAY="$1" SURPLUS_API_KEY=test-key VENICE_API_KEY=test-key
+    [ -n "$2" ] && export MODEL="$2"
+    # shellcheck disable=SC1090
+    source "$GW" 2>/dev/null | sed -n 's/^ccr-sidecar .*model=\([^ ]*\).*/\1/p' )
+}
+[ "$(sidecar_model surplus claude-opus-5-5)" = "claude-opus-5.5" ] \
+  && pass "surplus: claude-opus-5-5 → dot-form claude-opus-5.5" \
+  || bad "surplus: claude-opus-5-5 → dot-form claude-opus-5.5 (got $(sidecar_model surplus claude-opus-5-5))"
+[ "$(sidecar_model surplus claude-haiku-4-5-20251001)" = "claude-haiku-4.5" ] \
+  && pass "surplus: date suffix stripped, then dot-form" \
+  || bad "surplus: date suffix stripped, then dot-form (got $(sidecar_model surplus claude-haiku-4-5-20251001))"
+[ "$(sidecar_model surplus "")" = "claude-opus-5.5" ] \
+  && pass "surplus: unset MODEL falls back to opus-5.5" \
+  || bad "surplus: unset MODEL falls back to opus-5.5 (got $(sidecar_model surplus ""))"
+[ "$(sidecar_model venice claude-opus-5-5)" = "claude-opus-5-5" ] \
+  && pass "venice: claude-opus-5-5 passes through" \
+  || bad "venice: claude-opus-5-5 passes through (got $(sidecar_model venice claude-opus-5-5))"
+[ "$(sidecar_model venice claude-haiku-4-5-20251001)" = "claude-sonnet-5-5" ] \
+  && pass "venice: haiku (not carried) falls back to sonnet-5-5" \
+  || bad "venice: haiku (not carried) falls back to sonnet-5-5 (got $(sidecar_model venice claude-haiku-4-5-20251001))"
+
 # --- openrouter arm --------------------------------------------------------
 # Native arm, no sidecar: the run's resolved model id picks the slot by tier.
 or_model() {  # $1 = run model id; prints the MODEL the arm resolves
@@ -73,12 +118,15 @@ or_model() {  # $1 = run model id; prints the MODEL the arm resolves
     source "$GW" >/dev/null
     printf '%s' "$MODEL" )
 }
-[ "$(or_model claude-sonnet-5)" = "anthropic/claude-sonnet-5" ] \
+[ "$(or_model claude-sonnet-5-5)" = "anthropic/claude-sonnet-5.5" ] \
   && pass "openrouter: sonnet-tier run stays on the sonnet slug" \
-  || bad "openrouter: sonnet-tier run stays on the sonnet slug (got $(or_model claude-sonnet-5))"
-[ "$(or_model claude-opus-4-8)" = "anthropic/claude-opus-4.8" ] \
+  || bad "openrouter: sonnet-tier run stays on the sonnet slug (got $(or_model claude-sonnet-5-5))"
+[ "$(or_model claude-sonnet-5)" = "anthropic/claude-sonnet-5.5" ] \
+  && pass "openrouter: an older sonnet id still lands on the sonnet slot" \
+  || bad "openrouter: an older sonnet id still lands on the sonnet slot (got $(or_model claude-sonnet-5))"
+[ "$(or_model claude-opus-5-5)" = "anthropic/claude-opus-5.5" ] \
   && pass "openrouter: opus-pinned run gets the opus slug" \
-  || bad "openrouter: opus-pinned run gets the opus slug"
+  || bad "openrouter: opus-pinned run gets the opus slug (got $(or_model claude-opus-5-5))"
 [ "$(or_model claude-haiku-4-5-20251001)" = "anthropic/claude-haiku-4.5" ] \
   && pass "openrouter: haiku-tier run gets the haiku slug" \
   || bad "openrouter: haiku-tier run gets the haiku slug"
@@ -95,12 +143,12 @@ or_model() {  # $1 = run model id; prints the MODEL the arm resolves
 grok_model() {  # $1 = GROK_MODEL value ("" = unset); prints the MODEL the arm resolves
   ( unset GROK_MODEL
     [ -n "$1" ] && export GROK_MODEL="$1"
-    export GATEWAY=grok XAI_API_KEY=test-key MODEL=claude-opus-4-8
+    export GATEWAY=grok XAI_API_KEY=test-key MODEL=claude-opus-5-5
     # shellcheck disable=SC1090
     source "$GW" >/dev/null
     printf '%s|%s|%s' "$MODEL" "$ANTHROPIC_DEFAULT_OPUS_MODEL" "$ANTHROPIC_DEFAULT_HAIKU_MODEL" )
 }
-[ "$(grok_model "")" = "grok-4.5|grok-4.5|grok-4.5" ] \
+[ "$(grok_model "")" = "grok-4.7|grok-4.7|grok-4.7" ] \
   && pass "grok: unset GROK_MODEL pins every slot to the default" \
   || bad "grok: unset GROK_MODEL pins every slot to the default (got $(grok_model ""))"
 [ "$(grok_model grok-build-0.1)" = "grok-build-0.1|grok-build-0.1|grok-build-0.1" ] \

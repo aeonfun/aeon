@@ -5,53 +5,66 @@ import type { Harness } from './types'
 // First entry is the default: it's the top of the model picker AND the fallback the
 // harness-switch snap uses (modelsForHarness(...)[0] in app/page.tsx). Keep it in
 // sync with the config default in lib/config.ts and aeon.yml `model:`.
+// Sonnet 5 and Opus 4.8 stay selectable after the current pair so repos and
+// per-skill pins that still name them keep a matching picker entry.
 export const MODELS = [
+  { id: 'claude-sonnet-5-5', label: 'Sonnet 5.5' },
+  { id: 'claude-opus-5-5', label: 'Opus 5.5' },
+  { id: 'claude-haiku-4-5-20251001', label: 'Haiku 4.5' },
   { id: 'claude-sonnet-5', label: 'Sonnet 5' },
   { id: 'claude-opus-4-8', label: 'Opus 4.8' },
-  { id: 'claude-haiku-4-5-20251001', label: 'Haiku 4.5' },
 ]
 
-// Models offered when the Grok (`grok`) harness is selected — only grok-4.5, the
-// one model the X-account (GROK_CREDENTIALS) login exposes to the grok CLI's
-// --model flag. grok-4.5 is grok's current default: the flagship reasoning model
-// that powers Grok Build, multi-agent-capable (the grok adapter passes --no-subagents
-// in CI).
-// Everything else xAI documents — grok-composer-2.5-fast, grok-build, grok-build-0.1,
-// grok-4.3 — is an api.x.ai model *string*, NOT a valid CLI --model value on the
-// X-account OAuth login: the grok CLI rejects each with "unknown model id" (verified
-// live 2026-07-22). They're reachable only via XAI_API_KEY on the gateway path (set
+// Models offered when the Grok (`grok`) harness is selected: the ids the
+// X-account (GROK_CREDENTIALS) login exposes to the grok CLI's --model flag.
+// `grok models` on grok CLI 1.0.46 (verified 2026-10-01) lists grok-4.7 (its
+// default: the flagship reasoning model that powers Grok Build, multi-agent-capable;
+// the grok adapter passes --no-subagents in CI), grok-4.6 and grok-4.5.
+// Older api.x.ai ids (grok-composer-2.5-fast, grok-build, grok-build-0.1,
+// grok-4.3) are model *strings*, NOT valid CLI --model values on the X-account
+// OAuth login: the grok CLI rejects each with "unknown model id" (verified live
+// 2026-07-22). They're reachable only via XAI_API_KEY on the gateway path (set
 // the GROK_MODEL repo var), so listing any here would be a dead click.
 // First entry is the default (modelsForHarness(...)[0] on harness switch). Keep this
 // list in sync with the workflow_dispatch `model` choice options in
 // .github/workflows/aeon.yml — a mismatch 422s at dispatch time.
 export const GROK_MODELS = [
+  { id: 'grok-4.7', label: 'Grok 4.7' },
+  { id: 'grok-4.6', label: 'Grok 4.6' },
   { id: 'grok-4.5', label: 'Grok 4.5' },
 ]
 
 // kimi gets its own list: it bakes the selected id into a generic OpenRouter
 // provider config (`[providers.openrouter] type=openai`), so it drives ANY
 // OpenRouter model — and kimi IS Moonshot, so it runs Moonshot's own Kimi family
-// through OpenRouter (the way vibe runs Mistral and pi runs DeepSeek). K2.5 is the
-// default (fast, solid), K3 is the strongest (higher quality but ~2× slower), and
-// K2.7-code is the code-tuned variant. All three measured working end-to-end
-// 2026-07-23 on a real runner (k2.5 4/5, k3 5/5, k2.7-code 4/5; slates cross-checked
-// real). First entry is the default (modelsForHarness('kimi')[0] on harness switch)
+// through OpenRouter (the way vibe runs Mistral and pi runs DeepSeek). K2.6 is the
+// default (newer and cheaper than K2.5 on OpenRouter), K3 is the strongest (higher
+// quality but ~2× slower), and K2.7-code is the code-tuned variant; K2.5 stays as
+// the prior default. k2.5/k3/k2.7-code measured working end-to-end 2026-07-23 on a
+// real runner (k2.5 4/5, k3 5/5, k2.7-code 4/5; slates cross-checked real). First
+// entry is the default (modelsForHarness('kimi')[0] on harness switch)
 // — matched by aeon.yml's DEFAULT_HM. Any id here must also appear in the
 // workflow_dispatch `model` choice, or a dashboard dispatch of it 422s.
 export const KIMI_MODELS = [
-  { id: 'moonshotai/kimi-k2.5', label: 'Kimi K2.5' },
+  { id: 'moonshotai/kimi-k2.6', label: 'Kimi K2.6' },
   { id: 'moonshotai/kimi-k3', label: 'Kimi K3' },
   { id: 'moonshotai/kimi-k2.7-code', label: 'Kimi K2.7 Code' },
+  { id: 'moonshotai/kimi-k2.5', label: 'Kimi K2.5' },
 ]
 
 // codex needs its own list. It fails DETERMINISTICALLY on gpt-5-nano (it emits a
 // shell tool call with a duplicated `cmd` field, its strict parser rejects it,
 // and with no --max-turns it spins to the run guard), so nano is never offered.
-// The default (first entry, matched by aeon.yml's DEFAULT_HM) is the codex-tuned
-// gpt-5.1-codex-mini, verified live 2026-07-22. gpt-5-mini is the prior default
-// and stays as a universally-safe fallback; the rest are the fuller codex line
-// (gpt-5.3-codex) and the general gpt-5.6 family (luna, terra), all via OpenRouter.
+// The default (first entry, matched by aeon.yml's DEFAULT_HM) is gpt-6-luna,
+// newer and cheaper than the prior default gpt-5.1-codex-mini ($0.10/$0.50 vs
+// $0.25/$2 per 1M on OpenRouter). gpt-6-sol and gpt-6.1-sol are the quality
+// options. The older ids stay: gpt-5.1-codex-mini (verified live 2026-07-22),
+// gpt-5-mini as a universally-safe fallback, the fuller codex line
+// (gpt-5.3-codex) and the gpt-5.6 family (luna, terra), all via OpenRouter.
 export const CODEX_MODELS = [
+  { id: 'openai/gpt-6-luna', label: 'GPT-6 Luna' },
+  { id: 'openai/gpt-6-sol', label: 'GPT-6 Sol' },
+  { id: 'openai/gpt-6.1-sol', label: 'GPT-6.1 Sol' },
   { id: 'openai/gpt-5.1-codex-mini', label: 'GPT-5.1 Codex Mini' },
   { id: 'openai/gpt-5-mini', label: 'GPT-5 Mini' },
   { id: 'openai/gpt-5.3-codex', label: 'GPT-5.3 Codex' },
@@ -72,16 +85,23 @@ export const VIBE_MODELS = [
 ]
 
 // pi gets its own list: it drives any OpenRouter model via litellm routing
-// (`openrouter/<slug>`), so it runs the DeepSeek V4 pair — Flash (default, cheap/
-// fast) and Pro (stronger). First entry is the default (modelsForHarness('pi')[0]),
+// (`openrouter/<slug>`), so it runs the DeepSeek V4 pair: Flash (default, cheap/
+// fast) and Pro (stronger), plus V4.1 Flash (newer, but ~6x the output price of
+// V4 Flash, so it is an option rather than the default). First entry is the default (modelsForHarness('pi')[0]),
 // matched by aeon.yml's DEFAULT_HM. Any id here must also appear in the
 // workflow_dispatch `model` choice, or a dashboard dispatch 422s.
 export const PI_MODELS = [
   { id: 'deepseek/deepseek-v4-flash', label: 'DeepSeek V4 Flash' },
   { id: 'deepseek/deepseek-v4-pro', label: 'DeepSeek V4 Pro' },
+  { id: 'deepseek/deepseek-v4.1-flash', label: 'DeepSeek V4.1 Flash' },
 ]
 
-export const CURSOR_MODELS = [{ id: 'gpt-5.1', label: 'GPT-5.1' }]
+// cursor runs Cursor's own model ids (not OpenRouter ids). `auto` is Cursor's
+// router (it appears in `cursor-agent --list-models`), so it is the default; the
+// old `gpt-5.1` default is not a Cursor CLI id and is no longer offered here (it
+// stays a workflow_dispatch choice so existing configs still dispatch).
+export const CURSOR_MODELS = [{ id: 'auto', label: 'Auto' }]
+
 // hermes defaults to `default`: the model and provider Hermes restores from
 // HERMES_AUTH / its config.yaml (the Nous Portal subscription). resolve-harness.sh
 // treats `default` as "no override" and the hermes adapter omits --model for it,
@@ -92,6 +112,8 @@ export const CURSOR_MODELS = [{ id: 'gpt-5.1', label: 'GPT-5.1' }]
 // choice (scripts/tests/test_dashboard_model_choices.sh enforces it).
 export const HERMES_MODELS = [
   { id: 'default', label: 'Hermes default' },
+  { id: 'anthropic/claude-sonnet-5.5', label: 'Claude Sonnet 5.5' },
+  { id: 'openai/gpt-6-sol', label: 'GPT-6 Sol' },
   { id: 'anthropic/claude-sonnet-4.6', label: 'Claude Sonnet 4.6' },
   { id: 'openai/gpt-5.4', label: 'GPT-5.4' },
   { id: 'google/gemini-2.5-pro', label: 'Gemini 2.5 Pro' },

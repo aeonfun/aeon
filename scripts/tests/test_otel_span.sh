@@ -38,16 +38,16 @@ emit() { # runs the helper in a clean subshell with the given env
 
 # 1. no endpoint → no-op, rc 0, nothing recorded
 rm -f "$TMP/args.txt"
-emit grok grok-4.5 ""; rc=$?
+emit grok grok-4.7 ""; rc=$?
 { [ "$rc" = 0 ] && [ ! -f "$TMP/args.txt" ]; } && ok "telemetry off → no-op" || bad "telemetry off → no-op (rc=$rc)"
 
 # 2. non-claude + endpoint → emits gen_ai span with usage/model/cost
 rm -f "$TMP/args.txt"
-emit grok grok-4.5 "http://collector.invalid"
+emit grok grok-4.7 "http://collector.invalid"
 if [ -f "$TMP/args.txt" ]; then
   args="$(cat "$TMP/args.txt")"
   case "$args" in *"gen_ai.system=grok"*) ok "records gen_ai.system" ;; *) bad "missing gen_ai.system" ;; esac
-  case "$args" in *"gen_ai.request.model=grok-4.5"*) ok "records model" ;; *) bad "missing model" ;; esac
+  case "$args" in *"gen_ai.request.model=grok-4.7"*) ok "records model" ;; *) bad "missing model" ;; esac
   case "$args" in *"gen_ai.usage.input_tokens=1200"*) ok "records input tokens" ;; *) bad "missing input tokens" ;; esac
   case "$args" in *"gen_ai.usage.output_tokens=340"*) ok "records output tokens" ;; *) bad "missing output tokens" ;; esac
   case "$args" in *"aeon.cost_usd=0.0123"*) ok "records cost" ;; *) bad "missing cost" ;; esac
@@ -58,7 +58,7 @@ fi
 
 # 3. claude is skipped (it self-traces via Claude Code's own OTEL)
 rm -f "$TMP/args.txt"
-emit claude claude-sonnet-5 "http://collector.invalid"
+emit claude claude-sonnet-5-5 "http://collector.invalid"
 [ ! -f "$TMP/args.txt" ] && ok "claude harness skipped" || bad "claude harness should not emit"
 
 # 4. missing otel-cli → no-op even with endpoint set. Keep jq reachable (so the
@@ -66,7 +66,7 @@ emit claude claude-sonnet-5 "http://collector.invalid"
 rm -f "$TMP/args.txt"
 JQ_DIR="$(dirname "$(command -v jq)")"
 env -i PATH="$JQ_DIR:/usr/bin:/bin" HOME="$HOME" \
-  RH_HARNESS=grok RH_MODEL=grok-4.5 OTEL_EXPORTER_OTLP_ENDPOINT="http://collector.invalid" \
+  RH_HARNESS=grok RH_MODEL=grok-4.7 OTEL_EXPORTER_OTLP_ENDPOINT="http://collector.invalid" \
   bash -c ". '$LIB'; rh_emit_harness_span '$TMP/env.json' 1 2"; rc=$?
 [ "$rc" = 0 ] && ok "no otel-cli → no-op, rc 0" || bad "no otel-cli should no-op (rc=$rc)"
 
