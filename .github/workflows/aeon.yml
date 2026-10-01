@@ -1284,17 +1284,24 @@ jobs:
 
       # Undo "Single-source standing instructions" so the working tree matches HEAD
       # before any capture/guard/commit step runs. always(): the file must come back
-      # even if Run failed or timed out. The move is a plain rename back — it touches
-      # only the one file that was hidden, so it can't clobber skill outputs.
+      # even if Run failed or timed out. It touches only the one file that was hidden,
+      # so it can't clobber skill outputs. The file is restored from git, not from the
+      # parked copy: $RUNNER_TEMP is writable inside the read-only sandbox, so a run
+      # could edit (or delete) the parked copy and have "Commit results" push that
+      # change to CLAUDE.md / AGENTS.md. The parked copy is only discarded.
       - name: Restore standing instructions
         if: always()
         env:
           HIDDEN: ${{ steps.singlesrc.outputs.hidden }}
         run: |
-          if [ -n "$HIDDEN" ] && [ -f "$RUNNER_TEMP/$HIDDEN.singlesrc" ]; then
-            mv "$RUNNER_TEMP/$HIDDEN.singlesrc" "$HIDDEN"
-            echo "restored $HIDDEN"
-          fi
+          case "$HIDDEN" in
+            CLAUDE.md|AGENTS.md)
+              rm -f "$RUNNER_TEMP/$HIDDEN.singlesrc"
+              git checkout HEAD -- "$HIDDEN"
+              echo "restored $HIDDEN from HEAD" ;;
+            "") ;;
+            *) echo "::error::unexpected hidden file '$HIDDEN'"; exit 1 ;;
+          esac
 
       # ──────────────────────────────────────────────────────────────────────
       # Fleet Watcher postflight (opt-in, always-runs)
@@ -2068,8 +2075,11 @@ jobs:
           # PR branch gets only the agent's change, post-run state is committed
           # on main via git-push-retry.sh. Run the copy from the run's starting
           # commit so an agent edit to the script can't change its own commit.
-          git show "$GITHUB_SHA:scripts/commit-run-results.sh" > "$RUNNER_TEMP/commit-run-results.sh"
-          bash "$RUNNER_TEMP/commit-run-results.sh" "$LABEL"
+          # mktemp: a fresh O_EXCL file, so nothing a sandboxed run left in
+          # $RUNNER_TEMP (a symlink or a pre-made file) can stand in for the script.
+          CRR=$(mktemp "$RUNNER_TEMP/commit-run-results.XXXXXX")
+          git show "$GITHUB_SHA:scripts/commit-run-results.sh" > "$CRR"
+          bash "$CRR" "$LABEL"
 
       - name: Update cron state
         if: always() && steps.skill.outputs.name != ''
