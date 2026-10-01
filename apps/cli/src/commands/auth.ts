@@ -14,16 +14,19 @@ Claude harness (default):
   aeon auth <token>                 Same as --key (positional)
   aeon auth --github                Copy this machine's gh token into GH_GLOBAL
 
-Other harnesses (--harness codex|kimi|pi|vibe):
+Other harnesses (--harness codex|kimi|pi|vibe|fx|cursor|hermes):
   aeon auth --harness codex         Log in with ChatGPT (browser), store as CODEX_AUTH
   aeon auth --harness kimi          Log in with Moonshot (device code), store as KIMI_AUTH
   aeon auth --harness codex --key <sk-…>          Store an OpenAI key instead of the ChatGPT login
   aeon auth --harness pi   --key <sk-ant-…|sk-…>  Native provider key for pi
   aeon auth --harness vibe --key <key>            Mistral key for vibe
-  (any of the four also runs on the shared OPENROUTER_API_KEY — set that in Settings.)
+  aeon auth --harness fx --key <key>              Vercel AI Gateway key for fx
+  aeon auth --harness cursor --key <key>          Cursor API key
+  aeon auth --harness hermes        Log in with Nous Portal, store as HERMES_AUTH
+  (codex, kimi, pi, vibe and hermes also run on the shared OPENROUTER_API_KEY - set that in Settings.)
 
 Options:
-  --harness <h>       codex | kimi | pi | vibe (omit for the Claude harness)
+  --harness <h>       codex | kimi | pi | vibe | fx | cursor | hermes (omit for the Claude harness)
   --github            Copy \`gh auth token\` into GH_GLOBAL
   --provider <slug>   Force a gateway (bankr, openrouter, venice, …) — Claude only
   --base-url <url>    Custom HTTPS base URL (API-key auth only) — Claude only

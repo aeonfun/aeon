@@ -3,6 +3,11 @@
 A deployment runbook for putting `run-harness` into [aeonfun/aeon](https://github.com/aeonfun/aeon)
 so a skill can run on **codex, pi, vibe, or kimi** instead of only claude/grok.
 
+> **Historical runbook.** This records the original four-harness wiring. aeon now
+> ships nine harnesses (claude, grok, codex, pi, vibe, kimi, fx, cursor, hermes),
+> all through `run-harness`; see [`docs/harnesses.md`](../../docs/harnesses.md)
+> for the current state. `glm` is a gateway provider, not a harness.
+
 Every change below was applied to a full aeon fork and verified on a real GitHub
 runner (6-harness × 3-scenario matrix, Tier 4). This document is how to reproduce
 it on a fresh aeon instance, and what each change is for so you can review rather

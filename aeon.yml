@@ -3,8 +3,9 @@
 # Enable skills by setting enabled: true. Multiple skills at the same time run in parallel.
 # Set var: "value" to pass a default parameter to the skill.
 # Set model: "claude-haiku-4-5-20251001" per skill to override the default model (cost optimization).
-# Set harness: "grok" per skill to run it through the Grok Build CLI instead of the
-# default Claude Code harness (see the top-level `harness:` key below).
+# Set harness: "<name>" per skill (claude, grok, codex, pi, vibe, kimi, fx, cursor,
+# hermes) to run it on a different coding-agent CLI than the default Claude Code
+# harness (see the top-level `harness:` key below).
 
 skills:
   # --- Morning aggregation (7 AM UTC) ---
@@ -207,12 +208,12 @@ chains:
       - { skill: feature, var: "$chain_target" }
       - { skill: pr-review, var: "$feature_pr", consume: [feature] }
 
-  # routine:
+  # morning-digest:
   #   schedule: "0 7 * * *"
   #   on_error: fail-fast
   #   steps:
-  #     - parallel: [token-movers, hn-digest, issue-triage, github-trending]
-  #     - skill: routine, consume: [token-movers, hn-digest, issue-triage, github-trending]
+  #     - { parallel: [token-movers, github-trending] }
+  #     - { skill: digest, consume: [token-movers, github-trending] }
 
 # Default model for all skills. Override per-run via workflow_dispatch.
 # Options: claude-sonnet-5, claude-opus-4-8, claude-haiku-4-5-20251001
@@ -231,11 +232,15 @@ model: claude-sonnet-5
 #   grok              — Grok Build (`grok`); logs in with your X account
 #                       (GROK_CREDENTIALS, captured in the dashboard) or an
 #                       XAI_API_KEY. Bypasses the gateway (grok has its own auth).
-#   codex/pi/vibe/kimi — OpenAI Codex, Pi, Mistral Vibe, Moonshot Kimi — run through
-#                       harness-adapter/run-harness (one Claude-Code-shaped contract).
-#                       A single OPENROUTER_API_KEY drives all four, or each can use
-#                       its own native auth (ChatGPT/Moonshot login, provider key).
-#                       See docs/harnesses.md for models, auth, and verification.
+#   codex/pi/vibe/kimi - OpenAI Codex, Pi, Mistral Vibe, Moonshot Kimi. A single
+#                       OPENROUTER_API_KEY drives all four, or each can use its own
+#                       native auth (ChatGPT/Moonshot login, provider key).
+#   fx                - Vercel fx (AI_GATEWAY_API_KEY; no OpenRouter fallback).
+#   cursor            - Cursor CLI (CURSOR_API_KEY).
+#   hermes            - Nous Research Hermes Agent (HERMES_AUTH or OpenRouter).
+# All nine run through harness-adapter/run-harness (one Claude-Code-shaped
+# contract). GLM is a gateway provider, not a harness. See docs/harnesses.md for
+# models, auth, and verification.
 # Override per-skill with `harness: "<name>"` in the skill entry, or per-run via
 # the workflow_dispatch `harness` input. Default stays claude — everything
 # already configured keeps working unchanged.

@@ -11,11 +11,12 @@ per-harness reasons are recorded in the allowlist comment in
 
 `run-harness` wraps each CLI behind one headless interface — Claude Code's: prompt
 on stdin, flags mirroring `claude -p`, one JSON envelope on stdout. Swap the first
-argument, keep everything else. `.github/workflows/aeon.yml` invokes it in the same
-slot as `scripts/run-grok.sh`, so everything downstream (scoring, token accounting,
-memory, notifications) is unchanged. The pattern generalizes
-[aeonfun/aeon](https://github.com/aeonfun/aeon)'s `run-grok.sh`, which proved it for
-one harness.
+argument, keep everything else. `.github/workflows/aeon.yml` runs **every** skill
+through it, whichever harness is configured (claude is wrapped in the multi-provider
+gateway cascade; `scripts/run-grok.sh` is now setup-only), so everything downstream
+(scoring, token accounting, memory, notifications) is unchanged. The pattern
+generalizes [aeonfun/aeon](https://github.com/aeonfun/aeon)'s original `run-grok.sh`,
+which proved it for one harness.
 
 ```sh
 echo "Summarize the TODOs in this repo" | ./run-harness codex --mode read-only
@@ -49,10 +50,10 @@ output **fails the run** — partial or empty results are never emitted as succe
 | MCP tool call (live) | ✅ | ✅ needs `--trust`⁷ | ✅⁶ | n/a — warn+skip | ✅ | ✅ needs overlay⁸ |
 | Native provider auth | Claude Pro/Max OAuth | X account · `XAI_API_KEY` | ChatGPT OAuth · `OPENAI_API_KEY` | provider env key | Mistral key | Moonshot OAuth · key |
 
-All six round-trip the contract on real CLIs (claude ≥2.1, grok 0.2.101,
-codex-cli 0.144.6, pi 0.80.9, vibe 2.20.0, kimi 0.28.0). aeon reaches claude and
-grok through its own native paths (the AI gateway / `run-grok.sh`); codex, pi, vibe
-and kimi run only through this adapter.
+The six in this table round-trip the contract on real CLIs (claude ≥2.1, grok 0.2.101,
+codex-cli 0.144.6, pi 0.80.9, vibe 2.20.0, kimi 0.28.0). aeon runs all nine through
+this adapter; claude's call is additionally wrapped in the AI-gateway failover
+cascade.
 
 **fx** is the seventh adapter (`adapters/fx.sh`) - verified mechanically
 end-to-end (envelope, MCP-config translation, model/step env, and the

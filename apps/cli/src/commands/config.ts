@@ -12,7 +12,7 @@ const USAGE = `aeon config — top-level Aeon settings in aeon.yml
 
   aeon config show                    Model, harness, gateway, channels, repo
   aeon config set model <id>          Set the default model
-  aeon config set harness <claude|grok>
+  aeon config set harness <name>      ${HARNESSES.join(' | ')}
   aeon config set gateway <provider>  ${GATEWAY_PROVIDERS.join(' | ')}
 
 Options:

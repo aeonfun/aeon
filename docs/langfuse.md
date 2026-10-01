@@ -44,7 +44,7 @@ scorer, the json-render feed convert, and the conversational-reply poller
 (`messages.yml`). Each is tagged with an `aeon.component` resource attribute
 (`skill-run` / `scorer` / `feed` / `message`).
 
-### The non-claude harnesses (grok / codex / pi / vibe / kimi)
+### The non-claude harnesses (grok / codex / pi / vibe / kimi / fx / cursor / hermes)
 
 Those CLIs have no native OTEL export, so their *internal* spans (per-tool, per
 LLM-request) can't be captured. Instead run-harness emits **one coarse `gen_ai`
