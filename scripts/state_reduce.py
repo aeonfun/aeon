@@ -13,13 +13,49 @@ Event (one JSON object per line on stdin):
    "quality_score":4,"error":"sig"}   # quality_score/error optional
 A "dispatched" event (posted by the scheduler when it kicks off a run) carries
 only {"skill","status":"dispatched","ts"} and advances the dispatch watermark
-(last_dispatch) without counting as a run outcome.
+(last_dispatch) without counting as a run outcome. A reactive dispatch also
+carries "source" (the skill that tripped the handler), folded into
+reactive_sources {source: ts} so the scheduler can rotate `on: "*"` handlers.
+
+Events whose ts is unparseable or in the future (beyond a small clock-skew
+allowance) are dropped: one such event would otherwise sort last forever and pin
+a skill's last_dispatch / last_status, suppressing or re-firing it indefinitely.
 
 Output: the same aggregate shape aeon.yml's apply_state_update produces, so heartbeat
 / skill-health read it unchanged.
 """
 import json
 import sys
+from datetime import datetime, timedelta, timezone
+
+# Clock-skew allowance for "future" timestamps (runner clocks drift a little).
+FUTURE_SKEW = timedelta(minutes=10)
+
+
+def _parse_ts(ts):
+    """ISO 8601 -> aware datetime, or None when unparseable."""
+    try:
+        dt = datetime.fromisoformat(str(ts).replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    return dt
+
+
+def _valid_events(events, now=None):
+    """Drop events with an unparseable or future ts. Events without a ts are kept."""
+    now = now or datetime.now(timezone.utc)
+    limit = now + FUTURE_SKEW
+    out = []
+    for e in events:
+        ts = e.get("ts")
+        if ts:
+            dt = _parse_ts(ts)
+            if dt is None or dt > limit:
+                continue
+        out.append(e)
+    return out
 
 
 def _blank():
@@ -32,9 +68,10 @@ def _blank():
     }
 
 
-def reduce_events(events):
+def reduce_events(events, now=None):
     """Fold a list of event dicts (any order) into {skill: aggregate}."""
     state = {}
+    events = _valid_events(events, now)
     for e in sorted(events, key=lambda x: (x.get("ts") or "")):
         skill = e.get("skill")
         if not skill:
@@ -49,6 +86,8 @@ def reduce_events(events):
             s["last_status"] = "dispatched"
             if e.get("ts"):
                 s["last_dispatch"] = e["ts"]
+                if e.get("source"):
+                    s.setdefault("reactive_sources", {})[str(e["source"])] = e["ts"]
             continue
         status = "success" if raw == "success" else "failed"
         s["total_runs"] += 1
