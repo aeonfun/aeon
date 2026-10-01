@@ -1,0 +1,60 @@
+# Fixture for scripts/tests/test_parse_aeon_config.sh. Mirrors the shapes that
+# broke the old inline line-regex parsers in scheduler.yml.
+skills:
+  # --- inline flow entries ---
+  digest: { enabled: true, schedule: "0 7 * * *", var: "ai" } # trailing comment
+  inline-off: { enabled: false, schedule: "0 8 * * *" }
+  inline-no-enabled: { schedule: "0 9 * * *" }
+  # commented: { enabled: true, schedule: "0 1 * * *" }
+  # --- block entries ---
+  block-on:
+    schedule: "30 6 * * *"
+    var: "x y"
+  block-off:
+    enabled: false
+    schedule: "0 10 * * *"
+  block-unquoted:
+    enabled: true
+    schedule: 0 11 * * 1
+  skill-repair: { enabled: false, schedule: "reactive", var: "" }
+  notifier: { enabled: true, schedule: "reactive" }
+
+reactive:
+  skill-repair:
+    trigger:
+      - { on: "*", when: "consecutive_failures >= 3" }
+  notifier:
+    trigger:
+      - on: digest
+        when: "last_status = failed"
+      - { on: block-on, when: "success_rate < 0.5" }
+  # autoresearch:
+  #   trigger:
+  #     - { on: skill-health, when: "last_status = success" }
+
+chains:
+  morning:
+    schedule: "0 6 * * *"
+    steps:
+      - { parallel: [digest, block-on] }
+      - { skill: notifier, consume: [digest] }
+  dev:
+    schedule: "workflow_dispatch"
+    steps:
+      - { skill: feature }
+
+  # routine:
+  #   schedule: "0 7 * * *"
+  #   steps:
+  #     - parallel: [token-movers, hn-digest]
+  #     - skill: routine, consume: [token-movers, hn-digest]
+
+gateway:
+  provider: auto
+
+channels:
+  jsonrender:
+    enabled: true
+
+telegram:
+  enabled: true

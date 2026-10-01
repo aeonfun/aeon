@@ -32,7 +32,7 @@
  *                             and Actions: read/write on your fork (or classic `repo`)
  *   REPLAY_GUARD              Workers KV namespace binding (see wrangler.toml)
  */
-import { instrument } from "@microlabs/otel-cf-workers";
+import { instrument, OTLPExporter } from "@microlabs/otel-cf-workers";
 
 const handler = {
   async fetch(request, env, ctx) {
@@ -45,7 +45,10 @@ const handler = {
     // echoes the secret passed to setWebhook(secret_token) in this header.
     if (
       !env.TELEGRAM_WEBHOOK_SECRET ||
-      request.headers.get("x-telegram-bot-api-secret-token") !== env.TELEGRAM_WEBHOOK_SECRET
+      !(await secretEquals(
+        request.headers.get("x-telegram-bot-api-secret-token") || "",
+        env.TELEGRAM_WEBHOOK_SECRET,
+      ))
     ) {
       return new Response("forbidden", { status: 403 });
     }
@@ -183,10 +186,50 @@ function otelConfig(env) {
     const eq = pair.indexOf("=");
     if (eq > 0) headers[pair.slice(0, eq).trim()] = pair.slice(eq + 1).trim();
   }
+  // Outbound Telegram calls carry the bot token in the URL path
+  // (api.telegram.org/bot<TOKEN>/...), and the fetch instrumentation records
+  // url.full / url.path verbatim. Scrub every span before it leaves the Worker.
+  // (The library's `postProcessor` option is accepted but never invoked in
+  // rc.52, so the redaction wraps the exporter instead.)
+  const otlp = new OTLPExporter({ url, headers });
+  const token = env.TELEGRAM_BOT_TOKEN || "";
   return {
-    exporter: { url, headers },
+    exporter: {
+      export(spans, resultCallback) {
+        for (const span of spans) redactSpan(span, token);
+        otlp.export(spans, resultCallback);
+      },
+      shutdown() {
+        return otlp.shutdown();
+      },
+    },
     service: { name: env.OTEL_SERVICE_NAME || "aeon-webhook" },
   };
+}
+
+const TELEGRAM_TOKEN_IN_PATH = /\/bot\d+:[A-Za-z0-9_-]+/g;
+
+function redactString(value, token) {
+  let out = value.replace(TELEGRAM_TOKEN_IN_PATH, "/bot<redacted>");
+  if (token) out = out.split(token).join("<redacted>");
+  return out;
+}
+
+function redactAttributes(attrs, token) {
+  if (!attrs) return;
+  for (const key of Object.keys(attrs)) {
+    const v = attrs[key];
+    if (typeof v === "string") attrs[key] = redactString(v, token);
+    else if (Array.isArray(v)) attrs[key] = v.map((x) => (typeof x === "string" ? redactString(x, token) : x));
+  }
+}
+
+function redactSpan(span, token) {
+  redactAttributes(span.attributes, token);
+  for (const event of span.events || []) redactAttributes(event.attributes, token);
+  if (span.status && typeof span.status.message === "string") {
+    span.status.message = redactString(span.status.message, token);
+  }
 }
 
 let instrumented;
@@ -199,6 +242,22 @@ export default {
     return handler.fetch(request, env, ctx);
   },
 };
+
+// Constant-time secret check: hash both sides to fixed-length SHA-256 digests,
+// then compare every byte, so neither the length nor the first mismatching byte
+// of the configured secret leaks through response timing.
+async function secretEquals(a, b) {
+  const enc = new TextEncoder();
+  const [da, db] = await Promise.all([
+    crypto.subtle.digest("SHA-256", enc.encode(a)),
+    crypto.subtle.digest("SHA-256", enc.encode(b)),
+  ]);
+  const x = new Uint8Array(da);
+  const y = new Uint8Array(db);
+  let diff = 0;
+  for (let i = 0; i < x.length; i++) diff |= x[i] ^ y[i];
+  return diff === 0;
+}
 
 // Relay a classified update to the Aeon fork via repository_dispatch.
 async function dispatch(env, eventType, clientPayload) {

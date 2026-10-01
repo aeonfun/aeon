@@ -1,6 +1,8 @@
 name: ci-tests
 
-# Runs the committed script test suites on every PR that touches scripts/ or aeon.yml.
+# Runs the committed script test suites on every PR that touches scripts/, bin/,
+# harness-adapter/ (run-harness + lib/sandbox.sh included), skills/, aeon.yml, or
+# the aeon/chain-runner workflows the tests assert against.
 # These are the local tests authored alongside the hardening "easy wins" ported from
 # aeon-dev (notify formatting, capability modes, config validation) — same gate shape
 # as the other ci-*.yml. Keeps the extracted ./notify and the helper scripts honest.
@@ -12,10 +14,10 @@ on:
       - 'bin/**'
       - 'aeon.yml'
       - '.github/workflows/aeon.yml'
+      - '.github/workflows/scheduler.yml'
+      - 'harness-adapter/**'
       - '.github/workflows/chain-runner.yml'
-      - 'harness-adapter/adapters/**'
-      - 'harness-adapter/bin/**'
-      - 'harness-adapter/harnesses.json'
+      - 'skills/**'
       - '.github/workflows/ci-tests.yml'
   push:
     branches: [main]
@@ -24,10 +26,11 @@ on:
       - 'bin/**'
       - 'aeon.yml'
       - '.github/workflows/aeon.yml'
+      - '.github/workflows/scheduler.yml'
+      - 'harness-adapter/**'
       - '.github/workflows/chain-runner.yml'
-      - 'harness-adapter/adapters/**'
-      - 'harness-adapter/bin/**'
-      - 'harness-adapter/harnesses.json'
+      - 'skills/**'
+      - '.github/workflows/ci-tests.yml'
   workflow_dispatch:
 
 permissions:
@@ -129,6 +132,10 @@ jobs:
         run: node scripts/validate-config.js
       - name: cron-due scheduler decision tests
         run: bash scripts/tests/test_cron_due.sh
+      - name: scheduler aeon.yml parser tests
+        run: bash scripts/tests/test_parse_aeon_config.sh
+      - name: scheduler tick end-to-end tests
+        run: bash scripts/tests/test_scheduler_tick.sh
       - name: circuit-breaker scheduler decision tests
         run: bash scripts/tests/test_breaker.sh
       - name: reactive-trigger when-condition tests

@@ -23,6 +23,7 @@ on:
       - 'scripts/**'
       - 'bin/**'
       - 'harness-adapter/**'
+      - 'apps/cli/aeon'
       - 'skills/**/*.sh'
       - '.github/workflows/ci-shellcheck.yml'
   push:
@@ -32,15 +33,18 @@ on:
       - 'scripts/**'
       - 'bin/**'
       - 'harness-adapter/**'
+      - 'apps/cli/aeon'
       - 'skills/**/*.sh'
   workflow_dispatch:
 
 permissions:
   contents: read
 
+# Cancel a superseded run on a PR/branch; never on main, so every merged commit
+# keeps a complete result.
 concurrency:
   group: ci-shellcheck-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
   shellcheck:

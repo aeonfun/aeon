@@ -94,6 +94,26 @@ function wellKnown(base: string, suffix: string): string {
   return `${u.origin}/.well-known/${suffix}${path && path !== '' ? path : ''}`
 }
 
+// The endpoints in AS metadata are server-supplied: the authorization endpoint
+// is handed to `open`/`xdg-open`/Start-Process, and the token/registration
+// endpoints receive the client credentials and refresh token. Only https: is
+// accepted (http: only on a loopback host, for local dev servers), so a
+// malicious metadata document cannot launch file:, custom-scheme or other
+// handlers on the operator's machine, or pull tokens over plaintext.
+const LOOPBACK_HOSTNAMES = new Set(['localhost', '127.0.0.1', '[::1]'])
+
+export function assertSafeEndpoint(raw: string, label: string): void {
+  let u: URL
+  try {
+    u = new URL(raw)
+  } catch {
+    throw new Error(`OAuth ${label} is not a valid URL`)
+  }
+  if (u.protocol === 'https:') return
+  if (u.protocol === 'http:' && (LOOPBACK_HOSTNAMES.has(u.hostname) || /^127(\.\d{1,3}){3}$/.test(u.hostname))) return
+  throw new Error(`OAuth ${label} must use https: (http: only for localhost), got ${u.protocol}`)
+}
+
 // Given an MCP server URL, discover its authorization server + endpoints.
 export async function discover(mcpUrl: string): Promise<Discovery> {
   const origin = new URL(mcpUrl).origin
@@ -131,6 +151,9 @@ export async function discover(mcpUrl: string): Promise<Discovery> {
       `paste one on the server row instead.`,
     )
   }
+  assertSafeEndpoint(meta.authorization_endpoint, 'authorization_endpoint')
+  assertSafeEndpoint(meta.token_endpoint, 'token_endpoint')
+  if (meta.registration_endpoint !== undefined) assertSafeEndpoint(meta.registration_endpoint, 'registration_endpoint')
   return { resource, authServer, metadata: meta }
 }
 

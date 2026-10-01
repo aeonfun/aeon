@@ -2235,17 +2235,28 @@ jobs:
         if: always() && steps.skill.outputs.name != ''
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Step outputs go through env, never inline ${{ }} in the script: FLAGS is
+          # judge output derived from untrusted skill output, and a quote in it would
+          # break out of the shell string in a step that holds a write token.
+          HEALTH_ISSUES: ${{ vars.HEALTH_ISSUES }}
+          SKILL: ${{ steps.skill.outputs.name }}
+          SCORE_IN: ${{ steps.analyze.outputs.QUALITY_SCORE }}
+          FLAGS_IN: ${{ steps.analyze.outputs.FLAGS }}
+          RUN_OUTCOME: ${{ steps.run.outcome }}
         run: |
           # §7 is default-ON; disable only with repo var HEALTH_ISSUES=0. The toggle is
           # checked HERE in bash, NOT in the step `if:`. A GitHub Actions `if:` comparison
           # like `vars.HEALTH_ISSUES != '0'` does numeric coercion, and an UNSET var (null)
           # coerces to 0 — so `!= '0'` is FALSE when unset, silently skipping the step by
           # default (the opposite of "default-on"). Bash string comparison has no such trap.
-          if [ "${{ vars.HEALTH_ISSUES }}" = "0" ]; then echo "votable health disabled (HEALTH_ISSUES=0)"; exit 0; fi
-          SKILL="${{ steps.skill.outputs.name }}"
-          SCORE="${{ steps.analyze.outputs.QUALITY_SCORE }}"; [ -z "$SCORE" ] && SCORE=0
-          FLAGS='${{ steps.analyze.outputs.FLAGS }}'; [ -z "$FLAGS" ] && FLAGS='[]'
-          if [ "${{ steps.run.outcome }}" != "success" ]; then SCORE=1; FLAGS='["run_failed"]'; fi
+          if [ "$HEALTH_ISSUES" = "0" ]; then echo "votable health disabled (HEALTH_ISSUES=0)"; exit 0; fi
+          SCORE="$SCORE_IN"; [[ "$SCORE" =~ ^[0-9]+$ ]] || SCORE=0
+          # Accept FLAGS only as a JSON array of strings; anything else is dropped.
+          FLAGS='[]'
+          if [ -n "$FLAGS_IN" ] && printf '%s' "$FLAGS_IN" | jq -e 'type == "array" and all(.[]; type == "string")' >/dev/null 2>&1; then
+            FLAGS=$(printf '%s' "$FLAGS_IN" | jq -c '.')
+          fi
+          if [ "$RUN_OUTCOME" != "success" ]; then SCORE=1; FLAGS='["run_failed"]'; fi
           REC=$(jq -cn --arg s "$SKILL" --argjson sc "$SCORE" --argjson fl "$FLAGS" '{skill:$s,score:$sc,flags:$fl}')
           NEEDS=$(printf '%s' "$REC" | python3 -c "import sys,json; sys.path.insert(0,'scripts'); import health_triage as h; print('yes' if h.needs_comment(json.load(sys.stdin)) else 'no')" 2>/dev/null || echo no)
           if [ "$NEEDS" = "yes" ]; then

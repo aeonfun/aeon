@@ -2,12 +2,14 @@ name: CI Gate
 on:
   pull_request:
 permissions:
+  actions: read
   checks: read
   contents: read
 concurrency:
   group: ci-gate-${{ github.event.pull_request.number }}
   cancel-in-progress: true
 jobs:
+  # The job id `gate` is the required status check on main - do not rename it.
   gate:
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -17,28 +19,55 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
           SHA: ${{ github.event.pull_request.head.sha }}
+          SELF_RUN_ID: ${{ github.run_id }}
         run: |
           set -euo pipefail
-          # Grace period so sibling path-filtered workflows can register their check runs.
-          sleep 45
+          # Poll until every sibling workflow run AND every check run on the head
+          # SHA has completed, then judge. Workflow runs are created when the
+          # pull_request event is processed, before their jobs register check
+          # runs, so waiting on them covers slow path-filtered siblings without a
+          # fixed grace sleep. An all-done snapshot must hold for two polls in a
+          # row before judging, in case a sibling registers late.
+          #
+          # Workflow runs are deduped to the newest run per workflow file (the
+          # check-runs endpoint already returns only the latest run per name), so
+          # an older cancelled run on the same SHA cannot fail the gate.
+          workflow_runs() {
+            gh api "repos/$REPO/actions/runs?head_sha=$SHA&per_page=100" --paginate \
+              -q ".workflow_runs[] | select(.id != $SELF_RUN_ID and .path != \".github/workflows/ci-gate.yml\") | [.path, (.id | tostring), .name, .status, (.conclusion // \"\")] | @tsv" \
+              | sort -t "$(printf '\t')" -k1,1 -k2,2nr \
+              | awk -F'\t' 'NF>0 && !seen[$1]++ {print $3 "\t" $4 "\t" $5}'
+          }
           deadline=$(( $(date +%s) + 1500 ))
+          stable=0
           while :; do
+            wf=$(workflow_runs)
             runs=$(gh api "repos/$REPO/commits/$SHA/check-runs" --paginate \
               -q '.check_runs[] | select(.name != "gate") | [.name, .status, (.conclusion // "")] | @tsv')
-            pending=$(printf '%s\n' "$runs" | awk -F'\t' 'NF>0 && $2!="completed"' || true)
-            if [ -n "$pending" ]; then
-              echo "Waiting on checks still running:"
+            pending=$(
+              printf '%s\n' "$wf" | awk -F'\t' 'NF>0 && $2 ~ /^(queued|in_progress|waiting|requested|pending)$/ {print "workflow: " $0}'
+              printf '%s\n' "$runs" | awk -F'\t' 'NF>0 && $2!="completed" {print "check:    " $0}'
+            )
+            if [ -z "$pending" ]; then
+              stable=$(( stable + 1 ))
+              [ "$stable" -ge 2 ] && break
+            else
+              stable=0
+              echo "Waiting on runs still in progress:"
               printf '%s\n' "$pending"
-              if [ "$(date +%s)" -ge "$deadline" ]; then
-                echo "Timed out waiting for CI checks to complete."
-                exit 1
-              fi
-              sleep 15
-              continue
             fi
-            break
+            if [ "$(date +%s)" -ge "$deadline" ]; then
+              echo "Timed out waiting for CI checks to complete."
+              exit 1
+            fi
+            sleep 15
           done
-          failed=$(printf '%s\n' "$runs" | awk -F'\t' 'NF>0 && $3!="success" && $3!="skipped" && $3!="neutral"' || true)
+          # A workflow that fails before any job starts (e.g. invalid YAML) has no
+          # check runs, so judge the workflow runs' conclusions as well.
+          failed=$(
+            printf '%s\n' "$wf" | awk -F'\t' 'NF>0 && $3!="success" && $3!="skipped" && $3!="neutral" {print "workflow: " $0}'
+            printf '%s\n' "$runs" | awk -F'\t' 'NF>0 && $3!="success" && $3!="skipped" && $3!="neutral" {print "check:    " $0}'
+          )
           if [ -n "$failed" ]; then
             echo "These CI checks did not pass:"
             printf '%s\n' "$failed"

@@ -77,9 +77,12 @@ echo ""
 echo "  ╔══════════════════════════════════════╗"
 echo "  ║         ⚡ Aeon Dashboard ⚡          ║"
 echo "  ║                                      ║"
-printf "  ║   ➜  http://localhost:%-15s ║\n" "$PORT"
+printf "  ║   ➜  http://127.0.0.1:%-15s ║\n" "$PORT"
 echo "  ║                                      ║"
 echo "  ╚══════════════════════════════════════╝"
 echo ""
 
-npm run dev -- -p "$PORT"
+# Bind loopback only. The /api/* routes can set/delete repo secrets and
+# dispatch runs; the Host/Origin gate in lib/security/api-gate.ts only stops
+# browsers, so a LAN peer must not be able to reach the port at all.
+npm run dev -- -H 127.0.0.1 -p "$PORT"

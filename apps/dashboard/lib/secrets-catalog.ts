@@ -1,5 +1,5 @@
 import { execFileSync } from 'child_process'
-import { ghAvailable, ghArgsRepo, dispatchCommandsWorkflow } from './gh'
+import { ghAvailable, ghArgsRepo, ghSecretSet, dispatchCommandsWorkflow } from './gh'
 import { syncGatewayProvider } from './gateway'
 import { GATEWAY_SECRET_NAMES } from './gateway-registry'
 import { MCP_SECRET_RE, MCP_SECRET_OWNER, mcpServerLabel, oauthVar } from './mcp-catalog'
@@ -141,10 +141,16 @@ function mcpSlugStem(name: string): string {
 // the Telegram command menu the moment the bot token lands. Caller must
 // pre-validate `name` against VALID_SECRET_NAME. Throws on a gh failure.
 export async function setSecret(name: string, value: string): Promise<void> {
-  execFileSync('gh', ['secret', 'set', name, ...ghArgsRepo(), '-b', value], {
-    stdio: 'pipe',
-    cwd: process.cwd(),
-  })
+  // The value goes over stdin (ghSecretSet), never argv: an argv value is
+  // visible to `ps` and is echoed back in execFileSync's "Command failed: ..."
+  // message, which the route returns to the browser. Scrub it from the error
+  // anyway in case gh ever echoes its input on stderr.
+  try {
+    ghSecretSet(name, value)
+  } catch (error: unknown) {
+    const msg = error instanceof Error ? error.message : String(error)
+    throw new Error(value ? msg.split(value).join('***') : msg)
+  }
   if (GATEWAY_SECRET_NAMES.includes(name)) await syncGatewayProvider()
   if (name === 'TELEGRAM_BOT_TOKEN') {
     try { dispatchCommandsWorkflow() } catch { /* non-fatal — token is still saved */ }
