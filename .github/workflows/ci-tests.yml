@@ -12,6 +12,7 @@ on:
       - 'bin/**'
       - 'aeon.yml'
       - '.github/workflows/aeon.yml'
+      - '.github/workflows/chain-runner.yml'
       - 'harness-adapter/adapters/**'
       - 'harness-adapter/bin/**'
       - 'harness-adapter/harnesses.json'
@@ -23,6 +24,7 @@ on:
       - 'bin/**'
       - 'aeon.yml'
       - '.github/workflows/aeon.yml'
+      - '.github/workflows/chain-runner.yml'
       - 'harness-adapter/adapters/**'
       - 'harness-adapter/bin/**'
       - 'harness-adapter/harnesses.json'
@@ -139,6 +141,12 @@ jobs:
         run: bash scripts/tests/test_chain_runner_invalid_dispatch.sh
       - name: chain-runner no-action status tests
         run: bash scripts/tests/test_chain_runner_no_action.sh
+      - name: cron-state commit retry tests (aeon.yml + chain-runner.yml)
+        run: bash scripts/tests/test_cron_state_commit.sh
+      - name: git-push-retry conflict policy tests
+        run: bash scripts/tests/test_git_push_retry.sh
+      - name: Commit results feature-branch state split tests
+        run: bash scripts/tests/test_commit_results_feature_branch.sh
       - name: dev-loop deterministic handoff tests
         run: bash scripts/tests/test_dev_loop_handoff.sh
       - name: dev-loop review contract tests
