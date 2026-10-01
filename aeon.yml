@@ -148,6 +148,19 @@ skills:
   seo-audit: { enabled: false, schedule: "0 13 * * *", var: "" } # daily on-page + technical SEO audit of every page on a site. var: comma-separated origins (empty = no target, no-op). PAGESPEED_API_KEY folds in Core Web Vitals
   posthog-errors: { enabled: false, schedule: "0 15 * * 1", var: "" } # weekly cross-project PostHog error digest. Needs PostHog MCP connected in the dashboard. var: empty=all projects/7d | Nd window | project-name substrings
   rightstack: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand Web3 stack advisor. var: <build goal> | recommend:<goal> | workflow:<id> | compare:<a>|<b> | explain:<tool> | migrate:<package>. Read-only; pinned to rightstack@0.3.2 schema v1 JSON.
+
+  # On-demand (run from the dashboard / `./aeon skills run`; create-prove is also dispatched by the dev-loop chain)
+  competitor-monitor: { enabled: false, schedule: "workflow_dispatch", var: "" } # snapshot competitor pages (pricing, headings, CTAs, new/removed pages) and report what changed. var: comma-separated URLs
+  cortx-reliability: { enabled: false, schedule: "workflow_dispatch", var: "" } # check an x402 endpoint's paid delivery rate, incidents, and latency before spending on it. var: endpoint URL (required)
+  create-prove: { enabled: false, schedule: "workflow_dispatch", var: "" } # run a changed skill for real at a PR head and attach SHA-bound proof. var: owner/repo#pr@<40-char sha>
+  higgsfield: { enabled: false, schedule: "workflow_dispatch", var: "" } # generate images/video via the Higgsfield MCP. var: the generation request (required)
+  remotion: { enabled: false, schedule: "workflow_dispatch", var: "" } # render a short (~10s) Remotion video from a brief. var: <brief> [--orientation ...] [--theme ...]; empty = no-op
+  skill-article: { enabled: false, schedule: "workflow_dispatch", var: "" } # receipts-first launch article for any skill in this instance. var: <skill-name> [--brand <handle>] [--banner]
+  spend-watch: { enabled: false, schedule: "workflow_dispatch", var: "" } # cloud-cost analyst across Neon, Vercel, Railway, GitHub Actions. var: scope selector + optional arm flag
+  submit-hook: { enabled: false, schedule: "workflow_dispatch", var: "" } # submit a deployed Uniswap v4 hook to the univ4-hooks registry. var: hook address; empty = latest live deploy
+  video-script: { enabled: false, schedule: "workflow_dispatch", var: "" } # receipts-first, recording-ready video script. var: <source> [--minutes N]
+  weekly-aeoncard: { enabled: false, schedule: "workflow_dispatch", var: "" } # weekly token-consumption recap card (SVG) from memory/token-usage.csv. var: window + delivery control
+
   # --- Fallback (must be last) ---
   heartbeat: { enabled: true, schedule: "0 8 * * *", var: "" } # ambient fleet-health check (default) — surfaces anything worth attention. var: empty=ambient check | <area>=ambient focused on that area | brief[:<area>]=priority brief (3 things to focus on, why now, what moved; folds in priority-brief)
 
