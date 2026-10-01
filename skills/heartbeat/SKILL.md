@@ -282,7 +282,7 @@ Style rules:
     - Build the brief as HTML (wrap each section in `<h2>` headers, `<ul>/<li>` bullets)
     - Also keep a plain-text copy (the `./notify` content above, as-is)
     - Parse `$BRIEF_RECIPIENTS` as a comma-separated list of addresses
-    - POST to `https://api.resend.com/emails` with `./secretcurl` (the key goes in as the literal `{RESEND_API_KEY}` placeholder, never `$RESEND_API_KEY`):
+    - POST to `https://api.resend.com/emails` (key as the literal placeholder below, never `$RESEND_API_KEY`; see Network):
       ```
       Authorization: Bearer {RESEND_API_KEY}
       Content-Type: application/json
