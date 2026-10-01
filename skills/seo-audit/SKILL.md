@@ -65,8 +65,8 @@ This skill is `mode: read-only`, and that is load-bearing:
   with a shell redirection (`>`/`>>`) from an allowed command. The workflow's
   read-only guard reverts writes to code/config paths but **preserves `memory/`
   and `output/`**, which is exactly where this skill writes.
-- The guard also appends its own `## seo-audit (read-only)` run-log line, so the
-  log entry below is the detail under it, not a duplicate.
+- The guard also appends the `### seo-audit` run-log entry from your final
+  output, so put the log detail there (step 8), never a second self-written entry.
 
 `PAGESPEED_API_KEY` is optional. When set, the script folds in Core Web Vitals —
 it reads the env var itself, so **never pass the key as a command-line argument**;
@@ -334,8 +334,8 @@ unset, Core Web Vitals are simply absent. That is a degraded run, not a failed o
    - `references/checklist.md` has the target and a copy-paste pattern for
      every check.
 
-8. **Log it.** Append to `memory/logs/${today}.md` under a `### seo-audit`
-   heading — again by redirection — recording the per-URL scores, what
+8. **Log it.** End your final output with the log record (the guard writes it to
+   `memory/logs/${today}.md` under `### seo-audit`; don't append it yourself): the per-URL scores, what
    regressed, what was fixed, and any URL that failed to fetch. If `${var}` was
    empty, log a single `SEO_NO_TARGET` line and nothing else.
 

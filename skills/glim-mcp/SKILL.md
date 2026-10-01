@@ -52,7 +52,7 @@ Deliver via `./notify -f <file>` (ordinary Markdown): the answer, the evidence, 
 
 ### 5. Result record
 
-This skill is `read-only`, so it can't write the repo during the run (the sandbox write-locks the workspace). Don't append to `memory/logs/` yourself — put this record in your **final output**; the workflow persists it to `memory/logs/` and `output/.chains/glim-mcp.md` on your behalf after the run:
+This skill is `read-only`, so the workflow's read-only guard writes its `### glim-mcp` log entry from your captured output; a self-written entry would be a duplicate. Don't append to `memory/logs/` yourself - put this record in your **final output**; the workflow persists it to `memory/logs/` and `output/.chains/glim-mcp.md` on your behalf after the run:
 
 ```
 ### glim-mcp
