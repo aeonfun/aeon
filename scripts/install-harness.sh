@@ -46,6 +46,11 @@ need() {  # need VAR_NAME "what to set"
   fi
 }
 
+# Third-party installer scripts (curl | bash) run arbitrary remote code, and this
+# step's env carries GH_GLOBAL / GH_SECRETS_PAT (for grok's secret rotation).
+# None of the installers needs a GitHub credential, so run them without one.
+no_gh() { env -u GH_GLOBAL -u GH_SECRETS_PAT -u GH_TOKEN -u GITHUB_TOKEN "$@"; }
+
 # Each harness is configured for the provider AUTH_MODE selected:
 #   native-oauth — restore the captured login (~/.codex, ~/.kimi-code); the
 #                  harness then runs on its own default model.
@@ -227,7 +232,7 @@ TOML
     # pinned-version install path as of 0.0.5 — it's brand-new/experimental per
     # its own README, so this tracks whatever fx.sh/setup.sh currently serves.
     # Revisit if/when fx publishes pinned release artifacts.
-    curl -fsSL https://fx.sh/setup.sh | bash
+    curl -fsSL https://fx.sh/setup.sh | no_gh bash
     [ -n "${GITHUB_PATH:-}" ] && echo "$HOME/.local/bin" >> "$GITHUB_PATH"
     # fx has NO OpenRouter path (confirmed: no mention anywhere in its docs —
     # see resolve-harness.sh's fx case for the same note). Every other harness
@@ -243,12 +248,12 @@ TOML
     fi
     ;;
   cursor)
-    curl -fsSL https://cursor.com/install | bash
+    curl -fsSL https://cursor.com/install | no_gh bash
     [ -n "${GITHUB_PATH:-}" ] && echo "$HOME/.local/bin" >> "$GITHUB_PATH"
     need CURSOR_API_KEY "a Cursor API key for headless CLI runs"
     echo "cursor: API key staged via CURSOR_API_KEY" ;;
   hermes)
-    curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash
+    curl -fsSL https://hermes-agent.nousresearch.com/install.sh | no_gh bash
     [ -n "${GITHUB_PATH:-}" ] && echo "$HOME/.local/bin" >> "$GITHUB_PATH"
     mkdir -p "$HOME/.hermes"
     if [ "$AUTH_MODE" = "native-oauth" ]; then

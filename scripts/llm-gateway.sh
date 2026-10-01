@@ -75,7 +75,9 @@ start_ccr_sidecar() {
   fi
 
   if ! command -v ccr >/dev/null 2>&1; then
-    if ! npm install -g @musistudio/claude-code-router@2.0.0 >/dev/null 2>&1; then
+    # No GitHub credential for the install: its lifecycle scripts are third-party code.
+    if ! env -u GH_GLOBAL -u GH_SECRETS_PAT -u GH_TOKEN -u GITHUB_TOKEN \
+        npm install -g @musistudio/claude-code-router@2.0.0 >/dev/null 2>&1; then
       echo "::error::failed to install @musistudio/claude-code-router@2.0.0" >&2
       exit 1
     fi
