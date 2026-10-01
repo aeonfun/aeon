@@ -205,7 +205,7 @@ They just did something in this chat and want it to happen on a schedule.
 
 3. **Check it can actually run there.** No local filesystem, no logged-in tools. If the session read their home directory or used a local MCP server, say so plainly — that part won't work unattended unless it's wired as a repo secret / `.mcp.json`. Wiring an MCP server for unattended use (dashboard Connect, OAuth refresh, the rotating-token PAT): `references/mcp.md`.
 
-4. **Add the `aeon.yml` entry yourself.** A new skill on disk has no entry, and `./aeon skills enable|schedule` **will not create one** — they only flip entries that already exist, and report `no change — already in that state`, which is false. Add it by hand, disabled, before the fallback `heartbeat:` line:
+4. **Give it an `aeon.yml` entry.** A new skill on disk has no entry. `./aeon skills enable|schedule <name>` **upserts**: if the entry is missing they create it (inline, quoted `schedule:` defaulting to `"0 12 * * *"`, inserted before the fallback `heartbeat:` line) and then apply the change. To land it present but **disabled**, add it by hand instead, before the `heartbeat:` line:
 
    ```yaml
      my-skill: { enabled: false, schedule: "0 12 * * *" }
@@ -213,19 +213,20 @@ They just did something in this chat and want it to happen on a schedule.
 
    **Include the quoted `schedule:` even though it's disabled — the quotes are load-bearing.** Writing a bare `{ enabled: false }` and letting `./aeon skills schedule` add the key later produces an *unquoted* value the scheduler cannot read, and the skill never fires (Mode 3, check 5). Seeding a quoted node here means every later CLI edit preserves the quotes.
 
-   Match the inline `{ … }` form the other 61 entries use, on one line. `aeon.yml:367` reads per-skill `model:`/`harness:` overrides with a single-line grep, so an entry split across lines takes the global default instead.
+   Match the inline `{ … }` form every other entry uses, on one line. `aeon.yml:367` reads per-skill `model:`/`harness:` overrides with a single-line grep, so an entry split across lines takes the global default instead.
 
    This is the one sanctioned exception to "never hand-edit the YAML". Validate after: `node scripts/validate-config.js` — but note it only checks structure, and will not catch an unquoted value.
 
-5. **Regenerate BOTH catalogs, then ship it as a PR.** A new skill trips three CI gates. Run them locally — **nothing blocks a merge on red**, `main` is unprotected and has no rulesets, so an unrun gate just fails after the fact:
+5. **Regenerate BOTH catalogs, add the eyebrow entry, then ship it as a PR.** A new skill trips four CI gates, and **a red gate blocks the merge**: `main` requires the `gate` check, which `ci-gate` fails whenever any other check on the PR is red. Run them locally first. Commit `SKILL.md` on its own before regenerating (the catalog's `sha`/`updated` are git-derived):
 
    ```bash
    bash scripts/check-skill-categories.sh   # category is one of the six
    bin/generate-skills-json                 # catalog/skills.json
-   bin/generate-packs-json                  # catalog/packs.json — NOT optional
+   bin/generate-packs-json                  # catalog/packs.json - NOT optional
+   eyebrow scan --path . --lockfile /tmp/fresh.json   # splice only this skill's entry into eyebrowlock.json
    ```
 
-   `generate-packs-json` is the one everyone forgets: `catalog/skills.json` is itself a trigger path for `ci-packs-json`, so committing the skills catalog without the pack catalog goes red on a workflow you never touched. Commit both files.
+   `generate-packs-json` is the one everyone forgets: `catalog/skills.json` is itself a trigger path for `ci-packs-json`, so committing the skills catalog without the pack catalog goes red on a workflow you never touched. Commit both files. `ci-skill-integrity` also hard-fails any skill with no `eyebrowlock.json` entry; use the eyebrow version pinned in `.github/workflows/ci-skill-integrity.yml` and commit only the new skill's artifact, not a whole-file rescan.
 
    Full gate list, triggers, and the `ci-tests` / `ci-apps` commands: `references/ci.md`.
 
@@ -437,7 +438,7 @@ It runs as a **cascade**, not a single choice: the highest-priority key goes fir
 
 ### Harness — which CLI runs the skill
 
-`claude` (default) or `grok`. The Grok harness runs the `grok` CLI instead of Claude Code and **bypasses the gateway entirely** — it has its own auth.
+Nine harnesses: `claude` (default), `grok`, `codex`, `pi`, `vibe`, `kimi`, `fx`, `cursor`, `hermes`. All run through the same `harness-adapter/run-harness` contract; only `claude` goes through the gateway above, every other harness uses its own auth (`glm` is a gateway provider, not a harness). `codex`/`pi`/`vibe`/`kimi`/`hermes` can all run on one shared `OPENROUTER_API_KEY`; `fx` needs `AI_GATEWAY_API_KEY`, `cursor` needs `CURSOR_API_KEY`. Native logins: `./aeon auth --harness <name>` (see `./aeon auth --help`), and `docs/harnesses.md` for models and verification status. The rest of this section covers `grok`, the one with the most knobs. The Grok harness runs the `grok` CLI instead of Claude Code and **bypasses the gateway entirely**.
 
 - **Set it:** `./aeon config set harness grok` globally, or `harness: "grok"` on a single skill's `aeon.yml` entry — **quoted, on the entry's one inline line**. Per-skill `model:` and `harness:` are read by a single-line grep that requires double quotes (`aeon.yml:367`, `:380`), so an unquoted or line-split override is silently ignored and the skill keeps running the global default — no error, and the log's `model=` line looks normal. After setting either by CLI, re-read the entry and add the quotes if they're missing.
 - **Auth:** `XAI_API_KEY`, or an X account (SuperGrok / X Premium+) via the dashboard's **Connect X account**, which stores `GROK_CREDENTIALS`. There is no CLI flag for the X OAuth flow — send them to `./aeon` (the dashboard) for that one.
@@ -445,8 +446,8 @@ It runs as a **cascade**, not a single choice: the highest-priority key goes fir
 - **No free tier.**
 
 Tell them up front:
-- Grok runs report **0 tokens** — its JSON carries no token counts, so cost tracking reads blank. Not a bug.
+- `vibe` and `kimi` runs report **0 tokens** (their CLIs expose no token counts), so cost tracking reads blank for them. Not a bug. Grok reports real usage and cost.
 - The X OAuth session expires. If unattended runs start failing on auth, reconnect.
-- `mode: read-only` still applies (maps to `--sandbox read-only`), and MCP works.
+- `mode: read-only` still applies (the wrapper OS sandbox write-locks the workspace on every harness), and MCP works.
 
 Per-skill grok knobs, in `SKILL.md` frontmatter (ignored on the Claude harness): `max_turns` (default 60), `best_of_n`, `verify`, and `effort` (`low|medium|high|xhigh|max` — reasoning models only; `grok-composer-2.5-fast` rejects it).

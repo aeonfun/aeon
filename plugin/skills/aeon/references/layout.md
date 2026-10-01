@@ -43,7 +43,7 @@ comm -23 <(ls skills/*/SKILL.md | cut -d/ -f2 | sort) \
          <(grep -oE '^  [a-z0-9-]+:' aeon.yml | tr -d ' :' | sort)
 ```
 
-Anything printed is **on disk but unconfigured** — `./aeon skills enable` on it reports `no change — already in that state`, which is false (Mode 4 step 4). Empty output means every skill is configured.
+Anything printed is **on disk but unconfigured**. `./aeon skills enable <name>` (or `schedule`) creates the missing entry for you (Mode 4 step 4). Empty output means every skill is configured.
 
 The reverse — an `aeon.yml` entry with no skill directory — is caught by `node scripts/validate-config.js` ("skill-refs").
 
@@ -55,10 +55,11 @@ aeon.yml           the only runtime config. What's enabled, when, per-skill var/
 aeon               the CLI + dashboard entrypoint. With args → apps/cli; bare → web dashboard.
 CLAUDE.md          operating manual, in every run's context. Imports @STRATEGY.md.
 STRATEGY.md        the north star (Mode 7). Costs tokens on every run — keep it tight.
-AGENTS.md          GENERATED from STRATEGY.md for the grok harness. Never hand-edit;
-                   run `node scripts/gen-agents-md.js` (gated by ci-agents-md).
+AGENTS.md          GENERATED from CLAUDE.md (STRATEGY.md inlined) for every non-claude
+                   harness. Never hand-edit; run `node scripts/gen-agents-md.js`
+                   (gated by ci-agents-md).
 
-skills/<name>/SKILL.md    the skills themselves — 61 upstream. One prompt per file.
+skills/<name>/SKILL.md    the skills themselves - 85 upstream. One prompt per file.
 soul/              SOUL.md + STYLE.md + examples/ — voice, read on every run (Mode 7).
 memory/            durable state between runs:
   logs/<date>.md     per-run append under `### <skill-name>`. The dedup substrate.
@@ -73,8 +74,9 @@ scripts/           runtime helpers + validators. notify.sh and secretcurl.sh are
                    to ./notify and ./secretcurl at run time — that's why they're not at root.
 apps/              dashboard (Next.js), cli, mcp-server, webhook (Cloudflare Worker).
 docs/              CONFIGURATION.md, CAPABILITIES.md, skill-packs.md, harnesses.md.
-.github/workflows/ 14 workflows: aeon.yml (the runner), scheduler.yml (cron matcher),
-                   chain-runner.yml, and 9 ci-*.yml gates (see references/ci.md).
+.github/workflows/ 18 workflows: aeon.yml (the runner), scheduler.yml (cron matcher),
+                   chain-runner.yml, messages.yml (inbound), setup-commands.yml, and
+                   13 ci-*.yml gates; ci-gate is the required check (see references/ci.md).
 ```
 
 ### The three that get confused
