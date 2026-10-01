@@ -68,10 +68,10 @@ if printf '%s' "$SNAPSHOT" | grep -q 'marker-secret-do-not-leak'; then
 else
   pass "secret value does not appear in any process argv while the request is in flight"
 fi
-if printf '%s' "$SNAPSHOT" | grep -q '[c]url -K -'; then
-  pass "curl subprocess invoked via -K (config on stdin), not inline args"
+if printf '%s' "$SNAPSHOT" | grep -q '[c]url -K /dev/fd/'; then
+  pass "curl subprocess invoked via -K (config on a /dev/fd pipe), not inline args"
 else
-  bad "expected a 'curl -K -' subprocess in the ps snapshot (got: $(printf '%s' "$SNAPSHOT" | grep '[c]url'))"
+  bad "expected a 'curl -K /dev/fd/N' subprocess in the ps snapshot (got: $(printf '%s' "$SNAPSHOT" | grep '[c]url'))"
 fi
 
 # --- functional correctness: substitution, headers, and -d @file all still work
@@ -98,6 +98,55 @@ case "$(cat "$OUT")" in
   *'inline'*) pass "inline -d JSON payload still reaches the server" ;;
   *) bad "inline -d payload did not reach the server (got: $(cat "$OUT"))" ;;
 esac
+# --- config-injection hardening (cfg_quote + config off stdin) ---------------
+# A newline in a value used to end the -K config line, so the rest was parsed as
+# a fresh curl option. Multi-line bodies must arrive intact, and an injected
+# `output = FILE` line must never take effect.
+"$S" -s -o "$OUT" --max-time 5 -X POST "http://127.0.0.1:$PORT/body" \
+  --data-binary $'line1\nline2\r\n\tline3'
+BODY=$(python3 -c 'import json,sys; print(json.dumps(json.load(open(sys.argv[1]))["body"]))' "$OUT" 2>/dev/null)
+[ "$BODY" = '"line1\nline2\r\n\tline3"' ] \
+  && pass "multi-line --data-binary (\\n \\r \\t) reaches the server byte-exact" \
+  || bad "multi-line body was mangled (got: $BODY)"
+
+INJ=$(mktemp -u)
+"$S" -s -o "$OUT" --max-time 5 -X POST "http://127.0.0.1:$PORT/body" \
+  -d $'x\noutput = '"$INJ"$'\nurl = "http://127.0.0.1:1/"' >/dev/null 2>&1
+if [ -e "$INJ" ]; then
+  bad "newline in a -d value injected a curl 'output =' option (wrote $INJ)"
+  rm -f "$INJ"
+else
+  case "$(cat "$OUT")" in
+    *'output = '*) pass "newline in a value cannot inject curl options (sent as data instead)" ;;
+    *) bad "injection attempt body did not arrive as data (got: $(cat "$OUT"))" ;;
+  esac
+fi
+
+ERR=$("$S" -s $'-o\noutput = /tmp/x' "http://127.0.0.1:$PORT/" 2>&1 >/dev/null)
+RC=$?
+[ "$RC" -ne 0 ] && printf '%s' "$ERR" | grep -q "malformed option" \
+  && pass "an option token carrying a newline is refused" \
+  || bad "expected malformed-option refusal (rc=$RC, err=$ERR)"
+
+printf 'stdin-body-%s' "{TEST_SECRETCURL_API_KEY}" | "$S" -s -o "$OUT" --max-time 5 -X POST \
+  "http://127.0.0.1:$PORT/body" -H "X-Key: {TEST_SECRETCURL_API_KEY}" --data-binary @-
+RESP=$(cat "$OUT")
+case "$RESP" in
+  *'"body": "stdin-body-{TEST_SECRETCURL_API_KEY}"'*) pass "--data-binary @- sends the caller's stdin, not the curl config" ;;
+  *) bad "--data-binary @- did not send stdin as the body (got: $RESP)" ;;
+esac
+case "$RESP" in
+  *'"body": '*'marker-secret'*|*'url = '*) bad "--data-binary @- leaked config text into the body" ;;
+  *) pass "--data-binary @- body carries no config text or substituted secret" ;;
+esac
+
+# bash 5.2 patsub_replacement: an & in a secret used to expand to the matched
+# placeholder text inside ${a//pat/rep}.
+TEST_SECRETCURL_AMP_TOKEN='a&b&&c\&d' "$S" -s -o "$OUT" --max-time 5 \
+  "http://127.0.0.1:$PORT/hdr" -H "X-Amp: {TEST_SECRETCURL_AMP_TOKEN}"
+AMP=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["headers"].get("X-Amp",""))' "$OUT" 2>/dev/null)
+[ "$AMP" = 'a&b&&c\&d' ] && pass "secret containing & substitutes verbatim" \
+  || bad "secret containing & was corrupted (got: $AMP)"
 rm -f "$OUT"
 
 # --- exit-code fidelity: a real curl failure still propagates -------------

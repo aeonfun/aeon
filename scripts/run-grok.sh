@@ -71,7 +71,10 @@ esac
 # --- 1. ensure the CLI ------------------------------------------------------
 if ! command -v grok >/dev/null 2>&1; then
   log "::debug::grok CLI not found — installing @xai-official/grok@${GROK_CLI_VERSION}"
-  if ! npm install -g "@xai-official/grok@${GROK_CLI_VERSION}" >&2; then
+  # No GitHub credential for the install (lifecycle scripts run third-party
+  # code); GH_GLOBAL / GH_SECRETS_PAT stay set for the token rotation below.
+  if ! env -u GH_GLOBAL -u GH_SECRETS_PAT -u GH_TOKEN -u GITHUB_TOKEN \
+      npm install -g "@xai-official/grok@${GROK_CLI_VERSION}" >&2; then
     log "::error::failed to install @xai-official/grok@${GROK_CLI_VERSION}"
     exit 1
   fi

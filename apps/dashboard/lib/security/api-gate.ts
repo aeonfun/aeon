@@ -13,9 +13,12 @@
  *   - `POST /api/auth`                     - writes `CLAUDE_CODE_OAUTH_TOKEN`
  *
  * None of these have any application-level authentication today: the
- * implicit assumption is "the dashboard only listens on localhost, so the
- * filesystem-level user boundary is the auth boundary." Two failure
- * modes break that assumption:
+ * dashboard relies on listening on loopback only (`./aeon` and the
+ * `dev`/`start` scripts pass `-H 127.0.0.1`), so the filesystem-level user
+ * boundary is the auth boundary. This gate does NOT stop a non-browser
+ * client that can reach the port, since it can forge Host and Origin;
+ * binding 0.0.0.0 would expose every route below to the LAN. Two
+ * browser-driven failure modes still reach a loopback-only listener:
  *
  *   1. **DNS rebinding** - a malicious page loaded in the operator's own
  *      browser at `attacker.example` flips DNS to `127.0.0.1` and POSTs
