@@ -32,7 +32,7 @@ The two branches never share mutation logic: the REVIEW branch posts PR comments
 # REVIEW branch (default) — per-PR deep review
 
 Read `memory/MEMORY.md` and `memory/watched-repos.md`.
-Read the last 2 days of `memory/logs/` to pull the `headRefOid` of any PR reviewed recently — used for dedup.
+Read the last 2 days of `memory/logs/` for context on recent reviews. Whether a commit was already reviewed is decided by GitHub, not the logs (see the skip rules): a run can post its review and then lose its log entry.
 
 If `${var}` names `owner/repo#N`, fetch and review only that exact open PR; do not list or comment on any other PR. If `${var}` names `owner/repo`, review that repo's open PRs. Otherwise review every repo listed in `memory/watched-repos.md`.
 
@@ -57,7 +57,11 @@ Skip a PR if any of the following hold (record the skip reason for the run summa
 - title matches `^(WIP|\[WIP\]|Draft:)` (case-insensitive)
 - has label `no-review`, `do-not-merge`, `wip`, or `blocked`
 - author login contains `[bot]` (dependabot, renovate, etc.) or equals `aeonframework`
-- this PR's current `headRefOid` already appears in the last 2 days of `memory/logs/` against the same PR (already reviewed at this commit)
+- this account already posted a receipt-bearing review on this PR at its current `headRefOid`. Ask GitHub:
+  ```bash
+  ./scripts/dev-loop-review.sh reviewed owner/repo#NUMBER <headRefOid>
+  ```
+  exit `0` → skip as `dup-SHA`; exit `2` (GitHub unreadable) → skip as `review-check-unavailable` and let the next run decide; exit `1` → not yet reviewed at this commit. It counts exactly what the dev-loop gate counts, so a second review can never make the gate see two receipts.
 - a bot reviewer (`coderabbitai`, `copilot-pull-request-reviewer`, `claude`) posted a review in the last 30 min — skip to avoid piling on. Check via:
   ```bash
   gh api repos/owner/repo/pulls/NUMBER/reviews --jq '.[] | {user: .user.login, submitted_at}'

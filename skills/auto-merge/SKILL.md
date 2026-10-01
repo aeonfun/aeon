@@ -78,6 +78,11 @@ A PR merges only when every one of the following holds:
      ```bash
      gh pr merge NUMBER -R owner/repo --squash --delete-branch
      ```
+     A zero exit is not proof of a merge: on a repo with a merge queue, `gh pr merge` exits 0 after only adding the PR to the queue. Confirm with GitHub before counting or reporting it:
+     ```bash
+     gh pr view NUMBER -R owner/repo --json state,mergeCommit --jq '[.state, (.mergeCommit.oid // "")] | @tsv'
+     ```
+     Only `MERGED` with a commit SHA is a merge: report that SHA, never one inferred from the command output. `OPEN` means it was queued: log `QUEUED #N`, record `last_outcome: queued`, and report it as queued, not merged; it does not count toward `MAX_AUTO_MERGE`. Any other result, or a failed lookup, is logged as `MERGE_UNCONFIRMED #N` and reported as such.
      Increment `state.prs["<owner>/<repo>#<N>"].attempts` on every attempt regardless of outcome. Set `first_seen` if absent. Reset to 0 (delete the entry) for PRs that no longer appear in the open list (already merged or closed since the last run).
      If the merge fails (non-zero exit), capture stderr and log `MERGE_FAIL #N: <stderr>`. Record `last_outcome: merge_failed` and `last_error: <stderr ≤200 chars>` on the state entry. A failed merge does NOT count toward the per-run `MAX_AUTO_MERGE` cap — continue to the next qualifying PR. A PR whose `attempts` has reached 3 is filtered out in step 3 with `SKIP:retry-cap:3-attempts`; surface it in step 5b instead of retrying.
 
@@ -87,7 +92,7 @@ A PR merges only when every one of the following holds:
    ```
    *Auto Merge — ${today}*
    Merged N PR(s) on owner/repo:
-   - #123: PR title (+45/-12, by @author) — squash merged abc1234
+   - #123: PR title (+45/-12, by @author) — squash merged abc1234   (the mergeCommit SHA GitHub returned)
    Queue cleared. Self-improve cycle unblocked.
    ```
 
@@ -105,7 +110,8 @@ A PR merges only when every one of the following holds:
 7. **Log to memory/logs/${today}.md** under an `### auto-merge` heading:
    - `Mode`: live | dry-run
    - `Repo(s)`: list
-   - `Merged`: `#N title @author +A-D SHA` per line
+   - `Merged`: `#N title @author +A-D SHA` per line, confirmed `MERGED` by GitHub
+   - `Queued`: `#N` per line (merge queue accepted it; not merged yet)
    - `Skipped`: `#N SKIP:<reason>` per line
    - `Retry-capped`: `owner/repo#N — <last_error>` per line (empty if none)
    - `Totals`: `merged=X qualified=Y considered=Z retry_capped=R`

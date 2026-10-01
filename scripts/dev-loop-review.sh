@@ -3,7 +3,7 @@
 set -euo pipefail
 
 usage() {
-  echo "usage: $0 parse <owner/repo#pr> <40-char-head-sha> <review-body-file> | verify|body <owner/repo#pr> <40-char-head-sha>" >&2
+  echo "usage: $0 parse <owner/repo#pr> <40-char-head-sha> <review-body-file> | verify|body|reviewed <owner/repo#pr> <40-char-head-sha>" >&2
   exit 64
 }
 
@@ -72,6 +72,36 @@ parse_body() {
     '{schema:1,target:$target,sha:$sha,verdict:$verdict,critical:$critical,issues:$issues,actionable:($critical > 0 or $issues > 0)}'
 }
 
+# The receipt filter the dev-loop gate counts, shared with `reviewed` so the
+# gate and pr-review's own dedup can never disagree about what counts.
+# shellcheck disable=SC2016 # $actor and $sha are jq variables, bound with --arg
+RECEIPTS='[.[] | select(.user.login == $actor and .commit_id == $sha) | .body // empty | select(contains("<!-- aeon-review:"))]'
+
+# reviewed: does GitHub already hold a receipt-bearing review from this account
+# at this exact commit? Prints the count. exit 0 = yes (do not review again),
+# 1 = no, 2 = could not tell (treat as reviewed and skip this run).
+receipt_count() {
+  local target="$1" sha="$2" repo number actor count
+  validate_target "$target" || return 2
+  [[ "$sha" =~ ^[0-9a-f]{40}$ ]] || {
+    echo "dev-loop review: expected sha must be 40 lowercase hex characters" >&2
+    return 2
+  }
+  repo=${target%#*}
+  number=${target##*#}
+  actor=$(gh api user --jq .login 2>/dev/null) && [ -n "$actor" ] || {
+    echo "dev-loop review: could not determine review actor" >&2
+    return 2
+  }
+  count=$(gh api --paginate "repos/$repo/pulls/$number/reviews" 2>/dev/null |
+    jq -rs --arg actor "$actor" --arg sha "$sha" "add // [] | $RECEIPTS | length") || {
+    echo "dev-loop review: could not read reviews on $target" >&2
+    return 2
+  }
+  echo "$count"
+  [ "$count" -ge 1 ]
+}
+
 fetch_verified_body() {
   local target="$1" sha="$2" repo number actor current_sha reviews count
   validate_target "$target" || return $?
@@ -90,24 +120,22 @@ fetch_verified_body() {
   }
   reviews=$(mktemp)
   gh api "repos/$repo/pulls/$number/reviews" > "$reviews"
-  count=$(jq -r --arg actor "$actor" --arg sha "$sha" '
-    [.[] | select(.user.login == $actor and .commit_id == $sha) |
-     .body // empty | select(contains("<!-- aeon-review:"))] | length
-  ' "$reviews")
+  count=$(jq -r --arg actor "$actor" --arg sha "$sha" "$RECEIPTS | length" "$reviews")
   [ "$count" -eq 1 ] || {
     echo "dev-loop review: expected exactly one receipt-bearing GitHub review, found $count" >&2
     return 1
   }
-  jq -r --arg actor "$actor" --arg sha "$sha" '
-    [.[] | select(.user.login == $actor and .commit_id == $sha) |
-     .body // empty | select(contains("<!-- aeon-review:"))][0]
-  ' "$reviews"
+  jq -r --arg actor "$actor" --arg sha "$sha" "${RECEIPTS}[0]" "$reviews"
 }
 
 case "${1:-}" in
   parse)
     [ "$#" -eq 4 ] || usage
     parse_body "$2" "$3" "$4"
+    ;;
+  reviewed)
+    [ "$#" -eq 3 ] || usage
+    receipt_count "$2" "$3"
     ;;
   verify|body)
     [ "$#" -eq 3 ] || usage

@@ -95,6 +95,9 @@ WRITE_TOOLS="$WRITE_TOOLS,Bash(cargo:*)"
 # High/Critical code findings must pass this key-scrubbing, evidence-producing
 # runner before vuln-scanner may claim the severity or route a disclosure.
 WRITE_TOOLS="$WRITE_TOOLS,Bash(./scripts/vuln-poc-gate.sh:*)"
+# pr-review asks GitHub whether it already reviewed a PR at its head commit, with
+# the same receipt count the dev-loop gate uses, before posting another review.
+WRITE_TOOLS="$WRITE_TOOLS,Bash(./scripts/dev-loop-review.sh:*)"
 # Foundry bare-names + the key-safe runner for deploy-uni-hook. Foundry is staged by
 # scripts/stage-deploy-uni-hook.sh (the sandbox denies in-run installs); the skill then
 # builds/simulates/broadcasts by bare name. `./hook-deploy.sh` hides the deployer key
