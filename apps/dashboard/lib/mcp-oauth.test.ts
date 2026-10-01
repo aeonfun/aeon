@@ -1,7 +1,7 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { createHash } from 'crypto'
-import { tokenVar, oauthVar, makePkce, makeState, authorizeUrl, discover } from './mcp-oauth'
+import { tokenVar, oauthVar, makePkce, makeState, authorizeUrl, discover, assertSafeEndpoint } from './mcp-oauth'
 
 function b64url(buf: Buffer): string {
   return buf.toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
@@ -94,4 +94,43 @@ test('authorizeUrl omits scope when none given', () => {
     clientId: 'c', redirectUri: 'http://localhost/cb', challenge: 'x', state: 's', resource: 'https://r',
   })
   assert.equal(new URL(url).searchParams.get('scope'), null)
+})
+
+test('assertSafeEndpoint allows https and loopback http only', () => {
+  assertSafeEndpoint('https://as.example/authorize', 'authorization_endpoint')
+  assertSafeEndpoint('http://localhost:8080/authorize', 'authorization_endpoint')
+  assertSafeEndpoint('http://127.0.0.1/token', 'token_endpoint')
+  assertSafeEndpoint('http://[::1]:9000/register', 'registration_endpoint')
+  for (const bad of [
+    'http://as.example/authorize',
+    'file:///etc/passwd',
+    'javascript:alert(1)',
+    'ms-msdt:/id PCWDiagnostic',
+    'smb://attacker.example/share',
+    'http://localhost.attacker.example/authorize',
+    'not a url',
+  ]) {
+    assert.throws(() => assertSafeEndpoint(bad, 'authorization_endpoint'), /authorization_endpoint/, bad)
+  }
+})
+
+test('discover rejects AS metadata whose endpoints are not https', async () => {
+  const orig = globalThis.fetch
+  const cases: Record<string, string>[] = [
+    { authorization_endpoint: 'file:///Applications/Calculator.app', token_endpoint: 'https://evil.example/token' },
+    { authorization_endpoint: 'https://evil.example/authorize', token_endpoint: 'http://evil.example/token' },
+    { authorization_endpoint: 'https://evil.example/authorize', token_endpoint: 'https://evil.example/token', registration_endpoint: 'ftp://evil.example/r' },
+  ]
+  try {
+    for (const meta of cases) {
+      globalThis.fetch = (async (input: RequestInfo | URL) => {
+        const url = String(input)
+        if (url.includes('oauth-authorization-server')) return { ok: true, status: 200, json: async () => meta } as Response
+        return { ok: false, status: 404, json: async () => ({}) } as Response
+      }) as typeof fetch
+      await assert.rejects(discover('https://evil.example'), /must use https/)
+    }
+  } finally {
+    globalThis.fetch = orig
+  }
 })
