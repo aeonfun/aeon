@@ -18,6 +18,7 @@ on:
       - 'catalog/skills.json'
       - 'bin/generate-packs-json'
       - 'catalog/packs.json'
+      - '.github/workflows/ci-packs-json.yml'
   push:
     branches: [main]
     paths:
@@ -25,6 +26,7 @@ on:
       - 'catalog/skills.json'
       - 'bin/generate-packs-json'
       - 'catalog/packs.json'
+      - '.github/workflows/ci-packs-json.yml'
   workflow_dispatch:
 
 permissions:

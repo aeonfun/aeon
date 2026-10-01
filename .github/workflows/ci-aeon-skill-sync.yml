@@ -1,0 +1,43 @@
+name: ci-aeon-skill-sync
+
+# The `aeon` operator skill ships twice: .claude/skills/aeon (in-repo) and
+# plugin/skills/aeon (the Claude Code plugin). They are hand-synced and have
+# drifted before (#1098), so this fails any PR that changes one copy without the
+# other. The only allowed difference is the plugin copy's
+# "${PLUGIN_ROOT:-$CLAUDE_PLUGIN_ROOT}/skills/aeon/..." script paths, which
+# scripts/check-aeon-skill-sync.sh normalizes before diffing.
+#
+# Run locally: `bash scripts/check-aeon-skill-sync.sh`.
+
+on:
+  pull_request:
+    paths:
+      - '.claude/skills/aeon/**'
+      - 'plugin/skills/aeon/**'
+      - 'scripts/check-aeon-skill-sync.sh'
+      - '.github/workflows/ci-aeon-skill-sync.yml'
+  push:
+    branches: [main]
+    paths:
+      - '.claude/skills/aeon/**'
+      - 'plugin/skills/aeon/**'
+      - 'scripts/check-aeon-skill-sync.sh'
+      - '.github/workflows/ci-aeon-skill-sync.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Cancel a superseded in-progress run when a newer commit is pushed to the same PR
+# (reclaims runner-minutes on stacked PR pushes). Never cancels push/main/tag runs.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: .claude/skills/aeon and plugin/skills/aeon are in sync
+        run: bash scripts/check-aeon-skill-sync.sh

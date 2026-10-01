@@ -19,8 +19,14 @@ name: ci-skills-json
 #   - per-skill `sha` and `updated` — derived from `git log`, so they change each
 #     time a skill PR is squash-merged (the squash rewrites the commit). Without
 #     normalizing them, every squash-merge would false-fail the *next* skills PR.
-# fetch-depth: 0 is retained so the generator still resolves full per-skill
-# history; these git-derived values are normalized out of the diff regardless.
+# Because those git-derived values are normalized out, the checkout is shallow:
+# on a depth-1 clone the generator still runs and every semantic field matches.
+#
+# The same job also runs `bin/generate-skill-icons --check`, which renders the
+# per-skill icon assets (docs/assets/skill-icons/*.svg + the dashboard's
+# apps/dashboard/lib/skill-icons.data.ts) from catalog/skill-icons.json and each
+# skill's category in catalog/skills.json, and fails on drift, a missing glyph,
+# or a stale SVG.
 
 on:
   pull_request:
@@ -28,12 +34,22 @@ on:
       - 'skills/**'
       - 'bin/generate-skills-json'
       - 'catalog/skills.json'
+      - 'bin/generate-skill-icons'
+      - 'catalog/skill-icons.json'
+      - 'docs/assets/skill-icons/**'
+      - 'apps/dashboard/lib/skill-icons.data.ts'
+      - '.github/workflows/ci-skills-json.yml'
   push:
     branches: [main]
     paths:
       - 'skills/**'
       - 'bin/generate-skills-json'
       - 'catalog/skills.json'
+      - 'bin/generate-skill-icons'
+      - 'catalog/skill-icons.json'
+      - 'docs/assets/skill-icons/**'
+      - 'apps/dashboard/lib/skill-icons.data.ts'
+      - '.github/workflows/ci-skills-json.yml'
   workflow_dispatch:
 
 permissions:
@@ -50,8 +66,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-        with:
-          fetch-depth: 0          # full history for the generator; git-derived fields are normalized out of the diff
       - name: Regenerate skills.json and diff (ignoring timestamp + per-skill sha/updated)
         run: |
           set -euo pipefail
@@ -71,3 +85,5 @@ jobs:
             exit 1
           fi
           echo "skills-json: OK — committed manifest matches a fresh regen (timestamp + per-skill sha/updated aside)."
+      - name: Skill icon assets match catalog/skill-icons.json
+        run: node bin/generate-skill-icons --check

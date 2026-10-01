@@ -2,8 +2,8 @@ name: ci-apps
 
 # apps/** was the largest untested surface in the repo: four shipped apps — the
 # Next.js dashboard, the CLI, the MCP server, and the Telegram Worker — with no
-# gate of any kind. The dashboard alone carries 156 committed unit tests
-# (apps/dashboard/lib/**/*.test.ts) that nothing ran, plus a strict-mode
+# gate of any kind. The dashboard alone carries a committed unit-test suite
+# (apps/dashboard/lib/**/*.test.{ts,mjs}) that nothing ran, plus a strict-mode
 # TypeScript config nothing typechecked.
 #
 # That gap is not theoretical. Dependabot opens grouped monthly npm PRs against
@@ -40,10 +40,11 @@ on:
 permissions:
   contents: read
 
-# A force-push mid-review shouldn't leave a stale build burning a runner.
+# A force-push mid-review shouldn't leave a stale build burning a runner. Never
+# cancels main, so every merged commit keeps a complete result.
 concurrency:
   group: ci-apps-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
   dashboard:
@@ -117,10 +118,10 @@ jobs:
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: '22'
-      # No package-lock.json is committed for this app, so `npm ci` is not
-      # available and the install floats within the package.json ranges.
+          cache: npm
+          cache-dependency-path: apps/mcp-server/package-lock.json
       - name: Install deps
-        run: npm install --no-audit --no-fund
+        run: npm ci --no-audit --no-fund
       # `npm run build` (tsc, emitting to dist/) rather than a bare --noEmit:
       # dist/index.js is this package's published `bin`, so a build that cannot
       # emit is a broken install for anyone running `aeon-mcp`.
@@ -140,15 +141,20 @@ jobs:
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: '22'
+          cache: npm
+          cache-dependency-path: apps/webhook/package-lock.json
       - name: Syntax check the Worker
         run: node --check src/worker.js
-      # No lockfile committed for this app either — see mcp-server above.
       - name: Install deps
-        run: npm install --no-audit --no-fund
+        run: npm ci --no-audit --no-fund
       # Plain-JS Worker: @eslint/js recommended with Worker runtime globals
       # declared (see apps/webhook/eslint.config.mjs).
       - name: Lint (eslint)
         run: npm run lint
+      # Replay-guard unit tests (test/replay-guard.test.mjs): hermetic, a stubbed
+      # fetch + in-memory KV, no Cloudflare or GitHub calls.
+      - name: Unit tests
+        run: npm test
       # --dry-run validates wrangler.toml and bundles the Worker without any
       # Cloudflare credentials, so a broken config or a bad import fails here
       # instead of at deploy time.
