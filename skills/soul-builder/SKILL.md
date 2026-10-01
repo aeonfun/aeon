@@ -233,10 +233,10 @@ NOTIF_EOF
 
 ### 9. Log
 
-Append to `memory/logs/${today}.md`:
+Append to `memory/logs/${today}.md` under a `### soul-builder` heading (the health loop keys entries by slug):
 
 ```markdown
-## Soul Builder
+### soul-builder
 - **Subject:** ${handle / name / first link}
 - **Sources used:** x=@${handle} (${N} posts, ${api|x-mcp|websearch}) | name (web search) | links=${count}
 - **Files written:** soul/SOUL.md, soul/STYLE.md, soul/examples/good-outputs.md

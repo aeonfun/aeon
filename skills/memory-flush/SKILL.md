@@ -72,7 +72,7 @@ Log rotation now runs deterministically in step 0 (`memory_prep.py window`): who
 
 ### 8. Log the run, then stamp the watermark
 
-Log what you promoted, pruned, and archived, plus the scan window you used (start date to today; note if a >14-day gap was clamped), to `memory/logs/${today}.md`.
+Log what you promoted, pruned, and archived, plus the scan window you used (start date to today; note if a >14-day gap was clamped), to `memory/logs/${today}.md` as bullets under a `### memory-flush` heading (the health loop keys entries by slug).
 
 Then run `python3 scripts/memory_prep.py stamp` as your **final** action - it writes today's date to `memory/memory-flush-state.json` and mirrors it into the MEMORY.md `*Last consolidated:*` line.
 

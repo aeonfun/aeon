@@ -117,10 +117,10 @@ NOTIF_EOF
 
 ### 6. Log
 
-Append to `memory/logs/${today}.md`:
+Append to `memory/logs/${today}.md` under a `### strategy-builder` heading (the health loop keys entries by slug):
 
 ```markdown
-## Strategy Builder
+### strategy-builder
 - **North-star:** ${one line}
 - **Priorities:** ${count}
 - **Sources used:** goal | repo=${repo} | links=${count} | repo-context
