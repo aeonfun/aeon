@@ -322,7 +322,7 @@ If the combined report exceeds the budget, trim in this order: (1) drop Kalshi's
 
 # Log
 
-Append to `memory/logs/${today}.md` under a single `### monitor-polymarket` heading, with a bullet group for **each platform that ran**:
+This skill is `read-only`, so the workflow's read-only guard writes its `### monitor-polymarket` log entry from your captured output; a self-written entry would be a duplicate. Don't append to `memory/logs/` yourself - put this record in your **final output**, with a bullet group for **each platform that ran**:
 
 ```
 ### monitor-polymarket
@@ -352,4 +352,4 @@ If a market moved dramatically — Polymarket >5pp, or Kalshi >10pp on a non-thi
 
 ## Network note
 
-Both branches only fetch **public** APIs (`mode: read-only`), so there are no secret-bearing calls. `curl` works — there is no network sandbox; use **WebFetch** as a fallback for a flaky public GET (per-platform endpoint lists are in the Polymarket Network note P5 and the Kalshi Network note K9). Never write to the repo beyond `memory/logs/` (and an optional `memory/MEMORY.md` note); produce all output via `./notify` and `memory/`.
+Both branches only fetch **public** APIs (`mode: read-only`), so there are no secret-bearing calls. `curl` works - there is no network sandbox; use **WebFetch** as a fallback for a flaky public GET (per-platform endpoint lists are in the Polymarket Network note P5 and the Kalshi Network note K9). Never write to the repo beyond an optional `memory/MEMORY.md` note (the workflow writes `memory/logs/` for you); produce all output via `./notify` and your final output.

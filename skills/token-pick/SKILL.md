@@ -156,7 +156,9 @@ The `token-movers::deep-dive` marker routes the operator's reply to **token-move
 
 **Dedup.** token-pick runs once daily, so one offer per run is already once-per-day. Being `read-only`, it can't write a `FORCE_REPLY_OFFERED` marker — but it already reads recent logs, so if today's log already carries a `FORCE_REPLY_OFFERED: deep-dive` line (e.g. token-movers offered earlier today), SKIP this offer to avoid double-nagging.
 
-### 7. Log to `memory/logs/${today}.md`
+### 7. Log record
+
+This skill is `read-only`, so the workflow's read-only guard writes its `### token-pick` log entry from your captured output; a self-written entry would be a duplicate. Don't append to `memory/logs/` yourself - put this record in your **final output**:
 
 ```
 ### token-pick
@@ -168,7 +170,7 @@ The `token-movers::deep-dive` marker routes the operator's reply to **token-move
 - **Notification sent:** yes (normal | skip | no-data)
 ```
 
-Append symbol + market question on a single line for easy grep next-day dedup, e.g.:
+Also include symbol + market question on a single line for easy grep next-day dedup, e.g.:
 ```
 TOKEN_PICK_DEDUP: SYMBOL | "Will X happen by Y?"
 ```

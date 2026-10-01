@@ -195,7 +195,7 @@ Send formatted results via `./notify`:
 
 Log the search for future reference:
 
-1. **Append to daily log** — `memory/logs/${today}.md` under `### you-web-search`:
+1. **Log record** - this skill is `read-only`, so the workflow's read-only guard writes its `### you-web-search` log entry from your captured output; a self-written entry would be a duplicate. Don't append to `memory/logs/` yourself - put this record in your **final output**:
    ```
    ### you-web-search
    - Query: "${var}"

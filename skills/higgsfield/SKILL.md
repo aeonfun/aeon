@@ -70,7 +70,7 @@ Note assets may be time-limited signed URLs — say so and suggest the operator 
 
 ### 5. Log
 
-Append to `memory/logs/${today}.md`:
+This skill is `read-only`, so the workflow's read-only guard writes its `### higgsfield` log entry from your captured output; a self-written entry would be a duplicate. Don't append to `memory/logs/` yourself - put this record in your **final output**:
 
 ```
 ### higgsfield

@@ -255,8 +255,10 @@ today's section prepended. On the first run, seed the file with a
 
 ### 7. Log
 
-Append to `memory/logs/${today}.md` under a single `### competitor-monitor`
-heading:
+This skill is `read-only`, so the workflow's read-only guard writes its
+`### competitor-monitor` log entry from your captured output; a self-written
+entry would be a duplicate. Don't append to `memory/logs/` yourself - put this
+record in your **final output**:
 
 - `- var: "${var}"` and the resolved page count.
 - One line per page with its change count and top change type

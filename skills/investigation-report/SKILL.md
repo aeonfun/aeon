@@ -368,7 +368,7 @@ Token: https://basescan.org/token/0xToken     Pool: https://basescan.org/address
 
 ### Log
 
-Append to `memory/logs/${today}.md` under **one** heading (regardless of verdict — audit trail), with a discriminator line naming the checks + depth that ran:
+This skill is `read-only`, so the workflow's read-only guard writes its `### investigation-report` log entry from your captured output; a self-written entry would be a duplicate. Don't append to `memory/logs/` yourself - put this record in your **final output** (regardless of verdict - audit trail), with a discriminator line naming the checks + depth that ran:
 
 ```
 ### investigation-report

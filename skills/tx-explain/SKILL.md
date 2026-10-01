@@ -88,7 +88,7 @@ Tx: https://basescan.org/tx/0xhash...12
 
 ### 6. Log
 
-Append to `memory/logs/${today}.md`:
+This skill is `read-only`, so the workflow's read-only guard writes its `### tx-explain` log entry from your captured output; a self-written entry would be a duplicate. Don't append to `memory/logs/` yourself - put this record in your **final output**:
 
 ```
 ### tx-explain

@@ -271,7 +271,7 @@ reading is a muted message.
 
 ### 6. Log
 
-Append to `memory/logs/${today}.md` under a `### posthog-errors` heading:
+This skill is `read-only`, so the workflow's read-only guard writes its `### posthog-errors` log entry from your captured output; a self-written entry would be a duplicate. Don't append to `memory/logs/` yourself - put this record in your **final output**:
 
 ```
 ### posthog-errors
