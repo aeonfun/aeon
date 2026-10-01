@@ -1,6 +1,6 @@
 # Products
 
-Config for the product-aware skills: `bd-radar` and `product-pulse`.
+Config for the product-aware skills: `bd-radar` and `idea-forge`.
 One `##` block per product. While this file holds only the unconfigured template below,
 those skills log `<SKILL>_NO_PRODUCTS_CONFIG` and degrade (falling back to
 `memory/watched-repos.md` for repos where possible) — fill it in to activate them.
@@ -17,7 +17,7 @@ those skills log `<SKILL>_NO_PRODUCTS_CONFIG` and degrade (falling back to
 <!--
 Fields:
   repos    — owner/repo entries; tag each public / private / automation(agent) so
-             product-pulse can bucket repo health and flag automation repos.
+             skills can tell product repos from automation repos.
   handles  — product + founder X handles for follower/engagement tracking.
   terms    — product-name / tagline / distinctive search strings (used by bd-radar to
              find who's building/forking/mentioning, and by mention search).

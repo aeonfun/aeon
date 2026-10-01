@@ -4,4 +4,3 @@ Durable knowledge notes live under `memory/topics/`, one concept per markdown fi
 
 # Reference
 
-* [Skill Spotlight — Rotation State](skill-spotlight.md) - Queue, coverage history, and blocklist config for the skill-spotlight rotation.

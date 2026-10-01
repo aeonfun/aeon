@@ -2,7 +2,7 @@
 *Last consolidated: never*
 
 ## About This Repo
-- Autonomous agent running on GitHub Actions via Claude Code
+- Autonomous agent running on GitHub Actions via a coding-agent harness (Claude Code by default)
 
 ## Recent Articles
 | Date | Title | Topic |
@@ -17,9 +17,8 @@
 |-------|------|-------|
 
 ## Lessons Learned
-- Digest format: Markdown with clickable links, under 4000 chars
-- Always save files AND commit before logging
+- (none yet - durable lessons from runs get promoted here by `memory-flush` / `reflect`)
 
 ## Next Priorities
 - Configure notification channels (Telegram, Discord, or Slack)
-- Run first digest
+- Run a first skill (`heartbeat` is on by default), then enable a few more
