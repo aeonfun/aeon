@@ -61,7 +61,7 @@ Skip a PR if any of the following hold (record the skip reason for the run summa
   ```bash
   ./scripts/dev-loop-review.sh reviewed owner/repo#NUMBER <headRefOid>
   ```
-  exit `0` → skip as `dup-SHA`; exit `2` (GitHub unreadable) → skip as `review-check-unavailable` and let the next run decide; exit `1` → not yet reviewed at this commit. It counts exactly what the dev-loop gate counts, so a second review can never make the gate see two receipts.
+  exit `0` → skip as `dup-SHA`; exit `2` (the reviews could not be read) → skip as `review-check-unavailable` and let the next run decide; exit `1` → not yet reviewed at this commit. It counts exactly what the dev-loop gate counts, so a second review can never make the gate see two receipts. It works on either token: with `GH_GLOBAL` it counts that account's reviews, and on the `GITHUB_TOKEN` fallback (which cannot read `/user`) it counts `github-actions[bot]`, the login that token reviews as.
 - a bot reviewer (`coderabbitai`, `copilot-pull-request-reviewer`, `claude`) posted a review in the last 30 min — skip to avoid piling on. Check via:
   ```bash
   gh api repos/owner/repo/pulls/NUMBER/reviews --jq '.[] | {user: .user.login, submitted_at}'

@@ -77,6 +77,34 @@ parse_body() {
 # shellcheck disable=SC2016 # $actor and $sha are jq variables, bound with --arg
 RECEIPTS='[.[] | select(.user.login == $actor and .commit_id == $sha) | .body // empty | select(contains("<!-- aeon-review:"))]'
 
+# The login that posts this run's reviews. A PAT (GH_GLOBAL) can read /user.
+# The Actions GITHUB_TOKEN cannot (HTTP 403) and reviews as github-actions[bot],
+# the same fallback scripts/state_store.sh trusts. Any other failure is not
+# guessed at: the caller cannot tell whose reviews to count.
+review_actor() {
+  local login err
+  err=$(mktemp)
+  if login=$(gh api user --jq .login 2>"$err") && [ -n "$login" ]; then
+    rm -f "$err"
+    printf '%s\n' "$login"
+    return 0
+  fi
+  if grep -q 'HTTP 403' "$err"; then
+    rm -f "$err"
+    printf '%s\n' 'github-actions[bot]'
+    return 0
+  fi
+  rm -f "$err"
+  echo "dev-loop review: could not determine review actor" >&2
+  return 1
+}
+
+# Every review on the PR, all pages merged into one array. The gate and
+# `reviewed` both read through here, so neither stops at the first 30.
+fetch_reviews() {
+  gh api --paginate "repos/$1/pulls/$2/reviews" | jq -s 'add // []'
+}
+
 # reviewed: does GitHub already hold a receipt-bearing review from this account
 # at this exact commit? Prints the count. exit 0 = yes (do not review again),
 # 1 = no, 2 = could not tell (treat as reviewed and skip this run).
@@ -89,12 +117,9 @@ receipt_count() {
   }
   repo=${target%#*}
   number=${target##*#}
-  actor=$(gh api user --jq .login 2>/dev/null) && [ -n "$actor" ] || {
-    echo "dev-loop review: could not determine review actor" >&2
-    return 2
-  }
-  count=$(gh api --paginate "repos/$repo/pulls/$number/reviews" 2>/dev/null |
-    jq -rs --arg actor "$actor" --arg sha "$sha" "add // [] | $RECEIPTS | length") || {
+  actor=$(review_actor) || return 2
+  count=$(fetch_reviews "$repo" "$number" 2>/dev/null |
+    jq -r --arg actor "$actor" --arg sha "$sha" "$RECEIPTS | length") || {
     echo "dev-loop review: could not read reviews on $target" >&2
     return 2
   }
@@ -111,15 +136,14 @@ fetch_verified_body() {
   }
   repo=${target%#*}
   number=${target##*#}
-  actor=$(gh api user --jq .login)
-  [ -n "$actor" ] || { echo "dev-loop review: could not determine review actor" >&2; return 1; }
+  actor=$(review_actor) || return 1
   current_sha=$(gh api "repos/$repo/pulls/$number" --jq .head.sha)
   [ "$current_sha" = "$sha" ] || {
     echo "dev-loop review: PR head changed after review dispatch (expected $sha, found ${current_sha:-missing})" >&2
     return 1
   }
   reviews=$(mktemp)
-  gh api "repos/$repo/pulls/$number/reviews" > "$reviews"
+  fetch_reviews "$repo" "$number" > "$reviews"
   count=$(jq -r --arg actor "$actor" --arg sha "$sha" "$RECEIPTS | length" "$reviews")
   [ "$count" -eq 1 ] || {
     echo "dev-loop review: expected exactly one receipt-bearing GitHub review, found $count" >&2

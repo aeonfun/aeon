@@ -28,7 +28,7 @@ A PR merges only when every one of the following holds:
 - **Base branch**: `baseRefName` is `main` or `master`. Refuse any other target.
 - **Not a fork**: `isCrossRepository == false` (fork CI can be tampered with).
 - **Not draft**: `isDraft == false`.
-- **Not already queued**: `autoMergeRequest == null` (avoid fighting GitHub's native auto-merge if a human enabled it).
+- **Not already queued**: `autoMergeRequest == null` (avoid fighting GitHub's native auto-merge if a human enabled it) and the PR is not already in a merge queue (`mergeQueueEntry == null`, checked in step 2b).
 - **No opt-out label**: none of {`do-not-merge`, `wip`, `hold`, `needs-review`, `blocked`} present.
 - **Mergeable state**: `mergeStateStatus == "CLEAN"` (this is stricter than `mergeable == "MERGEABLE"` — CLEAN additionally requires branch-protection gates to be satisfied).
 - **Reviews**: `reviewDecision != "CHANGES_REQUESTED"`.
@@ -70,6 +70,13 @@ A PR merges only when every one of the following holds:
    ```
    If still UNKNOWN after the retry, skip the PR with reason `UNKNOWN-persistent` and let the next run retry.
 
+   2b. **Skip PRs already in a merge queue.** A PR this skill queued on an earlier run is still open, so it would be merged again, bump `attempts`, and hit the retry cap while it waits. `gh pr list` does not expose the queue, so ask GraphQL per PR:
+   ```bash
+   gh api graphql -f query='query($o:String!,$r:String!,$n:Int!){repository(owner:$o,name:$r){pullRequest(number:$n){mergeQueueEntry{state}}}}' \
+     -f o=owner -f r=repo -F n=NUMBER --jq '.data.repository.pullRequest.mergeQueueEntry.state // ""'
+   ```
+   A non-empty state (e.g. `QUEUED`, `AWAITING_CHECKS`, `MERGEABLE`) skips the PR as `SKIP:already-queued:<state>`. A failed lookup skips it as `SKIP:merge-queue-unknown`. Neither counts as an attempt: do not touch its `attempts`, and leave its state entry as is.
+
 3. **Apply the safety policy** to each PR. Record a verdict for every PR: either `MERGE` or `SKIP:<specific-reason>`. Reasons must name the failing gate — e.g. `SKIP:author-not-allowlisted:contributor123`, `SKIP:size-cap:823-lines`, `SKIP:mergeStateStatus=BEHIND`, `SKIP:label:do-not-merge`, `SKIP:check-failed:lint`, `SKIP:retry-cap:3-attempts`. Vague reasons like `SKIP:not-ready` are not acceptable.
 
 4. **Merge qualifying PRs**, up to MAX_AUTO_MERGE (default 3):
@@ -82,7 +89,7 @@ A PR merges only when every one of the following holds:
      ```bash
      gh pr view NUMBER -R owner/repo --json state,mergeCommit --jq '[.state, (.mergeCommit.oid // "")] | @tsv'
      ```
-     Only `MERGED` with a commit SHA is a merge: report that SHA, never one inferred from the command output. `OPEN` means it was queued: log `QUEUED #N`, record `last_outcome: queued`, and report it as queued, not merged; it does not count toward `MAX_AUTO_MERGE`. Any other result, or a failed lookup, is logged as `MERGE_UNCONFIRMED #N` and reported as such.
+     Only `MERGED` with a commit SHA is a merge: report that SHA, never one inferred from the command output. `OPEN` means it was queued: log `QUEUED #N`, record `last_outcome: queued`, and report it as queued, not merged. Any other result, or a failed lookup, is logged as `MERGE_UNCONFIRMED #N` and reported as such. Both count toward `MAX_AUTO_MERGE`: a merge was attempted and GitHub accepted the command, so the cap still bounds how much this run can send to `main`.
      Increment `state.prs["<owner>/<repo>#<N>"].attempts` on every attempt regardless of outcome. Set `first_seen` if absent. Reset to 0 (delete the entry) for PRs that no longer appear in the open list (already merged or closed since the last run).
      If the merge fails (non-zero exit), capture stderr and log `MERGE_FAIL #N: <stderr>`. Record `last_outcome: merge_failed` and `last_error: <stderr ≤200 chars>` on the state entry. A failed merge does NOT count toward the per-run `MAX_AUTO_MERGE` cap — continue to the next qualifying PR. A PR whose `attempts` has reached 3 is filtered out in step 3 with `SKIP:retry-cap:3-attempts`; surface it in step 5b instead of retrying.
 
@@ -114,8 +121,8 @@ A PR merges only when every one of the following holds:
    - `Queued`: `#N` per line (merge queue accepted it; not merged yet)
    - `Skipped`: `#N SKIP:<reason>` per line
    - `Retry-capped`: `owner/repo#N — <last_error>` per line (empty if none)
-   - `Totals`: `merged=X qualified=Y considered=Z retry_capped=R`
-   - If zero qualified, include a verdict breakdown: `AUTO_MERGE_SKIP: 0/Z qualifying (behind=B blocked=L failing=F draft=D author-blocked=A size-blocked=S retry-capped=R)`
+   - `Totals`: `merged=X queued=Q qualified=Y considered=Z retry_capped=R`
+   - If zero qualified, include a verdict breakdown: `AUTO_MERGE_SKIP: 0/Z qualifying (behind=B blocked=L failing=F draft=D already-queued=U author-blocked=A size-blocked=S retry-capped=R)`
 
 ## Network note
 

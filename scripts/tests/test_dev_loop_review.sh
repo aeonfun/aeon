@@ -76,6 +76,15 @@ mkdir -p "$TMP/bin"
 cat > "$TMP/bin/gh" <<'STUB'
 #!/usr/bin/env bash
 if [ "$1 $2" = 'api user' ]; then
+  # The Actions GITHUB_TOKEN cannot read /user; gh reports the 403 on stderr.
+  if [ -n "${TEST_USER_403:-}" ]; then
+    echo 'gh: Resource not accessible by integration (HTTP 403)' >&2
+    exit 1
+  fi
+  if [ -n "${TEST_USER_FAIL:-}" ]; then
+    echo 'error connecting to api.github.com' >&2
+    exit 1
+  fi
   printf '%s\n' aeonframework
   exit 0
 fi
@@ -124,5 +133,41 @@ set +e
 TEST_REVIEWS_FAIL=1 PATH="$TMP/bin:$PATH" bash "$CHECK" reviewed "$TARGET" "$SHA" >/dev/null 2>&1; rc=$?
 set -e
 [ "$rc" = 2 ] || { echo "unreadable reviews must exit 2, got $rc" >&2; exit 1; }
+
+# On the GITHUB_TOKEN fallback (no GH_GLOBAL) /user is 403, and the run reviews as
+# github-actions[bot]: count that account's receipts instead of skipping forever.
+BOT_RECEIPT='[{"user":{"login":"github-actions[bot]"},"commit_id":"0123456789abcdef0123456789abcdef01234567","body":"<!-- aeon-review:{} -->"},{"user":{"login":"aeonframework"},"commit_id":"0123456789abcdef0123456789abcdef01234567","body":"<!-- aeon-review:{} -->"}]'
+out=$(TEST_USER_403=1 TEST_REVIEWS="$BOT_RECEIPT" PATH="$TMP/bin:$PATH" bash "$CHECK" reviewed "$TARGET" "$SHA") ||
+  { echo 'reviewed on GITHUB_TOKEN missed the github-actions[bot] receipt' >&2; exit 1; }
+[ "$out" = 1 ] || { echo "reviewed on GITHUB_TOKEN counted $out, want 1" >&2; exit 1; }
+set +e
+out=$(TEST_USER_403=1 PATH="$TMP/bin:$PATH" bash "$CHECK" reviewed "$TARGET" "$SHA" 2>/dev/null); rc=$?
+set -e
+[ "$rc" = 1 ] && [ "$out" = 0 ] || { echo "GITHUB_TOKEN with no bot receipt: rc=$rc out=$out, want 1/0" >&2; exit 1; }
+# Any other /user failure is not guessed at: counting the wrong login could post a second review.
+set +e
+TEST_USER_FAIL=1 PATH="$TMP/bin:$PATH" bash "$CHECK" reviewed "$TARGET" "$SHA" >/dev/null 2>&1; rc=$?
+set -e
+[ "$rc" = 2 ] || { echo "unresolvable actor must exit 2, got $rc" >&2; exit 1; }
+
+# The gate reads every page of reviews, like `reviewed`: a receipt on page 2 still counts.
+mkdir -p "$TMP/pages"
+cat > "$TMP/pages/gh" <<'STUB'
+#!/usr/bin/env bash
+if [ "$1 $2" = 'api user' ]; then printf '%s\n' aeonframework; exit 0; fi
+if [ "$1" = api ] && [ "$2" = 'repos/acme/demo/pulls/42' ]; then
+  printf '%s\n' 0123456789abcdef0123456789abcdef01234567; exit 0
+fi
+if [ "$1" = api ] && [ "$2" = --paginate ] && [ "$3" = 'repos/acme/demo/pulls/42/reviews' ]; then
+  printf '%s\n' '[{"user":{"login":"someone-else"},"commit_id":"0123456789abcdef0123456789abcdef01234567","body":"lgtm"}]'
+  printf '%s\n' '[{"user":{"login":"aeonframework"},"commit_id":"0123456789abcdef0123456789abcdef01234567","body":"**Verdict**: approve-ready\n<!-- aeon-review:{\"schema\":1,\"target\":\"acme/demo#42\",\"sha\":\"0123456789abcdef0123456789abcdef01234567\",\"verdict\":\"approve-ready\",\"critical\":0,\"issues\":0} -->"}]'
+  exit 0
+fi
+exit 1
+STUB
+chmod +x "$TMP/pages/gh"
+jq -e '.verdict == "approve-ready"' \
+  <<<"$(PATH="$TMP/pages:$PATH" bash "$CHECK" verify "$TARGET" "$SHA")" >/dev/null ||
+  { echo 'gate missed a receipt on the second page of reviews' >&2; exit 1; }
 
 echo 'dev-loop review contract tests passed'
