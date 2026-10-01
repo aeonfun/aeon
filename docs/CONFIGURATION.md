@@ -81,6 +81,8 @@ The handler is dispatched with **the source skill's name as its `var`** (so `ski
 
 **The source skill must be enabled.** A trigger's `on:` source is evaluated only while that skill is `enabled: true` (a disabled skill never runs, so its state never changes). Point a trigger at a skill you have turned off and it silently never fires. `on:` may be written quoted or bare (`on: "digest"` or `on: digest`).
 
+**The handler must be enabled too.** A handler whose own `skills:` entry says `enabled: false` (the shipped default for `skill-repair`) is never dispatched, so uncommenting its `reactive:` block is not enough: also set `enabled: true` on its skill entry. A handler with no `skills:` entry at all is treated as enabled. A wildcard (`on: "*"`) handler never triggers on its own state, and it rotates across failing sources: a source it was dispatched for in the last 24h is passed over in favor of the next one, so one stuck skill cannot monopolize it.
+
 **Loop safety.** A reactive dispatch is deduped per handler for 90 minutes, so a source that stays broken can't re-fire its handler every tick, and a handler that itself fails can't spin a tight loop. (Reactive runs on billed Actions minutes and a shared rate limit, so this bound matters -- there is no `pkill` off-switch here.)
 
 ## Scheduler frequency
