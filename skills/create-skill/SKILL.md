@@ -71,7 +71,7 @@ Today is ${today}. Your task is to generate a complete, production-ready skill f
    - **Steps** — 4-8 numbered, following the standard pattern: read context → fetch/search → process/analyze → write output → log → notify.
    - **Schedule suggestion** — choose a cron slot. Read existing schedules in `aeon.yml`; avoid co-scheduling at the same minute as heavy skills (article, repo-scanner, deep-research, telegram-digest) unless the new skill is lightweight (<30s expected). Prefer a `:30` minute offset if the natural hour is already crowded.
    - **Model** — default `claude-sonnet-5`. Pick `claude-haiku-4-5-20251001` if the skill is high-frequency aggregation/digestion (cost optimization), or `claude-opus-4-8` if it needs the strongest reasoning. Document the choice in the PR body.
-   - **Category** — the pack the skill joins. Pick one: `research` `dev` `crypto` `onchain-security` `social` `productivity` `meta`. (`core` and `fleet` are curated in `packs.config.json`, not chosen here.) If none fits, omit it and the skill lands in the **Lab** catch-all for later triage. See `docs/skill-packs.md`.
+   - **Category** - the pack the skill joins. Pick exactly one of `core` `evolution` `basics` `dev` `crypto` `productivity` (the set `scripts/check-skill-categories.sh` enforces; anything else, or a missing category, fails CI). For a new user-facing skill that is usually `basics`, `dev`, `crypto`, or `productivity`. See `docs/skill-packs.md`.
 
 6. **Write the SKILL.md draft** at `skills/{skill-name}/SKILL.md` with this exact structure:
 
@@ -161,6 +161,14 @@ Today is ${today}. Your task is to generate a complete, production-ready skill f
     - Read `output/.dry-run/$name.json`. `passed: true` (or `skipped: true`) means continue. `passed: false` means **delete `skills/$name/`, revert the `aeon.yml` edit, and exit `CREATE_SKILL_DRYRUN_FAILED`** with a notify listing the verdict `reasons[]`. Do not open the PR.
     - Put the verdict JSON in the PR body under a `## Dry-run` section either way, so a reviewer sees the gate ran.
     The gate is **structural** (exit 0, non-empty output, no write outside the declared `mode`, no secret outside `requires:`), and no real credential is ever placed in the run's environment. It does not re-score content; the Haiku scorer already does that.
+
+9c. **Registration checklist (a new skill trips four CI gates; a red one blocks the merge).** The PR must also carry:
+    - `bash scripts/check-skill-categories.sh` passing (category from step 5).
+    - `catalog/skills.json` + `catalog/packs.json` regenerated with `bin/generate-skills-json` and `bin/generate-packs-json`, in a **separate commit after** the SKILL.md commit (the catalog's `sha`/`updated` come from git history).
+    - An `eyebrowlock.json` entry for the new skill: `ci-skill-integrity` hard-fails any skill without one. Run `eyebrow scan` with the version pinned in `.github/workflows/ci-skill-integrity.yml` and splice **only** the new skill's artifact into the committed lockfile.
+    - `node scripts/validate-readme-catalog.mjs` passing (README and docs skill counts include the new skill).
+    - The disabled `aeon.yml` entry from step 9.
+    If this run can't execute a step (e.g. no `eyebrow` binary), list the missing steps under a `## Before merge` heading in the PR body instead of skipping them silently.
 
 10. **Open as a PR (never commit to `main`).**
     ```bash

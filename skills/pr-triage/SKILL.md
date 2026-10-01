@@ -105,16 +105,16 @@ Score the PR against four checks. Every check is observable from the diff + meta
 
 | Check | Pass condition |
 |---|---|
-| **Scope** | Touches only `skills/`, `docs/`, `output/`, `catalog/`, `README.md`, `CLAUDE.md`. Touching `.github/workflows/`, `aeon` (root binary), `bin/`, `scripts/`, `apps/mcp-server/`, `apps/dashboard/lib/` requires a maintainer. |
+| **Scope** | Touches only `skills/`, `docs/`, `output/`, `catalog/`, `README.md`. Touching `.github/workflows/`, `aeon` (root binary), `aeon.yml`, `CLAUDE.md`, `AGENTS.md`, `eyebrow.policy.json`, `harness-adapter/`, `bin/`, `scripts/`, `apps/mcp-server/`, `apps/dashboard/lib/` requires a maintainer. |
 | **Format** | If a `skills/<name>/SKILL.md` is added or modified, the file has YAML frontmatter with `name`, `description`, `var`, `tags` keys. (Skip this check when no SKILL.md is touched.) |
 | **Originality** | If a new skill is added, its directory name does not already exist on `main`. Cross-check via `gh api repos/owner/repo/contents/skills` once per run. |
 | **Size** | `additions + deletions ≤ 500` lines, OR labelled `large-ok` by a maintainer. |
 
 Verdict assignment (first match wins, in this order):
 
-- **OUT-OF-SCOPE** — Scope check fails AND the touched paths are protected (`.github/workflows/`, `aeon`, `scripts/prefetch-*`, `scripts/postprocess-*`). External contributors cannot ship workflow / runtime changes; redirect them to file an issue.
+- **OUT-OF-SCOPE** — Scope check fails AND the touched paths are protected (`.github/workflows/`, `aeon`, `aeon.yml`, `CLAUDE.md`, `AGENTS.md`, `eyebrow.policy.json`, `harness-adapter/`, `scripts/skill_mode.sh`, `scripts/secretcurl.sh`). External contributors cannot ship workflow / runtime changes; redirect them to file an issue.
 - **NEEDS-CHANGES** — Format check fails (SKILL.md missing required frontmatter), OR Originality check fails (skill name collides), OR PR body is empty AND additions > 50.
-- **DEFER** — Size check fails (>500 lines without `large-ok`), OR PR is marked as RFC / proposal-only in the body, OR the PR depends on an external service that requires a secret the maintainer has not provisioned (mentions of `*_API_KEY` in added code without declaring it in the skill's `requires:`).
+- **DEFER** — Scope check fails on a non-protected maintainer path (other `bin/` / `scripts/` / `apps/` files), OR Size check fails (>500 lines without `large-ok`), OR PR is marked as RFC / proposal-only in the body, OR the PR depends on an external service that requires a secret the maintainer has not provisioned (mentions of `*_API_KEY` in added code without declaring it in the skill's `requires:`).
 - **ACCEPTED** — Otherwise. The PR passes every rubric check; ready for `pr-review` to take a depth pass.
 
 ### 6. Post the triage comment
