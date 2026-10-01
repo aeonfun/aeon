@@ -100,14 +100,16 @@ Claude only installs and runs when a skill actually matches - non-matching ticks
 
 ## Circuit breaker (outage protection)
 
-The scheduler trips a per-skill circuit breaker once a skill logs **3 consecutive failures** (`consecutive_failures` in `memory/cron-state.json`). While tripped it stops dispatching that skill every tick - so a dead upstream API or a revoked key can't burn a run every `*/5` for hours - and instead lets **one probe run through every 6 hours** (half-open). A probe that succeeds resets the counter and the skill resumes its normal schedule automatically; a probe that fails re-arms the 6h cooldown. It is auto-recovering, not a kill switch, so an outage self-heals with no operator action. `skill-health` already reports CRITICAL at the same threshold, so a tripped breaker is visible.
+The scheduler trips a per-skill circuit breaker once a skill logs **3 consecutive failures** (`consecutive_failures` in `memory/cron-state.json`). While tripped it stops dispatching that skill every tick - so a dead upstream API or a revoked key can't burn a run every `*/5` for hours - and instead lets **one probe run through every 6 hours** (half-open), but never more often than the skill's own schedule: a probe also waits for the skill's next scheduled slot, so a weekly skill in an outage is probed weekly, not 4 times a day. A probe that succeeds resets the counter and the skill resumes its normal schedule automatically; a probe that fails re-arms the cooldown. It is auto-recovering, not a kill switch, so an outage self-heals with no operator action. `skill-health` already reports CRITICAL at the same threshold, so a tripped breaker is visible.
 
 Tune with repo variables (both optional):
 
 ```
 BREAKER_THRESHOLD      failures in a row before tripping (default 3; 0 disables)
-BREAKER_COOLDOWN_MIN   minutes between half-open probes while tripped (default 360)
+BREAKER_COOLDOWN_MIN   minimum minutes between half-open probes while tripped (default 360)
 ```
+
+Before the breaker trips, a failed run gets **quick retries** 30 minutes apart, until the skill has failed `BREAKER_THRESHOLD` times in a row (3 with the breaker off), so 2 retries for the slot that failed by default. After that the skill only runs on its own schedule. Skills with `schedule: "workflow_dispatch"` or `"reactive"` are never retried or probed by the scheduler.
 
 The decision logic lives in `scripts/breaker.sh` (unit-tested in `scripts/tests/test_breaker.sh`); the scheduler calls it, no inline copy. To hard-disable a skill instead, set `enabled: false` in `aeon.yml`.
 
