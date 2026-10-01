@@ -82,7 +82,16 @@ export const PI_MODELS = [
 ]
 
 export const CURSOR_MODELS = [{ id: 'gpt-5.1', label: 'GPT-5.1' }]
+// hermes defaults to `default`: the model and provider Hermes restores from
+// HERMES_AUTH / its config.yaml (the Nous Portal subscription). resolve-harness.sh
+// treats `default` as "no override" and the hermes adapter omits --model for it,
+// whereas a concrete id here would be written into aeon.yml on harness switch
+// (modelsForHarness(...)[0]) and forwarded as --model, which can move Hermes to
+// a different provider and bypass the Portal subscription. The rest are opt-in
+// overrides. Every id must also appear in aeon.yml's workflow_dispatch `model`
+// choice (scripts/tests/test_dashboard_model_choices.sh enforces it).
 export const HERMES_MODELS = [
+  { id: 'default', label: 'Hermes default' },
   { id: 'anthropic/claude-sonnet-4.6', label: 'Claude Sonnet 4.6' },
   { id: 'openai/gpt-5.4', label: 'GPT-5.4' },
   { id: 'google/gemini-2.5-pro', label: 'Gemini 2.5 Pro' },

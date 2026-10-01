@@ -13,14 +13,18 @@ on:
         required: false
         type: choice
         default: '(config default)'
-        # Keep in sync with the dashboard's MODELS/GROK_MODELS/CODEX_MODELS/
-        # VIBE_MODELS/PI_MODELS/KIMI_MODELS (apps/dashboard/lib/constants.ts): the
-        # dashboard dispatches `-f model=<id>` and this is a `choice` input, so any id
-        # it offers that's missing here is rejected with HTTP 422 at dispatch time.
+        # Keep in sync with every dashboard model list (MODELS/GROK_MODELS/
+        # CODEX_MODELS/VIBE_MODELS/PI_MODELS/KIMI_MODELS/CURSOR_MODELS/HERMES_MODELS
+        # in apps/dashboard/lib/constants.ts): the dashboard dispatches
+        # `-f model=<id>` and this is a `choice` input, so any id it offers that's
+        # missing here is rejected with HTTP 422 at dispatch time.
+        # scripts/tests/test_dashboard_model_choices.sh enforces it.
         # Each harness runs its own native family: codex uses openai/* ids; kimi
         # moonshotai/*; vibe mistralai/mistral-medium-3-5 (default) + deepseek/
-        # deepseek-v4-flash; pi deepseek/deepseek-v4-flash (default) + deepseek-v4-pro.
-        # "Resolve harness" forwards them verbatim as the harness model.
+        # deepseek-v4-flash; pi deepseek/deepseek-v4-flash (default) + deepseek-v4-pro;
+        # cursor its own ids; hermes `default` (its configured provider) or an
+        # OpenRouter-style override. "Resolve harness" forwards them verbatim as the
+        # harness model (`default` means no override).
         options:
           - '(config default)'
           - claude-sonnet-5
@@ -39,6 +43,10 @@ on:
           - moonshotai/kimi-k3
           - moonshotai/kimi-k2.7-code
           - gpt-5.1
+          - default
+          - anthropic/claude-sonnet-4.6
+          - openai/gpt-5.4
+          - google/gemini-2.5-pro
       harness:
         description: 'Agent harness'
         required: false
@@ -725,6 +733,7 @@ jobs:
           GLM_MODEL_SONNET: ${{ vars.GLM_MODEL_SONNET }}
           GLM_MODEL_OPUS: ${{ vars.GLM_MODEL_OPUS }}
           GLM_MODEL_HAIKU: ${{ vars.GLM_MODEL_HAIKU }}
+          GROK_MODEL: ${{ vars.GROK_MODEL }}
           GLM_REASONING_EFFORT: ${{ vars.GLM_REASONING_EFFORT }}
           CCR_LOG: ${{ vars.CCR_LOG }}
           # Optional Langfuse observability — set both keys to stream Claude Code's
@@ -827,7 +836,7 @@ jobs:
           # grok's current default (grok-4.5) unless an explicit grok model was
           # chosen. The grok adapter omits --model for a non-grok value as a safety net.
           if [ "$HARNESS" = "grok" ]; then
-            case "$MODEL" in claude-*|"") MODEL="grok-4.5" ;; esac
+            case "$MODEL" in claude-*|default|"") MODEL="grok-4.5" ;; esac
           fi
           # Banner must name the model that ACTUALLY runs. For claude/grok that is
           # $MODEL (their native id). For the adapter harnesses (codex/pi/vibe/kimi)
@@ -1525,6 +1534,7 @@ jobs:
           GLM_MODEL_SONNET: ${{ vars.GLM_MODEL_SONNET }}
           GLM_MODEL_OPUS: ${{ vars.GLM_MODEL_OPUS }}
           GLM_MODEL_HAIKU: ${{ vars.GLM_MODEL_HAIKU }}
+          GROK_MODEL: ${{ vars.GROK_MODEL }}
           GLM_REASONING_EFFORT: ${{ vars.GLM_REASONING_EFFORT }}
           CCR_LOG: ${{ vars.CCR_LOG }}
           LANGFUSE_PUBLIC_KEY: ${{ secrets.LANGFUSE_PUBLIC_KEY }}
@@ -1796,6 +1806,7 @@ jobs:
           GLM_MODEL_SONNET: ${{ vars.GLM_MODEL_SONNET }}
           GLM_MODEL_OPUS: ${{ vars.GLM_MODEL_OPUS }}
           GLM_MODEL_HAIKU: ${{ vars.GLM_MODEL_HAIKU }}
+          GROK_MODEL: ${{ vars.GROK_MODEL }}
           GLM_REASONING_EFFORT: ${{ vars.GLM_REASONING_EFFORT }}
           GLM_API_KEY: ${{ secrets.GLM_API_KEY }}
           ZAI_API_KEY: ${{ secrets.ZAI_API_KEY }}

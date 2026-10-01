@@ -35,9 +35,9 @@ vibe, and kimi at once. Their model picker offers OpenRouter ids rather than the
 `claude-*`/`grok-*` ids, and the model you pick is what actually runs. Each of
 these harnesses carries its own curated list (`CODEX_MODELS` /
 `VIBE_MODELS` / `PI_MODELS` / `KIMI_MODELS`): **codex**
-defaults to `openai/gpt-5-mini` (it fails on `gpt-5-nano`) and also offers the
-codex-tuned line (`gpt-5.1-codex-mini`, `gpt-5.3-codex`) and the general
-`gpt-5.6` family (`luna`, `terra`); **vibe**'s generic `ProviderConfig` drives any
+defaults to the codex-tuned `openai/gpt-5.1-codex-mini` (it fails on `gpt-5-nano`)
+and also offers `gpt-5-mini` (the prior default), `gpt-5.3-codex`, and the
+general `gpt-5.6` family (`luna`, `terra`); **vibe**'s generic `ProviderConfig` drives any
 OpenRouter model, so it defaults to `mistralai/mistral-medium-3-5` and offers
 `deepseek/deepseek-v4-flash`; **pi** (litellm `openrouter/<slug>` routing) runs the
 DeepSeek V4 pair — `deepseek-v4-flash` (default) and `deepseek-v4-pro`; **kimi** is

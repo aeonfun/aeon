@@ -30,8 +30,8 @@
     "_floor_note": "Unset for the free-credit default. Set floor + bedrock_prices only if you fund a real per-token Bedrock cost.",
     "bedrock_prices": {
       "claude-opus-4.5": {
-        "input": 15.0,
-        "output": 75.0
+        "input": 5.0,
+        "output": 25.0
       },
       "claude-sonnet-4.5": {
         "input": 3.0,
@@ -56,8 +56,8 @@
     "_floor_note": "Unset for the free-credit default. Set floor + vertex_prices only if you fund a real per-token Vertex cost.",
     "vertex_prices": {
       "claude-opus-4.5": {
-        "input": 15.0,
-        "output": 75.0
+        "input": 5.0,
+        "output": 25.0
       },
       "claude-sonnet-4.5": {
         "input": 3.0,
@@ -66,7 +66,7 @@
     },
     "model_map": {
       "claude-opus-4.5": {
-        "id": "claude-opus-4-5@20250514",
+        "id": "claude-opus-4-5@20251101",
         "location": "us-east5"
       },
       "gemini-2.5-flash": "gemini-2.5-flash"

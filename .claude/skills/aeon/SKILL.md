@@ -442,7 +442,7 @@ Nine harnesses: `claude` (default), `grok`, `codex`, `pi`, `vibe`, `kimi`, `fx`,
 
 - **Set it:** `./aeon config set harness grok` globally, or `harness: "grok"` on a single skill's `aeon.yml` entry — **quoted, on the entry's one inline line**. Per-skill `model:` and `harness:` are read by a single-line grep that requires double quotes (`aeon.yml:367`, `:380`), so an unquoted or line-split override is silently ignored and the skill keeps running the global default — no error, and the log's `model=` line looks normal. After setting either by CLI, re-read the entry and add the quotes if they're missing.
 - **Auth:** `XAI_API_KEY`, or an X account (SuperGrok / X Premium+) via the dashboard's **Connect X account**, which stores `GROK_CREDENTIALS`. There is no CLI flag for the X OAuth flow — send them to `./aeon` (the dashboard) for that one.
-- **Models:** `grok-4.5` (default, reasoning) or `grok-composer-2.5-fast` (cheap).
+- **Models:** `grok-4.5` (default, reasoning), the one id the dashboard offers for the harness. Older api.x.ai ids such as `grok-composer-2.5-fast` are not harness models (the grok CLI rejects them on an X-account login); they work only on the `grok` gateway path (`XAI_API_KEY` plus the `GROK_MODEL` repo variable).
 - **No free tier.**
 
 Tell them up front:
@@ -450,4 +450,4 @@ Tell them up front:
 - The X OAuth session expires. If unattended runs start failing on auth, reconnect.
 - `mode: read-only` still applies (the wrapper OS sandbox write-locks the workspace on every harness), and MCP works.
 
-Per-skill grok knobs, in `SKILL.md` frontmatter (ignored on the Claude harness): `max_turns` (default 60), `best_of_n`, `verify`, and `effort` (`low|medium|high|xhigh|max` — reasoning models only; `grok-composer-2.5-fast` rejects it).
+Per-skill grok knobs, in `SKILL.md` frontmatter (ignored on the Claude harness): `max_turns` (default 60), `best_of_n`, `verify`, and `effort` (`low|medium|high|xhigh|max`, reasoning models only; non-reasoning models reject it).

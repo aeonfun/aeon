@@ -206,7 +206,7 @@ exists for it (see §2/§3 below), so it needs its own `AI_GATEWAY_API_KEY`.
 
 | harness | install | model default | `--model` passed | config notes |
 |---|---|---|---|---|
-| **codex** | `npm i -g @openai/codex@0.144.6` | `openai/gpt-5-mini` | bare id | `~/.codex/config.toml`: `wire_api = "responses"` (0.144.6 removed `"chat"`), `model_reasoning_effort = "medium"` (OpenRouter 400s on reasoning-disabled) |
+| **codex** | `npm i -g @openai/codex@0.144.6` | `openai/gpt-5.1-codex-mini` | bare id | `~/.codex/config.toml`: `wire_api = "responses"` (0.144.6 removed `"chat"`), `model_reasoning_effort = "medium"` (OpenRouter 400s on reasoning-disabled) |
 | **pi** | `npm i -g --ignore-scripts @earendil-works/pi-coding-agent` | `deepseek/deepseek-v4-flash` | `openrouter/<model>` | reads `OPENROUTER_API_KEY` from env |
 | **vibe** | `pipx install mistral-vibe` | `mistralai/mistral-medium-3-5` | none (config alias) | `~/.vibe/config.toml`: provider `api_style=openai`, `api_key_env_var` |
 | **kimi** | `npm i -g @moonshot-ai/kimi-code` | `moonshotai/kimi-k2.5` | none (config alias) | `~/.kimi-code/config.toml`: key **inline** (no env indirection), `default_model` set |

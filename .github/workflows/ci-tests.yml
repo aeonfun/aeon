@@ -1,8 +1,9 @@
 name: ci-tests
 
 # Runs the committed script test suites on every PR that touches scripts/, bin/,
-# harness-adapter/ (run-harness + lib/sandbox.sh included), skills/, aeon.yml, or
-# the aeon/chain-runner workflows the tests assert against.
+# harness-adapter/ (run-harness + lib/sandbox.sh included), skills/, aeon.yml, the
+# dashboard model lists (apps/dashboard/lib/constants.ts), or the
+# aeon/chain-runner workflows the tests assert against.
 # These are the local tests authored alongside the hardening "easy wins" ported from
 # aeon-dev (notify formatting, capability modes, config validation) — same gate shape
 # as the other ci-*.yml. Keeps the extracted ./notify and the helper scripts honest.
@@ -19,6 +20,7 @@ on:
       - 'harness-adapter/**'
       - '.github/workflows/chain-runner.yml'
       - 'skills/**'
+      - 'apps/dashboard/lib/constants.ts'
       - '.github/workflows/ci-tests.yml'
   push:
     branches: [main]
@@ -32,6 +34,7 @@ on:
       - 'harness-adapter/**'
       - '.github/workflows/chain-runner.yml'
       - 'skills/**'
+      - 'apps/dashboard/lib/constants.ts'
       - '.github/workflows/ci-tests.yml'
   workflow_dispatch:
 
@@ -112,6 +115,8 @@ jobs:
         run: bash scripts/tests/test_resolve_harness.sh
       - name: workflow harness choice tests
         run: bash scripts/tests/test_workflow_harness_choices.sh
+      - name: dashboard model lists vs workflow model choices + harness defaults
+        run: bash scripts/tests/test_dashboard_model_choices.sh
       - name: harness install/config tests
         run: bash scripts/tests/test_install_harness.sh
       - name: run-harness sandbox-gate tests
@@ -189,6 +194,8 @@ jobs:
         run: bash scripts/tests/test_audit.sh
       - name: dry-run gate (synthetic secrets, no real leak, pass criteria)
         run: bash scripts/tests/test_dry_run.sh
+      - name: dry-run harness/model dispatch boundary tests
+        run: bash scripts/tests/test_dry_run_dispatch.sh
       - name: secretcurl argv-exposure tests
         run: bash scripts/tests/test_secretcurl.sh
       - name: secretcurl xai retry tests

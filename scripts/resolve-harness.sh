@@ -131,7 +131,9 @@ elif [ -n "$SKILL_MODEL" ]; then
 else
   REQ_MODEL="${CONFIG_MODEL:-}"
 fi
-case "$REQ_MODEL" in claude-*|grok-*|"") REQ_MODEL="" ;; esac   # aeon-native / unset → not an OpenRouter id
+# `default` is the hermes dashboard pick ("use Hermes' configured model"); for
+# every harness it means "no override", so it falls through to DEFAULT_HM too.
+case "$REQ_MODEL" in claude-*|grok-*|default|"") REQ_MODEL="" ;; esac   # aeon-native / unset → not an OpenRouter id
 
 # NOTE: changing any per-harness DEFAULT_HM below also requires updating the
 # expected values in scripts/tests/test_resolve_harness.sh (a stale codex pin

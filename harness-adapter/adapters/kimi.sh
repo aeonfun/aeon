@@ -6,8 +6,9 @@
 #     {role,content} messages + a trailing {role:"meta"} resume hint -> .result
 #     is the last assistant message's content.
 #   * stream-json exposes no token usage -> counts normalize to 0.
-#   * model is an alias resolved from config.toml providers; default here is a
-#     small OpenRouter model (or-nano). --model / -m passes through.
+#   * model is an alias resolved from config.toml providers; install-harness.sh
+#     stages `or-cheap` (the OpenRouter model aeon resolved) or `kimi-native`
+#     (Moonshot key / OAuth) as default_model. --model / -m passes through.
 #   * NO native FS sandbox and read-only is SANDBOX-ONLY (its -p mode executes
 #     tools with no permission-layer gate) -> read-only relies entirely on the
 #     dispatcher's wrapper OS sandbox.

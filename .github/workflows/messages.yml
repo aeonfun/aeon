@@ -537,6 +537,7 @@ jobs:
           GLM_MODEL_SONNET: ${{ vars.GLM_MODEL_SONNET }}
           GLM_MODEL_OPUS: ${{ vars.GLM_MODEL_OPUS }}
           GLM_MODEL_HAIKU: ${{ vars.GLM_MODEL_HAIKU }}
+          GROK_MODEL: ${{ vars.GROK_MODEL }}
           GLM_REASONING_EFFORT: ${{ vars.GLM_REASONING_EFFORT }}
           CCR_LOG: ${{ vars.CCR_LOG }}
           # Optional Langfuse observability — traces the conversational-reply run
@@ -607,7 +608,7 @@ jobs:
           # with a ::warning::, because nothing on this workflow could install them.
           # On grok a claude-* model id is meaningless — fall back to grok's default.
           if [ "$HARNESS" = "grok" ]; then
-            case "$MODEL" in claude-*|"") MODEL="grok-4.5" ;; esac
+            case "$MODEL" in claude-*|default|"") MODEL="grok-4.5" ;; esac
           fi
           echo "Using harness: $HARNESS  |  auth: $AUTH_MODE  |  model: ${MODEL_ARG:-$MODEL}"
 

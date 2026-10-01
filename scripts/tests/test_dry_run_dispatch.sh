@@ -77,7 +77,11 @@ DRYRUN_HARNESS=codex DRYRUN_MODEL=gpt-6-astra run
 check jq -e '.passed and .harness == "codex" and .requested_model == "gpt-6-astra"' output/result.json
 DRYRUN_HARNESS=codex DRYRUN_MODEL=gpt-6-astra run --harness claude --model sonnet
 check jq -e '.passed and .harness == "claude" and .requested_model == "sonnet"' output/result.json
-for pair in 'codex claude-sonnet-4' 'claude gpt-6-astra' 'codex openai/gpt-6-astra'; do
+# codex's production default and every dashboard CODEX_MODELS id is openai/*.
+run --harness codex --model openai/gpt-5.1-codex-mini
+check jq -e '.passed and .harness == "codex" and .requested_model == "openai/gpt-5.1-codex-mini"' output/result.json
+check grep -qx openai/gpt-5.1-codex-mini output/args
+for pair in 'codex claude-sonnet-4' 'claude gpt-6-astra' 'claude openai/gpt-6-astra' 'codex grok-4.5'; do
   read -r h m <<< "$pair"
   expect_failure --harness "$h" --model "$m"
   check jq -e '.passed == false' output/.dry-run/probe.json

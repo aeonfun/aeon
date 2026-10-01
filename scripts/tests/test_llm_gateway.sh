@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Tests for the glm, openrouter and hivemindos arms of scripts/llm-gateway.sh.
+# Tests for the glm, openrouter, grok and hivemindos arms of scripts/llm-gateway.sh.
 # The shim is SOURCED by the workflow, so these tests source it too. Each case
 # runs in a subshell so exported CLAUDE_CODE_* / ANTHROPIC_* vars don't leak.
 # Run: bash scripts/tests/test_llm_gateway.sh
@@ -89,6 +89,41 @@ or_model() {  # $1 = run model id; prints the MODEL the arm resolves
   [ "$MODEL" = "x/sonnet" ] && [ "$ANTHROPIC_DEFAULT_OPUS_MODEL" = "x/opus" ]
 ) && pass "openrouter: per-tier repo vars override the slugs" \
   || bad "openrouter: per-tier repo vars override the slugs"
+
+# --- grok arm ---------------------------------------------------------------
+# Native arm, no sidecar: every slot is pinned to one grok model, GROK_MODEL wins.
+grok_model() {  # $1 = GROK_MODEL value ("" = unset); prints the MODEL the arm resolves
+  ( unset GROK_MODEL
+    [ -n "$1" ] && export GROK_MODEL="$1"
+    export GATEWAY=grok XAI_API_KEY=test-key MODEL=claude-opus-4-8
+    # shellcheck disable=SC1090
+    source "$GW" >/dev/null
+    printf '%s|%s|%s' "$MODEL" "$ANTHROPIC_DEFAULT_OPUS_MODEL" "$ANTHROPIC_DEFAULT_HAIKU_MODEL" )
+}
+[ "$(grok_model "")" = "grok-4.5|grok-4.5|grok-4.5" ] \
+  && pass "grok: unset GROK_MODEL pins every slot to the default" \
+  || bad "grok: unset GROK_MODEL pins every slot to the default (got $(grok_model ""))"
+[ "$(grok_model grok-build-0.1)" = "grok-build-0.1|grok-build-0.1|grok-build-0.1" ] \
+  && pass "grok: GROK_MODEL repo var overrides every slot" \
+  || bad "grok: GROK_MODEL repo var overrides every slot (got $(grok_model grok-build-0.1))"
+
+# Every workflow step that hands the gateway its model repo vars must hand it
+# GROK_MODEL too, or the documented var silently never reaches the grok arm.
+python3 - <<'PY' && pass "workflows: GROK_MODEL wired wherever the gateway model vars are" \
+  || bad "workflows: GROK_MODEL wired wherever the gateway model vars are"
+import sys, yaml
+missing = []
+for wf in (".github/workflows/aeon.yml", ".github/workflows/messages.yml"):
+    doc = yaml.safe_load(open(wf, encoding="utf-8"))
+    for job_name, job in (doc.get("jobs") or {}).items():
+        for step in job.get("steps") or []:
+            env = step.get("env") or {}
+            if "GLM_MODEL" in env and env.get("GROK_MODEL") != "${{ vars.GROK_MODEL }}":
+                missing.append(f"{wf}:{job_name}/{step.get('name', '?')}")
+if missing:
+    print("missing GROK_MODEL:", *missing, sep="\n  ", file=sys.stderr)
+    sys.exit(1)
+PY
 
 # --- hivemindos arm --------------------------------------------------------
 # A sidecar arm, so AEON_GATEWAY_DRY_RUN stands in for ccr: it prints the

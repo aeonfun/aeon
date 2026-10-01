@@ -145,6 +145,14 @@ mkfixture codex claude-sonnet-5
 mkfixture codex grok-4.5
 [ "$(get MODEL_ARG)" = "openai/gpt-5.1-codex-mini" ] \
   && pass "grok-* config model ignored → per-harness default" || bad "grok-* model passthrough"
+# `default` (the hermes dashboard pick, "Hermes' configured model") is "no
+# override" for every harness: codex must not receive --model default.
+mkfixture codex default
+[ "$(get MODEL_ARG)" = "openai/gpt-5.1-codex-mini" ] \
+  && pass "default config model → per-harness default" || bad "default model passthrough (got '$(get MODEL_ARG)')"
+mkfixture hermes default
+[ "$(get HARNESS_MODEL "" HERMES_AUTH=xx)" = "default" ] \
+  && pass "hermes: default config model stays default" || bad "hermes default model"
 mkfixture codex openai/gpt-5
 [ "$(get MODEL_ARG)" = "openai/gpt-5" ] \
   && pass "OpenRouter config model is forwarded" || bad "OpenRouter model passthrough"
