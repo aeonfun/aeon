@@ -185,13 +185,15 @@ A non-zero exit means the branch would turn `ci-skill-packs` red. Revert the uni
 EYEBROW_OK=0
 EB=$(command -v eyebrow || true)
 if [ -z "$EB" ]; then
-  # Use the SAME eyebrow version ci-skill-integrity.yml pins, parsed from the
-  # workflow's `alexverify/eyebrow/action@<sha> # vX.Y.Z` comment. A hardcoded
-  # version silently drifts from CI (the lock this writes with an older binary
-  # then fails CI's newer `eyebrow verify` as drift - the recurring sync red);
-  # deriving it self-heals across action bumps. Fall back to v0.4.2 if unparsable.
-  EBV=$(grep -oE 'alexverify/eyebrow/action@[0-9a-f]+ *# *v[0-9]+\.[0-9]+\.[0-9]+' .github/workflows/ci-skill-integrity.yml | grep -oE 'v[0-9]+\.[0-9]+\.[0-9]+' | head -1)
-  EBV=${EBV:-v0.4.2}
+  # Use the SAME eyebrow binary ci-skill-integrity.yml runs, parsed from the
+  # eyebrow step's `version:` input (the action downloads exactly that binary).
+  # Not the `# vX.Y.Z` comment on the `uses:` line: Dependabot bumps only the ref
+  # + comment, so the comment can drift ahead of the binary CI really runs, and a
+  # lock written with that newer binary then trips CI as drift (the recurring
+  # sync red). Fall back to the comment, then v0.5.6, if unparsable.
+  EBV=$(grep -A6 'alexverify/eyebrow/action@' .github/workflows/ci-skill-integrity.yml | grep -oE '^ *version: *v[0-9]+\.[0-9]+\.[0-9]+' | grep -oE 'v[0-9]+\.[0-9]+\.[0-9]+' | head -1)
+  [ -n "$EBV" ] || EBV=$(grep -oE 'alexverify/eyebrow/action@[0-9a-f]+ *# *v[0-9]+\.[0-9]+\.[0-9]+' .github/workflows/ci-skill-integrity.yml | grep -oE 'v[0-9]+\.[0-9]+\.[0-9]+' | head -1)
+  EBV=${EBV:-v0.5.6}
   # Linux runner (ubuntu-latest) assumed; unknown arch => skip to the fail-safe.
   case "$(uname -m)" in
     x86_64)        A=amd64 ;;
