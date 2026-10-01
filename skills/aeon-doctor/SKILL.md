@@ -21,7 +21,7 @@ You do **not** fix anything — a diagnostic that inspects config must never mut
 
 1. Read `memory/MEMORY.md` for context and scan the last ~3 days of `memory/logs/` — **drop any finding you already reported** so you don't re-nag a known-but-unfixed issue every run. (A finding is "the same" if it's the same check on the same skill.)
 2. Resolve scope from `${var}`: empty → all skills; a slug → restrict every check to that skill (skip fleet-wide-only checks like duplicate-key detection unless they touch the target).
-3. Every check below is a **pure local file read** — `grep`, `comm`, `node scripts/*.js`, `bash scripts/*.sh`. No network, no secrets, no GitHub API. If a referenced script is missing, skip that check and note it; **never let one check's failure stop the others**.
+3. Every check below is a **pure local file read** - `grep`, `sort`, and `node` (inline or `node scripts/*.js`). This skill is `read-only`, whose tool allowlist (`scripts/skill_mode.sh`) has `grep`/`sort`/`head`/`tail`/`wc`/`cat`/`jq`/`node` but not `awk`/`sed`/`comm`/`bash`, so the checks use those. No network, no secrets, no GitHub API. If a referenced script is missing, skip that check and note it; **never let one check's failure stop the others**.
 
 ## Steps — run every check, collect findings
 
@@ -40,15 +40,14 @@ Each printed line is an entry whose `schedule:` isn't double-quoted. **critical*
 A repeated skill name under the `skills:` map silently disables the first copy (last-wins YAML).
 ```bash
 node scripts/validate-config.js                        # authoritative — dup keys + checkout ordering
-grep -oE '^  [a-z0-9-]+:' aeon.yml | sort | uniq -d    # names appearing more than once
+node -e 'const k=require("fs").readFileSync("aeon.yml","utf8").match(/^  [a-z0-9-]+:/gm)||[];const c={};for(const x of k)c[x]=(c[x]||0)+1;for(const x in c)if(c[x]>1)console.log(x.trim().slice(0,-1))'    # names appearing more than once
 ```
-Any name from `uniq -d` (or a dup-key error from the validator) is a finding. **critical** if either copy is enabled. Fix: remove the shadow copy.
+Any printed name (or a dup-key error from the validator) is a finding. **critical** if either copy is enabled. Fix: remove the shadow copy.
 
 ### 3 · On disk but unconfigured — invisible skills (warn)
 A skill with a `SKILL.md` but no `aeon.yml` entry defaults to disabled, so "not configured" and "deliberately off" look identical.
 ```bash
-comm -23 <(ls skills/*/SKILL.md | cut -d/ -f2 | sort) \
-         <(grep -oE '^  [a-z0-9-]+:' aeon.yml | tr -d ' :' | sort)
+node -e 'const fs=require("fs");const k=new Set((fs.readFileSync("aeon.yml","utf8").match(/^  [a-z0-9-]+:/gm)||[]).map(x=>x.trim().slice(0,-1)));for(const d of fs.readdirSync("skills").sort())if(fs.existsSync("skills/"+d+"/SKILL.md")&&!k.has(d))console.log(d)'
 ```
 Each printed name exists on disk but has no config entry. **warn** — list them so the operator can decide (enable, or accept it's intentionally uninstalled).
 
@@ -58,15 +57,7 @@ The inverse: an `aeon.yml` entry pointing at a skill dir that doesn't exist. For
 ### 5 · `requires:` entry the allowlist silently drops (warn)
 Both list forms parse — inline (`requires: [KEY?]`) and block (`- KEY` on its own line), top-level or nested under `metadata:`. What still bites is the *value*: `scripts/skill_requires.sh` injects only names matching `^[A-Z][A-Z0-9_]{2,}$` (a trailing `?` = "works better with" is allowed). An entry that fails the filter — lowercase, fewer than 3 chars, a leading digit, or stray punctuation — is silently dropped, so the skill declares a credential it never receives and fails or degrades with a confusing auth error.
 ```bash
-for f in skills/*/SKILL.md; do awk '
-  /^---$/{n++; next} n!=1{next}
-  function chk(x){ sub(/\?$/,"",x); if(x!="" && x !~ /^[A-Z][A-Z0-9_]{2,}$/) print FILENAME": requires entry \""x"\" is dropped by the allowlist filter" }
-  collecting { if ($0 ~ /^[ \t]*-[ \t]*/){ it=$0; sub(/^[ \t]*-[ \t]*/,"",it); sub(/[ \t]*#.*/,"",it); gsub(/[ \t]/,"",it); chk(it); next } collecting=0 }
-  /^[^ \t]/{im=0} /^metadata:/{im=1}
-  /^requires:/ || (im && /^[ \t]+requires:/){
-    if ($0 ~ /\[/){ line=$0; sub(/.*\[/,"",line); sub(/\].*/,"",line); k=split(line,a,","); for(i=1;i<=k;i++){gsub(/[ \t]/,"",a[i]); chk(a[i])} }
-    else collecting=1
-  }' "$f"; done
+node -e 'const fs=require("fs");for(const d of fs.readdirSync("skills")){const p="skills/"+d+"/SKILL.md";if(!fs.existsSync(p))continue;const fm=(fs.readFileSync(p,"utf8").split(/^---$/m)[1]||"").split("\n");fm.forEach((l,i)=>{const m=l.match(/^\s*requires:\s*(.*)$/);if(!m)return;let it=[];if(m[1].includes("["))it=m[1].replace(/.*\[/,"").replace(/\].*/,"").split(",");else for(let j=i+1;j<fm.length&&/^\s*-\s*/.test(fm[j]);j++)it.push(fm[j].replace(/^\s*-\s*/,"").replace(/\s*#.*/,""));for(let x of it){x=x.replace(/\s/g,"").replace(/\?$/,"");if(x&&!/^[A-Z][A-Z0-9_]{2,}$/.test(x))console.log(p+": requires entry \""+x+"\" is dropped by the allowlist filter")}})}'
 ```
 Flag any entry that fails the filter. **warn**. Fix: use the exact env-var name (uppercase, `^[A-Z][A-Z0-9_]{2,}$`), with a trailing `?` only to mark it optional.
 
@@ -80,7 +71,7 @@ grep -rnE '^[[:space:]]*mode:' skills/*/SKILL.md | grep -vE ':\s*(read-only|writ
 ### 7 · `.mcp.json` unresolved `${VAR}` — kills ALL MCP (warn)
 On the Claude harness a **single** `${VAR}` in `.mcp.json` that resolves to no secret disables **every** MCP server that run (`Skipping MCP this run.`), not just the broken one. List the referenced vars so the operator can confirm each is set:
 ```bash
-[ -f .mcp.json ] && grep -oE '\$\{[A-Z0-9_]+\}' .mcp.json | sort -u
+grep -oE '\$\{[A-Z0-9_]+\}' .mcp.json | sort -u    # no .mcp.json = no output
 ```
 Report the list as **warn** with the note: verify each with `./aeon secrets ls --set`; any one unset silently blacks out MCP for skills that rely on it. (You can't read secret values in read-only mode — surface the vars, don't try to resolve them.)
 
@@ -108,20 +99,14 @@ Each printed line has an unquoted override → **warn**. Fix: quote it (`harness
 ### 11 · Category not one of the six — trips CI (warn)
 Every skill's `category:` must be one of `core evolution basics dev crypto productivity` or the catalog CI gate goes red.
 ```bash
-[ -x scripts/check-skill-categories.sh ] && bash scripts/check-skill-categories.sh
+node -e 'const fs=require("fs");const V=["core","evolution","basics","dev","crypto","productivity"];for(const d of fs.readdirSync("skills")){const p="skills/"+d+"/SKILL.md";if(!fs.existsSync(p))continue;const m=(fs.readFileSync(p,"utf8").split(/^---$/m)[1]||"").match(/^\s*category:\s*["\x27]?([A-Za-z-]+)/m);if(!m||!V.includes(m[1]))console.log(d+": category "+(m?m[1]:"(missing)")+" is not one of "+V.join(" "))}'    # same set as scripts/check-skill-categories.sh
 ```
 Report any offender as **warn**.
 
 ### 12 · Daily-log heading not `### <slug>` — health loop can't key it (warn)
 `CLAUDE.md` mandates each skill append its daily-log entry under a **`### <slug>`** heading — "the health loop parses this shape", and `skill-health` / `heartbeat` key skills by **slug**. A skill that logs under `## <Display Name>` (wrong level *and* wrong identifier) still runs, but its narrative log is harder for the health view to attribute and for the cross-skill dedup ("read the last 3 days of logs") to match — a silent degrade, never an error.
 ```bash
-for f in skills/*/SKILL.md; do
-  s=$(basename "$(dirname "$f")"); grep -qE 'memory/logs/\$\{today\}' "$f" || continue   # only log-writers
-  grep -qE '###[[:space:]]+'"$s"'\b' "$f" && continue                                     # compliant
-  name=$(awk -F': *' '/^name:/{print $2; exit}' "$f" | sed 's/ *$//')
-  hit=$(grep -oE '^##[[:space:]]+('"$s"'|'"${name:-$s}"')\b' "$f" | head -1)
-  [ -n "$hit" ] && echo "$s logs under '$hit' — should be '### $s'"
-done
+node -e 'const fs=require("fs");const e=x=>x.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");for(const s of fs.readdirSync("skills")){const p="skills/"+s+"/SKILL.md";if(!fs.existsSync(p))continue;const t=fs.readFileSync(p,"utf8");if(!/memory\/logs\/\$\{today\}/.test(t))continue;if(new RegExp("###\\s+"+e(s)+"\\b").test(t))continue;const n=((t.match(/^name:\s*(.*)$/m)||[])[1]||s).trim();const h=t.match(new RegExp("^##\\s+("+e(s)+"|"+e(n)+")\\b","m"));if(h)console.log(s+" logs under \""+h[0]+"\" - should be \"### "+s+"\"")}'
 ```
 Each hit → **warn**. Fix: change the Log-section heading (the instruction line *and* the example block) to `### <slug>`, and demote any sub-sections inside the block to `####`.
 

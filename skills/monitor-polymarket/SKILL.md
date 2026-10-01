@@ -91,7 +91,7 @@ The response contains the event `id`, `title`, and a `markets` array. Each marke
 **b) Get 24h price history for each open market:**
 ```bash
 # YES token is index 0 of clobTokenIds
-TOKEN_ID=$(echo "$CLOB_TOKEN_IDS" | python3 -c "import json,sys; print(json.loads(sys.stdin.read())[0])")
+TOKEN_ID=$(echo "$CLOB_TOKEN_IDS" | jq -r '.[0]')   # jq, not python3: python3 is not in the read-only tool allowlist
 curl -s "https://clob.polymarket.com/prices-history?market=$TOKEN_ID&interval=1d&fidelity=60"
 ```
 

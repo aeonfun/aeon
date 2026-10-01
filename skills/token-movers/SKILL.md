@@ -233,13 +233,14 @@ fetch_with_backoff "https://api.geckoterminal.com/api/v2/networks/trending_pools
   && GLOBAL_OK=1 || GLOBAL_OK=0
 sleep 1
 
-# Per-network trending + volume leaders
+# Per-network trending + volume leaders (per-source status, no eval: ${N} comes from var)
+NET_STATUS=""
 for N in $NETWORKS; do
   fetch_with_backoff "https://api.geckoterminal.com/api/v2/networks/${N}/trending_pools?page=1" "$TMPDIR/${N}-trend.json" \
-    && eval "${N}_TREND_OK=1" || eval "${N}_TREND_OK=0"
+    && NET_STATUS="$NET_STATUS ${N}-trend=ok" || NET_STATUS="$NET_STATUS ${N}-trend=fail"
   sleep 1
   fetch_with_backoff "https://api.geckoterminal.com/api/v2/networks/${N}/pools?page=1&sort=h24_volume_usd_desc" "$TMPDIR/${N}-vol.json" \
-    && eval "${N}_VOL_OK=1" || eval "${N}_VOL_OK=0"
+    && NET_STATUS="$NET_STATUS ${N}-vol=ok" || NET_STATUS="$NET_STATUS ${N}-vol=fail"
   sleep 1
 done
 
