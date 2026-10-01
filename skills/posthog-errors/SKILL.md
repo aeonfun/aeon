@@ -260,7 +260,7 @@ then write the final line as `[open]($REPORT_URL)` (a Markdown link, never the b
 path). It resolves once this run's commit lands, seconds after the send.
 
 **Exactly one `./notify` call per run.** Each call overwrites
-`apps/dashboard/outputs/.pending-posthog-errors.md` (last-writer-wins), which becomes
+`$AEON_PENDING_DIR/.pending-posthog-errors.md` (last-writer-wins), which becomes
 the chain artifact `output/.chains/posthog-errors.md` the feed and any `consume:`
 steps read — a follow-up "headline" ping would replace the digest with a stub.
 Everything goes in the single `-f` file.

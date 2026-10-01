@@ -48,7 +48,7 @@ Write the digest: a 2–3 sentence answer up top, then the supporting evidence g
 
 Deliver via `./notify -f <file>` (ordinary Markdown): the answer, the evidence, a `Sources` list of clickable URLs, and a final line `calls: N/<budget>`. This skill is on-demand — a completed run always notifies (unlike monitors, silence isn't signal here).
 
-**Exactly one `./notify` call per run.** Each call overwrites `apps/dashboard/outputs/.pending-<skill>.md` (last-writer-wins), which becomes the chain artifact `output/.chains/glim-mcp.md` that `consume:` steps and the feed read — a follow-up "headline" ping would replace the digest with a stub. Everything goes in the single `-f` file.
+**Exactly one `./notify` call per run.** Each call overwrites `$AEON_PENDING_DIR/.pending-<skill>.md` (last-writer-wins), which becomes the chain artifact `output/.chains/glim-mcp.md` that `consume:` steps and the feed read — a follow-up "headline" ping would replace the digest with a stub. Everything goes in the single `-f` file.
 
 ### 5. Result record
 

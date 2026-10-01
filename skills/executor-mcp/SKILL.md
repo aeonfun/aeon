@@ -47,7 +47,7 @@ Writes through proxied tools are real external side-effects. Only perform a writ
 
 ### 3. Notify
 
-Deliver via `./notify -f` (ordinary Markdown): what the task produced, which integrations/tools were used, and any pending approvals or policy blocks with what the operator should do about them. **Exactly one `./notify` call per run** — each call overwrites `apps/dashboard/outputs/.pending-<skill>.md` (last-writer-wins), which becomes the chain artifact `output/.chains/executor-mcp.md` that `consume:` steps and the feed read. Everything goes in the single `-f` file.
+Deliver via `./notify -f` (ordinary Markdown): what the task produced, which integrations/tools were used, and any pending approvals or policy blocks with what the operator should do about them. **Exactly one `./notify` call per run** — each call overwrites `$AEON_PENDING_DIR/.pending-<skill>.md` (last-writer-wins), which becomes the chain artifact `output/.chains/executor-mcp.md` that `consume:` steps and the feed read. Everything goes in the single `-f` file.
 
 ### 4. Log
 
