@@ -103,6 +103,46 @@ check "every-minute after run"         "* 9 * * *"      2026-07-07T09:30:00Z 202
 check "cap boundary reachable"         "0 6 * * *"     2026-07-07T12:59:00Z 2026-07-06T06:00:00Z 6  due
 check "cap boundary just out"          "0 6 * * *"     2026-07-07T13:00:00Z 2026-07-06T06:00:00Z 6  skip
 
+# --- cron-correct field semantics (B19) ---
+# Calendar: 2026-07-01 = Wed, 2026-07-05 = Sun, 2026-07-13 = Mon.
+# */N on day-of-month / month counts from the field minimum (1), like cron.
+check "dom */2 fires on odd day 1"     "0 0 */2 * *"   2026-07-01T00:30:00Z never                1  due
+check "dom */2 skips even day 2"       "0 0 */2 * *"   2026-07-02T00:30:00Z never                1  skip
+check "month */2 fires in July (7)"    "0 0 1 */2 *"   2026-07-01T00:30:00Z never                1  due
+check "month */2 skips August (8)"     "0 0 1 */2 *"   2026-08-01T00:30:00Z never                1  skip
+# day-of-week 7 is Sunday, alone or as a range end
+check "dow 7 = Sunday"                 "0 10 * * 7"    2026-07-05T10:30:00Z never                1  due
+check "dow range 5-7 covers Sunday"    "0 10 * * 5-7"  2026-07-05T10:30:00Z never                1  due
+check "dow 7 not on Monday"            "0 10 * * 7"    2026-07-06T10:30:00Z never                1  skip
+# leading zeros are decimal, not octal (08 used to crash the arithmetic)
+check "leading zeros 05 08"            "05 08 * * *"   2026-07-07T08:10:00Z 2026-07-06T08:05:00Z 6  due
+check "leading zeros 09 before slot"   "30 09 * * *"   2026-07-07T09:10:00Z 2026-07-06T09:30:00Z 6  skip
+# a list whose element carries a step: 0-10/5,30 = minutes 0,5,10,30
+check "step-range list hits 30"        "0-10/5,30 9 * * *" 2026-07-07T09:31:00Z 2026-07-07T09:12:00Z 6 due
+check "step-range list hits 10"        "0-10/5,30 9 * * *" 2026-07-07T09:12:00Z 2026-07-07T09:06:00Z 6 due
+check "step-range list between slots"  "0-10/5,30 9 * * *" 2026-07-07T09:29:00Z 2026-07-07T09:11:00Z 6 skip
+# Vixie star rule: a day field starting with * keeps AND semantics
+check "vixie */2 dom AND monday (odd)" "0 0 */2 * 1"   2026-07-13T00:30:00Z never                1  due
+check "vixie */2 dom AND monday (even)" "0 0 */2 * 1"  2026-07-06T00:30:00Z never                1  skip
+check "vixie */2 dom AND not monday"   "0 0 */2 * 1"   2026-07-07T00:30:00Z never                1  skip
+# month and weekday names
+check "dow name FRI"                   "0 10 * * FRI"  2026-07-10T10:30:00Z never                1  due
+check "dow name range mon-fri on sun"  "0 10 * * mon-fri" 2026-07-05T10:30:00Z never             1  skip
+check "month name JUL"                 "0 0 1 JUL *"   2026-07-01T00:30:00Z never                1  due
+# invalid schedules are never due (and must not crash the tick)
+check "step zero */0"                  "*/0 * * * *"   2026-07-07T09:30:00Z never                6  skip
+check "minute out of range"            "61 * * * *"    2026-07-07T09:30:00Z never                6  skip
+check "six fields"                     "0 0 * * * *"   2026-07-07T09:30:00Z never                6  skip
+check "garbage field"                  "0 x * * *"     2026-07-07T09:30:00Z never                6  skip
+
+# An invalid schedule warns on stderr instead of crashing (rc 1, message).
+err=$(bash "$SCRIPT" "*/0 * * * *" "$(parse_iso 2026-07-07T09:30:00Z)" 0 6 2>&1 >/dev/null); rc=$?
+if [ "$rc" -eq 1 ] && [[ "$err" == *"invalid schedule"* ]]; then
+  pass=$((pass+1))
+else
+  fail=$((fail+1)); printf 'FAIL: */0 should exit 1 with a stderr warning (rc=%s err=%s)\n' "$rc" "$err"
+fi
+
 echo "---"
 echo "PASS: $pass   FAIL: $fail"
 [ "$fail" -eq 0 ]

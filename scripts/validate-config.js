@@ -28,6 +28,9 @@
 //      (`when: "score > 5"`) must be a well-formed <key> <op> <value> expression,
 //      with ordering ops requiring an integer value, so an invalid expression is
 //      caught at config time rather than when the chain runs.
+//   6. Schedule format - every skill and chain `schedule:` is workflow_dispatch,
+//      reactive, or a 5-field cron expression scripts/cron-due.sh accepts, so a
+//      typo (`*/0`, `61`, a 6th field) fails CI instead of silently never firing.
 //
 // Output contract:
 //   - Exit 0 + only PASS lines  => CLEAN
@@ -353,6 +356,69 @@ function checkChainWhen(lines) {
   else pass('PASS chain-when: all chain when: expressions are well-formed');
 }
 
+// ---------------------------------------------------------------------------
+// Check 6 - schedule format. scripts/cron-due.sh treats a malformed schedule as
+// "never due" (with a stderr warning on every tick), so a typo silently stops a
+// skill. Mirror its grammar here: 5 fields, each a comma list of `*`, `N` or
+// `N-M`, optionally `/STEP` (STEP >= 1), numbers in the field's range; month and
+// day-of-week names (JAN-DEC, SUN-SAT) are accepted.
+// ---------------------------------------------------------------------------
+const CRON_FIELDS = [
+  ['minute', 0, 59], ['hour', 0, 23], ['day-of-month', 1, 31], ['month', 1, 12], ['day-of-week', 0, 7],
+];
+const MONTH_NAMES = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+const DOW_NAMES = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+
+// Pure: returns null when valid, else a short reason.
+function validateSchedule(sched) {
+  const s = String(sched).trim();
+  if (s === 'workflow_dispatch' || s === 'reactive') return null;
+  const fields = s.split(/\s+/);
+  if (fields.length !== 5) return 'expected 5 cron fields, got ' + fields.length;
+  for (let f = 0; f < 5; f++) {
+    const [name, lo, hi] = CRON_FIELDS[f];
+    let field = fields[f].toUpperCase();
+    if (f === 3) MONTH_NAMES.forEach((n, i) => { field = field.split(n).join(String(i + 1)); });
+    if (f === 4) DOW_NAMES.forEach((n, i) => { field = field.split(n).join(String(i)); });
+    for (const el of field.split(',')) {
+      const m = el.match(/^(\*|(\d+)(?:-(\d+))?)(?:\/(\d+))?$/);
+      if (!m) return 'bad ' + name + ' element "' + el + '"';
+      if (m[4] !== undefined && Number(m[4]) < 1) return name + ' step must be >= 1';
+      if (m[1] === '*') continue;
+      const a = Number(m[2]);
+      const b = m[3] !== undefined ? Number(m[3]) : a;
+      if (a < lo || b > hi || a > b) return name + ' value out of range ' + lo + '-' + hi + ' in "' + el + '"';
+    }
+  }
+  return null;
+}
+
+// Pure: every `schedule:` value in the skills: and chains: blocks, with line numbers.
+function collectSchedules(lines) {
+  const found = [];
+  for (const header of ['skills', 'chains']) {
+    for (const [i, raw] of blockLines(lines, header)) {
+      if (/^\s*#/.test(raw)) continue;
+      const m = raw.match(/\bschedule:\s*(?:"([^"]*)"|'([^']*)'|([^,}#]+))/);
+      if (!m) continue;
+      const v = (m[1] ?? m[2] ?? m[3] ?? '').trim();
+      found.push({ schedule: v, lineNum: i + 1 });
+    }
+  }
+  return found;
+}
+
+function checkSchedules(lines) {
+  const problems = [];
+  const all = collectSchedules(lines);
+  for (const { schedule, lineNum } of all) {
+    const why = validateSchedule(schedule);
+    if (why) problems.push('FAIL: aeon.yml schedule "' + schedule + '" (line ' + lineNum + ') is not valid: ' + why);
+  }
+  if (problems.length > 0) problems.forEach(fail);
+  else pass('PASS schedules: all ' + all.length + ' schedule: values are workflow_dispatch, reactive, or valid 5-field cron');
+}
+
 function main() {
   checkCheckoutOrdering();
 
@@ -364,6 +430,7 @@ function main() {
     checkSkillRefs(lines);
     checkReactiveRefs(lines);
     checkChainWhen(lines);
+    checkSchedules(lines);
   }
 
   out.forEach((l) => console.log(l));
@@ -378,4 +445,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { analyzeCheckout, parseSteps, collectReactiveRefs, validateWhen, validateChainWhen };
+module.exports = { analyzeCheckout, parseSteps, collectReactiveRefs, validateWhen, validateChainWhen, validateSchedule, collectSchedules };

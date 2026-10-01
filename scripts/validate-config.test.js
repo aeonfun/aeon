@@ -13,7 +13,9 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('fs');
 const path = require('path');
-const { analyzeCheckout, collectReactiveRefs, validateWhen, validateChainWhen } = require('./validate-config.js');
+const {
+  analyzeCheckout, collectReactiveRefs, validateWhen, validateChainWhen, validateSchedule, collectSchedules,
+} = require('./validate-config.js');
 
 // Wrap an indented steps body in a minimal single-job workflow.
 const wf = (steps) => `name: run
@@ -176,4 +178,43 @@ test('validateChainWhen: rejects malformed and non-integer ordering', () => {
   assert.equal(validateChainWhen('score >'), false);      // no value
   assert.equal(validateChainWhen('> 5'), false);          // no key
   assert.equal(validateChainWhen(''), false);
+});
+
+test('validateSchedule: accepts cron forms scripts/cron-due.sh can fire', () => {
+  for (const ok of [
+    'workflow_dispatch', 'reactive', '0 8 * * *', '*/30 * * * *', '15 6,14,18 * * *',
+    '0 9-17/2 * * *', '0-10/5,30 9 * * *', '0 0 13 * 5', '0 10 * * 7', '05 08 * * *',
+    '0 10 * * MON-FRI', '0 0 1 jul *',
+  ]) {
+    assert.equal(validateSchedule(ok), null, ok);
+  }
+});
+
+test('validateSchedule: rejects schedules cron-due.sh would never fire', () => {
+  for (const bad of ['*/0 * * * *', '61 * * * *', '0 24 * * *', '0 0 0 * *', '0 0 * 13 *',
+    '0 0 * * 8', '0 0 * * * *', '0 8 * *', '0 x * * *', '10-5 * * * *', 'daily']) {
+    assert.notEqual(validateSchedule(bad), null, bad);
+  }
+});
+
+test('collectSchedules: reads skills + chains schedules and skips comments', () => {
+  const lines = [
+    'skills:',
+    '  a: { enabled: true, schedule: "0 8 * * *" }',
+    '  b:',
+    '    schedule: \'*/0 * * * *\'',
+    'chains:',
+    '  c:',
+    '    schedule: "workflow_dispatch"',
+    '  # d:',
+    '  #   schedule: "bogus"',
+    'model: x',
+  ];
+  assert.deepEqual(collectSchedules(lines).map((s) => s.schedule), ['0 8 * * *', '*/0 * * * *', 'workflow_dispatch']);
+});
+
+test('the live aeon.yml has only valid schedules', () => {
+  const lines = fs.readFileSync(path.join(__dirname, '..', 'aeon.yml'), 'utf8').split('\n');
+  const bad = collectSchedules(lines).filter((s) => validateSchedule(s.schedule) !== null);
+  assert.deepEqual(bad, []);
 });
