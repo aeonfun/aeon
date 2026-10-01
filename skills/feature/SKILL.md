@@ -104,6 +104,30 @@ All branches read operator-controlled files under `memory/` (runtime config — 
 
 ---
 
+## Before any branch: is this already open?
+
+A scheduled run can pick the same work it picked yesterday: an issue stays open until its PR merges, and yesterday's PR may still be in review. Right before creating a branch (A7, B6, C4), ask GitHub, not memory:
+
+```bash
+./scripts/feature-open-pr.sh covered "$REPO" "<branch you are about to create>" [<issue number, when building an issue>]
+```
+
+- exit `0`: an open PR from this account already covers it (same head branch, or it references that issue), or the branch already exists on the remote. Log `FEATURE_SKIP: <repo> — already open: <printed URL or branch>`, send no notification, move on.
+- exit `2`: GitHub could not be read. Treat it as covered and skip; never open a PR blind.
+- exit `1`: nothing covers it. Go ahead.
+
+This only decides whether to open something new. It never pushes to an existing PR; the repair interception above is the only path that does.
+
+## After opening a PR that closes an issue
+
+When the PR body says `Closes #N`, check the claim before reporting it:
+
+```bash
+./scripts/feature-open-pr.sh issue-open "$REPO" N
+```
+
+Exit `0` means #N is a real, open issue. Exit `1` prints what it is instead (`closed`, `pull-request`, `missing`): remove the `Closes #N` line with `gh pr edit`, say in the PR body which issue the change relates to, log `FEATURE_ISSUE_MISMATCH: <repo>#N <state>`, and name the mismatch in the notification rather than claiming the issue is fixed. Exit `2`: leave the PR as is and log `FEATURE_ISSUE_UNCHECKED: <repo>#N`.
+
 ## §A — Watched branch (build a feature on every watched repo)
 
 Runs when `${var}` is empty or `watched[:<feature-spec>]`. Ships **one PR per watched repo** in a single run.
@@ -163,6 +187,8 @@ Write clean, complete code. No TODOs or placeholders. Match the existing code st
 
 ### A7. Branch and push
 
+Run the open-PR check first (see "Before any branch"), with `feat/<short-feature-name>` and the issue number when step A3 picked an issue.
+
 ```bash
 git checkout -b feat/<short-feature-name>
 git add -A
@@ -187,6 +213,8 @@ gh pr create -R owner/repo \
 
 ${AEON_DISPATCH_ID:+<!-- aeon-dispatch:$AEON_DISPATCH_ID -->}"
 ```
+
+When step A3 picked an issue, put `Closes #N` in the body, then run the issue check (see "After opening a PR that closes an issue").
 
 ### A9. Update memory
 
@@ -318,6 +346,8 @@ Write clean, production-ready code:
 
 ### B6. Create a branch and commit
 
+Run the open-PR check first (see "Before any branch"), with `$BRANCH` and the issue number when B4 picked an issue.
+
 ```bash
 BRANCH="ai/SHORT-DESCRIPTION"
 git checkout -b "$BRANCH"
@@ -327,7 +357,7 @@ git commit -m "TYPE: [description]
 [optional body explaining why]"
 ```
 
-Use conventional commit types: `fix:`, `feat:`, `test:`, `docs:`, `chore:`. If fixing an issue, add `Closes #N` to the commit body.
+Use conventional commit types: `fix:`, `feat:`, `test:`, `docs:`, `chore:`. If fixing an issue, add `Closes #N` to the commit body and the PR body, and run the issue check after B7 opens the PR.
 
 ### B7. Push and open a PR
 
@@ -449,7 +479,7 @@ Do NOT attempt:
 
 ### C4. Make the improvement
 
-Clone, branch, change, commit, push, PR:
+Clone, branch, change, commit, push, PR. Run the open-PR check first (see "Before any branch") with the branch `'chore/revive-*'`, which matches a revival PR from any earlier day, so a dormant repo picked again does not get a second one.
 
 ```bash
 gh repo clone "$REPO" "/tmp/repo-revive-${REPO##*/}"

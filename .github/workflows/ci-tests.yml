@@ -168,6 +168,8 @@ jobs:
         run: bash scripts/tests/test_dev_loop_repair.sh
       - name: dev-loop live proof gate tests
         run: bash scripts/tests/test_dev_loop_proof.sh
+      - name: feature open-PR and closing-issue checks
+        run: bash scripts/tests/test_feature_open_pr.sh
       - name: skill-scan calibration (fires on sinks, not benign syntax)
         run: bash scripts/tests/test_skill_scan_calibration.sh
       - name: audit-log redaction tests
