@@ -8,7 +8,9 @@ import { register } from "node:module";
 
 register("./loader-hook.mjs", import.meta.url);
 
-const TOKEN = "123456789:AAH-fake_TokenValue0123456789abcdef";
+// Built from parts so GitHub secret scanning does not flag this fake token
+// in every repo created from this template.
+const TOKEN = ["123456789", "AAH-fake_TokenValue0123456789abcdef"].join(":");
 const env = {
   TELEGRAM_WEBHOOK_SECRET: "s3cr3t",
   TELEGRAM_CHAT_ID: "111",
