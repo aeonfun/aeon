@@ -39,31 +39,47 @@ export function ghArgsRepo(): string[] {
 }
 
 // Ensure GitHub Actions in the managed repo may open (and auto-merge) pull
-// requests. install-skill runs in Actions, where the default GITHUB_TOKEN is
-// read-only and *forbidden from creating PRs* unless the repo's
-// "Allow GitHub Actions to create and approve pull requests" setting is on —
-// a repo setting that does NOT inherit to forks and that a workflow's own
-// `permissions:` block cannot override. Flipping it needs admin, which the
-// in-Actions token never has but the operator's local `gh` does — so the
-// dashboard ensures it here, right before dispatching a PR-opening skill.
+// requests. install-skill runs in Actions, and the default GITHUB_TOKEN is
+// *forbidden from creating PRs* unless the repo's "Allow GitHub Actions to
+// create and approve pull requests" setting is on - a repo setting that does
+// NOT inherit to forks and that a workflow's own `permissions:` block cannot
+// override. Flipping it needs admin, which the in-Actions token never has but
+// the operator's local `gh` does - so the dashboard ensures it here, right
+// before dispatching a PR-opening skill.
+//
+// Only that one switch is touched. The repo's default token permission
+// (default_workflow_permissions, read or write) is read and sent back
+// unchanged: every aeon workflow declares its own `permissions:` block, so
+// widening the default would only loosen workflows that don't.
 // Idempotent and best-effort: a missing-admin / API hiccup must never block the
 // run (install-skill degrades to leaving the branch + a compare link).
+export interface WorkflowPermissions { default_workflow_permissions?: string; can_approve_pull_request_reviews?: boolean }
+
+// The `gh api` PUT args that turn on PR creation while keeping the default
+// token permission as it is, or null when nothing needs to change. Pure.
+export function workflowPermissionsUpdate(repo: string, current: WorkflowPermissions): string[] | null {
+  if (current.can_approve_pull_request_reviews === true) return null
+  const level = current.default_workflow_permissions
+  return ['api', '-X', 'PUT', `repos/${repo}/actions/permissions/workflow`,
+    // Echo the current default back (same as `aeon init`) so only the PR switch moves.
+    ...(level === 'read' || level === 'write' ? ['-f', `default_workflow_permissions=${level}`] : []),
+    '-F', 'can_approve_pull_request_reviews=true']
+}
+
 export function ensureActionsCanOpenPRs(): void {
   const repo = ghRepo()
   if (!repo) return
   try {
-    // Grant write + the create/approve-PRs capability in one PUT.
-    execFileSync('gh', ['api', '-X', 'PUT',
-      `repos/${repo}/actions/permissions/workflow`,
-      '-f', 'default_workflow_permissions=write',
-      '-F', 'can_approve_pull_request_reviews=true',
-    ], { stdio: 'pipe', cwd: REPO_ROOT })
-  } catch { /* lacks admin or transient API error — leave as-is, don't block */ }
+    const current = JSON.parse(execFileSync('gh', ['api', `repos/${repo}/actions/permissions/workflow`],
+      { stdio: 'pipe', cwd: REPO_ROOT }).toString()) as WorkflowPermissions
+    const args = workflowPermissionsUpdate(repo, current)
+    if (args) execFileSync('gh', args, { stdio: 'pipe', cwd: REPO_ROOT })
+  } catch { /* lacks admin or transient API error - leave as-is, don't block */ }
   try {
     // Let install-skill's `gh pr merge --auto` queue the merge behind CI.
     execFileSync('gh', ['repo', 'edit', repo, '--enable-auto-merge'],
       { stdio: 'pipe', cwd: REPO_ROOT })
-  } catch { /* auto-merge unavailable (e.g. private free repo) — skill falls back to direct merge */ }
+  } catch { /* auto-merge unavailable (e.g. private free repo) - skill falls back to direct merge */ }
 }
 
 // Write a repo secret. The value goes in on stdin, never as an argv token, so it
