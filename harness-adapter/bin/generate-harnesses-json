@@ -16,10 +16,18 @@ set -eo pipefail
 # one queryable file instead of scattered across the README table and
 # resolve-harness.sh.
 #
-# The manifest describes harness CAPABILITIES only. The resolver's default-model
-# policy stays in scripts/resolve-harness.sh on purpose - mirroring it here would
-# make this manifest go stale on every model-pin edit, and default model is a
-# router decision, not a harness capability.
+# Each block also carries the harness's CREDENTIALS: every secret that can
+# authenticate it, most preferred first, in exactly the order
+# scripts/resolve-harness.sh picks them, with where to get each one and the
+# command that stores it. The legacy `auth` summary ({native_oauth, native_key,
+# openrouter}) is DERIVED from that list here, so the two cannot disagree.
+# `default_model` mirrors resolve-harness.sh's DEFAULT_HM for a fresh instance.
+# resolve-harness.sh stays the runtime source for both; the manifest is a
+# read-only mirror for the dashboard, `aeon init` and bin/onboard, and
+# scripts/tests/test_credential_manifest.sh fails CI the moment they drift.
+#
+# claude.sh also carries a gw-meta block: the claude harness's LLM-gateway
+# cascade (scripts/llm-gateway.sh), written out as gateways.json in the same pass.
 #
 # The manifest is generated, never hand-edited: change the block in the adapter
 # and re-run this. ci-harnesses-json.yml fails any PR whose committed manifest
@@ -28,6 +36,7 @@ set -eo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 ADAPTERS="$ROOT/adapters"
 OUTPUT="$ROOT/harnesses.json"
+GW_OUTPUT="$ROOT/gateways.json"
 
 command -v jq >/dev/null 2>&1 || { echo "generate-harnesses-json: jq is required" >&2; exit 1; }
 
@@ -36,12 +45,39 @@ FORMAT=(jq .)
 
 # Required keys every adapter meta block must carry. Keep in sync with the enum
 # assertions in scripts/tests/test_generate_harnesses_json.sh.
-REQUIRED='["id","label","cli","invoke","round_trip","token_usage","cost","read_only","structured_output","mcp","max_turns","claude_md","auth","native_control_path"]'
+REQUIRED='["id","label","cli","invoke","round_trip","token_usage","cost","read_only","structured_output","mcp","max_turns","claude_md","default_model","credentials","native_control_path"]'
 
-extract_meta() {  # $1 = adapter file -> the enclosed JSON object on stdout
-  sed -n '/rh-meta-start/,/rh-meta-end/p' "$1" \
-    | grep -v 'rh-meta-start\|rh-meta-end' \
+# Per-credential schema. kind: how the secret is obtained - oauth_capture (a CLI
+# login whose credential files are tar+base64'd into the secret), oauth_token (a
+# token a CLI mints, e.g. claude setup-token), api_key, oidc. auth_mode: the
+# AUTH_MODE resolve-harness.sh reports when this credential is the one in use.
+CRED_KINDS='["oauth_capture","oauth_token","api_key","oidc"]'
+AUTH_MODES='["native-oauth","native-key","openrouter"]'
+CRED_KEYS='["secret","kind","auth_mode","label","prefix","get_url","login_cmd","aeon_cmd","cred_paths","expires","refresh","aux_secrets"]'
+
+extract_block() {  # $1 = adapter file, $2 = block tag -> the enclosed JSON on stdout
+  sed -n "/$2-start/,/$2-end/p" "$1" \
+    | grep -v -e "$2-start" -e "$2-end" \
     | sed -E 's/^#[[:space:]]?//'
+}
+extract_meta() { extract_block "$1" rh-meta; }
+
+# Fail with a named error on a credential entry outside the schema above.
+check_credentials() {  # $1 = adapter basename, $2 = meta JSON
+  local problems
+  problems="$(echo "$2" | jq -r --argjson kinds "$CRED_KINDS" --argjson modes "$AUTH_MODES" --argjson keys "$CRED_KEYS" '
+    (.credentials | if type != "array" or length == 0 then ["credentials must be a non-empty array"] else [] end)
+    + [ (.credentials // [])[] as $c
+        | (if ($c.secret | type) != "string" or ($c.secret | test("^[A-Z][A-Z0-9_]+$") | not) then "bad secret name \($c.secret)" else empty end),
+          (if ($c.kind | IN($kinds[]) | not) then "\($c.secret): kind \($c.kind) not in \($kinds | join("|"))" else empty end),
+          (if ($c.auth_mode | IN($modes[]) | not) then "\($c.secret): auth_mode \($c.auth_mode) not in \($modes | join("|"))" else empty end),
+          (if ($c.label | type) != "string" or $c.label == "" then "\($c.secret): label is required" else empty end),
+          (if ($c.get_url | type) != "string" or ($c.get_url | startswith("https://") | not) then "\($c.secret): get_url must be an https URL" else empty end),
+          (if $c.kind == "oauth_capture" and ((($c.cred_paths | type) != "array") or ($c.login_cmd | type) != "string") then "\($c.secret): oauth_capture needs cred_paths and login_cmd" else empty end),
+          (if (($c | keys) - $keys | length) > 0 then "\($c.secret): unknown key(s) \(($c | keys) - $keys | join(", "))" else empty end) ]
+    + (if ([.credentials[]?.secret] | length) != ([.credentials[]?.secret] | unique | length) then ["duplicate credential secret"] else [] end)
+    | .[]')"
+  [ -z "$problems" ] || { echo "error: adapters/$1.sh credentials: $problems" >&2; exit 1; }
 }
 
 metas=""
@@ -54,15 +90,34 @@ for f in "$ADAPTERS"/*.sh; do
   [ -z "$missing" ] || { echo "error: adapters/$base.sh meta missing key(s): $missing" >&2; exit 1; }
   id="$(echo "$meta" | jq -r '.id')"
   [ "$id" = "$base" ] || { echo "error: adapters/$base.sh meta id '$id' does not match filename '$base'" >&2; exit 1; }
+  if echo "$meta" | jq -e 'has("auth")' >/dev/null; then
+    echo "error: adapters/$base.sh meta has an 'auth' key - it is derived from 'credentials' now, remove it" >&2; exit 1
+  fi
+  check_credentials "$base" "$meta"
+  # The legacy auth summary, derived from the ordered credential list.
+  meta="$(echo "$meta" | jq '. + { auth: {
+    native_oauth: [.credentials[] | select(.auth_mode == "native-oauth") | .secret],
+    native_key:   [.credentials[] | select(.auth_mode == "native-key") | .secret],
+    openrouter:   ([.credentials[] | select(.auth_mode == "openrouter")] | length > 0) } }')"
   metas+="$meta"$'\n'
 done
+
+gw="$(extract_block "$ADAPTERS/claude.sh" gw-meta)"
+[ -n "$gw" ] || { echo "error: no gw-meta block in adapters/claude.sh" >&2; exit 1; }
+echo "$gw" | jq -e 'type == "array" and length > 0' >/dev/null 2>&1 \
+  || { echo "error: adapters/claude.sh gw-meta block is not a non-empty JSON array" >&2; exit 1; }
+gwbad="$(echo "$gw" | jq -r '.[] | select(
+    (.id | type) != "string" or (.label | type) != "string" or (.secrets | type) != "array" or (.secrets | length) == 0
+    or (.prefixes | type) != "array" or (.transport | IN("native","anthropic-compatible","sidecar") | not)
+    or (.base_url | type) != "string" or (.get_url | startswith("https://") | not)) | .id // "?"')"
+[ -z "$gwbad" ] || { echo "error: adapters/claude.sh gw-meta: malformed entry: $gwbad" >&2; exit 1; }
 
 harnesses="$(printf '%s' "$metas" | jq -s 'sort_by(.id)')"
 generated="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 
 jq -n --argjson h "$harnesses" --arg gen "$generated" '
   {
-    note: "harness-adapter capability manifest - the local analog of a UHP GET /v1/harnesses discovery response. Generated by bin/generate-harnesses-json from each adapters/<h>.sh rh-meta block; do not hand-edit. Describes harness capabilities only; default-model policy lives in scripts/resolve-harness.sh.",
+    note: "harness-adapter capability manifest - the local analog of a UHP GET /v1/harnesses discovery response. Generated by bin/generate-harnesses-json from each adapters/<h>.sh rh-meta block; do not hand-edit. credentials are ordered most preferred first, exactly as scripts/resolve-harness.sh picks them, and auth is derived from them; default_model mirrors its DEFAULT_HM. resolve-harness.sh stays the runtime source; scripts/tests/test_credential_manifest.sh keeps this mirror honest.",
     contract: {
       stdin: "prompt",
       stdout: "{result, usage{input_tokens,output_tokens,cache_read_input_tokens,cache_creation_input_tokens}, session_id?, total_cost_usd?}",
@@ -73,4 +128,12 @@ jq -n --argjson h "$harnesses" --arg gen "$generated" '
     harnesses: $h
   }' | "${FORMAT[@]}" > "$OUTPUT"
 
-echo "generate-harnesses-json: wrote $OUTPUT ($(echo "$harnesses" | jq 'length') harnesses)" >&2
+jq -n --argjson g "$gw" --arg gen "$generated" '
+  {
+    note: "LLM-gateway manifest for the claude harness: every provider scripts/llm-gateway.sh can route Claude Code through, in its default GATEWAY_ORDER (the auto cascade). Generated by bin/generate-harnesses-json from the gw-meta block in adapters/claude.sh; do not hand-edit. transport: native = straight to Anthropic, anthropic-compatible = base URL swap, sidecar = claude-code-router translating to an OpenAI-compatible upstream.",
+    generated: $gen,
+    count: ($g | length),
+    gateways: $g
+  }' | "${FORMAT[@]}" > "$GW_OUTPUT"
+
+echo "generate-harnesses-json: wrote $OUTPUT ($(echo "$harnesses" | jq 'length') harnesses) and $GW_OUTPUT ($(echo "$gw" | jq 'length') gateways)" >&2

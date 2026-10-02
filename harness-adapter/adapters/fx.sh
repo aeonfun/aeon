@@ -47,7 +47,7 @@
 # {
 #   "id": "fx",
 #   "label": "fx",
-#   "cli": { "install": "curl -fsSL https://fx.sh/setup.sh | bash", "bin": "fx", "min_version": "0.0.5" },
+#   "cli": { "install": "curl -fsSL https://fx.sh/setup.sh | bash", "bin": "fx", "min_version": "0.0.12" },
 #   "invoke": "fx ask --json --auto --no-save",
 #   "round_trip": true,
 #   "token_usage": "full",
@@ -57,7 +57,11 @@
 #   "mcp": "native",
 #   "max_turns": "native",
 #   "claude_md": "native",
-#   "auth": { "native_oauth": [], "native_key": ["AI_GATEWAY_API_KEY", "VERCEL_OIDC_TOKEN"], "openrouter": false },
+#   "default_model": "default",
+#   "credentials": [
+#     { "secret": "AI_GATEWAY_API_KEY", "kind": "api_key", "auth_mode": "native-key", "label": "Vercel AI Gateway key", "get_url": "https://vercel.com/docs/ai-gateway", "aeon_cmd": "./aeon auth --harness fx --key <key>" },
+#     { "secret": "VERCEL_OIDC_TOKEN", "kind": "oidc", "auth_mode": "native-key", "label": "Vercel OIDC token", "get_url": "https://vercel.com/docs/oidc", "login_cmd": "vercel env pull", "expires": "about 12h (short-lived; best where Vercel provisions it for you)", "refresh": "pull a fresh token with vercel env pull and set it again" }
+#   ],
 #   "native_control_path": "run-harness"
 # }
 # rh-meta-end

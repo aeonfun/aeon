@@ -32,7 +32,7 @@
 # {
 #   "id": "pi",
 #   "label": "Pi",
-#   "cli": { "install": "npm i -g --ignore-scripts @earendil-works/pi-coding-agent", "bin": "pi", "min_version": "0.99.2" },
+#   "cli": { "install": "npm i -g --ignore-scripts @earendil-works/pi-coding-agent@0.99.2", "bin": "pi", "min_version": "0.99.2" },
 #   "invoke": "pi -p --mode json",
 #   "round_trip": true,
 #   "token_usage": "full",
@@ -42,7 +42,13 @@
 #   "mcp": "native",
 #   "max_turns": "timeout",
 #   "claude_md": "native",
-#   "auth": { "native_oauth": [], "native_key": ["ANTHROPIC_API_KEY", "OPENAI_API_KEY"], "openrouter": true },
+#   "default_model": "deepseek/deepseek-v4-flash",
+#   "credentials": [
+#     { "secret": "ANTHROPIC_API_KEY", "kind": "api_key", "auth_mode": "native-key", "label": "Anthropic API key", "prefix": "sk-ant-api", "get_url": "https://console.anthropic.com/settings/keys", "aeon_cmd": "./aeon auth --harness pi --key <sk-ant-api...>" },
+#     { "secret": "ANTHROPIC_OAUTH_TOKEN", "kind": "oauth_token", "auth_mode": "native-key", "label": "Claude subscription token", "prefix": "sk-ant-oat", "get_url": "https://claude.ai", "login_cmd": "claude setup-token", "aeon_cmd": "./aeon auth --harness pi --key <sk-ant-oat...>", "expires": "about 1 year (claude setup-token mints a long-lived token)" },
+#     { "secret": "OPENAI_API_KEY", "kind": "api_key", "auth_mode": "native-key", "label": "OpenAI API key", "prefix": "sk-", "get_url": "https://platform.openai.com/api-keys", "aeon_cmd": "./aeon auth --harness pi --key <sk-...>" },
+#     { "secret": "OPENROUTER_API_KEY", "kind": "api_key", "auth_mode": "openrouter", "label": "OpenRouter key (one key covers most harnesses)", "prefix": "sk-or-", "get_url": "https://openrouter.ai/settings/keys", "aeon_cmd": "./aeon secrets set OPENROUTER_API_KEY --stdin" }
+#   ],
 #   "native_control_path": "run-harness"
 # }
 # rh-meta-end

@@ -1,7 +1,26 @@
 #!/usr/bin/env bash
 # Hermes Agent adapter using documented scripted `hermes -z` and --usage-file.
 # rh-meta-start
-# {"id":"hermes","label":"Hermes (Nous Portal)","cli":{"install":"curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash","bin":"hermes","min_version":"latest"},"invoke":"hermes --usage-file <tmp> -z prompt","round_trip":true,"token_usage":"full","cost":true,"read_only":"sandbox","structured_output":"shim","mcp":"native","max_turns":"native","claude_md":"native","auth":{"native_oauth":["HERMES_AUTH"],"native_key":[],"openrouter":true},"native_control_path":"run-harness"}
+# {
+#   "id": "hermes",
+#   "label": "Hermes (Nous Portal)",
+#   "cli": { "install": "curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash", "bin": "hermes", "min_version": "2026.9.24" },
+#   "invoke": "hermes --usage-file <tmp> -z prompt",
+#   "round_trip": true,
+#   "token_usage": "full",
+#   "cost": true,
+#   "read_only": "sandbox",
+#   "structured_output": "shim",
+#   "mcp": "native",
+#   "max_turns": "native",
+#   "claude_md": "native",
+#   "default_model": "default",
+#   "credentials": [
+#     { "secret": "HERMES_AUTH", "kind": "oauth_capture", "auth_mode": "native-oauth", "label": "Nous Portal login", "get_url": "https://portal.nousresearch.com", "login_cmd": "hermes auth add nous --type oauth", "aeon_cmd": "./aeon auth --harness hermes", "cred_paths": [".hermes/auth.json", ".hermes/config.yaml"], "refresh": "re-run ./aeon auth --harness hermes if a run reports a login error" },
+#     { "secret": "OPENROUTER_API_KEY", "kind": "api_key", "auth_mode": "openrouter", "label": "OpenRouter key (one key covers most harnesses)", "prefix": "sk-or-", "get_url": "https://openrouter.ai/settings/keys", "aeon_cmd": "./aeon secrets set OPENROUTER_API_KEY --stdin" }
+#   ],
+#   "native_control_path": "run-harness"
+# }
 # rh-meta-end
 set -uo pipefail
 . "$RH_LIB/envelope.sh"

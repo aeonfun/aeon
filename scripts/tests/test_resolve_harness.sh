@@ -94,6 +94,8 @@ mkfixture hermes
 mkfixture cursor
 [ "$(get AUTH_MODE "" CURSOR_API_KEY=xx)" = "native-key" ] \
   && pass "cursor: CURSOR_API_KEY → native-key" || bad "cursor native-key"
+[ "$(get AUTH_MODE "" OPENROUTER_API_KEY=xx)" = "none" ] \
+  && pass "cursor: no CURSOR_API_KEY → none (no OpenRouter fallback)" || bad "cursor none label (got '$(get AUTH_MODE "" OPENROUTER_API_KEY=xx)')"
 mkfixture glm
 [ "$(get HARNESS)" = "claude" ] \
   && pass "glm: dead harness name → claude" || bad "glm dead name (got '$(get HARNESS)')"

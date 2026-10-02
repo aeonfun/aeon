@@ -6,7 +6,7 @@
 # {
 #   "id": "claude",
 #   "label": "Claude Code",
-#   "cli": { "install": "npm i -g @anthropic-ai/claude-code", "bin": "claude", "min_version": "2.1.287" },
+#   "cli": { "install": "npm i -g @anthropic-ai/claude-code@2.1.287", "bin": "claude", "min_version": "2.1.287" },
 #   "invoke": "claude -p - --output-format json",
 #   "round_trip": true,
 #   "token_usage": "full",
@@ -16,10 +16,33 @@
 #   "mcp": "native",
 #   "max_turns": "native",
 #   "claude_md": "native+imports",
-#   "auth": { "native_oauth": ["CLAUDE_CODE_OAUTH_TOKEN"], "native_key": ["ANTHROPIC_API_KEY"], "openrouter": false },
+#   "default_model": "claude-sonnet-5-5",
+#   "credentials": [
+#     { "secret": "CLAUDE_CODE_OAUTH_TOKEN", "kind": "oauth_token", "auth_mode": "native-oauth", "label": "Claude subscription (Pro/Max)", "prefix": "sk-ant-oat", "get_url": "https://claude.ai", "login_cmd": "claude setup-token", "aeon_cmd": "./aeon auth --harness claude-code", "expires": "about 1 year (claude setup-token mints a long-lived token)", "refresh": "re-run ./aeon auth --harness claude-code before it expires" },
+#     { "secret": "ANTHROPIC_API_KEY", "kind": "api_key", "auth_mode": "native-key", "label": "Anthropic API key (pay as you go)", "prefix": "sk-ant-api", "get_url": "https://console.anthropic.com/settings/keys", "aeon_cmd": "./aeon auth --key <sk-ant-api...>" }
+#   ],
+#   "gateways": "gateways.json",
 #   "native_control_path": "gateway"
 # }
 # rh-meta-end
+#
+# The claude harness's provider cascade (scripts/llm-gateway.sh), in its default
+# GATEWAY_ORDER. scripts/tests/test_credential_manifest.sh holds it to that file
+# and to apps/dashboard/lib/gateway-registry.ts.
+# gw-meta-start - gateway manifest source of truth (bin/generate-harnesses-json -> gateways.json)
+# [
+#   { "id": "claude", "label": "Claude subscription", "secrets": ["CLAUDE_CODE_OAUTH_TOKEN"], "prefixes": ["sk-ant-oat"], "transport": "native", "base_url": "https://api.anthropic.com", "get_url": "https://claude.ai" },
+#   { "id": "anthropic", "label": "Anthropic API", "secrets": ["ANTHROPIC_API_KEY"], "prefixes": ["sk-ant-api"], "transport": "native", "base_url": "https://api.anthropic.com", "get_url": "https://console.anthropic.com/settings/keys" },
+#   { "id": "openrouter", "label": "OpenRouter", "secrets": ["OPENROUTER_API_KEY"], "prefixes": ["sk-or-"], "transport": "anthropic-compatible", "base_url": "https://openrouter.ai/api", "get_url": "https://openrouter.ai/settings/keys" },
+#   { "id": "bankr", "label": "Bankr", "secrets": ["BANKR_LLM_KEY"], "prefixes": ["bk_"], "transport": "anthropic-compatible", "base_url": "https://llm.bankr.bot", "get_url": "https://docs.bankr.bot/llm-gateway/overview" },
+#   { "id": "usepod", "label": "UsePod", "secrets": ["USEPOD_TOKEN"], "prefixes": [], "transport": "anthropic-compatible", "base_url": "https://api.usepod.ai/proxy/<USEPOD_TOKEN>", "get_url": "https://usepod.ai" },
+#   { "id": "venice", "label": "Venice", "secrets": ["VENICE_API_KEY"], "prefixes": [], "transport": "sidecar", "base_url": "https://api.venice.ai/api/v1/chat/completions", "get_url": "https://venice.ai/settings/api" },
+#   { "id": "surplus", "label": "Surplus Intelligence", "secrets": ["SURPLUS_API_KEY"], "prefixes": ["inf_"], "transport": "sidecar", "base_url": "https://www.surplusintelligence.ai/api/inference/v1/chat/completions", "get_url": "https://surplusintelligence.ai" },
+#   { "id": "grok", "label": "Grok (xAI)", "secrets": ["XAI_API_KEY"], "prefixes": ["xai-"], "transport": "anthropic-compatible", "base_url": "https://api.x.ai", "get_url": "https://console.x.ai" },
+#   { "id": "glm", "label": "GLM (Z.AI)", "secrets": ["GLM_API_KEY", "ZAI_API_KEY"], "prefixes": [], "transport": "anthropic-compatible", "base_url": "https://api.z.ai/api/anthropic", "get_url": "https://z.ai" },
+#   { "id": "hivemindos", "label": "HivemindOS Models", "secrets": ["HIVEMINDOS_CREDIT_TOKEN"], "prefixes": [], "transport": "sidecar", "base_url": "https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/paid-agents/default/chat/completions", "get_url": "https://hivemindos.liamvisionary.com" }
+# ]
+# gw-meta-end
 set -uo pipefail
 . "$RH_LIB/envelope.sh"
 

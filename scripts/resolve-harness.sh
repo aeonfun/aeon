@@ -31,7 +31,8 @@
 # or `eval` after review):
 #   HARNESS        claude | grok | codex | pi | vibe | kimi | fx | cursor | hermes
 #   AUTH_MODE      native-oauth | native-key | openrouter | gateway (claude only:
-#                  a key from aeon.yml's gateway: block, see below)
+#                  a key from aeon.yml's gateway: block, see below) | none
+#                  (cursor with no CURSOR_API_KEY: it has no fallback)
 #   HARNESS_MODEL  the model label for logs/records ("(native:…)" on native auth)
 #   MODEL_ARG      what to pass as `run-harness --model`, or empty for "the
 #                  harness's own staged config decides" (always empty on claude:
@@ -92,7 +93,10 @@ case "$HARNESS" in
   codex) if [ -n "${CODEX_AUTH:-}" ]; then AUTH_MODE="native-oauth"; elif [ -n "${OPENAI_API_KEY:-}" ]; then AUTH_MODE="native-key"; fi ;;
   kimi)  if [ -n "${KIMI_AUTH:-}" ]; then AUTH_MODE="native-oauth"; elif [ -n "${MOONSHOT_API_KEY:-}" ]; then AUTH_MODE="native-key"; fi ;;
   hermes) if [ -n "${HERMES_AUTH:-}" ]; then AUTH_MODE="native-oauth"; fi ;;
-  cursor) if [ -n "${CURSOR_API_KEY:-}" ]; then AUTH_MODE="native-key"; fi ;;
+  # cursor has no OpenRouter path either (install-harness.sh fails closed without
+  # CURSOR_API_KEY), so with no key it is labelled `none` rather than a fallback
+  # that does not exist. Label only: the run still stops at the install step.
+  cursor) if [ -n "${CURSOR_API_KEY:-}" ]; then AUTH_MODE="native-key"; else AUTH_MODE="none"; fi ;;
   vibe)  if [ -n "${MISTRAL_API_KEY:-}" ]; then AUTH_MODE="native-key"; fi ;;
   pi)    if [ -n "${ANTHROPIC_API_KEY:-}" ] || [ -n "${ANTHROPIC_OAUTH_TOKEN:-}" ] || [ -n "${OPENAI_API_KEY:-}" ]; then AUTH_MODE="native-key"; fi ;;
   # fx has no OpenRouter path at all (confirmed: no mention anywhere in its

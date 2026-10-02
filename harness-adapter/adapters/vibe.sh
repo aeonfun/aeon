@@ -23,7 +23,7 @@
 # {
 #   "id": "vibe",
 #   "label": "Mistral Vibe",
-#   "cli": { "install": "", "bin": "vibe", "min_version": "2.25.8" },
+#   "cli": { "install": "pipx install mistral-vibe==2.25.8", "bin": "vibe", "min_version": "2.25.8" },
 #   "invoke": "vibe -p --trust --output json",
 #   "round_trip": true,
 #   "token_usage": "none",
@@ -33,7 +33,11 @@
 #   "mcp": "native",
 #   "max_turns": "native",
 #   "claude_md": "native",
-#   "auth": { "native_oauth": [], "native_key": ["MISTRAL_API_KEY"], "openrouter": true },
+#   "default_model": "mistralai/mistral-medium-3-5",
+#   "credentials": [
+#     { "secret": "MISTRAL_API_KEY", "kind": "api_key", "auth_mode": "native-key", "label": "Mistral API key", "get_url": "https://console.mistral.ai/api-keys", "aeon_cmd": "./aeon auth --harness vibe --key <key>" },
+#     { "secret": "OPENROUTER_API_KEY", "kind": "api_key", "auth_mode": "openrouter", "label": "OpenRouter key (one key covers most harnesses)", "prefix": "sk-or-", "get_url": "https://openrouter.ai/settings/keys", "aeon_cmd": "./aeon secrets set OPENROUTER_API_KEY --stdin" }
+#   ],
 #   "native_control_path": "run-harness"
 # }
 # rh-meta-end

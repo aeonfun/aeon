@@ -23,7 +23,7 @@
 # {
 #   "id": "grok",
 #   "label": "Grok Build",
-#   "cli": { "install": "npm i -g @xai-official/grok", "bin": "grok", "min_version": "1.0.46" },
+#   "cli": { "install": "npm i -g @xai-official/grok@1.0.46", "bin": "grok", "min_version": "1.0.46" },
 #   "invoke": "grok -p --output-format streaming-json",
 #   "round_trip": true,
 #   "token_usage": "full",
@@ -33,7 +33,11 @@
 #   "mcp": "native+trust",
 #   "max_turns": "native",
 #   "claude_md": "native",
-#   "auth": { "native_oauth": ["GROK_CREDENTIALS"], "native_key": ["XAI_API_KEY"], "openrouter": true },
+#   "default_model": "grok-4.7",
+#   "credentials": [
+#     { "secret": "GROK_CREDENTIALS", "kind": "oauth_capture", "auth_mode": "native-oauth", "label": "X account login (grok login)", "get_url": "https://x.ai/grok", "login_cmd": "grok login --device-auth", "aeon_cmd": "./aeon auth --harness grok", "cred_paths": [".grok/auth.json"], "expires": "access token about 6h; xAI rotates the refresh token on every refresh", "refresh": "scripts/run-grok.sh refreshes before each run and writes the rotated token back to GROK_CREDENTIALS, which needs GH_SECRETS_PAT or GH_GLOBAL", "aux_secrets": ["GH_SECRETS_PAT", "GH_GLOBAL"] },
+#     { "secret": "XAI_API_KEY", "kind": "api_key", "auth_mode": "native-key", "label": "xAI API key", "prefix": "xai-", "get_url": "https://console.x.ai", "aeon_cmd": "./aeon auth --harness grok --key <xai-...>" }
+#   ],
 #   "native_control_path": "run-grok.sh"
 # }
 # rh-meta-end

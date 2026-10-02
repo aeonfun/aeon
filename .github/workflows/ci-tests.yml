@@ -21,6 +21,8 @@ on:
       - '.github/workflows/chain-runner.yml'
       - 'skills/**'
       - 'apps/dashboard/lib/constants.ts'
+      - 'apps/dashboard/lib/harness-auth.ts'
+      - 'apps/dashboard/lib/gateway-registry.ts'
       - '.github/workflows/ci-tests.yml'
   push:
     branches: [main]
@@ -35,6 +37,8 @@ on:
       - '.github/workflows/chain-runner.yml'
       - 'skills/**'
       - 'apps/dashboard/lib/constants.ts'
+      - 'apps/dashboard/lib/harness-auth.ts'
+      - 'apps/dashboard/lib/gateway-registry.ts'
       - '.github/workflows/ci-tests.yml'
   workflow_dispatch:
 
@@ -121,6 +125,11 @@ jobs:
         run: bash scripts/tests/test_generate_harnesses_json.sh
       - name: harness resolution tests
         run: bash scripts/tests/test_resolve_harness.sh
+      # harnesses.json credentials/default_model + gateways.json mirror code in
+      # resolve-harness.sh, llm-gateway.sh, install-harness.sh, aeon.yml and the
+      # dashboard registries; this fails the moment any of them drifts.
+      - name: credential manifest consistency tests
+        run: bash scripts/tests/test_credential_manifest.sh
       - name: workflow harness choice tests
         run: bash scripts/tests/test_workflow_harness_choices.sh
       - name: dashboard model lists vs workflow model choices + harness defaults

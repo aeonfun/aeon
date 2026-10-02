@@ -23,7 +23,7 @@
 # {
 #   "id": "kimi",
 #   "label": "Kimi Code",
-#   "cli": { "install": "", "bin": "kimi", "min_version": "2.1.1" },
+#   "cli": { "install": "npm i -g --ignore-scripts @moonshot-ai/kimi-code@2.1.1", "bin": "kimi", "min_version": "2.1.1" },
 #   "invoke": "kimi -p --output-format stream-json",
 #   "round_trip": true,
 #   "token_usage": "none",
@@ -33,7 +33,12 @@
 #   "mcp": "native+overlay",
 #   "max_turns": "timeout",
 #   "claude_md": "native",
-#   "auth": { "native_oauth": ["KIMI_AUTH"], "native_key": ["MOONSHOT_API_KEY"], "openrouter": true },
+#   "default_model": "moonshotai/kimi-k2.6",
+#   "credentials": [
+#     { "secret": "KIMI_AUTH", "kind": "oauth_capture", "auth_mode": "native-oauth", "label": "Kimi (Moonshot) login", "get_url": "https://www.kimi.com", "login_cmd": "kimi login", "aeon_cmd": "./aeon auth --harness kimi", "cred_paths": [".kimi-code/credentials", ".kimi-code/config.toml"], "refresh": "re-run ./aeon auth --harness kimi if a run reports a login error" },
+#     { "secret": "MOONSHOT_API_KEY", "kind": "api_key", "auth_mode": "native-key", "label": "Moonshot API key", "prefix": "sk-", "get_url": "https://platform.moonshot.ai/console/api-keys", "aeon_cmd": "./aeon auth --harness kimi --key <sk-...>" },
+#     { "secret": "OPENROUTER_API_KEY", "kind": "api_key", "auth_mode": "openrouter", "label": "OpenRouter key (one key covers most harnesses)", "prefix": "sk-or-", "get_url": "https://openrouter.ai/settings/keys", "aeon_cmd": "./aeon secrets set OPENROUTER_API_KEY --stdin" }
+#   ],
 #   "native_control_path": "run-harness"
 # }
 # rh-meta-end

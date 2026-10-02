@@ -25,7 +25,15 @@ export const GATEWAY_REGISTRY = {
   // endpoint. No distinctive key prefix (dropdown-only, like UsePod/Venice).
   // Not a harness - there is no glm CLI; harness: glm is a dead name.
   glm: { label: 'GLM (Z.AI)', secretName: 'GLM_API_KEY', prefixes: [], domain: 'z.ai' },
+  // HivemindOS Models: OpenAI-compatible, billed to a credit balance, bridged
+  // by the claude-code-router sidecar (scripts/llm-gateway.sh). No key prefix,
+  // so it is dropdown-only like UsePod/Venice. Last in the auto cascade.
+  hivemindos: { label: 'HivemindOS Models', secretName: 'HIVEMINDOS_CREDIT_TOKEN', prefixes: [], domain: 'hivemindos.liamvisionary.com' },
 } as const
+
+// The claude gateway cascade is mirrored in harness-adapter/gateways.json
+// (generated from adapters/claude.sh); scripts/tests/test_credential_manifest.sh
+// fails CI when a slug, secret, prefix or label here drifts from it.
 
 export type GatewaySlug = keyof typeof GATEWAY_REGISTRY
 

@@ -223,9 +223,38 @@ jq '.harnesses[] | select(.mcp != "unsupported") | .id' harnesses.json
 
 `.github/workflows/ci-harnesses-json.yml` fails any PR whose committed manifest
 does not match a fresh regen, so it cannot drift from the adapters it describes.
-The manifest covers harness *capabilities* only; the resolver's default-model
-policy stays in `scripts/resolve-harness.sh`, so a model-pin edit never
-staleness-fails this gate.
+
+Each harness also lists its **credentials**: every secret that can authenticate
+it, most preferred first, in exactly the order `scripts/resolve-harness.sh`
+picks them. Per entry:
+
+| key | meaning |
+|-----|---------|
+| `secret` | repo secret name |
+| `kind` | `oauth_capture` (a CLI login whose files are tar+base64'd into the secret), `oauth_token` (a token a CLI mints, e.g. `claude setup-token`), `api_key`, `oidc` |
+| `auth_mode` | the `AUTH_MODE` resolve-harness.sh reports when this credential is the one in use (`native-oauth` / `native-key` / `openrouter`) |
+| `label` | human name |
+| `prefix` | key prefix, when the provider has one (optional) |
+| `get_url` | where to get it |
+| `login_cmd` | the provider CLI's own login command (optional) |
+| `aeon_cmd` | the local command that obtains and stores it (optional) |
+| `cred_paths` | `$HOME`-relative files captured, for `oauth_capture` |
+| `expires` / `refresh` | lifetime and how to renew (optional notes) |
+| `aux_secrets` | extra secrets the credential needs to stay alive (grok: `GH_SECRETS_PAT` or `GH_GLOBAL` to persist the rotated refresh token) |
+
+The older `auth` summary (`native_oauth` / `native_key` / `openrouter`) is
+derived from that list by the generator. `default_model` mirrors resolve-harness.sh's
+`DEFAULT_HM` (`default` = the harness's own configured model). The claude harness
+points at [`gateways.json`](gateways.json), generated from the `gw-meta` block in
+`adapters/claude.sh`: every provider `scripts/llm-gateway.sh` can route Claude Code
+through, in its default `GATEWAY_ORDER`, with secret(s), key prefixes, base URL,
+transport (`native` / `anthropic-compatible` / `sidecar`) and where to get a key.
+
+resolve-harness.sh and llm-gateway.sh stay the runtime source; the manifests are a
+read-only mirror for `aeon init`, `bin/onboard` and the dashboard.
+`scripts/tests/test_credential_manifest.sh` (ci-tests) fails the moment they
+drift from those scripts, the install pins, the aeon.yml `env:` blocks, or the
+dashboard's `harness-auth.ts` / `gateway-registry.ts`.
 
 ## Layout
 
@@ -234,6 +263,7 @@ run-harness            dispatcher: args → RH_* env → sandbox/timeout → ada
 adapters/<h>.sh        one per harness: invoke, translate, normalize (claude grok codex pi vibe kimi fx)
 harnesses.json         generated capability manifest (UHP GET /v1/harnesses analog)
 bin/generate-harnesses-json  aggregate adapters' rh-meta blocks → harnesses.json
+gateways.json          generated claude gateway cascade (gw-meta block in adapters/claude.sh)
 lib/envelope.sh        emit/validate the contract envelope
 lib/tools-grammar.sh   --allowedTools → per-harness permissions
 lib/mcp-translate.sh   .mcp.json → codex -c flags / vibe TOML / kimi home; ${VAR} expansion
