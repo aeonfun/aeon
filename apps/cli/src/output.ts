@@ -1,7 +1,7 @@
 // Output helpers shared by every command. A single `--json` switch flips all
 // human rendering to machine-parseable JSON so the CLI drops into scripts.
 
-import { ghAvailable } from '../../dashboard/lib/gh.ts'
+import { ghAvailable, ghArgsRepo } from '../../dashboard/lib/gh.ts'
 
 let jsonMode = false
 export function setJsonMode(on: boolean) { jsonMode = on }
@@ -67,4 +67,19 @@ export function fail(message: string, code = 1): never {
 // specifically failed (e.g. `secrets ls`) keep their own `fail(...)` message.
 export function requireGh(): void {
   if (!ghAvailable()) fail('GitHub CLI not authenticated. Run: gh auth login')
+}
+
+// The upstream template, never an operator's instance. A secret or push aimed
+// here means `gh repo set-default` was never run on a fresh clone, so the write
+// would land on (or 403 against) aeonfun/aeon instead of the operator's repo.
+export const UPSTREAM_REPOS = new Set(['aeonfun/aeon', 'aaronjmars/aeon'])
+export const isUpstreamRepo = (slug: string) => UPSTREAM_REPOS.has(slug.toLowerCase())
+
+// Guard for commands that write secrets: refuse when gh resolves to upstream.
+export function requireInstanceRepo(): void {
+  const args = ghArgsRepo()
+  const repo = args[1] ?? ''
+  if (repo && isUpstreamRepo(repo)) {
+    fail(`gh points at ${repo}, the Aeon template - not your instance. Run \`./aeon init\` (or \`gh repo set-default <you>/<your-repo>\`) first.`)
+  }
 }

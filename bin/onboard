@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# onboard — Validate that this Aeon fork is set up correctly.
+# onboard - Validate that this Aeon instance is set up correctly (read-only).
 #
 # Runs a series of checks against the local repo and (when authenticated to gh)
 # the remote secrets/workflows. Prints a colored checklist with a one-line fix
-# instruction for every gap.
+# instruction for every gap. Changes nothing; ./aeon init is the fixer.
 #
 # Usage:
 #   bin/onboard                  Run every check, print summary, exit 0/1
-#   bin/onboard --remote         Also run a workflow_dispatch of the onboard skill
-#                              so the same checklist arrives in your notification
-#                              channel.
+#   bin/onboard --remote         After the checks, dispatch one heartbeat run, an
+#                              end-to-end test: it proves Actions, the model
+#                              credential and your notification channel work.
 #   bin/onboard --quiet          Suppress per-check output, print summary only
 #   bin/onboard --json           Machine-readable JSON output (no colors, no fixes)
 #   bin/onboard --help           Show this help
@@ -92,15 +92,23 @@ repo_slug() {
 
 REPO_SLUG="$(repo_slug)"
 
+GH_READY=false
+if command -v gh >/dev/null 2>&1 && gh auth status >/dev/null 2>&1; then GH_READY=true; fi
+
+# One `gh secret list` for the whole run (names only, never values).
+SECRET_NAMES=""
+SECRETS_READ=false
+if [[ "$GH_READY" == "true" && -n "$REPO_SLUG" ]]; then
+  if SECRET_NAMES="$(gh secret list -R "$REPO_SLUG" --json name --jq '.[].name' 2>/dev/null)"; then
+    SECRETS_READ=true
+  fi
+fi
+
 has_secret() {
-  # has_secret <NAME> — true if the secret is configured on the remote repo.
-  # Requires `gh` authenticated. Returns 2 if gh isn't available (caller decides).
-  local name="$1"
-  if ! command -v gh >/dev/null 2>&1; then return 2; fi
-  if [[ -z "$REPO_SLUG" ]]; then return 2; fi
-  if ! gh auth status >/dev/null 2>&1; then return 2; fi
-  gh secret list -R "$REPO_SLUG" --json name --jq '.[].name' 2>/dev/null \
-    | grep -qx "$name"
+  # has_secret <NAME> - true if the secret is configured on the remote repo.
+  # Returns 2 if the secret list could not be read (caller decides).
+  [[ "$SECRETS_READ" == "true" ]] || return 2
+  grep -qx "$1" <<<"$SECRET_NAMES"
 }
 
 # --- header ----------------------------------------------------------------
@@ -112,6 +120,32 @@ if [[ "$JSON" != "true" && "$QUIET" != "true" ]]; then
   fi
   printf "\n\n"
 fi
+
+# --- 0. this checkout is an instance, and gh targets it ------------------
+
+case "$(printf '%s' "$REPO_SLUG" | tr '[:upper:]' '[:lower:]')" in
+  "")
+    emit fail "instance repo" "no GitHub remote (origin)" \
+      "./aeon init  (creates your repo from the aeonfun/aeon template and points this folder at it)"
+    ;;
+  aeonfun/aeon|aaronjmars/aeon)
+    emit fail "instance repo" "origin is $REPO_SLUG, the shared template - not your own instance" \
+      "./aeon init  (creates your repo from the template; secrets and runs then land on yours)"
+    ;;
+  *)
+    emit pass "instance repo" "$REPO_SLUG" ""
+    if [[ "$GH_READY" == "true" ]]; then
+      gh_default="$(gh repo set-default --view 2>/dev/null || true)"
+      [[ "$gh_default" == "no default"* ]] && gh_default=""
+      if [[ "$(printf '%s' "$gh_default" | tr '[:upper:]' '[:lower:]')" == "$(printf '%s' "$REPO_SLUG" | tr '[:upper:]' '[:lower:]')" ]]; then
+        emit pass "gh default repo" "$gh_default" ""
+      else
+        emit warn "gh default repo" "${gh_default:-not set} (secrets set from the dashboard/CLI may go elsewhere)" \
+          "gh repo set-default $REPO_SLUG"
+      fi
+    fi
+    ;;
+esac
 
 # --- 1. workflow files exist ----------------------------------------------
 
@@ -172,28 +206,56 @@ else
   fi
 fi
 
-# --- 4. authentication secret (Claude) ------------------------------------
+# --- 4. model credential (from the credential manifest) -------------------
+# Which secrets can run the configured harness comes from the generated
+# manifest (harness-adapter/harnesses.json `credentials`, most preferred first,
+# mirroring scripts/resolve-harness.sh) plus, for claude, every gateway key in
+# harness-adapter/gateways.json - so a gateway-only setup (OpenRouter, Bankr, ...)
+# passes instead of being told it has no Anthropic key.
 
-claude_secret_state="unknown"
-if has_secret ANTHROPIC_API_KEY; then
-  emit pass "auth secret" "ANTHROPIC_API_KEY configured" ""
-  claude_secret_state="ok"
-elif has_secret CLAUDE_CODE_OAUTH_TOKEN; then
-  emit pass "auth secret" "CLAUDE_CODE_OAUTH_TOKEN configured" ""
-  claude_secret_state="ok"
+HARNESS="$(grep -E '^harness:' aeon.yml 2>/dev/null | head -1 | sed 's/^harness:[[:space:]]*//; s/[[:space:]]*#.*$//' | tr -d "\"' " || true)"
+HARNESS="${HARNESS:-claude}"
+MANIFEST="harness-adapter/harnesses.json"
+GATEWAYS="harness-adapter/gateways.json"
+
+if ! command -v jq >/dev/null 2>&1 || [[ ! -f "$MANIFEST" ]]; then
+  emit warn "model credential" "cannot read $MANIFEST (needs jq)" \
+    "Install jq, or check Settings -> Secrets and variables -> Actions for the $HARNESS credential (docs/harnesses.md lists them)."
+elif ! jq -e --arg h "$HARNESS" '.harnesses[] | select(.id == $h)' "$MANIFEST" >/dev/null 2>&1; then
+  emit fail "model credential" "aeon.yml harness '$HARNESS' is not a known harness" \
+    "Set harness: to one of $(jq -r '[.harnesses[].id] | join(", ")' "$MANIFEST") (./aeon config set harness <name>)."
 else
-  case "$?" in
-    1)
-      emit fail "auth secret" "neither ANTHROPIC_API_KEY nor CLAUDE_CODE_OAUTH_TOKEN configured" \
-        "gh secret set ANTHROPIC_API_KEY --body 'sk-ant-...' -R $REPO_SLUG  (or run 'claude setup-token' and set CLAUDE_CODE_OAUTH_TOKEN)"
-      claude_secret_state="missing"
-      ;;
-    *)
-      emit warn "auth secret" "could not verify (gh not authenticated for $REPO_SLUG)" \
-        "Authenticate with 'gh auth login' to verify, or check Settings → Secrets and variables → Actions for ANTHROPIC_API_KEY or CLAUDE_CODE_OAUTH_TOKEN."
-      claude_secret_state="unverified"
-      ;;
-  esac
+  # "<SECRET>\t<label>" for every credential that can run this harness, in order.
+  # A manifest from before `credentials` existed falls back to its auth summary.
+  cand="$(jq -r --arg h "$HARNESS" '.harnesses[] | select(.id == $h) | . as $x
+    | ($x.credentials // (([($x.auth.native_oauth // [])[], ($x.auth.native_key // [])[]] | map({secret: ., label: .}))
+        + (if $x.auth.openrouter then [{secret: "OPENROUTER_API_KEY", label: "OpenRouter"}] else [] end)))[]
+    | "\(.secret)\t\(.label)"' "$MANIFEST")"
+  if [[ -n "$(jq -r --arg h "$HARNESS" '.harnesses[] | select(.id == $h) | .gateways // empty' "$MANIFEST")" && -f "$GATEWAYS" ]]; then
+    cand="$cand"$'\n'"$(jq -r '.gateways[] | select(.transport != "native") | .label as $l | .secrets[] | "\(.)\t\($l) gateway"' "$GATEWAYS")"
+  fi
+  if [[ "$SECRETS_READ" != "true" ]]; then
+    emit warn "model credential" "could not verify ($HARNESS; gh cannot read $REPO_SLUG secrets)" \
+      "gh auth login, then rerun bin/onboard. Any one of these works: $(cut -f1 <<<"$cand" | tr '\n' ' ')"
+  else
+    found=""
+    while IFS=$'\t' read -r secret label; do
+      [[ -n "$secret" ]] || continue
+      if has_secret "$secret"; then found="$secret ($label)"; break; fi
+    done <<<"$cand"
+    if [[ -n "$found" ]]; then
+      emit pass "model credential" "$HARNESS via $found" ""
+    else
+      first_cmd="$(jq -r --arg h "$HARNESS" '[.harnesses[] | select(.id == $h) | (.credentials // [])[] | select(.aeon_cmd != null)][0]
+        | if . == null then "./aeon auth --harness \($h)" else "\(.aeon_cmd)  (get one: \(.get_url))" end' "$MANIFEST")"
+      or_hint=""
+      if grep -q "^OPENROUTER_API_KEY"$'\t' <<<"$cand"; then
+        or_hint="  One OpenRouter key also works: ./aeon secrets set OPENROUTER_API_KEY --stdin"
+      fi
+      emit fail "model credential" "no credential for the $HARNESS harness is set" \
+        "./aeon init  (guided), or: $first_cmd.$or_hint"
+    fi
+  fi
 fi
 
 # --- 5. at least one notification channel ---------------------------------
@@ -236,18 +298,18 @@ elif [[ "$channels_unverified" == "true" ]]; then
     "Authenticate with 'gh auth login' or check Settings → Secrets for one of: TELEGRAM_BOT_TOKEN+TELEGRAM_CHAT_ID, DISCORD_WEBHOOK_URL, SLACK_WEBHOOK_URL, RESEND_API_KEY+NOTIFY_EMAIL_TO."
 else
   emit fail "notification channel" "no channel configured" \
-    "Pick one — Telegram is fastest. See README → Notifications for the @BotFather + chat_id walk-through, then: gh secret set TELEGRAM_BOT_TOKEN -R $REPO_SLUG && gh secret set TELEGRAM_CHAT_ID -R $REPO_SLUG"
+    "Pick one - Telegram is fastest: ./aeon init walks you through the @BotFather token and links your chat. Or set TELEGRAM_BOT_TOKEN + TELEGRAM_CHAT_ID with ./aeon secrets set <NAME> --stdin"
 fi
 
 # --- 6. GitHub Actions has actually run -----------------------------------
 
-if [[ -n "$REPO_SLUG" ]] && command -v gh >/dev/null 2>&1 && gh auth status >/dev/null 2>&1; then
+if [[ -n "$REPO_SLUG" && "$GH_READY" == "true" ]]; then
   run_count=$(gh run list -R "$REPO_SLUG" --workflow=messages.yml --limit 1 --json status --jq 'length' 2>/dev/null || echo "0")
   if [[ "${run_count:-0}" -ge 1 ]]; then
     emit pass "GitHub Actions" "messages.yml has run at least once" ""
   else
     emit warn "GitHub Actions" "no runs yet for messages.yml" \
-      "Enable Actions: gh workflow enable messages.yml -R $REPO_SLUG  (or visit Settings → Actions → General and allow workflows)."
+      "./aeon init enables Actions for you. Forks start with Actions off: open https://github.com/$REPO_SLUG/actions and enable workflows (or Settings -> Actions -> General)."
   fi
 else
   emit warn "GitHub Actions" "could not query run history" \
@@ -261,13 +323,13 @@ fi
 # "Install" button (which sets it automatically) would strand installs on a
 # branch. Surface it here for the CLI/cron path.
 
-if [[ -n "$REPO_SLUG" ]] && command -v gh >/dev/null 2>&1 && gh auth status >/dev/null 2>&1; then
+if [[ -n "$REPO_SLUG" && "$GH_READY" == "true" ]]; then
   pr_perm=$(gh api "repos/$REPO_SLUG/actions/permissions/workflow" --jq '.can_approve_pull_request_reviews' 2>/dev/null || echo "unknown")
   if [[ "$pr_perm" == "true" ]]; then
     emit pass "Actions can open PRs" "create-and-approve-PRs enabled" ""
   elif [[ "$pr_perm" == "false" ]]; then
     emit warn "Actions can open PRs" "disabled — install-skill can't open/merge its PR, so installs strand on a branch" \
-      "gh api -X PUT repos/$REPO_SLUG/actions/permissions/workflow -f default_workflow_permissions=write -F can_approve_pull_request_reviews=true  (the dashboard Install button sets this for you)"
+      "./aeon init turns it on (keeping your default token permission), or tick Settings -> Actions -> General -> Allow GitHub Actions to create and approve pull requests."
   else
     emit warn "Actions can open PRs" "could not query the setting" \
       "Check Settings → Actions → General → Workflow permissions → 'Allow GitHub Actions to create and approve pull requests'."
@@ -292,7 +354,7 @@ else
   case "$?" in
     1)
       emit warn "GH_GLOBAL (cross-repo PAT)" "not configured (optional)" \
-        "Only needed if you want skills like github-monitor / pr-review / external-feature to read repos outside this one. Create a fine-grained PAT and: gh secret set GH_GLOBAL -R $REPO_SLUG"
+        "Needed for skills that reach other repos (github-monitor, pr-review, feature) and to save refreshed logins (grok, MCP OAuth). ./aeon auth --github copies your gh token (needs scopes repo + workflow), or add a classic PAT with repo + workflow: ./aeon secrets set GH_GLOBAL --stdin"
       ;;
     *)
       :  # gh unavailable — skip silently to avoid noise
@@ -333,9 +395,17 @@ if [[ "$REMOTE" == "true" ]]; then
     echo "Cannot dispatch remote check — gh CLI not installed." >&2
     exit 1
   fi
-  echo "Dispatching onboard skill on $REPO_SLUG ..."
-  if gh workflow run aeon.yml -R "$REPO_SLUG" -f skill=onboard >/dev/null 2>&1; then
-    echo "Dispatched. Check your notification channel within ~2 minutes."
+  case "$(printf '%s' "$REPO_SLUG" | tr '[:upper:]' '[:lower:]')" in
+    aeonfun/aeon|aaronjmars/aeon)
+      echo "Refusing to dispatch on $REPO_SLUG, the shared template. Run ./aeon init first." >&2
+      exit 1 ;;
+  esac
+  # heartbeat is the template's always-on health skill: one run exercises
+  # Actions, the model credential and notifications end to end.
+  echo "Dispatching a heartbeat run on $REPO_SLUG ..."
+  if gh workflow run aeon.yml -R "$REPO_SLUG" -f skill=heartbeat >/dev/null 2>&1; then
+    echo "Dispatched. Watch it with: gh run list -R $REPO_SLUG --workflow=aeon.yml --limit 1"
+    echo "If heartbeat finds anything worth reporting, it arrives in your notification channel."
   else
     echo "Failed to dispatch. Verify Actions are enabled and that aeon.yml workflow exists." >&2
     exit 1

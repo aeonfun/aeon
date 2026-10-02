@@ -32,7 +32,7 @@
 #   "claude_md": "fallback",
 #   "default_model": "openai/gpt-6-luna",
 #   "credentials": [
-#     { "secret": "CODEX_AUTH", "kind": "oauth_capture", "auth_mode": "native-oauth", "label": "ChatGPT login (Plus/Pro)", "get_url": "https://chatgpt.com", "login_cmd": "codex login", "aeon_cmd": "./aeon auth --harness codex", "cred_paths": [".codex/auth.json"], "expires": "codex refreshes the access token from the captured refresh token at run start", "refresh": "re-run ./aeon auth --harness codex if a run reports a login error" },
+#     { "secret": "CODEX_AUTH", "kind": "oauth_capture", "auth_mode": "native-oauth", "label": "ChatGPT login (Plus/Pro)", "get_url": "https://chatgpt.com", "login_cmd": "codex login", "aeon_cmd": "./aeon auth --harness codex", "cred_paths": [".codex/auth.json"], "expires": "codex refreshes at run start but a rotated token is not saved back, so the capture eventually expires", "refresh": "re-run ./aeon auth --harness codex (or use an OpenAI key)" },
 #     { "secret": "OPENAI_API_KEY", "kind": "api_key", "auth_mode": "native-key", "label": "OpenAI API key", "prefix": "sk-", "get_url": "https://platform.openai.com/api-keys", "aeon_cmd": "./aeon auth --harness codex --key <sk-...>" },
 #     { "secret": "OPENROUTER_API_KEY", "kind": "api_key", "auth_mode": "openrouter", "label": "OpenRouter key (one key covers most harnesses)", "prefix": "sk-or-", "get_url": "https://openrouter.ai/settings/keys", "aeon_cmd": "./aeon secrets set OPENROUTER_API_KEY --stdin" }
 #   ],

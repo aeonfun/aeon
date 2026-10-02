@@ -9,7 +9,7 @@
       "124": "timeout"
     }
   },
-  "generated": "2026-10-02T19:46:38Z",
+  "generated": "2026-10-02T20:04:17Z",
   "count": 9,
   "harnesses": [
     {
@@ -95,8 +95,8 @@
           "cred_paths": [
             ".codex/auth.json"
           ],
-          "expires": "codex refreshes the access token from the captured refresh token at run start",
-          "refresh": "re-run ./aeon auth --harness codex if a run reports a login error"
+          "expires": "codex refreshes at run start but a rotated token is not saved back, so the capture eventually expires",
+          "refresh": "re-run ./aeon auth --harness codex (or use an OpenAI key)"
         },
         {
           "secret": "OPENAI_API_KEY",
