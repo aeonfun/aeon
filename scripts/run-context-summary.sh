@@ -9,9 +9,9 @@
 #   soul/        NOT auto-loaded: CLAUDE.md tells the agent to read it before
 #                writing. Reported as filled, template (comments only) or none;
 #                on claude the transcript also says whether the agent read it.
-#   MCP          from the run step's preflight (MCP_STATUS): on:<servers>,
-#                skipped:<missing secrets>, shadow, or off; on claude the transcript
-#                adds how many MCP tool calls the run made.
+#   MCP          from the run step's preflight (MCP_STATUS): on:<servers> or
+#                skipped:<missing secrets>; empty means not loaded or no .mcp.json.
+#                On claude the transcript adds how many MCP tool calls the run made.
 #
 # Usage:
 #   run-context-summary.sh [--md|--line]
@@ -52,13 +52,17 @@ else
   [ "${EX:-0}" -gt 0 ] && SOUL="$SOUL, ${EX} example(s)"
 fi
 
-# MCP preflight result from the run step.
+# MCP preflight result from the run step. Empty means the preflight never
+# enabled or skipped it: no .mcp.json, or a shadow run (MCP is never loaded there).
 case "${MCP_STATUS:-}" in
   on:*)      MCP="on (${MCP_STATUS#on:})" ;;
   skipped:*) MCP="skipped, secret(s) not set:${MCP_STATUS#skipped:}" ;;
-  shadow)    MCP="off (shadow run)" ;;
-  ""|off)    MCP="off (no .mcp.json)" ;;
-  *)         MCP="$MCP_STATUS" ;;
+  *)
+    if [ -f .mcp.json ] && jq -e '.mcpServers | length > 0' .mcp.json >/dev/null 2>&1; then
+      MCP="not loaded this run (shadow run or the run stopped before MCP setup)"
+    else
+      MCP="off (no .mcp.json)"
+    fi ;;
 esac
 
 # Claude only: the transcript says what the agent actually did with them. Other

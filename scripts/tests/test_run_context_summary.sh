@@ -58,8 +58,9 @@ L=$(HARNESS=claude SESSION_ID=sid2 MCP_STATUS="on:base" run --line)
 check "claude: soul not read" "$L" "not read this run"
 check "claude: zero mcp calls" "$L" "0 MCP tool call(s)"
 
-MD=$(HARNESS=claude SESSION_ID=sid1 MCP_STATUS=shadow run --md)
+printf '{"mcpServers":{"base":{"url":"https://x"}}}\n' > "$W/.mcp.json"
+MD=$(HARNESS=claude SESSION_ID=sid1 run --md)
 check "md table row strategy" "$MD" "| STRATEGY.md | custom |"
-check "md shadow mcp" "$MD" "| MCP | off (shadow run) |"
+check "md: .mcp.json present but preflight never ran" "$MD" "| MCP | not loaded this run"
 
 [ "$fail" -eq 0 ] && echo "PASS test_run_context_summary" || { echo "FAILURES in test_run_context_summary"; exit 1; }
