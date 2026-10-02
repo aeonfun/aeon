@@ -13,9 +13,9 @@ metadata:
 
 > **${var}** — The community pack to install: `owner/repo`, optionally followed by specific skill slugs to install only a subset, and optional flags. **Required.**
 > Examples:
-> - `AntFleet/aeon-skills` — install the whole pack
-> - `liquidpadbot/aeon-skill-pack-liquidpad liquidpad-burn-monitor` — install one skill from it
-> - `mnemedb/aeon-skill-pack-mneme --branch develop` — install from a non-default branch
+> - `clawhunter/clawhunter-skills` — install the whole pack
+> - `clawhunter/clawhunter-skills clawhunter-bounties` — install one skill from it
+> - `richard7463/aeon-skill-pack-claim-audit --branch develop` — install from a non-default branch
 
 If `${var}` is empty, exit `INSTALL_SKILL_NO_VAR`:
 ```bash

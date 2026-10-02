@@ -97,7 +97,7 @@ Install a curated community skill pack from a GitHub repository, or browse the
 community registry.
 
 Arguments:
-  <github-repo>          owner/repo (e.g. AntFleet/aeon-skills)
+  <github-repo>          owner/repo (e.g. clawhunter/clawhunter-skills)
                          Omit with --list to browse the community registry.
   [skill-names...]       Optional — limit install to specific slugs from the pack
 
@@ -124,10 +124,10 @@ Community registry:
 
 Examples:
   bin/install-skill-pack --list
-  bin/install-skill-pack AntFleet/aeon-skills --list
-  bin/install-skill-pack AntFleet/aeon-skills
-  bin/install-skill-pack liquidpadbot/aeon-skill-pack-liquidpad liquidpad-burn-monitor liquidpad-token-alert
-  bin/install-skill-pack mnemedb/aeon-skill-pack-mneme --dry-run
+  bin/install-skill-pack clawhunter/clawhunter-skills --list
+  bin/install-skill-pack clawhunter/clawhunter-skills
+  bin/install-skill-pack clawhunter/clawhunter-skills clawhunter-bounties
+  bin/install-skill-pack richard7463/aeon-skill-pack-claim-audit --dry-run
 EOF
   exit 0
 }

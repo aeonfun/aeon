@@ -9,4 +9,3 @@
 aeonfun
 aeonfun/aeon
 aaronjmars/aeon-agent
-AntFleet/aeon-skills
