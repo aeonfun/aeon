@@ -12,7 +12,7 @@ Where everything lives in an Aeon repo, and the fastest way to see what's on.
 ./aeon skills ls --enabled --json # for building the Mode 2 timeline
 ```
 
-`ls` prints `SKILL / ON / SCHEDULE / PACK / DESCRIPTION` and a footer — `85 skills · 1 enabled`. First run installs the CLI runtime (tsx + yaml, ~12MB, one-time); the noise is expected.
+`ls` prints `SKILL / ON / SCHEDULE / PACK / DESCRIPTION` and a footer — `86 skills · 1 enabled`. First run installs the CLI runtime (tsx + yaml, ~12MB, one-time); the noise is expected.
 
 **The `SCHEDULE` column is populated for disabled skills too** — it's their `aeon.yml` entry, not proof anything fires. Only the `●` in `ON` means it runs.
 
@@ -59,7 +59,7 @@ AGENTS.md          GENERATED from CLAUDE.md (STRATEGY.md inlined) for every non-
                    harness. Never hand-edit; run `node scripts/gen-agents-md.js`
                    (gated by ci-agents-md).
 
-skills/<name>/SKILL.md    the skills themselves - 85 upstream. One prompt per file.
+skills/<name>/SKILL.md    the skills themselves - 86 upstream. One prompt per file.
 soul/              SOUL.md + STYLE.md + examples/ — voice, read on every run (Mode 7).
 memory/            durable state between runs:
   logs/<date>.md     per-run append under `### <skill-name>`. The dedup substrate.
