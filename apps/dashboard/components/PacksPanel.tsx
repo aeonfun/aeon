@@ -86,7 +86,7 @@ export function PacksPanel({ firstParty, community, skills, enabledPacks, loadin
         {/* Hero skeleton */}
         <section className="relative overflow-hidden border border-[rgba(250,250,250,0.10)] bg-aeon-panel">
           <div className="dither" aria-hidden="true" />
-          <div className="relative z-10 px-8 pt-10 pb-8">
+          <div className="relative z-10 px-5 md:px-8 pt-10 pb-8">
             <div className="h-14 w-56 bg-[rgba(250,250,250,0.14)] animate-pulse" />
             <div className="mt-6 max-w-xl space-y-2">
               <div className="h-3 w-full bg-[rgba(250,250,250,0.07)] animate-pulse" />
@@ -136,7 +136,7 @@ export function PacksPanel({ firstParty, community, skills, enabledPacks, loadin
       {/* Hero */}
       <section className="relative overflow-hidden border border-[rgba(250,250,250,0.10)] bg-aeon-panel">
         <div className="dither" aria-hidden="true" />
-        <div className="relative z-10 px-8 pt-10 pb-8">
+        <div className="relative z-10 px-5 md:px-8 pt-10 pb-8">
           <h1 className="font-display uppercase leading-[0.92] tracking-tight text-aeon-fg" style={{ fontSize: 'clamp(40px, 6vw, 80px)' }}>
             PACKS
           </h1>

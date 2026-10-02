@@ -22,15 +22,29 @@ interface TopBarProps {
   onSync: () => void
 }
 
+// The bar's heading for the current screen. Shared with the phone-only
+// MobileBar, which shows it while this bar's title is hidden below `md`.
+export function viewTitle(skill: Skill | null, view: DashboardView, repo: string): string {
+  if (skill) return displayName(skill.name)
+  if (view === 'packs') return 'Packs'
+  if (view === 'secrets') return 'Settings'
+  if (view === 'strategy') return 'Strategy'
+  if (view === 'mcp') return 'MCP'
+  if (view === 'soul') return 'Soul'
+  return `${repo ? repo.split('/').pop() : 'Aeon'} HQ`
+}
+
 export function TopBar({ skill, view, repo, model, harness, gateway, hasModelKey, authLoading, pulling, syncing, hasChanges, behind, onSetupAuth, onUpdateModel, onUpdateHarness, onPull, onSync }: TopBarProps) {
   const dept = skill ? (PACK_BY_KEY[skill.pack || 'lab'] || null) : null
   const modelOptions = pickerOptions(modelsForHarness(harness), model)
 
   return (
-    <div className="h-14 border-b border-[rgba(250,250,250,0.10)] flex items-center justify-between px-5 shrink-0 bg-aeon-bg">
-      <div className="flex items-center gap-3 min-w-0 flex-1">
+    // Phones: the title moves to the MobileBar and the controls row scrolls
+    // sideways instead of overflowing the screen.
+    <div className="h-14 border-b border-[rgba(250,250,250,0.10)] flex items-center justify-start md:justify-between px-3 md:px-5 shrink-0 bg-aeon-bg overflow-x-auto">
+      <div className="hidden md:flex items-center gap-3 min-w-0 flex-1">
         <span className="font-display text-lg uppercase tracking-wide text-aeon-fg truncate">
-          {skill ? displayName(skill.name) : view === 'packs' ? 'Packs' : view === 'secrets' ? 'Settings' : view === 'strategy' ? 'Strategy' : view === 'mcp' ? 'MCP' : view === 'soul' ? 'Soul' : `${repo ? repo.split('/').pop() : 'Aeon'} HQ`}
+          {viewTitle(skill, view, repo)}
         </span>
         {skill && dept && (
           <span
@@ -41,7 +55,7 @@ export function TopBar({ skill, view, repo, model, harness, gateway, hasModelKey
           </span>
         )}
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 shrink-0">
         {harness === 'claude' && gateway !== 'direct' && gateway !== 'auto' && (
           <span className="text-[10px] font-mono px-2 py-0.5 bg-aeon-red/10 text-aeon-red uppercase tracking-[0.18em] border border-aeon-red/30">{gateway}</span>
         )}
@@ -69,13 +83,24 @@ export function TopBar({ skill, view, repo, model, harness, gateway, hasModelKey
             <option key={m.id} value={m.id} className="bg-aeon-panel text-aeon-fg">{m.label}</option>
           ))}
         </select>
-        <button onClick={onPull} disabled={pulling} className="btn-quiet disabled:opacity-50">
+        {/* Phones: arrow icons instead of the words, to keep the row short. */}
+        <button onClick={onPull} disabled={pulling} aria-label="Pull" title="Pull" className="btn-quiet disabled:opacity-50">
           {behind > 0 && <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-aeon-red animate-pulse" />}
-          {pulling ? '…' : 'Pull'}
+          {pulling ? '…' : (
+            <>
+              <svg viewBox="0 0 24 24" className="w-4 h-4 md:hidden" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 21h16" fill="none" stroke="currentColor" strokeWidth="2" /></svg>
+              <span className="hidden md:inline">Pull</span>
+            </>
+          )}
         </button>
-        <button onClick={onSync} disabled={syncing || !hasChanges} className="btn-quiet disabled:opacity-40">
+        <button onClick={onSync} disabled={syncing || !hasChanges} aria-label="Push" title="Push" className="btn-quiet disabled:opacity-40">
           {hasChanges && <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-aeon-green" />}
-          {syncing ? '…' : 'Push'}
+          {syncing ? '…' : (
+            <>
+              <svg viewBox="0 0 24 24" className="w-4 h-4 md:hidden" aria-hidden="true"><path d="M12 21V9m0 0l-5 5m5-5l5 5M4 3h16" fill="none" stroke="currentColor" strokeWidth="2" /></svg>
+              <span className="hidden md:inline">Push</span>
+            </>
+          )}
         </button>
         {repo && (
           <a

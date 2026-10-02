@@ -42,9 +42,11 @@ export function StrategyPanel({ content, loading, saving, building, onSave, onBu
       {/* Hero */}
       <section className="relative overflow-hidden border border-[rgba(250,250,250,0.10)] bg-aeon-panel">
         <div className="dither" aria-hidden="true" />
-        <div className="relative z-10 px-8 pt-10 pb-8">
-          <h1 className="font-display uppercase leading-[0.92] tracking-tight text-aeon-fg"
-              style={{ fontSize: 'clamp(40px, 6.5vw, 88px)' }}>
+        <div className="relative z-10 px-5 md:px-8 pt-10 pb-8">
+          {/* One word in two colors: nowrap + a smaller floor so phones never
+              split it into "STRA" / "TEGY". */}
+          <h1 className="font-display uppercase leading-[0.92] tracking-tight text-aeon-fg whitespace-nowrap"
+              style={{ fontSize: 'clamp(30px, 7vw, 88px)' }}>
             <Scramble text="STRA" />
             <span className="text-aeon-red"><Scramble text="TEGY" delay={160} /></span>
           </h1>

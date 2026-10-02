@@ -15,7 +15,9 @@ import TargetCursor from '../components/ui/TargetCursor'
 import { LoadingScreen } from '../components/LoadingScreen'
 import { ErrorScreen } from '../components/ErrorScreen'
 import { LeftSidebar } from '../components/LeftSidebar'
-import { TopBar } from '../components/TopBar'
+import { TopBar, viewTitle } from '../components/TopBar'
+import { MobileBar } from '../components/MobileBar'
+import { useNarrow } from '../lib/use-narrow'
 import { HQOverview } from '../components/HQOverview'
 import { SkillDetail } from '../components/SkillDetail'
 import { SecretsPanel } from '../components/SecretsPanel'
@@ -77,6 +79,10 @@ export default function Dashboard() {
   const [enabledPacks, setEnabledPacks] = useState<string[]>(Array.from(DEFAULT_VISIBLE_PACKS))
 
   const [showImport, setShowImport] = useState(false)
+  // Phones only: the sidebar and the activity panel are slide-in drawers.
+  const narrow = useNarrow()
+  const [navOpen, setNavOpen] = useState(false)
+  const [activityOpen, setActivityOpen] = useState(false)
   const [authLoading, setAuthLoading] = useState(false)
   const [grokLoading, setGrokLoading] = useState(false)
   const [harnessAuthLoading, setHarnessAuthLoading] = useState(false)
@@ -249,17 +255,32 @@ export default function Dashboard() {
       <TargetCursor />
       {toast && <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 bg-aeon-fg text-aeon-bg px-5 py-2.5 text-xs font-mono uppercase tracking-[0.18em] shadow-xl">{toast}</div>}
 
-      <LeftSidebar
-        view={view} setView={(v) => { setView(v); setSelectedSkill(null) }}
-        selectedSkill={selectedSkill}
-        skills={visibleSkills} runs={runs} secrets={secrets} repo={repo} harness={harness}
-        enabledCount={enabledCount} workingCount={workingCount}
-        categoryFilter={categoryFilter} setCategoryFilter={setCategoryFilter}
-        onSkillSelect={(name) => { setSelectedSkill(name); setView('hq') }}
-        onShowImport={() => setShowImport(true)}
-      />
+      {/* Below the modals (z-40) and the toast (z-50). */}
+      {narrow && (navOpen || activityOpen) && (
+        <div className="fixed inset-0 z-30 bg-black/60" aria-hidden onClick={() => { setNavOpen(false); setActivityOpen(false) }} />
+      )}
+
+      <div
+        inert={narrow && !navOpen}
+        className={narrow ? `fixed inset-y-0 left-0 z-[35] flex max-w-[88vw] transition-transform duration-300 ${navOpen ? 'translate-x-0' : '-translate-x-full'}` : 'flex'}
+      >
+        <LeftSidebar
+          view={view} setView={(v) => { setView(v); setSelectedSkill(null); setNavOpen(false) }}
+          selectedSkill={selectedSkill}
+          skills={visibleSkills} runs={runs} secrets={secrets} repo={repo} harness={harness}
+          enabledCount={enabledCount} workingCount={workingCount}
+          categoryFilter={categoryFilter} setCategoryFilter={setCategoryFilter}
+          onSkillSelect={(name) => { setSelectedSkill(name); setView('hq'); setNavOpen(false) }}
+          onShowImport={() => { setShowImport(true); setNavOpen(false) }}
+        />
+      </div>
 
       <div className="flex-1 flex flex-col min-w-0">
+        <MobileBar
+          title={viewTitle(skill, view, repo)}
+          onOpenNav={() => setNavOpen(true)}
+          onOpenActivity={() => setActivityOpen(true)}
+        />
         <TopBar
           skill={skill} view={view} repo={repo} model={model} harness={harness} gateway={gateway}
           hasModelKey={hasModelKey} authLoading={authLoading}
@@ -308,6 +329,7 @@ export default function Dashboard() {
 
       <RightPanel
         runs={runs} outputs={outputs} feedLoading={feedLoading} feedError={feedError} analyticsData={analyticsData} analyticsError={analyticsError}
+        drawerOpen={activityOpen} onCloseDrawer={() => setActivityOpen(false)}
         onRefresh={() => { fetchData(); setFeedKey(k => k + 1); setAnalyticsData(null); setAnalyticsError(false) }}
         onFetchAnalytics={() => { if (!analyticsData) { setAnalyticsError(false); getJson<AnalyticsData>('/api/analytics').then(d => setAnalyticsData(d)).catch(() => setAnalyticsError(true)) } }}
       />

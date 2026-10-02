@@ -40,7 +40,7 @@ export function HQOverview({ skills, runs, enabledCount, workingCount, categoryF
     <div className="max-w-5xl mx-auto pb-16 space-y-10">
       <section className="relative overflow-hidden border border-[rgba(250,250,250,0.10)] bg-aeon-panel">
         <div className="dither" aria-hidden="true" />
-        <div className="relative z-10 px-8 pt-10 pb-8">
+        <div className="relative z-10 px-5 md:px-8 pt-10 pb-8">
           <h1 className="font-display uppercase leading-[0.92] tracking-tight text-aeon-fg"
               style={{ fontSize: 'clamp(48px, 8vw, 110px)' }}>
             <Scramble text="AEON" />{' '}

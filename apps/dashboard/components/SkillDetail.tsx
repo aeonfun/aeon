@@ -171,7 +171,7 @@ export function SkillDetail({ skill, runs, model, harness, secrets, mcpServers, 
     <div className="max-w-5xl mx-auto pb-16 space-y-10">
       <section className="relative overflow-hidden border border-[rgba(250,250,250,0.10)] bg-aeon-panel">
         <div className="dither" aria-hidden="true" />
-        <div className="relative z-10 px-8 pt-10 pb-8">
+        <div className="relative z-10 px-5 md:px-8 pt-10 pb-8">
           <div className="flex items-center gap-4 mb-4 flex-wrap">
             <span className="inline-flex items-center gap-2 text-[11px] font-mono uppercase tracking-[0.18em]">
               <span className={statusDot(st.color)} />
@@ -368,8 +368,8 @@ export function SkillDetail({ skill, runs, model, harness, secrets, mcpServers, 
           </button>
         ) : (
           <button onClick={() => { setEditingVar(true); setVarDraft('') }} className="group w-full flex items-center gap-3 border border-dashed border-[rgba(250,250,250,0.16)] px-4 py-4 hover:border-aeon-red/40 transition-colors cursor-target">
-            <span className="text-sm text-primary-40 font-mono uppercase tracking-[0.18em] group-hover:text-primary-70 transition-colors">No custom settings</span>
-            <span className="btn-mini-go ml-auto">+ Set var</span>
+            <span className="text-sm text-left text-primary-40 font-mono uppercase tracking-[0.18em] group-hover:text-primary-70 transition-colors">No custom settings</span>
+            <span className="btn-mini-go ml-auto shrink-0 whitespace-nowrap"><span className="md:hidden">+ Set</span><span className="hidden md:inline">+ Set var</span></span>
           </button>
         )}
       </Section>

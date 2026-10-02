@@ -106,7 +106,7 @@ export function SecretsPanel({ secrets, skills, busy, repo, harness, focusKey, o
     <div className="max-w-5xl mx-auto pb-16 space-y-10">
       <section className="relative overflow-hidden border border-[rgba(250,250,250,0.10)] bg-aeon-panel">
         <div className="dither" aria-hidden="true" />
-        <div className="relative z-10 px-8 pt-10 pb-8">
+        <div className="relative z-10 px-5 md:px-8 pt-10 pb-8">
           <h1 className="font-display uppercase leading-[0.92] tracking-tight text-aeon-fg"
               style={{ fontSize: 'clamp(40px, 6.5vw, 88px)' }}>
             <Scramble text="ACCESS" />{' '}
@@ -147,11 +147,13 @@ export function SecretsPanel({ secrets, skills, busy, repo, harness, focusKey, o
             <div className="border border-[rgba(250,250,250,0.10)] divide-y divide-[rgba(250,250,250,0.08)]">
               {gs.map(secret => (
                 <div key={secret.name} id={`secret-${secret.name}`} className={`group px-[var(--space-md)] py-[var(--space-sm)] scroll-mt-24 transition-colors ${editingSecret === secret.name ? 'bg-aeon-red/5' : ''}`}>
-                  <div className="flex items-start justify-between gap-3">
+                  {/* Phones: actions drop below the text (indented past the icon)
+                      instead of squeezing the description into a narrow column. */}
+                  <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-2 md:gap-3">
                     <div className="flex items-start gap-3 min-w-0">
                       <ServiceIcon name={secret.name} className="mt-0.5" />
                       <div className="min-w-0">
-                      <div className="flex items-center gap-2"><span className="font-mono text-xs">{secret.name}</span><span className={`w-2 h-2 rounded-full ${secret.isSet ? 'bg-aeon-green' : 'bg-[rgba(250,250,250,0.15)]'}`} /></div>
+                      <div className="flex items-center gap-2"><span className="font-mono text-xs break-all">{secret.name}</span><span className={`w-2 h-2 rounded-full ${secret.isSet ? 'bg-aeon-green' : 'bg-[rgba(250,250,250,0.15)]'}`} /></div>
                       <div className="text-[11px] text-primary-40 font-mono">{linkify(secret.description)}</div>
                       {keyProvidedByHarness(secret.name, harness) && !secret.isSet && (
                         <div className="text-[10px] text-aeon-green/80 font-mono mt-1 flex items-center gap-1.5">
@@ -195,7 +197,7 @@ export function SecretsPanel({ secrets, skills, busy, repo, harness, focusKey, o
                       )}
                       </div>
                     </div>
-                    <div className="flex gap-1.5 shrink-0">
+                    <div className="flex flex-wrap gap-1.5 shrink-0 pl-[34px] md:pl-0">
                       {secret.name === 'CLAUDE_CODE_OAUTH_TOKEN' && !claudeAuthSet && <button onClick={onConnectClaude} disabled={connecting} title="Run the Claude Code OAuth flow - signs in with your Claude Pro/Max plan, no API key or manual token needed." className="text-[11px] text-aeon-bg bg-aeon-fg font-mono px-2.5 py-1 hover:opacity-90 transition-opacity disabled:opacity-50">{connecting ? '…' : 'Connect'}</button>}
                       {secret.name === 'GROK_CREDENTIALS' && <button onClick={onConnectGrok} disabled={grokConnecting} title="Run the Grok Build device-auth flow - opens your browser to approve on accounts.x.ai, then stores the session for CI. Use Reconnect if the session expires." className="text-[11px] text-aeon-bg bg-aeon-fg font-mono px-2.5 py-1 hover:opacity-90 transition-opacity disabled:opacity-50">{grokConnecting ? '…' : (secret.isSet ? 'Reconnect' : 'Connect')}</button>}
                       {secret.name === 'GH_GLOBAL' && <button onClick={onConnectGithub} disabled={githubConnecting} title="Copy this machine's GitHub CLI token into GH_GLOBAL so Actions can push, open PRs, and call other repos. Uses the gh session the dashboard already has - no extra login. Use Reconnect after gh auth switch. Or paste a PAT with Set." className="text-[11px] text-aeon-bg bg-aeon-fg font-mono px-2.5 py-1 hover:opacity-90 transition-opacity disabled:opacity-50">{githubConnecting ? '…' : (secret.isSet ? 'Reconnect' : 'Connect')}</button>}

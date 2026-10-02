@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useCallback, useMemo } from 'react';
+import React, { useEffect, useRef, useCallback, useMemo, useSyncExternalStore } from 'react';
 import { gsap } from 'gsap';
 import './TargetCursor.css';
 
@@ -10,6 +10,17 @@ interface TargetCursorProps {
   hideDefaultCursor?: boolean;
   hoverDuration?: number;
   parallaxOn?: boolean;
+}
+
+const noopSubscribe = () => () => {};
+
+function detectMobile(): boolean {
+  const hasTouchScreen = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  const isSmallScreen = window.innerWidth <= 768;
+  const userAgent = navigator.userAgent || navigator.vendor || (window as unknown as { opera?: string }).opera || '';
+  const mobileRegex = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i;
+  const isMobileUserAgent = mobileRegex.test(userAgent.toLowerCase());
+  return (hasTouchScreen && isSmallScreen) || isMobileUserAgent;
 }
 
 const TargetCursor: React.FC<TargetCursorProps> = ({
@@ -29,15 +40,11 @@ const TargetCursor: React.FC<TargetCursorProps> = ({
   const tickerFnRef = useRef<(() => void) | null>(null);
   const activeStrengthRef = useRef({ current: 0 });
 
-  const isMobile = useMemo(() => {
-    if (typeof window === 'undefined') return true;
-    const hasTouchScreen = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    const isSmallScreen = window.innerWidth <= 768;
-    const userAgent = navigator.userAgent || navigator.vendor || (window as unknown as { opera?: string }).opera || '';
-    const mobileRegex = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i;
-    const isMobileUserAgent = mobileRegex.test(userAgent.toLowerCase());
-    return (hasTouchScreen && isSmallScreen) || isMobileUserAgent;
-  }, []);
+  // Server snapshot says "mobile" (render nothing) and the client re-renders
+  // with the real answer after hydration, so SSR and the first client render
+  // agree. A useMemo here rendered null on the server but the cursor on the
+  // client, a hydration mismatch.
+  const isMobile = useSyncExternalStore(noopSubscribe, detectMobile, () => true);
 
   const constants = useMemo(() => ({ borderWidth: 3, cornerSize: 12 }), []);
 
