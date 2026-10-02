@@ -21,6 +21,14 @@ mkdir -p "$TMP/bin" "$TMP/codex-home"
 cat > "$TMP/bin/codex" <<'SH'
 #!/usr/bin/env bash
 cat >/dev/null
+echo "$*" >> "$CODEX_HOME/calls"
+# FAKE_REFUSE=<id>: fail like a ChatGPT login refusing that --model.
+if [ -n "${FAKE_REFUSE:-}" ] && [[ " $* " == *" --model $FAKE_REFUSE "* ]]; then
+  printf '{"type":"thread.started","thread_id":"x"}\n'
+  printf '{"type":"error","message":"{\\"status\\":400,\\"error\\":{\\"message\\":\\"The %s model is not supported when using Codex with a ChatGPT account.\\"}}"}\n' "$FAKE_REFUSE"
+  printf '{"type":"turn.failed","error":{"message":"refused"}}\n'
+  exit 1
+fi
 tid=01a0f9fb-46dd-7512-ac3f-c0938feaa1f9
 d="$CODEX_HOME/sessions/2026/10/01"; mkdir -p "$d"
 {
@@ -37,7 +45,7 @@ chmod +x "$TMP/bin/codex"
 printf 'do it' > "$TMP/prompt"
 
 run() {
-  rm -rf "$TMP/rh" "$TMP/codex-home/sessions"; mkdir -p "$TMP/rh"
+  rm -rf "$TMP/rh" "$TMP/codex-home/sessions" "$TMP/codex-home/calls"; mkdir -p "$TMP/rh"
   FAKE_MODEL="$1" CODEX_HOME="$TMP/codex-home" PATH="$TMP/bin:$PATH" \
     RH_LIB="$ROOT/harness-adapter/lib" RH_TMPDIR="$TMP/rh" RH_PROMPT_FILE="$TMP/prompt" RH_MODE=write \
     bash "$ROOT/harness-adapter/adapters/codex.sh" 2>"$TMP/err"
@@ -60,6 +68,34 @@ fi
 OUT=$(run 'x$(id);y')
 [ "$(jq -r '.model // "absent"' <<<"$OUT")" = "absent" ] \
   && pass "a non model-id value is dropped" || bad "unsafe model passed through: $(jq -c .model <<<"$OUT")"
+
+# A model the account refuses: retry once without --model, warn, and succeed.
+OUT=$(FAKE_REFUSE=gpt-5.6 RH_MODEL=gpt-5.6 run gpt-6.1-sol); rc=$?
+[ "$rc" = 0 ] && [ "$(jq -r .result <<<"$OUT")" = "done" ] \
+  && pass "refused model: retried and succeeded" || bad "refused-model retry (rc=$rc): $(cat "$TMP/err")"
+[ "$(wc -l < "$TMP/codex-home/calls" | tr -d ' ')" = 2 ] && ! sed -n 2p "$TMP/codex-home/calls" | grep -q -- '--model' \
+  && pass "retry drops --model" || bad "retry calls: $(cat "$TMP/codex-home/calls")"
+grep -q '^::warning::codex refused model gpt-5.6; retried on the account default' "$TMP/err" \
+  && pass "refused model is warned" || bad "no refusal warning: $(cat "$TMP/err")"
+[ "$(jq -r .model <<<"$OUT")" = "gpt-6.1-sol" ] \
+  && pass "envelope reports the default model that ran" || bad "retry model $(jq -c .model <<<"$OUT")"
+# An accepted pick runs once, with --model.
+OUT=$(RH_MODEL=gpt-6-luna run gpt-6-luna); rc=$?
+[ "$rc" = 0 ] && [ "$(wc -l < "$TMP/codex-home/calls" | tr -d ' ')" = 1 ] && grep -q -- '--model gpt-6-luna' "$TMP/codex-home/calls" \
+  && pass "accepted pick: one call with --model" || bad "accepted pick calls: $(cat "$TMP/codex-home/calls")"
+# A failure that is not a model refusal is not retried.
+cat > "$TMP/bin/codex-fail" <<'SH'
+#!/usr/bin/env bash
+cat >/dev/null
+echo "$*" >> "$CODEX_HOME/calls"
+printf '{"type":"error","message":"stream disconnected"}\n'
+exit 1
+SH
+chmod +x "$TMP/bin/codex-fail"; cp "$TMP/bin/codex" "$TMP/bin/codex-ok"; cp "$TMP/bin/codex-fail" "$TMP/bin/codex"
+RH_MODEL=gpt-6-luna run x >/dev/null; rc=$?
+[ "$rc" != 0 ] && [ "$(wc -l < "$TMP/codex-home/calls" | tr -d ' ')" = 1 ] \
+  && pass "other failures are not retried" || bad "non-refusal failure (rc=$rc, calls $(wc -l < "$TMP/codex-home/calls"))"
+cp "$TMP/bin/codex-ok" "$TMP/bin/codex"
 
 # No rollout (e.g. an older codex): no model field, run still succeeds.
 cat > "$TMP/bin/codex" <<'SH'

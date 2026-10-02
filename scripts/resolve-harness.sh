@@ -190,11 +190,21 @@ if [ "$AUTH_MODE" = "openrouter" ]; then
     # --model breaks them — their staged config decides.
   esac
 else
-  # Codex/Kimi/Vibe native accounts choose their own account default. Cursor and
+  # Kimi/Vibe native accounts choose their own account default. Cursor and
   # Hermes Portal explicitly document model overrides, so preserve the
   # dashboard/dispatch model for those harnesses even when their auth is native.
+  # Codex on a ChatGPT login or OpenAI key takes an explicitly picked OpenAI
+  # model as its bare id (openai/gpt-6-luna -> gpt-6-luna); with no pick it keeps
+  # the account default. If the account refuses the id, adapters/codex.sh
+  # retries once on the account default and warns.
   case "$HARNESS" in
     cursor|hermes) MODEL_ARG="$HM" ;;
+    codex)
+      PICK="${HARNESS_MODEL:-$REQ_MODEL}"
+      case "$PICK" in
+        openai/*|gpt-*) MODEL_ARG="${PICK#openai/}"; HM="$MODEL_ARG" ;;
+        *) HM="(native:$AUTH_MODE)" ;;
+      esac ;;
     *) HM="(native:$AUTH_MODE)" ;;
   esac
 fi

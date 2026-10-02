@@ -51,10 +51,12 @@ command -v codex >/dev/null 2>&1 || {
 # away with the job's home dir.
 ARGS=(exec --json --skip-git-repo-check --disable unbounded_connection_retries)
 
-# model: only pass ids codex can serve; a claude-*/grok-* leftover -> codex default
+# model: only pass ids codex can serve; a claude-*/grok-* leftover -> codex default.
+# Kept apart from ARGS so a refused model can be dropped for one retry (below).
+MODEL_ARGS=()
 case "${RH_MODEL:-}" in
   "" | default | claude-* | grok-*) ;;
-  *) ARGS+=(--model "$RH_MODEL") ;;
+  *) MODEL_ARGS=(--model "$RH_MODEL") ;;
 esac
 
 # Sandbox. codex is the only harness with a native kernel sandbox, but its
@@ -135,8 +137,22 @@ ${PROMPT}"
 ${PROMPT}"
 
 EVENTS="$RH_TMPDIR/codex-events.jsonl"
-printf '%s' "$PROMPT" | codex "${ARGS[@]}" ${MCP_ARGS[@]+"${MCP_ARGS[@]}"} - > "$EVENTS"
+run_codex() {
+  printf '%s' "$PROMPT" | codex "${ARGS[@]}" ${MODEL_ARGS[@]+"${MODEL_ARGS[@]}"} ${MCP_ARGS[@]+"${MCP_ARGS[@]}"} - > "$EVENTS"
+}
+run_codex
 rc=$?
+# A model the account cannot serve fails the turn before any work happens
+# (ChatGPT login: "The 'gpt-5.6' model is not supported when using Codex with a
+# ChatGPT account."; API key: "does not exist or you do not have access").
+# Retry once on the account default instead of failing the run.
+if [ $rc -ne 0 ] && [ ${#MODEL_ARGS[@]} -gt 0 ] \
+  && grep -qE "model is not supported|does not exist or you do not have access|model_not_found" "$EVENTS" 2>/dev/null; then
+  echo "::warning::codex refused model ${RH_MODEL//[^A-Za-z0-9._:\/@+-]/_}; retried on the account default" >&2
+  MODEL_ARGS=()
+  run_codex
+  rc=$?
+fi
 if [ $rc -ne 0 ]; then
   # 300 chars silently discarded the actual error whenever it was longer
   # than that; widened to match claude.sh's own harness-adapter precedent.
