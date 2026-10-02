@@ -1,5 +1,6 @@
-import { execSync } from 'child_process'
+import { execSync, execFileSync } from 'child_process'
 import { REPO_ROOT } from './gh'
+import { originRefusal, pushHeadToOrigin } from './github'
 
 function git(cmd: string) {
   return execSync(cmd, { stdio: 'pipe', cwd: REPO_ROOT }).toString().trim()
@@ -30,10 +31,16 @@ export type SyncPush =
 
 // Stage everything, commit, and push to origin. Shared by POST /api/sync and
 // `aeon sync`. Distinguishes "nothing to commit" (ok) from a real commit failure,
-// and a local-commit-but-push-failed (surfaced) — same semantics as the route.
+// and a local-commit-but-push-failed (surfaced), same semantics as the route.
+// Pushes exactly like commitAndPush: to `origin` by name (never whatever the
+// branch tracks), and refuses, before committing anything, when origin is the
+// Aeon template.
 export function syncPush(): SyncPush {
   const status = git('git status --porcelain')
   if (!status) return { ok: true, message: 'Already in sync' }
+  const gitArgs = (...args: string[]) => execFileSync('git', args, { stdio: 'pipe', cwd: REPO_ROOT }).toString().trim()
+  const refusal = originRefusal(gitArgs)
+  if (refusal) return { ok: false, error: `Not pushed: ${refusal}` }
 
   git('git add -A')
 
@@ -47,7 +54,7 @@ export function syncPush(): SyncPush {
   }
 
   try {
-    git('git push')
+    pushHeadToOrigin(gitArgs)
   } catch (e: unknown) {
     const pushErr = e instanceof Error ? e.message : 'Push failed'
     return { ok: false, error: `Committed locally but push failed: ${pushErr.slice(0, 200)}` }
