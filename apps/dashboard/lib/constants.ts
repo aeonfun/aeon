@@ -55,13 +55,12 @@ export const KIMI_MODELS = [
 // and with no --max-turns it spins to the run guard), so nano is never offered.
 // The default (first entry, matched by aeon.yml's DEFAULT_HM) is gpt-6-luna,
 // newer and cheaper than the prior default gpt-5.1-codex-mini ($0.10/$0.50 vs
-// $0.25/$2 per 1M on OpenRouter). gpt-6-sol and gpt-6.1-sol are the quality
-// options. The older ids (gpt-5.1-codex-mini, gpt-5-mini, gpt-5.3-codex, the
+// $0.25/$2 per 1M on OpenRouter). gpt-6.1-sol is the quality option.
+// The older ids (gpt-6-sol, gpt-5.1-codex-mini, gpt-5-mini, gpt-5.3-codex, the
 // gpt-5.6 family) are no longer offered here but stay workflow_dispatch choices,
 // so an existing pin still dispatches and renders via RETIRED_MODEL_LABELS.
 export const CODEX_MODELS = [
   { id: 'openai/gpt-6-luna', label: 'GPT-6 Luna' },
-  { id: 'openai/gpt-6-sol', label: 'GPT-6 Sol' },
   { id: 'openai/gpt-6.1-sol', label: 'GPT-6.1 Sol' },
 ]
 
@@ -144,6 +143,7 @@ const RETIRED_MODEL_LABELS: Record<string, string> = {
   'openai/gpt-5.3-codex': 'GPT-5.3 Codex',
   'openai/gpt-5.6-luna': 'GPT-5.6 Luna',
   'openai/gpt-5.6-terra': 'GPT-5.6 Terra',
+  'openai/gpt-6-sol': 'GPT-6 Sol',
 }
 
 // fx has no model picker: unlike codex/pi/vibe/kimi's OpenRouter path, fx's

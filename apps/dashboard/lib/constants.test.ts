@@ -93,8 +93,8 @@ describe("pickerOptions", () => {
 });
 
 describe("CODEX_MODELS", () => {
-  it("offers exactly the current three GPT-6 models", () => {
-    assert.deepEqual(CODEX_MODELS.map(m => m.id), ["openai/gpt-6-luna", "openai/gpt-6-sol", "openai/gpt-6.1-sol"]);
+  it("offers only GPT-6 Luna and GPT-6.1 Sol", () => {
+    assert.deepEqual(CODEX_MODELS.map(m => m.id), ["openai/gpt-6-luna", "openai/gpt-6.1-sol"]);
   });
   it("names an older codex pin that left the list", () => {
     assert.equal(pickerOptions(CODEX_MODELS, "openai/gpt-5.1-codex-mini").at(-1)?.label, "GPT-5.1 Codex Mini (configured)");
