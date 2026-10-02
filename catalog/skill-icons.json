@@ -5,6 +5,7 @@
     "aeon-update": "<path d='M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4'/><path d='M7 10l5 5 5-5'/><path d='M12 15V3'/>",
     "auto-merge": "<circle cx='6' cy='6' r='3'/><circle cx='18' cy='18' r='3'/><path d='M6 21V9a9 9 0 0 0 9 9'/>",
     "auto-workflow": "<rect x='3' y='3' width='8' height='8' rx='2'/><path d='M7 11v4a2 2 0 0 0 2 2h4'/><rect x='13' y='13' width='8' height='8' rx='2'/>",
+    "connect-check": "<path d='M12 22v-5'/><path d='M9 8V2'/><path d='M15 8V2'/><path d='M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8z'/>",
     "fleet-control": "<rect x='9' y='2' width='6' height='6' rx='1'/><rect x='2' y='16' width='6' height='6' rx='1'/><rect x='16' y='16' width='6' height='6' rx='1'/><path d='M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3'/><path d='M12 12V8'/>",
     "fork-fleet": "<circle cx='6' cy='6' r='3'/><circle cx='18' cy='6' r='3'/><circle cx='12' cy='18' r='3'/><path d='M18 9v1a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V9'/><path d='M12 12v3'/>",
     "heartbeat": "<path d='M22 12h-4l-3 9L9 3l-3 9H2'/>",

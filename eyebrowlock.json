@@ -489,6 +489,26 @@
       "discoveredFrom": "skills/spend-watch/SKILL.md"
     },
     {
+      "id": "371191ef68f09b4a",
+      "tool": "aeon",
+      "scope": "project:.",
+      "type": "skill",
+      "name": "connect-check",
+      "source": {
+        "kind": "local",
+        "ref": "skills/connect-check"
+      },
+      "capabilities": {},
+      "files": [
+        {
+          "path": "SKILL.md",
+          "hash": "411cfef3d0fb09b138c56d3a467344a045cf7ff47a4a46d8b1cf1f7235e3be94"
+        }
+      ],
+      "contentHash": "sha256-18f9f5fd1a78f7672d7470b2071d0361420b5c57f2296ca2b26a76437b553f25",
+      "discoveredFrom": "skills/connect-check/SKILL.md"
+    },
+    {
       "id": "371819a9ad666131",
       "tool": "aeon",
       "scope": "project:.",

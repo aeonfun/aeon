@@ -17,6 +17,7 @@ export const SKILL_ICONS: Record<string, string> = {
   "changelog": "<path d='M3 12a9 9 0 1 0 9-9 9.8 9.8 0 0 0-6.7 2.7L3 8'/><path d='M3 3v5h5'/><path d='M12 7v5l4 2'/>",
   "competitor-monitor": "<path d='M5 3v3M9 3v3'/><rect x='3' y='6' width='6' height='13' rx='3'/><rect x='15' y='6' width='6' height='13' rx='3'/><path d='M9 12h6'/>",
   "compute-resell": "<rect x='3' y='4' width='18' height='7' rx='2'/><rect x='3' y='13' width='18' height='7' rx='2'/><path d='M7 7.5h.01'/><path d='M7 16.5h.01'/>",
+  "connect-check": "<path d='M12 22v-5'/><path d='M9 8V2'/><path d='M15 8V2'/><path d='M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8z'/>",
   "cortx-reliability": "<path d='M22 12h-4l-3 9L9 3l-3 9H2'/>",
   "create-prove": "<path d='M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z'/><path d='m9 12 2 2 4-4'/>",
   "create-skill": "<path d='M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z'/><path d='M14 2v4a2 2 0 0 0 2 2h4'/><path d='M9 15h6'/><path d='M12 18v-6'/>",
