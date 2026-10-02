@@ -10,7 +10,6 @@ interface TopBarProps {
   harness: Harness
   gateway: GatewayProvider
   hasModelKey: boolean
-  authLoading: boolean
   pulling: boolean
   syncing: boolean
   hasChanges: boolean
@@ -34,7 +33,7 @@ export function viewTitle(skill: Skill | null, view: DashboardView, repo: string
   return `${repo ? repo.split('/').pop() : 'Aeon'} HQ`
 }
 
-export function TopBar({ skill, view, repo, model, harness, gateway, hasModelKey, authLoading, pulling, syncing, hasChanges, behind, onSetupAuth, onUpdateModel, onUpdateHarness, onPull, onSync }: TopBarProps) {
+export function TopBar({ skill, view, repo, model, harness, gateway, hasModelKey, pulling, syncing, hasChanges, behind, onSetupAuth, onUpdateModel, onUpdateHarness, onPull, onSync }: TopBarProps) {
   const dept = skill ? (PACK_BY_KEY[skill.pack || 'lab'] || null) : null
   const modelOptions = pickerOptions(modelsForHarness(harness), model)
 
@@ -60,8 +59,8 @@ export function TopBar({ skill, view, repo, model, harness, gateway, hasModelKey
           <span className="text-[10px] font-mono px-2 py-0.5 bg-aeon-red/10 text-aeon-red uppercase tracking-[0.18em] border border-aeon-red/30">{gateway}</span>
         )}
         {!hasModelKey && (
-          <button onClick={onSetupAuth} disabled={authLoading} className="btn-solid-sm disabled:opacity-50">
-            {authLoading ? '…' : 'Auth'}
+          <button onClick={onSetupAuth} title="Connect a model for this harness" className="btn-solid-sm">
+            Auth
           </button>
         )}
         <select

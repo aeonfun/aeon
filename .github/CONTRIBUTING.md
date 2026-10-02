@@ -105,7 +105,7 @@ per run by a [claude-code-router](https://github.com/musistudio/claude-code-rout
 sidecar, like Venice/Surplus).
 
 1. **`apps/dashboard/lib/gateway-registry.ts`** — add `slug: { label, secretName, prefixes, domain }` (empty `prefixes: []` = dropdown-only, no auto-detect). This is the **single source of truth**: it auto-flows to the `GatewayProvider` union (`lib/types.ts`), `CLAUDE_AUTH_SECRETS` (`lib/constants.ts`), the secrets route's gateway-key detection, the auth key-prefix detection (`lib/auth-provider.ts`), and the service-icon domain.
-2. **`apps/dashboard/components/AuthModal.tsx`** — add the slug to `PROVIDER_OPTIONS` (this dropdown list is **not** registry-derived).
+2. **`apps/dashboard/lib/connect-detect.ts`** - add the slug to `PROVIDER_OPTIONS` (the Connect modal provider dropdown; its secret names come from the registry, but the list itself is **not** registry-derived).
 3. **`apps/dashboard/lib/secrets-catalog.ts`** — add a `BUILTIN_SECRETS` row (description only) so the secret shows in Settings (and in `aeon secrets ls`).
 4. **`scripts/llm-gateway.sh`** — add an `aeon_present()` case, add the slug to the auto-resolver's default `GATEWAY_ORDER`, and add a `case` branch (a **native** provider exports `ANTHROPIC_BASE_URL` + the auth token; a **sidecar** provider calls `start_ccr_sidecar <slug> <openai-url> <key> <model>`).
 5. **`.github/workflows/aeon.yml`** — pass the new secret (and any `*_MODEL` override **variables**) into the run's `env:` (also `messages.yml`), so the resolver can see it.

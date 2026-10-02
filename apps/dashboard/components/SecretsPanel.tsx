@@ -12,6 +12,7 @@ import { InstantModeCard } from './InstantModeCard'
 import { LangfuseRegionCard } from './LangfuseRegionCard'
 import { TelegramCommandsCard } from './TelegramCommandsCard'
 import { TelegramChatIdHelper } from './TelegramChatIdHelper'
+import { TelegramLinkCard } from './TelegramLinkCard'
 import { OAUTH_SECRET_HARNESS } from '../lib/harness-auth'
 
 // Logo shown next to each credential group's header. Brand groups use their
@@ -44,17 +45,15 @@ interface SecretsPanelProps {
   onSave: (name: string, value: string) => void
   onDelete: (name: string) => void
   onSelectSkill: (name: string) => void
-  onConnectClaude: () => void
-  connecting?: boolean
-  onConnectGrok: () => void
-  grokConnecting?: boolean
-  onConnectHarness: (harness: string) => void
-  harnessConnecting?: boolean
+  // Open the Connect modal for a harness (its login or key).
+  onConnect: (harness: string) => void
+  // A secret was saved by a flow outside onSave (the Telegram chat link).
+  onMarkSet: (name: string) => void
   onConnectGithub: () => void
   githubConnecting?: boolean
 }
 
-export function SecretsPanel({ secrets, skills, busy, repo, harness, focusKey, onFocusHandled, onSave, onDelete, onSelectSkill, onConnectClaude, connecting, onConnectGrok, grokConnecting, onConnectHarness, harnessConnecting, onConnectGithub, githubConnecting }: SecretsPanelProps) {
+export function SecretsPanel({ secrets, skills, busy, repo, harness, focusKey, onFocusHandled, onSave, onDelete, onSelectSkill, onConnect, onMarkSet, onConnectGithub, githubConnecting }: SecretsPanelProps) {
   const [editingSecret, setEditingSecret] = useState<string | null>(null)
   const [secretValue, setSecretValue] = useState('')
   const [addingSecret, setAddingSecret] = useState(false)
@@ -198,10 +197,10 @@ export function SecretsPanel({ secrets, skills, busy, repo, harness, focusKey, o
                       </div>
                     </div>
                     <div className="flex flex-wrap gap-1.5 shrink-0 pl-[34px] md:pl-0">
-                      {secret.name === 'CLAUDE_CODE_OAUTH_TOKEN' && !claudeAuthSet && <button onClick={onConnectClaude} disabled={connecting} title="Run the Claude Code OAuth flow - signs in with your Claude Pro/Max plan, no API key or manual token needed." className="text-[11px] text-aeon-bg bg-aeon-fg font-mono px-2.5 py-1 hover:opacity-90 transition-opacity disabled:opacity-50">{connecting ? '…' : 'Connect'}</button>}
-                      {secret.name === 'GROK_CREDENTIALS' && <button onClick={onConnectGrok} disabled={grokConnecting} title="Run the Grok Build device-auth flow - opens your browser to approve on accounts.x.ai, then stores the session for CI. Use Reconnect if the session expires." className="text-[11px] text-aeon-bg bg-aeon-fg font-mono px-2.5 py-1 hover:opacity-90 transition-opacity disabled:opacity-50">{grokConnecting ? '…' : (secret.isSet ? 'Reconnect' : 'Connect')}</button>}
+                      {secret.name === 'CLAUDE_CODE_OAUTH_TOKEN' && !claudeAuthSet && <button onClick={() => onConnect('claude')} title="Connect Claude: run claude setup-token and paste the token, or use an API key or OpenRouter." className="text-[11px] text-aeon-bg bg-aeon-fg font-mono px-2.5 py-1 hover:opacity-90 transition-opacity disabled:opacity-50">Connect</button>}
+                      {secret.name === 'GROK_CREDENTIALS' && <button onClick={() => onConnect('grok')} title="Connect Grok: log in with your X account and paste the captured login, or use an xAI key. Use Reconnect if the session expires." className="text-[11px] text-aeon-bg bg-aeon-fg font-mono px-2.5 py-1 hover:opacity-90 transition-opacity disabled:opacity-50">{secret.isSet ? 'Reconnect' : 'Connect'}</button>}
                       {secret.name === 'GH_GLOBAL' && <button onClick={onConnectGithub} disabled={githubConnecting} title="Copy this machine's GitHub CLI token into GH_GLOBAL so Actions can push, open PRs, and call other repos. Uses the gh session the dashboard already has - no extra login. Use Reconnect after gh auth switch. Or paste a PAT with Set." className="text-[11px] text-aeon-bg bg-aeon-fg font-mono px-2.5 py-1 hover:opacity-90 transition-opacity disabled:opacity-50">{githubConnecting ? '…' : (secret.isSet ? 'Reconnect' : 'Connect')}</button>}
-                      {OAUTH_SECRET_HARNESS[secret.name] && <button onClick={() => onConnectHarness(OAUTH_SECRET_HARNESS[secret.name])} disabled={harnessConnecting} title={`Run the ${OAUTH_SECRET_HARNESS[secret.name]} login flow - opens your browser to approve, then stores the session for CI. Use Reconnect if it expires.`} className="text-[11px] text-aeon-bg bg-aeon-fg font-mono px-2.5 py-1 hover:opacity-90 transition-opacity disabled:opacity-50">{harnessConnecting ? '…' : (secret.isSet ? 'Reconnect' : 'Connect')}</button>}
+                      {OAUTH_SECRET_HARNESS[secret.name] && <button onClick={() => onConnect(OAUTH_SECRET_HARNESS[secret.name])} title={`Connect ${OAUTH_SECRET_HARNESS[secret.name]}: log in and paste the captured login. Use Reconnect if it expires.`} className="text-[11px] text-aeon-bg bg-aeon-fg font-mono px-2.5 py-1 hover:opacity-90 transition-opacity disabled:opacity-50">{secret.isSet ? 'Reconnect' : 'Connect'}</button>}
                       {!secret.isSet && editingSecret !== secret.name && !OAUTH_SECRET_HARNESS[secret.name] && <button onClick={() => { setEditingSecret(secret.name); setSecretValue('') }} className="btn-mini">Set</button>}
                       {secret.isSet && <button onClick={() => onDelete(secret.name)} disabled={!!busy[`sec-${secret.name}`]} className="btn-mini-danger">Remove</button>}
                     </div>
@@ -215,6 +214,9 @@ export function SecretsPanel({ secrets, skills, busy, repo, harness, focusKey, o
                   )}
                 </div>
               ))}
+              {group === 'Telegram' && (sessionBotToken || secrets.some(s => s.name === 'TELEGRAM_BOT_TOKEN' && s.isSet)) && (
+                <TelegramLinkCard sessionBotToken={sessionBotToken} chatIdSet={secrets.some(s => s.name === 'TELEGRAM_CHAT_ID' && s.isSet)} onLinked={() => onMarkSet('TELEGRAM_CHAT_ID')} />
+              )}
               {group === 'Telegram' && <TelegramCommandsCard tokenSet={secrets.some(s => s.name === 'TELEGRAM_BOT_TOKEN' && s.isSet)} />}
               {group === 'Telegram' && <InstantModeCard repo={repo} sessionBotToken={sessionBotToken} />}
               {group === 'Observability' && <LangfuseRegionCard keysSet={secrets.some(s => s.name === 'LANGFUSE_PUBLIC_KEY' && s.isSet) && secrets.some(s => s.name === 'LANGFUSE_SECRET_KEY' && s.isSet)} />}

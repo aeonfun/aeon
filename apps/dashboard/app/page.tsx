@@ -27,10 +27,9 @@ import { McpPanel } from '../components/McpPanel'
 import { PacksPanel } from '../components/PacksPanel'
 import { RightPanel } from '../components/RightPanel'
 import { ImportModal } from '../components/ImportModal'
-import { AuthModal } from '../components/AuthModal'
-import { GrokAuthModal } from '../components/GrokAuthModal'
-import { HarnessAuthModal } from '../components/HarnessAuthModal'
-import { HARNESS_AUTH } from '../lib/harness-auth'
+import { ConnectModal, type SavedCredential } from '../components/ConnectModal'
+import { OnboardingChecklist } from '../components/OnboardingChecklist'
+import type { CheckResult } from '../lib/connect-check'
 import { PanelError } from '../components/PanelError'
 
 export default function Dashboard() {
@@ -83,11 +82,13 @@ export default function Dashboard() {
   const narrow = useNarrow()
   const [navOpen, setNavOpen] = useState(false)
   const [activityOpen, setActivityOpen] = useState(false)
-  const [authLoading, setAuthLoading] = useState(false)
-  const [grokLoading, setGrokLoading] = useState(false)
-  const [harnessAuthLoading, setHarnessAuthLoading] = useState(false)
   const [githubLoading, setGithubLoading] = useState(false)
-  const [showAuthModal, setShowAuthModal] = useState(false)
+  // The Connect modal: which harness it connects, and whether it opens on the
+  // live test (the checklist's "Test").
+  const [connectFor, setConnectFor] = useState<{ harness: Harness; test?: boolean } | null>(null)
+  // Latest connect-check result per harness (HQ checklist "verified").
+  const [checks, setChecks] = useState<Record<string, CheckResult>>({})
+  const [actionsEnabled, setActionsEnabled] = useState<boolean | null>(null)
 
   const [strategy, setStrategy] = useState('')
   const [strategyLoaded, setStrategyLoaded] = useState(false)
@@ -190,14 +191,15 @@ export default function Dashboard() {
   // stale afterward. Refetch core data + the feed, and drop cached panel state so
   // strategy/soul/mcp/analytics reload from the freshly-pulled files.
   const pullFromGithub = async () => { setPulling(true); try { const { ok, data } = await postJson<ErrorResponse>('/api/outputs'); if (ok) { flash('Pulled - refreshing'); setAnalyticsData(null); setStrategyLoaded(false); setMcpLoaded(false); setSoulLoaded(false); setFeedKey(k => k + 1); await fetchData() } else { flash(data.error || 'Pull failed') } } finally { setPulling(false) } }
-  const setupAuth = async (auth?: string | { key: string, baseUrl?: string, provider?: string }) => { setAuthLoading(true); try { const body = typeof auth === 'string' ? { key: auth } : (auth || {}); const { ok, data } = await postJson<ErrorResponse>('/api/auth', body); if (ok) { flash('Authenticated'); setShowAuthModal(false); fetchData() } else { const msg = typeof data?.error === 'string' ? data.error : (auth ? 'Auth failed' : 'Auto-setup failed'); if (!auth) setShowAuthModal(true); flash(msg) } } finally { setAuthLoading(false) } }
-  // Connect the grok harness: no arg captures the local X-account OAuth session
-  // (GROK_CREDENTIALS); a key stores XAI_API_KEY instead.
-  const setupGrokAuth = async (payload?: { key: string }) => { setGrokLoading(true); try { const { ok, data } = await postJson<ErrorResponse & { harness?: Harness; synced?: boolean }>('/api/grok-auth', payload || {}); if (ok) { if (data?.harness === 'grok') { setHarness('grok'); flashSynced('X account connected - harness set to grok', data) } else { if (payload?.key) markSecretSet('XAI_API_KEY'); flash(payload?.key ? 'XAI_API_KEY saved' : 'X account connected') } setShowAuthModal(false); fetchData() } else { flash(typeof data?.error === 'string' ? data.error : 'Grok connect failed') } } finally { setGrokLoading(false) } }
-  // Native auth for codex/pi/vibe/kimi (the /api/harness-auth parallel to grok):
-  // no arg = OAuth capture (codex→ChatGPT, kimi→device), which also switches the
-  // repo to that harness; {key} = a provider key stored under its own secret.
-  const setupHarnessAuth = async (targetHarness: string, payload?: { key: string }) => { setHarnessAuthLoading(true); try { const { ok, data } = await postJson<ErrorResponse & { harness?: Harness; method?: string; secret?: string; synced?: boolean }>('/api/harness-auth', { harness: targetHarness, ...(payload || {}) }); if (ok) { if (data?.method === 'oauth' && data?.harness) { setHarness(data.harness); flashSynced(`${data.harness} connected - harness set`, data) } else { if (data?.secret) markSecretSet(data.secret); flash(`${data?.secret || 'Key'} saved`) } setShowAuthModal(false); fetchData() } else { flash(typeof data?.error === 'string' ? data.error : 'Connect failed') } } finally { setHarnessAuthLoading(false) } }
+  // A credential saved from the Connect modal (paste, OpenRouter, Do it for me,
+  // Found on this machine). A login capture also switched aeon.yml's harness.
+  // The modal moves on to the live test, so mark that harness as testing.
+  const onCredentialSaved = (c: SavedCredential) => {
+    if (c.secret) markSecretSet(c.secret, 'Core')
+    if (c.harness) { setHarness(c.harness); flashSynced(`${c.secret} saved - harness set to ${HARNESSES.find(x => x.id === c.harness)?.label || c.harness}`, c) } else flash(`${c.secret || 'Credential'} saved`)
+    setChecks(m => ({ ...m, [c.harness ?? connectFor?.harness ?? harness]: { state: 'queued' } }))
+    fetchData()
+  }
   const setupGithubAuth = async () => { setGithubLoading(true); try { const { ok, data } = await postJson<ErrorResponse>('/api/github-auth', {}); if (ok) { markSecretSet('GH_GLOBAL'); flash('GH_GLOBAL saved from gh') } else { flash(typeof data?.error === 'string' ? data.error : 'GitHub connect failed') } } finally { setGithubLoading(false) } }
   const saveSecret = async (n: string, value: string) => { setBusy(b => ({ ...b, [`sec-${n}`]: true })); try { const { ok } = await postJson('/api/secrets', { name: n, value }); if (ok) { markSecretSet(n); flash(`${n} saved`) } } finally { setBusy(b => ({ ...b, [`sec-${n}`]: false })) } }
   const deleteSecret = async (n: string) => { setBusy(b => ({ ...b, [`sec-${n}`]: true })); try { const { ok } = await del('/api/secrets', { name: n }); if (ok) { setSecrets(s => s.map(x => x.name === n ? { ...x, isSet: false } : x)); flash(`${n} removed`) } } finally { setBusy(b => ({ ...b, [`sec-${n}`]: false })) } }
@@ -222,6 +224,16 @@ export default function Dashboard() {
   const buildSoul = async (sources: SoulSources) => { setSoulBuilding(true); try { const { ok, data } = await postJson<ErrorResponse>('/api/soul/build', { ...sources, model }); if (ok) { const label = sources.handle ? `@${sources.handle}` : sources.name || 'your links'; flash(`Soul-builder started for ${label}`); scheduleRunRefresh(refreshRuns) } else { flash(data.error || 'Build failed to dispatch') } } finally { setSoulBuilding(false) } }
   const installSoulExample = async (key: string) => { setSoulInstalling(key); try { const { ok, data } = await postJson<SoulExampleResponse>('/api/soul/examples', { example: key }); if (ok) { setSoul(data.soul || ''); setSoulStyle(data.style || ''); setSoulLoaded(true); flashSynced(`Installed ${key} soul`, data) } else { flash(data.error || 'Install failed') } } finally { setSoulInstalling(null) } }
 
+  // Setup checklist inputs that need their own reads: whether Actions is on,
+  // and the newest connect-check verdict for the selected harness.
+  useEffect(() => { if (!loading) getJson<{ actionsEnabled: boolean | null }>('/api/onboarding').then(d => setActionsEnabled(d.actionsEnabled)).catch(() => {}) }, [loading])
+  useEffect(() => {
+    if (loading) return
+    let live = true
+    getJson<CheckResult>(`/api/connect-check?harness=${harness}`).then(d => { if (live) setChecks(m => (m[harness] && m[harness].state !== 'none' && d.state === 'none') ? m : { ...m, [harness]: d }) }).catch(() => {})
+    return () => { live = false }
+  }, [loading, harness])
+
   // Jump from a skill's API-keys panel straight to Settings → Access Keys,
   // scrolled to the chosen key with its input open and ready to paste.
   const goToSecret = (name: string) => { setSelectedSkill(null); setView('secrets'); setSecretFocus(name) }
@@ -234,6 +246,13 @@ export default function Dashboard() {
   // xAI key), so a Claude token doesn't count when grok is selected — that's what
   // surfaces the Auth CTA → "Connect X account". Derived from live `secrets`.
   const hasModelKey = secrets.some(s => s.isSet && authSecretsForHarness(harness).includes(s.name))
+  const isSet = (n: string) => secrets.some(s => s.isSet && s.name === n)
+  // Any one notify channel fully configured (see ./notify's opt-in secrets).
+  const notificationsSet = (isSet('TELEGRAM_BOT_TOKEN') && isSet('TELEGRAM_CHAT_ID'))
+    || isSet('DISCORD_WEBHOOK_URL') || (isSet('DISCORD_BOT_TOKEN') && isSet('DISCORD_CHANNEL_ID'))
+    || isSet('SLACK_WEBHOOK_URL') || (isSet('SLACK_BOT_TOKEN') && isSet('SLACK_CHANNEL_ID'))
+    || (isSet('RESEND_API_KEY') && isSet('NOTIFY_EMAIL_TO'))
+  const firstRunDone = runs.some(r => r.conclusion === 'success' && r.workflow.startsWith('skill: ') && !r.workflow.startsWith('skill: connect-check'))
   // Skills visible across the dashboard = first-party skills whose pack is
   // enabled (Core always on), PLUS every community skill — anything in a pack
   // that isn't first-party was installed from another repo on purpose, so it's
@@ -284,15 +303,15 @@ export default function Dashboard() {
         />
         <TopBar
           skill={skill} view={view} repo={repo} model={model} harness={harness} gateway={gateway}
-          hasModelKey={hasModelKey} authLoading={authLoading}
+          hasModelKey={hasModelKey}
           pulling={pulling} syncing={syncing} hasChanges={hasChanges} behind={behind}
-          onSetupAuth={() => setShowAuthModal(true)} onUpdateModel={updateModel} onUpdateHarness={updateHarness}
+          onSetupAuth={() => setConnectFor({ harness })} onUpdateModel={updateModel} onUpdateHarness={updateHarness}
           onPull={pullFromGithub} onSync={syncToGithub}
         />
 
         <div ref={mainScrollRef} className="flex-1 overflow-y-auto p-[var(--space-lg)]">
           {view === 'secrets' && !selectedSkill && (
-            <SecretsPanel secrets={secrets} skills={skills} busy={busy} repo={repo} harness={harness} focusKey={secretFocus} onFocusHandled={() => setSecretFocus(null)} onSave={saveSecret} onDelete={deleteSecret} onSelectSkill={(name) => { setSelectedSkill(name); setView('hq') }} onConnectClaude={() => setupAuth()} connecting={authLoading} onConnectGrok={() => setupGrokAuth()} grokConnecting={grokLoading} onConnectHarness={(h) => setupHarnessAuth(h)} harnessConnecting={harnessAuthLoading} onConnectGithub={() => setupGithubAuth()} githubConnecting={githubLoading} />
+            <SecretsPanel secrets={secrets} skills={skills} busy={busy} repo={repo} harness={harness} focusKey={secretFocus} onFocusHandled={() => setSecretFocus(null)} onSave={saveSecret} onDelete={deleteSecret} onSelectSkill={(name) => { setSelectedSkill(name); setView('hq') }} onConnect={(h) => setConnectFor({ harness: HARNESSES.find(x => x.id === h)?.id ?? 'claude' })} onMarkSet={(n) => markSecretSet(n, 'Telegram')} onConnectGithub={() => setupGithubAuth()} githubConnecting={githubLoading} />
           )}
           {view === 'strategy' && !selectedSkill && (
             strategyError
@@ -310,7 +329,17 @@ export default function Dashboard() {
               : <SoulPanel soul={soul} style={soulStyle} loading={!soulLoaded} saving={soulSaving} building={soulBuilding} installing={soulInstalling} onSave={saveSoul} onBuild={buildSoul} onInstallExample={installSoulExample} />
           )}
           {view === 'hq' && !selectedSkill && (
-            <HQOverview skills={visibleSkills} runs={runs} enabledCount={enabledCount} workingCount={workingCount} categoryFilter={categoryFilter} onCategoryClick={(key) => setCategoryFilter(categoryFilter === key ? null : key)} onOpenPacks={() => setView('packs')} />
+            <HQOverview skills={visibleSkills} runs={runs} enabledCount={enabledCount} workingCount={workingCount} categoryFilter={categoryFilter} onCategoryClick={(key) => setCategoryFilter(categoryFilter === key ? null : key)} onOpenPacks={() => setView('packs')}
+              checklist={
+                <OnboardingChecklist
+                  repo={repo} actionsEnabled={actionsEnabled} harness={harness} hasModelKey={hasModelKey}
+                  check={checks[harness] ?? null} notificationsSet={notificationsSet} firstRunDone={firstRunDone}
+                  onConnect={() => setConnectFor({ harness })}
+                  onTest={() => setConnectFor({ harness, test: true })}
+                  onNotifications={() => goToSecret(isSet('TELEGRAM_BOT_TOKEN') ? 'TELEGRAM_CHAT_ID' : 'TELEGRAM_BOT_TOKEN')}
+                  onFirstRun={() => { const first = visibleSkills.find(s => s.enabled && s.name !== 'connect-check'); if (first) { setSelectedSkill(first.name); setView('hq') } else setView('packs') }}
+                />
+              } />
           )}
           {view === 'packs' && !selectedSkill && (
             packsError
@@ -336,13 +365,17 @@ export default function Dashboard() {
       />
 
       {showImport && <ImportModal onClose={() => setShowImport(false)} onImport={importSkill} />}
-      {showAuthModal && (harness === 'grok'
-        ? <GrokAuthModal loading={grokLoading} onClose={() => setShowAuthModal(false)} onGrokAuth={(p) => setupGrokAuth(p)}
-            patSet={secrets.some(s => s.isSet && (s.name === 'GH_SECRETS_PAT' || s.name === 'GH_GLOBAL'))}
-            onGoToSecret={(n) => { setShowAuthModal(false); goToSecret(n) }} />
-        : HARNESS_AUTH[harness]
-        ? <HarnessAuthModal harness={harness} loading={harnessAuthLoading} onClose={() => setShowAuthModal(false)} onHarnessAuth={(p) => setupHarnessAuth(harness, p)} />
-        : <AuthModal loading={authLoading} onClose={() => setShowAuthModal(false)} onAuth={(auth) => setupAuth(auth)} />)}
+      {connectFor && (
+        <ConnectModal
+          key={`${connectFor.harness}-${connectFor.test ? 'test' : 'connect'}`}
+          harness={connectFor.harness} startWithTest={connectFor.test}
+          patSet={isSet('GH_SECRETS_PAT') || isSet('GH_GLOBAL')}
+          onClose={() => setConnectFor(null)}
+          onSaved={onCredentialSaved}
+          onChecked={(h, r) => setChecks(m => ({ ...m, [h]: r }))}
+          onGoToSecret={(n) => { setConnectFor(null); goToSecret(n) }}
+        />
+      )}
     </div>
   )
 }
