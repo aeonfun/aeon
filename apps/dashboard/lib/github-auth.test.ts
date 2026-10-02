@@ -1,7 +1,7 @@
 import { describe, it } from 'node:test'
 import { strict as assert } from 'node:assert'
 
-import { assertGhGlobalScopes, missingScopes, parseGhAuthToken, parseOAuthScopes } from './github-auth'
+import { GhGlobalScopeError, assertGhGlobalScopes, missingScopes, parseGhAuthToken, parseOAuthScopes } from './github-auth'
 
 describe('parseGhAuthToken', () => {
   it('accepts GitHub CLI OAuth tokens', () => {
@@ -44,7 +44,8 @@ describe('GH_GLOBAL scope check', () => {
 
   it('accepts a token with repo + workflow and refuses one without', () => {
     assert.doesNotThrow(() => assertGhGlobalScopes('gho_x', ['repo', 'workflow']))
-    assert.throws(() => assertGhGlobalScopes('gho_x', ['repo']), /missing the workflow scope.*gh auth refresh -h github.com -s repo,workflow/)
+    assert.throws(() => assertGhGlobalScopes('gho_x', ['repo']), /missing the workflow scope.*classic PAT with repo \+ workflow.*gh auth refresh -h github.com -s repo,workflow/)
+    assert.throws(() => assertGhGlobalScopes('ghp_x', ['gist']), GhGlobalScopeError)
     assert.throws(() => assertGhGlobalScopes('ghp_x', ['gist']), /repo \+ workflow scopes/)
   })
 

@@ -106,6 +106,10 @@ jobs:
       - name: Lint (eslint, borrows the dashboard install)
         run: npm run lint
         working-directory: apps/cli
+      # `aeon init` end to end against a fake gh (a directory of bare repos):
+      # template switch-over, re-run, resume, --dir, refusals. No network.
+      - name: aeon init sandbox tests
+        run: bash apps/cli/test/init-sandbox.sh
 
   mcp-server:
     name: mcp-server — build

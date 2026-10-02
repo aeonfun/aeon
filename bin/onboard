@@ -9,9 +9,11 @@ set -euo pipefail
 #
 # Usage:
 #   bin/onboard                  Run every check, print summary, exit 0/1
-#   bin/onboard --remote         After the checks, dispatch one heartbeat run, an
-#                              end-to-end test: it proves Actions, the model
-#                              credential and your notification channel work.
+#   bin/onboard --remote         After the checks, dispatch one heartbeat run (it
+#                              costs one Actions run and model call). A green run
+#                              proves Actions and the model credential work. It
+#                              commits docs/status.md and only notifies when it
+#                              finds something, so a quiet channel is normal.
 #   bin/onboard --quiet          Suppress per-check output, print summary only
 #   bin/onboard --json           Machine-readable JSON output (no colors, no fixes)
 #   bin/onboard --help           Show this help
@@ -221,10 +223,13 @@ GATEWAYS="harness-adapter/gateways.json"
 if ! command -v jq >/dev/null 2>&1 || [[ ! -f "$MANIFEST" ]]; then
   emit warn "model credential" "cannot read $MANIFEST (needs jq)" \
     "Install jq, or check Settings -> Secrets and variables -> Actions for the $HARNESS credential (docs/harnesses.md lists them)."
-elif ! jq -e --arg h "$HARNESS" '.harnesses[] | select(.id == $h)' "$MANIFEST" >/dev/null 2>&1; then
-  emit fail "model credential" "aeon.yml harness '$HARNESS' is not a known harness" \
-    "Set harness: to one of $(jq -r '[.harnesses[].id] | join(", ")' "$MANIFEST") (./aeon config set harness <name>)."
 else
+  # resolve-harness.sh runs an unknown harness name as claude, so check claude.
+  if ! jq -e --arg h "$HARNESS" '.harnesses[] | select(.id == $h)' "$MANIFEST" >/dev/null 2>&1; then
+    emit warn "harness" "aeon.yml harness '$HARNESS' is not a known harness, so runs fall back to claude" \
+      "Set harness: to one of $(jq -r '[.harnesses[].id] | join(", ")' "$MANIFEST") (./aeon config set harness <name>)."
+    HARNESS=claude
+  fi
   # "<SECRET>\t<label>" for every credential that can run this harness, in order.
   # A manifest from before `credentials` existed falls back to its auth summary.
   cand="$(jq -r --arg h "$HARNESS" '.harnesses[] | select(.id == $h) | . as $x
@@ -405,7 +410,8 @@ if [[ "$REMOTE" == "true" ]]; then
   echo "Dispatching a heartbeat run on $REPO_SLUG ..."
   if gh workflow run aeon.yml -R "$REPO_SLUG" -f skill=heartbeat >/dev/null 2>&1; then
     echo "Dispatched. Watch it with: gh run list -R $REPO_SLUG --workflow=aeon.yml --limit 1"
-    echo "If heartbeat finds anything worth reporting, it arrives in your notification channel."
+    echo "A green run means Actions and the model credential work. heartbeat commits docs/status.md and"
+    echo "only notifies when it finds something, so no message is normal on a fresh instance."
   else
     echo "Failed to dispatch. Verify Actions are enabled and that aeon.yml workflow exists." >&2
     exit 1

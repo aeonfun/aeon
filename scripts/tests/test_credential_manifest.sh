@@ -84,7 +84,9 @@ if block:
         arm = body[m.start():end]
         if m.group(1) == "claude":
             # Only the auto-pick secrets decide claude's label; the gateway pin is aeon.yml.
-            arm = arm[arm.index('if [ "$GW_PROVIDER" = "auto" ]'):]
+            at = arm.find('if [ "$GW_PROVIDER" = "auto" ]')
+            check(at >= 0, "resolve-harness.sh: claude arm has no `if [ \"$GW_PROVIDER\" = \"auto\" ]` block")
+            arm = arm[at:] if at >= 0 else ""
         names = []
         for n in re.findall(r'\$\{([A-Z][A-Z0-9_]*):-\}', arm):
             if n not in names:
@@ -173,6 +175,8 @@ if specs:
         oauth = re.search(r"oauth: \{.*?secret: '([A-Z0-9_]+)'", entry, re.S)
         paths = re.search(r"credPaths: \[([^\]]*)\]", entry)
         cap = [c for c in H[h]["credentials"] if c["kind"] == "oauth_capture"]
+        check(bool(oauth) == bool(cap),
+              f"{h}: harness-auth.ts {'has' if oauth else 'has no'} oauth capture but the manifest {'has' if cap else 'has no'} oauth_capture credential")
         if oauth:
             check(len(cap) == 1 and cap[0]["secret"] == oauth.group(1),
                   f"{h}: harness-auth.ts oauth secret {oauth.group(1)} is not the manifest's oauth_capture credential")
@@ -271,7 +275,9 @@ default_order = first(r'\$\{GATEWAY_ORDER:-([a-z ]+)\}', gateway_src)
 check(default_order is not None and gw_ids == default_order.split(),
       f"gateways.json order {gw_ids} != llm-gateway.sh default GATEWAY_ORDER {default_order}")
 present = dict(re.findall(r'^    ([a-z]+)\)\s+(\[ -n .*?\]) ;;$', gateway_src, re.M))
-route = gateway_src[gateway_src.index("# --- route"):]
+route_at = gateway_src.find("# --- route")
+check(route_at >= 0, "llm-gateway.sh: no '# --- route' section marker")
+route = gateway_src[route_at:] if route_at >= 0 else ""
 route_arms = list(re.finditer(r'^  ([a-z|"]+)\)', route, re.M))
 for g in gateways:
     gid = g["id"]
@@ -289,9 +295,18 @@ for g in gateways:
         check(sidecar == (g["transport"] == "sidecar"), f"{gid}: transport {g['transport']} but sidecar={sidecar} in llm-gateway.sh")
 
 # --- 7. gateways.json vs gateway-registry.ts + constants.ts --------------------
+# Entries are `slug: { ...keys in any order, possibly over several lines... }`.
 reg = {}
-for m in re.finditer(r"^  ([a-z]+): \{ label: '([^']+)', secretName: '([A-Z0-9_]+)', prefixes: \[([^\]]*)\]", registry_src, re.M):
-    reg[m.group(1)] = (m.group(2), m.group(3), re.findall(r"'([^']*)'", m.group(4)))
+reg_body = re.search(r"GATEWAY_REGISTRY = \{(.*?)\n\} as const", registry_src, re.S)
+check(reg_body is not None, "gateway-registry.ts: could not find GATEWAY_REGISTRY = { ... } as const")
+for m in re.finditer(r"^  ([a-z0-9]+): \{(.*?)\}", reg_body.group(1) if reg_body else "", re.S | re.M):
+    body = m.group(2)
+    label = re.search(r"\blabel: '([^']+)'", body)
+    secret = re.search(r"\bsecretName: '([A-Z0-9_]+)'", body)
+    prefixes = re.search(r"\bprefixes: \[([^\]]*)\]", body, re.S)
+    check(bool(label and secret and prefixes), f"gateway-registry.ts: entry {m.group(1)} lacks label/secretName/prefixes")
+    reg[m.group(1)] = (label.group(1) if label else None, secret.group(1) if secret else None,
+                       re.findall(r"'([^']*)'", prefixes.group(1)) if prefixes else None)
 non_native = [g for g in gateways if g["transport"] != "native"]
 check(set(reg) == {g["id"] for g in non_native},
       f"gateway-registry.ts slugs {sorted(reg)} != gateways.json non-native ids {sorted(g['id'] for g in non_native)}")
@@ -302,8 +317,9 @@ for g in non_native:
         check(secret == g["secrets"][0], f"{g['id']}: registry secretName {secret} != gateways.json {g['secrets'][0]}")
         check(prefixes == g["prefixes"], f"{g['id']}: registry prefixes {prefixes} != gateways.json {g['prefixes']}")
 cas = first(r"^export const CLAUDE_AUTH_SECRETS = \[([^\]]*)\]", constants_src)
-check(cas is not None and re.findall(r"'([A-Z0-9_]+)'", cas) == secrets_of("claude"),
-      f"constants.ts CLAUDE_AUTH_SECRETS does not start with claude's credentials {secrets_of('claude')}")
+cas_literal = re.findall(r"'([A-Z0-9_]+)'", cas) if cas is not None else None
+check(cas_literal == secrets_of("claude") and "...GATEWAY_SECRET_NAMES" in (cas or ""),
+      f"constants.ts CLAUDE_AUTH_SECRETS should be claude's credentials {secrets_of('claude')} then ...GATEWAY_SECRET_NAMES (got literals {cas_literal})")
 native = [g for g in gateways if g["transport"] == "native"]
 check([s for g in native for s in g["secrets"]] == secrets_of("claude"),
       "gateways.json native tier must be exactly claude's own credentials, in order")

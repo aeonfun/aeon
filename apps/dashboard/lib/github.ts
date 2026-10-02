@@ -38,6 +38,12 @@ export function withFileLock<T>(path: string, fn: () => Promise<T>): Promise<T> 
   return run
 }
 
+// Is this git remote URL the shared Aeon template (aeonfun/aeon, or the
+// aaronjmars/aeon redirect) rather than an operator's instance?
+export function isTemplateRemote(url: string): boolean {
+  return /github\.com[:/]+(aeonfun|aaronjmars)\/aeon(\.git)?\/?$/i.test(url.trim())
+}
+
 /**
  * Local-mode auto-sync. After a dashboard edit writes a file to disk, stage
  * exactly those paths, commit, and push so the change lands on GitHub
@@ -54,19 +60,30 @@ export function commitAndPush(paths: string[], message: string): CommitResult {
     execFileSync('git', args, { stdio: 'pipe', cwd: REPO_ROOT }).toString().trim()
   const errMsg = (e: unknown) => (e instanceof Error ? e.message : String(e)).slice(0, 200)
   try {
+    // Push to `origin` by name, never to whatever the branch happens to track:
+    // a half-converted clone of the template can still track aeonfun/aeon. And
+    // never push config to the template itself (the operator's edit stays on
+    // disk, reported as not synced).
+    let origin = ''
+    try { origin = git('remote', 'get-url', 'origin') } catch { /* no origin */ }
+    if (!origin) return { synced: false, reason: 'no origin remote - run ./aeon init' }
+    if (isTemplateRemote(origin)) {
+      return { synced: false, reason: `origin is the Aeon template (${origin}), not your instance - run ./aeon init` }
+    }
     git('add', '--', ...paths) // stages content changes AND deletions under these paths
     let staged = true
     try { git('diff', '--cached', '--quiet', '--', ...paths); staged = false } catch { staged = true }
     if (!staged) return { synced: true } // nothing changed in these paths
     git('commit', '-m', message, '--', ...paths)
+    const branch = git('rev-parse', '--abbrev-ref', 'HEAD')
     try {
-      git('push')
+      git('push', 'origin', `HEAD:${branch}`)
     } catch {
       // Most likely behind origin/main (e.g. an Actions bot commit). Rebase onto
       // the remote and retry once; abort cleanly if it conflicts.
       try {
-        git('pull', '--rebase', '--autostash')
-        git('push')
+        git('pull', '--rebase', '--autostash', 'origin', branch)
+        git('push', 'origin', `HEAD:${branch}`)
       } catch (e) {
         try { git('rebase', '--abort') } catch { /* not mid-rebase */ }
         return { synced: false, reason: errMsg(e) }

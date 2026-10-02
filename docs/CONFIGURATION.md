@@ -157,7 +157,7 @@ One classic PAT covers the whole instance - no separate read or secrets PAT is n
 - **`repo`** - cross-repo and private-repo read/write, repository security advisories + private vulnerability reports (the disclosure/PVR skills), and writing Actions secrets back (the OAuth-MCP / Grok refresh path).
 - **`workflow`** - required only for skills that push changes under `.github/workflows/` (`aeon-update`, `spawn-instance`, `auto-workflow`); without it those pushes 403.
 
-The quickest way to set it: `./aeon init` (or `./aeon auth --github`) copies your `gh` login token into `GH_GLOBAL`, after checking it carries `repo` + `workflow` (`gh auth refresh -h github.com -s repo,workflow` adds them). A gh login token works like a classic PAT and does not expire.
+The quickest way to set it: `./aeon init` (or `./aeon auth --github`) copies your `gh` login token into `GH_GLOBAL`, after checking it carries `repo` + `workflow` (`gh auth refresh -h github.com -s repo,workflow` adds them). A gh login token works like a classic PAT, but GitHub revokes it after a year without use, or when more than 10 tokens exist for the same user, app and scopes (each `gh auth login` mints one). That is fine to get started; for an instance that should run for months, create a **dedicated classic PAT** (`repo` + `workflow`) and set it with `./aeon secrets set GH_GLOBAL --stdin`.
 
 **`GH_SECRETS_PAT` is optional.** The two paths that write rotated logins back as secrets (MCP OAuth refresh, grok's X login) try `GH_SECRETS_PAT` first and fall back to `GH_GLOBAL`. Set it only to keep that secrets-write power on a separate token (a fine-grained PAT with **Secrets: read/write** on this repo).
 

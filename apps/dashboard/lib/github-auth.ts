@@ -51,25 +51,33 @@ export function ghTokenScopes(): string[] | null {
   }
 }
 
+// A token that is not fit to be GH_GLOBAL: a caller mistake (HTTP 400), not
+// a server failure.
+export class GhGlobalScopeError extends Error {}
+
+const SET_CLASSIC = 'Set GH_GLOBAL to a classic PAT with repo + workflow (https://github.com/settings/tokens, Tokens (classic))'
+
 // Throw a fix-it error unless `token` (with these readable `scopes`) is fit to
 // be GH_GLOBAL. Pure, so the route, the CLI and tests share one rule.
 export function assertGhGlobalScopes(token: string, scopes: string[] | null): void {
   if (scopes === null) {
-    throw new Error(token.startsWith('github_pat_')
-      ? 'This is a fine-grained token, whose permissions cannot be checked. GH_GLOBAL needs a classic token with the repo and workflow scopes: create one at https://github.com/settings/tokens (Tokens (classic)) and paste it with Set.'
-      : 'Could not read this token\'s scopes. Run `gh auth refresh -h github.com -s repo,workflow` and connect again, or paste a classic PAT (repo + workflow) with Set.')
+    throw new GhGlobalScopeError(token.startsWith('github_pat_')
+      ? `This is a fine-grained token, whose permissions cannot be checked. ${SET_CLASSIC}.`
+      : `Could not read this token's scopes. ${SET_CLASSIC}, or run \`gh auth refresh -h github.com -s ${GH_GLOBAL_SCOPES.join(',')}\` and connect again.`)
   }
   const missing = missingScopes(scopes)
   if (missing.length) {
-    throw new Error(`The gh token is missing the ${missing.join(' + ')} scope${missing.length > 1 ? 's' : ''} GH_GLOBAL needs. Run \`gh auth refresh -h github.com -s ${GH_GLOBAL_SCOPES.join(',')}\`, then connect again.`)
+    throw new GhGlobalScopeError(`The gh token is missing the ${missing.join(' + ')} scope${missing.length > 1 ? 's' : ''} GH_GLOBAL needs. ${SET_CLASSIC}, or run \`gh auth refresh -h github.com -s ${GH_GLOBAL_SCOPES.join(',')}\` and connect again.`)
   }
 }
 
 // Copy the operator's already-authenticated `gh` session into GH_GLOBAL so
 // Actions runs with that token. Shared by POST /api/github-auth,
 // `aeon auth --github` and `aeon init`. No extra browser flow: the dashboard
-// already required `gh auth login` to start, and GitHub CLI gho_ tokens do not
-// expire. Refuses a token without the repo + workflow scopes.
+// already required `gh auth login` to start. GitHub revokes a gho_ token after
+// a year unused or once more than 10 exist for the same app and scopes, so the
+// docs recommend a dedicated classic PAT for long-lived instances. Refuses a
+// token without the repo + workflow scopes (GhGlobalScopeError).
 export function captureGithubToken(): { ok: true; method: 'oauth'; secret: string } {
   let raw: string
   try {

@@ -1,0 +1,88 @@
+#!/usr/bin/env bash
+# fake-gh - a stand-in for the GitHub CLI used by init-sandbox.sh. "GitHub" is
+# a directory of bare repos at $FAKE_GH_ROOT/github.com/<owner>/<repo>.git
+# (git reaches it through a url.insteadOf rewrite), and every other piece of
+# state (default repo, secrets, Actions settings) lives in $FAKE_GH_STATE.
+# Every call is appended to $FAKE_GH_STATE/calls, so a test can assert both
+# what happened and what did NOT (no login, no repo create, no PUT).
+set -uo pipefail
+ROOT="$FAKE_GH_ROOT/github.com"
+ST="$FAKE_GH_STATE"
+mkdir -p "$ST"
+printf '%s\n' "$*" >> "$ST/calls"
+
+bare() { printf '%s/%s.git' "$ROOT" "$1"; }
+exists() { [ -d "$(bare "$1")" ]; }
+key() { printf '%s' "$1" | tr '/' '_'; }
+# value of `-R <slug>` in the args, else the default repo
+repo_arg() {
+  local prev=""
+  for a in "$@"; do
+    if [ "$prev" = "-R" ]; then printf '%s' "$a"; return; fi
+    prev="$a"
+  done
+  cat "$ST/default" 2>/dev/null
+}
+
+case "${1:-} ${2:-}" in
+  "--version "*) echo "gh version 9.9.9 (fake)" ;;
+  "auth status") exit 0 ;;
+  "auth token") echo "gho_fakesandboxtoken" ;;
+  "auth login"|"auth refresh") echo "fake-gh: interactive auth is not available" >&2; exit 1 ;;
+  "repo create")
+    slug="$3"
+    exists "$slug" && { echo "fake-gh: $slug already exists" >&2; exit 1; }
+    mkdir -p "$(dirname "$(bare "$slug")")"
+    git clone -q --bare "$(bare aeonfun/aeon)" "$(bare "$slug")"
+    echo "https://github.com/$slug" ;;
+  "repo view")
+    slug="${3:-}"
+    case "$slug" in -*|"") slug="$(cat "$ST/default" 2>/dev/null)" ;; esac
+    exists "$slug" || { echo "GraphQL: Could not resolve to a Repository" >&2; exit 1; }
+    case "$*" in
+      *defaultBranchRef*) echo main ;;
+      *) echo "$slug" ;;
+    esac ;;
+  "repo set-default")
+    if [ "${3:-}" = "--view" ]; then
+      cat "$ST/default" 2>/dev/null || echo "no default repository has been set"
+    else
+      printf '%s' "$3" > "$ST/default"
+    fi ;;
+  "repo clone") git clone -q "https://github.com/$3" "$4" ;;
+  "secret list")
+    slug="$(repo_arg "$@")"
+    exists "$slug" || exit 1
+    cat "$ST/secrets-$(key "$slug")" 2>/dev/null; exit 0 ;;
+  "secret set")
+    slug="$(repo_arg "$@")"
+    cat > /dev/null
+    echo "$3" >> "$ST/secrets-$(key "$slug")" ;;
+  "workflow run") exit 0 ;;
+  "api user") echo "tester" ;;
+  "api -i")
+    printf 'HTTP/2.0 200 OK\r\nX-Oauth-Scopes: gist, read:org, repo, workflow\r\n\r\n{"login":"tester"}\n' ;;
+  "api -X")
+    path="$4"
+    slug="$(printf '%s' "$path" | cut -d/ -f2-3)"
+    echo "PUT $*" >> "$ST/puts"
+    case "$path" in
+      */actions/permissions) echo '{"enabled":true,"allowed_actions":"all"}' > "$ST/perms-$(key "$slug")" ;;
+      */actions/permissions/workflow)
+        d="$(printf '%s' "$*" | sed -n 's/.*default_workflow_permissions=\([a-z]*\).*/\1/p')"
+        printf '{"default_workflow_permissions":"%s","can_approve_pull_request_reviews":true}' "${d:-read}" > "$ST/wf-$(key "$slug")" ;;
+    esac ;;
+  "api repos/"*)
+    path="$2"
+    slug="$(printf '%s' "$path" | cut -d/ -f2-3)"
+    exists "$slug" || { echo "HTTP 404" >&2; exit 1; }
+    case "$path" in
+      */contents/aeon.yml) git --git-dir="$(bare "$slug")" cat-file -e HEAD:aeon.yml 2>/dev/null || { echo "HTTP 404" >&2; exit 1; } ;;
+      */actions/permissions) cat "$ST/perms-$(key "$slug")" 2>/dev/null || echo '{"enabled":false}' ;;
+      */actions/permissions/workflow)
+        cat "$ST/wf-$(key "$slug")" 2>/dev/null || echo '{"default_workflow_permissions":"read","can_approve_pull_request_reviews":false}' ;;
+      */actions/workflows) : ;;
+      *) echo '{}' ;;
+    esac ;;
+  *) echo "fake-gh: unhandled: $*" >&2; exit 1 ;;
+esac
