@@ -54,7 +54,12 @@ case "$NOTES" in
   *"./notify"*"-f - <<'NOTIFY_EOF'"*) pass "read-only run-notes give the stdin heredoc recipe" ;;
   *) bad "read-only run-notes give the stdin heredoc recipe (got: $NOTES)" ;;
 esac
-[ -z "$(bash "$M" run-notes write)" ] && pass "write tier has no run-notes" || bad "write tier has no run-notes"
+case "$(bash "$M" run-notes write)" in
+  *"Write/Edit"*"not shell redirection"*) pass "write run-notes steer file writes to Write/Edit" ;;
+  *) bad "write run-notes steer file writes to Write/Edit" ;;
+esac
+bash "$M" run-notes write | grep -q './notify' && bad "write run-notes carry the read-only notify recipe" \
+  || pass "write run-notes do not carry the read-only notify recipe"
 if printf '%s' "$NOTES" | grep -q $'\xe2\x80\x94\|\xe2\x80\x93'; then bad "run-notes contain an em/en dash"; else pass "run-notes are plain ASCII dashes"; fi
 
 # The recipe in the note must be a command that really works: run it as written.
@@ -119,13 +124,14 @@ jq -cn '{type:"result", result:"done", usage:{input_tokens:1, output_tokens:2},
     {tool_name:"Write", tool_use_id:"a", tool_input:{file_path:"/tmp/x.md", content:"SECRET-BODY"}},
     {tool_name:"Bash", tool_use_id:"b", tool_input:{command:"cat > out.md <<EOF\nSECRET-CMD\nEOF"}},
     {tool_name:"Write", tool_use_id:"c", tool_input:{file_path:"/tmp/y.md", content:"x"}},
+    {tool_name:"Bash", tool_use_id:"e", tool_input:{command:"API_KEY=SECRET-ENV  curl -s https://x"}},
     {tool_name:"mcp__evil\n::error::pwned", tool_use_id:"d", tool_input:{}}]}' > "$TMP/denied.json"
 run_claude "$TMP/denied.json"; rc=$?
 [ "$rc" = 0 ] && [ "$(jq -r .result "$TMP/stdout")" = "done" ] \
   && pass "denials do not change the adapter result" || bad "denials do not change the adapter result (rc=$rc)"
 W=$(grep '^::warning::claude denied' "$TMP/stderr")
 case "$W" in
-  *"Bash x1"*"Write x2"*) pass "warning lists denied tool names with counts" ;;
+  *"Bash(cat>) x1"*"Bash(curl) x1"*"Write x2"*) pass "warning lists denied tool names with counts" ;;
   *) bad "warning lists denied tool names with counts (got: $W)" ;;
 esac
 grep -q 'SECRET-' "$TMP/stderr" && bad "warning leaked tool_input content" || pass "warning carries no tool_input content"

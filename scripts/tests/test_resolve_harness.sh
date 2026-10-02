@@ -134,6 +134,11 @@ case "$(get HARNESS_MODEL "" CODEX_AUTH=xx)" in
   "(native:native-oauth)") pass "native auth labels the model as native" ;;
   *) bad "native auth HARNESS_MODEL label" ;;
 esac
+LINE=$(CODEX_AUTH=xx bash "$R" "" 2>&1 >/dev/null | grep '^Harness:')
+case "$LINE" in
+  *"model: account default (logged after the run)"*) pass "native codex line says the account picks the model" ;;
+  *) bad "native codex line (got: $LINE)" ;;
+esac
 
 # --- 5. model precedence ----------------------------------------------------
 # An aeon-native id is NOT an OpenRouter id: a repo that never touched the model

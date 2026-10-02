@@ -60,8 +60,19 @@ rc=$?
 # can hold message bodies or command lines, so it never leaves this file. Names
 # are reduced to a safe charset so a crafted MCP tool name cannot inject a
 # workflow command.
+# A denied Bash call also names its program (the first word after any VAR=value
+# prefixes, which can hold secrets, so they are skipped) and is marked ">" when
+# the command redirects into a file, the usual reason Claude Code refuses it.
 DENIED=$(jq -r '
-  [(.permission_denials // [])[] | (.tool_name // "unknown") | tostring | gsub("[^A-Za-z0-9_.:-]"; "_")]
+  def safe: tostring | gsub("[^A-Za-z0-9_.:/-]"; "_") | .[0:40];
+  [(.permission_denials // [])[]
+   | ((.tool_name // "unknown") | safe) as $t
+   | if $t == "Bash" and ((.tool_input.command? // "") | type) == "string" then
+       (.tool_input.command | [splits("[ \t\n]+")] | map(select(length > 0))
+        | map(select(test("^[A-Za-z_][A-Za-z0-9_]*=") | not)) | (.[0] // "") | safe) as $p
+       | (if (.tool_input.command | test(">")) then ">" else "" end) as $r
+       | if $p == "" then $t else "Bash(\($p)\($r))" end
+     else $t end]
   | group_by(.) | map("\(.[0]) x\(length)") | join(", ")' "$OUT" 2>/dev/null || true)
 if [ -n "$DENIED" ]; then
   echo "::warning::claude denied tool call(s) under --allowedTools: $DENIED" >&2

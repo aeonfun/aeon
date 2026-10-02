@@ -21,7 +21,7 @@
 #   scripts/skill_mode.sh mode <skill-name>     -> prints read-only | write
 #   scripts/skill_mode.sh allowed-tools <mode>  -> prints the --allowedTools string
 #   scripts/skill_mode.sh grok-run-env <skill>  -> prints `export GROK_*=…` lines
-#   scripts/skill_mode.sh run-notes <mode>      -> prints standing notes for the tier (may be empty)
+#   scripts/skill_mode.sh run-notes <mode>      -> prints standing notes for the tier
 set -euo pipefail
 
 # Tools every tier gets: read, search, notify, and read-only/local shell helpers.
@@ -172,6 +172,16 @@ NOTIFY_EOF
 NOTES
 }
 
+# Write tier: Claude Code refuses shell redirection into a file (`>>` a log line,
+# `cat > f <<EOF`) even though Bash(cat:*)/Bash(echo:*) are granted, so a model
+# that appends memory/logs through the shell burns a denied call and retries with
+# Write (live-observed on heartbeat, claude-code 2.1.287). Say so up front.
+write_run_notes() {
+  cat <<'NOTES'
+Create, append to, or change files with your file-editing tools (Write/Edit), not shell redirection (`>`, `>>`, `tee`): shell writes into files may be refused.
+NOTES
+}
+
 # --- Why there is no grok permission mapping here ---------------------------
 # There used to be a `grok-args` subcommand that emitted grok's own permission
 # grammar (`--allow 'Bash(git *)'` rules plus `--sandbox read-only`) as this
@@ -242,7 +252,7 @@ case "${1:-}" in
   run-notes)
     case "${2:-write}" in
       read-only|readonly|read_only) read_only_run_notes ;;
-      *)                            : ;;
+      *)                            write_run_notes ;;
     esac ;;
   is-shadow)
     if is_shadow_selector "${2:?skill name required}" "${3:-}"; then echo true; else echo false; fi ;;

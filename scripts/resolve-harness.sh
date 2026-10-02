@@ -210,7 +210,16 @@ if [ "$HARNESS" = "claude" ]; then
   fi
   echo "Harness: $HARNESS  |  auth: $AUTH_MODE  |  gateway: $GW_PROVIDER  |  model: $HM" >&2
 else
-  echo "Harness: $HARNESS  |  auth: $AUTH_MODE  |  model: $HM  |  run-harness --model: ${MODEL_ARG:-<harness default>}" >&2
+  # On a native account the provider picks the model, so there is nothing to
+  # show yet. HARNESS_MODEL keeps the "(native:…)" label for records; only this
+  # line says it plainly. codex reports the model it ran after the run.
+  HM_SHOWN="$HM"
+  case "$HM" in
+    "(native:"*)
+      HM_SHOWN="account default"
+      [ "$HARNESS" = codex ] && HM_SHOWN="account default (logged after the run)" ;;
+  esac
+  echo "Harness: $HARNESS  |  auth: $AUTH_MODE  |  model: $HM_SHOWN  |  run-harness --model: ${MODEL_ARG:-<harness default>}" >&2
 fi
 printf 'HARNESS=%s\n'       "$HARNESS"
 printf 'AUTH_MODE=%s\n'     "$AUTH_MODE"

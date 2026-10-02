@@ -1087,7 +1087,7 @@ jobs:
           CLAUDE_OK=0
           RH="${GITHUB_WORKSPACE}/harness-adapter/run-harness"
           RH_ARGS=(--mode "$SKILL_MODE" --allowed-tools "$ALLOWED" --timeout 1800)
-          # Read-only tier notes (skill_mode.sh run-notes): long ./notify bodies via stdin.
+          # Tier notes (skill_mode.sh run-notes): notify via stdin, no shell file writes.
           RUN_NOTES=$(bash scripts/skill_mode.sh run-notes "$SKILL_MODE")
           if [ -n "$RUN_NOTES" ]; then RH_ARGS+=(--append-system-prompt "$RUN_NOTES"); fi
           # Pass --mcp-config only when the MCP preflight actually ENABLED MCP (every
