@@ -5,10 +5,11 @@ import { setSecret } from '@/lib/secrets-catalog'
 import { checkLink } from '@/lib/telegram-link'
 
 // POST /api/telegram/link/check { token, nonce } -> waiting | found | webhook |
-// expired. Reads getUpdates WITHOUT an offset (so nothing is consumed for the
+// backlog | expired. Reads getUpdates WITHOUT an offset (so nothing is consumed for the
 // messages.yml poller) looking for "/start <nonce>"; on a hit it saves the chat
 // as TELEGRAM_CHAT_ID and says hello in that chat. `webhook` (HTTP 409) means
-// the bot is in webhook mode: the UI falls back to the manual helper.
+// the bot is in webhook mode and `backlog` means 100+ unread updates hide the
+// /start: the UI falls back to the manual helper for both.
 export async function POST(request: Request) {
   try {
     const notReady = requireGh()

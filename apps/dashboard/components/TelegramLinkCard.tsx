@@ -23,7 +23,7 @@ const MAX_POLLS = 300 // 15 minutes, the nonce's lifetime
 export function TelegramLinkCard({ sessionBotToken, chatIdSet, onLinked }: TelegramLinkCardProps) {
   const [token, setToken] = useState('')
   const [link, setLink] = useState<{ username: string; nonce: string; link: string } | null>(null)
-  const [status, setStatus] = useState<'idle' | 'starting' | 'waiting' | 'found' | 'webhook' | 'error'>('idle')
+  const [status, setStatus] = useState<'idle' | 'starting' | 'waiting' | 'found' | 'webhook' | 'backlog' | 'error'>('idle')
   const [msg, setMsg] = useState('')
   const [copied, setCopied] = useState(false)
   const onLinkedRef = useRef(onLinked)
@@ -51,6 +51,7 @@ export function TelegramLinkCard({ sessionBotToken, chatIdSet, onLinked }: Teleg
       if (stopped) return
       if (ok && data.status === 'found' && data.chatId) { setStatus('found'); setMsg(`Linked chat ${data.chatId}. Saved as TELEGRAM_CHAT_ID.`); onLinkedRef.current(data.chatId); return }
       if (ok && data.status === 'webhook') { setStatus('webhook'); return }
+      if (ok && data.status === 'backlog') { setStatus('backlog'); return }
       if (ok && data.status === 'expired') { setStatus('error'); setMsg('That link expired. Start again.'); return }
       if (!ok) { setStatus('error'); setMsg(data.error || 'Could not check Telegram.'); return }
       if (++polls >= MAX_POLLS) { setStatus('error'); setMsg('No /start seen yet. Start again.'); return }
@@ -90,6 +91,11 @@ export function TelegramLinkCard({ sessionBotToken, chatIdSet, onLinked }: Teleg
         </div>
       ) : status === 'found' ? (
         <p className="text-[11px] font-mono text-aeon-green">{msg}</p>
+      ) : status === 'backlog' ? (
+        <div>
+          <p className="text-[11px] text-aeon-red/80 leading-relaxed">This bot has 100+ unread messages queued, so Aeon cannot see your new /start. Use <span className="text-aeon-fg">Find my chat ID</span> under TELEGRAM_CHAT_ID above, or clear the queue (let the messages poller run once) and try again.</p>
+          <button onClick={() => setStatus('idle')} className="btn-mini mt-1.5">Try again</button>
+        </div>
       ) : (
         <p className="text-[11px] text-aeon-red/80 leading-relaxed">This bot uses a webhook (instant mode), so Aeon cannot read its messages here. Use <span className="text-aeon-fg">Find my chat ID</span> under TELEGRAM_CHAT_ID above instead.</p>
       )}

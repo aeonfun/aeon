@@ -10,6 +10,7 @@ import { listSecretNames } from './secrets-catalog'
 import type { KvStore } from './connect-store'
 import { CONNECT_CHECK_SKILL, interpretRun, matchRun, type CheckResult } from './connect-check'
 import { makeNonce } from './telegram-link'
+import { reportsTokenUsage } from './manifest'
 
 const run = promisify(execFile)
 const gh = async (args: string[], timeout = 20_000) =>
@@ -68,7 +69,7 @@ export async function readConnectCheck(store: KvStore, harness: string, dispatch
   }
   let secretsSet: string[] = []
   try { secretsSet = listSecretNames() } catch { /* hint just gets less specific */ }
-  const result = { ...interpretRun({ status: row.status, conclusion: row.conclusion, log, harness, secretsSet }), ...base }
+  const result = { ...interpretRun({ status: row.status, conclusion: row.conclusion, log, harness, secretsSet, usageReported: reportsTokenUsage(harness) }), ...base }
   await store.set(resultKey(row.databaseId), result, 86_400)
   return result
 }

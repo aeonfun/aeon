@@ -67,16 +67,28 @@ export type LinkCheck =
   | { status: 'found'; chatId: string }
   | { status: 'webhook' }
   | { status: 'expired' }
+  // 100+ unread updates and ours is not among them: getUpdates (without an
+  // offset) only ever returns the oldest 100, so a newer /start can't be seen.
+  | { status: 'backlog' }
+
+// getUpdates returns at most this many updates per call.
+export const UPDATES_PAGE = 100
 
 export async function checkLink(store: KvStore, token: string, nonce: string, fetchImpl: Fetch = fetch): Promise<LinkCheck> {
   const pending = await store.get<{ botId: string }>(nonceKey(nonce))
   if (!pending || pending.botId !== parseBotToken(token)) return { status: 'expired' }
   const res = await fetchImpl(api(token.trim(), 'getUpdates'))
-  if (res.status === 409) return { status: 'webhook' }
   const body = await res.json().catch(() => ({})) as { ok?: boolean; result?: unknown; description?: string }
+  if (res.status === 409) {
+    // 409 is also "terminated by other getUpdates request" when the
+    // messages.yml poller reads at the same moment: transient, keep waiting.
+    return /webhook/i.test(body.description ?? '') ? { status: 'webhook' } : { status: 'waiting' }
+  }
   if (!body.ok) throw new Error(body.description || `Telegram getUpdates failed (HTTP ${res.status})`)
   const chatId = findStartChat(body.result, nonce)
-  if (chatId === null) return { status: 'waiting' }
+  if (chatId === null) {
+    return Array.isArray(body.result) && body.result.length >= UPDATES_PAGE ? { status: 'backlog' } : { status: 'waiting' }
+  }
   await store.del(nonceKey(nonce))
   return { status: 'found', chatId: String(chatId) }
 }

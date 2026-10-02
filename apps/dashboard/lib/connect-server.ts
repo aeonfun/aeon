@@ -6,15 +6,16 @@ import { execFileSync } from 'child_process'
 import { existsSync } from 'fs'
 import { homedir } from 'os'
 import { join } from 'path'
-import { gunzipSync } from 'zlib'
+import { gunzipSync, gzipSync } from 'zlib'
 import type { CommitResult } from './github'
 import { isLocal } from './github'
 import { setSecret } from './secrets-catalog'
 import { syncGatewayProvider, syncHarness } from './gateway'
 import { GATEWAY_SECRET_NAMES } from './gateway-registry'
+import { CLAUDE_AUTH_SECRETS } from './constants'
 import {
-  CAPTURE_MAX_CHARS, CAPTURE_SPECS, acceptedSecrets, classifyCapture, detectPaste, harnessName,
-  parseTarEntries, HIVEMINDOS_SECRET, type Detection,
+  CAPTURE_MAX_CHARS, CAPTURE_SPECS, TarRefused, acceptedSecrets, buildTar, classifyCapture, detectPaste, harnessName,
+  isAppleDouble, parseTarEntries, type Detection, type TarEntry,
 } from './connect-detect'
 import type { Harness } from './types'
 
@@ -38,11 +39,21 @@ export function inspectCapture(raw: string): { detection: Detection; value: stri
   } catch {
     return fail('The capture is cut off or not a gzip archive. Copy it again in one piece.')
   }
+  let entries: TarEntry[]
   try {
-    return { detection: classifyCapture(parseTarEntries(new Uint8Array(tar))), value: bytes.toString('base64') }
-  } catch {
-    return fail('The capture is not a tar archive. Run the step 1 command as shown.')
+    entries = parseTarEntries(new Uint8Array(tar))
+  } catch (e) {
+    return fail(e instanceof TarRefused ? e.message : 'The capture is not a tar archive. Run the step 1 command as shown.')
   }
+  const detection = classifyCapture(entries)
+  if (detection.state !== 'ok') return { detection, value: '' }
+  // Store a clean re-pack of just the verified regular files (no pax records,
+  // AppleDouble sidecars, or directory entries), never the pasted bytes.
+  const files = entries.filter((e) => e.type === 'file' && !isAppleDouble(e.name))
+    .map((e) => ({ name: e.name.replace(/^(\.\/)+/, ''), data: e.data, mtime: e.mtime }))
+  const value = gzipSync(Buffer.from(buildTar(files)), { level: 9 }).toString('base64')
+  if (value.length > CAPTURE_MAX_CHARS) return fail('This capture is over 48 KB, the GitHub secret limit. Capture only the files in the step 1 command.')
+  return { detection, value }
 }
 
 // detectPaste plus capture inspection: the full server-side answer.
@@ -50,6 +61,11 @@ export function detect(value: string, harness: string, provider = ''): { detecti
   const d = detectPaste(value, harness, provider)
   if (d.state === 'pending') return inspectCapture(value)
   return { detection: d, value: value.trim() }
+}
+
+// Claude-harness secrets setSecret does not already re-sync the gateway for.
+export function needsGatewaySync(secret: string): boolean {
+  return CLAUDE_AUTH_SECRETS.includes(secret) && !GATEWAY_SECRET_NAMES.includes(secret)
 }
 
 export interface SaveResult {
@@ -78,12 +94,11 @@ export async function saveConnection(
   if (detection.state !== 'ok' || !detection.secret) {
     throw new ConnectInputError(detection.note || 'Nothing to save. Paste a key, token, or login capture.')
   }
-  // setSecret re-syncs the gateway for registry gateway keys. A claude gateway
-  // the registry doesn't list yet (HivemindOS) gets the same sync here.
+  // setSecret re-syncs the gateway for gateway keys. The direct Claude
+  // credentials (subscription token, Anthropic key) are not gateway keys, but
+  // saving one must still pin gateway.provider to auto, as configureAuth does.
   await deps.setSecret(detection.secret, value)
-  if (detection.secret === HIVEMINDOS_SECRET && !GATEWAY_SECRET_NAMES.includes(detection.secret)) {
-    await deps.syncGateway()
-  }
+  if (needsGatewaySync(detection.secret)) await deps.syncGateway()
   // A login capture only signs in its own CLI, so connecting it also selects
   // that harness (same as the one-click logins always did).
   if (detection.captureHarness) {
@@ -137,6 +152,7 @@ export async function connectFound(id: string, harness: string, deps: SaveDeps =
   if (!item) throw new ConnectInputError('That login or key is no longer on this machine. Refresh and try again.')
   if (item.kind === 'env') {
     await deps.setSecret(item.secret, process.env[item.secret]!.trim())
+    if (needsGatewaySync(item.secret)) await deps.syncGateway()
     return { ok: true, secret: item.secret, label: item.secret }
   }
   const spec = CAPTURE_SPECS.find((s) => s.harness === harness)!

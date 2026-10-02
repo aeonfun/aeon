@@ -29,7 +29,7 @@ import { RightPanel } from '../components/RightPanel'
 import { ImportModal } from '../components/ImportModal'
 import { ConnectModal, type SavedCredential } from '../components/ConnectModal'
 import { OnboardingChecklist } from '../components/OnboardingChecklist'
-import type { CheckResult } from '../lib/connect-check'
+import { useConnectChecks } from '../lib/use-connect-checks'
 import { PanelError } from '../components/PanelError'
 
 export default function Dashboard() {
@@ -86,8 +86,9 @@ export default function Dashboard() {
   // The Connect modal: which harness it connects, and whether it opens on the
   // live test (the checklist's "Test").
   const [connectFor, setConnectFor] = useState<{ harness: Harness; test?: boolean } | null>(null)
-  // Latest connect-check result per harness (HQ checklist "verified").
-  const [checks, setChecks] = useState<Record<string, CheckResult>>({})
+  // Latest connect-check result per harness (HQ checklist "verified"). The
+  // page dispatches and polls, so closing the modal doesn't strand a run.
+  const { checks, startCheck, loadLatest } = useConnectChecks()
   const [actionsEnabled, setActionsEnabled] = useState<boolean | null>(null)
 
   const [strategy, setStrategy] = useState('')
@@ -197,7 +198,7 @@ export default function Dashboard() {
   const onCredentialSaved = (c: SavedCredential) => {
     if (c.secret) markSecretSet(c.secret, 'Core')
     if (c.harness) { setHarness(c.harness); flashSynced(`${c.secret} saved - harness set to ${HARNESSES.find(x => x.id === c.harness)?.label || c.harness}`, c) } else flash(`${c.secret || 'Credential'} saved`)
-    setChecks(m => ({ ...m, [c.harness ?? connectFor?.harness ?? harness]: { state: 'queued' } }))
+    startCheck(c.harness ?? connectFor?.harness ?? harness)
     fetchData()
   }
   const setupGithubAuth = async () => { setGithubLoading(true); try { const { ok, data } = await postJson<ErrorResponse>('/api/github-auth', {}); if (ok) { markSecretSet('GH_GLOBAL'); flash('GH_GLOBAL saved from gh') } else { flash(typeof data?.error === 'string' ? data.error : 'GitHub connect failed') } } finally { setGithubLoading(false) } }
@@ -227,12 +228,9 @@ export default function Dashboard() {
   // Setup checklist inputs that need their own reads: whether Actions is on,
   // and the newest connect-check verdict for the selected harness.
   useEffect(() => { if (!loading) getJson<{ actionsEnabled: boolean | null }>('/api/onboarding').then(d => setActionsEnabled(d.actionsEnabled)).catch(() => {}) }, [loading])
-  useEffect(() => {
-    if (loading) return
-    let live = true
-    getJson<CheckResult>(`/api/connect-check?harness=${harness}`).then(d => { if (live) setChecks(m => (m[harness] && m[harness].state !== 'none' && d.state === 'none') ? m : { ...m, [harness]: d }) }).catch(() => {})
-    return () => { live = false }
-  }, [loading, harness])
+  useEffect(() => { if (!loading) loadLatest(harness) }, [loading, harness, loadLatest])
+  // The test panel's one-click fix (e.g. drop a rejected subscription token).
+  const removeSecretForFix = async (n: string) => { const { ok, data } = await del<ErrorResponse>('/api/secrets', { name: n }); if (ok) { setSecrets(s => s.map(x => x.name === n ? { ...x, isSet: false } : x)); flash(`${n} removed`) } else flash(data?.error || `Could not remove ${n}`); return ok }
 
   // Jump from a skill's API-keys panel straight to Settings → Access Keys,
   // scrolled to the chosen key with its input open and ready to paste.
@@ -335,7 +333,8 @@ export default function Dashboard() {
                   repo={repo} actionsEnabled={actionsEnabled} harness={harness} hasModelKey={hasModelKey}
                   check={checks[harness] ?? null} notificationsSet={notificationsSet} firstRunDone={firstRunDone}
                   onConnect={() => setConnectFor({ harness })}
-                  onTest={() => setConnectFor({ harness, test: true })}
+                  onTest={() => { startCheck(harness); setConnectFor({ harness, test: true }) }}
+                  onFix={() => setConnectFor({ harness, test: true })}
                   onNotifications={() => goToSecret(isSet('TELEGRAM_BOT_TOKEN') ? 'TELEGRAM_CHAT_ID' : 'TELEGRAM_BOT_TOKEN')}
                   onFirstRun={() => { const first = visibleSkills.find(s => s.enabled && s.name !== 'connect-check'); if (first) { setSelectedSkill(first.name); setView('hq') } else setView('packs') }}
                 />
@@ -372,7 +371,9 @@ export default function Dashboard() {
           patSet={isSet('GH_SECRETS_PAT') || isSet('GH_GLOBAL')}
           onClose={() => setConnectFor(null)}
           onSaved={onCredentialSaved}
-          onChecked={(h, r) => setChecks(m => ({ ...m, [h]: r }))}
+          checks={checks}
+          onTestAgain={(h) => startCheck(h)}
+          onRemoveSecret={removeSecretForFix}
           onGoToSecret={(n) => { setConnectFor(null); goToSecret(n) }}
         />
       )}

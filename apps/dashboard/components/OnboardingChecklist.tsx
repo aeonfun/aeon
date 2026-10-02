@@ -22,6 +22,8 @@ export interface ChecklistState {
 interface OnboardingChecklistProps extends ChecklistState {
   onConnect: () => void
   onTest: () => void
+  // Open the failed test's details (reason, next step, one-click fix).
+  onFix: () => void
   onNotifications: () => void
   onFirstRun: () => void
 }
@@ -65,7 +67,7 @@ export function OnboardingChecklist(props: OnboardingChecklistProps) {
       detail: modelDetail,
       action: !hasModelKey ? { label: 'Connect', onClick: props.onConnect }
         : check?.state === 'pass' || testing ? undefined
-        : check?.state === 'fail' ? { label: 'Fix', onClick: props.onConnect }
+        : check?.state === 'fail' ? { label: 'Fix', onClick: props.onFix }
         : { label: 'Test', onClick: props.onTest },
     },
     {

@@ -6,12 +6,16 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { gzipSync, gunzipSync } from 'node:zlib'
 
-import { detectPaste, looksLikeCapture, parseTarEntries, classifyCapture, providersForHarness, acceptsOpenRouter, CAPTURE_MAX_CHARS } from './connect-detect'
-import { captureCommand } from './connect-commands'
+import {
+  detectPaste, looksLikeCapture, parseTarEntries, classifyCapture, providersForHarness, acceptsOpenRouter,
+  buildTar, CAPTURE_MAX_CHARS, CAPTURE_SPECS, PROVIDER_OPTIONS,
+} from './connect-detect'
+import { captureCommand, guideFor } from './connect-commands'
 import { inspectCapture, saveConnection, type SaveDeps } from './connect-server'
+import { credentialsFor } from './manifest'
 
 // Build a real tar.gz the same way the step 1 command does, rooted at a fake $HOME.
-function capture(files: Record<string, string>, extra: (home: string) => void = () => {}): string {
+function capture(files: Record<string, string>, extra: (home: string) => void = () => {}, env: Record<string, string> = { COPYFILE_DISABLE: '1' }): string {
   const home = mkdtempSync(join(tmpdir(), 'aeon-cap-'))
   for (const [rel, body] of Object.entries(files)) {
     mkdirSync(join(home, rel, '..'), { recursive: true })
@@ -19,12 +23,47 @@ function capture(files: Record<string, string>, extra: (home: string) => void = 
   }
   extra(home)
   const names = execFileSync('sh', ['-c', 'cd "$1" && find . -mindepth 1 \\( -type f -o -type l \\) | sed "s|^./||"', 'sh', home]).toString().trim().split('\n')
-  return execFileSync('tar', ['czf', '-', '-C', home, ...names], { env: { ...process.env, COPYFILE_DISABLE: '1' } }).toString('base64')
+  return execFileSync('tar', ['czf', '-', '-C', home, ...names], { env: { ...process.env, ...env } }).toString('base64')
 }
 
-describe('detectPaste: keys by prefix', () => {
+// Hand-built tar records, for archives no real tar would write.
+function header(name: string, flag: string, size: number): Buffer {
+  const h = Buffer.alloc(512)
+  h.write(name, 0, 100)
+  h.write('0000600\0', 100)
+  h.write('0000000\0', 108)
+  h.write('0000000\0', 116)
+  h.write(size.toString(8).padStart(11, '0') + '\0', 124)
+  h.write('00000000000\0', 136)
+  h.write(flag, 156)
+  h.write('ustar\0', 257)
+  h.write('00', 263)
+  h.fill(0x20, 148, 156)
+  let sum = 0
+  for (const b of h) sum += b
+  h.write(sum.toString(8).padStart(6, '0') + '\0 ', 148)
+  return h
+}
+function rawTar(records: { name: string; flag: string; body?: string }[]): string {
+  const parts: Buffer[] = []
+  for (const r of records) {
+    const body = Buffer.from(r.body ?? '')
+    parts.push(header(r.name, r.flag, body.length), body, Buffer.alloc((512 - (body.length % 512)) % 512))
+  }
+  parts.push(Buffer.alloc(1024))
+  return gzipSync(Buffer.concat(parts)).toString('base64')
+}
+const paxRecord = (key: string, value: string) => {
+  const rest = ` ${key}=${value}\n`
+  let len = rest.length + 1
+  while (`${len}${rest}`.length !== len) len = `${len}${rest}`.length
+  return `${len}${rest}`
+}
+const entryNames = (b64: string) => parseTarEntries(new Uint8Array(gunzipSync(Buffer.from(b64, 'base64')))).map((e) => e.name)
+
+describe('detectPaste: keys by prefix (from the manifest)', () => {
   const cases: [string, string, string, string][] = [
-    ['sk-ant-oat01-abc', 'claude', 'CLAUDE_CODE_OAUTH_TOKEN', 'Claude subscription token'],
+    ['sk-ant-oat01-abc', 'claude', 'CLAUDE_CODE_OAUTH_TOKEN', 'Claude subscription'],
     ['sk-ant-oat01-abc', 'pi', 'ANTHROPIC_OAUTH_TOKEN', 'Claude subscription token'],
     ['sk-ant-api03-abc', 'claude', 'ANTHROPIC_API_KEY', 'Anthropic API key'],
     ['sk-or-v1-abc', 'codex', 'OPENROUTER_API_KEY', 'OpenRouter key'],
@@ -33,8 +72,9 @@ describe('detectPaste: keys by prefix', () => {
     ['xai-abc', 'grok', 'XAI_API_KEY', 'xAI API key'],
     ['bk_abc', 'claude', 'BANKR_LLM_KEY', 'Bankr key'],
     ['inf_abc', 'claude', 'SURPLUS_API_KEY', 'Surplus Intelligence key'],
-    ['plainkey123', 'vibe', 'MISTRAL_API_KEY', 'Mistral key'],
-    ['plainkey123', 'cursor', 'CURSOR_API_KEY', 'Cursor key'],
+    ['plainkey123', 'vibe', 'MISTRAL_API_KEY', 'Mistral API key'],
+    ['plainkey123', 'cursor', 'CURSOR_API_KEY', 'Cursor API key'],
+    ['plainkey123', 'fx', 'AI_GATEWAY_API_KEY', 'Vercel AI Gateway key'],
   ]
   for (const [key, harness, secret, label] of cases) {
     it(`${key} on ${harness} -> ${secret}`, () => {
@@ -46,9 +86,9 @@ describe('detectPaste: keys by prefix', () => {
     })
   }
 
-  it('warns when the harness cannot use the key', () => {
+  it('picks the longest prefix across harnesses and warns when the harness cannot use it', () => {
     const d = detectPaste('sk-ant-api03-abc', 'codex')
-    assert.equal(d.state, 'ok')
+    assert.equal(d.secret, 'ANTHROPIC_API_KEY')
     assert.equal(d.warn, true)
   })
 
@@ -60,10 +100,12 @@ describe('detectPaste: keys by prefix', () => {
     assert.equal(claude.needsProvider, true)
   })
 
-  it('honours the provider override', () => {
+  it('honours the provider override, HivemindOS included', () => {
     assert.equal(detectPaste('mysterykey', 'claude', 'venice').secret, 'VENICE_API_KEY')
     assert.equal(detectPaste('mysterykey', 'claude', 'hivemindos').secret, 'HIVEMINDOS_CREDIT_TOKEN')
+    assert.equal(detectPaste('mysterykey', 'claude', 'glm').secret, 'GLM_API_KEY')
     assert.equal(detectPaste('mysterykey', 'claude', 'nope').state, 'error')
+    assert.ok(providersForHarness('claude').some((p) => p.id === 'hivemindos'))
   })
 
   it('rejects multiple values and treats blank as empty', () => {
@@ -72,10 +114,27 @@ describe('detectPaste: keys by prefix', () => {
   })
 
   it('offers only providers the harness can run on', () => {
-    assert.deepEqual(providersForHarness('vibe').map((p) => p.id), ['openrouter', 'mistral'])
-    assert.ok(providersForHarness('claude').some((p) => p.id === 'glm'))
+    assert.deepEqual(providersForHarness('vibe').map((p) => p.secret).sort(), ['MISTRAL_API_KEY', 'OPENROUTER_API_KEY'])
     assert.ok(acceptsOpenRouter('claude') && acceptsOpenRouter('hermes'))
     assert.ok(!acceptsOpenRouter('cursor') && !acceptsOpenRouter('fx') && !acceptsOpenRouter('grok'))
+    assert.equal(new Set(PROVIDER_OPTIONS.map((p) => p.secret)).size, PROVIDER_OPTIONS.length)
+  })
+})
+
+describe('commands come from the manifest', () => {
+  it('captures exactly the manifest cred_paths and uses its login/aeon commands', () => {
+    for (const spec of CAPTURE_SPECS) {
+      const cred = credentialsFor(spec.harness).find((c) => c.secret === spec.secret)!
+      assert.deepEqual(spec.paths, cred.cred_paths)
+      assert.ok(captureCommand(spec.harness, 'mac')!.startsWith(`${cred.login_cmd} && tar -czf - -C ~ ${cred.cred_paths!.join(' ')}`))
+    }
+    assert.equal(captureCommand('codex', 'mac'), 'codex login && tar -czf - -C ~ .codex/auth.json | base64 | pbcopy')
+    assert.equal(captureCommand('grok', 'linux'), 'grok login --device-auth && tar -czf - -C ~ .grok/auth.json | base64 -w0; echo')
+    assert.match(captureCommand('kimi', 'mac')!, /\.kimi-code\/credentials \.kimi-code\/config\.toml 2>\/dev\/null \| base64/)
+    assert.equal(captureCommand('claude', 'mac'), 'claude setup-token')
+    assert.equal(captureCommand('pi', 'mac'), null)
+    assert.equal(guideFor('codex').cli, './aeon auth --harness codex')
+    assert.ok(guideFor('vibe').keys.some((k) => k.url === credentialsFor('vibe')[0].get_url))
   })
 })
 
@@ -89,9 +148,9 @@ describe('login captures', () => {
     assert.match(detectPaste(huge, 'codex').note!, /48 KB/)
   })
 
-  it('maps each harness login to its secret', () => {
+  it('maps each harness login to its secret and stores a clean re-pack', () => {
     const want: [Record<string, string>, string, string][] = [
-      [{ '.codex/auth.json': '{}' }, 'CODEX_AUTH', 'codex'],
+      [{ '.codex/auth.json': '{"a":1}' }, 'CODEX_AUTH', 'codex'],
       [{ '.kimi-code/credentials/kimi-code.json': '{}', '.kimi-code/config.toml': 'x=1' }, 'KIMI_AUTH', 'kimi'],
       [{ '.hermes/auth.json': '{}', '.hermes/config.yaml': 'a: 1' }, 'HERMES_AUTH', 'hermes'],
       [{ '.grok/auth.json': '{}' }, 'GROK_CREDENTIALS', 'grok'],
@@ -102,40 +161,70 @@ describe('login captures', () => {
       assert.equal(detection.secret, secret)
       assert.equal(detection.captureHarness, harness)
       assert.ok(!/\s/.test(value))
+      assert.deepEqual(entryNames(value).sort(), Object.keys(files).sort())
+      // The runner's own restore (`base64 -d | tar xzf - -C $HOME`) reads it back intact.
+      const home = mkdtempSync(join(tmpdir(), 'aeon-restore-'))
+      execFileSync('sh', ['-c', 'printf "%s" "$1" | base64 -d | tar xzf - -C "$2"', 'sh', value, home])
+      for (const [rel, body] of Object.entries(files)) assert.equal(execFileSync('cat', [join(home, rel)]).toString(), body)
     }
   })
 
-  it('accepts a wrapped (GNU base64) paste and normalizes it to one line', () => {
-    const blob = capture({ '.codex/auth.json': '{}' })
-    const wrapped = blob.replace(/(.{76})/g, '$1\n')
-    const { detection, value } = inspectCapture(wrapped)
+  it('drops macOS AppleDouble sidecars and pax xattr records from the stored copy', { skip: process.platform !== 'darwin' && 'needs macOS tar + xattr' }, () => {
+    const blob = capture({ '.codex/auth.json': '{}' }, (home) => {
+      execFileSync('xattr', ['-w', 'com.example.test', 'hi', join(home, '.codex/auth.json')])
+    }, {})
+    const { detection, value } = inspectCapture(blob)
     assert.equal(detection.secret, 'CODEX_AUTH')
-    assert.equal(value, blob)
+    assert.deepEqual(entryNames(value), ['.codex/auth.json'])
+    assert.ok(!gunzipSync(Buffer.from(value, 'base64')).toString('latin1').includes('._auth.json'))
   })
 
-  it('refuses archives with files outside the login paths, links, or junk', () => {
-    assert.equal(inspectCapture(capture({ '.codex/auth.json': '{}', '.bashrc': 'evil' })).detection.state, 'error')
-    assert.equal(inspectCapture(capture({ '.codex/other.json': '{}' })).detection.state, 'error')
+  it('accepts a wrapped (GNU base64) paste', () => {
+    const blob = capture({ '.codex/auth.json': '{}' })
+    const { detection, value } = inspectCapture(blob.replace(/(.{76})/g, '$1\n'))
+    assert.equal(detection.secret, 'CODEX_AUTH')
+    assert.deepEqual(entryNames(value), ['.codex/auth.json'])
+  })
+
+  it('uses the LAST pax path, as tar does (repeated path records cannot smuggle a file)', () => {
+    const pax = paxRecord('path', '.codex/auth.json') + paxRecord('path', '.evilrc')
+    const evil = rawTar([{ name: 'PaxHeader/x', flag: 'x', body: pax }, { name: '.codex/auth.json', flag: '0', body: 'pwn' }])
+    assert.deepEqual(entryNames(evil), ['.evilrc'])
+    const r = inspectCapture(evil)
+    assert.equal(r.detection.state, 'error')
+    assert.equal(r.value, '')
+  })
+
+  it('refuses dangerous pax keys, global headers, links and long-name records', () => {
+    for (const key of ['size', 'linkpath', 'GNU.sparse.map']) {
+      const blob = rawTar([{ name: 'PaxHeader/x', flag: 'x', body: paxRecord(key, '1') }, { name: '.codex/auth.json', flag: '0', body: '{}' }])
+      assert.match(inspectCapture(blob).detection.note!, new RegExp(`unsupported tar field \\(${key.replace('.', '\\.')}\\)`))
+    }
+    const ok = rawTar([{ name: 'PaxHeader/x', flag: 'x', body: paxRecord('mtime', '1700000000.5') + paxRecord('LIBARCHIVE.xattr.a', 'b') + paxRecord('SCHILY.xattr.c', 'd') }, { name: '.codex/auth.json', flag: '0', body: '{}' }])
+    assert.equal(inspectCapture(ok).detection.secret, 'CODEX_AUTH')
+    assert.match(inspectCapture(rawTar([{ name: 'g', flag: 'g', body: paxRecord('path', 'x') }, { name: '.codex/auth.json', flag: '0', body: '{}' }])).detection.note!, /global header/)
+    assert.match(inspectCapture(rawTar([{ name: '.codex/auth.json', flag: '0', body: '{}' }, { name: '.codex/x', flag: '2' }])).detection.note!, /link/)
+    assert.match(inspectCapture(rawTar([{ name: '././@LongLink', flag: 'L', body: '.evilrc' }, { name: '.codex/auth.json', flag: '0', body: '{}' }])).detection.note!, /long-name/)
     const linked = capture({ '.codex/auth.json': '{}' }, (home) => symlinkSync('/etc/passwd', join(home, '.codex', 'x')))
     assert.match(inspectCapture(linked).detection.note!, /link/)
-    assert.equal(inspectCapture('H4sIAAAA').detection.state, 'error')
-    assert.equal(inspectCapture(gzipSync(Buffer.from('not a tar')).toString('base64')).detection.state, 'error')
   })
 
-  it('parses ustar names and stops at the end marker', () => {
-    const blob = capture({ '.grok/auth.json': '{}' })
-    const tar = gunzipSync(Buffer.from(blob, 'base64'))
-    const names = parseTarEntries(new Uint8Array(tar)).map((e) => e.name)
-    assert.deepEqual(names, ['.grok/auth.json'])
+  it('refuses files outside the login paths, corrupt headers, and junk', () => {
+    assert.equal(inspectCapture(capture({ '.codex/auth.json': '{}', '.bashrc': 'evil' })).detection.state, 'error')
+    assert.equal(inspectCapture(capture({ '.codex/other.json': '{}' })).detection.state, 'error')
+    assert.equal(inspectCapture(rawTar([{ name: '../.codex/auth.json', flag: '0', body: '{}' }])).detection.state, 'error')
+    const bad = gunzipSync(Buffer.from(rawTar([{ name: '.codex/auth.json', flag: '0', body: '{}' }]), 'base64'))
+    bad[0] = 0x2e + 1 // corrupt the name: checksum no longer matches
+    assert.match(inspectCapture(gzipSync(bad).toString('base64')).detection.note!, /checksum/)
+    assert.equal(inspectCapture('H4sIAAAA').detection.state, 'error')
+    assert.equal(inspectCapture(gzipSync(Buffer.from('not a tar')).toString('base64')).detection.state, 'error')
     assert.equal(classifyCapture([{ name: '../x', type: 'file' }]).state, 'error')
   })
 
-  it('step 1 commands produce exactly what the runner restores', () => {
-    assert.equal(captureCommand('codex', 'mac'), 'codex login && tar -czf - -C ~ .codex/auth.json | base64 | pbcopy')
-    assert.equal(captureCommand('grok', 'linux'), 'grok login --device-auth && tar -czf - -C ~ .grok/auth.json | base64 -w0; echo')
-    assert.match(captureCommand('kimi', 'mac')!, /\.kimi-code\/credentials \.kimi-code\/config\.toml 2>\/dev\/null \| base64/)
-    assert.equal(captureCommand('claude', 'mac'), 'claude setup-token')
-    assert.equal(captureCommand('pi', 'mac'), null)
+  it('buildTar round-trips through the parser', () => {
+    const files = [{ name: '.grok/auth.json', data: new TextEncoder().encode('{"t":1}'), mtime: 1700000000 }]
+    const back = parseTarEntries(buildTar(files))
+    assert.deepEqual(back.map((e) => [e.name, e.type, e.mtime, new TextDecoder().decode(e.data)]), [['.grok/auth.json', 'file', 1700000000, '{"t":1}']])
   })
 })
 
@@ -150,11 +239,22 @@ describe('saveConnection', () => {
     return { calls, deps }
   }
 
-  it('stores a key under the detected secret without switching harness', async () => {
+  it('pins the gateway to auto for direct Claude credentials, like configureAuth', async () => {
+    for (const [value, secret] of [['sk-ant-oat01-xyz', 'CLAUDE_CODE_OAUTH_TOKEN'], ['sk-ant-api03-xyz', 'ANTHROPIC_API_KEY']]) {
+      const { calls, deps } = fakeDeps()
+      const r = await saveConnection({ harness: 'claude', value }, deps)
+      assert.equal(r.secret, secret)
+      assert.deepEqual(calls, [`set:${secret}`, 'gateway'])
+    }
+  })
+
+  it('leaves gateway keys to setSecret (which re-syncs them itself)', async () => {
     const { calls, deps } = fakeDeps()
-    const r = await saveConnection({ harness: 'claude', value: 'sk-ant-oat01-xyz' }, deps)
-    assert.equal(r.secret, 'CLAUDE_CODE_OAUTH_TOKEN')
-    assert.deepEqual(calls, ['set:CLAUDE_CODE_OAUTH_TOKEN'])
+    await saveConnection({ harness: 'claude', value: 'tok', provider: 'hivemindos' }, deps)
+    assert.deepEqual(calls, ['set:HIVEMINDOS_CREDIT_TOKEN'])
+    const other = fakeDeps()
+    await saveConnection({ harness: 'codex', value: 'sk-proj-x' }, other.deps)
+    assert.deepEqual(other.calls, ['set:OPENAI_API_KEY'])
   })
 
   it('stores a capture and switches to its harness', async () => {
@@ -164,10 +264,8 @@ describe('saveConnection', () => {
     assert.deepEqual(calls, ['set:CODEX_AUTH', 'harness:codex'])
   })
 
-  it('syncs the gateway for HivemindOS and rejects unsavable pastes', async () => {
-    const { calls, deps } = fakeDeps()
-    await saveConnection({ harness: 'claude', value: 'tok', provider: 'hivemindos' }, deps)
-    assert.deepEqual(calls, ['set:HIVEMINDOS_CREDIT_TOKEN', 'gateway'])
+  it('rejects unsavable pastes', async () => {
+    const { deps } = fakeDeps()
     await assert.rejects(saveConnection({ harness: 'codex', value: 'mystery' }, deps), /provider/)
   })
 })

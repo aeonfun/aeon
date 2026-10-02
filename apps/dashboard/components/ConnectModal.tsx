@@ -25,8 +25,12 @@ interface ConnectModalProps {
   // Open straight on the test panel (the checklist's "Test" action).
   startWithTest?: boolean
   onClose: () => void
+  // Saved: the page records it and starts the live test for c.harness ?? harness.
   onSaved: (c: SavedCredential) => void
-  onChecked: (harness: Harness, result: CheckResult) => void
+  // Latest connect-check result per harness, owned by the page.
+  checks: Record<string, CheckResult>
+  onTestAgain: (harness: Harness) => void
+  onRemoveSecret: (name: string) => Promise<boolean>
   onGoToSecret: (name: string) => void
 }
 
@@ -71,63 +75,44 @@ function DetectionLine({ d }: { d: Detection }) {
   )
 }
 
-const POLL_MS = 5000
-const MAX_POLLS = 96 // 8 minutes
-
-// The live check: dispatch connect-check for `harness`, poll until it settles.
-function TestPanel({ harness, onChecked, onRetryConnect, onClose }: { harness: Harness; onChecked: (r: CheckResult) => void; onRetryConnect: () => void; onClose: () => void }) {
-  const [result, setResult] = useState<CheckResult | null>(null)
-  const [error, setError] = useState('')
-  const [run, setRun] = useState(0)
-  const onCheckedRef = useRef(onChecked)
-  useEffect(() => { onCheckedRef.current = onChecked })
-
-  useEffect(() => {
-    let stopped = false
-    let timer: ReturnType<typeof setTimeout> | undefined
-    const go = async () => {
-      setResult({ state: 'queued' }); setError('')
-      const { ok, data } = await postJson<{ dispatchId?: string; error?: string }>('/api/connect-check', { harness })
-      if (stopped) return
-      if (!ok || !data.dispatchId) { setError(data.error || 'Could not start the test run.'); return }
-      let polls = 0
-      const poll = async () => {
-        if (stopped) return
-        try {
-          const r = await fetch(`/api/connect-check?harness=${harness}&id=${encodeURIComponent(data.dispatchId!)}`)
-          const d = await r.json() as CheckResult & { error?: string }
-          if (stopped) return
-          if (!r.ok) { setError(d.error || 'Could not read the test run.'); return }
-          setResult(d)
-          if (d.state === 'pass' || d.state === 'fail') { onCheckedRef.current(d); return }
-        } catch { /* transient, keep polling */ }
-        if (++polls >= MAX_POLLS) { setError('The test is taking too long. Check the run on GitHub.'); return }
-        timer = setTimeout(poll, POLL_MS)
-      }
-      timer = setTimeout(poll, POLL_MS)
-    }
-    go()
-    return () => { stopped = true; if (timer) clearTimeout(timer) }
-  }, [harness, run])
-
-  const state = error ? 'fail' : result?.state ?? 'queued'
-  const done = state === 'pass' || state === 'fail'
+// The live check's result. The page dispatches and polls (lib/use-connect-checks.ts)
+// so the run keeps being followed after this modal closes.
+function TestPanel({ result, onTestAgain, onRemoveSecret, onRetryConnect, onClose }: {
+  result: CheckResult | undefined
+  onTestAgain: () => void
+  onRemoveSecret: (name: string) => Promise<boolean>
+  onRetryConnect: () => void
+  onClose: () => void
+}) {
+  const [fixing, setFixing] = useState(false)
+  const [fixed, setFixed] = useState('')
+  const state = result?.state ?? 'queued'
+  const done = state === 'pass' || state === 'fail' || state === 'none'
+  const applyFix = async () => {
+    if (!result?.fix) return
+    setFixing(true)
+    try { if (await onRemoveSecret(result.fix.secret)) setFixed(result.fix.secret) } finally { setFixing(false) }
+  }
   return (
     <div>
       <p className={stepCls}>Test connection</p>
       <div className={`${panelCls} flex items-start gap-3`}>
-        <span className={`mt-1 w-2.5 h-2.5 rounded-full shrink-0 ${state === 'pass' ? 'bg-aeon-green' : state === 'fail' ? 'bg-aeon-red-alert' : 'bg-aeon-red animate-pulse'}`} />
+        <span className={`mt-1 w-2.5 h-2.5 rounded-full shrink-0 ${state === 'pass' ? 'bg-aeon-green' : state === 'fail' ? 'bg-aeon-red-alert' : state === 'none' ? 'bg-[rgba(250,250,250,0.25)]' : 'bg-aeon-red animate-pulse'}`} />
         <div className="min-w-0 text-[11px] font-mono leading-relaxed">
           <div className="text-aeon-fg">
-            {error ? error
-              : state === 'pass' ? 'Connected. The model answered from a GitHub runner.'
+            {state === 'pass' ? 'Connected. The model answered from a GitHub runner.'
               : state === 'fail' ? (result?.reason || 'The test failed.')
+              : state === 'none' ? 'Not tested yet.'
               : state === 'running' ? 'Running a tiny test skill on GitHub...'
               : 'Starting a test run on GitHub...'}
           </div>
-          {state === 'pass' && result?.usage && <div className="text-primary-40">{result.usage.total} tokens used.</div>}
-          {state === 'fail' && result?.hint && !error && <div className="text-aeon-red mt-1">Next step: {result.hint}</div>}
-          {!done && <div className="text-primary-40">Usually 1 to 3 minutes. You can close this; the result shows on HQ.</div>}
+          {state === 'pass' && result?.usage && result.usage.total > 0 && <div className="text-primary-40">{result.usage.total} tokens used.</div>}
+          {state === 'fail' && result?.hint && !fixed && <div className="text-aeon-red mt-1">Next step: {result.hint}</div>}
+          {state === 'fail' && result?.fix && !fixed && (
+            <button onClick={applyFix} disabled={fixing} className="btn-mini-danger mt-2">{fixing ? '...' : result.fix.label}</button>
+          )}
+          {fixed && <div className="text-aeon-green mt-1">Removed {fixed}. Test again to confirm the next key works.</div>}
+          {!done && <div className="text-primary-40">Usually 1 to 3 minutes. You can close this; HQ keeps following the run.</div>}
           {result?.runUrl && <a href={result.runUrl} target="_blank" rel="noopener noreferrer" className="inline-block mt-1 text-primary-50 underline decoration-dotted underline-offset-2 hover:text-aeon-fg">Open the run on GitHub</a>}
         </div>
       </div>
@@ -135,7 +120,7 @@ function TestPanel({ harness, onChecked, onRetryConnect, onClose }: { harness: H
         {state === 'pass'
           ? <button onClick={onClose} className="col-span-2 bg-aeon-fg text-aeon-bg text-sm py-3 font-mono uppercase tracking-[2px] hover:opacity-90">Done</button>
           : <>
-              <button onClick={() => setRun((n) => n + 1)} disabled={!done} className={secondaryBtn}>Test again</button>
+              <button onClick={() => { setFixed(''); onTestAgain() }} disabled={!done} className={secondaryBtn}>{state === 'none' ? 'Test now' : 'Test again'}</button>
               <button onClick={onRetryConnect} className={secondaryBtn}>Try another way</button>
             </>}
       </div>
@@ -143,7 +128,7 @@ function TestPanel({ harness, onChecked, onRetryConnect, onClose }: { harness: H
   )
 }
 
-export function ConnectModal({ harness, patSet, startWithTest, onClose, onSaved, onChecked, onGoToSecret }: ConnectModalProps) {
+export function ConnectModal({ harness, patSet, startWithTest, onClose, onSaved, checks, onTestAgain, onRemoveSecret, onGoToSecret }: ConnectModalProps) {
   const guide = guideFor(harness)
   const [view, setView] = useState<'connect' | 'test'>(startWithTest ? 'test' : 'connect')
   // A pasted login capture can belong to another harness (and switches to it),
@@ -160,6 +145,14 @@ export function ConnectModal({ harness, patSet, startWithTest, onClose, onSaved,
   const [local, setLocal] = useState(false)
   const [found, setFound] = useState<{ id: string; label: string; secret: string }[]>([])
   const [orLink, setOrLink] = useState('')
+  // The OpenRouter wait (message listener + status poll) outlives the click,
+  // so it is torn down on unmount and never sets state after close.
+  const mounted = useRef(true)
+  const stopOpenRouter = useRef<(() => void) | null>(null)
+  useEffect(() => {
+    mounted.current = true
+    return () => { mounted.current = false; stopOpenRouter.current?.() }
+  }, [])
 
   useEffect(() => {
     let live = true
@@ -225,23 +218,31 @@ export function ConnectModal({ harness, patSet, startWithTest, onClose, onSaved,
   // only allow it inside the click), then point it at the authorize URL.
   const connectOpenRouter = async () => {
     setBusy('openrouter'); setError(''); setOrLink('')
+    stopOpenRouter.current?.()
     const popup = window.open('', 'aeon-openrouter', 'width=520,height=760')
     const { ok, data } = await postJson<{ url?: string; state?: string; error?: string }>('/api/openrouter-auth', { harness })
+    if (!mounted.current) { popup?.close(); return }
     if (!ok || !data.url || !data.state) { popup?.close(); setBusy(''); setError(data.error || 'Could not start OpenRouter connect'); return }
     if (popup) popup.location.href = data.url
     else setOrLink(data.url)
     const state = data.state
     let finished = false
-    const finish = (status: string, err?: string) => {
-      if (finished) return
+    const stop = () => {
       finished = true
       window.removeEventListener('message', onMessage)
       clearInterval(timer)
+      if (stopOpenRouter.current === stop) stopOpenRouter.current = null
+    }
+    const finish = (status: string, err?: string) => {
+      if (finished) return
+      stop()
+      if (!mounted.current) return
       setBusy('')
       if (status === 'done') saved({ secret: 'OPENROUTER_API_KEY', label: 'OpenRouter key' })
       else setError(err || 'OpenRouter connect failed')
     }
     const check = async () => {
+      if (finished) return
       try {
         const d = await (await fetch(`/api/openrouter-auth?state=${encodeURIComponent(state)}`)).json() as { status: string; error?: string }
         if (d.status !== 'pending') finish(d.status, d.error)
@@ -257,6 +258,7 @@ export function ConnectModal({ harness, patSet, startWithTest, onClose, onSaved,
       if (Date.now() - started > 10 * 60_000) finish('error', 'OpenRouter connect timed out. Start again.')
       else check()
     }, 2000)
+    stopOpenRouter.current = stop
   }
 
   const step1 = captureCommand(harness, os) ?? guide.login
@@ -271,7 +273,7 @@ export function ConnectModal({ harness, patSet, startWithTest, onClose, onSaved,
         </div>
 
         {view === 'test' ? (
-          <TestPanel harness={testHarness} onChecked={(r) => onChecked(testHarness, r)} onRetryConnect={() => setView('connect')} onClose={onClose} />
+          <TestPanel result={checks[testHarness]} onTestAgain={() => onTestAgain(testHarness)} onRemoveSecret={onRemoveSecret} onRetryConnect={() => setView('connect')} onClose={onClose} />
         ) : (
           <>
             <p className="text-xs text-primary-50 font-mono mb-[var(--space-md)]">

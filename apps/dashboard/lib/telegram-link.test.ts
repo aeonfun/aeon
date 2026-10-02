@@ -66,16 +66,44 @@ describe('telegram link flow', () => {
     assert.deepEqual(await checkLink(store, TOKEN, nonce, impl), { status: 'expired' })
   })
 
-  it('reports webhook mode (409) and rejects a nonce from another bot', async () => {
+  it('reports webhook mode (409 naming the webhook) and rejects a nonce from another bot', async () => {
     const store = createMemoryStore()
     const { impl } = tg({
       getMe: () => json({ ok: true, result: { username: 'b' } }),
-      getUpdates: () => json({ ok: false, description: 'Conflict' }, 409),
+      getUpdates: () => json({ ok: false, description: "Conflict: can't use getUpdates method while webhook is active; use deleteWebhook to delete the webhook first" }, 409),
     })
     const { nonce } = await startLink(store, TOKEN, impl)
     assert.deepEqual(await checkLink(store, TOKEN, nonce, impl), { status: 'webhook' })
     const other = ['987654321', 'AAHanotherFakeToken_0123456789abc'].join(':')
     assert.deepEqual(await checkLink(store, other, nonce, impl), { status: 'expired' })
+  })
+
+  it('treats a non-webhook 409 (another poller reading) as transient', async () => {
+    const store = createMemoryStore()
+    const { impl } = tg({
+      getMe: () => json({ ok: true, result: { username: 'b' } }),
+      getUpdates: () => json({ ok: false, description: 'Conflict: terminated by other getUpdates request; make sure that only one bot instance is running' }, 409),
+    })
+    const { nonce } = await startLink(store, TOKEN, impl)
+    assert.deepEqual(await checkLink(store, TOKEN, nonce, impl), { status: 'waiting' })
+  })
+
+  it('reports a backlog when 100+ unread updates hide the /start', async () => {
+    const store = createMemoryStore()
+    let updates: unknown[] = Array.from({ length: 100 }, (_, i) => ({ message: { text: `old ${i}`, chat: { id: i } } }))
+    const { impl } = tg({
+      getMe: () => json({ ok: true, result: { username: 'b' } }),
+      getUpdates: () => json({ ok: true, result: updates }),
+    })
+    const { nonce } = await startLink(store, TOKEN, impl)
+    assert.deepEqual(await checkLink(store, TOKEN, nonce, impl), { status: 'backlog' })
+    // A full page that does contain the /start still links.
+    updates = [...updates.slice(1), { message: { text: `/start ${nonce}`, chat: { id: 7 } } }]
+    assert.deepEqual(await checkLink(store, TOKEN, nonce, impl), { status: 'found', chatId: '7' })
+    // 99 unread is not a backlog: keep waiting.
+    const { nonce: n2 } = await startLink(store, TOKEN, impl)
+    updates = updates.slice(0, 99)
+    assert.deepEqual(await checkLink(store, TOKEN, n2, impl), { status: 'waiting' })
   })
 
   it('surfaces a bad token', async () => {

@@ -2,15 +2,27 @@
 // from a GitHub runner? PURE (no I/O) so it is unit-tested and shared with the
 // hosted fork; lib/connect-check-server.ts does the gh calls.
 //
-// Green needs BOTH a successful run AND nonzero model usage. Usage comes from
-// the workflow's Run step, which prints
-//   ::notice::Token usage - model: X, input: N, output: N, cache_read: N, cache_creation: N, total: N
-// (rendered as "##[notice]Token usage ..." in downloaded logs). A Claude
-// subscription token rejected at the Anthropic edge exits "successfully" with
-// zero usage (docs/CONFIGURATION.md), which is exactly the case this catches.
+// Green needs a successful run AND proof the model answered:
+//   - harnesses that report real token counts (manifest token_usage != none):
+//     nonzero usage from the Run step's
+//       ::notice::Token usage - model: X, input: N, output: N, ...
+//     (rendered "##[notice]Token usage ..." in downloaded logs). A Claude
+//     subscription token rejected at the Anthropic edge exits "successfully"
+//     with zero usage (docs/CONFIGURATION.md), which is exactly what this catches.
+//   - harnesses that don't (cursor reports 0, kimi/vibe estimate from text):
+//     the harness's final answer being exactly AEON_CONNECT_OK (see
+//     RunOutput.reply: only the result line printed right before the usage
+//     notice counts, never the prompt or SKILL.md echoed earlier in the log).
+// Only the Run step's own output and ##[error]/##[warning] lines are read: the
+// downloaded log also holds every step's script (##[group]Run ... blocks), and
+// those scripts contain words like "rate_limited" that would match a failure
+// signature on every run.
+
+import { acceptedSecrets } from './connect-detect'
 
 export const CONNECT_CHECK_SKILL = 'connect-check'
 export const CONNECT_OK = 'AEON_CONNECT_OK'
+export const SUBSCRIPTION_SECRET = 'CLAUDE_CODE_OAUTH_TOKEN'
 
 export type CheckState = 'none' | 'queued' | 'running' | 'pass' | 'fail'
 
@@ -21,23 +33,73 @@ export interface CheckResult {
   reason?: string
   // A concrete next step for the operator when the check fails.
   hint?: string
+  // A one-click fix the UI can offer next to the hint.
+  fix?: { kind: 'remove-secret'; secret: string; label: string }
   usage?: Usage
   runId?: number
   runUrl?: string
 }
 
-// The last "Token usage" line in the log (one per run; last wins on retries).
-export function parseUsage(log: string): Usage | null {
+// --- log slicing ---------------------------------------------------------------
+
+export interface RunOutput {
+  // The Run step's printed output (scripts and env dumps removed).
+  run: string
+  // ##[error] / ##[warning] lines from any step.
+  problems: string
+  // The harness's final answer: the workflow prints the result text
+  // (`echo "$RESULT_TEXT"`) as the Run step's last output right before the
+  // "Token usage" notice, so it is the last non-empty line ahead of that
+  // notice. null when there is no notice. Anything earlier (a harness echoing
+  // the prompt or SKILL.md, stderr tails) can never count as the answer.
+  reply: string | null
+}
+
+const TS = /^﻿?\d{4}-\d{2}-\d{2}T[\d:.]+Z ?/
+
+// Split a `gh run view --log` dump (lines are job<TAB>step<TAB>text) into the
+// Run step's real output and the error/warning annotations. Each step's
+// ##[group]...##[endgroup] blocks (the script echo, the env listing) are
+// dropped. A log that is not in that shape is treated as all output.
+export function extractRunOutput(log: string): RunOutput {
+  const run: string[] = []
+  const problems: string[] = []
+  const inGroup = new Map<string, boolean>()
+  let tabbed = false
+  for (const line of log.split('\n')) {
+    const parts = line.split('\t')
+    if (parts.length < 3) continue
+    tabbed = true
+    const step = parts[1]
+    const text = parts.slice(2).join('\t').replace(TS, '')
+    if (text.startsWith('##[group]')) { inGroup.set(step, true); continue }
+    if (text.startsWith('##[endgroup]')) { inGroup.set(step, false); continue }
+    if (inGroup.get(step)) continue
+    if (/^##\[(error|warning)\]/.test(text)) problems.push(text)
+    if (step === 'Run') run.push(text)
+  }
+  const lines = tabbed ? run : log.split('\n').map((l) => l.replace(TS, ''))
+  return { run: lines.join('\n'), problems: problems.join('\n'), reply: replyBeforeUsage(lines) }
+}
+
+function replyBeforeUsage(lines: string[]): string | null {
+  let notice = -1
+  for (let i = lines.length - 1; i >= 0; i--) if (/Token usage\b.*input:\s*\d+/.test(lines[i])) { notice = i; break }
+  if (notice < 0) return null
+  for (let i = notice - 1; i >= 0; i--) if (lines[i].trim()) return lines[i].trim()
+  return null
+}
+
+// The last "Token usage" line (one per run; last wins on retries).
+export function parseUsage(text: string): Usage | null {
   const re = /Token usage\b[^\n]*?input:\s*(\d+),\s*output:\s*(\d+)(?:,\s*cache_read:\s*(\d+))?(?:,\s*cache_creation:\s*(\d+))?/g
   let m: RegExpExecArray | null
   let last: RegExpExecArray | null = null
-  while ((m = re.exec(log))) last = m
+  while ((m = re.exec(text))) last = m
   if (!last) return null
   const [input, output, cacheRead, cacheCreation] = [1, 2, 3, 4].map((i) => Number(last![i] || 0))
   return { input, output, cacheRead, cacheCreation, total: input + output + cacheRead + cacheCreation }
 }
-
-const SUBSCRIPTION_HINT = 'GitHub servers rejected the subscription token. Use an API key or connect OpenRouter instead.'
 
 // Known failure signatures, most specific first. Reasons are our own words:
 // never echo log text back, it can carry provider responses.
@@ -54,6 +116,19 @@ const SIGNATURES: { re: RegExp; reason: string; hint: string }[] = [
     reason: 'The runner found no usable credential for this harness.', hint: 'Check the secret was saved under the right name, or connect again.' },
 ]
 
+// The subscription token is first in the claude gateway's auto order and a
+// rejected one "succeeds" with zero usage, so the cascade never falls through
+// to another key. The fix is removing it, not adding something else.
+function subscriptionAdvice(secretsSet: string[]): Pick<CheckResult, 'hint' | 'fix'> {
+  const others = acceptedSecrets('claude').filter((s) => s !== SUBSCRIPTION_SECRET && secretsSet.includes(s))
+  return {
+    hint: others.length
+      ? `GitHub servers rejected the Claude subscription token, and runs try it before your other key (${others[0]}). Remove ${SUBSCRIPTION_SECRET} so runs use that key.`
+      : `GitHub servers rejected the Claude subscription token. Remove ${SUBSCRIPTION_SECRET}, then connect an API key or OpenRouter.`,
+    fix: { kind: 'remove-secret', secret: SUBSCRIPTION_SECRET, label: 'Remove subscription token' },
+  }
+}
+
 export interface RunFacts {
   status: string
   conclusion: string | null
@@ -61,32 +136,42 @@ export interface RunFacts {
   harness: string
   // Names of the repo secrets that are set; used to explain zero usage.
   secretsSet: string[]
+  // From the manifest's token_usage; false = judge by the reply instead.
+  usageReported?: boolean
 }
 
 export function interpretRun(run: RunFacts): CheckResult {
   if (run.status !== 'completed') {
     return { state: run.status === 'in_progress' ? 'running' : 'queued' }
   }
-  const usage = parseUsage(run.log) ?? undefined
+  const out = extractRunOutput(run.log)
+  const usage = parseUsage(out.run) ?? undefined
+  const answered = out.reply === CONNECT_OK
+  const usageReported = run.usageReported !== false
   if (run.conclusion === 'cancelled' || run.conclusion === 'skipped') {
     return { state: 'fail', usage, reason: `The run was ${run.conclusion}.`, hint: 'Start the test again.' }
   }
-  if (run.conclusion === 'success' && usage && usage.total > 0) {
-    const answered = run.log.includes(CONNECT_OK)
-    return { state: 'pass', usage, reason: `The model answered from GitHub (${usage.total} tokens)${answered ? '' : ', though not with the expected reply'}.` }
+  if (run.conclusion === 'success') {
+    if (usageReported && usage && usage.total > 0) {
+      return { state: 'pass', usage, reason: `The model answered from GitHub (${usage.total} tokens)${answered ? '' : ', though not with the expected reply'}.` }
+    }
+    if (!usageReported && answered) {
+      return { state: 'pass', usage, reason: 'The model answered from GitHub with the expected reply.' }
+    }
   }
 
-  const sig = SIGNATURES.find((s) => s.re.test(run.log))
-  const subscription = run.harness === 'claude' && run.secretsSet.includes('CLAUDE_CODE_OAUTH_TOKEN')
+  const sig = SIGNATURES.find((s) => s.re.test(`${out.run}\n${out.problems}`))
+  const subscription = run.harness === 'claude' && run.secretsSet.includes(SUBSCRIPTION_SECRET)
   if (run.conclusion === 'success') {
-    // Finished green but no model call happened.
-    if (sig) return { state: 'fail', usage, reason: `The run made no model call. ${sig.reason}`, hint: sig.hint }
-    if (subscription) return { state: 'fail', usage, reason: 'The run finished with zero model usage.', hint: SUBSCRIPTION_HINT }
-    return { state: 'fail', usage, reason: 'The run finished with zero model usage.', hint: 'Open the run log. If the key looks right, try an API key or OpenRouter.' }
+    // Finished green but the model never answered.
+    const what = usageReported ? 'The run finished with zero model usage.' : 'The run finished without the expected reply from the model.'
+    if (sig) return { state: 'fail', usage, reason: `${what} ${sig.reason}`, hint: sig.hint }
+    if (subscription) return { state: 'fail', usage, reason: what, ...subscriptionAdvice(run.secretsSet) }
+    return { state: 'fail', usage, reason: what, hint: 'Open the run log. If the key looks right, try an API key or OpenRouter.' }
   }
   if (sig) return { state: 'fail', usage, reason: sig.reason, hint: sig.hint }
   if (subscription && (!usage || usage.total === 0)) {
-    return { state: 'fail', usage, reason: 'The run failed before the model answered.', hint: SUBSCRIPTION_HINT }
+    return { state: 'fail', usage, reason: 'The run failed before the model answered.', ...subscriptionAdvice(run.secretsSet) }
   }
   return { state: 'fail', usage, reason: 'The run failed.', hint: 'Open the run log for the error, fix it, and test again.' }
 }
@@ -100,4 +185,52 @@ export function matchRun<T extends { displayTitle: string }>(runs: T[], opts: { 
   return opts.dispatchId
     ? runs.find((r) => r.displayTitle.includes(dispatchTag(opts.dispatchId!)))
     : runs.find((r) => r.displayTitle.startsWith(`skill: ${CONNECT_CHECK_SKILL}`) && r.displayTitle.includes(harnessTagPrefix(opts.harness)))
+}
+
+// --- polling ---------------------------------------------------------------------
+
+export const isSettled = (s: CheckState) => s === 'pass' || s === 'fail' || s === 'none'
+
+export interface PollDeps {
+  // GET /api/connect-check?harness=&id= ; throws on network trouble.
+  read: () => Promise<CheckResult>
+  onUpdate: (r: CheckResult) => void
+  sleep: (ms: number) => Promise<void>
+  now: () => number
+  // Stop quietly (the page went away); checked between polls.
+  cancelled: () => boolean
+  intervalMs?: number
+  timeoutMs?: number
+}
+
+// Poll one dispatch until it settles or times out, reporting every state.
+// Owned by the page (not the modal) so closing the modal does not strand the
+// HQ checklist on "in progress". Resolves with the last result.
+export async function pollConnectCheck(deps: PollDeps): Promise<CheckResult> {
+  const interval = deps.intervalMs ?? 5000
+  const deadline = deps.now() + (deps.timeoutMs ?? 10 * 60_000)
+  let last: CheckResult = { state: 'queued' }
+  let errors = 0
+  while (!deps.cancelled()) {
+    await deps.sleep(interval)
+    if (deps.cancelled()) break
+    try {
+      last = await deps.read()
+      errors = 0
+      deps.onUpdate(last)
+      if (isSettled(last.state)) return last
+    } catch {
+      if (++errors >= 5) {
+        last = { state: 'fail', reason: 'Lost contact with the dashboard server while testing.', hint: 'Reload and test again.' }
+        deps.onUpdate(last)
+        return last
+      }
+    }
+    if (deps.now() >= deadline) {
+      last = { ...last, state: 'fail', reason: 'The test is taking too long.', hint: 'Check the run on GitHub; Actions may be busy or disabled.' }
+      deps.onUpdate(last)
+      return last
+    }
+  }
+  return last
 }
