@@ -67,10 +67,17 @@ login locally, store the session as a repo secret, restore it on the runner):
 
 Which one runs is decided at dispatch by **which secret is set**, native first,
 OpenRouter last (`authSecretsForHarness` / the `HARNESS_AUTH` registry in
-`apps/dashboard/lib/harness-auth.ts`). On native auth the harness uses its **own
-default model** — the OpenRouter model picker only applies when the run falls
-back to `OPENROUTER_API_KEY` (an `openai/*` id would be the wrong provider
-otherwise). The workflow's *Install harness CLI* step restores/configures the
+`apps/dashboard/lib/harness-auth.ts`). On native auth pi, vibe and kimi use their **own
+default model**, and the OpenRouter model picker applies only when the run falls
+back to `OPENROUTER_API_KEY`. cursor and hermes keep the picked model (both
+document model overrides). **codex** follows the pick too: on `CODEX_AUTH` or
+`OPENAI_API_KEY` an explicit OpenAI pick (config `model:`, per-skill, dispatch
+input or `vars.HARNESS_MODEL`) is forwarded as its bare id (`openai/gpt-6-luna`
+becomes `--model gpt-6-luna`); with no pick it keeps the account default. A
+ChatGPT plan does not serve every id, so when codex refuses the model the adapter
+retries once on the account default and warns
+`codex refused model <id>; retried on the account default`. The run records the
+model that actually ran, read from codex's session rollout. The workflow's *Install harness CLI* step restores/configures the
 selected provider; the CLI + dashboard flows share `lib/harness-auth-server.ts`.
 
 **`fx` breaks the "OpenRouter last" rule above** — it's the one harness with no
@@ -110,7 +117,8 @@ Notes from the sweep:
   so a stale or quota-dead native secret keeps failing even when a working fallback
   is present. Delete the native secret to fall through. Deleting `CODEX_AUTH` is also
   how you pin a cheap model: the OpenRouter path forwards `-f model=openai/gpt-5-*`,
-  while native auth uses the harness's own (pricier) default.
+  while native auth uses the harness's own (pricier) default. (Since #1144 codex
+  also honours an explicit pick on native auth, so this no longer applies to codex.)
 - **The scorer grades stdout, not `./notify`.** A run that routes its deliverable
   into a channel and leaves a thin final message is under-graded even though the
   work was real (observed on codex/`gpt-5-mini`, which narrated pessimistically in

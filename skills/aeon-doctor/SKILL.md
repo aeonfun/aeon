@@ -29,12 +29,12 @@ Each finding = **{check, skill, severity, one-line what's-wrong, exact fix}**. S
 - **critical** — an `enabled: true` skill that will **never fire** or will run with the **wrong privilege**. Live breakage.
 - **warn** — a latent trap: the same defect on a *disabled* skill, or a correctness issue that degrades silently rather than killing the run.
 
-### 1 · Unquoted `schedule:` — the #1 silent killer (critical / warn)
-`scheduler.yml` matches schedules with the bash regex `schedule: *"([^"]+)"`. An unquoted value doesn't match, is read as empty, and the skill is **skipped every tick, forever** — the file is still valid YAML, so nothing else notices.
+### 1 · Unquoted `schedule:` on the old regex scheduler (critical / warn)
+Applies only when `scripts/parse-aeon-config.sh` is **missing**. With it, `scheduler.yml` reads `aeon.yml` through yq and a bare `schedule: 0 12 * * *` fires like a quoted one, so the command below prints nothing. Without it, `scheduler.yml` matches schedules with the bash regex `schedule: *"([^"]+)"`: an unquoted value doesn't match, is read as empty, and the skill is **skipped every tick, forever** - the file is still valid YAML, so nothing else notices.
 ```bash
-grep -nE '^\s+[a-z0-9-]+:\s*\{[^}]*schedule:' aeon.yml | grep -vE 'schedule: *"'
+[ -f scripts/parse-aeon-config.sh ] || grep -nE '^\s+[a-z0-9-]+:\s*\{[^}]*schedule:' aeon.yml | grep -vE 'schedule: *"'
 ```
-Each printed line is an entry whose `schedule:` isn't double-quoted. **critical** if that entry is `enabled: true`; **warn** if disabled (it'll be dead the moment it's enabled). Fix: add the quotes — `schedule: "0 12 * * *"`.
+Each printed line is an entry whose `schedule:` isn't double-quoted. **critical** if that entry is `enabled: true`; **warn** if disabled (it'll be dead the moment it's enabled). Fix: add the quotes (`schedule: "0 12 * * *"`), or pull upstream to get the yq scheduler.
 
 ### 2 · Duplicate skill keys — silent shadow (critical)
 A repeated skill name under the `skills:` map silently disables the first copy (last-wins YAML).
@@ -90,7 +90,7 @@ grep -rnE '^[[:space:]]*(schedule|cron):' skills/*/SKILL.md
 Report as **warn** (informational): these lines are inert; the real schedule is the `aeon.yml` entry (the pattern allows leading indent, since spec-form frontmatter nests these under `metadata:`).
 
 ### 10 · Unquoted per-skill `harness:` / `model:` override (warn)
-Same quoting rule as `schedule:` — the override grep requires double quotes. An unquoted `harness: grok` or `model: …` is silently ignored and the skill keeps running the global default.
+The override read (`scripts/skill_entry.sh` plus a quoted-value match) requires double quotes, even where the yq scheduler accepts a bare `schedule:`. An unquoted `harness: grok` or `model: …` is silently ignored and the skill keeps running the global default.
 ```bash
 grep -nE '\{[^}]*(harness|model):' aeon.yml | grep -vE '(harness|model): *"'
 ```

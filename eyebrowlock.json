@@ -370,10 +370,10 @@
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "b801bcf20983f3a7d216398c86e6e88d7642e4a60f84fe2e759da60c05c9d7f5"
+          "hash": "ab06717cc439a90bc6d23f77a26fb87345769927a30b1d7b4353d0c65078523e"
         }
       ],
-      "contentHash": "sha256-f3bd2e0dd8ee3335100823ee5f379aba097f216676306124c5717ec2c6115398",
+      "contentHash": "sha256-3ac8cf4d307cc4e72363256cb4bd5dd4bc6211cd1ca18c983e84bb4cdd0dccb2",
       "discoveredFrom": "skills/aeon-doctor/SKILL.md"
     },
     {

@@ -91,7 +91,7 @@ var=<value>
 
 | Call | Skills | Notes |
 |---|---|---|
-| `./notify "msg"` / `./notify -f body.md` | 76 | `-f` for anything multi-line. Structured form: `--title`, `--severity {info,success,warn,critical}`, `--link`. Falls back to `.pending-notify/` when the sandbox blocks outbound curl |
+| `./notify "msg"` / `./notify -f body.md` | 76 | `-f` for anything multi-line; `-f -` reads the body from stdin, so a quoted heredoc into `./notify` works where the run cannot write a scratch file (read-only skills on claude). Structured form: `--title`, `--severity {info,success,warn,critical}`, `--link`. Falls back to `.pending-notify/` when the sandbox blocks outbound curl |
 | `WebFetch` | 45 | preferred fallback for a flaky public GET |
 | `./secretcurl` | 35 | authenticated curl - **the only safe way to use a key** |
 | `gh api` | 34 | handles GitHub auth internally; prefer over raw curl for repo metadata |

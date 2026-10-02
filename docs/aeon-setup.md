@@ -19,13 +19,13 @@ You don't have to learn `aeon.yml`, cron syntax, or the CLI flags. Mention Aeon 
 |---|---|
 | **Start** | Stand up a brand-new instance and get one real notification on your phone, fast |
 | **Reschedule** | Change when a skill runs, its cadence, or what it focuses on ("move the digest to 7am", "weekdays only") |
-| **Unblock** | Figure out why a skill "didn't run" — it walks the ordered checklist (disabled? unquoted schedule? Actions off? wrong repo?) |
+| **Unblock** | Figure out why a skill "didn't run" — it walks the ordered checklist (disabled? invalid cron? Actions off? wrong repo?) |
 | **Chat → skill** | Turn something you just did in the agent into a scheduled skill |
 | **Edit a skill** | Change what an existing skill does — a source, a filter, tone, length |
 | **What to turn on** | Pick skills for what you care about, browse packs, install community packs |
 | **Strategy & voice** | Set `STRATEGY.md` (the north star) and `soul/` (the voice every run speaks in) |
 
-It knows the things that silently break an instance — an unquoted `schedule:` that never fires, `gh` pointed at the wrong repo, a missing secret — and it verifies as it goes instead of guessing. (The config-side of that knowledge is also enforced continuously by the [`aeon-doctor`](../skills/aeon-doctor/SKILL.md) skill.)
+It knows the things that silently break an instance — an unquoted per-skill `model:` override that is silently ignored, `gh` pointed at the wrong repo, a missing secret — and it verifies as it goes instead of guessing. (The config-side of that knowledge is also enforced continuously by the [`aeon-doctor`](../skills/aeon-doctor/SKILL.md) skill.)
 
 ## Install
 

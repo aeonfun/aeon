@@ -11,6 +11,27 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Added
 
+- **pi runs MCP servers.** pi 0.99 ships built-in MCP (stdio + streamable HTTP), so the pi adapter
+  no longer skips `.mcp.json`. It translates the servers into pi's `mcp.json` inside a temp
+  `PI_CODING_AGENT_DIR` (the user's own `~/.pi/agent/mcp.json` is never read or written) and
+  declares their tools as `mcp__<server>__<tool>`. pi waits up to a hard-coded 10s for servers
+  before the first request; legacy `sse` entries are skipped with a warning. (#1131)
+- **codex honours the picked model on a ChatGPT login.** On `CODEX_AUTH` or `OPENAI_API_KEY` an
+  explicit OpenAI pick (config `model:`, per-skill, dispatch input or `vars.HARNESS_MODEL`) is now
+  forwarded as its bare id (`openai/gpt-6-luna` becomes `--model gpt-6-luna`); with no pick codex
+  keeps the account default. When a ChatGPT plan refuses the id, the adapter retries once on the
+  account default and warns. The run records the model that actually ran, read from codex's
+  session rollout. (#1134, #1144)
+- **Each run reports the operator context it loaded.** A notice and a run-summary table show
+  whether `STRATEGY.md` is custom, the shipped template or missing, whether `soul/` is filled (and,
+  on claude, whether the agent read it), and the MCP status with servers or missing secrets. Fix
+  found on the way: a stale `AGENTS.md` is now regenerated before a non-claude run, so codex, grok,
+  pi and the rest see the current strategy after the dashboard or `strategy-builder` rewrites it.
+  The run summary also opens with the harness and the model that ran. (#1141, #1147)
+- **`aeon auth --harness claude-code`.** The Claude harness takes the same `--harness` flag as
+  every other harness (`claude-code` or `claude`): no key runs `claude setup-token`, `--key` stores
+  a key, and `--oauth` stays as an alias. The success line names the secret it set. (#1133)
+
 - **New `feedback-builder` skill (Dev & Code): build what agents asked for.** Point an agent at
   a service's `/feedback` endpoint (sources in `memory/feedback-sources.md`, or
   `var="<feedback-url> <owner/repo>"`). Each run reads what agents reported, clusters reports that
@@ -107,6 +128,47 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Changed
 
+- **Model defaults move to the 2026-10 generation.** claude `claude-sonnet-5-5` (default) and
+  `claude-opus-5-5` (the `deploy-uni-hook` / `sc-audit` pins), haiku stays
+  `claude-haiku-4-5-20251001`; grok `grok-4.7` (harness, gateway, scorer and every direct xAI call);
+  codex `openai/gpt-6-luna` (plus `gpt-6.1-sol`); kimi `moonshotai/kimi-k2.6`; glm `glm-5.3` /
+  `glm-5.3-flash`; cursor `auto`; pi adds `deepseek/deepseek-v4.1-flash`. OpenRouter, Surplus and
+  Venice gateway tiers follow. The dashboard pickers now offer only the current ids (Claude: Sonnet
+  5.5, Opus 5.5, Haiku 4.5; codex: GPT-6 Luna, GPT-6.1 Sol) and list harnesses as Claude, Codex,
+  Grok, Kimi first; an older pinned id still dispatches and shows as "<label> (configured)".
+  (#1124, #1137, #1138, #1139, #1146)
+- **Every harness CLI bumped to its latest release and smoke-tested in CI.** claude-code 2.1.287,
+  grok 1.0.46, codex 0.159.3, pi 0.99.2, kimi 2.1.1, vibe 2.25.8, claude-code-router 3.1.1. The
+  adapters absorb each breaking change: claude runs with `--permission-mode default` (2.1.285 would
+  otherwise start in auto mode behind a gateway), grok drops the removed `--best-of-n` / `--check`
+  (`GROK_BEST_OF_N` / `GROK_CHECK` are ignored with a notice), codex no longer retries an
+  unreachable provider forever, and the ccr gateway sidecar is rebuilt for the 3.x rewrite. New
+  `ci-harness-cli.yml` installs each pinned CLI and drives it through its adapter against a local
+  fake model server. (#1125)
+- **The scheduler reads `aeon.yml` with yq.** New `scripts/parse-aeon-config.sh` is section- and
+  comment-aware: a commented chain `schedule:` no longer fires `dev-loop` daily on fresh forks, and
+  chain names or channel keys no longer register as skills. A bare `schedule: 0 9 * * *` is now
+  honoured, invalid YAML fails the tick with an `::error::` instead of dispatching from a half-parsed
+  config, and the scheduler now needs yq on the runner (preinstalled on GitHub-hosted ubuntu).
+  `cron-due.sh` gains correct `*/N` day-of-month counting (so `*/2` now fires on odd days), Sunday
+  as 7, month and weekday names, and treats a malformed field as "not due" with a warning;
+  `validate-config.js` checks schedule format. Also: chain-covered skills are stamped when the chain
+  is accepted, reactive handlers must be enabled and an `on: "*"` handler rotates sources, and the
+  issues state backend folds only trusted authors' comments. (#1115)
+- **Failed-run retries and breaker probes follow the skill's cadence.** A weekly skill with a
+  persistent failure now gets its 2 quick retries and then one probe per weekly slot, instead of a
+  probe every 6 hours; with the breaker off (`BREAKER_THRESHOLD=0`) a failure streak stops after 2
+  quick retries instead of retrying every 30 minutes forever. (#1119)
+- **Clearer shell-write guidance and denial logs.** The write-tier run note now says plainly that
+  `cat > f`, `>> f`, `tee f` and heredocs into files are always refused (use Write/Edit), a denied
+  claude Bash call is logged with its program and a redirect marker (e.g. `Bash(cat>) x1`), and
+  `base64` is allowed in skill tiers so `gh api ... | base64 -d` reads work. (#1135, #1141, #1142)
+- **Docs and stale-reference sweep.** Skill counts say 85 everywhere and a CI gate keeps them exact
+  (#1100); CLAUDE.md, AGENTS.md, CONFIGURATION, harness and setup-skill docs describe read-only
+  state dirs, flow-brace chain steps, all nine harnesses through `run-harness` and the current CI
+  gates, and 10 skills that shipped without an `aeon.yml` entry get a disabled one (#1118); inert
+  `schedule:` / `cron:` lines are removed from 13 skills' frontmatter (#1140).
+
 - **Docs refresh.** README stats refreshed and dead README links fixed (#1092), the stale "ten"
   harness count in `llms.txt` is corrected (#1090), and the ecosystem list drops AeThree and
   updates the ClawHunter logo (#1089). (A "not affiliated with OpenAI" line added in #1091 was
@@ -147,6 +209,44 @@ from or pin to; the template keeps serving the latest `main` to new forks.
   showcase hooks in `aeonfun/univ4-hooks` carried the fee. (#1035)
 
 ### Fixed
+
+- **Post-run state survives push races and feature branches.** `git-push-retry.sh` now merges
+  conflicts per file type (union for logs and token usage, a 3-way jq merge for JSON, `--ours`
+  otherwise) instead of dropping upstream edits; cron-state retries re-apply this run's stamp on
+  upstream's copy; and a run that ends on a feature branch commits its `memory/` and `output/`
+  state to main, not into the PR, in both `aeon.yml` and `messages.yml`. A chain dispatch failure
+  no longer kills the chain before `on_error: continue` runs. (#1117, #1120)
+- **Runtime and config batch.** `ALL_SECRETS` now names every skill `requires:` key (a new CI test
+  fails if one is missing); block-style `harness:`, `model:` and `attest:` entries take effect; the
+  CLI writes `schedule`, `var`, `model` and `harness` double-quoted; the claude gateway cascade
+  fails over only on provider errors, never after a skill crash or timeout; the OpenRouter arm picks
+  its model by run tier; `notify` stops eating short real alerts as probes; `remotion` and
+  `weekly-aeoncard` notifications actually send; and Telegram instant mode generates a
+  `TELEGRAM_WEBHOOK_SECRET`. (#1116)
+- **Model mapping fixes.** The dashboard no longer strips `/` and `:` from model ids (slashed ids
+  were rejected with HTTP 422), `GROK_MODEL` reaches the gateway, hermes defaults to `default`
+  instead of forwarding a Claude id, dry-run accepts `codex:openai/*`, and the fleet scorecard
+  prices by Claude model version and counts non-Claude rows as unpriced. (#1123)
+- **Read-only skills on claude can notify again.** `./notify -f -` reads the body from stdin, and a
+  standing run note tells read-only runs to pipe a quoted heredoc instead of writing a scratch file
+  they are not allowed to create. Also: concurrent runs no longer concatenate
+  `output/.chains/<skill>.md`, the resolve line shows claude's real auth and model, codex token
+  counts no longer double-count cache reads, and the template ships an empty `cron-state.json`.
+  (#1134)
+- **Read-only skills log once.** Twelve read-only skills stopped appending their own log entry on
+  top of the workflow guard's, and the guard now logs the final output when the skill notified.
+  (#1121)
+- **`feature`, `pr-review` and `auto-merge` check GitHub first.** `feature` skips work that already
+  has an open PR or branch and verifies `Closes #N`; `pr-review` does not review the same commit
+  twice; `auto-merge` reports a merge only when GitHub shows it merged. (#1126, #1128)
+- **Harness fixes.** vibe gets `--trust` so it loads the repo `AGENTS.md` (#1129); pi token usage is
+  summed over every turn, not just the last (#1130); duplicate gateway route annotations on claude
+  runs are gone (#1148).
+- **Smaller fixes.** The `.claude` setup skill is resynced with the plugin copy and history mining
+  skips subagent transcripts (#1098); `sc-audit` defines its coverage manifest inline instead of
+  pointing at a section that never existed (#1127); the dashboard sidebar title shrinks to fit long
+  instance names (#1136); instance `ci-tests` no longer go red because the operator customised
+  `heartbeat` in `aeon.yml` (#1145).
 
 - **`aeon-update` keeps instance CI green on two sync paths.** `catalog/skill-packs.json` now
   syncs as one unit with `docs/community-skill-packs.md`, its validator, test and CI workflow (the
@@ -974,6 +1074,23 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Security
 
+- **Security audit fixes (2026-10-01).** The dashboard binds to `127.0.0.1` only; the health step
+  takes its values through `env:` (no shell injection); `secretcurl` escapes newlines, rejects
+  malformed option tokens and no longer sends its config (with the substituted secret) as a
+  `--data-binary @-` body; `setSecret` keeps the value out of argv; webhook traces strip the bot
+  token; MCP OAuth requires `https:` endpoints; the webhook secret compare is constant-time.
+  (#1114)
+- **Read-only sandbox hardening.** The bwrap root is now read-only by default with only the needed
+  paths writable, which closes a parent-rename escape (#1132). Runner file-command files, git, gh,
+  ssh and npm config, `~/.local/bin`, PATH dirs under `$HOME` and the tool cache are locked against
+  read-only runs, and harness config is snapshotted before the run and restored before the
+  unsandboxed scorer, so a prompt-injected skill cannot plant an MCP server or hook that later
+  steps execute (#1114, #1122, #1130).
+- **Pinned, checksum-gated harness installers.** fx, cursor and hermes install one pinned release
+  whose sha256 is checked before anything runs, under a clean env with no GitHub token or provider
+  key. Override with `FX_VERSION` / `CURSOR_VERSION` / `HERMES_COMMIT` plus the matching
+  `*_SHA256`. (#1122)
+
 - **Dead channel credentials dropped from the in-run skill env (#912 item 2).**
   Six infrastructure creds with no in-run consumer - `DISCORD_BOT_TOKEN` /
   `DISCORD_CHANNEL_ID`, `SLACK_BOT_TOKEN` / `SLACK_CHANNEL_ID`, and
@@ -1010,6 +1127,12 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 - Bumped the dashboard `postcss` override past `GHSA-r28c-9q8g-f849`. (#783)
 
 ### Maintenance
+
+- Dependency, CI and toolchain noise (2026-09-29 to 2026-10-02): dependency bumps (#1099, #1102,
+  #1103, #1106, #1108, #1109, #1112); dashboard `next` 16.3.8 for the critical `next/og` RCE
+  advisory GHSA-vcvr-r3jv-pc5j (#1107) and ESLint 10 (#1111); eyebrow action 0.5.6 (#1104); CI
+  coverage gaps closed across the `ci-*` workflows (#1113); GitHub-hosted runners pinned to
+  `ubuntu-24.04` ahead of the `ubuntu-latest` move (#1143).
 
 - First repo lint gates: eslint (per app) and shellcheck (whole shell surface),
   both green on the current tree, with two shellcheck false positives suppressed

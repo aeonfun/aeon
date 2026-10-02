@@ -123,13 +123,13 @@ Rules:
 - Confirm back the **next 3 fire times in their timezone** after any change.
 - `--dry-run` first on anything ambiguous, show the diff, then apply.
 - Changes need a push to take effect. The CLI does it; confirm it landed.
-- **Then check the value came out quoted** — one grep, every time:
+- **Then check the entry came out right** - one grep, every time:
 
   ```bash
   grep '^  <skill>:' aeon.yml
   ```
 
-  The scheduler only reads `schedule: "…"` **with double quotes**. The CLI writes a *new* key unquoted, so an entry that had no `schedule:` yet comes back as `schedule: 0 12 * * *` and the skill is skipped forever. Details below.
+  The CLI writes `schedule`, `var`, `model` and `harness` double-quoted, and the scheduler reads `aeon.yml` with yq, so a quoted or a bare `schedule:` both fire. Quotes still matter on a hand-written per-skill `model:`/`harness:` override (see Harness below). Details in Mode 3, check 5.
 
 Skills with `schedule: workflow_dispatch` are on-demand only — they never fire on cron. `reactive` ones fire on conditions, not time.
 
@@ -143,18 +143,17 @@ Skills with `schedule: workflow_dispatch` are on-demand only — they never fire
 2. **Duplicate key?** `node scripts/validate-config.js`. A repeated skill name in `aeon.yml` silently shadows the first one. Common after hand-edits.
 3. **Is it even cron?** `workflow_dispatch` and `reactive` never fire on a schedule.
 4. **Are Actions disabled?** `gh api repos/{owner}/{repo}/actions/permissions`. GitHub auto-disables scheduled workflows after 60 days of repo inactivity — this silently kills forks and nothing in Aeon surfaces it. Re-enable in repo Settings.
-5. **Is the schedule quoted?** `grep '^  <skill>:' aeon.yml` — the value must be `schedule: "0 12 * * *"`, **with double quotes**.
+5. **Is the schedule valid cron?** `grep '^  <skill>:' aeon.yml`. The scheduler reads `aeon.yml` with yq (`scripts/parse-aeon-config.sh`), so quotes are optional:
 
    ```
    schedule: "0 12 * * *"   ✅ fires
-   schedule: 0 12 * * *     ❌ never fires, no error anywhere
+   schedule: 0 12 * * *     ✅ fires
+   schedule: "0 12 * *"     ❌ never fires (wrong field count)
    ```
 
-   `scheduler.yml` matches schedules with the bash regex `schedule: *"([^"]+)"`. An unquoted value doesn't match, `$SCHED` is empty, and the match loop hits `[ -z "$SCHED" ] && continue` — skipped silently, every tick, forever.
+   `scripts/cron-due.sh` treats a wrong field count, `*/0` or an out-of-range value as "not due" and only warns on stderr, so the skill is skipped every tick. `node scripts/validate-config.js` checks the schedule format, so run it after any hand edit. Invalid YAML anywhere in `aeon.yml` fails the whole scheduler tick with an `::error::`, so nothing runs at all.
 
-   How it gets that way: the CLI edits `aeon.yml` through a YAML document model that preserves an *existing* quoted node but writes a **newly added** key in plain style. So `./aeon skills schedule <name> "0 12 * * *"` is safe on an entry that already had a quoted `schedule:`, and quietly breaks one that didn't. Same for a first-time `--var`.
-
-   **Nothing else detects this.** The file is valid YAML, `validate-config.js` reports CLEAN, and `./aeon skills ls --enabled` lists the skill with its schedule — because they all parse YAML properly and only the scheduler uses a regex. Fix by adding the quotes by hand.
+   **Older instances:** a `scheduler.yml` from before the yq parser (no `scripts/parse-aeon-config.sh` in the repo) matches schedules with the bash regex `schedule: *"([^"]+)"`, so there an unquoted value is skipped silently, every tick, forever, and nothing else detects it. Pull upstream, or add the quotes by hand.
 6. **Did it run and fail?** `./aeon runs ls` then `./aeon runs logs <id>`. A failed skill retries after a 30-minute cooldown.
 
 Three more, if the above are clean:
@@ -211,11 +210,11 @@ They just did something in this chat and want it to happen on a schedule.
      my-skill: { enabled: false, schedule: "0 12 * * *" }
    ```
 
-   **Include the quoted `schedule:` even though it's disabled — the quotes are load-bearing.** Writing a bare `{ enabled: false }` and letting `./aeon skills schedule` add the key later produces an *unquoted* value the scheduler cannot read, and the skill never fires (Mode 3, check 5). Seeding a quoted node here means every later CLI edit preserves the quotes.
+   **Include the quoted `schedule:` even though it's disabled.** It matches every other entry, and an older instance whose scheduler still uses the bash regex only reads quoted values (Mode 3, check 5). The CLI writes the values it adds double-quoted, so later edits stay consistent.
 
-   Match the inline `{ … }` form every other entry uses, on one line. `aeon.yml:367` reads per-skill `model:`/`harness:` overrides with a single-line grep, so an entry split across lines takes the global default instead.
+   Match the inline `{ … }` form every other entry uses, on one line. Per-skill `model:`/`harness:` overrides are read through `scripts/skill_entry.sh`, which also follows an entry split across lines, but the value must be double-quoted (see Harness below).
 
-   This is the one sanctioned exception to "never hand-edit the YAML". Validate after: `node scripts/validate-config.js` — but note it only checks structure, and will not catch an unquoted value.
+   This is the one sanctioned exception to "never hand-edit the YAML". Validate after: `node scripts/validate-config.js`. It checks structure and schedule format, but not whether a `model:`/`harness:` override is quoted.
 
 5. **Regenerate BOTH catalogs, add the eyebrow entry, then ship it as a PR.** A new skill trips four CI gates, and **a red gate blocks the merge**: `main` requires the `gate` check, which `ci-gate` fails whenever any other check on the PR is red. Run them locally first. Commit `SKILL.md` on its own before regenerating (the catalog's `sha`/`updated` are git-derived):
 
@@ -440,7 +439,7 @@ It runs as a **cascade**, not a single choice: the highest-priority key goes fir
 
 Nine harnesses: `claude` (default), `grok`, `codex`, `pi`, `vibe`, `kimi`, `fx`, `cursor`, `hermes`. All run through the same `harness-adapter/run-harness` contract; only `claude` goes through the gateway above, every other harness uses its own auth (`glm` is a gateway provider, not a harness). `codex`/`pi`/`vibe`/`kimi`/`hermes` can all run on one shared `OPENROUTER_API_KEY`; `fx` needs `AI_GATEWAY_API_KEY`, `cursor` needs `CURSOR_API_KEY`. Native logins: `./aeon auth --harness <name>` (see `./aeon auth --help`), and `docs/harnesses.md` for models and verification status. The rest of this section covers `grok`, the one with the most knobs. The Grok harness runs the `grok` CLI instead of Claude Code and **bypasses the gateway entirely**.
 
-- **Set it:** `./aeon config set harness grok` globally, or `harness: "grok"` on a single skill's `aeon.yml` entry — **quoted, on the entry's one inline line**. Per-skill `model:` and `harness:` are read by a single-line grep that requires double quotes (`aeon.yml:367`, `:380`), so an unquoted or line-split override is silently ignored and the skill keeps running the global default — no error, and the log's `model=` line looks normal. After setting either by CLI, re-read the entry and add the quotes if they're missing.
+- **Set it:** `./aeon config set harness grok` globally, or `harness: "grok"` on a single skill's `aeon.yml` entry - **quoted**. Per-skill `model:` and `harness:` are read through `scripts/skill_entry.sh` with a match that requires double quotes, so an unquoted override is silently ignored and the skill keeps running the global default - no error, and the log's `model=` line looks normal. The CLI writes both quoted; after a hand edit, re-read the entry and add the quotes if they're missing.
 - **Auth:** `XAI_API_KEY`, or an X account (SuperGrok / X Premium+) via the dashboard's **Connect X account**, which stores `GROK_CREDENTIALS`. There is no CLI flag for the X OAuth flow — send them to `./aeon` (the dashboard) for that one.
 - **Models:** `grok-4.7` (default, reasoning), `grok-4.6` or `grok-4.5`, the ids the dashboard offers for the harness. Older api.x.ai ids such as `grok-composer-2.5-fast` are not harness models (the grok CLI rejects them on an X-account login); they work only on the `grok` gateway path (`XAI_API_KEY` plus the `GROK_MODEL` repo variable).
 - **No free tier.**
