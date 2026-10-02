@@ -5,14 +5,12 @@ import type { Harness } from './types'
 // First entry is the default: it's the top of the model picker AND the fallback the
 // harness-switch snap uses (modelsForHarness(...)[0] in app/page.tsx). Keep it in
 // sync with the config default in lib/config.ts and aeon.yml `model:`.
-// Sonnet 5 and Opus 4.8 stay selectable after the current pair so repos and
-// per-skill pins that still name them keep a matching picker entry.
+// Just the current three. A repo or per-skill pin that still names an older id
+// (claude-sonnet-5, claude-opus-4-8) keeps a visible entry via pickerOptions.
 export const MODELS = [
   { id: 'claude-sonnet-5-5', label: 'Sonnet 5.5' },
   { id: 'claude-opus-5-5', label: 'Opus 5.5' },
   { id: 'claude-haiku-4-5-20251001', label: 'Haiku 4.5' },
-  { id: 'claude-sonnet-5', label: 'Sonnet 5' },
-  { id: 'claude-opus-4-8', label: 'Opus 4.8' },
 ]
 
 // Models offered when the Grok (`grok`) harness is selected: the ids the
@@ -148,6 +146,17 @@ export const HARNESSES = [
 // fx always runs on its own default model. So this intentionally falls
 // through to the generic MODELS default below: whatever renders there is
 // cosmetic only for fx and never actually reaches the run.
+// The options a model <select> renders. A controlled <select> whose value is
+// not among its options silently shows the first one, so a configured model
+// that is not offered (an older pin) is appended, marked as configured.
+export function pickerOptions(list: readonly { id: string; label: string }[], current?: string | null) {
+  if (!current || list.some((m) => m.id === current)) return list
+  const known = [MODELS, GROK_MODELS, CODEX_MODELS, VIBE_MODELS, PI_MODELS, KIMI_MODELS, CURSOR_MODELS, HERMES_MODELS]
+    .flat().find((m) => m.id === current)
+  const label = known?.label ?? { 'claude-sonnet-5': 'Sonnet 5', 'claude-opus-4-8': 'Opus 4.8' }[current] ?? current
+  return [...list, { id: current, label: `${label} (configured)` }]
+}
+
 export function modelsForHarness(harness: string) {
   if (harness === 'grok') return GROK_MODELS
   if (harness === 'codex') return CODEX_MODELS

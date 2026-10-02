@@ -1,5 +1,5 @@
 import type { Skill, GatewayProvider, Harness, DashboardView } from '../lib/types'
-import { PACK_BY_KEY, HARNESSES, modelsForHarness } from '../lib/constants'
+import { PACK_BY_KEY, HARNESSES, modelsForHarness, pickerOptions } from '../lib/constants'
 import { displayName } from '../lib/utils'
 
 interface TopBarProps {
@@ -24,7 +24,7 @@ interface TopBarProps {
 
 export function TopBar({ skill, view, repo, model, harness, gateway, hasModelKey, authLoading, pulling, syncing, hasChanges, behind, onSetupAuth, onUpdateModel, onUpdateHarness, onPull, onSync }: TopBarProps) {
   const dept = skill ? (PACK_BY_KEY[skill.pack || 'lab'] || null) : null
-  const modelOptions = modelsForHarness(harness)
+  const modelOptions = pickerOptions(modelsForHarness(harness), model)
 
   return (
     <div className="h-14 border-b border-[rgba(250,250,250,0.10)] flex items-center justify-between px-5 shrink-0 bg-aeon-bg">

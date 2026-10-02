@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import type { Skill, Run, Secret, SkillKeyRef, SkillMcpRef, McpServers } from '../lib/types'
-import { modelsForHarness, keyProvidedByHarness, CATEGORIES } from '../lib/constants'
+import { modelsForHarness, pickerOptions, keyProvidedByHarness, CATEGORIES } from '../lib/constants'
 import { SkillGlyph, hasSkillGlyph } from './ui/SkillGlyph'
 import { MCP_BY_SLUG } from '../lib/mcp-catalog'
 import { displayName, getSkillStatus, cronLabel, statusDot, inputCls, runStatusColor, runStatusGlyph } from '../lib/utils'
@@ -381,7 +381,7 @@ export function SkillDetail({ skill, runs, model, harness, secrets, mcpServers, 
           className="bg-aeon-panel text-aeon-fg text-sm px-4 py-3 border border-[rgba(250,250,250,0.10)] outline-none font-mono w-full max-w-md cursor-pointer hover:border-[rgba(250,250,250,0.22)] focus:border-aeon-red transition-colors"
         >
           <option value="">Default ({modelOptions.find(m => m.id === model)?.label ?? model})</option>
-          {modelOptions.map(m => <option key={m.id} value={m.id}>{m.label}</option>)}
+          {pickerOptions(modelOptions, skill.model).map(m => <option key={m.id} value={m.id}>{m.label}</option>)}
         </select>
       </Section>
 

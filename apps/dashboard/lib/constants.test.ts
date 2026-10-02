@@ -9,7 +9,7 @@
 import { describe, it } from "node:test";
 import { strict as assert } from "node:assert";
 
-import { packGroups, FIRST_PARTY_KEYS, keyProvidedByHarness } from "./constants";
+import { packGroups, FIRST_PARTY_KEYS, keyProvidedByHarness, MODELS, pickerOptions } from "./constants";
 
 const sk = (name: string, pack: string, packName = "") => ({ pack, packName });
 
@@ -68,5 +68,26 @@ describe("keyProvidedByHarness", () => {
 
   it("is safe for an unknown harness", () => {
     assert.equal(keyProvidedByHarness("XAI_API_KEY", "whatever"), false);
+  });
+});
+
+describe("MODELS", () => {
+  it("offers exactly the current three Claude models", () => {
+    assert.deepEqual(MODELS.map(m => m.id), ["claude-sonnet-5-5", "claude-opus-5-5", "claude-haiku-4-5-20251001"]);
+  });
+});
+
+describe("pickerOptions", () => {
+  it("keeps the list when the configured model is offered", () => {
+    assert.deepEqual(pickerOptions(MODELS, "claude-opus-5-5"), MODELS);
+    assert.deepEqual(pickerOptions(MODELS, ""), MODELS);
+  });
+  it("keeps an older configured model visible, marked as configured", () => {
+    const opts = pickerOptions(MODELS, "claude-sonnet-5");
+    assert.equal(opts.length, 4);
+    assert.deepEqual(opts[3], { id: "claude-sonnet-5", label: "Sonnet 5 (configured)" });
+  });
+  it("labels an unknown id with the raw id", () => {
+    assert.equal(pickerOptions(MODELS, "x/custom").at(-1)?.label, "x/custom (configured)");
   });
 });
