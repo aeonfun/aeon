@@ -4,7 +4,6 @@ description: Retrospective on past token and prediction market picks - what hit,
 metadata:
   title: Picks Tracker
   category: crypto
-  schedule: "0 9 * * 0"
   tags:
     - crypto
     - review

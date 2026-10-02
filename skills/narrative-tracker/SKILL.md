@@ -2,7 +2,6 @@
 name: narrative-tracker
 description: Track rising, peaking, and fading crypto/tech narratives with quantitative mindshare + velocity signals and explicit positioning calls
 metadata:
-  schedule: "0 14 * * *"
   commits: true
   permissions:
     - contents:write

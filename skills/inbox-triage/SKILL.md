@@ -9,7 +9,6 @@ metadata:
     - github
     - security
     - meta
-  schedule: "30 11 * * *"
 ---
 
 Today is ${today}. Read `memory/MEMORY.md` before starting.

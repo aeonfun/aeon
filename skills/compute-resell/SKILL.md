@@ -8,7 +8,6 @@ metadata:
   tags:
     - crypto
     - onchain
-  cron: "15 6,14,18 * * *"
   mode: write
   requires:
     - SURPLUS_SELLER_KEY?

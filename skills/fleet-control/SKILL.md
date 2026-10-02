@@ -13,7 +13,6 @@ metadata:
     - cost
   requires:
     - GH_READ_PAT?
-  cron: "0 9,15 * * *"
 ---
 <!-- autoresearch: variation B — sharper output: verdict line + delta vs prior + per-instance action column + state-change-gated notify -->
 

@@ -4,7 +4,6 @@ description: Monitor external web and social mentions of the operator's active p
 metadata:
   title: Mention Radar
   category: productivity
-  schedule: "25 7 2/2 * *"
   commits: false
   var: ""
   tags:

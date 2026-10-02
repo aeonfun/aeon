@@ -8,7 +8,6 @@ metadata:
   tags:
     - dev
     - meta
-  cron: "0 11 * * 1"
   mode: write
 ---
 > **${var}** — mode selector; space-separated tokens, order-independent, all optional:

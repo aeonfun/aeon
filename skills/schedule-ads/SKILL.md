@@ -14,7 +14,6 @@ metadata:
       .admanage-state/campaigns.json, and create the missing Meta campaigns + ad sets
       in-run. On-demand; creates entities PAUSED; returned IDs are written back into
       state so the schedule branch can launch into them.
-  schedule: "0 8 * * *"
   commits: true
   permissions:
     - contents:write

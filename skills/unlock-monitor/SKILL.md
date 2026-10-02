@@ -4,7 +4,6 @@ description: Token unlock and vesting tracker - quantify supply pressure via abs
 metadata:
   title: Unlock Monitor
   category: crypto
-  schedule: "0 10 * * 1"
   commits: true
   tags:
     - crypto

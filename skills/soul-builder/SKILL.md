@@ -3,7 +3,6 @@ name: soul-builder
 description: Build a SOUL from an X handle - read a wide sample of a public X account, then draft SOUL.md (identity, worldview, opinions), STYLE.md (voice), and examples so every skill speaks in that voice.
 metadata:
   category: core
-  schedule: "workflow_dispatch"
   commits: true
   permissions:
     - contents:write

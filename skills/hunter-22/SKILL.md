@@ -8,7 +8,6 @@ metadata:
   var: ""
   tags: [bounties, income, discovery, security]
   requires: []
-schedule: "0 10 * * *"
 ---
 
 > **${var}** — optional filter. Empty → default capability match (see below). `types:<a,b>` → restrict to bounty types (e.g. `types:code,research`). `min:<usd>` → minimum reward floor.

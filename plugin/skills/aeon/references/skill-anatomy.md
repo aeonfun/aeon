@@ -47,7 +47,7 @@ This is **least-privilege secret injection**: the run exports only the keys list
 
 ### Trap 3 — `schedule:` / `cron:` in frontmatter does nothing
 
-13 skills carry one (`schedule: "0 14 * * *"`, `cron: "0 9,15 * * *"`). Nothing reads it. `.github/workflows/scheduler.yml` parses **`aeon.yml` only** (`done < aeon.yml`). Those lines are stale documentation. Never set a schedule by editing `SKILL.md`, and don't trust one you find there - check `aeon.yml`.
+Upstream skills no longer carry one, but forks and third-party skills may (`schedule: "0 14 * * *"`, `cron: "0 9,15 * * *"`). Nothing reads it. `.github/workflows/scheduler.yml` parses **`aeon.yml` only** (`done < aeon.yml`). Such a line is inert, stale documentation. Never set a schedule by editing `SKILL.md`, and don't trust one you find there - check `aeon.yml`.
 
 ## Body structure
 

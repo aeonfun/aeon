@@ -272,7 +272,7 @@ Four things that bite when authoring — full detail in `references/skill-anatom
 - **`${today}` / `${var}` are not templated.** Nothing rewrites `SKILL.md`; the workflow puts the date and var in the surrounding prompt and the model resolves them in context. Inventing `${my_thing}` yields a literal `${my_thing}`.
 - **Never put a secret on a command line.** Use `./secretcurl` with a `{ENV_NAME}` placeholder in braces — Claude Code's permission analyzer blocks `$SECRET` expansions at run time.
 
-Schedules do **not** go in `SKILL.md` — they live in `aeon.yml`. 10 upstream skills carry a `schedule:` or `cron:` frontmatter line anyway; **nothing reads it** (`scheduler.yml` parses `aeon.yml` only). Don't copy that pattern, and don't trust one you find — check `aeon.yml`.
+Schedules do **not** go in `SKILL.md`; they live in `aeon.yml`. Upstream skills no longer carry a `schedule:` or `cron:` frontmatter line. If you find one (in a fork or a third-party skill), it is inert: **nothing reads it** (`scheduler.yml` parses `aeon.yml` only). Don't add one, and don't trust one you find - check `aeon.yml`.
 
 ---
 

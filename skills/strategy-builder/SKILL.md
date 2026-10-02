@@ -3,7 +3,6 @@ name: strategy-builder
 description: Draft STRATEGY.md from a goal - read the operator's brief (goal, repo, links) plus the repo README and memory, then write a tight north-star/priorities/audience/constraints strategy.
 metadata:
   category: core
-  schedule: "workflow_dispatch"
   commits: true
   permissions:
     - contents:write

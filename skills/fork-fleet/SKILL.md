@@ -7,7 +7,6 @@ metadata:
   tags:
     - dev
     - meta
-  cron: "0 10 * * 1"
 ---
 > **${var}** — Divergence scope selector; space-separated tokens, order-independent, all optional:
 > - **scope** (`code` | `config` | `both`, default `both`) — which divergence dimension to run.
