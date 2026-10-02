@@ -663,6 +663,18 @@ jobs:
         run: |
           [ -n "$HARNESS" ] || { echo "no harness resolved — leaving both files"; exit 0; }
           if [ "$HARNESS" = "claude" ]; then HIDE="AGENTS.md"; KEPT="CLAUDE.md"; else HIDE="CLAUDE.md"; KEPT="AGENTS.md"; fi
+          # AGENTS.md is generated, and nothing regenerated it when the dashboard or
+          # strategy-builder rewrote STRATEGY.md (only ci-agents-md checks it, on PRs).
+          # Non-claude harnesses then ran on the OLD strategy. Refresh it when stale;
+          # a write-mode run commits the fresh copy, read-only runs revert it after.
+          if [ "$KEPT" = "AGENTS.md" ] && [ -f scripts/gen-agents-md.js ] \
+             && ! node scripts/gen-agents-md.js --check >/dev/null 2>&1; then
+            if node scripts/gen-agents-md.js >/dev/null 2>&1; then
+              echo "::notice::AGENTS.md was out of date with CLAUDE.md/STRATEGY.md; regenerated so $HARNESS loads the current strategy"
+            else
+              echo "::warning::AGENTS.md is out of date and regenerating it failed; $HARNESS runs on the committed copy"
+            fi
+          fi
           if [ -f "$HIDE" ]; then
             mv "$HIDE" "$RUNNER_TEMP/$HIDE.singlesrc"
             echo "hidden=$HIDE" >> "$GITHUB_OUTPUT"
@@ -1095,6 +1107,17 @@ jobs:
           # left empty otherwise, so it doubles as the "MCP on" gate. run-harness does
           # its own ${VAR} expansion + per-harness translation from the same file.
           if [ "${#MCP_FLAGS[@]}" -gt 0 ]; then RH_ARGS+=(--mcp-config .mcp.json); fi
+          # MCP state for the run's Context line (scripts/run-context-summary.sh).
+          if [ "${#MCP_FLAGS[@]}" -gt 0 ]; then
+            MCP_STATUS="on:$(jq -r '.mcpServers | keys | join(", ")' .mcp.json | tr -d '\r\n')"
+          elif [ -n "${MCP_MISSING:-}" ]; then
+            MCP_STATUS="skipped:$MCP_MISSING"
+          elif [ "$SHADOW_MODE" = "1" ] && [ -f .mcp.json ]; then
+            MCP_STATUS="shadow"
+          else
+            MCP_STATUS="off"
+          fi
+          echo "MCP_STATUS=$MCP_STATUS" >> "$GITHUB_OUTPUT"
 
           if [ "$HARNESS" = "claude" ]; then
             # Cascade: try each provider in priority order; fall over only on a
@@ -1364,6 +1387,8 @@ jobs:
         env:
           RUN_HARNESS: ${{ steps.run.outputs.HARNESS }}
           RUN_MODEL: ${{ steps.run.outputs.SKILL_MODEL }}
+          MCP_STATUS: ${{ steps.run.outputs.MCP_STATUS }}
+          SESSION_ID: ${{ steps.run.outputs.SESSION_ID }}
         run: |
           SKILL="${{ steps.skill.outputs.name }}"
           INPUT="${{ steps.run.outputs.SKILL_INPUT_TOKENS }}"
@@ -1385,6 +1410,11 @@ jobs:
           echo "| Cache read | $CACHE_READ |" >> "$GITHUB_STEP_SUMMARY"
           echo "| Cache creation | $CACHE_CREATION |" >> "$GITHUB_STEP_SUMMARY"
           echo "| **Total** | **$TOTAL** |" >> "$GITHUB_STEP_SUMMARY"
+          # Which operator context this run had: STRATEGY.md, soul/, MCP.
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          HARNESS="$RUN_HARNESS" bash scripts/run-context-summary.sh --md >> "$GITHUB_STEP_SUMMARY" || true
+          CTX=$(HARNESS="$RUN_HARNESS" bash scripts/run-context-summary.sh --line || true)
+          [ -n "$CTX" ] && echo "::notice::$CTX"
 
       # "Under the hood" — tally the tool actions Claude actually took this run
       # (Read/Edit/Grep/Bash + network/exec breakdown), from its session transcript.

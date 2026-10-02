@@ -93,6 +93,8 @@ jobs:
         run: bash scripts/tests/test_gateway_failover.sh
       - name: run actions summary tests
         run: bash scripts/tests/test_run_actions_summary.sh
+      - name: run context summary tests
+        run: bash scripts/tests/test_run_context_summary.sh
       - name: fleet scorecard classification tests
         run: node --test scripts/tests/test_fleet_scorecard.mjs
       - name: skill-pack manifest validation tests
