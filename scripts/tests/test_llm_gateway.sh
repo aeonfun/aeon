@@ -231,6 +231,24 @@ hm_src() {
 ) && pass "gateway=auto resolves to hivemindos on the credit token alone" \
   || bad "gateway=auto resolves to hivemindos on the credit token alone"
 
+# Route notice: an annotation on the Run step, a plain log line when a post-run step
+# re-sources the gateway with AEON_GATEWAY_QUIET=1 (no duplicate run annotation).
+# shellcheck disable=SC1090
+out=$( export GATEWAY=claude CLAUDE_CODE_OAUTH_TOKEN=tok; source "$GW" )
+echo "$out" | grep -q '^::notice::Using Claude Code subscription' \
+  && pass "route notice is an annotation by default" \
+  || bad "route notice is an annotation by default (got: $out)"
+# shellcheck disable=SC1090
+out=$( export GATEWAY=claude CLAUDE_CODE_OAUTH_TOKEN=tok AEON_GATEWAY_QUIET=1; source "$GW" )
+{ echo "$out" | grep -q '^gateway: Using Claude Code subscription' && ! echo "$out" | grep -q '::notice::'; } \
+  && pass "AEON_GATEWAY_QUIET=1 logs the route without an annotation" \
+  || bad "AEON_GATEWAY_QUIET=1 logs the route without an annotation (got: $out)"
+# shellcheck disable=SC1090
+out=$( export GATEWAY=claude AEON_GATEWAY_QUIET=1; unset CLAUDE_CODE_OAUTH_TOKEN; source "$GW" 2>&1 )
+echo "$out" | grep -q '^::error::' \
+  && pass "AEON_GATEWAY_QUIET=1 never quiets errors" \
+  || bad "AEON_GATEWAY_QUIET=1 never quiets errors (got: $out)"
+
 echo
 if [ "$fail" -eq 0 ]; then echo "All llm-gateway tests passed."; else echo "Some tests FAILED."; fi
 exit "$fail"

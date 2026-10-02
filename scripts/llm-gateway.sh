@@ -34,6 +34,14 @@
 CCR_PORT="${CCR_PORT:-3456}"
 HIVEMINDOS_DEFAULT_MODEL="inclusionai/ling-3.0-flash"
 
+# Route notices. The Run step sources this file once per attempt; post-run steps
+# (scorer, feed convert) source it again for their own claude call and set
+# AEON_GATEWAY_QUIET=1, so the route prints as a plain log line there instead of a
+# second, identical run annotation. Warnings and errors are never quieted.
+gw_notice() {
+  if [ -n "${AEON_GATEWAY_QUIET:-}" ]; then echo "gateway: $*"; else echo "::notice::$*"; fi
+}
+
 require_secret() {
   if [ -z "${!1:-}" ]; then
     echo "::error::gateway.provider=${GATEWAY} requires the $1 secret but it is not set" >&2
@@ -88,7 +96,7 @@ start_ccr_sidecar() {
   elif [ "$extra_tf" = "cleancache" ]; then
     # 2.x's cleancache transformer has no 3.x counterpart and no job left: 3.x
     # drops cache_control when it translates to chat-completions.
-    echo "::notice::VENICE_CLEANCACHE is a no-op on claude-code-router 3.x (cache markers are dropped upstream)" >&2
+    gw_notice "VENICE_CLEANCACHE is a no-op on claude-code-router 3.x (cache markers are dropped upstream)" >&2
   fi
 
   # AEON_GATEWAY_DRY_RUN prints what this sidecar WOULD run and returns, so the
@@ -216,7 +224,7 @@ if [ -z "${GATEWAY:-}" ] || [ "${GATEWAY}" = "auto" ]; then
   if [ -n "${AEON_LIST_CANDIDATES:-}" ]; then printf '%s\n' "$AEON_CANDIDATES"; exit 0; fi
   # Single-shot: set up the first present provider (preserves prior behavior).
   GATEWAY="${AEON_CANDIDATES%% *}"
-  echo "::notice::gateway=auto resolved to '${GATEWAY}'"
+  gw_notice "gateway=auto resolved to '${GATEWAY}'"
 fi
 
 # --- route ------------------------------------------------------------------
@@ -225,16 +233,16 @@ case "${GATEWAY:-direct}" in
   claude)  # NATIVE — Claude Code subscription (OAuth token)
     require_secret CLAUDE_CODE_OAUTH_TOKEN
     unset ANTHROPIC_API_KEY   # prefer the subscription token over a pay-go key
-    echo "::notice::Using Claude Code subscription (CLAUDE_CODE_OAUTH_TOKEN)"
+    gw_notice "Using Claude Code subscription (CLAUDE_CODE_OAUTH_TOKEN)"
     ;;
 
   anthropic)  # NATIVE — pay-as-you-go Anthropic API key (or compatible endpoint)
     require_secret ANTHROPIC_API_KEY
     unset CLAUDE_CODE_OAUTH_TOKEN
     if [ -n "${ANTHROPIC_BASE_URL:-}" ]; then
-      echo "::notice::Using Anthropic-compatible API at ${ANTHROPIC_BASE_URL}"
+      gw_notice "Using Anthropic-compatible API at ${ANTHROPIC_BASE_URL}"
     else
-      echo "::notice::Using direct Anthropic API (ANTHROPIC_API_KEY)"
+      gw_notice "Using direct Anthropic API (ANTHROPIC_API_KEY)"
     fi
     ;;
 
@@ -243,7 +251,7 @@ case "${GATEWAY:-direct}" in
     export ANTHROPIC_BASE_URL="https://llm.bankr.bot"
     export ANTHROPIC_AUTH_TOKEN="$BANKR_LLM_KEY"
     unset ANTHROPIC_API_KEY CLAUDE_CODE_OAUTH_TOKEN
-    echo "::notice::Routing through Bankr Gateway (https://llm.bankr.bot)"
+    gw_notice "Routing through Bankr Gateway (https://llm.bankr.bot)"
     ;;
 
   openrouter)  # NATIVE - Anthropic "skin", carries Opus 5.5 + Sonnet 5.5 + Haiku
@@ -270,7 +278,7 @@ case "${GATEWAY:-direct}" in
     # OPENROUTER_SITE_URL / OPENROUTER_APP_TITLE.
     export ANTHROPIC_CUSTOM_HEADERS="HTTP-Referer: ${OPENROUTER_SITE_URL:-https://aeon.fun}
 X-Title: ${OPENROUTER_APP_TITLE:-Aeon}"
-    echo "::notice::Routing through OpenRouter (Anthropic-native) as ${MODEL}"
+    gw_notice "Routing through OpenRouter (Anthropic-native) as ${MODEL}"
     ;;
 
   usepod)  # NATIVE — token lives in the URL path; base URL IS a secret
@@ -284,7 +292,7 @@ X-Title: ${OPENROUTER_APP_TITLE:-Aeon}"
     if [ -n "${USEPOD_MODEL:-}" ]; then MODEL="$USEPOD_MODEL"; fi
     if [ -n "${USEPOD_MODEL_SONNET:-}" ]; then export ANTHROPIC_DEFAULT_SONNET_MODEL="$USEPOD_MODEL_SONNET"; fi
     if [ -n "${USEPOD_MODEL_HAIKU:-}" ]; then export ANTHROPIC_DEFAULT_HAIKU_MODEL="$USEPOD_MODEL_HAIKU"; fi
-    echo "::notice::Routing through UsePod (Anthropic-native marketplace)"
+    gw_notice "Routing through UsePod (Anthropic-native marketplace)"
     ;;
 
   grok)  # NATIVE — xAI's Anthropic-compatible API (Claude Code → api.x.ai)
@@ -306,7 +314,7 @@ X-Title: ${OPENROUTER_APP_TITLE:-Aeon}"
     export ANTHROPIC_DEFAULT_SONNET_MODEL="$grok_model"
     export ANTHROPIC_DEFAULT_HAIKU_MODEL="$grok_model"
     MODEL="$grok_model"
-    echo "::notice::Routing through xAI (Anthropic-compatible) as ${grok_model} @ ${ANTHROPIC_BASE_URL}"
+    gw_notice "Routing through xAI (Anthropic-compatible) as ${grok_model} @ ${ANTHROPIC_BASE_URL}"
     ;;
 
   glm)  # NATIVE — Z.AI's Anthropic-compatible API (Claude Code → api.z.ai)
@@ -341,7 +349,7 @@ X-Title: ${OPENROUTER_APP_TITLE:-Aeon}"
     export ANTHROPIC_DEFAULT_SONNET_MODEL="$glm_model"
     export ANTHROPIC_DEFAULT_HAIKU_MODEL="$glm_model"
     MODEL="$glm_model"
-    echo "::notice::Routing through Z.AI (Anthropic-compatible) as ${glm_model} @ ${ANTHROPIC_BASE_URL}"
+    gw_notice "Routing through Z.AI (Anthropic-compatible) as ${glm_model} @ ${ANTHROPIC_BASE_URL}"
     ;;
 
   surplus)  # SIDECAR — OpenAI-compatible (dot-form ids); carries the full catalog
@@ -357,7 +365,7 @@ X-Title: ${OPENROUTER_APP_TITLE:-Aeon}"
     start_ccr_sidecar surplus \
       "https://www.surplusintelligence.ai/api/inference/v1/chat/completions" \
       "$SURPLUS_API_KEY" "$surplus_model"
-    echo "::notice::Routing through Surplus via claude-code-router (${surplus_model})"
+    gw_notice "Routing through Surplus via claude-code-router (${surplus_model})"
     ;;
 
   venice)  # SIDECAR - OpenAI-compatible (dash-form ids); carries Opus 5.5, no haiku
@@ -384,7 +392,7 @@ X-Title: ${OPENROUTER_APP_TITLE:-Aeon}"
     start_ccr_sidecar venice \
       "${VENICE_BASE_URL:-https://api.venice.ai/api/v1/chat/completions}" \
       "$VENICE_API_KEY" "$venice_model" "${VENICE_CLEANCACHE:+cleancache}"
-    echo "::notice::Routing through Venice via claude-code-router (${venice_model} @ ${VENICE_BASE_URL:-https://api.venice.ai/api/v1/chat/completions})"
+    gw_notice "Routing through Venice via claude-code-router (${venice_model} @ ${VENICE_BASE_URL:-https://api.venice.ai/api/v1/chat/completions})"
     ;;
 
   hivemindos)  # SIDECAR — HivemindOS Models: OpenAI-compatible, billed to a credit balance
@@ -413,14 +421,14 @@ X-Title: ${OPENROUTER_APP_TITLE:-Aeon}"
     start_ccr_sidecar hivemindos \
       "${HIVEMINDOS_BASE_URL:-https://hivemindos-paid-agent-gateway.hivemindos.workers.dev/api/paid-agents/default}/chat/completions" \
       "$HIVEMINDOS_CREDIT_TOKEN" "$hivemindos_model" "hivemindos"
-    echo "::notice::Routing through HivemindOS Models via claude-code-router (${hivemindos_model})"
+    gw_notice "Routing through HivemindOS Models via claude-code-router (${hivemindos_model})"
     ;;
 
   direct|"")  # NATIVE — Anthropic API or an Anthropic-compatible endpoint
     if [ -n "${ANTHROPIC_BASE_URL:-}" ]; then
-      echo "::notice::Using Anthropic-compatible API at ${ANTHROPIC_BASE_URL}"
+      gw_notice "Using Anthropic-compatible API at ${ANTHROPIC_BASE_URL}"
     else
-      echo "::notice::Using direct Anthropic API"
+      gw_notice "Using direct Anthropic API"
     fi
     ;;
 

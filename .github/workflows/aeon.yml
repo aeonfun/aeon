@@ -1097,18 +1097,15 @@ jobs:
           if [ "${#MCP_FLAGS[@]}" -gt 0 ]; then RH_ARGS+=(--mcp-config .mcp.json); fi
 
           if [ "$HARNESS" = "claude" ]; then
-            # Cascade: try each provider in priority order; fall over only on a
-            # provider-shaped failure, never a timeout or skill-side failure (a
-            # retry re-runs the whole skill; scripts/gateway-failover.sh). Each
-            # attempt is an isolated subshell that sets up its provider env (+
-            # optional Langfuse), THEN runs `run-harness claude` (which invokes
-            # `claude -p` under that env). Gateway/Langfuse notices go to the step
-            # log (>&2); only run-harness's stdout envelope is captured. A hard
-            # gateway setup failure `exit 1`s the subshell → this attempt fails →
-            # fall over, exactly as the old inline `claude -p` cascade did.
+            # Cascade: try each provider in order; fall over only on a provider-shaped
+            # failure, never a timeout or skill failure (scripts/gateway-failover.sh).
+            # Each attempt is a subshell that sets up its provider env (+ Langfuse),
+            # then runs `run-harness claude`; only its stdout envelope is captured. A
+            # gateway setup `exit 1` fails the attempt and falls over. Only a failover
+            # is annotated; the first route is the gateway's own notice.
             USED_GATEWAY=""
             for cand in $CANDIDATES; do
-              echo "::notice::Routing attempt via '$cand'"
+              if [ "$cand" = "${CANDIDATES%% *}" ]; then echo "Routing attempt via '$cand'"; else echo "::notice::Failing over to '$cand'"; fi
               rm -f /tmp/harness-stderr.txt; RC=0
               CLAUDE_OUTPUT=$(
                 GATEWAY="$cand"
@@ -1647,7 +1644,7 @@ jobs:
           # so this is a no-op there and correct for the added harnesses.)
           if [ "$HARNESS" = "claude" ]; then
             GATEWAY="${{ steps.run.outputs.GATEWAY }}"
-            source "${GITHUB_WORKSPACE}/scripts/llm-gateway.sh"
+            AEON_GATEWAY_QUIET=1 source "${GITHUB_WORKSPACE}/scripts/llm-gateway.sh"
             AEON_OTEL_COMPONENT=scorer source "${GITHUB_WORKSPACE}/scripts/langfuse-otel.sh"
           fi
 
@@ -1906,7 +1903,7 @@ jobs:
           # GATEWAY may be empty when the Run step failed early — the script
           # treats that as `direct`, matching the old inline behavior.
           GATEWAY="${{ steps.run.outputs.GATEWAY }}"
-          source "${GITHUB_WORKSPACE}/scripts/llm-gateway.sh"
+          AEON_GATEWAY_QUIET=1 source "${GITHUB_WORKSPACE}/scripts/llm-gateway.sh"
           AEON_OTEL_COMPONENT=feed source "${GITHUB_WORKSPACE}/scripts/langfuse-otel.sh"
           for pending in "${AEON_PENDING_DIR:-${RUNNER_TEMP:-/tmp}/aeon-pending}"/.pending-*.md; do
             [ -f "$pending" ] || continue
