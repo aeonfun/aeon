@@ -26,7 +26,7 @@ concurrency:
 
 jobs:
   run:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     # Each step waits up to wait_for_runs' cap (60 min) for one aeon.yml run, and
     # dev-loop chains five of them back to back (feature, review, repair,
     # re-review, proof). 60 here killed any chain mid-wait; 360 is the hosted

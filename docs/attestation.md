@@ -29,7 +29,7 @@ or tampered with after the fact?"* — not *"is the output any good?"*
 
 ## Prerequisites
 
-- **A GitHub-hosted runner** — Aeon already uses `ubuntu-latest`. ✔
+- **A GitHub-hosted runner** — Aeon already uses `ubuntu-24.04`. ✔
 - **Attestation availability for your repo:**
   - **Public repo** → works out of the box on every plan.
   - **Private repo** → the attestation store requires a plan that includes

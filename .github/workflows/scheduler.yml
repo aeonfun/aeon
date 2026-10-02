@@ -37,7 +37,7 @@ concurrency:
 
 jobs:
   schedule:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     # 10 min: a big catch-up tick (many owed slots after a delivery gap) does one
     # gh call + a 1s spacer per dispatch and persists state once at the end, so a
     # 5-min cap could cancel it mid-way and lose every stamp (all re-fire).

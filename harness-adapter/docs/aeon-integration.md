@@ -62,7 +62,7 @@ measured reason:
 | `HARNESS_MODEL` | repo variable | **optional** override; per-harness defaults are built in (§6). Leave unset unless you want to force one model for all four |
 | everything aeon already requires | — | unchanged |
 
-The runner must be Linux (`ubuntu-latest` is fine). bubblewrap + an AppArmor
+The runner must be Linux (aeon pins `ubuntu-24.04`). bubblewrap + an AppArmor
 sysctl are installed by the added step (§7).
 
 ---
@@ -228,7 +228,7 @@ claude-code.
 
 ## 7. Runner gotchas (all handled by the added steps, listed so you know why)
 
-- **AppArmor blocks bubblewrap on Ubuntu 24.04** (including `ubuntu-latest`).
+- **AppArmor blocks bubblewrap on Ubuntu 24.04** (aeon pins `ubuntu-24.04`).
   Unprivileged user namespaces are restricted, so bwrap dies with `setting up uid
   map: Permission denied` and run-harness fails *closed* on every read-only skill
   — correct, but fatal. The install step runs

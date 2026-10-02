@@ -161,7 +161,7 @@ concurrency:
 jobs:
   run:
     if: github.event_name != 'issues' || github.event.label.name == 'ai-build'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 50
 
     steps:

@@ -42,7 +42,7 @@ concurrency:
 jobs:
   poll:
     if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.message == '') || (github.event_name == 'repository_dispatch' && github.event.action == 'cron-tick')
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 5
 
     steps:
@@ -285,7 +285,7 @@ jobs:
     # mirroring what the poller does inline. See scripts/telegram-route.sh.
     if: >-
       github.event_name == 'repository_dispatch' && contains(fromJSON('["telegram-command","telegram-callback","telegram-reply"]'), github.event.action)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
       - name: Checkout repo
@@ -352,7 +352,7 @@ jobs:
     if: >-
       (github.event_name == 'repository_dispatch' && contains(fromJSON('["telegram-message","discord-message","slack-message"]'), github.event.action))
       || (github.event_name == 'workflow_dispatch' && inputs.message != '')
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
 
     steps:
