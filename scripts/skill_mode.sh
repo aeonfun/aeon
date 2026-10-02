@@ -184,7 +184,7 @@ NOTES
 # Write (live-observed on heartbeat, claude-code 2.1.287). Say so up front.
 write_run_notes() {
   cat <<'NOTES'
-Create, append to, or change files with your file-editing tools (Write/Edit), not shell redirection (`>`, `>>`, `tee`): shell writes into files may be refused.
+Write files only with Write/Edit: Write for a new file or a full rewrite, Edit to append or change (Read the file first). Never write files from Bash: `cat > f`, `cat >> f`, `echo ... >> f`, `printf ... > f`, `tee f` and heredocs redirected into a file are always refused in this run and waste a turn. This holds even where a skill's own example shows a shell redirect: make the same write with Write/Edit instead. Pipes between commands are fine.
 NOTES
 }
 

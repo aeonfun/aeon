@@ -55,7 +55,7 @@ case "$NOTES" in
   *) bad "read-only run-notes give the stdin heredoc recipe (got: $NOTES)" ;;
 esac
 case "$(bash "$M" run-notes write)" in
-  *"Write/Edit"*"not shell redirection"*) pass "write run-notes steer file writes to Write/Edit" ;;
+  *"only with Write/Edit"*"Never write files from Bash"*"cat >> f"*"skill's own example"*) pass "write run-notes steer file writes to Write/Edit" ;;
   *) bad "write run-notes steer file writes to Write/Edit" ;;
 esac
 bash "$M" run-notes write | grep -q './notify' && bad "write run-notes carry the read-only notify recipe" \
