@@ -54,8 +54,8 @@ discovery notes) and their companion skills:
 
 The glim and Executor loops were verified end-to-end on a live instance
 (Connect → per-run refresh → PAT-persisted rotation → refresh off the persisted
-token, no re-connect): every catalog provider rotates, so treat `GH_SECRETS_PAT`
-as **required** in practice, not optional.
+token, no re-connect): every catalog provider rotates, so treat a secrets-write
+token (`GH_GLOBAL`, or the optional `GH_SECRETS_PAT`) as **required** in practice.
 
 ## Code map
 
@@ -80,9 +80,12 @@ as **required** in practice, not optional.
   the old one is invalidated the moment it's used, so unless the replacement is
   saved the *next* headless run's refresh fails (`no access_token` / `invalid_grant`)
   and auth breaks one run later. Persisting a secret needs a **secrets-write
-  credential** — the default `GITHUB_TOKEN` cannot write secrets. To make refresh
-  durable for rotating providers, add a fine-grained PAT with **Secrets: read/write**
-  on this repo as the secret **`GH_SECRETS_PAT`** (or a repo-wide `GH_GLOBAL`);
+  credential** - the default `GITHUB_TOKEN` cannot write secrets. To make refresh
+  durable for rotating providers, set **`GH_GLOBAL`**, the instance's one classic
+  PAT with `repo` + `workflow` ([Cross-repo access](CONFIGURATION.md#cross-repo-access);
+  `./aeon init` sets it from your gh login). **`GH_SECRETS_PAT`** is optional and
+  tried first: a fine-grained PAT with **Secrets: read/write** on this repo, for
+  keeping secrets-write on its own token;
   `scripts/mcp-oauth-refresh.sh` then saves each rotated refresh token back to its
   `MCP_<SLUG>_OAUTH` secret and warns loudly when it can't. **After adding the PAT,
   re-connect the affected server once** to seed a valid refresh token — a refresh

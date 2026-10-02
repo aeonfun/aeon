@@ -23,6 +23,12 @@ require the full dashboard app to be installed.
 The shortest way to run it is the **repo-root `./aeon`**: bare `./aeon` launches
 the web dashboard, and `./aeon <command> …` runs this CLI.
 
+Setting up a new instance? `./aeon init` does it end to end from a clone of
+`aeonfun/aeon`: creates your repo from the template, points this folder and `gh`
+at it, enables Actions, stores `GH_GLOBAL`, connects a model (from the credential
+manifest in `harness-adapter/harnesses.json`) and links Telegram. Every step checks
+first, so it is safe to re-run; `./aeon init --dry-run` shows what it would do.
+
 ```sh
 ./aeon skills ls               # ← same as ./apps/cli/aeon skills ls
 ./aeon skills disable heartbeat --dry-run
@@ -69,7 +75,9 @@ runs pick the change up), call `gh` (secrets/auth), or dispatch a workflow.
 | `aeon skills rm <name> --yes` | delete the skill dir + config entry |
 | `aeon skills run <name> [--var\|--model]` | dispatch a run (`gh workflow run aeon.yml`) |
 | `aeon secrets set <NAME> --stdin` · `aeon secrets rm <NAME>` | manage secrets via `gh` |
+| `aeon init [--name\|--private\|--dir\|--harness\|--yes]` | set up an instance end to end (interactive, idempotent) |
 | `aeon auth --harness claude-code \| --key <k> [--provider\|--base-url]` | set Claude auth (`--oauth` still works) |
+| `aeon auth --harness <h> [--key <k>]` | another harness's login or key (`grok` included); `--github` copies the gh token to `GH_GLOBAL` (needs `repo` + `workflow`) |
 | `aeon sync [--status]` | commit + push local changes |
 | `aeon config set model\|harness\|gateway <v>` | set top-level config |
 | `aeon strategy set --stdin\|--file` · `aeon strategy build "<goal>"` | write / regenerate STRATEGY.md |

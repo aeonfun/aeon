@@ -110,6 +110,8 @@ sidecar, like Venice/Surplus).
 4. **`scripts/llm-gateway.sh`** — add an `aeon_present()` case, add the slug to the auto-resolver's default `GATEWAY_ORDER`, and add a `case` branch (a **native** provider exports `ANTHROPIC_BASE_URL` + the auth token; a **sidecar** provider calls `start_ccr_sidecar <slug> <openai-url> <key> <model>`).
 5. **`.github/workflows/aeon.yml`** — pass the new secret (and any `*_MODEL` override **variables**) into the run's `env:` (also `messages.yml`), so the resolver can see it.
 
+6. **`harness-adapter/adapters/claude.sh`** - add an entry to the `gw-meta` block in the same position as in `GATEWAY_ORDER` (label, secrets, prefixes, transport, base URL, where to get a key), then run `harness-adapter/bin/generate-harnesses-json` and commit the regenerated `harness-adapter/gateways.json`. `aeon init` and `bin/onboard` read it, and `scripts/tests/test_credential_manifest.sh` (ci-tests) fails if it disagrees with steps 1, 4 or 5.
+
 Then add a row to the gateway table in [`docs/CONFIGURATION.md`](../docs/CONFIGURATION.md#llm-gateways). To
 verify the full loop: paste a key in the dashboard (prefix should auto-detect, or
 pick it from the dropdown) and run any skill — the workflow log prints

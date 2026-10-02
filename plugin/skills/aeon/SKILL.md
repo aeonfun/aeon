@@ -50,47 +50,34 @@ Anything it prints is on disk but unconfigured. **Orientation — what's install
 
 Goal: one real notification in their phone, fast. Do not configure a schedule first.
 
-1. **Get a repo. Ask public or private before you run anything** — it changes the command, and switching later means moving the repo.
-
-   **Public** (recommend this): Actions minutes are free, and upstream skill updates arrive with one command.
+1. **Run `./aeon init`.** Ask public or private first (public: Actions minutes are free; private: `--private`, minutes bill against the account quota, 2,000/mo on Free). Then, from a clone of the template:
 
    ```bash
-   gh repo fork aeonfun/aeon --clone && cd aeon
-   gh repo set-default <owner>/aeon        # REQUIRED — see below
+   git clone https://github.com/aeonfun/aeon && cd aeon
+   ./aeon init                 # add --private, --name <repo>, --harness <h> as needed
    ```
 
-   **Private**: a fork of a public repo is always public, so a private instance is a mirror, not a fork.
+   It is idempotent and prints a check or a fix per step: signs in to GitHub with the `workflow` scope, creates `<owner>/<name>` from the **template** (not a fork: forks start with Actions disabled), points this folder at it (`aeonfun/aeon` stays as the `upstream` remote), runs `gh repo set-default`, enables Actions and lets them open PRs (the default token permission is left as is), offers to store the gh token as `GH_GLOBAL` (only if it has `repo` + `workflow`), connects a model from the credential manifest, and links Telegram with a `/start` deep link. Re-run it any time; `bin/onboard` is the read-only check. `--dry-run` shows every step without changing anything.
+
+   **If they set things up by hand, pin the default repo before any other command.** With an `upstream` remote and no default pinned, **`gh` prefers `upstream` over `origin`**, so secrets and runs silently land on `aeonfun/aeon`. Fix and verify:
 
    ```bash
-   gh repo create <name> --private
-   git clone --bare https://github.com/aeonfun/aeon.git
-   git -C aeon.git push --mirror https://github.com/<owner>/<name>.git
-   rm -rf aeon.git && git clone https://github.com/<owner>/<name>.git && cd <name>
-   git remote add upstream https://github.com/aeonfun/aeon.git
-   gh repo set-default <owner>/<name>      # REQUIRED — see below
-   ```
-
-   Say both costs out loud before they pick private: Actions minutes bill against the account quota (2,000/mo on Free — scheduled skills burn it), and updates come from `git fetch upstream && git merge upstream/main` instead of `gh repo sync`.
-
-   **Pin the default repo before any other command — both paths.** Both end up with an `upstream` remote (`gh repo fork --clone` adds one for you), and with no default pinned **`gh` prefers `upstream` over `origin`**. Everything in Aeon routes through `gh -R $(gh repo view …)`, so an unpinned checkout silently writes secrets to and dispatches runs against `aeonfun/aeon` instead of their instance — with no error, because the commands genuinely succeed on the wrong repo. Verify:
-
-   ```bash
+   gh repo set-default <owner>/<repo>
    gh repo view --json nameWithOwner -q .nameWithOwner   # must print THEIR repo
    ```
 
-   Everything after this step is identical either way.
-2. **Auth a model.** At least one is required. Fastest is `./aeon auth --harness claude-code` (Claude Pro/Max, opens a browser), or `./aeon auth --key <key>`, which detects the provider **from the key prefix** — `sk-ant-oat` (OAuth), `sk-or-` (OpenRouter), `bk_` (Bankr), `inf_` (Surplus), `xai-` (Grok); anything else lands in `ANTHROPIC_API_KEY`.
+2. **Auth a model** (if `init` skipped it). At least one is required. The choices per harness, in the order the workflow uses them, are in `harness-adapter/harnesses.json` (`credentials`) and the table in `docs/harnesses.md`. Fastest is `./aeon auth --harness claude-code` (Claude Pro/Max, opens a browser), or `./aeon auth --key <key>`, which detects the provider **from the key prefix**: `sk-ant-oat` (OAuth), `sk-or-` (OpenRouter), `bk_` (Bankr), `inf_` (Surplus), `xai-` (Grok); anything else lands in `ANTHROPIC_API_KEY`.
 
-   **UsePod and Venice keys have no prefix** and are undetectable, so a bare `--key` files them as a plain Anthropic key and the run fails later with a confusing auth error. They must be named:
+   **UsePod, Venice, GLM and HivemindOS keys have no prefix** and are undetectable, so a bare `--key` files them as a plain Anthropic key and the run fails later with a confusing auth error. They must be named:
 
    ```bash
-   ./aeon auth --key <token> --provider usepod    # same for venice
+   ./aeon auth --key <token> --provider usepod    # same for venice, glm, hivemindos
    ```
 
-   `--dry-run` prints the resolved `method=… → secret …` without calling `gh` or `claude` — worth running whenever the provider is in doubt.
+   `--dry-run` prints the resolved `method=... -> secret ...` without calling `gh` or `claude`; run it whenever the provider is in doubt.
 
    **Don't assume they have a Claude subscription:** ten providers work, including OpenRouter, Grok, GLM, and crypto-settled gateways. See "Providers and harnesses".
-3. **Wire one channel.** Telegram is the fastest: create a bot with @BotFather, then `./aeon secrets set TELEGRAM_BOT_TOKEN --stdin` and `TELEGRAM_CHAT_ID`. Skip Discord/Slack/email for now — one channel is enough to prove it works.
+3. **Wire one channel** (if `init` skipped it). Telegram is the fastest: `./aeon init` asks for the @BotFather token and links the chat for them; by hand it is `./aeon secrets set TELEGRAM_BOT_TOKEN --stdin` and `TELEGRAM_CHAT_ID`. Skip Discord/Slack/email for now; one channel is enough to prove it works.
 4. **Run one skill now.** Pick it with Mode 6 — ask what they want handled, propose one — then `./aeon skills run <name>`. Wait for it, then `./aeon runs logs <id>`. They should get a Telegram message.
 5. **Only then, schedule it.** `./aeon skills enable <name>` and set a time (see Mode 2).
 

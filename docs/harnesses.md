@@ -31,7 +31,7 @@ CI) rather than the shared `OPENROUTER_API_KEY`.
 
 Each one runs on its own provider login (see **Native auth** below); a single
 shared **`OPENROUTER_API_KEY`** is the zero-setup alternative for codex, pi,
-vibe, and kimi at once. Their model picker offers OpenRouter ids rather than the
+vibe, kimi and hermes at once (and, as a gateway, for claude). Their model picker offers OpenRouter ids rather than the
 `claude-*`/`grok-*` ids, and the model you pick is what actually runs. Each of
 these harnesses carries its own curated list (`CODEX_MODELS` /
 `VIBE_MODELS` / `PI_MODELS` / `KIMI_MODELS`): **codex**
@@ -61,8 +61,8 @@ login locally, store the session as a repo secret, restore it on the runner):
 | `kimi`  | **Moonshot** device login | `aeon auth --harness kimi` (or **Connect Kimi**) → `KIMI_AUTH`. Or `--key` → `MOONSHOT_API_KEY` |
 | `pi`    | provider API key | `aeon auth --harness pi --key <sk-ant-…\|sk-…>` → the matching `ANTHROPIC_API_KEY` / `OPENAI_API_KEY` (auto-detected) |
 | `vibe`  | Mistral key | `aeon auth --harness vibe --key <key>` → `MISTRAL_API_KEY` (vibe's default provider) |
-| `fx`    | Vercel AI Gateway key (or `VERCEL_OIDC_TOKEN`) | set `AI_GATEWAY_API_KEY` as a repo secret. **No `aeon auth` flow and no OpenRouter fallback** — see below. |
-| `cursor` | Cursor API key | set `CURSOR_API_KEY` as a repo secret; headless entry point is `agent -p --trust` because every CI run starts with a fresh home. `--force` remains write-mode only. |
+| `fx`    | Vercel AI Gateway key (or `VERCEL_OIDC_TOKEN`) | `aeon auth --harness fx --key <key>` -> `AI_GATEWAY_API_KEY`. **No login flow and no OpenRouter fallback** - see below. |
+| `cursor` | Cursor API key | `aeon auth --harness cursor --key <key>` -> `CURSOR_API_KEY`; headless entry point is `agent -p --trust` because every CI run starts with a fresh home. `--force` remains write-mode only. |
 | `hermes` | Nous Portal OAuth | `aeon auth --harness hermes` → `HERMES_AUTH`; the adapter restores `~/.hermes/auth.json`. |
 
 Which one runs is decided at dispatch by **which secret is set**, native first,
@@ -79,6 +79,30 @@ retries once on the account default and warns
 `codex refused model <id>; retried on the account default`. The run records the
 model that actually ran, read from codex's session rollout. The workflow's *Install harness CLI* step restores/configures the
 selected provider; the CLI + dashboard flows share `lib/harness-auth-server.ts`.
+
+### Credentials at a glance
+
+Generated from the credential manifest ([`harness-adapter/harnesses.json`](../harness-adapter/harnesses.json),
+`credentials` + `default_model`), which CI holds to `scripts/resolve-harness.sh`. Each harness
+uses the **first** secret in its list that is set; set any one. `./aeon init` walks you
+through the same list, and `bin/onboard` checks it.
+
+| harness | precedence (first set wins) | default model |
+|---------|-----------------------------|---------------|
+| `claude` | 1. `CLAUDE_CODE_OAUTH_TOKEN` - Claude subscription (Pro/Max) (login token; [get](https://claude.ai), `./aeon auth --harness claude-code`)<br>2. `ANTHROPIC_API_KEY` - Anthropic API key (pay as you go) (API key; [get](https://console.anthropic.com/settings/keys), `./aeon auth --key <sk-ant-api...>`)<br>then any [gateway key](CONFIGURATION.md#llm-gateways) (openrouter, bankr, usepod, venice, surplus, grok, glm, hivemindos) | `claude-sonnet-5-5` |
+| `codex` | 1. `CODEX_AUTH` - ChatGPT login (Plus/Pro) (login capture; [get](https://chatgpt.com), `./aeon auth --harness codex`)<br>2. `OPENAI_API_KEY` - OpenAI API key (API key; [get](https://platform.openai.com/api-keys), `./aeon auth --harness codex --key <sk-...>`)<br>3. `OPENROUTER_API_KEY` - OpenRouter key (one key covers most harnesses) (API key; [get](https://openrouter.ai/settings/keys), `./aeon secrets set OPENROUTER_API_KEY --stdin`) | `openai/gpt-6-luna` |
+| `cursor` | 1. `CURSOR_API_KEY` - Cursor API key (API key; [get](https://cursor.com/dashboard), `./aeon auth --harness cursor --key <key>`) | `auto` |
+| `fx` | 1. `AI_GATEWAY_API_KEY` - Vercel AI Gateway key (API key; [get](https://vercel.com/docs/ai-gateway), `./aeon auth --harness fx --key <key>`)<br>2. `VERCEL_OIDC_TOKEN` - Vercel OIDC token (OIDC token; [get](https://vercel.com/docs/oidc), `vercel env pull`) | the harness's own default |
+| `grok` | 1. `GROK_CREDENTIALS` - X account login (grok login) (login capture; [get](https://x.ai/grok), `./aeon auth --harness grok`)<br>2. `XAI_API_KEY` - xAI API key (API key; [get](https://console.x.ai), `./aeon auth --harness grok --key <xai-...>`) | `grok-4.7` |
+| `hermes` | 1. `HERMES_AUTH` - Nous Portal login (login capture; [get](https://portal.nousresearch.com), `./aeon auth --harness hermes`)<br>2. `OPENROUTER_API_KEY` - OpenRouter key (one key covers most harnesses) (API key; [get](https://openrouter.ai/settings/keys), `./aeon secrets set OPENROUTER_API_KEY --stdin`) | the harness's own default |
+| `kimi` | 1. `KIMI_AUTH` - Kimi (Moonshot) login (login capture; [get](https://www.kimi.com), `./aeon auth --harness kimi`)<br>2. `MOONSHOT_API_KEY` - Moonshot API key (API key; [get](https://platform.moonshot.ai/console/api-keys), `./aeon auth --harness kimi --key <sk-...>`)<br>3. `OPENROUTER_API_KEY` - OpenRouter key (one key covers most harnesses) (API key; [get](https://openrouter.ai/settings/keys), `./aeon secrets set OPENROUTER_API_KEY --stdin`) | `moonshotai/kimi-k2.6` |
+| `pi` | 1. `ANTHROPIC_API_KEY` - Anthropic API key (API key; [get](https://console.anthropic.com/settings/keys), `./aeon auth --harness pi --key <sk-ant-api...>`)<br>2. `ANTHROPIC_OAUTH_TOKEN` - Claude subscription token (login token; [get](https://claude.ai), `./aeon auth --harness pi --key <sk-ant-oat...>`)<br>3. `OPENAI_API_KEY` - OpenAI API key (API key; [get](https://platform.openai.com/api-keys), `./aeon auth --harness pi --key <sk-...>`)<br>4. `OPENROUTER_API_KEY` - OpenRouter key (one key covers most harnesses) (API key; [get](https://openrouter.ai/settings/keys), `./aeon secrets set OPENROUTER_API_KEY --stdin`) | `deepseek/deepseek-v4-flash` |
+| `vibe` | 1. `MISTRAL_API_KEY` - Mistral API key (API key; [get](https://console.mistral.ai/api-keys), `./aeon auth --harness vibe --key <key>`)<br>2. `OPENROUTER_API_KEY` - OpenRouter key (one key covers most harnesses) (API key; [get](https://openrouter.ai/settings/keys), `./aeon secrets set OPENROUTER_API_KEY --stdin`) | `mistralai/mistral-medium-3-5` |
+
+Notes: `GROK_CREDENTIALS` needs `GH_GLOBAL` (or the optional `GH_SECRETS_PAT`) to save its
+rotating refresh token after each run (see Token accounting below). `cursor` and `fx` have no
+OpenRouter fallback; with no key `cursor` reports `AUTH_MODE=none` and stops at install.
+
 
 **`fx` breaks the "OpenRouter last" rule above** — it's the one harness with no
 OpenRouter fallback at all (confirmed: fx has no OpenRouter integration
@@ -172,8 +196,10 @@ has been revoked"), so a *static* capture self-destructs ~6h after Connect. To f
 that, `scripts/run-grok.sh` (§2b) refreshes the access token from the refresh token
 before each run and **persists the rotated `auth.json` back to the `GROK_CREDENTIALS`
 secret**. Persisting a secret needs a secrets-write credential - the default
-`GITHUB_TOKEN` cannot - so set a fine-grained PAT with **Secrets: read/write** as
-`GH_SECRETS_PAT` (or `GH_GLOBAL`). Without the PAT, grok
+`GITHUB_TOKEN` cannot - so set `GH_GLOBAL` (the instance's classic PAT with `repo` +
+`workflow`, see [Cross-repo access](CONFIGURATION.md#cross-repo-access); `./aeon init`
+sets it from your gh login). `GH_SECRETS_PAT` is optional and tried first, for
+keeping secrets-write on its own token. Without either, grok
 warns loudly and auth breaks one run after the first post-expiry refresh. **After
 adding the PAT, re-connect the X account once** to seed a valid refresh token (a token
 already consumed by a prior run can't be revived by the PAT alone). Concurrent grok
