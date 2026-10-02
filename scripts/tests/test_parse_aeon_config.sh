@@ -56,12 +56,18 @@ hasnt "commented reactive not registered" "$OUT" "^reactive\|autoresearch\|"
 
 # --- the shipped root aeon.yml ---
 ROOT=$(records "$ROOT_CFG")
-has   "root: heartbeat enabled"         "$ROOT" "skill|heartbeat|true|0 8 * * *|"
-has   "root: dev-loop chain is manual"  "$ROOT" "chain|dev-loop|workflow_dispatch|feature,pr-review"
-hasnt "root: no morning-digest chain (commented example)" "$ROOT" "^chain\|morning-digest\|"
+# Shipped DEFAULT values only hold in canon: an instance's operator edits its own
+# aeon.yml (heartbeat var/schedule, chains, reactive triggers), so on an instance
+# these would go red on every push with nothing broken. The structural checks
+# below (no stray skill records, every entry parses) hold everywhere.
+if [ "${GITHUB_REPOSITORY:-aeonfun/aeon}" = "aeonfun/aeon" ]; then
+  has   "root: heartbeat enabled"         "$ROOT" "skill|heartbeat|true|0 8 * * *|"
+  has   "root: dev-loop chain is manual"  "$ROOT" "chain|dev-loop|workflow_dispatch|feature,pr-review"
+  hasnt "root: no morning-digest chain (commented example)" "$ROOT" "^chain\|morning-digest\|"
+  hasnt "root: no reactive triggers"      "$ROOT" "^reactive\|"
+fi
 hasnt "root: dev-loop is not a skill"   "$ROOT" "^skill\|dev-loop\|"
 hasnt "root: jsonrender is not a skill" "$ROOT" "^skill\|jsonrender\|"
-hasnt "root: no reactive triggers"      "$ROOT" "^reactive\|"
 # Every shipped skill entry parses (the skills: block is one line per skill).
 WANT=$(awk '/^skills:/{f=1;next} f&&/^[a-zA-Z]/{f=0} f&&/^  [a-z0-9-]+:/{n++} END{print n}' "$ROOT_CFG")
 GOT=$(grep -c '^skill|' <<< "$ROOT")
