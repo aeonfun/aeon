@@ -147,16 +147,22 @@ esac
 CONFIG_MODEL=$(grep -E '^model:' aeon.yml | sed 's/^model: *//' | tr -d ' ' || true)
 SKILL_MODEL=$(printf '%s\n' "$SKILL_ENTRY" | sed -n 's/.*model: *"\([^"]*\)".*/\1/p' | head -1)
 
-if [ -n "${INPUT_MODEL:-}" ] && [ "$INPUT_MODEL" != "(config default)" ]; then
-  REQ_MODEL="$INPUT_MODEL"
-elif [ -n "$SKILL_MODEL" ]; then
-  REQ_MODEL="$SKILL_MODEL"
-else
-  REQ_MODEL="${CONFIG_MODEL:-}"
-fi
+# First usable pick wins: dispatch input, then the skill's own model, then the
+# config model. A claude-*/grok-* id is aeon-native (a per-skill opus pin, or the
+# untouched config default) and means nothing to these harnesses, so it is
+# SKIPPED and the next level applies: a heartbeat pinned to claude-opus-5-5 on a
+# codex instance runs the dashboard's codex pick, not the account default.
 # `default` is the hermes dashboard pick ("use Hermes' configured model"); for
-# every harness it means "no override", so it falls through to DEFAULT_HM too.
-case "$REQ_MODEL" in claude-*|grok-*|default|"") REQ_MODEL="" ;; esac   # aeon-native / unset → not an OpenRouter id
+# every harness it means "no override", so it stops the chain and falls through
+# to DEFAULT_HM.
+REQ_MODEL=""
+for cand in "${INPUT_MODEL:-}" "$SKILL_MODEL" "${CONFIG_MODEL:-}"; do
+  case "$cand" in
+    ""|"(config default)"|claude-*|grok-*) continue ;;
+    default) break ;;
+    *) REQ_MODEL="$cand"; break ;;
+  esac
+done
 
 # NOTE: changing any per-harness DEFAULT_HM below also requires updating the
 # expected values in scripts/tests/test_resolve_harness.sh (a stale codex pin

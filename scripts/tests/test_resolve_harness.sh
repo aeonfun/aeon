@@ -152,6 +152,19 @@ mkfixture codex openai/gpt-6-sol
 mkfixture vibe openai/gpt-6-sol
 [ -z "$(get MODEL_ARG "" MISTRAL_API_KEY=xx)" ] \
   && pass "native vibe: still no --model" || bad "native vibe must not forward"
+# A per-skill claude pin is skipped on a non-claude harness: the config's
+# codex pick applies (live: heartbeat pinned to claude-opus-5-5 on aeon-test).
+{ echo "model: openai/gpt-6-luna"; echo "harness: codex"; echo "skills:"
+  echo '  heartbeat: { enabled: true, model: "claude-opus-5-5" }'
+  echo '  pinned: { enabled: true, model: "openai/gpt-6.1-sol" }'; } > aeon.yml
+[ "$(get MODEL_ARG heartbeat CODEX_AUTH=xx)" = "gpt-6-luna" ] \
+  && pass "claude skill pin skipped: config codex pick applies" || bad "claude pin skip (got '$(get MODEL_ARG heartbeat CODEX_AUTH=xx)')"
+[ "$(get MODEL_ARG heartbeat)" = "openai/gpt-6-luna" ] \
+  && pass "claude skill pin skipped on openrouter too" || bad "claude pin skip openrouter"
+[ "$(get MODEL_ARG pinned CODEX_AUTH=xx)" = "gpt-6.1-sol" ] \
+  && pass "an openai skill pin still beats config" || bad "openai skill pin"
+[ "$(get MODEL_ARG heartbeat CODEX_AUTH=xx INPUT_MODEL=claude-opus-5-5)" = "gpt-6-luna" ] \
+  && pass "claude dispatch model skipped too" || bad "claude dispatch skip"
 
 # --- 5. model precedence ----------------------------------------------------
 # An aeon-native id is NOT an OpenRouter id: a repo that never touched the model
