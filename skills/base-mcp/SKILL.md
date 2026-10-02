@@ -8,6 +8,7 @@ metadata:
   tags:
     - crypto
     - onchain
+  var: ""
   mcp:
     - base
   version: 0.1.0
@@ -15,8 +16,61 @@ metadata:
 
 # Base MCP
 
+> **${var}** - empty = wallet snapshot (address, portfolio, last 7 days of activity). `history[:N]` = last N transactions (default 10). Anything else = a read-only question about the account, answered from the MCP reads. Never sends, swaps, signs, pays, or batches on an Aeon run.
+
+## Aeon runs (scheduled or dispatched)
+
+The rest of this file is Base's upstream skill, written for a live chat. An Aeon run has no user to talk to, so these rules override it:
+
+- **Skip onboarding.** No capability intro, no disclaimer, no "give me an action" reply. Go straight to the reads below. An empty `${var}` is the task, not a missing one.
+- **Fetch the wallet address and balances up front.** The upstream "only when the user asks" rule does not apply: the snapshot needs them.
+- **Read-only.** Call only read tools (address, portfolio/balances, transaction history, `web_request` GETs for plugin data). Do not call any tool that sends, swaps, signs, pays (x402), or batches, even if `${var}` asks for it - nobody is present to approve it. Refuse that request in the notify and say to run it from a chat surface instead.
+- **Every figure traces to a tool response.** Never estimate balances or values.
+
+### 1. Read
+
+Call the Base MCP tools (`mcp__base__*`; discover them from the server, don't assume names) for:
+
+- wallet address
+- portfolio: each token (symbol, amount, USD value), total USD value
+- transaction history: last 7 days (empty var) or last N (`history[:N]`), with date, type, token, amount, counterparty
+
+For a free-form `${var}` question, make only the reads that answer it.
+
+If no `mcp__base__*` tool is callable, the server is not connected (or `MCP_BASE_TOKEN` is missing and the workflow skipped MCP with a `::warning::`). Report `BASE_MCP_NOT_CONNECTED`, notify once pointing the operator at the dashboard MCP tab, and stop. If tools return 401/invalid-token, report `BASE_MCP_AUTH_STALE` and ask the operator to reconnect. Don't retry the same call more than twice.
+
+### 2. Compare
+
+Read the previous run's output at `output/.chains/base-mcp.md` if it exists and pull its `Snapshot:` line. Something changed when any of these holds:
+
+- first run (no previous snapshot)
+- a transaction newer than the previous snapshot
+- a token added or removed from the holdings
+- total USD value moved 5% or more
+
+### 3. Notify
+
+One `./notify -f - <<'EOF' ... EOF` call per run, only when something changed (step 2) or `${var}` was set:
+
+- **Snapshot:** address (shortened), total value and change vs last snapshot, a holdings table, recent transactions, one line on what stands out (a new token, a large outflow, a big move).
+- **Question / history:** the answer or the transaction list.
+- **Refused write:** what was asked and why it was not run.
+
+No change on an empty-var run = no notify; the final output still carries the full snapshot.
+
+### 4. Result record
+
+This skill is `read-only`: the workflow writes the `### base-mcp` log entry and `output/.chains/base-mcp.md` from your final output, so don't append to `memory/logs/` yourself. End the final output with:
+
+```
+### base-mcp
+- Branch: snapshot | history | question | refused
+- Result: BASE_MCP_OK | BASE_MCP_NO_CHANGE | BASE_MCP_REFUSED | BASE_MCP_NOT_CONNECTED | BASE_MCP_AUTH_STALE | BASE_MCP_ERROR
+- Snapshot: address=0x… value=$… tokens=N last_tx=<ISO time or none>
+```
+
 > [!IMPORTANT]
-> ## Run onboarding at the start of every conversation that touches Base MCP
+> ## Run onboarding at the start of every conversation that touches Base MCP (chat surfaces only - Aeon runs skip it, see above)
 >
 > Including conversations that jump straight to a plugin topic. Onboarding is short — see below.
 
