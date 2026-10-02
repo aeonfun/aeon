@@ -13,6 +13,7 @@
 # Usage (backward compatible):
 #   ./notify "message"                         — inline arg (short, multi-line OK)
 #   ./notify -f path/to/file.md                — read body from file (any length)
+#   ./notify -f - <<'EOF' ... EOF              - read body from stdin (any length)
 # New structured form (all optional, compose freely):
 #   ./notify --title "Token Report" --severity warn -f body.md --link https://...
 #   severity ∈ {info(default), success, warn, critical}; gated by NOTIFY_MIN_SEVERITY.
@@ -36,6 +37,15 @@ have_body=false
 while [ $# -gt 0 ]; do
   case "$1" in
     -f|--file|--body)
+      # `-f -` (or /dev/stdin) reads the body from stdin. This is the route for a
+      # read-only skill on the claude harness: that tier has no Write tool and
+      # Claude Code refuses shell redirection into a file, so a skill told to
+      # "write the body to a scratch file" had no file to pass and the notify was
+      # silently dropped. A quoted heredoc into ./notify itself is a single
+      # allowlisted Bash(./notify:*) call, so it needs no new write capability.
+      if [ "${2:-}" = "-" ] || [ "${2:-}" = "/dev/stdin" ]; then
+        MSG=$(cat); have_body=true; shift 2; continue
+      fi
       if [ -z "${2:-}" ] || [ ! -f "$2" ]; then
         echo "notify: $1 requires an existing file path" >&2
         exit 2
@@ -54,7 +64,7 @@ while [ $# -gt 0 ]; do
       # probes `./notify --help` to inspect flags had the string fall through the catch-all
       # below and get broadcast to every channel as the message body (self-reported
       # 2026-08-10; recurred). Never page the operator with a usage probe.
-      echo "notify: usage: ./notify [--title T] [--severity info|success|warn|critical] [--link URL] [--mute-key K] [-f FILE | \"message\"]" >&2
+      echo "notify: usage: ./notify [--title T] [--severity info|success|warn|critical] [--link URL] [--mute-key K] [-f FILE | -f - (stdin) | \"message\"]" >&2
       exit 0 ;;
     --*)
       # An unrecognised long flag is almost certainly a mistyped option or a usage probe,

@@ -23,17 +23,19 @@
 #   HARNESS_MODEL                 vars.HARNESS_MODEL, a repo-wide model override
 #   CODEX_AUTH / KIMI_AUTH / HERMES_AUTH / GROK_CREDENTIALS
 #   OPENAI_API_KEY / MOONSHOT_API_KEY / MISTRAL_API_KEY / XAI_API_KEY
-#   ANTHROPIC_API_KEY / ANTHROPIC_OAUTH_TOKEN
+#   ANTHROPIC_API_KEY / ANTHROPIC_OAUTH_TOKEN / CLAUDE_CODE_OAUTH_TOKEN
 #                                 presence ONLY — never read for their value here,
 #                                 never echoed. They pick AUTH_MODE.
 #
 # Outputs (stdout, one KEY=VALUE per line — append to $GITHUB_OUTPUT/$GITHUB_ENV,
 # or `eval` after review):
 #   HARNESS        claude | grok | codex | pi | vibe | kimi | fx | cursor | hermes
-#   AUTH_MODE      native-oauth | native-key | openrouter
+#   AUTH_MODE      native-oauth | native-key | openrouter | gateway (claude only:
+#                  a key from aeon.yml's gateway: block, see below)
 #   HARNESS_MODEL  the model label for logs/records ("(native:…)" on native auth)
 #   MODEL_ARG      what to pass as `run-harness --model`, or empty for "the
-#                  harness's own staged config decides"
+#                  harness's own staged config decides" (always empty on claude:
+#                  aeon.yml passes claude its own model id)
 #
 # Reads ./aeon.yml from the current directory. Prints diagnostics to stderr.
 set -euo pipefail
@@ -102,6 +104,27 @@ case "$HARNESS" in
   # MissingCredentials error, not a silent/confusing one) rather than actually
   # running on a shared key like the other six do.
   fx)    if [ -n "${AI_GATEWAY_API_KEY:-}" ] || [ -n "${VERCEL_OIDC_TOKEN:-}" ]; then AUTH_MODE="native-key"; fi ;;
+  # claude never takes the OpenRouter-CLI path above: its run starts on whatever
+  # scripts/llm-gateway.sh picks (aeon.yml's Run step, messages.yml's reply). Mirror
+  # that pick from the same inputs so the log line names the auth that really runs.
+  # A pinned gateway.provider wins; `auto` takes the first present secret in the
+  # gateway's default order: the Claude subscription, then the Anthropic API key,
+  # then a gateway key. Label only; this changes nothing about the run.
+  claude)
+    GW_PROVIDER=$(grep -A1 '^gateway:' aeon.yml | grep 'provider:' | sed 's/.*provider:[[:space:]]*//' | sed "s/[\"' ]//g" || true)
+    GW_PROVIDER="${GW_PROVIDER:-auto}"
+    if [ "$GW_PROVIDER" = "auto" ]; then
+      if [ -n "${CLAUDE_CODE_OAUTH_TOKEN:-}" ]; then
+        GW_PROVIDER="claude"
+      elif [ -n "${ANTHROPIC_API_KEY:-}" ]; then
+        GW_PROVIDER="anthropic"
+      fi
+    fi
+    case "$GW_PROVIDER" in
+      claude)           AUTH_MODE="native-oauth" ;;
+      anthropic|direct) AUTH_MODE="native-key" ;;
+      *)                AUTH_MODE="gateway" ;;
+    esac ;;
 esac
 
 # The harness model (HM), in priority order:
@@ -176,7 +199,19 @@ else
   esac
 fi
 
-echo "Harness: $HARNESS  |  auth: $AUTH_MODE  |  model: $HM  |  run-harness --model: ${MODEL_ARG:-<harness default>}" >&2
+# claude runs aeon's own model id (INPUT_MODEL > per-skill > aeon.yml model: >
+# claude-sonnet-5-5, the same precedence as aeon.yml's Run step), not the
+# OpenRouter default above, and it is not driven by MODEL_ARG. Say so.
+if [ "$HARNESS" = "claude" ]; then
+  if [ -n "${INPUT_MODEL:-}" ] && [ "$INPUT_MODEL" != "(config default)" ]; then
+    HM="$INPUT_MODEL"
+  else
+    HM="${SKILL_MODEL:-${CONFIG_MODEL:-claude-sonnet-5-5}}"
+  fi
+  echo "Harness: $HARNESS  |  auth: $AUTH_MODE  |  gateway: $GW_PROVIDER  |  model: $HM" >&2
+else
+  echo "Harness: $HARNESS  |  auth: $AUTH_MODE  |  model: $HM  |  run-harness --model: ${MODEL_ARG:-<harness default>}" >&2
+fi
 printf 'HARNESS=%s\n'       "$HARNESS"
 printf 'AUTH_MODE=%s\n'     "$AUTH_MODE"
 printf 'HARNESS_MODEL=%s\n' "$HM"

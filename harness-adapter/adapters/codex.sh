@@ -4,9 +4,11 @@
 # Codex quirks this adapter absorbs:
 #   * `codex exec --json` emits a JSONL EVENT STREAM, not a final result object
 #     -> result comes from --output-last-message (belt) or the last
-#        item.completed agent_message (braces); usage is SUMMED over every
-#        turn.completed event (field names: input_tokens, cached_input_tokens,
-#        output_tokens). No dollar-cost field exists.
+#        item.completed agent_message (braces); usage comes from turn.completed
+#        (field names: input_tokens, cached_input_tokens, output_tokens), with
+#        input_tokens normalized to exclude cache reads. No dollar-cost field exists.
+#   * the stream never names the model (thread.started carries only thread_id)
+#     -> read it from the session's rollout file (turn_context.payload.model).
 #   * approval-needed actions are silently auto-denied headlessly (deny-and-
 #     continue, like Claude) -> approval_policy=never, sandbox picked by mode.
 #   * workspace-write blocks network by default -> we enable it (skills fetch).
@@ -43,7 +45,11 @@ command -v codex >/dev/null 2>&1 || {
 # provider FOREVER ("Reconnecting... waiting for network", 5-60s backoff), so a
 # gateway outage burned the whole dispatcher timeout. With the feature off it
 # fails after 5 retries with turn.failed and a non-zero exit.
-ARGS=(exec --json --skip-git-repo-check --ephemeral --disable unbounded_connection_retries)
+# No --ephemeral: the session's rollout file is the only place codex records the
+# model it actually ran (see "model" below). It lands under $CODEX_HOME/sessions,
+# the way claude -p keeps its transcript under ~/.claude; on a runner both go
+# away with the job's home dir.
+ARGS=(exec --json --skip-git-repo-check --disable unbounded_connection_retries)
 
 # model: only pass ids codex can serve; a claude-*/grok-* leftover -> codex default
 case "${RH_MODEL:-}" in
@@ -158,15 +164,45 @@ if [ "${FAILED:-0}" -gt 0 ] && [ -z "$RESULT" ]; then
 fi
 [ "${FAILED:-0}" -gt 0 ] && echo "warning: codex reported $FAILED failed-turn/error event(s) — retaining output" >&2
 
-# usage: sum across turns; map cached_input_tokens -> cache_read and
-# cache_write_input_tokens -> cache_creation (codex has no cost field)
-# (0.159+ also reports cache_write_input_tokens -> cache_creation.)
+# usage: map cached_input_tokens -> cache_read and cache_write_input_tokens ->
+# cache_creation (codex has no cost field).
+#   * turn.completed carries the THREAD's running total, not a per-turn delta
+#     (codex-rs exec/src/event_processor_with_jsonl_output.rs usage_from_last_total
+#     reads `usage.total`), and exec ends after its one turn. So take the last
+#     event; summing would double-count if a build ever emitted two.
+#   * codex's input_tokens is the Responses API figure, which INCLUDES the cached
+#     tokens (codex-rs protocol/src/protocol.rs TokenUsage::non_cached_input is
+#     `input_tokens - cached_input_tokens`). The contract follows Claude, whose
+#     input_tokens excludes cache reads, so subtract them here. Without this a
+#     heartbeat run recorded input 142972 next to cache_read 109312, counting the
+#     cached 109k twice in token-usage.csv.
 read -r TIN TOUT TCR TCW <<<"$(jq -rs '
-  [.[] | select(.type == "turn.completed") | (.usage // {})] |
-  [ ([.[].input_tokens // 0] | add // 0),
-    ([.[].output_tokens // 0] | add // 0),
-    ([.[].cached_input_tokens // 0] | add // 0),
-    ([.[].cache_write_input_tokens // 0] | add // 0) ] | @tsv' "$CLEAN")"
+  ([.[] | select(.type == "turn.completed") | (.usage // {})] | last // {}) as $u
+  | ($u.input_tokens // 0) as $in | ($u.cached_input_tokens // 0) as $cr
+  | [ ([$in - $cr, 0] | max), ($u.output_tokens // 0), $cr,
+      ($u.cache_write_input_tokens // 0) ] | @tsv' "$CLEAN")"
 SID=$(jq -rs '[.[] | select(.type == "thread.started") | (.thread_id // empty)] | first // ""' "$CLEAN")
 
-emit_envelope "$RESULT" "${TIN:-0}" "${TOUT:-0}" "${TCR:-0}" "${TCW:-0}" "" "$SID"
+# model: `codex exec --json` never names it (ThreadStartedEvent is only
+# thread_id; codex-rs exec/src/exec_events.rs), and on a native ChatGPT login no
+# --model is passed, so aeon used to record "codex-default". codex persists each
+# turn's TurnContextItem, whose `model` field is the model it ran
+# (codex-rs protocol/src/protocol.rs TurnContextItem), as a
+# {"type":"turn_context","payload":{...}} line in
+# $CODEX_HOME/sessions/YYYY/MM/DD/rollout-<ts>-<thread_id>.jsonl. Take the FIRST
+# one (written before the agent acts) and keep only a model-id charset: the file
+# sits in rw ~/.codex during the run, and this value ends up in workflow outputs.
+MODEL_USED=""
+if [ -n "$SID" ]; then
+  ROLLOUT=$(find "${CODEX_HOME:-$HOME/.codex}/sessions" -type f -name "rollout-*${SID}*.jsonl" 2>/dev/null | head -1)
+  if [ -n "$ROLLOUT" ]; then
+    MODEL_USED=$(jq -rR 'fromjson? | select(.type == "turn_context") | .payload.model // empty' "$ROLLOUT" 2>/dev/null | head -1)
+    case "$MODEL_USED" in
+      *[!A-Za-z0-9._:/@+-]*) MODEL_USED="" ;;
+    esac
+    [ "${#MODEL_USED}" -le 100 ] || MODEL_USED=""
+  fi
+fi
+[ -z "$MODEL_USED" ] && echo "notice: codex model not found in the session rollout; not reported" >&2
+
+emit_envelope "$RESULT" "${TIN:-0}" "${TOUT:-0}" "${TCR:-0}" "${TCW:-0}" "" "$SID" "$MODEL_USED"

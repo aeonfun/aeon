@@ -191,6 +191,42 @@ mkfixture codex openai/gpt-5
 [ "$(get HARNESS after)" = "pi" ] \
   && pass "single-line entry after a block entry still resolves" || bad "single-line after block (got '$(get HARNESS after)')"
 
+# --- 5c. claude: the resolve line names the auth + model that really run ----
+# claude never runs on the OpenRouter-CLI default: its provider is picked by
+# scripts/llm-gateway.sh and its model is aeon's own id. The line used to read
+# "auth: openrouter | model: openai/gpt-5-mini" on a subscription run.
+mkfixture
+NOKEYS=(CLAUDE_CODE_OAUTH_TOKEN= ANTHROPIC_API_KEY= OPENROUTER_API_KEY=)
+# shellcheck disable=SC2069  # keep only stderr (the human line), on purpose
+line() { env "${NOKEYS[@]}" "$@" bash "$R" daily-brief 2>&1 >/dev/null; }
+[ "$(get AUTH_MODE daily-brief "${NOKEYS[@]}" CLAUDE_CODE_OAUTH_TOKEN=x)" = "native-oauth" ] \
+  && pass "claude + CLAUDE_CODE_OAUTH_TOKEN -> native-oauth" || bad "claude oauth auth (got '$(get AUTH_MODE daily-brief "${NOKEYS[@]}" CLAUDE_CODE_OAUTH_TOKEN=x)')"
+[ "$(get AUTH_MODE daily-brief "${NOKEYS[@]}" ANTHROPIC_API_KEY=x)" = "native-key" ] \
+  && pass "claude + ANTHROPIC_API_KEY only -> native-key" || bad "claude api-key auth"
+[ "$(get AUTH_MODE daily-brief "${NOKEYS[@]}" CLAUDE_CODE_OAUTH_TOKEN=x ANTHROPIC_API_KEY=x)" = "native-oauth" ] \
+  && pass "claude: subscription wins over the API key (gateway order)" || bad "claude auth order"
+[ "$(get AUTH_MODE daily-brief "${NOKEYS[@]}" OPENROUTER_API_KEY=x)" = "gateway" ] \
+  && pass "claude with neither native secret -> gateway" || bad "claude gateway auth"
+L=$(line CLAUDE_CODE_OAUTH_TOKEN=x)
+case "$L" in
+  *"Harness: claude  |  auth: native-oauth  |  gateway: claude  |  model: claude-sonnet-5-5"*) pass "claude line names the subscription and the real model" ;;
+  *) bad "claude line (got: $L)" ;;
+esac
+case "$L" in *openai/*|*"run-harness --model"*) bad "claude line still shows the OpenRouter default / MODEL_ARG" ;; *) pass "claude line drops fields that do not apply" ;; esac
+[ "$(get MODEL_ARG daily-brief CLAUDE_CODE_OAUTH_TOKEN=x)" = "" ] \
+  && pass "claude MODEL_ARG unchanged (empty)" || bad "claude MODEL_ARG changed"
+case "$(line CLAUDE_CODE_OAUTH_TOKEN=x INPUT_MODEL=claude-opus-5-5)" in
+  *"model: claude-opus-5-5"*) pass "claude line honours a dispatch model" ;; *) bad "claude dispatch model" ;; esac
+mkfixture "" claude-haiku-5
+case "$(line ANTHROPIC_API_KEY=x)" in
+  *"auth: native-key  |  gateway: anthropic  |  model: claude-haiku-5"*) pass "claude line uses aeon.yml model:" ;; *) bad "claude config model ($(line ANTHROPIC_API_KEY=x))" ;; esac
+{ echo "model: claude-sonnet-5-5"; echo "gateway:"; echo "  provider: openrouter"; echo "skills:"; } > aeon.yml
+[ "$(get AUTH_MODE "" "${NOKEYS[@]}" CLAUDE_CODE_OAUTH_TOKEN=x)" = "gateway" ] \
+  && pass "a pinned gateway.provider wins over a present subscription token" || bad "pinned gateway auth"
+{ echo "model: claude-sonnet-5-5"; echo "gateway:"; echo '  provider: "claude"'; echo "skills:"; } > aeon.yml
+[ "$(get AUTH_MODE "" "${NOKEYS[@]}")" = "native-oauth" ] \
+  && pass "gateway.provider: claude -> native-oauth" || bad "pinned claude auth"
+
 # --- 6. output contract -----------------------------------------------------
 # Callers append this straight to $GITHUB_OUTPUT, so stdout must be exactly the
 # four KEY=VALUE lines — the human summary belongs on stderr.

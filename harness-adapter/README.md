@@ -31,7 +31,8 @@ stdin   the prompt
 stdout  { "result": "<text>",
           "usage": { "input_tokens": N, "output_tokens": N,
                      "cache_read_input_tokens": N, "cache_creation_input_tokens": N },
-          "session_id": "<optional>", "total_cost_usd": <optional> }
+          "session_id": "<optional>", "total_cost_usd": <optional>,
+          "model": "<optional: the model the harness says it ran (codex today)>" }
 stderr  diagnostics only
 exit    0 ok · 3 abnormal model stop with no output · 124 timeout · other = error
 ```

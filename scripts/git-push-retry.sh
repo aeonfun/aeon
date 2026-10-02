@@ -12,8 +12,12 @@
 # commits other runs already pushed) and stage 3 ("theirs") is the LOCAL commit
 # being replayed. A whole-file `checkout --theirs` keeps this run's copy and
 # silently drops every concurrent upstream edit, so instead:
+#   - output/.chains/<skill>.md: keep THIS run's copy (stage 3). It holds only the
+#     latest run's output for the next chain step to read, so a union of two
+#     runs is wrong: two concurrent runs of one skill left both versions
+#     concatenated on main.
 #   - append-only ledgers/logs (token-usage.csv, memory/logs, topics, MEMORY.md,
-#     output/, dashboard outputs): union-merge, keeping both sides' lines.
+#     the rest of output/, dashboard outputs): union-merge, keeping both sides' lines.
 #   - *.json (skill-health, cron-state, other state): 3-way merge with jq, so
 #     the result is still valid JSON. skill-health also keeps both sides'
 #     history entries (newest analysis wins the scalar fields).
@@ -72,7 +76,11 @@ resolve_conflict() {
     return
   fi
 
-  if [[ "$f" == *.json ]]; then
+  if [[ "$f" == output/.chains/* ]]; then
+    # Latest-run-only file: this run's copy wins whole. Stage 3 is the local
+    # commit being replayed (the rebase inversion above), so take $tmp/local.
+    cat "$tmp/local" > "$f"
+  elif [[ "$f" == *.json ]]; then
     local health=false
     [[ "$f" == memory/skill-health/* ]] && health=true
     if jq -n --argjson health "$health" --slurpfile b "$tmp/base" \

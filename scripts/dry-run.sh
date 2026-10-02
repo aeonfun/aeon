@@ -231,6 +231,10 @@ cmd_run() {
     sandbox_prefix "$work" >/dev/null || { reject 'read-only OS sandbox unavailable'; return 1; }
   fi
   local args=("$harness" --mode "$mode" --allowed-tools "$tools" --timeout "$seconds")
+  # Same standing notes aeon.yml appends on a read-only run (empty for write).
+  local notes
+  notes="$(bash "$ROOT/scripts/skill_mode.sh" run-notes "$mode")" || { reject 'run-notes resolution failed'; return 1; }
+  [ -n "$notes" ] && args+=(--append-system-prompt "$notes")
   [ -n "$model" ] && [ "$model" != default ] && args+=(--model "$model")
   echo "dry-run: harness=$harness model=${model:-default} mode=$mode timeout=${seconds}s" >&2
   (

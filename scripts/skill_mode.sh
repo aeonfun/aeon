@@ -21,6 +21,7 @@
 #   scripts/skill_mode.sh mode <skill-name>     -> prints read-only | write
 #   scripts/skill_mode.sh allowed-tools <mode>  -> prints the --allowedTools string
 #   scripts/skill_mode.sh grok-run-env <skill>  -> prints `export GROK_*=…` lines
+#   scripts/skill_mode.sh run-notes <mode>      -> prints standing notes for the tier (may be empty)
 set -euo pipefail
 
 # Tools every tier gets: read, search, notify, and read-only/local shell helpers.
@@ -150,6 +151,27 @@ is_shadow_selector() {
 # Write tier = base tools + the repo-mutation tools.
 write_tools() { echo "$BASE_TOOLS,$WRITE_TOOLS"; }
 
+# --- Standing notes for a read-only run --------------------------------------
+# Several read-only skills (aeon-doctor, github-trending's long slate, and every
+# skill whose SKILL.md says `./notify -f <file>`) tell the model to write the
+# notify body to a scratch file first. On the claude harness that cannot work:
+# this tier has no Write tool and Claude Code refuses shell redirection into a
+# file, so the model ends the run with "No pending notifications" while the run
+# stays green (live-observed on github-trending, claude-code 2.1.287). The fix
+# keeps the tier exactly as narrow as it is: ./notify reads its body from stdin
+# (`-f -`), and a quoted heredoc into ./notify is a single Bash(./notify:*) call,
+# which the allowlist above already permits. This note tells the model so up
+# front, because the skills themselves still say "scratch file". aeon.yml (and
+# scripts/dry-run.sh) pass it as --append-system-prompt on read-only runs.
+read_only_run_notes() {
+  cat <<'NOTES'
+This run is read-only. Do not create a scratch file just to hold a ./notify body, even when the skill says to write one and send it with `-f <file>`: pass the body on stdin instead, in ONE Bash call with a quoted heredoc, other ./notify flags first:
+./notify --title "Title" -f - <<'NOTIFY_EOF'
+message body
+NOTIFY_EOF
+NOTES
+}
+
 # --- Why there is no grok permission mapping here ---------------------------
 # There used to be a `grok-args` subcommand that emitted grok's own permission
 # grammar (`--allow 'Bash(git *)'` rules plus `--sandbox read-only`) as this
@@ -217,7 +239,12 @@ case "${1:-}" in
       *)                            write_tools ;;
     esac ;;
   grok-run-env)  grok_run_env "${2:?skill name required}" ;;
+  run-notes)
+    case "${2:-write}" in
+      read-only|readonly|read_only) read_only_run_notes ;;
+      *)                            : ;;
+    esac ;;
   is-shadow)
     if is_shadow_selector "${2:?skill name required}" "${3:-}"; then echo true; else echo false; fi ;;
-  *) echo "usage: skill_mode.sh {mode <skill> [var]|allowed-tools <mode>|grok-run-env <skill>|is-shadow <skill> [var]}" >&2; exit 2 ;;
+  *) echo "usage: skill_mode.sh {mode <skill> [var]|allowed-tools <mode>|grok-run-env <skill>|run-notes <mode>|is-shadow <skill> [var]}" >&2; exit 2 ;;
 esac

@@ -52,6 +52,21 @@ fi
 OUT="$RH_TMPDIR/claude-out.json"
 claude "${ARGS[@]}" < "$RH_PROMPT_FILE" > "$OUT"
 rc=$?
+
+# Surface permission denials. The result event carries a permission_denials array
+# (tool_name + the full tool_input) for every call the allowlist refused. A
+# read-only skill whose notify write was denied still exits 0, so without this the
+# run went green with nothing in the log. Tool names and counts only: tool_input
+# can hold message bodies or command lines, so it never leaves this file. Names
+# are reduced to a safe charset so a crafted MCP tool name cannot inject a
+# workflow command.
+DENIED=$(jq -r '
+  [(.permission_denials // [])[] | (.tool_name // "unknown") | tostring | gsub("[^A-Za-z0-9_.:-]"; "_")]
+  | group_by(.) | map("\(.[0]) x\(length)") | join(", ")' "$OUT" 2>/dev/null || true)
+if [ -n "$DENIED" ]; then
+  echo "::warning::claude denied tool call(s) under --allowedTools: $DENIED" >&2
+fi
+
 if [ $rc -ne 0 ]; then
   # 300 chars silently discarded the actual error/result content on any
   # response longer than that -- e.g. a full completed-turn JSON envelope

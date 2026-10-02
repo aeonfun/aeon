@@ -292,6 +292,9 @@ jobs:
           MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           ANTHROPIC_OAUTH_TOKEN: ${{ secrets.ANTHROPIC_OAUTH_TOKEN }}
+          # claude's auth label: the Claude subscription token is the gateway's
+          # first pick, so the resolve line names it instead of "openrouter".
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           # grok's native auth (X-account OAuth capture > xAI key), so its AUTH_MODE
           # is detected like the other harnesses instead of defaulting to openrouter.
           GROK_CREDENTIALS: ${{ secrets.GROK_CREDENTIALS }}
@@ -1084,6 +1087,9 @@ jobs:
           CLAUDE_OK=0
           RH="${GITHUB_WORKSPACE}/harness-adapter/run-harness"
           RH_ARGS=(--mode "$SKILL_MODE" --allowed-tools "$ALLOWED" --timeout 1800)
+          # Read-only tier notes (skill_mode.sh run-notes): long ./notify bodies via stdin.
+          RUN_NOTES=$(bash scripts/skill_mode.sh run-notes "$SKILL_MODE")
+          if [ -n "$RUN_NOTES" ]; then RH_ARGS+=(--append-system-prompt "$RUN_NOTES"); fi
           # Pass --mcp-config only when the MCP preflight actually ENABLED MCP (every
           # required ${VAR} resolved) — MCP_FLAGS is set to the flags in that case and
           # left empty otherwise, so it doubles as the "MCP on" gate. run-harness does
@@ -1111,6 +1117,8 @@ jobs:
                 source "$LF" >&2   # optional Langfuse tracing (no-op unless LANGFUSE_* set)
                 echo "$PROMPT" | bash "$RH" claude --model "$MODEL" "${RH_ARGS[@]}" 2>/tmp/harness-stderr.txt
               ) || RC=$?
+              # The adapter's permission-denial warning; stderr is only dumped on failure.
+              grep '^::warning::claude denied' /tmp/harness-stderr.txt 2>/dev/null || true
               if [ "$RC" -eq 0 ]; then
                 USED_GATEWAY="$cand"; CLAUDE_OK=1; break
               fi
@@ -1154,14 +1162,6 @@ jobs:
               # harness's staged config choose). Never aeon's BASE_MODEL: that is
               # always a claude-*/grok-* id these CLIs cannot resolve.
               if [ -n "${RH_MODEL_ARG:-}" ]; then RH_MODEL_ARGS=(--model "$RH_MODEL_ARG"); fi
-              # Re-emit SKILL_MODEL with what ACTUALLY ran. It was written above from
-              # BASE_MODEL, before the harness was applied — leaving it would file
-              # these tokens under a model that never ran in memory/token-usage.csv,
-              # and put a false model into the run manifest that attestation signs.
-              # Later writes to $GITHUB_OUTPUT win, so this corrects every consumer.
-              EFFECTIVE_MODEL="${RH_MODEL_ARG:-$HARNESS-default}"   # no spaces: the notice is parsed by field
-              echo "SKILL_MODEL=$EFFECTIVE_MODEL" >> "$GITHUB_OUTPUT"
-              echo "::notice::effective model for $HARNESS: $EFFECTIVE_MODEL"
             fi
 
             # Tier-2 harness tracing: export the OTLP env (Langfuse keys or a raw
@@ -1172,6 +1172,16 @@ jobs:
             AEON_OTEL_COMPONENT=harness source "$LF" >&2 || true
             if CLAUDE_OUTPUT=$(echo "$PROMPT" | bash "$RH" "$HARNESS" "${RH_MODEL_ARGS[@]}" "${RH_ARGS[@]}" 2>/tmp/harness-stderr.txt); then
               CLAUDE_OK=1
+            fi
+            if [ "$HARNESS" != "grok" ]; then
+              # Re-emit SKILL_MODEL (token-usage.csv, signed run manifest) with what
+              # ACTUALLY ran: the model the harness reports (codex: its session
+              # rollout), else RH_MODEL_ARG, else <harness>-default. Later writes win.
+              # Model-id charset only: later run: scripts interpolate it.
+              EFFECTIVE_MODEL=$(echo "$CLAUDE_OUTPUT" | jq -r '.model // empty | strings' 2>/dev/null || true)
+              [[ "$EFFECTIVE_MODEL" =~ ^[A-Za-z0-9._:/@+-]{1,100}$ ]] || EFFECTIVE_MODEL="${RH_MODEL_ARG:-$HARNESS-default}"
+              echo "SKILL_MODEL=$EFFECTIVE_MODEL" >> "$GITHUB_OUTPUT"
+              echo "::notice::effective model for $HARNESS: $EFFECTIVE_MODEL"   # no spaces: parsed by field
             fi
             # run-harness's diagnostics are the only signal when a harness stalls;
             # surface them in the step log either way, not just on failure.

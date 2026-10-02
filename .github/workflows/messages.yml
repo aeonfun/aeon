@@ -440,6 +440,9 @@ jobs:
           MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           ANTHROPIC_OAUTH_TOKEN: ${{ secrets.ANTHROPIC_OAUTH_TOKEN }}
+          # claude's auth label: the Claude subscription token is the gateway's
+          # first pick, so the resolve line names it instead of "openrouter".
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           GROK_CREDENTIALS: ${{ secrets.GROK_CREDENTIALS }}
           XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
         run: bash scripts/resolve-harness.sh >> "$GITHUB_OUTPUT"

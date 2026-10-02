@@ -330,6 +330,11 @@ case "$H" in
     grep -q "$FAKE_URL" "$HOME/.codex/config.toml" || die "could not repoint the codex config"
     run_harness > "$ENV_OUT"
     check_envelope "$ENV_OUT" 1
+    # The JSON stream never names the model; adapters/codex.sh reads it from the
+    # session rollout. The staged config pins model = $HM, so that is what ran.
+    [ "$(jq -r '.model // ""' "$ENV_OUT")" = "$HM" ] \
+      && pass "codex reports the model it ran ($HM) from its session rollout" \
+      || bad "codex .model is '$(jq -r '.model // ""' "$ENV_OUT")', want $HM (stderr: $(tail -c 600 "$WORK/rh.err" | tr '\n' ' '))"
     run_harness_ro ;;
   kimi)
     sed -i.bak "s#https://openrouter.ai/api/v1#$FAKE_URL/api/v1#" "$HOME/.kimi-code/config.toml"

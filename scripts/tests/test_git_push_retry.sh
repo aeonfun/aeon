@@ -28,6 +28,9 @@ g clone -q "$TMP/remote.git" "$TMP/seed" 2>/dev/null
   printf '{"skill":"digest","last_analyzed":"2026-01-01T00:00:00Z","quality_score":3,"avg_score":3,"history":[{"date":"2026-01-01","score":3,"ts":"2026-01-01T00:00:00Z"}]}\n' | jq . > memory/skill-health/digest.json
   printf '{"a":{"last_status":"success","total_runs":1},"b":{"last_status":"success","total_runs":1},"c":{"last_status":"success"}}\n' | jq . > memory/cron-state.json
   printf 'line1\nline2\nline3\nline4\nline5\nline6\nline7\n' > notes.txt
+  mkdir -p output/.chains
+  printf '*Digest*\nseed run output\n' > output/.chains/digest.md
+  printf 'seed report\n' > output/report.md
   g add -A && g commit -qm seed && git push -q origin main
 )
 g clone -q "$TMP/remote.git" "$TMP/up" 2>/dev/null
@@ -42,7 +45,10 @@ g clone -q "$TMP/remote.git" "$TMP/local" 2>/dev/null
     memory/skill-health/digest.json > x && mv x memory/skill-health/digest.json
   jq '.a.total_runs=2 | .a.last_status="failed" | .c.last_status="upstream"' memory/cron-state.json > x && mv x memory/cron-state.json
   sed 's/^line2$/line2 upstream/' notes.txt > x && mv x notes.txt
-  g commit -qam upstream && git push -q origin main
+  printf '*Digest*\nupstream run output\n' > output/.chains/digest.md
+  printf 'seed report\nupstream report line\n' > output/report.md
+  printf 'upstream-only chain\n' > output/.chains/fresh.md
+  g add -A && g commit -qm upstream && git push -q origin main
 )
 
 # Local: this run, based on the old seed.
@@ -54,6 +60,10 @@ g clone -q "$TMP/remote.git" "$TMP/local" 2>/dev/null
     memory/skill-health/digest.json > x && mv x memory/skill-health/digest.json
   jq '.b.total_runs=2 | .b.last_status="failed" | .c.last_status="local"' memory/cron-state.json > x && mv x memory/cron-state.json
   sed 's/^line2$/line2 local/; s/^line7$/line7 local/' notes.txt > x && mv x notes.txt
+  printf '*Digest*\nlocal run output\n' > output/.chains/digest.md
+  printf 'seed report\nlocal report line\n' > output/report.md
+  printf 'local-only chain\n' > output/.chains/fresh.md
+  g add output/.chains/fresh.md
   echo dirty > untracked-leftover.txt
   g commit -qam local
 )
@@ -92,6 +102,16 @@ if jq -e . memory/cron-state.json >/dev/null 2>&1; then
 else
   bad "cron-state JSON is invalid after conflict resolution"
 fi
+
+# output/.chains/<skill>.md holds only the latest run's output; a union left two
+# runs' slates concatenated on main. This run (local) wins the whole file, for a
+# modify/modify and an add/add conflict alike.
+[ "$(cat output/.chains/digest.md)" = "$(printf '*Digest*\nlocal run output')" ] \
+  && pass "chain file keeps only this run's copy (no union)" || bad "chain file: $(cat output/.chains/digest.md)"
+[ "$(cat output/.chains/fresh.md)" = "local-only chain" ] \
+  && pass "add/add chain file keeps this run's copy" || bad "add/add chain file: $(cat output/.chains/fresh.md)"
+grep -q 'upstream report line' output/report.md && grep -q 'local report line' output/report.md \
+  && pass "the rest of output/ still union-merges" || bad "output/report.md lost a side: $(cat output/report.md)"
 
 grep -q '^line2 upstream$' notes.txt && pass "other files: upstream wins the conflicting hunk" || bad "notes.txt line2: $(sed -n 2p notes.txt)"
 grep -q '^line7 local$' notes.txt && pass "other files: local's non-conflicting hunk re-applied" || bad "notes.txt lost local line7"

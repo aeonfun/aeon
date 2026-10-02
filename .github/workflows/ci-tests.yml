@@ -77,6 +77,8 @@ jobs:
         run: bash scripts/tests/test_idea_pipeline_dev_loop_offer.sh
       - name: capability mode tests
         run: bash scripts/tests/test_skill_mode.sh
+      - name: read-only notify + claude denial warning tests
+        run: bash scripts/tests/test_readonly_notify.sh
       - name: vuln-scanner status contract tests
         run: python3 scripts/tests/test_vuln_scanner_status.py
       - name: read-only guard run-log tests
@@ -109,6 +111,8 @@ jobs:
         run: bash scripts/tests/test_hermes_adapter.sh
       - name: cursor adapter tests
         run: bash scripts/tests/test_cursor_adapter.sh
+      - name: codex adapter model + token tests
+        run: bash scripts/tests/test_codex_adapter.sh
       - name: pi adapter MCP tests
         run: bash scripts/tests/test_pi_adapter_mcp.sh
       - name: harness capability manifest tests
