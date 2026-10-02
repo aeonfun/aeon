@@ -1,14 +1,10 @@
 # Strategy
 
-Aeon's north-star. Every skill reads this — it's imported into `CLAUDE.md`, so it
-sits in context on **every** run. Skills should align their output to it: what to
-work on, what to prioritise, what to flag, what to skip.
+Aeon's north-star. Every skill reads this — it's imported into `CLAUDE.md`, so it sits in context on **every** run. Skills should align their output to it: what to work on, what to prioritise, what to flag, what to skip.
 
-Keep it short (it costs tokens each run): one north-star, 3–5 priorities, the
-constraints. Replace the defaults below with your own.
+Keep it short (it costs tokens each run): one north-star, 3–5 priorities, the constraints. Replace the defaults below with your own.
 
-> **Status:** unconfigured defaults. Until you tailor this file, skills operate
-> with general best judgment and no specific bias. Remove this line once it's yours.
+> **Status:** unconfigured defaults. Until you tailor this file, skills operate with general best judgment and no specific bias. Remove this line once it's yours.
 
 ## North-star metric
 
