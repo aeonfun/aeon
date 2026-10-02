@@ -68,7 +68,7 @@ export function TopBar({ skill, view, repo, model, harness, gateway, hasModelKey
           value={harness}
           onChange={(e) => onUpdateHarness(e.target.value)}
           title="Agent harness"
-          className="bg-aeon-panel text-primary-70 text-[11px] font-mono uppercase tracking-[0.14em] px-3 h-[32px] border border-[rgba(250,250,250,0.10)] outline-none cursor-pointer hover:border-[rgba(250,250,250,0.22)] transition-colors"
+          className="bg-aeon-panel text-primary-70 text-[10px] md:text-[11px] font-mono uppercase tracking-[0.04em] md:tracking-[0.14em] px-2 md:px-3 h-[30px] md:h-[32px] border border-[rgba(250,250,250,0.10)] outline-none cursor-pointer hover:border-[rgba(250,250,250,0.22)] transition-colors"
         >
           {HARNESSES.map((h) => (
             <option key={h.id} value={h.id} className="bg-aeon-panel text-aeon-fg">{h.label}</option>
@@ -77,31 +77,24 @@ export function TopBar({ skill, view, repo, model, harness, gateway, hasModelKey
         <select
           value={model}
           onChange={(e) => onUpdateModel(e.target.value)}
-          className="bg-aeon-panel text-primary-70 text-[11px] font-mono uppercase tracking-[0.14em] px-3 h-[32px] border border-[rgba(250,250,250,0.10)] outline-none cursor-pointer hover:border-[rgba(250,250,250,0.22)] transition-colors"
+          className="bg-aeon-panel text-primary-70 text-[10px] md:text-[11px] font-mono uppercase tracking-[0.04em] md:tracking-[0.14em] px-2 md:px-3 h-[30px] md:h-[32px] border border-[rgba(250,250,250,0.10)] outline-none cursor-pointer hover:border-[rgba(250,250,250,0.22)] transition-colors"
         >
           {modelOptions.map((m) => (
             <option key={m.id} value={m.id} className="bg-aeon-panel text-aeon-fg">{m.label}</option>
           ))}
         </select>
-        {/* Phones: arrow icons instead of the words, to keep the row short. */}
-        <button onClick={onPull} disabled={pulling} aria-label="Pull" title="Pull" className="btn-quiet disabled:opacity-50">
-          {behind > 0 && <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-aeon-red animate-pulse" />}
-          {pulling ? '…' : (
-            <>
-              <svg viewBox="0 0 24 24" className="w-4 h-4 md:hidden" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 21h16" fill="none" stroke="currentColor" strokeWidth="2" /></svg>
-              <span className="hidden md:inline">Pull</span>
-            </>
-          )}
-        </button>
-        <button onClick={onSync} disabled={syncing || !hasChanges} aria-label="Push" title="Push" className="btn-quiet disabled:opacity-40">
-          {hasChanges && <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-aeon-green" />}
-          {syncing ? '…' : (
-            <>
-              <svg viewBox="0 0 24 24" className="w-4 h-4 md:hidden" aria-hidden="true"><path d="M12 21V9m0 0l-5 5m5-5l5 5M4 3h16" fill="none" stroke="currentColor" strokeWidth="2" /></svg>
-              <span className="hidden md:inline">Push</span>
-            </>
-          )}
-        </button>
+        {/* Desktop only: on phones the row keeps just the harness and model,
+            and Pull / Push move into the sidebar drawer. */}
+        <div className="hidden md:contents">
+          <button onClick={onPull} disabled={pulling} className="btn-quiet disabled:opacity-50">
+            {behind > 0 && <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-aeon-red animate-pulse" />}
+            {pulling ? '…' : 'Pull'}
+          </button>
+          <button onClick={onSync} disabled={syncing || !hasChanges} className="btn-quiet disabled:opacity-40">
+            {hasChanges && <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-aeon-green" />}
+            {syncing ? '…' : 'Push'}
+          </button>
+        </div>
         {repo && (
           <a
             href={`https://github.com/${repo}`}

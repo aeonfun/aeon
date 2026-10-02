@@ -272,6 +272,7 @@ export default function Dashboard() {
           categoryFilter={categoryFilter} setCategoryFilter={setCategoryFilter}
           onSkillSelect={(name) => { setSelectedSkill(name); setView('hq'); setNavOpen(false) }}
           onShowImport={() => { setShowImport(true); setNavOpen(false) }}
+          sync={{ pulling, syncing, hasChanges, behind, onPull: pullFromGithub, onPush: syncToGithub }}
         />
       </div>
 

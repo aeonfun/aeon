@@ -21,9 +21,12 @@ interface LeftSidebarProps {
   setCategoryFilter: (c: string | null) => void
   onSkillSelect: (name: string) => void
   onShowImport: () => void
+  // Pull / Push live in the top bar on desktop; on phones the top bar drops
+  // them and the sidebar drawer carries them instead.
+  sync?: { pulling: boolean; syncing: boolean; hasChanges: boolean; behind: number; onPull: () => void; onPush: () => void }
 }
 
-export function LeftSidebar({ view, setView, selectedSkill, skills, runs, secrets, repo, harness, enabledCount, workingCount, categoryFilter, setCategoryFilter, onSkillSelect, onShowImport }: LeftSidebarProps) {
+export function LeftSidebar({ view, setView, selectedSkill, skills, runs, secrets, repo, harness, enabledCount, workingCount, categoryFilter, setCategoryFilter, onSkillSelect, onShowImport, sync }: LeftSidebarProps) {
   const [skillSearch, setSkillSearch] = useState('')
   const brandName = repo ? repo.split('/').pop() : 'Aeon'
   // The roster only ever holds skills from *enabled packs* (Core by default —
@@ -91,6 +94,21 @@ export function LeftSidebar({ view, setView, selectedSkill, skills, runs, secret
           </button>
         ))}
       </div>
+
+      {sync && (
+        <div className="md:hidden grid grid-cols-2 gap-2 px-2 py-3 border-b border-[rgba(250,250,250,0.10)]">
+          <button onClick={sync.onPull} disabled={sync.pulling} className="btn-quiet relative w-full gap-2 disabled:opacity-50">
+            {sync.behind > 0 && <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-aeon-red animate-pulse" />}
+            <svg viewBox="0 0 24 24" className="w-3.5 h-3.5" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 21h16" fill="none" stroke="currentColor" strokeWidth="2" /></svg>
+            {sync.pulling ? '…' : 'Pull'}
+          </button>
+          <button onClick={sync.onPush} disabled={sync.syncing || !sync.hasChanges} className="btn-quiet relative w-full gap-2 disabled:opacity-40">
+            {sync.hasChanges && <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-aeon-green" />}
+            <svg viewBox="0 0 24 24" className="w-3.5 h-3.5" aria-hidden="true"><path d="M12 21V9m0 0l-5 5m5-5l5 5M4 3h16" fill="none" stroke="currentColor" strokeWidth="2" /></svg>
+            {sync.syncing ? '…' : 'Push'}
+          </button>
+        </div>
+      )}
 
       {/* Team roster */}
       <div className="flex-1 overflow-y-auto">
