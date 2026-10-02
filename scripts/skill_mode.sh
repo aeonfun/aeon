@@ -53,6 +53,12 @@ BASE_TOOLS="$BASE_TOOLS,Bash(mkdir:*),Bash(ls:*),Bash(cat:*),Bash(chmod:*)"
 BASE_TOOLS="$BASE_TOOLS,Bash(cd:*)"
 BASE_TOOLS="$BASE_TOOLS,Bash(date:*),Bash(echo:*),Bash(node:*),Bash(npm:*),Bash(npx:*)"
 BASE_TOOLS="$BASE_TOOLS,Bash(head:*),Bash(tail:*),Bash(wc:*),Bash(sort:*),Bash(grep:*)"
+# base64 is a pure stdin-to-stdout filter like head/tail. Six write-tier skills
+# (strategy-builder, article, fork-fleet, fleet-control, pr-review, aeon-update)
+# read GitHub file contents via `gh api ... --jq .content | base64 -d`; without
+# this grant the whole pipe is denied (live: strategy-builder on aeon-test lost
+# the README and drafted from a partial read).
+BASE_TOOLS="$BASE_TOOLS,Bash(base64:*)"
 # The run-audit wrapper. skill-health documents ./scripts/skill-runs as a primary
 # data source (so did several since-retired skills), but no tier granted it, so every documented call was denied. That was
 # the trigger for ISS-001 on aeon-compute: skill-health, unable to reach its own

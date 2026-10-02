@@ -1223,7 +1223,7 @@ jobs:
           # Empty on the grok harness (no Claude transcript) — the step then no-ops.
           echo "SESSION_ID=$(echo "$CLAUDE_OUTPUT" | jq -r '.session_id // empty')" >> "$GITHUB_OUTPUT"
 
-          echo "::notice::Token usage — input: $INPUT_TOKENS, output: $OUTPUT_TOKENS, cache_read: $CACHE_READ, cache_creation: $CACHE_CREATION, total: $TOTAL_TOKENS"
+          echo "::notice::Token usage — model: ${EFFECTIVE_MODEL:-$BANNER_MODEL}, input: $INPUT_TOKENS, output: $OUTPUT_TOKENS, cache_read: $CACHE_READ, cache_creation: $CACHE_CREATION, total: $TOTAL_TOKENS"
 
       # Egress hardening P2: publish the warn-mode audit log. always() so it lands
       # even if the run failed; the host list is the allowlist oracle P3 builds from.
@@ -1361,6 +1361,9 @@ jobs:
 
       - name: Log token usage
         if: steps.work.outputs.mode != ''
+        env:
+          RUN_HARNESS: ${{ steps.run.outputs.HARNESS }}
+          RUN_MODEL: ${{ steps.run.outputs.SKILL_MODEL }}
         run: |
           SKILL="${{ steps.skill.outputs.name }}"
           INPUT="${{ steps.run.outputs.SKILL_INPUT_TOKENS }}"
@@ -1369,6 +1372,12 @@ jobs:
           CACHE_CREATION="${{ steps.run.outputs.SKILL_CACHE_CREATION_TOKENS }}"
           TOTAL="${{ steps.run.outputs.SKILL_TOTAL_TOKENS }}"
           echo "## Token Usage: $SKILL" >> "$GITHUB_STEP_SUMMARY"
+          # Model that actually ran (claude/grok: the resolved id; adapter harnesses:
+          # what the harness reports, e.g. codex's rollout). Via env, not inline expressions, so
+          # an odd configured id cannot inject into the script. Backticks stripped
+          # so it cannot break out of the inline code span.
+          # shellcheck disable=SC2016  # literal backticks: markdown code span
+          printf 'Harness: `%s` | Model: `%s`\n\n' "${RUN_HARNESS//\`/}" "${RUN_MODEL//\`/}" >> "$GITHUB_STEP_SUMMARY"
           echo "| Metric | Tokens |" >> "$GITHUB_STEP_SUMMARY"
           echo "|--------|--------|" >> "$GITHUB_STEP_SUMMARY"
           echo "| Input | $INPUT |" >> "$GITHUB_STEP_SUMMARY"
