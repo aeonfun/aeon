@@ -372,7 +372,7 @@ case "$H" in
     ccr_arm() {  # ccr_arm <gateway> -> sources llm-gateway.sh for that arm, then probes it
       local arm="$1"
       (
-        export GATEWAY="$arm" MODEL=claude-sonnet-5 CCR_PORT=$((20000 + RANDOM % 20000))
+        export GATEWAY="$arm" MODEL=claude-sonnet-5-5 CCR_PORT=$((20000 + RANDOM % 20000))
         export HIVEMINDOS_CREDIT_TOKEN=up-smoke-key HIVEMINDOS_BASE_URL="$FAKE_URL/v1"
         export VENICE_API_KEY=up-smoke-key VENICE_BASE_URL="$FAKE_URL/api/v1/chat/completions"
         : > "$FAKE_LOG"
@@ -396,7 +396,7 @@ case "$H" in
         jq -e --arg r "$REPLY_TEXT" '.type == "message" and .content[0].text == $r' <<<"$got" >/dev/null \
           && ok "POST /v1/messages round-trips to the OpenAI upstream" || nok "non-stream reply: $(printf '%.600s' "$got")"
         got=$(curl -fsSN -X POST "$ANTHROPIC_BASE_URL/v1/messages" -H "Authorization: Bearer $ANTHROPIC_API_KEY" \
-          -H 'content-type: application/json' -d '{"model":"claude-sonnet-5","max_tokens":64,"stream":true,"messages":[{"role":"user","content":"ping"}]}')
+          -H 'content-type: application/json' -d '{"model":"claude-sonnet-5-5","max_tokens":64,"stream":true,"messages":[{"role":"user","content":"ping"}]}')
         grep -q 'event: message_stop' <<<"$got" && grep -q "$REPLY_TEXT" <<<"$got" \
           && ok "a streaming client gets Anthropic SSE" || nok "stream reply: $(printf '%.600s' "$got")"
         # Claude Code itself, through run-harness, the way aeon.yml runs it.
@@ -408,7 +408,7 @@ case "$H" in
           || nok "claude via sidecar: $(head -c 600 "$WORK/env-$arm.json") $(tail -c 1500 "$WORK/rh.err" | tr '\n' ' ')"
         # What reached the upstream: the pinned model on every call, and on
         # hivemindos the credit-billing shape (non-streamed, capped, fresh key).
-        jq -se --arg m "$( [ "$arm" = hivemindos ] && echo inclusionai/ling-3.0-flash || echo claude-sonnet-5 )" \
+        jq -se --arg m "$( [ "$arm" = hivemindos ] && echo inclusionai/ling-3.0-flash || echo claude-sonnet-5-5 )" \
           'length > 0 and all(.[]; .body.model == $m)' "$FAKE_LOG" >/dev/null \
           && ok "every upstream call carries the pinned model" \
           || nok "upstream models: $(jq -sc '[.[].body.model]' "$FAKE_LOG")"

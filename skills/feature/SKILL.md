@@ -93,11 +93,12 @@ All branches read operator-controlled files under `memory/` (runtime config — 
   - text-davinci
 
   ## Current models (suggest these as replacements)
-  - claude-sonnet-5
-  - claude-opus-4-8
-  - gpt-5
+  - claude-sonnet-5-5
+  - claude-opus-5-5
+  - gpt-6-luna
+  - gpt-6-sol
   - gemini-3
-  - grok-4.6
+  - grok-4.7
   ```
 
   If the file is missing, the **dormant** branch skips the "stale model" fix category entirely (other categories still apply) and logs `REPO_REVIVE_NO_MODEL_CONFIG: skipping model audit`.

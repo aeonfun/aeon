@@ -910,10 +910,10 @@
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "b71672ed11a7624534585a03f1b359acc13befba0d4e3d79de75002e8034b3fd"
+          "hash": "67a2ed32987d5899febfba1218d83d639969d79c4a461b47fea4d4cc35ebfc68"
         }
       ],
-      "contentHash": "sha256-e0993ed63c3067cf8496e18eb2e2d70882ac1ee3cc37f6bbcb770fcb295cf415",
+      "contentHash": "sha256-aadecf6ade155471bf022ffa93f91ea4a630756aba8e8a3ab9b16c9a3d2995e9",
       "discoveredFrom": "skills/feature/SKILL.md"
     },
     {

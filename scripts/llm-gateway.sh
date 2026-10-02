@@ -396,7 +396,7 @@ X-Title: ${OPENROUTER_APP_TITLE:-Aeon}"
     # as the SSE frames Claude Code expects.
     #
     # The catalog is addressed by its own ids (vendor/model, e.g.
-    # anthropic/claude-sonnet-5), so aeon's native claude-*/grok-* ids mean
+    # anthropic/claude-sonnet-5.5), so aeon's native claude-*/grok-* ids mean
     # nothing here and fall back to the default below. HIVEMINDOS_MODEL pins one;
     # HIVEMINDOS_BASE_URL points at another deployment (same override pattern as
     # VENICE_BASE_URL).
