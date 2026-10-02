@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import type { Skill, Run, Secret, DashboardView } from '../lib/types'
 import { packGroups, keyProvidedByHarness } from '../lib/constants'
-import { displayName, initials, getSkillStatus, statusDot } from '../lib/utils'
+import { displayName, initials, getSkillStatus, statusDot, fitFontSize } from '../lib/utils'
 import { SkillGlyph, hasSkillGlyph } from './ui/SkillGlyph'
 
 interface LeftSidebarProps {
@@ -25,6 +25,7 @@ interface LeftSidebarProps {
 
 export function LeftSidebar({ view, setView, selectedSkill, skills, runs, secrets, repo, harness, enabledCount, workingCount, categoryFilter, setCategoryFilter, onSkillSelect, onShowImport }: LeftSidebarProps) {
   const [skillSearch, setSkillSearch] = useState('')
+  const brandName = repo ? repo.split('/').pop() : 'Aeon'
   // The roster only ever holds skills from *enabled packs* (Core by default —
   // the parent filters before passing `skills`), so it's already focused. We
   // show all of those skills (enabled or not); "Enabled" is an opt-in filter,
@@ -60,9 +61,10 @@ export function LeftSidebar({ view, setView, selectedSkill, skills, runs, secret
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/android-chrome-192x192.png" alt="" />
           </span>
-          <div className="min-w-0">
-            <div className="font-display text-sm leading-tight uppercase tracking-tight text-aeon-fg truncate">
-              {repo ? repo.split('/').pop() : 'Aeon'} HQ
+          <div className="min-w-0 flex-1" style={{ containerType: 'inline-size' }}>
+            <div className="font-display leading-tight uppercase tracking-tight text-aeon-fg truncate"
+                 style={{ fontSize: fitFontSize(`${brandName} HQ`, '14px', 10) }}>
+              {brandName} HQ
             </div>
             <div className="text-[10px] text-primary-40 font-mono uppercase tracking-[0.18em]">
               {enabledCount} enabled

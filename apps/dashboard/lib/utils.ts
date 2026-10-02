@@ -99,3 +99,11 @@ export const inputCls = "w-full bg-aeon-bg text-aeon-fg text-xs px-3 py-2 border
 export const panelInputCls = "bg-aeon-bg text-aeon-fg text-[13px] px-3 py-2.5 border border-[rgba(250,250,250,0.10)] outline-none font-mono focus:border-aeon-red transition-colors placeholder:text-primary-35 cursor-target"
 
 export const editorCls = "w-full bg-aeon-bg text-aeon-fg text-[13px] leading-relaxed px-4 py-3 border border-[rgba(250,250,250,0.10)] outline-none font-mono focus:border-aeon-red transition-colors resize-y"
+
+// Dela Gothic One caps average ~0.88em per glyph; 0.92 leaves headroom so a long
+// instance name shrinks to fit one line instead of being clipped by the panel.
+// Container query units, so the parent must set containerType: 'inline-size'.
+export function fitFontSize(text: string, max: string, minPx: number): string {
+  const ems = Math.max(text.length, 1) * 0.92
+  return `max(${minPx}px, min(${max}, calc(100cqw / ${ems.toFixed(2)})))`
+}
