@@ -32,8 +32,16 @@ case "${1:-} ${2:-}" in
   "repo create")
     slug="$3"
     exists "$slug" && { echo "fake-gh: $slug already exists" >&2; exit 1; }
-    mkdir -p "$(dirname "$(bare "$slug")")"
-    git clone -q --bare "$(bare aeonfun/aeon)" "$(bare "$slug")"
+    # Like GitHub's "Use this template": the template's files in ONE fresh root
+    # commit, sharing no history with aeonfun/aeon.
+    new="$(bare "$slug")"
+    mkdir -p "$(dirname "$new")"
+    git init -q --bare -b main "$new"
+    git --git-dir="$new" fetch -q "$(bare aeonfun/aeon)" "main:refs/tmp/template"
+    tree="$(git --git-dir="$new" rev-parse 'refs/tmp/template^{tree}')"
+    root="$(git --git-dir="$new" commit-tree "$tree" -m "Initial commit")"
+    git --git-dir="$new" update-ref refs/heads/main "$root"
+    git --git-dir="$new" update-ref -d refs/tmp/template
     echo "https://github.com/$slug" ;;
   "repo view")
     slug="${3:-}"

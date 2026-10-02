@@ -13,7 +13,7 @@
 //   8. Summary checklist, then optionally start the dashboard
 import { parseArgs } from 'node:util'
 import { spawnSync } from 'node:child_process'
-import { existsSync, readFileSync, readdirSync, rmSync } from 'node:fs'
+import { existsSync, readFileSync, readdirSync, rmSync, statSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 import { randomBytes } from 'node:crypto'
 import { createInterface } from 'node:readline/promises'
@@ -252,7 +252,8 @@ async function stepRepo(opts: Opts, login: string): Promise<string> {
   }
   // Switching this folder over must not cost any work, so check that BEFORE
   // creating anything on GitHub.
-  if (!opts.dir) preflightFolder(opts)
+  if (opts.dir) preflightDir(opts.dir)
+  else preflightFolder(opts)
 
   if (view.ok) {
     if (!isAeonRepo(target)) {
@@ -309,10 +310,8 @@ async function cloneElsewhere(opts: Opts, target: string): Promise<never> {
     finish(true)
   }
   if (!existsSync(join(dir, 'aeon.yml'))) {
-    if (existsSync(dir) && readdirSync(dir).length) {
-      report('clone', 'fail', `${dir} exists, is not empty and is not an Aeon checkout`, `pick an empty or new folder: ./aeon init --dir <path>`)
-      finish(false)
-    }
+    preflightDir(dir)
+    const preExisted = existsSync(dir)
     if (!(await waitForContent(target))) {
       report('clone', 'fail', `${target} is still empty (GitHub has not finished copying the template)`, 'wait a minute, then re-run the same ./aeon init command')
       finish(false)
@@ -324,8 +323,12 @@ async function cloneElsewhere(opts: Opts, target: string): Promise<never> {
       const r = run('gh', ['repo', 'clone', target, dir], process.cwd())
       cloned = r.ok && existsSync(join(dir, 'aeon.yml'))
       err = r.err.split('\n')[0] || (r.ok ? 'the clone had no aeon.yml' : '')
-      // Only ever remove what this run created.
-      if (!cloned) rmSync(dir, { recursive: true, force: true })
+      // Undo only what this run created: a folder that already existed (empty,
+      // per preflightDir) is emptied again, never removed.
+      if (!cloned) {
+        if (preExisted) for (const f of readdirSync(dir)) rmSync(join(dir, f), { recursive: true, force: true })
+        else rmSync(dir, { recursive: true, force: true })
+      }
     }
     if (!cloned) {
       report('clone', 'fail', `could not clone ${target}: ${err}`, `gh repo clone ${target} ${dir}`)
@@ -348,6 +351,21 @@ async function cloneElsewhere(opts: Opts, target: string): Promise<never> {
     process.exit(1)
   }
   process.exit(r.status ?? 1)
+}
+
+// --dir must be a new folder, an empty folder, or an existing Aeon checkout.
+// Checked before anything is created on GitHub.
+function preflightDir(path: string) {
+  const dir = resolve(path)
+  if (!existsSync(dir)) return
+  if (!statSync(dir).isDirectory()) {
+    report('clone', 'fail', `${dir} exists and is not a folder`, 'pick a new or empty folder: ./aeon init --dir <path>')
+    finish(false)
+  }
+  if (!existsSync(join(dir, 'aeon.yml')) && readdirSync(dir).length) {
+    report('clone', 'fail', `${dir} exists, is not empty and is not an Aeon checkout`, 'pick a new or empty folder: ./aeon init --dir <path>')
+    finish(false)
+  }
 }
 
 // The checks that make switching this folder over safe: no uncommitted edits
@@ -384,7 +402,8 @@ async function adoptThisFolder(here: string | null, target: string): Promise<str
   const url = `https://github.com/${target}.git`
   const add = git('remote', 'add', TEMP_REMOTE, url)
   if (!add.ok) {
-    report('folder', 'fail', `could not add a remote for ${target}: ${add.err}`, `git remote add origin ${url}`)
+    report('folder', 'fail', `could not add the ${TEMP_REMOTE} remote for ${target}: ${add.err.split('\n')[0]}`,
+      `git remote remove ${TEMP_REMOTE}, then re-run ./aeon init`)
     finish(false)
   }
   if (!(await waitForContent(target))) {
@@ -409,9 +428,18 @@ async function adoptThisFolder(here: string | null, target: string): Promise<str
   // Only now move the remotes. The old origin (the template) becomes upstream;
   // if an upstream already exists it is kept and the template origin dropped.
   if (remotes().includes('origin')) {
-    if (!remotes().includes('upstream')) git('remote', 'rename', 'origin', 'upstream')
-    else if (here && isUpstreamRepo(here)) git('remote', 'remove', 'origin')
-    else git('remote', 'rename', 'origin', 'origin-previous')
+    let moved: Run
+    let hint = 're-run ./aeon init'
+    if (!remotes().includes('upstream')) moved = git('remote', 'rename', 'origin', 'upstream')
+    else if (here && isUpstreamRepo(here)) moved = git('remote', 'remove', 'origin')
+    else if (remotes().includes('origin-previous')) {
+      moved = { ok: false, out: '', err: 'an origin-previous remote already exists' }
+      hint = `this folder already has upstream and origin-previous remotes; remove the one you no longer need (git remote remove origin-previous), then re-run ./aeon init`
+    } else moved = git('remote', 'rename', 'origin', 'origin-previous')
+    if (!moved.ok) {
+      report('folder', 'fail', `could not move the old origin remote out of the way: ${moved.err.split('\n')[0]}`, hint)
+      finish(false)
+    }
   }
   const ren = git('remote', 'rename', TEMP_REMOTE, 'origin')
   if (!ren.ok) {
@@ -452,6 +480,27 @@ async function ensureTracksOrigin(slug: string) {
   if (!git('fetch', 'origin').ok || !git('rev-parse', '--verify', '--quiet', `refs/remotes/origin/${branch}`).ok) {
     report('folder', 'fail', `could not fetch origin/${branch} from ${slug}`, `git fetch origin && git branch --set-upstream-to=origin/${branch} ${branch}`)
     finish(false)
+  }
+  // A template copy starts a FRESH history, so a branch still on the
+  // template's commits shares nothing with origin. Re-pointing @{u} alone
+  // would leave this folder on the template; switch to the instance's history
+  // instead, but only when that cannot lose work.
+  if (!git('merge-base', 'HEAD', `origin/${branch}`).ok) {
+    const dirty = git('status', '--porcelain', '--untracked-files=no').out
+    const local = git('rev-list', '--count', '--branches', '--not', '--remotes')
+    if (dirty || !local.ok || local.out !== '0') {
+      report('folder', 'fail', `${branch} has no history in common with ${slug}, and this folder has ${dirty ? 'uncommitted changes' : 'local commits on no remote'}`,
+        `save them elsewhere, then: git checkout -B ${branch} origin/${branch}  (or start fresh: ./aeon init --dir ../${slug.split('/')[1]})`)
+      finish(false)
+    }
+    const co = git('checkout', '-B', branch, `origin/${branch}`)
+    if (!co.ok) {
+      report('folder', 'fail', `could not check out origin/${branch}: ${co.err.split('\n')[0]}`, `git checkout -B ${branch} origin/${branch}`)
+      finish(false)
+    }
+    git('branch', `--set-upstream-to=origin/${branch}`, branch)
+    report('folder', 'fixed', `${branch} was still the template's history; switched it to ${slug}'s origin/${branch}`)
+    return
   }
   git('branch', `--set-upstream-to=origin/${branch}`, branch)
   report('folder', 'fixed', `${branch} now tracks origin/${branch} (was ${was})`)

@@ -133,5 +133,36 @@ mkdir -p "$T/d9" && echo keep > "$T/d9/file"
 init "$W" --yes --name aeon8 --dir "$T/d9"; rc=$?
 [ "$rc" != 0 ] && [ -f "$T/d9/file" ] && pass "--dir refuses a non-empty folder and leaves it alone" || bad "--dir on a non-empty folder: rc=$rc"
 
+mkdir -p "$T/d10" && echo x > "$T/d10/notadir"
+init "$W" --yes --name aeon10 --dir "$T/d10/notadir"; rc=$?
+[ "$rc" != 0 ] && pass "--dir on a file stops" || bad "--dir on a file ran"
+[ -d "$GH/tester/aeon10.git" ] && bad "repo created before the --dir check" || pass "--dir is checked before create"
+
+# --- 9. a hand-wired folder still on the template's history is switched over -----
+# Template copies start a FRESH history (fake-gh does the same), so pointing the
+# branch at origin is not enough: it must move to the instance's commits.
+"$HERE/fake-gh" repo create tester/aeon11 --template aeonfun/aeon --public >/dev/null
+git --git-dir="$GH/tester/aeon11.git" merge-base main "$(git --git-dir="$GH/aeonfun/aeon.git" rev-parse main)" >/dev/null 2>&1 \
+  && bad "fake template copy shares history with the template" || pass "template copies have fresh history"
+W="$T/w11"; clone_template "$W"
+git -C "$W" remote rename origin upstream
+git -C "$W" remote add origin https://github.com/tester/aeon11.git
+init "$W" --yes; rc=$?
+[ "$rc" = 0 ] && pass "fresh-history repair exits 0" || { bad "fresh-history repair exited $rc"; cat "$T/out"; }
+[ "$(git -C "$W" rev-parse HEAD)" = "$(git --git-dir="$GH/tester/aeon11.git" rev-parse main)" ] \
+  && pass "folder moved onto the instance's history" || bad "HEAD is still the template commit"
+[ "$(u "$W")" = "origin/main" ] && pass "and tracks origin/main" || bad "tracks $(u "$W")"
+grep -q "was still the template's history" "$T/out" && pass "history switch reported" || bad "history switch not reported"
+
+W="$T/w12"; clone_template "$W"
+git -C "$W" remote rename origin upstream
+git -C "$W" remote add origin https://github.com/tester/aeon11.git
+echo "# local edit" >> "$W/aeon.yml"
+tpl_head="$(git -C "$W" rev-parse HEAD)"
+init "$W" --yes; rc=$?
+[ "$rc" != 0 ] && pass "fresh-history repair refuses a dirty folder" || bad "dirty folder was moved"
+[ "$(git -C "$W" rev-parse HEAD)" = "$tpl_head" ] && grep -q "local edit" "$W/aeon.yml" \
+  && pass "dirty folder left untouched" || bad "dirty folder changed"
+
 [ "$fail" = 0 ] && echo "PASS" || echo "SOME TESTS FAILED"
 exit $fail
