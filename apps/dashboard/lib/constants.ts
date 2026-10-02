@@ -56,18 +56,13 @@ export const KIMI_MODELS = [
 // The default (first entry, matched by aeon.yml's DEFAULT_HM) is gpt-6-luna,
 // newer and cheaper than the prior default gpt-5.1-codex-mini ($0.10/$0.50 vs
 // $0.25/$2 per 1M on OpenRouter). gpt-6-sol and gpt-6.1-sol are the quality
-// options. The older ids stay: gpt-5.1-codex-mini (verified live 2026-07-22),
-// gpt-5-mini as a universally-safe fallback, the fuller codex line
-// (gpt-5.3-codex) and the gpt-5.6 family (luna, terra), all via OpenRouter.
+// options. The older ids (gpt-5.1-codex-mini, gpt-5-mini, gpt-5.3-codex, the
+// gpt-5.6 family) are no longer offered here but stay workflow_dispatch choices,
+// so an existing pin still dispatches and renders via RETIRED_MODEL_LABELS.
 export const CODEX_MODELS = [
   { id: 'openai/gpt-6-luna', label: 'GPT-6 Luna' },
   { id: 'openai/gpt-6-sol', label: 'GPT-6 Sol' },
   { id: 'openai/gpt-6.1-sol', label: 'GPT-6.1 Sol' },
-  { id: 'openai/gpt-5.1-codex-mini', label: 'GPT-5.1 Codex Mini' },
-  { id: 'openai/gpt-5-mini', label: 'GPT-5 Mini' },
-  { id: 'openai/gpt-5.3-codex', label: 'GPT-5.3 Codex' },
-  { id: 'openai/gpt-5.6-luna', label: 'GPT-5.6 Luna' },
-  { id: 'openai/gpt-5.6-terra', label: 'GPT-5.6 Terra' },
 ]
 
 // vibe gets its own list: its generic ProviderConfig drives ANY OpenRouter model,
@@ -129,15 +124,27 @@ export const HERMES_MODELS = [
 // against the Harness union in ./types.
 export const HARNESSES = [
   { id: 'claude', label: 'Claude' },
-  { id: 'grok', label: 'Grok' },
   { id: 'codex', label: 'Codex' },
+  { id: 'grok', label: 'Grok' },
+  { id: 'kimi', label: 'Kimi' },
   { id: 'fx', label: 'fx' },
   { id: 'pi', label: 'Pi' },
   { id: 'vibe', label: 'Mistral' },
-  { id: 'kimi', label: 'Kimi' },
   { id: 'cursor', label: 'Cursor' },
   { id: 'hermes', label: 'Hermes' },
 ] as const satisfies readonly { id: Harness; label: string }[]
+
+// Labels for ids no longer offered in any picker but still valid dispatch
+// choices, so a pinned older model renders by name instead of raw id.
+const RETIRED_MODEL_LABELS: Record<string, string> = {
+  'claude-sonnet-5': 'Sonnet 5',
+  'claude-opus-4-8': 'Opus 4.8',
+  'openai/gpt-5.1-codex-mini': 'GPT-5.1 Codex Mini',
+  'openai/gpt-5-mini': 'GPT-5 Mini',
+  'openai/gpt-5.3-codex': 'GPT-5.3 Codex',
+  'openai/gpt-5.6-luna': 'GPT-5.6 Luna',
+  'openai/gpt-5.6-terra': 'GPT-5.6 Terra',
+}
 
 // fx has no model picker: unlike codex/pi/vibe/kimi's OpenRouter path, fx's
 // only real auth mode is native-key (AI_GATEWAY_API_KEY / VERCEL_OIDC_TOKEN),
@@ -153,7 +160,7 @@ export function pickerOptions(list: readonly { id: string; label: string }[], cu
   if (!current || list.some((m) => m.id === current)) return list
   const known = [MODELS, GROK_MODELS, CODEX_MODELS, VIBE_MODELS, PI_MODELS, KIMI_MODELS, CURSOR_MODELS, HERMES_MODELS]
     .flat().find((m) => m.id === current)
-  const label = known?.label ?? { 'claude-sonnet-5': 'Sonnet 5', 'claude-opus-4-8': 'Opus 4.8' }[current] ?? current
+  const label = known?.label ?? RETIRED_MODEL_LABELS[current] ?? current
   return [...list, { id: current, label: `${label} (configured)` }]
 }
 

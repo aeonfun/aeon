@@ -9,7 +9,7 @@
 import { describe, it } from "node:test";
 import { strict as assert } from "node:assert";
 
-import { packGroups, FIRST_PARTY_KEYS, keyProvidedByHarness, MODELS, pickerOptions } from "./constants";
+import { packGroups, FIRST_PARTY_KEYS, keyProvidedByHarness, MODELS, CODEX_MODELS, HARNESSES, pickerOptions } from "./constants";
 
 const sk = (name: string, pack: string, packName = "") => ({ pack, packName });
 
@@ -89,5 +89,20 @@ describe("pickerOptions", () => {
   });
   it("labels an unknown id with the raw id", () => {
     assert.equal(pickerOptions(MODELS, "x/custom").at(-1)?.label, "x/custom (configured)");
+  });
+});
+
+describe("CODEX_MODELS", () => {
+  it("offers exactly the current three GPT-6 models", () => {
+    assert.deepEqual(CODEX_MODELS.map(m => m.id), ["openai/gpt-6-luna", "openai/gpt-6-sol", "openai/gpt-6.1-sol"]);
+  });
+  it("names an older codex pin that left the list", () => {
+    assert.equal(pickerOptions(CODEX_MODELS, "openai/gpt-5.1-codex-mini").at(-1)?.label, "GPT-5.1 Codex Mini (configured)");
+  });
+});
+
+describe("HARNESSES", () => {
+  it("lists Claude, Codex, Grok, Kimi first", () => {
+    assert.deepEqual(HARNESSES.slice(0, 4).map(h => h.id), ["claude", "codex", "grok", "kimi"]);
   });
 });
