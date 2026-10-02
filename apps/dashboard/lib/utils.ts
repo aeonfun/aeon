@@ -75,6 +75,14 @@ export function getSkillStatus(name: string, enabled: boolean, runs: Run[]) {
   return enabled ? { label: 'Enabled', color: 'green' } : { label: 'Disabled', color: 'gray' }
 }
 
+// Id of the newest successful run of a skill (runs come newest first), or null.
+// The dashboard watches this for strategy-builder / soul-builder: when a new
+// one lands, the file it rewrote is reloaded instead of showing stale content.
+export function lastSuccessfulRunId(skill: string, runs: Run[]): number | null {
+  const r = runs.find(r => r.workflow.toLowerCase().includes(skill) && r.status === 'completed' && r.conclusion === 'success')
+  return r ? r.id : null
+}
+
 export function statusDot(color: string) {
   return `w-2 h-2 rounded-full shrink-0 ${color === 'green' ? 'bg-aeon-green' : color === 'orange' ? 'bg-aeon-red animate-pulse' : color === 'red' ? 'bg-aeon-red-alert' : 'bg-[rgba(250,250,250,0.22)]'}`
 }

@@ -10,7 +10,7 @@ import type {
 } from '../lib/types'
 import { getJson, postJson, putJson, patchJson, del, scheduleRunRefresh } from '../lib/api-client'
 import { MODELS, authSecretsForHarness, PACK_BY_KEY, FIRST_PARTY_KEYS, DEFAULT_VISIBLE_PACKS, HARNESSES, modelsForHarness } from '../lib/constants'
-import { displayName } from '../lib/utils'
+import { displayName, lastSuccessfulRunId } from '../lib/utils'
 import TargetCursor from '../components/ui/TargetCursor'
 import { LoadingScreen } from '../components/LoadingScreen'
 import { ErrorScreen } from '../components/ErrorScreen'
@@ -140,6 +140,25 @@ export default function Dashboard() {
     setEnabledPacks(Array.from(new Set([...DEFAULT_VISIBLE_PACKS, ...saved])))
   }, [repo])
   useEffect(() => { const id = setInterval(refreshRuns, 10_000); return () => clearInterval(id) }, [refreshRuns])
+  // A builder run commits STRATEGY.md / soul/ on GitHub. Once a new one
+  // succeeds, pull it into the local checkout (local mode reads these files from
+  // disk, same as the Pull button) and reload that editor so it stops showing the
+  // old content. The pull is best-effort: on failure the reload still runs.
+  const strategyBuildId = lastSuccessfulRunId('strategy-builder', runs)
+  const soulBuildId = lastSuccessfulRunId('soul-builder', runs)
+  const seenBuild = useRef<{ strategy?: number | null; soul?: number | null }>({})
+  useEffect(() => {
+    if (loading) return
+    const seen = seenBuild.current
+    const strategyChanged = seen.strategy !== undefined && strategyBuildId !== null && strategyBuildId !== seen.strategy
+    const soulChanged = seen.soul !== undefined && soulBuildId !== null && soulBuildId !== seen.soul
+    seenBuild.current = { strategy: strategyBuildId, soul: soulBuildId }
+    if (!strategyChanged && !soulChanged) return
+    postJson<ErrorResponse>('/api/outputs').catch(() => {}).finally(() => {
+      if (strategyChanged) setStrategyLoaded(false)
+      if (soulChanged) setSoulLoaded(false)
+    })
+  }, [loading, strategyBuildId, soulBuildId])
   useEffect(() => { setFeedLoading(true); setFeedError(false); getJson<OutputsResponse>('/api/outputs').then(d => setOutputs(d.outputs || [])).catch(() => setFeedError(true)).finally(() => setFeedLoading(false)) }, [feedKey])
   useEffect(() => { if (view === 'strategy' && !strategyLoaded) { getJson<StrategyResponse>('/api/strategy').then(d => { setStrategy(d.content || ''); setStrategyLoaded(true) }).catch(() => { setStrategyError(true); setStrategyLoaded(true) }) } }, [view, strategyLoaded])
   useEffect(() => { if (view === 'mcp' && !mcpLoaded) { getJson<McpResponse>('/api/mcp').then(d => { setMcpServers(d.servers || {}); setMcpLoaded(true) }).catch(() => { setMcpError(true); setMcpLoaded(true) }) } }, [view, mcpLoaded])
