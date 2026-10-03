@@ -43,9 +43,11 @@ The left sidebar switches between the workspaces; the **Team** roster below the 
 | **HQ** | Mission-control overview — team size, how many skills are on duty vs. working, pack breakdown, and the most recent runs. Click a run to inspect its output. |
 | **Packs** | Enable or disable whole [skill packs](../../docs/skill-packs.md). By default only the small **Core** pack is visible; switching a pack on reveals its skills across the UI. Community packs install one-click from here (a security-scanned, auto-merging PR). |
 | **Strategy** | Edit `STRATEGY.md` — the north-star goal, priorities, audience, and constraints that ride along with every run. |
-| **Soul** | Manage the optional `soul/` voice files (identity, writing style, examples) so notifications and articles sound like you. |
+| **Soul** | Manage the optional `soul/` voice files (identity, writing style, examples) so notifications and articles sound like you. After a `strategy-builder` or `soul-builder` run succeeds, the Strategy and Soul editors pull and reload on their own. |
 | **MCP** | Browse featured MCP servers and write `.mcp.json` for one-click install; shows which secret each server needs. |
 | **Settings** | Add and manage credentials (Anthropic / gateway keys, per-skill API keys, notification channel tokens) as GitHub secrets. Skills flag inline when a required key is missing. |
+
+On a phone (below 768px) the sidebar and the Feed / Runs / Analytics panel become slide-in drawers opened from a top bar, and Pull / Push move into the sidebar drawer.
 
 Selecting a skill from the roster opens its detail panel: description, schedule, the API keys and MCP servers it needs, a `var` input, a **model picker** (its options track the active harness), and **Run now**.
 

@@ -96,7 +96,7 @@ All branches read operator-controlled files under `memory/` (runtime config — 
   - claude-sonnet-5-5
   - claude-opus-5-5
   - gpt-6-luna
-  - gpt-6-sol
+  - gpt-6.1-sol
   - gemini-3
   - grok-4.7
   ```

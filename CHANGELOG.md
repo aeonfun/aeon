@@ -11,6 +11,42 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Added
 
+- **`./aeon init` sets up an instance in one command.** From a clone of the template it checks gh
+  and its `repo` + `workflow` scopes, creates the instance from the template (never a fork, never
+  aeonfun/aeon or a redirect), switches the folder over with aeonfun/aeon kept as `upstream`, runs
+  `gh repo set-default`, enables Actions and PR creation without forcing write permissions, turns
+  back on workflows GitHub left off, sets `GH_GLOBAL` from the gh token, connects a model from a
+  manifest-built harness menu, links Telegram through a `t.me/<bot>?start=<code>` link, and prints
+  a summary checklist. Every step checks first, so it is safe to re-run; `--dry-run` shows the plan.
+  Flags: `--name`, `--private`, `--dir`, `--harness`, `--yes`, `--no-telegram`, `--no-dashboard`.
+  The README quick start now leads with it. (#1158)
+- **One credential manifest for every surface.** Each adapter's `rh-meta` block lists its
+  credentials in the exact order `resolve-harness.sh` picks them (secret, kind, auth mode, prefix,
+  where to get it, login command, credential paths), and a new `harness-adapter/gateways.json`
+  lists every `llm-gateway.sh` provider in cascade order. `scripts/tests/test_credential_manifest.sh`
+  (266 checks, in ci-tests) holds `resolve-harness.sh`, `harness-auth.ts`, `aeon.yml` secret
+  bindings, install pins, `llm-gateway.sh` and `gateway-registry.ts` to it. `docs/harnesses.md`
+  gains a credential table generated from it. Drift fixed on the way: grok no longer claims an
+  OpenRouter fallback, pi lists `ANTHROPIC_OAUTH_TOKEN`, and the kimi, vibe, fx, cursor and hermes
+  install pins match reality. (#1158)
+- **Dashboard: one Connect modal for every harness.** It replaces AuthModal, GrokAuthModal and
+  HarnessAuthModal. Step 1 shows the exact command to run (for example `claude setup-token`, or
+  `codex login` plus a one-liner that copies the saved login); step 2 is one paste box that says
+  what it detected before saving ("Claude subscription -> CLAUDE_CODE_OAUTH_TOKEN"). Login captures
+  are verified and re-packed server-side, never stored as pasted. Also one-click OpenRouter (OAuth
+  PKCE), and on a local dashboard **Do it for me** and **Found on this machine** (names only, never
+  values). HQ shows a setup checklist until the repo, Actions, model, notifications and a first run
+  are done, and Settings links the Telegram chat without copying an id. A post-connect
+  `connect-check` test run shipped with it and was dropped the same day: the first real run proves
+  the credential, so the catalog stays at 85 skills. (#1157, #1160)
+- **Failed runs explain themselves on HQ.** For a failed or timed-out run, HQ's Recent activity
+  and the run detail panel read the log (`GET /api/runs/[id]/diagnosis`, cached) and show one
+  plain reason, the next step, and a **Connect** button when the credential is the problem. (#1160)
+- **The dashboard works on phones.** Below 768px the sidebar and the Feed / Runs / Analytics panel
+  become slide-in drawers opened from a new top bar, Pull / Push move into the sidebar drawer, and
+  the pickers, panel heroes and Settings rows compact to fit a 390px screen. Desktop is unchanged.
+  (#1154)
+
 - **pi runs MCP servers.** pi 0.99 ships built-in MCP (stdio + streamable HTTP), so the pi adapter
   no longer skips `.mcp.json`. It translates the servers into pi's `mcp.json` inside a temp
   `PI_CODING_AGENT_DIR` (the user's own `~/.pi/agent/mcp.json` is never read or written) and
@@ -128,6 +164,22 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Changed
 
+- **Model pickers show only the latest models.** pi: `deepseek/deepseek-v4.1-flash` (new default)
+  and `deepseek/deepseek-v4-pro`; vibe: `mistralai/mistral-medium-3-5` and
+  `deepseek/deepseek-v4.1-flash`; hermes: `default`, `anthropic/claude-sonnet-5.5` and
+  `openai/gpt-6.1-sol`; kimi: `moonshotai/kimi-k2.7-code` (new default) and `moonshotai/kimi-k3`;
+  grok: `grok-4.7` and `grok-4.6`. The pi and kimi runtime defaults moved with them, and kimi on a
+  Moonshot API key now pins the native `kimi-k2.7-code`. Dropped ids stay dispatchable and render
+  as "(configured)", so existing pins keep working. (#1161)
+- **Community pack registry trimmed to 8 packs.** Eight dead or idle packs are gone from
+  `catalog/skill-packs.json`, `docs/community-skill-packs.md` and the trust list (Atrium, Mneme,
+  Signa and AgentLink no longer resolve; AntFleet, SpartanLabs Polymarket, LiquidPad and
+  MythosForge overlap first-party skills or went idle). `bin/install-from-atrium` is removed because
+  the Atrium marketplace is offline; `bin/add-skill` and `bin/install-skill-pack` are the two
+  installers left. (#1155, #1156)
+- **`STRATEGY.md` template paragraphs are one line each**, so soft-wrapping editors (the dashboard
+  Strategy tab, the GitHub web editor) no longer break mid-sentence. Text is unchanged. (#1151)
+
 - **Model defaults move to the 2026-10 generation.** claude `claude-sonnet-5-5` (default) and
   `claude-opus-5-5` (the `deploy-uni-hook` / `sc-audit` pins), haiku stays
   `claude-haiku-4-5-20251001`; grok `grok-4.7` (harness, gateway, scorer and every direct xAI call);
@@ -209,6 +261,21 @@ from or pin to; the template keeps serving the latest `main` to new forks.
   showcase hooks in `aeonfun/univ4-hooks` carried the fee. (#1035)
 
 ### Fixed
+
+- **`base-mcp` does real work on a scheduled run.** An empty `var` used to do onboarding only with
+  zero MCP calls. It now takes a wallet snapshot (address, portfolio, last 7 days), `history[:N]`
+  lists recent transactions, and any other `var` is a read-only account question. It never sends,
+  swaps or signs, and notifies only when something changed. (#1150)
+- **Strategy and Soul reload after a builder run.** When a `strategy-builder` or `soul-builder` run
+  succeeds, the dashboard pulls and reloads that editor instead of showing the old text until a
+  manual Pull. (#1153)
+- **`next dev` no longer leaves files for PUSH to commit.** Next 16.3 wrote `AGENTS.md`,
+  `CLAUDE.md` and a rewritten `next-env.d.ts` into `apps/dashboard`, and the PUSH button's
+  `git add -A` would commit them into the instance. `agentRules: false` stops the first two;
+  `next-env.d.ts` is now gitignored and generated by `next typegen` before typecheck. (#1159)
+- **No more leaked-token alert on new instances.** The webhook test fixture builds its fake
+  Telegram token from parts, so GitHub secret scanning stops flagging every public instance made
+  from the template. (#1152)
 
 - **Post-run state survives push races and feature branches.** `git-push-retry.sh` now merges
   conflicts per file type (union for logs and token usage, a 3-way jq merge for JSON, `--ours`

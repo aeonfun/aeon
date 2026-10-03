@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
-# skill-install.sh — shared helpers for the three skill installers:
+# skill-install.sh — shared helpers for the two skill installers:
 #   bin/add-skill            (any GitHub repo, scans for SKILL.md)
 #   bin/install-skill-pack   (curated community packs with a skills-pack.json manifest)
-#   bin/install-from-atrium  (Atrium onchain marketplace, single SKILL.md endpoint)
 #
 # SOURCED, never executed. Before this file existed each installer carried its
 # own copy of: frontmatter parsing, trusted-source check, tarball fetch+extract,
 # skills.lock provenance upsert, and aeon.yml insertion. Centralising them here
-# keeps the three entry points thin and their shared behaviour identical.
+# keeps the two entry points thin and their shared behaviour identical.
 #
 # Every function is Bash 3.2-compatible (macOS ships 3.2 — no associative
 # arrays, no ${var^^}) and takes explicit path arguments rather than reading
@@ -89,7 +88,7 @@ skill_fetch_repo() {
 # skill_lock_upsert <lock_file> <entry_json>
 #   Ensure <lock_file> holds a JSON array, then replace any existing element with
 #   the same .skill_name and append <entry_json>. Requires jq. This is the one
-#   provenance-write path for all three installers (schemas differ only in which
+#   provenance-write path for both installers (schemas differ only in which
 #   fields the caller puts in <entry_json>).
 skill_lock_upsert() {
   local lock_file="$1" entry="$2"
