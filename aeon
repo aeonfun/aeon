@@ -48,10 +48,22 @@ fi
 
 cd "$DASHBOARD"
 
-# Install deps if needed
+# Install deps on first run. Quietly: the raw npm output is pages of peer
+# warnings (eslint plugin ranges) and an audit of dev-only lint deps, which
+# reads like an error to a first-time user. It goes to a log that is shown
+# only when the install fails. `npm ci` when the lockfile exists, so the
+# install is exactly what CI tested.
 if [ ! -d node_modules ]; then
-  echo "Installing dependencies..."
-  npm install
+  echo "Installing dashboard dependencies (first run only)..."
+  NPM_LOG="$(mktemp "${TMPDIR:-/tmp}/aeon-npm-install.XXXXXX")"
+  NPM_CMD=install
+  [ -f package-lock.json ] && NPM_CMD=ci
+  if ! npm "$NPM_CMD" --no-audit --no-fund --loglevel=error >"$NPM_LOG" 2>&1; then
+    echo "npm $NPM_CMD failed. Last lines (full log: $NPM_LOG):" >&2
+    tail -n 30 "$NPM_LOG" >&2
+    exit 1
+  fi
+  rm -f "$NPM_LOG"
 fi
 
 PORT="${PORT:-5555}"
@@ -73,13 +85,23 @@ while lsof -iTCP:"$PORT" -sTCP:LISTEN -t >/dev/null 2>&1; do
   PORT=$((PORT + 1))
 done
 
+# Banner. Plain one-column characters only inside the box (an emoji is two
+# columns wide in most terminals and breaks the right edge), and every row is
+# padded to the same inner width, whatever the port length.
+URL="http://127.0.0.1:$PORT"
+INNER=38
+[ $((${#URL} + 6)) -gt "$INNER" ] && INNER=$((${#URL} + 6))
+bar="$(printf '%*s' "$INNER" '' | sed 's/ /═/g')"
+row() { printf '  ║%-*s║\n' "$INNER" "$1"; }
+TITLE="Aeon Dashboard"
+pad=$(((INNER - ${#TITLE}) / 2))
 echo ""
-echo "  ╔══════════════════════════════════════╗"
-echo "  ║         ⚡ Aeon Dashboard ⚡          ║"
-echo "  ║                                      ║"
-printf "  ║   ➜  http://127.0.0.1:%-15s ║\n" "$PORT"
-echo "  ║                                      ║"
-echo "  ╚══════════════════════════════════════╝"
+echo "  ╔${bar}╗"
+row "$(printf '%*s%s' "$pad" '' "$TITLE")"
+row ""
+row "   -> $URL"
+row ""
+echo "  ╚${bar}╝"
 echo ""
 
 # Bind loopback only. The /api/* routes can set/delete repo secrets and
