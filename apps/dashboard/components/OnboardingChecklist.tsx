@@ -51,7 +51,7 @@ export function OnboardingChecklist(props: OnboardingChecklistProps) {
     : check?.state === 'pass' ? 'Verified from a GitHub runner.'
     : testing ? 'Test run in progress...'
     : check?.state === 'fail' ? `${check.reason ?? 'Last test failed.'} ${check.hint ?? ''}`
-    : 'Key saved, not tested yet.'
+    : 'Key saved, not tested on GitHub yet.'
 
   const rows: { label: string; state: RowState; detail: string; action?: { label: string; onClick?: () => void; href?: string } }[] = [
     { label: 'Repo connected', state: repo ? 'done' : 'todo', detail: repo || 'The dashboard could not find your repo. Run gh auth login, then reload.' },
@@ -68,7 +68,7 @@ export function OnboardingChecklist(props: OnboardingChecklistProps) {
       action: !hasModelKey ? { label: 'Connect', onClick: props.onConnect }
         : check?.state === 'pass' || testing ? undefined
         : check?.state === 'fail' ? { label: 'Fix', onClick: props.onFix }
-        : { label: 'Test', onClick: props.onTest },
+        : { label: 'Test connection', onClick: props.onTest },
     },
     {
       label: 'Notifications set up',

@@ -33,8 +33,29 @@ async function fetchRunLog(runId: number): Promise<string> {
   return gh(['run', 'view', String(runId), ...ghArgsRepo(), '--log'], 45_000)
 }
 
+// The instance predates connect-check: dispatching would just fail the run.
+export const MISSING_SKILL_MESSAGE = 'This instance has no connect-check skill yet. Update your instance (merge the latest aeonfun/aeon, e.g. git pull upstream main, then ./aeon sync) and test again.'
+export class ConnectCheckMissing extends Error {
+  constructor() { super(MISSING_SKILL_MESSAGE) }
+}
+
+// Does the repo the runs read (its default branch on GitHub) have the skill?
+// null when it can't be told (no repo resolved, API trouble).
+export async function instanceHasConnectCheck(): Promise<boolean | null> {
+  const repo = ghArgsRepo()[1]
+  if (!repo) return null
+  try {
+    await gh(['api', `repos/${repo}/contents/skills/${CONNECT_CHECK_SKILL}/SKILL.md`, '--silent'])
+    return true
+  } catch (e) {
+    const msg = `${e instanceof Error ? e.message : ''} ${(e as { stderr?: string }).stderr ?? ''}`
+    return /404|Not Found/i.test(msg) ? false : null
+  }
+}
+
 export async function dispatchConnectCheck(store: KvStore, harness: string): Promise<{ dispatchId: string }> {
   if (!HARNESS_RE.test(harness)) throw new Error(`Invalid harness: ${harness}`)
+  if ((await instanceHasConnectCheck()) === false) throw new ConnectCheckMissing()
   const dispatchId = `cc-${harness}-${makeNonce().slice(0, 10)}`
   await gh(['workflow', 'run', 'aeon.yml', ...ghArgsRepo(),
     '-f', `skill=${CONNECT_CHECK_SKILL}`, '-f', `harness=${harness}`, '-f', `dispatch_id=${dispatchId}`])

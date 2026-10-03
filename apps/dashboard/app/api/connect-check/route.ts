@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { errorResponse, requireGh } from '@/lib/http'
 import { getConnectStore } from '@/lib/connect-store'
-import { dispatchConnectCheck, readConnectCheck } from '@/lib/connect-check-server'
+import { ConnectCheckMissing, dispatchConnectCheck, readConnectCheck } from '@/lib/connect-check-server'
 
 // Post-connect "Test connection".
 //   POST { harness }   -> dispatch the connect-check skill, { dispatchId }
@@ -17,6 +17,7 @@ export async function POST(request: Request) {
     if (!harness) return NextResponse.json({ error: 'harness is required' }, { status: 400 })
     return NextResponse.json(await dispatchConnectCheck(getConnectStore(), harness))
   } catch (error: unknown) {
+    if (error instanceof ConnectCheckMissing) return NextResponse.json({ error: error.message, missingSkill: true }, { status: 409 })
     return errorResponse(error, 'Failed to start the connection test')
   }
 }

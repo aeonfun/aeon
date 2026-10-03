@@ -34,7 +34,8 @@ export interface CheckResult {
   // A concrete next step for the operator when the check fails.
   hint?: string
   // A one-click fix the UI can offer next to the hint.
-  fix?: { kind: 'remove-secret'; secret: string; label: string }
+  // `cli` is the same fix as a terminal command (for `aeon init`).
+  fix?: { kind: 'remove-secret'; secret: string; label: string; cli: string }
   usage?: Usage
   runId?: number
   runUrl?: string
@@ -162,7 +163,7 @@ function subscriptionAdvice(secretsSet: string[]): Pick<CheckResult, 'hint' | 'f
     hint: others.length
       ? `GitHub servers rejected the Claude subscription token, and runs try it before your other key (${others[0]}). Remove ${SUBSCRIPTION_SECRET} so runs use that key.`
       : `GitHub servers rejected the Claude subscription token. Remove ${SUBSCRIPTION_SECRET}, then connect an API key or OpenRouter.`,
-    fix: { kind: 'remove-secret', secret: SUBSCRIPTION_SECRET, label: 'Remove subscription token' },
+    fix: { kind: 'remove-secret', secret: SUBSCRIPTION_SECRET, label: 'Remove subscription token', cli: `./aeon secrets rm ${SUBSCRIPTION_SECRET}` },
   }
 }
 

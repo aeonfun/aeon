@@ -43,7 +43,11 @@ export function useConnectChecks() {
     const prev = polls.current.get(harness)
     if (prev) { prev.cancelled = true; polls.current.delete(harness) }
     setCheck(harness, { state: 'queued' })
-    const { ok, data } = await postJson<{ dispatchId?: string; error?: string }>('/api/connect-check', { harness })
+    const { ok, data } = await postJson<{ dispatchId?: string; error?: string; missingSkill?: boolean }>('/api/connect-check', { harness })
+    if (data.missingSkill) {
+      setCheck(harness, { state: 'fail', reason: 'This instance has no connect-check skill yet.', hint: 'Update your instance (merge the latest aeonfun/aeon, e.g. git pull upstream main, then Push), then test again.' })
+      return
+    }
     if (!ok || !data.dispatchId) {
       setCheck(harness, { state: 'fail', reason: data.error || 'Could not start the test run.', hint: 'Check that gh is logged in and Actions is enabled, then test again.' })
       return

@@ -10,7 +10,9 @@
 # tracking the template, resuming an interrupted switch-over, refusing to create
 # anything without a terminal or --yes, refusing a dirty folder BEFORE creating
 # the repo, --dir waiting for content and handing over, and --harness on an
-# already-connected harness only switching aeon.yml (no login).
+# already-connected harness only switching aeon.yml (no login), and the
+# connection test (pass with tokens, zero-usage fail with the remove-token
+# command, --no-test, the instance-predates-connect-check case).
 #
 # Run: bash apps/cli/test/init-sandbox.sh   (needs apps/cli deps: npm ci in apps/cli)
 set -uo pipefail
@@ -163,6 +165,51 @@ init "$W" --yes; rc=$?
 [ "$rc" != 0 ] && pass "fresh-history repair refuses a dirty folder" || bad "dirty folder was moved"
 [ "$(git -C "$W" rev-parse HEAD)" = "$tpl_head" ] && grep -q "local edit" "$W/aeon.yml" \
   && pass "dirty folder left untouched" || bad "dirty folder changed"
+
+# --- 10. test connection --------------------------------------------------------
+# Step 4 left tester/aeon connected (codex via OpenRouter) on an instance made
+# before connect-check existed: init says to update instead of dispatching.
+grep -q "no connect-check skill yet" "$T/out" 2>/dev/null || init "$T/w1" --yes
+grep -q "this instance has no connect-check skill yet" "$T/out" && pass "old instance: says to update" || bad "missing-skill case not reported"
+
+# From here on the template ships the skill, so new instances have it.
+SK="$T/tplw"; git clone -q https://github.com/aeonfun/aeon "$SK"
+mkdir -p "$SK/skills/connect-check" && printf -- '---\nname: connect-check\n---\nAEON_CONNECT_OK\n' > "$SK/skills/connect-check/SKILL.md"
+git -C "$SK" add -A && git -C "$SK" commit -q -m "add connect-check" && git -C "$SK" push -q origin main
+
+FIX="$HERE/../../dashboard/lib/fixtures/connect-check-run.log"
+ZERO="$T/zero.log"
+sed -E 's/Token usage - input: [0-9]+, output: [0-9]+, cache_read: [0-9]+, cache_creation: [0-9]+, total: [0-9]+/Token usage - input: 0, output: 0, cache_read: 0, cache_creation: 0, total: 0/' "$FIX" > "$ZERO"
+export AEON_CONNECT_CHECK_POLL_MS=20
+
+W="$T/w13"; clone_template "$W"
+"$HERE/fake-gh" repo create tester/aeon13 --template aeonfun/aeon --public >/dev/null
+echo CLAUDE_CODE_OAUTH_TOKEN > "$FAKE_GH_STATE/secrets-tester_aeon13"
+rm -f "$FAKE_GH_STATE/dispatch"
+FAKE_RUN_LOG="$FIX" init "$W" --yes --name aeon13; rc=$?
+[ "$rc" = 0 ] && pass "connection test passes" || { bad "connection test run exited $rc"; cat "$T/out"; }
+grep -q "workflow run aeon.yml -R tester/aeon13 -f skill=connect-check -f harness=claude -f dispatch_id=cc-claude-" "$FAKE_GH_STATE/calls" \
+  && pass "connect-check dispatched on the instance for claude" || bad "dispatch call wrong: $(grep 'workflow run' "$FAKE_GH_STATE/calls")"
+grep -q "Claude Code answered from GitHub (22584 tokens)" "$T/out" && pass "pass shows the token count" || bad "no pass line"
+grep -Eq "test +Claude Code answered" "$T/out" && pass "test is in the summary" || bad "test missing from the summary"
+
+FAKE_RUN_LOG="$ZERO" init "$W" --yes --name aeon13; rc=$?
+[ "$rc" != 0 ] && pass "zero usage fails the run" || bad "zero usage exited 0"
+grep -q "test failed: The run finished with zero model usage" "$T/out" && pass "fail shows the reason" || { bad "no fail reason"; cat "$T/out"; }
+grep -q "Remove CLAUDE_CODE_OAUTH_TOKEN" "$T/out" && grep -q "then: ./aeon secrets rm CLAUDE_CODE_OAUTH_TOKEN" "$T/out" \
+  && pass "fail shows the hint and the remove command" || bad "hint/remove command missing"
+
+calls_before="$(grep -c 'workflow run' "$FAKE_GH_STATE/calls")"
+FAKE_RUN_LOG="$FIX" init "$W" --yes --name aeon13 --no-test; rc=$?
+[ "$rc" = 0 ] && grep -q "skipped (--no-test)" "$T/out" && [ "$(grep -c 'workflow run' "$FAKE_GH_STATE/calls")" = "$calls_before" ] \
+  && pass "--no-test skips without dispatching" || bad "--no-test: rc=$rc"
+
+W="$T/w14"; clone_template "$W"
+"$HERE/fake-gh" repo create tester/aeon14 --template aeonfun/aeon --public >/dev/null
+echo CLAUDE_CODE_OAUTH_TOKEN > "$FAKE_GH_STATE/secrets-tester_aeon14"
+calls_before="$(grep -c 'workflow run' "$FAKE_GH_STATE/calls")"
+FAKE_RUN_LOG="$FIX" init "$W" --name aeon14; rc=$?
+[ "$(grep -c 'workflow run' "$FAKE_GH_STATE/calls")" = "$calls_before" ] && pass "no terminal and no --yes: no test dispatched" || bad "test dispatched without confirmation"
 
 [ "$fail" = 0 ] && echo "PASS" || echo "SOME TESTS FAILED"
 exit $fail

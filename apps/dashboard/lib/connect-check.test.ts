@@ -147,7 +147,7 @@ describe('connect-check result parser', () => {
   it('tells the operator to REMOVE the subscription token and offers the one-click fix', () => {
     const alone = interpretRun(facts({ log: runLog(usageLine(0, 0)), secretsSet: ['CLAUDE_CODE_OAUTH_TOKEN'] }))
     assert.match(alone.hint!, /Remove CLAUDE_CODE_OAUTH_TOKEN, then connect an API key or OpenRouter/)
-    assert.deepEqual(alone.fix, { kind: 'remove-secret', secret: 'CLAUDE_CODE_OAUTH_TOKEN', label: 'Remove subscription token' })
+    assert.deepEqual(alone.fix, { kind: 'remove-secret', secret: 'CLAUDE_CODE_OAUTH_TOKEN', label: 'Remove subscription token', cli: './aeon secrets rm CLAUDE_CODE_OAUTH_TOKEN' })
     const withKey = interpretRun(facts({ log: runLog(usageLine(0, 0)), secretsSet: ['CLAUDE_CODE_OAUTH_TOKEN', 'OPENROUTER_API_KEY'] }))
     assert.match(withKey.hint!, /before your other key \(OPENROUTER_API_KEY\)\. Remove CLAUDE_CODE_OAUTH_TOKEN/)
     assert.equal(interpretRun(facts({ log: runLog(usageLine(0, 0)), harness: 'pi', secretsSet: ['CLAUDE_CODE_OAUTH_TOKEN'] })).fix, undefined)

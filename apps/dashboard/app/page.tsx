@@ -264,6 +264,17 @@ export default function Dashboard() {
   const enabledCount = visibleSkills.filter(s => s.enabled).length
   const workingCount = runs.filter(r => r.status === 'in_progress').length
 
+  // A model key exists but no connect-check has ever run for this harness
+  // (e.g. right after `./aeon init`): start one automatically, once per repo
+  // and harness in this browser, so HQ can show "verified" without a click.
+  const autoCheckState = checks[harness]?.state
+  useEffect(() => {
+    if (loading || !repo || !hasModelKey || autoCheckState !== 'none') return
+    const key = `aeon.connectCheck.autoStarted:${repo}:${harness}`
+    try { if (localStorage.getItem(key)) return; localStorage.setItem(key, new Date().toISOString()) } catch { return }
+    startCheck(harness)
+  }, [loading, repo, harness, hasModelKey, autoCheckState, startCheck])
+
   if (loading) return <LoadingScreen />
   if (error) return <ErrorScreen error={error} />
 

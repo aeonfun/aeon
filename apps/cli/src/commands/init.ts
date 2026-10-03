@@ -9,8 +9,10 @@
 //   4. Actions enabled + Actions may open PRs (the default token is left as is)
 //   5. GH_GLOBAL from your gh token (only when it has repo + workflow)
 //   6. Model: pick a harness and connect one of its credentials (manifest-driven)
-//   7. Telegram (optional): bot token + chat id via a /start deep link
-//   8. Summary checklist, then optionally start the dashboard
+//   7. Test connection: run the tiny connect-check skill on GitHub and read the
+//      verdict (same lib as the dashboard's "Test connection")
+//   8. Telegram (optional): bot token + chat id via a /start deep link
+//   9. Summary checklist, then optionally start the dashboard
 import { parseArgs } from 'node:util'
 import { spawnSync } from 'node:child_process'
 import { existsSync, readFileSync, readdirSync, rmSync, statSync } from 'node:fs'
@@ -28,6 +30,9 @@ import { parseConfig } from '../../../dashboard/lib/config.ts'
 import { HARNESSES, type Harness } from '../../../dashboard/lib/types.ts'
 import { loadGateways, loadHarnesses, runnableSecrets, type Credential, type Gateway, type HarnessManifest } from '../manifest.ts'
 import { grokLogin, storeGrokKey } from '../grok.ts'
+import { createMemoryStore } from '../../../dashboard/lib/connect-store.ts'
+import { ConnectCheckMissing, dispatchConnectCheck, readConnectCheck } from '../../../dashboard/lib/connect-check-server.ts'
+import { pollConnectCheck, type CheckResult } from '../../../dashboard/lib/connect-check.ts'
 import { c, fail, isDryRun, isUpstreamRepo } from '../output.ts'
 
 const USAGE = `aeon init - set up your own Aeon instance, end to end (safe to re-run)
@@ -41,6 +46,7 @@ Options:
   --dir <path>       Clone your instance into <path> and continue there,
                      instead of turning this folder into it
   --harness <h>      Preselect the agent: ${HARNESSES.join(' | ')}
+  --no-test          Skip the connection test (a tiny skill run on GitHub)
   --no-telegram      Skip the Telegram step
   --no-dashboard     Do not offer to start the dashboard at the end
   -y, --yes          Accept every default (still asks for keys it cannot guess)
@@ -59,6 +65,7 @@ interface Opts {
   private: boolean
   dir?: string
   harness?: string
+  test: boolean
   telegram: boolean
   dashboard: boolean
   yes: boolean
@@ -343,7 +350,7 @@ async function cloneElsewhere(opts: Opts, target: string): Promise<never> {
   report('clone', 'fixed', `cloned ${target} into ${dir}; continuing there`)
   printSummary()
   const args = ['init', ...(opts.yes ? ['--yes'] : []), ...(opts.harness ? ['--harness', opts.harness] : []),
-    ...(opts.telegram ? [] : ['--no-telegram']), ...(opts.dashboard ? [] : ['--no-dashboard'])]
+    ...(opts.test ? [] : ['--no-test']), ...(opts.telegram ? [] : ['--no-telegram']), ...(opts.dashboard ? [] : ['--no-dashboard'])]
   const env = { ...process.env, AEON_REPO_ROOT: dir }
   const r = spawnSync(launcher, args, { cwd: dir, stdio: 'inherit', env })
   if (r.error) {
@@ -777,6 +784,78 @@ async function stepModel(opts: Opts, secrets: Set<string> | null) {
   if (h.id !== configured) await switchHarness(h.id)
 }
 
+// --- Test connection --------------------------------------------------------
+// The harness aeon.yml runs, if one of its credentials is set on the instance.
+function connectedHarness(secrets: Set<string> | null): HarnessManifest | null {
+  const h = loadHarnesses().find((x) => x.id === currentHarness())
+  return h && runnableSecrets(h, loadGateways()).some((s) => secrets?.has(s)) ? h : null
+}
+
+const STATE_TEXT: Record<string, string> = {
+  queued: 'waiting for a runner', running: 'running on GitHub', none: 'looking for the run',
+}
+
+// Dispatch connect-check on the configured harness and wait for the verdict:
+// the run must succeed AND the model must answer (token usage, or the exact
+// reply on harnesses that report no usage). A saved key that GitHub rejects
+// (a Claude subscription token, typically) fails here instead of on the first
+// scheduled run.
+async function stepTest(opts: Opts, secrets: Set<string> | null) {
+  heading(7, 'Test connection')
+  const h = connectedHarness(secrets)
+  if (!h) { report('test', 'skip', 'no model connected, nothing to test'); return }
+  if (!opts.test) { report('test', 'skip', 'skipped (--no-test)', './aeon init, or Test connection on the dashboard HQ'); return }
+  note('Runs the tiny connect-check skill once on GitHub (about 1 to 3 minutes) to prove the model answers.')
+  if (!(await confirm(opts, `Test ${h.label} now?`, true))) {
+    report('test', 'skip', 'connection not tested', './aeon init, or Test connection on the dashboard HQ')
+    return
+  }
+  if (isDryRun()) { report('test', 'skip', `would run the connect-check skill on ${h.id} and wait for the result`); return }
+
+  const store = createMemoryStore()
+  let dispatchId: string
+  try {
+    dispatchId = (await dispatchConnectCheck(store, h.id)).dispatchId
+  } catch (e) {
+    if (e instanceof ConnectCheckMissing) {
+      report('test', 'warn', 'this instance has no connect-check skill yet, so the model was not tested',
+        'update your instance (git pull upstream main, then ./aeon sync), then re-run ./aeon init')
+    } else {
+      report('test', 'fail', `could not start the test run: ${e instanceof Error ? e.message.split('\n')[0] : String(e)}`, 'check that Actions is enabled, then re-run ./aeon init')
+    }
+    return
+  }
+
+  let last = ''
+  const progress = (r: CheckResult) => {
+    const text = STATE_TEXT[r.state]
+    if (!text || text === last) return
+    last = text
+    if (interactive) process.stdout.write(`\r     ${c.dim(`${text}...`)}\x1b[K`)
+    else console.log(c.dim(`     ${text}...`))
+  }
+  progress({ state: 'queued' })
+  const pollMs = Number(process.env.AEON_CONNECT_CHECK_POLL_MS) || 5000
+  const result = await pollConnectCheck({
+    read: () => readConnectCheck(store, h.id, dispatchId),
+    onUpdate: progress,
+    sleep: (ms) => sleep(ms).then(() => undefined),
+    now: Date.now,
+    cancelled: () => false,
+    intervalMs: pollMs,
+    timeoutMs: Math.max(10 * 60_000, pollMs * 20),
+  })
+  if (interactive) process.stdout.write('\r\x1b[K')
+  if (result.state === 'pass') {
+    const tokens = result.usage && result.usage.total > 0 ? ` (${result.usage.total} tokens)` : ''
+    report('test', 'ok', `${h.label} answered from GitHub${tokens}`)
+    return
+  }
+  const fix = [result.hint, result.fix ? `then: ${result.fix.cli}` : '', result.runUrl ? `run: ${result.runUrl}` : '']
+    .filter(Boolean).join('  ')
+  report('test', 'fail', `${h.label} test failed: ${result.reason ?? 'no verdict'}`, fix || './aeon init')
+}
+
 // --- Telegram ---------------------------------------------------------------
 interface TgUpdate { message?: { text?: string; chat?: { id?: number } } }
 
@@ -793,7 +872,7 @@ async function manualChatId(why: string): Promise<string> {
 }
 
 async function stepTelegram(opts: Opts, secrets: Set<string> | null) {
-  heading(7, 'Telegram (optional)')
+  heading(8, 'Telegram (optional)')
   if (!opts.telegram) { report('telegram', 'skip', 'skipped (--no-telegram)'); return }
   if (secrets?.has('TELEGRAM_BOT_TOKEN') && secrets.has('TELEGRAM_CHAT_ID')) {
     report('telegram', 'ok', 'TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID are set')
@@ -890,18 +969,18 @@ function finish(completed: boolean): never {
 
 export async function initCommand(argv: string[]) {
   if (argv.includes('-h') || argv.includes('--help')) { console.log(USAGE); return }
-  let values: { name?: string; private?: boolean; dir?: string; harness?: string; 'no-telegram'?: boolean; 'no-dashboard'?: boolean; yes?: boolean }
+  let values: { name?: string; private?: boolean; dir?: string; harness?: string; 'no-test'?: boolean; 'no-telegram'?: boolean; 'no-dashboard'?: boolean; yes?: boolean }
   try {
     ;({ values } = parseArgs({ args: argv, options: {
       name: { type: 'string' }, private: { type: 'boolean' }, dir: { type: 'string' }, harness: { type: 'string' },
-      'no-telegram': { type: 'boolean' }, 'no-dashboard': { type: 'boolean' }, yes: { type: 'boolean', short: 'y' },
+      'no-test': { type: 'boolean' }, 'no-telegram': { type: 'boolean' }, 'no-dashboard': { type: 'boolean' }, yes: { type: 'boolean', short: 'y' },
     } }))
   } catch (e) { fail(e instanceof Error ? e.message : 'bad arguments') }
   const name = values.name ?? 'aeon'
   if (!/^[A-Za-z0-9._-]+$/.test(name)) fail(`--name must be a plain repo name (got '${name}')`)
   const opts: Opts = {
     name, private: Boolean(values.private), dir: values.dir, harness: values.harness,
-    telegram: !values['no-telegram'], dashboard: !values['no-dashboard'], yes: Boolean(values.yes),
+    test: !values['no-test'], telegram: !values['no-telegram'], dashboard: !values['no-dashboard'], yes: Boolean(values.yes),
   }
 
   console.log(c.bold('Aeon setup') + c.dim(`  - each step checks first and only fixes what is missing; safe to re-run${isDryRun() ? ' (dry run: nothing changes)' : ''}`))
@@ -920,6 +999,7 @@ export async function initCommand(argv: string[]) {
   if (!secrets) note('Could not list the repo secrets; the steps below will offer to set everything.')
   await stepGhGlobal(opts, secrets)
   await stepModel(opts, secrets)
+  await stepTest(opts, secretNames(slug) ?? secrets)
   await stepTelegram(opts, secretNames(slug) ?? secrets)
 
   const failed = rows.some((r) => r.status === 'fail')

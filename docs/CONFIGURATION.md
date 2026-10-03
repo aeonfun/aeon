@@ -280,7 +280,7 @@ Aeon needs **at least one** way to reach a model. Add it in the dashboard's **Au
 
 Set several and each run resolves the highest-priority one whose key is present, so you don't have to pick just one.
 
-> **Claude subscription tokens on GitHub runners.** A `CLAUDE_CODE_OAUTH_TOKEN` from `claude setup-token` normally works on a hosted GitHub Actions runner, but in some cases it can be rejected there: the run then exits almost instantly with **zero** model usage even though the token was saved correctly. After connecting, run **Test connection** in the dashboard to confirm it answers from GitHub. If it shows zero usage, remove `CLAUDE_CODE_OAUTH_TOKEN` and use an **API key** (`ANTHROPIC_API_KEY`) or an [OpenRouter or other gateway](#llm-gateways) key instead.
+> **Claude subscription tokens on GitHub runners.** A `CLAUDE_CODE_OAUTH_TOKEN` from `claude setup-token` normally works on a hosted GitHub Actions runner, but in some cases it can be rejected there: the run then exits almost instantly with **zero** model usage even though the token was saved correctly. After connecting, run **Test connection** in the dashboard (or `./aeon init`, which runs the same test) to confirm it answers from GitHub. If it shows zero usage, remove `CLAUDE_CODE_OAUTH_TOKEN` and use an **API key** (`ANTHROPIC_API_KEY`) or an [OpenRouter or other gateway](#llm-gateways) key instead.
 
 ## Models
 
