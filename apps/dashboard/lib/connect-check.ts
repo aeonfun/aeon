@@ -43,51 +43,79 @@ export interface CheckResult {
 // --- log slicing ---------------------------------------------------------------
 
 export interface RunOutput {
-  // The Run step's printed output (scripts and env dumps removed).
+  // The Run step's printed output: from the end of its script block up to and
+  // including the "Token usage" notice. Empty when there is no notice.
   run: string
-  // ##[error] / ##[warning] lines from any step.
+  // ##[error] / ##[warning] lines from any step (outside script blocks).
   problems: string
-  // The harness's final answer: the workflow prints the result text
-  // (`echo "$RESULT_TEXT"`) as the Run step's last output right before the
-  // "Token usage" notice, so it is the last non-empty line ahead of that
-  // notice. null when there is no notice. Anything earlier (a harness echoing
-  // the prompt or SKILL.md, stderr tails) can never count as the answer.
+  // The harness's final answer: the line printed right before the notice.
+  // The workflow ends the Run step with `echo "$RESULT_TEXT"` followed by the
+  // notice (.github/workflows/aeon.yml, Run step), with the harness stderr
+  // tail printed BEFORE that echo, so only this one line is the answer; an
+  // empty result prints an empty line here. null when there is no notice.
   reply: string | null
+  // The Run step got as far as the model call (the usage notice is printed).
+  reachedModel: boolean
 }
 
+// gh prefixes each line with "<ISO timestamp> "; a downloaded logs zip has
+// the same per-line timestamps without the job/step columns.
 const TS = /^﻿?\d{4}-\d{2}-\d{2}T[\d:.]+Z ?/
+// The Run step's usage notice, as rendered (##[notice]) or raw (::notice::).
+// The script echo of the same command has `$INPUT_TOKENS`, not digits.
+const USAGE_NOTICE = /^(##\[notice\]|::notice::)Token usage\b.*\binput:\s*\d+/
 
-// Split a `gh run view --log` dump (lines are job<TAB>step<TAB>text) into the
-// Run step's real output and the error/warning annotations. Each step's
-// ##[group]...##[endgroup] blocks (the script echo, the env listing) are
-// dropped. A log that is not in that shape is treated as all output.
-export function extractRunOutput(log: string): RunOutput {
-  const run: string[] = []
-  const problems: string[] = []
-  const inGroup = new Map<string, boolean>()
-  let tabbed = false
-  for (const line of log.split('\n')) {
+interface LogLine { step: string | null; text: string }
+
+function normalize(log: string): LogLine[] {
+  return log.split('\n').map((raw) => {
+    const line = raw.replace(/\r$/, '')
     const parts = line.split('\t')
-    if (parts.length < 3) continue
-    tabbed = true
-    const step = parts[1]
-    const text = parts.slice(2).join('\t').replace(TS, '')
-    if (text.startsWith('##[group]')) { inGroup.set(step, true); continue }
-    if (text.startsWith('##[endgroup]')) { inGroup.set(step, false); continue }
-    if (inGroup.get(step)) continue
-    if (/^##\[(error|warning)\]/.test(text)) problems.push(text)
-    if (step === 'Run') run.push(text)
-  }
-  const lines = tabbed ? run : log.split('\n').map((l) => l.replace(TS, ''))
-  return { run: lines.join('\n'), problems: problems.join('\n'), reply: replyBeforeUsage(lines) }
+    return parts.length >= 3
+      ? { step: parts[1], text: parts.slice(2).join('\t').replace(TS, '') }
+      : { step: null, text: line.replace(TS, '') }
+  })
 }
 
-function replyBeforeUsage(lines: string[]): string | null {
+// Drop ##[group] ... ##[endgroup] blocks (script echoes, env listings).
+function outsideGroups(lines: LogLine[]): LogLine[] {
+  const out: LogLine[] = []
+  let depth = 0
+  for (const l of lines) {
+    if (l.text.startsWith('##[group]')) { depth++; continue }
+    if (l.text.startsWith('##[endgroup]')) { depth = Math.max(0, depth - 1); continue }
+    if (depth === 0) out.push(l)
+  }
+  return out
+}
+
+// Slice a run log down to what the connect check may read. Works on
+// `gh run view --log` text (gh 2.10x prints "UNKNOWN STEP" in the step column
+// for every line) and on a logs zip without per-step files: the slice is
+// anchored on the LAST usage notice, and starts where the script block of the
+// nearest preceding "##[group]Run " header ends. When real step names exist,
+// only the "Run" step's lines are considered first (fast path).
+export function extractRunOutput(log: string): RunOutput {
+  const all = normalize(log)
+  const problems = outsideGroups(all).map((l) => l.text).filter((t) => /^##\[(error|warning)\]/.test(t))
+  const lines = all.some((l) => l.step === 'Run') ? all.filter((l) => l.step === 'Run') : all
+
   let notice = -1
-  for (let i = lines.length - 1; i >= 0; i--) if (/Token usage\b.*input:\s*\d+/.test(lines[i])) { notice = i; break }
-  if (notice < 0) return null
-  for (let i = notice - 1; i >= 0; i--) if (lines[i].trim()) return lines[i].trim()
-  return null
+  for (let i = lines.length - 1; i >= 0; i--) if (USAGE_NOTICE.test(lines[i].text)) { notice = i; break }
+  if (notice < 0) return { run: '', problems: problems.join('\n'), reply: null, reachedModel: false }
+
+  let header = -1
+  for (let i = notice - 1; i >= 0; i--) if (lines[i].text.startsWith('##[group]Run ')) { header = i; break }
+  let start = 0
+  if (header >= 0) {
+    start = header + 1
+    for (let i = header + 1; i < notice; i++) if (lines[i].text.startsWith('##[endgroup]')) { start = i + 1; break }
+  } else {
+    for (let i = notice - 1; i >= 0; i--) if (lines[i].text.startsWith('##[endgroup]')) { start = i + 1; break }
+  }
+  const run = outsideGroups(lines.slice(start, notice + 1)).map((l) => l.text)
+  const before = run.length >= 2 ? run[run.length - 2].trim() : ''
+  return { run: run.join('\n'), problems: problems.join('\n'), reply: before || null, reachedModel: true }
 }
 
 // The last "Token usage" line (one per run; last wins on retries).
@@ -166,13 +194,14 @@ export function interpretRun(run: RunFacts): CheckResult {
     // Finished green but the model never answered.
     const what = usageReported ? 'The run finished with zero model usage.' : 'The run finished without the expected reply from the model.'
     if (sig) return { state: 'fail', usage, reason: `${what} ${sig.reason}`, hint: sig.hint }
-    if (subscription) return { state: 'fail', usage, reason: what, ...subscriptionAdvice(run.secretsSet) }
+    // Only blame (and offer to remove) the subscription token when the run
+    // demonstrably reached the model call and got zero usage back.
+    if (subscription && usageReported && out.reachedModel && (usage?.total ?? 0) === 0) {
+      return { state: 'fail', usage, reason: what, ...subscriptionAdvice(run.secretsSet) }
+    }
     return { state: 'fail', usage, reason: what, hint: 'Open the run log. If the key looks right, try an API key or OpenRouter.' }
   }
   if (sig) return { state: 'fail', usage, reason: sig.reason, hint: sig.hint }
-  if (subscription && (!usage || usage.total === 0)) {
-    return { state: 'fail', usage, reason: 'The run failed before the model answered.', ...subscriptionAdvice(run.secretsSet) }
-  }
   return { state: 'fail', usage, reason: 'The run failed.', hint: 'Open the run log for the error, fix it, and test again.' }
 }
 
