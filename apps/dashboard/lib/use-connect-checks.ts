@@ -38,6 +38,10 @@ export function useConnectChecks() {
 
   // Dispatch a fresh connect-check run for `harness` and follow it.
   const startCheck = useCallback(async (harness: string) => {
+    // Stop following the previous run first, so its late results can't
+    // overwrite the new "queued" state while this dispatch is in flight.
+    const prev = polls.current.get(harness)
+    if (prev) { prev.cancelled = true; polls.current.delete(harness) }
     setCheck(harness, { state: 'queued' })
     const { ok, data } = await postJson<{ dispatchId?: string; error?: string }>('/api/connect-check', { harness })
     if (!ok || !data.dispatchId) {

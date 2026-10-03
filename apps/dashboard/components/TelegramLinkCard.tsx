@@ -93,7 +93,7 @@ export function TelegramLinkCard({ sessionBotToken, chatIdSet, onLinked }: Teleg
         <p className="text-[11px] font-mono text-aeon-green">{msg}</p>
       ) : status === 'backlog' ? (
         <div>
-          <p className="text-[11px] text-aeon-red/80 leading-relaxed">This bot has 100+ unread messages queued, so Aeon cannot see your new /start. Use <span className="text-aeon-fg">Find my chat ID</span> under TELEGRAM_CHAT_ID above, or clear the queue (let the messages poller run once) and try again.</p>
+          <p className="text-[11px] text-aeon-red/80 leading-relaxed">This bot has 100+ old updates waiting, so Aeon cannot see your new /start. Paste the chat id yourself with <span className="text-aeon-fg">Find my chat ID</span> under TELEGRAM_CHAT_ID above, or clear the bot&apos;s old updates and try again.</p>
           <button onClick={() => setStatus('idle')} className="btn-mini mt-1.5">Try again</button>
         </div>
       ) : (

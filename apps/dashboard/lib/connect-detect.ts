@@ -166,10 +166,15 @@ export function parseTarEntries(bytes: Uint8Array): TarEntry[] {
     let mtime = octal(h.subarray(136, 148), 'mtime')
     if (pax) {
       if (pax.has('path')) name = pax.get('path')!
-      if (pax.has('mtime')) mtime = Math.floor(Number(pax.get('mtime'))) || mtime
+      if (pax.has('mtime')) {
+        const t = Number(pax.get('mtime'))
+        if (Number.isFinite(t)) mtime = Math.floor(t)
+      }
       pax = null
     }
     if (flag === '5' && size !== 0) throw new TarRefused('Not a tar archive (directory with data).')
+    if (flag !== '5' && name.endsWith('/')) throw new TarRefused(`The archive has a file named like a folder (${name}).`)
+    mtime = Math.min(Math.max(0, mtime), MAX_MTIME)
     out.push({ name, type: flag === '5' ? 'dir' : 'file', mtime, data: flag === '5' ? new Uint8Array(0) : data.slice() })
   }
   if (pax) throw new TarRefused('Malformed archive (dangling pax header).')
@@ -177,6 +182,9 @@ export function parseTarEntries(bytes: Uint8Array): TarEntry[] {
   if (out.length === 0) throw new TarRefused('The archive is empty.')
   return out
 }
+
+// The largest mtime an 11-digit octal ustar field holds.
+export const MAX_MTIME = 8 ** 11 - 1
 
 // A minimal ustar archive of regular files (mode 0600), for re-packing a
 // verified capture so the stored secret holds nothing but those files.
@@ -199,7 +207,8 @@ export function buildTar(files: { name: string; data: Uint8Array; mtime: number 
     field(h, 108, 8, oct(0, 8))
     field(h, 116, 8, oct(0, 8))
     field(h, 124, 12, oct(f.data.length, 12))
-    field(h, 136, 12, oct(Math.max(0, Math.floor(f.mtime)), 12))
+    const mtime = Number.isFinite(f.mtime) ? Math.min(Math.max(0, Math.floor(f.mtime)), MAX_MTIME) : 0
+    field(h, 136, 12, oct(mtime, 12))
     h[156] = 0x30 // '0' regular file
     field(h, 257, 6, 'ustar')
     field(h, 263, 2, '00')
@@ -230,7 +239,7 @@ export interface Detection {
   needsProvider?: boolean
 }
 
-const normName = (n: string) => n.replace(/^(\.\/)+/, '').replace(/\/+$/, '')
+export const normName = (n: string) => n.replace(/^(\.\/)+/, '').replace(/\/+$/, '')
 // AppleDouble sidecars (._name) that macOS tar may add are metadata only.
 export const isAppleDouble = (n: string) => normName(n).split('/').pop()!.startsWith('._')
 
@@ -238,6 +247,9 @@ export const isAppleDouble = (n: string) => normName(n).split('/').pop()!.starts
 // inside that harness's credential paths: the runner untars the secret into
 // $HOME, so anything else (a dotfile, `..`, an absolute path) is refused.
 export function classifyCapture(entries: { name: string; type: string }[]): Detection {
+  for (const e of entries) {
+    if (e.type === 'file' && /\/$/.test(e.name)) return { state: 'error', label: 'Login capture', note: `The archive has a file named like a folder (${e.name}).` }
+  }
   const names = entries.map((e) => ({ ...e, name: normName(e.name) }))
   for (const e of names) {
     if (e.type !== 'file' && e.type !== 'dir') return { state: 'error', label: 'Login capture', note: `The archive contains a link or special file (${e.name}). Capture only the files shown in step 1.` }
@@ -246,9 +258,12 @@ export function classifyCapture(entries: { name: string; type: string }[]): Dete
   const real = names.filter((e) => !isAppleDouble(e.name))
   for (const spec of CAPTURE_SPECS) {
     const dirs = new Set(spec.paths.flatMap((p) => p.split('/').slice(0, -1).map((_, i, parts) => parts.slice(0, i + 1).join('/'))))
-    const inside = (n: string) => spec.paths.some((p) => n === p || n.startsWith(`${p}/`)) || dirs.has(n)
+    // Files must be a login path or sit under one; only directory entries may
+    // also be one of the parent folders (a FILE called ".codex" is refused).
+    const inside = (e: { name: string; type: string }) =>
+      spec.paths.some((p) => e.name === p || e.name.startsWith(`${p}/`)) || (e.type === 'dir' && dirs.has(e.name))
     const files = real.filter((e) => e.type === 'file')
-    if (!files.length || !real.every((e) => inside(e.name))) continue
+    if (!files.length || !real.every(inside)) continue
     // The first path is the login itself; the rest (config files) are optional.
     const main = spec.paths[0]
     if (!files.some((e) => e.name === main || e.name.startsWith(`${main}/`))) continue

@@ -8,7 +8,7 @@ import { gzipSync, gunzipSync } from 'node:zlib'
 
 import {
   detectPaste, looksLikeCapture, parseTarEntries, classifyCapture, providersForHarness, acceptsOpenRouter,
-  buildTar, CAPTURE_MAX_CHARS, CAPTURE_SPECS, PROVIDER_OPTIONS,
+  buildTar, CAPTURE_MAX_CHARS, CAPTURE_SPECS, MAX_MTIME, PROVIDER_OPTIONS,
 } from './connect-detect'
 import { captureCommand, guideFor } from './connect-commands'
 import { inspectCapture, saveConnection, type SaveDeps } from './connect-server'
@@ -219,6 +219,34 @@ describe('login captures', () => {
     assert.equal(inspectCapture('H4sIAAAA').detection.state, 'error')
     assert.equal(inspectCapture(gzipSync(Buffer.from('not a tar')).toString('base64')).detection.state, 'error')
     assert.equal(classifyCapture([{ name: '../x', type: 'file' }]).state, 'error')
+  })
+
+  it('keeps pax mtime finite and inside the ustar range', () => {
+    const tarOf = (mtime: string) => rawTar([{ name: 'PaxHeader/x', flag: 'x', body: paxRecord('mtime', mtime) }, { name: '.codex/auth.json', flag: '0', body: '{}' }])
+    const mtimeOf = (b64: string) => parseTarEntries(new Uint8Array(gunzipSync(Buffer.from(b64, 'base64'))))[0].mtime
+    assert.equal(mtimeOf(tarOf('1e400')), 0) // Infinity: header value kept
+    assert.equal(mtimeOf(tarOf('NaN')), 0)
+    assert.equal(mtimeOf(tarOf('-5')), 0)
+    assert.equal(mtimeOf(tarOf('99999999999999999')), MAX_MTIME)
+    assert.equal(mtimeOf(tarOf('1700000000.9')), 1700000000)
+    // The re-pack of a clamped capture still parses.
+    const { detection, value } = inspectCapture(tarOf('99999999999999999'))
+    assert.equal(detection.secret, 'CODEX_AUTH')
+    assert.equal(entryNames(value)[0], '.codex/auth.json')
+  })
+
+  it('lets only directory entries match folder names', () => {
+    // A directory entry for the login's folder is fine...
+    assert.equal(inspectCapture(rawTar([{ name: '.codex/', flag: '5' }, { name: '.codex/auth.json', flag: '0', body: '{}' }])).detection.secret, 'CODEX_AUTH')
+    // ...a FILE named like that folder is not (it would shadow ~/.codex).
+    assert.equal(inspectCapture(rawTar([{ name: '.codex', flag: '0', body: 'x' }, { name: '.codex/auth.json', flag: '0', body: '{}' }])).detection.state, 'error')
+    assert.equal(classifyCapture([{ name: '.kimi-code', type: 'file' }, { name: '.kimi-code/credentials/a.json', type: 'file' }]).state, 'error')
+    // A file entry with a trailing slash is refused by the parser and the classifier.
+    assert.match(inspectCapture(rawTar([{ name: '.codex/auth.json/', flag: '0', body: '{}' }])).detection.note!, /named like a folder/)
+    assert.equal(classifyCapture([{ name: '.codex/auth.json/', type: 'file' }]).state, 'error')
+    // Re-pack names are normalized (no ./ prefix).
+    const { value } = inspectCapture(rawTar([{ name: './.codex/auth.json', flag: '0', body: '{}' }]))
+    assert.deepEqual(entryNames(value), ['.codex/auth.json'])
   })
 
   it('buildTar round-trips through the parser', () => {

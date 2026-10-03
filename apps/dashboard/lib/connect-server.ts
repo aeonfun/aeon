@@ -15,7 +15,7 @@ import { GATEWAY_SECRET_NAMES } from './gateway-registry'
 import { CLAUDE_AUTH_SECRETS } from './constants'
 import {
   CAPTURE_MAX_CHARS, CAPTURE_SPECS, TarRefused, acceptedSecrets, buildTar, classifyCapture, detectPaste, harnessName,
-  isAppleDouble, parseTarEntries, type Detection, type TarEntry,
+  isAppleDouble, normName, parseTarEntries, type Detection, type TarEntry,
 } from './connect-detect'
 import type { Harness } from './types'
 
@@ -50,7 +50,7 @@ export function inspectCapture(raw: string): { detection: Detection; value: stri
   // Store a clean re-pack of just the verified regular files (no pax records,
   // AppleDouble sidecars, or directory entries), never the pasted bytes.
   const files = entries.filter((e) => e.type === 'file' && !isAppleDouble(e.name))
-    .map((e) => ({ name: e.name.replace(/^(\.\/)+/, ''), data: e.data, mtime: e.mtime }))
+    .map((e) => ({ name: normName(e.name), data: e.data, mtime: e.mtime }))
   const value = gzipSync(Buffer.from(buildTar(files)), { level: 9 }).toString('base64')
   if (value.length > CAPTURE_MAX_CHARS) return fail('This capture is over 48 KB, the GitHub secret limit. Capture only the files in the step 1 command.')
   return { detection, value }
