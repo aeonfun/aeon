@@ -120,13 +120,22 @@ export function extractRunOutput(log: string): RunOutput {
 
 // The last "Token usage" line (one per run; last wins on retries).
 export function parseUsage(text: string): Usage | null {
-  const re = /Token usage\b[^\n]*?input:\s*(\d+),\s*output:\s*(\d+)(?:,\s*cache_read:\s*(\d+))?(?:,\s*cache_creation:\s*(\d+))?/g
+  const re = /Token usage\b[^\n]*?input:\s*(\d+),\s*output:\s*(\d+)(?:,\s*cache_read:\s*(\d+))?(?:,\s*cache_creation:\s*(\d+))?(?:,\s*total:\s*(\d+))?/g
   let m: RegExpExecArray | null
   let last: RegExpExecArray | null = null
   while ((m = re.exec(text))) last = m
   if (!last) return null
   const [input, output, cacheRead, cacheCreation] = [1, 2, 3, 4].map((i) => Number(last![i] || 0))
-  return { input, output, cacheRead, cacheCreation, total: input + output + cacheRead + cacheCreation }
+  // `total` is the notice's own figure (input + output, as the workflow
+  // prints it), so the text we show matches the run log.
+  const total = last[5] !== undefined ? Number(last[5]) : input + output
+  return { input, output, cacheRead, cacheCreation, total }
+}
+
+// Did the model do any work at all? Counts cache traffic too, so the
+// pass/fail decision doesn't hinge on how `total` is defined.
+export function usedTokens(u: Usage | null | undefined): boolean {
+  return Boolean(u && u.input + u.output + u.cacheRead + u.cacheCreation > 0)
 }
 
 // Known failure signatures, most specific first. Reasons are our own words:
@@ -180,7 +189,7 @@ export function interpretRun(run: RunFacts): CheckResult {
     return { state: 'fail', usage, reason: `The run was ${run.conclusion}.`, hint: 'Start the test again.' }
   }
   if (run.conclusion === 'success') {
-    if (usageReported && usage && usage.total > 0) {
+    if (usageReported && usage && usedTokens(usage)) {
       return { state: 'pass', usage, reason: `The model answered from GitHub (${usage.total} tokens)${answered ? '' : ', though not with the expected reply'}.` }
     }
     if (!usageReported && answered) {
@@ -196,7 +205,7 @@ export function interpretRun(run: RunFacts): CheckResult {
     if (sig) return { state: 'fail', usage, reason: `${what} ${sig.reason}`, hint: sig.hint }
     // Only blame (and offer to remove) the subscription token when the run
     // demonstrably reached the model call and got zero usage back.
-    if (subscription && usageReported && out.reachedModel && (usage?.total ?? 0) === 0) {
+    if (subscription && usageReported && out.reachedModel && !usedTokens(usage)) {
       return { state: 'fail', usage, reason: what, ...subscriptionAdvice(run.secretsSet) }
     }
     return { state: 'fail', usage, reason: what, hint: 'Open the run log. If the key looks right, try an API key or OpenRouter.' }

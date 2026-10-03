@@ -48,7 +48,9 @@ describe('connect-check on the real gh log shape (UNKNOWN STEP)', () => {
   it('a real successful run passes with its token count', () => {
     const out = extractRunOutput(REAL)
     assert.equal(out.reachedModel, true)
-    assert.equal(parseUsage(out.run)?.total, 2936 + 19648 + 3251450 + 58568)
+    // total is the notice's own figure (input + output), as printed in the log.
+    assert.deepEqual(parseUsage(out.run), { input: 2936, output: 19648, cacheRead: 3251450, cacheCreation: 58568, total: 22584 })
+    assert.match(interpretRun(facts({ log: REAL })).reason!, /\(22584 tokens\)/)
     assert.doesNotMatch(out.run, /INPUT_TOKENS|##\[group\]/)
     const r = interpretRun(facts({ log: REAL, secretsSet: ['CLAUDE_CODE_OAUTH_TOKEN'] }))
     assert.equal(r.state, 'pass')
@@ -117,10 +119,12 @@ describe('connect-check log slicing', () => {
   })
 
   it('reads the token usage notice (last one wins), in either log form', () => {
-    assert.deepEqual(parseUsage(extractRunOutput(runLog(usageLine(12, 3, 100, 5))).run), { input: 12, output: 3, cacheRead: 100, cacheCreation: 5, total: 120 })
+    assert.deepEqual(parseUsage(extractRunOutput(runLog(usageLine(12, 3, 100, 5))).run), { input: 12, output: 3, cacheRead: 100, cacheCreation: 5, total: 15 })
     const raw = `::notice::Token usage ${LONG_DASH} model: x, input: 7, output: 1, cache_read: 0, cache_creation: 0, total: 8`
     assert.equal(parseUsage(raw)?.total, 8)
     assert.equal(parseUsage(`${usageLine(1, 1)}\n${usageLine(0, 0)}`)?.total, 0)
+    // No total field: fall back to input + output.
+    assert.equal(parseUsage('##[notice]Token usage - input: 4, output: 6, cache_read: 900')?.total, 10)
     assert.equal(parseUsage('nothing here'), null)
   })
 })
