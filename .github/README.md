@@ -140,7 +140,7 @@ Full comparison vs Claude Code, Hermes, and OpenClaw: [`SHOWCASE.md`](../docs/SH
 ## Proof of work
 
 <p align="center">
-  <img src="../docs/assets/proof-aeon.jpg" alt="Proof of work, live at aeon.fun: 4.7M GitHub stars secured across 100+ open-source repos, 70+ products and agents built on Aeon, and 8 community skill packs." width="100%" />
+  <img src="../docs/assets/proof-aeon.jpg" alt="Proof of work, live at aeon.fun: 4.7M GitHub stars secured across 100+ open-source repos, 70+ products and agents built on Aeon, and 9 community skill packs." width="100%" />
 </p>
 
 Live at **[aeon.fun](https://www.aeon.fun)**: **4.7M GitHub stars secured** - real vulnerabilities found, patched, and responsibly disclosed across 100+ open-source repos (**Alibaba**, **Tencent**, **Vercel**, and more), many rated High or Critical. **70+ products built on top of Aeon.**
@@ -157,7 +157,7 @@ Live at **[aeon.fun](https://www.aeon.fun)**: **4.7M GitHub stars secured** - re
 
 ### It heals itself
 
-![Anatomy of a skill run](../docs/assets/skill-run-aeon.jpg)
+![It heals itself - a loop that detects failing runs, scores them 1-5, repairs broken skills, and improves them](../docs/assets/skill-run-aeon.jpg)
 
 A model scores every run 1–5; `heartbeat` → `skill-health` → `skill-repair` → `self-improve` detect and fix broken skills without you, and `aeon-doctor` lints the config itself. How the loop closes: [`CORE.md`](../docs/CORE.md).
 
@@ -183,7 +183,7 @@ Read-only skills can't touch the repo, irreversible actions fail closed, an opti
 
 ## Configure
 
-<a href="../docs/CONFIGURATION.md"><img src="../docs/assets/never-sleeps-aeon.jpg" alt="Aeon never sleeps - a full day of autonomous runs from one config file" width="100%" /></a>
+<a href="../docs/CONFIGURATION.md"><img src="../docs/assets/never-sleeps-aeon.jpg" alt="Aeon never sleeps - one config, a full day of autonomous runs (UTC): morning aggregation, dev and repo, crypto, content, repo intel, security, social, and evening meta skills on a 24-hour dial" width="100%" /></a>
 
 Everything lives in `aeon.yml` - schedules (standard UTC cron), the per-skill `var` input, model, auth, notification channels, and API keys:
 
