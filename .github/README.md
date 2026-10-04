@@ -181,6 +181,16 @@ Read-only skills can't touch the repo, irreversible actions fail closed, an opti
 
 ---
 
+## Private by design
+
+<p align="center">
+  <img src="../docs/assets/privacy-aeon.jpg" alt="Who holds your data? Muse, Grok, Hermes Cloud and Aeon all run 24/7 in the cloud, but only Aeon keeps your data off the vendor's servers, never trains a vendor model on your chats, and is open source. Aeon: private instance plus your own model key." width="100%" />
+</p>
+
+Muse, Grok, and Hermes Cloud run around the clock too, but on their own servers, and they train on your chats unless you opt out ([Muse](https://www.engadget.com/2256577/how-to-get-started-with-meta-s-new-ai-agent-muse/), [Grok](https://x.ai/legal/faq), [Hermes Cloud](https://portal.nousresearch.com/privacy)). Aeon runs on your own GitHub Actions: memory is files in your repo, keys are your repo's encrypted secrets, there is no Aeon server in the loop, and nothing is sent anywhere unless you point tracing at your own collector. Keep it fully private with a **private** instance ([two-repo strategy](../docs/CONFIGURATION.md#two-repo-strategy)) and your own model key - your model provider's terms still apply.
+
+---
+
 ## Configure
 
 <a href="../docs/CONFIGURATION.md"><img src="../docs/assets/never-sleeps-aeon.jpg" alt="Aeon never sleeps - one config, a full day of autonomous runs (UTC): morning aggregation, dev and repo, crypto, content, repo intel, security, social, and evening meta skills on a 24-hour dial" width="100%" /></a>
