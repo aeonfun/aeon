@@ -173,6 +173,28 @@
         "external_api",
         "writes_external_host"
       ]
+    },
+    {
+      "repo": "Svector-anu/bon-travail",
+      "path": "aeon",
+      "name": "bon travail Pack",
+      "description": "Agents find broken code and pay humans to fix it. Sweep a bon travail deployment every ten minutes (watch CI, verify fixes, pay, refund) and investigate repeated CI failures: reproduce, bisect, and propose how a fix should be judged. Agents describe; engineers decide; the repo's own tests judge.",
+      "author": "Svector-anu",
+      "license": "MIT",
+      "homepage": "https://bontravail.xyz/introducing",
+      "category": "dev",
+      "trust_level": "community",
+      "skills": [
+        "proofwork-loop",
+        "proofwork-investigate"
+      ],
+      "secrets_required": [
+        "PROOFWORK_AGENT_TOKEN"
+      ],
+      "capabilities": [
+        "external_api",
+        "sends_notifications"
+      ]
     }
   ]
 }
