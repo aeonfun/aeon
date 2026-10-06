@@ -44,6 +44,8 @@ Anything it prints is on disk but unconfigured. **Orientation — what's install
 
 **Setting any key or token:** read `references/secrets.md` — it has every secret and repo variable with the exact page to get it from. Always set secrets with `./aeon secrets set NAME --stdin`, never as a command argument.
 
+**Handling secrets:** never ask the user to paste a key, token, or private key into the chat, and never echo, log, or commit one. Never read credential files (`~/.ssh`, `.env`, CLI session files) to fill a secret in. The user enters each value themselves, straight into `./aeon secrets set NAME --stdin` or the dashboard's Connect screens.
+
 ---
 
 ## Mode 1 — Start on Aeon

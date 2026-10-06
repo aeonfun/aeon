@@ -13,6 +13,8 @@
 
 Always `--stdin`. Passing a key as an argument puts it in shell history.
 
+**Handling secrets:** never ask the user to paste a key, token, or private key into the chat, and never echo, log, or commit one. Never read credential files (`~/.ssh`, `.env`, CLI session files) to fill a secret in. The user enters each value themselves, straight into `./aeon secrets set NAME --stdin` or the dashboard's Connect screens.
+
 **Variables** (non-secret behaviour toggles — readable):
 
 ```bash
@@ -45,20 +47,20 @@ The first two are the direct-to-Anthropic options; the rest are gateways. Settin
 | `SURPLUS_API_KEY` | surplusintelligence.ai — `inf_…`, settles USDC on Base. Fund the wallet and `approve()` once before first use |
 | `HIVEMINDOS_CREDIT_TOKEN` | HivemindOS Models - a credit token billed to a balance, not a provider account. Routed through a local translator sidecar. Not in the dashboard modal yet; set it with `gh secret set` |
 | `XAI_API_KEY` | console.x.ai — `xai-…`. Triple duty: X/tweet skills, the Grok gateway, and API-key auth for the grok harness |
-| `GROK_CREDENTIALS` | Dashboard → **Connect a model** → **Connect X account**. Base64 of your `~/.grok` session; runs the grok harness on a SuperGrok / X Premium+ entitlement. No CLI path for this one |
+| `GROK_CREDENTIALS` | Dashboard → **Connect a model** → **Connect X account**. The dashboard runs the X sign-in and stores the result for you; runs the grok harness on a SuperGrok / X Premium+ entitlement. No CLI path for this one |
 
 ## 2. Notification channels — need at least one
 
 | Secret | Where to get it |
 |---|---|
 | `TELEGRAM_BOT_TOKEN` | Message @BotFather → `/newbot` → copy the token |
-| `TELEGRAM_CHAT_ID` | Message your new bot, then open `api.telegram.org/bot<TOKEN>/getUpdates` and read `message.chat.id` |
+| `TELEGRAM_CHAT_ID` | Message your new bot, then let `./aeon init` link the chat; it reads the chat id for you |
 | `DISCORD_WEBHOOK_URL` | Channel Settings → Integrations → Webhooks → New Webhook → Copy URL (outbound only) |
 | `DISCORD_BOT_TOKEN` + `DISCORD_CHANNEL_ID` | discord.com/developers/applications → your app → Bot. Add the `channels:history` scope. Only needed for inbound commands |
 | `SLACK_WEBHOOK_URL` | api.slack.com/apps → Create App → Incoming Webhooks → Install → Copy URL |
 | `SLACK_BOT_TOKEN` + `SLACK_CHANNEL_ID` | Same app → add `channels:history` + `reactions:write` scopes. Only for inbound |
 | `RESEND_API_KEY` + `NOTIFY_EMAIL_TO` | resend.com/api-keys. Powers **all** outbound email — the notification channel, emailed digests, and security disclosures |
-| `BUZZ_PRIVATE_KEY` + `BUZZ_CHANNEL_ID` (+ `BUZZ_RELAY_URL`) | [Buzz](https://buzz.xyz) (Block's Nostr-relay workspace). `BUZZ_PRIVATE_KEY` is the agent's `nsec` keypair, `BUZZ_CHANNEL_ID` the target channel UUID (`buzz channels list`), `BUZZ_RELAY_URL` your relay (defaults to localhost). Outbound only; needs the `buzz` CLI staged in the run |
+| `BUZZ_PRIVATE_KEY` + `BUZZ_CHANNEL_ID` (+ `BUZZ_RELAY_URL`) | [Buzz](https://buzz.xyz) (Block's Nostr-relay workspace). `BUZZ_PRIVATE_KEY` is a fresh `nsec` keypair made only for the agent (never a personal key), `BUZZ_CHANNEL_ID` the target channel UUID (`buzz channels list`), `BUZZ_RELAY_URL` your relay (defaults to localhost). Outbound only; needs the `buzz` CLI staged in the run |
 
 Telegram is the fastest to set up and the only one with inline buttons and slash-commands. Start there.
 
@@ -69,7 +71,7 @@ Telegram is the fastest to set up and the only one with inline buttons and slash
 | Secret | Where to get it |
 |---|---|
 | `GITHUB_TOKEN` | Built in — nothing to set. Scoped to this repo only |
-| `GH_GLOBAL` | github.com/settings/tokens -> **Tokens (classic)** -> scopes **`repo`** + **`workflow`** -> add as `GH_GLOBAL`. One token covers everything cross-repo (`github-monitor`, `pr-review`, `feature`, `changelog` push-to), private reads, repository security advisories / PVR (disclosure skills), and secrets writeback. Auto-promoted to the run's `GITHUB_TOKEN` |
+| `GH_GLOBAL` | github.com/settings/tokens -> **Tokens (classic)** -> scopes **`repo`** + **`workflow`** -> add as `GH_GLOBAL`. Make a dedicated token for the agent, not one you use elsewhere, and set an expiry. One token covers everything cross-repo (`github-monitor`, `pr-review`, `feature`, `changelog` push-to), private reads, repository security advisories / PVR (disclosure skills), and secrets writeback. Auto-promoted to the run's `GITHUB_TOKEN` |
 | `GH_READ_PAT` | *Legacy / optional.* Folded into `GH_GLOBAL`. Keep a separate read-only PAT only to give `bd-radar`'s private cross-repo enrichment a read token without granting the run write |
 | `GH_SECRETS_PAT` | *Optional.* Folds into `GH_GLOBAL` (its `repo` scope already writes secrets). Set a dedicated PAT only to isolate secrets-write from the main token: github.com/settings/personal-access-tokens -> add this repo under Repository access (a PAT without it 404s) -> Repository permissions -> Secrets: Read and write. Used by OAuth-connected MCP servers or the Grok X-account harness |
 
