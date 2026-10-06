@@ -83,7 +83,7 @@ The send is the skill's **final** action and is **fail-closed**: apply every che
    ```
 5. **Recipient sanity.** `$TO` must match `^[^@[:space:]]+@[^@[:space:]]+\.[^@[:space:]]+$` (`grep -qE`) → else `SEND_EMAIL_REFUSED: bad recipient`, stop.
 6. **Cooldown.** If `$TO` was emailed within `${DISCLOSURE_EMAIL_COOLDOWN_DAYS:-7}` days (find its latest `.sent_at` in the ledger and compare with a `python3` datetime diff) → `SEND_EMAIL_SKIP: cooldown`, stop.
-7. **Secret tripwire.** If subject+body match `grep -qE '(sk-[A-Za-z0-9]{20}|re_[A-Za-z0-9]{8}[A-Za-z0-9_]{12}|gh[pousr]_[A-Za-z0-9]{20}|AKIA[0-9A-Z]{16}|AIza[0-9A-Za-z_-]{20}|-----BEGIN [A-Z ]*PRIVATE KEY-----)'` → `SEND_EMAIL_BLOCKED: secret in body`, stop (never exfiltrate a token).
+7. **Secret tripwire.** If subject+body match `grep -qE '(sk-[A-Za-z0-9]{20}|re_[A-Za-z0-9]{8}[A-Za-z0-9_]{12}|gh[pousr]_[A-Za-z0-9_]{20}|AKIA[0-9A-Z]{16}|AIza[0-9A-Za-z_-]{20}|-----BEGIN [A-Z ]*PRIVATE KEY-----)'` → `SEND_EMAIL_BLOCKED: secret in body`, stop (never exfiltrate a token).
 8. **Build cc** = the request's `cc` (comma-list or array) **plus** `$RESEND_CC` (operator audit copy), with blanks and `$TO` removed and deduped (`jq`).
 9. **Build payload + send.** Build the JSON with `python3` reading `RESEND_FROM`/`RESEND_REPLY_TO` from `os.environ` — so no secret-named var ever lands on a command line (a `--arg from "$RESEND_FROM"` would risk the analyzer block). Then POST with `./secretcurl` (the `{RESEND_API_KEY}` header placeholder is substituted inside the script; `$PAYLOAD` carries only the already-resolved from-address, not a secret-named expansion). `slug` is the idempotency key so a re-run can't double-send:
    ```bash
