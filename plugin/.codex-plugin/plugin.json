@@ -13,13 +13,15 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Aeon",
-    "shortDescription": "Set up and run an Aeon autonomous agent instance from your coding agent",
-    "longDescription": "Aeon is an autonomous agent framework that runs your own skills on a schedule in GitHub Actions. This plugin ships the operator console skill: get started from scratch, turn skills on or off, schedule or reschedule what runs, edit what a skill does, debug a skill that will not fire, set the STRATEGY.md north star and soul voice, and mine past coding-agent chats into new scheduled skills. Works alongside the Aeon repo (aeonfun/aeon); the skill walks the rest.",
+    "shortDescription": "Run your own scheduled agent",
+    "longDescription": "Aeon is an autonomous agent framework that runs your own skills on a schedule in GitHub Actions. This plugin ships the operator console skill: get started from scratch, turn skills on or off, schedule or reschedule what runs, edit what a skill does, debug a skill that will not fire, set the STRATEGY.md north star and soul voice, and mine past coding-agent chats into new scheduled skills. Works alongside the Aeon repo (aeonfun/aeon); the skill walks the rest.\n\nBest in Codex with a local checkout of your Aeon repo: the skill runs the repo's ./aeon CLI, git and gh. Chat mining reads your local ~/.codex/sessions or ~/.claude/projects transcripts on your own machine only; nothing is uploaded.",
     "developerName": "Aeon Inc",
     "category": "Productivity",
     "capabilities": ["Interactive", "Write"],
     "websiteURL": "https://www.aeon.fun",
     "defaultPrompt": ["Help me set up and run an Aeon agent instance"],
-    "brandColor": "#0B0B0B"
+    "brandColor": "#0B0B0B",
+    "composerIcon": "./icon.png",
+    "logo": "./icon.png"
   }
 }
