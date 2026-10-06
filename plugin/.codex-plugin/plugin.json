@@ -1,7 +1,7 @@
 {
   "name": "aeon",
   "version": "0.1.0",
-  "description": "Operator console for an Aeon agent instance: enable/schedule/edit skills, wire secrets and channels, debug runs, and mine past Codex/Claude Code chats into scheduled skills.",
+  "description": "Operator console for an Aeon agent instance: enable/schedule/edit skills, wire secrets and channels, debug runs, and mine past coding-agent chats into scheduled skills.",
   "author": {
     "name": "Aeon Inc",
     "url": "https://github.com/aeonfun"
@@ -14,11 +14,14 @@
   "interface": {
     "displayName": "Aeon",
     "shortDescription": "Run your own scheduled agent",
-    "longDescription": "Aeon is an autonomous agent framework that runs your own skills on a schedule in GitHub Actions. This plugin ships the operator console skill: get started from scratch, turn skills on or off, schedule or reschedule what runs, edit what a skill does, debug a skill that will not fire, set the STRATEGY.md north star and soul voice, and mine past coding-agent chats into new scheduled skills. Works alongside the Aeon repo (aeonfun/aeon); the skill walks the rest.\n\nBest in Codex with a local checkout of your Aeon repo: the skill runs the repo's ./aeon CLI, git and gh. Chat mining reads your local ~/.codex/sessions or ~/.claude/projects transcripts on your own machine only; nothing is uploaded.",
+    "longDescription": "Set up and operate your own Aeon agent: an open-source framework that runs your skills on a schedule in your GitHub repo using GitHub Actions. This plugin ships the operator console skill: get started from scratch, turn skills on or off, schedule or reschedule what runs, edit what a skill does, debug a skill that will not fire, set the STRATEGY.md north star and soul voice, and mine past coding-agent chats into new scheduled skills. Works alongside the Aeon repo (aeonfun/aeon); the skill walks the rest.\n\nBest in Codex with a local checkout of your Aeon repo: the skill runs the repo's ./aeon CLI, git and gh. Chat mining reads your local coding-agent session transcripts on your own machine only; nothing is uploaded.",
     "developerName": "Aeon Inc",
-    "category": "Productivity",
+    "category": "Developer Tools",
     "capabilities": ["Interactive", "Write"],
     "websiteURL": "https://www.aeon.fun",
+    "supportURL": "https://www.aeon.fun/contact",
+    "privacyPolicyURL": "https://www.aeon.fun/privacy",
+    "termsOfServiceURL": "https://www.aeon.fun/terms",
     "defaultPrompt": ["Help me set up and run an Aeon agent instance"],
     "brandColor": "#0B0B0B",
     "composerIcon": "./icon.png",
