@@ -240,15 +240,14 @@ jobs:
         if: steps.work.outputs.mode != ''
         # ~/.npm is npm's content-addressable download cache — reusing it lets the
         # pinned install run fully offline. Version is baked into the key (immutable,
-        # ~100% hit after the first run of a version, shared with messages.yml). The
-        # restore-keys prefix degrades gracefully on a version bump. Keep the version
-        # in the key in sync with the pin below.
+        # ~100% hit after the first run of a version, shared with messages.yml). Keep
+        # the version in the key in sync with the pin below. No restore-keys: an older
+        # cache carries a stale packument, and --prefer-offline trusts it, so a bumped
+        # pin fails with ETARGET forever (the failed install never saves a new key).
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
         with:
           path: ~/.npm
           key: claude-code-${{ runner.os }}-2.1.287
-          restore-keys: |
-            claude-code-${{ runner.os }}-
 
       - name: Install Claude Code
         if: steps.work.outputs.mode != ''

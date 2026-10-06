@@ -405,13 +405,12 @@ jobs:
       - name: Cache Claude Code (npm)
         if: steps.msg.outputs.source != ''
         # Shares the pinned-version cache with aeon.yml so the global install runs
-        # offline. Keep the version in the key in sync with the pin below.
+        # offline. Keep the version in the key in sync with the pin below. No
+        # restore-keys (see aeon.yml: a stale packument breaks a bumped pin).
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
         with:
           path: ~/.npm
           key: claude-code-${{ runner.os }}-2.1.287
-          restore-keys: |
-            claude-code-${{ runner.os }}-
 
       - name: Install Claude Code
         if: steps.msg.outputs.source != ''
