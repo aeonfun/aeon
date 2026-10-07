@@ -17,7 +17,8 @@ export interface Skill {
   name: string;
   description: string;
   category: string;
-  schedule: string;
+  /** From aeon.yml, not the catalog: a cron string, "workflow_dispatch", or unset. */
+  schedule?: string;
   var: string;
 }
 
@@ -27,7 +28,30 @@ interface SkillsManifest {
   skills: Skill[];
 }
 
-/** Load the skill catalog from <repoRoot>/catalog/skills.json. Returns [] if missing. */
+/**
+ * A skill's own line in aeon.yml's skills map (`  my-skill: { enabled: true, ... }`),
+ * or undefined. Entries are inline flow maps on one line, and the first match wins
+ * (the skills map sits above chains:, which also indents its keys by two).
+ */
+function skillConfigLine(cfg: string, slug: string): string | undefined {
+  return cfg.match(new RegExp(`^ {2}${slug.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}:.*$`, "m"))?.[0];
+}
+
+function readConfig(repoRoot: string): string {
+  try {
+    return readFileSync(join(repoRoot, "aeon.yml"), "utf-8");
+  } catch {
+    return "";
+  }
+}
+
+/**
+ * Load the skill catalog from <repoRoot>/catalog/skills.json. Returns [] if missing.
+ *
+ * The catalog deliberately carries no schedules (bin/generate-skills-json), so each
+ * skill's `schedule:` is read from aeon.yml, the source of truth. A skill with no
+ * entry there keeps `schedule` unset.
+ */
 export function loadSkills(repoRoot: string, logPrefix = "[aeon]"): Skill[] {
   const manifestPath = join(repoRoot, "catalog", "skills.json");
   if (!existsSync(manifestPath)) {
@@ -35,7 +59,11 @@ export function loadSkills(repoRoot: string, logPrefix = "[aeon]"): Skill[] {
     return [];
   }
   const manifest = JSON.parse(readFileSync(manifestPath, "utf-8")) as SkillsManifest;
-  return manifest.skills ?? [];
+  const cfg = readConfig(repoRoot);
+  return (manifest.skills ?? []).map((skill) => {
+    const schedule = skillConfigLine(cfg, skill.slug)?.match(/schedule:\s*"([^"]*)"/)?.[1];
+    return schedule ? { ...skill, schedule } : skill;
+  });
 }
 
 /**
@@ -69,21 +97,16 @@ const isHarness = (v: string): v is Harness =>
 export function resolveHarness(repoRoot: string, slug?: string): Harness {
   let picked = (process.env.AEON_HARNESS || "").trim().toLowerCase();
   if (!picked) {
-    try {
-      const cfg = readFileSync(join(repoRoot, "aeon.yml"), "utf-8");
-      // Per-skill override. aeon.yml's skills map is INLINE flow-mapping on one
-      // line (`  my-skill: { enabled: true, harness: "vibe" }`), and that is the
-      // only form resolve-harness.sh matches — keep the two greps equivalent.
-      if (slug) {
-        picked = cfg
-          .match(new RegExp(`^ {2}${slug.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}:.*$`, "m"))?.[0]
-          ?.match(/harness:\s*"([^"]*)"/)?.[1]
-          ?.toLowerCase() ?? "";
-      }
-      if (!picked) picked = cfg.match(/^harness:\s*["']?([A-Za-z]+)/m)?.[1].toLowerCase() ?? "";
-    } catch {
-      /* no aeon.yml → default */
+    const cfg = readConfig(repoRoot); // "" when there is no aeon.yml -> default
+    // Per-skill override. aeon.yml's skills map is INLINE flow-mapping on one
+    // line (`  my-skill: { enabled: true, harness: "vibe" }`), and that is the
+    // only form resolve-harness.sh matches - keep the two greps equivalent.
+    if (slug) {
+      picked = skillConfigLine(cfg, slug)
+        ?.match(/harness:\s*"([^"]*)"/)?.[1]
+        ?.toLowerCase() ?? "";
     }
+    if (!picked) picked = cfg.match(/^harness:\s*["']?([A-Za-z]+)/m)?.[1].toLowerCase() ?? "";
   }
   // Allowlist LAST, as resolve-harness.sh does: a value that is set but
   // unrecognized falls back to claude rather than to the next level down. A
@@ -118,7 +141,7 @@ function resolveMode(
   repoRoot: string,
   slug: string,
   varValue: string
-): { mode: string; allowedTools: string; isShadow: boolean } | null {
+): { mode: string; allowedTools: string; runNotes: string; isShadow: boolean } | null {
   const script = join(repoRoot, "scripts", "skill_mode.sh");
   if (!existsSync(script)) return null;
   const run = (...args: string[]) =>
@@ -138,7 +161,13 @@ function resolveMode(
   const allowedTools = (toolsRes.stdout || "").trim();
   if (!allowedTools) return null;
 
-  return { mode, allowedTools, isShadow };
+  // Standing tier notes (notify via stdin, no shell file writes), the same
+  // `run-notes <mode>` aeon.yml appends to the system prompt. Empty is allowed.
+  const notesRes = run("run-notes", mode);
+  if (notesRes.status !== 0) return null;
+  const runNotes = (notesRes.stdout || "").trim();
+
+  return { mode, allowedTools, runNotes, isShadow };
 }
 
 /**
@@ -182,6 +211,12 @@ function enqueue<T>(task: () => Promise<T>): Promise<T> {
   return result;
 }
 
+/**
+ * Per-run budget in seconds, passed to run-harness as --timeout. Matches the
+ * `--timeout 1800` aeon.yml passes on a scheduled run.
+ */
+const RUN_TIMEOUT_SECONDS = 1800;
+
 interface HarnessResult {
   status: number | null;
   stdout: string;
@@ -192,7 +227,7 @@ interface HarnessResult {
 /**
  * Async replacement for spawnSync with the same result shape
  * (status/stdout/stderr/error) so the parsing below is unchanged, but it awaits
- * `close` instead of blocking the Node event loop for the whole 10-minute run.
+ * `close` instead of blocking the Node event loop for the whole run.
  * Enforces the same timeout and combined output cap, surfacing each as `error`
  * the way spawnSync did (ETIMEDOUT / ENOBUFS).
  */
@@ -272,7 +307,7 @@ function spawnHarness(
  * than thrown, so callers can surface them without special-casing.
  *
  * Async so a running skill no longer freezes the whole stdio MCP server: the old
- * spawnSync parked the Node event loop for up to 10 minutes per call, blocking
+ * spawnSync parked the Node event loop for the whole run on every call, blocking
  * every other request (tools/list, pings, a second tool call). This awaits the
  * child instead.
  */
@@ -330,8 +365,11 @@ async function runSkillInner(
     runHarness, harness,
     "--mode", capability.mode,
     "--allowed-tools", capability.allowedTools,
-    "--timeout", "600",
+    "--timeout", String(RUN_TIMEOUT_SECONDS),
   ];
+  if (capability.runNotes) {
+    args.push("--append-system-prompt", capability.runNotes);
+  }
   // Shadow runs get no MCP servers, matching aeon.yml (`SHADOW_MODE != 1` gates
   // its MCP block): an MCP server is a credentialed side channel that
   // shadowSafeEnv's stripped env would not cover.
@@ -343,7 +381,7 @@ async function runSkillInner(
     input: prompt,
     cwd: repoRoot,
     env: capability.isShadow ? shadowSafeEnv(process.env) : process.env,
-    timeout: 600_000, // 10 minutes - same as the GitHub Actions timeout
+    timeout: RUN_TIMEOUT_SECONDS * 1000,
     maxBuffer: 10 * 1024 * 1024, // 10 MB
   });
 
