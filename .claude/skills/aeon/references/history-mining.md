@@ -1,4 +1,4 @@
-# History mining — deep reference (Mode 8)
+# History mining - deep reference (Mode 8)
 
 `scripts/mine-history.mjs` reads the operator's local coding-agent transcripts and
 surfaces recurring work that could become a scheduled Aeon skill. This file is the
@@ -14,25 +14,25 @@ the ones the miner uses:
 
 | record `type` | field | used for |
 |---|---|---|
-| `ai-title` | `aiTitle` | the session's generated title — the semantic label for theme grouping (last one in a file wins = freshest) |
-| `user` | `message.content` (string) | real human prompts — only plain strings without a `<system-reminder>`/`<command-name>` wrapper; tool-result echoes are lists and are skipped |
+| `ai-title` | `aiTitle` | the session's generated title - the semantic label for theme grouping (last one in a file wins = freshest) |
+| `user` | `message.content` (string) | real human prompts - only plain strings without a `<system-reminder>`/`<command-name>` wrapper; tool-result echoes are lists and are skipped |
 | `assistant` | `message.content[].tool_use` | `Bash` commands → normalised workflows; `mcp__*` names → MCP tool usage |
 | any | `cwd`, `timestamp`, `sessionId` | project scoping, cadence (distinct days), dedup |
 
-It only scans **top-level sessions** — files under a `subagents/` path are
+It only scans **top-level sessions** - files under a `subagents/` path are
 sidechains (agent fan-out) and would double-count the parent's work, so they're
 skipped. The scan window is bounded by file mtime (`--days`, default 120) so it
 stays a few seconds even over thousands of transcripts.
 
 ## How it ranks
 
-Everything is ranked by `distinct sessions × 1000 + distinct days × 10 + runs` —
+Everything is ranked by `distinct sessions × 1000 + distinct days × 10 + runs` -
 so **breadth of recurrence dominates raw volume**. A command run 500 times in one
 marathon session ranks below one run once each across 20 days: the second is a
 habit with a cadence, the first is a one-off you happened to repeat. Days are the
 cadence signal that tells you *daily* vs *weekly* when you get to `schedule:`.
 
-`--min-sessions N` (default 2) drops anything seen in a single session — a true
+`--min-sessions N` (default 2) drops anything seen in a single session - a true
 one-off is never an automation candidate.
 
 ### Command normalisation
@@ -42,15 +42,15 @@ each segment's first token becomes `binary subcommand` (for `node`/`python3` the
 script basename is the "subcommand", since that's the recurring workflow). Two
 denylists keep the signal clean:
 
-- **`NOISE_BIN`** — file-poking and shell/JS keywords (`ls`, `cat`, `grep`,
+- **`NOISE_BIN`** - file-poking and shell/JS keywords (`ls`, `cat`, `grep`,
   `printf`, `done`, `const`, …). Never a workflow.
-- **`PLUMBING`** — universal git/gh navigation (`git status`, `git log`,
+- **`PLUMBING`** - universal git/gh navigation (`git status`, `git log`,
   `git diff`, `gh auth`, …). Present in nearly every coding session, so it tells
   you nothing about *what* to automate. Filtered from the command table.
 
 What survives is the distinctive stuff: named scripts, specific CLIs, tight API
 patterns. Note that `gh pr`, `gh api`, `npm run` survive the filter but are still
-near-substrate — high in *every* repo. Treat them as weak on their own; they
+near-substrate - high in *every* repo. Treat them as weak on their own; they
 matter only when a **title theme** explains *what* the PR/API work was for.
 
 ### Title grouping
@@ -59,28 +59,28 @@ Session titles are lowercased, stripped to their content words (stopwords
 removed), truncated to the first six, and grouped. Near-identical titles collapse
 ("Synthesize activity logs into timeline cards" ≈ "Synthesizing user activity
 logs…"), and the group is ranked by sessions then days. This is usually the
-**most useful table** — the titles are already semantic, so a high-count group is
+**most useful table** - the titles are already semantic, so a high-count group is
 a plain-language description of a thing the operator keeps doing.
 
 ## From a digest row to a skill
 
 A row is a candidate only if it clears all four gates:
 
-1. **Recurring** — several sessions across several days. One busy day = not yet.
-2. **Fetch / compute / report-shaped** — it pulls or checks something and reports
+1. **Recurring** - several sessions across several days. One busy day = not yet.
+2. **Fetch / compute / report-shaped** - it pulls or checks something and reports
    a result. Read-heavy monitoring, digests, and status checks automate cleanly.
-   Interactive debugging, decision-heavy review, and one-off migrations do not —
+   Interactive debugging, decision-heavy review, and one-off migrations do not -
    they need a human in the loop that a cron run doesn't have.
-3. **Unattended-safe** — no reliance on local files, a logged-in desktop app, or
+3. **Unattended-safe** - no reliance on local files, a logged-in desktop app, or
    the operator answering a question mid-task. If the observed work used a local
    MCP server or read `~`, that part has to be re-wired as a repo secret /
-   `.mcp.json` or dropped (Mode 4 steps 2–3).
+   `.mcp.json` or dropped (Mode 4 steps 2-3).
 4. **Not already covered.** Dedup against `./aeon skills ls` *before* proposing.
    Common overlaps to watch for:
 
    | Digest signal | Already a skill → do this instead |
    |---|---|
-   | Heavy `gh pr` / PR review | `pr-review`, `pr-check` → Mode 2 reschedule |
+   | Heavy `gh pr` / PR review | `pr-review` → Mode 2 reschedule |
    | Recurring topic research / "digest X" | `digest`, `article`, `mention-radar` → Mode 5 `--var` |
    | Repo / commit monitoring | `github-monitor`, `changelog` |
    | Shipping recap | `shiplog`, `heartbeat` |
@@ -105,7 +105,7 @@ Always convert to UTC and confirm the next 3 fire times in their timezone
 ## Privacy
 
 Transcripts are the operator's own and can contain anything they've ever pasted
-into the coding agent. The miner only emits **aggregates** — command patterns, grouped
+into the coding agent. The miner only emits **aggregates** - command patterns, grouped
 titles, counts. Keep it that way: never surface a raw prompt body, and never write
 transcript contents into a committed file or a notification. The counts and titles
 carry all the signal needed to decide what to automate.
@@ -128,6 +128,13 @@ node .claude/skills/aeon/scripts/mine-history.mjs --project my-repo
 node .claude/skills/aeon/scripts/mine-history.mjs --json | jq '.titles'
 ```
 
+If the path comes out as `/skills/aeon/scripts/mine-history.mjs` and `node` fails with
+`MODULE_NOT_FOUND`, neither `PLUGIN_ROOT` nor `CLAUDE_PLUGIN_ROOT` is set (Claude Code
+does not export `CLAUDE_PLUGIN_ROOT` to Bash). Run it from this skill's base directory
+instead, with the same flags: `node <skill base dir>/scripts/mine-history.mjs --days 45`,
+where `<skill base dir>` is the directory holding the skill's `SKILL.md` (Claude Code
+prints it as "Base directory for this skill" when the skill loads).
+
 Needs only Node (>=16) and a local `~/.claude/projects` or `~/.codex/sessions` - it exits with a clear
 message anywhere that directory is absent (e.g. a CI checkout), and never writes
 anything. If a busy background app dominates the tables (a tool that itself drives
@@ -139,7 +146,7 @@ a coding agent will pile up near-identical sessions), scope past it with `--proj
 |---|---|---|
 | `--days N` | 120 | only sessions whose transcript was modified in the last N days |
 | `--top N` | 20 | rows per table |
-| `--project SUBSTR` | — | only sessions whose cwd contains SUBSTR |
+| `--project SUBSTR` | - | only sessions whose cwd contains SUBSTR |
 | `--min-sessions N` | 2 | drop candidates seen in fewer than N distinct sessions |
 | `--json` | off | raw JSON instead of the markdown digest |
 

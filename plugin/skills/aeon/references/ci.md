@@ -1,8 +1,8 @@
 # CI gates in `aeonfun/aeon`
 
-Thirteen `ci-*.yml` workflows. Twelve are **path-filtered** and fire on `pull_request`, `push` to `main`, and `workflow_dispatch`; the thirteenth, `ci-gate`, runs on every pull request.
+Fifteen `ci-*.yml` workflows. Fourteen are **path-filtered** and fire on `pull_request`, `push` to `main`, and `workflow_dispatch`; the fifteenth, `ci-gate`, runs on every pull request.
 
-**`ci-gate` is what blocks merges.** `main` is branch-protected with one required status check, `gate` (the `ci-gate` job). Because the other twelve are path-filtered, none of them can be required directly (a skipped workflow never reports). `gate` waits for every other check run on the PR head and fails if any of them did not end `success`, `skipped`, or `neutral`. So a red gate anywhere on the PR blocks the merge, and a push straight to `main` still runs the same gates after the fact. Run them locally before pushing anyway; it is faster than waiting on the gate.
+**`ci-gate` is what blocks merges.** `main` is branch-protected with one required status check, `gate` (the `ci-gate` job). Because the other fourteen are path-filtered, none of them can be required directly (a skipped workflow never reports). `gate` waits for every other check run on the PR head and fails if any of them did not end `success`, `skipped`, or `neutral`. So a red gate anywhere on the PR blocks the merge, and a push straight to `main` still runs the same gates after the fact. Run them locally before pushing anyway; it is faster than waiting on the gate.
 
 ## The gates
 
@@ -21,6 +21,8 @@ Thirteen `ci-*.yml` workflows. Twelve are **path-filtered** and fire on `pull_re
 | `ci-skill-packs` | `catalog/skill-packs.json`, `docs/community-skill-packs.md`, `bin/install-skill-pack`, `skills/security/trusted-sources.txt` | community registry well-formed + matches the Listed packs table in `docs/community-skill-packs.md`; no unbacked `trust_level: trusted` | `node scripts/validate-skill-packs.mjs` |
 | `ci-agents-md` | `CLAUDE.md`, `STRATEGY.md`, `AGENTS.md`, `scripts/gen-agents-md.js` | `AGENTS.md` regenerated from `CLAUDE.md` (with `STRATEGY.md` inlined) | `node scripts/gen-agents-md.js --check` |
 | `ci-apps` | `apps/**` | dashboard typecheck+lint+test+build, cli typecheck+lint, mcp-server build, webhook lint+bundle | per app, see below |
+| `ci-aeon-skill-sync` | `.claude/skills/aeon/**`, `plugin/skills/aeon/**`, `scripts/check-aeon-skill-sync.sh` | the in-repo `aeon` operator skill and its plugin copy are identical, except the plugin copy's plugin-root script paths | `bash scripts/check-aeon-skill-sync.sh` |
+| `ci-harness-cli` | `harness-adapter/**`, `scripts/install-harness.sh`, `scripts/run-grok.sh`, `scripts/llm-gateway.sh`, `scripts/ccr-*.js`, `.github/workflows/aeon.yml`, `.github/workflows/messages.yml`, `scripts/tests/harness_cli_smoke.sh`, `scripts/tests/fake-llm-upstream.mjs` | one job per harness (claude, grok, codex, pi, kimi, vibe, ccr): installs the pinned CLI, checks its version and adapter flags, and round-trips a prompt through a local fake model (plus a read-only sandbox leg) | `bash scripts/tests/harness_cli_smoke.sh <harness>` |
 
 The pack security scan in `bin/install-skill-pack` runs at *install* time, not in CI. `ci-skill-integrity` is the CI-side check, and it gates on a skill's *reach* (hosts, capabilities), not on content.
 

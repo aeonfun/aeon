@@ -1,14 +1,14 @@
 #!/usr/bin/env node
-// mine-history.mjs — scan local coding-agent conversation history and surface
+// mine-history.mjs - scan local coding-agent conversation history and surface
 // recurring work worth turning into a scheduled Aeon skill.
 //
 // OPERATOR-SIDE ONLY. Reads local transcripts under ~/.claude/projects (Claude
 // Code) and ~/.codex/sessions (Codex). Does nothing on GitHub Actions (no
-// history there) — the aeon
+// history there) - the aeon
 // `aeon` skill invokes it during skill authoring (Mode 8), never at run time.
 //
-// It does the mechanical part — parse transcripts, normalise commands, count
-// recurrence and cadence — and prints a compact digest. The semantic judgment
+// It does the mechanical part - parse transcripts, normalise commands, count
+// recurrence and cadence - and prints a compact digest. The semantic judgment
 // (which cluster is actually a good skill) is left to the model reading it.
 //
 // Usage:
@@ -21,7 +21,7 @@
 //   --min-sessions N drop candidates seen in fewer than N distinct sessions (default 2)
 //   --json           emit raw JSON instead of the markdown digest
 //
-// No dependencies — plain Node (>=16), reads line-by-line.
+// No dependencies - plain Node (>=16), reads line-by-line.
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -52,13 +52,13 @@ const ROOTS = [
   { dir: path.join(os.homedir(), '.codex', 'sessions'), maxDepth: Infinity },
 ].filter((r) => fs.existsSync(r.dir));
 if (!ROOTS.length) {
-  console.error('No coding-agent history found under ~/.claude/projects or ~/.codex/sessions — nothing to mine (this is normal off a local machine).');
+  console.error('No coding-agent history found under ~/.claude/projects or ~/.codex/sessions - nothing to mine (this is normal off a local machine).');
   process.exit(2);
 }
 const CUTOFF_MS = Date.now() - DAYS * 86400_000;
 
 // ---- helpers -------------------------------------------------------------
-// The interesting binaries — the ones a workflow is built from. Bare file
+// The interesting binaries - the ones a workflow is built from. Bare file
 // pokers (ls/cat/cd/echo/grep/…) are noise and get dropped.
 const VERBS = new Set([
   'gh', 'git', 'npm', 'npx', 'node', 'python', 'python3', 'pip', 'pip3',
@@ -80,7 +80,7 @@ const NOISE_BIN = new Set(['ls', 'cd', 'cat', 'echo', 'head', 'tail', 'grep',
   'console', 'require', 'module', 'yield', 'throw', 'typeof', 'new',
   'error', 'warn', 'warning', 'note', 'fail', 'failed', 'success', 'ok']);
 
-// Universal coding substrate — present in nearly every session, tells you
+// Universal coding substrate - present in nearly every session, tells you
 // nothing about what to automate. Dropped from the command leaderboard.
 const PLUMBING = new Set([
   'git log', 'git status', 'git diff', 'git branch', 'git checkout', 'git switch',
@@ -213,7 +213,7 @@ async function scanFile(fp) {
         const a = JSON.parse(px.arguments || '{}');
         const cc = a.command;
         cmd = Array.isArray(cc) ? (cc[cc.length - 1] || cc.join(' ')) : (typeof cc === 'string' ? cc : '');
-      } catch { /* opaque arguments — skip */ }
+      } catch { /* opaque arguments - skip */ }
       if (cmd) localCmds.push(...normCmd(cmd));
     }
   }
@@ -222,7 +222,7 @@ async function scanFile(fp) {
   const proj = cwd || 'unknown';
   const day = dayKey(maxTs || minTs);
   if (day) allDays.add(day);
-  // commands / mcp / slash — count each distinct pattern once per session too via Sets
+  // commands / mcp / slash - count each distinct pattern once per session too via Sets
   for (const k of localCmds) bump(cmds, k, sid, day, proj);
   for (const k of localMcp) bump(mcp, k, sid, day, proj);
   for (const k of localSlash) bump(slash, k, sid, day, proj);
@@ -230,7 +230,7 @@ async function scanFile(fp) {
   let p = projects.get(proj);
   if (!p) { p = { sessions: new Set(), last: '' }; projects.set(proj, p); }
   p.sessions.add(sid); if (maxTs > p.last) p.last = maxTs;
-  // recurring session titles — the strongest human-readable "what I keep doing"
+  // recurring session titles - the strongest human-readable "what I keep doing"
   // signal. Normalise so near-identical titles collapse into one group.
   if (title) {
     const norm = title.toLowerCase().replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim()
@@ -325,7 +325,7 @@ if (JSON_OUT) {
   }, null, 2));
 } else {
   const out = [];
-  out.push(`# Automation candidates — mined from coding-agent history`);
+  out.push(`# Automation candidates - mined from coding-agent history`);
   out.push('');
   out.push(`Scanned **${sessionsScanned}** sessions (${files.length} files, last ${DAYS} days) across **${allDays.size}** active days${PROJECT ? `, project filter \`${PROJECT}\`` : ''}.`);
   out.push('');
@@ -339,11 +339,11 @@ if (JSON_OUT) {
   out.push('');
   out.push(titleRows.length ? mdTable(titleRows, ['#', 'recurring session title', 'sessions', 'days']) : '_none above threshold_');
   out.push('');
-  out.push(`**Topic keywords** (title+prompt, noise-filtered): ${keywordList.join(', ') || '—'}`);
+  out.push(`**Topic keywords** (title+prompt, noise-filtered): ${keywordList.join(', ') || '-'}`);
   out.push('');
   out.push(`## Tooling`);
-  out.push(`- **MCP tools:** ${mcpRows.join(', ') || '—'}`);
-  out.push(`- **Slash / skills:** ${slashRows.join(', ') || '—'}`);
+  out.push(`- **MCP tools:** ${mcpRows.join(', ') || '-'}`);
+  out.push(`- **Slash / skills:** ${slashRows.join(', ') || '-'}`);
   out.push('');
   out.push(`## Where the work happens`);
   out.push(projRows.length ? mdTable(projRows, ['project', 'sessions', 'last seen']) : '_none_');
