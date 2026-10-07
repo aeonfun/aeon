@@ -10,6 +10,8 @@
     "lint:shell": "bash scripts/lint-shell.sh",
     "typecheck": "npm --prefix apps/dashboard run typecheck && npm --prefix apps/cli run typecheck && npm --prefix apps/mcp-server run typecheck",
     "build": "npm --prefix apps/dashboard run build && npm --prefix apps/mcp-server run build",
-    "test": "npm --prefix apps/dashboard test && npm --prefix apps/webhook test"
+    "test": "npm --prefix apps/dashboard test && npm --prefix apps/webhook test",
+    "format": "npx --yes @biomejs/biome@2.5.15 format --write .",
+    "format:check": "npx --yes @biomejs/biome@2.5.15 ci ."
   }
 }

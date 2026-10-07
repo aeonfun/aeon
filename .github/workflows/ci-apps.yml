@@ -30,11 +30,13 @@ on:
   pull_request:
     paths:
       - 'apps/**'
+      - 'biome.json'
       - '.github/workflows/ci-apps.yml'
   push:
     branches: [main]
     paths:
       - 'apps/**'
+      - 'biome.json'
   workflow_dispatch:
 
 permissions:
@@ -47,6 +49,21 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
+  format:
+    name: format - biome
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: '22'
+      # Formatter only (linting stays with each app's eslint). One root biome.json
+      # covers all four apps, with per-app quote/semicolon overrides that keep each
+      # app's existing style. Pinned exact so a Biome release can't reformat the
+      # tree under an unrelated PR. Fix locally with `npm run format`.
+      - name: Format check (biome ci)
+        run: npx --yes @biomejs/biome@2.5.15 ci --reporter=github .
+
   dashboard:
     name: dashboard — typecheck, test, build
     runs-on: ubuntu-24.04
