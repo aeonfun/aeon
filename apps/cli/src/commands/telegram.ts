@@ -14,13 +14,24 @@ auto-registered the moment you set that token via \`aeon secrets set\`.`
 
 export function telegramCommand(argv: string[]) {
   const sub = argv[0] && !argv[0].startsWith('-') ? argv[0] : ''
-  if (sub === 'help' || argv.includes('-h') || argv.includes('--help')) { console.log(USAGE); return }
+  if (sub === 'help' || argv.includes('-h') || argv.includes('--help')) {
+    console.log(USAGE)
+    return
+  }
   if (sub !== 'register') fail(`unknown subcommand: ${sub || '(none)'}\n\n${USAGE}`)
 
-  if (isDryRun()) return emit({ dryRun: true, workflow: 'setup-commands.yml' }, () =>
-    console.log(c.yellow('dry-run: ') + 'gh workflow run setup-commands.yml'))
+  if (isDryRun())
+    return emit({ dryRun: true, workflow: 'setup-commands.yml' }, () =>
+      console.log(c.yellow('dry-run: ') + 'gh workflow run setup-commands.yml'),
+    )
 
   requireGh()
-  try { dispatchCommandsWorkflow() } catch (e) { fail(e instanceof Error ? e.message : 'failed to dispatch') }
-  emit({ ok: true }, () => console.log(c.green('✓ ') + 'dispatched setup-commands.yml — the / menu will refresh shortly'))
+  try {
+    dispatchCommandsWorkflow()
+  } catch (e) {
+    fail(e instanceof Error ? e.message : 'failed to dispatch')
+  }
+  emit({ ok: true }, () =>
+    console.log(c.green('✓ ') + 'dispatched setup-commands.yml — the / menu will refresh shortly'),
+  )
 }

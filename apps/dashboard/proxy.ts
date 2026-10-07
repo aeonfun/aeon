@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
-import { gateRequest } from "@/lib/security/api-gate";
+import { NextRequest, NextResponse } from 'next/server'
+import { gateRequest } from '@/lib/security/api-gate'
 
 /**
  * Gate every `/api/*` request behind a loopback Host-header allowlist
@@ -19,9 +19,9 @@ import { gateRequest } from "@/lib/security/api-gate";
  * trusted-reverse-proxy setups).
  */
 export function proxy(req: NextRequest) {
-  const rejected = gateRequest(req);
-  if (rejected) return rejected;
-  return NextResponse.next();
+  const rejected = gateRequest(req)
+  if (rejected) return rejected
+  return NextResponse.next()
 }
 
 export const config = {
@@ -29,5 +29,5 @@ export const config = {
   // and `outputs/` static assets are not the attack surface - they
   // don't have side effects worth gating, and refusing the document
   // would just produce a confusing UX during a rebinding probe.
-  matcher: ["/api/:path*"],
-};
+  matcher: ['/api/:path*'],
+}

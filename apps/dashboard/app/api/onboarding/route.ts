@@ -14,9 +14,17 @@ export async function GET() {
     const repo = ghArgsRepo()[1]
     if (repo) {
       try {
-        const out = execFileSync('gh', ['api', `repos/${repo}/actions/permissions`, '-q', '.enabled'], { stdio: 'pipe', cwd: REPO_ROOT, timeout: 15_000 }).toString().trim()
+        const out = execFileSync('gh', ['api', `repos/${repo}/actions/permissions`, '-q', '.enabled'], {
+          stdio: 'pipe',
+          cwd: REPO_ROOT,
+          timeout: 15_000,
+        })
+          .toString()
+          .trim()
         actionsEnabled = out === 'true' ? true : out === 'false' ? false : null
-      } catch { /* leave unknown */ }
+      } catch {
+        /* leave unknown */
+      }
     }
   }
   return NextResponse.json({ actionsEnabled })

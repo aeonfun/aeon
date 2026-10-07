@@ -73,11 +73,7 @@ export function parseConfig(raw: string): AeonConfig {
 /**
  * Update a skill's config fields in aeon.yml. Preserves formatting and comments.
  */
-export function updateSkillInConfig(
-  raw: string,
-  name: string,
-  updates: Partial<SkillConfig>,
-): string {
+export function updateSkillInConfig(raw: string, name: string, updates: Partial<SkillConfig>): string {
   const doc = parseDocument(raw)
   const skillsNode = doc.get('skills')
   if (!isMap(skillsNode)) return raw
@@ -180,11 +176,7 @@ export function removeSkillFromConfig(raw: string, name: string): string {
 /**
  * Add a new skill entry to aeon.yml (before the fallback comment).
  */
-export function addSkillToConfig(
-  raw: string,
-  name: string,
-  config: Partial<SkillConfig> = {},
-): string {
+export function addSkillToConfig(raw: string, name: string, config: Partial<SkillConfig> = {}): string {
   const doc = parseDocument(raw)
   const skillsNode = doc.get('skills')
   if (!isMap(skillsNode)) return raw
@@ -211,9 +203,7 @@ export function addSkillToConfig(
 
   // Find the fallback skill (heartbeat, last entry) and insert before it
   const items = skillsNode.items
-  const fallbackIdx = items.findIndex(
-    (item) => isPair(item) && isScalar(item.key) && item.key.value === 'heartbeat',
-  )
+  const fallbackIdx = items.findIndex(item => isPair(item) && isScalar(item.key) && item.key.value === 'heartbeat')
 
   if (fallbackIdx >= 0) {
     const pair = doc.createPair(name, entry)
@@ -238,11 +228,7 @@ export function addSkillToConfig(
  * Callers must confirm the skill exists on disk first; this will happily
  * create an entry for a typo'd name.
  */
-export function upsertSkillInConfig(
-  raw: string,
-  name: string,
-  updates: Partial<SkillConfig>,
-): string {
+export function upsertSkillInConfig(raw: string, name: string, updates: Partial<SkillConfig>): string {
   // addSkillToConfig is a no-op when the entry already exists, so composing the
   // two is safe unconditionally. Seeding it with `updates` means a create lands
   // the right enabled/schedule immediately rather than writing the defaults and

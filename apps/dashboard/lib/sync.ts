@@ -6,7 +6,11 @@ function git(cmd: string) {
   return execSync(cmd, { stdio: 'pipe', cwd: REPO_ROOT }).toString().trim()
 }
 
-export interface SyncStatus { hasChanges: boolean; changedFiles: number; behind: number }
+export interface SyncStatus {
+  hasChanges: boolean
+  changedFiles: number
+  behind: number
+}
 
 // Working-tree status plus how far behind origin/main the local repo is. Shared by
 // GET /api/sync and `aeon sync --status`. A failed fetch (offline/no remote) leaves
@@ -25,9 +29,7 @@ export function syncStatus(): SyncStatus {
   return { hasChanges, changedFiles, behind }
 }
 
-export type SyncPush =
-  | { ok: true; message: string }
-  | { ok: false; error: string }
+export type SyncPush = { ok: true; message: string } | { ok: false; error: string }
 
 // Stage everything, commit, and push to origin. Shared by POST /api/sync and
 // `aeon sync`. Distinguishes "nothing to commit" (ok) from a real commit failure,

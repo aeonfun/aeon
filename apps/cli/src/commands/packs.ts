@@ -17,7 +17,10 @@ Installed skills land DISABLED and security-scanned — enable them with
 
 export async function packsCommand(argv: string[]) {
   const sub = argv[0] && !argv[0].startsWith('-') ? argv[0] : 'ls'
-  if (sub === 'help' || argv.includes('-h') || argv.includes('--help')) { console.log(USAGE); return }
+  if (sub === 'help' || argv.includes('-h') || argv.includes('--help')) {
+    console.log(USAGE)
+    return
+  }
   if (sub === 'ls') return list()
   if (sub === 'install') return install(argv.slice(1))
   fail(`unknown subcommand: ${sub}\n\n${USAGE}`)
@@ -28,13 +31,17 @@ async function list() {
   emit({ firstParty, community }, () => {
     if (firstParty.length) {
       console.log(c.bold('First-party'))
-      table(['PACK', 'ENABLED', 'DESCRIPTION'],
-        firstParty.map(p => [p.key, `${p.enabled}/${p.total}`, truncate(p.description, 56)]))
+      table(
+        ['PACK', 'ENABLED', 'DESCRIPTION'],
+        firstParty.map(p => [p.key, `${p.enabled}/${p.total}`, truncate(p.description, 56)]),
+      )
     }
     if (community.length) {
       console.log('\n' + c.bold('Community'))
-      table(['PACK', 'INSTALLED', 'REPO'],
-        community.map(p => [p.name, `${p.installedCount}/${p.skills.length}`, p.repo]))
+      table(
+        ['PACK', 'INSTALLED', 'REPO'],
+        community.map(p => [p.name, `${p.installedCount}/${p.skills.length}`, p.repo]),
+      )
     }
     if (!firstParty.length && !community.length) console.log(c.dim('(no pack manifests found)'))
   })
@@ -48,10 +55,14 @@ function install(args: string[]) {
   if (isDryRun()) {
     const ghArgs = buildSkillRunArgs('install-skill', { var: varArg })
     return emit({ dryRun: true, var: varArg, command: ['gh', ...ghArgs] }, () =>
-      console.log(c.yellow('dry-run: ') + 'gh ' + ghArgs.join(' ')))
+      console.log(c.yellow('dry-run: ') + 'gh ' + ghArgs.join(' ')),
+    )
   }
   requireGh()
   runSkill('install-skill', { var: varArg })
   emit({ ok: true, installing: varArg }, () =>
-    console.log(c.green('✓ ') + `dispatched install-skill for "${varArg}" — it opens an auto-merging PR; watch \`aeon runs ls\``))
+    console.log(
+      c.green('✓ ') + `dispatched install-skill for "${varArg}" — it opens an auto-merging PR; watch \`aeon runs ls\``,
+    ),
+  )
 }

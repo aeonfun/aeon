@@ -27,7 +27,9 @@ function readVar(name: string): string | null {
       'gh',
       ['variable', 'list', ...ghArgsRepo(), '--json', 'name,value', '-q', `.[] | select(.name=="${name}") | .value`],
       { stdio: 'pipe', cwd: process.cwd() },
-    ).toString().trim()
+    )
+      .toString()
+      .trim()
     return out || null
   } catch {
     return null
@@ -44,7 +46,7 @@ export async function GET() {
 export async function POST(request: Request) {
   const notReady = requireGh()
   if (notReady) return notReady
-  const body = await request.json().catch(() => ({})) as { region?: string }
+  const body = (await request.json().catch(() => ({}))) as { region?: string }
   const region: Region | null = body.region === 'us' ? 'us' : body.region === 'eu' ? 'eu' : null
   if (!region) {
     return NextResponse.json({ error: "region must be 'eu' or 'us'" }, { status: 400 })

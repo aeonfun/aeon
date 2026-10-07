@@ -40,9 +40,7 @@ globalThis.fetch = async (url, opts) => {
   const u = new URL(url);
   if (u.hostname === "api.github.com") {
     dispatchCalls++;
-    return dispatchShouldFail
-      ? new Response("nope", { status: 500 })
-      : new Response("ok", { status: 200 });
+    return dispatchShouldFail ? new Response("nope", { status: 500 }) : new Response("ok", { status: 200 });
   }
   if (u.hostname === "api.telegram.org") {
     return new Response("{}", { status: 200 }); // best-effort, ignored
@@ -54,7 +52,7 @@ const mod = await import("../src/worker.js");
 const worker = mod.default;
 
 let waitUntilPromises = [];
-const ctx = { waitUntil: (p) => waitUntilPromises.push(p) };
+const ctx = { waitUntil: p => waitUntilPromises.push(p) };
 
 function req(update) {
   return new Request("https://example.invalid/", {
@@ -68,7 +66,7 @@ async function drain() {
   waitUntilPromises = [];
 }
 
-const msgUpdate = (id) => ({
+const msgUpdate = id => ({
   update_id: id,
   message: { text: "/status", chat: { id: 111, type: "private" }, from: { id: 111 } },
 });
@@ -113,7 +111,7 @@ console.log("ok   - a failed dispatch is not cached, so Telegram's retry after f
 
 // --- test 5: callback_query path shares the same update_id-keyed guard -----
 dispatchCalls = 0;
-const cbUpdate = (id) => ({
+const cbUpdate = id => ({
   update_id: id,
   callback_query: { id: "cbid1", data: "run:foo", from: { id: 111 }, message: { chat: { id: 111 }, message_id: 5 } },
 });
@@ -140,7 +138,11 @@ res = await worker.fetch(
 );
 await drain();
 assert.equal(res.status, 200);
-assert.equal(dispatchCalls, 1, "an update with no update_id should still be processed (fail open on dedupe, not on delivery)");
+assert.equal(
+  dispatchCalls,
+  1,
+  "an update with no update_id should still be processed (fail open on dedupe, not on delivery)",
+);
 console.log("ok   - an update with no update_id is still processed normally (dedupe fails open)");
 
 // --- test 7: KV namespace not bound (misconfigured deploy) -> fail OPEN.

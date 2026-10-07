@@ -92,7 +92,7 @@ export function loadSkills(repoRoot: string, logPrefix = "[aeon]"): Skill[] {
   }
   const manifest = JSON.parse(readFileSync(manifestPath, "utf-8")) as SkillsManifest;
   const cfg = readConfig(repoRoot);
-  return (manifest.skills ?? []).map((skill) => {
+  return (manifest.skills ?? []).map(skill => {
     const schedule = skillConfigLine(cfg, skill.slug)?.match(/schedule:\s*"([^"]*)"/)?.[1];
     return schedule ? { ...skill, schedule } : skill;
   });
@@ -114,8 +114,7 @@ export function buildSkillPrompt(slug: string, varValue: string): string {
 /** Every harness harness-adapter's run-harness can dispatch to. */
 export const HARNESSES = ["claude", "grok", "codex", "pi", "vibe", "kimi", "fx", "cursor", "hermes"] as const;
 export type Harness = (typeof HARNESSES)[number];
-const isHarness = (v: string): v is Harness =>
-  (HARNESSES as readonly string[]).includes(v);
+const isHarness = (v: string): v is Harness => (HARNESSES as readonly string[]).includes(v);
 
 /**
  * Which agent harness runs the skill. Mirrors scripts/resolve-harness.sh's
@@ -133,9 +132,10 @@ export function resolveHarness(repoRoot: string, slug?: string): Harness {
     // Per-skill override, read from the whole entry (single-line or block),
     // like resolve-harness.sh does via scripts/skill_entry.sh.
     if (slug) {
-      picked = skillConfigLine(cfg, slug)
-        ?.match(/harness:\s*"([^"]*)"/)?.[1]
-        ?.toLowerCase() ?? "";
+      picked =
+        skillConfigLine(cfg, slug)
+          ?.match(/harness:\s*"([^"]*)"/)?.[1]
+          ?.toLowerCase() ?? "";
     }
     if (!picked) picked = cfg.match(/^harness:\s*["']?([A-Za-z]+)/m)?.[1].toLowerCase() ?? "";
   }
@@ -173,7 +173,7 @@ export function resolveModel(repoRoot: string, slug?: string): string {
   const input = inputModel();
   if (input) return input;
   const cfg = readConfig(repoRoot);
-  const skillModel = slug ? skillConfigLine(cfg, slug)?.match(/model:\s*"([^"]*)"/)?.[1] ?? "" : "";
+  const skillModel = slug ? (skillConfigLine(cfg, slug)?.match(/model:\s*"([^"]*)"/)?.[1] ?? "") : "";
   if (skillModel) return skillModel;
   return cfg.match(/^model:\s*["']?([^\s"'#]+)/m)?.[1] ?? "claude-sonnet-5-5";
 }
@@ -231,12 +231,11 @@ function resolveModelArgs(repoRoot: string, slug: string, harness: Harness, logP
 function resolveMode(
   repoRoot: string,
   slug: string,
-  varValue: string
+  varValue: string,
 ): { mode: string; allowedTools: string; runNotes: string; isShadow: boolean } | null {
   const script = join(repoRoot, "scripts", "skill_mode.sh");
   if (!existsSync(script)) return null;
-  const run = (...args: string[]) =>
-    spawnSync("bash", [script, ...args], { cwd: repoRoot, encoding: "utf-8" });
+  const run = (...args: string[]) => spawnSync("bash", [script, ...args], { cwd: repoRoot, encoding: "utf-8" });
 
   const shadowRes = run("is-shadow", slug, varValue);
   if (shadowRes.status !== 0) return null;
@@ -297,7 +296,7 @@ function enqueue<T>(task: () => Promise<T>): Promise<T> {
   // not wedge every later run.
   runQueue = result.then(
     () => undefined,
-    () => undefined
+    () => undefined,
   );
   return result;
 }
@@ -330,9 +329,9 @@ function spawnHarness(
     env: NodeJS.ProcessEnv;
     timeout: number;
     maxBuffer: number;
-  }
+  },
 ): Promise<HarnessResult> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     const child = spawn("bash", args, { cwd: opts.cwd, env: opts.env });
     let stdout = "";
     let stderr = "";
@@ -362,21 +361,13 @@ function spawnHarness(
       resolve(r);
     };
 
-    child.on("error", (err) =>
-      finish({ status: null, stdout, stderr, error: err as NodeJS.ErrnoException })
-    );
-    child.on("close", (code) => {
+    child.on("error", err => finish({ status: null, stdout, stderr, error: err as NodeJS.ErrnoException }));
+    child.on("close", code => {
       let error: NodeJS.ErrnoException | undefined;
       if (killReason === "timeout") {
-        error = Object.assign(
-          new Error(`run-harness timed out after ${opts.timeout} ms`),
-          { code: "ETIMEDOUT" }
-        );
+        error = Object.assign(new Error(`run-harness timed out after ${opts.timeout} ms`), { code: "ETIMEDOUT" });
       } else if (killReason === "buffer") {
-        error = Object.assign(
-          new Error(`run-harness output exceeded ${opts.maxBuffer} bytes`),
-          { code: "ENOBUFS" }
-        );
+        error = Object.assign(new Error(`run-harness output exceeded ${opts.maxBuffer} bytes`), { code: "ENOBUFS" });
       }
       finish({ status: code, stdout, stderr, error });
     });
@@ -402,21 +393,11 @@ function spawnHarness(
  * every other request (tools/list, pings, a second tool call). This awaits the
  * child instead.
  */
-export function runSkill(
-  repoRoot: string,
-  slug: string,
-  varValue: string,
-  logPrefix = "[aeon]"
-): Promise<string> {
+export function runSkill(repoRoot: string, slug: string, varValue: string, logPrefix = "[aeon]"): Promise<string> {
   return enqueue(() => runSkillInner(repoRoot, slug, varValue, logPrefix));
 }
 
-async function runSkillInner(
-  repoRoot: string,
-  slug: string,
-  varValue: string,
-  logPrefix: string
-): Promise<string> {
+async function runSkillInner(repoRoot: string, slug: string, varValue: string, logPrefix: string): Promise<string> {
   const skillFile = join(repoRoot, "skills", slug, "SKILL.md");
   if (!existsSync(skillFile)) {
     return [
@@ -440,7 +421,7 @@ async function runSkillInner(
   const modelArgs = resolveModelArgs(repoRoot, slug, harness, logPrefix);
   const modelLabel = modelArgs[1] ?? `${harness} default`;
   process.stderr.write(
-    `${logPrefix} Running skill: ${slug}${varValue ? ` (var=${varValue})` : ""} [harness: ${harness}, model: ${modelLabel}, mode: ${capability.mode}]\n`
+    `${logPrefix} Running skill: ${slug}${varValue ? ` (var=${varValue})` : ""} [harness: ${harness}, model: ${modelLabel}, mode: ${capability.mode}]\n`,
   );
 
   // Every harness goes through harness-adapter's run-harness — the same dispatcher
@@ -457,11 +438,15 @@ async function runSkillInner(
   // run silently used the CLI's own default instead of the skill's pinned model.
   const runHarness = join(repoRoot, "harness-adapter", "run-harness");
   const args = [
-    runHarness, harness,
+    runHarness,
+    harness,
     ...modelArgs,
-    "--mode", capability.mode,
-    "--allowed-tools", capability.allowedTools,
-    "--timeout", String(RUN_TIMEOUT_SECONDS),
+    "--mode",
+    capability.mode,
+    "--allowed-tools",
+    capability.allowedTools,
+    "--timeout",
+    String(RUN_TIMEOUT_SECONDS),
   ];
   if (capability.runNotes) {
     args.push("--append-system-prompt", capability.runNotes);

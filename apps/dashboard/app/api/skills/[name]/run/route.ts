@@ -5,20 +5,19 @@ import { runSkill } from '@/lib/run-skill'
 // The name validation, var/model sanitization, install-skill PR-permission
 // guarantee, and gh dispatch live in lib/run-skill.ts so `aeon skills run` and
 // this route dispatch identically.
-export async function POST(
-  request: Request,
-  { params }: { params: Promise<{ name: string }> },
-) {
+export async function POST(request: Request, { params }: { params: Promise<{ name: string }> }) {
   try {
     const { name } = await params
 
     let skillVar = ''
     let model = ''
     try {
-      const body = await request.json() as { var?: string; model?: string }
+      const body = (await request.json()) as { var?: string; model?: string }
       if (typeof body.var === 'string') skillVar = body.var
       if (typeof body.model === 'string') model = body.model
-    } catch { /* no body is fine */ }
+    } catch {
+      /* no body is fine */
+    }
 
     runSkill(name, { var: skillVar, model })
     return NextResponse.json({ ok: true })

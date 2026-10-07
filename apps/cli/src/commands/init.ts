@@ -20,7 +20,12 @@ import { join, resolve } from 'node:path'
 import { randomBytes } from 'node:crypto'
 import { createInterface } from 'node:readline/promises'
 import { REPO_ROOT } from '../../../dashboard/lib/gh.ts'
-import { GH_GLOBAL_SCOPES, captureGithubToken, ghTokenScopes, missingScopes } from '../../../dashboard/lib/github-auth.ts'
+import {
+  GH_GLOBAL_SCOPES,
+  captureGithubToken,
+  ghTokenScopes,
+  missingScopes,
+} from '../../../dashboard/lib/github-auth.ts'
 import { setSecret } from '../../../dashboard/lib/secrets-catalog.ts'
 import { configureAuth } from '../../../dashboard/lib/auth.ts'
 import { HARNESS_AUTH } from '../../../dashboard/lib/harness-auth.ts'
@@ -28,7 +33,14 @@ import { captureHarnessCreds, driveTtyLogin, setHarnessApiKey } from '../../../d
 import { syncHarness } from '../../../dashboard/lib/gateway.ts'
 import { parseConfig } from '../../../dashboard/lib/config.ts'
 import { HARNESSES, type Harness } from '../../../dashboard/lib/types.ts'
-import { loadGateways, loadHarnesses, runnableSecrets, type Credential, type Gateway, type HarnessManifest } from '../manifest.ts'
+import {
+  loadGateways,
+  loadHarnesses,
+  runnableSecrets,
+  type Credential,
+  type Gateway,
+  type HarnessManifest,
+} from '../manifest.ts'
 import { grokLogin, storeGrokKey } from '../grok.ts'
 import { c, fail, isDryRun, isUpstreamRepo } from '../output.ts'
 
@@ -57,7 +69,11 @@ https://www.aeon.fun/connect`
 const TEMPLATE = 'aeonfun/aeon'
 
 type Status = 'ok' | 'fixed' | 'warn' | 'fail' | 'skip'
-interface Row { step: string; status: Status; detail: string }
+interface Row {
+  step: string
+  status: Status
+  detail: string
+}
 
 interface Opts {
   name: string
@@ -72,7 +88,11 @@ interface Opts {
 // --- output -----------------------------------------------------------------
 const rows: Row[] = []
 const ICON: Record<Status, string> = {
-  ok: c.green('✓'), fixed: c.green('✓'), warn: c.yellow('!'), fail: c.red('✗'), skip: c.dim('-'),
+  ok: c.green('✓'),
+  fixed: c.green('✓'),
+  warn: c.yellow('!'),
+  fail: c.red('✗'),
+  skip: c.dim('-'),
 }
 function report(step: string, status: Status, detail: string, fix?: string) {
   rows.push({ step, status, detail })
@@ -81,7 +101,7 @@ function report(step: string, status: Status, detail: string, fix?: string) {
 }
 const heading = (n: number, title: string) => console.log(`\n${c.bold(`${n}. ${title}`)}`)
 const note = (s: string) => console.log(c.dim(`     ${s}`))
-const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
+const sleep = (ms: number) => new Promise(r => setTimeout(r, ms))
 
 // --- prompts ----------------------------------------------------------------
 const interactive = Boolean(process.stdin.isTTY && process.stdout.isTTY)
@@ -112,7 +132,7 @@ async function confirm(opts: Opts, question: string, def = true): Promise<boolea
 // sends them.
 function askSecret(question: string): Promise<string> {
   if (!interactive) return Promise.resolve('')
-  return new Promise((done) => {
+  return new Promise(done => {
     process.stdout.write(`  ${question} `)
     const stdin = process.stdin
     stdin.setRawMode(true)
@@ -129,8 +149,15 @@ function askSecret(question: string): Promise<string> {
     const onData = (chunk: string) => {
       for (const ch of chunk) {
         if (ch === '\r' || ch === '\n') return submit()
-        if (ch === '\u0003') { stdin.setRawMode(false); process.stdout.write('\n'); process.exit(130) }
-        if (ch === '\u007f' || ch === '\b') { buf = buf.slice(0, -1); continue }
+        if (ch === '\u0003') {
+          stdin.setRawMode(false)
+          process.stdout.write('\n')
+          process.exit(130)
+        }
+        if (ch === '\u007f' || ch === '\b') {
+          buf = buf.slice(0, -1)
+          continue
+        }
         buf += ch
       }
     }
@@ -139,10 +166,18 @@ function askSecret(question: string): Promise<string> {
 }
 
 // --- gh / git helpers -----------------------------------------------------------
-interface Run { ok: boolean; out: string; err: string }
+interface Run {
+  ok: boolean
+  out: string
+  err: string
+}
 function run(cmd: string, args: string[], cwd = REPO_ROOT): Run {
   const r = spawnSync(cmd, args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] })
-  return { ok: r.status === 0 && !r.error, out: (r.stdout ?? '').trim(), err: (r.stderr ?? '').trim() || (r.error?.message ?? '') }
+  return {
+    ok: r.status === 0 && !r.error,
+    out: (r.stdout ?? '').trim(),
+    err: (r.stderr ?? '').trim() || (r.error?.message ?? ''),
+  }
 }
 const gh = (...args: string[]) => run('gh', args)
 const git = (...args: string[]) => run('git', args)
@@ -167,11 +202,24 @@ async function stepGh(): Promise<string> {
   heading(1, 'GitHub CLI')
   const v = run('gh', ['--version'])
   if (!v.ok) {
-    report('gh', 'fail', 'GitHub CLI (gh) is not installed',
-      'macOS: brew install gh  |  Linux/Windows: https://github.com/cli/cli#installation  - then re-run ./aeon init  (no terminal? https://www.aeon.fun/connect)')
+    report(
+      'gh',
+      'fail',
+      'GitHub CLI (gh) is not installed',
+      'macOS: brew install gh  |  Linux/Windows: https://github.com/cli/cli#installation  - then re-run ./aeon init  (no terminal? https://www.aeon.fun/connect)',
+    )
     finish(false)
   }
-  report('gh', 'ok', `gh installed (${v.out.split('\n')[0].replace(/^gh version /, '').split(' ')[0]})`)
+  report(
+    'gh',
+    'ok',
+    `gh installed (${
+      v.out
+        .split('\n')[0]
+        .replace(/^gh version /, '')
+        .split(' ')[0]
+    })`,
+  )
 
   if (!gh('auth', 'status').ok) {
     if (isDryRun()) {
@@ -179,10 +227,19 @@ async function stepGh(): Promise<string> {
       return ''
     }
     if (!interactive) {
-      report('gh auth', 'fail', 'not signed in to GitHub (the browser sign-in needs a terminal)', 'gh auth login --web -s workflow, then re-run ./aeon init')
+      report(
+        'gh auth',
+        'fail',
+        'not signed in to GitHub (the browser sign-in needs a terminal)',
+        'gh auth login --web -s workflow, then re-run ./aeon init',
+      )
       finish(false)
     }
-    console.log(c.dim('     Signing in to GitHub (a browser window opens; the workflow scope lets Aeon update its own workflows).'))
+    console.log(
+      c.dim(
+        '     Signing in to GitHub (a browser window opens; the workflow scope lets Aeon update its own workflows).',
+      ),
+    )
     if (!interactiveRun('gh', ['auth', 'login', '--web', '-s', 'workflow'])) {
       report('gh auth', 'fail', 'GitHub sign-in did not finish', 'gh auth login --web -s workflow')
       finish(false)
@@ -199,13 +256,21 @@ async function stepGh(): Promise<string> {
   if (scopes && missing.length) {
     const envToken = process.env.GH_TOKEN || process.env.GITHUB_TOKEN
     if (envToken) {
-      report('gh scopes', 'warn', `signed in as ${login}, but the GH_TOKEN in your shell lacks ${missing.join(' + ')}`,
-        'unset GH_TOKEN GITHUB_TOKEN, then re-run ./aeon init')
+      report(
+        'gh scopes',
+        'warn',
+        `signed in as ${login}, but the GH_TOKEN in your shell lacks ${missing.join(' + ')}`,
+        'unset GH_TOKEN GITHUB_TOKEN, then re-run ./aeon init',
+      )
       return login
     }
     if (isDryRun() || !interactive) {
-      report('gh scopes', 'warn', `signed in as ${login}; token lacks ${missing.join(' + ')}`,
-        `${isDryRun() ? 'would run: ' : ''}gh auth refresh -h github.com -s ${GH_GLOBAL_SCOPES.join(',')}`)
+      report(
+        'gh scopes',
+        'warn',
+        `signed in as ${login}; token lacks ${missing.join(' + ')}`,
+        `${isDryRun() ? 'would run: ' : ''}gh auth refresh -h github.com -s ${GH_GLOBAL_SCOPES.join(',')}`,
+      )
       return login
     }
     console.log(c.dim(`     Adding the ${missing.join(' + ')} scope to your gh login (approve in the browser).`))
@@ -214,11 +279,19 @@ async function stepGh(): Promise<string> {
     missing = scopes ? missingScopes(scopes) : []
   }
   if (!scopes) {
-    report('gh scopes', 'warn', `signed in as ${login}; token scopes cannot be read (fine-grained token?)`,
-      'gh auth login --web -s workflow  (a gh login token works everywhere Aeon needs one)')
+    report(
+      'gh scopes',
+      'warn',
+      `signed in as ${login}; token scopes cannot be read (fine-grained token?)`,
+      'gh auth login --web -s workflow  (a gh login token works everywhere Aeon needs one)',
+    )
   } else if (missing.length) {
-    report('gh scopes', 'warn', `signed in as ${login}; token still lacks ${missing.join(' + ')}`,
-      `gh auth refresh -h github.com -s ${GH_GLOBAL_SCOPES.join(',')}`)
+    report(
+      'gh scopes',
+      'warn',
+      `signed in as ${login}; token still lacks ${missing.join(' + ')}`,
+      `gh auth refresh -h github.com -s ${GH_GLOBAL_SCOPES.join(',')}`,
+    )
   } else {
     report('gh scopes', 'ok', `signed in as ${login} (scopes include repo + workflow)`)
   }
@@ -235,7 +308,8 @@ async function stepRepo(opts: Opts, login: string): Promise<string> {
   const here = originSlug()
   if (here && !isUpstreamRepo(here) && existsSync(join(REPO_ROOT, 'aeon.yml'))) {
     report('repo', 'ok', `this folder is your instance: ${here}`)
-    if (opts.name !== 'aeon' && !here.endsWith(`/${opts.name}`)) note(`--name ${opts.name} ignored: already inside ${here}`)
+    if (opts.name !== 'aeon' && !here.endsWith(`/${opts.name}`))
+      note(`--name ${opts.name} ignored: already inside ${here}`)
     await ensureTracksOrigin(here)
     return here
   }
@@ -245,14 +319,25 @@ async function stepRepo(opts: Opts, login: string): Promise<string> {
   }
 
   const target = `${login}/${opts.name}`
-  note(here ? `This folder is a copy of ${here}, the shared template. Your agent needs its own repo.` : 'This folder has no GitHub remote yet.')
+  note(
+    here
+      ? `This folder is a copy of ${here}, the shared template. Your agent needs its own repo.`
+      : 'This folder has no GitHub remote yet.',
+  )
   // A renamed/transferred repo answers under its old name too (GitHub
   // redirects), so compare the name GitHub resolves, not the one we asked for:
   // never adopt the template, or anything that redirects to another repo.
   const view = gh('repo', 'view', target, '--json', 'nameWithOwner', '-q', '.nameWithOwner')
-  if (isUpstreamRepo(target) || (view.ok && (isUpstreamRepo(view.out) || view.out.toLowerCase() !== target.toLowerCase()))) {
-    report('repo', 'fail', `${target} is ${view.ok && view.out.toLowerCase() !== target.toLowerCase() ? `a redirect to ${view.out}` : 'the Aeon template itself'}, not a new instance`,
-      './aeon init --name <another-name>  (e.g. --name my-aeon)')
+  if (
+    isUpstreamRepo(target) ||
+    (view.ok && (isUpstreamRepo(view.out) || view.out.toLowerCase() !== target.toLowerCase()))
+  ) {
+    report(
+      'repo',
+      'fail',
+      `${target} is ${view.ok && view.out.toLowerCase() !== target.toLowerCase() ? `a redirect to ${view.out}` : 'the Aeon template itself'}, not a new instance`,
+      './aeon init --name <another-name>  (e.g. --name my-aeon)',
+    )
     finish(false)
   }
   // Switching this folder over must not cost any work, so check that BEFORE
@@ -262,31 +347,52 @@ async function stepRepo(opts: Opts, login: string): Promise<string> {
 
   if (view.ok) {
     if (!isAeonRepo(target)) {
-      report('repo', 'fail', `${target} already exists and is not an Aeon repo (no aeon.yml)`, './aeon init --name <another-name>')
+      report(
+        'repo',
+        'fail',
+        `${target} already exists and is not an Aeon repo (no aeon.yml)`,
+        './aeon init --name <another-name>',
+      )
       finish(false)
     }
     report('repo', 'ok', `found your instance ${target}`)
   } else {
     const vis = opts.private ? 'private' : 'public'
-    note(opts.private
-      ? 'Private: GitHub Actions minutes come out of your plan (Free includes 2,000/month).'
-      : 'Public: GitHub Actions minutes are free. Secrets stay secret either way; pass --private to keep the code private.')
+    note(
+      opts.private
+        ? 'Private: GitHub Actions minutes come out of your plan (Free includes 2,000/month).'
+        : 'Public: GitHub Actions minutes are free. Secrets stay secret either way; pass --private to keep the code private.',
+    )
     if (!(await confirm(opts, `Create ${target} (${vis}) from the ${TEMPLATE} template?`))) {
-      report('repo', 'fail', interactive ? 'no instance repo' : 'no instance repo (no terminal to confirm; pass --yes to create it)',
-        `./aeon init --yes  (or gh repo create ${target} --template ${TEMPLATE} --${vis})`)
+      report(
+        'repo',
+        'fail',
+        interactive ? 'no instance repo' : 'no instance repo (no terminal to confirm; pass --yes to create it)',
+        `./aeon init --yes  (or gh repo create ${target} --template ${TEMPLATE} --${vis})`,
+      )
       finish(false)
     }
     if (isDryRun()) {
       report('repo', 'skip', `would run: gh repo create ${target} --template ${TEMPLATE} --${vis}`)
       if (opts.dir) report('clone', 'skip', `would clone ${target} into ${resolve(opts.dir)} and continue there`)
-      else report('folder', 'skip', `would make ${target} this folder's origin (${here ?? 'no remote'} kept as upstream) and check out its main`)
+      else
+        report(
+          'folder',
+          'skip',
+          `would make ${target} this folder's origin (${here ?? 'no remote'} kept as upstream) and check out its main`,
+        )
       return target
     }
     // A template copy, not a fork: forks start with Actions disabled and
     // inherit nothing useful, which is the #1 "my agent never ran" cause.
     const created = gh('repo', 'create', target, '--template', TEMPLATE, `--${vis}`, '--description', 'My Aeon agent')
     if (!created.ok) {
-      report('repo', 'fail', `could not create ${target}: ${created.err.split('\n')[0]}`, `gh repo create ${target} --template ${TEMPLATE} --${vis}`)
+      report(
+        'repo',
+        'fail',
+        `could not create ${target}: ${created.err.split('\n')[0]}`,
+        `gh repo create ${target} --template ${TEMPLATE} --${vis}`,
+      )
       finish(false)
     }
     report('repo', 'fixed', `created ${target} from the ${TEMPLATE} template`)
@@ -318,7 +424,12 @@ async function cloneElsewhere(opts: Opts, target: string): Promise<never> {
     preflightDir(dir)
     const preExisted = existsSync(dir)
     if (!(await waitForContent(target))) {
-      report('clone', 'fail', `${target} is still empty (GitHub has not finished copying the template)`, 'wait a minute, then re-run the same ./aeon init command')
+      report(
+        'clone',
+        'fail',
+        `${target} is still empty (GitHub has not finished copying the template)`,
+        'wait a minute, then re-run the same ./aeon init command',
+      )
       finish(false)
     }
     let cloned = false
@@ -347,12 +458,19 @@ async function cloneElsewhere(opts: Opts, target: string): Promise<never> {
   }
   report('clone', 'fixed', `cloned ${target} into ${dir}; continuing there`)
   printSummary()
-  const args = ['init', ...(opts.yes ? ['--yes'] : []), ...(opts.harness ? ['--harness', opts.harness] : []),
-    ...(opts.telegram ? [] : ['--no-telegram']), ...(opts.dashboard ? [] : ['--no-dashboard'])]
+  const args = [
+    'init',
+    ...(opts.yes ? ['--yes'] : []),
+    ...(opts.harness ? ['--harness', opts.harness] : []),
+    ...(opts.telegram ? [] : ['--no-telegram']),
+    ...(opts.dashboard ? [] : ['--no-dashboard']),
+  ]
   const env = { ...process.env, AEON_REPO_ROOT: dir }
   const r = spawnSync(launcher, args, { cwd: dir, stdio: 'inherit', env })
   if (r.error) {
-    console.error(c.red('error: ') + `could not start ${launcher}: ${r.error.message}. Run it yourself: cd ${dir} && ./aeon init`)
+    console.error(
+      c.red('error: ') + `could not start ${launcher}: ${r.error.message}. Run it yourself: cd ${dir} && ./aeon init`,
+    )
     process.exit(1)
   }
   process.exit(r.status ?? 1)
@@ -368,7 +486,12 @@ function preflightDir(path: string) {
     finish(false)
   }
   if (!existsSync(join(dir, 'aeon.yml')) && readdirSync(dir).length) {
-    report('clone', 'fail', `${dir} exists, is not empty and is not an Aeon checkout`, 'pick a new or empty folder: ./aeon init --dir <path>')
+    report(
+      'clone',
+      'fail',
+      `${dir} exists, is not empty and is not an Aeon checkout`,
+      'pick a new or empty folder: ./aeon init --dir <path>',
+    )
     finish(false)
   }
 }
@@ -378,14 +501,22 @@ function preflightDir(path: string) {
 function preflightFolder(opts: Opts) {
   const dirty = git('status', '--porcelain', '--untracked-files=no')
   if (dirty.out) {
-    report('folder', 'fail', 'this folder has uncommitted changes, so it was not switched over',
-      `commit or stash them and re-run, or: ./aeon init --dir ../${opts.name}`)
+    report(
+      'folder',
+      'fail',
+      'this folder has uncommitted changes, so it was not switched over',
+      `commit or stash them and re-run, or: ./aeon init --dir ../${opts.name}`,
+    )
     finish(false)
   }
   const local = git('rev-list', '--count', '--branches', '--not', '--remotes')
   if (local.ok && local.out !== '0') {
-    report('folder', 'fail', `this folder has ${local.out} local commit(s) not on any remote, so it was not switched over`,
-      `push them somewhere first, or: ./aeon init --dir ../${opts.name}`)
+    report(
+      'folder',
+      'fail',
+      `this folder has ${local.out} local commit(s) not on any remote, so it was not switched over`,
+      `push them somewhere first, or: ./aeon init --dir ../${opts.name}`,
+    )
     finish(false)
   }
 }
@@ -399,7 +530,11 @@ const TEMP_REMOTE = 'aeon-instance'
 // always ends with the branch tracking origin/<branch>.
 async function adoptThisFolder(here: string | null, target: string): Promise<string> {
   if (isDryRun()) {
-    report('folder', 'skip', `would make ${target} this folder's origin (${here ?? 'no remote'} kept as upstream) and check out its main`)
+    report(
+      'folder',
+      'skip',
+      `would make ${target} this folder's origin (${here ?? 'no remote'} kept as upstream) and check out its main`,
+    )
     return target
   }
   const remotes = () => git('remote').out.split('\n').filter(Boolean)
@@ -407,19 +542,30 @@ async function adoptThisFolder(here: string | null, target: string): Promise<str
   const url = `https://github.com/${target}.git`
   const add = git('remote', 'add', TEMP_REMOTE, url)
   if (!add.ok) {
-    report('folder', 'fail', `could not add the ${TEMP_REMOTE} remote for ${target}: ${add.err.split('\n')[0]}`,
-      `git remote remove ${TEMP_REMOTE}, then re-run ./aeon init`)
+    report(
+      'folder',
+      'fail',
+      `could not add the ${TEMP_REMOTE} remote for ${target}: ${add.err.split('\n')[0]}`,
+      `git remote remove ${TEMP_REMOTE}, then re-run ./aeon init`,
+    )
     finish(false)
   }
   if (!(await waitForContent(target))) {
-    report('folder', 'fail', `${target} is still empty (GitHub has not finished copying the template)`, 'wait a minute, then re-run ./aeon init')
+    report(
+      'folder',
+      'fail',
+      `${target} is still empty (GitHub has not finished copying the template)`,
+      'wait a minute, then re-run ./aeon init',
+    )
     finish(false)
   }
   const branch = gh('repo', 'view', target, '--json', 'defaultBranchRef', '-q', '.defaultBranchRef.name').out || 'main'
   let fetched = false
   for (let i = 0; i < 5 && !fetched; i++) {
     if (i) await sleep(3000)
-    fetched = git('fetch', TEMP_REMOTE).ok && git('rev-parse', '--verify', '--quiet', `refs/remotes/${TEMP_REMOTE}/${branch}`).ok
+    fetched =
+      git('fetch', TEMP_REMOTE).ok &&
+      git('rev-parse', '--verify', '--quiet', `refs/remotes/${TEMP_REMOTE}/${branch}`).ok
   }
   if (!fetched) {
     report('folder', 'fail', `could not fetch ${target} (${branch})`, 'check your network, then re-run ./aeon init')
@@ -454,7 +600,12 @@ async function adoptThisFolder(here: string | null, target: string): Promise<str
   git('branch', `--set-upstream-to=origin/${branch}`, branch)
   const up = git('rev-parse', '--abbrev-ref', '--symbolic-full-name', '@{u}').out
   if (up !== `origin/${branch}`) {
-    report('folder', 'fail', `${branch} tracks ${up || 'nothing'}, not origin/${branch}`, `git branch --set-upstream-to=origin/${branch} ${branch}`)
+    report(
+      'folder',
+      'fail',
+      `${branch} tracks ${up || 'nothing'}, not origin/${branch}`,
+      `git branch --set-upstream-to=origin/${branch} ${branch}`,
+    )
     finish(false)
   }
   report('folder', 'fixed', `this folder now tracks ${target}${here ? ` (${here} kept as the upstream remote)` : ''}`)
@@ -475,7 +626,12 @@ async function ensureTracksOrigin(slug: string) {
   const branch = gh('repo', 'view', slug, '--json', 'defaultBranchRef', '-q', '.defaultBranchRef.name').out || 'main'
   const was = up.ok ? up.out : 'nothing'
   if (cur !== branch) {
-    report('folder', 'warn', `you are on ${cur} (tracking ${was}); scheduled runs read ${branch}`, `git checkout ${branch}`)
+    report(
+      'folder',
+      'warn',
+      `you are on ${cur} (tracking ${was}); scheduled runs read ${branch}`,
+      `git checkout ${branch}`,
+    )
     return
   }
   if (isDryRun()) {
@@ -483,7 +639,12 @@ async function ensureTracksOrigin(slug: string) {
     return
   }
   if (!git('fetch', 'origin').ok || !git('rev-parse', '--verify', '--quiet', `refs/remotes/origin/${branch}`).ok) {
-    report('folder', 'fail', `could not fetch origin/${branch} from ${slug}`, `git fetch origin && git branch --set-upstream-to=origin/${branch} ${branch}`)
+    report(
+      'folder',
+      'fail',
+      `could not fetch origin/${branch} from ${slug}`,
+      `git fetch origin && git branch --set-upstream-to=origin/${branch} ${branch}`,
+    )
     finish(false)
   }
   // A template copy starts a FRESH history, so a branch still on the
@@ -494,13 +655,22 @@ async function ensureTracksOrigin(slug: string) {
     const dirty = git('status', '--porcelain', '--untracked-files=no').out
     const local = git('rev-list', '--count', '--branches', '--not', '--remotes')
     if (dirty || !local.ok || local.out !== '0') {
-      report('folder', 'fail', `${branch} has no history in common with ${slug}, and this folder has ${dirty ? 'uncommitted changes' : 'local commits on no remote'}`,
-        `save them elsewhere, then: git checkout -B ${branch} origin/${branch}  (or start fresh: ./aeon init --dir ../${slug.split('/')[1]})`)
+      report(
+        'folder',
+        'fail',
+        `${branch} has no history in common with ${slug}, and this folder has ${dirty ? 'uncommitted changes' : 'local commits on no remote'}`,
+        `save them elsewhere, then: git checkout -B ${branch} origin/${branch}  (or start fresh: ./aeon init --dir ../${slug.split('/')[1]})`,
+      )
       finish(false)
     }
     const co = git('checkout', '-B', branch, `origin/${branch}`)
     if (!co.ok) {
-      report('folder', 'fail', `could not check out origin/${branch}: ${co.err.split('\n')[0]}`, `git checkout -B ${branch} origin/${branch}`)
+      report(
+        'folder',
+        'fail',
+        `could not check out origin/${branch}: ${co.err.split('\n')[0]}`,
+        `git checkout -B ${branch} origin/${branch}`,
+      )
       finish(false)
     }
     git('branch', `--set-upstream-to=origin/${branch}`, branch)
@@ -514,7 +684,12 @@ async function ensureTracksOrigin(slug: string) {
 function stepDefaultRepo(slug: string) {
   heading(3, 'Default repo for gh')
   if (isUpstreamRepo(slug)) {
-    report('set-default', 'fail', `refusing to target ${slug}, the shared template`, './aeon init from your own instance')
+    report(
+      'set-default',
+      'fail',
+      `refusing to target ${slug}, the shared template`,
+      './aeon init from your own instance',
+    )
     finish(false)
   }
   const current = gh('repo', 'set-default', '--view').out
@@ -528,10 +703,19 @@ function stepDefaultRepo(slug: string) {
   }
   const r = gh('repo', 'set-default', slug)
   if (!r.ok) {
-    report('set-default', 'fail', `could not set the default repo: ${r.err.split('\n')[0]}`, `gh repo set-default ${slug}`)
+    report(
+      'set-default',
+      'fail',
+      `could not set the default repo: ${r.err.split('\n')[0]}`,
+      `gh repo set-default ${slug}`,
+    )
     finish(false)
   }
-  report('set-default', 'fixed', `gh default repo set to ${slug}${current ? ` (was ${current})` : ''} - secrets now land on your repo`)
+  report(
+    'set-default',
+    'fixed',
+    `gh default repo set to ${slug}${current ? ` (was ${current})` : ''} - secrets now land on your repo`,
+  )
 }
 
 function stepActions(slug: string) {
@@ -541,8 +725,16 @@ function stepActions(slug: string) {
   const wf = gh('api', `repos/${slug}/actions/permissions/workflow`)
   let p: { enabled?: boolean; allowed_actions?: string } = {}
   let w: { default_workflow_permissions?: string; can_approve_pull_request_reviews?: boolean } = {}
-  try { p = JSON.parse(perms.out || '{}') } catch { /* unreadable: treat as unset */ }
-  try { w = JSON.parse(wf.out || '{}') } catch { /* unreadable: treat as unset */ }
+  try {
+    p = JSON.parse(perms.out || '{}')
+  } catch {
+    /* unreadable: treat as unset */
+  }
+  try {
+    w = JSON.parse(wf.out || '{}')
+  } catch {
+    /* unreadable: treat as unset */
+  }
   // Every aeon workflow declares its own `permissions:`, so the repo's default
   // token (read or write) is left exactly as it is. What a run needs from the
   // repo settings is only: Actions on, and "Allow GitHub Actions to create and
@@ -561,28 +753,70 @@ function stepActions(slug: string) {
     ].join(' + ')
     report('actions', 'skip', `would ${todo} (workflow token stays ${w.default_workflow_permissions ?? 'as is'})`)
   } else {
-    const a = actionsOk || gh('api', '-X', 'PUT', `repos/${slug}/actions/permissions`, '-F', 'enabled=true',
-      ...(p.allowed_actions ? [] : ['-f', 'allowed_actions=all'])).ok
+    const a =
+      actionsOk ||
+      gh(
+        'api',
+        '-X',
+        'PUT',
+        `repos/${slug}/actions/permissions`,
+        '-F',
+        'enabled=true',
+        ...(p.allowed_actions ? [] : ['-f', 'allowed_actions=all']),
+      ).ok
     // The endpoint takes both fields; send the current default token back
     // unchanged so only the PR switch moves.
-    const b = prOk || gh('api', '-X', 'PUT', `repos/${slug}/actions/permissions/workflow`,
-      ...(w.default_workflow_permissions ? ['-f', `default_workflow_permissions=${w.default_workflow_permissions}`] : []),
-      '-F', 'can_approve_pull_request_reviews=true').ok
-    const done = [...(actionsOk ? [] : ['enabled Actions']), ...(prOk ? [] : ['allowed Actions to open PRs'])].join(' and ')
+    const b =
+      prOk ||
+      gh(
+        'api',
+        '-X',
+        'PUT',
+        `repos/${slug}/actions/permissions/workflow`,
+        ...(w.default_workflow_permissions
+          ? ['-f', `default_workflow_permissions=${w.default_workflow_permissions}`]
+          : []),
+        '-F',
+        'can_approve_pull_request_reviews=true',
+      ).ok
+    const done = [...(actionsOk ? [] : ['enabled Actions']), ...(prOk ? [] : ['allowed Actions to open PRs'])].join(
+      ' and ',
+    )
     if (a && b) report('actions', 'fixed', `${done} (workflow token left ${w.default_workflow_permissions ?? 'as is'})`)
-    else report('actions', 'fail', 'could not change the Actions settings (needs admin on the repo)',
-      `open ${settings}: enable Actions and tick "Allow GitHub Actions to create and approve pull requests"`)
+    else
+      report(
+        'actions',
+        'fail',
+        'could not change the Actions settings (needs admin on the repo)',
+        `open ${settings}: enable Actions and tick "Allow GitHub Actions to create and approve pull requests"`,
+      )
   }
 
   // Forks ship with every workflow disabled ("disabled_fork"), and GitHub
   // disables schedules after 60 idle days. Re-enable only those two states:
   // a workflow the operator turned off by hand stays off.
-  const list = gh('api', `repos/${slug}/actions/workflows`, '-q', '.workflows[] | select(.state == "disabled_fork" or .state == "disabled_inactivity") | "\\(.id) \\(.path)"')
+  const list = gh(
+    'api',
+    `repos/${slug}/actions/workflows`,
+    '-q',
+    '.workflows[] | select(.state == "disabled_fork" or .state == "disabled_inactivity") | "\\(.id) \\(.path)"',
+  )
   const off = list.ok && list.out ? list.out.split('\n') : []
   if (!off.length) return
-  if (isDryRun()) { report('workflows', 'skip', `would enable ${off.length} workflow(s) GitHub left off`); return }
-  const failed = off.filter((l) => !gh('api', '-X', 'PUT', `repos/${slug}/actions/workflows/${l.split(' ')[0]}/enable`).ok)
-  if (failed.length) report('workflows', 'fail', `${failed.length} workflow(s) still disabled`, `open https://github.com/${slug}/actions and enable them`)
+  if (isDryRun()) {
+    report('workflows', 'skip', `would enable ${off.length} workflow(s) GitHub left off`)
+    return
+  }
+  const failed = off.filter(
+    l => !gh('api', '-X', 'PUT', `repos/${slug}/actions/workflows/${l.split(' ')[0]}/enable`).ok,
+  )
+  if (failed.length)
+    report(
+      'workflows',
+      'fail',
+      `${failed.length} workflow(s) still disabled`,
+      `open https://github.com/${slug}/actions and enable them`,
+    )
   else report('workflows', 'fixed', `enabled ${off.length} workflow(s) GitHub had left off`)
 }
 
@@ -605,17 +839,28 @@ async function stepGhGlobal(opts: Opts, secrets: Set<string> | null) {
   const scopes = ghTokenScopes()
   const missing = scopes ? missingScopes(scopes) : [...GH_GLOBAL_SCOPES]
   if (missing.length) {
-    report('GH_GLOBAL', 'warn', `not set; your gh token lacks ${missing.join(' + ')}, so it was not copied`,
-      `gh auth refresh -h github.com -s ${GH_GLOBAL_SCOPES.join(',')} && ./aeon auth --github  (or a classic PAT with repo + workflow: ./aeon secrets set GH_GLOBAL --stdin)`)
+    report(
+      'GH_GLOBAL',
+      'warn',
+      `not set; your gh token lacks ${missing.join(' + ')}, so it was not copied`,
+      `gh auth refresh -h github.com -s ${GH_GLOBAL_SCOPES.join(',')} && ./aeon auth --github  (or a classic PAT with repo + workflow: ./aeon secrets set GH_GLOBAL --stdin)`,
+    )
     return
   }
-  note('Good for getting started. GitHub revokes a gh login token after a year unused, or when you have more than 10 for the')
-  note('same app and scopes, so for an instance that runs for a long time use a dedicated classic PAT (repo + workflow).')
+  note(
+    'Good for getting started. GitHub revokes a gh login token after a year unused, or when you have more than 10 for the',
+  )
+  note(
+    'same app and scopes, so for an instance that runs for a long time use a dedicated classic PAT (repo + workflow).',
+  )
   if (!(await confirm(opts, 'Store your gh token as GH_GLOBAL now? (scopes: repo, workflow)'))) {
     report('GH_GLOBAL', 'skip', 'GH_GLOBAL not set (optional)', './aeon auth --github')
     return
   }
-  if (isDryRun()) { report('GH_GLOBAL', 'skip', 'would copy `gh auth token` into GH_GLOBAL'); return }
+  if (isDryRun()) {
+    report('GH_GLOBAL', 'skip', 'would copy `gh auth token` into GH_GLOBAL')
+    return
+  }
   try {
     captureGithubToken()
     report('GH_GLOBAL', 'fixed', 'stored your gh token as GH_GLOBAL')
@@ -639,7 +884,12 @@ function cliInstalled(bin: string): boolean {
 
 // Store a pasted key for `h` under the credential's secret, going through the
 // same lib paths the dashboard uses so gateway/harness side effects match.
-async function storeKey(h: HarnessManifest, cred: Credential | null, gateway: Gateway | null, key: string): Promise<string> {
+async function storeKey(
+  h: HarnessManifest,
+  cred: Credential | null,
+  gateway: Gateway | null,
+  key: string,
+): Promise<string> {
   if (gateway) return (await configureAuth({ key, provider: gateway.id })).secret ?? gateway.secrets[0]
   if (!cred) throw new Error('nothing to store')
   if (h.id === 'claude') return (await configureAuth({ key })).secret ?? cred.secret
@@ -666,13 +916,25 @@ async function runLogin(h: HarnessManifest, cred: Credential): Promise<string> {
 
 // Point aeon.yml's harness: at `id` (commit + push to origin via the lib).
 async function switchHarness(id: string) {
-  if (isDryRun()) { report('harness', 'skip', `would set harness: ${id} in aeon.yml`); return }
+  if (isDryRun()) {
+    report('harness', 'skip', `would set harness: ${id} in aeon.yml`)
+    return
+  }
   try {
     const sync = await syncHarness(id as Harness)
-    report('harness', sync.synced ? 'fixed' : 'warn', `aeon.yml now runs ${id}${sync.synced ? ' (pushed)' : ` (saved locally, not pushed: ${sync.reason ?? 'unknown'})`}`,
-      sync.synced ? undefined : './aeon sync')
+    report(
+      'harness',
+      sync.synced ? 'fixed' : 'warn',
+      `aeon.yml now runs ${id}${sync.synced ? ' (pushed)' : ` (saved locally, not pushed: ${sync.reason ?? 'unknown'})`}`,
+      sync.synced ? undefined : './aeon sync',
+    )
   } catch (e) {
-    report('harness', 'fail', `could not set harness: ${e instanceof Error ? e.message : String(e)}`, `./aeon config set harness ${id}`)
+    report(
+      'harness',
+      'fail',
+      `could not set harness: ${e instanceof Error ? e.message : String(e)}`,
+      `./aeon config set harness ${id}`,
+    )
   }
 }
 
@@ -680,12 +942,12 @@ async function stepModel(opts: Opts, secrets: Set<string> | null) {
   heading(6, 'Model')
   const harnesses = loadHarnesses()
   const gateways = loadGateways()
-  const byId = new Map(harnesses.map((h) => [h.id, h]))
+  const byId = new Map(harnesses.map(h => [h.id, h]))
   const configured = currentHarness()
-  const have = (h: HarnessManifest) => runnableSecrets(h, gateways).find((s) => secrets?.has(s))
+  const have = (h: HarnessManifest) => runnableSecrets(h, gateways).find(s => secrets?.has(s))
 
   const asked = opts.harness ? byId.get(opts.harness === 'claude-code' ? 'claude' : opts.harness) : undefined
-  if (opts.harness && !asked) fail(`unknown harness '${opts.harness}'. One of: ${harnesses.map((h) => h.id).join(', ')}`)
+  if (opts.harness && !asked) fail(`unknown harness '${opts.harness}'. One of: ${harnesses.map(h => h.id).join(', ')}`)
 
   // Already connected? Then do not run a login again: some captures rotate on
   // every login (grok), so a needless re-login can break a working setup.
@@ -700,19 +962,31 @@ async function stepModel(opts: Opts, secrets: Set<string> | null) {
 
   console.log('')
   harnesses.forEach((h, i) => {
-    const how = h.credentials.map((cr) => cr.label.replace(/ \(.*\)$/, '')).join(', ')
-    console.log(`     ${String(i + 1).padStart(2)}. ${h.label}${h.id === configured ? c.dim(' (current)') : ''} ${c.dim(`- ${how}${h.gateways ? ', or a gateway key' : ''}`)}`)
+    const how = h.credentials.map(cr => cr.label.replace(/ \(.*\)$/, '')).join(', ')
+    console.log(
+      `     ${String(i + 1).padStart(2)}. ${h.label}${h.id === configured ? c.dim(' (current)') : ''} ${c.dim(`- ${how}${h.gateways ? ', or a gateway key' : ''}`)}`,
+    )
   })
   note('One OpenRouter key (https://openrouter.ai/settings/keys) works for most of these:')
-  note(`${harnesses.filter((h) => h.gateways || h.credentials.some((cr) => cr.secret === 'OPENROUTER_API_KEY')).map((h) => h.id).join(', ')}.`)
+  note(
+    `${harnesses
+      .filter(h => h.gateways || h.credentials.some(cr => cr.secret === 'OPENROUTER_API_KEY'))
+      .map(h => h.id)
+      .join(', ')}.`,
+  )
 
   let pick = asked
   if (!pick && !interactive && !isDryRun()) {
-    report('model', 'warn', 'no model connected (choosing one needs a terminal)', './aeon init (in a terminal), or ./aeon init --harness <name>')
+    report(
+      'model',
+      'warn',
+      'no model connected (choosing one needs a terminal)',
+      './aeon init (in a terminal), or ./aeon init --harness <name>',
+    )
     return
   }
   if (!pick) {
-    const def = String(harnesses.findIndex((h) => h.id === configured) + 1)
+    const def = String(harnesses.findIndex(h => h.id === configured) + 1)
     const ans = await ask('Which agent should run your skills?', def)
     pick = harnesses[Number(ans) - 1] ?? byId.get(ans)
   }
@@ -725,13 +999,31 @@ async function stepModel(opts: Opts, secrets: Set<string> | null) {
   // The harness's own credentials (most preferred first), then for claude the
   // gateway keys it can route through.
   const options: { cred: Credential | null; gw: Gateway | null; label: string; how: string; url: string }[] = [
-    ...h.credentials.map((cr) => ({ cred: cr, gw: null, label: cr.label, how: cr.aeon_cmd ?? `./aeon secrets set ${cr.secret} --stdin`, url: cr.get_url })),
-    ...(h.gateways ? gateways.filter((g) => g.transport !== 'native').map((g) => ({
-      cred: null, gw: g, label: `${g.label} gateway key`, how: `./aeon auth --key <key> --provider ${g.id}`, url: g.get_url,
-    })) : []),
+    ...h.credentials.map(cr => ({
+      cred: cr,
+      gw: null,
+      label: cr.label,
+      how: cr.aeon_cmd ?? `./aeon secrets set ${cr.secret} --stdin`,
+      url: cr.get_url,
+    })),
+    ...(h.gateways
+      ? gateways
+          .filter(g => g.transport !== 'native')
+          .map(g => ({
+            cred: null,
+            gw: g,
+            label: `${g.label} gateway key`,
+            how: `./aeon auth --key <key> --provider ${g.id}`,
+            url: g.get_url,
+          }))
+      : []),
   ]
   console.log(`\n     ${c.bold(h.label)} can sign in with:`)
-  options.forEach((o, i) => console.log(`     ${String(i + 1).padStart(2)}. ${o.label} ${c.dim(`- get one: ${o.url}`)}\n         ${c.dim(o.how)}`))
+  options.forEach((o, i) =>
+    console.log(
+      `     ${String(i + 1).padStart(2)}. ${o.label} ${c.dim(`- get one: ${o.url}`)}\n         ${c.dim(o.how)}`,
+    ),
+  )
 
   const ans = await ask('Which one?', '1')
   const choice = options[Number(ans) - 1]
@@ -740,14 +1032,26 @@ async function stepModel(opts: Opts, secrets: Set<string> | null) {
     return
   }
 
-  const isLogin = choice.cred !== null && (choice.cred.kind === 'oauth_capture' || (choice.cred.kind === 'oauth_token' && Boolean(choice.cred.login_cmd) && h.id === 'claude'))
+  const isLogin =
+    choice.cred !== null &&
+    (choice.cred.kind === 'oauth_capture' ||
+      (choice.cred.kind === 'oauth_token' && Boolean(choice.cred.login_cmd) && h.id === 'claude'))
   if (isDryRun()) {
-    report('model', 'skip', `would ${isLogin ? `run ${choice.cred?.login_cmd}` : 'ask for the key'} and store ${choice.gw?.secrets[0] ?? choice.cred?.secret}${h.id !== configured ? `, then set harness: ${h.id}` : ''}`)
+    report(
+      'model',
+      'skip',
+      `would ${isLogin ? `run ${choice.cred?.login_cmd}` : 'ask for the key'} and store ${choice.gw?.secrets[0] ?? choice.cred?.secret}${h.id !== configured ? `, then set harness: ${h.id}` : ''}`,
+    )
     return
   }
   // Logins open a browser and keys are pasted: both need someone at a terminal.
   if (!interactive) {
-    report('model', 'warn', `${h.label}: not connected (${isLogin ? 'the login' : 'pasting a key'} needs a terminal)`, choice.how)
+    report(
+      'model',
+      'warn',
+      `${h.label}: not connected (${isLogin ? 'the login' : 'pasting a key'} needs a terminal)`,
+      choice.how,
+    )
     return
   }
 
@@ -763,8 +1067,11 @@ async function stepModel(opts: Opts, secrets: Set<string> | null) {
         return
       }
       const prefixes = choice.gw ? choice.gw.prefixes : choice.cred?.prefix ? [choice.cred.prefix] : []
-      if (prefixes.length && !prefixes.some((p) => key.startsWith(p)) &&
-          !(await confirm(opts, `That key does not start with ${prefixes.join(' / ')}. Store it anyway?`, false))) {
+      if (
+        prefixes.length &&
+        !prefixes.some(p => key.startsWith(p)) &&
+        !(await confirm(opts, `That key does not start with ${prefixes.join(' / ')}. Store it anyway?`, false))
+      ) {
         report('model', 'warn', `${h.label}: key not stored`, choice.how)
         return
       }
@@ -776,16 +1083,23 @@ async function stepModel(opts: Opts, secrets: Set<string> | null) {
   }
   report('model', 'fixed', `${h.label} connected (stored as ${stored})`)
   const aux = choice.cred?.aux_secrets
-  if (aux?.length && !aux.some((s) => secrets?.has(s))) {
-    note(`${choice.cred!.refresh ?? 'This login needs a secrets-write token to stay alive'}: set ${aux.join(' or ')} (step 5).`)
+  if (aux?.length && !aux.some(s => secrets?.has(s))) {
+    note(
+      `${choice.cred!.refresh ?? 'This login needs a secrets-write token to stay alive'}: set ${aux.join(' or ')} (step 5).`,
+    )
   }
   if (h.id !== configured) await switchHarness(h.id)
 }
 
 // --- Telegram ---------------------------------------------------------------
-interface TgUpdate { message?: { text?: string; chat?: { id?: number } } }
+interface TgUpdate {
+  message?: { text?: string; chat?: { id?: number } }
+}
 
-async function tg<T>(token: string, method: string): Promise<{ status: number; ok: boolean; result?: T; description?: string }> {
+async function tg<T>(
+  token: string,
+  method: string,
+): Promise<{ status: number; ok: boolean; result?: T; description?: string }> {
   const res = await fetch(`https://api.telegram.org/bot${token}/${method}`)
   const body = (await res.json().catch(() => ({}))) as { ok?: boolean; result?: T; description?: string }
   return { status: res.status, ok: Boolean(body.ok), result: body.result, description: body.description }
@@ -799,36 +1113,64 @@ async function manualChatId(why: string): Promise<string> {
 
 async function stepTelegram(opts: Opts, secrets: Set<string> | null) {
   heading(7, 'Telegram (optional)')
-  if (!opts.telegram) { report('telegram', 'skip', 'skipped (--no-telegram)'); return }
+  if (!opts.telegram) {
+    report('telegram', 'skip', 'skipped (--no-telegram)')
+    return
+  }
   if (secrets?.has('TELEGRAM_BOT_TOKEN') && secrets.has('TELEGRAM_CHAT_ID')) {
     report('telegram', 'ok', 'TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID are set')
     return
   }
   if (!interactive) {
-    report('telegram', 'skip', 'not set (needs a terminal)', './aeon init (interactive), or set TELEGRAM_BOT_TOKEN + TELEGRAM_CHAT_ID with ./aeon secrets set')
+    report(
+      'telegram',
+      'skip',
+      'not set (needs a terminal)',
+      './aeon init (interactive), or set TELEGRAM_BOT_TOKEN + TELEGRAM_CHAT_ID with ./aeon secrets set',
+    )
     return
   }
-  if (!(await confirm(opts, 'Get your agent\'s reports on Telegram?', true))) {
+  if (!(await confirm(opts, "Get your agent's reports on Telegram?", true))) {
     report('telegram', 'skip', 'Telegram not set up (optional)', './aeon init')
     return
   }
-  if (isDryRun()) { report('telegram', 'skip', 'would ask for a bot token, then link your chat with a /start deep link'); return }
+  if (isDryRun()) {
+    report('telegram', 'skip', 'would ask for a bot token, then link your chat with a /start deep link')
+    return
+  }
 
   note('In Telegram, message @BotFather, send /newbot, and copy the token it gives you.')
   const token = await askSecret('Bot token:')
-  if (!token) { report('telegram', 'skip', 'no bot token entered', './aeon init'); return }
+  if (!token) {
+    report('telegram', 'skip', 'no bot token entered', './aeon init')
+    return
+  }
   let me
-  try { me = await tg<{ username?: string }>(token, 'getMe') } catch (e) {
+  try {
+    me = await tg<{ username?: string }>(token, 'getMe')
+  } catch (e) {
     report('telegram', 'fail', `could not reach Telegram: ${e instanceof Error ? e.message : String(e)}`, './aeon init')
     return
   }
   if (!me.ok || !me.result?.username) {
-    report('telegram', 'fail', `Telegram rejected that token${me.description ? ` (${me.description})` : ''}`, 'copy the token from @BotFather again and re-run ./aeon init')
+    report(
+      'telegram',
+      'fail',
+      `Telegram rejected that token${me.description ? ` (${me.description})` : ''}`,
+      'copy the token from @BotFather again and re-run ./aeon init',
+    )
     return
   }
   const bot = me.result.username
-  try { await setSecret('TELEGRAM_BOT_TOKEN', token) } catch (e) {
-    report('telegram', 'fail', `could not save TELEGRAM_BOT_TOKEN: ${e instanceof Error ? e.message : String(e)}`, './aeon secrets set TELEGRAM_BOT_TOKEN --stdin')
+  try {
+    await setSecret('TELEGRAM_BOT_TOKEN', token)
+  } catch (e) {
+    report(
+      'telegram',
+      'fail',
+      `could not save TELEGRAM_BOT_TOKEN: ${e instanceof Error ? e.message : String(e)}`,
+      './aeon secrets set TELEGRAM_BOT_TOKEN --stdin',
+    )
     return
   }
   report('telegram', 'fixed', `saved the token for @${bot}`)
@@ -842,7 +1184,11 @@ async function stepTelegram(opts: Opts, secrets: Set<string> | null) {
   const deadline = Date.now() + 180_000
   while (!chatId && Date.now() < deadline) {
     let up
-    try { up = await tg<TgUpdate[]>(token, 'getUpdates') } catch { up = null }
+    try {
+      up = await tg<TgUpdate[]>(token, 'getUpdates')
+    } catch {
+      up = null
+    }
     if (up && up.status === 409) {
       chatId = await manualChatId('This bot has a webhook set, so its updates cannot be read here.')
       break
@@ -851,10 +1197,12 @@ async function stepTelegram(opts: Opts, secrets: Set<string> | null) {
     // updates, so a busy bot would hide the /start forever. An offset would
     // confirm (drop) updates the messages.yml poller still needs, so ask instead.
     if ((up?.result?.length ?? 0) >= 100) {
-      chatId = await manualChatId('This bot has a backlog of unread updates, so the /start message cannot be picked out here.')
+      chatId = await manualChatId(
+        'This bot has a backlog of unread updates, so the /start message cannot be picked out here.',
+      )
       break
     }
-    const hit = up?.result?.find((u) => u.message?.text?.trim() === `/start ${nonce}`)
+    const hit = up?.result?.find(u => u.message?.text?.trim() === `/start ${nonce}`)
     if (hit?.message?.chat?.id !== undefined) chatId = String(hit.message.chat.id)
     else await sleep(2000)
   }
@@ -867,7 +1215,12 @@ async function stepTelegram(opts: Opts, secrets: Set<string> | null) {
     await setSecret('TELEGRAM_CHAT_ID', chatId)
     report('telegram', 'fixed', `linked chat ${chatId} - reports will arrive from @${bot}`)
   } catch (e) {
-    report('telegram', 'fail', `could not save TELEGRAM_CHAT_ID: ${e instanceof Error ? e.message : String(e)}`, './aeon secrets set TELEGRAM_CHAT_ID --stdin')
+    report(
+      'telegram',
+      'fail',
+      `could not save TELEGRAM_CHAT_ID: ${e instanceof Error ? e.message : String(e)}`,
+      './aeon secrets set TELEGRAM_CHAT_ID --stdin',
+    )
   }
 }
 
@@ -880,36 +1233,73 @@ function printSummary() {
 // Every exit path: print the checklist, exit 0 only when nothing failed.
 function finish(completed: boolean): never {
   printSummary()
-  const failed = rows.filter((r) => r.status === 'fail').length
+  const failed = rows.filter(r => r.status === 'fail').length
   if (!completed || failed) {
-    console.log(`\n${c.yellow('Not finished.')} Fix the ${c.red('✗')} items above, then re-run ${c.bold('./aeon init')} - it skips what is already done.`)
+    console.log(
+      `\n${c.yellow('Not finished.')} Fix the ${c.red('✗')} items above, then re-run ${c.bold('./aeon init')} - it skips what is already done.`,
+    )
   } else if (isDryRun()) {
     console.log(`\n${c.yellow('Dry run finished:')} nothing was changed. Run ${c.bold('./aeon init')} to do it.`)
-  } else if (rows.some((r) => r.status === 'warn')) {
-    console.log(`\n${c.yellow('Almost there.')} Fix the ${c.yellow('!')} items above (or re-run ${c.bold('./aeon init')}); ${c.bold('bin/onboard')} re-checks everything.`)
+  } else if (rows.some(r => r.status === 'warn')) {
+    console.log(
+      `\n${c.yellow('Almost there.')} Fix the ${c.yellow('!')} items above (or re-run ${c.bold('./aeon init')}); ${c.bold('bin/onboard')} re-checks everything.`,
+    )
   } else {
-    console.log(`\n${c.green('Your agent is set up.')} Skills run on their schedule in GitHub Actions; ${c.bold('bin/onboard')} re-checks everything.`)
+    console.log(
+      `\n${c.green('Your agent is set up.')} Skills run on their schedule in GitHub Actions; ${c.bold('bin/onboard')} re-checks everything.`,
+    )
   }
   process.exit(failed || !completed ? 1 : 0)
 }
 
 export async function initCommand(argv: string[]) {
-  if (argv.includes('-h') || argv.includes('--help')) { console.log(USAGE); return }
-  let values: { name?: string; private?: boolean; dir?: string; harness?: string; 'no-telegram'?: boolean; 'no-dashboard'?: boolean; yes?: boolean }
+  if (argv.includes('-h') || argv.includes('--help')) {
+    console.log(USAGE)
+    return
+  }
+  let values: {
+    name?: string
+    private?: boolean
+    dir?: string
+    harness?: string
+    'no-telegram'?: boolean
+    'no-dashboard'?: boolean
+    yes?: boolean
+  }
   try {
-    ;({ values } = parseArgs({ args: argv, options: {
-      name: { type: 'string' }, private: { type: 'boolean' }, dir: { type: 'string' }, harness: { type: 'string' },
-      'no-telegram': { type: 'boolean' }, 'no-dashboard': { type: 'boolean' }, yes: { type: 'boolean', short: 'y' },
-    } }))
-  } catch (e) { fail(e instanceof Error ? e.message : 'bad arguments') }
+    ;({ values } = parseArgs({
+      args: argv,
+      options: {
+        name: { type: 'string' },
+        private: { type: 'boolean' },
+        dir: { type: 'string' },
+        harness: { type: 'string' },
+        'no-telegram': { type: 'boolean' },
+        'no-dashboard': { type: 'boolean' },
+        yes: { type: 'boolean', short: 'y' },
+      },
+    }))
+  } catch (e) {
+    fail(e instanceof Error ? e.message : 'bad arguments')
+  }
   const name = values.name ?? 'aeon'
   if (!/^[A-Za-z0-9._-]+$/.test(name)) fail(`--name must be a plain repo name (got '${name}')`)
   const opts: Opts = {
-    name, private: Boolean(values.private), dir: values.dir, harness: values.harness,
-    telegram: !values['no-telegram'], dashboard: !values['no-dashboard'], yes: Boolean(values.yes),
+    name,
+    private: Boolean(values.private),
+    dir: values.dir,
+    harness: values.harness,
+    telegram: !values['no-telegram'],
+    dashboard: !values['no-dashboard'],
+    yes: Boolean(values.yes),
   }
 
-  console.log(c.bold('Aeon setup') + c.dim(`  - each step checks first and only fixes what is missing; safe to re-run${isDryRun() ? ' (dry run: nothing changes)' : ''}`))
+  console.log(
+    c.bold('Aeon setup') +
+      c.dim(
+        `  - each step checks first and only fixes what is missing; safe to re-run${isDryRun() ? ' (dry run: nothing changes)' : ''}`,
+      ),
+  )
   const login = await stepGh()
   const slug = await stepRepo(opts, login)
   stepDefaultRepo(slug)
@@ -917,7 +1307,12 @@ export async function initCommand(argv: string[]) {
   // (origin). Both must point at the instance, never the template.
   const origin = originSlug()
   if (!isDryRun() && (!origin || isUpstreamRepo(origin) || origin.toLowerCase() !== slug.toLowerCase())) {
-    report('origin', 'fail', `this folder's origin is ${origin ?? 'unset'}, not ${slug}`, `git remote set-url origin https://github.com/${slug}.git`)
+    report(
+      'origin',
+      'fail',
+      `this folder's origin is ${origin ?? 'unset'}, not ${slug}`,
+      `git remote set-url origin https://github.com/${slug}.git`,
+    )
     finish(false)
   }
   stepActions(slug)
@@ -927,11 +1322,17 @@ export async function initCommand(argv: string[]) {
   await stepModel(opts, secrets)
   await stepTelegram(opts, secretNames(slug) ?? secrets)
 
-  const failed = rows.some((r) => r.status === 'fail')
+  const failed = rows.some(r => r.status === 'fail')
   // --yes means unattended, and the dashboard is a foreground server: never
   // start it implicitly.
-  if (!failed && opts.dashboard && interactive && !opts.yes && !isDryRun() &&
-      (await confirm(opts, 'Start the dashboard now?', true))) {
+  if (
+    !failed &&
+    opts.dashboard &&
+    interactive &&
+    !opts.yes &&
+    !isDryRun() &&
+    (await confirm(opts, 'Start the dashboard now?', true))
+  ) {
     printSummary()
     const r = spawnSync(join(REPO_ROOT, 'aeon'), [], { cwd: REPO_ROOT, stdio: 'inherit' })
     process.exit(r.status ?? 0)

@@ -13,7 +13,11 @@ const NAME_RE = /^[\p{L}\p{N} .,'’\-&/]{1,80}$/u
 
 function normRepo(raw: unknown): string {
   if (typeof raw !== 'string') return ''
-  let r = raw.trim().replace(/^https?:\/\/github\.com\//i, '').replace(/\/$/, '').replace(/\.git$/i, '')
+  let r = raw
+    .trim()
+    .replace(/^https?:\/\/github\.com\//i, '')
+    .replace(/\/$/, '')
+    .replace(/\.git$/i, '')
   const parts = r.split('/')
   if (parts.length >= 2) r = `${parts[0]}/${parts[1]}`
   return REPO_RE.test(r) ? r : ''
@@ -21,16 +25,29 @@ function normRepo(raw: unknown): string {
 
 function normGoal(raw: unknown): string {
   if (typeof raw !== 'string') return ''
-  return raw.replace(/[\r\n\t]+/g, ' ').replace(/\s*\|\s*/g, ' / ').replace(/\s{2,}/g, ' ').trim().slice(0, 600)
+  return raw
+    .replace(/[\r\n\t]+/g, ' ')
+    .replace(/\s*\|\s*/g, ' / ')
+    .replace(/\s{2,}/g, ' ')
+    .trim()
+    .slice(0, 600)
 }
 
 function normHandle(raw: unknown): string {
   if (typeof raw !== 'string') return ''
-  const h = raw.trim().replace(/^@/, '').replace(/^https?:\/\/(x|twitter)\.com\//i, '').replace(/\/.*$/, '')
+  const h = raw
+    .trim()
+    .replace(/^@/, '')
+    .replace(/^https?:\/\/(x|twitter)\.com\//i, '')
+    .replace(/\/.*$/, '')
   return HANDLE_RE.test(h) ? h : ''
 }
 
-export interface StrategyBrief { goal: string | null; repo: string | null; links: string[] }
+export interface StrategyBrief {
+  goal: string | null
+  repo: string | null
+  links: string[]
+}
 
 export function buildStrategy(
   input: { goal?: unknown; repo?: unknown; links?: unknown; model?: unknown },
@@ -59,7 +76,11 @@ export function buildStrategy(
   return { args, brief: { goal: goal || null, repo: repo || null, links } }
 }
 
-export interface SoulBrief { handle: string | null; name: string | null; links: string[] }
+export interface SoulBrief {
+  handle: string | null
+  name: string | null
+  links: string[]
+}
 
 export function buildSoul(
   input: { handle?: unknown; name?: unknown; links?: unknown; model?: unknown },

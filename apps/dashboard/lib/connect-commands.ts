@@ -15,7 +15,10 @@
 import { CAPTURE_SPECS } from './connect-detect'
 import { MANIFEST_GATEWAYS, harnessManifest } from './manifest'
 
-export interface KeyLink { label: string; url: string }
+export interface KeyLink {
+  label: string
+  url: string
+}
 
 export interface ConnectGuide {
   // The login half of the step 1 command (`codex login`), or null when the
@@ -43,16 +46,19 @@ export function guideFor(harness: string): ConnectGuide {
   const first = h.credentials[0]
   const isLogin = Boolean(first?.login_cmd) && (first.kind === 'oauth_capture' || first.kind === 'oauth_token')
   const keys: KeyLink[] = []
-  const addKey = (label: string, url: string) => { if (!keys.some((k) => k.url === url)) keys.push({ label, url }) }
+  const addKey = (label: string, url: string) => {
+    if (!keys.some(k => k.url === url)) keys.push({ label, url })
+  }
   for (const c of h.credentials) if (c.kind === 'api_key') addKey(short(c.label), c.get_url)
   // claude reaches OpenRouter through the gateway cascade.
   if (h.gateways) {
-    const or = MANIFEST_GATEWAYS.find((g) => g.id === 'openrouter')
+    const or = MANIFEST_GATEWAYS.find(g => g.id === 'openrouter')
     if (or) addKey(`${or.label} key`, or.get_url)
   }
-  const keyNames = h.credentials.filter((c) => c.kind === 'api_key').map((c) => short(c.label).replace(/ (API )?key$/, ''))
-  const pasteHint = PASTE_HINTS[harness]
-    ?? (isLogin ? `Paste the copied login, or a key (${keyNames.join(', ')}).` : `Paste a key (${keyNames.join(', ')}).`)
+  const keyNames = h.credentials.filter(c => c.kind === 'api_key').map(c => short(c.label).replace(/ (API )?key$/, ''))
+  const pasteHint =
+    PASTE_HINTS[harness] ??
+    (isLogin ? `Paste the copied login, or a key (${keyNames.join(', ')}).` : `Paste a key (${keyNames.join(', ')}).`)
   return {
     login: isLogin ? first.login_cmd! : null,
     pasteHint,
@@ -69,16 +75,14 @@ export type Os = 'mac' | 'linux'
 export function captureCommand(harness: string, os: Os): string | null {
   const g = guideFor(harness)
   if (!g.login) return null
-  const spec = CAPTURE_SPECS.find((s) => s.harness === harness)
+  const spec = CAPTURE_SPECS.find(s => s.harness === harness)
   if (!spec) return g.login
   const tar = `tar -czf - -C ~ ${spec.paths.join(' ')}${spec.paths.length > 1 ? ' 2>/dev/null' : ''}`
-  return os === 'mac'
-    ? `${g.login} && ${tar} | base64 | pbcopy`
-    : `${g.login} && ${tar} | base64 -w0; echo`
+  return os === 'mac' ? `${g.login} && ${tar} | base64 | pbcopy` : `${g.login} && ${tar} | base64 -w0; echo`
 }
 
 // Harnesses whose login the dashboard can drive itself on this machine ("Do it
 // for me"): claude's setup-token and every login capture.
 export function canDriveLogin(harness: string): boolean {
-  return harness === 'claude' || CAPTURE_SPECS.some((s) => s.harness === harness)
+  return harness === 'claude' || CAPTURE_SPECS.some(s => s.harness === harness)
 }

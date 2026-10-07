@@ -65,7 +65,7 @@ export function loadGateways(root = CLI_REPO): Gateway[] {
 // Every secret that, once set, lets `harness` run: its own credentials, plus
 // (claude only) every gateway key in the cascade.
 export function runnableSecrets(harness: HarnessManifest, gateways: Gateway[]): string[] {
-  const own = harness.credentials.map((c) => c.secret)
-  const gw = harness.gateways ? gateways.flatMap((g) => g.secrets) : []
+  const own = harness.credentials.map(c => c.secret)
+  const gw = harness.gateways ? gateways.flatMap(g => g.secrets) : []
   return [...new Set([...own, ...gw])]
 }

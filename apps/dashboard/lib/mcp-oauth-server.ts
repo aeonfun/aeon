@@ -45,14 +45,17 @@ export function storeSecrets(flow: PendingFlow, tokens: TokenSet): { durable: bo
   // Narrow on the value, not on `durable` — the boolean doesn't carry the
   // refresh token's non-undefined-ness into the block.
   if (tokens.refresh_token) {
-    ghSecretSet(oauthVar(flow.slug), JSON.stringify({
-      token_endpoint: flow.tokenEndpoint,
-      client_id: flow.clientId,
-      ...(flow.clientSecret ? { client_secret: flow.clientSecret } : {}),
-      refresh_token: tokens.refresh_token,
-      ...(tokens.scope ? { scope: tokens.scope } : {}),
-      slug: flow.slug,
-    } satisfies OAuthSecret))
+    ghSecretSet(
+      oauthVar(flow.slug),
+      JSON.stringify({
+        token_endpoint: flow.tokenEndpoint,
+        client_id: flow.clientId,
+        ...(flow.clientSecret ? { client_secret: flow.clientSecret } : {}),
+        refresh_token: tokens.refresh_token,
+        ...(tokens.scope ? { scope: tokens.scope } : {}),
+        slug: flow.slug,
+      } satisfies OAuthSecret),
+    )
   }
 
   const server: McpServer = {

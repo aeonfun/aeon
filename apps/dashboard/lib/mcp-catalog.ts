@@ -47,7 +47,8 @@ export const MCP_CATALOG: McpCatalogEntry[] = [
     name: 'Robinhood Trading',
     url: 'https://agent.robinhood.com/mcp/trading',
     logo: 'https://pbs.twimg.com/profile_images/1844399977482813442/1fTlYz2c_400x400.png',
-    description: 'Robinhood Agentic Trading - read your portfolio, buying power, positions, and order history, and place trades from your agent. Remote HTTP MCP with OAuth; trades execute in a dedicated Agentic brokerage account you authorize. You are responsible for every order your agent places.',
+    description:
+      'Robinhood Agentic Trading - read your portfolio, buying power, positions, and order history, and place trades from your agent. Remote HTTP MCP with OAuth; trades execute in a dedicated Agentic brokerage account you authorize. You are responsible for every order your agent places.',
     // Standard OAuth, self-issuing: PRM (well-known path) names the MCP URL itself
     // as the authorization server, AS metadata at agent.robinhood.com/.well-known/
     // oauth-authorization-server/mcp/trading. Supports authorization_code +
@@ -64,7 +65,8 @@ export const MCP_CATALOG: McpCatalogEntry[] = [
     name: 'Executor',
     url: 'https://executor.sh/mcp',
     logo: 'https://executor.sh/favicon-192.png',
-    description: 'Executor Cloud - one MCP endpoint in front of all your integrations: add MCP servers, OpenAPI specs, and GraphQL APIs once and every tool joins a single policy-governed catalog. Credentials live in Executor, never in the agent; each tool call is allowed, approval-gated, or blocked by policy.',
+    description:
+      'Executor Cloud - one MCP endpoint in front of all your integrations: add MCP servers, OpenAPI specs, and GraphQL APIs once and every tool joins a single policy-governed catalog. Credentials live in Executor, never in the agent; each tool call is allowed, approval-gated, or blocked by policy.',
     // Standard OAuth, probed live 2026-07-16: the 401 carries a WWW-Authenticate
     // resource_metadata pointer to PRM at /.well-known/oauth-protected-resource/mcp,
     // which names AS https://signin.executor.sh (full metadata: authorization_code +
@@ -80,7 +82,8 @@ export const MCP_CATALOG: McpCatalogEntry[] = [
     name: 'glim.sh',
     url: 'https://glim.sh/mcp',
     logo: 'https://raw.githubusercontent.com/glim-sh/glim-mcp/main/assets/icon-400.png',
-    description: 'glim.sh - live data for AI agents: web search, full page extraction, Twitter/X, Reddit, GitHub, Amazon, YouTube transcripts. Pay-per-call with x402 (Base/Solana USDC) or MPP (Tempo), or sign in and draw from a prepaid account balance.',
+    description:
+      'glim.sh - live data for AI agents: web search, full page extraction, Twitter/X, Reddit, GitHub, Amazon, YouTube transcripts. Pay-per-call with x402 (Base/Solana USDC) or MPP (Tempo), or sign in and draw from a prepaid account balance.',
     // Standard OAuth (PRM https://glim.sh/api/auth → AS metadata + DCR). Request
     // offline_access so the token endpoint returns a refresh token (durable headless
     // auth); openid for identity. Skip profile/email — not needed for API access.
@@ -92,7 +95,8 @@ export const MCP_CATALOG: McpCatalogEntry[] = [
     name: 'Finance District Agent Wallet',
     url: 'https://wallet-mcp.fd.xyz',
     logo: 'https://fd.xyz/apple-icon.png',
-    description: 'Non-custodial MCP wallet for AI agents: hold and send across EVM, Solana, Bitcoin and Sui, swap tokens, earn DeFi yield, and make x402 payments — all within server-enforced spending caps, with keys that never leave a secure enclave (the agent never holds them).',
+    description:
+      'Non-custodial MCP wallet for AI agents: hold and send across EVM, Solana, Bitcoin and Sui, swap tokens, earn DeFi yield, and make x402 payments — all within server-enforced spending caps, with keys that never leave a secure enclave (the agent never holds them).',
     // Standard OAuth. PRM (RFC 9728) at wallet-mcp.fd.xyz/.well-known/oauth-protected-resource
     // names AS https://oauth.fd.xyz (RFC 8414: authorization_code + refresh_token grants,
     // PKCE S256, DCR registration_endpoint, public client via auth "none"). offline_access
@@ -108,7 +112,8 @@ export const MCP_CATALOG: McpCatalogEntry[] = [
     name: 'PostHog',
     url: 'https://mcp.posthog.com/mcp',
     logo: 'https://avatars.githubusercontent.com/u/60330232?s=200&v=4',
-    description: 'PostHog - product analytics from the agent: insights & HogQL/SQL queries, dashboards, feature flags, experiments, error tracking, and session replays. Hosted streamable-HTTP MCP with one-click OAuth Connect.',
+    description:
+      'PostHog - product analytics from the agent: insights & HogQL/SQL queries, dashboards, feature flags, experiments, error tracking, and session replays. Hosted streamable-HTTP MCP with one-click OAuth Connect.',
     // Standard OAuth, probed live 2026-07-21: the 401 on /mcp carries a WWW-Authenticate
     // resource_metadata pointer to PRM at /.well-known/oauth-protected-resource/mcp,
     // which names AS https://oauth.posthog.com (full metadata: authorization_code +
@@ -133,7 +138,8 @@ export const MCP_CATALOG: McpCatalogEntry[] = [
     name: 'Higgsfield',
     url: 'https://mcp.higgsfield.ai/mcp',
     logo: 'https://higgsfield.ai/apple-touch-icon.png',
-    description: 'Higgsfield - generative media from the agent: text-to-image, image-to-video and text-to-video with motion control, consistent characters, product placement, and cinematic looks across 100+ models. Hosted streamable-HTTP MCP with one-click OAuth Connect. Generation draws from your Higgsfield account credits.',
+    description:
+      'Higgsfield - generative media from the agent: text-to-image, image-to-video and text-to-video with motion control, consistent characters, product placement, and cinematic looks across 100+ models. Hosted streamable-HTTP MCP with one-click OAuth Connect. Generation draws from your Higgsfield account credits.',
     // Standard OAuth, probed live 2026-08-04: a 401 on /mcp carries WWW-Authenticate
     // resource_metadata → PRM at /.well-known/oauth-protected-resource/mcp, which names
     // AS https://mcp.higgsfield.ai (upstream Clerk) with authorization_code + refresh_token
@@ -149,8 +155,7 @@ export const MCP_CATALOG: McpCatalogEntry[] = [
   },
 ]
 
-export const MCP_BY_SLUG: Record<string, McpCatalogEntry> =
-  Object.fromEntries(MCP_CATALOG.map(e => [e.slug, e]))
+export const MCP_BY_SLUG: Record<string, McpCatalogEntry> = Object.fromEntries(MCP_CATALOG.map(e => [e.slug, e]))
 
 // --- credential names -------------------------------------------------------
 // A server's credentials derive their secret names from its slug, so the
@@ -176,10 +181,13 @@ export const MCP_SECRET_RE = /^MCP_[A-Z0-9_]+_(TOKEN|OAUTH)$/
 // from `robinhood-trading` or `robinhood_trading` (both sanitize to the same
 // name). Anything not in here is a custom server the operator added by hand.
 export const MCP_SECRET_OWNER: Record<string, McpCatalogEntry> = Object.fromEntries(
-  MCP_CATALOG.flatMap(e => ([
-    [tokenVar(e.slug), e],
-    [oauthVar(e.slug), e],
-  ] as [string, McpCatalogEntry][])),
+  MCP_CATALOG.flatMap(
+    e =>
+      [
+        [tokenVar(e.slug), e],
+        [oauthVar(e.slug), e],
+      ] as [string, McpCatalogEntry][],
+  ),
 )
 
 // Display name for an MCP credential: the catalog's brand when we know the
@@ -189,5 +197,9 @@ export const MCP_SECRET_OWNER: Record<string, McpCatalogEntry> = Object.fromEntr
 export function mcpServerLabel(secretName: string): string {
   const owner = MCP_SECRET_OWNER[secretName]
   if (owner) return owner.name
-  return secretName.replace(/^MCP_/, '').replace(/_(TOKEN|OAUTH)$/, '').toLowerCase().replace(/_/g, ' ')
+  return secretName
+    .replace(/^MCP_/, '')
+    .replace(/_(TOKEN|OAUTH)$/, '')
+    .toLowerCase()
+    .replace(/_/g, ' ')
 }

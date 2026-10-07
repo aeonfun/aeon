@@ -108,7 +108,11 @@ export function parseFrontmatter(content: string): Frontmatter {
 // spec form (lists nested under `metadata:` in block style) parses correctly.
 function extractList(block: string, key: string): string[] {
   const inline = block.match(new RegExp(`^[ \\t]*${key}:\\s*\\[([^\\]]*)\\]`, 'm'))
-  if (inline) return inline[1].split(',').map(t => t.trim()).filter(Boolean)
+  if (inline)
+    return inline[1]
+      .split(',')
+      .map(t => t.trim())
+      .filter(Boolean)
   const lines = block.split('\n')
   const keyRe = new RegExp(`^[ \\t]*${key}:\\s*(#.*)?$`)
   const idx = lines.findIndex(l => keyRe.test(l))
