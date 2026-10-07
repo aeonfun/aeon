@@ -34,6 +34,7 @@ node dist/index.js           # stdio server; normally launched by the MCP client
 
 - **Node.js >= 18** and npm (build + runtime).
 - The CLI for the harness the skill resolves to on `PATH` (`AEON_HARNESS` env, else the skill's `harness:` in `aeon.yml`, else the global `harness:`, else `claude`). For the default, install the **`claude` CLI** with `npm install -g @anthropic-ai/claude-code`.
+- Optional `AEON_MODEL` env to pick the model for every run, like the workflow's `model` dispatch input. Otherwise the model is resolved the same way a scheduled run does it: the skill's `model:` in `aeon.yml`, else the global `model:`, else `claude-sonnet-5-5`. claude gets that id as `--model`; grok gets it only if it is a `grok-*` id (a claude id becomes `grok-4.7`); the other harnesses get whatever `scripts/resolve-harness.sh` maps it to for their provider, or no `--model` so their own default applies.
 - Whatever each skill needs at runtime — `ANTHROPIC_API_KEY` (or a configured gateway), `GITHUB_TOKEN` for repo skills, and any per-skill API keys. The spawned skill process inherits the MCP server's environment, so export these in your shell (or the `env` block of the client's MCP config) before launching it. Nothing reads a `.env` file.
 
 ## Tools
@@ -89,7 +90,7 @@ You should see the full `aeon-*` tool list followed by a real skill output. If t
 
 - **Transport:** stdio (`StdioServerTransport`) using the official `@modelcontextprotocol/sdk`. The MCP client launches `node dist/index.js` as a subprocess and speaks JSON-RPC over stdin/stdout — diagnostics go to stderr (`[aeon-mcp] …`) so they never corrupt the protocol stream.
 - **Skill discovery:** `loadSkills()` parses `catalog/skills.json` (resolved relative to the compiled file, three levels up from `dist/`). If the manifest is missing the server starts with zero tools rather than crashing.
-- **Execution:** each call spawns `harness-adapter/run-harness <harness> --mode <tier> --allowed-tools <list> --append-system-prompt <tier notes> --timeout 1800` (tier, tools and tier notes from `scripts/skill_mode.sh`, the same values `.github/workflows/aeon.yml` passes on a scheduled run) with `cwd` set to the repo root. The 1800-second (30-minute) timeout matches the `--timeout` the workflow gives `run-harness`; the workflow job itself has a longer outer limit. The JSON envelope is unwrapped to return `result`; raw output is returned as a fallback.
+- **Execution:** each call spawns `harness-adapter/run-harness <harness> --model <model> --mode <tier> --allowed-tools <list> --append-system-prompt <tier notes> --timeout 1800` (model as described under Requirements; tier, tools and tier notes from `scripts/skill_mode.sh`, the same values `.github/workflows/aeon.yml` passes on a scheduled run) with `cwd` set to the repo root. The 1800-second (30-minute) timeout matches the `--timeout` the workflow gives `run-harness`; the workflow job itself has a longer outer limit. The JSON envelope is unwrapped to return `result`; raw output is returned as a fallback.
 - **Errors are returned, not thrown:** a missing skill, a missing `run-harness` (`ENOENT`), or a non-zero exit (including a missing harness CLI) all come back as readable tool text so Claude can react instead of the connection dropping.
 
 ## Sandbox / deployment note
