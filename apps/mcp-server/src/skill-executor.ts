@@ -28,13 +28,45 @@ interface SkillsManifest {
   skills: Skill[];
 }
 
+/** Drop a `#` comment, but only outside double quotes (a var like "fix #12" survives). */
+function stripComment(line: string): string {
+  let quoted = false;
+  for (let i = 0; i < line.length; i++) {
+    const c = line[i];
+    if (c === '"') quoted = !quoted;
+    if (c === "#" && !quoted && (i === 0 || /[ \t]/.test(line[i - 1]))) return line.slice(0, i);
+  }
+  return line;
+}
+
 /**
- * A skill's own line in aeon.yml's skills map (`  my-skill: { enabled: true, ... }`),
- * or undefined. Entries are inline flow maps on one line, and the first match wins
- * (the skills map sits above chains:, which also indents its keys by two).
+ * A skill's own entry in aeon.yml's skills map, comments stripped, or undefined.
+ * A port of scripts/skill_entry.sh (the reader the workflow and resolve-harness.sh
+ * use), so it handles BOTH entry shapes:
+ *   single-line   my-skill: { enabled: true, model: "x" }
+ *   block         my-skill:
+ *                   { enabled: true,
+ *                     model: "x" }
+ * Capture runs from the header to the line that closes the flow map, and stops
+ * early at the next entry or top-level key. The first header wins (the skills map
+ * sits above chains:, which also indents its keys by two).
  */
 function skillConfigLine(cfg: string, slug: string): string | undefined {
-  return cfg.match(new RegExp(`^ {2}${slug.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}:.*$`, "m"))?.[0];
+  const header = `  ${slug}:`;
+  const out: string[] = [];
+  let found = false;
+  for (const raw of cfg.split("\n")) {
+    if (!found) {
+      if (!raw.startsWith(header)) continue;
+      found = true;
+    } else if (/^ {2}[^ #]/.test(raw) || /^[^ #\t]/.test(raw)) {
+      break; // next entry / next top-level key
+    }
+    const line = stripComment(raw);
+    out.push(line);
+    if (line.includes("}")) break;
+  }
+  return found ? out.join("\n") : undefined;
 }
 
 function readConfig(repoRoot: string): string {
@@ -98,9 +130,8 @@ export function resolveHarness(repoRoot: string, slug?: string): Harness {
   let picked = (process.env.AEON_HARNESS || "").trim().toLowerCase();
   if (!picked) {
     const cfg = readConfig(repoRoot); // "" when there is no aeon.yml -> default
-    // Per-skill override. aeon.yml's skills map is INLINE flow-mapping on one
-    // line (`  my-skill: { enabled: true, harness: "vibe" }`), and that is the
-    // only form resolve-harness.sh matches - keep the two greps equivalent.
+    // Per-skill override, read from the whole entry (single-line or block),
+    // like resolve-harness.sh does via scripts/skill_entry.sh.
     if (slug) {
       picked = skillConfigLine(cfg, slug)
         ?.match(/harness:\s*"([^"]*)"/)?.[1]
@@ -118,6 +149,66 @@ export function resolveHarness(repoRoot: string, slug?: string): Harness {
   // `"codex"` and is rewritten to claude. That is a bug in that script, not a
   // contract, so this reads the YAML correctly instead of reproducing it.
   return isHarness(picked) ? picked : "claude";
+}
+
+/**
+ * AEON_MODEL, the local stand-in for the workflow_dispatch `model` input (as
+ * AEON_HARNESS is for `harness`). "(config default)" is that input's placeholder
+ * value, so it counts as unset here too.
+ */
+function inputModel(): string {
+  const v = (process.env.AEON_MODEL || "").trim();
+  return v === "(config default)" ? "" : v;
+}
+
+/**
+ * aeon's own model id for the run, the same 3-tier precedence as the workflow's
+ * Run step (.github/workflows/aeon.yml, the INPUT_MODEL / SKILL_MODEL /
+ * CONFIG_MODEL block): AEON_MODEL, else the skill's `model: "..."` in its aeon.yml
+ * entry, else the repo's global `model:`, else claude-sonnet-5-5. Like
+ * resolveHarness, the global key is read with its quotes and trailing comment
+ * dropped (the workflow's grep keeps both).
+ */
+export function resolveModel(repoRoot: string, slug?: string): string {
+  const input = inputModel();
+  if (input) return input;
+  const cfg = readConfig(repoRoot);
+  const skillModel = slug ? skillConfigLine(cfg, slug)?.match(/model:\s*"([^"]*)"/)?.[1] ?? "" : "";
+  if (skillModel) return skillModel;
+  return cfg.match(/^model:\s*["']?([^\s"'#]+)/m)?.[1] ?? "claude-sonnet-5-5";
+}
+
+/**
+ * The `--model` args for run-harness, or [] to let the harness pick its default.
+ * Mirrors what the workflow passes per harness, because aeon's model ids are
+ * claude or grok ids that mean nothing to the other CLIs:
+ *   claude  always `--model <resolveModel()>`.
+ *   grok    a claude-*, `default` or empty pick becomes grok-4.7; only a grok-*
+ *           id is passed.
+ *   others  MODEL_ARG from scripts/resolve-harness.sh (the same script the
+ *           workflow's "Resolve harness" step runs), which maps the pick to the
+ *           harness's own id or leaves it empty, based on which auth keys are set.
+ */
+function resolveModelArgs(repoRoot: string, slug: string, harness: Harness, logPrefix: string): string[] {
+  if (harness === "claude") return ["--model", resolveModel(repoRoot, slug)];
+  if (harness === "grok") {
+    let model = resolveModel(repoRoot, slug);
+    if (model === "default" || model.startsWith("claude-")) model = "grok-4.7";
+    return model.startsWith("grok-") ? ["--model", model] : [];
+  }
+  const script = join(repoRoot, "scripts", "resolve-harness.sh");
+  if (!existsSync(script)) return [];
+  const res = spawnSync("bash", [script, slug], {
+    cwd: repoRoot,
+    encoding: "utf-8",
+    env: { ...process.env, INPUT_HARNESS: harness, INPUT_MODEL: inputModel() },
+  });
+  if (res.status !== 0) {
+    process.stderr.write(`${logPrefix} resolve-harness.sh failed; using the ${harness} default model\n`);
+    return [];
+  }
+  const modelArg = (res.stdout || "").match(/^MODEL_ARG=(.*)$/m)?.[1]?.trim() ?? "";
+  return modelArg ? ["--model", modelArg] : [];
 }
 
 /**
@@ -346,8 +437,10 @@ async function runSkillInner(
 
   const prompt = buildSkillPrompt(slug, varValue);
   const harness = resolveHarness(repoRoot, slug);
+  const modelArgs = resolveModelArgs(repoRoot, slug, harness, logPrefix);
+  const modelLabel = modelArgs[1] ?? `${harness} default`;
   process.stderr.write(
-    `${logPrefix} Running skill: ${slug}${varValue ? ` (var=${varValue})` : ""} [harness: ${harness}, mode: ${capability.mode}]\n`
+    `${logPrefix} Running skill: ${slug}${varValue ? ` (var=${varValue})` : ""} [harness: ${harness}, model: ${modelLabel}, mode: ${capability.mode}]\n`
   );
 
   // Every harness goes through harness-adapter's run-harness — the same dispatcher
@@ -360,9 +453,12 @@ async function runSkillInner(
   // RH_ARGS. They used to be hardcoded to write, so the twelve skills declaring
   // `mode: read-only` ran unsandboxed with the full write toolset on this path -
   // the same two-path drift the run-path consolidation removed, one layer up.
+  // --model likewise follows the workflow (resolveModelArgs); without it a local
+  // run silently used the CLI's own default instead of the skill's pinned model.
   const runHarness = join(repoRoot, "harness-adapter", "run-harness");
   const args = [
     runHarness, harness,
+    ...modelArgs,
     "--mode", capability.mode,
     "--allowed-tools", capability.allowedTools,
     "--timeout", String(RUN_TIMEOUT_SECONDS),
