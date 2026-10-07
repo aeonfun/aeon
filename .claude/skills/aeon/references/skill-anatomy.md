@@ -1,6 +1,6 @@
 # How Aeon skills are actually written
 
-Surveyed across all 85 skills in `aeonfun/aeon`. Frequencies are real counts - match the dominant convention unless there's a reason not to. Bodies run 14–1228 lines (~221 median); a skill is a prompt, not a config file, and reads as prose.
+Surveyed across all 85 skills in `aeonfun/aeon`. Frequencies are real counts - match the dominant convention unless there's a reason not to. Bodies run 14-1228 lines (~221 median); a skill is a prompt, not a config file, and reads as prose.
 
 ## Frontmatter
 
@@ -8,7 +8,7 @@ Near-universal - **all 85 skills** carry `name`, `description`, `category`, and 
 
 ```yaml
 name: my-skill       # the slug (matches the skills/<slug>/ directory)
-description: One line — what it does and what it sends.
+description: One line - what it does and what it sends.
 metadata:
   title: My Skill    # human-readable display name
   category: basics   # core | evolution | basics | dev | crypto | productivity
@@ -28,9 +28,9 @@ Then, in descending real-world use:
 | `mcp:` | 8 | MCP servers the skill needs - **catalog metadata only, gates nothing at run time** (`references/mcp.md`) |
 | `depends_on:` | 4 | other skills, for chain ordering |
 
-### Trap 1 — `requires:` injects only names that pass the filter
+### Trap 1 - `requires:` injects only names that pass the filter
 
-`scripts/skill_requires.sh` reads it with awk and injects only entries matching `^[A-Z][A-Z0-9_]{2,}$` (a trailing `?` marks "works better with"; bare means required). Both list forms parse — inline or block, top-level or nested under `metadata:` (the spec form):
+`scripts/skill_requires.sh` reads it with awk and injects only entries matching `^[A-Z][A-Z0-9_]{2,}$` (a trailing `?` marks "works better with"; bare means required). Both list forms parse - inline or block, top-level or nested under `metadata:` (the spec form):
 
 ```yaml
 metadata:
@@ -39,13 +39,13 @@ metadata:
     - ALCHEMY_API_KEY?
 ```
 
-This is **least-privilege secret injection**: the run exports only the keys listed here — a skill sees nothing else from the secret store. The trap is the *value*, not the list style — a lowercase, too-short, or otherwise malformed entry is silently dropped, so the skill declares a credential it never receives and fails at run time as if the key were never set.
+This is **least-privilege secret injection**: the run exports only the keys listed here - a skill sees nothing else from the secret store. The trap is the *value*, not the list style - a lowercase, too-short, or otherwise malformed entry is silently dropped, so the skill declares a credential it never receives and fails at run time as if the key were never set.
 
-### Trap 2 — a typo'd `mode:` silently grants write
+### Trap 2 - a typo'd `mode:` silently grants write
 
-`scripts/skill_mode.sh` maps an unknown value to `write` ("never silently over-restrict"). `mode: readonly` or `mode: read_only` does **not** get you `read-only` — it gets you full access. The exact string is `read-only`.
+`scripts/skill_mode.sh` maps an unknown value to `write` ("never silently over-restrict"). `mode: readonly` or `mode: read_only` does **not** get you `read-only` - it gets you full access. The exact string is `read-only`.
 
-### Trap 3 — `schedule:` / `cron:` in frontmatter does nothing
+### Trap 3 - `schedule:` / `cron:` in frontmatter does nothing
 
 Upstream skills no longer carry one, but forks and third-party skills may (`schedule: "0 14 * * *"`, `cron: "0 9,15 * * *"`). Nothing reads it. `.github/workflows/scheduler.yml` parses **`aeon.yml` only** (`done < aeon.yml`). Such a line is inert, stale documentation. Never set a schedule by editing `SKILL.md`, and don't trust one you find there - check `aeon.yml`.
 
@@ -66,7 +66,7 @@ The dominant shape, by heading frequency:
 Open with the date/var line, close with notify + log:
 
 ```markdown
-Today is ${today}. <the prompt — plain instructions, including judgment calls>
+Today is ${today}. <the prompt - plain instructions, including judgment calls>
 
 Report via `./notify` (use `./notify -f file.md` for anything multi-line).
 Send nothing if there's nothing worth reporting.
@@ -75,7 +75,7 @@ Append what you did to `memory/logs/${today}.md` under a `### <skill-name>` head
 
 ### `${today}` and `${var}` are NOT template variables
 
-There is no substitution step. The workflow never rewrites `SKILL.md` — it builds a prompt that says:
+There is no substitution step. The workflow never rewrites `SKILL.md` - it builds a prompt that says:
 
 ```
 Today is 2026-07-21. Read and execute the skill defined in skills/<name>/SKILL.md
@@ -83,7 +83,7 @@ Use this variable (override the default in the skill file):
 var=<value>
 ```
 
-…and the model reads the file with its Read tool. So `${today}` works only because the date is in the surrounding prompt and the model resolves it in context. It's a **convention, not an engine** — inventing `${my_thing}` gets you a literal `${my_thing}` with nothing to bind it. (Other `${...}` tokens you'll see in skill bodies — `${total_runs}`, `${network}` — are placeholders inside *sample output blocks*, showing the model what to fill in. Same mechanism: prose, not templating.)
+…and the model reads the file with its Read tool. So `${today}` works only because the date is in the surrounding prompt and the model resolves it in context. It's a **convention, not an engine** - inventing `${my_thing}` gets you a literal `${my_thing}` with nothing to bind it. (Other `${...}` tokens you'll see in skill bodies - `${total_runs}`, `${network}` - are placeholders inside *sample output blocks*, showing the model what to fill in. Same mechanism: prose, not templating.)
 
 ## Calling external scripts
 
@@ -107,7 +107,7 @@ Claude Code's Bash permission analyzer **blocks any command containing a secret 
 
 Braces, not `$`. A skill that writes `-H "Authorization: Bearer $XAI_API_KEY"` will be blocked at run time, not at author time.
 
-There is **no network sandbox** — plain `curl` works for unauthenticated GETs.
+There is **no network sandbox** - plain `curl` works for unauthenticated GETs.
 
 ## Memory
 
@@ -124,13 +124,13 @@ Every skill appends what it did, under **one** heading that is exactly its slug:
 - <what happened, one line per fact>
 ```
 
-The `### <skill-name>` shape is load-bearing — the health/heartbeat loop parses it. Use one heading per run and put discriminators on lines beneath it rather than inventing `### <skill-name> (plan)`.
+The `### <skill-name>` shape is load-bearing - the health/heartbeat loop parses it. Use one heading per run and put discriminators on lines beneath it rather than inventing `### <skill-name> (plan)`.
 
 This is also the **dedup substrate**. The standard rule, and the one to add to any new skill: *read the last 3 days of `memory/logs/` and skip anything already reported.* Without it a daily skill re-reports the same item until it's muted.
 
 ### `memory/MEMORY.md` - the durable index (138 references across 59 skills)
 
-Long-lived facts, not run history. Skills read it for context; the `memory-flush` skill promotes important log lines into it and prunes stale ones. Don't append per-run noise here — that's what `logs/` is for.
+Long-lived facts, not run history. Skills read it for context; the `memory-flush` skill promotes important log lines into it and prunes stale ones. Don't append per-run noise here - that's what `logs/` is for.
 
 ### Domain state files
 
