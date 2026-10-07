@@ -1,8 +1,8 @@
 # CI gates in `aeonfun/aeon`
 
-Thirteen `ci-*.yml` workflows. Twelve are **path-filtered** and fire on `pull_request`, `push` to `main`, and `workflow_dispatch`; the thirteenth, `ci-gate`, runs on every pull request.
+Fifteen `ci-*.yml` workflows. Fourteen are **path-filtered** and fire on `pull_request`, `push` to `main`, and `workflow_dispatch`; the fifteenth, `ci-gate`, runs on every pull request.
 
-**`ci-gate` is what blocks merges.** `main` is branch-protected with one required status check, `gate` (the `ci-gate` job). Because the other twelve are path-filtered, none of them can be required directly (a skipped workflow never reports). `gate` waits for every other check run on the PR head and fails if any of them did not end `success`, `skipped`, or `neutral`. So a red gate anywhere on the PR blocks the merge, and a push straight to `main` still runs the same gates after the fact. Run them locally before pushing anyway; it is faster than waiting on the gate.
+**`ci-gate` is what blocks merges.** `main` is branch-protected with one required status check, `gate` (the `ci-gate` job). Because the other fourteen are path-filtered, none of them can be required directly (a skipped workflow never reports). `gate` waits for every other check run on the PR head and fails if any of them did not end `success`, `skipped`, or `neutral`. So a red gate anywhere on the PR blocks the merge, and a push straight to `main` still runs the same gates after the fact. Run them locally before pushing anyway; it is faster than waiting on the gate.
 
 ## The gates
 
@@ -14,19 +14,21 @@ Thirteen `ci-*.yml` workflows. Twelve are **path-filtered** and fire on `pull_re
 | `ci-packs-json` | `catalog/packs.config.json`, **`catalog/skills.json`**, `bin/generate-packs-json`, `catalog/packs.json` | pack catalog == fresh regen; every skill in exactly one pack | `bin/generate-packs-json` |
 | `ci-skill-integrity` | `skills/**`, `eyebrowlock.json`, `eyebrow.policy.json` | **every skill has an `eyebrowlock.json` entry** (hard coverage gate), then `eyebrow verify` fails on a new egress host or new critical finding | `eyebrow scan` / `eyebrow verify` (see below) |
 | `ci-readme-catalog` | `.github/README.md`, `catalog/*.json`, `docs/skill-packs.md`, `docs/aeon-setup.md`, `docs/examples/README.md`, the hero SVG | README skill tables and skill counts match the catalog | `node scripts/validate-readme-catalog.mjs` |
-| `ci-tests` | `scripts/**`, `bin/**`, `aeon.yml`, `.github/workflows/aeon.yml`, `harness-adapter/adapters/**` | the `scripts/tests/` suites + config validation | see below |
+| `ci-tests` | `skills/**`, `scripts/**`, `bin/**`, `harness-adapter/**`, `aeon.yml`, `.github/workflows/{aeon,messages,scheduler,chain-runner}.yml`, `apps/dashboard/lib/{constants,gateway-registry,harness-auth}.ts` | the `scripts/tests/` suites + config validation | see below |
 | `ci-shellcheck` | `aeon`, `scripts/**`, `bin/**`, `harness-adapter/**`, `skills/**/*.sh` | shellcheck on the tracked shell surface | `bash scripts/lint-shell.sh` |
 | `ci-harnesses-json` | `harness-adapter/adapters/**`, `harness-adapter/bin/generate-harnesses-json`, `harness-adapter/harnesses.json`, `harness-adapter/gateways.json` | committed harness + gateway manifests == fresh regen | `harness-adapter/bin/generate-harnesses-json` |
 | `ci-capabilities-parity` | `bin/install-skill-pack`, `docs/CAPABILITIES.md` | capabilities taxonomy in sync across both | `bash scripts/check-capabilities-parity.sh` |
 | `ci-skill-packs` | `catalog/skill-packs.json`, `docs/community-skill-packs.md`, `bin/install-skill-pack`, `skills/security/trusted-sources.txt` | community registry well-formed + matches the Listed packs table in `docs/community-skill-packs.md`; no unbacked `trust_level: trusted` | `node scripts/validate-skill-packs.mjs` |
 | `ci-agents-md` | `CLAUDE.md`, `STRATEGY.md`, `AGENTS.md`, `scripts/gen-agents-md.js` | `AGENTS.md` regenerated from `CLAUDE.md` (with `STRATEGY.md` inlined) | `node scripts/gen-agents-md.js --check` |
 | `ci-apps` | `apps/**` | dashboard typecheck+lint+test+build, cli typecheck+lint, mcp-server build, webhook lint+bundle | per app, see below |
+| `ci-aeon-skill-sync` | `.claude/skills/aeon/**`, `plugin/skills/aeon/**`, `scripts/check-aeon-skill-sync.sh` | the in-repo `aeon` operator skill and its plugin copy are identical, except the plugin copy's plugin-root script paths | `bash scripts/check-aeon-skill-sync.sh` |
+| `ci-harness-cli` | `harness-adapter/**`, `scripts/install-harness.sh`, `scripts/run-grok.sh`, `scripts/llm-gateway.sh`, `scripts/ccr-*.js`, `.github/workflows/aeon.yml`, `.github/workflows/messages.yml`, `scripts/tests/harness_cli_smoke.sh`, `scripts/tests/fake-llm-upstream.mjs` | one job per harness (claude, grok, codex, pi, kimi, vibe, ccr): installs the pinned CLI, checks its version and adapter flags, and round-trips a prompt through a local fake model (plus a read-only sandbox leg) | `bash scripts/tests/harness_cli_smoke.sh <harness>` |
 
 The pack security scan in `bin/install-skill-pack` runs at *install* time, not in CI. `ci-skill-integrity` is the CI-side check, and it gates on a skill's *reach* (hosts, capabilities), not on content.
 
 ## Checklist: adding or editing a skill
 
-This is the common case (Modes 4 and 5). A **new** skill trips four gates. Run all of it from the repo root before opening the PR:
+This is the common case (Modes 4 and 5). A **new** skill trips six gates: `ci-skill-category`, `ci-skills-json`, `ci-packs-json`, `ci-skill-integrity`, `ci-readme-catalog` (via the catalog files) and `ci-tests` (via `skills/**`). Run all of it from the repo root before opening the PR:
 
 ```bash
 bash scripts/check-skill-categories.sh    # category is valid

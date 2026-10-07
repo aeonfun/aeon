@@ -180,9 +180,9 @@ from or pin to; the template keeps serving the latest `main` to new forks.
   now sets `displayName`, author email, `icon` and the docs, support, privacy and terms links that
   Anthropic's plugin directory reads for the listing.
 
-- **Operator-console plugin drops the MiniMax manifest.** `plugin/.minimax-plugin/` is gone;
-  the plugin now ships for Claude Code, Codex and the Agent Plugins format only. `plugin/icon.png`
-  stays (the Codex manifest uses it).
+- **Operator-console plugin drops the MiniMax and agent-plugins manifests.** `plugin/.minimax-plugin/`
+  and the root `plugin/plugin.json` (agent-plugins.org format, for Kiro Powers) are gone; the plugin
+  now ships for Claude Code and Codex only. `plugin/icon.png` stays (the Codex manifest uses it).
 
 - **Model pickers show only the latest models.** pi: `deepseek/deepseek-v4.1-flash` (new default)
   and `deepseek/deepseek-v4-pro`; vibe: `mistralai/mistral-medium-3-5` and
