@@ -15,7 +15,9 @@ const USAGE = `aeon mcp — MCP servers wired into skill runs (.mcp.json)
 
 Options:
   --dry-run   Preview the change to .mcp.json
-  --json      Machine-readable output`
+  --json      Machine-readable output
+
+Driving Aeon itself from ChatGPT, Claude or Cursor? Hosted: https://www.aeon.fun/connect/mcp - local: bin/add-mcp`
 
 async function readServers(): Promise<McpServers> {
   let content: string

@@ -182,6 +182,10 @@ export function McpPanel({ servers, loading, saving, secrets, busy, onSave, onSe
             Servers your skills can <span className="text-primary-100">call</span> during a run - GitHub, a database,
             a paid API.
           </p>
+          <p className="mt-2 max-w-xl text-sm text-primary-70 leading-relaxed">
+            Want the other direction? Drive this agent from ChatGPT, Claude or Cursor with the hosted MCP server:{' '}
+            <a href="https://www.aeon.fun/connect/mcp" target="_blank" rel="noopener noreferrer" className="text-primary-70 underline decoration-dotted underline-offset-2 hover:text-aeon-fg transition-colors">www.aeon.fun/connect/mcp</a>
+          </p>
         </div>
       </section>
 

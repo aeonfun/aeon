@@ -134,7 +134,7 @@ catalog/                 ← registries the dashboard reads (generated + hand-au
 bin/                     ← operator + maintainer CLI (run from repo root, e.g. bin/add-skill)
   onboard                ← validate the fork's setup (secrets, workflows, channels)
   add-skill              ← import skills from GitHub repos (with security scanning)
-  add-mcp                ← register Aeon as an MCP server for Claude Desktop/Code
+  add-mcp                ← register Aeon as a local MCP server for Claude Desktop/Code
   install-skill-pack     ← install a curated community skill pack
   export-skill           ← package skills for standalone distribution
   new-from-template      ← scaffold a skill from a template (--category sets its pack)
@@ -153,7 +153,7 @@ skills/                  ← each skill is a SKILL.md prompt file (`category:` =
 apps/                    ← standalone sub-projects, each with its own package.json
   dashboard/             ← local web UI (Next.js + json-render feed)
   cli/                   ← headless CLI (`./aeon <command>`) — the dashboard's features as commands
-  mcp-server/            ← MCP server — exposes skills as Claude tools
+  mcp-server/            ← local stdio MCP server (the hosted one lives in Aeon Connect)
   webhook/               ← Telegram instant-mode Cloudflare Worker (~1s delivery)
 memory/                  ← durable memory the agent reads/writes across runs
   MEMORY.md              ← goals, active topics, pointers

@@ -54,6 +54,8 @@ Goal: one real notification in their phone, fast. Do not configure a schedule fi
 
 > **Fastest start, no terminal: Aeon Connect.** If the user has no terminal, no Node or `gh`, or just wants the quickest path, send them to https://www.aeon.fun/connect. In the browser they sign in with GitHub, create their aeon (a public fork or a private copy), install the Aeon Connect GitHub App on that one repo, connect a model, and pick skills. Nothing else to do: the agent then runs on their own GitHub Actions. Use the terminal path below only if they want a local clone.
 
+> **Want to drive it from a chat app instead?** Once an instance exists, the user can add https://www.aeon.fun/connect/mcp as a connector in ChatGPT, Claude or Cursor (Claude Code: `claude mcp add --transport http aeon https://www.aeon.fun/connect/mcp`). It signs in with GitHub and can run skills, read outputs and memory, and edit strategy and soul. Details: `references/mcp.md`.
+
 1. **Run `./aeon init`.** Ask public or private first (public: Actions minutes are free; private: `--private`, minutes bill against the account quota, 2,000/mo on Free). Then, from a clone of the template:
 
    ```bash

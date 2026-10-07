@@ -20,6 +20,8 @@
 > **▶ Start in your browser:** **[www.aeon.fun/connect](https://www.aeon.fun/connect)** - sign in with GitHub, connect a model, pick skills. No clone, no terminal.
 >
 > **🤖 Using a coding agent?** Point it here: **read https://www.aeon.fun/skills/aeon.md and follow the instructions to set up your Aeon agent.**
+>
+> **Already have an agent?** Drive it from ChatGPT, Claude or Cursor: add **https://www.aeon.fun/connect/mcp** as a connector and sign in with GitHub.
 
 <div align="center">
 
@@ -45,6 +47,8 @@
 **In your browser (recommended): [Aeon Connect](https://www.aeon.fun/connect).** Sign in with GitHub at **[www.aeon.fun/connect](https://www.aeon.fun/connect)** and click **Create your aeon**: it makes **your own repo** (public = a fork of `aeonfun/aeon`, free Actions minutes; private = a copy, on your own minutes) and turns GitHub Actions on. Install the [Aeon Connect GitHub App](https://github.com/apps/aeon-connect) on that one repo (GitHub's page opens with it pre-selected), then **connect a model** (a Claude subscription token from `claude setup-token`, an API key, a ChatGPT login, or OpenRouter in one click), **pick skills**, and press **Run**. Keys go straight into your repo's encrypted secrets; Aeon Connect only hosts the dashboard, and every run happens on your own GitHub Actions.
 
 **Using a coding agent?** Paste this into Claude Code, Codex, Hermes or OpenClaw: `read https://www.aeon.fun/skills/aeon.md and follow the instructions to set up your aeon agent`.
+
+**Drive it from ChatGPT, Claude or Cursor.** Add `https://www.aeon.fun/connect/mcp` as a connector (custom MCP server). Sign in with GitHub, pick which agent it can reach, then list and run skills, read their output and memory, or edit your strategy and soul from the chat. Nothing to install, no keys. Claude Code: `claude mcp add --transport http aeon https://www.aeon.fun/connect/mcp`. Runs still happen on your own GitHub Actions.
 
 <details>
 <summary><strong>Prefer the terminal?</strong></summary>
@@ -189,6 +193,8 @@ Read-only skills can't touch the repo, irreversible actions fail closed, an opti
 
 Muse, Grok, and Hermes Cloud run around the clock too, but on their own servers, and they train on your chats unless you opt out ([Muse](https://www.engadget.com/2256577/how-to-get-started-with-meta-s-new-ai-agent-muse/), [Grok](https://x.ai/legal/faq), [Hermes Cloud](https://portal.nousresearch.com/privacy)). Aeon runs on your own GitHub Actions: memory is files in your repo, keys are your repo's encrypted secrets, there is no Aeon server in the loop, and nothing is sent anywhere unless you point tracing at your own collector. Keep it fully private with a **private** instance ([two-repo strategy](../docs/CONFIGURATION.md#two-repo-strategy)) and your own model key - your model provider's terms still apply.
 
+The hosted MCP server is opt-in: when you connect it, Aeon Connect reads what you ask for (runs, outputs, memory) from your repo and hands it to your chat client.
+
 ---
 
 ## Configure
@@ -235,7 +241,7 @@ The deep reference lives in [`docs/`](../docs) - jump in:
 </p>
 <p align="center">
   <a href="../apps/cli/README.md"><img src="../docs/assets/doc-cli.svg" alt="CLI - the whole dashboard as scriptable ./aeon commands" height="30" align="absmiddle"></a>&nbsp;
-  <a href="../apps/mcp-server/README.md"><img src="../docs/assets/doc-mcp.svg" alt="MCP server - every skill as an aeon MCP tool in Claude" height="30" align="absmiddle"></a>&nbsp;
+  <a href="../apps/mcp-server/README.md"><img src="../docs/assets/doc-mcp.svg" alt="MCP server - run Aeon from ChatGPT, Claude or Cursor (hosted at www.aeon.fun/connect/mcp) or every skill as a local MCP tool" height="30" align="absmiddle"></a>&nbsp;
   <a href="../apps/webhook/README.md"><img src="../docs/assets/doc-webhooks.svg" alt="Webhooks - ~1s Telegram instant mode via a self-hosted worker" height="30" align="absmiddle"></a>&nbsp;
   <a href="../docs/ADK.md"><img src="../docs/assets/doc-adk.svg" alt="ADK - build products on top of Aeon over the GitHub API" height="30" align="absmiddle"></a>&nbsp;
   <a href="../docs/ECOSYSTEM.md"><img src="../docs/assets/doc-ecosystem.svg" alt="Ecosystem - products and agents built on Aeon" height="30" align="absmiddle"></a>

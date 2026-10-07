@@ -12,6 +12,8 @@ Actions run can't perform. This is the same problem the grok harness solves for 
 X-account login — and the solution here mirrors it: capture once in the dashboard,
 store as repo secrets, refresh before every run.
 
+This page is about MCP servers your skills call. Signing in to Aeon's own hosted MCP server ([www.aeon.fun/connect/mcp](https://www.aeon.fun/connect/mcp)) from ChatGPT, Claude or Cursor is a different flow, handled by Aeon Connect.
+
 ## The flow
 
 1. **Connect (dashboard).** In the MCP panel, an OAuth-flagged featured server shows

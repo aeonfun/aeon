@@ -92,6 +92,14 @@ injection — see the `## Security` section of [`CLAUDE.md`](../CLAUDE.md).
   through the Aeon Connect GitHub App, installed on that one repo only. Keys you
   connect are encrypted straight into the repo's Actions secrets; Aeon Connect
   does not store them.
+- The hosted MCP server at [www.aeon.fun/connect/mcp](https://www.aeon.fun/connect/mcp)
+  uses OAuth 2.1 with GitHub sign-in. A client reaches only the repos you
+  approve, through the same Aeon Connect GitHub App. Its write tools
+  (`run_skill`, `update_skill`, `update_strategy`, `update_soul`,
+  `install_pack`) act on that repo. Secret values are never readable or
+  writable over it. To cut access at once, uninstall the Aeon Connect GitHub
+  App or remove the repo from it; otherwise unused access expires after 30
+  days.
 - A public instance's `memory/`, `output/`, and run logs are public. To keep
   them private, make the instance a **private repo** (a copy of the template:
   GitHub does not allow private forks of a public repo).
