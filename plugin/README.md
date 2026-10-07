@@ -2,7 +2,7 @@
 
 The operator-facing skill for [Aeon](https://github.com/aeonfun/aeon), an autonomous
 agent framework that runs your own skills on a schedule in GitHub Actions. This
-plugin ships that one skill so you can drive an Aeon instance straight from your
+plugin ships that skill so you can drive an Aeon instance straight from your
 coding agent: get started from scratch, turn skills on or off, schedule or
 reschedule what runs, edit what a skill does, debug a skill that will not fire,
 set the `STRATEGY.md` north star and soul voice, and mine past coding-agent chats
@@ -30,6 +30,22 @@ codex plugin add aeon@aeon
 
 Then type `/aeon` (or mention Aeon / `aeon.yml` / "schedule a skill") and point it
 at your instance repo when it asks.
+
+## Connect your agent (ChatGPT, Codex, Claude Code)
+
+The plugin also connects to your agent through Aeon Connect's hosted MCP server,
+`https://www.aeon.fun/connect/mcp`. Sign in with GitHub and pick ONE agent repo; from
+then on you can ask, from any chat:
+
+- "What skills does my Aeon agent have, and which are on?" (`list_skills`)
+- "Run the digest skill now and tell me when it is done" (`run_skill`, `get_run`)
+- "Did anything fail today? Why?" (`list_runs`, `get_run`)
+- "Turn on the digest every morning at 8" (`update_skill`, commits `aeon.yml` after you confirm)
+
+In ChatGPT the settings page shows one switch per skill, and `@` in the composer finds
+skills by name. The connection only reaches the repo you picked and never reads or
+changes your secrets. After install, the `get-started` skill checks the connection and
+runs a first skill with you.
 
 ## What it needs
 

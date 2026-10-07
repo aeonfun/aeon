@@ -1,6 +1,6 @@
 {
   "name": "aeon",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Operator console for an Aeon agent instance: enable/schedule/edit skills, wire secrets and channels, debug runs, and mine past coding-agent chats into scheduled skills.",
   "author": {
     "name": "Aeon Inc",
