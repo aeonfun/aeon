@@ -176,6 +176,13 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Changed
 
+- **Haiku tier moves to Claude Haiku 5.5.** `claude-haiku-5-5` replaces `claude-haiku-4-5-20251001`
+  in the dashboard picker, the workflow_dispatch choices, the quality scorer's default, the
+  json-render notifier and the docs; `claude-haiku-4-5-20251001` stays a valid dispatch choice and
+  shows as "Haiku 4.5 (configured)". The OpenRouter haiku slot defaults to
+  `anthropic/claude-haiku-5.5`; Surplus does not serve it yet, so its haiku tier stays on
+  `claude-haiku-4.5`. Fleet scorecard prices Haiku 5.5 at $0.10 in / $0.50 out per 1M tokens.
+
 - **Operator-console plugin fills its Claude directory listing.** `plugin/.claude-plugin/plugin.json`
   now sets `displayName`, author email, `icon` and the docs, support, privacy and terms links that
   Anthropic's plugin directory reads for the listing, and a shorter `description` that fits the

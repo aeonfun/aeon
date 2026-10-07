@@ -190,9 +190,9 @@ describe("updateModelInConfig", () => {
   });
 
   it("replaces an existing model", () => {
-    const updated = updateModelInConfig(FULL_YAML, "claude-haiku-4-5-20251001");
+    const updated = updateModelInConfig(FULL_YAML, "claude-haiku-5-5");
     const config = parseConfig(updated);
-    assert.equal(config.model, "claude-haiku-4-5-20251001");
+    assert.equal(config.model, "claude-haiku-5-5");
   });
 });
 

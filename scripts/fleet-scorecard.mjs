@@ -118,13 +118,14 @@ const CLAUDE_PRICES = {
   'claude-sonnet-4-6': { in: 3, out: 15, cr: 0.30 },
   'claude-sonnet-4-5': { in: 3, out: 15, cr: 0.30 },
   'claude-sonnet-4': { in: 3, out: 15, cr: 0.30 },
+  'claude-haiku-5-5': { in: 0.10, out: 0.50, cr: 0.01 },
   'claude-haiku-4-5': { in: 1, out: 5, cr: 0.10 },
   'claude-3-5-haiku': { in: 0.80, out: 4, cr: 0.08 },
 };
 // A Claude id with a version this table does not know yet (a new release) is
 // priced at its family's current flagship row, so it still shows up in the
 // cost columns instead of vanishing.
-const CLAUDE_FAMILY_FALLBACK = { opus: 'claude-opus-5-5', sonnet: 'claude-sonnet-5-5', haiku: 'claude-haiku-4-5' };
+const CLAUDE_FAMILY_FALLBACK = { opus: 'claude-opus-5-5', sonnet: 'claude-sonnet-5-5', haiku: 'claude-haiku-5-5' };
 const normalizeModel = (model) => String(model || '').trim().toLowerCase()
   .replace(/^anthropic\//, '').replace(/-\d{8}$/, '').replace(/\./g, '-');
 // Rates in $ per token for a model, or null when it is not a Claude model. Rows

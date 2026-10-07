@@ -2,7 +2,7 @@
 #
 # Enable skills by setting enabled: true. Multiple skills at the same time run in parallel.
 # Set var: "value" to pass a default parameter to the skill.
-# Set model: "claude-haiku-4-5-20251001" per skill to override the default model (cost optimization).
+# Set model: "claude-haiku-5-5" per skill to override the default model (cost optimization).
 # Set harness: "<name>" per skill (claude, grok, codex, pi, vibe, kimi, fx, cursor,
 # hermes) to run it on a different coding-agent CLI than the default Claude Code
 # harness (see the top-level `harness:` key below).
@@ -229,7 +229,7 @@ chains:
   #     - { skill: digest, consume: [token-movers, github-trending] }
 
 # Default model for all skills. Override per-run via workflow_dispatch.
-# Options: claude-sonnet-5-5, claude-opus-5-5, claude-haiku-4-5-20251001
+# Options: claude-sonnet-5-5, claude-opus-5-5, claude-haiku-5-5
 # (older claude-sonnet-5 / claude-opus-4-8 still accepted)
 # (Grok harness model: grok-4.7, the flagship reasoning model and grok's current
 #  default, run with --no-subagents in CI; grok-4.6 is also offered, and an existing

@@ -56,6 +56,7 @@ test('prices Claude rows by model version and leaves non-Claude rows unpriced', 
     '2026-10-01,a,claude-sonnet-5,1000000,1000000,0,0', // 2 + 10 = 12
     '2026-10-01,a,claude-sonnet-4-6,1000000,1000000,0,0', // 3 + 15 = 18
     '2026-10-01,a,claude-haiku-4-5-20251001,1000000,1000000,1000000,1000000', // 1 + 5 + read 0.1 + write 1.25 = 7.35
+    '2026-10-01,a,claude-haiku-5-5,10000000,10000000,10000000,10000000', // 10M each at a tenth of 4.5's rates = 7.35
     '2026-10-01,b,openai/gpt-5.1-codex-mini,1000000,1000000,0,0', // unpriced
     '2026-10-01,b,codex-default,1000000,1000000,0,0', // unpriced
     '2026-10-01,b,grok-4.5,1000000,1000000,0,0', // unpriced
@@ -74,8 +75,8 @@ test('prices Claude rows by model version and leaves non-Claude rows unpriced', 
   try {
     await import(new URL(`../fleet-scorecard.mjs?test=pricing-${Date.now()}`, import.meta.url))
     const metrics = JSON.parse(readFileSync('/tmp/fleet-scorecard/metrics.json', 'utf8'))
-    assert.equal(metrics.generations, 8)
-    assert.equal(metrics.est_cost_usd, 24 + 30 + 12 + 18 + 7.35)
+    assert.equal(metrics.generations, 9)
+    assert.equal(metrics.est_cost_usd, Math.round((24 + 30 + 12 + 18 + 7.35 + 7.35) * 100) / 100)
     assert.equal(metrics.unpriced_generations, 3)
     assert.equal(metrics.unpriced_tokens, 6_000_000)
     const body = readFileSync('/tmp/fleet-scorecard/scorecard-body.md', 'utf8')

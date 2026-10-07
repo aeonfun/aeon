@@ -6,11 +6,12 @@ import type { Harness } from './types'
 // harness-switch snap uses (modelsForHarness(...)[0] in app/page.tsx). Keep it in
 // sync with the config default in lib/config.ts and aeon.yml `model:`.
 // Just the current three. A repo or per-skill pin that still names an older id
-// (claude-sonnet-5, claude-opus-4-8) keeps a visible entry via pickerOptions.
+// (claude-sonnet-5, claude-opus-4-8, claude-haiku-4-5-20251001) keeps a visible
+// entry via pickerOptions.
 export const MODELS = [
   { id: 'claude-sonnet-5-5', label: 'Sonnet 5.5' },
   { id: 'claude-opus-5-5', label: 'Opus 5.5' },
-  { id: 'claude-haiku-4-5-20251001', label: 'Haiku 4.5' },
+  { id: 'claude-haiku-5-5', label: 'Haiku 5.5' },
 ]
 
 // Models offered when the Grok (`grok`) harness is selected: the ids the
@@ -137,6 +138,7 @@ export const HARNESSES = [
 const RETIRED_MODEL_LABELS: Record<string, string> = {
   'claude-sonnet-5': 'Sonnet 5',
   'claude-opus-4-8': 'Opus 4.8',
+  'claude-haiku-4-5-20251001': 'Haiku 4.5',
   'openai/gpt-5.1-codex-mini': 'GPT-5.1 Codex Mini',
   'openai/gpt-5-mini': 'GPT-5 Mini',
   'openai/gpt-5.3-codex': 'GPT-5.3 Codex',
