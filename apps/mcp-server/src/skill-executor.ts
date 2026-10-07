@@ -17,7 +17,8 @@ export interface Skill {
   name: string;
   description: string;
   category: string;
-  schedule: string;
+  /** From aeon.yml, not the catalog: a cron string, "workflow_dispatch", or unset. */
+  schedule?: string;
   var: string;
 }
 
@@ -27,7 +28,62 @@ interface SkillsManifest {
   skills: Skill[];
 }
 
-/** Load the skill catalog from <repoRoot>/catalog/skills.json. Returns [] if missing. */
+/** Drop a `#` comment, but only outside double quotes (a var like "fix #12" survives). */
+function stripComment(line: string): string {
+  let quoted = false;
+  for (let i = 0; i < line.length; i++) {
+    const c = line[i];
+    if (c === '"') quoted = !quoted;
+    if (c === "#" && !quoted && (i === 0 || /[ \t]/.test(line[i - 1]))) return line.slice(0, i);
+  }
+  return line;
+}
+
+/**
+ * A skill's own entry in aeon.yml's skills map, comments stripped, or undefined.
+ * A port of scripts/skill_entry.sh (the reader the workflow and resolve-harness.sh
+ * use), so it handles BOTH entry shapes:
+ *   single-line   my-skill: { enabled: true, model: "x" }
+ *   block         my-skill:
+ *                   { enabled: true,
+ *                     model: "x" }
+ * Capture runs from the header to the line that closes the flow map, and stops
+ * early at the next entry or top-level key. The first header wins (the skills map
+ * sits above chains:, which also indents its keys by two).
+ */
+function skillConfigLine(cfg: string, slug: string): string | undefined {
+  const header = `  ${slug}:`;
+  const out: string[] = [];
+  let found = false;
+  for (const raw of cfg.split("\n")) {
+    if (!found) {
+      if (!raw.startsWith(header)) continue;
+      found = true;
+    } else if (/^ {2}[^ #]/.test(raw) || /^[^ #\t]/.test(raw)) {
+      break; // next entry / next top-level key
+    }
+    const line = stripComment(raw);
+    out.push(line);
+    if (line.includes("}")) break;
+  }
+  return found ? out.join("\n") : undefined;
+}
+
+function readConfig(repoRoot: string): string {
+  try {
+    return readFileSync(join(repoRoot, "aeon.yml"), "utf-8");
+  } catch {
+    return "";
+  }
+}
+
+/**
+ * Load the skill catalog from <repoRoot>/catalog/skills.json. Returns [] if missing.
+ *
+ * The catalog deliberately carries no schedules (bin/generate-skills-json), so each
+ * skill's `schedule:` is read from aeon.yml, the source of truth. A skill with no
+ * entry there keeps `schedule` unset.
+ */
 export function loadSkills(repoRoot: string, logPrefix = "[aeon]"): Skill[] {
   const manifestPath = join(repoRoot, "catalog", "skills.json");
   if (!existsSync(manifestPath)) {
@@ -35,7 +91,11 @@ export function loadSkills(repoRoot: string, logPrefix = "[aeon]"): Skill[] {
     return [];
   }
   const manifest = JSON.parse(readFileSync(manifestPath, "utf-8")) as SkillsManifest;
-  return manifest.skills ?? [];
+  const cfg = readConfig(repoRoot);
+  return (manifest.skills ?? []).map((skill) => {
+    const schedule = skillConfigLine(cfg, skill.slug)?.match(/schedule:\s*"([^"]*)"/)?.[1];
+    return schedule ? { ...skill, schedule } : skill;
+  });
 }
 
 /**
@@ -69,21 +129,15 @@ const isHarness = (v: string): v is Harness =>
 export function resolveHarness(repoRoot: string, slug?: string): Harness {
   let picked = (process.env.AEON_HARNESS || "").trim().toLowerCase();
   if (!picked) {
-    try {
-      const cfg = readFileSync(join(repoRoot, "aeon.yml"), "utf-8");
-      // Per-skill override. aeon.yml's skills map is INLINE flow-mapping on one
-      // line (`  my-skill: { enabled: true, harness: "vibe" }`), and that is the
-      // only form resolve-harness.sh matches — keep the two greps equivalent.
-      if (slug) {
-        picked = cfg
-          .match(new RegExp(`^ {2}${slug.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}:.*$`, "m"))?.[0]
-          ?.match(/harness:\s*"([^"]*)"/)?.[1]
-          ?.toLowerCase() ?? "";
-      }
-      if (!picked) picked = cfg.match(/^harness:\s*["']?([A-Za-z]+)/m)?.[1].toLowerCase() ?? "";
-    } catch {
-      /* no aeon.yml → default */
+    const cfg = readConfig(repoRoot); // "" when there is no aeon.yml -> default
+    // Per-skill override, read from the whole entry (single-line or block),
+    // like resolve-harness.sh does via scripts/skill_entry.sh.
+    if (slug) {
+      picked = skillConfigLine(cfg, slug)
+        ?.match(/harness:\s*"([^"]*)"/)?.[1]
+        ?.toLowerCase() ?? "";
     }
+    if (!picked) picked = cfg.match(/^harness:\s*["']?([A-Za-z]+)/m)?.[1].toLowerCase() ?? "";
   }
   // Allowlist LAST, as resolve-harness.sh does: a value that is set but
   // unrecognized falls back to claude rather than to the next level down. A
@@ -95,6 +149,66 @@ export function resolveHarness(repoRoot: string, slug?: string): Harness {
   // `"codex"` and is rewritten to claude. That is a bug in that script, not a
   // contract, so this reads the YAML correctly instead of reproducing it.
   return isHarness(picked) ? picked : "claude";
+}
+
+/**
+ * AEON_MODEL, the local stand-in for the workflow_dispatch `model` input (as
+ * AEON_HARNESS is for `harness`). "(config default)" is that input's placeholder
+ * value, so it counts as unset here too.
+ */
+function inputModel(): string {
+  const v = (process.env.AEON_MODEL || "").trim();
+  return v === "(config default)" ? "" : v;
+}
+
+/**
+ * aeon's own model id for the run, the same 3-tier precedence as the workflow's
+ * Run step (.github/workflows/aeon.yml, the INPUT_MODEL / SKILL_MODEL /
+ * CONFIG_MODEL block): AEON_MODEL, else the skill's `model: "..."` in its aeon.yml
+ * entry, else the repo's global `model:`, else claude-sonnet-5-5. Like
+ * resolveHarness, the global key is read with its quotes and trailing comment
+ * dropped (the workflow's grep keeps both).
+ */
+export function resolveModel(repoRoot: string, slug?: string): string {
+  const input = inputModel();
+  if (input) return input;
+  const cfg = readConfig(repoRoot);
+  const skillModel = slug ? skillConfigLine(cfg, slug)?.match(/model:\s*"([^"]*)"/)?.[1] ?? "" : "";
+  if (skillModel) return skillModel;
+  return cfg.match(/^model:\s*["']?([^\s"'#]+)/m)?.[1] ?? "claude-sonnet-5-5";
+}
+
+/**
+ * The `--model` args for run-harness, or [] to let the harness pick its default.
+ * Mirrors what the workflow passes per harness, because aeon's model ids are
+ * claude or grok ids that mean nothing to the other CLIs:
+ *   claude  always `--model <resolveModel()>`.
+ *   grok    a claude-*, `default` or empty pick becomes grok-4.7; only a grok-*
+ *           id is passed.
+ *   others  MODEL_ARG from scripts/resolve-harness.sh (the same script the
+ *           workflow's "Resolve harness" step runs), which maps the pick to the
+ *           harness's own id or leaves it empty, based on which auth keys are set.
+ */
+function resolveModelArgs(repoRoot: string, slug: string, harness: Harness, logPrefix: string): string[] {
+  if (harness === "claude") return ["--model", resolveModel(repoRoot, slug)];
+  if (harness === "grok") {
+    let model = resolveModel(repoRoot, slug);
+    if (model === "default" || model.startsWith("claude-")) model = "grok-4.7";
+    return model.startsWith("grok-") ? ["--model", model] : [];
+  }
+  const script = join(repoRoot, "scripts", "resolve-harness.sh");
+  if (!existsSync(script)) return [];
+  const res = spawnSync("bash", [script, slug], {
+    cwd: repoRoot,
+    encoding: "utf-8",
+    env: { ...process.env, INPUT_HARNESS: harness, INPUT_MODEL: inputModel() },
+  });
+  if (res.status !== 0) {
+    process.stderr.write(`${logPrefix} resolve-harness.sh failed; using the ${harness} default model\n`);
+    return [];
+  }
+  const modelArg = (res.stdout || "").match(/^MODEL_ARG=(.*)$/m)?.[1]?.trim() ?? "";
+  return modelArg ? ["--model", modelArg] : [];
 }
 
 /**
@@ -118,7 +232,7 @@ function resolveMode(
   repoRoot: string,
   slug: string,
   varValue: string
-): { mode: string; allowedTools: string; isShadow: boolean } | null {
+): { mode: string; allowedTools: string; runNotes: string; isShadow: boolean } | null {
   const script = join(repoRoot, "scripts", "skill_mode.sh");
   if (!existsSync(script)) return null;
   const run = (...args: string[]) =>
@@ -138,7 +252,13 @@ function resolveMode(
   const allowedTools = (toolsRes.stdout || "").trim();
   if (!allowedTools) return null;
 
-  return { mode, allowedTools, isShadow };
+  // Standing tier notes (notify via stdin, no shell file writes), the same
+  // `run-notes <mode>` aeon.yml appends to the system prompt. Empty is allowed.
+  const notesRes = run("run-notes", mode);
+  if (notesRes.status !== 0) return null;
+  const runNotes = (notesRes.stdout || "").trim();
+
+  return { mode, allowedTools, runNotes, isShadow };
 }
 
 /**
@@ -182,6 +302,12 @@ function enqueue<T>(task: () => Promise<T>): Promise<T> {
   return result;
 }
 
+/**
+ * Per-run budget in seconds, passed to run-harness as --timeout. Matches the
+ * `--timeout 1800` aeon.yml passes on a scheduled run.
+ */
+const RUN_TIMEOUT_SECONDS = 1800;
+
 interface HarnessResult {
   status: number | null;
   stdout: string;
@@ -192,7 +318,7 @@ interface HarnessResult {
 /**
  * Async replacement for spawnSync with the same result shape
  * (status/stdout/stderr/error) so the parsing below is unchanged, but it awaits
- * `close` instead of blocking the Node event loop for the whole 10-minute run.
+ * `close` instead of blocking the Node event loop for the whole run.
  * Enforces the same timeout and combined output cap, surfacing each as `error`
  * the way spawnSync did (ETIMEDOUT / ENOBUFS).
  */
@@ -272,7 +398,7 @@ function spawnHarness(
  * than thrown, so callers can surface them without special-casing.
  *
  * Async so a running skill no longer freezes the whole stdio MCP server: the old
- * spawnSync parked the Node event loop for up to 10 minutes per call, blocking
+ * spawnSync parked the Node event loop for the whole run on every call, blocking
  * every other request (tools/list, pings, a second tool call). This awaits the
  * child instead.
  */
@@ -311,8 +437,10 @@ async function runSkillInner(
 
   const prompt = buildSkillPrompt(slug, varValue);
   const harness = resolveHarness(repoRoot, slug);
+  const modelArgs = resolveModelArgs(repoRoot, slug, harness, logPrefix);
+  const modelLabel = modelArgs[1] ?? `${harness} default`;
   process.stderr.write(
-    `${logPrefix} Running skill: ${slug}${varValue ? ` (var=${varValue})` : ""} [harness: ${harness}, mode: ${capability.mode}]\n`
+    `${logPrefix} Running skill: ${slug}${varValue ? ` (var=${varValue})` : ""} [harness: ${harness}, model: ${modelLabel}, mode: ${capability.mode}]\n`
   );
 
   // Every harness goes through harness-adapter's run-harness — the same dispatcher
@@ -325,13 +453,19 @@ async function runSkillInner(
   // RH_ARGS. They used to be hardcoded to write, so the twelve skills declaring
   // `mode: read-only` ran unsandboxed with the full write toolset on this path -
   // the same two-path drift the run-path consolidation removed, one layer up.
+  // --model likewise follows the workflow (resolveModelArgs); without it a local
+  // run silently used the CLI's own default instead of the skill's pinned model.
   const runHarness = join(repoRoot, "harness-adapter", "run-harness");
   const args = [
     runHarness, harness,
+    ...modelArgs,
     "--mode", capability.mode,
     "--allowed-tools", capability.allowedTools,
-    "--timeout", "600",
+    "--timeout", String(RUN_TIMEOUT_SECONDS),
   ];
+  if (capability.runNotes) {
+    args.push("--append-system-prompt", capability.runNotes);
+  }
   // Shadow runs get no MCP servers, matching aeon.yml (`SHADOW_MODE != 1` gates
   // its MCP block): an MCP server is a credentialed side channel that
   // shadowSafeEnv's stripped env would not cover.
@@ -343,7 +477,7 @@ async function runSkillInner(
     input: prompt,
     cwd: repoRoot,
     env: capability.isShadow ? shadowSafeEnv(process.env) : process.env,
-    timeout: 600_000, // 10 minutes - same as the GitHub Actions timeout
+    timeout: RUN_TIMEOUT_SECONDS * 1000,
     maxBuffer: 10 * 1024 * 1024, // 10 MB
   });
 

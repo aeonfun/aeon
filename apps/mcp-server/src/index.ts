@@ -5,7 +5,7 @@
  * Exposes all Aeon skills as MCP tools so any Claude Desktop or Claude Code
  * user can invoke them directly from their Claude interface.
  *
- * Tool naming: aeon-{slug} (e.g. aeon-article, aeon-hn-digest)
+ * Tool naming: aeon-{slug} (e.g. aeon-article, aeon-digest)
  * Each tool accepts a single optional `var` argument (the skill's variable input).
  *
  * Skill execution: spawns the configured harness through harness-adapter's
@@ -63,11 +63,16 @@ function buildTools(skills: Skill[]) {
 
 function buildDescription(skill: Skill): string {
   const categoryLabel = categoryName(skill.category);
+  const base = `[Aeon · ${categoryLabel}] ${skill.description}`;
+  // schedule comes from aeon.yml; a skill with no entry there gets no suffix.
+  if (!skill.schedule) return base;
   const scheduleLabel =
-    skill.schedule === "on-demand"
+    skill.schedule === "workflow_dispatch"
       ? "on-demand"
-      : `cron: ${skill.schedule}`;
-  return `[Aeon · ${categoryLabel}] ${skill.description} (${scheduleLabel})`;
+      : skill.schedule === "reactive"
+        ? "reactive"
+        : `cron: ${skill.schedule}`;
+  return `${base} (${scheduleLabel})`;
 }
 
 function buildVarDescription(skill: Skill): string {

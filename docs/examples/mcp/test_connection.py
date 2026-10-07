@@ -16,8 +16,8 @@ Setup:
     cd /path/to/aeon
     bin/add-mcp --build-only          # produce apps/mcp-server/dist/index.js
     pip install mcp                 # official anthropic MCP client
-    python examples/mcp/test_connection.py            # lists + calls default tool
-    python examples/mcp/test_connection.py aeon-token-movers AEON
+    python docs/examples/mcp/test_connection.py       # lists + calls default tool
+    python docs/examples/mcp/test_connection.py aeon-token-movers AEON
 """
 from __future__ import annotations
 

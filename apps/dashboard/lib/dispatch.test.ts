@@ -31,7 +31,7 @@ describe("sanitizeModel", () => {
   it("keeps dotted versions and colon variant suffixes", () => {
     assert.equal(sanitizeModel("grok-4.5"), "grok-4.5");
     assert.equal(sanitizeModel("vendor/model:free"), "vendor/model:free");
-    assert.equal(sanitizeModel("claude-haiku-4-5-20251001"), "claude-haiku-4-5-20251001");
+    assert.equal(sanitizeModel("claude-haiku-5-5"), "claude-haiku-5-5");
   });
 
   it("strips characters outside the id charset", () => {

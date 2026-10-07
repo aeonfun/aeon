@@ -99,6 +99,9 @@ sidecar_model() {  # $1 = gateway, $2 = run model id ("" = unset); prints model=
 [ "$(sidecar_model surplus claude-haiku-4-5-20251001)" = "claude-haiku-4.5" ] \
   && pass "surplus: date suffix stripped, then dot-form" \
   || bad "surplus: date suffix stripped, then dot-form (got $(sidecar_model surplus claude-haiku-4-5-20251001))"
+[ "$(sidecar_model surplus claude-haiku-5-5)" = "claude-haiku-4.5" ] \
+  && pass "surplus: haiku-5-5 (not carried yet) stays on claude-haiku-4.5" \
+  || bad "surplus: haiku-5-5 (not carried yet) stays on claude-haiku-4.5 (got $(sidecar_model surplus claude-haiku-5-5))"
 [ "$(sidecar_model surplus "")" = "claude-opus-5.5" ] \
   && pass "surplus: unset MODEL falls back to opus-5.5" \
   || bad "surplus: unset MODEL falls back to opus-5.5 (got $(sidecar_model surplus ""))"
@@ -127,9 +130,12 @@ or_model() {  # $1 = run model id; prints the MODEL the arm resolves
 [ "$(or_model claude-opus-5-5)" = "anthropic/claude-opus-5.5" ] \
   && pass "openrouter: opus-pinned run gets the opus slug" \
   || bad "openrouter: opus-pinned run gets the opus slug (got $(or_model claude-opus-5-5))"
-[ "$(or_model claude-haiku-4-5-20251001)" = "anthropic/claude-haiku-4.5" ] \
+[ "$(or_model claude-haiku-5-5)" = "anthropic/claude-haiku-5.5" ] \
   && pass "openrouter: haiku-tier run gets the haiku slug" \
-  || bad "openrouter: haiku-tier run gets the haiku slug"
+  || bad "openrouter: haiku-tier run gets the haiku slug (got $(or_model claude-haiku-5-5))"
+[ "$(or_model claude-haiku-4-5-20251001)" = "anthropic/claude-haiku-5.5" ] \
+  && pass "openrouter: an older haiku id still lands on the haiku slot" \
+  || bad "openrouter: an older haiku id still lands on the haiku slot (got $(or_model claude-haiku-4-5-20251001))"
 ( export GATEWAY=openrouter OPENROUTER_API_KEY=test-key MODEL=claude-sonnet-5 \
     OPENROUTER_MODEL=x/opus OPENROUTER_MODEL_SONNET=x/sonnet
   # shellcheck disable=SC1090
