@@ -1,6 +1,6 @@
 # Aeon
 
-> Aeon is an autonomous agent framework. It runs your own skills on a schedule in GitHub Actions, keeps state in git-committed memory, and dispatches every run through one harness adapter that works across nine coding-agent CLIs (Claude Code, Codex, Grok, Kimi, Pi, Vibe, fx, Cursor, Hermes). GLM Coding Plan is a Claude AI Gateway provider, not a harness. Skills are Markdown with a spec-form frontmatter; a least-privilege `requires:` -> dashboard vault contract wires secrets. Start it from the browser with Aeon Connect (https://www.aeon.fun/connect: sign in with GitHub, connect a model, pick skills), or clone the repo and run `./aeon init`; either way it runs itself on your own GitHub Actions.
+> Aeon is an autonomous agent framework. It runs your own skills on a schedule in GitHub Actions, keeps state in git-committed memory, and dispatches every run through one harness adapter that works across nine coding-agent CLIs (Claude Code, Codex, Grok, Kimi, Pi, Vibe, fx, Cursor, Hermes). GLM Coding Plan is a Claude AI Gateway provider, not a harness. Skills are Markdown with a spec-form frontmatter; a least-privilege `requires:` -> dashboard vault contract wires secrets. Start it from the browser with Aeon Connect (https://www.aeon.fun/connect: sign in with GitHub, connect a model, pick skills), or clone the repo and run `./aeon init`; either way it runs itself on your own GitHub Actions. Once it exists, drive it from ChatGPT, Claude or Cursor through the hosted MCP server at https://www.aeon.fun/connect/mcp.
 
 Repo: https://github.com/aeonfun/aeon
 Site: https://www.aeon.fun
@@ -15,6 +15,7 @@ Site: https://www.aeon.fun
 ## Setup and configuration
 
 - [Aeon Connect](https://www.aeon.fun/connect): The fastest start, in the browser. Sign in with GitHub, create your instance repo (a public fork or a private copy of aeonfun/aeon), install the Aeon Connect GitHub App on it, connect a model, pick skills. No clone or terminal.
+- [Hosted MCP server](https://www.aeon.fun/connect/mcp): Drive your agent from ChatGPT, Claude, Claude Code or Cursor. Add the URL as a custom connector (Claude Code: `claude mcp add --transport http aeon https://www.aeon.fun/connect/mcp`), sign in with GitHub and pick the agent repo. List and run skills (on the repo's own GitHub Actions), read runs, output and memory, edit skills, strategy and soul. Secret values are never readable or writable over it.
 - [docs/aeon-setup.md](https://raw.githubusercontent.com/aeonfun/aeon/main/docs/aeon-setup.md): The setup skill - get an instance running from scratch from a chat in your coding agent.
 - [docs/CONFIGURATION.md](https://raw.githubusercontent.com/aeonfun/aeon/main/docs/CONFIGURATION.md): Configuration and advanced reference.
 - [docs/CORE.md](https://raw.githubusercontent.com/aeonfun/aeon/main/docs/CORE.md): The Core - the ~15 load-bearing skills (self-evolution, self-healing, fleet) that make Aeon autonomous rather than just scheduled.
@@ -31,6 +32,7 @@ Site: https://www.aeon.fun
 
 - [docs/harnesses.md](https://raw.githubusercontent.com/aeonfun/aeon/main/docs/harnesses.md): Advanced harness behavior across the nine supported coding-agent CLIs.
 - [harness-adapter/README.md](https://raw.githubusercontent.com/aeonfun/aeon/main/harness-adapter/README.md): The single dispatch path that translates one tool grammar to every harness.
+- [apps/mcp-server/README.md](https://raw.githubusercontent.com/aeonfun/aeon/main/apps/mcp-server/README.md): The local stdio MCP server (`bin/add-mcp`): every skill as an `aeon-<slug>` tool in Claude Code or Claude Desktop, run on your machine. Compares it with the hosted server.
 - [docs/mcp-oauth.md](https://raw.githubusercontent.com/aeonfun/aeon/main/docs/mcp-oauth.md): Durable dashboard OAuth for OAuth-gated MCP servers.
 - [docs/telegram-commands.md](https://raw.githubusercontent.com/aeonfun/aeon/main/docs/telegram-commands.md): The inbound Telegram command surface.
 

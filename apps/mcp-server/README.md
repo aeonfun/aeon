@@ -1,6 +1,33 @@
-# Aeon MCP Server
+# Aeon MCP Server (local)
 
-Expose every Aeon skill as a [Model Context Protocol](https://modelcontextprotocol.io) tool, so you can run any skill straight from **Claude Desktop** or **Claude Code** — no GitHub Actions, no cron, no separate UI. Each skill shows up as an `aeon-<slug>` tool; ask Claude to use it and it runs the exact same `SKILL.md` prompt the scheduled runner uses.
+Expose every Aeon skill as a [Model Context Protocol](https://modelcontextprotocol.io) tool, so you can run any skill straight from **Claude Desktop** or **Claude Code** on your own machine. Each skill shows up as an `aeon-<slug>` tool; ask Claude to use it and it runs the exact same `SKILL.md` prompt the scheduled runner uses. Using ChatGPT or Cursor, or want nothing to install? Use the hosted server at [www.aeon.fun/connect/mcp](https://www.aeon.fun/connect/mcp) instead (see below).
+
+## Hosted or local?
+
+There are two Aeon MCP servers. Pick the one that fits:
+
+| | Hosted (Aeon Connect) | Local (this app) |
+|---|---|---|
+| **Add it with** | `https://www.aeon.fun/connect/mcp` as a connector | `bin/add-mcp` |
+| **Transport** | Streamable HTTP, OAuth 2.1 with GitHub sign-in | stdio |
+| **Works in** | ChatGPT, Claude, Claude Code, Cursor, any remote MCP client | Claude Code, Claude Desktop |
+| **Runs skills on** | your repo's own GitHub Actions | your machine, through `harness-adapter/run-harness` |
+| **Tools** | about 20: list and run skills, read runs, output and memory, edit skills, strategy and soul, check setup, install packs, switch between your Aeon repos | one `aeon-<slug>` tool per skill |
+| **Needs** | an Aeon repo with the Aeon Connect GitHub App installed | a clone of your repo, Node 20+, a harness CLI signed in, and the keys your skills use |
+
+**Hosted how-to.** Add `https://www.aeon.fun/connect/mcp` as a custom connector (custom MCP server) in ChatGPT, Claude or Cursor. In Claude Code:
+
+```bash
+claude mcp add --transport http aeon https://www.aeon.fun/connect/mcp
+```
+
+Sign in with GitHub when asked, then pick which agent repo the client can reach on the consent screen. Secret values are never readable or writable over it; `setup_status` only shows key names.
+
+**Using both?** `bin/add-mcp` registers the local server under the name `aeon` and first runs `claude mcp remove aeon`, which would delete a hosted entry with the same name (the script warns you when it sees one). To keep both, add the hosted one under another name:
+
+```bash
+claude mcp add --transport http aeon-cloud https://www.aeon.fun/connect/mcp
+```
 
 ## What it is
 

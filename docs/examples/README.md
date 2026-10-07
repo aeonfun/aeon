@@ -1,6 +1,6 @@
 # Aeon integration examples
 
-Aeon ships an [MCP server](../../apps/mcp-server/) so any Claude client can call its 85 skills. The scripts here are the shortest possible "first call works" demos - build the server, run `python <file>`, get a real Aeon output back.
+Aeon ships an [MCP server](../../apps/mcp-server/) so any Claude client can call its 85 skills. The scripts here are the shortest possible "first call works" demos - build the server, run `python <file>`, get a real Aeon output back. Using ChatGPT or Cursor, or want nothing to install? The hosted server at [www.aeon.fun/connect/mcp](https://www.aeon.fun/connect/mcp) runs skills on your own GitHub Actions instead ([hosted or local?](../../apps/mcp-server/README.md#hosted-or-local)).
 
 | File | Stack | Skill called | What it shows |
 |------|-------|--------------|---------------|

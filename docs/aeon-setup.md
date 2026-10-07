@@ -72,9 +72,10 @@ The skill is a standard `SKILL.md` (plus a `references/` folder). Any agent that
 
 ## How it relates to the dashboard & CLI
 
-Four front doors, one engine - all of them read and write the same `aeon.yml` + repo secrets:
+Five front doors, one engine - all of them work on the same repo, `aeon.yml` and secrets (the hosted MCP server never reads or writes secret values):
 
 - **Aeon Connect** ([www.aeon.fun/connect](https://www.aeon.fun/connect)) - the dashboard, hosted: sign in with GitHub, create your repo, connect a model, pick skills. Nothing to install; best for a first run. See [Quick start](../.github/README.md#quick-start).
+- **Hosted MCP** ([www.aeon.fun/connect/mcp](https://www.aeon.fun/connect/mcp)) - drive an existing agent from ChatGPT, Claude, Claude Code or Cursor: add the URL as a connector, sign in with GitHub, then run skills, read output and memory, and edit strategy and soul from the chat. See [Hosted or local?](../apps/mcp-server/README.md#hosted-or-local).
 - **Local dashboard** (`./aeon` → `localhost:5555`) - the same click-driven UI, run from your clone.
 - **CLI** (`./aeon skills …`, `./aeon secrets …`) — scriptable, `--json`-friendly. See [Command line](../apps/cli/README.md).
 - **This skill** (`/aeon` in your agent) — conversational; you say what you want, it runs the CLI and confirms the result.

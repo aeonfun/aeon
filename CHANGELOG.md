@@ -11,6 +11,17 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Added
 
+- **Hosted MCP server: drive your agent from ChatGPT, Claude or Cursor.** Aeon Connect now serves
+  a remote MCP server at [www.aeon.fun/connect/mcp](https://www.aeon.fun/connect/mcp) (Streamable
+  HTTP, OAuth 2.1 with dynamic client registration and PKCE, GitHub sign-in). The consent screen
+  picks which agent repo a client can reach, and `switch_instance` moves between your Aeon repos
+  after a fresh GitHub check. About 20 tools list and run skills (runs dispatch on the repo's own
+  GitHub Actions), read runs, output and memory, edit skills, strategy and soul, show setup status
+  (key names only) and install packs. Secret values are never readable or writable over it. Claude
+  Code: `claude mcp add --transport http aeon https://www.aeon.fun/connect/mcp`. The README, setup
+  skill, `apps/mcp-server` README, security policy, `llms.txt` and docs now point to it, and
+  `bin/add-mcp` warns before its `claude mcp remove aeon` would delete a hosted `aeon` entry.
+  (aeon-connect #66, #68)
 - **Aeon Connect: start an agent from the browser.** [www.aeon.fun/connect](https://www.aeon.fun/connect)
   is the hosted, multi-tenant version of the dashboard (aaronjmars/aeon-connect). Sign in with GitHub,
   **Create your aeon**: the repo is created first (public = a real fork of aeonfun/aeon that can pull
