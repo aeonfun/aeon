@@ -176,6 +176,10 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Changed
 
+- **Operator-console plugin fills its Claude directory listing.** `plugin/.claude-plugin/plugin.json`
+  now sets `displayName`, author email, `icon` and the docs, support, privacy and terms links that
+  Anthropic's plugin directory reads for the listing.
+
 - **Operator-console plugin drops the MiniMax manifest.** `plugin/.minimax-plugin/` is gone;
   the plugin now ships for Claude Code, Codex and the Agent Plugins format only. `plugin/icon.png`
   stays (the Codex manifest uses it).

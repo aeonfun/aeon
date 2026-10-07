@@ -1,13 +1,20 @@
 {
   "name": "aeon",
+  "displayName": "Aeon",
   "version": "0.1.0",
   "description": "Operator console for an Aeon agent instance: enable/schedule/edit skills, wire secrets and channels, debug runs, and mine past coding-agent chats into scheduled skills.",
   "author": {
     "name": "Aeon Inc",
-    "url": "https://github.com/aeonfun"
+    "email": "aaron@aeon.fun",
+    "url": "https://www.aeon.fun"
   },
   "homepage": "https://www.aeon.fun",
   "repository": "https://github.com/aeonfun/aeon",
   "license": "MIT",
-  "keywords": ["aeon", "agent", "skills", "automation", "github-actions", "cron"]
+  "keywords": ["aeon", "agent", "skills", "automation", "github-actions", "cron"],
+  "icon": "./icon.png",
+  "documentationUrl": "https://www.aeon.fun/docs",
+  "supportUrl": "https://www.aeon.fun/contact",
+  "privacyPolicyUrl": "https://www.aeon.fun/privacy",
+  "termsOfServiceUrl": "https://www.aeon.fun/terms"
 }
