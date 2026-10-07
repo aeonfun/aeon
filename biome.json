@@ -16,7 +16,12 @@
   "linter": { "enabled": false },
   "assist": { "enabled": false },
   "javascript": {
-    "formatter": { "quoteStyle": "single", "semicolons": "asNeeded", "trailingCommas": "all", "arrowParentheses": "asNeeded" }
+    "formatter": {
+      "quoteStyle": "single",
+      "semicolons": "asNeeded",
+      "trailingCommas": "all",
+      "arrowParentheses": "asNeeded"
+    }
   },
   "overrides": [
     {
