@@ -60,7 +60,7 @@ CRITICAL RULES:
 
 # Use claude CLI — works with both API key and OAuth token
 SPEC=$(echo "$CONTENT" | claude -p "Convert this skill output into a json-render spec. Skill: ${SKILL}" \
-  --model claude-haiku-4-5-20251001 \
+  --model claude-haiku-5-5 \
   --system-prompt "$SYSTEM" \
   --max-turns 1 \
   --output-format text 2>/dev/null)

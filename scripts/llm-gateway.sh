@@ -262,7 +262,7 @@ case "${GATEWAY:-direct}" in
     # Map EVERY model slot Claude Code uses to OpenRouter slugs (opus/sonnet/haiku).
     export ANTHROPIC_DEFAULT_OPUS_MODEL="${OPENROUTER_MODEL:-anthropic/claude-opus-5.5}"
     export ANTHROPIC_DEFAULT_SONNET_MODEL="${OPENROUTER_MODEL_SONNET:-anthropic/claude-sonnet-5.5}"
-    export ANTHROPIC_DEFAULT_HAIKU_MODEL="${OPENROUTER_MODEL_HAIKU:-anthropic/claude-haiku-4.5}"
+    export ANTHROPIC_DEFAULT_HAIKU_MODEL="${OPENROUTER_MODEL_HAIKU:-anthropic/claude-haiku-5.5}"
     # Tiered mapping, same as the glm arm: the run's resolved model id picks the
     # slot, so sonnet-tier skills (and the scorer) stay on sonnet instead of every
     # run being billed as Opus.
@@ -360,8 +360,12 @@ X-Title: ${OPENROUTER_APP_TITLE:-Aeon}"
     # <digit>-<digit> to <digit>.<digit> (claude-opus-5-5 -> claude-opus-5.5).
     # SURPLUS_MODEL overrides; opus-5.5 is the fallback when $MODEL is unset.
     # Surplus served claude-opus-5.5 and claude-sonnet-5.5 on 2026-10-01
-    # (/api/inference/v1/models).
+    # (/api/inference/v1/models). It did not serve claude-haiku-5.5 yet on
+    # 2026-10-07, so the haiku tier stays on claude-haiku-4.5 there.
     surplus_model="${SURPLUS_MODEL:-$(printf '%s' "${MODEL:-claude-opus-5-5}" | sed -E 's/-[0-9]{8}$//; s/([0-9])-([0-9])/\1.\2/g')}"
+    if [ -z "${SURPLUS_MODEL:-}" ] && [ "$surplus_model" = "claude-haiku-5.5" ]; then
+      surplus_model="claude-haiku-4.5"
+    fi
     start_ccr_sidecar surplus \
       "https://www.surplusintelligence.ai/api/inference/v1/chat/completions" \
       "$SURPLUS_API_KEY" "$surplus_model"

@@ -34,9 +34,10 @@ on:
           - '(config default)'
           - claude-sonnet-5-5
           - claude-opus-5-5
-          - claude-haiku-4-5-20251001
+          - claude-haiku-5-5
           - claude-sonnet-5
           - claude-opus-4-8
+          - claude-haiku-4-5-20251001
           - grok-4.7
           - grok-4.6
           - grok-4.5
@@ -1750,7 +1751,7 @@ jobs:
 
           JSON format: {\"score\": N, \"assessment\": \"one line\", \"flags\": []}"
 
-          SCORE_MODEL="${ANTHROPIC_DEFAULT_HAIKU_MODEL:-claude-haiku-4-5-20251001}"
+          SCORE_MODEL="${ANTHROPIC_DEFAULT_HAIKU_MODEL:-claude-haiku-5-5}"
           # Score through the SAME harness the skill ran on, ALWAYS via the
           # harness-adapter — no native `claude -p` / `run-grok.sh` path remains.
           # A repo authed for only one harness has no Claude creds, so a direct
