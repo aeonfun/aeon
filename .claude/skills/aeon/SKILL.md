@@ -207,7 +207,7 @@ They just did something in this chat and want it to happen on a schedule.
 
    This is the one sanctioned exception to "never hand-edit the YAML". Validate after: `node scripts/validate-config.js`. It checks structure and schedule format, but not whether a `model:`/`harness:` override is quoted.
 
-5. **Regenerate BOTH catalogs, add the eyebrow entry, then ship it as a PR.** A new skill trips four CI gates, and **a red gate blocks the merge**: `main` requires the `gate` check, which `ci-gate` fails whenever any other check on the PR is red. Run them locally first. Commit `SKILL.md` on its own before regenerating (the catalog's `sha`/`updated` are git-derived):
+5. **Regenerate BOTH catalogs, add the eyebrow entry, then ship it as a PR.** A new skill trips six CI gates (see `references/ci.md`), and **a red gate blocks the merge**: `main` requires the `gate` check, which `ci-gate` fails whenever any other check on the PR is red. Run them locally first. Commit `SKILL.md` on its own before regenerating (the catalog's `sha`/`updated` are git-derived):
 
    ```bash
    bash scripts/check-skill-categories.sh   # category is one of the six
