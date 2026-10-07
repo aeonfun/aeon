@@ -3,7 +3,12 @@
 This plugin is a self-contained copy of the Aeon operator-console skill. It ships
 Markdown instructions plus one local helper script (`skills/aeon/scripts/mine-history.mjs`),
 and drives your Aeon instance through the authenticated GitHub CLI (`gh`). It bundles
-no server, no credentials, and no telemetry - secrets stay in your own GitHub instance.
+no credentials and no telemetry - secrets stay in your own GitHub instance.
+
+From 0.2.0 the plugin also points at Aeon Connect's hosted MCP server,
+`https://www.aeon.fun/connect/mcp`, which uses OAuth with GitHub sign-in. That server
+reaches only the repos you allow. It can list the names of missing keys, but it never
+reads or writes secret values.
 
 ## Reporting a vulnerability
 

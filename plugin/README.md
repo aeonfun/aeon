@@ -31,21 +31,32 @@ codex plugin add aeon@aeon
 Then type `/aeon` (or mention Aeon / `aeon.yml` / "schedule a skill") and point it
 at your instance repo when it asks.
 
-## Connect your agent (ChatGPT, Codex, Claude Code)
+## Connect your agent
 
 The plugin also connects to your agent through Aeon Connect's hosted MCP server,
-`https://www.aeon.fun/connect/mcp`. Sign in with GitHub and pick ONE agent repo; from
-then on you can ask, from any chat:
+`https://www.aeon.fun/connect/mcp`. Sign in with GitHub and pick your agent repo;
+from then on you can ask, from any chat:
 
 - "What skills does my Aeon agent have, and which are on?" (`list_skills`)
 - "Run the digest skill now and tell me when it is done" (`run_skill`, `get_run`)
+- "Show me what my last digest found" (`read_output`)
 - "Did anything fail today? Why?" (`list_runs`, `get_run`)
 - "Turn on the digest every morning at 8" (`update_skill`, commits `aeon.yml` after you confirm)
+- "What does my agent still need to be fully set up?" (`setup_status`)
+- "What has my agent written down about this week?" (`search_memory`, `read_memory`)
+- "Add this goal to my strategy" or "Make my agent sound more casual"
+  (`read_strategy` / `update_strategy`, `read_soul` / `update_soul`, after you confirm)
+- "What skill packs can I add?" (`list_packs`; `install_pack` opens a pull request after you confirm)
+- "Which Aeon agents can I use here? Switch to my other one" (`list_instances`, `switch_instance`)
 
-In ChatGPT the settings page shows one switch per skill, and `@` in the composer finds
-skills by name. The connection only reaches the repo you picked and never reads or
-changes your secrets. After install, the `get-started` skill checks the connection and
-runs a first skill with you.
+In ChatGPT there is more: the settings page has one switch per skill plus the agent
+harness, `@` in the composer finds skills by name, and running a skill shows a live
+view of its runs.
+
+The connection reaches only the repo you pick, plus your other Aeon repos if you allow
+switching when you connect. It never reads or changes your secrets: `setup_status` can
+name missing keys, never show their values. After install, the `get-started` skill
+checks the connection, says what setup is missing, and runs a first skill with you.
 
 ## What it needs
 

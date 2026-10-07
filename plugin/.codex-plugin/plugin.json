@@ -1,7 +1,7 @@
 {
   "name": "aeon",
   "version": "0.2.0",
-  "description": "Run and manage your Aeon agent: list skills, run them and read the results, turn them on or off and reschedule them, plus the Codex operator console for setting up and editing an Aeon instance.",
+  "description": "Run and manage your Aeon agent: run skills and read results, turn them on or off and reschedule them, check setup, read memory, edit strategy and voice, add skill packs, plus the operator console skill.",
   "author": {
     "name": "Aeon Inc",
     "url": "https://github.com/aeonfun"
@@ -15,7 +15,7 @@
   "interface": {
     "displayName": "Aeon",
     "shortDescription": "Run your own scheduled agent",
-    "longDescription": "Run your own Aeon agent from ChatGPT and Codex. Aeon is an open-source agent framework that runs skills on a schedule in your own GitHub repo using GitHub Actions. Connect your agent through Aeon Connect to see its skills, run one now and follow the run, read what a run produced and why one failed, turn skills on or off and change their schedule. The plugin also ships the operator console skill for Codex: set up an agent from scratch, edit what a skill does, set the STRATEGY.md north star and soul voice, and mine past coding-agent chats into new scheduled skills.\n\nThe connection reaches only the one repo you pick when you sign in with GitHub. It never reads or changes your secrets. No agent yet? Create one in two minutes at https://www.aeon.fun/connect.",
+    "longDescription": "Run your own Aeon agent from ChatGPT and Codex. Aeon is an open-source agent framework that runs skills on a schedule in your own GitHub repo using GitHub Actions. Connect your agent through Aeon Connect to see its skills, run one now and follow the run, read what a skill produced and why a run failed, and turn skills on or off or change their schedule. Check what setup is missing, search its memory, edit its STRATEGY.md north star and soul voice, and add skill packs. The plugin also ships the operator console skill for Codex: set up an agent from scratch, edit what a skill does, and mine past coding-agent chats into new scheduled skills.\n\nThe connection reaches only the repo you pick when you sign in with GitHub, plus your other Aeon repos if you allow switching. It never reads or changes your secrets. No agent yet? Create one in two minutes at https://www.aeon.fun/connect.",
     "developerName": "Aeon Inc",
     "category": "Developer Tools",
     "capabilities": ["Interactive", "Read", "Write"],
@@ -24,7 +24,7 @@
     "privacyPolicyURL": "https://www.aeon.fun/privacy",
     "termsOfServiceURL": "https://www.aeon.fun/terms",
     "defaultPrompt": [
-      "List my Aeon skills and which ones are on",
+      "What does my Aeon agent still need to be fully set up?",
       "Run the heartbeat skill and tell me when it is done",
       "Did any Aeon run fail today? Why?"
     ],
@@ -65,8 +65,26 @@
             {
               "description": "Read a run's output",
               "prompt": "Show me what my last heartbeat run found.",
-              "tools_triggered": "list_runs, get_run",
-              "expected_behavior": "Finds the most recent heartbeat run and summarizes its output from the run summary, with a link to the run."
+              "tools_triggered": "list_runs, read_output",
+              "expected_behavior": "Finds the latest heartbeat run, then summarizes the skill's latest saved output with a link to the run. If heartbeat has no saved output yet, says so."
+            },
+            {
+              "description": "Check setup",
+              "prompt": "What does my Aeon agent still need to be fully set up?",
+              "tools_triggered": "setup_status",
+              "expected_behavior": "Says whether a model is connected and names any API keys the enabled skills are missing, by name only, never values, and points to Aeon Connect to add them. No changes are made."
+            },
+            {
+              "description": "Search memory",
+              "prompt": "What has my Aeon agent written down about this week?",
+              "tools_triggered": "search_memory, read_memory",
+              "expected_behavior": "Searches and reads the agent's memory and daily logs, then summarizes what it noted this week and where each note lives. No changes are made."
+            },
+            {
+              "description": "Edit the north star",
+              "prompt": "Add 'grow the newsletter to 1,000 readers' to my Aeon strategy.",
+              "tools_triggered": "read_strategy, update_strategy",
+              "expected_behavior": "Reads STRATEGY.md, shows the exact change, and asks for confirmation. After a yes, commits the updated STRATEGY.md and confirms it is saved."
             }
           ],
           "negative": [
@@ -79,7 +97,7 @@
               "prompt": "Delete my Aeon repo and all its skills."
             },
             {
-              "description": "Only the connected repo",
+              "description": "Only repos the user allowed",
               "prompt": "Run the digest skill on the repo octo/someone-elses-agent."
             }
           ]
@@ -88,7 +106,7 @@
         "commerce_description": "This plugin does not sell products or process payments."
       },
       "publication": {
-        "release_notes": "Connect your Aeon agent: list skills, run a skill and follow the run, read run output and failure reasons, turn skills on or off and change schedules, plus a get-started flow. Includes the Codex operator console skill."
+        "release_notes": "Connect your Aeon agent: list skills, run a skill and follow the run live, read a skill's output and why a run failed, turn skills on or off and change schedules, check what setup is missing, read and search memory, edit strategy and voice, and add skill packs. Switch between your Aeon repos if you allow it. Adds a get-started flow and keeps the Codex operator console skill."
       }
     }
   }
