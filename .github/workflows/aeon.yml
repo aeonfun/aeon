@@ -1099,7 +1099,7 @@ jobs:
           # request). The post-run guard reverted it after the fact; now the write is
           # refused outright.
           CLAUDE_OK=0
-          RH="${GITHUB_WORKSPACE}/harness-adapter/run-harness"
+          RH=$(bash scripts/harness-adapter-snapshot.sh)
           RH_ARGS=(--mode "$SKILL_MODE" --allowed-tools "$ALLOWED" --timeout 1800)
           # Tier notes (skill_mode.sh run-notes): notify via stdin, no shell file writes.
           RUN_NOTES=$(bash scripts/skill_mode.sh run-notes "$SKILL_MODE")
