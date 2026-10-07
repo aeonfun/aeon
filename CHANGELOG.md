@@ -178,7 +178,8 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 - **Operator-console plugin fills its Claude directory listing.** `plugin/.claude-plugin/plugin.json`
   now sets `displayName`, author email, `icon` and the docs, support, privacy and terms links that
-  Anthropic's plugin directory reads for the listing.
+  Anthropic's plugin directory reads for the listing, and a shorter `description` that fits the
+  listing's short-description slot.
 
 - **Operator-console plugin drops the MiniMax and agent-plugins manifests.** `plugin/.minimax-plugin/`
   and the root `plugin/plugin.json` (agent-plugins.org format, for Kiro Powers) are gone; the plugin
