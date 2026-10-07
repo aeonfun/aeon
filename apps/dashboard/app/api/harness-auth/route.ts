@@ -29,7 +29,8 @@ export async function POST(request: Request) {
 
     // Path 1 — API key (given, or the only option for pi/vibe).
     if (key || !spec.oauth) {
-      if (!spec.apiKey) return NextResponse.json({ error: `${harness} needs its login flow, not a key` }, { status: 400 })
+      if (!spec.apiKey)
+        return NextResponse.json({ error: `${harness} needs its login flow, not a key` }, { status: 400 })
       if (!key) return NextResponse.json({ error: `${harness} takes a provider API key` }, { status: 400 })
       const { secret } = setHarnessApiKey(harness, key)
       return NextResponse.json({ ok: true, harness, method: 'api-key', secret })

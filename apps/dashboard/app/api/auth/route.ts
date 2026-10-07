@@ -9,11 +9,14 @@ export async function POST(request: Request) {
   try {
     const notReady = requireGh()
     if (notReady) return notReady
-    const body = await request.json().catch(() => ({})) as { key?: string, baseUrl?: string, provider?: string }
+    const body = (await request.json().catch(() => ({}))) as { key?: string; baseUrl?: string; provider?: string }
     return NextResponse.json(await configureAuth(body))
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : 'Failed to setup auth'
-    const status = msg.includes('Base URL') || msg.includes('OAuth tokens') || msg.includes('gateway') || msg.includes('extract') ? 400 : 500
+    const status =
+      msg.includes('Base URL') || msg.includes('OAuth tokens') || msg.includes('gateway') || msg.includes('extract')
+        ? 400
+        : 500
     return NextResponse.json({ error: msg }, { status })
   }
 }

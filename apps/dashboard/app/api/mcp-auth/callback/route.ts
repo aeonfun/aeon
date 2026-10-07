@@ -10,7 +10,7 @@ import { pendingFlows } from '@/lib/mcp-oauth-server'
 // `title`/`detail` can carry attacker-controlled OAuth ?error/?error_description values
 // (GHSA-gh95-xx4q-qch8) or a token-endpoint's error body, so escape before interpolating.
 function escapeHtml(s: string): string {
-  return s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!)
+  return s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!)
 }
 
 function page(title: string, detail = '', status = 200): Response {
@@ -35,7 +35,11 @@ export async function GET(request: Request) {
 
   const flow = state ? pendingFlows.get(state) : undefined
   if (!flow) {
-    return page('Unknown or expired request', 'This authorization request is no longer pending. Start again from the dashboard.', 400)
+    return page(
+      'Unknown or expired request',
+      'This authorization request is no longer pending. Start again from the dashboard.',
+      400,
+    )
   }
   // One-shot: remove it and stop the POST's timeout regardless of outcome.
   pendingFlows.delete(state)

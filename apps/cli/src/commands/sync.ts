@@ -11,13 +11,18 @@ Options:
   --json      Machine-readable output`
 
 export function syncCommand(argv: string[]) {
-  if (argv.includes('-h') || argv.includes('--help')) { console.log(USAGE); return }
+  if (argv.includes('-h') || argv.includes('--help')) {
+    console.log(USAGE)
+    return
+  }
 
   if (argv.includes('--status')) {
     const s = syncStatus()
     return emit(s, () => {
-      console.log(`${s.hasChanges ? c.yellow(`${s.changedFiles} changed file(s)`) : c.green('clean tree')}` +
-        `   ${s.behind > 0 ? c.yellow(`${s.behind} behind origin/main`) : c.dim('up to date')}`)
+      console.log(
+        `${s.hasChanges ? c.yellow(`${s.changedFiles} changed file(s)`) : c.green('clean tree')}` +
+          `   ${s.behind > 0 ? c.yellow(`${s.behind} behind origin/main`) : c.dim('up to date')}`,
+      )
     })
   }
 

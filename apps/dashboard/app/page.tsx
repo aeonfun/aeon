@@ -2,14 +2,42 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import type {
-  Skill, Run, Secret, SkillOutput, GatewayProvider, Harness, UploadFile, AnalyticsData,
-  SkillsResponse, RunsResponse, SecretsResponse, SyncStatusResponse, McpResponse,
-  OutputsResponse, StrategyResponse, SoulResponse, SyncResult, SoulExampleResponse,
-  UploadResponse, ErrorResponse, PacksResponse, McpServers, SoulSources, StrategySources,
+  Skill,
+  Run,
+  Secret,
+  SkillOutput,
+  GatewayProvider,
+  Harness,
+  UploadFile,
+  AnalyticsData,
+  SkillsResponse,
+  RunsResponse,
+  SecretsResponse,
+  SyncStatusResponse,
+  McpResponse,
+  OutputsResponse,
+  StrategyResponse,
+  SoulResponse,
+  SyncResult,
+  SoulExampleResponse,
+  UploadResponse,
+  ErrorResponse,
+  PacksResponse,
+  McpServers,
+  SoulSources,
+  StrategySources,
   DashboardView,
 } from '../lib/types'
 import { getJson, postJson, putJson, patchJson, del, scheduleRunRefresh } from '../lib/api-client'
-import { MODELS, authSecretsForHarness, PACK_BY_KEY, FIRST_PARTY_KEYS, DEFAULT_VISIBLE_PACKS, HARNESSES, modelsForHarness } from '../lib/constants'
+import {
+  MODELS,
+  authSecretsForHarness,
+  PACK_BY_KEY,
+  FIRST_PARTY_KEYS,
+  DEFAULT_VISIBLE_PACKS,
+  HARNESSES,
+  modelsForHarness,
+} from '../lib/constants'
 import { displayName, lastSuccessfulRunId } from '../lib/utils'
 import TargetCursor from '../components/ui/TargetCursor'
 import { LoadingScreen } from '../components/LoadingScreen'
@@ -31,14 +59,13 @@ import { ConnectModal, type SavedCredential } from '../components/ConnectModal'
 import { OnboardingChecklist, type NotifyChannel } from '../components/OnboardingChecklist'
 import { PanelError } from '../components/PanelError'
 
-
 // The secret each notification channel's setup starts at: the first one of
 // its pair that is still missing (see ./notify's opt-in secrets).
 const NOTIFY_FIRST_SECRET: Record<NotifyChannel, (isSet: (n: string) => boolean) => string> = {
-  telegram: (isSet) => (isSet('TELEGRAM_BOT_TOKEN') ? 'TELEGRAM_CHAT_ID' : 'TELEGRAM_BOT_TOKEN'),
+  telegram: isSet => (isSet('TELEGRAM_BOT_TOKEN') ? 'TELEGRAM_CHAT_ID' : 'TELEGRAM_BOT_TOKEN'),
   discord: () => 'DISCORD_WEBHOOK_URL',
   slack: () => 'SLACK_WEBHOOK_URL',
-  email: (isSet) => (isSet('RESEND_API_KEY') ? 'NOTIFY_EMAIL_TO' : 'RESEND_API_KEY'),
+  email: isSet => (isSet('RESEND_API_KEY') ? 'NOTIFY_EMAIL_TO' : 'RESEND_API_KEY'),
 }
 
 export default function Dashboard() {
@@ -113,7 +140,10 @@ export default function Dashboard() {
   const [soulBuilding, setSoulBuilding] = useState(false)
   const [soulInstalling, setSoulInstalling] = useState<string | null>(null)
 
-  const flash = (msg: string) => { setToast(msg); setTimeout(() => setToast(''), 3000) }
+  const flash = (msg: string) => {
+    setToast(msg)
+    setTimeout(() => setToast(''), 3000)
+  }
   // Config writes auto-commit+push in local mode (no-op in hosted mode). Reflect
   // the result: clear the "needs Sync" nudge on success, raise it only if the
   // push failed (e.g. behind origin/main → resolve via the manual Sync button).
@@ -125,18 +155,70 @@ export default function Dashboard() {
 
   // --- API ---
   const fetchData = useCallback(async () => {
-    try { const [sr, rr, secr] = await Promise.all([fetch('/api/skills'), fetch('/api/runs'), fetch('/api/secrets')]); if (sr.ok) { const d = await sr.json() as SkillsResponse; setSkills(d.skills); if (d.model) setModel(d.model); if (d.harness) setHarness(d.harness); if (d.gateway?.provider) setGateway(d.gateway.provider); if (d.repo) setRepo(d.repo) }; if (rr.ok) setRuns((await rr.json() as RunsResponse).runs); if (secr.ok) { const d = await secr.json() as SecretsResponse; if (d.secrets) { setSecrets(d.secrets); setSecretsReadOk(true) } } else { setSecretsReadOk(false) } } catch (e: unknown) { setError(e instanceof Error ? e.message : 'Failed to connect') } finally { setLoading(false) }
-    try { const r = await fetch('/api/sync'); if (r.ok) { const d = await r.json() as SyncStatusResponse; setHasChanges(d.hasChanges); if (typeof d.behind === 'number') setBehind(d.behind) } } catch {}
+    try {
+      const [sr, rr, secr] = await Promise.all([fetch('/api/skills'), fetch('/api/runs'), fetch('/api/secrets')])
+      if (sr.ok) {
+        const d = (await sr.json()) as SkillsResponse
+        setSkills(d.skills)
+        if (d.model) setModel(d.model)
+        if (d.harness) setHarness(d.harness)
+        if (d.gateway?.provider) setGateway(d.gateway.provider)
+        if (d.repo) setRepo(d.repo)
+      }
+      if (rr.ok) setRuns(((await rr.json()) as RunsResponse).runs)
+      if (secr.ok) {
+        const d = (await secr.json()) as SecretsResponse
+        if (d.secrets) {
+          setSecrets(d.secrets)
+          setSecretsReadOk(true)
+        }
+      } else {
+        setSecretsReadOk(false)
+      }
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : 'Failed to connect')
+    } finally {
+      setLoading(false)
+    }
+    try {
+      const r = await fetch('/api/sync')
+      if (r.ok) {
+        const d = (await r.json()) as SyncStatusResponse
+        setHasChanges(d.hasChanges)
+        if (typeof d.behind === 'number') setBehind(d.behind)
+      }
+    } catch {}
     // Preload MCP servers so each skill's "MCP servers" panel can show install state.
-    try { const r = await fetch('/api/mcp'); if (r.ok) { const d = await r.json() as McpResponse; setMcpServers(d.servers || {}); setMcpLoaded(true) } } catch {}
+    try {
+      const r = await fetch('/api/mcp')
+      if (r.ok) {
+        const d = (await r.json()) as McpResponse
+        setMcpServers(d.servers || {})
+        setMcpLoaded(true)
+      }
+    } catch {}
   }, [])
-  const refreshRuns = useCallback(async () => { try { const r = await fetch('/api/runs'); if (r.ok) setRuns((await r.json() as RunsResponse).runs) } catch {} }, [])
+  const refreshRuns = useCallback(async () => {
+    try {
+      const r = await fetch('/api/runs')
+      if (r.ok) setRuns(((await r.json()) as RunsResponse).runs)
+    } catch {}
+  }, [])
   // Optimistically mark a just-saved secret as set. We know it's set (the write
   // succeeded), so reflect it even before the follow-up /api/secrets read lands -
   // and flag the vault readable so the run-gate stops blaming a missing key when
   // that read is flaky (the GitHub-503 case behind #878).
-  const markSecretSet = (name: string, group = 'Skill Keys') => { setSecrets(s => s.some(x => x.name === name) ? s.map(x => x.name === name ? { ...x, isSet: true } : x) : [...s, { name, group, description: 'Custom', isSet: true }]); setSecretsReadOk(true) }
-  useEffect(() => { fetchData() }, [fetchData])
+  const markSecretSet = (name: string, group = 'Skill Keys') => {
+    setSecrets(s =>
+      s.some(x => x.name === name)
+        ? s.map(x => (x.name === name ? { ...x, isSet: true } : x))
+        : [...s, { name, group, description: 'Custom', isSet: true }],
+    )
+    setSecretsReadOk(true)
+  }
+  useEffect(() => {
+    fetchData()
+  }, [fetchData])
   // Restore the operator's enabled-pack selection from a prior visit, scoped to
   // THIS repo (Core is always on). Per-repo keying so testing multiple forks on
   // the same localhost doesn't bleed one fork's pack selection into another — a
@@ -148,11 +230,17 @@ export default function Dashboard() {
     let saved: string[] = []
     try {
       const raw = localStorage.getItem(`aeon.enabledPacks:${repo}`)
-      if (raw) { const arr: unknown = JSON.parse(raw); if (Array.isArray(arr)) saved = arr.filter((k: unknown): k is string => typeof k === 'string') }
+      if (raw) {
+        const arr: unknown = JSON.parse(raw)
+        if (Array.isArray(arr)) saved = arr.filter((k: unknown): k is string => typeof k === 'string')
+      }
     } catch {}
     setEnabledPacks(Array.from(new Set([...DEFAULT_VISIBLE_PACKS, ...saved])))
   }, [repo])
-  useEffect(() => { const id = setInterval(refreshRuns, 10_000); return () => clearInterval(id) }, [refreshRuns])
+  useEffect(() => {
+    const id = setInterval(refreshRuns, 10_000)
+    return () => clearInterval(id)
+  }, [refreshRuns])
   // A builder run commits STRATEGY.md / soul/ on GitHub. Once a new one
   // succeeds, pull it into the local checkout (local mode reads these files from
   // disk, same as the Pull button) and reload that editor so it stops showing the
@@ -167,50 +255,295 @@ export default function Dashboard() {
     const soulChanged = seen.soul !== undefined && soulBuildId !== null && soulBuildId !== seen.soul
     seenBuild.current = { strategy: strategyBuildId, soul: soulBuildId }
     if (!strategyChanged && !soulChanged) return
-    postJson<ErrorResponse>('/api/outputs').catch(() => {}).finally(() => {
-      if (strategyChanged) setStrategyLoaded(false)
-      if (soulChanged) setSoulLoaded(false)
-    })
+    postJson<ErrorResponse>('/api/outputs')
+      .catch(() => {})
+      .finally(() => {
+        if (strategyChanged) setStrategyLoaded(false)
+        if (soulChanged) setSoulLoaded(false)
+      })
   }, [loading, strategyBuildId, soulBuildId])
-  useEffect(() => { setFeedLoading(true); setFeedError(false); getJson<OutputsResponse>('/api/outputs').then(d => setOutputs(d.outputs || [])).catch(() => setFeedError(true)).finally(() => setFeedLoading(false)) }, [feedKey])
-  useEffect(() => { if (view === 'strategy' && !strategyLoaded) { getJson<StrategyResponse>('/api/strategy').then(d => { setStrategy(d.content || ''); setStrategyLoaded(true) }).catch(() => { setStrategyError(true); setStrategyLoaded(true) }) } }, [view, strategyLoaded])
-  useEffect(() => { if (view === 'mcp' && !mcpLoaded) { getJson<McpResponse>('/api/mcp').then(d => { setMcpServers(d.servers || {}); setMcpLoaded(true) }).catch(() => { setMcpError(true); setMcpLoaded(true) }) } }, [view, mcpLoaded])
-  useEffect(() => { if (view === 'soul' && !soulLoaded) { getJson<SoulResponse>('/api/soul').then(d => { setSoul(d.soul?.content || ''); setSoulStyle(d.style?.content || ''); setSoulLoaded(true) }).catch(() => { setSoulError(true); setSoulLoaded(true) }) } }, [view, soulLoaded])
-  useEffect(() => { if (view === 'packs' && !packsLoaded) { getJson<PacksResponse>('/api/packs').then(d => { setPacks(d); setPacksLoaded(true) }).catch(() => { setPacksError(true); setPacksLoaded(true) }) } }, [view, packsLoaded])
+  useEffect(() => {
+    setFeedLoading(true)
+    setFeedError(false)
+    getJson<OutputsResponse>('/api/outputs')
+      .then(d => setOutputs(d.outputs || []))
+      .catch(() => setFeedError(true))
+      .finally(() => setFeedLoading(false))
+  }, [feedKey])
+  useEffect(() => {
+    if (view === 'strategy' && !strategyLoaded) {
+      getJson<StrategyResponse>('/api/strategy')
+        .then(d => {
+          setStrategy(d.content || '')
+          setStrategyLoaded(true)
+        })
+        .catch(() => {
+          setStrategyError(true)
+          setStrategyLoaded(true)
+        })
+    }
+  }, [view, strategyLoaded])
+  useEffect(() => {
+    if (view === 'mcp' && !mcpLoaded) {
+      getJson<McpResponse>('/api/mcp')
+        .then(d => {
+          setMcpServers(d.servers || {})
+          setMcpLoaded(true)
+        })
+        .catch(() => {
+          setMcpError(true)
+          setMcpLoaded(true)
+        })
+    }
+  }, [view, mcpLoaded])
+  useEffect(() => {
+    if (view === 'soul' && !soulLoaded) {
+      getJson<SoulResponse>('/api/soul')
+        .then(d => {
+          setSoul(d.soul?.content || '')
+          setSoulStyle(d.style?.content || '')
+          setSoulLoaded(true)
+        })
+        .catch(() => {
+          setSoulError(true)
+          setSoulLoaded(true)
+        })
+    }
+  }, [view, soulLoaded])
+  useEffect(() => {
+    if (view === 'packs' && !packsLoaded) {
+      getJson<PacksResponse>('/api/packs')
+        .then(d => {
+          setPacks(d)
+          setPacksLoaded(true)
+        })
+        .catch(() => {
+          setPacksError(true)
+          setPacksLoaded(true)
+        })
+    }
+  }, [view, packsLoaded])
   // Reset the main content scroll to the top whenever the active view or the
   // selected skill changes, so each screen (Soul, Strategy, a skill, …) opens at the top.
-  useEffect(() => { mainScrollRef.current?.scrollTo({ top: 0 }) }, [view, selectedSkill])
+  useEffect(() => {
+    mainScrollRef.current?.scrollTo({ top: 0 })
+  }, [view, selectedSkill])
 
-  const toggleSkill = async (n: string, en: boolean) => { setBusy(b => ({ ...b, [n]: true })); try { const { ok, data } = await patchJson<SyncResult>('/api/skills', { name: n, enabled: en }); if (ok) { setSkills(s => s.map(sk => sk.name === n ? { ...sk, enabled: en } : sk)); flashSynced(`${displayName(n)} ${en ? 'enabled' : 'disabled'}`, data) } else { flash(`${displayName(n)} update failed`) } } catch { flash('Network error') } finally { setBusy(b => ({ ...b, [n]: false })) } }
-  const runSkill = async (n: string, v?: string, sm?: string) => { if (!secrets.some(s => s.isSet && authSecretsForHarness(harness).includes(s.name))) { flash(secretsReadOk ? 'No model connected yet - connect a model before running skills' : "Couldn't read repo secrets - GitHub API error or gh not authenticated. Retry, or run `gh auth login`."); return } setBusy(b => ({ ...b, [`r-${n}`]: true })); try { const { ok, data } = await postJson<ErrorResponse>(`/api/skills/${n}/run`, { var: v || '', model: sm || model }); if (ok) { flash(`${displayName(n)} started`); scheduleRunRefresh(refreshRuns) } else { flash(data.error || 'Failed') } } finally { setBusy(b => ({ ...b, [`r-${n}`]: false })) } }
-  const updateSchedule = async (n: string, s: string) => { try { const { ok, data } = await patchJson<SyncResult>('/api/skills', { name: n, schedule: s }); if (ok) { setSkills(sk => sk.map(x => x.name === n ? { ...x, schedule: s } : x)); flashSynced('Schedule updated', data) } } catch { flash('Network error') } }
-  const updateVar = async (n: string, v: string) => { try { const { ok, data } = await patchJson<SyncResult>('/api/skills', { name: n, var: v }); if (ok) { setSkills(s => s.map(x => x.name === n ? { ...x, var: v } : x)); flashSynced('Brief updated', data) } } catch { flash('Network error') } }
-  const updateSkillModel = async (n: string, m: string) => { try { const { ok, data } = await patchJson<SyncResult>('/api/skills', { name: n, skillModel: m }); if (ok) { setSkills(s => s.map(x => x.name === n ? { ...x, model: m } : x)); flashSynced('Capability updated', data) } } catch { flash('Network error') } }
-  const updateModel = async (m: string) => { setModel(m); try { const { data } = await patchJson<SyncResult>('/api/skills', { model: m }); flashSynced(`Default: ${modelsForHarness(harness).find(x => x.id === m)?.label || m}`, data) } catch { flash('Network error') } }
+  const toggleSkill = async (n: string, en: boolean) => {
+    setBusy(b => ({ ...b, [n]: true }))
+    try {
+      const { ok, data } = await patchJson<SyncResult>('/api/skills', { name: n, enabled: en })
+      if (ok) {
+        setSkills(s => s.map(sk => (sk.name === n ? { ...sk, enabled: en } : sk)))
+        flashSynced(`${displayName(n)} ${en ? 'enabled' : 'disabled'}`, data)
+      } else {
+        flash(`${displayName(n)} update failed`)
+      }
+    } catch {
+      flash('Network error')
+    } finally {
+      setBusy(b => ({ ...b, [n]: false }))
+    }
+  }
+  const runSkill = async (n: string, v?: string, sm?: string) => {
+    if (!secrets.some(s => s.isSet && authSecretsForHarness(harness).includes(s.name))) {
+      flash(
+        secretsReadOk
+          ? 'No model connected yet - connect a model before running skills'
+          : "Couldn't read repo secrets - GitHub API error or gh not authenticated. Retry, or run `gh auth login`.",
+      )
+      return
+    }
+    setBusy(b => ({ ...b, [`r-${n}`]: true }))
+    try {
+      const { ok, data } = await postJson<ErrorResponse>(`/api/skills/${n}/run`, { var: v || '', model: sm || model })
+      if (ok) {
+        flash(`${displayName(n)} started`)
+        scheduleRunRefresh(refreshRuns)
+      } else {
+        flash(data.error || 'Failed')
+      }
+    } finally {
+      setBusy(b => ({ ...b, [`r-${n}`]: false }))
+    }
+  }
+  const updateSchedule = async (n: string, s: string) => {
+    try {
+      const { ok, data } = await patchJson<SyncResult>('/api/skills', { name: n, schedule: s })
+      if (ok) {
+        setSkills(sk => sk.map(x => (x.name === n ? { ...x, schedule: s } : x)))
+        flashSynced('Schedule updated', data)
+      }
+    } catch {
+      flash('Network error')
+    }
+  }
+  const updateVar = async (n: string, v: string) => {
+    try {
+      const { ok, data } = await patchJson<SyncResult>('/api/skills', { name: n, var: v })
+      if (ok) {
+        setSkills(s => s.map(x => (x.name === n ? { ...x, var: v } : x)))
+        flashSynced('Brief updated', data)
+      }
+    } catch {
+      flash('Network error')
+    }
+  }
+  const updateSkillModel = async (n: string, m: string) => {
+    try {
+      const { ok, data } = await patchJson<SyncResult>('/api/skills', { name: n, skillModel: m })
+      if (ok) {
+        setSkills(s => s.map(x => (x.name === n ? { ...x, model: m } : x)))
+        flashSynced('Capability updated', data)
+      }
+    } catch {
+      flash('Network error')
+    }
+  }
+  const updateModel = async (m: string) => {
+    setModel(m)
+    try {
+      const { data } = await patchJson<SyncResult>('/api/skills', { model: m })
+      flashSynced(`Default: ${modelsForHarness(harness).find(x => x.id === m)?.label || m}`, data)
+    } catch {
+      flash('Network error')
+    }
+  }
   // Switch the agent harness. If the current model doesn't belong to the new
   // harness's model set, snap it to that harness's default so the picker + runs
   // stay coherent (persisted in the same PATCH round-trip).
-  const updateHarness = async (h: string) => { const hh: Harness = HARNESSES.find(x => x.id === h)?.id ?? 'claude'; setHarness(hh); const list = modelsForHarness(hh); const nextModel = list.some(x => x.id === model) ? undefined : list[0]?.id; if (nextModel) setModel(nextModel); try { const { data } = await patchJson<SyncResult>('/api/skills', { harness: hh, ...(nextModel ? { model: nextModel } : {}) }); flashSynced(`Harness: ${HARNESSES.find(x => x.id === hh)?.label || hh}`, data) } catch { flash('Network error') } }
-  const deleteSkill = async (n: string) => { setBusy(b => ({ ...b, [`d-${n}`]: true })); try { const { ok, data } = await del<SyncResult>('/api/skills', { name: n }); if (ok) { setSkills(s => s.filter(x => x.name !== n)); setSelectedSkill(null); flashSynced(`${displayName(n)} removed`, data) } else { flash(`${displayName(n)} removal failed`) } } catch { flash('Network error') } finally { setBusy(b => ({ ...b, [`d-${n}`]: false })) } }
-  const syncToGithub = async () => { setSyncing(true); try { const { ok } = await postJson('/api/sync'); if (ok) { flash('Synced'); setHasChanges(false) } else { flash('Sync failed') } } catch { flash('Network error') } finally { setSyncing(false) } }
+  const updateHarness = async (h: string) => {
+    const hh: Harness = HARNESSES.find(x => x.id === h)?.id ?? 'claude'
+    setHarness(hh)
+    const list = modelsForHarness(hh)
+    const nextModel = list.some(x => x.id === model) ? undefined : list[0]?.id
+    if (nextModel) setModel(nextModel)
+    try {
+      const { data } = await patchJson<SyncResult>('/api/skills', {
+        harness: hh,
+        ...(nextModel ? { model: nextModel } : {}),
+      })
+      flashSynced(`Harness: ${HARNESSES.find(x => x.id === hh)?.label || hh}`, data)
+    } catch {
+      flash('Network error')
+    }
+  }
+  const deleteSkill = async (n: string) => {
+    setBusy(b => ({ ...b, [`d-${n}`]: true }))
+    try {
+      const { ok, data } = await del<SyncResult>('/api/skills', { name: n })
+      if (ok) {
+        setSkills(s => s.filter(x => x.name !== n))
+        setSelectedSkill(null)
+        flashSynced(`${displayName(n)} removed`, data)
+      } else {
+        flash(`${displayName(n)} removal failed`)
+      }
+    } catch {
+      flash('Network error')
+    } finally {
+      setBusy(b => ({ ...b, [`d-${n}`]: false }))
+    }
+  }
+  const syncToGithub = async () => {
+    setSyncing(true)
+    try {
+      const { ok } = await postJson('/api/sync')
+      if (ok) {
+        flash('Synced')
+        setHasChanges(false)
+      } else {
+        flash('Sync failed')
+      }
+    } catch {
+      flash('Network error')
+    } finally {
+      setSyncing(false)
+    }
+  }
   // Pull rebases origin/main onto the working tree, so the whole dashboard can be
   // stale afterward. Refetch core data + the feed, and drop cached panel state so
   // strategy/soul/mcp/analytics reload from the freshly-pulled files.
-  const pullFromGithub = async () => { setPulling(true); try { const { ok, data } = await postJson<ErrorResponse>('/api/outputs'); if (ok) { flash('Pulled - refreshing'); setAnalyticsData(null); setStrategyLoaded(false); setMcpLoaded(false); setSoulLoaded(false); setFeedKey(k => k + 1); await fetchData() } else { flash(data.error || 'Pull failed') } } finally { setPulling(false) } }
+  const pullFromGithub = async () => {
+    setPulling(true)
+    try {
+      const { ok, data } = await postJson<ErrorResponse>('/api/outputs')
+      if (ok) {
+        flash('Pulled - refreshing')
+        setAnalyticsData(null)
+        setStrategyLoaded(false)
+        setMcpLoaded(false)
+        setSoulLoaded(false)
+        setFeedKey(k => k + 1)
+        await fetchData()
+      } else {
+        flash(data.error || 'Pull failed')
+      }
+    } finally {
+      setPulling(false)
+    }
+  }
   // A credential saved from the Connect modal (paste, OpenRouter, Do it for me,
   // Found on this machine). A login capture also switched aeon.yml's harness.
   // No test run follows: the next skill run uses it.
   const onCredentialSaved = (c: SavedCredential) => {
     if (c.secret) markSecretSet(c.secret, 'Core')
-    if (c.harness) { setHarness(c.harness); flashSynced(`${c.secret} saved - harness set to ${HARNESSES.find(x => x.id === c.harness)?.label || c.harness}`, c) } else flash(`${c.secret || 'Credential'} saved`)
+    if (c.harness) {
+      setHarness(c.harness)
+      flashSynced(
+        `${c.secret} saved - harness set to ${HARNESSES.find(x => x.id === c.harness)?.label || c.harness}`,
+        c,
+      )
+    } else flash(`${c.secret || 'Credential'} saved`)
     fetchData()
   }
   // A failed run's "Connect": the harness it ran on, else the selected one.
   const connectHarness = (h?: string) => setConnectFor({ harness: HARNESSES.find(x => x.id === h)?.id ?? harness })
-  const setupGithubAuth = async () => { setGithubLoading(true); try { const { ok, data } = await postJson<ErrorResponse>('/api/github-auth', {}); if (ok) { markSecretSet('GH_GLOBAL'); flash('GH_GLOBAL saved from gh') } else { flash(typeof data?.error === 'string' ? data.error : 'GitHub connect failed') } } finally { setGithubLoading(false) } }
-  const saveSecret = async (n: string, value: string) => { setBusy(b => ({ ...b, [`sec-${n}`]: true })); try { const { ok } = await postJson('/api/secrets', { name: n, value }); if (ok) { markSecretSet(n); flash(`${n} saved`) } } finally { setBusy(b => ({ ...b, [`sec-${n}`]: false })) } }
-  const deleteSecret = async (n: string) => { setBusy(b => ({ ...b, [`sec-${n}`]: true })); try { const { ok } = await del('/api/secrets', { name: n }); if (ok) { setSecrets(s => s.map(x => x.name === n ? { ...x, isSet: false } : x)); flash(`${n} removed`) } } finally { setBusy(b => ({ ...b, [`sec-${n}`]: false })) } }
-  const importSkill = async (files: UploadFile[], name?: string, category?: string) => { const { ok, data } = await postJson<UploadResponse>('/api/upload', { files, name, category }); if (ok) { flash(`${displayName(data.name)} added`); fetchData() } }
+  const setupGithubAuth = async () => {
+    setGithubLoading(true)
+    try {
+      const { ok, data } = await postJson<ErrorResponse>('/api/github-auth', {})
+      if (ok) {
+        markSecretSet('GH_GLOBAL')
+        flash('GH_GLOBAL saved from gh')
+      } else {
+        flash(typeof data?.error === 'string' ? data.error : 'GitHub connect failed')
+      }
+    } finally {
+      setGithubLoading(false)
+    }
+  }
+  const saveSecret = async (n: string, value: string) => {
+    setBusy(b => ({ ...b, [`sec-${n}`]: true }))
+    try {
+      const { ok } = await postJson('/api/secrets', { name: n, value })
+      if (ok) {
+        markSecretSet(n)
+        flash(`${n} saved`)
+      }
+    } finally {
+      setBusy(b => ({ ...b, [`sec-${n}`]: false }))
+    }
+  }
+  const deleteSecret = async (n: string) => {
+    setBusy(b => ({ ...b, [`sec-${n}`]: true }))
+    try {
+      const { ok } = await del('/api/secrets', { name: n })
+      if (ok) {
+        setSecrets(s => s.map(x => (x.name === n ? { ...x, isSet: false } : x)))
+        flash(`${n} removed`)
+      }
+    } finally {
+      setBusy(b => ({ ...b, [`sec-${n}`]: false }))
+    }
+  }
+  const importSkill = async (files: UploadFile[], name?: string, category?: string) => {
+    const { ok, data } = await postJson<UploadResponse>('/api/upload', { files, name, category })
+    if (ok) {
+      flash(`${displayName(data.name)} added`)
+      fetchData()
+    }
+  }
   // Enable/disable a pack's *visibility* (not its skills). Core is always on.
   // Toggling reveals or hides the pack's skills across the sidebar + HQ; it's a
   // view preference, persisted to localStorage, with zero effect on what runs.
@@ -219,25 +552,130 @@ export default function Dashboard() {
     setEnabledPacks(prev => {
       const has = prev.includes(key)
       const next = has ? prev.filter(k => k !== key) : [...prev, key]
-      try { if (repo) localStorage.setItem(`aeon.enabledPacks:${repo}`, JSON.stringify(next.filter(k => !DEFAULT_VISIBLE_PACKS.has(k)))) } catch {}
+      try {
+        if (repo)
+          localStorage.setItem(
+            `aeon.enabledPacks:${repo}`,
+            JSON.stringify(next.filter(k => !DEFAULT_VISIBLE_PACKS.has(k))),
+          )
+      } catch {}
       flash(`${PACK_BY_KEY[key]?.label || key} ${has ? 'hidden' : 'revealed'}`)
       return next
     })
   }
-  const saveStrategy = async (content: string) => { setStrategySaving(true); try { const { ok, data } = await putJson<SyncResult>('/api/strategy', { content }); if (ok) { setStrategy(content); flashSynced('Strategy saved', data) } else { flash('Save failed') } } finally { setStrategySaving(false) } }
-  const buildStrategy = async (sources: StrategySources) => { setStrategyBuilding(true); try { const { ok, data } = await postJson<ErrorResponse>('/api/strategy/build', { ...sources, model }); if (ok) { flash('Strategy-builder started'); scheduleRunRefresh(refreshRuns) } else { flash(data.error || 'Build failed to dispatch') } } finally { setStrategyBuilding(false) } }
-  const saveMcp = async (servers: McpServers) => { setMcpSaving(true); try { const { ok, data } = await putJson<SyncResult & { allowlist?: { added: string[]; synced: boolean } }>('/api/mcp', { servers }); if (ok) { setMcpServers(servers); const added = data?.allowlist?.added ?? []; const base = added.length ? `MCP servers saved · allowlisted ${added.join(', ')} for runs` : 'MCP servers saved'; flashSynced(base, { synced: data?.synced !== false && data?.allowlist?.synced !== false }) } else { flash('Save failed') } } finally { setMcpSaving(false) } }
-  const saveSoul = async (file: SoulFile, content: string) => { setSoulSaving(true); try { const { ok, data } = await putJson<SyncResult>('/api/soul', { file, content }); if (ok) { if (file === 'soul') setSoul(content); else setSoulStyle(content); flashSynced(`${file === 'soul' ? 'SOUL.md' : 'STYLE.md'} saved`, data) } else { flash('Save failed') } } finally { setSoulSaving(false) } }
-  const buildSoul = async (sources: SoulSources) => { setSoulBuilding(true); try { const { ok, data } = await postJson<ErrorResponse>('/api/soul/build', { ...sources, model }); if (ok) { const label = sources.handle ? `@${sources.handle}` : sources.name || 'your links'; flash(`Soul-builder started for ${label}`); scheduleRunRefresh(refreshRuns) } else { flash(data.error || 'Build failed to dispatch') } } finally { setSoulBuilding(false) } }
-  const installSoulExample = async (key: string) => { setSoulInstalling(key); try { const { ok, data } = await postJson<SoulExampleResponse>('/api/soul/examples', { example: key }); if (ok) { setSoul(data.soul || ''); setSoulStyle(data.style || ''); setSoulLoaded(true); flashSynced(`Installed ${key} soul`, data) } else { flash(data.error || 'Install failed') } } finally { setSoulInstalling(null) } }
+  const saveStrategy = async (content: string) => {
+    setStrategySaving(true)
+    try {
+      const { ok, data } = await putJson<SyncResult>('/api/strategy', { content })
+      if (ok) {
+        setStrategy(content)
+        flashSynced('Strategy saved', data)
+      } else {
+        flash('Save failed')
+      }
+    } finally {
+      setStrategySaving(false)
+    }
+  }
+  const buildStrategy = async (sources: StrategySources) => {
+    setStrategyBuilding(true)
+    try {
+      const { ok, data } = await postJson<ErrorResponse>('/api/strategy/build', { ...sources, model })
+      if (ok) {
+        flash('Strategy-builder started')
+        scheduleRunRefresh(refreshRuns)
+      } else {
+        flash(data.error || 'Build failed to dispatch')
+      }
+    } finally {
+      setStrategyBuilding(false)
+    }
+  }
+  const saveMcp = async (servers: McpServers) => {
+    setMcpSaving(true)
+    try {
+      const { ok, data } = await putJson<SyncResult & { allowlist?: { added: string[]; synced: boolean } }>(
+        '/api/mcp',
+        { servers },
+      )
+      if (ok) {
+        setMcpServers(servers)
+        const added = data?.allowlist?.added ?? []
+        const base = added.length ? `MCP servers saved · allowlisted ${added.join(', ')} for runs` : 'MCP servers saved'
+        flashSynced(base, { synced: data?.synced !== false && data?.allowlist?.synced !== false })
+      } else {
+        flash('Save failed')
+      }
+    } finally {
+      setMcpSaving(false)
+    }
+  }
+  const saveSoul = async (file: SoulFile, content: string) => {
+    setSoulSaving(true)
+    try {
+      const { ok, data } = await putJson<SyncResult>('/api/soul', { file, content })
+      if (ok) {
+        if (file === 'soul') setSoul(content)
+        else setSoulStyle(content)
+        flashSynced(`${file === 'soul' ? 'SOUL.md' : 'STYLE.md'} saved`, data)
+      } else {
+        flash('Save failed')
+      }
+    } finally {
+      setSoulSaving(false)
+    }
+  }
+  const buildSoul = async (sources: SoulSources) => {
+    setSoulBuilding(true)
+    try {
+      const { ok, data } = await postJson<ErrorResponse>('/api/soul/build', { ...sources, model })
+      if (ok) {
+        const label = sources.handle ? `@${sources.handle}` : sources.name || 'your links'
+        flash(`Soul-builder started for ${label}`)
+        scheduleRunRefresh(refreshRuns)
+      } else {
+        flash(data.error || 'Build failed to dispatch')
+      }
+    } finally {
+      setSoulBuilding(false)
+    }
+  }
+  const installSoulExample = async (key: string) => {
+    setSoulInstalling(key)
+    try {
+      const { ok, data } = await postJson<SoulExampleResponse>('/api/soul/examples', { example: key })
+      if (ok) {
+        setSoul(data.soul || '')
+        setSoulStyle(data.style || '')
+        setSoulLoaded(true)
+        flashSynced(`Installed ${key} soul`, data)
+      } else {
+        flash(data.error || 'Install failed')
+      }
+    } finally {
+      setSoulInstalling(null)
+    }
+  }
 
   // Setup checklist input that needs its own read: whether Actions is on.
-  useEffect(() => { if (!loading) getJson<{ actionsEnabled: boolean | null }>('/api/onboarding').then(d => setActionsEnabled(d.actionsEnabled)).catch(() => {}) }, [loading])
+  useEffect(() => {
+    if (!loading)
+      getJson<{ actionsEnabled: boolean | null }>('/api/onboarding')
+        .then(d => setActionsEnabled(d.actionsEnabled))
+        .catch(() => {})
+  }, [loading])
 
   // Jump from a skill's API-keys panel straight to Keys → Access Keys,
   // scrolled to the chosen key with its input open and ready to paste.
-  const goToSecret = (name: string) => { setSelectedSkill(null); setView('secrets'); setSecretFocus(name) }
-  const goToMcp = () => { setSelectedSkill(null); setView('mcp') }
+  const goToSecret = (name: string) => {
+    setSelectedSkill(null)
+    setView('secrets')
+    setSecretFocus(name)
+  }
+  const goToMcp = () => {
+    setSelectedSkill(null)
+    setView('mcp')
+  }
 
   // --- Derived ---
   const skill = selectedSkill ? skills.find(s => s.name === selectedSkill) || null : null
@@ -248,10 +686,13 @@ export default function Dashboard() {
   const hasModelKey = secrets.some(s => s.isSet && authSecretsForHarness(harness).includes(s.name))
   const isSet = (n: string) => secrets.some(s => s.isSet && s.name === n)
   // Any one notify channel fully configured (see ./notify's opt-in secrets).
-  const notificationsSet = (isSet('TELEGRAM_BOT_TOKEN') && isSet('TELEGRAM_CHAT_ID'))
-    || isSet('DISCORD_WEBHOOK_URL') || (isSet('DISCORD_BOT_TOKEN') && isSet('DISCORD_CHANNEL_ID'))
-    || isSet('SLACK_WEBHOOK_URL') || (isSet('SLACK_BOT_TOKEN') && isSet('SLACK_CHANNEL_ID'))
-    || (isSet('RESEND_API_KEY') && isSet('NOTIFY_EMAIL_TO'))
+  const notificationsSet =
+    (isSet('TELEGRAM_BOT_TOKEN') && isSet('TELEGRAM_CHAT_ID')) ||
+    isSet('DISCORD_WEBHOOK_URL') ||
+    (isSet('DISCORD_BOT_TOKEN') && isSet('DISCORD_CHANNEL_ID')) ||
+    isSet('SLACK_WEBHOOK_URL') ||
+    (isSet('SLACK_BOT_TOKEN') && isSet('SLACK_CHANNEL_ID')) ||
+    (isSet('RESEND_API_KEY') && isSet('NOTIFY_EMAIL_TO'))
   const firstRunDone = runs.some(r => r.conclusion === 'success' && r.workflow.startsWith('skill: '))
   // Skills visible across the dashboard = first-party skills whose pack is
   // enabled (Core always on), PLUS every community skill — anything in a pack
@@ -275,25 +716,58 @@ export default function Dashboard() {
   return (
     <div className="h-screen flex bg-aeon-bg text-aeon-fg">
       <TargetCursor />
-      {toast && <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 bg-aeon-fg text-aeon-bg px-5 py-2.5 text-xs font-mono uppercase tracking-[0.18em] shadow-xl">{toast}</div>}
+      {toast && (
+        <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 bg-aeon-fg text-aeon-bg px-5 py-2.5 text-xs font-mono uppercase tracking-[0.18em] shadow-xl">
+          {toast}
+        </div>
+      )}
 
       {/* Below the modals (z-40) and the toast (z-50). */}
       {narrow && (navOpen || activityOpen) && (
-        <div className="fixed inset-0 z-30 bg-black/60" aria-hidden onClick={() => { setNavOpen(false); setActivityOpen(false) }} />
+        <div
+          className="fixed inset-0 z-30 bg-black/60"
+          aria-hidden
+          onClick={() => {
+            setNavOpen(false)
+            setActivityOpen(false)
+          }}
+        />
       )}
 
       <div
         inert={narrow && !navOpen}
-        className={narrow ? `fixed inset-y-0 left-0 z-[35] flex max-w-[88vw] transition-transform duration-300 ${navOpen ? 'translate-x-0' : '-translate-x-full'}` : 'flex'}
+        className={
+          narrow
+            ? `fixed inset-y-0 left-0 z-[35] flex max-w-[88vw] transition-transform duration-300 ${navOpen ? 'translate-x-0' : '-translate-x-full'}`
+            : 'flex'
+        }
       >
         <LeftSidebar
-          view={view} setView={(v) => { setView(v); setSelectedSkill(null); setNavOpen(false) }}
+          view={view}
+          setView={v => {
+            setView(v)
+            setSelectedSkill(null)
+            setNavOpen(false)
+          }}
           selectedSkill={selectedSkill}
-          skills={visibleSkills} runs={runs} secrets={secrets} repo={repo} harness={harness}
-          enabledCount={enabledCount} workingCount={workingCount}
-          categoryFilter={categoryFilter} setCategoryFilter={setCategoryFilter}
-          onSkillSelect={(name) => { setSelectedSkill(name); setView('hq'); setNavOpen(false) }}
-          onShowImport={() => { setShowImport(true); setNavOpen(false) }}
+          skills={visibleSkills}
+          runs={runs}
+          secrets={secrets}
+          repo={repo}
+          harness={harness}
+          enabledCount={enabledCount}
+          workingCount={workingCount}
+          categoryFilter={categoryFilter}
+          setCategoryFilter={setCategoryFilter}
+          onSkillSelect={name => {
+            setSelectedSkill(name)
+            setView('hq')
+            setNavOpen(false)
+          }}
+          onShowImport={() => {
+            setShowImport(true)
+            setNavOpen(false)
+          }}
           sync={{ pulling, syncing, hasChanges, behind, onPull: pullFromGithub, onPush: syncToGithub }}
         />
       </div>
@@ -305,66 +779,220 @@ export default function Dashboard() {
           onOpenActivity={() => setActivityOpen(true)}
         />
         <TopBar
-          skill={skill} view={view} repo={repo} model={model} harness={harness} gateway={gateway}
+          skill={skill}
+          view={view}
+          repo={repo}
+          model={model}
+          harness={harness}
+          gateway={gateway}
           hasModelKey={hasModelKey}
-          pulling={pulling} syncing={syncing} hasChanges={hasChanges} behind={behind}
-          onSetupAuth={() => setConnectFor({ harness })} onUpdateModel={updateModel} onUpdateHarness={updateHarness}
-          onPull={pullFromGithub} onSync={syncToGithub}
+          pulling={pulling}
+          syncing={syncing}
+          hasChanges={hasChanges}
+          behind={behind}
+          onSetupAuth={() => setConnectFor({ harness })}
+          onUpdateModel={updateModel}
+          onUpdateHarness={updateHarness}
+          onPull={pullFromGithub}
+          onSync={syncToGithub}
         />
 
         <div ref={mainScrollRef} className="flex-1 overflow-y-auto p-[var(--space-lg)]">
           {view === 'secrets' && !selectedSkill && (
-            <SecretsPanel secrets={secrets} skills={skills} busy={busy} repo={repo} harness={harness} focusKey={secretFocus} onFocusHandled={() => setSecretFocus(null)} onSave={saveSecret} onDelete={deleteSecret} onSelectSkill={(name) => { setSelectedSkill(name); setView('hq') }} onConnect={(h) => setConnectFor({ harness: HARNESSES.find(x => x.id === h)?.id ?? 'claude' })} onMarkSet={(n) => markSecretSet(n, 'Telegram')} onConnectGithub={() => setupGithubAuth()} githubConnecting={githubLoading} />
+            <SecretsPanel
+              secrets={secrets}
+              skills={skills}
+              busy={busy}
+              repo={repo}
+              harness={harness}
+              focusKey={secretFocus}
+              onFocusHandled={() => setSecretFocus(null)}
+              onSave={saveSecret}
+              onDelete={deleteSecret}
+              onSelectSkill={name => {
+                setSelectedSkill(name)
+                setView('hq')
+              }}
+              onConnect={h => setConnectFor({ harness: HARNESSES.find(x => x.id === h)?.id ?? 'claude' })}
+              onMarkSet={n => markSecretSet(n, 'Telegram')}
+              onConnectGithub={() => setupGithubAuth()}
+              githubConnecting={githubLoading}
+            />
           )}
-          {view === 'strategy' && !selectedSkill && (
-            strategyError
-              ? <PanelError label="strategy" onRetry={() => { setStrategyError(false); setStrategyLoaded(false) }} />
-              : <StrategyPanel content={strategy} loading={!strategyLoaded} saving={strategySaving} building={strategyBuilding} onSave={saveStrategy} onBuild={buildStrategy} />
-          )}
-          {view === 'mcp' && !selectedSkill && (
-            mcpError
-              ? <PanelError label="MCP servers" onRetry={() => { setMcpError(false); setMcpLoaded(false) }} />
-              : <McpPanel servers={mcpServers} loading={!mcpLoaded} saving={mcpSaving} secrets={secrets} busy={busy} onSave={saveMcp} onSetSecret={saveSecret} onDeleteSecret={deleteSecret} onGoToSecret={goToSecret} />
-          )}
-          {view === 'soul' && !selectedSkill && (
-            soulError
-              ? <PanelError label="soul" onRetry={() => { setSoulError(false); setSoulLoaded(false) }} />
-              : <SoulPanel soul={soul} style={soulStyle} loading={!soulLoaded} saving={soulSaving} building={soulBuilding} installing={soulInstalling} onSave={saveSoul} onBuild={buildSoul} onInstallExample={installSoulExample} />
-          )}
+          {view === 'strategy' &&
+            !selectedSkill &&
+            (strategyError ? (
+              <PanelError
+                label="strategy"
+                onRetry={() => {
+                  setStrategyError(false)
+                  setStrategyLoaded(false)
+                }}
+              />
+            ) : (
+              <StrategyPanel
+                content={strategy}
+                loading={!strategyLoaded}
+                saving={strategySaving}
+                building={strategyBuilding}
+                onSave={saveStrategy}
+                onBuild={buildStrategy}
+              />
+            ))}
+          {view === 'mcp' &&
+            !selectedSkill &&
+            (mcpError ? (
+              <PanelError
+                label="MCP servers"
+                onRetry={() => {
+                  setMcpError(false)
+                  setMcpLoaded(false)
+                }}
+              />
+            ) : (
+              <McpPanel
+                servers={mcpServers}
+                loading={!mcpLoaded}
+                saving={mcpSaving}
+                secrets={secrets}
+                busy={busy}
+                onSave={saveMcp}
+                onSetSecret={saveSecret}
+                onDeleteSecret={deleteSecret}
+                onGoToSecret={goToSecret}
+              />
+            ))}
+          {view === 'soul' &&
+            !selectedSkill &&
+            (soulError ? (
+              <PanelError
+                label="soul"
+                onRetry={() => {
+                  setSoulError(false)
+                  setSoulLoaded(false)
+                }}
+              />
+            ) : (
+              <SoulPanel
+                soul={soul}
+                style={soulStyle}
+                loading={!soulLoaded}
+                saving={soulSaving}
+                building={soulBuilding}
+                installing={soulInstalling}
+                onSave={saveSoul}
+                onBuild={buildSoul}
+                onInstallExample={installSoulExample}
+              />
+            ))}
           {view === 'hq' && !selectedSkill && (
-            <HQOverview skills={visibleSkills} runs={runs} enabledCount={enabledCount} workingCount={workingCount} categoryFilter={categoryFilter} onCategoryClick={(key) => setCategoryFilter(categoryFilter === key ? null : key)} onOpenPacks={() => setView('packs')} onConnect={connectHarness}
+            <HQOverview
+              skills={visibleSkills}
+              runs={runs}
+              enabledCount={enabledCount}
+              workingCount={workingCount}
+              categoryFilter={categoryFilter}
+              onCategoryClick={key => setCategoryFilter(categoryFilter === key ? null : key)}
+              onOpenPacks={() => setView('packs')}
+              onConnect={connectHarness}
               checklist={
                 <OnboardingChecklist
-                  repo={repo} actionsEnabled={actionsEnabled} harness={harness} hasModelKey={hasModelKey}
-                  skillsPicked={skillsPicked} notificationsSet={notificationsSet} firstRunDone={firstRunDone}
+                  repo={repo}
+                  actionsEnabled={actionsEnabled}
+                  harness={harness}
+                  hasModelKey={hasModelKey}
+                  skillsPicked={skillsPicked}
+                  notificationsSet={notificationsSet}
+                  firstRunDone={firstRunDone}
                   onConnect={() => setConnectFor({ harness })}
-                  onPickSkills={() => { setSelectedSkill(null); setView('packs') }}
-                  onNotifications={(c) => goToSecret(NOTIFY_FIRST_SECRET[c](isSet))}
-                  onFirstRun={() => { const first = visibleSkills.find(s => s.enabled); if (first) { setSelectedSkill(first.name); setView('hq') } else setView('packs') }}
+                  onPickSkills={() => {
+                    setSelectedSkill(null)
+                    setView('packs')
+                  }}
+                  onNotifications={c => goToSecret(NOTIFY_FIRST_SECRET[c](isSet))}
+                  onFirstRun={() => {
+                    const first = visibleSkills.find(s => s.enabled)
+                    if (first) {
+                      setSelectedSkill(first.name)
+                      setView('hq')
+                    } else setView('packs')
+                  }}
                 />
-              } />
+              }
+            />
           )}
-          {view === 'packs' && !selectedSkill && (
-            packsError
-              ? <PanelError label="packs" onRetry={() => { setPacksError(false); setPacksLoaded(false) }} />
-              : <PacksPanel firstParty={packs?.firstParty ?? []} community={packs?.community ?? []} skills={skills} enabledPacks={enabledPacks} loading={!packsLoaded} busy={busy} onTogglePack={togglePack} onToggleSkill={toggleSkill} onSelectSkill={(name) => { setSelectedSkill(name); setView('hq') }} onInstallPack={(arg) => runSkill('install-skill', arg)} />
-          )}
+          {view === 'packs' &&
+            !selectedSkill &&
+            (packsError ? (
+              <PanelError
+                label="packs"
+                onRetry={() => {
+                  setPacksError(false)
+                  setPacksLoaded(false)
+                }}
+              />
+            ) : (
+              <PacksPanel
+                firstParty={packs?.firstParty ?? []}
+                community={packs?.community ?? []}
+                skills={skills}
+                enabledPacks={enabledPacks}
+                loading={!packsLoaded}
+                busy={busy}
+                onTogglePack={togglePack}
+                onToggleSkill={toggleSkill}
+                onSelectSkill={name => {
+                  setSelectedSkill(name)
+                  setView('hq')
+                }}
+                onInstallPack={arg => runSkill('install-skill', arg)}
+              />
+            ))}
           {skill && (
             <SkillDetail
-              skill={skill} runs={runs} model={model} harness={harness} secrets={secrets} mcpServers={mcpServers} busy={busy}
-              onToggle={toggleSkill} onRun={runSkill} onDelete={deleteSkill}
-              onUpdateSchedule={updateSchedule} onUpdateVar={updateVar} onUpdateModel={updateSkillModel}
-              onGoToSecret={goToSecret} onGoToMcp={goToMcp}
+              skill={skill}
+              runs={runs}
+              model={model}
+              harness={harness}
+              secrets={secrets}
+              mcpServers={mcpServers}
+              busy={busy}
+              onToggle={toggleSkill}
+              onRun={runSkill}
+              onDelete={deleteSkill}
+              onUpdateSchedule={updateSchedule}
+              onUpdateVar={updateVar}
+              onUpdateModel={updateSkillModel}
+              onGoToSecret={goToSecret}
+              onGoToMcp={goToMcp}
             />
           )}
         </div>
       </div>
 
       <RightPanel
-        runs={runs} outputs={outputs} feedLoading={feedLoading} feedError={feedError} analyticsData={analyticsData} analyticsError={analyticsError}
-        drawerOpen={activityOpen} onCloseDrawer={() => setActivityOpen(false)}
-        onRefresh={() => { fetchData(); setFeedKey(k => k + 1); setAnalyticsData(null); setAnalyticsError(false) }}
-        onFetchAnalytics={() => { if (!analyticsData) { setAnalyticsError(false); getJson<AnalyticsData>('/api/analytics').then(d => setAnalyticsData(d)).catch(() => setAnalyticsError(true)) } }}
+        runs={runs}
+        outputs={outputs}
+        feedLoading={feedLoading}
+        feedError={feedError}
+        analyticsData={analyticsData}
+        analyticsError={analyticsError}
+        drawerOpen={activityOpen}
+        onCloseDrawer={() => setActivityOpen(false)}
+        onRefresh={() => {
+          fetchData()
+          setFeedKey(k => k + 1)
+          setAnalyticsData(null)
+          setAnalyticsError(false)
+        }}
+        onFetchAnalytics={() => {
+          if (!analyticsData) {
+            setAnalyticsError(false)
+            getJson<AnalyticsData>('/api/analytics')
+              .then(d => setAnalyticsData(d))
+              .catch(() => setAnalyticsError(true))
+          }
+        }}
         onConnect={connectHarness}
       />
 
@@ -376,7 +1004,10 @@ export default function Dashboard() {
           patSet={isSet('GH_SECRETS_PAT') || isSet('GH_GLOBAL')}
           onClose={() => setConnectFor(null)}
           onSaved={onCredentialSaved}
-          onGoToSecret={(n) => { setConnectFor(null); goToSecret(n) }}
+          onGoToSecret={n => {
+            setConnectFor(null)
+            goToSecret(n)
+          }}
         />
       )}
     </div>

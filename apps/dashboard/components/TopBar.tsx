@@ -33,8 +33,25 @@ export function viewTitle(skill: Skill | null, view: DashboardView, repo: string
   return `${repo ? repo.split('/').pop() : 'Aeon'} HQ`
 }
 
-export function TopBar({ skill, view, repo, model, harness, gateway, hasModelKey, pulling, syncing, hasChanges, behind, onSetupAuth, onUpdateModel, onUpdateHarness, onPull, onSync }: TopBarProps) {
-  const dept = skill ? (PACK_BY_KEY[skill.pack || 'lab'] || null) : null
+export function TopBar({
+  skill,
+  view,
+  repo,
+  model,
+  harness,
+  gateway,
+  hasModelKey,
+  pulling,
+  syncing,
+  hasChanges,
+  behind,
+  onSetupAuth,
+  onUpdateModel,
+  onUpdateHarness,
+  onPull,
+  onSync,
+}: TopBarProps) {
+  const dept = skill ? PACK_BY_KEY[skill.pack || 'lab'] || null : null
   const modelOptions = pickerOptions(modelsForHarness(harness), model)
 
   return (
@@ -56,37 +73,49 @@ export function TopBar({ skill, view, repo, model, harness, gateway, hasModelKey
       </div>
       <div className="flex items-center gap-2 shrink-0">
         {harness === 'claude' && gateway !== 'direct' && gateway !== 'auto' && (
-          <span className="text-[10px] font-mono px-2 py-0.5 bg-aeon-red/10 text-aeon-red uppercase tracking-[0.18em] border border-aeon-red/30">{gateway}</span>
+          <span className="text-[10px] font-mono px-2 py-0.5 bg-aeon-red/10 text-aeon-red uppercase tracking-[0.18em] border border-aeon-red/30">
+            {gateway}
+          </span>
         )}
         {!hasModelKey && (
-          <button onClick={onSetupAuth} title="Connect a model so skills can run" className="btn-solid-sm whitespace-nowrap">
+          <button
+            onClick={onSetupAuth}
+            title="Connect a model so skills can run"
+            className="btn-solid-sm whitespace-nowrap"
+          >
             Connect a model
           </button>
         )}
         <select
           value={harness}
-          onChange={(e) => onUpdateHarness(e.target.value)}
+          onChange={e => onUpdateHarness(e.target.value)}
           title="Agent harness"
           className="bg-aeon-panel text-primary-70 text-[10px] md:text-[11px] font-mono uppercase tracking-[0.04em] md:tracking-[0.14em] px-2 md:px-3 h-[30px] md:h-[32px] border border-[rgba(250,250,250,0.10)] outline-none cursor-pointer hover:border-[rgba(250,250,250,0.22)] transition-colors"
         >
-          {HARNESSES.map((h) => (
-            <option key={h.id} value={h.id} className="bg-aeon-panel text-aeon-fg">{h.label}</option>
+          {HARNESSES.map(h => (
+            <option key={h.id} value={h.id} className="bg-aeon-panel text-aeon-fg">
+              {h.label}
+            </option>
           ))}
         </select>
         <select
           value={model}
-          onChange={(e) => onUpdateModel(e.target.value)}
+          onChange={e => onUpdateModel(e.target.value)}
           className="bg-aeon-panel text-primary-70 text-[10px] md:text-[11px] font-mono uppercase tracking-[0.04em] md:tracking-[0.14em] px-2 md:px-3 h-[30px] md:h-[32px] border border-[rgba(250,250,250,0.10)] outline-none cursor-pointer hover:border-[rgba(250,250,250,0.22)] transition-colors"
         >
-          {modelOptions.map((m) => (
-            <option key={m.id} value={m.id} className="bg-aeon-panel text-aeon-fg">{m.label}</option>
+          {modelOptions.map(m => (
+            <option key={m.id} value={m.id} className="bg-aeon-panel text-aeon-fg">
+              {m.label}
+            </option>
           ))}
         </select>
         {/* Desktop only: on phones the row keeps just the harness and model,
             and Pull / Push move into the sidebar drawer. */}
         <div className="hidden md:contents">
           <button onClick={onPull} disabled={pulling} className="btn-quiet disabled:opacity-50">
-            {behind > 0 && <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-aeon-red animate-pulse" />}
+            {behind > 0 && (
+              <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-aeon-red animate-pulse" />
+            )}
             {pulling ? '…' : 'Pull'}
           </button>
           <button onClick={onSync} disabled={syncing || !hasChanges} className="btn-quiet disabled:opacity-40">
@@ -104,7 +133,7 @@ export function TopBar({ skill, view, repo, model, harness, gateway, hasModelKey
             className="btn-quiet flex items-center justify-center"
           >
             <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4" aria-hidden="true">
-              <path d="M12 .5C5.37.5 0 5.78 0 12.29c0 5.2 3.44 9.61 8.21 11.17.6.11.82-.26.82-.58 0-.29-.01-1.04-.02-2.05-3.34.72-4.04-1.6-4.04-1.6-.55-1.38-1.34-1.75-1.34-1.75-1.09-.74.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.11-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 016.01 0c2.29-1.55 3.29-1.23 3.29-1.23.66 1.66.25 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.81 1.1.81 2.22 0 1.6-.01 2.89-.01 3.28 0 .32.22.69.83.57C20.57 21.9 24 17.49 24 12.29 24 5.78 18.63.5 12 .5z"/>
+              <path d="M12 .5C5.37.5 0 5.78 0 12.29c0 5.2 3.44 9.61 8.21 11.17.6.11.82-.26.82-.58 0-.29-.01-1.04-.02-2.05-3.34.72-4.04-1.6-4.04-1.6-.55-1.38-1.34-1.75-1.34-1.75-1.09-.74.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.11-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 016.01 0c2.29-1.55 3.29-1.23 3.29-1.23.66 1.66.25 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.81 1.1.81 2.22 0 1.6-.01 2.89-.01 3.28 0 .32.22.69.83.57C20.57 21.9 24 17.49 24 12.29 24 5.78 18.63.5 12 .5z" />
             </svg>
           </a>
         )}

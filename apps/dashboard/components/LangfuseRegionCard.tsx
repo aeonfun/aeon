@@ -36,14 +36,22 @@ export function LangfuseRegionCard({ keysSet }: LangfuseRegionCardProps) {
         if (d.region) setRegion(d.region)
         setHost(d.host ?? null)
       })
-      .catch(() => { /* leave EU default */ })
-      .finally(() => { if (alive) setLoading(false) })
-    return () => { alive = false }
+      .catch(() => {
+        /* leave EU default */
+      })
+      .finally(() => {
+        if (alive) setLoading(false)
+      })
+    return () => {
+      alive = false
+    }
   }, [])
 
   const choose = async (next: Region) => {
     if (next === 'custom' || next === region) return
-    setSaving(true); setSaved(false); setError(null)
+    setSaving(true)
+    setSaved(false)
+    setError(null)
     const prev = region
     setRegion(next)
     try {
@@ -52,7 +60,7 @@ export function LangfuseRegionCard({ keysSet }: LangfuseRegionCardProps) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ region: next }),
       })
-      const data = await res.json() as { ok?: boolean; host?: string; error?: string }
+      const data = (await res.json()) as { ok?: boolean; host?: string; error?: string }
       if (!res.ok || !data.ok) throw new Error(data.error || 'Failed to save region')
       setHost(data.host ?? null)
       setSaved(true)
@@ -92,7 +100,7 @@ export function LangfuseRegionCard({ keysSet }: LangfuseRegionCardProps) {
           {saved && <span className="text-[10px] font-mono text-aeon-green">saved ✓</span>}
           <select
             value={region}
-            onChange={(e) => choose(e.target.value as Region)}
+            onChange={e => choose(e.target.value as Region)}
             disabled={loading || saving}
             title="Langfuse region"
             className="bg-aeon-panel text-primary-70 text-[11px] font-mono uppercase tracking-[0.14em] px-3 h-[32px] border border-[rgba(250,250,250,0.10)] outline-none cursor-pointer hover:border-[rgba(250,250,250,0.22)] transition-colors disabled:opacity-50"

@@ -1,45 +1,28 @@
 'use client'
 
-import {
-  Fragment,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-  type ReactNode,
-} from 'react'
+import { Fragment, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react'
 
 /* Effects ported from aeon-website/app/effects.tsx so the dashboard
    uses the same motion vocabulary as the marketing site. */
 
 const prefersReducedMotion = () =>
-  typeof window !== 'undefined' &&
-  window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-const useIsoLayoutEffect =
-  typeof window !== 'undefined' ? useLayoutEffect : useEffect
+const useIsoLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect
 
 /* ──────────────────────────────────────────────────────────
    SCRAMBLE - headline letters decode from random glyphs.
    ────────────────────────────────────────────────────────── */
 const GLYPHS = 'ABCDEFGHKNOPRSTUVXYZ0123456789#/'
 
-export function Scramble({
-  text,
-  delay = 0,
-  className,
-}: {
-  text: string
-  delay?: number
-  className?: string
-}) {
+export function Scramble({ text, delay = 0, className }: { text: string; delay?: number; className?: string }) {
   const rootRef = useRef<HTMLSpanElement>(null)
 
   useIsoLayoutEffect(() => {
     const root = rootRef.current
     if (!root) return
     const spans = Array.from(root.querySelectorAll<HTMLElement>('[data-c]'))
-    const finals = spans.map((s) => s.dataset.c ?? '')
+    const finals = spans.map(s => s.dataset.c ?? '')
     if (prefersReducedMotion() || spans.length === 0) return
 
     const rand = () => GLYPHS[(Math.random() * GLYPHS.length) | 0]
@@ -51,7 +34,7 @@ export function Scramble({
       })
     }
 
-    spans.forEach((s) => {
+    spans.forEach(s => {
       s.style.width = `${s.getBoundingClientRect().width}px`
       s.textContent = rand()
     })
@@ -90,21 +73,12 @@ export function Scramble({
 
   const words = text.split(' ')
   return (
-    <span
-      ref={rootRef}
-      className={className}
-      aria-label={text}
-      role="text"
-    >
+    <span ref={rootRef} className={className} aria-label={text} role="text">
       {words.map((word, wi) => (
         <Fragment key={wi}>
           <span style={{ display: 'inline-block', whiteSpace: 'nowrap' }}>
             {[...word].map((ch, ci) => (
-              <span
-                key={ci}
-                data-c={ch}
-                style={{ display: 'inline-block', textAlign: 'center' }}
-              >
+              <span key={ci} data-c={ch} style={{ display: 'inline-block', textAlign: 'center' }}>
                 {ch}
               </span>
             ))}
@@ -133,14 +107,14 @@ function Reel({ digit, delay }: { digit: number; delay: number }) {
     setOffset(0)
 
     const io = new IntersectionObserver(
-      (entries) => {
+      entries => {
         if (entries[0]?.isIntersecting) {
           setAnimate(true)
           setOffset(20 + digit)
           io.disconnect()
         }
       },
-      { threshold: 0.4 }
+      { threshold: 0.4 },
     )
     io.observe(el)
     return () => io.disconnect()
@@ -164,9 +138,7 @@ function Reel({ digit, delay }: { digit: number; delay: number }) {
           flexDirection: 'column',
           willChange: 'transform',
           transform: `translateY(-${offset}em)`,
-          transition: animate
-            ? `transform 1.5s cubic-bezier(0.2, 0.85, 0.25, 1) ${delay}ms`
-            : 'none',
+          transition: animate ? `transform 1.5s cubic-bezier(0.2, 0.85, 0.25, 1) ${delay}ms` : 'none',
         }}
       >
         {Array.from({ length: 31 }).map((_, i) => (
@@ -188,13 +160,7 @@ function Reel({ digit, delay }: { digit: number; delay: number }) {
   )
 }
 
-export function Flip({
-  value,
-  className,
-}: {
-  value: number
-  className?: string
-}) {
+export function Flip({ value, className }: { value: number; className?: string }) {
   const digits = String(value).split('')
   return (
     <span className={className} aria-label={String(value)} role="text">

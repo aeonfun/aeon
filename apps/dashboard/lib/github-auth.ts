@@ -18,7 +18,9 @@ export const GH_TOKEN_RE = /^(gho_|ghp_|github_pat_)[A-Za-z0-9_]+$/
 export function parseGhAuthToken(raw: string): string {
   const token = raw.trim().split(/\s+/, 1)[0] ?? ''
   if (!GH_TOKEN_RE.test(token)) {
-    throw new Error('Could not read a GitHub token from `gh auth token`. Run `gh auth login`, then Connect again. Or paste a PAT with Set.')
+    throw new Error(
+      'Could not read a GitHub token from `gh auth token`. Run `gh auth login`, then Connect again. Or paste a PAT with Set.',
+    )
   }
   return token
 }
@@ -28,16 +30,20 @@ export function parseGhAuthToken(raw: string): string {
 // fine-grained PAT or GitHub App token, whose permissions cannot be read back.
 export function parseOAuthScopes(raw: string): string[] | null {
   const head = raw.split(/\r?\n\r?\n/, 1)[0] ?? ''
-  const line = head.split(/\r?\n/).find((l) => /^x-oauth-scopes:/i.test(l))
+  const line = head.split(/\r?\n/).find(l => /^x-oauth-scopes:/i.test(l))
   if (line === undefined) return null
-  return line.slice(line.indexOf(':') + 1).split(',').map((s) => s.trim()).filter(Boolean)
+  return line
+    .slice(line.indexOf(':') + 1)
+    .split(',')
+    .map(s => s.trim())
+    .filter(Boolean)
 }
 
 // Which of `required` the granted scopes do not cover. `repo` is the only
 // umbrella scope that matters here (it implies its repo:* children, never
 // `workflow`), so this is a plain set difference.
 export function missingScopes(granted: readonly string[], required: readonly string[] = GH_GLOBAL_SCOPES): string[] {
-  return required.filter((s) => !granted.includes(s))
+  return required.filter(s => !granted.includes(s))
 }
 
 // The scopes of the token `gh` is using right now, or null when they cannot be
@@ -55,19 +61,24 @@ export function ghTokenScopes(): string[] | null {
 // a server failure.
 export class GhGlobalScopeError extends Error {}
 
-const SET_CLASSIC = 'Set GH_GLOBAL to a classic PAT with repo + workflow (https://github.com/settings/tokens, Tokens (classic))'
+const SET_CLASSIC =
+  'Set GH_GLOBAL to a classic PAT with repo + workflow (https://github.com/settings/tokens, Tokens (classic))'
 
 // Throw a fix-it error unless `token` (with these readable `scopes`) is fit to
 // be GH_GLOBAL. Pure, so the route, the CLI and tests share one rule.
 export function assertGhGlobalScopes(token: string, scopes: string[] | null): void {
   if (scopes === null) {
-    throw new GhGlobalScopeError(token.startsWith('github_pat_')
-      ? `This is a fine-grained token, whose permissions cannot be checked. ${SET_CLASSIC}.`
-      : `Could not read this token's scopes. ${SET_CLASSIC}, or run \`gh auth refresh -h github.com -s ${GH_GLOBAL_SCOPES.join(',')}\` and connect again.`)
+    throw new GhGlobalScopeError(
+      token.startsWith('github_pat_')
+        ? `This is a fine-grained token, whose permissions cannot be checked. ${SET_CLASSIC}.`
+        : `Could not read this token's scopes. ${SET_CLASSIC}, or run \`gh auth refresh -h github.com -s ${GH_GLOBAL_SCOPES.join(',')}\` and connect again.`,
+    )
   }
   const missing = missingScopes(scopes)
   if (missing.length) {
-    throw new GhGlobalScopeError(`The gh token is missing the ${missing.join(' + ')} scope${missing.length > 1 ? 's' : ''} GH_GLOBAL needs. ${SET_CLASSIC}, or run \`gh auth refresh -h github.com -s ${GH_GLOBAL_SCOPES.join(',')}\` and connect again.`)
+    throw new GhGlobalScopeError(
+      `The gh token is missing the ${missing.join(' + ')} scope${missing.length > 1 ? 's' : ''} GH_GLOBAL needs. ${SET_CLASSIC}, or run \`gh auth refresh -h github.com -s ${GH_GLOBAL_SCOPES.join(',')}\` and connect again.`,
+    )
   }
 }
 

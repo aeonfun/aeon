@@ -27,10 +27,10 @@ const SECRET_NAME_RE = /^[A-Z_][A-Z0-9_]*$/
 const MCP_VAR_RE = /\$\{([A-Z_][A-Z0-9_]*)\}/g
 
 export interface AllowlistResult {
-  added: string[]           // secret names newly spliced into the blob (union across files)
-  files: string[]           // workflow files actually changed
-  synced: boolean           // false if a local-mode commit/push failed
-  reason?: string           // why a file could not be patched (read/write/scope error)
+  added: string[] // secret names newly spliced into the blob (union across files)
+  files: string[] // workflow files actually changed
+  synced: boolean // false if a local-mode commit/push failed
+  reason?: string // why a file could not be patched (read/write/scope error)
 }
 
 // Pull the unique ${VAR} names a .mcp.json servers object references.
@@ -45,9 +45,7 @@ export function referencedSecrets(servers: unknown): string[] {
 // object (starts with `{"`, references toJSON(secrets.…)). Returns -1 if absent
 // (a custom fork may not carry it).
 function findBlobLine(lines: string[]): number {
-  return lines.findIndex(
-    (l) => l.includes('toJSON(secrets.') && l.trimStart().startsWith('{"'),
-  )
+  return lines.findIndex(l => l.includes('toJSON(secrets.') && l.trimStart().startsWith('{"'))
 }
 
 // Splice `"NAME":${{ toJSON(secrets.NAME) }}` for each not-yet-present name in,
@@ -57,13 +55,11 @@ function spliceBlob(line: string, names: string[]): { line: string; added: strin
   const trailing = line.match(/\s*$/)?.[0] ?? ''
   const core = line.slice(0, line.length - trailing.length) // ends with the JSON `}`
   if (!core.endsWith('}')) return { line, added: [] }
-  const missing = names.filter((n) => !core.includes(`"${n}":`))
+  const missing = names.filter(n => !core.includes(`"${n}":`))
   if (missing.length === 0) return { line, added: [] }
   // Single-quoted concatenation so the literal `${{` is emitted verbatim (a
   // template literal would treat `${` as interpolation).
-  const additions = missing
-    .map((n) => ',"' + n + '":${{ toJSON(secrets.' + n + ') }}')
-    .join('')
+  const additions = missing.map(n => ',"' + n + '":${{ toJSON(secrets.' + n + ') }}').join('')
   const spliced = core.slice(0, -1) + additions + '}' + trailing
   return { line: spliced, added: missing }
 }
@@ -72,10 +68,7 @@ function spliceBlob(line: string, names: string[]): { line: string; added: strin
 // names in its ALL_SECRETS blob. Returns the new content and the names added
 // (empty when the file has no blob or every name is already present, in which
 // case `content` is returned unchanged). Exported for unit testing.
-export function patchWorkflowContent(
-  content: string,
-  names: string[],
-): { content: string; added: string[] } {
+export function patchWorkflowContent(content: string, names: string[]): { content: string; added: string[] } {
   const lines = content.split('\n')
   const idx = findBlobLine(lines)
   if (idx === -1) return { content, added: [] }
@@ -90,7 +83,7 @@ export function patchWorkflowContent(
 // one file (e.g. a token without `workflow` scope) is reported via `reason`, not
 // thrown - the caller's primary write (.mcp.json) has already succeeded.
 export async function ensureSecretsAllowlisted(names: string[]): Promise<AllowlistResult> {
-  const wanted = [...new Set(names)].filter((n) => SECRET_NAME_RE.test(n))
+  const wanted = [...new Set(names)].filter(n => SECRET_NAME_RE.test(n))
   const result: AllowlistResult = { added: [], files: [], synced: true }
   if (wanted.length === 0) return result
 
@@ -105,7 +98,7 @@ export async function ensureSecretsAllowlisted(names: string[]): Promise<Allowli
         createMsg: `chore: allowlist MCP secret(s) in ${file.split('/').pop()}`,
       })
       result.files.push(file)
-      fileAdded.forEach((n) => added.add(n))
+      fileAdded.forEach(n => added.add(n))
       if (!sync.synced) {
         result.synced = false
         result.reason = sync.reason

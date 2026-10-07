@@ -13,7 +13,14 @@ export function normLinks(input: unknown): string[] {
     .map(s => s.trim())
     .filter(Boolean)
     .map(s => (/^https?:\/\//i.test(s) ? s : `https://${s}`))
-    .filter(s => { try { const u = new URL(s); return u.protocol === 'http:' || u.protocol === 'https:' } catch { return false } })
+    .filter(s => {
+      try {
+        const u = new URL(s)
+        return u.protocol === 'http:' || u.protocol === 'https:'
+      } catch {
+        return false
+      }
+    })
     .slice(0, 6)
 }
 

@@ -15,7 +15,12 @@ export const GATEWAY_REGISTRY = {
   // workflow, not sent as a header.)
   usepod: { label: 'UsePod', secretName: 'USEPOD_TOKEN', prefixes: [], domain: 'usepod.ai' },
   venice: { label: 'Venice', secretName: 'VENICE_API_KEY', prefixes: [], domain: 'venice.ai' },
-  surplus: { label: 'Surplus Intelligence', secretName: 'SURPLUS_API_KEY', prefixes: ['inf_'], domain: 'surplusintelligence.ai' },
+  surplus: {
+    label: 'Surplus Intelligence',
+    secretName: 'SURPLUS_API_KEY',
+    prefixes: ['inf_'],
+    domain: 'surplusintelligence.ai',
+  },
   // Grok (xAI) as a GATEWAY: Claude Code routed at xAI's Anthropic-compatible
   // api.x.ai. Reuses the XAI_API_KEY secret (xAI keys are prefixed `xai-`). This
   // is separate from the grok CLI *harness* (harness: grok), which runs the grok
@@ -28,7 +33,12 @@ export const GATEWAY_REGISTRY = {
   // HivemindOS Models: OpenAI-compatible, billed to a credit balance, bridged
   // by the claude-code-router sidecar (scripts/llm-gateway.sh). No key prefix,
   // so it is dropdown-only like UsePod/Venice. Last in the auto cascade.
-  hivemindos: { label: 'HivemindOS Models', secretName: 'HIVEMINDOS_CREDIT_TOKEN', prefixes: [], domain: 'hivemindos.liamvisionary.com' },
+  hivemindos: {
+    label: 'HivemindOS Models',
+    secretName: 'HIVEMINDOS_CREDIT_TOKEN',
+    prefixes: [],
+    domain: 'hivemindos.liamvisionary.com',
+  },
 } as const
 
 // The claude gateway cascade is mirrored in harness-adapter/gateways.json
@@ -38,4 +48,4 @@ export const GATEWAY_REGISTRY = {
 export type GatewaySlug = keyof typeof GATEWAY_REGISTRY
 
 export const GATEWAY_SLUGS = Object.keys(GATEWAY_REGISTRY) as GatewaySlug[]
-export const GATEWAY_SECRET_NAMES: string[] = Object.values(GATEWAY_REGISTRY).map((p) => p.secretName)
+export const GATEWAY_SECRET_NAMES: string[] = Object.values(GATEWAY_REGISTRY).map(p => p.secretName)

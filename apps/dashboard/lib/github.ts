@@ -6,13 +6,24 @@ import { REPO_ROOT } from './gh'
 const GITHUB_API = 'https://api.github.com'
 
 // Minimal shapes for the GitHub "Get repository content" REST responses.
-interface GitHubContentFile { content: string; sha: string; encoding: string }
-interface GitHubContentEntry { name: string; type: 'file' | 'dir' | 'symlink' | 'submodule'; path: string }
+interface GitHubContentFile {
+  content: string
+  sha: string
+  encoding: string
+}
+interface GitHubContentEntry {
+  name: string
+  type: 'file' | 'dir' | 'symlink' | 'submodule'
+  path: string
+}
 
 // Outcome of the local-mode git commit+push. `reason` is set only when the push
 // failed (surfaced to the UI as `syncError`). Distinct from the wire-level
 // SyncResult in lib/types.ts, which is the client-facing JSON response body.
-export interface CommitResult { synced: boolean; reason?: string }
+export interface CommitResult {
+  synced: boolean
+  reason?: string
+}
 
 export function isLocal() {
   return !process.env.GITHUB_TOKEN || !process.env.GITHUB_REPO
@@ -34,7 +45,10 @@ const fileLocks = new Map<string, Promise<unknown>>()
 export function withFileLock<T>(path: string, fn: () => Promise<T>): Promise<T> {
   const prior = fileLocks.get(path) ?? Promise.resolve()
   const run = prior.then(fn, fn)
-  fileLocks.set(path, run.catch(() => {}))
+  fileLocks.set(
+    path,
+    run.catch(() => {}),
+  )
   return run
 }
 
@@ -53,7 +67,11 @@ type Git = (...args: string[]) => string
 // commitAndPush and `aeon sync` (lib/sync.ts).
 export function originRefusal(git: Git): string | null {
   let origin = ''
-  try { origin = git('remote', 'get-url', 'origin') } catch { /* no origin */ }
+  try {
+    origin = git('remote', 'get-url', 'origin')
+  } catch {
+    /* no origin */
+  }
   if (!origin) return 'no origin remote - run ./aeon init'
   if (isTemplateRemote(origin)) return `origin is the Aeon template (${origin}), not your instance - run ./aeon init`
   return null
@@ -71,7 +89,11 @@ export function pushHeadToOrigin(git: Git): void {
       git('pull', '--rebase', '--autostash', 'origin', branch)
       git('push', 'origin', `HEAD:${branch}`)
     } catch (e) {
-      try { git('rebase', '--abort') } catch { /* not mid-rebase */ }
+      try {
+        git('rebase', '--abort')
+      } catch {
+        /* not mid-rebase */
+      }
       throw e
     }
   }
@@ -89,8 +111,7 @@ export function pushHeadToOrigin(git: Git): void {
  */
 export function commitAndPush(paths: string[], message: string): CommitResult {
   if (isLocal() === false) return { synced: true } // hosted mode: edit already committed via API
-  const git = (...args: string[]) =>
-    execFileSync('git', args, { stdio: 'pipe', cwd: REPO_ROOT }).toString().trim()
+  const git = (...args: string[]) => execFileSync('git', args, { stdio: 'pipe', cwd: REPO_ROOT }).toString().trim()
   const errMsg = (e: unknown) => (e instanceof Error ? e.message : String(e)).slice(0, 200)
   try {
     // Push to `origin` by name, never to the template (the operator's edit
@@ -99,7 +120,12 @@ export function commitAndPush(paths: string[], message: string): CommitResult {
     if (refusal) return { synced: false, reason: refusal }
     git('add', '--', ...paths) // stages content changes AND deletions under these paths
     let staged = true
-    try { git('diff', '--cached', '--quiet', '--', ...paths); staged = false } catch { staged = true }
+    try {
+      git('diff', '--cached', '--quiet', '--', ...paths)
+      staged = false
+    } catch {
+      staged = true
+    }
     if (!staged) return { synced: true } // nothing changed in these paths
     git('commit', '-m', message, '--', ...paths)
     try {
@@ -263,11 +289,12 @@ function remoteAuthHeaders(): Record<string, string> {
   }
 }
 
-export async function getRemoteDirectory(remoteRepo: string, path: string): Promise<Array<{ name: string; type: string }>> {
+export async function getRemoteDirectory(
+  remoteRepo: string,
+  path: string,
+): Promise<Array<{ name: string; type: string }>> {
   // Always uses GitHub API (remote repo)
-  const url = path
-    ? `${GITHUB_API}/repos/${remoteRepo}/contents/${path}`
-    : `${GITHUB_API}/repos/${remoteRepo}/contents`
+  const url = path ? `${GITHUB_API}/repos/${remoteRepo}/contents/${path}` : `${GITHUB_API}/repos/${remoteRepo}/contents`
   const res = await fetch(url, { headers: remoteAuthHeaders(), cache: 'no-store' })
   return parseContentsList(res, path)
 }

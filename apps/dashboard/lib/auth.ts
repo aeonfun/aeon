@@ -33,7 +33,13 @@ export async function configureAuth(
   if (config.key) {
     ghSecretSet(config.secretName, config.key)
     await syncGatewayProvider()
-    return { ok: true, method: config.method, secret: config.secretName, baseUrl: Boolean(config.baseUrl), gateway: config.gateway }
+    return {
+      ok: true,
+      method: config.method,
+      secret: config.secretName,
+      baseUrl: Boolean(config.baseUrl),
+      gateway: config.gateway,
+    }
   }
 
   // No key provided → mint an OAuth token locally via the Claude CLI.

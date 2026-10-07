@@ -26,7 +26,9 @@ function ghRepo(): string | null {
     if (repo && !repo.startsWith('no default')) return repo
   } catch {}
   try {
-    const repo = execSync('gh repo view --json nameWithOwner -q .nameWithOwner', { stdio: 'pipe', cwd: REPO_ROOT }).toString().trim()
+    const repo = execSync('gh repo view --json nameWithOwner -q .nameWithOwner', { stdio: 'pipe', cwd: REPO_ROOT })
+      .toString()
+      .trim()
     if (repo) return repo
   } catch {}
   return null
@@ -53,33 +55,49 @@ export function ghArgsRepo(): string[] {
 // widening the default would only loosen workflows that don't.
 // Idempotent and best-effort: a missing-admin / API hiccup must never block the
 // run (install-skill degrades to leaving the branch + a compare link).
-export interface WorkflowPermissions { default_workflow_permissions?: string; can_approve_pull_request_reviews?: boolean }
+export interface WorkflowPermissions {
+  default_workflow_permissions?: string
+  can_approve_pull_request_reviews?: boolean
+}
 
 // The `gh api` PUT args that turn on PR creation while keeping the default
 // token permission as it is, or null when nothing needs to change. Pure.
 export function workflowPermissionsUpdate(repo: string, current: WorkflowPermissions): string[] | null {
   if (current.can_approve_pull_request_reviews === true) return null
   const level = current.default_workflow_permissions
-  return ['api', '-X', 'PUT', `repos/${repo}/actions/permissions/workflow`,
+  return [
+    'api',
+    '-X',
+    'PUT',
+    `repos/${repo}/actions/permissions/workflow`,
     // Echo the current default back (same as `aeon init`) so only the PR switch moves.
     ...(level === 'read' || level === 'write' ? ['-f', `default_workflow_permissions=${level}`] : []),
-    '-F', 'can_approve_pull_request_reviews=true']
+    '-F',
+    'can_approve_pull_request_reviews=true',
+  ]
 }
 
 export function ensureActionsCanOpenPRs(): void {
   const repo = ghRepo()
   if (!repo) return
   try {
-    const current = JSON.parse(execFileSync('gh', ['api', `repos/${repo}/actions/permissions/workflow`],
-      { stdio: 'pipe', cwd: REPO_ROOT }).toString()) as WorkflowPermissions
+    const current = JSON.parse(
+      execFileSync('gh', ['api', `repos/${repo}/actions/permissions/workflow`], {
+        stdio: 'pipe',
+        cwd: REPO_ROOT,
+      }).toString(),
+    ) as WorkflowPermissions
     const args = workflowPermissionsUpdate(repo, current)
     if (args) execFileSync('gh', args, { stdio: 'pipe', cwd: REPO_ROOT })
-  } catch { /* lacks admin or transient API error - leave as-is, don't block */ }
+  } catch {
+    /* lacks admin or transient API error - leave as-is, don't block */
+  }
   try {
     // Let install-skill's `gh pr merge --auto` queue the merge behind CI.
-    execFileSync('gh', ['repo', 'edit', repo, '--enable-auto-merge'],
-      { stdio: 'pipe', cwd: REPO_ROOT })
-  } catch { /* auto-merge unavailable (e.g. private free repo) - skill falls back to direct merge */ }
+    execFileSync('gh', ['repo', 'edit', repo, '--enable-auto-merge'], { stdio: 'pipe', cwd: REPO_ROOT })
+  } catch {
+    /* auto-merge unavailable (e.g. private free repo) - skill falls back to direct merge */
+  }
 }
 
 // Write a repo secret. The value goes in on stdin, never as an argv token, so it
@@ -98,6 +116,5 @@ export function ghSecretSet(name: string, value: string): void {
 // saved. Throws on failure so the API route can surface it; wrap in try/catch for the
 // best-effort auto-register path.
 export function dispatchCommandsWorkflow(): void {
-  execFileSync('gh', ['workflow', 'run', 'setup-commands.yml', ...ghArgsRepo()],
-    { stdio: 'pipe', cwd: REPO_ROOT })
+  execFileSync('gh', ['workflow', 'run', 'setup-commands.yml', ...ghArgsRepo()], { stdio: 'pipe', cwd: REPO_ROOT })
 }

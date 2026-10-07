@@ -11,7 +11,7 @@ import { strict as assert } from "node:assert";
 import { withFileLock } from "./github";
 
 function sleep(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 describe("withFileLock", () => {

@@ -12,7 +12,10 @@ Options:
 
 export async function runsCommand(argv: string[]) {
   const sub = argv[0] && !argv[0].startsWith('-') ? argv[0] : 'ls'
-  if (sub === 'help' || argv.includes('-h') || argv.includes('--help')) { console.log(USAGE); return }
+  if (sub === 'help' || argv.includes('-h') || argv.includes('--help')) {
+    console.log(USAGE)
+    return
+  }
 
   requireGh()
 
@@ -36,7 +39,10 @@ function listRunsCmd(args: string[]) {
 
   const runs = listRuns(limit)
   emit(runs, () => {
-    if (runs.length === 0) { console.log(c.dim('(no recent Aeon runs)')); return }
+    if (runs.length === 0) {
+      console.log(c.dim('(no recent Aeon runs)'))
+      return
+    }
     table(
       ['ID', 'STATUS', 'WORKFLOW', 'WHEN'],
       runs.map(r => [String(r.id), statusCell(r.status, r.conclusion), truncate(r.workflow, 48), rel(r.created_at)]),

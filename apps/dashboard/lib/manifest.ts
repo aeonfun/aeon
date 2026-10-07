@@ -51,7 +51,7 @@ export const MANIFEST_HARNESSES = (harnessesJson as unknown as { harnesses: Mani
 export const MANIFEST_GATEWAYS = (gatewaysJson as unknown as { gateways: ManifestGateway[] }).gateways
 
 export function harnessManifest(id: string): ManifestHarness | undefined {
-  return MANIFEST_HARNESSES.find((h) => h.id === id)
+  return MANIFEST_HARNESSES.find(h => h.id === id)
 }
 
 export function credentialsFor(id: string): ManifestCredential[] {

@@ -6,10 +6,7 @@ import { readRunDiagnosis } from '@/lib/run-diagnosis-server'
 // Why a failed or timed-out run ended that way, in plain words, with the next
 // step (lib/run-diagnosis.ts). HQ asks only when a run is opened.
 //   GET -> { diagnosis }  (null while running, or when the run did not fail)
-export async function GET(
-  _request: Request,
-  { params }: { params: Promise<{ id: string }> },
-) {
+export async function GET(_request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     const notReady = requireGh()
     if (notReady) return notReady

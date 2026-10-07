@@ -72,7 +72,9 @@ async function listEntries<T>(
       if (!s.isFile()) continue
       const item = map(name, s)
       if (item) out.push(item)
-    } catch { /* skip unreadable */ }
+    } catch {
+      /* skip unreadable */
+    }
   }
   out.sort(sort)
   return out
@@ -88,9 +90,10 @@ export interface TopicFile {
 export function listTopics(): Promise<TopicFile[]> {
   return listEntries(
     TOPICS_DIR,
-    (name, s) => name.endsWith('.md')
-      ? { slug: name.replace(/\.md$/, ''), filename: name, size: s.size, updatedAt: s.mtime.toISOString() }
-      : null,
+    (name, s) =>
+      name.endsWith('.md')
+        ? { slug: name.replace(/\.md$/, ''), filename: name, size: s.size, updatedAt: s.mtime.toISOString() }
+        : null,
     (a, b) => a.slug.localeCompare(b.slug),
   )
 }

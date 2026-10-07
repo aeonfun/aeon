@@ -7,7 +7,13 @@
 // those scripts contain words like "rate_limited" that would match a failure
 // signature on every run.
 
-export interface Usage { input: number; output: number; cacheRead: number; cacheCreation: number; total: number }
+export interface Usage {
+  input: number
+  output: number
+  cacheRead: number
+  cacheCreation: number
+  total: number
+}
 
 export interface Diagnosis {
   // One plain sentence: what went wrong.
@@ -49,10 +55,13 @@ const HARNESS_BANNER = /^Using harness:\s*([a-z]+)\b/
 // printed after the harness call (every harness but grok).
 const HARNESS_NOTICE = /^(?:##\[notice\]|::notice::)effective model for ([a-z]+):/
 
-interface LogLine { step: string | null; text: string }
+interface LogLine {
+  step: string | null
+  text: string
+}
 
 function normalize(log: string): LogLine[] {
-  return log.split('\n').map((raw) => {
+  return log.split('\n').map(raw => {
     const line = raw.replace(/\r$/, '')
     const parts = line.split('\t')
     return parts.length >= 3
@@ -66,8 +75,14 @@ function outsideGroups(lines: LogLine[]): LogLine[] {
   const out: LogLine[] = []
   let depth = 0
   for (const l of lines) {
-    if (l.text.startsWith('##[group]')) { depth++; continue }
-    if (l.text.startsWith('##[endgroup]')) { depth = Math.max(0, depth - 1); continue }
+    if (l.text.startsWith('##[group]')) {
+      depth++
+      continue
+    }
+    if (l.text.startsWith('##[endgroup]')) {
+      depth = Math.max(0, depth - 1)
+      continue
+    }
     if (depth === 0) out.push(l)
   }
   return out
@@ -83,8 +98,8 @@ function outsideGroups(lines: LogLine[]): LogLine[] {
 // only the "Run" step's lines are considered first (fast path).
 export function extractRunOutput(log: string): RunOutput {
   const all = normalize(log)
-  const outside = outsideGroups(all).map((l) => l.text)
-  const problems = outside.filter((t) => /^##\[(error|warning)\]/.test(t))
+  const outside = outsideGroups(all).map(l => l.text)
+  const problems = outside.filter(t => /^##\[(error|warning)\]/.test(t))
   let banner: string | null = null
   let effective: string | null = null
   for (const t of outside) {
@@ -92,35 +107,52 @@ export function extractRunOutput(log: string): RunOutput {
     effective = HARNESS_NOTICE.exec(t)?.[1] ?? effective
   }
   const harness = banner ?? effective
-  const lines = all.some((l) => l.step === 'Run') ? all.filter((l) => l.step === 'Run') : all
+  const lines = all.some(l => l.step === 'Run') ? all.filter(l => l.step === 'Run') : all
 
   let anchor = -1
-  for (let i = lines.length - 1; i >= 0; i--) if (USAGE_NOTICE.test(lines[i].text)) { anchor = i; break }
+  for (let i = lines.length - 1; i >= 0; i--)
+    if (USAGE_NOTICE.test(lines[i].text)) {
+      anchor = i
+      break
+    }
   const reachedModel = anchor >= 0
-  if (!reachedModel) anchor = lines.findIndex((l) => l.text.startsWith('##[error]'))
+  if (!reachedModel) anchor = lines.findIndex(l => l.text.startsWith('##[error]'))
   if (anchor < 0) return { run: '', problems: problems.join('\n'), reachedModel, harness }
 
   let header = -1
-  for (let i = anchor - 1; i >= 0; i--) if (lines[i].text.startsWith('##[group]Run ')) { header = i; break }
+  for (let i = anchor - 1; i >= 0; i--)
+    if (lines[i].text.startsWith('##[group]Run ')) {
+      header = i
+      break
+    }
   let start = 0
   if (header >= 0) {
     start = header + 1
-    for (let i = header + 1; i < anchor; i++) if (lines[i].text.startsWith('##[endgroup]')) { start = i + 1; break }
+    for (let i = header + 1; i < anchor; i++)
+      if (lines[i].text.startsWith('##[endgroup]')) {
+        start = i + 1
+        break
+      }
   } else {
-    for (let i = anchor - 1; i >= 0; i--) if (lines[i].text.startsWith('##[endgroup]')) { start = i + 1; break }
+    for (let i = anchor - 1; i >= 0; i--)
+      if (lines[i].text.startsWith('##[endgroup]')) {
+        start = i + 1
+        break
+      }
   }
-  const run = outsideGroups(lines.slice(start, anchor + 1)).map((l) => l.text)
+  const run = outsideGroups(lines.slice(start, anchor + 1)).map(l => l.text)
   return { run: run.join('\n'), problems: problems.join('\n'), reachedModel, harness }
 }
 
 // The last "Token usage" line (one per run; last wins on retries).
 export function parseUsage(text: string): Usage | null {
-  const re = /Token usage\b[^\n]*?input:\s*(\d+),\s*output:\s*(\d+)(?:,\s*cache_read:\s*(\d+))?(?:,\s*cache_creation:\s*(\d+))?(?:,\s*total:\s*(\d+))?/g
+  const re =
+    /Token usage\b[^\n]*?input:\s*(\d+),\s*output:\s*(\d+)(?:,\s*cache_read:\s*(\d+))?(?:,\s*cache_creation:\s*(\d+))?(?:,\s*total:\s*(\d+))?/g
   let m: RegExpExecArray | null
   let last: RegExpExecArray | null = null
   while ((m = re.exec(text))) last = m
   if (!last) return null
-  const [input, output, cacheRead, cacheCreation] = [1, 2, 3, 4].map((i) => Number(last![i] || 0))
+  const [input, output, cacheRead, cacheCreation] = [1, 2, 3, 4].map(i => Number(last![i] || 0))
   // `total` is the notice's own figure (input + output, as the workflow
   // prints it), so the text we show matches the run log.
   const total = last[5] !== undefined ? Number(last[5]) : input + output
@@ -130,18 +162,42 @@ export function parseUsage(text: string): Usage | null {
 // Known failure signatures, most specific first. Reasons are our own words:
 // never echo log text back, it can carry provider responses.
 const SIGNATURES: { re: RegExp; reason: string; hint: string; credential: boolean }[] = [
-  { re: /token (has )?expired|invalid_grant|refresh token (is )?(invalid|expired|revoked)|session expired|token_revoked|invalidated oauth token/i,
-    reason: 'The saved login expired.', hint: 'Log in again and connect the new login.', credential: true },
-  { re: /\b401\b|invalid[ _-]?(api[ _-]?)?key|invalid x-api-key|authentication_error|unauthori[sz]ed/i,
-    reason: 'The provider rejected the credential.', hint: 'Paste a fresh key or log in again.', credential: true },
-  { re: /\b402\b|insufficient[ _](credits|funds|balance|quota)|credit balance is too low|exceeded your current quota|payment required/i,
-    reason: 'The provider account is out of credit.', hint: 'Top up the account or connect a different key.', credential: true },
-  { re: /\b429\b|rate[ _-]?limit/i,
-    reason: 'The provider rate-limited the run.', hint: 'Wait a minute and run the skill again.', credential: false },
-  { re: /model[^\n]{0,40}(not found|does not exist|not available)|unknown model|invalid model|model_not_found/i,
-    reason: 'The selected model is not available with this credential.', hint: 'Pick another model in the top bar, then run the skill again.', credential: false },
-  { re: /needs auth|harness needs|no (provider|model) (key|credential)|is not set|not valid base64|failed to extract/i,
-    reason: 'The runner found no usable credential for this harness.', hint: 'Check the secret was saved under the right name, or connect again.', credential: true },
+  {
+    re: /token (has )?expired|invalid_grant|refresh token (is )?(invalid|expired|revoked)|session expired|token_revoked|invalidated oauth token/i,
+    reason: 'The saved login expired.',
+    hint: 'Log in again and connect the new login.',
+    credential: true,
+  },
+  {
+    re: /\b401\b|invalid[ _-]?(api[ _-]?)?key|invalid x-api-key|authentication_error|unauthori[sz]ed/i,
+    reason: 'The provider rejected the credential.',
+    hint: 'Paste a fresh key or log in again.',
+    credential: true,
+  },
+  {
+    re: /\b402\b|insufficient[ _](credits|funds|balance|quota)|credit balance is too low|exceeded your current quota|payment required/i,
+    reason: 'The provider account is out of credit.',
+    hint: 'Top up the account or connect a different key.',
+    credential: true,
+  },
+  {
+    re: /\b429\b|rate[ _-]?limit/i,
+    reason: 'The provider rate-limited the run.',
+    hint: 'Wait a minute and run the skill again.',
+    credential: false,
+  },
+  {
+    re: /model[^\n]{0,40}(not found|does not exist|not available)|unknown model|invalid model|model_not_found/i,
+    reason: 'The selected model is not available with this credential.',
+    hint: 'Pick another model in the top bar, then run the skill again.',
+    credential: false,
+  },
+  {
+    re: /needs auth|harness needs|no (provider|model) (key|credential)|is not set|not valid base64|failed to extract/i,
+    reason: 'The runner found no usable credential for this harness.',
+    hint: 'Check the secret was saved under the right name, or connect again.',
+    credential: true,
+  },
 ]
 
 export interface RunFacts {
@@ -155,9 +211,16 @@ export function diagnoseRun(run: RunFacts): Diagnosis | null {
   const out = extractRunOutput(run.log)
   const usage = parseUsage(out.run) ?? undefined
   const base = { usage, ...(out.harness ? { harness: out.harness } : {}) }
-  if (run.conclusion === 'cancelled') return { ...base, reason: 'The run was cancelled.', hint: 'Run it again when ready.', credential: false }
-  if (run.conclusion === 'timed_out') return { ...base, reason: 'The run hit its time limit.', hint: 'Run it again; if it keeps timing out, open the run log.', credential: false }
-  const sig = SIGNATURES.find((s) => s.re.test(`${out.run}\n${out.problems}`))
+  if (run.conclusion === 'cancelled')
+    return { ...base, reason: 'The run was cancelled.', hint: 'Run it again when ready.', credential: false }
+  if (run.conclusion === 'timed_out')
+    return {
+      ...base,
+      reason: 'The run hit its time limit.',
+      hint: 'Run it again; if it keeps timing out, open the run log.',
+      credential: false,
+    }
+  const sig = SIGNATURES.find(s => s.re.test(`${out.run}\n${out.problems}`))
   if (sig) return { ...base, reason: sig.reason, hint: sig.hint, credential: sig.credential }
   return { ...base, reason: 'The run failed.', hint: 'Open the run log for the error.', credential: false }
 }

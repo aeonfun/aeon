@@ -1,6 +1,9 @@
 import { getFileContent } from '../../../dashboard/lib/github.ts'
 import {
-  parseConfig, updateModelInConfig, updateHarnessInConfig, updateGatewayInConfig,
+  parseConfig,
+  updateModelInConfig,
+  updateHarnessInConfig,
+  updateGatewayInConfig,
 } from '../../../dashboard/lib/config.ts'
 import { getRepoSlug } from '../../../dashboard/lib/skills.ts'
 import { HARNESSES, GATEWAY_PROVIDERS } from '../../../dashboard/lib/types.ts'
@@ -21,7 +24,10 @@ Options:
 
 export async function configCommand(argv: string[]) {
   const sub = argv[0] && !argv[0].startsWith('-') ? argv[0] : 'show'
-  if (sub === 'help' || argv.includes('-h') || argv.includes('--help')) { console.log(USAGE); return }
+  if (sub === 'help' || argv.includes('-h') || argv.includes('--help')) {
+    console.log(USAGE)
+    return
+  }
   if (sub === 'show') return show()
   if (sub === 'set') return set(argv.slice(1))
   fail(`unknown subcommand: ${sub}\n\n${USAGE}`)
@@ -70,12 +76,19 @@ async function set(args: string[]) {
     }
     case 'harness': {
       if (!HARNESSES.includes(value as Harness)) fail(`harness must be one of: ${HARNESSES.join(', ')}`)
-      const res = await applyConfig(raw => updateHarnessInConfig(raw, value as Harness), `chore: set harness to ${value}`)
+      const res = await applyConfig(
+        raw => updateHarnessInConfig(raw, value as Harness),
+        `chore: set harness to ${value}`,
+      )
       return reportConfig(res, `set harness → ${value}`)
     }
     case 'gateway': {
-      if (!GATEWAY_PROVIDERS.includes(value as GatewayProvider)) fail(`gateway must be one of: ${GATEWAY_PROVIDERS.join(', ')}`)
-      const res = await applyConfig(raw => updateGatewayInConfig(raw, value as GatewayProvider), `chore: set gateway to ${value}`)
+      if (!GATEWAY_PROVIDERS.includes(value as GatewayProvider))
+        fail(`gateway must be one of: ${GATEWAY_PROVIDERS.join(', ')}`)
+      const res = await applyConfig(
+        raw => updateGatewayInConfig(raw, value as GatewayProvider),
+        `chore: set gateway to ${value}`,
+      )
       return reportConfig(res, `set gateway → ${value}`)
     }
     default:

@@ -17,7 +17,7 @@ function detectGateway(key: string, provider: string): GatewaySlug | '' {
     return provider as GatewaySlug
   }
   for (const [name, def] of Object.entries(GATEWAY_REGISTRY)) {
-    if (def.prefixes.some((p) => key.startsWith(p))) return name as GatewaySlug
+    if (def.prefixes.some(p => key.startsWith(p))) return name as GatewaySlug
   }
   return ''
 }
@@ -28,7 +28,13 @@ export function normalizeAuthConfig(body: { key?: unknown; baseUrl?: unknown; pr
   const provider = str(body.provider).trim().toLowerCase()
 
   if (!key) {
-    return { key: '', baseUrl: normalizeBaseUrl(baseUrl), method: 'oauth', secretName: 'CLAUDE_CODE_OAUTH_TOKEN', gateway: 'direct' }
+    return {
+      key: '',
+      baseUrl: normalizeBaseUrl(baseUrl),
+      method: 'oauth',
+      secretName: 'CLAUDE_CODE_OAUTH_TOKEN',
+      gateway: 'direct',
+    }
   }
 
   // Gateway keys: explicit `provider` wins, else infer from an unambiguous prefix.
