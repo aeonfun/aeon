@@ -1099,7 +1099,18 @@ jobs:
           # request). The post-run guard reverted it after the fact; now the write is
           # refused outright.
           CLAUDE_OK=0
-          RH="${GITHUB_WORKSPACE}/harness-adapter/run-harness"
+          # Run the harness from a snapshot outside the workspace. bash reads a
+          # script as it executes, so a skill that rewrites harness-adapter/ while
+          # it runs (aeon-update syncing upstream) leaves run-harness and the
+          # running adapter reading a changed file: "unexpected EOF" after the
+          # agent exits, the attempt counts as a provider failure and the cascade
+          # re-runs the whole skill (aeon-agent run 37300267512). Under $HOME, not
+          # $RUNNER_TEMP or /tmp: those are rw inside the read-only sandbox, and the
+          # unsandboxed scorer below runs this same copy.
+          RH_DIR="${HOME}/.aeon-run/harness-adapter"
+          mkdir -p "${HOME}/.aeon-run"
+          rm -rf "$RH_DIR" && cp -a "${GITHUB_WORKSPACE}/harness-adapter" "$RH_DIR"
+          RH="${RH_DIR}/run-harness"
           RH_ARGS=(--mode "$SKILL_MODE" --allowed-tools "$ALLOWED" --timeout 1800)
           # Tier notes (skill_mode.sh run-notes): notify via stdin, no shell file writes.
           RUN_NOTES=$(bash scripts/skill_mode.sh run-notes "$SKILL_MODE")
