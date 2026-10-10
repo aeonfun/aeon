@@ -22,7 +22,7 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 | <img src="https://pbs.twimg.com/profile_images/2076592848452145152/9xUQBtzv_400x400.jpg" width="36" height="36" alt="AgentOS logo"> | AgentOS | [@useAgentOS](https://x.com/useAgentOS) |
 | <img src="https://pbs.twimg.com/profile_images/2021447689398030336/eY9wm4_X_400x400.png" width="36" height="36" alt="AI2Human logo"> | AI2Human | [@ai2humannetwork](https://x.com/ai2humannetwork) · [ai2human.io](https://ai2human.io) |
 | <img src="https://pbs.twimg.com/profile_images/2055896281751633920/NeawiT3G_400x400.png" width="36" height="36" alt="AntFleet logo"> | AntFleet | [@AntFleetDev](https://x.com/AntFleetDev) |
-| <img src="https://pbs.twimg.com/profile_images/2061160773208956933/qPhvV6Gb_400x400.jpg" width="36" height="36" alt="Atrium logo"> | Atrium | [@atriumhermes](https://x.com/atriumhermes) · [atriumhermes.tech](https://atriumhermes.tech) |
+| <img src="https://pbs.twimg.com/profile_images/2061160773208956933/qPhvV6Gb_400x400.jpg" width="36" height="36" alt="Atrium logo"> | Atrium | [@atriumhermes](https://x.com/atriumhermes) |
 | <img src="https://coin-images.coingecko.com/coins/images/102173323/large/autonomopoly.jpg?1779000184" width="36" height="36" alt="Autonomopoly logo"> | Autonomopoly | [GeckoTerminal](https://www.geckoterminal.com/base/pools/0x84771828f44fcfbaae08e271ff74e272cc2934a3348ec724a475941185ce4eb9) |
 | <img src="https://pbs.twimg.com/profile_images/2087686997942951937/0kEuCySj_400x400.jpg" width="36" height="36" alt="Azzle logo"> | Azzle | [@azzleAI](https://x.com/azzleAI) |
 | <img src="https://pbs.twimg.com/profile_images/2082476759392698368/LTB7_hF6_400x400.jpg" width="36" height="36" alt="Bankr logo"> | Bankr | [@bankrbot](https://x.com/bankrbot) |
@@ -48,7 +48,7 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 | <img src="https://pbs.twimg.com/profile_images/2065134999163080704/IGp7PE1Q_400x400.jpg" width="36" height="36" alt="Glim.sh logo"> | Glim.sh | [@glim_sh](https://x.com/glim_sh) |
 | <img src="https://pbs.twimg.com/profile_images/2097627668179214336/Vx4FYI41_400x400.jpg" width="36" height="36" alt="HivemindOS logo"> | HivemindOS | [@thehivemindos](https://x.com/thehivemindos) · [hivemindos.liamvisionary.com](https://hivemindos.liamvisionary.com) |
 | <img src="https://pbs.twimg.com/profile_images/2050846114472202240/fOvJsybI_400x400.jpg" width="36" height="36" alt="Hivra logo"> | Hivra | [@HivraOS](https://x.com/HivraOS) |
-| <img src="https://pbs.twimg.com/profile_images/2060061798691221509/dGZFzJ5e_400x400.jpg" width="36" height="36" alt="Hound Flow logo"> | Hound Flow | [@HoundFlow_](https://x.com/HoundFlow_) · [houndflow.com](https://houndflow.com) |
+| <img src="https://pbs.twimg.com/profile_images/2060061798691221509/dGZFzJ5e_400x400.jpg" width="36" height="36" alt="Hound Flow logo"> | Hound Flow | [@HoundFlow_](https://x.com/HoundFlow_) |
 | <img src="https://pbs.twimg.com/profile_images/2093311513289506816/BlgiDbJl.jpg" width="36" height="36" alt="Hunch logo"> | Hunch | [@playhunchxyz](https://x.com/playhunchxyz) |
 | <img src="https://pbs.twimg.com/profile_images/2065880577148882944/eljgIBzJ_400x400.jpg" width="36" height="36" alt="Lens logo"> | Lens | [@lnsx_io](https://x.com/lnsx_io) |
 | <img src="https://pbs.twimg.com/profile_images/2044050121852366850/v70sEXCF_400x400.jpg" width="36" height="36" alt="LiquidPad logo"> | LiquidPad | [@LiquidPadBot](https://x.com/LiquidPadBot) · [liquidpad.site](https://www.liquidpad.site) |
@@ -73,7 +73,7 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 | <img src="https://pbs.twimg.com/profile_images/2070604629688070144/xNwUGHgX_400x400.jpg" width="36" height="36" alt="RootAi logo"> | RootAi | [@root_edge](https://x.com/root_edge) |
 | <img src="https://pbs.twimg.com/profile_images/2056693584452300802/i6yxFLgW_400x400.jpg" width="36" height="36" alt="SAM logo"> | SAM | [@prmrsamm](https://x.com/prmrsamm) |
 | <img src="https://pbs.twimg.com/profile_images/2056009745040121856/SkTibyEJ_400x400.jpg" width="36" height="36" alt="Sentysis logo"> | Sentysis | [@Sentysislabs](https://x.com/Sentysislabs) |
-| <img src="https://pbs.twimg.com/profile_images/2056291951084032000/QJiBIXV-_400x400.jpg" width="36" height="36" alt="Signa logo"> | Signa | [@Signa_Agent](https://x.com/Signa_Agent) · [signaagent.xyz](https://www.signaagent.xyz) |
+| <img src="https://pbs.twimg.com/profile_images/2056291951084032000/QJiBIXV-_400x400.jpg" width="36" height="36" alt="Signa logo"> | Signa | [@Signa_Agent](https://x.com/Signa_Agent) |
 | <img src="https://pbs.twimg.com/profile_images/2064718491668889600/S23rFUM6_400x400.jpg" width="36" height="36" alt="Simmer logo"> | Simmer | [@simmer_markets](https://x.com/simmer_markets) |
 | <img src="https://pbs.twimg.com/profile_images/2056536399864827904/sJpI8LLl_400x400.jpg" width="36" height="36" alt="Skim logo"> | Skim | [@skim402](https://x.com/skim402) · [skim402.com](https://skim402.com) |
 | <img src="https://pbs.twimg.com/profile_images/2074036017712320512/zeatSErP_400x400.jpg" width="36" height="36" alt="Solvr logo"> | Solvr | [@solvrbot](https://x.com/solvrbot) |
