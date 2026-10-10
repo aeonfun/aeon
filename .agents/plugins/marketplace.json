@@ -20,7 +20,7 @@
         "authentication": "ON_USE"
       },
       "category": "Productivity",
-      "description": "Operator console for running an Aeon agent instance from your coding agent."
+      "description": "Run your Aeon agent from your coding agent: connect to it, run and schedule skills, and set it up with the operator console."
     }
   ]
 }
