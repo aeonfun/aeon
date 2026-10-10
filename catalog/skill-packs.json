@@ -151,12 +151,12 @@
       ]
     },
     {
-      "repo": "Svector-anu/aeon-epoch-pack",
+      "repo": "Svector-anu/epoch",
       "name": "Epoch Pack",
       "description": "Your unattended software engineer, running inside your Aeon instance: spec, build, review, prove and a merge-ready verdict, each pinned to one commit. Opens pull requests; you merge.",
       "author": "Svector-anu",
       "license": "MIT",
-      "homepage": "https://github.com/Svector-anu/aeon-epoch-pack",
+      "homepage": "https://github.com/Svector-anu/epoch",
       "category": "dev",
       "trust_level": "community",
       "skills": [

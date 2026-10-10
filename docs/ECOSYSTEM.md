@@ -34,11 +34,11 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 | <img src="https://pbs.twimg.com/profile_images/2062754968852221952/QcEP9JKW_400x400.jpg" width="36" height="36" alt="Charon logo"> | Charon | [@Charon_AI](https://x.com/Charon_AI) |
 | <img src="https://pbs.twimg.com/profile_images/2027296134939684866/eTsFmewn_400x400.jpg" width="36" height="36" alt="Claw Harbor logo"> | Claw Harbor | [@ClawHarbor](https://x.com/ClawHarbor) |
 | <img src="https://pbs.twimg.com/profile_images/2045511364072873985/r7zESZco_400x400.jpg" width="36" height="36" alt="ClawBank logo"> | ClawBank | [@ClawBankHQ](https://x.com/ClawBankHQ) |
-| <img src="https://pbs.twimg.com/profile_images/2100360896103018496/2GQeuGJO_400x400.jpg" width="36" height="36" alt="ClawHunter logo"> | ClawHunter | [@clawhuntersol](https://x.com/clawhuntersol) |
+| <img src="https://pbs.twimg.com/profile_images/2105335791383691264/rp4LqFBi_400x400.jpg" width="36" height="36" alt="ClawHunter logo"> | ClawHunter | [@mystudiosfun](https://x.com/mystudiosfun) |
 | <img src="https://pbs.twimg.com/profile_images/2058054817516548096/e0qPRxNW_400x400.jpg" width="36" height="36" alt="Clerk logo"> | Clerk | [@agent_clerk](https://x.com/agent_clerk) |
 | <img src="https://pbs.twimg.com/profile_images/2039705524166660096/mcVkmNR3_400x400.jpg" width="36" height="36" alt="Cobot logo"> | Cobot | [@cobotgg](https://x.com/cobotgg) |
 | <img src="https://pbs.twimg.com/profile_images/2075170344957083648/AR-5asAz_400x400.jpg" width="36" height="36" alt="CTRL logo"> | CTRL | [@CTRL_automation](https://x.com/CTRL_automation) |
-| <img src="https://pbs.twimg.com/profile_images/2070145040882544640/P8NilHgr_400x400.jpg" width="36" height="36" alt="DarkSol logo"> | DarkSol | [@Darks0l_](https://x.com/Darks0l_) |
+| <img src="https://pbs.twimg.com/profile_images/2106896088074539008/pi_VRet1_400x400.jpg" width="36" height="36" alt="DarkSol logo"> | DarkSol | [@Darks0l_](https://x.com/Darks0l_) |
 | <img src="https://pbs.twimg.com/profile_images/2057284361066569728/K5ZhxKXY_400x400.png" width="36" height="36" alt="Echo Oracle logo"> | Echo Oracle | [@BuiltByEcho](https://x.com/BuiltByEcho) · [builtbyecho.xyz](https://www.builtbyecho.xyz/) |
 | <img src="https://pbs.twimg.com/profile_images/2076035829168787456/nvPci2jF_400x400.jpg" width="36" height="36" alt="eyebrow logo"> | eyebrow | [@eyebrowCC](https://x.com/eyebrowCC) · [eyebrow.cc](https://eyebrow.cc) |
 | <img src="https://pbs.twimg.com/profile_images/2058778503957590016/3Uo13Pxy_400x400.jpg" width="36" height="36" alt="Finance District logo"> | Finance District | [@FD_XYZ](https://x.com/FD_XYZ) · [fd.xyz](https://fd.xyz) |
@@ -56,7 +56,7 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 | <img src="https://pbs.twimg.com/profile_images/2065063781042954241/zcTqmW5j_400x400.jpg" width="36" height="36" alt="LiteBeam logo"> | LiteBeam | [@Litebeam_xyz](https://x.com/Litebeam_xyz) |
 | <img src="https://signedlogbook.com/logbook-pfp-blue.png" width="36" height="36" alt="logbook logo"> | logbook | [@logbookonbase](https://x.com/logbookonbase) · [signedlogbook.com](https://signedlogbook.com) |
 | <img src="https://pbs.twimg.com/profile_images/2059995800902537220/IngKmW55_400x400.jpg" width="36" height="36" alt="MANAGR logo"> | MANAGR | [@USICAI](https://x.com/USICAI) |
-| <img src="https://pbs.twimg.com/profile_images/2030743130421751808/w4Yi3fC7_400x400.jpg" width="36" height="36" alt="Mei logo"> | Mei | [@MeiMighty1](https://x.com/MeiMighty1) |
+| <img src="https://pbs.twimg.com/profile_images/2105672150858297344/r6BrNQzJ_400x400.jpg" width="36" height="36" alt="Mei logo"> | Mei | [@MeiTerminal_x](https://x.com/MeiTerminal_x) |
 | <img src="https://pbs.twimg.com/profile_images/2060426975718592517/Jdj2fOzg_400x400.jpg" width="36" height="36" alt="MiroShark logo"> | MiroShark | [@miroshark_](https://x.com/miroshark_) |
 | <img src="https://pbs.twimg.com/profile_images/2089264506991976448/9Ki_nVAN_400x400.jpg" width="36" height="36" alt="Mneme logo"> | Mneme | [@mnemeDB](https://x.com/mnemeDB) · [mnemedb.dev](https://mnemedb.dev) |
 | <img src="https://pbs.twimg.com/profile_images/2059382579107659778/pkh1HmwK_400x400.jpg" width="36" height="36" alt="Noctel logo"> | Noctel | [@noctelxbt](https://x.com/noctelxbt) · [noctel.xyz](https://www.noctel.xyz) |
