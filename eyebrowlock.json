@@ -2668,881 +2668,737 @@
       "contentHash": "sha256-349ae83cfa9c3c1bc1d2da278ece86db40ae6c6be73c2a494f22517b3c9c8845",
       "discoveredFrom": "skills/feedback-builder/SKILL.md"
     },
-  {
-    "id": "b3117facd6f337d9",
-    "tool": "aeon",
-    "scope": "project:.",
-    "type": "skill",
-    "name": "anatomy",
-    "source": {
-      "kind": "local",
-      "ref": "skills/anatomy"
-    },
-    "capabilities": {},
-    "files": [
-      {
-        "path": ".gitattributes",
-        "hash": "cdd266359c792670902c16da138e75d6b10bba6251b1842191ab46939ae2c7aa"
-      },
-      {
-        "path": ".github/ISSUE_TEMPLATE/bug_report.yml",
-        "hash": "12c73cade869e17338a18bff2baec1725278fd8739dc3ce4771e71f7d2ed130d"
-      },
-      {
-        "path": ".github/ISSUE_TEMPLATE/config.yml",
-        "hash": "b6dcbdd46103891d9614c85e7f28a74452e3a2c5db7393c5444ad4a029880c0c"
-      },
-      {
-        "path": ".github/ISSUE_TEMPLATE/figure_request.yml",
-        "hash": "69fdd31d68b4d49840d5a97618ad10a00e4e65c0632daaf00fb9660b42af13a5"
-      },
-      {
-        "path": ".github/PULL_REQUEST_TEMPLATE.md",
-        "hash": "95bb2be701cd6e1e3e9797596b573f2324d903288bce9b01b114ca3455b1a239"
-      },
-      {
-        "path": ".github/assets/dial-indicator.webp",
-        "hash": "a1f0550e0938a3c76316fddd272792d5f50609cceca7217606b187868d7f4fe7"
-      },
-      {
-        "path": ".github/assets/raptor-engine-apart.webp",
-        "hash": "db1bee237411d26d97e2e88f60949a75f9f160a0139d03382f46a2e2d6801050"
-      },
-      {
-        "path": ".github/assets/raptor-engine-firing.webp",
-        "hash": "c42a9eb6aacb506f7baf0fd91d4fbb04649999e9615f9847585daff595a62d55"
-      },
-      {
-        "path": ".github/assets/ripple-tank.webp",
-        "hash": "1312c34386e18792d44c3d3e1939d22e14bc48ce67e4f48eb29c543e741f79c2"
-      },
-      {
-        "path": ".github/assets/turning-dial.webp",
-        "hash": "f77d1a97efc718d875ca3abfa0c0a0b64049797006e188f804383d0173281739"
-      },
-      {
-        "path": ".github/workflows/ci.yml",
-        "hash": "edf8fb39a6e960fae25898c3822c2a63d1ea9a1f83aed0f300f220a2268b6107"
-      },
-      {
-        "path": ".gitignore",
-        "hash": "7340a4546689ca1bc113c156e8264c7c673ed44c52bb9d2a8dd1c663bba7390a"
-      },
-      {
-        "path": "CHANGELOG.md",
-        "hash": "e41f2b0b2282b6a4ca7cf3cf9be16ea92d6252e6c71e54563e1600896829e00e"
-      },
-      {
-        "path": "CODE_OF_CONDUCT.md",
-        "hash": "dd94a5c1483143876992d096247d6b5531fd7a1041728bee339b007fe15764e5"
-      },
-      {
-        "path": "CONTRIBUTING.md",
-        "hash": "42d9e4ef76d5bb78ff3d80182dc23426ef8a4cf62de7f9a8f438d6e5b0aed1cf"
-      },
-      {
-        "path": "LICENSE",
-        "hash": "87c078ab9d90a3044f359e6b563d4e6afea7aa060897cf4f21618687b3856796"
-      },
-      {
-        "path": "README.md",
-        "hash": "031b8d9533abafd3620a884839c4888198305307056639112a8f2f3f707c7d88"
-      },
-      {
-        "path": "SECURITY.md",
-        "hash": "c9bd6a03b51053be6321f88110f9589e73c1cb00aa81d9d1c2881e94073e9629"
-      },
-      {
-        "path": "SKILL.md",
-        "hash": "835e7783746ad5675b5a49e37d8fa6065e79b69949f75dfb9158bce92602fdc2"
-      },
-      {
-        "path": "UPSTREAM.md",
-        "hash": "19784981ab293523dcc43dca8864160903a525086409047ca364fdfcbfe8f15e"
-      },
-      {
-        "path": "agents/openai.yaml",
-        "hash": "254b17510460bc5151295b1e1e40b6a1aceeff60a0dda4e9594adcfa36819526"
-      },
-      {
-        "path": "evals/evals.json",
-        "hash": "b79afa9daa10084c71bb18c3baafef403a929c1d707b2be4c636952ae1896dd4"
-      },
-      {
-        "path": "examples/arcade-cabinet/arcade-cabinet-light.html",
-        "hash": "03f832383879a031119de40dfaaff7b800baa975065992079ff6377267d8cb5e"
-      },
-      {
-        "path": "examples/arcade-cabinet/arcade-cabinet.css",
-        "hash": "a0ea7bce89a665ddd13f72daf31849c07d8b517b66a3d555543aa506b8933629"
-      },
-      {
-        "path": "examples/arcade-cabinet/arcade-cabinet.html",
-        "hash": "6d95f892c35d888ac635870244ec904bf6e79e10927f1f5a345bb844bc606bff"
-      },
-      {
-        "path": "examples/arcade-cabinet/build.mjs",
-        "hash": "a5e92188b54fb18fe7fbce3dbc86a8e55abf32f2560be667ac0866d089ba7b84"
-      },
-      {
-        "path": "examples/arcade-cabinet/live.js",
-        "hash": "d9f02ea9193f3109501333bdfb4ab297a71457aaba431f05f5df667ea8c40c8f"
-      },
-      {
-        "path": "examples/arcade-cabinet/parts.mjs",
-        "hash": "3ba74b8c55e72933b1e119e3d24c939f654b2c43d41ff26cf855f064cbc7d2a3"
-      },
-      {
-        "path": "examples/arcade-cabinet/screen.mjs",
-        "hash": "8fbb8aebb1d657508979ec9b58a29281c71403396df1fcdc6f8f834fe9097be9"
-      },
-      {
-        "path": "examples/desk-computer/build.mjs",
-        "hash": "d378f9814acf75bc915921d4f2d83ed1eb4991a8b4298eb0de0e10383b2ff66d"
-      },
-      {
-        "path": "examples/desk-computer/desk-computer-light.html",
-        "hash": "ce63c5bed81b76491a82f5e94d22e5f64744c87bc448fdad8726ae0c6ecd0b59"
-      },
-      {
-        "path": "examples/desk-computer/desk-computer.html",
-        "hash": "94f04084c1ce997a88e60fc0b4d9c5b6dbe859b95ee0dd7a10603e648fced2bc"
-      },
-      {
-        "path": "examples/dial-indicator/build.mjs",
-        "hash": "e4eaa2324af7f2630650ca72e52a78d56159213a786e14fba8321344789f990d"
-      },
-      {
-        "path": "examples/dial-indicator/dial-indicator-light.html",
-        "hash": "bc1810e340d916a25cc1749589b44096b7e41970f22fa7fce569bbefc0613093"
-      },
-      {
-        "path": "examples/dial-indicator/dial-indicator.html",
-        "hash": "2ba95d49a5432a5aa764fca89af91ab91043531669609ed57b92bd50b51e5519"
-      },
-      {
-        "path": "examples/raptor-engine/build.mjs",
-        "hash": "26064df05bb650845ec485195f972f5a0fed3c21ee152f0b8db8194fdc26d916"
-      },
-      {
-        "path": "examples/raptor-engine/live.js",
-        "hash": "03d801ef2b75e17a38ebc3d5cb9178747226ea8c2e0c527caafb9c72844d88d8"
-      },
-      {
-        "path": "examples/raptor-engine/raptor-engine-light.html",
-        "hash": "f49110757e6e55ebfbee090e40676e3fce814ce664de0f8905a20233a1432265"
-      },
-      {
-        "path": "examples/raptor-engine/raptor-engine.html",
-        "hash": "2d0f782b459dcd5bc3aa8c4ce922a1f523f63f2799d120f9c0de2dc732cc92e1"
-      },
-      {
-        "path": "examples/raptor-engine/raptor.css",
-        "hash": "f850575feeeacac8ef5d9d9c49359f4deaef848666c68a4dafa9727fe926cd6e"
-      },
-      {
-        "path": "examples/ripple-tank/build.mjs",
-        "hash": "5a5b846bcd146630be3eafb73ebd04cfdd2101d05def15a877fff7188822b493"
-      },
-      {
-        "path": "examples/ripple-tank/live.js",
-        "hash": "d2427eada1948662c680b9ca42e8d6e81979f9206c0572524ac404f204f07b5e"
-      },
-      {
-        "path": "examples/ripple-tank/model.mjs",
-        "hash": "f6315aa53e80c0c69bf3c52baf0a1340ca4daacfae80245def02f357c2d33882"
-      },
-      {
-        "path": "examples/ripple-tank/ripple-tank-light.html",
-        "hash": "922ca1692b76a72bbc9330708af56a5073c41f6936d87da507f5fc1247a9c94f"
-      },
-      {
-        "path": "examples/ripple-tank/ripple-tank.html",
-        "hash": "6ae0099f420c96b0241a74361aea700ef83e554d5f17d5fbcdfd9c130335c27e"
-      },
-      {
-        "path": "examples/ripple-tank/ripple.css",
-        "hash": "1bf7a778f0b50928adcd54e67c44aa2b12a6877b45f15a0b697d87ab7be0dd5c"
-      },
-      {
-        "path": "examples/spot-plate/art.tsx",
-        "hash": "aecef8d6ee247e99d52717371a319283af8b1bbba2adfcdd4d012553d2963b38"
-      },
-      {
-        "path": "examples/spot-plate/drops.ts",
-        "hash": "9bec874c5e324d69a25cc9085ecf2c5d9c3c2e3bd1a8c667c45e048301b899d4"
-      },
-      {
-        "path": "examples/spot-plate/fan.ts",
-        "hash": "648c1d946e9512afcae60e077d2436926ca1ea94b02c944df8624419812077b1"
-      },
-      {
-        "path": "examples/spot-plate/figure.tsx",
-        "hash": "b9db1ef99bfac58d55d0506f05e0c178e5c9566c61cbf26826ea25cfaa57805f"
-      },
-      {
-        "path": "examples/spot-plate/geometry.ts",
-        "hash": "faf7d6bf1b475daacd4751687d409d7a5c03a6c2bb216ae81beadce5a3cea99a"
-      },
-      {
-        "path": "examples/spot-plate/live.tsx",
-        "hash": "e96fd47aa4ab250a6b2c6fe3c6c3c96d4bcf737dff7f084d4912f5d1ef195116"
-      },
-      {
-        "path": "examples/spot-plate/rig.ts",
-        "hash": "b19fc1637a1f4c411c23f34c7a48361f308402b15b11efc44fb6555e8f67ceea"
-      },
-      {
-        "path": "examples/spot-plate/spot-plate.css",
-        "hash": "b31e4c8e02f4de0b77fe0a71718f59d7df2e3abc3d9772f802e00fc3d8a582bd"
-      },
-      {
-        "path": "examples/test-rig/art.tsx",
-        "hash": "a6b8c1094a9402380d9835ecedbcc677254686b7391027a20da10fc8bf24dae5"
-      },
-      {
-        "path": "examples/test-rig/figure.tsx",
-        "hash": "2dbaef167b9a6a96de74357fc57ae2a650159007852d3d4e8c471b8837e463a9"
-      },
-      {
-        "path": "examples/test-rig/geometry.ts",
-        "hash": "b8c275eb58b093a85c312f90dc5d79fd9d9a93ae266e42a8a6fa7f6f9aaeb571"
-      },
-      {
-        "path": "examples/test-rig/live.tsx",
-        "hash": "46a4c338a2805fc0078a20d6f4e12d9de20fc4145ec051ffce3964b164c5a7da"
-      },
-      {
-        "path": "examples/test-rig/pose.ts",
-        "hash": "380e1d07afcaa3a4e2cd1b13556500f2b336e354fa1c369918b3173f0c9d0866"
-      },
-      {
-        "path": "examples/test-rig/rig.ts",
-        "hash": "9672431d6982acaa7b6f28e88e1371443bd6a10fb906ff52fc7bdb0f5fd88b05"
-      },
-      {
-        "path": "examples/test-rig/stretch.css",
-        "hash": "dd15f4582b5fb9b228dc7e32ef57dbcba0129dad38b36e5707247eeb7a2abe8b"
-      },
-      {
-        "path": "examples/test-rig/view.ts",
-        "hash": "5465a3e122c2074f8de755b874c7bdb783b365e4140e3e741fc91a32cd69500c"
-      },
-      {
-        "path": "examples/turning-dial/build.mjs",
-        "hash": "dcb1b2a1fec2c98c2cea401c6a5b1c7e6545da3b5ea08433cfd72a7f27a49248"
-      },
-      {
-        "path": "examples/turning-dial/dial.css",
-        "hash": "769fc9596dcd2bbc46823d6e2816a3e584b52e0a6db359d93bedce16f354bedd"
-      },
-      {
-        "path": "examples/turning-dial/live.js",
-        "hash": "e872f0d930ba583ce7c4c252a3767aa6b9f6cd1f97fe6dddb212653a0579b41f"
-      },
-      {
-        "path": "examples/turning-dial/stress.mjs",
-        "hash": "6d3aec19d8ce6daadffe15113da9415c2fe084c6407d1bb7fb4b5fec86330314"
-      },
-      {
-        "path": "examples/turning-dial/turning-dial-light.html",
-        "hash": "7873a4873e4f1a204ca59691765915f155f44095c2c290730aa2b915b4c88c9e"
-      },
-      {
-        "path": "examples/turning-dial/turning-dial-verify-light.html",
-        "hash": "7516d25e04c8a2c7d3abc7bf19e78985cfca2a2f37e1de72740808a977346366"
-      },
-      {
-        "path": "examples/turning-dial/turning-dial.html",
-        "hash": "e477d45029568c45966bf2e4ae2353265e065b90663877e8c21de5b6741e4e90"
-      },
-      {
-        "path": "examples/turning-dial/turning-stress-light.html",
-        "hash": "e175e82f1bba087bb6031e375fb5da386f4f779e89e91a7864f7fc298b8b14e3"
-      },
-      {
-        "path": "kit/audit.mjs",
-        "hash": "90c5bb4a86f108e8a1d3211dbea326bed16acd887c3438810ea29200a2cde28d"
-      },
-      {
-        "path": "kit/canvas-painter.mjs",
-        "hash": "1918db10279c9d9df87d7df52c7ed8c2de8acd0bbce214c8f2115a39e7f955ac"
-      },
-      {
-        "path": "kit/gl-shared.mjs",
-        "hash": "8c3773cf3e15844df332db3ba55af940186edb2227201e5839347ecc390c039c"
-      },
-      {
-        "path": "kit/gl.mjs",
-        "hash": "17a477411e0b9fcb8e84e718094eaefa6be2c0b7d6ce15ee03fe8e252944130a"
-      },
-      {
-        "path": "kit/iso-kit.mjs",
-        "hash": "6d3ecc725d30c3b0346da309cf61dfa5a65017c23620bbd4093009d4fb104018"
-      },
-      {
-        "path": "kit/iso-kit.ts",
-        "hash": "e9fc988c61a11bfac1f097e62419915ea86b2130ab091f1b50c0e019c907e253"
-      },
-      {
-        "path": "kit/iso.css",
-        "hash": "ef19bac5a42ba9be42b56b2c1cf7fc7e21d332a8060765e9ca1d987b8ab23924"
-      },
-      {
-        "path": "kit/lathe.mjs",
-        "hash": "a4e7e974b1a37e603ad2b76363b6f9815cc101dfff0ad277a5d4e8f1dc56fccb"
-      },
-      {
-        "path": "kit/react/draw.tsx",
-        "hash": "d5389bd78aa3d5424a37b1ce6f635bd102eb86faf27d064b10957716278a631c"
-      },
-      {
-        "path": "kit/react/live.tsx",
-        "hash": "85024d4906d984c3c513564fee22d81a13a9c933b82c410196fb7b1cd9abc1a2"
-      },
-      {
-        "path": "kit/tube.mjs",
-        "hash": "bcb3cc360f6d83e6a5753f4c464b4587ab7965028b05a5d58e285abce58667c9"
-      },
-      {
-        "path": "kit/turn-audit.mjs",
-        "hash": "e118b838c00621eb5d86409552b75b50d02c303eaedefc008146a7c62c2eaefd"
-      },
-      {
-        "path": "kit/turn-build.mjs",
-        "hash": "b95d76f9181703508b5bb758973bf004eb92d298a01e0e5ff5457f830c183888"
-      },
-      {
-        "path": "kit/turn-fixed.mjs",
-        "hash": "7429b46eb7673aefb6ed90adeaf130c1dafe8e32af038cbde24a04e693d13fc7"
-      },
-      {
-        "path": "kit/turn.mjs",
-        "hash": "cb4b530b5e1750ba0e4fd2367d5f25e00195c0136672aa2ecd665c0622ffd1a2"
-      },
-      {
-        "path": "references/3d.md",
-        "hash": "de58da5415b4c9fe7712b5b71e0868c4d36363d54e4e32d98a6b016363554536"
-      },
-      {
-        "path": "references/craft.md",
-        "hash": "38761fa9b81d66b30e50b05488501d4815830d3627f153d60f76ca783f598936"
-      },
-      {
-        "path": "references/kit.md",
-        "hash": "684672e069fdb52735efabc3f4310dedd840d0c8066a8dc7784be2b7e656be71"
-      },
-      {
-        "path": "references/motion.md",
-        "hash": "dda401ca1b4661a5f0b7c1e33dac6e7e4b8c13d51ca5d9312123a5c02dab320b"
-      },
-      {
-        "path": "references/react.md",
-        "hash": "76b5cee6e0a7513e3c77a832e3f58b1343806597d469774e1749f141525801fd"
-      },
-      {
-        "path": "references/verify.md",
-        "hash": "fb81437fc5d75094a34432eb6f545644aa228e15173a27d08b3cace912033561"
-      },
-      {
-        "path": "references/walkthrough.md",
-        "hash": "4d157e0169080a6ed44d5b06de0a5de2931baf3d0fac30283d2644dd66506dfa"
-      },
-      {
-        "path": "references/webgl.md",
-        "hash": "fb4e2421c6a705d4ad849c8e516731ebc958bc5ff0855548ff58232b0aa01923"
-      },
-      {
-        "path": "scripts/audit-affine-bounds.test.mjs",
-        "hash": "038e0a879363c4b0d2c7146a62065b09f2973210114928d5005e9082219654d2"
-      },
-      {
-        "path": "scripts/audit-cache.test.mjs",
-        "hash": "00b49601c068897e94bf8309d652bb55595e541283c510bba34957c457edd57e"
-      },
-      {
-        "path": "scripts/audit-clearance-envelope.test.mjs",
-        "hash": "ffa8321d25996ac165dd1fdb6473a903c1c6f03b86996b2fef6978203b8f2bd8"
-      },
-      {
-        "path": "scripts/audit-empty-clipping.test.mjs",
-        "hash": "a28384ccbf303acc32f7788753459a7338c94bc74ee5efe70762daa75a62c8cb"
-      },
-      {
-        "path": "scripts/audit-order-convergence.test.mjs",
-        "hash": "9ad7b9a645d9e90a788e561484013b0fdefb1a8abd38fcb160f5d1a6464be278"
-      },
-      {
-        "path": "scripts/audit-path-origin.test.mjs",
-        "hash": "1e5917a4a3bc337aa4497e5717de47b198db8fc9538d5f10d40a788f5f821d37"
-      },
-      {
-        "path": "scripts/audit-profile.test.mjs",
-        "hash": "80179ae38afa6e58ed254a597daeee27240e85f87d1bbd0421def4e347ec37c0"
-      },
-      {
-        "path": "scripts/audit-projection.test.mjs",
-        "hash": "0cd790e0dfc64633019db3233b87fec823c6148037d9335e1c2b16ea1c722db6"
-      },
-      {
-        "path": "scripts/audit-slide-clearance.test.mjs",
-        "hash": "007f68aa5262eae40aceef00eec91e4d5be0164bd5fb9377680996164ff9ac19"
-      },
-      {
-        "path": "scripts/audit-svg-attributes.test.mjs",
-        "hash": "2d2a949639f90d6328eeea401f6b7f3a3dc1fcc17f1d46cbe2de208afc3c6533"
-      },
-      {
-        "path": "scripts/audit-taper.test.mjs",
-        "hash": "ea4415ef743efc4ba1393457c571cdfc2b91bfd5ea931ae32829926c80aed487"
-      },
-      {
-        "path": "scripts/capture-selector.test.mjs",
-        "hash": "046ce21a686e99c1a5a760f529b999cdca5b7f504961784bc087395b0b586eff"
-      },
-      {
-        "path": "scripts/capture.mjs",
-        "hash": "a668240a98a82fafd97ba40b84a8f58b3c8e470dfd2afbdfd5627f17f4baa9f2"
-      },
-      {
-        "path": "scripts/capture.test.mjs",
-        "hash": "319aed308ded5eb4137c8d633720a9254d8c5f35a8adcc1e883066e6c983ed62"
-      },
-      {
-        "path": "scripts/chrome-port.mjs",
-        "hash": "6775d3d389d26f37a52be8358aa88d1dc0aded63cb24ae20a936505a192e5d9d"
-      },
-      {
-        "path": "scripts/chrome-startup.test.mjs",
-        "hash": "bd3c0eb4b699ebfbfd4efa5920acf386f31876ed490aaee839886dd8ed4cf797"
-      },
-      {
-        "path": "scripts/drive-actions.test.mjs",
-        "hash": "ef415f9860e656dcf0d1c95b48aedf974cf311aa31e547403f7684c59d676aa3"
-      },
-      {
-        "path": "scripts/drive.mjs",
-        "hash": "41458d12f5cffc45b4af5b7c8a550bc919be9183e0ef5c4f019b9cb7cd475b38"
-      },
-      {
-        "path": "scripts/drive.test.mjs",
-        "hash": "9d0d19d82dbdc22c712e24c5de241ef7b67ae3c7ea356621033c77780f3337f5"
-      },
-      {
-        "path": "scripts/enter-key.test.mjs",
-        "hash": "2592318f2b41735e4ff8ed2edcbc3abee46d81f9184b02dd99c121d8900d3838"
-      },
-      {
-        "path": "scripts/fidelity-cut.test.mjs",
-        "hash": "7f3518eba374167ada79cc73970cc9557ef48faa3e8b390326589c67ab989787"
-      },
-      {
-        "path": "scripts/fidelity-tube-coverage.test.mjs",
-        "hash": "eef7300ea786d82268811cc4e4153c1de913bae17cec58bd4a28f64ea875c525"
-      },
-      {
-        "path": "scripts/inline-kit.mjs",
-        "hash": "01e08df7c2556ce52a7e8ed9009a332036b209ab7e42389874af2a65fda6e9db"
-      },
-      {
-        "path": "scripts/line-ends.mjs",
-        "hash": "e8a121473dfe62245eab2116e8fb6b4d8ed86e3fe29ea50a90e86ffed335b1cd"
-      },
-      {
-        "path": "scripts/lines-arcs.test.mjs",
-        "hash": "ae915157d4bbdfe8e4af031c0e2e5f5f566c938ba7bb88884ae377489aff540e"
-      },
-      {
-        "path": "scripts/lines-bezier.test.mjs",
-        "hash": "7a95169325fed35eecb0c7aefcb806a48bfd09eaba3df5461dc2e30c5d0695f4"
-      },
-      {
-        "path": "scripts/lines-round.test.mjs",
-        "hash": "7a012c3eb010b7f8082ee49ce939d6f35f384d188d897e3fd3708682c5d3a657"
-      },
-      {
-        "path": "scripts/lines-rounded-rect.test.mjs",
-        "hash": "88d0a27b047895a00f5654f59d93c775fb8312a5c28be3b47b5e673d80efe5b6"
-      },
-      {
-        "path": "scripts/lines.mjs",
-        "hash": "b0ca73ab3a0d1cd4a28fda933496cbd7384ef315d821b5d2fffae1c704ce79cc"
-      },
-      {
-        "path": "scripts/lines.test.mjs",
-        "hash": "82931231d33d977bcc44c54b05bdb7b78c4ddebc422848ab59539018dd43583a"
-      },
-      {
-        "path": "scripts/navigation.test.mjs",
-        "hash": "b9bd9d7360735e178b24e086e5c875e1703e3e0593e7ddff5f10fe0b4f0f7587"
-      },
-      {
-        "path": "scripts/orbit-sampling.test.mjs",
-        "hash": "ed6ce6b0dd32f6c7ab51a5a50ea2dd4b920858ff35d725bea22bee79e323b97a"
-      },
-      {
-        "path": "scripts/react-dots-opacity.test.mjs",
-        "hash": "e7d2b5386f397efe4197b4607f2131170bf88dc52ccc3cfcfea2677f28d41aec"
-      },
-      {
-        "path": "scripts/react-readout-first-write.test.mjs",
-        "hash": "088a2d29d67e9638f7e43e9b5204c027566934d38302c0ee5e406752f2a4780a"
-      },
-      {
-        "path": "scripts/react-solid-seamless.test.mjs",
-        "hash": "f45927c14dd6023eec7109da5db10cddd46cd46b21f58675a6d4dc6ca12122b0"
-      },
-      {
-        "path": "scripts/react-visibility-target.test.mjs",
-        "hash": "78c630aa974d2fbd04cb096a95b528d64d3027e2a9666b85e9d7a50965160925"
-      },
-      {
-        "path": "scripts/turn-bench.mjs",
-        "hash": "d86cd53e3702fa92e22b4052ee9bf47da10fd0a71401fe477bd8da2fe30b1631"
-      },
-      {
-        "path": "scripts/turn-check.mjs",
-        "hash": "d96945a2c9c25c59773477ba83e4ce6e2efb165890ff20dcb4d4999f903f8958"
-      },
-      {
-        "path": "scripts/turn-fidelity.mjs",
-        "hash": "4b8e7ad29d0a255d2dd5e7f396bce11f13e5baa5eb682adc68025d4ee16a1fb7"
-      },
-      {
-        "path": "scripts/turn-group-reference.test.mjs",
-        "hash": "bfac2f910c80c7fcfba9e4861391552000a0f25414ae86576a9ef9ef46291412"
-      },
-      {
-        "path": "scripts/turn-split-owner.test.mjs",
-        "hash": "829febf610ba09cdca651fbd86340f13932f241b4e3525a3d8566ac70d75a69d"
-      },
-      {
-        "path": "tests/fixtures/react-dots-dark.png",
-        "hash": "f2e7655868e8564d81d274464c618cb330a603459a5fe63bf0bd22992e9c396d"
-      },
-      {
-        "path": "tests/fixtures/react-dots-light.png",
-        "hash": "df72b8d04fd82bf1a1f63b29ea1676ead0570f9b36d55057d8b886087d869543"
-      },
-      {
-        "path": "tests/fixtures/react-solid-dark.png",
-        "hash": "529b58a497268540c2d74b590691f65605ba5d1882566d0462ff984e7a9248e1"
-      },
-      {
-        "path": "tests/fixtures/react-solid-light.png",
-        "hash": "5b344ec9017d06267531b8d01ad3b88062fb8003cd77ad90ecff37319c8dd085"
-      }
-    ],
-    "findings": [
-      {
-        "ruleId": "SENSITIVE-PATH-READ",
-        "severity": "high",
-        "owasp": "ASK-06",
-        "file": ".gitignore",
-        "line": 5,
-        "snippet": ".env",
-        "explanation": "references sensitive credential or secret paths"
-      },
-      {
-        "ruleId": "SENSITIVE-PATH-READ",
-        "severity": "high",
-        "owasp": "ASK-06",
-        "file": ".gitignore",
-        "line": 6,
-        "snippet": ".env.*",
-        "explanation": "references sensitive credential or secret paths"
-      },
-      {
-        "ruleId": "PROMPT-INJECTION",
-        "severity": "high",
-        "owasp": "ASK-07",
-        "file": "SKILL.md",
-        "line": 80,
-        "snippet": "- **Figure**: one mechanism, 40–80 parts, SVG with at most one WebGL layer. About 30–90 minutes. Build it without as…",
-        "explanation": "contains consent-bypass or prompt-injection language"
-      },
-      {
-        "ruleId": "OBFUSCATION-EVAL",
-        "severity": "high",
-        "owasp": "ASK-05",
-        "file": "examples/turning-dial/turning-dial-light.html",
-        "line": 596,
-        "snippet": "const text = atob(value);",
-        "explanation": "dynamic code evaluation or base64 decoding, a common obfuscation vector"
-      },
-      {
-        "ruleId": "OBFUSCATION-EVAL",
-        "severity": "high",
-        "owasp": "ASK-05",
-        "file": "examples/turning-dial/turning-dial-verify-light.html",
-        "line": 596,
-        "snippet": "const text = atob(value);",
-        "explanation": "dynamic code evaluation or base64 decoding, a common obfuscation vector"
-      },
-      {
-        "ruleId": "OBFUSCATION-EVAL",
-        "severity": "high",
-        "owasp": "ASK-05",
-        "file": "examples/turning-dial/turning-dial.html",
-        "line": 596,
-        "snippet": "const text = atob(value);",
-        "explanation": "dynamic code evaluation or base64 decoding, a common obfuscation vector"
-      },
-      {
-        "ruleId": "OBFUSCATION-EVAL",
-        "severity": "high",
-        "owasp": "ASK-05",
-        "file": "examples/turning-dial/turning-stress-light.html",
-        "line": 586,
-        "snippet": "const text = atob(value);",
-        "explanation": "dynamic code evaluation or base64 decoding, a common obfuscation vector"
-      },
-      {
-        "ruleId": "OBFUSCATION-EVAL",
-        "severity": "high",
-        "owasp": "ASK-05",
-        "file": "kit/turn-fixed.mjs",
-        "line": 463,
-        "snippet": "const text = atob(value);",
-        "explanation": "dynamic code evaluation or base64 decoding, a common obfuscation vector"
-      },
-      {
-        "ruleId": "OBFUSCATION-EVAL",
-        "severity": "high",
-        "owasp": "ASK-05",
-        "file": "kit/turn.mjs",
-        "line": 428,
-        "snippet": "const text = atob(value);",
-        "explanation": "dynamic code evaluation or base64 decoding, a common obfuscation vector"
-      },
-      {
-        "ruleId": "EXEC-PRIMITIVE",
-        "severity": "medium",
-        "owasp": "ASK-03",
-        "file": "scripts/audit-affine-bounds.test.mjs",
-        "line": 2,
-        "snippet": "import { execFile } from \"node:child_process\";",
-        "explanation": "uses a process-execution primitive"
-      },
-      {
-        "ruleId": "EXEC-PRIMITIVE",
-        "severity": "medium",
-        "owasp": "ASK-03",
-        "file": "scripts/audit-empty-clipping.test.mjs",
-        "line": 2,
-        "snippet": "import { execFile } from \"node:child_process\";",
-        "explanation": "uses a process-execution primitive"
-      },
-      {
-        "ruleId": "EXEC-PRIMITIVE",
-        "severity": "medium",
-        "owasp": "ASK-03",
-        "file": "scripts/audit-path-origin.test.mjs",
-        "line": 2,
-        "snippet": "import { execFile } from \"node:child_process\";",
-        "explanation": "uses a process-execution primitive"
-      },
-      {
-        "ruleId": "EXEC-PRIMITIVE",
-        "severity": "medium",
-        "owasp": "ASK-03",
-        "file": "scripts/audit-svg-attributes.test.mjs",
-        "line": 2,
-        "snippet": "import { execFile } from \"node:child_process\";",
-        "explanation": "uses a process-execution primitive"
-      },
-      {
-        "ruleId": "EXEC-PRIMITIVE",
-        "severity": "medium",
-        "owasp": "ASK-03",
-        "file": "scripts/capture-selector.test.mjs",
-        "line": 2,
-        "snippet": "import { execFile } from \"node:child_process\";",
-        "explanation": "uses a process-execution primitive"
-      },
-      {
-        "ruleId": "EXEC-PRIMITIVE",
-        "severity": "medium",
-        "owasp": "ASK-03",
-        "file": "scripts/capture.mjs",
-        "line": 2,
-        "snippet": "import { spawn } from \"node:child_process\";",
-        "explanation": "uses a process-execution primitive"
-      },
-      {
-        "ruleId": "EXEC-PRIMITIVE",
-        "severity": "medium",
-        "owasp": "ASK-03",
-        "file": "scripts/capture.test.mjs",
-        "line": 2,
-        "snippet": "import { execFile } from \"node:child_process\";",
-        "explanation": "uses a process-execution primitive"
-      },
-      {
-        "ruleId": "EXEC-PRIMITIVE",
-        "severity": "medium",
-        "owasp": "ASK-03",
-        "file": "scripts/chrome-startup.test.mjs",
-        "line": 2,
-        "snippet": "import { execFile } from \"node:child_process\";",
-        "explanation": "uses a process-execution primitive"
-      },
-      {
-        "ruleId": "EXEC-PRIMITIVE",
-        "severity": "medium",
-        "owasp": "ASK-03",
-        "file": "scripts/drive-actions.test.mjs",
-        "line": 2,
-        "snippet": "import { execFile } from \"node:child_process\";",
-        "explanation": "uses a process-execution primitive"
-      },
-      {
-        "ruleId": "EXEC-PRIMITIVE",
-        "severity": "medium",
-        "owasp": "ASK-03",
-        "file": "scripts/drive.mjs",
-        "line": 2,
-        "snippet": "import { spawn } from \"node:child_process\";",
-        "explanation": "uses a process-execution primitive"
-      },
-      {
-        "ruleId": "EXEC-PRIMITIVE",
-        "severity": "medium",
-        "owasp": "ASK-03",
-        "file": "scripts/drive.test.mjs",
-        "line": 2,
-        "snippet": "import { execFile } from \"node:child_process\";",
-        "explanation": "uses a process-execution primitive"
-      },
-      {
-        "ruleId": "EXEC-PRIMITIVE",
-        "severity": "medium",
-        "owasp": "ASK-03",
-        "file": "scripts/enter-key.test.mjs",
-        "line": 2,
-        "snippet": "import { execFile } from \"node:child_process\";",
-        "explanation": "uses a process-execution primitive"
-      },
-      {
-        "ruleId": "EXEC-PRIMITIVE",
-        "severity": "medium",
-        "owasp": "ASK-03",
-        "file": "scripts/fidelity-cut.test.mjs",
-        "line": 2,
-        "snippet": "import { execFile } from \"node:child_process\";",
-        "explanation": "uses a process-execution primitive"
-      },
-      {
-        "ruleId": "EXEC-PRIMITIVE",
-        "severity": "medium",
-        "owasp": "ASK-03",
-        "file": "scripts/fidelity-tube-coverage.test.mjs",
-        "line": 2,
-        "snippet": "import { execFile } from \"node:child_process\";",
-        "explanation": "uses a process-execution primitive"
-      },
-      {
-        "ruleId": "EXEC-PRIMITIVE",
-        "severity": "medium",
-        "owasp": "ASK-03",
-        "file": "scripts/lines-arcs.test.mjs",
-        "line": 2,
-        "snippet": "import { execFile } from \"node:child_process\";",
-        "explanation": "uses a process-execution primitive"
-      },
-      {
-        "ruleId": "EXEC-PRIMITIVE",
-        "severity": "medium",
-        "owasp": "ASK-03",
-        "file": "scripts/lines-bezier.test.mjs",
-        "line": 2,
-        "snippet": "import { execFile } from \"node:child_process\";",
-        "explanation": "uses a process-execution primitive"
-      },
-      {
-        "ruleId": "EXEC-PRIMITIVE",
-        "severity": "medium",
-        "owasp": "ASK-03",
-        "file": "scripts/lines-round.test.mjs",
-        "line": 2,
-        "snippet": "import { execFile } from \"node:child_process\";",
-        "explanation": "uses a process-execution primitive"
-      },
-      {
-        "ruleId": "EXEC-PRIMITIVE",
-        "severity": "medium",
-        "owasp": "ASK-03",
-        "file": "scripts/lines-rounded-rect.test.mjs",
-        "line": 2,
-        "snippet": "import { execFile } from \"node:child_process\";",
-        "explanation": "uses a process-execution primitive"
-      },
-      {
-        "ruleId": "EXEC-PRIMITIVE",
-        "severity": "medium",
-        "owasp": "ASK-03",
-        "file": "scripts/lines.mjs",
-        "line": 1,
-        "snippet": "import { spawn } from \"node:child_process\";",
-        "explanation": "uses a process-execution primitive"
-      },
-      {
-        "ruleId": "EXEC-PRIMITIVE",
-        "severity": "medium",
-        "owasp": "ASK-03",
-        "file": "scripts/lines.test.mjs",
-        "line": 2,
-        "snippet": "import { execFile } from \"node:child_process\";",
-        "explanation": "uses a process-execution primitive"
-      },
-      {
-        "ruleId": "EXEC-PRIMITIVE",
-        "severity": "medium",
-        "owasp": "ASK-03",
-        "file": "scripts/navigation.test.mjs",
-        "line": 2,
-        "snippet": "import { execFile } from \"node:child_process\";",
-        "explanation": "uses a process-execution primitive"
-      },
-      {
-        "ruleId": "EXEC-PRIMITIVE",
-        "severity": "medium",
-        "owasp": "ASK-03",
-        "file": "scripts/orbit-sampling.test.mjs",
-        "line": 2,
-        "snippet": "import { execFile } from \"node:child_process\";",
-        "explanation": "uses a process-execution primitive"
-      },
-      {
-        "ruleId": "EXEC-PRIMITIVE",
-        "severity": "medium",
-        "owasp": "ASK-03",
-        "file": "scripts/react-readout-first-write.test.mjs",
-        "line": 2,
-        "snippet": "import { execFile } from \"node:child_process\";",
-        "explanation": "uses a process-execution primitive"
-      },
-      {
-        "ruleId": "EXEC-PRIMITIVE",
-        "severity": "medium",
-        "owasp": "ASK-03",
-        "file": "scripts/react-visibility-target.test.mjs",
-        "line": 2,
-        "snippet": "import { execFile } from \"node:child_process\";",
-        "explanation": "uses a process-execution primitive"
-      },
-      {
-        "ruleId": "EXEC-PRIMITIVE",
-        "severity": "medium",
-        "owasp": "ASK-03",
-        "file": "scripts/turn-check.mjs",
-        "line": 2,
-        "snippet": "import { spawn } from \"node:child_process\";",
-        "explanation": "uses a process-execution primitive"
-      }
-    ],
-    "contentHash": "sha256-46beede40e138dbaa906ce09f1e31abc6557b0d3cde2b7041f6bdddded0ebdef",
-    "discoveredFrom": "skills/anatomy/SKILL.md"
-  }
+    {
+      "id": "b3117facd6f337d9",
+      "tool": "aeon",
+      "scope": "project:.",
+      "type": "skill",
+      "name": "anatomy",
+      "source": {
+        "kind": "local",
+        "ref": "skills/anatomy"
+      },
+      "capabilities": {},
+      "files": [
+        {
+          "path": ".gitattributes",
+          "hash": "cdd266359c792670902c16da138e75d6b10bba6251b1842191ab46939ae2c7aa"
+        },
+        {
+          "path": ".gitignore",
+          "hash": "eb7c42b7def9a8b0fe1814feb22b84add9339d92d9f6fcdf856ae222bc78d8f3"
+        },
+        {
+          "path": "CHANGELOG.md",
+          "hash": "e41f2b0b2282b6a4ca7cf3cf9be16ea92d6252e6c71e54563e1600896829e00e"
+        },
+        {
+          "path": "LICENSE",
+          "hash": "87c078ab9d90a3044f359e6b563d4e6afea7aa060897cf4f21618687b3856796"
+        },
+        {
+          "path": "README.md",
+          "hash": "031b8d9533abafd3620a884839c4888198305307056639112a8f2f3f707c7d88"
+        },
+        {
+          "path": "SKILL.md",
+          "hash": "59b568cd65fdbd3ca5cc05f29717f0330e863b615db507cef86b7225f2184dc8"
+        },
+        {
+          "path": "UPSTREAM.md",
+          "hash": "c12551c26326ff7ab97c0d4c6a7afb05545f6d89067def6c92ab2e2749493845"
+        },
+        {
+          "path": "agents/openai.yaml",
+          "hash": "254b17510460bc5151295b1e1e40b6a1aceeff60a0dda4e9594adcfa36819526"
+        },
+        {
+          "path": "evals/evals.json",
+          "hash": "b79afa9daa10084c71bb18c3baafef403a929c1d707b2be4c636952ae1896dd4"
+        },
+        {
+          "path": "examples/arcade-cabinet/arcade-cabinet.css",
+          "hash": "a0ea7bce89a665ddd13f72daf31849c07d8b517b66a3d555543aa506b8933629"
+        },
+        {
+          "path": "examples/arcade-cabinet/build.mjs",
+          "hash": "a5e92188b54fb18fe7fbce3dbc86a8e55abf32f2560be667ac0866d089ba7b84"
+        },
+        {
+          "path": "examples/arcade-cabinet/live.js",
+          "hash": "d9f02ea9193f3109501333bdfb4ab297a71457aaba431f05f5df667ea8c40c8f"
+        },
+        {
+          "path": "examples/arcade-cabinet/parts.mjs",
+          "hash": "3ba74b8c55e72933b1e119e3d24c939f654b2c43d41ff26cf855f064cbc7d2a3"
+        },
+        {
+          "path": "examples/arcade-cabinet/screen.mjs",
+          "hash": "8fbb8aebb1d657508979ec9b58a29281c71403396df1fcdc6f8f834fe9097be9"
+        },
+        {
+          "path": "examples/desk-computer/build.mjs",
+          "hash": "d378f9814acf75bc915921d4f2d83ed1eb4991a8b4298eb0de0e10383b2ff66d"
+        },
+        {
+          "path": "examples/dial-indicator/build.mjs",
+          "hash": "e4eaa2324af7f2630650ca72e52a78d56159213a786e14fba8321344789f990d"
+        },
+        {
+          "path": "examples/raptor-engine/build.mjs",
+          "hash": "26064df05bb650845ec485195f972f5a0fed3c21ee152f0b8db8194fdc26d916"
+        },
+        {
+          "path": "examples/raptor-engine/live.js",
+          "hash": "03d801ef2b75e17a38ebc3d5cb9178747226ea8c2e0c527caafb9c72844d88d8"
+        },
+        {
+          "path": "examples/raptor-engine/raptor.css",
+          "hash": "f850575feeeacac8ef5d9d9c49359f4deaef848666c68a4dafa9727fe926cd6e"
+        },
+        {
+          "path": "examples/ripple-tank/build.mjs",
+          "hash": "5a5b846bcd146630be3eafb73ebd04cfdd2101d05def15a877fff7188822b493"
+        },
+        {
+          "path": "examples/ripple-tank/live.js",
+          "hash": "d2427eada1948662c680b9ca42e8d6e81979f9206c0572524ac404f204f07b5e"
+        },
+        {
+          "path": "examples/ripple-tank/model.mjs",
+          "hash": "f6315aa53e80c0c69bf3c52baf0a1340ca4daacfae80245def02f357c2d33882"
+        },
+        {
+          "path": "examples/ripple-tank/ripple.css",
+          "hash": "1bf7a778f0b50928adcd54e67c44aa2b12a6877b45f15a0b697d87ab7be0dd5c"
+        },
+        {
+          "path": "examples/spot-plate/art.tsx",
+          "hash": "aecef8d6ee247e99d52717371a319283af8b1bbba2adfcdd4d012553d2963b38"
+        },
+        {
+          "path": "examples/spot-plate/drops.ts",
+          "hash": "9bec874c5e324d69a25cc9085ecf2c5d9c3c2e3bd1a8c667c45e048301b899d4"
+        },
+        {
+          "path": "examples/spot-plate/fan.ts",
+          "hash": "648c1d946e9512afcae60e077d2436926ca1ea94b02c944df8624419812077b1"
+        },
+        {
+          "path": "examples/spot-plate/figure.tsx",
+          "hash": "b9db1ef99bfac58d55d0506f05e0c178e5c9566c61cbf26826ea25cfaa57805f"
+        },
+        {
+          "path": "examples/spot-plate/geometry.ts",
+          "hash": "faf7d6bf1b475daacd4751687d409d7a5c03a6c2bb216ae81beadce5a3cea99a"
+        },
+        {
+          "path": "examples/spot-plate/live.tsx",
+          "hash": "e96fd47aa4ab250a6b2c6fe3c6c3c96d4bcf737dff7f084d4912f5d1ef195116"
+        },
+        {
+          "path": "examples/spot-plate/rig.ts",
+          "hash": "b19fc1637a1f4c411c23f34c7a48361f308402b15b11efc44fb6555e8f67ceea"
+        },
+        {
+          "path": "examples/spot-plate/spot-plate.css",
+          "hash": "b31e4c8e02f4de0b77fe0a71718f59d7df2e3abc3d9772f802e00fc3d8a582bd"
+        },
+        {
+          "path": "examples/test-rig/art.tsx",
+          "hash": "a6b8c1094a9402380d9835ecedbcc677254686b7391027a20da10fc8bf24dae5"
+        },
+        {
+          "path": "examples/test-rig/figure.tsx",
+          "hash": "2dbaef167b9a6a96de74357fc57ae2a650159007852d3d4e8c471b8837e463a9"
+        },
+        {
+          "path": "examples/test-rig/geometry.ts",
+          "hash": "b8c275eb58b093a85c312f90dc5d79fd9d9a93ae266e42a8a6fa7f6f9aaeb571"
+        },
+        {
+          "path": "examples/test-rig/live.tsx",
+          "hash": "46a4c338a2805fc0078a20d6f4e12d9de20fc4145ec051ffce3964b164c5a7da"
+        },
+        {
+          "path": "examples/test-rig/pose.ts",
+          "hash": "380e1d07afcaa3a4e2cd1b13556500f2b336e354fa1c369918b3173f0c9d0866"
+        },
+        {
+          "path": "examples/test-rig/rig.ts",
+          "hash": "9672431d6982acaa7b6f28e88e1371443bd6a10fb906ff52fc7bdb0f5fd88b05"
+        },
+        {
+          "path": "examples/test-rig/stretch.css",
+          "hash": "dd15f4582b5fb9b228dc7e32ef57dbcba0129dad38b36e5707247eeb7a2abe8b"
+        },
+        {
+          "path": "examples/test-rig/view.ts",
+          "hash": "5465a3e122c2074f8de755b874c7bdb783b365e4140e3e741fc91a32cd69500c"
+        },
+        {
+          "path": "examples/turning-dial/build.mjs",
+          "hash": "dcb1b2a1fec2c98c2cea401c6a5b1c7e6545da3b5ea08433cfd72a7f27a49248"
+        },
+        {
+          "path": "examples/turning-dial/dial.css",
+          "hash": "769fc9596dcd2bbc46823d6e2816a3e584b52e0a6db359d93bedce16f354bedd"
+        },
+        {
+          "path": "examples/turning-dial/live.js",
+          "hash": "e872f0d930ba583ce7c4c252a3767aa6b9f6cd1f97fe6dddb212653a0579b41f"
+        },
+        {
+          "path": "examples/turning-dial/stress.mjs",
+          "hash": "6d3aec19d8ce6daadffe15113da9415c2fe084c6407d1bb7fb4b5fec86330314"
+        },
+        {
+          "path": "kit/audit.mjs",
+          "hash": "90c5bb4a86f108e8a1d3211dbea326bed16acd887c3438810ea29200a2cde28d"
+        },
+        {
+          "path": "kit/canvas-painter.mjs",
+          "hash": "1918db10279c9d9df87d7df52c7ed8c2de8acd0bbce214c8f2115a39e7f955ac"
+        },
+        {
+          "path": "kit/gl-shared.mjs",
+          "hash": "8c3773cf3e15844df332db3ba55af940186edb2227201e5839347ecc390c039c"
+        },
+        {
+          "path": "kit/gl.mjs",
+          "hash": "17a477411e0b9fcb8e84e718094eaefa6be2c0b7d6ce15ee03fe8e252944130a"
+        },
+        {
+          "path": "kit/iso-kit.mjs",
+          "hash": "6d3ecc725d30c3b0346da309cf61dfa5a65017c23620bbd4093009d4fb104018"
+        },
+        {
+          "path": "kit/iso-kit.ts",
+          "hash": "e9fc988c61a11bfac1f097e62419915ea86b2130ab091f1b50c0e019c907e253"
+        },
+        {
+          "path": "kit/iso.css",
+          "hash": "ef19bac5a42ba9be42b56b2c1cf7fc7e21d332a8060765e9ca1d987b8ab23924"
+        },
+        {
+          "path": "kit/lathe.mjs",
+          "hash": "a4e7e974b1a37e603ad2b76363b6f9815cc101dfff0ad277a5d4e8f1dc56fccb"
+        },
+        {
+          "path": "kit/react/draw.tsx",
+          "hash": "d5389bd78aa3d5424a37b1ce6f635bd102eb86faf27d064b10957716278a631c"
+        },
+        {
+          "path": "kit/react/live.tsx",
+          "hash": "85024d4906d984c3c513564fee22d81a13a9c933b82c410196fb7b1cd9abc1a2"
+        },
+        {
+          "path": "kit/tube.mjs",
+          "hash": "bcb3cc360f6d83e6a5753f4c464b4587ab7965028b05a5d58e285abce58667c9"
+        },
+        {
+          "path": "kit/turn-audit.mjs",
+          "hash": "e118b838c00621eb5d86409552b75b50d02c303eaedefc008146a7c62c2eaefd"
+        },
+        {
+          "path": "kit/turn-build.mjs",
+          "hash": "b95d76f9181703508b5bb758973bf004eb92d298a01e0e5ff5457f830c183888"
+        },
+        {
+          "path": "kit/turn-fixed.mjs",
+          "hash": "7429b46eb7673aefb6ed90adeaf130c1dafe8e32af038cbde24a04e693d13fc7"
+        },
+        {
+          "path": "kit/turn.mjs",
+          "hash": "cb4b530b5e1750ba0e4fd2367d5f25e00195c0136672aa2ecd665c0622ffd1a2"
+        },
+        {
+          "path": "references/3d.md",
+          "hash": "de58da5415b4c9fe7712b5b71e0868c4d36363d54e4e32d98a6b016363554536"
+        },
+        {
+          "path": "references/craft.md",
+          "hash": "38761fa9b81d66b30e50b05488501d4815830d3627f153d60f76ca783f598936"
+        },
+        {
+          "path": "references/kit.md",
+          "hash": "684672e069fdb52735efabc3f4310dedd840d0c8066a8dc7784be2b7e656be71"
+        },
+        {
+          "path": "references/motion.md",
+          "hash": "dda401ca1b4661a5f0b7c1e33dac6e7e4b8c13d51ca5d9312123a5c02dab320b"
+        },
+        {
+          "path": "references/react.md",
+          "hash": "76b5cee6e0a7513e3c77a832e3f58b1343806597d469774e1749f141525801fd"
+        },
+        {
+          "path": "references/verify.md",
+          "hash": "fb81437fc5d75094a34432eb6f545644aa228e15173a27d08b3cace912033561"
+        },
+        {
+          "path": "references/walkthrough.md",
+          "hash": "4d157e0169080a6ed44d5b06de0a5de2931baf3d0fac30283d2644dd66506dfa"
+        },
+        {
+          "path": "references/webgl.md",
+          "hash": "fb4e2421c6a705d4ad849c8e516731ebc958bc5ff0855548ff58232b0aa01923"
+        },
+        {
+          "path": "scripts/audit-affine-bounds.test.mjs",
+          "hash": "038e0a879363c4b0d2c7146a62065b09f2973210114928d5005e9082219654d2"
+        },
+        {
+          "path": "scripts/audit-cache.test.mjs",
+          "hash": "00b49601c068897e94bf8309d652bb55595e541283c510bba34957c457edd57e"
+        },
+        {
+          "path": "scripts/audit-clearance-envelope.test.mjs",
+          "hash": "ffa8321d25996ac165dd1fdb6473a903c1c6f03b86996b2fef6978203b8f2bd8"
+        },
+        {
+          "path": "scripts/audit-empty-clipping.test.mjs",
+          "hash": "a28384ccbf303acc32f7788753459a7338c94bc74ee5efe70762daa75a62c8cb"
+        },
+        {
+          "path": "scripts/audit-order-convergence.test.mjs",
+          "hash": "9ad7b9a645d9e90a788e561484013b0fdefb1a8abd38fcb160f5d1a6464be278"
+        },
+        {
+          "path": "scripts/audit-path-origin.test.mjs",
+          "hash": "1e5917a4a3bc337aa4497e5717de47b198db8fc9538d5f10d40a788f5f821d37"
+        },
+        {
+          "path": "scripts/audit-profile.test.mjs",
+          "hash": "80179ae38afa6e58ed254a597daeee27240e85f87d1bbd0421def4e347ec37c0"
+        },
+        {
+          "path": "scripts/audit-projection.test.mjs",
+          "hash": "0cd790e0dfc64633019db3233b87fec823c6148037d9335e1c2b16ea1c722db6"
+        },
+        {
+          "path": "scripts/audit-slide-clearance.test.mjs",
+          "hash": "007f68aa5262eae40aceef00eec91e4d5be0164bd5fb9377680996164ff9ac19"
+        },
+        {
+          "path": "scripts/audit-svg-attributes.test.mjs",
+          "hash": "2d2a949639f90d6328eeea401f6b7f3a3dc1fcc17f1d46cbe2de208afc3c6533"
+        },
+        {
+          "path": "scripts/audit-taper.test.mjs",
+          "hash": "ea4415ef743efc4ba1393457c571cdfc2b91bfd5ea931ae32829926c80aed487"
+        },
+        {
+          "path": "scripts/capture-selector.test.mjs",
+          "hash": "046ce21a686e99c1a5a760f529b999cdca5b7f504961784bc087395b0b586eff"
+        },
+        {
+          "path": "scripts/capture.mjs",
+          "hash": "a668240a98a82fafd97ba40b84a8f58b3c8e470dfd2afbdfd5627f17f4baa9f2"
+        },
+        {
+          "path": "scripts/capture.test.mjs",
+          "hash": "319aed308ded5eb4137c8d633720a9254d8c5f35a8adcc1e883066e6c983ed62"
+        },
+        {
+          "path": "scripts/chrome-port.mjs",
+          "hash": "6775d3d389d26f37a52be8358aa88d1dc0aded63cb24ae20a936505a192e5d9d"
+        },
+        {
+          "path": "scripts/chrome-startup.test.mjs",
+          "hash": "bd3c0eb4b699ebfbfd4efa5920acf386f31876ed490aaee839886dd8ed4cf797"
+        },
+        {
+          "path": "scripts/drive-actions.test.mjs",
+          "hash": "ef415f9860e656dcf0d1c95b48aedf974cf311aa31e547403f7684c59d676aa3"
+        },
+        {
+          "path": "scripts/drive.mjs",
+          "hash": "41458d12f5cffc45b4af5b7c8a550bc919be9183e0ef5c4f019b9cb7cd475b38"
+        },
+        {
+          "path": "scripts/drive.test.mjs",
+          "hash": "9d0d19d82dbdc22c712e24c5de241ef7b67ae3c7ea356621033c77780f3337f5"
+        },
+        {
+          "path": "scripts/enter-key.test.mjs",
+          "hash": "2592318f2b41735e4ff8ed2edcbc3abee46d81f9184b02dd99c121d8900d3838"
+        },
+        {
+          "path": "scripts/fidelity-cut.test.mjs",
+          "hash": "7f3518eba374167ada79cc73970cc9557ef48faa3e8b390326589c67ab989787"
+        },
+        {
+          "path": "scripts/fidelity-tube-coverage.test.mjs",
+          "hash": "eef7300ea786d82268811cc4e4153c1de913bae17cec58bd4a28f64ea875c525"
+        },
+        {
+          "path": "scripts/inline-kit.mjs",
+          "hash": "01e08df7c2556ce52a7e8ed9009a332036b209ab7e42389874af2a65fda6e9db"
+        },
+        {
+          "path": "scripts/line-ends.mjs",
+          "hash": "e8a121473dfe62245eab2116e8fb6b4d8ed86e3fe29ea50a90e86ffed335b1cd"
+        },
+        {
+          "path": "scripts/lines-arcs.test.mjs",
+          "hash": "ae915157d4bbdfe8e4af031c0e2e5f5f566c938ba7bb88884ae377489aff540e"
+        },
+        {
+          "path": "scripts/lines-bezier.test.mjs",
+          "hash": "7a95169325fed35eecb0c7aefcb806a48bfd09eaba3df5461dc2e30c5d0695f4"
+        },
+        {
+          "path": "scripts/lines-round.test.mjs",
+          "hash": "7a012c3eb010b7f8082ee49ce939d6f35f384d188d897e3fd3708682c5d3a657"
+        },
+        {
+          "path": "scripts/lines-rounded-rect.test.mjs",
+          "hash": "88d0a27b047895a00f5654f59d93c775fb8312a5c28be3b47b5e673d80efe5b6"
+        },
+        {
+          "path": "scripts/lines.mjs",
+          "hash": "b0ca73ab3a0d1cd4a28fda933496cbd7384ef315d821b5d2fffae1c704ce79cc"
+        },
+        {
+          "path": "scripts/lines.test.mjs",
+          "hash": "82931231d33d977bcc44c54b05bdb7b78c4ddebc422848ab59539018dd43583a"
+        },
+        {
+          "path": "scripts/navigation.test.mjs",
+          "hash": "b9bd9d7360735e178b24e086e5c875e1703e3e0593e7ddff5f10fe0b4f0f7587"
+        },
+        {
+          "path": "scripts/orbit-sampling.test.mjs",
+          "hash": "ed6ce6b0dd32f6c7ab51a5a50ea2dd4b920858ff35d725bea22bee79e323b97a"
+        },
+        {
+          "path": "scripts/react-dots-opacity.test.mjs",
+          "hash": "e7d2b5386f397efe4197b4607f2131170bf88dc52ccc3cfcfea2677f28d41aec"
+        },
+        {
+          "path": "scripts/react-readout-first-write.test.mjs",
+          "hash": "088a2d29d67e9638f7e43e9b5204c027566934d38302c0ee5e406752f2a4780a"
+        },
+        {
+          "path": "scripts/react-solid-seamless.test.mjs",
+          "hash": "f45927c14dd6023eec7109da5db10cddd46cd46b21f58675a6d4dc6ca12122b0"
+        },
+        {
+          "path": "scripts/react-visibility-target.test.mjs",
+          "hash": "78c630aa974d2fbd04cb096a95b528d64d3027e2a9666b85e9d7a50965160925"
+        },
+        {
+          "path": "scripts/turn-bench.mjs",
+          "hash": "d86cd53e3702fa92e22b4052ee9bf47da10fd0a71401fe477bd8da2fe30b1631"
+        },
+        {
+          "path": "scripts/turn-check.mjs",
+          "hash": "d96945a2c9c25c59773477ba83e4ce6e2efb165890ff20dcb4d4999f903f8958"
+        },
+        {
+          "path": "scripts/turn-fidelity.mjs",
+          "hash": "4b8e7ad29d0a255d2dd5e7f396bce11f13e5baa5eb682adc68025d4ee16a1fb7"
+        },
+        {
+          "path": "scripts/turn-group-reference.test.mjs",
+          "hash": "bfac2f910c80c7fcfba9e4861391552000a0f25414ae86576a9ef9ef46291412"
+        },
+        {
+          "path": "scripts/turn-split-owner.test.mjs",
+          "hash": "829febf610ba09cdca651fbd86340f13932f241b4e3525a3d8566ac70d75a69d"
+        },
+        {
+          "path": "tests/fixtures/react-dots-dark.png",
+          "hash": "f2e7655868e8564d81d274464c618cb330a603459a5fe63bf0bd22992e9c396d"
+        },
+        {
+          "path": "tests/fixtures/react-dots-light.png",
+          "hash": "df72b8d04fd82bf1a1f63b29ea1676ead0570f9b36d55057d8b886087d869543"
+        },
+        {
+          "path": "tests/fixtures/react-solid-dark.png",
+          "hash": "529b58a497268540c2d74b590691f65605ba5d1882566d0462ff984e7a9248e1"
+        },
+        {
+          "path": "tests/fixtures/react-solid-light.png",
+          "hash": "5b344ec9017d06267531b8d01ad3b88062fb8003cd77ad90ecff37319c8dd085"
+        }
+      ],
+      "findings": [
+        {
+          "ruleId": "SENSITIVE-PATH-READ",
+          "severity": "high",
+          "owasp": "ASK-06",
+          "file": ".gitignore",
+          "line": 5,
+          "snippet": ".env",
+          "explanation": "references sensitive credential or secret paths"
+        },
+        {
+          "ruleId": "SENSITIVE-PATH-READ",
+          "severity": "high",
+          "owasp": "ASK-06",
+          "file": ".gitignore",
+          "line": 6,
+          "snippet": ".env.*",
+          "explanation": "references sensitive credential or secret paths"
+        },
+        {
+          "ruleId": "PROMPT-INJECTION",
+          "severity": "high",
+          "owasp": "ASK-07",
+          "file": "SKILL.md",
+          "line": 131,
+          "snippet": "- **Figure**: one mechanism, 40–80 parts, SVG with at most one WebGL layer. About 30–90 minutes. Build it without as…",
+          "explanation": "contains consent-bypass or prompt-injection language"
+        },
+        {
+          "ruleId": "OBFUSCATION-EVAL",
+          "severity": "high",
+          "owasp": "ASK-05",
+          "file": "kit/turn-fixed.mjs",
+          "line": 463,
+          "snippet": "const text = atob(value);",
+          "explanation": "dynamic code evaluation or base64 decoding, a common obfuscation vector"
+        },
+        {
+          "ruleId": "OBFUSCATION-EVAL",
+          "severity": "high",
+          "owasp": "ASK-05",
+          "file": "kit/turn.mjs",
+          "line": 428,
+          "snippet": "const text = atob(value);",
+          "explanation": "dynamic code evaluation or base64 decoding, a common obfuscation vector"
+        },
+        {
+          "ruleId": "EXEC-PRIMITIVE",
+          "severity": "medium",
+          "owasp": "ASK-03",
+          "file": "scripts/audit-affine-bounds.test.mjs",
+          "line": 2,
+          "snippet": "import { execFile } from \"node:child_process\";",
+          "explanation": "uses a process-execution primitive"
+        },
+        {
+          "ruleId": "EXEC-PRIMITIVE",
+          "severity": "medium",
+          "owasp": "ASK-03",
+          "file": "scripts/audit-empty-clipping.test.mjs",
+          "line": 2,
+          "snippet": "import { execFile } from \"node:child_process\";",
+          "explanation": "uses a process-execution primitive"
+        },
+        {
+          "ruleId": "EXEC-PRIMITIVE",
+          "severity": "medium",
+          "owasp": "ASK-03",
+          "file": "scripts/audit-path-origin.test.mjs",
+          "line": 2,
+          "snippet": "import { execFile } from \"node:child_process\";",
+          "explanation": "uses a process-execution primitive"
+        },
+        {
+          "ruleId": "EXEC-PRIMITIVE",
+          "severity": "medium",
+          "owasp": "ASK-03",
+          "file": "scripts/audit-svg-attributes.test.mjs",
+          "line": 2,
+          "snippet": "import { execFile } from \"node:child_process\";",
+          "explanation": "uses a process-execution primitive"
+        },
+        {
+          "ruleId": "EXEC-PRIMITIVE",
+          "severity": "medium",
+          "owasp": "ASK-03",
+          "file": "scripts/capture-selector.test.mjs",
+          "line": 2,
+          "snippet": "import { execFile } from \"node:child_process\";",
+          "explanation": "uses a process-execution primitive"
+        },
+        {
+          "ruleId": "EXEC-PRIMITIVE",
+          "severity": "medium",
+          "owasp": "ASK-03",
+          "file": "scripts/capture.mjs",
+          "line": 2,
+          "snippet": "import { spawn } from \"node:child_process\";",
+          "explanation": "uses a process-execution primitive"
+        },
+        {
+          "ruleId": "EXEC-PRIMITIVE",
+          "severity": "medium",
+          "owasp": "ASK-03",
+          "file": "scripts/capture.test.mjs",
+          "line": 2,
+          "snippet": "import { execFile } from \"node:child_process\";",
+          "explanation": "uses a process-execution primitive"
+        },
+        {
+          "ruleId": "EXEC-PRIMITIVE",
+          "severity": "medium",
+          "owasp": "ASK-03",
+          "file": "scripts/chrome-startup.test.mjs",
+          "line": 2,
+          "snippet": "import { execFile } from \"node:child_process\";",
+          "explanation": "uses a process-execution primitive"
+        },
+        {
+          "ruleId": "EXEC-PRIMITIVE",
+          "severity": "medium",
+          "owasp": "ASK-03",
+          "file": "scripts/drive-actions.test.mjs",
+          "line": 2,
+          "snippet": "import { execFile } from \"node:child_process\";",
+          "explanation": "uses a process-execution primitive"
+        },
+        {
+          "ruleId": "EXEC-PRIMITIVE",
+          "severity": "medium",
+          "owasp": "ASK-03",
+          "file": "scripts/drive.mjs",
+          "line": 2,
+          "snippet": "import { spawn } from \"node:child_process\";",
+          "explanation": "uses a process-execution primitive"
+        },
+        {
+          "ruleId": "EXEC-PRIMITIVE",
+          "severity": "medium",
+          "owasp": "ASK-03",
+          "file": "scripts/drive.test.mjs",
+          "line": 2,
+          "snippet": "import { execFile } from \"node:child_process\";",
+          "explanation": "uses a process-execution primitive"
+        },
+        {
+          "ruleId": "EXEC-PRIMITIVE",
+          "severity": "medium",
+          "owasp": "ASK-03",
+          "file": "scripts/enter-key.test.mjs",
+          "line": 2,
+          "snippet": "import { execFile } from \"node:child_process\";",
+          "explanation": "uses a process-execution primitive"
+        },
+        {
+          "ruleId": "EXEC-PRIMITIVE",
+          "severity": "medium",
+          "owasp": "ASK-03",
+          "file": "scripts/fidelity-cut.test.mjs",
+          "line": 2,
+          "snippet": "import { execFile } from \"node:child_process\";",
+          "explanation": "uses a process-execution primitive"
+        },
+        {
+          "ruleId": "EXEC-PRIMITIVE",
+          "severity": "medium",
+          "owasp": "ASK-03",
+          "file": "scripts/fidelity-tube-coverage.test.mjs",
+          "line": 2,
+          "snippet": "import { execFile } from \"node:child_process\";",
+          "explanation": "uses a process-execution primitive"
+        },
+        {
+          "ruleId": "EXEC-PRIMITIVE",
+          "severity": "medium",
+          "owasp": "ASK-03",
+          "file": "scripts/lines-arcs.test.mjs",
+          "line": 2,
+          "snippet": "import { execFile } from \"node:child_process\";",
+          "explanation": "uses a process-execution primitive"
+        },
+        {
+          "ruleId": "EXEC-PRIMITIVE",
+          "severity": "medium",
+          "owasp": "ASK-03",
+          "file": "scripts/lines-bezier.test.mjs",
+          "line": 2,
+          "snippet": "import { execFile } from \"node:child_process\";",
+          "explanation": "uses a process-execution primitive"
+        },
+        {
+          "ruleId": "EXEC-PRIMITIVE",
+          "severity": "medium",
+          "owasp": "ASK-03",
+          "file": "scripts/lines-round.test.mjs",
+          "line": 2,
+          "snippet": "import { execFile } from \"node:child_process\";",
+          "explanation": "uses a process-execution primitive"
+        },
+        {
+          "ruleId": "EXEC-PRIMITIVE",
+          "severity": "medium",
+          "owasp": "ASK-03",
+          "file": "scripts/lines-rounded-rect.test.mjs",
+          "line": 2,
+          "snippet": "import { execFile } from \"node:child_process\";",
+          "explanation": "uses a process-execution primitive"
+        },
+        {
+          "ruleId": "EXEC-PRIMITIVE",
+          "severity": "medium",
+          "owasp": "ASK-03",
+          "file": "scripts/lines.mjs",
+          "line": 1,
+          "snippet": "import { spawn } from \"node:child_process\";",
+          "explanation": "uses a process-execution primitive"
+        },
+        {
+          "ruleId": "EXEC-PRIMITIVE",
+          "severity": "medium",
+          "owasp": "ASK-03",
+          "file": "scripts/lines.test.mjs",
+          "line": 2,
+          "snippet": "import { execFile } from \"node:child_process\";",
+          "explanation": "uses a process-execution primitive"
+        },
+        {
+          "ruleId": "EXEC-PRIMITIVE",
+          "severity": "medium",
+          "owasp": "ASK-03",
+          "file": "scripts/navigation.test.mjs",
+          "line": 2,
+          "snippet": "import { execFile } from \"node:child_process\";",
+          "explanation": "uses a process-execution primitive"
+        },
+        {
+          "ruleId": "EXEC-PRIMITIVE",
+          "severity": "medium",
+          "owasp": "ASK-03",
+          "file": "scripts/orbit-sampling.test.mjs",
+          "line": 2,
+          "snippet": "import { execFile } from \"node:child_process\";",
+          "explanation": "uses a process-execution primitive"
+        },
+        {
+          "ruleId": "EXEC-PRIMITIVE",
+          "severity": "medium",
+          "owasp": "ASK-03",
+          "file": "scripts/react-readout-first-write.test.mjs",
+          "line": 2,
+          "snippet": "import { execFile } from \"node:child_process\";",
+          "explanation": "uses a process-execution primitive"
+        },
+        {
+          "ruleId": "EXEC-PRIMITIVE",
+          "severity": "medium",
+          "owasp": "ASK-03",
+          "file": "scripts/react-visibility-target.test.mjs",
+          "line": 2,
+          "snippet": "import { execFile } from \"node:child_process\";",
+          "explanation": "uses a process-execution primitive"
+        },
+        {
+          "ruleId": "EXEC-PRIMITIVE",
+          "severity": "medium",
+          "owasp": "ASK-03",
+          "file": "scripts/turn-check.mjs",
+          "line": 2,
+          "snippet": "import { spawn } from \"node:child_process\";",
+          "explanation": "uses a process-execution primitive"
+        }
+      ],
+      "contentHash": "sha256-b230f3f81002d9247112aef5443c7aae9559de36f118d7308e548dbe9619d3ec",
+      "discoveredFrom": "skills/anatomy/SKILL.md"
+    }
   ]
 }
