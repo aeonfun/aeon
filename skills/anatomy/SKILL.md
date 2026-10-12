@@ -4,29 +4,80 @@ description: Build crafted, highly detailed, interactive isometric SVG figures t
 license: MIT
 compatibility: Written for Claude Code; also runs in OpenCode and Codex. Needs Node.js 20.10+, and Chrome or Chromium for the checks.
 metadata:
+  title: Anatomy
   category: dev
-  var: "<illustration brief>"
+  var: "<illustration brief>. Empty exits clean (no build, no notify). Headless runs build a Figure-scale page or smaller."
   tags:
     - dev
     - visual
     - browser
   opencode/slash: "true"
+  capabilities:
+    - sends_notifications
 ---
 
 ## Aeon runtime integration
 
-This skill runs inside Aeon through the configured harness adapter. Use a
-throwaway directory under `${RUNNER_TEMP:-/tmp}` for generated projects,
-headless-browser profiles, captures, and build output. Persist only reviewable
-summaries and evidence under `output/anatomy/` and `memory/skills/anatomy/`;
-don't modify `aeon.yml`, other skills, or upstream source.
+On Aeon this skill runs headless in a GitHub Actions job through the configured harness adapter, and `.github/workflows/aeon.yml` kills that job at 50 minutes. **The rules in this section override any upstream guidance below that conflicts with them** (sizing, timings, asking or telling the user, and where files are written). Everything from `# Anatomy` down is the vendored upstream text, kept verbatim; read it through these rules.
 
-The upstream `evals/evals.json` file is the evaluation corpus. For a run, choose
-a representative task and record build, geometry-audit, browser/interaction,
-reduced-motion, and artifact paths separately. A build or audit failure is a
-failed gate even when the visual result looks good. Aeon's normal scorer writes
-the run score, `skill-health` ranks it, and `skill-repair`/`self-improve` can use
-the evidence; do not create a parallel health or repair ledger.
+Today is ${today}.
+
+### 1. Brief
+
+`${var}` is the illustration brief, for example `"how a write-ahead log survives a crash"`. If `${var}` is empty, append `ANATOMY_NO_VAR` under `### anatomy` in `memory/logs/${today}.md` and exit 0 with no build and no notify: a figure costs real CI time, so a blank default run does nothing.
+
+### 2. Headless: never ask
+
+Nobody is there to answer. Never ask a question, wait for a choice, or "tell the user" before working. Where the upstream text says to tell, ask or wait for the user, decide yourself and put the decision (size, any downscale) in the notify and the log instead.
+
+### 3. Time budget and size
+
+Run `date` at the start and at each step. The whole run (research, build, checks, commit, notify) must fit in about 35-40 minutes so the job is never killed. This replaces upstream workflow step 1 and its estimates:
+
+- Build a **Figure** or smaller: one mechanism, 40-80 parts, SVG with at most one WebGL layer. Have a page that builds and opens by about minute 15, then deepen it.
+- A brief that reads as a **Hero** or an **Epic**, or that needs the 3D mode, is downscaled to a Figure that keeps the core of the idea. Never start a Hero, an Epic or a 3D figure on Aeon (the 3D orbit audit alone takes 15-20 minutes). Say in the notify what the full version would add.
+- Use the framework-free path (a Node build script writing one standalone HTML page). The runner has no React or TypeScript toolchain for this skill.
+- Checks, in order of value: the build, `--audit` when the figure has pipes, cables or round parts, `scripts/lines.mjs`, and one desktop plus one phone (390 wide) capture with `scripts/capture.mjs`. Skip the long close-up sweeps and shader contact sheets when time is short, and say which checks were skipped.
+- At about minute 30, stop adding detail and run the final checks. At about minute 38, deliver what you have if the page builds and opens, with `--severity warn` naming what is unfinished.
+
+### 4. Work outside the repo
+
+Never write anything inside `skills/anatomy/`: the run's commit step stages the whole worktree, so files built there would land in the repo. Copy the skill to a scratch directory and do all work there (examples, your figure, `shots/`, browser profiles):
+
+```bash
+REPO_ROOT=$(pwd)
+WORK="${RUNNER_TEMP:-/tmp}/anatomy-run"
+rm -rf "$WORK" && mkdir -p "$WORK" && cp -R skills/anatomy "$WORK/anatomy"
+cd "$WORK/anatomy"
+node examples/dial-indicator/build.mjs          # builds an example inside the copy
+```
+
+The examples ship as source only (`build.mjs` and its modules); their built `.html` pages are not checked in. To look at one, build it in the copy as above (add `--light` for the light theme) and capture it; read `build.mjs` and its modules for the code. Put your own figure at `$WORK/anatomy/examples/<slug>/build.mjs`, where `<slug>` is a short name you pick from the brief (lowercase `a-z`, `0-9` and hyphens, at most 40 characters), so its `../../kit/` and `../../scripts/` imports resolve like the examples'. If the scripts cannot find Chrome, set `CHROME_PATH` (for example `/usr/bin/google-chrome`).
+
+### 5. Deliver the figure
+
+The deliverable is one self-contained HTML page (kit inlined with `kitScript()`, no external files), dark theme unless the brief asks for light, plus a desktop screenshot. Copy them into the repo; the workflow's commit step commits `output/**` after the run:
+
+```bash
+cd "$REPO_ROOT"
+OUT="output/anatomy/${today}-<slug>"
+mkdir -p output/anatomy
+cp "$WORK/anatomy/examples/<slug>/<slug>.html" "$OUT.html"
+cp "$WORK/anatomy/shots/<slug>-desktop.png" "$OUT.png"    # if a capture was made
+REPO=$(gh repo view --json nameWithOwner -q .nameWithOwner)
+```
+
+One figure per run. Links: `https://github.com/${REPO}/blob/main/${OUT}.png` shows the screenshot, and `https://github.com/${REPO}/raw/main/${OUT}.html` is the page (GitHub shows HTML as source, so download it and open it in a browser). They go live once the run's commit lands, about a minute after the run.
+
+### 6. Record, notify, log
+
+- Append one line to `memory/state/anatomy-figures.jsonl`: `{"date","brief","slug","size":"figure","parts":N,"html":"output/anatomy/...","png":"...","bytes":N,"checks":{"build":"pass","audit":"pass|skipped","lines":"pass|N ends","capture":"pass"}}`.
+- Notify once: write a short body (title, one line on what moves and what that motion means, the two links, size and parts, checks, any downscale) to `.pending-notify-temp/anatomy-${today}.md` (`mkdir -p .pending-notify-temp` first), then run `./notify --severity success -f .pending-notify-temp/anatomy-${today}.md`. On a failed or partial run use `--severity warn` and say what happened and the one thing the operator can do.
+- Append under `### anatomy` in `memory/logs/${today}.md`: the brief, the result (`ANATOMY_OK`, `ANATOMY_DOWNSCALED`, `ANATOMY_PARTIAL`, `ANATOMY_FAILED` or `ANATOMY_NO_VAR`), the output paths and the checks.
+
+### 7. Evals and boundaries
+
+`evals/evals.json` is the evaluation corpus for skill-repair, self-improve and manual validation; a normal run builds the brief, not an eval. Aeon's normal scorer writes the run score and `skill-health` ranks it; do not create a parallel health or repair ledger. Don't modify `aeon.yml`, other skills, or the vendored files under `skills/anatomy/`.
 
 # Anatomy
 

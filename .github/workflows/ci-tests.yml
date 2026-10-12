@@ -254,3 +254,5 @@ jobs:
         run: bash scripts/tests/test_riva_candidates.sh
       - name: vuln-scanner Riva kernel contract tests
         run: bash scripts/tests/test_riva_kernel_contract.sh
+      - name: anatomy skill integration tests
+        run: bash scripts/tests/test_anatomy_integration.sh

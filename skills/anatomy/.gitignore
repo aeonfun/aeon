@@ -9,3 +9,6 @@ audit.txt
 /capture.png
 .scratch/
 tmp/
+
+# Aeon: example pages are built, never committed (see UPSTREAM.md)
+examples/**/*.html
