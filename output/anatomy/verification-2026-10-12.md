@@ -62,3 +62,35 @@ bash scripts/dry-run.sh evaluate '{"exit":0,"output_len":42,"writes":["output/an
 
 which returned `{"passed":true,"reasons":[]}`. No repair code was changed because
 there is no reproduced integration defect; the blocker is provider quota.
+
+## follow-up validation — 2026-10-12
+
+The catalog was regenerated after the initial integration commit. The Anatomy
+entry now reports `files: 137`, `sha: b6762e5`, and `updated: 2026-10-12`.
+`bash scripts/tests/test_anatomy_integration.sh` and JSON parsing of
+`catalog/skills.json` both pass.
+
+Local generation and browser evidence:
+
+- `node skills/anatomy/examples/dial-indicator/build.mjs --audit` passed and
+  rebuilt both dark and light pages.
+- `lines.mjs` on the light page reported `line ends: 0 of 367 ends on 23 lines
+  float`; console clean.
+- `capture.mjs` produced `/private/tmp/aeon-anatomy-capture.png` with clean
+  console and no sideways scrolling.
+- `drive.mjs` exercised ArrowRight/ArrowLeft, pointer move/click, screenshot,
+  and line checks; it reported `line ends: 0` and a clean console.
+- Native Chrome WebGL `turn-check.mjs --order --step 360` passed with one state,
+  zero out-of-order live pairs, clean console, and the planted reversed-order
+  control failing as expected.
+
+The full upstream script suite, run from `skills/anatomy` with native Chrome,
+produced 189 passes and 4 failures. The four failures are the React fixtures,
+which stop at module loading because this vendored package has no declared
+`typescript` or `esbuild` test dependency. No framework-free or WebGL audit
+failure was observed in that run.
+
+An attempted live anatomy generation through the Codex/OpenRouter path was
+blocked before execution by the environment's external-model egress approval;
+no model output or generated live artifact is claimed. The controlled repair
+experiment therefore remains blocked after the local structural gate above.

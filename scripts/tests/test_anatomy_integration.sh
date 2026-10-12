@@ -22,6 +22,9 @@ const skill = fs.readFileSync('skills/anatomy/SKILL.md', 'utf8');
 if (!skill.includes('category: dev') || !skill.includes('Aeon runtime integration')) throw new Error('Aeon metadata missing');
 const config = fs.readFileSync('aeon.yml', 'utf8');
 if (!config.includes('anatomy: { enabled: false')) throw new Error('anatomy must remain disabled by default');
+const catalog = JSON.parse(fs.readFileSync('catalog/skills.json', 'utf8'));
+const entry = catalog.skills.find((item) => item.slug === 'anatomy');
+if (!entry || entry.files < 1 || !entry.sha || !entry.updated) throw new Error('anatomy catalog entry is stale');
 NODE
 
 node scripts/validate-config.js >/dev/null
