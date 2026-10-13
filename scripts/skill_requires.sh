@@ -22,6 +22,7 @@ awk '
   n!=1{next}
   # collecting block-list items under a bare `requires:` key
   collecting {
+    if ($0 ~ /^[[:space:]]*(#.*)?$/) next   # a comment or blank line inside the list
     if ($0 ~ /^[[:space:]]*-[[:space:]]*/) {
       item=$0; sub(/^[[:space:]]*-[[:space:]]*/,"",item); sub(/[[:space:]]*#.*/,"",item); gsub(/[[:space:]]/,"",item)
       if (item != "") print item

@@ -1474,13 +1474,16 @@ jobs:
 
             # Tier 2 — SKILL.md frontmatter (author intent, travels with the skill).
             # Accepts legacy top-level `attest:` or the Agent Skills spec form
-            # nested under `metadata:` (indented).
-            FM_ATTEST=$(awk '/^---$/{n++; next}
+            # nested under `metadata:` (indented). Reads like scripts/skill_mode.sh:
+            # a trailing CR is stripped, a comment line does not end metadata:,
+            # and the value is compared in lowercase (True -> true).
+            FM_ATTEST=$(awk '{ sub(/\r$/,"") }
+              /^---$/{n++; next}
               n!=1{next}
-              /^[^ \t]/{im=0} /^metadata:/{im=1}
+              /^[^ \t#]/{im=0} /^metadata:/{im=1}
               /^attest:/ || (im && /^[ \t]+attest:/){
                 v=$0; sub(/^[ \t]*attest:[ \t]*/,"",v); sub(/[ \t]*#.*$/,"",v);
-                gsub(/^[ \t"]+|[ \t"]+$/,"",v); print v; exit
+                gsub(/^[ \t"]+|[ \t"]+$/,"",v); print tolower(v); exit
               }' "skills/${SKILL}/SKILL.md" 2>/dev/null || true)
 
             # Tier 3 — default policy: attest runs whose output is PUBLISHED to the

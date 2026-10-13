@@ -41,6 +41,15 @@ printf -- '---\nname: x\nmetadata:\n# note\n  requires: [COINGECKO_API_KEY]\n---
 [ "$(bash "$S" "$NC")" = "COINGECKO_API_KEY" ] && pass "comment line inside metadata: keeps nested requires" || bad "comment line inside metadata: keeps nested requires"
 rm -rf "skills/$CR" "skills/$NC"
 
+# a comment or blank line inside a block list does not end the list
+BC="zzz-test-blockcomment-$$"
+mkdir -p "skills/$BC"
+printf -- '---\r\nname: x\r\nrequires:\r\n  - COINGECKO_API_KEY?\r\n# optional\r\n    # indented note\r\n\r\n  - GH_GLOBAL\r\nmode: write\r\n---\r\nbody\r\n' > "skills/$BC/SKILL.md"
+OUT=$(bash "$S" "$BC" | tr '\n' ' ')
+[ "$OUT" = "COINGECKO_API_KEY GH_GLOBAL " ] && pass "comment and blank lines inside a block list keep later items" \
+  || bad "comment and blank lines inside a block list keep later items (got: '$OUT')"
+rm -rf "skills/$BC"
+
 # every emitted token is a valid SHELL-SAFE secret name (no lowercase, spaces, brackets)
 if bash "$S" "$BOTH" | grep -qvE '^[A-Z][A-Z0-9_]+$'; then bad "all tokens are valid secret names"; else pass "all tokens are valid secret names"; fi
 

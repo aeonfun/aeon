@@ -293,13 +293,17 @@ jobs:
             if [ -f "$SKILL_FILE" ]; then
               # depends_on may be inline (`[a, b]`) or block (`- a` lines), top-level
               # or nested under `metadata:` (Agent Skills spec form). Emit comma-joined.
+              # Reads like scripts/skill_mode.sh: a trailing CR is stripped, and a
+              # comment line ends neither metadata: nor a block list.
               DEPS=$(awk '
+                { sub(/\r$/,"") }
                 /^---$/{n++; next} n!=1{next}
                 collecting {
+                  if ($0 ~ /^[ \t]*(#.*)?$/) next
                   if ($0 ~ /^[ \t]*-[ \t]*/) { it=$0; sub(/^[ \t]*-[ \t]*/,"",it); sub(/[ \t]*#.*/,"",it); gsub(/[ \t]/,"",it); if(it!="") acc=(acc==""?it:acc","it); next }
                   collecting=0; print acc; exit
                 }
-                /^[^ \t]/{im=0} /^metadata:/{im=1}
+                /^[^ \t#]/{im=0} /^metadata:/{im=1}
                 /^depends_on:/ || (im && /^[ \t]+depends_on:/){
                   if ($0 ~ /\[/) { line=$0; sub(/^[ \t]*depends_on:[ \t]*\[/,"",line); sub(/\].*/,"",line); gsub(/[ \t]/,"",line); print line; exit }
                   collecting=1; next
