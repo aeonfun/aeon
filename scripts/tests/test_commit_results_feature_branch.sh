@@ -171,6 +171,38 @@ HOOK
     && pass "$wf: push helpers come from the starting commit and hooks do not run" \
     || { bad "$wf: an edited push helper or a hook ran in the commit step (rc=$rc, marker=$([ -e "$MARK" ] && echo yes || echo no))"; echo "$out"; }
 
+  # --- Run edits scripts/ and .github/ on main: dropped and reported ----------
+  D="$TMP/$wf/guarded"; setup "$D"
+  git -C "$D/run" checkout -q main 2>/dev/null || true
+  (
+    cd "$D/run" || exit 1
+    printf '# edited by the run\n' >> scripts/commit-run-results.sh          # uncommitted edit
+    mkdir -p .github/workflows; printf 'name: x\n' > .github/workflows/new.yml   # uncommitted new file
+    printf '# committed by the run\n' >> scripts/git-push-retry.sh             # committed by the run itself
+    git add scripts/git-push-retry.sh && git commit -qm "run committed a helper"
+  )
+  out=$(cd "$D/run" && bash -e "$STEP" 2>&1); rc=$?
+  R="$D/remote.git"
+  [ "$rc" -eq 0 ] && grep -q '::error::This run changed scripts .github on main' <<<"$out" \
+    && [ "$(git -C "$R" show main:scripts/git-push-retry.sh)" = "$(git -C "$D/seed" show main:scripts/git-push-retry.sh)" ] \
+    && [ "$(git -C "$R" show main:scripts/commit-run-results.sh)" = "$(git -C "$D/seed" show main:scripts/commit-run-results.sh)" ] \
+    && ! git -C "$R" cat-file -e main:.github/workflows/new.yml 2>/dev/null \
+    && git -C "$R" show main:memory/logs/2026-01-01.md | grep -q 'opened a PR' \
+    && pass "$wf: changes to scripts/ and .github/ never reach main, run state still does" \
+    || { bad "$wf: guarded paths reached main or the step broke (rc=$rc)"; echo "$out" | tail -15; }
+  [ -z "$(cd "$D/run" && git status --porcelain -- scripts .github)" ] && pass "$wf: guarded paths are clean in the checkout afterwards" || bad "$wf: guarded paths left dirty"
+
+  # --- A skill that changes scripts/ on a branch (the PR path) still can ----
+  D="$TMP/$wf/guardedbranch"; setup "$D"
+  printf '# fixed by a PR branch\n' >> "$D/run/scripts/audit.sh"
+  out=$(cd "$D/run" && bash -e "$STEP" 2>&1); rc=$?
+  R="$D/remote.git"
+  [ "$rc" -eq 0 ] && git -C "$R" show feat/demo:scripts/audit.sh | grep -q 'fixed by a PR branch' \
+    && ! git -C "$R" show main:scripts/audit.sh | grep -q 'fixed by a PR branch' \
+    && ! grep -q '::error::This run changed' <<<"$out" \
+    && pass "$wf: a scripts/ change on a feature branch reaches the branch, not main, without an error" \
+    || { bad "$wf: feature-branch scripts/ change was blocked or leaked to main (rc=$rc)"; echo "$out" | tail -10; }
+
   # --- Dispatched on a non-main ref: no local main, branch keeps everything ---
   D="$TMP/$wf/nonmain"; setup "$D"
   rm -rf "$D/run"

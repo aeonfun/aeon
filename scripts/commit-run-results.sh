@@ -108,6 +108,26 @@ main() {
     fi
   fi
 
+  # scripts/ and .github/ are what later runs execute with the repo's credentials,
+  # so a run does not change them on main. Skills that need to (aeon-update,
+  # skill-repair, self-improve, ...) work on a branch and open a PR, which the
+  # feature-branch path above handles. Anything left here, uncommitted or
+  # committed by the run, is put back to origin/main and reported.
+  local -a GUARDED=(scripts .github)
+  if git rev-parse -q --verify origin/main >/dev/null \
+    && { [ -n "$(git status --porcelain -- "${GUARDED[@]}")" ] \
+      || [ -n "$(git diff --name-only origin/main HEAD -- "${GUARDED[@]}")" ]; }; then
+    echo "::error::This run changed ${GUARDED[*]} on main; those changes were dropped. Changes there belong on a branch with a PR."
+    for p in "${GUARDED[@]}"; do
+      if git cat-file -e "origin/main:$p" 2>/dev/null; then
+        git restore --source=origin/main --staged --worktree -- "$p"
+      else
+        git rm -rfq --cached --ignore-unmatch -- "$p"
+      fi
+      git clean -fdq -- "$p"
+    done
+  fi
+
   # Commit any remaining changes on main
   git add -A
   if git diff --staged --quiet; then
