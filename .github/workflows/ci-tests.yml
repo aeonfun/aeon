@@ -205,6 +205,8 @@ jobs:
         run: bash scripts/tests/test_git_push_retry.sh
       - name: Commit results feature-branch state split tests
         run: bash scripts/tests/test_commit_results_feature_branch.sh
+      - name: git-config-guard tests (planted .git/config does not run)
+        run: bash scripts/tests/test_git_config_guard.sh
       - name: Standing instructions restore tests
         run: bash scripts/tests/test_standing_instructions_restore.sh
       - name: dev-loop deterministic handoff tests

@@ -1035,7 +1035,7 @@ jobs:
             echo "Riva shadow mode: declared and disclosure credentials withheld"
           fi
           [ -n "$INJECTED" ] && echo "::notice::Injected declared secrets for ${SKILL_NAME}:${INJECTED}"
-          export AEON_SECRETCURL_ALLOW="$(bash scripts/skill_requires.sh "$SKILL_NAME" 2>/dev/null | tr '\n' ' ')"
+          export AEON_SECRETCURL_ALLOW="$([ "$SHADOW_MODE" = "1" ] || bash scripts/skill_requires.sh "$SKILL_NAME" 2>/dev/null | tr '\n' ' ')"
 
           unset ALL_SECRETS   # drop the secrets blob before any skill/Claude code runs
 
@@ -1229,6 +1229,14 @@ jobs:
           echo "SESSION_ID=$(echo "$CLAUDE_OUTPUT" | jq -r '.session_id // empty')" >> "$GITHUB_OUTPUT"
 
           echo "::notice::Token usage — model: ${EFFECTIVE_MODEL:-$BANNER_MODEL}, input: $INPUT_TOKENS, output: $OUTPUT_TOKENS, cache_read: $CACHE_READ, cache_creation: $CACHE_CREATION, total: $TOTAL_TOKENS"
+
+      # The run can write .git/config, and every later git step runs in this
+      # checkout with push credentials. Drop the config that makes git run a
+      # program (fsmonitor, filters, merge drivers, credential helpers, includes,
+      # ...) and pin hooks off, from the starting commit's copy of the script.
+      - name: Lock git config
+        if: always() && steps.work.outputs.mode != ''
+        run: git show "$GITHUB_SHA:scripts/git-config-guard.sh" | bash
 
       # Egress hardening P2: publish the warn-mode audit log. always() so it lands
       # even if the run failed; the host list is the allowlist oracle P3 builds from.
@@ -2094,7 +2102,12 @@ jobs:
             exit 0
           fi
           git commit -m "chore(${{ steps.skill.outputs.name }}): log read-only failure $(date +%Y-%m-%d)"
-          bash scripts/git-push-retry.sh
+          # Push helpers from the starting commit, as in "Commit results": they run
+          # with push credentials and the run could have edited the working tree.
+          HELPERS=$(mktemp -d "$RUNNER_TEMP/push-helpers.XXXXXX")
+          git show "$GITHUB_SHA:scripts/git-push-retry.sh" > "$HELPERS/git-push-retry.sh"
+          git show "$GITHUB_SHA:scripts/audit.sh" > "$HELPERS/audit.sh"
+          AEON_AUDIT_SCRIPT="$HELPERS/audit.sh" bash "$HELPERS/git-push-retry.sh"
 
       - name: Commit results
         # (Read-only failures are handled above, in "Commit read-only failure

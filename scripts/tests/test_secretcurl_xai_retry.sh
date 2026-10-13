@@ -4,11 +4,13 @@ cd "$(dirname "$0")/../.."
 
 tmp=$(mktemp -d)
 trap 'rm -rf "$tmp"' EXIT
-state="$tmp/state"
+# The fake curl reads its settings from $HOME (secretcurl strips curl's env).
+mkdir -p "$tmp/h503" "$tmp/h401"
+state="$tmp/h503/fake-curl-state"
 response="$tmp/response.json"
 
 PATH="$PWD/scripts/tests/fixtures:$PATH" \
-FAKE_CURL_STATE="$state" \
+HOME="$tmp/h503" \
   ./scripts/secretcurl.sh -s -o "$response" -w '%{http_code}' \
     --max-time 1 -X POST "https://api.x.ai/v1/responses" \
     -H 'Authorization: Bearer {XAI_API_KEY}' -d @/dev/null \
@@ -21,11 +23,11 @@ grep -q 'attempt=1/3 http=503 .*reason=http-503' "$tmp/diag" || { echo "FAIL - m
 grep -q 'attempt=2/3 http=200 .*reason=ok' "$tmp/diag" || { echo "FAIL - missing success diagnostic"; exit 1; }
 echo 'PASS - xai retries transient HTTP 503'
 
-state401="$tmp/state401"
+state401="$tmp/h401/fake-curl-state"
 response401="$tmp/response401.json"
+printf '401' > "$tmp/h401/fake-curl-http"
 PATH="$PWD/scripts/tests/fixtures:$PATH" \
-FAKE_CURL_STATE="$state401" \
-FAKE_CURL_HTTP=401 \
+HOME="$tmp/h401" \
   ./scripts/secretcurl.sh -s -o "$response401" -w '%{http_code}' \
     --max-time 1 -X POST "https://api.x.ai/v1/responses" \
     -H 'Authorization: Bearer {XAI_API_KEY}' -d @/dev/null \

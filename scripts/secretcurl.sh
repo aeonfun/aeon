@@ -59,8 +59,31 @@ subst() {
   printf '%s' "$a"
 }
 
+# Audit record inputs: credential placeholders named (NAMES only) and the target
+# URL, both read from the ORIGINAL placeholder args so no secret value is handled
+# here. Only when auditing is on (AEON_AUDIT_LOG set).
+_SECS="" _URL=""
+if [ -n "${AEON_AUDIT_LOG:-}" ]; then
+  for a in "$@"; do
+    for n in $(printf '%s\n' "$a" | grep -oE '\{[A-Z_][A-Z0-9_]*\}' | tr -d '{}' | sort -u || true); do
+      case "$n" in *_API_KEY|*_KEY|*_TOKEN|*_SECRET|*_PAT|*_WEBHOOK_URL) _SECS="${_SECS}${n}," ;; esac
+    done
+  done
+  for a in "$@"; do case "$a" in http://*|https://*) _URL="$a"; break ;; esac; done
+fi
+audit() {
+  [ -n "${AEON_AUDIT_LOG:-}" ] || return 0
+  local here c
+  here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+  for c in "scripts/audit.sh" "$here/audit.sh" "$here/scripts/audit.sh"; do
+    if [ -f "$c" ]; then bash "$c" "secretcurl" "${_URL%%\?*}" "$1" "${_SECS%,}" || true; break; fi
+  done
+}
+# A refused call is recorded too (exit 1), so a blocked attempt leaves a trace.
+refuse() { audit 1; exit 1; }
+
 args=()
-for a in "$@"; do args+=("$(subst "$a")") || exit 1; done
+for a in "$@"; do args+=("$(subst "$a")") || refuse; done
 
 # Substituted args still land in curl's OWN process argv (visible to any other
 # process on the box via `ps`/`/proc/<pid>/cmdline`) if handed to curl directly
@@ -89,6 +112,21 @@ cfg_quote() {
 }
 is_url() { case "$1" in http://*|https://*) return 0 ;; *) return 1 ;; esac; }
 
+# reads_proc FLAG VALUE: the value makes curl read a file under /proc, such as
+# another process's environ, which would send keys the placeholder check never
+# saw. In a short-option cluster (-sF) the value belongs to the last letter.
+reads_proc() {
+  local flag="$1" val="$2"
+  case "$val" in */proc/*) ;; *) return 1 ;; esac
+  case "$flag" in --*) ;; *) flag="-${flag: -1}" ;; esac
+  case "$flag" in
+    -T|--upload-file) return 0 ;;
+    -F|--form) [[ "$val" == *=[@\<]* ]] ;;
+    --data-urlencode|--url-query) [[ "$val" =~ ^[^=]*@ ]] ;;
+    *) [[ "$val" == @* ]] ;;
+  esac
+}
+
 # build_config: turn a curl-style argv array into -K config-file text. Every
 # real call site in this repo is one of: a bare target URL, a boolean flag
 # (-s/-fsS/-sS), or a flag with a value (-H/-X/-o/-w/-m/--max-time) -- including
@@ -112,13 +150,18 @@ build_config() {
       fi
       # These make curl read environment variables or another config file on its
       # own, which would hand it values the placeholder check above never saw.
+      # -[!-]*K* also catches -K inside a short-option cluster (-sK file).
       case "$tok" in
-        --variable|--expand-*|-K|--config)
+        --variable|--expand-*|--config|-[!-]*K*)
           echo "secretcurl: option $tok is not supported" >&2
           return 1 ;;
       esac
       local next=$((i + 1))
       if [ "$next" -lt "$n" ] && [[ "${a[$next]}" != -* ]] && ! is_url "${a[$next]}"; then
+        if reads_proc "$tok" "${a[$next]}"; then
+          echo "secretcurl: option $tok reads a file under /proc - refusing" >&2
+          return 1
+        fi
         printf '%s %s\n' "$tok" "$(cfg_quote "${a[$next]}")"
         i=$((i + 2))
       else
@@ -133,7 +176,18 @@ build_config() {
   done
 }
 
-CONFIG="$(build_config "${args[@]}")" || exit 1
+CONFIG="$(build_config "${args[@]}")" || refuse
+
+# Every secret curl needs is in CONFIG by now, so curl runs with an environment
+# holding none: only what it needs to reach the network (proxy, CA bundle) and
+# no credential a `-d @/proc/self/environ` could read back. -q skips ~/.curlrc,
+# which the run could have written.
+CURL_ENV=("PATH=$PATH" "HOME=${HOME:-/}")
+for v in TMPDIR LANG LC_ALL LC_CTYPE http_proxy HTTP_PROXY https_proxy HTTPS_PROXY \
+  all_proxy ALL_PROXY no_proxy NO_PROXY CURL_CA_BUNDLE SSL_CERT_FILE SSL_CERT_DIR; do
+  [ -n "${!v+x}" ] && CURL_ENV+=("$v=${!v}")
+done
+run_curl() { env -i "${CURL_ENV[@]}" curl -q -K <(printf '%s' "$CONFIG"); }
 
 # x_search is a live, variable-latency request.  Every skill uses this helper,
 # so retry only the X.AI Responses endpoint here instead of duplicating subtly
@@ -165,7 +219,7 @@ run_xai_search() {
   while [ "$attempt" -le "$max_attempts" ]; do
     stdout_file="$(mktemp)"
     set +e
-    curl -K <(printf '%s' "$CONFIG") >"$stdout_file"
+    run_curl >"$stdout_file"
     rc=$?
     set -e
     http=""
@@ -220,32 +274,19 @@ run_xai_search() {
 # the foreground (stdout/stderr/exit all pass through unchanged) so we can record
 # the call after.
 if [ -n "${AEON_AUDIT_LOG:-}" ]; then
-  # Credential placeholders that were substituted (NAMES only) and the target URL,
-  # both read from the ORIGINAL placeholder args so no secret value is handled here.
-  _SECS=""
-  for a in "$@"; do
-    for n in $(printf '%s\n' "$a" | grep -oE '\{[A-Z_][A-Z0-9_]*\}' | tr -d '{}' | sort -u || true); do
-      case "$n" in *_API_KEY|*_KEY|*_TOKEN|*_SECRET|*_PAT|*_WEBHOOK_URL) _SECS="${_SECS}${n}," ;; esac
-    done
-  done
-  _URL=""
-  for a in "$@"; do case "$a" in http://*|https://*) _URL="$a"; break ;; esac; done
   set +e
   if is_xai_search "${args[@]}"; then
     run_xai_search "${args[@]}"
   else
-    curl -K <(printf '%s' "$CONFIG")
+    run_curl
   fi
   _RC=$?
   set -e
-  _HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-  for _c in "scripts/audit.sh" "$_HERE/audit.sh" "$_HERE/scripts/audit.sh"; do
-    if [ -f "$_c" ]; then bash "$_c" "secretcurl" "${_URL%%\?*}" "$_RC" "${_SECS%,}" || true; break; fi
-  done
+  audit "$_RC"
   exit "$_RC"
 fi
 if is_xai_search "${args[@]}"; then
   run_xai_search "${args[@]}"
   exit $?
 fi
-curl -K <(printf '%s' "$CONFIG")
+run_curl

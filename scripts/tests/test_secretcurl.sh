@@ -68,7 +68,7 @@ if printf '%s' "$SNAPSHOT" | grep -q 'marker-secret-do-not-leak'; then
 else
   pass "secret value does not appear in any process argv while the request is in flight"
 fi
-if printf '%s' "$SNAPSHOT" | grep -q '[c]url -K /dev/fd/'; then
+if printf '%s' "$SNAPSHOT" | grep -qE '[c]url (-q )?-K /dev/fd/'; then
   pass "curl subprocess invoked via -K (config on a /dev/fd pipe), not inline args"
 else
   bad "expected a 'curl -K /dev/fd/N' subprocess in the ps snapshot (got: $(printf '%s' "$SNAPSHOT" | grep '[c]url'))"
@@ -200,12 +200,55 @@ if [ "$RC" -ne 0 ] && ! printf '%s' "$OUT" | grep -q 'env-marker'; then
 else
   bad "curl was allowed to import an environment variable (rc=$RC, out=$OUT)"
 fi
+# --- curl runs with no credentials in its environment ------------------------
+# Everything curl needs is in the -K config, so a -d @/proc/self/environ (or any
+# read of curl's own environment) finds no key. A stub curl dumps its env.
+STUB=$(mktemp -d)
+printf '#!/bin/sh\nenv > "$HOME/curl-env"\n' > "$STUB/curl"; chmod +x "$STUB/curl"
+HOME="$STUB" PATH="$STUB:$PATH" HTTPS_PROXY='http://127.0.0.1:9' "$S" -s -H 'X-Key: {TEST_SECRETCURL_API_KEY}' "http://127.0.0.1:$PORT/" >/dev/null 2>&1
+if [ -s "$STUB/curl-env" ] && ! grep -q 'marker-secret\|TEST_SECRETCURL_API_KEY\|TEST_UNDECLARED_API_KEY' "$STUB/curl-env" \
+  && grep -q '^HTTPS_PROXY=http://127.0.0.1:9$' "$STUB/curl-env"; then
+  pass "curl's environment holds no credential, and keeps the proxy setting"
+else
+  bad "curl inherited a credential or lost the proxy (env: $(tr '\n' ' ' < "$STUB/curl-env" 2>/dev/null))"
+fi
+rm -rf "$STUB"
+
+# --- options that make curl read a config file or a /proc file are refused ---
+for argv in "-sK /tmp/x.cfg" "-d @/proc/self/environ" "-sd @/proc/1/environ" "-H @/proc/self/environ" \
+  "-F f=@/proc/self/environ" "-sF f=</proc/self/environ" "-T /proc/self/environ" "--data-urlencode e@/proc/self/environ"; do
+  # shellcheck disable=SC2086 # argv is a deliberate word list
+  OUT=$("$S" -s $argv "http://127.0.0.1:$PORT/" 2>&1); RC=$?
+  if [ "$RC" -ne 0 ] && printf '%s' "$OUT" | grep -q 'not supported\|reads a file under /proc'; then
+    pass "refused: $argv"
+  else
+    bad "not refused: $argv (rc=$RC, out=$OUT)"
+  fi
+done
+OUT=$("$S" -s -d '{"note":"see /proc/self/environ"}' "http://127.0.0.1:$PORT/" 2>&1); RC=$?
+[ "$RC" -eq 0 ] && pass "a body that only mentions /proc is still sent" || bad "a body mentioning /proc was refused (rc=$RC, out=$OUT)"
+
+# --- a refused call leaves an audit record --------------------------------
+AUDIT_FILE=$(mktemp)
+AEON_AUDIT_LOG="$AUDIT_FILE" AEON_SECRETCURL_ALLOW="" "$S" -s -H 'X-Key: {TEST_UNDECLARED_API_KEY}' "http://127.0.0.1:$PORT/x?q=1" >/dev/null 2>&1
+if jq -e 'select(.action == "secretcurl" and .exit == 1)' "$AUDIT_FILE" >/dev/null 2>&1 && ! grep -q 'undeclared-marker' "$AUDIT_FILE"; then
+  pass "a refused call is written to the audit log, without the value"
+else
+  bad "no audit record for a refused call: $(cat "$AUDIT_FILE")"
+fi
+rm -f "$AUDIT_FILE"
+
 rm -f "$REQLOG"
 # the workflow must hand the declared list to the run, or the check above never applies
 if grep -q 'export AEON_SECRETCURL_ALLOW=.*skill_requires.sh' .github/workflows/aeon.yml; then
   pass "aeon.yml exports the skill's declared names as AEON_SECRETCURL_ALLOW"
 else
   bad "aeon.yml no longer exports AEON_SECRETCURL_ALLOW"
+fi
+if grep -q 'export AEON_SECRETCURL_ALLOW="$(\[ "$SHADOW_MODE" = "1" \] ||' .github/workflows/aeon.yml; then
+  pass "aeon.yml leaves the declared list empty in shadow mode"
+else
+  bad "aeon.yml hands the declared list to shadow runs"
 fi
 
 echo "---"

@@ -807,6 +807,13 @@ jobs:
 
           echo "::notice::Token usage — input: $INPUT_TOKENS, output: $OUTPUT_TOKENS, cache_read: $CACHE_READ, cache_creation: $CACHE_CREATION, total: $TOTAL_TOKENS"
 
+      # The run can write .git/config, and "Commit results" pushes from this
+      # checkout. Drop the config that makes git run a program and pin hooks off
+      # (scripts/git-config-guard.sh, read from the starting commit).
+      - name: Lock git config
+        if: always() && steps.msg.outputs.source != ''
+        run: git show "$GITHUB_SHA:scripts/git-config-guard.sh" | bash
+
       # Sidecar gateway logs die with the VM — surface them in the job log on
       # failure (set the CCR_LOG=true repo variable for request-level detail).
       # The ccr config.json is deliberately NOT printed (it embeds the provider key).

@@ -183,7 +183,7 @@ HOOK
   )
   out=$(cd "$D/run" && bash -e "$STEP" 2>&1); rc=$?
   R="$D/remote.git"
-  [ "$rc" -eq 0 ] && grep -q '::error::This run changed scripts .github on main' <<<"$out" \
+  [ "$rc" -eq 0 ] && grep -q '::error::This run changed scripts .github harness-adapter on main' <<<"$out" \
     && [ "$(git -C "$R" show main:scripts/git-push-retry.sh)" = "$(git -C "$D/seed" show main:scripts/git-push-retry.sh)" ] \
     && [ "$(git -C "$R" show main:scripts/commit-run-results.sh)" = "$(git -C "$D/seed" show main:scripts/commit-run-results.sh)" ] \
     && ! git -C "$R" cat-file -e main:.github/workflows/new.yml 2>/dev/null \
@@ -191,6 +191,40 @@ HOOK
     && pass "$wf: changes to scripts/ and .github/ never reach main, run state still does" \
     || { bad "$wf: guarded paths reached main or the step broke (rc=$rc)"; echo "$out" | tail -15; }
   [ -z "$(cd "$D/run" && git status --porcelain -- scripts .github)" ] && pass "$wf: guarded paths are clean in the checkout afterwards" || bad "$wf: guarded paths left dirty"
+
+  # --- The run deletes or moves its origin/main ref: the check still holds ----
+  for how in delete spoof; do
+    D="$TMP/$wf/guard-$how"; setup "$D"
+    (
+      cd "$D/run" || exit 1
+      git checkout -q main
+      printf '# committed by the run\n' >> scripts/git-push-retry.sh
+      git add scripts/git-push-retry.sh && git commit -qm "run committed a helper"
+      if [ "$how" = delete ]; then git update-ref -d refs/remotes/origin/main; else git update-ref refs/remotes/origin/main HEAD; fi
+    )
+    out=$(cd "$D/run" && bash -e "$STEP" 2>&1); rc=$?
+    R="$D/remote.git"
+    [ "$(git -C "$R" show main:scripts/git-push-retry.sh)" = "$(git -C "$D/seed" show main:scripts/git-push-retry.sh)" ] \
+      && grep -q '::error::This run changed' <<<"$out" \
+      && pass "$wf: a run that ${how}s origin/main still cannot land a scripts/ change" \
+      || { bad "$wf: ${how}d origin/main let a scripts/ change reach main (rc=$rc)"; echo "$out" | tail -10; }
+  done
+
+  # --- Push helpers missing at the starting commit: fail, never the run's copy -
+  D="$TMP/$wf/nohelper"; setup "$D"
+  MARK="$D/helper-ran"
+  printf 'touch %q\n' "$MARK" >> "$D/run/scripts/git-push-retry.sh"
+  # A starting commit that has the commit script but no push helper.
+  NOHELPER_SHA=$(
+    cd "$D/run" || exit 1
+    export GIT_INDEX_FILE="$D/nohelper.index"
+    git read-tree HEAD && git rm -q --cached scripts/git-push-retry.sh \
+      && git commit-tree "$(git write-tree)" -p HEAD -m "no helper"
+  )
+  out=$(cd "$D/run" && GITHUB_SHA="$NOHELPER_SHA" bash -e "$STEP" 2>&1); rc=$?
+  [ "$rc" -ne 0 ] && [ ! -e "$MARK" ] && grep -q 'Could not read the push helpers' <<<"$out" \
+    && pass "$wf: an unreadable starting commit fails the step instead of running the working-tree helper" \
+    || { bad "$wf: fell back to the working-tree helper (rc=$rc, marker=$([ -e "$MARK" ] && echo yes || echo no))"; echo "$out" | tail -10; }
 
   # --- A skill that changes scripts/ on a branch (the PR path) still can ----
   D="$TMP/$wf/guardedbranch"; setup "$D"
