@@ -36,4 +36,4 @@ Each template is plain Markdown — edit it like you'd edit any document. Common
 
 ## From Aeon skills
 
-These templates are adapted from Aeon's internal skills. The full skills include memory integration, multi-repo support, notification channels, and dashboard rendering. If you want the full experience, [set up Aeon](../../README.md#quick-start) instead.
+These templates are adapted from Aeon's internal skills. The full skills include memory integration, multi-repo support, notification channels, and dashboard rendering. If you want the full experience, [set up Aeon](../../../.github/README.md#quick-start) instead.

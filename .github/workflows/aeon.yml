@@ -327,38 +327,16 @@ jobs:
       # the same thing on all seven.
       - name: Install bubblewrap (read-only sandbox)
         if: steps.work.outputs.mode != ''
-        # Bound this step. apt can block on the runner's unattended-upgrades dpkg
-        # lock, and with no cap a stall here consumed the entire 50-min job wall and
-        # the run was cancelled before the skill ever executed (nur create-skill/
-        # digest/heartbeat + data kpi-daily all self-flagged run_failed 2026-08-19,
-        # each a ~50-min hang on this exact step). timeout-minutes fails the step
-        # fast; DPkg::Lock::Timeout waits a bounded time for the lock instead of
-        # hanging indefinitely.
-        # The lock is not the only stall: on 2026-10-07 `apt-get update` itself hung
-        # on a slow mirror for the full 5 min and killed an aeon-agent tweet-digest run
-        # before it ran. So try the install from the image's cached package lists
-        # first (no network index refresh), and only refresh on a miss, with each
-        # update capped at 90s and retried once. Acquire timeouts stop a single dead
-        # mirror from hanging.
+        # Bound this step: apt can block on the runner's dpkg lock or a slow mirror
+        # (a ~50-min hang 2026-08-19, a 5-min `apt-get update` hang 2026-10-07).
+        # The action installs from a cached .deb (no apt at all on a hit), falls
+        # back to the bounded apt path on a miss, and lifts Ubuntu 24.04's AppArmor
+        # userns restriction. Not strict: a blocked bwrap only warns here, and
+        # run-harness fails CLOSED on read-only skills on its own.
         timeout-minutes: 5
-        run: |
-          set -euo pipefail
-          APT_OPTS="-o DPkg::Lock::Timeout=120 -o Acquire::Retries=3 -o Acquire::http::Timeout=20 -o Acquire::https::Timeout=20"
-          if ! command -v bwrap >/dev/null 2>&1; then
-            if ! sudo apt-get $APT_OPTS install -y -qq bubblewrap; then
-              for attempt in 1 2; do
-                sudo timeout 90 apt-get $APT_OPTS update -qq && break
-                echo "::warning::apt-get update attempt $attempt timed out or failed"
-              done
-              sudo apt-get $APT_OPTS install -y -qq bubblewrap
-            fi
-          fi
-          # Ubuntu 24.04 (including GitHub's ubuntu-latest) restricts unprivileged
-          # user namespaces via AppArmor, so bwrap dies with 'setting up uid map:
-          # Permission denied' and run-harness fails CLOSED on every read-only
-          # skill. Measured on this runner 2026-07-21. Re-enable them for the job.
-          sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0 || true
-          bwrap --dev-bind / / --ro-bind /tmp /tmp true && echo 'bwrap: userns OK' || echo '::warning::bwrap still blocked'
+        uses: ./.github/actions/install-bubblewrap
+        with:
+          strict: 'false'
 
       - name: Install harness CLI
         if: steps.harness.outputs.HARNESS != '' && steps.harness.outputs.HARNESS != 'claude'
@@ -2010,6 +1988,11 @@ jobs:
             if bash scripts/notify-deliver.sh "$p"; then ok=$((ok+1)); else echo "notify-deliver failed for $(basename "$p")"; fi
           done
           echo "Delivered $ok/${#payloads[@]} pending payload(s) via notify-deliver.sh"
+          if [ "$ok" -lt "${#payloads[@]}" ]; then
+            # The queue is removed below (the runner is discarded after this job), so
+            # an undelivered payload is gone; make that visible on the run.
+            echo "::warning::$(( ${#payloads[@]} - ok )) of ${#payloads[@]} notification(s) from ${SKILL_NAME:-this run} were not delivered on any channel and are dropped"
+          fi
           if [ -f "$AEON_AUDIT_LOG" ]; then
             echo "--- notify audit records ---"; cat "$AEON_AUDIT_LOG"
           fi

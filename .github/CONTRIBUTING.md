@@ -189,10 +189,17 @@ protect:
 | `ci-packs-json` | `packs.json` matches a fresh `bin/generate-packs-json` |
 | `ci-skill-category` | every `SKILL.md` declares a valid `category:` |
 | `ci-capabilities-parity` | the capabilities taxonomy stays in sync |
-| `ci-skill-packs` | `catalog/skill-packs.json` is well-formed **and** matches the README's Community Packs table |
+| `ci-skill-packs` | `catalog/skill-packs.json` is well-formed **and** matches the Listed packs table in `docs/community-skill-packs.md` |
 | `ci-apps` | each app in `apps/**` typechecks, tests, and builds |
 | `ci-tests` | the `scripts/tests/` suites pass |
 | `ci-agents-md` | `AGENTS.md` is regenerated from `STRATEGY.md` |
+| `ci-readme-catalog` | the README's skill tables and counts match `catalog/packs.json` |
+| `ci-shellcheck` | shell under `scripts/`, `bin/`, `harness-adapter/` passes shellcheck |
+| `ci-skill-integrity` | every skill is in `eyebrowlock.json` and none gained reach since it was locked |
+| `ci-aeon-skill-sync` | the two copies of the `aeon` operator skill stay in sync |
+| `ci-harnesses-json` | `harness-adapter/harnesses.json` matches a fresh `generate-harnesses-json` |
+| `ci-harness-cli` | each pinned harness CLI still works with its adapter |
+| `ci-gate` | the required check on `main`: waits for every other check on the PR and fails if any failed |
 
 Run the checks locally before pushing:
 
@@ -200,7 +207,19 @@ Run the checks locally before pushing:
 bash scripts/check-skill-categories.sh
 bash scripts/check-capabilities-parity.sh
 node scripts/validate-skill-packs.mjs          # listing a community pack
+node scripts/validate-config.js                # aeon.yml structure and schedules
+node scripts/validate-readme-catalog.mjs       # README tables and counts vs packs.json
+node bin/generate-skill-icons --check          # every skill has an icon glyph
+node scripts/gen-agents-md.js --check
+bash scripts/lint-shell.sh                     # shellcheck
+npx --yes @biomejs/biome@2.5.15 ci .           # formatting for apps/** (fix with `npm run format`)
 ```
+
+Adding or renaming a skill also changes generated files: run `bin/generate-skills-json`
+and `bin/generate-packs-json`, add the skill to `catalog/skill-icons.json`, update the README
+counts that `validate-readme-catalog.mjs` reports, and refresh `eyebrowlock.json` with
+`eyebrow scan --path . --lockfile eyebrowlock.json` (see the header of
+`.github/workflows/ci-skill-integrity.yml`).
 
 Touching `apps/**`? Run that app's own checks — for the dashboard:
 

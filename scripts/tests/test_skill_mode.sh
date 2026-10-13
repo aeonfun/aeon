@@ -10,7 +10,8 @@ bad()  { echo "FAIL - $1"; fail=1; }
 # Fixtures live under real skills/ so resolve_mode finds them; use temp names + cleanup.
 mk() { mkdir -p "skills/$1"; printf '%s\n' "---" "name: $1" "${2:-}" "---" "body" > "skills/$1/SKILL.md"; }
 RO="zzz-test-readonly-$$"; WR="zzz-test-write-$$"; NM="zzz-test-nomode-$$"; BAD="zzz-test-bad-$$"; CMT="zzz-test-comment-$$"
-cleanup() { rm -rf "skills/$RO" "skills/$WR" "skills/$NM" "skills/$BAD" "skills/$CMT"; }
+CRLF="zzz-test-crlf-$$"; NEST="zzz-test-nested-comment-$$"; CASE="zzz-test-case-$$"
+cleanup() { rm -rf "skills/$RO" "skills/$WR" "skills/$NM" "skills/$BAD" "skills/$CMT" "skills/$CRLF" "skills/$NEST" "skills/$CASE"; }
 trap cleanup EXIT
 mk "$RO" "mode: read-only"
 mk "$WR" "mode: write"
@@ -25,6 +26,15 @@ mk "$CMT" "mode: read-only   # with an inline comment and trailing space   "
 [ "$(bash "$M" mode "$NM")"  = "write" ]     && pass "no mode defaults to write"   || bad "no mode defaults to write"
 [ "$(bash "$M" mode "$BAD")" = "write" ]     && pass "unknown mode falls back to write" || bad "unknown mode falls back to write"
 [ "$(bash "$M" mode "nonexistent-skill-xyz")" = "write" ] && pass "missing skill defaults to write" || bad "missing skill defaults to write"
+
+# frontmatter shapes that must still resolve to the declared mode
+mkdir -p "skills/$CRLF" "skills/$NEST" "skills/$CASE"
+printf -- '---\r\nname: x\r\nmode: read-only\r\n---\r\nbody\r\n' > "skills/$CRLF/SKILL.md"
+printf -- '---\nname: x\nmetadata:\n# a note at column 0\n  mode: read-only\n---\nbody\n' > "skills/$NEST/SKILL.md"
+printf -- '---\nname: x\nmode: Read-Only\n---\nbody\n' > "skills/$CASE/SKILL.md"
+[ "$(bash "$M" mode "$CRLF")" = "read-only" ] && pass "CRLF frontmatter resolves" || bad "CRLF frontmatter resolves"
+[ "$(bash "$M" mode "$NEST")" = "read-only" ] && pass "column-0 comment inside metadata: keeps the nested mode" || bad "column-0 comment inside metadata: keeps the nested mode"
+[ "$(bash "$M" mode "$CASE")" = "read-only" ] && pass "mode value is case-insensitive" || bad "mode value is case-insensitive"
 
 # allowed-tools: write tier has the mutation tools
 WT=$(bash "$M" allowed-tools write)
