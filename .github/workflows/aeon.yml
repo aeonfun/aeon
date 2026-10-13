@@ -1991,7 +1991,17 @@ jobs:
             if bash scripts/notify-deliver.sh "$p"; then ok=$((ok+1)); else echo "notify-deliver failed for $(basename "$p")"; fi
           done
           echo "Delivered $ok/${#payloads[@]} pending payload(s) via notify-deliver.sh"
-          if [ "$ok" -lt "${#payloads[@]}" ]; then
+          # Same channel tests notify-deliver.sh uses. With none set it fails every
+          # payload by design, which is not worth a warning on every run.
+          channels=0
+          { [ -n "${TELEGRAM_BOT_TOKEN:-}" ] && [ -n "${TELEGRAM_CHAT_ID:-}" ]; } && channels=1
+          [ -n "${DISCORD_WEBHOOK_URL:-}" ] && channels=1
+          [ -n "${SLACK_WEBHOOK_URL:-}" ] && channels=1
+          { [ -n "${BUZZ_PRIVATE_KEY:-}" ] && [ -n "${BUZZ_CHANNEL_ID:-}" ]; } && channels=1
+          { [ -n "${RESEND_API_KEY:-}" ] && [ -n "${NOTIFY_EMAIL_TO:-}" ]; } && channels=1
+          if [ "$channels" -eq 0 ]; then
+            echo "No notify channel configured; ${#payloads[@]} notification(s) from ${SKILL_NAME:-this run} were not sent"
+          elif [ "$ok" -lt "${#payloads[@]}" ]; then
             # The queue is removed below (the runner is discarded after this job), so
             # an undelivered payload is gone; make that visible on the run.
             echo "::warning::$(( ${#payloads[@]} - ok )) of ${#payloads[@]} notification(s) from ${SKILL_NAME:-this run} were not delivered on any channel and are dropped"
