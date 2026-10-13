@@ -237,6 +237,9 @@ jobs:
               # message tells them apart. Surface it so the skill is not silently
               # skipped forever.
               echo "::warning::skill $SKILL has an invalid schedule and will never run: $(cat "$CRON_ERR")"
+            elif [ -s "$CRON_ERR" ]; then
+              # Any other stderr (a crash, a date error) still reaches the log.
+              cat "$CRON_ERR" >&2
             fi
 
             # --- Circuit breaker (auto-recovering) ---
@@ -344,6 +347,8 @@ jobs:
             if ! bash scripts/cron-due.sh "$SCHED" "$NOW_EPOCH" "$LAST_DISPATCH_EPOCH" "$CATCHUP_HOURS" >/dev/null 2>"$CRON_ERR"; then
               if grep -q "invalid schedule" "$CRON_ERR"; then
                 echo "::warning::chain $CH has an invalid schedule and will never run: $(cat "$CRON_ERR")"
+              elif [ -s "$CRON_ERR" ]; then
+                cat "$CRON_ERR" >&2
               fi
               continue
             fi
