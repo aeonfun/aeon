@@ -1,0 +1,87 @@
+name: install-bubblewrap
+description: Install bubblewrap (read-only sandbox) from a cached .deb, falling back to apt, then lift Ubuntu 24.04's AppArmor userns restriction
+inputs:
+  strict:
+    description: "'true' fails the step when bwrap still cannot create a user namespace; 'false' only warns"
+    required: false
+    default: 'true'
+runs:
+  using: composite
+  steps:
+    # The cache holds the bubblewrap .deb (~50 KB). A hit unpacks /usr/bin/bwrap
+    # straight from it: no apt, no package index, no mirror, no dpkg lock. The
+    # apt path below was 3-100s per job (dpkg lock waits and slow mirrors before
+    # dpkg even started); a hit is ~1s. The key rolls monthly so a bubblewrap
+    # security update is picked up within a month.
+    - name: Bubblewrap cache key
+      id: key
+      shell: bash
+      run: echo "key=bubblewrap-${{ runner.os }}-${{ runner.arch }}-${ImageOS:-unknown}-$(date -u +%Y-%m)" >> "$GITHUB_OUTPUT"
+
+    - name: Restore bubblewrap .deb
+      id: restore
+      uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+      with:
+        path: ~/.cache/bubblewrap
+        key: ${{ steps.key.outputs.key }}
+
+    - name: Install bubblewrap
+      id: install
+      shell: bash
+      env:
+        STRICT: ${{ inputs.strict }}
+      run: |
+        set -euo pipefail
+        CACHE="$HOME/.cache/bubblewrap"
+        if ! command -v bwrap >/dev/null 2>&1; then
+          deb=""
+          for f in "$CACHE"/bubblewrap_*.deb; do [ -f "$f" ] && { deb=$f; break; }; done
+          if [ -n "$deb" ] && dpkg-deb --fsys-tarfile "$deb" | sudo tar -x -C / ./usr/bin/bwrap \
+             && bwrap --version >/dev/null 2>&1; then
+            echo "bubblewrap restored from cache ($(basename "$deb"))"
+          else
+            # apt can block on the runner's unattended-upgrades dpkg lock, and with no
+            # cap a stall consumed the whole 50-min job wall (2026-08-19).
+            # DPkg::Lock::Timeout bounds the lock wait. On 2026-10-07 `apt-get update`
+            # itself hung on a slow mirror, so install from the image's cached package
+            # lists first and refresh only on a miss, each update capped at 90s and
+            # retried once. Acquire timeouts stop a single dead mirror from hanging.
+            # The caller's timeout-minutes bounds the whole step.
+            APT_OPTS="-o DPkg::Lock::Timeout=120 -o Acquire::Retries=3 -o Acquire::http::Timeout=20 -o Acquire::https::Timeout=20"
+            if ! sudo apt-get $APT_OPTS install -y -qq bubblewrap; then
+              for attempt in 1 2; do
+                sudo timeout 90 apt-get $APT_OPTS update -qq && break
+                echo "::warning::apt-get update attempt $attempt timed out or failed"
+              done
+              sudo apt-get $APT_OPTS install -y -qq bubblewrap
+            fi
+            # Stage the .deb apt just used for the next run (best effort; never fails the step).
+            mkdir -p "$CACHE"
+            cp /var/cache/apt/archives/bubblewrap_*.deb "$CACHE"/ 2>/dev/null \
+              || (cd "$CACHE" && timeout 60 apt-get download -qq bubblewrap) \
+              || echo "::warning::could not stage the bubblewrap .deb for the cache"
+            for f in "$CACHE"/bubblewrap_*.deb; do
+              [ -f "$f" ] && { echo "staged=true" >> "$GITHUB_OUTPUT"; break; }
+            done
+          fi
+        fi
+        # Ubuntu 24.04 (including GitHub's ubuntu-latest) restricts unprivileged
+        # user namespaces via AppArmor, so bwrap dies with 'setting up uid map:
+        # Permission denied' and run-harness fails CLOSED on every read-only
+        # skill. Measured on this runner 2026-07-21. Re-enable them for the job.
+        sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0 || true
+        if bwrap --dev-bind / / --ro-bind /tmp /tmp true; then
+          echo 'bwrap: userns OK'
+        elif [ "$STRICT" = true ]; then
+          echo '::error::bwrap still blocked'
+          exit 1
+        else
+          echo '::warning::bwrap still blocked'
+        fi
+
+    - name: Save bubblewrap .deb
+      if: steps.restore.outputs.cache-hit != 'true' && steps.install.outputs.staged == 'true'
+      uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+      with:
+        path: ~/.cache/bubblewrap
+        key: ${{ steps.key.outputs.key }}
