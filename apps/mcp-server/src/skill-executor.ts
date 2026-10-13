@@ -399,27 +399,41 @@ export interface SkillRunResult {
   text: string;
 }
 
-export function runSkill(repoRoot: string, slug: string, varValue: string, logPrefix = "[aeon]"): Promise<SkillRunResult> {
+export function runSkill(
+  repoRoot: string,
+  slug: string,
+  varValue: string,
+  logPrefix = "[aeon]",
+): Promise<SkillRunResult> {
   return enqueue(() => runSkillInner(repoRoot, slug, varValue, logPrefix));
 }
 
-async function runSkillInner(repoRoot: string, slug: string, varValue: string, logPrefix: string): Promise<SkillRunResult> {
+async function runSkillInner(
+  repoRoot: string,
+  slug: string,
+  varValue: string,
+  logPrefix: string,
+): Promise<SkillRunResult> {
   const skillFile = join(repoRoot, "skills", slug, "SKILL.md");
   if (!existsSync(skillFile)) {
-    return fail([
-      `Error: skill '${slug}' not found.`,
-      `Expected SKILL.md at: ${skillFile}`,
-      `Make sure you're running from inside an Aeon repo clone.`,
-    ].join("\n"));
+    return fail(
+      [
+        `Error: skill '${slug}' not found.`,
+        `Expected SKILL.md at: ${skillFile}`,
+        `Make sure you're running from inside an Aeon repo clone.`,
+      ].join("\n"),
+    );
   }
 
   const capability = resolveMode(repoRoot, slug, varValue);
   if (!capability) {
-    return fail([
-      `Error: could not resolve the capability tier for '${slug}'.`,
-      `scripts/skill_mode.sh must be present and runnable from: ${repoRoot}`,
-      `Refusing to run rather than defaulting to write mode.`,
-    ].join("\n"));
+    return fail(
+      [
+        `Error: could not resolve the capability tier for '${slug}'.`,
+        `scripts/skill_mode.sh must be present and runnable from: ${repoRoot}`,
+        `Refusing to run rather than defaulting to write mode.`,
+      ].join("\n"),
+    );
   }
 
   const prompt = buildSkillPrompt(slug, varValue);
