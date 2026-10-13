@@ -2010,6 +2010,11 @@ jobs:
             if bash scripts/notify-deliver.sh "$p"; then ok=$((ok+1)); else echo "notify-deliver failed for $(basename "$p")"; fi
           done
           echo "Delivered $ok/${#payloads[@]} pending payload(s) via notify-deliver.sh"
+          if [ "$ok" -lt "${#payloads[@]}" ]; then
+            # The queue is removed below (the runner is discarded after this job), so
+            # an undelivered payload is gone; make that visible on the run.
+            echo "::warning::$(( ${#payloads[@]} - ok )) of ${#payloads[@]} notification(s) from ${SKILL_NAME:-this run} were not delivered on any channel and are dropped"
+          fi
           if [ -f "$AEON_AUDIT_LOG" ]; then
             echo "--- notify audit records ---"; cat "$AEON_AUDIT_LOG"
           fi
