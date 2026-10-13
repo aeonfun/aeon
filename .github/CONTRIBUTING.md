@@ -190,12 +190,12 @@ protect:
 | `ci-skill-category` | every `SKILL.md` declares a valid `category:` |
 | `ci-capabilities-parity` | the capabilities taxonomy stays in sync |
 | `ci-skill-packs` | `catalog/skill-packs.json` is well-formed **and** matches the Listed packs table in `docs/community-skill-packs.md` |
-| `ci-apps` | each app in `apps/**` typechecks, tests, and builds |
+| `ci-apps` | `apps/**` passes the biome format check; the dashboard typechecks, lints, tests and builds; the cli typechecks, lints and runs its `aeon init` sandbox tests; mcp-server builds; the webhook Worker lints, tests and bundles |
 | `ci-tests` | the `scripts/tests/` suites pass |
 | `ci-agents-md` | `AGENTS.md` is regenerated from `STRATEGY.md` |
 | `ci-readme-catalog` | the README's skill tables and counts match `catalog/packs.json` |
-| `ci-shellcheck` | shell under `scripts/`, `bin/`, `harness-adapter/` passes shellcheck |
-| `ci-skill-integrity` | every skill is in `eyebrowlock.json` and none gained reach since it was locked |
+| `ci-shellcheck` | the root `aeon` script and shell under `scripts/`, `bin/`, `harness-adapter/` and skill helpers pass shellcheck |
+| `ci-skill-integrity` | every skill is in `eyebrowlock.json`, and none gained reach or a new CRITICAL finding since it was locked |
 | `ci-aeon-skill-sync` | the two copies of the `aeon` operator skill stay in sync |
 | `ci-harnesses-json` | `harness-adapter/harnesses.json` matches a fresh `generate-harnesses-json` |
 | `ci-harness-cli` | each pinned harness CLI still works with its adapter |
