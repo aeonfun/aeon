@@ -399,25 +399,26 @@ function spawnHarness(
   });
 }
 
-/**
- * Run a skill and return its text output. Serialized through `enqueue` (one skill
- * at a time, since they share the repo working tree) and dispatched through
- * harness-adapter's `run-harness`, which emits one `{ result, usage }` envelope
- * for every harness, so parsing is shared. Failure modes (missing skill, missing
- * CLI, non-zero exit, empty output) are returned as human-readable strings rather
- * than thrown, so callers can surface them without special-casing.
- *
- * Async so a running skill no longer freezes the whole stdio MCP server: the old
- * spawnSync parked the Node event loop for the whole run on every call, blocking
- * every other request (tools/list, pings, a second tool call). This awaits the
- * child instead.
- */
 /** A skill run's text plus whether it ran to completion, so callers can flag failures. */
 export interface SkillRunResult {
   ok: boolean;
   text: string;
 }
 
+/**
+ * Run a skill and return its text output. Serialized through `enqueue` (one skill
+ * at a time, since they share the repo working tree) and dispatched through
+ * harness-adapter's `run-harness`, which emits one `{ result, usage }` envelope
+ * for every harness, so parsing is shared. Failure modes (missing skill, missing
+ * CLI, non-zero exit, empty output) come back as `{ ok: false, text }` with a
+ * human-readable message rather than thrown, and the MCP server marks those
+ * results `isError`, so callers can surface them without special-casing.
+ *
+ * Async so a running skill no longer freezes the whole stdio MCP server: the old
+ * spawnSync parked the Node event loop for the whole run on every call, blocking
+ * every other request (tools/list, pings, a second tool call). This awaits the
+ * child instead.
+ */
 export function runSkill(
   repoRoot: string,
   slug: string,

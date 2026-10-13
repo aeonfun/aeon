@@ -52,10 +52,10 @@ async function run(varValue) {
   const harness = process.env.AEON_HARNESS;
   process.env.AEON_HARNESS = "claude";
   try {
-    await runSkill(root, "vuln-scanner", varValue, "[test]");
+    const result = await runSkill(root, "vuln-scanner", varValue, "[test]");
     const args = readFileSync(join(root, ".harness-args"), "utf-8").split("\0").slice(0, -1);
     const prompt = readFileSync(join(root, ".harness-prompt"), "utf-8");
-    return { args, prompt, log: logs.join("") };
+    return { result, args, prompt, log: logs.join("") };
   } finally {
     process.stderr.write = write;
     if (harness === undefined) delete process.env.AEON_HARNESS;
@@ -74,7 +74,8 @@ for (const [raw, clean] of [
   ["​shadow", "shadow"],
 ]) {
   test(`var ${JSON.stringify(raw)} runs read-only and shows the cleaned value`, async () => {
-    const { args, prompt, log } = await run(raw);
+    const { result, args, prompt, log } = await run(raw);
+    assert.deepEqual(result, { ok: true, text: "ok" });
     assert.equal(modeOf(args), "read-only");
     assert.ok(!args.includes("--mcp-config"), "a shadow run must not get MCP servers");
     assert.ok(prompt.endsWith(`\nvar=${clean}`), `prompt should end with var=${clean}: ${JSON.stringify(prompt)}`);
