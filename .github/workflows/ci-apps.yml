@@ -148,6 +148,11 @@ jobs:
       # emit is a broken install for anyone running `aeon-mcp`.
       - name: Build
         run: npm run build
+      # Hermetic (temp repo root, fake run-harness, no network): the var is
+      # cleaned once and the same value reaches the capability check, the
+      # prompt and the log, so a padded shadow selector still runs read-only.
+      - name: Unit tests
+        run: npm test
 
   webhook:
     name: webhook — worker bundle

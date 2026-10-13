@@ -148,8 +148,14 @@ resolve_mode() {
 is_shadow_selector() {
   local skill="$1" var="${2:-}"
   [ "$skill" = "vuln-scanner" ] || return 1
+  # Fail closed on padding: trim surrounding whitespace (space, tab, CR, LF)
+  # first, and treat a selector word followed by whitespace as that selector.
+  # A model still reads " shadow", "shadow\r\n" or "shadow x" as a shadow run,
+  # so those must get the read-only tier too, not fall through to write.
+  var="${var#"${var%%[![:space:]]*}"}"
+  var="${var%"${var##*[![:space:]]}"}"
   case "$var" in
-    shadow|shadow:*|compare|compare:*) return 0 ;;
+    shadow|shadow:*|shadow[[:space:]]*|compare|compare:*|compare[[:space:]]*) return 0 ;;
     *) return 1 ;;
   esac
 }

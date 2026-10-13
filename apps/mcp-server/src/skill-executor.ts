@@ -115,10 +115,17 @@ export function buildSkillPrompt(slug: string, varValue: string): string {
 /**
  * The var is caller-supplied text that lands inside the prompt. Fold line breaks
  * and other control characters into spaces so it stays one `var=` line and
- * cannot start a new paragraph of instructions after it.
+ * cannot start a new paragraph of instructions after it. Invisible format
+ * characters (zero-width space, BOM, bidi marks) are dropped, and surrounding
+ * whitespace is trimmed, so the value the model reads is the value the
+ * capability check sees: runSkillInner cleans the var once with this and passes
+ * that one value to resolveMode, the prompt and the log.
  */
 export function sanitizeVar(varValue: string): string {
-  return varValue.replace(/[\u0000-\u001f\u007f\u0085\u2028\u2029]+/g, " ").trim();
+  return varValue
+    .replace(/[\p{Cc}\p{Zl}\p{Zp}]+/gu, " ")
+    .replace(/\p{Cf}+/gu, "")
+    .trim();
 }
 
 /** Every harness harness-adapter's run-harness can dispatch to. */
@@ -232,7 +239,9 @@ function resolveModelArgs(repoRoot: string, slug: string, harness: Harness, logP
  * vuln-scanner's Riva shadow/compare evaluation) applies on this dispatch path
  * too, not only aeon.yml's. That check used to live only in a script aeon.yml
  * sourced, so this path silently ran shadow evaluations at full write access
- * with every ambient credential attached.
+ * with every ambient credential attached. Pass the sanitizeVar() value, the
+ * same one the prompt gets: the selector match is exact, so a raw value with
+ * padding or a line break would miss it while the model still reads shadow.
  *
  * Returns null when the tier cannot be determined. Callers must fail rather than
  * assume `write`: guessing the permissive tier is exactly the mistake this
@@ -417,7 +426,13 @@ async function runSkillInner(repoRoot: string, slug: string, varValue: string, l
     ].join("\n");
   }
 
-  const capability = resolveMode(repoRoot, slug, varValue);
+  // Clean the var once and use that one value everywhere below. The capability
+  // check (skill_mode.sh's exact shadow/compare match) used to get the raw value
+  // while the prompt got the cleaned one, so " shadow" or "shadow\n" resolved to
+  // write mode with every credential attached while the model read var=shadow.
+  const cleanVar = sanitizeVar(varValue);
+
+  const capability = resolveMode(repoRoot, slug, cleanVar);
   if (!capability) {
     return [
       `Error: could not resolve the capability tier for '${slug}'.`,
@@ -426,12 +441,12 @@ async function runSkillInner(repoRoot: string, slug: string, varValue: string, l
     ].join("\n");
   }
 
-  const prompt = buildSkillPrompt(slug, varValue);
+  const prompt = buildSkillPrompt(slug, cleanVar);
   const harness = resolveHarness(repoRoot, slug);
   const modelArgs = resolveModelArgs(repoRoot, slug, harness, logPrefix);
   const modelLabel = modelArgs[1] ?? `${harness} default`;
   process.stderr.write(
-    `${logPrefix} Running skill: ${slug}${varValue ? ` (var=${varValue})` : ""} [harness: ${harness}, model: ${modelLabel}, mode: ${capability.mode}]\n`,
+    `${logPrefix} Running skill: ${slug}${cleanVar ? ` (var=${cleanVar})` : ""} [harness: ${harness}, model: ${modelLabel}, mode: ${capability.mode}]\n`,
   );
 
   // Every harness goes through harness-adapter's run-harness — the same dispatcher

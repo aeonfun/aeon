@@ -108,6 +108,25 @@ GE2=$(bash "$M" grok-run-env "$WR")
 ( eval "$GE"; [ "$GROK_EFFORT" = high ] && [ "$GROK_MAX_TURNS" = 60 ]; ) \
   && pass "grok-run-env output is eval-safe" || bad "grok-run-env output not eval-safe"
 
+# vuln-scanner shadow/compare selector: read-only even when the var is padded.
+# The model reads " shadow" or "shadow\r\n" as a shadow run, so the tier must
+# agree (fail closed) instead of an exact match falling through to write.
+for sel in shadow compare shadow:owner/repo compare:x " shadow" $'shadow\n' $'shadow\r\n' \
+  $'\tcompare:x' $'  compare:owner/repo \n' "shadow owner/repo" $'shadow\towner/repo'; do
+  label=$(printf '%q' "$sel")
+  [ "$(bash "$M" is-shadow vuln-scanner "$sel")" = "true" ] \
+    && pass "is-shadow true for $label" || bad "is-shadow should be true for $label"
+  [ "$(bash "$M" mode vuln-scanner "$sel")" = "read-only" ] \
+    && pass "vuln-scanner var $label resolves read-only" || bad "vuln-scanner var $label should resolve read-only"
+done
+for sel in "" owner/repo riva:owner/repo shadowy " shadowy" scan:owner/repo owner/shadow; do
+  label=$(printf '%q' "$sel")
+  [ "$(bash "$M" is-shadow vuln-scanner "$sel")" = "false" ] \
+    && pass "is-shadow false for $label" || bad "is-shadow should be false for $label"
+done
+[ "$(bash "$M" is-shadow "$WR" shadow)" = "false" ] \
+  && pass "shadow selector only applies to vuln-scanner" || bad "shadow selector leaked to another skill"
+
 echo "---"
 [ "$fail" = "0" ] && echo "ALL PASS" || echo "SOME FAILED"
 exit "$fail"
