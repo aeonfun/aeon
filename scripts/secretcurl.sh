@@ -26,6 +26,20 @@ shopt -u patsub_replacement 2>/dev/null || true
 # Substitute {ENV_NAME} placeholders with the env var's value. Only credential-
 # shaped, currently-set vars are substituted, so JSON/prose braces (e.g. lower-
 # case keys, {HOME}) are left untouched.
+# In a workflow run AEON_SECRETCURL_ALLOW lists the secrets the skill declared in
+# requires: (space or comma separated). The environment also holds keys the skill
+# did not ask for (the model provider's, the engine's), and a placeholder naming
+# one of those is refused instead of being sent wherever the URL points. The
+# repo token every run gets (GH_TOKEN, GITHUB_TOKEN) stays usable. Without
+# AEON_SECRETCURL_ALLOW (local use) every credential-shaped variable is
+# substituted, as before.
+secret_allowed() {
+  case "$1" in GH_TOKEN|GITHUB_TOKEN) return 0 ;; esac
+  [ -z "${AEON_SECRETCURL_ALLOW+x}" ] && return 0
+  case " ${AEON_SECRETCURL_ALLOW//,/ } " in *" $1 "*) return 0 ;; esac
+  return 1
+}
+
 subst() {
   local a="$1" name val names
   names=$(printf '%s\n' "$a" | grep -oE '\{[A-Z_][A-Z0-9_]*\}' | tr -d '{}' | sort -u || true)
@@ -35,13 +49,18 @@ subst() {
       *) continue ;;
     esac
     val="${!name-}"
-    [ -z "$val" ] || a="${a//\{$name\}/$val}"
+    [ -z "$val" ] && continue
+    if ! secret_allowed "$name"; then
+      echo "secretcurl: {$name} is not in this skill's requires: - refusing to send it" >&2
+      return 1
+    fi
+    a="${a//\{$name\}/$val}"
   done
   printf '%s' "$a"
 }
 
 args=()
-for a in "$@"; do args+=("$(subst "$a")"); done
+for a in "$@"; do args+=("$(subst "$a")") || exit 1; done
 
 # Substituted args still land in curl's OWN process argv (visible to any other
 # process on the box via `ps`/`/proc/<pid>/cmdline`) if handed to curl directly
@@ -91,6 +110,13 @@ build_config() {
         echo "secretcurl: refusing a malformed option (must be a bare -x / --name; not echoed, may hold a secret)" >&2
         return 1
       fi
+      # These make curl read environment variables or another config file on its
+      # own, which would hand it values the placeholder check above never saw.
+      case "$tok" in
+        --variable|--expand-*|-K|--config)
+          echo "secretcurl: option $tok is not supported" >&2
+          return 1 ;;
+      esac
       local next=$((i + 1))
       if [ "$next" -lt "$n" ] && [[ "${a[$next]}" != -* ]] && ! is_url "${a[$next]}"; then
         printf '%s %s\n' "$tok" "$(cfg_quote "${a[$next]}")"

@@ -164,6 +164,51 @@ else
   bad "expected a 'cannot classify' refusal for an unclassifiable argument (rc=$RC, err=$ERR)"
 fi
 
+# --- only secrets the skill declared are substituted in a workflow run ------
+# Without AEON_SECRETCURL_ALLOW (above) every credential-shaped variable works.
+# In a run the workflow sets it to the skill's requires: names.
+export TEST_UNDECLARED_API_KEY='undeclared-marker-do-not-send'
+REQLOG=$(mktemp)
+OUT=$(AEON_SECRETCURL_ALLOW="TEST_SECRETCURL_API_KEY" "$S" -s -H 'X-Key: {TEST_UNDECLARED_API_KEY}' "http://127.0.0.1:$PORT/" 2>&1); RC=$?
+if [ "$RC" -ne 0 ] && printf '%s' "$OUT" | grep -q "TEST_UNDECLARED_API_KEY} is not in this skill's requires" && ! printf '%s' "$OUT" | grep -q 'undeclared-marker'; then
+  pass "a credential-shaped variable the skill did not declare is refused, and its value is not printed"
+else
+  bad "undeclared variable was not refused (rc=$RC, out=$OUT)"
+fi
+OUT=$(AEON_SECRETCURL_ALLOW="TEST_SECRETCURL_API_KEY,TEST_UNDECLARED_API_KEY" "$S" -s -H 'X-Key: {TEST_UNDECLARED_API_KEY}' "http://127.0.0.1:$PORT/" 2>&1); RC=$?
+if [ "$RC" -eq 0 ] && printf '%s' "$OUT" | grep -q 'undeclared-marker-do-not-send'; then
+  pass "a declared variable is substituted (comma-separated list)"
+else
+  bad "declared variable was not substituted (rc=$RC, out=$OUT)"
+fi
+OUT=$(AEON_SECRETCURL_ALLOW="" GH_TOKEN='gh-marker' "$S" -s -H 'Authorization: Bearer {GH_TOKEN}' "http://127.0.0.1:$PORT/" 2>&1); RC=$?
+if [ "$RC" -eq 0 ] && printf '%s' "$OUT" | grep -q 'gh-marker'; then
+  pass "the repo token stays usable with nothing declared"
+else
+  bad "GH_TOKEN was refused (rc=$RC, out=$OUT)"
+fi
+OUT=$(AEON_SECRETCURL_ALLOW="" "$S" -s -H 'X-Key: {TEST_NOT_SET_API_KEY}' "http://127.0.0.1:$PORT/" 2>&1); RC=$?
+if [ "$RC" -eq 0 ]; then
+  pass "a placeholder naming an unset variable is still left alone"
+else
+  bad "unset placeholder was refused (rc=$RC, out=$OUT)"
+fi
+export TEST_ENV_LEAK_URL='env-marker-do-not-send'
+OUT=$("$S" -s --variable '%TEST_ENV_LEAK_URL' --expand-write-out 'LEAK={{TEST_ENV_LEAK_URL}}\n' "http://127.0.0.1:$PORT/" 2>&1); RC=$?
+if [ "$RC" -ne 0 ] && ! printf '%s' "$OUT" | grep -q 'env-marker'; then
+  pass "--variable / --expand-* (curl importing environment variables itself) are refused"
+else
+  bad "curl was allowed to import an environment variable (rc=$RC, out=$OUT)"
+fi
+rm -f "$REQLOG"
+# the workflow must hand the declared list to the run, or the check above never applies
+if grep -q 'export AEON_SECRETCURL_ALLOW=' .github/workflows/aeon.yml \
+  && grep -q 'SECRETCURL_ALLOW="\$SECRETCURL_ALLOW \$key"' .github/workflows/aeon.yml; then
+  pass "aeon.yml exports the skill's declared names as AEON_SECRETCURL_ALLOW"
+else
+  bad "aeon.yml no longer exports AEON_SECRETCURL_ALLOW"
+fi
+
 echo "---"
 [ "$fail" = "0" ] && echo "ALL PASS" || echo "SOME FAILED"
 exit "$fail"
