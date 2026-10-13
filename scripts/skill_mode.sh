@@ -137,7 +137,7 @@ resolve_mode() {
   # `mode:` frontmatter scalar via the shared _fm reader (strips inline comment,
   # quotes, and surrounding ws); absent file/field -> "" -> the write default.
   local m
-  m=$(_fm "$skill" mode)
+  m=$(_fm "$skill" mode | tr '[:upper:]' '[:lower:]')
   case "$m" in
     read-only|readonly|read_only) echo "read-only" ;;
     write|"")                     echo "write" ;;
@@ -228,9 +228,10 @@ _fm() {
   local skill="$1" key="$2" f="skills/$1/SKILL.md"
   [ -f "$f" ] || return 0
   awk -v k="$key" '
+    { sub(/\r$/,"") }
     /^---$/{n++; next}
     n!=1{next}
-    /^[^ \t]/{inmeta=0}
+    /^[^ \t#]/{inmeta=0}
     /^metadata:/{inmeta=1}
     # legacy top-level scalar, or the Agent Skills spec form nested under metadata:
     $0 ~ "^"k":" || (inmeta && $0 ~ "^[ \t]+"k":") {
