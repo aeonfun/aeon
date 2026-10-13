@@ -167,6 +167,14 @@ FAILED=0
 for skill in "${SKILL_NAMES[@]}"; do
   [[ "$skill" == "--force" ]] && continue
 
+  # The name becomes a path under skills/ that is removed and rewritten below, so
+  # it must be a plain slug (the same rule bin/install-skill-pack applies).
+  if [[ ! "$skill" =~ ^[a-zA-Z0-9_-]+$ ]]; then
+    echo "  skip: '$skill' is not a valid skill name"
+    FAILED=$((FAILED + 1))
+    continue
+  fi
+
   if [[ -d "$REPO_DIR/skills/$skill" ]]; then
     src="$REPO_DIR/skills/$skill"
   else
