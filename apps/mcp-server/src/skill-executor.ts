@@ -105,10 +105,20 @@ export function loadSkills(repoRoot: string, logPrefix = "[aeon]"): Skill[] {
 export function buildSkillPrompt(slug: string, varValue: string): string {
   const today = new Date().toISOString().split("T")[0];
   let prompt = `Today is ${today}. Read and execute the skill defined in skills/${slug}/SKILL.md`;
-  if (varValue.trim()) {
-    prompt += `\n\nUse this variable (override the default in the skill file):\nvar=${varValue.trim()}`;
+  const value = sanitizeVar(varValue);
+  if (value) {
+    prompt += `\n\nUse this variable (override the default in the skill file):\nvar=${value}`;
   }
   return prompt;
+}
+
+/**
+ * The var is caller-supplied text that lands inside the prompt. Fold line breaks
+ * and other control characters into spaces so it stays one `var=` line and
+ * cannot start a new paragraph of instructions after it.
+ */
+export function sanitizeVar(varValue: string): string {
+  return varValue.replace(/[\u0000-\u001f\u007f\u0085\u2028\u2029]+/g, " ").trim();
 }
 
 /** Every harness harness-adapter's run-harness can dispatch to. */
