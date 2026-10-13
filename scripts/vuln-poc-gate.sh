@@ -85,6 +85,19 @@ FINDING_SHA="$(hash_file "$FINDING")"
 # Aeon/harness credential. Foundry uses only the public RPC passed on argv.
 ISOLATED_ENV=(env -i "PATH=$PATH" "HOME=${HOME:-/tmp}" "TMPDIR=${TMPDIR:-/tmp}" CI=1)
 
+# A PoC must be a regular file that really lives under POC_DIR. A prefix match on
+# the spelled path accepts "$POC_DIR/../x.sh" and a link inside POC_DIR that
+# points elsewhere, so compare canonical directories and refuse a link. Prints
+# the canonical path of the file.
+poc_file() {
+  local f="$1" d base
+  [ ! -L "$f" ] || return 1
+  d="$(cd "$(dirname "$f")" 2>/dev/null && pwd -P)" || return 1
+  base="$(cd "$POC_DIR" 2>/dev/null && pwd -P)" || return 1
+  case "$d/" in "$base"/*) ;; *) return 1 ;; esac
+  printf '%s/%s\n' "$d" "$(basename "$f")"
+}
+
 # Forge exit 0 is not a reproduction if no test matched. Require a suite
 # summary with N>=1 passed and reject "No tests found".
 foundry_matched_pass() {
@@ -120,7 +133,7 @@ case "$MODE" in
     command -v forge >/dev/null 2>&1 || { echo "VULN_POC_ERROR id=$ID reason=forge-missing" >&2; exit 6; }
     command -v cast >/dev/null 2>&1 || { echo "VULN_POC_ERROR id=$ID reason=cast-missing" >&2; exit 6; }
 
-    case "$TEST_FILE" in "$POC_DIR"/*) ;; *) echo "VULN_POC_ERROR id=$ID reason=test-file-outside-poc-dir" >&2; exit 6 ;; esac
+    TEST_FILE="$(poc_file "$TEST_FILE")" || { echo "VULN_POC_ERROR id=$ID reason=test-file-outside-poc-dir" >&2; exit 6; }
     ROW="$(awk -F'\t' -v c="$CHAIN" '!/^#/ && $1==c {print; exit}' "$CHAINS_FILE")"
     [ -n "$ROW" ] || { echo "VULN_POC_ERROR id=$ID reason=unknown-chain" >&2; exit 6; }
     IFS=$'\t' read -r _NAME EXPECTED_CHAIN_ID _TESTNET _PM _SV RPC _EXPLORER _ALCHEMY <<<"$ROW"
@@ -166,12 +179,16 @@ case "$MODE" in
 
   command)
     [ -f "$SCRIPT" ] || { echo "VULN_POC_ERROR id=$ID reason=script-missing" >&2; exit 6; }
-    case "$SCRIPT" in "$POC_DIR"/*) ;; *) echo "VULN_POC_ERROR id=$ID reason=script-outside-poc-dir" >&2; exit 6 ;; esac
+    SCRIPT="$(poc_file "$SCRIPT")" || { echo "VULN_POC_ERROR id=$ID reason=script-outside-poc-dir" >&2; exit 6; }
+    # git diff does not see files the script creates, so compare the whole status
+    # (untracked files included) before and after.
+    STATUS_BEFORE="$(git -C "$REPO" status --porcelain --untracked-files=all)"
     set +e
     (cd "$REPO" && "${ISOLATED_ENV[@]}" bash "$SCRIPT") >"$LOG" 2>&1
     VERIFY_RC=$?
     set -e
-    if ! git -C "$REPO" diff --quiet -- . || ! git -C "$REPO" diff --cached --quiet -- .; then
+    if ! git -C "$REPO" diff --quiet -- . || ! git -C "$REPO" diff --cached --quiet -- . \
+      || [ "$(git -C "$REPO" status --porcelain --untracked-files=all)" != "$STATUS_BEFORE" ]; then
       write_result failed local-command
       echo "VULN_POC_FAILED id=$ID verifier=local-command reason=target-mutated result=$RESULT" >&2
       exit 21

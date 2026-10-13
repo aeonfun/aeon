@@ -119,6 +119,49 @@ bash scripts/vuln-poc-gate.sh command --finding "$POC/finding.json" --repo "$REP
   && pass "a verifier that mutates audited source is rejected" || bad "source mutation should block verification"
 git -C "$REPO" checkout -q -- source.txt
 
+# --- a PoC must really live under the PoC dir -------------------------------
+gate_command() {  # gate_command <script> -> exit code
+  bash scripts/vuln-poc-gate.sh command --finding "$POC/finding.json" --repo "$REPO" \
+    --script "$1" >/tmp/vuln-poc-test.out 2>/tmp/vuln-poc-test.err
+}
+OUTSIDE_MARK="$TMP/ran-outside"
+printf '#!/usr/bin/env bash\ntouch "%s"\nexit 0\n' "$OUTSIDE_MARK" > "$TMP/outside.sh"
+rm -f "$OUTSIDE_MARK"
+gate_command "$POC/../outside.sh"
+[ "$?" -eq 6 ] && grep -q 'reason=script-outside-poc-dir' /tmp/vuln-poc-test.err && [ ! -e "$OUTSIDE_MARK" ] \
+  && pass "a script reached through .. out of the PoC dir is refused and not run" || bad "a .. path escaped the PoC dir"
+
+ln -s "$TMP/outside.sh" "$POC/linked.sh"
+gate_command "$POC/linked.sh"
+[ "$?" -eq 6 ] && [ ! -e "$OUTSIDE_MARK" ] \
+  && pass "a link inside the PoC dir is refused" || bad "a symlinked script was run"
+
+mkdir -p "$TMP/elsewhere" && cp "$TMP/outside.sh" "$TMP/elsewhere/inner.sh"
+ln -s "$TMP/elsewhere" "$POC/linkdir"
+gate_command "$POC/linkdir/inner.sh"
+[ "$?" -eq 6 ] && [ ! -e "$OUTSIDE_MARK" ] \
+  && pass "a script behind a linked directory is refused" || bad "a script behind a symlinked directory was run"
+
+# --- files a PoC creates in the target count as mutation ---------------------
+cat > "$POC/repro-creates.sh" <<'EOF'
+#!/usr/bin/env bash
+printf 'new\n' > created-by-poc.txt
+EOF
+gate_command "$POC/repro-creates.sh"
+[ "$?" -eq 21 ] && jq -e '.verdict=="failed"' "$RESULTS/case-1.json" >/dev/null \
+  && pass "a verifier that creates an untracked file in the target is rejected" || bad "an untracked file in the target went unnoticed"
+rm -f "$REPO/created-by-poc.txt"
+
+printf 'preexisting\n' > "$REPO/already-untracked.txt"
+cat > "$POC/repro-clean.sh" <<'EOF'
+#!/usr/bin/env bash
+test -f already-untracked.txt
+EOF
+gate_command "$POC/repro-clean.sh"
+[ "$?" -eq 0 ] && jq -e '.verdict=="verified"' "$RESULTS/case-1.json" >/dev/null \
+  && pass "untracked files that were already there do not count" || bad "a pre-existing untracked file broke verification"
+rm -f "$REPO/already-untracked.txt"
+
 echo "---"
 [ "$fail" -eq 0 ] && echo "ALL PASS" || echo "SOME FAILED"
 exit "$fail"
