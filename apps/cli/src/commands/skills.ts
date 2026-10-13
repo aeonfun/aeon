@@ -1,8 +1,11 @@
+import { createRequire } from 'node:module'
 import { parseArgs } from 'node:util'
 import { getSkills } from '../../../dashboard/lib/skills.ts'
 import { updateSkillInConfig, upsertSkillInConfig, removeSkillFromConfig } from '../../../dashboard/lib/config.ts'
 import { getFileContent, saveFile, deleteDirectory, commitAndPush } from '../../../dashboard/lib/github.ts'
 import { runSkill, buildSkillRunArgs } from '../../../dashboard/lib/run-skill.ts'
+import { HARNESSES } from '../../../dashboard/lib/types.ts'
+import type { Harness } from '../../../dashboard/lib/types.ts'
 import type { Skill } from '../../../dashboard/lib/types.ts'
 import { emit, table, c, fail, isDryRun, truncate } from '../output.ts'
 import { applyConfig, reportConfig, printSync } from '../mutate.ts'
@@ -17,7 +20,7 @@ Write (edit aeon.yml, commit + push):
   aeon skills enable <name>                   Turn a skill on
   aeon skills disable <name>                  Turn a skill off
   aeon skills schedule <name> "<cron>"        Set its cron schedule
-  aeon skills set <name> [--var …] [--model …] [--harness grok|claude]
+  aeon skills set <name> [--var …] [--model …] [--harness <name>]
   aeon skills rm <name> --yes                 Delete the skill dir + config entry
   aeon skills run <name> [--var …] [--model …]  Dispatch a run (gh workflow run)
 
@@ -27,6 +30,12 @@ Options:
   --json                     Machine-readable output`
 
 const NAME_RE = /^[a-z][a-z0-9-]*$/
+
+// The same grammar CI enforces (scripts/validate-config.js), so a schedule that
+// cron-due.sh would treat as never due is refused here instead of being pushed.
+const { validateSchedule } = createRequire(import.meta.url)('../../../../scripts/validate-config.js') as {
+  validateSchedule: (schedule: string) => string | null
+}
 
 export async function skillsCommand(argv: string[]) {
   const sub = argv[0] && !argv[0].startsWith('-') ? argv[0] : 'ls'
@@ -92,6 +101,8 @@ async function schedule(args: string[]) {
   const name = requireName(args)
   const cron = args.filter(a => !a.startsWith('-') && a !== name)[0]
   if (!cron) fail('usage: aeon skills schedule <name> "<cron>"')
+  const invalid = validateSchedule(cron)
+  if (invalid) fail(`invalid schedule "${cron}": ${invalid}`)
   await requireInstalled(name)
   const res = await applyConfig(raw => upsertSkillInConfig(raw, name, { schedule: cron }), `chore: schedule ${name}`)
   reportConfig(res, `schedule ${name} → ${cron}`)
@@ -116,7 +127,13 @@ async function setFields(args: string[]) {
   const updates: Parameters<typeof updateSkillInConfig>[2] = {}
   if (typeof values.var === 'string') updates.var = values.var
   if (typeof values.model === 'string') updates.model = values.model
-  if (typeof values.harness === 'string') updates.harness = values.harness
+  if (typeof values.harness === 'string') {
+    // An empty value clears the override; anything else must be a known harness.
+    if (values.harness !== '' && !HARNESSES.includes(values.harness as Harness)) {
+      fail(`harness must be one of: ${HARNESSES.join(', ')}`)
+    }
+    updates.harness = values.harness
+  }
   if (Object.keys(updates).length === 0) fail('nothing to set — pass --var, --model, or --harness')
   await requireInstalled(name)
   const res = await applyConfig(raw => upsertSkillInConfig(raw, name, updates), `chore: update ${name} config`)

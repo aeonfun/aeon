@@ -184,7 +184,7 @@ test('validateSchedule: accepts cron forms scripts/cron-due.sh can fire', () => 
   for (const ok of [
     'workflow_dispatch', 'reactive', '0 8 * * *', '*/30 * * * *', '15 6,14,18 * * *',
     '0 9-17/2 * * *', '0-10/5,30 9 * * *', '0 0 13 * 5', '0 10 * * 7', '05 08 * * *',
-    '0 10 * * MON-FRI', '0 0 1 jul *',
+    '0 10 * * MON-FRI', '0 0 1 jul *', '0 9 * * SAT-SUN', '0 9 * * fri-sun', '0 9 * * SUN',
   ]) {
     assert.equal(validateSchedule(ok), null, ok);
   }
@@ -192,7 +192,7 @@ test('validateSchedule: accepts cron forms scripts/cron-due.sh can fire', () => 
 
 test('validateSchedule: rejects schedules cron-due.sh would never fire', () => {
   for (const bad of ['*/0 * * * *', '61 * * * *', '0 24 * * *', '0 0 0 * *', '0 0 * 13 *',
-    '0 0 * * 8', '0 0 * * * *', '0 8 * *', '0 x * * *', '10-5 * * * *', 'daily']) {
+    '0 0 * * 8', '0 9 * * SUN-SAT-SUN', '0 0 * * * *', '0 8 * *', '0 x * * *', '10-5 * * * *', 'daily']) {
     assert.notEqual(validateSchedule(bad), null, bad);
   }
 });

@@ -379,7 +379,11 @@ function validateSchedule(sched) {
     const [name, lo, hi] = CRON_FIELDS[f];
     let field = fields[f].toUpperCase();
     if (f === 3) MONTH_NAMES.forEach((n, i) => { field = field.split(n).join(String(i + 1)); });
-    if (f === 4) DOW_NAMES.forEach((n, i) => { field = field.split(n).join(String(i)); });
+    if (f === 4) {
+      // SUN closes a range as 7 (SAT-SUN is 6-7), as scripts/cron-due.sh reads it.
+      field = field.split('-SUN').join('-7');
+      DOW_NAMES.forEach((n, i) => { field = field.split(n).join(String(i)); });
+    }
     for (const el of field.split(',')) {
       const m = el.match(/^(\*|(\d+)(?:-(\d+))?)(?:\/(\d+))?$/);
       if (!m) return 'bad ' + name + ' element "' + el + '"';
