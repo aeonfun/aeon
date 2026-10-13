@@ -24,6 +24,7 @@ on:
       - 'apps/dashboard/lib/harness-auth.ts'
       - 'apps/dashboard/lib/gateway-registry.ts'
       - '.github/workflows/ci-tests.yml'
+      - '.github/actions/install-bubblewrap/**'
   push:
     branches: [main]
     paths:
@@ -40,6 +41,7 @@ on:
       - 'apps/dashboard/lib/harness-auth.ts'
       - 'apps/dashboard/lib/gateway-registry.ts'
       - '.github/workflows/ci-tests.yml'
+      - '.github/actions/install-bubblewrap/**'
   workflow_dispatch:
 
 permissions:
@@ -65,22 +67,7 @@ jobs:
       # never silently skip on CI (the test step also requires them, below).
       - name: Install bubblewrap (live read-only sandbox test)
         timeout-minutes: 5
-        run: |
-          set -euo pipefail
-          # Cached lists first; refresh only on a miss, each update capped at 90s
-          # (a slow mirror hung `apt-get update` past the step cap on 2026-10-07).
-          APT_OPTS="-o DPkg::Lock::Timeout=120 -o Acquire::Retries=3 -o Acquire::http::Timeout=20 -o Acquire::https::Timeout=20"
-          if ! command -v bwrap >/dev/null 2>&1; then
-            if ! sudo apt-get $APT_OPTS install -y -qq bubblewrap; then
-              for attempt in 1 2; do
-                sudo timeout 90 apt-get $APT_OPTS update -qq && break
-                echo "::warning::apt-get update attempt $attempt timed out or failed"
-              done
-              sudo apt-get $APT_OPTS install -y -qq bubblewrap
-            fi
-          fi
-          sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0 || true
-          bwrap --dev-bind / / --ro-bind /tmp /tmp true && echo 'bwrap: userns OK'
+        uses: ./.github/actions/install-bubblewrap
       - name: notify_format unit tests
         run: python3 scripts/tests/test_notify_format.py
       - name: notify integration tests
