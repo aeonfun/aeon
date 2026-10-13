@@ -14,7 +14,7 @@ const assert = require('node:assert/strict');
 const fs = require('fs');
 const path = require('path');
 const {
-  analyzeCheckout, collectReactiveRefs, validateWhen, validateChainWhen, validateSchedule, collectSchedules,
+  analyzeCheckout, collectReactiveRefs, validateWhen, validateChainWhen, validateSchedule, dowToNumbers, collectSchedules,
 } = require('./validate-config.js');
 
 // Wrap an indented steps body in a minimal single-job workflow.
@@ -185,6 +185,7 @@ test('validateSchedule: accepts cron forms scripts/cron-due.sh can fire', () => 
     'workflow_dispatch', 'reactive', '0 8 * * *', '*/30 * * * *', '15 6,14,18 * * *',
     '0 9-17/2 * * *', '0-10/5,30 9 * * *', '0 0 13 * 5', '0 10 * * 7', '05 08 * * *',
     '0 10 * * MON-FRI', '0 0 1 jul *', '0 9 * * SAT-SUN', '0 9 * * fri-sun', '0 9 * * SUN',
+    '0 9 * * MON-SUN', '0 9 * * SUN-SUN', '0 9 * * 0-SUN', '0 9 * * SAT-SUN/1', '0 9 * * MON,SUN',
   ]) {
     assert.equal(validateSchedule(ok), null, ok);
   }
@@ -195,6 +196,19 @@ test('validateSchedule: rejects schedules cron-due.sh would never fire', () => {
     '0 0 * * 8', '0 9 * * SUN-SAT-SUN', '0 0 * * * *', '0 8 * *', '0 x * * *', '10-5 * * * *', 'daily']) {
     assert.notEqual(validateSchedule(bad), null, bad);
   }
+});
+
+test('dowToNumbers: SUN ends a range as 7 only when the range does not start on Sunday', () => {
+  assert.equal(dowToNumbers('SAT-SUN'), '6-7');
+  assert.equal(dowToNumbers('fri-sun'), '5-7');
+  assert.equal(dowToNumbers('MON-SUN'), '1-7');
+  assert.equal(dowToNumbers('SAT-SUN/1'), '6-7/1');
+  assert.equal(dowToNumbers('SUN-SUN'), '0-0'); // Sunday only, not 0-7 (every day)
+  assert.equal(dowToNumbers('0-SUN'), '0-0');   // Sunday only
+  assert.equal(dowToNumbers('MON,SUN-SUN'), '1,0-0');
+  assert.equal(dowToNumbers('SUN'), '0');
+  assert.equal(dowToNumbers('MON,SUN'), '1,0');
+  assert.equal(dowToNumbers('SUN-SAT'), '0-6');
 });
 
 test('collectSchedules: reads skills + chains schedules and skips comments', () => {

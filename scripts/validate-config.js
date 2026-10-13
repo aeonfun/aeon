@@ -369,6 +369,15 @@ const CRON_FIELDS = [
 const MONTH_NAMES = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 const DOW_NAMES = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 
+// Pure: a day-of-week field with names turned into numbers, as scripts/cron-due.sh
+// reads it. SUN closes a range as 7 (SAT-SUN is 6-7) unless the range also starts
+// on Sunday: SUN-SUN and 0-SUN stay Sunday only. A bare SUN stays 0.
+function dowToNumbers(field) {
+  let out = String(field).toUpperCase().replace(/(^|,)(SUN|0+)-SUN/g, '$1$2-0').split('-SUN').join('-7');
+  DOW_NAMES.forEach((n, i) => { out = out.split(n).join(String(i)); });
+  return out;
+}
+
 // Pure: returns null when valid, else a short reason.
 function validateSchedule(sched) {
   const s = String(sched).trim();
@@ -379,11 +388,7 @@ function validateSchedule(sched) {
     const [name, lo, hi] = CRON_FIELDS[f];
     let field = fields[f].toUpperCase();
     if (f === 3) MONTH_NAMES.forEach((n, i) => { field = field.split(n).join(String(i + 1)); });
-    if (f === 4) {
-      // SUN closes a range as 7 (SAT-SUN is 6-7), as scripts/cron-due.sh reads it.
-      field = field.split('-SUN').join('-7');
-      DOW_NAMES.forEach((n, i) => { field = field.split(n).join(String(i)); });
-    }
+    if (f === 4) field = dowToNumbers(field);
     for (const el of field.split(',')) {
       const m = el.match(/^(\*|(\d+)(?:-(\d+))?)(?:\/(\d+))?$/);
       if (!m) return 'bad ' + name + ' element "' + el + '"';
@@ -449,4 +454,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { analyzeCheckout, parseSteps, collectReactiveRefs, validateWhen, validateChainWhen, validateSchedule, collectSchedules };
+module.exports = { analyzeCheckout, parseSteps, collectReactiveRefs, validateWhen, validateChainWhen, validateSchedule, dowToNumbers, collectSchedules };
