@@ -190,6 +190,16 @@ export async function getFileContent(path: string): Promise<{ content: string; s
   }
 }
 
+/**
+ * True only when a read failed because the file does not exist (local ENOENT or a
+ * GitHub 404). A 401, 403, 5xx or network error is not "missing": callers that
+ * would otherwise create the file or start from an empty one must rethrow it.
+ */
+export function isMissingFileError(e: unknown): boolean {
+  if (!(e instanceof Error)) return false
+  return (e as NodeJS.ErrnoException).code === 'ENOENT' || /^GitHub API 404:/.test(e.message)
+}
+
 export async function updateFile(path: string, content: string, sha: string, _message: string): Promise<void> {
   if (isLocal()) {
     await writeFile(join(REPO_ROOT, path), content, 'utf-8')
@@ -252,8 +262,10 @@ export async function saveFile(
   let sha: string | undefined
   try {
     sha = (await getFileContent(path)).sha
-  } catch {
-    // File doesn't exist yet - create it
+  } catch (e) {
+    // Only a missing file means "create it"; any other read error would otherwise
+    // surface as a confusing create failure and hide the real cause.
+    if (!isMissingFileError(e)) throw e
   }
   if (sha) {
     await updateFile(path, content, sha, opts.updateMsg)
