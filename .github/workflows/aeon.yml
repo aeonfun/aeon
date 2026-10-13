@@ -213,6 +213,19 @@ jobs:
           git config user.name "aeonframework"
           git config user.email "aeonframework@proton.me"
 
+      # memory-flush with nothing new to fold in: skip the model call. `idle` exits 0
+      # only when no daily log changed since the last flush (fingerprints recorded by
+      # `stamp`) and that flush is under 7 days old; any doubt or error runs it as usual.
+      # The skipped run is recorded as a success so the slot is not retried.
+      - name: Idle gate (memory-flush)
+        id: idle
+        if: steps.work.outputs.mode != '' && steps.skill.outputs.name == 'memory-flush'
+        run: |
+          if python3 scripts/memory_prep.py idle; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::memory-flush skipped: no new log entries since the last flush"
+          fi
+
       # Egress hardening P1: default-deny outbound to link-local + cloud metadata.
       # No skill has a legitimate reason to reach 169.254.0.0/16. Kills the SSRF /
       # DNS-rebinding-to-metadata class before any skill runs. REJECT (not DROP) so a
@@ -724,7 +737,7 @@ jobs:
       # uses the adapter's normalized result/usage/session_id envelope.
       - name: Run
         id: run
-        if: steps.work.outputs.mode != ''
+        if: steps.work.outputs.mode != '' && steps.idle.outputs.skip != 'true'
         env:
           # Secrets available to .mcp.json ${NAME} refs + per-skill `requires:`
           # injection. Built from an explicit allowlist of named secrets rather
@@ -1339,8 +1352,10 @@ jobs:
           SKILL:       ${{ steps.skill.outputs.name }}
           RUN_OUTCOME: ${{ steps.run.outcome }}
           AUDIT_REF:   ${{ steps.fleet_preflight.outputs.audit_ref }}
+          IDLE_SKIP:   ${{ steps.idle.outputs.skip }}
         run: |
           set -euo pipefail
+          [ "$IDLE_SKIP" = "true" ] && RUN_OUTCOME="success"
           case "$RUN_OUTCOME" in
             success) STATUS="ok" ;;
             failure) STATUS="error" ;;
@@ -2148,6 +2163,7 @@ jobs:
         env:
           STATE_BACKEND: ${{ vars.STATE_BACKEND }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          IDLE_SKIP: ${{ steps.idle.outputs.skip }}
         run: |
           SKILL="${{ steps.skill.outputs.name }}"
           RUN_OUTCOME="${{ steps.run.outcome }}"
@@ -2155,8 +2171,8 @@ jobs:
           STATE_FILE="memory/cron-state.json"
           QUALITY_SCORE="${{ steps.analyze.outputs.QUALITY_SCORE }}"
 
-          # Determine status from step outcome
-          if [ "$RUN_OUTCOME" = "success" ]; then
+          # Determine status from step outcome (an idle-gated memory-flush counts as done)
+          if [ "$RUN_OUTCOME" = "success" ] || [ "${IDLE_SKIP:-}" = "true" ]; then
             CRON_STATUS="success"
           else
             CRON_STATUS="failed"

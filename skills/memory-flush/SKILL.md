@@ -40,6 +40,7 @@ Skip if already recorded. Dedup by the fact's **subject**, not by string match:
 - Identify what each candidate is *about* (a skill, a token, a repo, a lesson, a priority).
 - If MEMORY.md already carries that subject, **edit the existing line in place** (merge the new detail, bump any date). Never append a second bullet that paraphrases an existing one - that near-duplicate drift is what a memory flush exists to prevent.
 - Only add a new bullet when the subject is genuinely absent.
+- **When a candidate contradicts an existing entry** (same subject, different fact), check the evidence before choosing: run `python3 scripts/memory_prep.py source <ref>` for each side that carries a `[source: ...]` tag (it prints that log section, from `memory/logs/` or the monthly archive). Keep what the log actually says. The newer statement wins only when the sources do not settle it; a sourced entry beats an untagged one. Do not drop the old fact silently: if history matters, say so in the entry ("moved to X in Oct, was Y").
 
 ### 3. Remove stale entries - this is as important as adding new ones
 
@@ -55,6 +56,7 @@ d. **Overflow any section that outgrows its budget** (keeps MEMORY.md an index, 
 - Add brief entries to MEMORY.md (keep it under ~50 lines as an index).
 - If a topic needs more detail, write to `memory/topics/<topic>.md` instead (see step 6 - register it in the index).
 - Update tables (recent articles, recent digests) with new rows.
+- **Cite the log every fact came from.** End each bullet you add or change (in MEMORY.md or a topic file) with `[source: logs/YYYY-MM-DD#<skill>]`: the log file's date and the `### <skill>` heading the entry sat under. For a table row, put the tag at the end of the last cell. When you merge new detail into an existing line, replace its tag with the newer source. Never invent a source, and do not backfill tags on untouched legacy lines. The tag is what lets a later flush (or the operator) check a fact and trace a bad entry back to the run that wrote it.
 - Before adding a section, check whether its `## Heading` already exists anywhere in MEMORY.md - if it does, update that section in place. Never prepend a duplicate heading.
 - **Do not hand-edit the consolidation date.** It is stamped by step 8 (`memory_prep.py stamp`), which writes the structured watermark `memory/memory-flush-state.json` (the source of truth) and mirrors it into the MEMORY.md `*Last consolidated:*` line. Skipping step 8 after a real flush is a bug - other skills (e.g. `action-converter`) read that line to tell a live, consolidated store from an untouched template.
 
@@ -88,4 +90,5 @@ If nothing was worth promoting or removing, log `MEMORY_FLUSH_OK` - but still ru
 - Never duplicate an existing `## Heading` or an existing fact - update in place.
 - Pruning stale entries is as important as adding new ones.
 - The watermark and log rotation are owned by `scripts/memory_prep.py` (steps 0 and 8), not by hand. The model's job is judgment: what to promote, dedup, and prune.
+- **Idle runs never reach you.** Before the model starts, the workflow's "Idle gate" runs `memory_prep.py idle`: when no daily log changed since the last flush (fingerprints written by `stamp`, ignoring this skill's own entries and the "under the hood" footers) and that flush is under 7 days old, the run is skipped and recorded as a success. That is why step 8's `stamp` must run on every real flush, a clean one included.
 - **This skill owns MEMORY.md consolidation.** Other skills (e.g. `self-improve`) may *flag* memory-hygiene problems, but structural pruning and archiving of MEMORY.md should land here to avoid two skills thrashing the same file. If `self-improve` prunes in an audit, treat it as a stopgap, not a reason to skip the next flush.
