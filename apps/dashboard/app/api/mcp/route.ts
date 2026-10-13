@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { getFileContent, saveFile } from '@/lib/github'
+import { getFileContent, isMissingFileError, saveFile } from '@/lib/github'
 import { errorResponse, syncResult } from '@/lib/http'
 import { ensureSecretsAllowlisted, referencedSecrets } from '@/lib/workflow-secrets'
 import type { McpServers } from '@/lib/types'
@@ -19,8 +19,14 @@ export async function GET() {
       console.warn(`[mcp] .mcp.json is not valid JSON; returning raw for repair: ${e instanceof Error ? e.message : e}`)
     }
     return NextResponse.json({ exists: true, servers, sha, raw: content })
-  } catch {
-    return NextResponse.json({ exists: false, servers: {}, sha: '', raw: '' })
+  } catch (error: unknown) {
+    // Only a missing file reads as "no servers". Any other read error (401, 403,
+    // 5xx, network) must not look empty, or the next save from the UI would
+    // overwrite the real .mcp.json with only what was added on top of nothing.
+    if (isMissingFileError(error)) {
+      return NextResponse.json({ exists: false, servers: {}, sha: '', raw: '' })
+    }
+    return errorResponse(error, 'Failed to read .mcp.json')
   }
 }
 
