@@ -393,27 +393,47 @@ function spawnHarness(
  * every other request (tools/list, pings, a second tool call). This awaits the
  * child instead.
  */
-export function runSkill(repoRoot: string, slug: string, varValue: string, logPrefix = "[aeon]"): Promise<string> {
+/** A skill run's text plus whether it ran to completion, so callers can flag failures. */
+export interface SkillRunResult {
+  ok: boolean;
+  text: string;
+}
+
+export function runSkill(
+  repoRoot: string,
+  slug: string,
+  varValue: string,
+  logPrefix = "[aeon]",
+): Promise<SkillRunResult> {
   return enqueue(() => runSkillInner(repoRoot, slug, varValue, logPrefix));
 }
 
-async function runSkillInner(repoRoot: string, slug: string, varValue: string, logPrefix: string): Promise<string> {
+async function runSkillInner(
+  repoRoot: string,
+  slug: string,
+  varValue: string,
+  logPrefix: string,
+): Promise<SkillRunResult> {
   const skillFile = join(repoRoot, "skills", slug, "SKILL.md");
   if (!existsSync(skillFile)) {
-    return [
-      `Error: skill '${slug}' not found.`,
-      `Expected SKILL.md at: ${skillFile}`,
-      `Make sure you're running from inside an Aeon repo clone.`,
-    ].join("\n");
+    return fail(
+      [
+        `Error: skill '${slug}' not found.`,
+        `Expected SKILL.md at: ${skillFile}`,
+        `Make sure you're running from inside an Aeon repo clone.`,
+      ].join("\n"),
+    );
   }
 
   const capability = resolveMode(repoRoot, slug, varValue);
   if (!capability) {
-    return [
-      `Error: could not resolve the capability tier for '${slug}'.`,
-      `scripts/skill_mode.sh must be present and runnable from: ${repoRoot}`,
-      `Refusing to run rather than defaulting to write mode.`,
-    ].join("\n");
+    return fail(
+      [
+        `Error: could not resolve the capability tier for '${slug}'.`,
+        `scripts/skill_mode.sh must be present and runnable from: ${repoRoot}`,
+        `Refusing to run rather than defaulting to write mode.`,
+      ].join("\n"),
+    );
   }
 
   const prompt = buildSkillPrompt(slug, varValue);
@@ -471,25 +491,29 @@ async function runSkillInner(repoRoot: string, slug: string, varValue: string, l
     const msg = enoent
       ? `'bash' or harness-adapter/run-harness not found — run from inside an Aeon repo clone.`
       : `Failed to spawn run-harness: ${result.error.message}`;
-    return `Error: ${msg}`;
+    return fail(`Error: ${msg}`);
   }
 
   if (result.status !== 0) {
     const output = (result.stderr || result.stdout || "").trim();
-    return `Skill '${slug}' failed (exit ${result.status}):\n${output}`;
+    return fail(`Skill '${slug}' failed (exit ${result.status}):\n${output}`);
   }
 
   const stdout = (result.stdout || "").trim();
   if (!stdout) {
-    return `Skill '${slug}' produced no output.`;
+    return fail(`Skill '${slug}' produced no output.`);
   }
 
   // run-harness normalizes every harness to { result: "..." }, so this parse is
   // harness-agnostic.
   try {
     const parsed = JSON.parse(stdout) as { result?: string };
-    return parsed.result ?? stdout;
+    return { ok: true, text: parsed.result ?? stdout };
   } catch {
-    return stdout;
+    return { ok: true, text: stdout };
   }
+}
+
+function fail(text: string): SkillRunResult {
+  return { ok: false, text };
 }

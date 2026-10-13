@@ -524,9 +524,12 @@ jobs:
             echo "No state changes"
           else
             git commit -m "chore(scheduler): update cron state"
+            PERSISTED=0
+            PUSH_ERR=$(mktemp)
             for i in 1 2 3 4 5; do
-              if git pull --rebase origin main 2>/dev/null && git push -u origin HEAD 2>/dev/null; then
+              if git pull --rebase origin main 2>/dev/null && git push -u origin HEAD 2>"$PUSH_ERR"; then
                 echo "State committed on attempt $i"
+                PERSISTED=1
                 break
               fi
               # Lost the race. Start over from upstream's cron-state and re-apply
@@ -548,8 +551,14 @@ jobs:
               fi
               echo "$MERGED" | apply_stamps | jq '.' > "$STATE_FILE"
               git add "$STATE_FILE"
-              git diff --staged --quiet && { echo "State already up to date after merge"; break; }
+              git diff --staged --quiet && { echo "State already up to date after merge"; PERSISTED=1; break; }
               git commit -m "chore(scheduler): update cron state"
               sleep "$i"
             done
+            if [ "$PERSISTED" != 1 ]; then
+              # The dispatches already happened; without these stamps the same
+              # slots are owed again next tick and the skills run twice.
+              echo "::error::cron-state.json was not pushed after 5 attempts; owed skills will be dispatched again next tick. Last push error: $(tr '\n' ' ' < "$PUSH_ERR")"
+              exit 1
+            fi
           fi

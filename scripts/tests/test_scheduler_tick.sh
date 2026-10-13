@@ -12,6 +12,8 @@
 #     and keeps every stamp, including chain:<name>
 #   - a skill whose schedule cron-due.sh rejects is reported with a ::warning::
 #     instead of being skipped without a trace
+#   - a state push that origin keeps rejecting fails the tick with an ::error::
+#     instead of ending green with the dispatch stamps lost
 #   - failed-run retries and breaker probes respect the skill's own cadence: a
 #     weekly skill gets its quick retries, but is never re-run ~4x/day by the
 #     probe or every 30 min with the breaker off; workflow_dispatch skills are
@@ -194,6 +196,19 @@ if run_tick 2026-07-13T09:05:00Z; then ok "tick 4 exits 0"; else bad "tick 4 fai
 dispatched "workflow run aeon.yml -f skill=weekly-down" && ok "weekly skill probed at its own next slot" \
   || bad "weekly-down not probed at its slot: $(cat "$TMP/gh.log")"
 grep -q 'skill=manual' "$TMP/gh.log" && bad "workflow_dispatch-only skill probed" || ok "workflow_dispatch skill never probed"
+
+# --- tick 5: origin rejects every push, the tick must say so -----------------------
+# Without the stamps in cron-state.json the same slots are owed again next tick, so
+# losing the push has to fail the step with an error, not end with a green tick.
+git -C "$TMP/work" pull -q origin main 2>/dev/null
+mkdir -p "$TMP/origin.git/hooks"
+printf '#!/bin/sh\necho "rejected by test hook" >&2\nexit 1\n' > "$TMP/origin.git/hooks/pre-receive"
+chmod +x "$TMP/origin.git/hooks/pre-receive"
+if run_tick 2026-07-14T06:05:00Z; then bad "tick 5 exited 0 although the state push was rejected"; else ok "tick 5 fails when the state push is rejected"; fi
+grep -q '^::error::cron-state.json was not pushed after 5 attempts' "$TMP/tick.out" \
+  && ok "lost state push is reported with ::error::" || bad "no error annotation for the lost push: $(tail -5 "$TMP/tick.out")"
+grep -q 'rejected by test hook' "$TMP/tick.out" && ok "the push error is shown" || bad "push error not shown"
+rm -f "$TMP/origin.git/hooks/pre-receive"
 
 echo "---"
 echo "PASS: $pass   FAIL: $fail"

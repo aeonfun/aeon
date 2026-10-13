@@ -135,10 +135,12 @@ server.setRequestHandler(CallToolRequestSchema, async request => {
     try {
       const varArg = request.params.arguments?.var;
       const varValue = typeof varArg === "string" ? varArg : "";
-      const output = await runSkill(REPO_ROOT, slug, varValue, LOG_PREFIX);
+      const { ok, text: output } = await runSkill(REPO_ROOT, slug, varValue, LOG_PREFIX);
       span.setAttribute("aeon.output_bytes", output.length);
+      if (!ok) span.setStatus({ code: SpanStatusCode.ERROR, message: "skill run failed" });
       return {
         content: [{ type: "text" as const, text: output }],
+        ...(ok ? {} : { isError: true }),
       };
     } catch (err) {
       span.recordException(err as Error);

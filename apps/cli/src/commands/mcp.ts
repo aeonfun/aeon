@@ -1,5 +1,5 @@
 import { parseArgs } from 'node:util'
-import { getFileContent, saveFile } from '../../../dashboard/lib/github.ts'
+import { getFileContent, isMissingFileError, saveFile } from '../../../dashboard/lib/github.ts'
 import { MCP_CATALOG } from '../../../dashboard/lib/mcp-catalog.ts'
 import type { McpServers, McpServer } from '../../../dashboard/lib/types.ts'
 import { emit, table, c, fail, isDryRun } from '../output.ts'
@@ -23,8 +23,11 @@ async function readServers(): Promise<McpServers> {
   let content: string
   try {
     content = (await getFileContent('.mcp.json')).content
-  } catch {
-    return {} // no .mcp.json yet — an empty server set is the correct default
+  } catch (e) {
+    // No .mcp.json yet: an empty server set is the correct default. Any other read
+    // error must not look like that, or `mcp add` would overwrite the real file.
+    if (isMissingFileError(e)) return {}
+    throw e
   }
   // A present-but-corrupt file must NOT silently read as empty: `mcp add` would
   // then overwrite it with only the new server, clobbering the existing config.

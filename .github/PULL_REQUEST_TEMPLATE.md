@@ -37,7 +37,7 @@
 - [ ] Pack repo is public with a clear license (MIT / Apache-2.0)
 - [ ] Pack has a `skills-pack.json` manifest at its root and a `SKILL.md` per skill
 - [ ] Write / onchain / bet skills are `default_enabled: false`
-- [ ] This PR adds **both** a README table row and a matching `skill-packs.json` entry
+- [ ] This PR adds **both** a row in the Listed packs table of `docs/community-skill-packs.md` and a matching `skill-packs.json` entry
 - [ ] `node scripts/validate-skill-packs.mjs` passes (registry shape + parity with the Listed packs table in docs/community-skill-packs.md)
 - [ ] No monkey-patching of Aeon internals; no private or auth-walled endpoints required to run
 
@@ -45,7 +45,7 @@
 
 - [ ] Change is focused — one concern, no unrelated refactor
 - [ ] Touched code follows the existing pattern in the file
-- [ ] Relevant CI gates pass locally (e.g. `bash scripts/check-skill-categories.sh`, `bash scripts/check-capabilities-parity.sh`)
+- [ ] Relevant CI gates pass locally (the list is under *Testing & CI* in [CONTRIBUTING.md](CONTRIBUTING.md#testing--ci))
 - [ ] Touched `apps/**`? That app typechecks, tests, and builds (dashboard: `npm run typecheck && npm test && npm run build`)
 
 ---

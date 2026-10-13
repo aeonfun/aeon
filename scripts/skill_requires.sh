@@ -17,6 +17,7 @@ set -euo pipefail
 f="skills/${1:?skill name required}/SKILL.md"
 [ -f "$f" ] || exit 0
 awk '
+  { sub(/\r$/,"") }
   /^---$/{n++; next}
   n!=1{next}
   # collecting block-list items under a bare `requires:` key
@@ -28,7 +29,7 @@ awk '
     }
     exit   # first non-item line ends the block
   }
-  /^[^ \t]/{inmeta=0}
+  /^[^ \t#]/{inmeta=0}
   /^metadata:/{inmeta=1}
   # requires key, top-level (legacy) or under metadata: (spec form)
   (/^requires:/ || (inmeta && /^[[:space:]]+requires:/)) {
