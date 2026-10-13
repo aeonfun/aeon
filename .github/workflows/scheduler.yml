@@ -518,9 +518,11 @@ jobs:
           else
             git commit -m "chore(scheduler): update cron state"
             PERSISTED=0
-            PUSH_ERR=$(mktemp)
+            # stderr of whichever git step failed last (pull, push or fetch), so the
+            # final error says why, not just that it failed.
+            GIT_ERR=$(mktemp)
             for i in 1 2 3 4 5; do
-              if git pull --rebase origin main 2>/dev/null && git push -u origin HEAD 2>"$PUSH_ERR"; then
+              if git pull --rebase origin main 2>"$GIT_ERR" && git push -u origin HEAD 2>"$GIT_ERR"; then
                 echo "State committed on attempt $i"
                 PERSISTED=1
                 break
@@ -531,7 +533,10 @@ jobs:
               # OUR copy from the index, so every retry replayed the same conflict
               # and the stamps were lost (double dispatch next tick).
               git rebase --abort 2>/dev/null || true
-              if ! git fetch origin main 2>/dev/null; then
+              # A fetch that works still writes progress to stderr, so keep its
+              # output only when it fails; the pull/push error stays otherwise.
+              if ! FETCH_OUT=$(git fetch origin main 2>&1); then
+                printf '%s\n' "$FETCH_OUT" > "$GIT_ERR"
                 sleep "$i"
                 continue
               fi
@@ -551,7 +556,7 @@ jobs:
             if [ "$PERSISTED" != 1 ]; then
               # The dispatches already happened; without these stamps the same
               # slots are owed again next tick and the skills run twice.
-              echo "::error::cron-state.json was not pushed after 5 attempts; owed skills will be dispatched again next tick. Last push error: $(tr '\n' ' ' < "$PUSH_ERR")"
+              echo "::error::cron-state.json was not pushed after 5 attempts; owed skills will be dispatched again next tick. Last git error: $(tr '\n' ' ' < "$GIT_ERR")"
               exit 1
             fi
           fi

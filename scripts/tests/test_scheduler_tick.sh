@@ -11,7 +11,8 @@
 #   - the persist retry rebuilds on upstream's cron-state after losing a race
 #     and keeps every stamp, including chain:<name>
 #   - a state push that origin keeps rejecting fails the tick with an ::error::
-#     instead of ending green with the dispatch stamps lost
+#     instead of ending green with the dispatch stamps lost, and shows the
+#     last pull or push error
 #   - depends_on in a CRLF SKILL.md, after a comment inside metadata:, still
 #     orders the dependent after its dependency
 #   - failed-run retries and breaker probes respect the skill's own cadence: a
@@ -215,8 +216,16 @@ chmod +x "$TMP/origin.git/hooks/pre-receive"
 if run_tick 2026-07-14T06:05:00Z; then bad "tick 5 exited 0 although the state push was rejected"; else ok "tick 5 fails when the state push is rejected"; fi
 grep -q '^::error::cron-state.json was not pushed after 5 attempts' "$TMP/tick.out" \
   && ok "lost state push is reported with ::error::" || bad "no error annotation for the lost push: $(tail -5 "$TMP/tick.out")"
-grep -q 'rejected by test hook' "$TMP/tick.out" && ok "the push error is shown" || bad "push error not shown"
+grep '^::error::' "$TMP/tick.out" | grep -q 'rejected by test hook' && ok "the push error is shown" || bad "push error not shown"
 rm -f "$TMP/origin.git/hooks/pre-receive"
+
+# --- tick 6: the pull itself fails every attempt, its error must be shown ---------
+# Push never runs then, so the error used to end with an empty "Last ... error:".
+git -C "$TMP/work" remote set-url origin "$TMP/missing.git"
+if run_tick 2026-07-15T06:05:00Z; then bad "tick 6 exited 0 although every pull failed"; else ok "tick 6 fails when every pull fails"; fi
+grep '^::error::cron-state.json was not pushed' "$TMP/tick.out" | grep -q 'missing.git' \
+  && ok "the pull error is shown when the push never ran" || bad "pull error not shown: $(grep '^::error::' "$TMP/tick.out")"
+git -C "$TMP/work" remote set-url origin "$TMP/origin.git"
 
 echo "---"
 echo "PASS: $pass   FAIL: $fail"
