@@ -113,6 +113,10 @@ check "month */2 skips August (8)"     "0 0 1 */2 *"   2026-08-01T00:30:00Z neve
 # day-of-week 7 is Sunday, alone or as a range end
 check "dow 7 = Sunday"                 "0 10 * * 7"    2026-07-05T10:30:00Z never                1  due
 check "dow range 5-7 covers Sunday"    "0 10 * * 5-7"  2026-07-05T10:30:00Z never                1  due
+check "dow name range sat-sun on sat"  "0 10 * * sat-sun" 2026-07-04T10:30:00Z never             1  due
+check "dow name range sat-sun on sun"  "0 10 * * sat-sun" 2026-07-05T10:30:00Z never             1  due
+check "dow name range sat-sun on mon"  "0 10 * * sat-sun" 2026-07-06T10:30:00Z never             1  skip
+check "dow name range fri-sun on sun"  "0 10 * * fri-sun" 2026-07-05T10:30:00Z never             1  due
 check "dow 7 not on Monday"            "0 10 * * 7"    2026-07-06T10:30:00Z never                1  skip
 # leading zeros are decimal, not octal (08 used to crash the arithmetic)
 check "leading zeros 05 08"            "05 08 * * *"   2026-07-07T08:10:00Z 2026-07-06T08:05:00Z 6  due

@@ -68,6 +68,8 @@ i=1
 for n in JAN FEB MAR APR MAY JUN JUL AUG SEP OCT NOV DEC; do
   C_MONTH="${C_MONTH//$n/$i}"; i=$((i + 1))
 done
+# SUN closes a range as 7 (SAT-SUN is 6-7); a bare SUN stays 0.
+C_DOW="${C_DOW//-SUN/-7}"
 i=0
 for n in SUN MON TUE WED THU FRI SAT; do
   C_DOW="${C_DOW//$n/$i}"; i=$((i + 1))
