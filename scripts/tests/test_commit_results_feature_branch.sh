@@ -45,7 +45,7 @@ setup() {
     cd "$d/seed" || exit 1
     git checkout -q -b main
     mkdir -p memory/logs scripts skills/demo
-    cp "$ROOT/scripts/git-push-retry.sh" "$ROOT/scripts/commit-run-results.sh" scripts/
+    cp "$ROOT/scripts/git-push-retry.sh" "$ROOT/scripts/commit-run-results.sh" "$ROOT/scripts/audit.sh" scripts/
     printf 'date,skill\n' > memory/token-usage.csv
     printf '# log\n' > memory/logs/2026-01-01.md
     printf 'v1\n' > skills/demo/SKILL.md
@@ -100,14 +100,16 @@ run_suite() {
 
   # --- Branch push rejected: state still recorded on main, step fails --------
   D="$TMP/$wf/reject"; setup "$D"
-  cat > "$D/run/.git/hooks/pre-push" <<'HOOK'
+  # The remote refuses feat/* (the commit step turns the run's own hooks off).
+  mkdir -p "$D/remote.git/hooks"
+  cat > "$D/remote.git/hooks/pre-receive" <<'HOOK'
 #!/usr/bin/env bash
-while read -r _ _ remote_ref _; do
-  case "$remote_ref" in refs/heads/feat/*) exit 1 ;; esac
+while read -r _ _ ref; do
+  case "$ref" in refs/heads/feat/*) exit 1 ;; esac
 done
 exit 0
 HOOK
-  chmod +x "$D/run/.git/hooks/pre-push"
+  chmod +x "$D/remote.git/hooks/pre-receive"
   out=$(cd "$D/run" && bash -e "$STEP" 2>&1); rc=$?
   [ "$rc" -ne 0 ] && pass "$wf: failed branch push fails the step (no silent || true)" || bad "$wf: branch push failure was swallowed"
   echo "$out" | grep -q '::error::Feature branch feat/demo failed to push' && pass "$wf: failure is annotated" || bad "$wf: no error annotation: $out"
@@ -153,6 +155,21 @@ HOOK
     && git -C "$D/remote.git" show main:memory/logs/2026-01-01.md | grep -q 'opened a PR' \
     && pass "$wf: runs the committed script, not the agent's working-tree edit" \
     || { bad "$wf: agent edit to commit-run-results.sh changed this run's commit (rc=$rc)"; echo "$out"; }
+
+  # --- Agent edited the push helpers or planted a hook: neither runs --------
+  D="$TMP/$wf/helperedit"; setup "$D"
+  MARK="$D/ran-from-working-tree"
+  printf '#!/usr/bin/env bash\ntouch "%s"\nexit 0\n' "$MARK" > "$D/run/scripts/git-push-retry.sh"
+  printf '#!/usr/bin/env bash\ntouch "%s"\nexit 0\n' "$MARK" > "$D/run/scripts/audit.sh"
+  mkdir -p "$D/run/.git/hooks"
+  printf '#!/usr/bin/env bash\ntouch "%s"\nexit 0\n' "$MARK" > "$D/run/.git/hooks/pre-commit"
+  printf '#!/usr/bin/env bash\ntouch "%s"\nexit 0\n' "$MARK" > "$D/run/.git/hooks/pre-push"
+  chmod +x "$D/run/.git/hooks/pre-commit" "$D/run/.git/hooks/pre-push"
+  out=$(cd "$D/run" && bash -e "$STEP" 2>&1); rc=$?
+  [ "$rc" -eq 0 ] && [ ! -e "$MARK" ] \
+    && git -C "$D/remote.git" show main:memory/logs/2026-01-01.md | grep -q 'opened a PR' \
+    && pass "$wf: push helpers come from the starting commit and hooks do not run" \
+    || { bad "$wf: an edited push helper or a hook ran in the commit step (rc=$rc, marker=$([ -e "$MARK" ] && echo yes || echo no))"; echo "$out"; }
 
   # --- Dispatched on a non-main ref: no local main, branch keeps everything ---
   D="$TMP/$wf/nonmain"; setup "$D"
