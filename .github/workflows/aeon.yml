@@ -1021,11 +1021,9 @@ jobs:
           # Inject only secrets declared by this skill's requires: frontmatter.
           SECRETS_JSON="${ALL_SECRETS:-}"; [ -z "$SECRETS_JSON" ] && SECRETS_JSON='{}'
           INJECTED=""
-          SECRETCURL_ALLOW=""   # declared names, for ./secretcurl (scripts/secretcurl.sh)
           if [ "$SHADOW_MODE" != "1" ]; then
             while IFS= read -r key; do
               [ -z "$key" ] && continue
-              SECRETCURL_ALLOW="$SECRETCURL_ALLOW $key"
               [ -n "${!key:-}" ] && continue                     # already in env (infra) — leave it
               val="$(jq -r --arg k "$key" '.[$k] // empty' <<<"$SECRETS_JSON")"
               [ -n "$val" ] && { export "$key=$val"; INJECTED="$INJECTED $key"; }
@@ -1037,7 +1035,7 @@ jobs:
             echo "Riva shadow mode: declared and disclosure credentials withheld"
           fi
           [ -n "$INJECTED" ] && echo "::notice::Injected declared secrets for ${SKILL_NAME}:${INJECTED}"
-          export AEON_SECRETCURL_ALLOW="${SECRETCURL_ALLOW# }"
+          export AEON_SECRETCURL_ALLOW="$(bash scripts/skill_requires.sh "$SKILL_NAME" 2>/dev/null | tr '\n' ' ')"
 
           unset ALL_SECRETS   # drop the secrets blob before any skill/Claude code runs
 

@@ -202,8 +202,7 @@ else
 fi
 rm -f "$REQLOG"
 # the workflow must hand the declared list to the run, or the check above never applies
-if grep -q 'export AEON_SECRETCURL_ALLOW=' .github/workflows/aeon.yml \
-  && grep -q 'SECRETCURL_ALLOW="\$SECRETCURL_ALLOW \$key"' .github/workflows/aeon.yml; then
+if grep -q 'export AEON_SECRETCURL_ALLOW=.*skill_requires.sh' .github/workflows/aeon.yml; then
   pass "aeon.yml exports the skill's declared names as AEON_SECRETCURL_ALLOW"
 else
   bad "aeon.yml no longer exports AEON_SECRETCURL_ALLOW"
