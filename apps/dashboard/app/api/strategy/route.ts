@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { getFileContent, saveFile } from '@/lib/github'
+import { getFileContent, isMissingFileError, saveFile } from '@/lib/github'
 import { errorResponse, syncResult } from '@/lib/http'
 
 const FILE = 'STRATEGY.md'
@@ -8,9 +8,14 @@ export async function GET() {
   try {
     const { content, sha } = await getFileContent(FILE)
     return NextResponse.json({ exists: true, content, sha })
-  } catch {
-    // Not created yet - the editor can bootstrap it on first save.
-    return NextResponse.json({ exists: false, content: '', sha: '' })
+  } catch (error: unknown) {
+    // Not created yet - the editor can bootstrap it on first save. Any other
+    // read error must not look empty, or the next save would replace the real
+    // STRATEGY.md with whatever was typed over a blank editor.
+    if (isMissingFileError(error)) {
+      return NextResponse.json({ exists: false, content: '', sha: '' })
+    }
+    return errorResponse(error, 'Failed to read STRATEGY.md')
   }
 }
 
