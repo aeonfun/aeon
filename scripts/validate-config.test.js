@@ -41,6 +41,31 @@ test('PASS: conditional checkout covers a run step with the same condition', () 
   assert.equal(r.ok, true, r.line);
 });
 
+test("PASS: a checkout whose condition leads the run step's && chain covers it", () => {
+  const r = analyzeCheckout(wf(
+`      - name: Checkout repo
+        if: steps.work.outputs.mode != ''
+        uses: actions/checkout@v7
+      - name: Run
+        id: run
+        if: steps.work.outputs.mode != '' && steps.idle.outputs.skip != 'true'
+        run: claude`));
+  assert.equal(r.ok, true, r.line);
+});
+
+test('FAIL: an || in the run condition breaks the conjunct cover', () => {
+  const r = analyzeCheckout(wf(
+`      - name: Checkout repo
+        if: steps.work.outputs.mode != ''
+        uses: actions/checkout@v7
+      - name: Run
+        id: run
+        if: steps.work.outputs.mode != '' && inputs.a || inputs.b
+        run: claude`));
+  assert.equal(r.ok, false);
+  assert.match(r.line, /does not cover/);
+});
+
 test('PASS: an unconditional checkout covers any run step', () => {
   const r = analyzeCheckout(wf(
 `      - name: Checkout repo

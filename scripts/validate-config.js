@@ -118,12 +118,16 @@ function analyzeCheckout(text) {
   const runStep = steps[runIdx];
   const runCond = normCond(runStep.ifCond);
 
-  // A preceding checkout "covers" Run if it is unconditional, or shares Run's exact
-  // condition, so it can never be skipped in a run where Run itself executes.
+  // A preceding checkout "covers" Run if it is unconditional, shares Run's exact
+  // condition, or is the leading conjunct of it (`C && X`), so it can never be
+  // skipped in a run where Run itself executes. An `||` on either side breaks that
+  // implication (`C && X || Y` runs without C), so it never counts as a conjunct.
   const covering = checkouts.find((s) => {
     if (steps.indexOf(s) >= runIdx) return false;
     const c = normCond(s.ifCond);
-    return c === null || c === runCond;
+    if (c === null || c === runCond) return true;
+    return runCond !== null && !c.includes('||') && !runCond.includes('||')
+      && runCond.startsWith(c + ' && ');
   });
 
   if (covering) {
