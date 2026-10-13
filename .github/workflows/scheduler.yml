@@ -63,6 +63,7 @@ jobs:
         run: |
           NOW_ISO=$(date -u +%FT%TZ)
           NOW_EPOCH=$(date -u +%s)
+          CRON_ERR=$(mktemp)
 
           # Catch-up depth, in hours, for both skills and chains. GitHub delivers
           # only ~10% of the */5 ticks, so gaps routinely exceed a 2h window and a
@@ -229,8 +230,13 @@ jobs:
             # compares the most recent slot (within CATCHUP_HOURS) against the last
             # dispatch. Gates both the breaker probe and normal cron matching below.
             SLOT_OWED=0
-            if SLOT_ISO=$(bash scripts/cron-due.sh "$SCHED" "$NOW_EPOCH" "$LAST_DISPATCH_EPOCH" "$CATCHUP_HOURS"); then
+            if SLOT_ISO=$(bash scripts/cron-due.sh "$SCHED" "$NOW_EPOCH" "$LAST_DISPATCH_EPOCH" "$CATCHUP_HOURS" 2>"$CRON_ERR"); then
               SLOT_OWED=1
+            elif grep -q "invalid schedule" "$CRON_ERR"; then
+              # cron-due.sh exits 1 for both "not due" and "invalid"; only the
+              # message tells them apart. Surface it so the skill is not silently
+              # skipped forever.
+              echo "::warning::skill $SKILL has an invalid schedule and will never run: $(cat "$CRON_ERR")"
             fi
 
             # --- Circuit breaker (auto-recovering) ---
@@ -335,7 +341,12 @@ jobs:
             LAST_DISPATCH_EPOCH=$(date -u -d "$LAST_DISPATCH" +%s 2>/dev/null || echo 0)
 
             # Same exact-slot debt decision as the per-skill path (scripts/cron-due.sh).
-            bash scripts/cron-due.sh "$SCHED" "$NOW_EPOCH" "$LAST_DISPATCH_EPOCH" "$CATCHUP_HOURS" >/dev/null || continue
+            if ! bash scripts/cron-due.sh "$SCHED" "$NOW_EPOCH" "$LAST_DISPATCH_EPOCH" "$CATCHUP_HOURS" >/dev/null 2>"$CRON_ERR"; then
+              if grep -q "invalid schedule" "$CRON_ERR"; then
+                echo "::warning::chain $CH has an invalid schedule and will never run: $(cat "$CRON_ERR")"
+              fi
+              continue
+            fi
 
             MATCHED_CHAINS+=("$CH")
             echo "Matched chain: $CH (schedule: $SCHED)"
