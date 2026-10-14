@@ -17,6 +17,8 @@ report a problem privately.
 advisory that only the maintainers can see — never a public issue, so a fix can
 ship before the details are out.
 
+If you can't use the form, email **aaron@aeon.fun** instead.
+
 Please include what you can:
 
 - The skill, script, workflow, or dashboard route affected (a path is ideal).
