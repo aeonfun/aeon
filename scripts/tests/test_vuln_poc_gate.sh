@@ -133,7 +133,7 @@ gate_command "$POC/../outside.sh"
 
 ln -s "$TMP/outside.sh" "$POC/linked.sh"
 gate_command "$POC/linked.sh"
-[ "$?" -eq 6 ] && [ ! -e "$OUTSIDE_MARK" ] \
+[ "$?" -eq 6 ] && grep -q 'reason=script-is-symlink' /tmp/vuln-poc-test.err && [ ! -e "$OUTSIDE_MARK" ] \
   && pass "a link inside the PoC dir is refused" || bad "a symlinked script was run"
 
 mkdir -p "$TMP/elsewhere" && cp "$TMP/outside.sh" "$TMP/elsewhere/inner.sh"
@@ -161,6 +161,18 @@ gate_command "$POC/repro-clean.sh"
 [ "$?" -eq 0 ] && jq -e '.verdict=="verified"' "$RESULTS/case-1.json" >/dev/null \
   && pass "untracked files that were already there do not count" || bad "a pre-existing untracked file broke verification"
 rm -f "$REPO/already-untracked.txt"
+
+# --- a PoC that moves HEAD off the audited commit counts as mutation ---------
+cat > "$POC/repro-commits.sh" <<'EOF'
+#!/usr/bin/env bash
+printf 'patched\n' > source.txt
+git commit -qam patched
+EOF
+gate_command "$POC/repro-commits.sh"
+[ "$?" -eq 21 ] && grep -q 'reason=target-mutated' /tmp/vuln-poc-test.err \
+  && jq -e --arg c "$COMMIT" '.verdict=="failed" and .target_commit==$c' "$RESULTS/case-1.json" >/dev/null \
+  && pass "a verifier that commits and moves HEAD is rejected" || bad "a moved HEAD went unnoticed"
+git -C "$REPO" reset -q --hard "$COMMIT"
 
 echo "---"
 [ "$fail" -eq 0 ] && echo "ALL PASS" || echo "SOME FAILED"

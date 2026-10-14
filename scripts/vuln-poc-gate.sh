@@ -83,12 +83,14 @@ FINDING_SHA="$(hash_file "$FINDING")"
 # Target code, build scripts, and PoCs are untrusted. Start them with a small,
 # explicit environment rather than trying to enumerate every present and future
 # Aeon/harness credential. Foundry uses only the public RPC passed on argv.
-ISOLATED_ENV=(env -i "PATH=$PATH" "HOME=${HOME:-/tmp}" "TMPDIR=${TMPDIR:-/tmp}" CI=1)
+# PYTHONDONTWRITEBYTECODE keeps a Python PoC from leaving __pycache__ in the clone.
+ISOLATED_ENV=(env -i "PATH=$PATH" "HOME=${HOME:-/tmp}" "TMPDIR=${TMPDIR:-/tmp}" CI=1 PYTHONDONTWRITEBYTECODE=1)
 
 # A PoC must be a regular file that really lives under POC_DIR. A prefix match on
 # the spelled path accepts "$POC_DIR/../x.sh" and a link inside POC_DIR that
 # points elsewhere, so compare canonical directories and refuse a link. Prints
-# the canonical path of the file.
+# the canonical path of the file. Callers report a link with its own reason first;
+# the link check here keeps the helper fail-closed on its own.
 poc_file() {
   local f="$1" d base
   [ ! -L "$f" ] || return 1
@@ -96,6 +98,14 @@ poc_file() {
   base="$(cd "$POC_DIR" 2>/dev/null && pwd -P)" || return 1
   case "$d/" in "$base"/*) ;; *) return 1 ;; esac
   printf '%s/%s\n' "$d" "$(basename "$f")"
+}
+
+# True when the run changed the audited checkout: a tracked edit, a staged change,
+# or HEAD moved off the audited commit (a PoC that commits or checks out other
+# code would otherwise verify against the wrong code).
+target_changed() {
+  ! git -C "$REPO" diff --quiet -- . || ! git -C "$REPO" diff --cached --quiet -- . \
+    || [ "$(git -C "$REPO" rev-parse HEAD 2>/dev/null || true)" != "$ACTUAL_COMMIT" ]
 }
 
 # Forge exit 0 is not a reproduction if no test matched. Require a suite
@@ -133,6 +143,7 @@ case "$MODE" in
     command -v forge >/dev/null 2>&1 || { echo "VULN_POC_ERROR id=$ID reason=forge-missing" >&2; exit 6; }
     command -v cast >/dev/null 2>&1 || { echo "VULN_POC_ERROR id=$ID reason=cast-missing" >&2; exit 6; }
 
+    [ ! -L "$TEST_FILE" ] || { echo "VULN_POC_ERROR id=$ID reason=test-file-is-symlink" >&2; exit 6; }
     TEST_FILE="$(poc_file "$TEST_FILE")" || { echo "VULN_POC_ERROR id=$ID reason=test-file-outside-poc-dir" >&2; exit 6; }
     ROW="$(awk -F'\t' -v c="$CHAIN" '!/^#/ && $1==c {print; exit}' "$CHAINS_FILE")"
     [ -n "$ROW" ] || { echo "VULN_POC_ERROR id=$ID reason=unknown-chain" >&2; exit 6; }
@@ -159,7 +170,7 @@ case "$MODE" in
     "${ISOLATED_ENV[@]}" forge "${ARGS[@]}" >>"$LOG" 2>&1
     VERIFY_RC=$?
     set -e
-    if ! git -C "$REPO" diff --quiet -- . || ! git -C "$REPO" diff --cached --quiet -- .; then
+    if target_changed; then
       write_result failed foundry-fork "$CHAIN" "$CHAIN_ID" "$BLOCK"
       echo "VULN_POC_FAILED id=$ID verifier=foundry-fork reason=target-mutated result=$RESULT" >&2
       exit 21
@@ -179,15 +190,18 @@ case "$MODE" in
 
   command)
     [ -f "$SCRIPT" ] || { echo "VULN_POC_ERROR id=$ID reason=script-missing" >&2; exit 6; }
+    [ ! -L "$SCRIPT" ] || { echo "VULN_POC_ERROR id=$ID reason=script-is-symlink" >&2; exit 6; }
     SCRIPT="$(poc_file "$SCRIPT")" || { echo "VULN_POC_ERROR id=$ID reason=script-outside-poc-dir" >&2; exit 6; }
-    # git diff does not see files the script creates, so compare the whole status
-    # (untracked files included) before and after.
+    # git diff does not see files the script creates, so also compare the status
+    # before and after. git status lists untracked files but not gitignored ones,
+    # so this catches new untracked, non-ignored files (build output under an
+    # ignored path such as node_modules/ or build/ is deliberately not counted).
     STATUS_BEFORE="$(git -C "$REPO" status --porcelain --untracked-files=all)"
     set +e
     (cd "$REPO" && "${ISOLATED_ENV[@]}" bash "$SCRIPT") >"$LOG" 2>&1
     VERIFY_RC=$?
     set -e
-    if ! git -C "$REPO" diff --quiet -- . || ! git -C "$REPO" diff --cached --quiet -- . \
+    if target_changed \
       || [ "$(git -C "$REPO" status --porcelain --untracked-files=all)" != "$STATUS_BEFORE" ]; then
       write_result failed local-command
       echo "VULN_POC_FAILED id=$ID verifier=local-command reason=target-mutated result=$RESULT" >&2
