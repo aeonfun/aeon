@@ -92,15 +92,18 @@ cat > "$TMP/claude-env.json" <<'JSON'
                "claude-haiku-5-5":{"inputTokens":10,"outputTokens":50,"cacheReadInputTokens":1000,"cacheCreationInputTokens":100}}}
 JSON
 TID=0123456789abcdef0123456789abcdef
-trace() { # <harness> <rc> <envelope> -> prints TRACEPARENT seen by the harness
+RES="service.name=aeon,aeon.component=skill-run,langfuse.session.id=77,aeon.skill=heartbeat,langfuse.trace.name=aeon:skill-run:heartbeat,langfuse.user.id=heartbeat,langfuse.release=canon-df013db"
+trace() { # <harness> <rc> <envelope> [VAR=value...] -> prints TRACEPARENT seen by the harness
   rm -f "$TMP/curl/"*
   env -i PATH="$TMP/cbin:$PATH" HOME="$HOME" TMPDIR="$TMP" CURL_STUB_DIR="$TMP/curl" \
     RH_HARNESS="$1" RH_MODEL=claude-sonnet-5-5 AEON_LF_TRACE_ID="$TID" \
     OTEL_EXPORTER_OTLP_ENDPOINT="https://lf.invalid/api/public/otel" \
     OTEL_EXPORTER_OTLP_HEADERS="Authorization=Basic c2VjcmV0OnBhc3M=,x-langfuse-ingestion-version=4" \
-    OTEL_RESOURCE_ATTRIBUTES="service.name=aeon,aeon.component=skill-run,langfuse.session.id=77,aeon.skill=heartbeat,langfuse.trace.name=aeon:skill-run:heartbeat" \
+    OTEL_RESOURCE_ATTRIBUTES="$RES" AEON_LF_VERSION=abc1234 "${@:4}" \
     bash -c ". '$LIB'; rh_trace_begin; echo \"\${TRACEPARENT:-}\"; rh_trace_end '$2' /nonexistent '$3'"
 }
+# attrs <span-index>: that span's attributes as one {key: value} object.
+attrs() { jq -c --argjson n "$1" '.resourceSpans[0].scopeSpans[0].spans[$n] | [.attributes[] | {(.key): (.value | .stringValue // .intValue // .doubleValue // ([.arrayValue.values[]?.stringValue]))}] | add' "$TMP/curl/body"; }
 
 tp=$(trace claude 0 "$TMP/claude-env.json")
 [[ "$tp" =~ ^00-${TID}-[0-9a-f]{16}-01$ ]] && ok "claude: TRACEPARENT carries AEON_LF_TRACE_ID" || bad "claude: TRACEPARENT ($tp)"
@@ -120,6 +123,15 @@ if [ -f "$TMP/curl/body" ]; then
       | .parentSpanId == $s and $a["gen_ai.usage.input_tokens"].intValue == "8920" and $a["gen_ai.usage.output_tokens"].intValue == "450"
       and $a["gen_ai.usage.cache_read_input_tokens"].intValue == "8000" and $a["langfuse.observation.type"].stringValue == "generation"' "$B" >/dev/null \
     && ok "usage generation: cache-inclusive input, output, cache counts, parent = root" || bad "usage generation fields"
+  attrs 0 | jq -e '.["langfuse.observation.type"] == "agent" and .["langfuse.version"] == "abc1234"
+      and .["langfuse.user.id"] == "heartbeat" and .["langfuse.release"] == "canon-df013db"
+      and (has("langfuse.observation.status_message") | not)' >/dev/null \
+    && ok "root span: type agent, skill version, user, release" || bad "root span slicing fields ($(attrs 0))"
+  for n in 1 2; do
+    attrs "$n" | jq -e '.["langfuse.trace.name"] == "aeon:skill-run:heartbeat" and .["langfuse.trace.tags"] == ["skill:heartbeat","component:skill-run"]
+        and .["langfuse.user.id"] == "heartbeat" and .["langfuse.version"] == "abc1234" and .["langfuse.session.id"] == "77"' >/dev/null \
+      && ok "usage generation $n: trace name, tags, user, version (cost groups by skill)" || bad "usage generation $n trace fields ($(attrs "$n"))"
+  done
   grep -q SENSITIVE-RESULT-TEXT "$B" && bad "result text leaked into the trace" || ok "no result text in the trace"
   grep -q 'Authorization: Basic c2VjcmV0OnBhc3M=' "$TMP/curl/headers" && ok "auth header passed on stdin" || bad "auth header not on stdin"
   grep -q c2VjcmV0OnBhc3M "$TMP/curl/argv" && bad "auth value in curl argv" || ok "auth value never in argv"
@@ -136,6 +148,32 @@ if [ -f "$TMP/curl/body" ]; then
 else
   bad "failed claude run should still send its root span"
 fi
+
+if [ -f "$TMP/curl/body" ]; then
+  attrs 0 | jq -e '.["langfuse.observation.status_message"] == "exit 1" and (.["langfuse.trace.tags"] | index("status:error"))' >/dev/null \
+    && ok "failed run: status message exit 1 + status:error tag" || bad "failed run status ($(attrs 0))"
+fi
+trace claude 124 /nonexistent >/dev/null
+attrs 0 | jq -e '.["langfuse.observation.status_message"] == "timeout"' >/dev/null \
+  && ok "timed-out run (rc 124): status message timeout" || bad "timeout status message"
+cat > "$TMP/denied-env.json" <<'JSON'
+{"result":"x","is_error":true,"subtype":"error_max_turns","num_turns":40,
+ "permission_denials":[{"tool_name":"Bash","tool_input":{"command":"SECRET-CMD"}},{"tool_name":"Write","tool_input":{}}],
+ "usage":{"input_tokens":1,"output_tokens":2,"cache_read_input_tokens":0,"cache_creation_input_tokens":0}}
+JSON
+trace claude 0 "$TMP/denied-env.json" >/dev/null
+attrs 0 | jq -e '.["langfuse.observation.status_message"] == "error_max_turns" and .["langfuse.observation.level"] == "ERROR"
+    and .["langfuse.observation.metadata.permission_denials"] == "2"' >/dev/null \
+  && ok "error result: subtype as status message, permission denial count" || bad "error result fields ($(attrs 0))"
+attrs 1 | jq -e '.["langfuse.trace.tags"] | index("status:error")' >/dev/null \
+  && ok "usage generation of a failed run carries status:error" || bad "usage generation status tag"
+grep -q SECRET-CMD "$TMP/curl/body" && bad "denied tool input leaked" || ok "denied tool input never sent"
+trace claude 0 "$TMP/claude-env.json" OTEL_RESOURCE_ATTRIBUTES="aeon.component=scorer,aeon.skill=heartbeat,langfuse.trace.name=aeon:scorer:heartbeat" >/dev/null
+attrs 0 | jq -e '.["langfuse.observation.type"] == "evaluator" and .["langfuse.trace.tags"] == ["skill:heartbeat","component:scorer"]' >/dev/null \
+  && ok "scorer root: type evaluator" || bad "scorer root type ($(attrs 0))"
+trace claude 0 "$TMP/claude-env.json" OTEL_RESOURCE_ATTRIBUTES="aeon.component=message" AEON_LF_VERSION= >/dev/null
+attrs 0 | jq -e '(has("langfuse.observation.type") | not) and (has("langfuse.version") | not)' >/dev/null \
+  && ok "other component, no version: plain span, no version attribute" || bad "other component root ($(attrs 0))"
 
 tp=$(trace grok 0 "$TMP/claude-env.json")
 { [ -z "$tp" ] && [ ! -f "$TMP/curl/body" ]; } && ok "non-claude: no TRACEPARENT, no root span" || bad "non-claude should not trace"

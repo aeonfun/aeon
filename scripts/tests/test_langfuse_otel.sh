@@ -16,7 +16,9 @@ unset LANGFUSE_PUBLIC_KEY LANGFUSE_SECRET_KEY LANGFUSE_HOST LANGFUSE_BASE_URL \
       LANGFUSE_TRACING LANGFUSE_LOG_CONTENT AEON_OTEL_COMPONENT SKILL_NAME \
       CLAUDE_CODE_ENABLE_TELEMETRY OTEL_TRACES_EXPORTER OTEL_EXPORTER_OTLP_ENDPOINT \
       OTEL_EXPORTER_OTLP_HEADERS OTEL_LOG_USER_PROMPTS OTEL_LOG_TOOL_CONTENT \
-      OTEL_RESOURCE_ATTRIBUTES 2>/dev/null || true
+      OTEL_RESOURCE_ATTRIBUTES LANGFUSE_TRACING_ENVIRONMENT AEON_LF_VERSION \
+      GITHUB_REF_NAME GITHUB_EVENT_PATH GITHUB_EVENT_NAME GITHUB_WORKSPACE GITHUB_SHA \
+      GITHUB_REPOSITORY 2>/dev/null || true
 
 # 1. No keys → complete no-op (nothing exported), and returns success under -e.
 ( set -e
@@ -138,6 +140,52 @@ want=$(printf '%s' "aeon:42:1:skill-run:heartbeat" | { sha256sum 2>/dev/null || 
   source "$LF" 2>/dev/null; [ -z "${AEON_LF_TRACE_ID:-}" ]
 ) && pass "no GITHUB_RUN_ID → no AEON_LF_TRACE_ID" || bad "no GITHUB_RUN_ID → no AEON_LF_TRACE_ID"
 
+# 16. Slicing handles. WS is a fake workspace (state file, a skill) and EV an
+#     event payload naming the default branch.
+WS=$(mktemp -d)
+mkdir -p "$WS/memory/topics" "$WS/skills/heartbeat"
+echo '{"baseline_sha":"df013dbe0be81e63771b7b013ec055380c766986"}' > "$WS/memory/topics/aeon-update-state.json"
+printf -- '---\nname: heartbeat\n---\nbody\n' > "$WS/skills/heartbeat/SKILL.md"
+printf '{"repository":{"default_branch":"trunk"}}' > "$WS/event.json"
+# shellcheck disable=SC2163  # "$@" holds VAR=value pairs to export
+attrs_for() { ( export LANGFUSE_PUBLIC_KEY=pk LANGFUSE_SECRET_KEY=sk GITHUB_WORKSPACE="$WS" "$@"
+  source "$LF" 2>/dev/null; echo "${OTEL_RESOURCE_ATTRIBUTES:-}|${AEON_LF_VERSION:-}" ); }
+has() { case "$1" in *"$2"*) return 0 ;; *) return 1 ;; esac; }
+r=$(attrs_for GITHUB_REF_NAME=main)
+has "$r" "deployment.environment=production," && pass "env: default branch (main fallback) → production" || bad "env production ($r)"
+r=$(attrs_for GITHUB_REF_NAME=verify/langfuse)
+has "$r" "deployment.environment=branch," && pass "env: other branch → branch" || bad "env branch ($r)"
+r=$(attrs_for GITHUB_REF_NAME=trunk GITHUB_EVENT_PATH="$WS/event.json")
+has "$r" "deployment.environment=production," && pass "env: default branch read from the event payload" || bad "env from payload ($r)"
+r=$(attrs_for GITHUB_REF_NAME=main GITHUB_EVENT_PATH="$WS/event.json")
+has "$r" "deployment.environment=branch," && pass "env: main is not the default branch → branch" || bad "env payload mismatch ($r)"
+r=$(attrs_for GITHUB_REF_NAME=main LANGFUSE_TRACING_ENVIRONMENT=test)
+has "$r" "deployment.environment=test," && pass "env: LANGFUSE_TRACING_ENVIRONMENT wins" || bad "env override ($r)"
+r=$(attrs_for LANGFUSE_TRACING_ENVIRONMENT=langfuse-x)
+has "$r" "deployment.environment=local," && pass "env: reserved override ignored; no ref → local" || bad "env reserved/local ($r)"
+r=$(attrs_for SKILL_NAME=heartbeat GITHUB_REPOSITORY=aaronjmars/aeon-agent GITHUB_EVENT_NAME=workflow_dispatch)
+{ has "$r" "langfuse.user.id=heartbeat," && has "$r" "langfuse.trace.metadata.instance=aeon-agent" \
+  && has "$r" "langfuse.trace.metadata.trigger=workflow_dispatch"; } \
+  && pass "userId = skill; instance + trigger metadata" || bad "user/metadata ($r)"
+r=$(attrs_for AEON_OTEL_COMPONENT=feed)
+has "$r" "langfuse.user.id=aeon:feed," && pass "no skill → userId aeon:<component>" || bad "feed user ($r)"
+r=$(attrs_for GITHUB_SHA=0123456789abcdef0123456789abcdef01234567)
+has "$r" "langfuse.release=canon-df013db" && pass "release = canon-<baseline sha7>, not GITHUB_SHA" || bad "release baseline ($r)"
+r=$(attrs_for GITHUB_WORKSPACE=/nonexistent GITHUB_SHA=0123456789abcdef0123456789abcdef01234567)
+has "$r" "langfuse.release=0123456," && pass "no aeon-update state → release = short GITHUB_SHA" || bad "release fallback ($r)"
+r=$(attrs_for GITHUB_WORKSPACE=/nonexistent)
+has "$r" "langfuse.release=" && bad "no state, no sha → no release ($r)" || pass "no state, no sha → no release attribute"
+want=$(git hash-object "$WS/skills/heartbeat/SKILL.md" | cut -c1-7)
+r=$(attrs_for SKILL_NAME=heartbeat)
+{ [ "${r##*|}" = "$want" ] && ! has "${r%|*}" "langfuse.version"; } \
+  && pass "AEON_LF_VERSION = SKILL.md blob hash, kept out of resource attrs" || bad "version ($r, want $want)"
+r=$(attrs_for SKILL_NAME=no-such-skill)
+[ -z "${r##*|}" ] && pass "no SKILL.md → no version" || bad "version without SKILL.md ($r)"
+( set -e -o pipefail
+  export LANGFUSE_PUBLIC_KEY=pk LANGFUSE_SECRET_KEY=sk SKILL_NAME=heartbeat GITHUB_WORKSPACE=/nonexistent GITHUB_EVENT_PATH=/nonexistent
+  source "$LF" >/dev/null 2>&1
+) && pass "sourcing under bash -e -o pipefail with missing files does not abort" || bad "pipefail abort"
+
 # --- scripts/langfuse-score.sh -------------------------------------------------
 SC="scripts/langfuse-score.sh"
 STUB=$(mktemp -d)
@@ -152,7 +200,7 @@ chmod +x "$STUB/curl"
 score() { rm -f "$STUB"/bodies "$STUB"/config.* "$STUB"/argv.*
   env PATH="$STUB:$PATH" STUB_DIR="$STUB" GITHUB_RUN_ID=42 GITHUB_RUN_ATTEMPT=1 LANGFUSE_HOST=https://lf.invalid "$@" >/dev/null 2>&1; }
 
-# 16. No keys → no POST; keys + claude → numeric score on the skill run's trace
+# 17. No keys → no POST; keys + claude → numeric score on the skill run's trace
 #     (the same id langfuse-otel.sh gives the Run step) + one flag score.
 score bash "$SC" heartbeat 4 "ok" '["unverifiable_claim"]' claude claude-haiku-5-5
 [ ! -f "$STUB/bodies" ] && pass "score: no keys → no POST" || bad "score: no keys → no POST"
@@ -160,7 +208,7 @@ score LANGFUSE_PUBLIC_KEY=pk-lf-1 LANGFUSE_SECRET_KEY=sk-lf-2 bash "$SC" heartbe
 if [ -f "$STUB/bodies" ]; then
   q=$(sed -n 1p "$STUB/bodies"); f=$(sed -n 2p "$STUB/bodies")
   echo "$q" | jq -e --arg t "$a" '.traceId == $t and (has("sessionId") | not) and .name == "quality" and .value == 4
-      and .dataType == "NUMERIC" and .environment == "github-actions" and .id == ($t + "-quality")
+      and .dataType == "NUMERIC" and .environment == "local" and .id == ($t + "-quality")
       and .metadata.skill == "heartbeat" and .metadata.score_model == "claude-haiku-5-5"' >/dev/null \
     && pass "score: quality on the Run step's trace id" || bad "score: quality body ($q)"
   echo "$f" | jq -e --arg t "$a" '.traceId == $t and .name == "quality_flag" and .value == "unverifiable_claim" and .dataType == "CATEGORICAL"' >/dev/null \
@@ -171,13 +219,41 @@ else
   bad "score: expected a POST"
 fi
 
-# 17. Other harness → session score; bad score → nothing.
+# 18. Other harness → session score; bad score → nothing.
 score LANGFUSE_PUBLIC_KEY=pk LANGFUSE_SECRET_KEY=sk bash "$SC" heartbeat 3 "meh" '[]' grok
 sed -n 1p "$STUB/bodies" 2>/dev/null | jq -e '.sessionId == "42" and (has("traceId") | not)' >/dev/null \
   && pass "score: non-claude harness → session score" || bad "score: non-claude harness → session score"
 score LANGFUSE_PUBLIC_KEY=pk LANGFUSE_SECRET_KEY=sk bash "$SC" heartbeat 0 "x" '[]' claude
 [ ! -f "$STUB/bodies" ] && pass "score: out-of-range score → no POST" || bad "score: out-of-range score → no POST"
-rm -rf "$STUB"
+
+# 19. Score environment matches the traces'.
+score GITHUB_REF_NAME=main LANGFUSE_PUBLIC_KEY=pk LANGFUSE_SECRET_KEY=sk bash "$SC" heartbeat 3 "meh" '[]' claude
+sed -n 1p "$STUB/bodies" 2>/dev/null | jq -e '.environment == "production"' >/dev/null \
+  && pass "score: default branch → environment production" || bad "score: environment production"
+score GITHUB_REF_NAME=verify/x LANGFUSE_PUBLIC_KEY=pk LANGFUSE_SECRET_KEY=sk bash "$SC" heartbeat 3 "meh" '[]' claude
+sed -n 1p "$STUB/bodies" 2>/dev/null | jq -e '.environment == "branch"' >/dev/null \
+  && pass "score: other branch → environment branch" || bad "score: environment branch"
+
+# 20. --run-ok: one BOOLEAN run_ok on the skill run's trace (fixed id), the error
+#     as comment; session score for other harnesses; bad value → nothing.
+score GITHUB_REF_NAME=main LANGFUSE_PUBLIC_KEY=pk LANGFUSE_SECRET_KEY=sk bash "$SC" --run-ok heartbeat 1 claude
+sed -n 1p "$STUB/bodies" 2>/dev/null | jq -e --arg t "$a" '.traceId == $t and .name == "run_ok" and .value == 1
+    and .dataType == "BOOLEAN" and .id == ($t + "-run_ok") and .environment == "production" and (has("comment") | not)
+    and .metadata.skill == "heartbeat"' >/dev/null \
+  && pass "run-ok: BOOLEAN run_ok=1 on the Run step's trace" || bad "run-ok body ($(sed -n 1p "$STUB/bodies" 2>/dev/null))"
+[ "$(wc -l < "$STUB/bodies" 2>/dev/null)" -eq 1 ] && pass "run-ok: exactly one POST" || bad "run-ok: POST count"
+score LANGFUSE_PUBLIC_KEY=pk LANGFUSE_SECRET_KEY=sk bash "$SC" --run-ok heartbeat 0 claude "harness timed out"
+sed -n 1p "$STUB/bodies" 2>/dev/null | jq -e '.value == 0 and .comment == "harness timed out"' >/dev/null \
+  && pass "run-ok: failed run → 0 with the error as comment" || bad "run-ok failed body"
+score LANGFUSE_PUBLIC_KEY=pk LANGFUSE_SECRET_KEY=sk bash "$SC" --run-ok heartbeat 1 grok
+sed -n 1p "$STUB/bodies" 2>/dev/null | jq -e '.sessionId == "42" and (has("traceId") | not)' >/dev/null \
+  && pass "run-ok: non-claude harness → session score" || bad "run-ok: session score"
+score LANGFUSE_PUBLIC_KEY=pk LANGFUSE_SECRET_KEY=sk bash "$SC" --run-ok heartbeat 1 ""
+sed -n 1p "$STUB/bodies" 2>/dev/null | jq -e --arg t "$a" '.traceId == $t' >/dev/null \
+  && pass "run-ok: empty harness (Run never started) → claude trace id" || bad "run-ok: empty harness"
+score LANGFUSE_PUBLIC_KEY=pk LANGFUSE_SECRET_KEY=sk bash "$SC" --run-ok heartbeat yes claude
+[ ! -f "$STUB/bodies" ] && pass "run-ok: bad value → no POST" || bad "run-ok: bad value → no POST"
+rm -rf "$STUB" "$WS"
 
 echo
 if [ "$fail" -eq 0 ]; then echo "All langfuse-otel tests passed."; else echo "Some tests FAILED."; fi

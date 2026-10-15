@@ -136,6 +136,7 @@ rh_trace_end() {
     --arg start "$RH_ROOT_START_NS" --arg end "$end" --arg rc "$rc" \
     --arg model "${RH_MODEL:-default}" --arg res "${OTEL_RESOURCE_ATTRIBUTES:-}" \
     --arg svc "${OTEL_SERVICE_NAME:-aeon}" --arg comp "${AEON_OTEL_COMPONENT:-skill-run}" \
+    --arg ver "${AEON_LF_VERSION:-}" \
     --argjson gids "$gids" '
     def s($k; $v): {key: $k, value: {stringValue: ($v | tostring)}};
     def i($k; $v): {key: $k, value: {intValue: ($v | tostring)}};
@@ -143,28 +144,47 @@ rh_trace_end() {
     | [$res | split(",")[] | select(index("=")) | index("=") as $p | {k: .[:$p], v: .[$p + 1:]}] as $ra
     | ([$ra[] | {(.k): .v}] | add // {}) as $rm
     | ($rm["langfuse.trace.name"] // ("aeon:" + $comp)) as $name
-    # Langfuse reads session / user / trace name from span attributes, so copy
-    # the langfuse.* resource attributes onto both spans (Claude Code does too).
-    | [$ra[] | select(.k | startswith("langfuse.")) | select(.k != "langfuse.trace.name") | s(.k; .v)] as $lfa
+    | ($rm["aeon.component"] // $comp) as $component
+    | ($rc != "0" or $e.is_error == true) as $err
+    # Why a run failed, for the root span: timeout for run-harness rc 124, the
+    # result subtype (error_max_turns, error_during_execution), the exit code, or
+    # the API error status.
+    | (if $rc == "124" then "timeout"
+       elif ($e.subtype | type) == "string" and ($e.subtype | startswith("error")) then $e.subtype
+       elif $rc != "0" then "exit " + $rc
+       elif $e.api_error_status then "api_error " + ($e.api_error_status | tostring)
+       else "is_error" end) as $why
+    | ([("skill:" + ($rm["aeon.skill"] // empty)), ("component:" + $component)]
+       + (if $err then ["status:error"] else [] end)) as $tags
+    # Langfuse keeps trace-level fields per observation and reads session / user /
+    # release / trace name / tags from span attributes, so the langfuse.* resource
+    # attributes, the trace name, the tags and the skill version go on every span
+    # we send (the usage rows carry the cost, so they need them to group by skill).
+    | ([$ra[] | select(.k | startswith("langfuse.")) | select(.k != "langfuse.trace.name") | s(.k; .v)]
+       + [s("langfuse.trace.name"; $name),
+          {key: "langfuse.trace.tags", value: {arrayValue: {values: [$tags[] | {stringValue: .}]}}}]
+       + (if $ver != "" then [s("langfuse.version"; $ver)] else [] end)) as $lfa
     | ((($e.modelUsage // {}) | to_entries | map({m: .key, in: (.value.inputTokens // 0), out: (.value.outputTokens // 0),
           cr: (.value.cacheReadInputTokens // 0), cc: (.value.cacheCreationInputTokens // 0)}))
        | if length > 0 then .
          elif $e.usage then [{m: $model, in: ($e.usage.input_tokens // 0), out: ($e.usage.output_tokens // 0),
            cr: ($e.usage.cache_read_input_tokens // 0), cc: ($e.usage.cache_creation_input_tokens // 0)}]
          else [] end) as $gens
-    | ($rc != "0" or $e.is_error == true) as $err
-    | ([("skill:" + ($rm["aeon.skill"] // empty)), ("component:" + ($rm["aeon.component"] // $comp))]) as $tags
     | {resourceSpans: [{
         resource: {attributes: ([$ra[] | s(.k; .v)] + (if $rm["service.name"] then [] else [s("service.name"; $svc)] end))},
         scopeSpans: [{scope: {name: "aeon.run-harness"}, spans: (
           [{traceId: $tid, spanId: $sid, name: $name, kind: 1,
             startTimeUnixNano: $start, endTimeUnixNano: $end,
-            attributes: ($lfa + [s("langfuse.trace.name"; $name), s("aeon.harness"; "claude"), s("aeon.model"; $model),
-                i("aeon.exit_code"; ($rc | tonumber? // 1)),
-                {key: "langfuse.trace.tags", value: {arrayValue: {values: [$tags[] | {stringValue: .}]}}}]
+            attributes: ($lfa + [s("aeon.harness"; "claude"), s("aeon.model"; $model),
+                i("aeon.exit_code"; ($rc | tonumber? // 1))]
+              # agent for the skill run, evaluator for the scorer (type filter, agent graph).
+              + (({"skill-run": "agent", scorer: "evaluator"}[$component] // "") as $t
+                 | if $t != "" then [s("langfuse.observation.type"; $t)] else [] end)
               + (if $e.num_turns then [i("aeon.num_turns"; $e.num_turns)] else [] end)
               + (if ($e.total_cost_usd | type) == "number" then [{key: "aeon.cost_usd_reported", value: {doubleValue: $e.total_cost_usd}}] else [] end)
-              + (if $err then [s("langfuse.observation.level"; "ERROR")] else [] end)),
+              # Tool calls the allowlist refused this run (count only, never the inputs).
+              + (if ($e.permission_denials | type) == "array" then [i("langfuse.observation.metadata.permission_denials"; $e.permission_denials | length)] else [] end)
+              + (if $err then [s("langfuse.observation.level"; "ERROR"), s("langfuse.observation.status_message"; $why)] else [] end)),
             status: {code: (if $err then 2 else 1 end)}}
            + (if $parent != "" then {parentSpanId: $parent} else {} end)]
           + [$gens | to_entries[] | select(.key < ($gids | length)) | .key as $n | .value as $g

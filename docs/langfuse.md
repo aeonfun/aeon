@@ -68,7 +68,32 @@ The trace id comes from the run (`AEON_LF_TRACE_ID`, set by `langfuse-otel.sh`),
 so the scorer step can post its 1-5 grade to the skill run's trace with
 `scripts/langfuse-score.sh`: a NUMERIC `quality` score (comment = the judge's
 assessment) plus one CATEGORICAL `quality_flag` per flag. Non-claude runs get the
-score on the run's session instead.
+score on the run's session instead. The "Update cron state" step also posts one
+BOOLEAN `run_ok` per run (1 = the Run step succeeded, the error line as comment on
+a failure), so success rate per skill sits next to quality in the score charts.
+To get typed score charts, create these score configs once per project
+(Settings, Scores): `quality` NUMERIC 1-5, `quality_flag` CATEGORICAL with the
+flags the scorer emits, `run_ok` BOOLEAN.
+
+### Filters: environment, user, release, version, tags
+
+`langfuse-otel.sh` and the root span set the Langfuse handles so each one slices
+something useful:
+
+| Handle | Value | Use |
+|---|---|---|
+| environment | `production` on the default branch, `branch` on any other branch (verify runs), `local` outside Actions; `LANGFUSE_TRACING_ENVIRONMENT` overrides | keep test runs out of the production view |
+| userId | the skill (`aeon:<component>` without one) | the Users page is a per-skill table of traces, tokens and cost |
+| release | `canon-<sha7>` of aeon-update's `baseline_sha`, else the short `GITHUB_SHA` | before and after a canon sync |
+| version | first 7 chars of the skill's `SKILL.md` blob hash (root span and usage rows) | a skill edit shows up as a new version |
+| tags | `skill:<name>`, `component:<name>`, `status:error` on a failed run | filter and group cost by skill |
+
+The root span is type `agent` for the skill run and `evaluator` for the scorer;
+a failed run gets level ERROR, a status message (`timeout`, the result subtype
+such as `error_max_turns`, or `exit <rc>`) and the `status:error` tag. Its
+metadata carries `permission_denials`, the number of tool calls the allowlist
+refused. Trace metadata also carries `instance` (repo name) and `trigger` (event).
+The usage rows carry the same trace name and tags, so cost groups by skill.
 
 ### The non-claude harnesses (grok / codex / pi / vibe / kimi / fx / cursor / hermes)
 
@@ -126,6 +151,7 @@ see the whole run in one place rather than one session per process.
 | `LANGFUSE_SECRET_KEY` | secret | — | Langfuse secret key (`sk-lf-…`). **Required** to activate. |
 | `LANGFUSE_HOST` | variable | `https://cloud.langfuse.com` | Langfuse base URL / region. `LANGFUSE_BASE_URL` is accepted as an alias. |
 | `LANGFUSE_TRACING` | variable | `1` | Set to `0`/`false`/`off` to force-disable even with keys set. |
+| `LANGFUSE_TRACING_ENVIRONMENT` | env | branch-based | Force the Langfuse environment (lowercase letters, digits, `-`, `_`). |
 | `LANGFUSE_LOG_CONTENT` | variable | `1` | `1` = capture prompts + responses + tool params; `0` = metadata only (redact all content); `all` = also capture tool input/output bodies. |
 
 ## Privacy

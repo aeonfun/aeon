@@ -2165,6 +2165,11 @@ jobs:
         env:
           STATE_BACKEND: ${{ vars.STATE_BACKEND }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LANGFUSE_PUBLIC_KEY: ${{ secrets.LANGFUSE_PUBLIC_KEY }}
+          LANGFUSE_SECRET_KEY: ${{ secrets.LANGFUSE_SECRET_KEY }}
+          LANGFUSE_HOST: ${{ vars.LANGFUSE_HOST }}
+          LANGFUSE_TRACING: ${{ vars.LANGFUSE_TRACING }}
+          RUN_HARNESS: ${{ steps.run.outputs.HARNESS }}
           IDLE_SKIP: ${{ steps.idle.outputs.skip }}
         run: |
           SKILL="${{ steps.skill.outputs.name }}"
@@ -2184,6 +2189,13 @@ jobs:
           ERROR_SIG=""
           if [ "$CRON_STATUS" = "failed" ] && [ -f /tmp/skill-error.txt ]; then
             ERROR_SIG=$(cat /tmp/skill-error.txt)
+          fi
+
+          # run_ok to Langfuse, on the skill run's trace (no-op without LANGFUSE_* keys).
+          # Not for an idle-gated skip: no run happened.
+          if [ "${IDLE_SKIP:-}" != "true" ]; then
+            RUN_OK=0; if [ "$CRON_STATUS" = "success" ]; then RUN_OK=1; fi
+            bash scripts/langfuse-score.sh --run-ok "$SKILL" "$RUN_OK" "${RUN_HARNESS:-}" "$ERROR_SIG" || true
           fi
 
           # Issues-as-state (hardening §3). STATE_BACKEND tri-state:

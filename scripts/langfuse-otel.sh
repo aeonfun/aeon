@@ -95,9 +95,45 @@ esac
 # Langfuse sessions. Pin langfuse.session.id to the GitHub run id so all of one
 # run's components collapse into ONE session; langfuse.trace.name gives the trace
 # a readable name instead of a blank one.
+#
+# Slicing handles (same values on the root span and usage rows run-harness sends):
+#   environment  production on the default branch (cron and dispatches on main),
+#                branch on any other branch (verify and probe runs), local outside
+#                Actions, so test runs stay out of the production view.
+#                LANGFUSE_TRACING_ENVIRONMENT overrides it. scripts/langfuse-score.sh
+#                picks the same value for the scores.
+#   userId       the skill (aeon:<component> when there is none), so the Users page
+#                is a per-skill cost table. Wins over Claude Code's per-install user.id.
+#   release      canon-<sha7> of the canon commit this instance was last synced to
+#                (aeon-update's baseline_sha), else the short GITHUB_SHA. Not
+#                GITHUB_SHA on an instance: every run auto-commits, so it changes
+#                on nearly every run.
 export OTEL_SERVICE_NAME="${OTEL_SERVICE_NAME:-aeon}"
-_lf_attrs="service.name=aeon,deployment.environment=github-actions"
+_lf_env="${LANGFUSE_TRACING_ENVIRONMENT:-}"
+case "$_lf_env" in *[!a-z0-9_-]* | langfuse*) _lf_env="" ;; esac
+if [ -z "$_lf_env" ]; then
+  _lf_default=""
+  if [ -f "${GITHUB_EVENT_PATH:-}" ] && command -v jq >/dev/null 2>&1; then
+    _lf_default=$(jq -r '.repository.default_branch // empty | strings' "$GITHUB_EVENT_PATH" 2>/dev/null || true)
+  fi
+  if [ -z "${GITHUB_REF_NAME:-}" ]; then _lf_env=local
+  elif [ "$GITHUB_REF_NAME" = "${_lf_default:-main}" ]; then _lf_env=production
+  else _lf_env=branch; fi
+fi
+_lf_rel=""
+_lf_state="${GITHUB_WORKSPACE:-.}/memory/topics/aeon-update-state.json"
+if [ -f "$_lf_state" ] && command -v jq >/dev/null 2>&1; then
+  _lf_rel=$(jq -r '.baseline_sha // empty | strings' "$_lf_state" 2>/dev/null | cut -c1-7 || true)
+fi
+case "$_lf_rel" in
+  *[!0-9a-f]* | "") _lf_rel="${GITHUB_SHA:-}"; _lf_rel="${_lf_rel:0:7}"
+    case "$_lf_rel" in *[!0-9a-f]*) _lf_rel="" ;; esac ;;
+  *) _lf_rel="canon-${_lf_rel}" ;;
+esac
+_lf_attrs="service.name=aeon,deployment.environment=${_lf_env}"
 _lf_attrs="${_lf_attrs},aeon.component=${AEON_OTEL_COMPONENT:-skill-run}"
+_lf_attrs="${_lf_attrs},langfuse.user.id=${SKILL_NAME:-aeon:${AEON_OTEL_COMPONENT:-skill-run}}"
+if [ -n "$_lf_rel" ]; then _lf_attrs="${_lf_attrs},langfuse.release=${_lf_rel}"; fi
 if [ -n "${GITHUB_RUN_ID:-}" ]; then
   _lf_attrs="${_lf_attrs},langfuse.session.id=${GITHUB_RUN_ID},aeon.run_id=${GITHUB_RUN_ID}"
 fi
@@ -107,7 +143,10 @@ if [ -n "${SKILL_NAME:-}" ]; then
 else
   _lf_attrs="${_lf_attrs},langfuse.trace.name=aeon:${AEON_OTEL_COMPONENT:-skill-run}"
 fi
-if [ -n "${GITHUB_REPOSITORY:-}" ]; then _lf_attrs="${_lf_attrs},aeon.repo=${GITHUB_REPOSITORY}"; fi
+if [ -n "${GITHUB_REPOSITORY:-}" ]; then
+  _lf_attrs="${_lf_attrs},aeon.repo=${GITHUB_REPOSITORY},langfuse.trace.metadata.instance=${GITHUB_REPOSITORY#*/}"
+fi
+if [ -n "${GITHUB_EVENT_NAME:-}" ]; then _lf_attrs="${_lf_attrs},langfuse.trace.metadata.trigger=${GITHUB_EVENT_NAME}"; fi
 if [ -n "${GITHUB_RUN_ATTEMPT:-}" ];then _lf_attrs="${_lf_attrs},aeon.run_attempt=${GITHUB_RUN_ATTEMPT}"; fi
 export OTEL_RESOURCE_ATTRIBUTES="$_lf_attrs"
 
@@ -126,6 +165,20 @@ if [ -n "${GITHUB_RUN_ID:-}" ]; then
   esac
 fi
 
-echo "::notice::Langfuse tracing on → ${_lf_host} (component=${AEON_OTEL_COMPONENT:-skill-run}, content=${LANGFUSE_LOG_CONTENT:-1})" >&2
-unset _lf_host _lf_auth _lf_attrs _lf_seed _lf_tid
+# Version: the skill's SKILL.md content hash (git blob id, 7 chars), so a skill
+# edit shows up as a new version next to its cost and score. Exported for the
+# root span and usage rows only (harness-adapter/lib/otel-span.sh), not put in
+# the resource attributes: Claude Code's own spans keep their CLI version.
+unset AEON_LF_VERSION
+_lf_md="${GITHUB_WORKSPACE:-.}/skills/${SKILL_NAME:-}/SKILL.md"
+if [ -n "${SKILL_NAME:-}" ] && [ -f "$_lf_md" ]; then
+  _lf_ver=$(git hash-object "$_lf_md" 2>/dev/null | cut -c1-7 || true)
+  case "$_lf_ver" in
+    *[!0-9a-f]* | "") : ;;
+    *) export AEON_LF_VERSION="$_lf_ver" ;;
+  esac
+fi
+
+echo "::notice::Langfuse tracing on → ${_lf_host} (component=${AEON_OTEL_COMPONENT:-skill-run}, env=${_lf_env}, content=${LANGFUSE_LOG_CONTENT:-1})" >&2
+unset _lf_host _lf_auth _lf_attrs _lf_seed _lf_tid _lf_env _lf_default _lf_rel _lf_state _lf_md _lf_ver
 return 0 2>/dev/null || exit 0
