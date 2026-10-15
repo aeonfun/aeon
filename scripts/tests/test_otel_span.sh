@@ -125,7 +125,7 @@ if [ -f "$TMP/curl/body" ]; then
     && ok "usage generation: cache-inclusive input, output, cache counts, parent = root" || bad "usage generation fields"
   attrs 0 | jq -e '.["langfuse.observation.type"] == "agent" and .["langfuse.version"] == "abc1234"
       and .["langfuse.user.id"] == "heartbeat" and .["langfuse.release"] == "canon-df013db"
-      and (has("langfuse.observation.status_message") | not)' >/dev/null \
+      and (has("langfuse.observation.status_message") | not) and (has("langfuse.observation.metadata.error_class") | not)' >/dev/null \
     && ok "root span: type agent, skill version, user, release" || bad "root span slicing fields ($(attrs 0))"
   for n in 1 2; do
     attrs "$n" | jq -e '.["langfuse.trace.name"] == "aeon:skill-run:heartbeat" and .["langfuse.trace.tags"] == ["skill:heartbeat","component:skill-run"]
@@ -150,24 +150,57 @@ else
 fi
 
 if [ -f "$TMP/curl/body" ]; then
-  attrs 0 | jq -e '.["langfuse.observation.status_message"] == "exit 1" and (.["langfuse.trace.tags"] | index("status:error"))' >/dev/null \
-    && ok "failed run: status message exit 1 + status:error tag" || bad "failed run status ($(attrs 0))"
+  attrs 0 | jq -e '.["langfuse.observation.status_message"] == "tool_failed: exit 1" and .["langfuse.observation.metadata.error_class"] == "tool_failed"
+      and (.["langfuse.trace.tags"] | index("status:error"))' >/dev/null \
+    && ok "failed run: tool_failed: exit 1 + error_class + status:error tag" || bad "failed run status ($(attrs 0))"
 fi
 trace claude 124 /nonexistent >/dev/null
-attrs 0 | jq -e '.["langfuse.observation.status_message"] == "timeout"' >/dev/null \
-  && ok "timed-out run (rc 124): status message timeout" || bad "timeout status message"
+attrs 0 | jq -e '.["langfuse.observation.status_message"] == "timeout: rc 124" and .["langfuse.observation.metadata.error_class"] == "timeout"' >/dev/null \
+  && ok "timed-out run (rc 124): class timeout" || bad "timeout status message ($(attrs 0))"
 cat > "$TMP/denied-env.json" <<'JSON'
 {"result":"x","is_error":true,"subtype":"error_max_turns","num_turns":40,
  "permission_denials":[{"tool_name":"Bash","tool_input":{"command":"SECRET-CMD"}},{"tool_name":"Write","tool_input":{}}],
  "usage":{"input_tokens":1,"output_tokens":2,"cache_read_input_tokens":0,"cache_creation_input_tokens":0}}
 JSON
 trace claude 0 "$TMP/denied-env.json" >/dev/null
-attrs 0 | jq -e '.["langfuse.observation.status_message"] == "error_max_turns" and .["langfuse.observation.level"] == "ERROR"
+attrs 0 | jq -e '.["langfuse.observation.status_message"] == "budget_cap: error_max_turns" and .["langfuse.observation.level"] == "ERROR"
+    and .["langfuse.observation.metadata.error_class"] == "budget_cap"
     and .["langfuse.observation.metadata.permission_denials"] == "2"' >/dev/null \
-  && ok "error result: subtype as status message, permission denial count" || bad "error result fields ($(attrs 0))"
+  && ok "error result: error_max_turns -> budget_cap, permission denial count" || bad "error result fields ($(attrs 0))"
 attrs 1 | jq -e '.["langfuse.trace.tags"] | index("status:error")' >/dev/null \
   && ok "usage generation of a failed run carries status:error" || bad "usage generation status tag"
 grep -q SECRET-CMD "$TMP/curl/body" && bad "denied tool input leaked" || ok "denied tool input never sent"
+# error_class: structured facts first (subtype, API status), then the result
+# text or the raw output head (read for the class only, never sent).
+eclass() { # <rc> <file> <class> <status message> <label>
+  trace claude "$1" "$2" >/dev/null
+  attrs 0 | jq -e --arg c "$3" --arg m "$4" '.["langfuse.observation.metadata.error_class"] == $c
+      and .["langfuse.observation.status_message"] == $m and .["langfuse.observation.level"] == "ERROR"' >/dev/null \
+    && ok "error_class $3: $5" || bad "error_class $5 ($(attrs 0))"
+}
+U='"usage":{"input_tokens":1,"output_tokens":2}'
+echo "{\"is_error\":true,\"subtype\":\"error_during_execution\",$U}" > "$TMP/e1.json"
+eclass 1 "$TMP/e1.json" tool_failed "tool_failed: error_during_execution" "error_during_execution"
+echo "{\"is_error\":true,\"subtype\":\"success\",\"api_error_status\":429,\"result\":\"API Error: 429\",$U}" > "$TMP/e2.json"
+eclass 1 "$TMP/e2.json" rate_limit "rate_limit: exit 1" "API status 429"
+echo "{\"is_error\":true,\"subtype\":\"success\",\"api_error_status\":529,\"result\":\"SECRET-RESULT overloaded\",$U}" > "$TMP/e3.json"
+eclass 0 "$TMP/e3.json" upstream_error "upstream_error: api_error 529" "API status 529"
+echo "{\"is_error\":true,\"subtype\":\"success\",\"api_error_status\":401,$U}" > "$TMP/e4.json"
+eclass 1 "$TMP/e4.json" auth "auth: exit 1" "API status 401"
+echo "{\"is_error\":true,\"subtype\":\"success\",\"result\":\"SECRET-RESULT Invalid API key · Please run /login\",$U}" > "$TMP/e5.json"
+eclass 1 "$TMP/e5.json" auth "auth: exit 1" "login error in the result text"
+grep -q SECRET-RESULT "$TMP/curl/body" && bad "result text leaked via error_class" || ok "result text used for the class, never sent"
+echo "{\"is_error\":true,\"subtype\":\"success\",\"result\":\"You've hit your limit · resets 3pm\",$U}" > "$TMP/e6.json"
+eclass 1 "$TMP/e6.json" budget_cap "budget_cap: exit 1" "plan limit in the result text"
+echo "{\"is_error\":true,\"subtype\":\"success\",\"result\":\"Prompt is too long\",$U}" > "$TMP/e7.json"
+eclass 0 "$TMP/e7.json" context_limit "context_limit: is_error" "shared rule table on the result text"
+echo "{\"is_error\":true,\"subtype\":\"success\",\"result\":\"something odd\",$U}" > "$TMP/e8.json"
+eclass 0 "$TMP/e8.json" other "other: is_error" "no rule matches"
+printf 'SECRET-RAW OAuth token has expired. Please obtain a new token.\n' > "$TMP/raw.txt"
+eclass 1 "$TMP/raw.txt" auth "auth: exit 1" "raw output head without an envelope"
+grep -q SECRET-RAW "$TMP/curl/body" && bad "raw output leaked" || ok "raw output used for the class, never sent"
+printf 'Error: connect ECONNREFUSED 127.0.0.1:8080\n' > "$TMP/raw2.txt"
+eclass 2 "$TMP/raw2.txt" network "network: exit 2" "raw output, shared table"
 trace claude 0 "$TMP/claude-env.json" OTEL_RESOURCE_ATTRIBUTES="aeon.component=scorer,aeon.skill=heartbeat,langfuse.trace.name=aeon:scorer:heartbeat" >/dev/null
 attrs 0 | jq -e '.["langfuse.observation.type"] == "evaluator" and .["langfuse.trace.tags"] == ["skill:heartbeat","component:scorer"]' >/dev/null \
   && ok "scorer root: type evaluator" || bad "scorer root type ($(attrs 0))"

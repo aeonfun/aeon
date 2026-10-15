@@ -89,10 +89,17 @@ something useful:
 | tags | `skill:<name>`, `component:<name>`, `status:error` on a failed run | filter and group cost by skill |
 
 The root span is type `agent` for the skill run and `evaluator` for the scorer;
-a failed run gets level ERROR, a status message (`timeout`, the result subtype
-such as `error_max_turns`, or `exit <rc>`) and the `status:error` tag. Its
-metadata carries `permission_denials`, the number of tool calls the allowlist
-refused. Trace metadata also carries `instance` (repo name) and `trigger` (event).
+a failed run gets level ERROR, the `status:error` tag, metadata `error_class`
+and a status message `<error_class>: <reason>` (reason: `rc 124`, the result
+subtype such as `error_max_turns`, `exit <rc>` or `api_error <status>`). The
+class is one of the error classes every Langfuse sender shares, set from facts
+first: rc 124 is `timeout`, `error_max_*` is `budget_cap`, API status 429 /
+401-403 / 402 / other is `rate_limit` / `auth` / `credits` / `upstream_error`,
+`error_during_execution` is `tool_failed`; else the result text (or the raw
+output of a run that left no envelope) goes through the shared rule table. That
+text only picks the class and is never sent. The scorer root gets the same
+fields. Tool spans come from Claude Code and carry no class. Its metadata
+carries `permission_denials`, the number of tool calls the allowlist refused. Trace metadata also carries `instance` (repo name) and `trigger` (event).
 The usage rows carry the same trace name and tags, so cost groups by skill.
 
 ### The non-claude harnesses (grok / codex / pi / vibe / kimi / fx / cursor / hermes)
