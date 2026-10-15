@@ -1108,8 +1108,8 @@ jobs:
           CLAUDE_OK=0
           RH=$(bash scripts/harness-adapter-snapshot.sh)
           RH_ARGS=(--mode "$SKILL_MODE" --allowed-tools "$ALLOWED" --timeout 1800)
-          # Tier notes (skill_mode.sh run-notes): notify via stdin, no shell file writes.
-          RUN_NOTES=$(bash scripts/skill_mode.sh run-notes "$SKILL_MODE")
+          # Tier notes (skill_mode.sh run-notes): notify, shell shape, keys set.
+          RUN_NOTES=$(bash scripts/skill_mode.sh run-notes "$SKILL_MODE" "$SKILL_NAME")
           if [ -n "$RUN_NOTES" ]; then RH_ARGS+=(--append-system-prompt "$RUN_NOTES"); fi
           # Pass --mcp-config only when the MCP preflight actually ENABLED MCP (every
           # required ${VAR} resolved) — MCP_FLAGS is set to the flags in that case and
@@ -1686,7 +1686,7 @@ jobs:
           if [ "$HARNESS" = "claude" ]; then
             GATEWAY="${{ steps.run.outputs.GATEWAY }}"
             AEON_GATEWAY_QUIET=1 source "${GITHUB_WORKSPACE}/scripts/llm-gateway.sh"
-            AEON_OTEL_COMPONENT=scorer source "${GITHUB_WORKSPACE}/scripts/langfuse-otel.sh"
+            SKILL_NAME="$SKILL" AEON_OTEL_COMPONENT=scorer source "${GITHUB_WORKSPACE}/scripts/langfuse-otel.sh"
           fi
 
           # Grade the artifact the skill actually SENT, not its closing summary.
@@ -1851,6 +1851,8 @@ jobs:
 
           echo "QUALITY_SCORE=$SCORE" >> "$GITHUB_OUTPUT"
           echo "FLAGS=$FLAGS" >> "$GITHUB_OUTPUT"   # consumed by the votable-health step (§7)
+          # Same score to Langfuse, on the skill run's trace (no-op without LANGFUSE_* keys).
+          bash scripts/langfuse-score.sh "$SKILL" "$SCORE" "$ASSESSMENT" "$FLAGS" "$HARNESS" "${SCORE_MODEL:-}" || true
 
           # Write skill health file with rolling history
           mkdir -p memory/skill-health

@@ -44,6 +44,32 @@ scorer, the json-render feed convert, and the conversational-reply poller
 (`messages.yml`). Each is tagged with an `aeon.component` resource attribute
 (`skill-run` / `scorer` / `feed` / `message`).
 
+### Run root, token usage and the quality score (claude)
+
+For a claude run, run-harness also sends one **root span** per call itself
+(`harness-adapter/lib/otel-span.sh`, OTLP/JSON over curl, after the run, also
+when the run fails). It carries the trace name (`aeon:<component>:<skill>`), tags
+`skill:<name>` and `component:<name>`, and one `usage <model>` GENERATION per
+model with the run's real token counts from the envelope's `modelUsage`.
+Langfuse prices those from its own model table, so traces, sessions and the cost
+dashboards show real tokens and dollars. Claude Code's own `total_cost_usd` is
+kept only as `aeon.cost_usd_reported` (it misprices model ids it does not know).
+
+`TRACEPARENT` puts Claude Code's interaction span under that root. With a
+subscription OAuth token, Claude Code starts its span exporter only after a
+remote managed settings fetch while its first turn does not wait, so the
+interaction span used to start on a no-op tracer and every span became its own
+one-span trace (seen on every aeon-agent run from Claude Code 2.1.287 on; an
+instance with an MCP server was spared because connecting it delays the first
+turn). The claude adapter therefore holds the first turn about 1s with a
+`SessionStart` hook while tracing is on. Set `AEON_OTEL_STARTUP_DELAY=0` to drop it.
+
+The trace id comes from the run (`AEON_LF_TRACE_ID`, set by `langfuse-otel.sh`),
+so the scorer step can post its 1-5 grade to the skill run's trace with
+`scripts/langfuse-score.sh`: a NUMERIC `quality` score (comment = the judge's
+assessment) plus one CATEGORICAL `quality_flag` per flag. Non-claude runs get the
+score on the run's session instead.
+
 ### The non-claude harnesses (grok / codex / pi / vibe / kimi / fx / cursor / hermes)
 
 Those CLIs have no native OTEL export, so their *internal* spans (per-tool, per
@@ -118,12 +144,11 @@ Confirmed against a live run (Claude Code `2.1.168`): traces, span tree, latency
 tool commands, prompts, and the `aeon.*` tags all flow correctly. Two gaps remain,
 both upstream — **neither is fixable from this shim's env vars**:
 
-- **Langfuse cost / token rollups are empty** (`usageDetails`, `costDetails`,
-  `totalCost`, and the rendered `input`/`output` fields). Langfuse reads usage
-  from `gen_ai.usage.*` and input from `gen_ai.prompt`, but Claude Code emits
-  **bare** `input_tokens` / `user_prompt`, so they land in
-  `metadata.attributes.*` — present and viewable per span, just not aggregated or
-  costed.
+- **Per-call token counts stay unaggregated.** Langfuse reads usage from
+  `gen_ai.usage.*`, but Claude Code emits **bare** `input_tokens` on each
+  `claude_code.llm_request`, so those land in `metadata.attributes.*`. Per-run
+  totals and cost are covered by the root span's `usage <model>` generations
+  (above); per-call cost would still need a collector.
 - **Assistant response text never appears.** Claude Code puts it on the
   `claude_code.assistant_response` **event** (the OTEL *logs* signal), which
   Langfuse's OTLP endpoint doesn't ingest (traces only).
@@ -133,11 +158,10 @@ cost mapping.** Rationale: it adds a networked process to the critical path of
 every run (a reliability risk for a reporting nicety), it's hand-rolled OTLP
 parsing, and it shims *beta* Claude Code attribute names that will most likely
 align with `gen_ai.usage.*` upstream (or Langfuse will add native Claude-Code
-mapping) — at which point the proxy is dead code. Per-run token/cost data is
-already captured durably in `memory/token-usage.csv`, so the only thing missing
-is a Langfuse-native cost *view*. Revisit only if upstream stays unaligned **and**
-Langfuse becomes the primary cost surface across many repos. Model prices (with
-cache-token pricing) would also need adding in Langfuse's UI regardless.
+mapping), at which point the proxy is dead code. Per-run tokens and cost already
+reach Langfuse through the run root span (and `memory/token-usage.csv`), so only
+per-call cost is missing. Revisit only if upstream stays unaligned **and**
+per-call cost in Langfuse becomes worth a sidecar.
 
 ## Network note
 

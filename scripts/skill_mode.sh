@@ -21,7 +21,8 @@
 #   scripts/skill_mode.sh mode <skill-name>     -> prints read-only | write
 #   scripts/skill_mode.sh allowed-tools <mode>  -> prints the --allowedTools string
 #   scripts/skill_mode.sh grok-run-env <skill>  -> prints `export GROK_*=…` lines
-#   scripts/skill_mode.sh run-notes <mode>      -> prints standing notes for the tier
+#   scripts/skill_mode.sh run-notes <mode> [skill] -> prints standing notes for the tier
+#                                                (+ which of the skill's keys are set)
 set -euo pipefail
 
 # Tools every tier gets: read, search, notify, and read-only/local shell helpers.
@@ -194,6 +195,30 @@ Write files only with Write/Edit: Write for a new file or a full rewrite, Edit t
 NOTES
 }
 
+# Shell shape + secret keys, for both tiers. Measured on the live instances
+# (Langfuse, 30 days): 11-19% of all Bash calls were refused, mostly probes for
+# whether a key is set (`env | grep`, `printenv X`, `echo ${X:+yes}`) and calls
+# that are not one allowlisted command (a leading VAR=..., if/for/while, `cd x &&`).
+# Each refusal costs a full model turn, so name the keys that are present.
+# $2 = skill name; its declared keys (scripts/skill_requires.sh) are checked
+# against this process's env, which the Run step has already filled.
+shell_run_notes() {
+  local skill="${1:-}" key have="" missing=""
+  echo "Each Bash call must be one allowed command; pipes are fine. A call that starts with VAR=value, uses if/for/while, or chains with ; or && is refused unless every part is itself allowed, so split it into separate calls."
+  [ -n "$skill" ] || return 0
+  while IFS= read -r key; do
+    [[ "$key" =~ ^[A-Za-z_][A-Za-z0-9_]*$ ]] || continue
+    if [ -n "${!key:-}" ]; then have="$have $key"; else missing="$missing $key"; fi
+  done < <(bash "$(dirname "${BASH_SOURCE[0]}")/skill_requires.sh" "$skill" 2>/dev/null)
+  [ -n "$have$missing" ] || return 0
+  if [ -n "$have" ]; then
+    echo "Keys set for this run:${have}. They are already in the environment; do not check for them (env, printenv, echo \${KEY:+...} and [ -n \"\$KEY\" ] are refused). Use them as the skill says; credential keys go to ./secretcurl as {KEY} placeholders."
+  fi
+  if [ -n "$missing" ]; then
+    echo "Keys NOT set for this run:${missing}. Skip or fall back on whatever needs them; do not probe for them."
+  fi
+}
+
 # --- Why there is no grok permission mapping here ---------------------------
 # There used to be a `grok-args` subcommand that emitted grok's own permission
 # grammar (`--allow 'Bash(git *)'` rules plus `--sandbox read-only`) as this
@@ -266,8 +291,9 @@ case "${1:-}" in
     case "${2:-write}" in
       read-only|readonly|read_only) read_only_run_notes ;;
       *)                            write_run_notes ;;
-    esac ;;
+    esac
+    shell_run_notes "${3:-}" ;;
   is-shadow)
     if is_shadow_selector "${2:?skill name required}" "${3:-}"; then echo true; else echo false; fi ;;
-  *) echo "usage: skill_mode.sh {mode <skill> [var]|allowed-tools <mode>|grok-run-env <skill>|run-notes <mode>|is-shadow <skill> [var]}" >&2; exit 2 ;;
+  *) echo "usage: skill_mode.sh {mode <skill> [var]|allowed-tools <mode>|grok-run-env <skill>|run-notes <mode> [skill]|is-shadow <skill> [var]}" >&2; exit 2 ;;
 esac

@@ -61,7 +61,7 @@ fi
 
 . "$HERE/lib/tools-grammar.sh"
 . "$HERE/lib/envelope.sh"
-. "$HERE/lib/otel-span.sh"   # sourced; no-op unless OTLP + otel-cli are configured
+. "$HERE/lib/otel-span.sh"   # sourced; no-op unless OTLP telemetry is configured
 
 # derive capability mode from the toolset when not given explicitly
 if [ -z "$MODE" ]; then
@@ -156,6 +156,10 @@ if [ "$MODE" = "read-only" ] && [ "$SANDBOX" = "auto" ]; then
 fi
 
 OUT="$RH_TMPDIR/envelope.json"
+# claude: root span ids + TRACEPARENT for Claude Code; the root span (with the
+# run's token usage) is sent on EXIT, so a failed or timed-out run still gets one.
+rh_trace_begin
+trap 'rh_trace_end "$?" "$OUT" "$RH_TMPDIR/claude-out.json"; rm -rf "$RH_TMPDIR"' EXIT
 RH_SPAN_START=$(_rh_now)
 RH_T0=$SECONDS
 "${CMD[@]}" > "$OUT"

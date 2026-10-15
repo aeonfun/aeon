@@ -103,11 +103,29 @@ if [ -n "${GITHUB_RUN_ID:-}" ]; then
 fi
 if [ -n "${SKILL_NAME:-}" ]; then
   _lf_attrs="${_lf_attrs},aeon.skill=${SKILL_NAME},langfuse.trace.name=aeon:${AEON_OTEL_COMPONENT:-skill-run}:${SKILL_NAME}"
+  _lf_attrs="${_lf_attrs},langfuse.trace.metadata.skill=${SKILL_NAME}"
+else
+  _lf_attrs="${_lf_attrs},langfuse.trace.name=aeon:${AEON_OTEL_COMPONENT:-skill-run}"
 fi
 if [ -n "${GITHUB_REPOSITORY:-}" ]; then _lf_attrs="${_lf_attrs},aeon.repo=${GITHUB_REPOSITORY}"; fi
 if [ -n "${GITHUB_RUN_ATTEMPT:-}" ];then _lf_attrs="${_lf_attrs},aeon.run_attempt=${GITHUB_RUN_ATTEMPT}"; fi
 export OTEL_RESOURCE_ATTRIBUTES="$_lf_attrs"
 
+# Trace id for this call site, derived from the run so other steps can find the
+# trace again: the scorer posts its 1-5 score to the skill run's trace with
+# scripts/langfuse-score.sh, which derives the same id. Same recipe as
+# Langfuse's create_trace_id(seed): the first 32 hex chars of sha256(seed).
+# run-harness uses it for the root span it sends for a claude run.
+unset AEON_LF_TRACE_ID
+if [ -n "${GITHUB_RUN_ID:-}" ]; then
+  _lf_seed="aeon:${GITHUB_RUN_ID}:${GITHUB_RUN_ATTEMPT:-1}:${AEON_OTEL_COMPONENT:-skill-run}:${SKILL_NAME:-}"
+  _lf_tid=$( { printf '%s' "$_lf_seed" | sha256sum 2>/dev/null || printf '%s' "$_lf_seed" | shasum -a 256 2>/dev/null; } | cut -c1-32)
+  case "$_lf_tid" in
+    *[!0-9a-f]* | "") : ;;
+    *) if [ ${#_lf_tid} -eq 32 ]; then export AEON_LF_TRACE_ID="$_lf_tid"; fi ;;
+  esac
+fi
+
 echo "::notice::Langfuse tracing on → ${_lf_host} (component=${AEON_OTEL_COMPONENT:-skill-run}, content=${LANGFUSE_LOG_CONTENT:-1})" >&2
-unset _lf_host _lf_auth _lf_attrs
+unset _lf_host _lf_auth _lf_attrs _lf_seed _lf_tid
 return 0 2>/dev/null || exit 0

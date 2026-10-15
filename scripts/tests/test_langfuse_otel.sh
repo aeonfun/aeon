@@ -114,6 +114,71 @@ unset LANGFUSE_PUBLIC_KEY LANGFUSE_SECRET_KEY LANGFUSE_HOST LANGFUSE_BASE_URL \
   echo "still-running" >/dev/null
 ) && pass "sourcing under bash -e does not abort caller" || bad "sourcing under bash -e does not abort caller"
 
+# 14. A call site with no skill (the feed) still gets a readable trace name; a
+#     skill adds trace metadata Langfuse can filter on.
+( export LANGFUSE_PUBLIC_KEY=pk LANGFUSE_SECRET_KEY=sk AEON_OTEL_COMPONENT=feed
+  source "$LF" 2>/dev/null
+  case "${OTEL_RESOURCE_ATTRIBUTES:-}" in *langfuse.trace.name=aeon:feed*) exit 0 ;; *) exit 1 ;; esac
+) && pass "no skill → trace name aeon:<component>" || bad "no skill → trace name aeon:<component>"
+( export LANGFUSE_PUBLIC_KEY=pk LANGFUSE_SECRET_KEY=sk SKILL_NAME=heartbeat
+  source "$LF" 2>/dev/null
+  case "${OTEL_RESOURCE_ATTRIBUTES:-}" in *langfuse.trace.metadata.skill=heartbeat*) exit 0 ;; *) exit 1 ;; esac
+) && pass "skill → langfuse.trace.metadata.skill" || bad "skill → langfuse.trace.metadata.skill"
+
+# 15. AEON_LF_TRACE_ID: 32 hex, derived from run/attempt/component/skill, so it is
+#     stable within a run and differs per call site.
+tid_for() { ( export LANGFUSE_PUBLIC_KEY=pk LANGFUSE_SECRET_KEY=sk GITHUB_RUN_ID=42 GITHUB_RUN_ATTEMPT=1 SKILL_NAME="$2"
+  if [ -n "$1" ]; then export AEON_OTEL_COMPONENT="$1"; fi
+  source "$LF" 2>/dev/null; echo "${AEON_LF_TRACE_ID:-}" ); }
+a=$(tid_for "" heartbeat); b=$(tid_for "" heartbeat); c=$(tid_for scorer heartbeat)
+want=$(printf '%s' "aeon:42:1:skill-run:heartbeat" | { sha256sum 2>/dev/null || shasum -a 256; } | cut -c1-32)
+{ [[ "$a" =~ ^[0-9a-f]{32}$ ]] && [ "$a" = "$b" ] && [ "$a" = "$want" ] && [ "$a" != "$c" ]; } \
+  && pass "AEON_LF_TRACE_ID = sha256(run:attempt:component:skill)[:32]" || bad "AEON_LF_TRACE_ID derivation ($a / $c)"
+( export LANGFUSE_PUBLIC_KEY=pk LANGFUSE_SECRET_KEY=sk; unset GITHUB_RUN_ID
+  source "$LF" 2>/dev/null; [ -z "${AEON_LF_TRACE_ID:-}" ]
+) && pass "no GITHUB_RUN_ID → no AEON_LF_TRACE_ID" || bad "no GITHUB_RUN_ID → no AEON_LF_TRACE_ID"
+
+# --- scripts/langfuse-score.sh -------------------------------------------------
+SC="scripts/langfuse-score.sh"
+STUB=$(mktemp -d)
+cat > "$STUB/curl" <<'CURL'
+#!/usr/bin/env bash
+cat > "$STUB_DIR/config.$$"
+printf '%s\n' "$@" > "$STUB_DIR/argv.$$"
+while [ $# -gt 0 ]; do case "$1" in --data-binary) printf '%s\n' "$2" >> "$STUB_DIR/bodies"; shift 2 ;; *) shift ;; esac; done
+printf 200
+CURL
+chmod +x "$STUB/curl"
+score() { rm -f "$STUB"/bodies "$STUB"/config.* "$STUB"/argv.*
+  env PATH="$STUB:$PATH" STUB_DIR="$STUB" GITHUB_RUN_ID=42 GITHUB_RUN_ATTEMPT=1 LANGFUSE_HOST=https://lf.invalid "$@" >/dev/null 2>&1; }
+
+# 16. No keys → no POST; keys + claude → numeric score on the skill run's trace
+#     (the same id langfuse-otel.sh gives the Run step) + one flag score.
+score bash "$SC" heartbeat 4 "ok" '["unverifiable_claim"]' claude claude-haiku-5-5
+[ ! -f "$STUB/bodies" ] && pass "score: no keys → no POST" || bad "score: no keys → no POST"
+score LANGFUSE_PUBLIC_KEY=pk-lf-1 LANGFUSE_SECRET_KEY=sk-lf-2 bash "$SC" heartbeat 4 "fine run" '["unverifiable_claim"]' claude claude-haiku-5-5
+if [ -f "$STUB/bodies" ]; then
+  q=$(sed -n 1p "$STUB/bodies"); f=$(sed -n 2p "$STUB/bodies")
+  echo "$q" | jq -e --arg t "$a" '.traceId == $t and (has("sessionId") | not) and .name == "quality" and .value == 4
+      and .dataType == "NUMERIC" and .environment == "github-actions" and .id == ($t + "-quality")
+      and .metadata.skill == "heartbeat" and .metadata.score_model == "claude-haiku-5-5"' >/dev/null \
+    && pass "score: quality on the Run step's trace id" || bad "score: quality body ($q)"
+  echo "$f" | jq -e --arg t "$a" '.traceId == $t and .name == "quality_flag" and .value == "unverifiable_claim" and .dataType == "CATEGORICAL"' >/dev/null \
+    && pass "score: one categorical score per flag" || bad "score: flag body ($f)"
+  grep -q 'sk-lf-2' "$STUB"/argv.* && bad "score: secret in curl argv" || pass "score: secret never in argv"
+  grep -q 'user = "pk-lf-1:sk-lf-2"' "$STUB"/config.* && pass "score: auth via curl config on stdin" || bad "score: auth via curl config on stdin"
+else
+  bad "score: expected a POST"
+fi
+
+# 17. Other harness → session score; bad score → nothing.
+score LANGFUSE_PUBLIC_KEY=pk LANGFUSE_SECRET_KEY=sk bash "$SC" heartbeat 3 "meh" '[]' grok
+sed -n 1p "$STUB/bodies" 2>/dev/null | jq -e '.sessionId == "42" and (has("traceId") | not)' >/dev/null \
+  && pass "score: non-claude harness → session score" || bad "score: non-claude harness → session score"
+score LANGFUSE_PUBLIC_KEY=pk LANGFUSE_SECRET_KEY=sk bash "$SC" heartbeat 0 "x" '[]' claude
+[ ! -f "$STUB/bodies" ] && pass "score: out-of-range score → no POST" || bad "score: out-of-range score → no POST"
+rm -rf "$STUB"
+
 echo
 if [ "$fail" -eq 0 ]; then echo "All langfuse-otel tests passed."; else echo "Some tests FAILED."; fi
 exit "$fail"

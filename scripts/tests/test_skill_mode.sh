@@ -137,6 +137,21 @@ done
 [ "$(bash "$M" is-shadow "$WR" shadow)" = "false" ] \
   && pass "shadow selector only applies to vuln-scanner" || bad "shadow selector leaked to another skill"
 
+# run-notes: shell-shape note on both tiers; with a skill, name which of its
+# declared keys are set (from the env) and which are not, never their values.
+KEYS="zzz-test-keys-$$"
+mk "$KEYS" "requires: [ZZZ_SET_KEY, ZZZ_UNSET_KEY?]"
+for tier in write read-only; do
+  bash "$M" run-notes "$tier" | grep -q "Each Bash call must be one allowed command" \
+    && pass "run-notes $tier: shell-shape note" || bad "run-notes $tier: shell-shape note"
+done
+N=$(ZZZ_SET_KEY=s3cr3t-value bash "$M" run-notes write "$KEYS")
+echo "$N" | grep -q "Keys set for this run: ZZZ_SET_KEY\." && pass "run-notes: present key named" || bad "run-notes: present key named"
+echo "$N" | grep -q "Keys NOT set for this run: ZZZ_UNSET_KEY\." && pass "run-notes: missing key named" || bad "run-notes: missing key named"
+echo "$N" | grep -q "s3cr3t-value" && bad "run-notes leaked a key value" || pass "run-notes never prints key values"
+bash "$M" run-notes write | grep -q "Keys" && bad "run-notes without a skill should not list keys" || pass "run-notes without a skill lists no keys"
+rm -rf "skills/$KEYS"
+
 echo "---"
 [ "$fail" = "0" ] && echo "ALL PASS" || echo "SOME FAILED"
 exit "$fail"
