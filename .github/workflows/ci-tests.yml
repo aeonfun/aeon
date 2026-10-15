@@ -55,7 +55,15 @@ concurrency:
 
 jobs:
   test:
-    runs-on: ubuntu-24.04
+    # THROWAWAY bench branch, never merge: same suite on GitHub's public 4 vCPU
+    # runner vs Blacksmith 2 and 4 vCPU, 5 repeats each.
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [ubuntu-24.04, blacksmith-2vcpu-ubuntu-2404, blacksmith-4vcpu-ubuntu-2404]
+        rep: [1, 2, 3, 4, 5]
+    name: test (${{ matrix.runner }} #${{ matrix.rep }})
+    runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: Install deps
