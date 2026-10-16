@@ -84,6 +84,7 @@
             }
           ]
         },
+        "demo_recording_url": "https://www.aeon.fun/videos/openai-plugin-demo.mp4",
         "commerce": false,
         "commerce_description": "This plugin does not sell products or process payments."
       },
