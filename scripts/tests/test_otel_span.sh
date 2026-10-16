@@ -208,6 +208,8 @@ echo "{\"is_error\":true,\"subtype\":\"success\",\"result\":\"You've hit your li
 eclass 1 "$TMP/e6.json" budget_cap "budget_cap: exit 1" "plan limit in the result text"
 echo "{\"is_error\":true,\"subtype\":\"success\",\"result\":\"Prompt is too long\",$U}" > "$TMP/e7.json"
 eclass 0 "$TMP/e7.json" context_limit "context_limit: is_error" "shared rule table on the result text"
+echo "{\"is_error\":true,\"subtype\":\"success\",\"result\":\"The client has disconnected\",$U}" > "$TMP/e9.json"
+eclass 0 "$TMP/e9.json" cancelled "cancelled: is_error" "HTTP 499 client hang-up is cancelled, not network"
 echo "{\"is_error\":true,\"subtype\":\"success\",\"result\":\"something odd\",$U}" > "$TMP/e8.json"
 eclass 0 "$TMP/e8.json" other "other: is_error" "no rule matches"
 printf 'SECRET-RAW OAuth token has expired. Please obtain a new token.\n' > "$TMP/raw.txt"
