@@ -6,7 +6,7 @@
 # {
 #   "id": "claude",
 #   "label": "Claude Code",
-#   "cli": { "install": "npm i -g @anthropic-ai/claude-code@2.1.287", "bin": "claude", "min_version": "2.1.287" },
+#   "cli": { "install": "npm i -g @anthropic-ai/claude-code@2.1.301", "bin": "claude", "min_version": "2.1.301" },
 #   "invoke": "claude -p - --output-format json",
 #   "round_trip": true,
 #   "token_usage": "full",
