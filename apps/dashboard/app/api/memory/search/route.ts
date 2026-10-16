@@ -9,10 +9,7 @@ export async function GET(request: Request) {
     const url = new URL(request.url)
     const q = (url.searchParams.get('q') ?? '').trim()
     if (!q) {
-      return NextResponse.json(
-        { error: 'Missing required query parameter: q' },
-        { status: 400 },
-      )
+      return NextResponse.json({ error: 'Missing required query parameter: q' }, { status: 400 })
     }
 
     const limitRaw = url.searchParams.get('limit')

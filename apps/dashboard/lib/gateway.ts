@@ -38,7 +38,7 @@ export async function syncHarness(harness: Harness): Promise<CommitResult> {
     // model=claude-opus.
     const currentModel = parseConfig(content).model
     const list = modelsForHarness(harness)
-    if (currentModel && !list.some((m) => m.id === currentModel) && list[0]) {
+    if (currentModel && !list.some(m => m.id === currentModel) && list[0]) {
       updated = updateModelInConfig(updated, list[0].id)
     }
     if (updated === content) return { synced: true }

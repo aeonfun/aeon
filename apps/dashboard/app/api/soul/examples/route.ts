@@ -48,8 +48,14 @@ export async function POST(request: Request) {
     const paths = ['soul/SOUL.md']
     // createFile overwrites-or-creates in both local and hosted modes.
     await createFile('soul/SOUL.md', soul, msg)
-    if (style) { await createFile('soul/STYLE.md', style, msg); paths.push('soul/STYLE.md') }
-    if (good) { await createFile('soul/examples/good-outputs.md', good, msg); paths.push('soul/examples/good-outputs.md') }
+    if (style) {
+      await createFile('soul/STYLE.md', style, msg)
+      paths.push('soul/STYLE.md')
+    }
+    if (good) {
+      await createFile('soul/examples/good-outputs.md', good, msg)
+      paths.push('soul/examples/good-outputs.md')
+    }
 
     const sync = commitAndPush(paths, msg)
     return NextResponse.json({ ok: true, soul, style: style || '', ...syncFields(sync) })

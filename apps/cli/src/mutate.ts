@@ -26,23 +26,36 @@ export async function applyConfig(mutate: (raw: string) => string, message: stri
 // Human/JSON report for a config change. `label` names what happened, e.g.
 // "enabled heartbeat".
 export function reportConfig(res: ConfigChange, label: string) {
-  emit({ label, changed: res.changed, dryRun: res.dryRun, ...(res.sync ? { synced: res.sync.synced, syncError: res.sync.reason } : {}) }, () => {
-    if (!res.changed) { console.log(c.dim(`no change — ${label} already in that state`)); return }
-    if (res.dryRun) {
-      console.log(c.yellow('dry-run: ') + `would ${label}`)
-      printDiff(res.before, res.after)
-      return
-    }
-    console.log(c.green('✓ ') + label)
-    printSync(res.sync)
-  })
+  emit(
+    {
+      label,
+      changed: res.changed,
+      dryRun: res.dryRun,
+      ...(res.sync ? { synced: res.sync.synced, syncError: res.sync.reason } : {}),
+    },
+    () => {
+      if (!res.changed) {
+        console.log(c.dim(`no change — ${label} already in that state`))
+        return
+      }
+      if (res.dryRun) {
+        console.log(c.yellow('dry-run: ') + `would ${label}`)
+        printDiff(res.before, res.after)
+        return
+      }
+      console.log(c.green('✓ ') + label)
+      printSync(res.sync)
+    },
+  )
 }
 
 // Compact preview of which aeon.yml lines changed. Localized yaml edits touch a
 // line or two, so a naive add/remove set is enough — no full LCS needed.
 export function printDiff(before: string, after: string) {
-  const b = before.split('\n'), a = after.split('\n')
-  const bs = new Set(b), as = new Set(a)
+  const b = before.split('\n'),
+    a = after.split('\n')
+  const bs = new Set(b),
+    as = new Set(a)
   const removed = b.filter(l => !as.has(l) && l.trim())
   const added = a.filter(l => !bs.has(l) && l.trim())
   for (const l of removed) console.log(c.red('  - ' + l.trim()))

@@ -14,7 +14,7 @@ const assert = require('node:assert/strict');
 const fs = require('fs');
 const path = require('path');
 const {
-  analyzeCheckout, collectReactiveRefs, validateWhen, validateChainWhen, validateSchedule, collectSchedules,
+  analyzeCheckout, collectReactiveRefs, validateWhen, validateChainWhen, validateSchedule, dowToNumbers, collectSchedules,
 } = require('./validate-config.js');
 
 // Wrap an indented steps body in a minimal single-job workflow.
@@ -39,6 +39,31 @@ test('PASS: conditional checkout covers a run step with the same condition', () 
         if: steps.work.outputs.mode != ''
         run: claude`));
   assert.equal(r.ok, true, r.line);
+});
+
+test("PASS: a checkout whose condition leads the run step's && chain covers it", () => {
+  const r = analyzeCheckout(wf(
+`      - name: Checkout repo
+        if: steps.work.outputs.mode != ''
+        uses: actions/checkout@v7
+      - name: Run
+        id: run
+        if: steps.work.outputs.mode != '' && steps.idle.outputs.skip != 'true'
+        run: claude`));
+  assert.equal(r.ok, true, r.line);
+});
+
+test('FAIL: an || in the run condition breaks the conjunct cover', () => {
+  const r = analyzeCheckout(wf(
+`      - name: Checkout repo
+        if: steps.work.outputs.mode != ''
+        uses: actions/checkout@v7
+      - name: Run
+        id: run
+        if: steps.work.outputs.mode != '' && inputs.a || inputs.b
+        run: claude`));
+  assert.equal(r.ok, false);
+  assert.match(r.line, /does not cover/);
 });
 
 test('PASS: an unconditional checkout covers any run step', () => {
@@ -184,7 +209,8 @@ test('validateSchedule: accepts cron forms scripts/cron-due.sh can fire', () => 
   for (const ok of [
     'workflow_dispatch', 'reactive', '0 8 * * *', '*/30 * * * *', '15 6,14,18 * * *',
     '0 9-17/2 * * *', '0-10/5,30 9 * * *', '0 0 13 * 5', '0 10 * * 7', '05 08 * * *',
-    '0 10 * * MON-FRI', '0 0 1 jul *',
+    '0 10 * * MON-FRI', '0 0 1 jul *', '0 9 * * SAT-SUN', '0 9 * * fri-sun', '0 9 * * SUN',
+    '0 9 * * MON-SUN', '0 9 * * SUN-SUN', '0 9 * * 0-SUN', '0 9 * * SAT-SUN/1', '0 9 * * MON,SUN',
   ]) {
     assert.equal(validateSchedule(ok), null, ok);
   }
@@ -192,9 +218,22 @@ test('validateSchedule: accepts cron forms scripts/cron-due.sh can fire', () => 
 
 test('validateSchedule: rejects schedules cron-due.sh would never fire', () => {
   for (const bad of ['*/0 * * * *', '61 * * * *', '0 24 * * *', '0 0 0 * *', '0 0 * 13 *',
-    '0 0 * * 8', '0 0 * * * *', '0 8 * *', '0 x * * *', '10-5 * * * *', 'daily']) {
+    '0 0 * * 8', '0 9 * * SUN-SAT-SUN', '0 0 * * * *', '0 8 * *', '0 x * * *', '10-5 * * * *', 'daily']) {
     assert.notEqual(validateSchedule(bad), null, bad);
   }
+});
+
+test('dowToNumbers: SUN ends a range as 7 only when the range does not start on Sunday', () => {
+  assert.equal(dowToNumbers('SAT-SUN'), '6-7');
+  assert.equal(dowToNumbers('fri-sun'), '5-7');
+  assert.equal(dowToNumbers('MON-SUN'), '1-7');
+  assert.equal(dowToNumbers('SAT-SUN/1'), '6-7/1');
+  assert.equal(dowToNumbers('SUN-SUN'), '0-0'); // Sunday only, not 0-7 (every day)
+  assert.equal(dowToNumbers('0-SUN'), '0-0');   // Sunday only
+  assert.equal(dowToNumbers('MON,SUN-SUN'), '1,0-0');
+  assert.equal(dowToNumbers('SUN'), '0');
+  assert.equal(dowToNumbers('MON,SUN'), '1,0');
+  assert.equal(dowToNumbers('SUN-SAT'), '0-6');
 });
 
 test('collectSchedules: reads skills + chains schedules and skips comments', () => {

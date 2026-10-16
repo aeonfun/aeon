@@ -10,10 +10,7 @@ export async function GET(request: Request) {
     if (date) {
       const log = await readLog(date)
       if (!log) {
-        return NextResponse.json(
-          { error: `No log found for ${date} (expected YYYY-MM-DD)` },
-          { status: 404 },
-        )
+        return NextResponse.json({ error: `No log found for ${date} (expected YYYY-MM-DD)` }, { status: 404 })
       }
       return NextResponse.json(log)
     }

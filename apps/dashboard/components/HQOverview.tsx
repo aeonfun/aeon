@@ -21,7 +21,17 @@ interface HQOverviewProps {
   onConnect?: (harness?: string) => void
 }
 
-export function HQOverview({ skills, runs, enabledCount, workingCount, categoryFilter, onCategoryClick, onOpenPacks, checklist, onConnect }: HQOverviewProps) {
+export function HQOverview({
+  skills,
+  runs,
+  enabledCount,
+  workingCount,
+  categoryFilter,
+  onCategoryClick,
+  onOpenPacks,
+  checklist,
+  onConnect,
+}: HQOverviewProps) {
   const onMove = (e: React.MouseEvent<HTMLUListElement>) => {
     const card = (e.target as HTMLElement).closest('li')
     if (!card) return
@@ -47,13 +57,18 @@ export function HQOverview({ skills, runs, enabledCount, workingCount, categoryF
       <section className="relative overflow-hidden border border-[rgba(250,250,250,0.10)] bg-aeon-panel">
         <div className="dither" aria-hidden="true" />
         <div className="relative z-10 px-5 md:px-8 pt-10 pb-8">
-          <h1 className="font-display uppercase leading-[0.92] tracking-tight text-aeon-fg"
-              style={{ fontSize: 'clamp(48px, 8vw, 110px)' }}>
+          <h1
+            className="font-display uppercase leading-[0.92] tracking-tight text-aeon-fg"
+            style={{ fontSize: 'clamp(48px, 8vw, 110px)' }}
+          >
             <Scramble text="AEON" />{' '}
-            <span className="text-aeon-red"><Scramble text="HQ" delay={180} /></span>
+            <span className="text-aeon-red">
+              <Scramble text="HQ" delay={180} />
+            </span>
           </h1>
           <p className="mt-4 max-w-xl text-sm text-primary-70 leading-relaxed">
-            {enabledCount} skill{enabledCount === 1 ? '' : 's'} enabled across {cats.length} pack{cats.length === 1 ? '' : 's'}.{workingCount > 0 ? ` ${workingCount} currently working.` : ''}
+            {enabledCount} skill{enabledCount === 1 ? '' : 's'} enabled across {cats.length} pack
+            {cats.length === 1 ? '' : 's'}.{workingCount > 0 ? ` ${workingCount} currently working.` : ''}
           </p>
         </div>
 
@@ -65,7 +80,10 @@ export function HQOverview({ skills, runs, enabledCount, workingCount, categoryF
               className={`px-6 py-5 ${i < stats.length - 1 ? 'border-r border-[rgba(250,250,250,0.10)]' : ''}`}
             >
               <dt className="text-[10px] font-mono uppercase tracking-[0.22em] text-primary-35 mb-2">{s.label}</dt>
-              <dd className={`font-display leading-none ${s.tone || 'text-aeon-fg'}`} style={{ fontSize: 'clamp(32px, 3.5vw, 52px)' }}>
+              <dd
+                className={`font-display leading-none ${s.tone || 'text-aeon-fg'}`}
+                style={{ fontSize: 'clamp(32px, 3.5vw, 52px)' }}
+              >
                 <Flip value={s.value} />
               </dd>
             </div>
@@ -84,20 +102,34 @@ export function HQOverview({ skills, runs, enabledCount, workingCount, categoryF
             // li is flex so the button stretches to the grid row's full height —
             // otherwise the active ring stops short when the row neighbor is taller
             return (
-              <li key={cat.key} className="spotlight relative overflow-hidden bg-aeon-bg transition-colors hover:bg-aeon-panel-2 flex">
+              <li
+                key={cat.key}
+                className="spotlight relative overflow-hidden bg-aeon-bg transition-colors hover:bg-aeon-panel-2 flex"
+              >
                 <button
                   onClick={() => onCategoryClick(cat.key)}
                   title={active ? 'Clear the team filter' : `Filter the team to ${cat.label}`}
                   aria-pressed={active}
                   className="w-full px-6 py-5 flex items-center gap-5 text-left cursor-pointer"
-                  style={active ? { boxShadow: `inset 0 0 0 1px ${cat.color}`, backgroundColor: cat.color + '14' } : undefined}
+                  style={
+                    active
+                      ? { boxShadow: `inset 0 0 0 1px ${cat.color}`, backgroundColor: cat.color + '14' }
+                      : undefined
+                  }
                 >
-                  <span className="font-display leading-none text-aeon-red shrink-0 whitespace-nowrap" style={{ fontSize: 'clamp(28px, 3vw, 44px)' }}>
+                  <span
+                    className="font-display leading-none text-aeon-red shrink-0 whitespace-nowrap"
+                    style={{ fontSize: 'clamp(28px, 3vw, 44px)' }}
+                  >
                     <Flip value={cat.skills.length} />
                   </span>
                   <div className="min-w-0">
-                    <div className="font-display uppercase tracking-wide text-aeon-fg text-base leading-tight">{cat.label}</div>
-                    <div className="text-[11px] text-primary-40 font-mono mt-1 uppercase tracking-[0.14em]">{en} active · {cat.skills.length - en} idle</div>
+                    <div className="font-display uppercase tracking-wide text-aeon-fg text-base leading-tight">
+                      {cat.label}
+                    </div>
+                    <div className="text-[11px] text-primary-40 font-mono mt-1 uppercase tracking-[0.14em]">
+                      {en} active · {cat.skills.length - en} idle
+                    </div>
                   </div>
                   <span
                     className="ml-auto w-2 h-2 rounded-full shrink-0"
@@ -113,12 +145,19 @@ export function HQOverview({ skills, runs, enabledCount, workingCount, categoryF
               title="Browse all packs and enable more skills"
               className="group w-full px-6 py-5 flex items-center gap-5 text-left cursor-pointer"
             >
-              <span className="font-display leading-none text-primary-35 shrink-0 transition-colors group-hover:text-aeon-red" style={{ fontSize: 'clamp(28px, 3vw, 44px)' }}>
+              <span
+                className="font-display leading-none text-primary-35 shrink-0 transition-colors group-hover:text-aeon-red"
+                style={{ fontSize: 'clamp(28px, 3vw, 44px)' }}
+              >
                 +
               </span>
               <div className="min-w-0">
-                <div className="font-display uppercase tracking-wide text-aeon-fg text-base leading-tight">Add more</div>
-                <div className="text-[11px] text-primary-40 font-mono mt-1 uppercase tracking-[0.14em]">Browse all packs</div>
+                <div className="font-display uppercase tracking-wide text-aeon-fg text-base leading-tight">
+                  Add more
+                </div>
+                <div className="text-[11px] text-primary-40 font-mono mt-1 uppercase tracking-[0.14em]">
+                  Browse all packs
+                </div>
               </div>
             </button>
           </li>
@@ -132,7 +171,9 @@ export function HQOverview({ skills, runs, enabledCount, workingCount, categoryF
               <div className="w-full flex items-center gap-4 text-left">
                 <span className={`text-sm w-4 shrink-0 ${runStatusColor(run)}`}>{runStatusGlyph(run)}</span>
                 <span className="text-xs text-primary-70 truncate flex-1 font-mono">{run.workflow}</span>
-                <span className="text-[10px] text-primary-35 font-mono tabular-nums uppercase tracking-[0.14em]">{timeAgo(run.created_at)}</span>
+                <span className="text-[10px] text-primary-35 font-mono tabular-nums uppercase tracking-[0.14em]">
+                  {timeAgo(run.created_at)}
+                </span>
               </div>
               {/* Failed runs only: "Why?" reads the log on demand. */}
               <RunDiagnosisToggle run={run} onConnect={onConnect} className="mt-1 pl-8" />
@@ -141,7 +182,9 @@ export function HQOverview({ skills, runs, enabledCount, workingCount, categoryF
           {!runs.length && (
             <div className="px-6 py-12 text-center">
               <p className="font-display uppercase text-aeon-fg text-xl tracking-wide">Nothing yet</p>
-              <p className="text-[11px] text-primary-40 font-mono mt-2 uppercase tracking-[0.18em]">Open any skill and press Run, or use Run one in the setup list</p>
+              <p className="text-[11px] text-primary-40 font-mono mt-2 uppercase tracking-[0.18em]">
+                Open any skill and press Run, or use Run one in the setup list
+              </p>
             </div>
           )}
         </div>
@@ -153,7 +196,10 @@ export function HQOverview({ skills, runs, enabledCount, workingCount, categoryF
       >
         {Array.from({ length: 2 }).map((_, k) => (
           <span key={k} aria-hidden={k === 1 ? 'true' : undefined} className="inline-block px-7">
-            AEON HQ <i className="not-italic text-aeon-red">★</i> {enabledCount} ENABLED <i className="not-italic text-aeon-red">★</i> {cats.length} PACKS <i className="not-italic text-aeon-red">★</i> {runs.length} RUNS LOGGED <i className="not-italic text-aeon-red">★</i> NO BABYSITTING <i className="not-italic text-aeon-red">★</i>
+            AEON HQ <i className="not-italic text-aeon-red">★</i> {enabledCount} ENABLED{' '}
+            <i className="not-italic text-aeon-red">★</i> {cats.length} PACKS{' '}
+            <i className="not-italic text-aeon-red">★</i> {runs.length} RUNS LOGGED{' '}
+            <i className="not-italic text-aeon-red">★</i> NO BABYSITTING <i className="not-italic text-aeon-red">★</i>
           </span>
         ))}
       </VelocityMarquee>

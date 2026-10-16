@@ -68,6 +68,9 @@ i=1
 for n in JAN FEB MAR APR MAY JUN JUL AUG SEP OCT NOV DEC; do
   C_MONTH="${C_MONTH//$n/$i}"; i=$((i + 1))
 done
+# SUN closes a range as 7 (SAT-SUN is 6-7) unless the range also starts on
+# Sunday: SUN-SUN and 0-SUN stay Sunday only. A bare SUN stays 0.
+C_DOW=$(printf '%s' "$C_DOW" | sed -E 's/(^|,)(SUN|0+)-SUN/\1\2-0/g; s/-SUN/-7/g')
 i=0
 for n in SUN MON TUE WED THU FRI SAT; do
   C_DOW="${C_DOW//$n/$i}"; i=$((i + 1))

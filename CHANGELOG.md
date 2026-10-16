@@ -11,6 +11,32 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Added
 
+- **`anatomy`: interactive isometric SVG figures from a brief.** New `dev` skill (vendored from
+  upstream at 689dcf9, MIT, provenance in `skills/anatomy/UPSTREAM.md`) that builds a crafted,
+  interactive isometric figure explaining a technical idea as a physical object, with live readout,
+  eased motion and optional WebGL effects, committed under `output/anatomy/`. Disabled by default on
+  `workflow_dispatch`; `var` is the illustration brief and an empty `var` exits clean with no build
+  or notify. An Aeon runtime section keeps headless runs inside the 50-minute job cap (Figure scale
+  or smaller, no 3D). Catalog is now 86 skills. (#1197)
+- **Three more community skill packs listed:** the Messaging Pack (`messaging-review`, a weekly
+  plain-language copy review of a product site) (#1164), the bon travail pack (`proofwork-loop` and
+  `proofwork-investigate`, installed with `--path aeon`) (#1167) and the Epoch Pack (spec, build,
+  review, prove, ship workflow skills that open PRs and never merge) (#1168).
+- **README "Private by design" section.** A comparison card of four cloud agents (data off their
+  servers, no training on your chats, open source), with the caveat that the claim needs a private
+  instance. (#1166)
+
+- **Hosted MCP server: drive your agent from ChatGPT, Claude or Cursor.** Aeon Connect now serves
+  a remote MCP server at [www.aeon.fun/connect/mcp](https://www.aeon.fun/connect/mcp) (Streamable
+  HTTP, OAuth 2.1 with dynamic client registration and PKCE, GitHub sign-in). The consent screen
+  picks which agent repo a client can reach, and `switch_instance` moves between your Aeon repos
+  after a fresh GitHub check. About 20 tools list and run skills (runs dispatch on the repo's own
+  GitHub Actions), read runs, output and memory, edit skills, strategy and soul, show setup status
+  (key names only) and install packs. Secret values are never readable or writable over it. Claude
+  Code: `claude mcp add --transport http aeon https://www.aeon.fun/connect/mcp`. The README, setup
+  skill, `apps/mcp-server` README, security policy, `llms.txt` and docs now point to it, and
+  `bin/add-mcp` warns before its `claude mcp remove aeon` would delete a hosted `aeon` entry.
+  (aeon-connect #66, #68)
 - **Aeon Connect: start an agent from the browser.** [www.aeon.fun/connect](https://www.aeon.fun/connect)
   is the hosted, multi-tenant version of the dashboard (aaronjmars/aeon-connect). Sign in with GitHub,
   **Create your aeon**: the repo is created first (public = a real fork of aeonfun/aeon that can pull
@@ -176,6 +202,28 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Changed
 
+- **Setup skill secrets guidance tightened.** A new "Handling secrets" rule in `SKILL.md` and
+  `references/secrets.md`: never ask for a key in chat, never echo, log or commit one, never read
+  credential files to fill one in; values go in through `./aeon secrets set NAME --stdin` or the
+  dashboard. `GROK_CREDENTIALS`, `TELEGRAM_CHAT_ID`, `BUZZ_PRIVATE_KEY` and `GH_GLOBAL` guidance
+  rewritten to match. (#1179)
+- **Setup skill refresh.** Mode 8 gains a fallback when the plugin-root path comes out bare (Claude
+  Code does not export `CLAUDE_PLUGIN_ROOT` to Bash); `references/ci.md` now lists 15 `ci-*`
+  workflows incl. `ci-aeon-skill-sync` and `ci-harness-cli`, the real `ci-tests` triggers, and the
+  six gates a new skill trips; stale `pr-check` references and em/en dashes removed (#1183, #1185).
+  Skill counts and survey figures updated for the 86-skill catalog.
+- **`aeon-update` treats `.github/dependabot.yml` as operator-owned.** Upstream changes to it are
+  listed in the update PR body instead of being written into the instance. (#1194)
+- **Biome formatter for every app.** Root `biome.json` (formatter only, pinned 2.5.15, run via
+  `npx`) with per-app style overrides, `npm run format` / `format:check`, and a `format - biome` job
+  in ci-apps. (#1193)
+- **Codex plugin manifest fits the OpenAI plugin directory.** Shorter subtitle, logo and composer
+  icon, privacy/terms/support links, `Developer Tools` category, host-neutral wording. (#1176, #1178)
+- **README visuals synced with canon.** Proof card shows 9 community packs, the harness card shows
+  nine engines (GLM is a gateway), and the "never sleeps" dial lists skills that exist today. (#1165)
+- **Ecosystem docs cleanup.** Dead avatars replaced, renamed X handles updated, three dead project
+  sites dropped, and the Epoch pack repo renamed to `Svector-anu/epoch`. (#1196)
+
 - **Haiku tier moves to Claude Haiku 5.5.** `claude-haiku-5-5` replaces `claude-haiku-4-5-20251001`
   in the dashboard picker, the workflow_dispatch choices, the quality scorer's default, the
   json-render notifier and the docs; `claude-haiku-4-5-20251001` stays a valid dispatch choice and
@@ -289,6 +337,20 @@ from or pin to; the template keeps serving the latest `main` to new forks.
   showcase hooks in `aeonfun/univ4-hooks` carried the fee. (#1035)
 
 ### Fixed
+
+- **Stale Claude Code npm cache no longer blocks pin bumps.** `restore-keys` restored an old cache
+  whose packument did not list the new version, so every run failed at "Install Claude Code"; an
+  exact-key miss now downloads fresh. (#1169)
+- **A skill that syncs `harness-adapter` can no longer break its own run.** The harness now runs from
+  a snapshot (`scripts/harness-adapter-snapshot.sh`), so `aeon-update` rewriting `run-harness`
+  mid-run no longer causes a parse error and a double run. (#1180)
+- **`apt-get update` hangs no longer kill read-only runs.** The bubblewrap step skips apt when
+  `bwrap` exists, tries cached lists first, and caps `apt-get update` at 90s with one retry. (#1186)
+- **Secret tripwire catches stateless `ghs_` tokens.** The email skills' GitHub token pattern now
+  allows `_`, so the new `ghs_<appid>_<jwt>` installation tokens are blocked too. (#1177)
+- **Local MCP server matches scheduled runs.** Tool descriptions read the schedule from `aeon.yml`
+  (no more "cron: undefined"), tier run notes reach the harness, the timeout is 1800s, and the model
+  is resolved and passed per harness the same way `.github/workflows/aeon.yml` does. (#1190, #1191)
 
 - **`base-mcp` does real work on a scheduled run.** An empty `var` used to do onboarding only with
   zero MCP calls. It now takes a wallet snapshot (address, portfolio, last 7 days), `history[:N]`
@@ -1222,6 +1284,12 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 - Bumped the dashboard `postcss` override past `GHSA-r28c-9q8g-f849`. (#783)
 
 ### Maintenance
+
+- Dependency bumps 2026-10-07: `sharp`, `@modelcontextprotocol/sdk`, `proxy-addr`,
+  `source-map-js` and an npm_and_yarn group (#1171, #1172, #1173, #1174, #1175). PR numbers for
+  entries above that shipped without one: Aeon Connect onboarding docs (#1163), hosted MCP pointers
+  (#1192), Haiku 5.5 (#1189), MiniMax and agent-plugins manifests dropped (#1182, #1187), Claude
+  directory listing (#1184, #1188).
 
 - Dependency, CI and toolchain noise (2026-09-29 to 2026-10-02): dependency bumps (#1099, #1102,
   #1103, #1106, #1108, #1109, #1112); dashboard `next` 16.3.8 for the critical `next/og` RCE

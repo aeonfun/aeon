@@ -25,7 +25,9 @@ export function TelegramChatIdHelper({ defaultToken, onFound }: TelegramChatIdHe
   const [busy, setBusy] = useState(false)
   const [status, setStatus] = useState<TelegramStatus | null>(null)
 
-  useEffect(() => { if (defaultToken) setToken(defaultToken) }, [defaultToken])
+  useEffect(() => {
+    if (defaultToken) setToken(defaultToken)
+  }, [defaultToken])
 
   const trimmed = token.trim()
   const getUpdatesUrl = trimmed ? `https://api.telegram.org/bot${trimmed}/getUpdates` : null
@@ -41,9 +43,10 @@ export function TelegramChatIdHelper({ defaultToken, onFound }: TelegramChatIdHe
       const res = await fetch(getUpdatesUrl)
       const data: unknown = await res.json()
       if (!isRecord(data) || data.ok !== true) {
-        const msg = isRecord(data) && typeof data.description === 'string'
-          ? data.description
-          : 'Telegram rejected the token - double-check it.'
+        const msg =
+          isRecord(data) && typeof data.description === 'string'
+            ? data.description
+            : 'Telegram rejected the token - double-check it.'
         setStatus({ ok: false, msg })
         return
       }
@@ -80,16 +83,16 @@ export function TelegramChatIdHelper({ defaultToken, onFound }: TelegramChatIdHe
   return (
     <div className="mt-2 border border-[rgba(250,250,250,0.10)] bg-aeon-bg/40 p-3 space-y-2">
       <p className="text-[11px] text-primary-40 leading-relaxed">
-        Send your bot any message in Telegram first (it can&apos;t see you until you do), then paste
-        its token - the chat ID is read from <span className="font-mono text-primary-70">getUpdates</span>.
-        The token stays in your browser; nothing is stored.
+        Send your bot any message in Telegram first (it can&apos;t see you until you do), then paste its token - the
+        chat ID is read from <span className="font-mono text-primary-70">getUpdates</span>. The token stays in your
+        browser; nothing is stored.
       </p>
       <div className="flex gap-2">
         <input
           type="password"
           value={token}
-          onChange={(e) => setToken(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && findChatId()}
+          onChange={e => setToken(e.target.value)}
+          onKeyDown={e => e.key === 'Enter' && findChatId()}
           placeholder="paste bot token..."
           className={inputCls}
         />
@@ -101,21 +104,28 @@ export function TelegramChatIdHelper({ defaultToken, onFound }: TelegramChatIdHe
           {busy ? 'Fetching…' : 'Fetch'}
         </button>
         <button
-          onClick={() => { setOpen(false); setStatus(null) }}
+          onClick={() => {
+            setOpen(false)
+            setStatus(null)
+          }}
           className="text-[11px] text-primary-40 font-mono px-2 py-2 hover:text-primary-70 shrink-0"
         >
           Cancel
         </button>
       </div>
       {status && (
-        <p className={`text-[11px] font-mono ${status.ok ? 'text-aeon-green' : 'text-aeon-red-alert/80'}`}>{status.msg}</p>
+        <p className={`text-[11px] font-mono ${status.ok ? 'text-aeon-green' : 'text-aeon-red-alert/80'}`}>
+          {status.msg}
+        </p>
       )}
       {getUpdatesUrl && (
         <a
           href={getUpdatesUrl}
           target="_blank"
           rel="noopener noreferrer"
-          title={'Opens getUpdates for your bot in a new tab - look for "chat":{"id":...} in the JSON. Empty result? Message your bot first.'}
+          title={
+            'Opens getUpdates for your bot in a new tab - look for "chat":{"id":...} in the JSON. Empty result? Message your bot first.'
+          }
           className="inline-block text-[10px] font-mono text-primary-40 hover:text-aeon-red transition-colors"
         >
           or open getUpdates in a new tab ↗

@@ -17,14 +17,18 @@ const AUTH_FILE = '.grok/auth.json'
 export function grokLogin(): { secret: string } {
   const res = spawnSync('grok', ['login', '--device-auth'], { stdio: 'inherit' })
   if (res.error) {
-    throw new Error((res.error as NodeJS.ErrnoException).code === 'ENOENT'
-      ? 'grok CLI not found. Install it: npm i -g @xai-official/grok'
-      : res.error.message)
+    throw new Error(
+      (res.error as NodeJS.ErrnoException).code === 'ENOENT'
+        ? 'grok CLI not found. Install it: npm i -g @xai-official/grok'
+        : res.error.message,
+    )
   }
   if (res.status !== 0) throw new Error(`grok login exited ${res.status}`)
   const home = homedir()
   if (!existsSync(join(home, AUTH_FILE))) {
-    throw new Error('Login finished but no ~/.grok/auth.json was found. Run `grok login` in a terminal, then try again.')
+    throw new Error(
+      'Login finished but no ~/.grok/auth.json was found. Run `grok login` in a terminal, then try again.',
+    )
   }
   const archive = execFileSync('tar', ['czf', '-', '-C', home, AUTH_FILE], { maxBuffer: 8 * 1024 * 1024 })
   ghSecretSet('GROK_CREDENTIALS', archive.toString('base64'))

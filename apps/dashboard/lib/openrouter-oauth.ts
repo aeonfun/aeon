@@ -22,7 +22,10 @@ export const OPENROUTER_AUTH_URL = 'https://openrouter.ai/auth'
 export const OPENROUTER_KEYS_URL = 'https://openrouter.ai/api/v1/auth/keys'
 export const FLOW_TTL_SECONDS = 600
 
-export interface OpenRouterFlow { verifier: string; harness: string }
+export interface OpenRouterFlow {
+  verifier: string
+  harness: string
+}
 export type FlowStatus = { status: 'pending' } | { status: 'done'; secret: string } | { status: 'error'; error: string }
 
 const flowKey = (state: string) => `openrouter:flow:${state}`
@@ -48,7 +51,10 @@ export function buildAuthUrl(opts: { callbackUrl: string; challenge: string; lab
   return u.toString()
 }
 
-export async function startFlow(store: KvStore, opts: { origin: string; harness: string; label: string }): Promise<{ url: string; state: string }> {
+export async function startFlow(
+  store: KvStore,
+  opts: { origin: string; harness: string; label: string },
+): Promise<{ url: string; state: string }> {
   const { verifier, challenge } = makePkce()
   const state = makeState()
   await store.set<OpenRouterFlow>(flowKey(state), { verifier, harness: opts.harness }, FLOW_TTL_SECONDS)
@@ -63,10 +69,12 @@ export async function exchangeCode(code: string, verifier: string, fetchImpl: ty
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ code, code_verifier: verifier, code_challenge_method: 'S256' }),
   })
-  const body = await res.json().catch(() => ({})) as { key?: unknown; error?: { message?: string } | string }
+  const body = (await res.json().catch(() => ({}))) as { key?: unknown; error?: { message?: string } | string }
   if (!res.ok) {
     const msg = typeof body.error === 'string' ? body.error : body.error?.message
-    throw new Error(`OpenRouter refused the code (HTTP ${res.status})${msg ? `: ${msg}` : ''}. Codes expire after 10 minutes; start again.`)
+    throw new Error(
+      `OpenRouter refused the code (HTTP ${res.status})${msg ? `: ${msg}` : ''}. Codes expire after 10 minutes; start again.`,
+    )
   }
   if (typeof body.key !== 'string' || !body.key.startsWith('sk-or-')) throw new Error('OpenRouter returned no key')
   return body.key
@@ -80,7 +88,11 @@ export async function finishFlow(
   deps: { save: (key: string, harness: string) => Promise<string>; fetchImpl?: typeof fetch },
 ): Promise<FlowStatus> {
   const flow = input.state ? await store.take<OpenRouterFlow>(flowKey(input.state)) : null
-  if (!flow) return { status: 'error', error: 'This OpenRouter request expired or was already used. Start again from the dashboard.' }
+  if (!flow)
+    return {
+      status: 'error',
+      error: 'This OpenRouter request expired or was already used. Start again from the dashboard.',
+    }
   let result: FlowStatus
   try {
     if (input.error) throw new Error(`OpenRouter: ${input.error}`)

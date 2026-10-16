@@ -12,9 +12,7 @@ export async function GET() {
     ])
 
     return NextResponse.json({
-      memory: memory
-        ? { exists: true, size: memory.length, excerpt: memory.slice(0, 400) }
-        : { exists: false },
+      memory: memory ? { exists: true, size: memory.length, excerpt: memory.slice(0, 400) } : { exists: false },
       counts: {
         topics: topics.length,
         logs: logs.length,

@@ -4,11 +4,17 @@
 import { ghAvailable, ghArgsRepo } from '../../dashboard/lib/gh.ts'
 
 let jsonMode = false
-export function setJsonMode(on: boolean) { jsonMode = on }
+export function setJsonMode(on: boolean) {
+  jsonMode = on
+}
 
 let dryRun = false
-export function setDryRun(on: boolean) { dryRun = on }
-export function isDryRun() { return dryRun }
+export function setDryRun(on: boolean) {
+  dryRun = on
+}
+export function isDryRun() {
+  return dryRun
+}
 
 const useColor = process.stdout.isTTY && !process.env.NO_COLOR
 const wrap = (code: number, s: string) => (useColor ? `\x1b[${code}m${s}\x1b[0m` : s)
@@ -37,8 +43,7 @@ export function truncate(s: string, n: number) {
 }
 
 export function table(headers: string[], rows: string[][]) {
-  const widths = headers.map((h, i) =>
-    Math.max(h.length, ...rows.map(r => stripAnsi(r[i] ?? '').length)))
+  const widths = headers.map((h, i) => Math.max(h.length, ...rows.map(r => stripAnsi(r[i] ?? '').length)))
   const pad = (cell: string, i: number) => {
     const visible = stripAnsi(cell).length
     return cell + ' '.repeat(Math.max(0, widths[i] - visible))
@@ -80,6 +85,8 @@ export function requireInstanceRepo(): void {
   const args = ghArgsRepo()
   const repo = args[1] ?? ''
   if (repo && isUpstreamRepo(repo)) {
-    fail(`gh points at ${repo}, the Aeon template - not your instance. Run \`./aeon init\` (or \`gh repo set-default <you>/<your-repo>\`) first.`)
+    fail(
+      `gh points at ${repo}, the Aeon template - not your instance. Run \`./aeon init\` (or \`gh repo set-default <you>/<your-repo>\`) first.`,
+    )
   }
 }

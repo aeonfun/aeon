@@ -10,7 +10,9 @@ export function PanelError({ label, onRetry }: { label: string; onRetry: () => v
       <button
         onClick={onRetry}
         className="cursor-target bg-aeon-bg text-primary-70 text-[11px] px-4 py-2 font-mono uppercase tracking-[1px] border border-[rgba(250,250,250,0.10)] hover:border-aeon-red hover:text-aeon-red transition-colors"
-      >Retry</button>
+      >
+        Retry
+      </button>
     </div>
   )
 }

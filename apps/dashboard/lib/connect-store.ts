@@ -19,18 +19,26 @@ export interface KvStore {
   del(key: string): Promise<void>
 }
 
-interface Entry { value: unknown; expiresAt: number }
+interface Entry {
+  value: unknown
+  expiresAt: number
+}
 
 export function createMemoryStore(now: () => number = Date.now): KvStore {
   const map = new Map<string, Entry>()
   const live = (key: string): Entry | null => {
     const e = map.get(key)
     if (!e) return null
-    if (e.expiresAt <= now()) { map.delete(key); return null }
+    if (e.expiresAt <= now()) {
+      map.delete(key)
+      return null
+    }
     return e
   }
   return {
-    async get<T>(key: string) { return (live(key)?.value as T | undefined) ?? null },
+    async get<T>(key: string) {
+      return (live(key)?.value as T | undefined) ?? null
+    },
     async set<T>(key: string, value: T, ttlSeconds: number) {
       map.set(key, { value, expiresAt: now() + ttlSeconds * 1000 })
     },
@@ -39,7 +47,9 @@ export function createMemoryStore(now: () => number = Date.now): KvStore {
       map.delete(key)
       return (e?.value as T | undefined) ?? null
     },
-    async del(key: string) { map.delete(key) },
+    async del(key: string) {
+      map.delete(key)
+    },
   }
 }
 

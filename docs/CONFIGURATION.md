@@ -140,6 +140,8 @@ Turn it off per repo with the variable **`SKILL_DRYRUN=0`** (default on), so a f
 
 Let skills **call** MCP servers (GitHub, a database, a paid API, your own) while they run in GitHub Actions. Opt-in and safe - with no `.mcp.json` at the repo root, runs are byte-identical to before.
 
+This is about skills calling *other* MCP servers. To drive Aeon itself from ChatGPT, Claude or Cursor, use the hosted server at [www.aeon.fun/connect/mcp](https://www.aeon.fun/connect/mcp) or the local one ([hosted or local?](../apps/mcp-server/README.md#hosted-or-local)).
+
 ```bash
 cp docs/examples/mcp/.mcp.json.example .mcp.json   # then edit, commit, push
 ```

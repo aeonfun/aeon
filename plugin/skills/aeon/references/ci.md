@@ -72,6 +72,7 @@ cd apps/dashboard && npm ci && npm run typecheck && npm run lint && npm test && 
 cd apps/cli       && npm ci && npm run typecheck && npm run lint   # needs apps/dashboard deps installed first
 cd apps/mcp-server && npm install && npm run build
 cd apps/webhook   && node --check src/worker.js && npm install && npm run lint && npx wrangler deploy --dry-run --outdir /tmp/w
+npm run format:check   # from the repo root: biome formatter over all four apps (fix: npm run format)
 ```
 
 The dashboard runs **both** `typecheck` and `build` on purpose: a past Dependabot bump crashed `next build` while `tsc --noEmit` passed. Don't treat the typecheck as sufficient. The CLI cannot typecheck without the dashboard's `node_modules` - its tsconfig compiles `../dashboard/lib/**/*.ts` and borrows that app's typescript and `@types`.

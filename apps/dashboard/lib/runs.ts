@@ -2,7 +2,10 @@ import { execFileSync } from 'child_process'
 import { REPO_ROOT, ghArgsRepo } from './gh'
 import type { GhRunJson, Run } from './types'
 
-type GhRunListItem = Pick<GhRunJson, 'databaseId' | 'name' | 'status' | 'conclusion' | 'createdAt' | 'url' | 'displayTitle' | 'event'>
+type GhRunListItem = Pick<
+  GhRunJson,
+  'databaseId' | 'name' | 'status' | 'conclusion' | 'createdAt' | 'url' | 'displayTitle' | 'event'
+>
 type GhRunView = Pick<GhRunJson, 'status' | 'conclusion' | 'displayTitle' | 'jobs'>
 
 // Events that represent genuine Aeon skill activity, from the `on:` blocks of the
@@ -24,23 +27,33 @@ export interface RunLogs {
 export function listRuns(limit = 30): Run[] {
   const out = execFileSync(
     'gh',
-    ['run', 'list', ...ghArgsRepo(), '--json', 'databaseId,name,status,conclusion,createdAt,url,displayTitle,event', '--limit', String(limit)],
+    [
+      'run',
+      'list',
+      ...ghArgsRepo(),
+      '--json',
+      'databaseId,name,status,conclusion,createdAt,url,displayTitle,event',
+      '--limit',
+      String(limit),
+    ],
     { stdio: 'pipe', cwd: REPO_ROOT },
   ).toString()
   const raw = JSON.parse(out) as GhRunListItem[]
-  return raw
-    // Keep only Aeon-launched runs; drop CI, Dependabot, and other managed noise.
-    .filter((r) => AEON_EVENTS.has(r.event))
-    // "Sync from upstream" is schedule-triggered fork maintenance, not skill activity.
-    .filter((r) => r.name !== 'Sync from upstream')
-    .map((r) => ({
-      id: r.databaseId,
-      workflow: r.displayTitle || r.name,
-      status: r.status,
-      conclusion: r.conclusion,
-      created_at: r.createdAt,
-      url: r.url,
-    }))
+  return (
+    raw
+      // Keep only Aeon-launched runs; drop CI, Dependabot, and other managed noise.
+      .filter(r => AEON_EVENTS.has(r.event))
+      // "Sync from upstream" is schedule-triggered fork maintenance, not skill activity.
+      .filter(r => r.name !== 'Sync from upstream')
+      .map(r => ({
+        id: r.databaseId,
+        workflow: r.displayTitle || r.name,
+        status: r.status,
+        conclusion: r.conclusion,
+        created_at: r.createdAt,
+        url: r.url,
+      }))
+  )
 }
 
 // A single run's status plus the interesting slice of its logs: the Claude "Run"
@@ -97,9 +110,7 @@ export function getRunLogs(id: string): RunLogs {
   const summaryLines: string[] = []
   let inSummary = false
   for (const line of outputLines) {
-    const clean = line
-      .replace(/\x1b\[[0-9;]*m/g, '')
-      .replace(/^\d{4}-\d{2}-\d{2}T[\d:.]+Z\s?/, '')
+    const clean = line.replace(/\x1b\[[0-9;]*m/g, '').replace(/^\d{4}-\d{2}-\d{2}T[\d:.]+Z\s?/, '')
     if (/^#{1,3}\s+Summary/.test(clean)) {
       inSummary = true
       summaryLines.push(line)
@@ -110,9 +121,10 @@ export function getRunLogs(id: string): RunLogs {
   }
 
   const trimmedLines = output.split('\n')
-  const trimmed = trimmedLines.length > 500
-    ? '... (truncated, showing last 500 lines)\n' + trimmedLines.slice(-500).join('\n')
-    : output
+  const trimmed =
+    trimmedLines.length > 500
+      ? '... (truncated, showing last 500 lines)\n' + trimmedLines.slice(-500).join('\n')
+      : output
 
   return {
     id,

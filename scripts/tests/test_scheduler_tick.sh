@@ -10,6 +10,13 @@
 #   - an `on: "*"` handler rotates past a source it handled recently
 #   - the persist retry rebuilds on upstream's cron-state after losing a race
 #     and keeps every stamp, including chain:<name>
+#   - a skill whose schedule cron-due.sh rejects is reported with a ::warning::
+#     instead of being skipped without a trace
+#   - a state push that origin keeps rejecting fails the tick with an ::error::
+#     instead of ending green with the dispatch stamps lost, and shows the
+#     last pull or push error
+#   - depends_on in a CRLF SKILL.md, after a comment inside metadata:, still
+#     orders the dependent after its dependency
 #   - failed-run retries and breaker probes respect the skill's own cadence: a
 #     weekly skill gets its quick retries, but is never re-run ~4x/day by the
 #     probe or every 30 min with the breaker off; workflow_dispatch skills are
@@ -66,6 +73,7 @@ for f in cron-due.sh breaker.sh reactive_when.sh parse-aeon-config.sh; do cp "$R
 cat > aeon.yml <<'EOF'
 skills:
   digest: { enabled: true, schedule: "0 6 * * *" }
+  after-solo: { enabled: true, schedule: "0 6 * * *" }
   solo: { enabled: true, schedule: "0 6 * * *" }
   feature: { enabled: false, schedule: "workflow_dispatch" }
   skill-repair: { enabled: false, schedule: "reactive" }
@@ -75,6 +83,7 @@ skills:
   weekly-down: { enabled: true, schedule: "0 9 * * 1" }
   weekly-flaky: { enabled: true, schedule: "0 5 * * 2" }
   manual: { enabled: true, schedule: "workflow_dispatch" }
+  bad-cron: { enabled: true, schedule: "@daily" }
 
 reactive:
   skill-repair:
@@ -103,6 +112,11 @@ channels:
   jsonrender:
     enabled: true
 EOF
+# after-solo is listed before solo but depends on it. Its SKILL.md has CRLF line
+# endings and a comment inside metadata:, which the depends_on reader must read
+# through, so solo is still dispatched first.
+mkdir -p skills/after-solo
+printf -- '---\r\nname: after-solo\r\nmetadata:\r\n# ordering\r\n  depends_on:\r\n    # the producer\r\n    - solo\r\n---\r\nbody\r\n' > skills/after-solo/SKILL.md
 # 2026-07-07 06:05 UTC (a Tuesday). broken-a/b are failing with an open breaker
 # (dispatched an hour ago); fixer handled broken-a 2h ago, so it must rotate to
 # broken-b. weekly-down (Mondays 09:00) is in an outage, last run 7h ago: the
@@ -112,6 +126,7 @@ cat > memory/cron-state.json <<'EOF'
 {
   "digest": { "last_status": "success", "last_dispatch": "2026-07-06T06:00:00Z" },
   "solo": { "last_status": "success", "last_dispatch": "2026-07-06T06:00:00Z" },
+  "after-solo": { "last_status": "success", "last_dispatch": "2026-07-06T06:00:00Z" },
   "broken-a": { "last_status": "failed", "last_dispatch": "2026-07-07T05:05:00Z", "consecutive_failures": 5 },
   "broken-b": { "last_status": "failed", "last_dispatch": "2026-07-07T05:05:00Z", "consecutive_failures": 4 },
   "weekly-down": { "last_status": "failed", "last_dispatch": "2026-07-06T23:00:00Z", "consecutive_failures": 5 },
@@ -149,6 +164,11 @@ dispatched "workflow run chain-runner.yml -f chain=morning" && ok "scheduled cha
 grep -q 'chain=dev-loop' "$TMP/gh.log" && bad "commented schedule leaked into dev-loop" || ok "dev-loop (workflow_dispatch) not dispatched"
 grep -q 'skill=digest' "$TMP/gh.log" && bad "chain-covered digest also dispatched standalone" || ok "chain-covered skill not dispatched standalone"
 dispatched "workflow run aeon.yml -f skill=solo" && ok "solo dispatched (commented chain does not cover it)" || bad "solo not dispatched"
+SOLO_AT=$(grep -nxF "workflow run aeon.yml -f skill=solo" "$TMP/gh.log" | cut -d: -f1)
+AFTER_AT=$(grep -nxF "workflow run aeon.yml -f skill=after-solo" "$TMP/gh.log" | cut -d: -f1)
+[ -n "$SOLO_AT" ] && [ -n "$AFTER_AT" ] && [ "$SOLO_AT" -lt "$AFTER_AT" ] \
+  && ok "depends_on read from a CRLF SKILL.md: dependent dispatched after its dependency" \
+  || bad "after-solo not ordered after solo: $(cat "$TMP/gh.log")"
 grep -qE 'skill=(dev-loop|morning|jsonrender|feature)( |$)' "$TMP/gh.log" && bad "non-skill key dispatched as a skill" || ok "chain/channel keys never dispatched as skills"
 grep -q 'skill=skill-repair' "$TMP/gh.log" && bad "disabled reactive handler dispatched" || ok "reactive handler with enabled: false not dispatched"
 dispatched "workflow run aeon.yml -f skill=fixer -f var=broken-b" && ok "wildcard handler rotated to broken-b" \
@@ -158,6 +178,9 @@ grep -q 'skill=weekly-down' "$TMP/gh.log" && bad "weekly skill probed off-cadenc
 dispatched "workflow run aeon.yml -f skill=weekly-flaky" && ok "weekly skill still gets a quick retry for its failed slot" \
   || bad "weekly-flaky not quick-retried"
 grep -q 'skill=manual' "$TMP/gh.log" && bad "workflow_dispatch-only skill auto-retried" || ok "workflow_dispatch skill never retried"
+grep -q 'skill=bad-cron' "$TMP/gh.log" && bad "skill with an invalid schedule dispatched" || ok "invalid schedule is not dispatched"
+grep -q '^::warning::skill bad-cron has an invalid schedule' "$TMP/tick.out" \
+  && ok "invalid schedule is annotated, not skipped silently" || bad "invalid schedule not annotated: $(grep -i invalid "$TMP/tick.out")"
 
 STATE="$(git -C "$TMP/origin.git" show main:memory/cron-state.json)"
 NOW=2026-07-07T06:05:00Z
@@ -188,6 +211,27 @@ if run_tick 2026-07-13T09:05:00Z; then ok "tick 4 exits 0"; else bad "tick 4 fai
 dispatched "workflow run aeon.yml -f skill=weekly-down" && ok "weekly skill probed at its own next slot" \
   || bad "weekly-down not probed at its slot: $(cat "$TMP/gh.log")"
 grep -q 'skill=manual' "$TMP/gh.log" && bad "workflow_dispatch-only skill probed" || ok "workflow_dispatch skill never probed"
+
+# --- tick 5: origin rejects every push, the tick must say so -----------------------
+# Without the stamps in cron-state.json the same slots are owed again next tick, so
+# losing the push has to fail the step with an error, not end with a green tick.
+git -C "$TMP/work" pull -q origin main 2>/dev/null
+mkdir -p "$TMP/origin.git/hooks"
+printf '#!/bin/sh\necho "rejected by test hook" >&2\nexit 1\n' > "$TMP/origin.git/hooks/pre-receive"
+chmod +x "$TMP/origin.git/hooks/pre-receive"
+if run_tick 2026-07-14T06:05:00Z; then bad "tick 5 exited 0 although the state push was rejected"; else ok "tick 5 fails when the state push is rejected"; fi
+grep -q '^::error::cron-state.json was not pushed after 5 attempts' "$TMP/tick.out" \
+  && ok "lost state push is reported with ::error::" || bad "no error annotation for the lost push: $(tail -5 "$TMP/tick.out")"
+grep '^::error::' "$TMP/tick.out" | grep -q 'rejected by test hook' && ok "the push error is shown" || bad "push error not shown"
+rm -f "$TMP/origin.git/hooks/pre-receive"
+
+# --- tick 6: the pull itself fails every attempt, its error must be shown ---------
+# Push never runs then, so the error used to end with an empty "Last ... error:".
+git -C "$TMP/work" remote set-url origin "$TMP/missing.git"
+if run_tick 2026-07-15T06:05:00Z; then bad "tick 6 exited 0 although every pull failed"; else ok "tick 6 fails when every pull fails"; fi
+grep '^::error::cron-state.json was not pushed' "$TMP/tick.out" | grep -q 'missing.git' \
+  && ok "the pull error is shown when the push never ran" || bad "pull error not shown: $(grep '^::error::' "$TMP/tick.out")"
+git -C "$TMP/work" remote set-url origin "$TMP/origin.git"
 
 echo "---"
 echo "PASS: $pass   FAIL: $fail"

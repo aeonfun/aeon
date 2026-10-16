@@ -13,5 +13,9 @@ function subscribe(onChange: () => void) {
 }
 
 export function useNarrow(): boolean {
-  return useSyncExternalStore(subscribe, () => window.matchMedia(QUERY).matches, () => false)
+  return useSyncExternalStore(
+    subscribe,
+    () => window.matchMedia(QUERY).matches,
+    () => false,
+  )
 }

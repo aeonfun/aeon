@@ -53,20 +53,22 @@ export async function getPacks(): Promise<PacksResponse> {
         enabled: skills.filter(s => s.enabled).length,
       }
     })
-  } catch { /* packs.json optional */ }
+  } catch {
+    /* packs.json optional */
+  }
 
   let community: CommunityPack[] = []
   try {
     const { content } = await getFileContent('catalog/skill-packs.json')
     const manifest = JSON.parse(content) as CommunityManifest
-    const installed = new Set(
-      (await getDirectory('skills')).filter(d => d.type === 'dir').map(d => d.name),
-    )
+    const installed = new Set((await getDirectory('skills')).filter(d => d.type === 'dir').map(d => d.name))
     community = (manifest.packs ?? []).map(p => ({
       ...p,
       installedCount: (p.skills ?? []).filter(s => installed.has(s)).length,
     }))
-  } catch { /* skill-packs.json optional */ }
+  } catch {
+    /* skill-packs.json optional */
+  }
 
   return { firstParty, community }
 }

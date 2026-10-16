@@ -92,10 +92,10 @@ aeon.yml            STRATEGY.md         soul/**             memory/**
 output/**           .mcp.json           .env*               aeon.db
 skills.lock         eyebrowlock.json    .claude/**  (except .claude/skills/aeon/**)
 catalog/*.json  (except catalog/skill-packs.json)
-apps/dashboard/outputs/**
+apps/dashboard/outputs/**       .github/dependabot.yml
 ```
 
-Everything else is **OWNED** (a candidate for auto-apply): `skills/**`, `scripts/**`, `bin/**`, `harness-adapter/**`, `.github/**`, `apps/**` (except `apps/dashboard/outputs/**`), `CLAUDE.md`, `AGENTS.md`, `docs/**`, `.github/README.md`, `LICENSE`, `CHANGELOG.md`, `.gitignore`, `eyebrow.policy.json`, `catalog/skill-packs.json`, and tracked root helpers (`aeon`, ...).
+Everything else is **OWNED** (a candidate for auto-apply): `skills/**`, `scripts/**`, `bin/**`, `harness-adapter/**`, `.github/**` (except `.github/dependabot.yml`), `apps/**` (except `apps/dashboard/outputs/**`), `CLAUDE.md`, `AGENTS.md`, `docs/**`, `.github/README.md`, `LICENSE`, `CHANGELOG.md`, `.gitignore`, `eyebrow.policy.json`, `catalog/skill-packs.json`, and tracked root helpers (`aeon`, ...).
 
 `catalog/*.json` and `eyebrowlock.json` are OPERATOR-owned here **only** so they are never blindly copied - they are **regenerated** from the synced sources in S7, which is the correct way to reconcile them.
 

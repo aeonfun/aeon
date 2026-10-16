@@ -65,13 +65,18 @@ async function fetchJson(url: string, init?: RequestInit): Promise<unknown> {
 // fetchJson deliberately returns `unknown` — these bodies come from an arbitrary
 // third-party authorization server. Narrow with a guard rather than a cast, so
 // the checks below are the ones the compiler sees too.
-interface PrmMetadata { authorization_servers?: string[]; resource?: string }
+interface PrmMetadata {
+  authorization_servers?: string[]
+  resource?: string
+}
 
 function isPrmMetadata(v: unknown): v is PrmMetadata {
   if (!isRecord(v)) return false
   const servers = v.authorization_servers
-  return (servers === undefined || (Array.isArray(servers) && servers.every(s => typeof s === 'string')))
-    && (v.resource === undefined || typeof v.resource === 'string')
+  return (
+    (servers === undefined || (Array.isArray(servers) && servers.every(s => typeof s === 'string'))) &&
+    (v.resource === undefined || typeof v.resource === 'string')
+  )
 }
 
 function isAsMetadata(v: unknown): v is AsMetadata {
@@ -122,8 +127,13 @@ export async function discover(mcpUrl: string): Promise<Discovery> {
   for (const url of [wellKnown(mcpUrl, 'oauth-protected-resource'), `${origin}/.well-known/oauth-protected-resource`]) {
     try {
       const body = await fetchJson(url)
-      if (isPrmMetadata(body)) { prm = body; if (prm.authorization_servers?.length) break }
-    } catch { /* try next */ }
+      if (isPrmMetadata(body)) {
+        prm = body
+        if (prm.authorization_servers?.length) break
+      }
+    } catch {
+      /* try next */
+    }
   }
   // If PRM names an authorization server, use it. Otherwise fall back to the MCP
   // server's OWN origin acting as its authorization server — the behavior compliant
@@ -141,14 +151,19 @@ export async function discover(mcpUrl: string): Promise<Discovery> {
   ]) {
     try {
       const m = await fetchJson(url)
-      if (isAsMetadata(m)) { meta = m; break }
-    } catch { /* try next */ }
+      if (isAsMetadata(m)) {
+        meta = m
+        break
+      }
+    } catch {
+      /* try next */
+    }
   }
   if (!meta) {
     throw new Error(
       `No OAuth metadata found for ${mcpUrl} — it advertises neither Protected Resource ` +
-      `Metadata nor Authorization Server Metadata. It likely uses a static bearer token; ` +
-      `paste one on the server row instead.`,
+        `Metadata nor Authorization Server Metadata. It likely uses a static bearer token; ` +
+        `paste one on the server row instead.`,
     )
   }
   assertSafeEndpoint(meta.authorization_endpoint, 'authorization_endpoint')
@@ -158,7 +173,10 @@ export async function discover(mcpUrl: string): Promise<Discovery> {
 }
 
 // --- dynamic client registration (RFC 7591) ---------------------------------
-export interface ClientCreds { client_id: string; client_secret?: string }
+export interface ClientCreds {
+  client_id: string
+  client_secret?: string
+}
 
 export async function registerClient(
   registrationEndpoint: string,
@@ -219,7 +237,10 @@ function tokenForm(params: Record<string, string | undefined>): URLSearchParams 
 }
 
 async function postToken(tokenEndpoint: string, form: URLSearchParams, clientSecret?: string): Promise<TokenSet> {
-  const headers: Record<string, string> = { 'Content-Type': 'application/x-www-form-urlencoded', Accept: 'application/json' }
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/x-www-form-urlencoded',
+    Accept: 'application/json',
+  }
   // Confidential clients authenticate with HTTP Basic; public (PKCE) clients pass client_id in the body.
   if (clientSecret) {
     const clientId = form.get('client_id') ?? ''
@@ -243,15 +264,19 @@ export async function exchangeCode(opts: {
   redirectUri: string
   resource: string
 }): Promise<TokenSet> {
-  return postToken(opts.tokenEndpoint, tokenForm({
-    grant_type: 'authorization_code',
-    code: opts.code,
-    code_verifier: opts.verifier,
-    client_id: opts.clientId,
-    client_secret: opts.clientSecret,
-    redirect_uri: opts.redirectUri,
-    resource: opts.resource,
-  }), opts.clientSecret)
+  return postToken(
+    opts.tokenEndpoint,
+    tokenForm({
+      grant_type: 'authorization_code',
+      code: opts.code,
+      code_verifier: opts.verifier,
+      client_id: opts.clientId,
+      client_secret: opts.clientSecret,
+      redirect_uri: opts.redirectUri,
+      resource: opts.resource,
+    }),
+    opts.clientSecret,
+  )
 }
 
 // The JSON blob persisted as the MCP_<SLUG>_OAUTH secret. Everything the runtime

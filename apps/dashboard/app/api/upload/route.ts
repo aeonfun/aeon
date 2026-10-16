@@ -46,8 +46,8 @@ function sanitizeRelativePath(relativePath: string): string | null {
   if (!relativePath || relativePath.startsWith('/') || relativePath.includes('..')) {
     return null
   }
-  const parts = relativePath.split('/').filter((p) => p && p !== '.')
-  if (parts.some((p) => p === '..')) return null
+  const parts = relativePath.split('/').filter(p => p && p !== '.')
+  if (parts.some(p => p === '..')) return null
   return parts.join('/')
 }
 
@@ -61,11 +61,12 @@ function assertSkillDestPath(skillName: string, relativePath: string): string | 
 
 function deriveSkillName(files: UploadFile[]): { name: string; prefix: string } {
   // First try SKILL.md
-  const skillFile = files.find(f =>
-    f.path === 'SKILL.md' ||
-    f.path.endsWith('/SKILL.md') ||
-    f.path.toLowerCase() === 'skill.md' ||
-    f.path.toLowerCase().endsWith('/skill.md')
+  const skillFile = files.find(
+    f =>
+      f.path === 'SKILL.md' ||
+      f.path.endsWith('/SKILL.md') ||
+      f.path.toLowerCase() === 'skill.md' ||
+      f.path.toLowerCase().endsWith('/skill.md'),
   )
 
   // Then try *.skill files
@@ -111,7 +112,7 @@ function deriveSkillName(files: UploadFile[]): { name: string; prefix: string } 
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json() as unknown
+    const body = (await request.json()) as unknown
     const rawFiles = isRecord(body) && Array.isArray(body.files) ? body.files : []
     const overrideName = isRecord(body) && typeof body.name === 'string' ? body.name : undefined
     // Optional pack category - injected into the uploaded SKILL.md frontmatter so
@@ -130,18 +131,24 @@ export async function POST(request: Request) {
     const hasSkillFile = files.some(f => isSkillFile(f.path))
 
     if (!hasSkillFile) {
-      return NextResponse.json({
-        error: 'No SKILL.md or .skill file found.',
-      }, { status: 400 })
+      return NextResponse.json(
+        {
+          error: 'No SKILL.md or .skill file found.',
+        },
+        { status: 400 },
+      )
     }
 
     const { name: derivedName, prefix } = deriveSkillName(files)
     const skillName = slugify(overrideName?.trim() ?? '') || derivedName
 
     if (!skillName) {
-      return NextResponse.json({
-        error: 'Could not determine skill name. Please provide a name.',
-      }, { status: 400 })
+      return NextResponse.json(
+        {
+          error: 'Could not determine skill name. Please provide a name.',
+        },
+        { status: 400 },
+      )
     }
 
     let filesWritten = 0
@@ -166,15 +173,10 @@ export async function POST(request: Request) {
       }
 
       // Stamp the chosen category onto the skill's SKILL.md frontmatter.
-      const content = (category && relativePath === 'SKILL.md')
-        ? setFrontmatterCategory(file.content, category)
-        : file.content
+      const content =
+        category && relativePath === 'SKILL.md' ? setFrontmatterCategory(file.content, category) : file.content
 
-      await createFile(
-        destPath,
-        content,
-        `feat: upload ${skillName} skill`,
-      )
+      await createFile(destPath, content, `feat: upload ${skillName} skill`)
       filesWritten++
     }
 

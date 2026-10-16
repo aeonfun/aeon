@@ -113,6 +113,20 @@ check "month */2 skips August (8)"     "0 0 1 */2 *"   2026-08-01T00:30:00Z neve
 # day-of-week 7 is Sunday, alone or as a range end
 check "dow 7 = Sunday"                 "0 10 * * 7"    2026-07-05T10:30:00Z never                1  due
 check "dow range 5-7 covers Sunday"    "0 10 * * 5-7"  2026-07-05T10:30:00Z never                1  due
+check "dow name range sat-sun on sat"  "0 10 * * sat-sun" 2026-07-04T10:30:00Z never             1  due
+check "dow name range sat-sun on sun"  "0 10 * * sat-sun" 2026-07-05T10:30:00Z never             1  due
+check "dow name range sat-sun on mon"  "0 10 * * sat-sun" 2026-07-06T10:30:00Z never             1  skip
+check "dow name range fri-sun on sun"  "0 10 * * fri-sun" 2026-07-05T10:30:00Z never             1  due
+check "dow name range mon-sun on wed"  "0 10 * * mon-sun" 2026-07-08T10:30:00Z never             1  due
+check "dow name range sat-sun/1 on sun" "0 10 * * sat-sun/1" 2026-07-05T10:30:00Z never          1  due
+check "dow name list mon,sun on sun"   "0 10 * * mon,sun" 2026-07-05T10:30:00Z never             1  due
+check "dow name list mon,sun on tue"   "0 10 * * mon,sun" 2026-07-07T10:30:00Z never             1  skip
+# a range that starts on Sunday and ends at SUN is Sunday only, not every day
+check "dow name range sun-sun on sun"  "0 10 * * sun-sun" 2026-07-05T10:30:00Z never             1  due
+check "dow name range sun-sun on mon"  "0 10 * * sun-sun" 2026-07-06T10:30:00Z never             1  skip
+check "dow range 0-sun on sun"         "0 10 * * 0-sun"   2026-07-05T10:30:00Z never             1  due
+check "dow range 0-sun on mon"         "0 10 * * 0-sun"   2026-07-06T10:30:00Z never             1  skip
+check "dow name sun alone on mon"      "0 10 * * sun"     2026-07-06T10:30:00Z never             1  skip
 check "dow 7 not on Monday"            "0 10 * * 7"    2026-07-06T10:30:00Z never                1  skip
 # leading zeros are decimal, not octal (08 used to crash the arithmetic)
 check "leading zeros 05 08"            "05 08 * * *"   2026-07-07T08:10:00Z 2026-07-06T08:05:00Z 6  due

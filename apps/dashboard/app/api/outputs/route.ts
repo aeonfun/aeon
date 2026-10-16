@@ -27,15 +27,17 @@ function fileTsToIso(ts: string): string {
 export async function GET() {
   try {
     const files = await readdir(OUTPUTS_DIR).catch(() => [] as string[])
-    const jsonFiles = files.filter(f => f.endsWith('.json')).sort((a, b) => {
-      // Extract timestamp from filename: <skill>-<YYYY-MM-DDTHH-MM-SSZ>.json
-      const tsA = a.match(/(\d{4}-\d{2}-\d{2}T[\d-]+Z)\.json$/)?.[1] || ''
-      const tsB = b.match(/(\d{4}-\d{2}-\d{2}T[\d-]+Z)\.json$/)?.[1] || ''
-      return tsB.localeCompare(tsA) // newest first
-    })
+    const jsonFiles = files
+      .filter(f => f.endsWith('.json'))
+      .sort((a, b) => {
+        // Extract timestamp from filename: <skill>-<YYYY-MM-DDTHH-MM-SSZ>.json
+        const tsA = a.match(/(\d{4}-\d{2}-\d{2}T[\d-]+Z)\.json$/)?.[1] || ''
+        const tsB = b.match(/(\d{4}-\d{2}-\d{2}T[\d-]+Z)\.json$/)?.[1] || ''
+        return tsB.localeCompare(tsA) // newest first
+      })
 
     const outputs = await Promise.all(
-      jsonFiles.slice(0, 100).map(async (filename) => {
+      jsonFiles.slice(0, 100).map(async filename => {
         try {
           const raw = await readFile(join(OUTPUTS_DIR, filename), 'utf-8')
           const spec = JSON.parse(raw) as unknown
@@ -54,7 +56,7 @@ export async function GET() {
         } catch {
           return null
         }
-      })
+      }),
     )
 
     return NextResponse.json({ outputs: outputs.filter(Boolean) })

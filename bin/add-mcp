@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# add-mcp — Install the Aeon MCP server so Claude Code and Claude Desktop
+# add-mcp - Install the Aeon MCP server so Claude Code and Claude Desktop
 # can invoke any Aeon skill directly from the Claude interface.
 #
 # Usage:
@@ -10,7 +10,10 @@
 #   bin/add-mcp --help           Show this help
 #
 # After running, every Aeon skill appears as an 'aeon-<name>' tool in Claude.
-# Skills run locally via `claude -p -` exactly as they do on GitHub Actions.
+# Skills run locally through harness-adapter/run-harness, as on GitHub Actions.
+#
+# No install wanted, or using ChatGPT or Cursor? Use the hosted server instead:
+#   claude mcp add --transport http aeon https://www.aeon.fun/connect/mcp
 
 set -euo pipefail
 
@@ -18,7 +21,7 @@ DIR="$(cd "$(dirname "$0")/.." && pwd)"
 MCP_DIR="$DIR/apps/mcp-server"
 
 usage() {
-  sed -n '3,12p' "$0" | sed 's/^# //'
+  sed -n '2,16p' "$0" | sed -E 's/^# ?//'
   exit 0
 }
 
@@ -26,6 +29,15 @@ err() { echo "Error: $*" >&2; exit 1; }
 info() { printf '\033[0;34m%s\033[0m\n' "$*"; }
 ok() { printf '\033[0;32m✓ %s\033[0m\n' "$*"; }
 warn() { printf '\033[0;33m⚠ %s\033[0m\n' "$*"; }
+
+HOSTED_URL="https://www.aeon.fun/connect/mcp"
+
+# True when the 'aeon' entry in Claude Code is the hosted server, not this one.
+aeon_entry_is_hosted() {
+  local entry
+  entry="$(claude mcp get aeon 2>/dev/null)" || return 1
+  [[ "$entry" == *"aeon.fun/connect/mcp"* ]]
+}
 
 BUILD_ONLY=false
 SHOW_DESKTOP=false
@@ -46,6 +58,11 @@ done
 if [[ "$UNINSTALL" == "true" ]]; then
   if ! command -v claude &>/dev/null; then
     err "'claude' CLI not found. Nothing to uninstall."
+  fi
+  if aeon_entry_is_hosted; then
+    warn "The 'aeon' entry in Claude Code is the hosted server ($HOSTED_URL), not this local one. Leaving it in place."
+    warn "To remove it anyway, run: claude mcp remove aeon"
+    exit 0
   fi
   info "Removing Aeon MCP server from Claude Code..."
   if claude mcp remove aeon 2>/dev/null; then
@@ -111,6 +128,11 @@ if ! command -v claude &>/dev/null; then
   warn "Then run: claude mcp add aeon node \"$SERVER_PATH\""
 else
   info "Registering with Claude Code..."
+  if aeon_entry_is_hosted; then
+    warn "Your existing 'aeon' entry is the hosted server ($HOSTED_URL). Replacing it with the local one."
+    warn "To keep both, re-add the hosted one under another name:"
+    warn "  claude mcp add --transport http aeon-cloud $HOSTED_URL"
+  fi
   # Remove existing entry to avoid duplicates, then re-add
   claude mcp remove aeon 2>/dev/null || true
   claude mcp add aeon node "$SERVER_PATH"
@@ -131,6 +153,9 @@ echo "│  Example usage in Claude:                                │"
 echo "│    Use the aeon-digest tool for a digest on AI agents    │"
 echo "│    Use aeon-token-movers with var=\"bitcoin\"              │"
 echo "│    Run aeon-article with var=\"lens:AI agent frameworks\"  │"
+echo "│                                                          │"
+echo "│  No install, or ChatGPT / Cursor? Use the hosted server: │"
+echo "│    www.aeon.fun/connect/mcp                              │"
 echo "└──────────────────────────────────────────────────────────┘"
 echo ""
 

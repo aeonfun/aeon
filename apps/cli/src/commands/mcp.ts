@@ -1,5 +1,5 @@
 import { parseArgs } from 'node:util'
-import { getFileContent, saveFile } from '../../../dashboard/lib/github.ts'
+import { getFileContent, isMissingFileError, saveFile } from '../../../dashboard/lib/github.ts'
 import { MCP_CATALOG } from '../../../dashboard/lib/mcp-catalog.ts'
 import type { McpServers, McpServer } from '../../../dashboard/lib/types.ts'
 import { emit, table, c, fail, isDryRun } from '../output.ts'
@@ -15,14 +15,19 @@ const USAGE = `aeon mcp — MCP servers wired into skill runs (.mcp.json)
 
 Options:
   --dry-run   Preview the change to .mcp.json
-  --json      Machine-readable output`
+  --json      Machine-readable output
+
+Driving Aeon itself from ChatGPT, Claude or Cursor? Hosted: https://www.aeon.fun/connect/mcp - local: bin/add-mcp`
 
 async function readServers(): Promise<McpServers> {
   let content: string
   try {
     content = (await getFileContent('.mcp.json')).content
-  } catch {
-    return {} // no .mcp.json yet — an empty server set is the correct default
+  } catch (e) {
+    // No .mcp.json yet: an empty server set is the correct default. Any other read
+    // error must not look like that, or `mcp add` would overwrite the real file.
+    if (isMissingFileError(e)) return {}
+    throw e
   }
   // A present-but-corrupt file must NOT silently read as empty: `mcp add` would
   // then overwrite it with only the new server, clobbering the existing config.
@@ -43,13 +48,21 @@ async function writeServers(servers: McpServers, message: string) {
 
 export async function mcpCommand(argv: string[]) {
   const sub = argv[0] && !argv[0].startsWith('-') ? argv[0] : 'ls'
-  if (sub === 'help' || argv.includes('-h') || argv.includes('--help')) { console.log(USAGE); return }
+  if (sub === 'help' || argv.includes('-h') || argv.includes('--help')) {
+    console.log(USAGE)
+    return
+  }
   switch (sub) {
-    case 'ls': return list()
-    case 'catalog': return catalog()
-    case 'add': return add(argv.slice(1))
-    case 'rm': return remove(argv.slice(1))
-    default: fail(`unknown subcommand: ${sub}\n\n${USAGE}`)
+    case 'ls':
+      return list()
+    case 'catalog':
+      return catalog()
+    case 'add':
+      return add(argv.slice(1))
+    case 'rm':
+      return remove(argv.slice(1))
+    default:
+      fail(`unknown subcommand: ${sub}\n\n${USAGE}`)
   }
 }
 
@@ -57,24 +70,38 @@ async function list() {
   const servers = await readServers()
   const names = Object.keys(servers)
   emit(servers, () => {
-    if (!names.length) { console.log(c.dim('(no servers configured — see `aeon mcp catalog`)')); return }
-    table(['NAME', 'TRANSPORT', 'ENDPOINT'], names.map(n => {
-      const s = servers[n]
-      return [n, s.type || (s.command ? 'stdio' : 'http'), s.url || s.command || '']
-    }))
+    if (!names.length) {
+      console.log(c.dim('(no servers configured — see `aeon mcp catalog`)'))
+      return
+    }
+    table(
+      ['NAME', 'TRANSPORT', 'ENDPOINT'],
+      names.map(n => {
+        const s = servers[n]
+        return [n, s.type || (s.command ? 'stdio' : 'http'), s.url || s.command || '']
+      }),
+    )
   })
 }
 
 function catalog() {
   emit(MCP_CATALOG, () => {
-    table(['SLUG', 'NAME', 'URL'], MCP_CATALOG.map(e => [e.slug, e.name, e.url]))
+    table(
+      ['SLUG', 'NAME', 'URL'],
+      MCP_CATALOG.map(e => [e.slug, e.name, e.url]),
+    )
   })
 }
 
 async function add(args: string[]) {
-  const { values, positionals } = parseArgs({ args, options: {
-    sse: { type: 'boolean' }, header: { type: 'string', multiple: true },
-  }, allowPositionals: true })
+  const { values, positionals } = parseArgs({
+    args,
+    options: {
+      sse: { type: 'boolean' },
+      header: { type: 'string', multiple: true },
+    },
+    allowPositionals: true,
+  })
 
   const servers = await readServers()
   let name: string
@@ -90,7 +117,11 @@ async function add(args: string[]) {
   } else if (positionals.length >= 2) {
     name = positionals[0]
     const url = positionals[1]
-    try { new URL(url) } catch { fail('url must be a valid URL') }
+    try {
+      new URL(url)
+    } catch {
+      fail('url must be a valid URL')
+    }
     server = { type: values.sse ? 'sse' : 'http', url }
     const headers: Record<string, string> = {}
     for (const h of values.header ?? []) {
@@ -104,10 +135,15 @@ async function add(args: string[]) {
   }
 
   const next = { ...servers, [name]: server }
-  if (isDryRun()) return emit({ dryRun: true, add: { [name]: server } }, () =>
-    console.log(c.yellow('dry-run: ') + `would add server "${name}" → ${server.url}`))
+  if (isDryRun())
+    return emit({ dryRun: true, add: { [name]: server } }, () =>
+      console.log(c.yellow('dry-run: ') + `would add server "${name}" → ${server.url}`),
+    )
   const sync = await writeServers(next, `chore: add MCP server ${name}`)
-  emit({ ok: true, added: name, synced: sync.synced }, () => { console.log(c.green('✓ ') + `added ${name}`); printSync(sync) })
+  emit({ ok: true, added: name, synced: sync.synced }, () => {
+    console.log(c.green('✓ ') + `added ${name}`)
+    printSync(sync)
+  })
 }
 
 async function remove(args: string[]) {
@@ -117,8 +153,13 @@ async function remove(args: string[]) {
   if (!(name in servers)) fail(`no such server: ${name}`)
   const next = { ...servers }
   delete next[name]
-  if (isDryRun()) return emit({ dryRun: true, remove: name }, () =>
-    console.log(c.yellow('dry-run: ') + `would remove server "${name}"`))
+  if (isDryRun())
+    return emit({ dryRun: true, remove: name }, () =>
+      console.log(c.yellow('dry-run: ') + `would remove server "${name}"`),
+    )
   const sync = await writeServers(next, `chore: remove MCP server ${name}`)
-  emit({ ok: true, removed: name, synced: sync.synced }, () => { console.log(c.green('✓ ') + `removed ${name}`); printSync(sync) })
+  emit({ ok: true, removed: name, synced: sync.synced }, () => {
+    console.log(c.green('✓ ') + `removed ${name}`)
+    printSync(sync)
+  })
 }

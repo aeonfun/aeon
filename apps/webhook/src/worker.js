@@ -45,10 +45,7 @@ const handler = {
     // echoes the secret passed to setWebhook(secret_token) in this header.
     if (
       !env.TELEGRAM_WEBHOOK_SECRET ||
-      !(await secretEquals(
-        request.headers.get("x-telegram-bot-api-secret-token") || "",
-        env.TELEGRAM_WEBHOOK_SECRET,
-      ))
+      !(await secretEquals(request.headers.get("x-telegram-bot-api-secret-token") || "", env.TELEGRAM_WEBHOOK_SECRET))
     ) {
       return new Response("forbidden", { status: 403 });
     }
@@ -78,10 +75,7 @@ const handler = {
     // exactly-once delivery guarantee.
     // The five-minute TTL preserves the existing guard's bounded window: it
     // covers prompt transient retries without retaining update IDs indefinitely.
-    const dedupeKey =
-      typeof update?.update_id === "number"
-        ? `update:${update.update_id}`
-        : null;
+    const dedupeKey = typeof update?.update_id === "number" ? `update:${update.update_id}` : null;
     // If the KV namespace is not bound (a misconfigured deploy), fail OPEN:
     // skip dedup and dispatch normally, rather than throwing a 500 on a real
     // update. The wrangler.toml placeholder id makes this unreachable on a
@@ -220,7 +214,7 @@ function redactAttributes(attrs, token) {
   for (const key of Object.keys(attrs)) {
     const v = attrs[key];
     if (typeof v === "string") attrs[key] = redactString(v, token);
-    else if (Array.isArray(v)) attrs[key] = v.map((x) => (typeof x === "string" ? redactString(x, token) : x));
+    else if (Array.isArray(v)) attrs[key] = v.map(x => (typeof x === "string" ? redactString(x, token) : x));
   }
 }
 

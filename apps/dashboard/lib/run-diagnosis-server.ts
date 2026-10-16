@@ -22,10 +22,18 @@ export async function readRunDiagnosis(store: KvStore, runId: string): Promise<D
   if (!/^\d+$/.test(runId)) throw new Error('Invalid run ID')
   const cached = await store.get<{ diagnosis: Diagnosis | null }>(cacheKey(runId))
   if (cached) return cached.diagnosis
-  const info = JSON.parse(await gh(['run', 'view', runId, ...ghArgsRepo(), '--json', 'status,conclusion'])) as { status: string; conclusion: string | null }
+  const info = JSON.parse(await gh(['run', 'view', runId, ...ghArgsRepo(), '--json', 'status,conclusion'])) as {
+    status: string
+    conclusion: string | null
+  }
   if (info.status !== 'completed') return null
-  const diagnosis = info.conclusion !== 'failure' && info.conclusion !== 'timed_out' ? null
-    : diagnoseRun({ conclusion: info.conclusion, log: await gh(['run', 'view', runId, ...ghArgsRepo(), '--log'], 45_000) })
+  const diagnosis =
+    info.conclusion !== 'failure' && info.conclusion !== 'timed_out'
+      ? null
+      : diagnoseRun({
+          conclusion: info.conclusion,
+          log: await gh(['run', 'view', runId, ...ghArgsRepo(), '--log'], 45_000),
+        })
   await store.set(cacheKey(runId), { diagnosis }, 86_400)
   return diagnosis
 }

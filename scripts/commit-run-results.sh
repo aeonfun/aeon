@@ -8,7 +8,9 @@
 # first. Run it from the repo root. The workflows run the copy from the run's
 # starting commit (git show "$GITHUB_SHA:scripts/commit-run-results.sh"), not
 # the working tree, so an agent edit to this file never changes how its own
-# run is committed.
+# run is committed. The push helpers it calls (git-push-retry.sh, audit.sh) and
+# the repo's git hooks get the same treatment: they run with push credentials,
+# so they come from that commit too, and hooks are switched off.
 #
 # If the agent left the checkout on a feature branch, only its real change is
 # committed and pushed to that branch. Post-run state (memory/, output/,
@@ -30,6 +32,18 @@ main() {
   local CURRENT_BRANCH BRANCH_PUSH_FAILED=false HAS_MAIN STASHED p PUSH_RC
   local -a STATE_PATHS=()
   CURRENT_BRANCH=$(git branch --show-current)
+
+  # Hooks live in the working tree's .git, which the run could write, and so do
+  # the fsmonitor and signing settings, which also run a program. Environment
+  # config outranks the repo's own config, so this holds for every git call below
+  # and in the push helper. The workflows also run scripts/git-config-guard.sh
+  # right after the run, which drops the rest (filters, merge drivers, ...).
+  local N_CFG="${GIT_CONFIG_COUNT:-0}" kv
+  for kv in core.hooksPath=/dev/null core.fsmonitor=false commit.gpgsign=false; do
+    export "GIT_CONFIG_KEY_${N_CFG}=${kv%%=*}" "GIT_CONFIG_VALUE_${N_CFG}=${kv#*=}"
+    N_CFG=$((N_CFG + 1))
+  done
+  export GIT_CONFIG_COUNT="$N_CFG"
 
   # A failed feature-branch push still records this run's state on main
   # below, then fails the step so the lost PR work is visible.
@@ -100,6 +114,40 @@ main() {
     fi
   fi
 
+  # scripts/, .github/ and harness-adapter/ are what later runs execute with the
+  # repo's credentials, so a run does not change them on main. Skills that need
+  # to (aeon-update, skill-repair, self-improve, ...) work on a branch and open a
+  # PR, which the feature-branch path above handles. Anything left here,
+  # uncommitted or committed by the run, is put back to remote main and reported.
+  # The local origin/main ref is the run's to move or delete, so main is fetched
+  # fresh; if that fails the run's starting commit stands in, and with neither
+  # the step fails rather than skip the check.
+  local -a GUARDED=(scripts .github harness-adapter)
+  local SRC="" BASE
+  if git fetch -q origin +refs/heads/main:refs/remotes/origin/main 2>/dev/null; then
+    SRC=origin/main
+  elif [ -n "${GITHUB_SHA:-}" ] && git cat-file -e "${GITHUB_SHA}^{commit}" 2>/dev/null; then
+    SRC="$GITHUB_SHA"
+  fi
+  if [ -z "$SRC" ]; then
+    echo "::error::Could not fetch main and no starting commit to check ${GUARDED[*]} against; not pushing"
+    finish 1
+  fi
+  # Only the run's own commits count: commits it pulled from main are already there.
+  BASE=$(git merge-base "$SRC" HEAD 2>/dev/null || echo "$SRC")
+  if [ -n "$(git status --porcelain -- "${GUARDED[@]}")" ] \
+    || [ -n "$(git diff --name-only "$BASE" HEAD -- "${GUARDED[@]}")" ]; then
+    echo "::error::This run changed ${GUARDED[*]} on main; those changes were dropped. Changes there belong on a branch with a PR."
+    for p in "${GUARDED[@]}"; do
+      if git cat-file -e "$SRC:$p" 2>/dev/null; then
+        git restore --source="$SRC" --staged --worktree -- "$p"
+      else
+        git rm -rfq --cached --ignore-unmatch -- "$p"
+      fi
+      git clean -fdq -- "$p"
+    done
+  fi
+
   # Commit any remaining changes on main
   git add -A
   if git diff --staged --quiet; then
@@ -114,7 +162,20 @@ main() {
     git commit -m "chore($LABEL): auto-commit $(date +%Y-%m-%d)"
   fi
   PUSH_RC=0
-  bash scripts/git-push-retry.sh || PUSH_RC=$?
+  local HELPERS
+  HELPERS=$(mktemp -d)
+  # In a workflow run the helpers come from the starting commit or not at all:
+  # falling back to the working-tree copy would run whatever the run left there.
+  if [ -z "${GITHUB_SHA:-}" ]; then
+    bash scripts/git-push-retry.sh || PUSH_RC=$?
+  elif git show "$GITHUB_SHA:scripts/git-push-retry.sh" > "$HELPERS/git-push-retry.sh" 2>/dev/null \
+    && git show "$GITHUB_SHA:scripts/audit.sh" > "$HELPERS/audit.sh" 2>/dev/null; then
+    AEON_AUDIT_SCRIPT="$HELPERS/audit.sh" bash "$HELPERS/git-push-retry.sh" || PUSH_RC=$?
+  else
+    echo "::error::Could not read the push helpers from the starting commit $GITHUB_SHA; not pushing"
+    PUSH_RC=1
+  fi
+  rm -rf "$HELPERS"
   finish "$PUSH_RC"
 }
 

@@ -15,12 +15,10 @@ import { MCP_CATALOG, tokenVar, oauthVar, MCP_SECRET_RE, mcpServerLabel } from "
 
 describe("resolveServiceMark", () => {
   it("gives every catalogued secret a logo or a glyph, never the initials badge", () => {
-    const unmarked = BUILTIN_SECRETS
-      .map(s => s.name)
-      .filter(name => {
-        const { src, glyph } = resolveServiceMark({ name });
-        return !src && !glyph;
-      });
+    const unmarked = BUILTIN_SECRETS.map(s => s.name).filter(name => {
+      const { src, glyph } = resolveServiceMark({ name });
+      return !src && !glyph;
+    });
     assert.deepEqual(unmarked, [], `secrets missing an icon: ${unmarked.join(", ")}`);
   });
 

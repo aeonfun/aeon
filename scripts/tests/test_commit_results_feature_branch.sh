@@ -45,7 +45,7 @@ setup() {
     cd "$d/seed" || exit 1
     git checkout -q -b main
     mkdir -p memory/logs scripts skills/demo
-    cp "$ROOT/scripts/git-push-retry.sh" "$ROOT/scripts/commit-run-results.sh" scripts/
+    cp "$ROOT/scripts/git-push-retry.sh" "$ROOT/scripts/commit-run-results.sh" "$ROOT/scripts/audit.sh" scripts/
     printf 'date,skill\n' > memory/token-usage.csv
     printf '# log\n' > memory/logs/2026-01-01.md
     printf 'v1\n' > skills/demo/SKILL.md
@@ -100,14 +100,16 @@ run_suite() {
 
   # --- Branch push rejected: state still recorded on main, step fails --------
   D="$TMP/$wf/reject"; setup "$D"
-  cat > "$D/run/.git/hooks/pre-push" <<'HOOK'
+  # The remote refuses feat/* (the commit step turns the run's own hooks off).
+  mkdir -p "$D/remote.git/hooks"
+  cat > "$D/remote.git/hooks/pre-receive" <<'HOOK'
 #!/usr/bin/env bash
-while read -r _ _ remote_ref _; do
-  case "$remote_ref" in refs/heads/feat/*) exit 1 ;; esac
+while read -r _ _ ref; do
+  case "$ref" in refs/heads/feat/*) exit 1 ;; esac
 done
 exit 0
 HOOK
-  chmod +x "$D/run/.git/hooks/pre-push"
+  chmod +x "$D/remote.git/hooks/pre-receive"
   out=$(cd "$D/run" && bash -e "$STEP" 2>&1); rc=$?
   [ "$rc" -ne 0 ] && pass "$wf: failed branch push fails the step (no silent || true)" || bad "$wf: branch push failure was swallowed"
   echo "$out" | grep -q '::error::Feature branch feat/demo failed to push' && pass "$wf: failure is annotated" || bad "$wf: no error annotation: $out"
@@ -153,6 +155,87 @@ HOOK
     && git -C "$D/remote.git" show main:memory/logs/2026-01-01.md | grep -q 'opened a PR' \
     && pass "$wf: runs the committed script, not the agent's working-tree edit" \
     || { bad "$wf: agent edit to commit-run-results.sh changed this run's commit (rc=$rc)"; echo "$out"; }
+
+  # --- Agent edited the push helpers or planted a hook: neither runs --------
+  D="$TMP/$wf/helperedit"; setup "$D"
+  MARK="$D/ran-from-working-tree"
+  printf '#!/usr/bin/env bash\ntouch "%s"\nexit 0\n' "$MARK" > "$D/run/scripts/git-push-retry.sh"
+  printf '#!/usr/bin/env bash\ntouch "%s"\nexit 0\n' "$MARK" > "$D/run/scripts/audit.sh"
+  mkdir -p "$D/run/.git/hooks"
+  printf '#!/usr/bin/env bash\ntouch "%s"\nexit 0\n' "$MARK" > "$D/run/.git/hooks/pre-commit"
+  printf '#!/usr/bin/env bash\ntouch "%s"\nexit 0\n' "$MARK" > "$D/run/.git/hooks/pre-push"
+  chmod +x "$D/run/.git/hooks/pre-commit" "$D/run/.git/hooks/pre-push"
+  out=$(cd "$D/run" && bash -e "$STEP" 2>&1); rc=$?
+  [ "$rc" -eq 0 ] && [ ! -e "$MARK" ] \
+    && git -C "$D/remote.git" show main:memory/logs/2026-01-01.md | grep -q 'opened a PR' \
+    && pass "$wf: push helpers come from the starting commit and hooks do not run" \
+    || { bad "$wf: an edited push helper or a hook ran in the commit step (rc=$rc, marker=$([ -e "$MARK" ] && echo yes || echo no))"; echo "$out"; }
+
+  # --- Run edits scripts/ and .github/ on main: dropped and reported ----------
+  D="$TMP/$wf/guarded"; setup "$D"
+  git -C "$D/run" checkout -q main 2>/dev/null || true
+  (
+    cd "$D/run" || exit 1
+    printf '# edited by the run\n' >> scripts/commit-run-results.sh          # uncommitted edit
+    mkdir -p .github/workflows; printf 'name: x\n' > .github/workflows/new.yml   # uncommitted new file
+    printf '# committed by the run\n' >> scripts/git-push-retry.sh             # committed by the run itself
+    git add scripts/git-push-retry.sh && git commit -qm "run committed a helper"
+  )
+  out=$(cd "$D/run" && bash -e "$STEP" 2>&1); rc=$?
+  R="$D/remote.git"
+  [ "$rc" -eq 0 ] && grep -q '::error::This run changed scripts .github harness-adapter on main' <<<"$out" \
+    && [ "$(git -C "$R" show main:scripts/git-push-retry.sh)" = "$(git -C "$D/seed" show main:scripts/git-push-retry.sh)" ] \
+    && [ "$(git -C "$R" show main:scripts/commit-run-results.sh)" = "$(git -C "$D/seed" show main:scripts/commit-run-results.sh)" ] \
+    && ! git -C "$R" cat-file -e main:.github/workflows/new.yml 2>/dev/null \
+    && git -C "$R" show main:memory/logs/2026-01-01.md | grep -q 'opened a PR' \
+    && pass "$wf: changes to scripts/ and .github/ never reach main, run state still does" \
+    || { bad "$wf: guarded paths reached main or the step broke (rc=$rc)"; echo "$out" | tail -15; }
+  [ -z "$(cd "$D/run" && git status --porcelain -- scripts .github)" ] && pass "$wf: guarded paths are clean in the checkout afterwards" || bad "$wf: guarded paths left dirty"
+
+  # --- The run deletes or moves its origin/main ref: the check still holds ----
+  for how in delete spoof; do
+    D="$TMP/$wf/guard-$how"; setup "$D"
+    (
+      cd "$D/run" || exit 1
+      git checkout -q main
+      printf '# committed by the run\n' >> scripts/git-push-retry.sh
+      git add scripts/git-push-retry.sh && git commit -qm "run committed a helper"
+      if [ "$how" = delete ]; then git update-ref -d refs/remotes/origin/main; else git update-ref refs/remotes/origin/main HEAD; fi
+    )
+    out=$(cd "$D/run" && bash -e "$STEP" 2>&1); rc=$?
+    R="$D/remote.git"
+    [ "$(git -C "$R" show main:scripts/git-push-retry.sh)" = "$(git -C "$D/seed" show main:scripts/git-push-retry.sh)" ] \
+      && grep -q '::error::This run changed' <<<"$out" \
+      && pass "$wf: a run that ${how}s origin/main still cannot land a scripts/ change" \
+      || { bad "$wf: ${how}d origin/main let a scripts/ change reach main (rc=$rc)"; echo "$out" | tail -10; }
+  done
+
+  # --- Push helpers missing at the starting commit: fail, never the run's copy -
+  D="$TMP/$wf/nohelper"; setup "$D"
+  MARK="$D/helper-ran"
+  printf 'touch %q\n' "$MARK" >> "$D/run/scripts/git-push-retry.sh"
+  # A starting commit that has the commit script but no push helper.
+  NOHELPER_SHA=$(
+    cd "$D/run" || exit 1
+    export GIT_INDEX_FILE="$D/nohelper.index"
+    git read-tree HEAD && git rm -q --cached scripts/git-push-retry.sh \
+      && git commit-tree "$(git write-tree)" -p HEAD -m "no helper"
+  )
+  out=$(cd "$D/run" && GITHUB_SHA="$NOHELPER_SHA" bash -e "$STEP" 2>&1); rc=$?
+  [ "$rc" -ne 0 ] && [ ! -e "$MARK" ] && grep -q 'Could not read the push helpers' <<<"$out" \
+    && pass "$wf: an unreadable starting commit fails the step instead of running the working-tree helper" \
+    || { bad "$wf: fell back to the working-tree helper (rc=$rc, marker=$([ -e "$MARK" ] && echo yes || echo no))"; echo "$out" | tail -10; }
+
+  # --- A skill that changes scripts/ on a branch (the PR path) still can ----
+  D="$TMP/$wf/guardedbranch"; setup "$D"
+  printf '# fixed by a PR branch\n' >> "$D/run/scripts/audit.sh"
+  out=$(cd "$D/run" && bash -e "$STEP" 2>&1); rc=$?
+  R="$D/remote.git"
+  [ "$rc" -eq 0 ] && git -C "$R" show feat/demo:scripts/audit.sh | grep -q 'fixed by a PR branch' \
+    && ! git -C "$R" show main:scripts/audit.sh | grep -q 'fixed by a PR branch' \
+    && ! grep -q '::error::This run changed' <<<"$out" \
+    && pass "$wf: a scripts/ change on a feature branch reaches the branch, not main, without an error" \
+    || { bad "$wf: feature-branch scripts/ change was blocked or leaked to main (rc=$rc)"; echo "$out" | tail -10; }
 
   # --- Dispatched on a non-main ref: no local main, branch keeps everything ---
   D="$TMP/$wf/nonmain"; setup "$D"

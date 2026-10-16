@@ -44,6 +44,64 @@ scorer, the json-render feed convert, and the conversational-reply poller
 (`messages.yml`). Each is tagged with an `aeon.component` resource attribute
 (`skill-run` / `scorer` / `feed` / `message`).
 
+### Run root, token usage and the quality score (claude)
+
+For a claude run, run-harness also sends one **root span** per call itself
+(`harness-adapter/lib/otel-span.sh`, OTLP/JSON over curl, after the run, also
+when the run fails). It carries the trace name (`aeon:<component>:<skill>`), tags
+`skill:<name>` and `component:<name>`, and one `usage <model>` GENERATION per
+model with the run's real token counts from the envelope's `modelUsage`.
+Langfuse prices those from its own model table, so traces, sessions and the cost
+dashboards show real tokens and dollars. Claude Code's own `total_cost_usd` is
+kept only as `aeon.cost_usd_reported` (it misprices model ids it does not know).
+
+`TRACEPARENT` puts Claude Code's interaction span under that root. With a
+subscription OAuth token, Claude Code starts its span exporter only after a
+remote managed settings fetch while its first turn does not wait, so the
+interaction span used to start on a no-op tracer and every span became its own
+one-span trace (seen on every aeon-agent run from Claude Code 2.1.287 on; an
+instance with an MCP server was spared because connecting it delays the first
+turn). The claude adapter therefore holds the first turn about 1s with a
+`SessionStart` hook while tracing is on. Set `AEON_OTEL_STARTUP_DELAY=0` to drop it.
+
+The trace id comes from the run (`AEON_LF_TRACE_ID`, set by `langfuse-otel.sh`),
+so the scorer step can post its 1-5 grade to the skill run's trace with
+`scripts/langfuse-score.sh`: a NUMERIC `quality` score (comment = the judge's
+assessment) plus one CATEGORICAL `quality_flag` per flag. Non-claude runs get the
+score on the run's session instead. The "Update cron state" step also posts one
+BOOLEAN `run_ok` per run (1 = the Run step succeeded, the error line as comment on
+a failure), so success rate per skill sits next to quality in the score charts.
+To get typed score charts, create these score configs once per project
+(Settings, Scores): `quality` NUMERIC 1-5, `quality_flag` CATEGORICAL with the
+flags the scorer emits, `run_ok` BOOLEAN.
+
+### Filters: environment, user, release, version, tags
+
+`langfuse-otel.sh` and the root span set the Langfuse handles so each one slices
+something useful:
+
+| Handle | Value | Use |
+|---|---|---|
+| environment | `production` on the default branch, `branch` on any other branch (verify runs), `local` outside Actions; `LANGFUSE_TRACING_ENVIRONMENT` overrides | keep test runs out of the production view |
+| userId | the skill (`aeon:<component>` without one) | the Users page is a per-skill table of traces, tokens and cost |
+| release | `canon-<sha7>` of aeon-update's `baseline_sha`, else the short `GITHUB_SHA` | before and after a canon sync |
+| version | first 7 chars of the skill's `SKILL.md` blob hash (root span and usage rows) | a skill edit shows up as a new version |
+| tags | `skill:<name>`, `component:<name>`, `status:error` on a failed run | filter and group cost by skill |
+
+The root span is type `agent` for the skill run and `evaluator` for the scorer;
+a failed run gets level ERROR, the `status:error` tag, metadata `error_class`
+and a status message `<error_class>: <reason>` (reason: `rc 124`, the result
+subtype such as `error_max_turns`, `exit <rc>` or `api_error <status>`). The
+class is one of the error classes every Langfuse sender shares, set from facts
+first: rc 124 is `timeout`, `error_max_*` is `budget_cap`, API status 429 /
+401-403 / 402 / other is `rate_limit` / `auth` / `credits` / `upstream_error`,
+`error_during_execution` is `tool_failed`; else the result text (or the raw
+output of a run that left no envelope) goes through the shared rule table. That
+text only picks the class and is never sent. The scorer root gets the same
+fields. Tool spans come from Claude Code and carry no class. Its metadata
+carries `permission_denials`, the number of tool calls the allowlist refused. Trace metadata also carries `instance` (repo name) and `trigger` (event).
+The usage rows carry the same trace name and tags, so cost groups by skill.
+
 ### The non-claude harnesses (grok / codex / pi / vibe / kimi / fx / cursor / hermes)
 
 Those CLIs have no native OTEL export, so their *internal* spans (per-tool, per
@@ -100,6 +158,7 @@ see the whole run in one place rather than one session per process.
 | `LANGFUSE_SECRET_KEY` | secret | — | Langfuse secret key (`sk-lf-…`). **Required** to activate. |
 | `LANGFUSE_HOST` | variable | `https://cloud.langfuse.com` | Langfuse base URL / region. `LANGFUSE_BASE_URL` is accepted as an alias. |
 | `LANGFUSE_TRACING` | variable | `1` | Set to `0`/`false`/`off` to force-disable even with keys set. |
+| `LANGFUSE_TRACING_ENVIRONMENT` | env | branch-based | Force the Langfuse environment (lowercase letters, digits, `-`, `_`). |
 | `LANGFUSE_LOG_CONTENT` | variable | `1` | `1` = capture prompts + responses + tool params; `0` = metadata only (redact all content); `all` = also capture tool input/output bodies. |
 
 ## Privacy
@@ -118,12 +177,11 @@ Confirmed against a live run (Claude Code `2.1.168`): traces, span tree, latency
 tool commands, prompts, and the `aeon.*` tags all flow correctly. Two gaps remain,
 both upstream — **neither is fixable from this shim's env vars**:
 
-- **Langfuse cost / token rollups are empty** (`usageDetails`, `costDetails`,
-  `totalCost`, and the rendered `input`/`output` fields). Langfuse reads usage
-  from `gen_ai.usage.*` and input from `gen_ai.prompt`, but Claude Code emits
-  **bare** `input_tokens` / `user_prompt`, so they land in
-  `metadata.attributes.*` — present and viewable per span, just not aggregated or
-  costed.
+- **Per-call token counts stay unaggregated.** Langfuse reads usage from
+  `gen_ai.usage.*`, but Claude Code emits **bare** `input_tokens` on each
+  `claude_code.llm_request`, so those land in `metadata.attributes.*`. Per-run
+  totals and cost are covered by the root span's `usage <model>` generations
+  (above); per-call cost would still need a collector.
 - **Assistant response text never appears.** Claude Code puts it on the
   `claude_code.assistant_response` **event** (the OTEL *logs* signal), which
   Langfuse's OTLP endpoint doesn't ingest (traces only).
@@ -133,11 +191,10 @@ cost mapping.** Rationale: it adds a networked process to the critical path of
 every run (a reliability risk for a reporting nicety), it's hand-rolled OTLP
 parsing, and it shims *beta* Claude Code attribute names that will most likely
 align with `gen_ai.usage.*` upstream (or Langfuse will add native Claude-Code
-mapping) — at which point the proxy is dead code. Per-run token/cost data is
-already captured durably in `memory/token-usage.csv`, so the only thing missing
-is a Langfuse-native cost *view*. Revisit only if upstream stays unaligned **and**
-Langfuse becomes the primary cost surface across many repos. Model prices (with
-cache-token pricing) would also need adding in Langfuse's UI regardless.
+mapping), at which point the proxy is dead code. Per-run tokens and cost already
+reach Langfuse through the run root span (and `memory/token-usage.csv`), so only
+per-call cost is missing. Revisit only if upstream stays unaligned **and**
+per-call cost in Langfuse becomes worth a sidecar.
 
 ## Network note
 

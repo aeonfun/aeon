@@ -24,6 +24,7 @@ on:
       - 'apps/dashboard/lib/harness-auth.ts'
       - 'apps/dashboard/lib/gateway-registry.ts'
       - '.github/workflows/ci-tests.yml'
+      - '.github/actions/install-bubblewrap/**'
   push:
     branches: [main]
     paths:
@@ -40,6 +41,7 @@ on:
       - 'apps/dashboard/lib/harness-auth.ts'
       - 'apps/dashboard/lib/gateway-registry.ts'
       - '.github/workflows/ci-tests.yml'
+      - '.github/actions/install-bubblewrap/**'
   workflow_dispatch:
 
 permissions:
@@ -53,7 +55,12 @@ concurrency:
 
 jobs:
   test:
-    runs-on: ubuntu-24.04
+    # Blacksmith, not GitHub: ~50 short serial test steps, so single-core speed
+    # decides. Median job 51s vs 64.5s on GitHub's public 4 vCPU runner (queue 7s
+    # vs 2s), live bwrap checks pass; Blacksmith 4 vCPU was no faster (50s).
+    # Bench: runs 38823788873 + 38825096928. Back to ubuntu-24.04 if Blacksmith
+    # is down, since this job gates every PR through CI Gate.
+    runs-on: blacksmith-2vcpu-ubuntu-2404
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: Install deps
@@ -65,22 +72,7 @@ jobs:
       # never silently skip on CI (the test step also requires them, below).
       - name: Install bubblewrap (live read-only sandbox test)
         timeout-minutes: 5
-        run: |
-          set -euo pipefail
-          # Cached lists first; refresh only on a miss, each update capped at 90s
-          # (a slow mirror hung `apt-get update` past the step cap on 2026-10-07).
-          APT_OPTS="-o DPkg::Lock::Timeout=120 -o Acquire::Retries=3 -o Acquire::http::Timeout=20 -o Acquire::https::Timeout=20"
-          if ! command -v bwrap >/dev/null 2>&1; then
-            if ! sudo apt-get $APT_OPTS install -y -qq bubblewrap; then
-              for attempt in 1 2; do
-                sudo timeout 90 apt-get $APT_OPTS update -qq && break
-                echo "::warning::apt-get update attempt $attempt timed out or failed"
-              done
-              sudo apt-get $APT_OPTS install -y -qq bubblewrap
-            fi
-          fi
-          sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0 || true
-          bwrap --dev-bind / / --ro-bind /tmp /tmp true && echo 'bwrap: userns OK'
+        uses: ./.github/actions/install-bubblewrap
       - name: notify_format unit tests
         run: python3 scripts/tests/test_notify_format.py
       - name: notify integration tests
@@ -198,6 +190,8 @@ jobs:
         run: bash scripts/tests/test_parse_aeon_config.sh
       - name: scheduler tick end-to-end tests
         run: bash scripts/tests/test_scheduler_tick.sh
+      - name: notify step undelivered-payload warning test
+        run: bash scripts/tests/test_notify_step_undelivered.sh
       - name: circuit-breaker scheduler decision tests
         run: bash scripts/tests/test_breaker.sh
       - name: reactive-trigger when-condition tests
@@ -216,6 +210,8 @@ jobs:
         run: bash scripts/tests/test_git_push_retry.sh
       - name: Commit results feature-branch state split tests
         run: bash scripts/tests/test_commit_results_feature_branch.sh
+      - name: git-config-guard tests (planted .git/config does not run)
+        run: bash scripts/tests/test_git_config_guard.sh
       - name: Standing instructions restore tests
         run: bash scripts/tests/test_standing_instructions_restore.sh
       - name: dev-loop deterministic handoff tests
@@ -254,3 +250,5 @@ jobs:
         run: bash scripts/tests/test_riva_candidates.sh
       - name: vuln-scanner Riva kernel contract tests
         run: bash scripts/tests/test_riva_kernel_contract.sh
+      - name: anatomy skill integration tests
+        run: bash scripts/tests/test_anatomy_integration.sh

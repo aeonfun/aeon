@@ -30,7 +30,10 @@ export function TelegramCommandsCard({ tokenSet }: TelegramCommandsCardProps) {
         setStatus({ ok: false, msg: data.error || 'Could not start the registration workflow.' })
         return
       }
-      setStatus({ ok: true, msg: 'Registering… the workflow is running in GitHub Actions; your / menu updates in ~30s.' })
+      setStatus({
+        ok: true,
+        msg: 'Registering… the workflow is running in GitHub Actions; your / menu updates in ~30s.',
+      })
     } catch {
       setStatus({ ok: false, msg: 'Could not reach the dashboard API.' })
     } finally {
@@ -51,15 +54,19 @@ export function TelegramCommandsCard({ tokenSet }: TelegramCommandsCardProps) {
             <span className="text-primary-70">/skillname</span> runs instantly, no LLM call.
           </div>
           {status && (
-            <p className={`text-[11px] font-mono mt-2 ${status.ok ? 'text-aeon-green' : 'text-aeon-red-alert/80'}`}>{status.msg}</p>
+            <p className={`text-[11px] font-mono mt-2 ${status.ok ? 'text-aeon-green' : 'text-aeon-red-alert/80'}`}>
+              {status.msg}
+            </p>
           )}
         </div>
         <button
           onClick={register}
           disabled={!tokenSet || busy}
-          title={tokenSet
-            ? 'Runs the Setup Telegram Commands workflow - reuses the stored bot token server-side, no pasting.'
-            : 'Set TELEGRAM_BOT_TOKEN first; commands register automatically once it is saved.'}
+          title={
+            tokenSet
+              ? 'Runs the Setup Telegram Commands workflow - reuses the stored bot token server-side, no pasting.'
+              : 'Set TELEGRAM_BOT_TOKEN first; commands register automatically once it is saved.'
+          }
           className="text-[11px] text-aeon-bg bg-aeon-fg font-mono px-2.5 py-1 hover:opacity-90 transition-opacity disabled:opacity-50 shrink-0"
         >
           {busy ? 'Registering…' : 'Register again'}

@@ -24,7 +24,27 @@ export async function GET() {
 
 export async function PATCH(request: Request) {
   try {
-    const { name, enabled, schedule, var: skillVar, model, skillModel, harness, skillHarness, jsonrenderEnabled } = await request.json() as { name?: string; enabled?: boolean; schedule?: string; var?: string; model?: string; skillModel?: string; harness?: string; skillHarness?: string; jsonrenderEnabled?: boolean }
+    const {
+      name,
+      enabled,
+      schedule,
+      var: skillVar,
+      model,
+      skillModel,
+      harness,
+      skillHarness,
+      jsonrenderEnabled,
+    } = (await request.json()) as {
+      name?: string
+      enabled?: boolean
+      schedule?: string
+      var?: string
+      model?: string
+      skillModel?: string
+      harness?: string
+      skillHarness?: string
+      jsonrenderEnabled?: boolean
+    }
 
     const sync = await withFileLock('aeon.yml', async () => {
       const { content, sha } = await getFileContent('aeon.yml')
@@ -43,7 +63,14 @@ export async function PATCH(request: Request) {
         updated = updateHarnessInConfig(updated, harness as Harness)
       }
 
-      if (name && (typeof enabled === 'boolean' || typeof schedule === 'string' || typeof skillVar === 'string' || typeof skillModel === 'string' || typeof skillHarness === 'string')) {
+      if (
+        name &&
+        (typeof enabled === 'boolean' ||
+          typeof schedule === 'string' ||
+          typeof skillVar === 'string' ||
+          typeof skillModel === 'string' ||
+          typeof skillHarness === 'string')
+      ) {
         // upsert, not update: the skill list is built from disk, so the UI can
         // toggle a skill that has no aeon.yml entry yet (a freshly added
         // SKILL.md). A plain update would silently no-op on it.
@@ -76,7 +103,7 @@ export async function PATCH(request: Request) {
 
 export async function DELETE(request: Request) {
   try {
-    const { name } = await request.json() as { name?: string }
+    const { name } = (await request.json()) as { name?: string }
     if (!name || !/^[a-z][a-z0-9-]*$/.test(name)) {
       return NextResponse.json({ error: 'Invalid skill name' }, { status: 400 })
     }

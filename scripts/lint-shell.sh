@@ -56,20 +56,62 @@ if [ "${#FILES[@]}" -eq 0 ]; then
   exit 1
 fi
 
-echo "lint-shell: checking ${#FILES[@]} shell files"
+JOBS="$(getconf _NPROCESSORS_ONLN 2>/dev/null || echo 2)"
+echo "lint-shell: checking ${#FILES[@]} shell files on $JOBS cores"
 echo "shellcheck $(shellcheck --version | awk '/version:/{print $2}')"
 echo
 
-# Advisory pass first (never fails the build) so the backlog is visible in logs.
-advisory_count="$(shellcheck -x --severity="$ADVISORY_SEVERITY" --format=gcc "${FILES[@]}" 2>/dev/null | grep -cE ':[0-9]+:[0-9]+:' || true)"
+OUT_DIR="$(mktemp -d)"
+trap 'rm -rf "$OUT_DIR"' EXIT
+export OUT_DIR
+
+# run_shellcheck <severity>: prints every finding at or above <severity>, one
+# gcc-format line each (file:line:col: level: message [SCxxxx]), sorted.
+# One shellcheck process uses one core, so the files are split into batches across all
+# cores, each batch writing its own file (parallel writes to one pipe can split
+# lines). Exit 1 means findings; anything higher (bad flag, unreadable file)
+# fails the run instead of passing as clean.
+run_shellcheck() {
+  rm -f "$OUT_DIR"/sc.*
+  # shellcheck disable=SC2016 # $SEV, $OUT_DIR and $@ expand in the inner sh
+  if ! printf '%s\0' "${FILES[@]}" | SEV="$1" xargs -0 -P "$JOBS" -n 16 sh -c '
+    shellcheck -x --severity="$SEV" --format=gcc "$@" > "$(mktemp "$OUT_DIR/sc.XXXXXX")"
+    [ $? -le 1 ]' sh; then
+    echo "lint-shell: shellcheck itself failed (see above)" >&2
+    return 2
+  fi
+  cat "$OUT_DIR"/sc.* 2>/dev/null | sort
+}
+
+# gcc output names error and warning but folds info and style into "note", so the
+# gate can be read off the advisory pass only when it is error or warning. A
+# stricter gate gets its own pass.
+case "$GATE_SEVERITY:$ADVISORY_SEVERITY" in
+  error:error | error:warning | error:info | error:style) gate_levels='error' ;;
+  warning:warning | warning:info | warning:style) gate_levels='error|warning' ;;
+  *) gate_levels='' ;;
+esac
+
+# Advisory pass (never fails the build) so the backlog is visible in logs.
+advisory="$(run_shellcheck "$ADVISORY_SEVERITY")" || exit 2
+advisory_count="$(printf '%s' "$advisory" | grep -cE ':[0-9]+:[0-9]+:' || true)"
 if [ "$advisory_count" -gt 0 ]; then
   echo "::group::shellcheck advisory (severity >= $ADVISORY_SEVERITY, non-blocking): $advisory_count"
-  shellcheck -x --severity="$ADVISORY_SEVERITY" "${FILES[@]}" || true
+  printf '%s\n' "$advisory"
   echo "::endgroup::"
   echo
 fi
 
-# Gate pass: this one decides the exit code.
+# Gate: this one decides the exit code.
 echo "shellcheck gate (severity >= $GATE_SEVERITY):"
-shellcheck -x --severity="$GATE_SEVERITY" "${FILES[@]}"
+if [ -n "$gate_levels" ]; then
+  gate="$(printf '%s' "$advisory" | grep -E ": ($gate_levels): " || true)"
+else
+  gate="$(run_shellcheck "$GATE_SEVERITY")" || exit 2
+fi
+if [ -n "$gate" ]; then
+  printf '%s\n' "$gate"
+  echo "lint-shell: FAIL - findings at or above '$GATE_SEVERITY'" >&2
+  exit 1
+fi
 echo "lint-shell: OK - no findings at or above '$GATE_SEVERITY'"

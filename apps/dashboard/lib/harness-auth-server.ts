@@ -29,9 +29,11 @@ export function captureHarnessCreds(harness: string): { secret: string } {
   const spec = HARNESS_AUTH[harness]
   if (!spec?.oauth) throw new Error(`${harness} has no OAuth capture`)
   const home = homedir()
-  const present = spec.oauth.credPaths.filter((p) => existsSync(join(home, p)))
+  const present = spec.oauth.credPaths.filter(p => existsSync(join(home, p)))
   if (present.length === 0) {
-    throw new Error(`Login completed but none of ${spec.oauth.credPaths.join(', ')} was found under $HOME. Try the login in a terminal, then connect again.`)
+    throw new Error(
+      `Login completed but none of ${spec.oauth.credPaths.join(', ')} was found under $HOME. Try the login in a terminal, then connect again.`,
+    )
   }
   const archive = execFileSync('tar', ['czf', '-', '-C', home, ...present], { maxBuffer: 8 * 1024 * 1024 })
   ghSecretSet(spec.oauth.secret, archive.toString('base64'))
@@ -44,7 +46,11 @@ export function captureHarnessCreds(harness: string): { secret: string } {
 export function driveTtyLogin(harness: string): void {
   const spec = HARNESS_AUTH[harness]
   if (!spec?.oauth) throw new Error(`${harness} has no OAuth login`)
-  execFileSync(spec.oauth.cli, spec.oauth.deviceArgs.length && !process.stdout.isTTY ? spec.oauth.deviceArgs : spec.oauth.ttyArgs, { stdio: 'inherit' })
+  execFileSync(
+    spec.oauth.cli,
+    spec.oauth.deviceArgs.length && !process.stdout.isTTY ? spec.oauth.deviceArgs : spec.oauth.ttyArgs,
+    { stdio: 'inherit' },
+  )
 }
 
 // Drive the DEVICE login for the dashboard route, waiting on the tab the CLI
@@ -64,25 +70,32 @@ export function driveDeviceLogin(harness: string, timeoutMs = 240_000): Promise<
       return reject(e)
     }
     let buf = ''
-    const onData = (chunk: Buffer) => { buf += chunk.toString() }
+    const onData = (chunk: Buffer) => {
+      buf += chunk.toString()
+    }
     child.stdout?.on('data', onData)
     child.stderr?.on('data', onData)
     // The first EXTERNAL URL in the output, quoted back only when the flow fails
     // so an operator whose browser never opened can finish by hand. codex prints
     // its localhost callback server first (http://localhost:1455), which is not
     // the auth page, so skip loopback hosts.
-    const verifyUrl = () => (buf.match(new RegExp(DEVICE_URL_RE.source, 'g')) || [])
-      .find((u) => !/localhost|127\.0\.0\.1|\[::1\]/.test(u)) ?? ''
+    const verifyUrl = () =>
+      (buf.match(new RegExp(DEVICE_URL_RE.source, 'g')) || []).find(u => !/localhost|127\.0\.0\.1|\[::1\]/.test(u)) ??
+      ''
     const timer = setTimeout(() => {
       child.kill()
       const url = verifyUrl()
-      reject(new Error(`Timed out waiting for approval. Approve in the browser and connect again.${url ? ` If no tab opened, visit ${url}` : ''}`))
+      reject(
+        new Error(
+          `Timed out waiting for approval. Approve in the browser and connect again.${url ? ` If no tab opened, visit ${url}` : ''}`,
+        ),
+      )
     }, timeoutMs)
     child.on('error', (e: NodeJS.ErrnoException) => {
       clearTimeout(timer)
       reject(e.code === 'ENOENT' ? new Error(`${cli} CLI not found — install it first.`) : e)
     })
-    child.on('close', (code) => {
+    child.on('close', code => {
       clearTimeout(timer)
       if (code === 0) resolve()
       else reject(new Error(`${cli} login exited ${code}. ${buf.slice(-200)}`))

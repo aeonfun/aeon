@@ -123,7 +123,7 @@ rm -rf "$d"
 # failed and every imported skill was recorded with commit_sha "unknown".
 d=$(mktemp -d)
 mkdir -p "$d/bin" "$d/scripts/lib" "$d/skills/security" "$d/fakebin" \
-  "$d/fixture/pack-main/skills/demo"
+  "$d/fixture/pack-main/skills/demo" "$d/fixture/pack-main/scripts"
 cp "$ROOT/bin/add-skill" "$d/bin/"
 cp "$ROOT/scripts/lib/skill-install.sh" "$d/scripts/lib/"
 cat > "$d/fixture/pack-main/skills/demo/SKILL.md" <<'EOF'
@@ -132,6 +132,8 @@ name: demo
 description: Installer provenance fixture.
 ---
 EOF
+printf '%s\n' '---' 'name: scripts' 'description: Not a skill name.' '---' \
+  > "$d/fixture/pack-main/scripts/SKILL.md"
 tar -czf "$d/fixture/repo.tar.gz" -C "$d/fixture" pack-main
 cat > "$d/fakebin/curl" <<'EOF'
 #!/usr/bin/env bash
@@ -174,6 +176,17 @@ if grep -q -- '-X GET repos/example/pack/commits -f path=skills/demo/SKILL.md -f
 else
   bad "add-skill queries the commits endpoint with GET and the fetched ref (got: '$(cat "$d/gh-args")')"
 fi
+# A name that is not a plain slug must not reach the rm -rf/cp of the destination.
+# Install the real skill first (above), then ask for a path outside skills/.
+for bad_name in ../scripts ../../etc .. scripts/x 'a b'; do
+  out=$(cd "$d" && PATH="$d/fakebin:$PATH" FIXTURE_TARBALL="$d/fixture/repo.tar.gz" \
+    GH_ARGS_LOG="$d/gh-args" GH_SHA="$sha" bin/add-skill example/pack "$bad_name" 2>&1)
+  if [[ -f "$d/scripts/lib/skill-install.sh" ]] && [[ "$out" == *"not a valid skill name"* ]]; then
+    pass "add-skill refuses the name '$bad_name'"
+  else
+    bad "add-skill refuses the name '$bad_name' (got: $out)"
+  fi
+done
 rm -rf "$d"
 
 # ── 5. aeon.yml schedules are rewritten to something cron-due.sh can fire ────

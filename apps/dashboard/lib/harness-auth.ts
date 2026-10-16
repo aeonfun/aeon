@@ -142,9 +142,7 @@ export const HARNESS_AUTH: Record<string, HarnessAuthSpec | undefined> = HARNESS
 // credential. Derive it from the registry so adding a harness in one place
 // cannot leave its secret looking like a generic pasteable API key.
 export const OAUTH_SECRET_HARNESS: Readonly<Record<string, string>> = Object.fromEntries(
-  Object.entries(HARNESS_AUTH).flatMap(([harness, spec]) =>
-    spec?.oauth ? [[spec.oauth.secret, harness]] : [],
-  ),
+  Object.entries(HARNESS_AUTH).flatMap(([harness, spec]) => (spec?.oauth ? [[spec.oauth.secret, harness]] : [])),
 )
 
 // The URL a device-auth flow prints for the operator to approve in the browser.

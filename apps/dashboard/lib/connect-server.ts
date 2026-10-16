@@ -14,8 +14,19 @@ import { syncGatewayProvider, syncHarness } from './gateway'
 import { GATEWAY_SECRET_NAMES } from './gateway-registry'
 import { CLAUDE_AUTH_SECRETS } from './constants'
 import {
-  CAPTURE_MAX_CHARS, CAPTURE_SPECS, TarRefused, acceptedSecrets, buildTar, classifyCapture, detectPaste, harnessName,
-  isAppleDouble, normName, parseTarEntries, type Detection, type TarEntry,
+  CAPTURE_MAX_CHARS,
+  CAPTURE_SPECS,
+  TarRefused,
+  acceptedSecrets,
+  buildTar,
+  classifyCapture,
+  detectPaste,
+  harnessName,
+  isAppleDouble,
+  normName,
+  parseTarEntries,
+  type Detection,
+  type TarEntry,
 } from './connect-detect'
 import type { Harness } from './types'
 
@@ -26,13 +37,19 @@ export class ConnectInputError extends Error {}
 // Returns the detection plus the canonical single-line base64 to store.
 export function inspectCapture(raw: string): { detection: Detection; value: string } {
   const b64 = raw.replace(/\s+/g, '')
-  const fail = (note: string) => ({ detection: { state: 'error', label: 'Login capture', note } as Detection, value: '' })
+  const fail = (note: string) => ({
+    detection: { state: 'error', label: 'Login capture', note } as Detection,
+    value: '',
+  })
   if (b64.length > CAPTURE_MAX_CHARS) {
-    return fail(`This capture is ${Math.ceil(b64.length / 1024)} KB; GitHub secrets max out at 48 KB. Capture only the files in the step 1 command.`)
+    return fail(
+      `This capture is ${Math.ceil(b64.length / 1024)} KB; GitHub secrets max out at 48 KB. Capture only the files in the step 1 command.`,
+    )
   }
   const bytes = Buffer.from(b64, 'base64')
   // Buffer.from silently skips junk; a strict round-trip catches a truncated paste.
-  if (bytes.toString('base64').replace(/=+$/, '') !== b64.replace(/=+$/, '')) return fail('The capture is not valid base64. Copy it again in one piece.')
+  if (bytes.toString('base64').replace(/=+$/, '') !== b64.replace(/=+$/, ''))
+    return fail('The capture is not valid base64. Copy it again in one piece.')
   let tar: Buffer
   try {
     tar = gunzipSync(bytes, { maxOutputLength: 4 * 1024 * 1024 })
@@ -43,16 +60,20 @@ export function inspectCapture(raw: string): { detection: Detection; value: stri
   try {
     entries = parseTarEntries(new Uint8Array(tar))
   } catch (e) {
-    return fail(e instanceof TarRefused ? e.message : 'The capture is not a tar archive. Run the step 1 command as shown.')
+    return fail(
+      e instanceof TarRefused ? e.message : 'The capture is not a tar archive. Run the step 1 command as shown.',
+    )
   }
   const detection = classifyCapture(entries)
   if (detection.state !== 'ok') return { detection, value: '' }
   // Store a clean re-pack of just the verified regular files (no pax records,
   // AppleDouble sidecars, or directory entries), never the pasted bytes.
-  const files = entries.filter((e) => e.type === 'file' && !isAppleDouble(e.name))
-    .map((e) => ({ name: normName(e.name), data: e.data, mtime: e.mtime }))
+  const files = entries
+    .filter(e => e.type === 'file' && !isAppleDouble(e.name))
+    .map(e => ({ name: normName(e.name), data: e.data, mtime: e.mtime }))
   const value = gzipSync(Buffer.from(buildTar(files)), { level: 9 }).toString('base64')
-  if (value.length > CAPTURE_MAX_CHARS) return fail('This capture is over 48 KB, the GitHub secret limit. Capture only the files in the step 1 command.')
+  if (value.length > CAPTURE_MAX_CHARS)
+    return fail('This capture is over 48 KB, the GitHub secret limit. Capture only the files in the step 1 command.')
   return { detection, value }
 }
 
@@ -103,7 +124,13 @@ export async function saveConnection(
   // that harness (same as the one-click logins always did).
   if (detection.captureHarness) {
     const sync = await deps.syncHarness(detection.captureHarness as Harness)
-    return { ok: true, secret: detection.secret, label: detection.label, harness: detection.captureHarness, synced: sync.synced }
+    return {
+      ok: true,
+      secret: detection.secret,
+      label: detection.label,
+      harness: detection.captureHarness,
+      synced: sync.synced,
+    }
   }
   return { ok: true, secret: detection.secret, label: detection.label }
 }
@@ -113,8 +140,14 @@ export async function saveConnection(
 // Env vars in the dashboard's own process that hold a model key, by name. The
 // secret has the same name.
 export const FOUND_ENV_KEYS = [
-  'ANTHROPIC_API_KEY', 'OPENROUTER_API_KEY', 'OPENAI_API_KEY', 'XAI_API_KEY',
-  'MISTRAL_API_KEY', 'MOONSHOT_API_KEY', 'CURSOR_API_KEY', 'AI_GATEWAY_API_KEY',
+  'ANTHROPIC_API_KEY',
+  'OPENROUTER_API_KEY',
+  'OPENAI_API_KEY',
+  'XAI_API_KEY',
+  'MISTRAL_API_KEY',
+  'MOONSHOT_API_KEY',
+  'CURSOR_API_KEY',
+  'AI_GATEWAY_API_KEY',
 ]
 
 export interface FoundItem {
@@ -133,7 +166,12 @@ export function listFound(harness: string): FoundItem[] {
   const items: FoundItem[] = []
   for (const spec of CAPTURE_SPECS) {
     if (spec.harness !== harness || !existsSync(join(home, spec.paths[0]))) continue
-    items.push({ id: `login:${spec.harness}`, kind: 'login', label: `${harnessName(spec.harness)} login in ~/${spec.paths[0]}`, secret: spec.secret })
+    items.push({
+      id: `login:${spec.harness}`,
+      kind: 'login',
+      label: `${harnessName(spec.harness)} login in ~/${spec.paths[0]}`,
+      secret: spec.secret,
+    })
   }
   const accepted = acceptedSecrets(harness)
   for (const name of FOUND_ENV_KEYS) {
@@ -148,16 +186,16 @@ export function listFound(harness: string): FoundItem[] {
 // server.
 export async function connectFound(id: string, harness: string, deps: SaveDeps = defaultDeps): Promise<SaveResult> {
   if (!isLocal()) throw new ConnectInputError('Only available when the dashboard runs on your machine.')
-  const item = listFound(harness).find((i) => i.id === id)
+  const item = listFound(harness).find(i => i.id === id)
   if (!item) throw new ConnectInputError('That login or key is no longer on this machine. Refresh and try again.')
   if (item.kind === 'env') {
     await deps.setSecret(item.secret, process.env[item.secret]!.trim())
     if (needsGatewaySync(item.secret)) await deps.syncGateway()
     return { ok: true, secret: item.secret, label: item.secret }
   }
-  const spec = CAPTURE_SPECS.find((s) => s.harness === harness)!
+  const spec = CAPTURE_SPECS.find(s => s.harness === harness)!
   const home = homedir()
-  const present = spec.paths.filter((p) => existsSync(join(home, p)))
+  const present = spec.paths.filter(p => existsSync(join(home, p)))
   const archive = execFileSync('tar', ['czf', '-', '-C', home, ...present], { maxBuffer: 8 * 1024 * 1024 })
   return saveConnection({ harness, value: archive.toString('base64') }, deps)
 }

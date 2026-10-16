@@ -7,8 +7,7 @@ import type { ReactNode } from 'react'
 // like "on-chain", "(bk_...)" or "X-API-Key" are never linked by accident.
 const URL_RE = /((?:https?:\/\/)?(?:[a-z0-9-]+\.)+[a-z]{2,}(?:\/[^\s)]*)?)/gi
 
-const LINK_CLS =
-  'text-aeon-red/80 hover:text-aeon-red underline decoration-dotted underline-offset-2 transition-colors'
+const LINK_CLS = 'text-aeon-red/80 hover:text-aeon-red underline decoration-dotted underline-offset-2 transition-colors'
 
 export function linkify(text: string): ReactNode {
   if (!text) return text
@@ -36,7 +35,7 @@ export function linkify(text: string): ReactNode {
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        onClick={(e) => e.stopPropagation()}
+        onClick={e => e.stopPropagation()}
         className={LINK_CLS}
       >
         {url}

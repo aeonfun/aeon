@@ -343,7 +343,8 @@ Total infrastructure on your side: one GitHub App and a session store. No agent 
 
 ### 5.4 Other entry points worth knowing
 
-- **MCP server** ([`apps/mcp-server`](../apps/mcp-server/README.md)) - every skill as an `aeon-<slug>` tool in Claude Desktop/Code; the local, push-button complement to your hosted integration.
+- **Hosted MCP server** ([www.aeon.fun/connect/mcp](https://www.aeon.fun/connect/mcp)) - Aeon Connect's remote MCP server (Streamable HTTP, OAuth 2.1 with GitHub sign-in): users drive their own instance from ChatGPT, Claude, Claude Code or Cursor, with runs on the instance's own GitHub Actions. Secret values are never readable or writable over it.
+- **Local MCP server** ([`apps/mcp-server`](../apps/mcp-server/README.md)) - every skill as an `aeon-<slug>` tool in Claude Desktop/Code; the local, push-button complement to your hosted integration.
 - **`ai-build` label** - label any GitHub issue `ai-build` and the agent implements it and opens a PR; your app can create labeled issues to request work.
 - **Telegram instant mode** ([`apps/webhook`](../apps/webhook/README.md)) - ~1s command replies via a Cloudflare Worker, if your product fronts a chat surface.
 

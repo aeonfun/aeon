@@ -6,7 +6,10 @@ while [ "$#" -gt 0 ]; do
   if [ "$1" = "-K" ] && [ "$#" -gt 1 ]; then cfg=$(cat "$2"); shift; fi
   shift
 done
-state=${FAKE_CURL_STATE:?FAKE_CURL_STATE is required}
+# secretcurl runs curl with a near-empty environment, so the test hands its
+# settings over as files under $HOME (one of the few variables kept).
+state="$HOME/fake-curl-state"
+FAKE_CURL_HTTP=$(cat "$HOME/fake-curl-http" 2>/dev/null || true)
 attempt=0
 [ -f "$state" ] && attempt=$(cat "$state")
 next=$((attempt + 1))

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { getFileContent, saveFile } from '@/lib/github'
+import { getFileContent, isMissingFileError, saveFile } from '@/lib/github'
 import { errorResponse, syncResult } from '@/lib/http'
 
 // The two operator-editable soul files. examples/ and data/ are populated by the
@@ -7,18 +7,26 @@ import { errorResponse, syncResult } from '@/lib/http'
 const FILES = { soul: 'soul/SOUL.md', style: 'soul/STYLE.md' } as const
 type FileKey = keyof typeof FILES
 
+// Only a missing file reads as empty. Any other read error is thrown, so the
+// tab shows its retry panel instead of a blank editor whose save would replace
+// the real file.
 async function read(path: string): Promise<{ content: string; exists: boolean }> {
   try {
     const { content } = await getFileContent(path)
     return { content, exists: true }
-  } catch {
-    return { content: '', exists: false }
+  } catch (error: unknown) {
+    if (isMissingFileError(error)) return { content: '', exists: false }
+    throw error
   }
 }
 
 export async function GET() {
-  const [soul, style] = await Promise.all([read(FILES.soul), read(FILES.style)])
-  return NextResponse.json({ soul, style })
+  try {
+    const [soul, style] = await Promise.all([read(FILES.soul), read(FILES.style)])
+    return NextResponse.json({ soul, style })
+  } catch (error: unknown) {
+    return errorResponse(error, 'Failed to read soul files')
+  }
 }
 
 export async function PUT(request: Request) {

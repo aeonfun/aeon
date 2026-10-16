@@ -196,9 +196,7 @@ metadata:
     assert.equal(result.name, "Spec Form");
     assert.equal(result.category, "crypto");
     assert.deepEqual(result.tags, ["crypto", "defi"]);
-    assert.deepEqual(result.requires, [
-      { key: "COINGECKO_API_KEY", optional: true },
-    ]);
+    assert.deepEqual(result.requires, [{ key: "COINGECKO_API_KEY", optional: true }]);
     assert.deepEqual(result.mcp, [{ slug: "base", optional: false }]);
   });
 

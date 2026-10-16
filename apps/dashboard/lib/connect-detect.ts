@@ -20,16 +20,24 @@ import { HARNESSES } from './constants'
 // stored. Measured on the base64 text, which is what gets saved.
 export const CAPTURE_MAX_CHARS = 48 * 1024
 
-const HARNESS_LABELS: Record<string, string> = Object.fromEntries(HARNESSES.map((h) => [h.id, h.label]))
+const HARNESS_LABELS: Record<string, string> = Object.fromEntries(HARNESSES.map(h => [h.id, h.label]))
 export const harnessName = (h: string) => HARNESS_LABELS[h] ?? h
 // Manifest labels, minus parenthetical detail ("OpenRouter key (one key covers...)").
 const credLabel = (c: ManifestCredential) => c.label.replace(/\s*\(.*\)$/, '')
 
 // --- providers (the override dropdown) ---------------------------------------
 
-export interface ProviderOption { id: string; label: string; secret: string }
+export interface ProviderOption {
+  id: string
+  label: string
+  secret: string
+}
 
-const slugOf = (secret: string) => secret.replace(/_(API_KEY|TOKEN)$/, '').toLowerCase().replace(/_/g, '-')
+const slugOf = (secret: string) =>
+  secret
+    .replace(/_(API_KEY|TOKEN)$/, '')
+    .toLowerCase()
+    .replace(/_/g, '-')
 
 // Every pasteable key a provider can be pinned to: each claude gateway, then
 // every other harness's API keys. Detection by prefix covers the common ones;
@@ -37,13 +45,19 @@ const slugOf = (secret: string) => secret.replace(/_(API_KEY|TOKEN)$/, '').toLow
 export const PROVIDER_OPTIONS: ProviderOption[] = (() => {
   const out: ProviderOption[] = []
   const seen = new Set<string>()
-  const add = (o: ProviderOption) => { if (!seen.has(o.secret)) { seen.add(o.secret); out.push(o) } }
+  const add = (o: ProviderOption) => {
+    if (!seen.has(o.secret)) {
+      seen.add(o.secret)
+      out.push(o)
+    }
+  }
   for (const g of MANIFEST_GATEWAYS) {
-    if (g.prefixes.some((p) => p.startsWith('sk-ant-oat'))) continue // a subscription token, not a key to pick
+    if (g.prefixes.some(p => p.startsWith('sk-ant-oat'))) continue // a subscription token, not a key to pick
     add({ id: g.id, label: g.label, secret: g.secrets[0] })
   }
   for (const h of MANIFEST_HARNESSES) {
-    for (const c of h.credentials) if (c.kind === 'api_key') add({ id: slugOf(c.secret), label: credLabel(c), secret: c.secret })
+    for (const c of h.credentials)
+      if (c.kind === 'api_key') add({ id: slugOf(c.secret), label: credLabel(c), secret: c.secret })
   }
   return out
 })()
@@ -53,14 +67,14 @@ export const PROVIDER_OPTIONS: ProviderOption[] = (() => {
 export function acceptedSecrets(harness: string): string[] {
   const h = harnessManifest(harness)
   if (!h) return []
-  const gw = h.gateways ? MANIFEST_GATEWAYS.flatMap((g) => g.secrets) : []
-  return [...new Set([...h.credentials.map((c) => c.secret), ...gw])]
+  const gw = h.gateways ? MANIFEST_GATEWAYS.flatMap(g => g.secrets) : []
+  return [...new Set([...h.credentials.map(c => c.secret), ...gw])]
 }
 
 // The dropdown options that make sense for this harness.
 export function providersForHarness(harness: string): ProviderOption[] {
   const ok = new Set(acceptedSecrets(harness))
-  return PROVIDER_OPTIONS.filter((p) => ok.has(p.secret))
+  return PROVIDER_OPTIONS.filter(p => ok.has(p.secret))
 }
 
 // Whether the harness can use the shared OpenRouter key (gates the one-click
@@ -71,13 +85,19 @@ export function acceptsOpenRouter(harness: string): boolean {
 
 // --- login captures ----------------------------------------------------------
 
-export interface CaptureSpec { harness: string; secret: string; paths: string[] }
+export interface CaptureSpec {
+  harness: string
+  secret: string
+  paths: string[]
+}
 
 // Where each CLI login lives under $HOME and the secret its tar+base64 capture
 // is stored in: every oauth_capture credential in the manifest.
-export const CAPTURE_SPECS: CaptureSpec[] = MANIFEST_HARNESSES.flatMap((h) =>
-  h.credentials.filter((c) => c.kind === 'oauth_capture' && c.cred_paths?.length)
-    .map((c) => ({ harness: h.id, secret: c.secret, paths: c.cred_paths! })))
+export const CAPTURE_SPECS: CaptureSpec[] = MANIFEST_HARNESSES.flatMap(h =>
+  h.credentials
+    .filter(c => c.kind === 'oauth_capture' && c.cred_paths?.length)
+    .map(c => ({ harness: h.id, secret: c.secret, paths: c.cred_paths! })),
+)
 
 // A gzip stream always starts 1f 8b 08, which base64-encodes to "H4sI".
 export function looksLikeCapture(value: string): boolean {
@@ -85,7 +105,12 @@ export function looksLikeCapture(value: string): boolean {
   return v.startsWith('H4sI') && /^[A-Za-z0-9+/]+=*$/.test(v)
 }
 
-export interface TarEntry { name: string; type: 'file' | 'dir'; mtime: number; data: Uint8Array }
+export interface TarEntry {
+  name: string
+  type: 'file' | 'dir'
+  mtime: number
+  data: Uint8Array
+}
 
 // A tar the capture check refuses outright. The message is shown to the operator.
 export class TarRefused extends Error {}
@@ -114,12 +139,14 @@ function parsePax(data: Uint8Array): Map<string, string> {
     let sp = i
     while (sp < data.length && data[sp] !== 0x20) sp++
     const len = parseInt(decoder.decode(data.subarray(i, sp)), 10)
-    if (!Number.isInteger(len) || len <= 0 || i + len > data.length || data[i + len - 1] !== 0x0a) throw new TarRefused('Malformed pax header in the archive.')
+    if (!Number.isInteger(len) || len <= 0 || i + len > data.length || data[i + len - 1] !== 0x0a)
+      throw new TarRefused('Malformed pax header in the archive.')
     const rec = decoder.decode(data.subarray(sp + 1, i + len - 1))
     const eq = rec.indexOf('=')
     if (eq <= 0) throw new TarRefused('Malformed pax header in the archive.')
     const key = rec.slice(0, eq)
-    if (!PAX_OK.test(key)) throw new TarRefused(`The archive uses an unsupported tar field (${key}). Capture with the step 1 command.`)
+    if (!PAX_OK.test(key))
+      throw new TarRefused(`The archive uses an unsupported tar field (${key}). Capture with the step 1 command.`)
     out.set(key, rec.slice(eq + 1)) // repeated keys: the LAST one wins, as in tar itself
     i += len
   }
@@ -138,7 +165,10 @@ export function parseTarEntries(bytes: Uint8Array): TarEntry[] {
   let ended = false
   while (off + 512 <= bytes.length) {
     const h = bytes.subarray(off, off + 512)
-    if (h.every((x) => x === 0)) { ended = true; break }
+    if (h.every(x => x === 0)) {
+      ended = true
+      break
+    }
     // Header checksum: sum of the header with the checksum field read as spaces.
     let sum = 0
     for (let i = 0; i < 512; i++) sum += i >= 148 && i < 156 ? 0x20 : h[i]
@@ -157,7 +187,14 @@ export function parseTarEntries(bytes: Uint8Array): TarEntry[] {
       continue
     }
     if (flag !== '0' && flag !== '\0' && flag !== '7' && flag !== '5') {
-      const what = flag === '1' || flag === '2' ? 'a link' : flag === 'g' ? 'a global header' : flag === 'L' || flag === 'K' ? 'a long-name record' : 'a special file'
+      const what =
+        flag === '1' || flag === '2'
+          ? 'a link'
+          : flag === 'g'
+            ? 'a global header'
+            : flag === 'L' || flag === 'K'
+              ? 'a long-name record'
+              : 'a special file'
       throw new TarRefused(`The archive contains ${what}. Capture only the files shown in step 1.`)
     }
     let name = cstr(h.subarray(0, 100))
@@ -173,9 +210,15 @@ export function parseTarEntries(bytes: Uint8Array): TarEntry[] {
       pax = null
     }
     if (flag === '5' && size !== 0) throw new TarRefused('Not a tar archive (directory with data).')
-    if (flag !== '5' && name.endsWith('/')) throw new TarRefused(`The archive has a file named like a folder (${name}).`)
+    if (flag !== '5' && name.endsWith('/'))
+      throw new TarRefused(`The archive has a file named like a folder (${name}).`)
     mtime = Math.min(Math.max(0, mtime), MAX_MTIME)
-    out.push({ name, type: flag === '5' ? 'dir' : 'file', mtime, data: flag === '5' ? new Uint8Array(0) : data.slice() })
+    out.push({
+      name,
+      type: flag === '5' ? 'dir' : 'file',
+      mtime,
+      data: flag === '5' ? new Uint8Array(0) : data.slice(),
+    })
   }
   if (pax) throw new TarRefused('Malformed archive (dangling pax header).')
   if (!ended && off < bytes.length) throw new TarRefused('The capture is cut off. Copy it again in one piece.')
@@ -200,7 +243,8 @@ export function buildTar(files: { name: string; data: Uint8Array; mtime: number 
       const cut = name.lastIndexOf('/', 155)
       prefix = name.slice(0, cut)
       name = name.slice(cut + 1)
-      if (cut <= 0 || encoder.encode(name).length > 100 || encoder.encode(prefix).length > 155) throw new TarRefused(`Path too long: ${f.name}`)
+      if (cut <= 0 || encoder.encode(name).length > 100 || encoder.encode(prefix).length > 155)
+        throw new TarRefused(`Path too long: ${f.name}`)
     }
     field(h, 0, 100, name)
     field(h, 100, 8, oct(0o600, 8))
@@ -221,7 +265,10 @@ export function buildTar(files: { name: string; data: Uint8Array; mtime: number 
   blocks.push(new Uint8Array(1024))
   const out = new Uint8Array(blocks.reduce((n, b) => n + b.length, 0))
   let at = 0
-  for (const b of blocks) { out.set(b, at); at += b.length }
+  for (const b of blocks) {
+    out.set(b, at)
+    at += b.length
+  }
   return out
 }
 
@@ -248,37 +295,68 @@ export const isAppleDouble = (n: string) => normName(n).split('/').pop()!.starts
 // $HOME, so anything else (a dotfile, `..`, an absolute path) is refused.
 export function classifyCapture(entries: { name: string; type: string }[]): Detection {
   for (const e of entries) {
-    if (e.type === 'file' && /\/$/.test(e.name)) return { state: 'error', label: 'Login capture', note: `The archive has a file named like a folder (${e.name}).` }
+    if (e.type === 'file' && /\/$/.test(e.name))
+      return { state: 'error', label: 'Login capture', note: `The archive has a file named like a folder (${e.name}).` }
   }
-  const names = entries.map((e) => ({ ...e, name: normName(e.name) }))
+  const names = entries.map(e => ({ ...e, name: normName(e.name) }))
   for (const e of names) {
-    if (e.type !== 'file' && e.type !== 'dir') return { state: 'error', label: 'Login capture', note: `The archive contains a link or special file (${e.name}). Capture only the files shown in step 1.` }
-    if (!e.name || e.name.startsWith('/') || e.name.split('/').includes('..')) return { state: 'error', label: 'Login capture', note: `Unsafe path in the archive: ${e.name || '(empty)'}` }
+    if (e.type !== 'file' && e.type !== 'dir')
+      return {
+        state: 'error',
+        label: 'Login capture',
+        note: `The archive contains a link or special file (${e.name}). Capture only the files shown in step 1.`,
+      }
+    if (!e.name || e.name.startsWith('/') || e.name.split('/').includes('..'))
+      return { state: 'error', label: 'Login capture', note: `Unsafe path in the archive: ${e.name || '(empty)'}` }
   }
-  const real = names.filter((e) => !isAppleDouble(e.name))
+  const real = names.filter(e => !isAppleDouble(e.name))
   for (const spec of CAPTURE_SPECS) {
-    const dirs = new Set(spec.paths.flatMap((p) => p.split('/').slice(0, -1).map((_, i, parts) => parts.slice(0, i + 1).join('/'))))
+    const dirs = new Set(
+      spec.paths.flatMap(p =>
+        p
+          .split('/')
+          .slice(0, -1)
+          .map((_, i, parts) => parts.slice(0, i + 1).join('/')),
+      ),
+    )
     // Files must be a login path or sit under one; only directory entries may
     // also be one of the parent folders (a FILE called ".codex" is refused).
     const inside = (e: { name: string; type: string }) =>
-      spec.paths.some((p) => e.name === p || e.name.startsWith(`${p}/`)) || (e.type === 'dir' && dirs.has(e.name))
-    const files = real.filter((e) => e.type === 'file')
+      spec.paths.some(p => e.name === p || e.name.startsWith(`${p}/`)) || (e.type === 'dir' && dirs.has(e.name))
+    const files = real.filter(e => e.type === 'file')
     if (!files.length || !real.every(inside)) continue
     // The first path is the login itself; the rest (config files) are optional.
     const main = spec.paths[0]
-    if (!files.some((e) => e.name === main || e.name.startsWith(`${main}/`))) continue
-    const cred = harnessManifest(spec.harness)?.credentials.find((c) => c.secret === spec.secret)
+    if (!files.some(e => e.name === main || e.name.startsWith(`${main}/`))) continue
+    const cred = harnessManifest(spec.harness)?.credentials.find(c => c.secret === spec.secret)
     const label = cred ? credLabel(cred) : `${harnessName(spec.harness)} login`
-    return { state: 'ok', label, secret: spec.secret, captureHarness: spec.harness, note: `Saving also selects the ${harnessName(spec.harness)} harness.` }
+    return {
+      state: 'ok',
+      label,
+      secret: spec.secret,
+      captureHarness: spec.harness,
+      note: `Saving also selects the ${harnessName(spec.harness)} harness.`,
+    }
   }
-  const sample = real.slice(0, 3).map((e) => e.name).join(', ')
-  return { state: 'error', label: 'Login capture', note: `Not a login Aeon knows (found ${sample || 'no files'}). Run the step 1 command as shown.` }
+  const sample = real
+    .slice(0, 3)
+    .map(e => e.name)
+    .join(', ')
+  return {
+    state: 'error',
+    label: 'Login capture',
+    note: `Not a login Aeon knows (found ${sample || 'no files'}). Run the step 1 command as shown.`,
+  }
 }
 
 // --- keys ----------------------------------------------------------------------
 
-interface PrefixRule { prefix: string; secret: string; label: string; rank: number }
-
+interface PrefixRule {
+  prefix: string
+  secret: string
+  label: string
+  rank: number
+}
 
 // Prefix candidates for a paste on `harness`, from the manifests. Ranked: the
 // harness's own credentials first, then the claude gateway cascade, then any
@@ -286,20 +364,28 @@ interface PrefixRule { prefix: string; secret: string; label: string; rank: numb
 function prefixRules(harness: string): PrefixRule[] {
   const rules: PrefixRule[] = []
   const own = harnessManifest(harness)
-  for (const c of own?.credentials ?? []) if (c.prefix) rules.push({ prefix: c.prefix, secret: c.secret, label: credLabel(c), rank: 0 })
+  for (const c of own?.credentials ?? [])
+    if (c.prefix) rules.push({ prefix: c.prefix, secret: c.secret, label: credLabel(c), rank: 0 })
   for (const g of MANIFEST_GATEWAYS) {
-    const viaCred = MANIFEST_HARNESSES.flatMap((h) => h.credentials).find((c) => c.secret === g.secrets[0])
-    for (const p of g.prefixes) rules.push({ prefix: p, secret: g.secrets[0], label: viaCred ? credLabel(viaCred) : `${g.label} key`, rank: own?.gateways ? 0 : 1 })
+    const viaCred = MANIFEST_HARNESSES.flatMap(h => h.credentials).find(c => c.secret === g.secrets[0])
+    for (const p of g.prefixes)
+      rules.push({
+        prefix: p,
+        secret: g.secrets[0],
+        label: viaCred ? credLabel(viaCred) : `${g.label} key`,
+        rank: own?.gateways ? 0 : 1,
+      })
   }
   for (const h of MANIFEST_HARNESSES) {
     if (h.id === harness) continue
-    for (const c of h.credentials) if (c.prefix) rules.push({ prefix: c.prefix, secret: c.secret, label: credLabel(c), rank: 2 })
+    for (const c of h.credentials)
+      if (c.prefix) rules.push({ prefix: c.prefix, secret: c.secret, label: credLabel(c), rank: 2 })
   }
   return rules
 }
 
 function byPrefix(key: string, harness: string): { label: string; secret: string } | null {
-  const hits = prefixRules(harness).filter((r) => key.startsWith(r.prefix))
+  const hits = prefixRules(harness).filter(r => key.startsWith(r.prefix))
   // Longest prefix wins (sk-or- over sk-); ties go to the better rank.
   hits.sort((a, b) => b.prefix.length - a.prefix.length || a.rank - b.rank)
   return hits[0] ? { label: hits[0].label, secret: hits[0].secret } : null
@@ -308,7 +394,7 @@ function byPrefix(key: string, harness: string): { label: string; secret: string
 // A key that no prefix identifies falls back to the harness's only
 // unprefixed API key (vibe -> MISTRAL_API_KEY, cursor, fx).
 function soleKeySecret(harness: string): ManifestCredential | null {
-  const keys = (harnessManifest(harness)?.credentials ?? []).filter((c) => c.kind === 'api_key' && !c.prefix)
+  const keys = (harnessManifest(harness)?.credentials ?? []).filter(c => c.kind === 'api_key' && !c.prefix)
   return keys.length === 1 ? keys[0] : null
 }
 
@@ -320,20 +406,33 @@ export function detectPaste(raw: string, harness: string, provider = ''): Detect
   if (looksLikeCapture(value)) {
     const size = value.replace(/\s+/g, '').length
     if (size > CAPTURE_MAX_CHARS) {
-      return { state: 'error', label: 'Login capture', note: `This capture is ${Math.ceil(size / 1024)} KB; GitHub secrets max out at 48 KB. Capture only the files in the step 1 command.` }
+      return {
+        state: 'error',
+        label: 'Login capture',
+        note: `This capture is ${Math.ceil(size / 1024)} KB; GitHub secrets max out at 48 KB. Capture only the files in the step 1 command.`,
+      }
     }
     return { state: 'pending', label: 'Login capture', note: 'Checking which login this is...' }
   }
-  if (/\s/.test(value)) return { state: 'error', label: 'Unrecognized', note: 'That looks like more than one value. Paste a single key or token.' }
+  if (/\s/.test(value))
+    return {
+      state: 'error',
+      label: 'Unrecognized',
+      note: 'That looks like more than one value. Paste a single key or token.',
+    }
 
   const accepted = acceptedSecrets(harness)
   const fit = (d: Detection): Detection => {
     if (!d.secret || accepted.includes(d.secret)) return d
-    return { ...d, warn: true, note: `The ${harnessName(harness)} harness can't run on this. It will be saved, but switch harness to use it.` }
+    return {
+      ...d,
+      warn: true,
+      note: `The ${harnessName(harness)} harness can't run on this. It will be saved, but switch harness to use it.`,
+    }
   }
 
   if (provider) {
-    const p = PROVIDER_OPTIONS.find((o) => o.id === provider)
+    const p = PROVIDER_OPTIONS.find(o => o.id === provider)
     if (!p) return { state: 'error', label: 'Unrecognized', note: `Unknown provider: ${provider}` }
     return fit({ state: 'ok', label: `${p.label} key`.replace(/ key key$/, ' key'), secret: p.secret })
   }
@@ -344,7 +443,18 @@ export function detectPaste(raw: string, harness: string, provider = ''): Detect
   const sole = soleKeySecret(harness)
   if (sole) return { state: 'ok', label: credLabel(sole), secret: sole.secret }
   if (harnessManifest(harness)?.gateways) {
-    return { state: 'ok', label: 'Anthropic-compatible key', secret: 'ANTHROPIC_API_KEY', needsProvider: true, note: 'No known prefix. If this is a gateway key (UsePod, Venice, GLM, HivemindOS...), pick it below.' }
+    return {
+      state: 'ok',
+      label: 'Anthropic-compatible key',
+      secret: 'ANTHROPIC_API_KEY',
+      needsProvider: true,
+      note: 'No known prefix. If this is a gateway key (UsePod, Venice, GLM, HivemindOS...), pick it below.',
+    }
   }
-  return { state: 'error', label: 'Unrecognized key', needsProvider: true, note: 'Pick which provider this key is from.' }
+  return {
+    state: 'error',
+    label: 'Unrecognized key',
+    needsProvider: true,
+    note: 'Pick which provider this key is from.',
+  }
 }

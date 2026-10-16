@@ -24,7 +24,9 @@ export function RunDiagnosis({ run, onConnect, className = '' }: RunDiagnosisPro
       <span className="text-aeon-red-alert">{d.reason}</span>{' '}
       <span className="text-primary-50">Next step: {d.hint}</span>
       {d.credential && onConnect && (
-        <button onClick={() => onConnect(d.harness)} className="btn-mini-go ml-2">Connect</button>
+        <button onClick={() => onConnect(d.harness)} className="btn-mini-go ml-2">
+          Connect
+        </button>
       )}
     </div>
   )
@@ -39,23 +41,32 @@ export function RunDiagnosisToggle({ run, onConnect, className = '' }: RunDiagno
   const d = state.status === 'done' ? state.diagnosis : null
   return (
     <div className={`text-[11px] font-mono leading-relaxed ${className}`}>
-      <button onClick={() => setOpen(!open)} aria-expanded={open} className="text-primary-40 hover:text-aeon-fg underline decoration-dotted underline-offset-2">
+      <button
+        onClick={() => setOpen(!open)}
+        aria-expanded={open}
+        className="text-primary-40 hover:text-aeon-fg underline decoration-dotted underline-offset-2"
+      >
         {open ? 'Hide' : 'Why?'}
       </button>
-      {open && (
-        state.status === 'loading' ? <span className="ml-2 text-primary-40">Reading the run log...</span>
-        : state.status === 'error' ? <span className="ml-2 text-primary-40">Could not read the run log. Try again in a minute.</span>
-        : !d ? <span className="ml-2 text-primary-40">No reason found in the log.</span>
-        : (
+      {open &&
+        (state.status === 'loading' ? (
+          <span className="ml-2 text-primary-40">Reading the run log...</span>
+        ) : state.status === 'error' ? (
+          <span className="ml-2 text-primary-40">Could not read the run log. Try again in a minute.</span>
+        ) : !d ? (
+          <span className="ml-2 text-primary-40">No reason found in the log.</span>
+        ) : (
           <>
-            {' '}<span className="text-aeon-red-alert">{d.reason}</span>{' '}
+            {' '}
+            <span className="text-aeon-red-alert">{d.reason}</span>{' '}
             <span className="text-primary-50">Next step: {d.hint}</span>
             {d.credential && onConnect && (
-              <button onClick={() => onConnect(d.harness)} className="btn-mini-go ml-2">Connect</button>
+              <button onClick={() => onConnect(d.harness)} className="btn-mini-go ml-2">
+                Connect
+              </button>
             )}
           </>
-        )
-      )}
+        ))}
     </div>
   )
 }

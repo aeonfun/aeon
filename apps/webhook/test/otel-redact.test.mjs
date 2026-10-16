@@ -55,7 +55,7 @@ await check("exported spans carry no Telegram bot token", async () => {
     events: [{ name: "exception", attributes: { "exception.message": `fetch failed for /bot${TOKEN}/x` } }],
     status: { code: 2, message: `error at bot${TOKEN}` },
   };
-  await new Promise((resolve) => config.exporter.export([span], resolve));
+  await new Promise(resolve => config.exporter.export([span], resolve));
   const sent = JSON.stringify(captured.exported.at(-1));
   assert.ok(!sent.includes(TOKEN), `token leaked: ${sent}`);
   assert.ok(!sent.includes("AAH-fake"), `token tail leaked: ${sent}`);
@@ -71,7 +71,7 @@ await check("non-Telegram URLs pass through unchanged", async () => {
     events: [],
     status: { code: 0 },
   };
-  await new Promise((resolve) => config.exporter.export([span], resolve));
+  await new Promise(resolve => config.exporter.export([span], resolve));
   assert.equal(span.attributes["url.full"], "https://api.github.com/repos/fake/bot-repo/dispatches");
 });
 
@@ -94,7 +94,11 @@ await check("missing webhook secret header is rejected", async () => {
 });
 
 await check("unset TELEGRAM_WEBHOOK_SECRET rejects even an empty header", async () => {
-  const res = await worker.fetch(post({ "x-telegram-bot-api-secret-token": "" }), { ...env, TELEGRAM_WEBHOOK_SECRET: "" }, { waitUntil() {} });
+  const res = await worker.fetch(
+    post({ "x-telegram-bot-api-secret-token": "" }),
+    { ...env, TELEGRAM_WEBHOOK_SECRET: "" },
+    { waitUntil() {} },
+  );
   assert.equal(res.status, 403);
 });
 

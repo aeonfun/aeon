@@ -516,7 +516,9 @@ id and fork block in `/tmp/vuln-scan/poc-results/<id>.json`.
 
 Write `/tmp/vuln-scan/poc/<id>.sh` so it sets up only local fixtures, exercises the
 real production entrypoint, checks the concrete prohibited outcome, and exits nonzero
-when the claim is not reproduced. Then run:
+when the claim is not reproduced. Put any fixtures or scratch files the script creates
+in a `mktemp -d` directory outside the clone: a new untracked (not gitignored) file left
+in the clone, or a commit that moves HEAD, fails the run as `target-mutated`. Then run:
 
 ```bash
 CLONE="$PWD"

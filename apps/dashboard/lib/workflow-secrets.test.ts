@@ -45,7 +45,7 @@ describe("patchWorkflowContent", () => {
 
   it("keeps the blob on a single physical line", () => {
     const { content } = patchWorkflowContent(WORKFLOW, ["FINANCE_API_KEY"]);
-    const blob = content.split("\n").find((l) => l.trimStart().startsWith('{"'));
+    const blob = content.split("\n").find(l => l.trimStart().startsWith('{"'));
     assert.ok(blob);
     assert.ok(blob!.includes("FINANCE_API_KEY"));
     // The line count is unchanged - no fold/newline introduced.
@@ -54,7 +54,7 @@ describe("patchWorkflowContent", () => {
 
   it("preserves the blob line's indentation", () => {
     const { content } = patchWorkflowContent(WORKFLOW, ["FINANCE_API_KEY"]);
-    const blob = content.split("\n").find((l) => l.includes("FINANCE_API_KEY"));
+    const blob = content.split("\n").find(l => l.includes("FINANCE_API_KEY"));
     assert.ok(blob!.startsWith("            {"));
   });
 
@@ -81,13 +81,13 @@ describe("patchWorkflowContent", () => {
 
   it("still parses as one JSON object after the splice", () => {
     const { content } = patchWorkflowContent(WORKFLOW, ["FINANCE_API_KEY"]);
-    const blob = content.split("\n").find((l) => l.trimStart().startsWith('{"'))!.trim();
+    const blob = content
+      .split("\n")
+      .find(l => l.trimStart().startsWith('{"'))!
+      .trim();
     // Strip the ${{ … }} expressions to a placeholder so the skeleton is JSON.
     const skeleton = blob.replace(/\$\{\{[^}]*\}\}/g, '"x"');
     const parsed = JSON.parse(skeleton) as Record<string, string>;
-    assert.deepEqual(
-      Object.keys(parsed).sort(),
-      ["ALCHEMY_API_KEY", "FINANCE_API_KEY", "XAI_API_KEY"],
-    );
+    assert.deepEqual(Object.keys(parsed).sort(), ["ALCHEMY_API_KEY", "FINANCE_API_KEY", "XAI_API_KEY"]);
   });
 });

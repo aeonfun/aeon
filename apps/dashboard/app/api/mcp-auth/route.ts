@@ -18,7 +18,11 @@ export async function POST(request: Request) {
     if (notReady) return notReady
 
     const body = (await request.json().catch(() => ({}))) as {
-      slug?: string; url?: string; name?: string; scopes?: string[]; clientId?: string
+      slug?: string
+      url?: string
+      name?: string
+      scopes?: string[]
+      clientId?: string
     }
     const slug = (body.slug || '').trim()
     const url = (body.url || '').trim()
@@ -38,10 +42,14 @@ export async function POST(request: Request) {
     let clientSecret: string | undefined
     if (!clientId) {
       if (!disc.metadata.registration_endpoint) {
-        return NextResponse.json({
-          error: 'This server does not support dynamic client registration. ' +
-            'Register a client with the provider and retry with its client_id.',
-        }, { status: 400 })
+        return NextResponse.json(
+          {
+            error:
+              'This server does not support dynamic client registration. ' +
+              'Register a client with the provider and retry with its client_id.',
+          },
+          { status: 400 },
+        )
       }
       const reg = await registerClient(disc.metadata.registration_endpoint, redirectUri)
       clientId = reg.client_id
@@ -60,13 +68,31 @@ export async function POST(request: Request) {
         reject(new Error('Timed out waiting for authorization. Approve in the browser, then click Connect again.'))
       }, OAUTH_TIMEOUT_MS)
       flow = {
-        slug, name, url,
+        slug,
+        name,
+        url,
         tokenEndpoint: disc.metadata.token_endpoint,
-        clientId, clientSecret, verifier, redirectUri,
-        resource: disc.resource, resolve, reject, timer,
+        clientId,
+        clientSecret,
+        verifier,
+        redirectUri,
+        resource: disc.resource,
+        resolve,
+        reject,
+        timer,
       }
       pendingFlows.set(state, flow)
-      openBrowser(authorizeUrl({ metadata: disc.metadata, clientId, redirectUri, challenge, state, resource: disc.resource, scopes }))
+      openBrowser(
+        authorizeUrl({
+          metadata: disc.metadata,
+          clientId,
+          redirectUri,
+          challenge,
+          state,
+          resource: disc.resource,
+          scopes,
+        }),
+      )
     })
 
     // 5. Persist tokens as secrets; hand the server descriptor back for the panel
@@ -77,7 +103,12 @@ export async function POST(request: Request) {
       slug,
       server,
       durable,
-      ...(durable ? {} : { warning: 'No refresh token was granted, so the access token will expire and need reconnecting. The provider may require an offline-access scope.' }),
+      ...(durable
+        ? {}
+        : {
+            warning:
+              'No refresh token was granted, so the access token will expire and need reconnecting. The provider may require an offline-access scope.',
+          }),
     })
   } catch (error: unknown) {
     return errorResponse(error, 'Failed to connect the MCP server')

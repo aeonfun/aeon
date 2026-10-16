@@ -6,7 +6,18 @@
 import { describe, it } from "node:test";
 import { strict as assert } from "node:assert";
 
-import { displayName, initials, parseCron, cronLabel, buildCron, timeAgo, getSkillStatus, lastSuccessfulRunId, localToUtc24, slugify } from "./utils";
+import {
+  displayName,
+  initials,
+  parseCron,
+  cronLabel,
+  buildCron,
+  timeAgo,
+  getSkillStatus,
+  lastSuccessfulRunId,
+  localToUtc24,
+  slugify,
+} from "./utils";
 import type { Run } from "./types";
 
 // ── displayName ──────────────────────────────────────────────────────
@@ -277,7 +288,12 @@ describe("localToUtc24", () => {
 
 describe("lastSuccessfulRunId", () => {
   const run = (id: number, workflow: string, status: string, conclusion: string | null): Run => ({
-    id, workflow, status, conclusion, created_at: "", url: "",
+    id,
+    workflow,
+    status,
+    conclusion,
+    created_at: "",
+    url: "",
   });
 
   it("returns the newest successful run of the skill", () => {
@@ -291,7 +307,10 @@ describe("lastSuccessfulRunId", () => {
   });
 
   it("ignores failed runs and returns null when none succeeded", () => {
-    assert.equal(lastSuccessfulRunId("strategy-builder", [run(1, "skill: strategy-builder", "completed", "failure")]), null);
+    assert.equal(
+      lastSuccessfulRunId("strategy-builder", [run(1, "skill: strategy-builder", "completed", "failure")]),
+      null,
+    );
     assert.equal(lastSuccessfulRunId("strategy-builder", []), null);
   });
 });

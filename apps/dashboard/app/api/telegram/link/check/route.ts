@@ -26,7 +26,10 @@ export async function POST(request: Request) {
       await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chat_id: result.chatId, text: 'Aeon is linked to this chat. Notifications will arrive here.' }),
+        body: JSON.stringify({
+          chat_id: result.chatId,
+          text: 'Aeon is linked to this chat. Notifications will arrive here.',
+        }),
       }).catch(() => {})
     }
     return NextResponse.json(result)

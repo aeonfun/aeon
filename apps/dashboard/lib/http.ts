@@ -9,10 +9,7 @@ import { ghAvailable } from './gh'
  */
 export function requireGh(extra?: Record<string, unknown>): NextResponse | null {
   if (ghAvailable()) return null
-  return NextResponse.json(
-    { error: 'GitHub CLI not authenticated. Run: gh auth login', ...extra },
-    { status: 503 },
-  )
+  return NextResponse.json({ error: 'GitHub CLI not authenticated. Run: gh auth login', ...extra }, { status: 503 })
 }
 
 /**
@@ -21,10 +18,7 @@ export function requireGh(extra?: Record<string, unknown>): NextResponse | null 
  * `{ error: msg }` shape every route's 500 catch block already returns.
  */
 export function errorResponse(error: unknown, fallback = 'Unknown error', status = 500) {
-  return NextResponse.json(
-    { error: error instanceof Error ? error.message : fallback },
-    { status },
-  )
+  return NextResponse.json({ error: error instanceof Error ? error.message : fallback }, { status })
 }
 
 /**

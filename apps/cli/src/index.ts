@@ -68,8 +68,14 @@ async function main() {
   // Pull the global flags out of argv wherever they appear, so commands only see
   // their own args.
   let argv = process.argv.slice(2)
-  if (argv.includes('--json')) { setJsonMode(true); argv = argv.filter(a => a !== '--json') }
-  if (argv.includes('--dry-run')) { setDryRun(true); argv = argv.filter(a => a !== '--dry-run') }
+  if (argv.includes('--json')) {
+    setJsonMode(true)
+    argv = argv.filter(a => a !== '--json')
+  }
+  if (argv.includes('--dry-run')) {
+    setDryRun(true)
+    argv = argv.filter(a => a !== '--dry-run')
+  }
 
   const cmd = argv[0]
   if (!cmd || cmd === 'help' || cmd === '--help' || cmd === '-h') {

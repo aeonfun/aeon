@@ -9,7 +9,15 @@
 import { describe, it } from "node:test";
 import { strict as assert } from "node:assert";
 
-import { packGroups, FIRST_PARTY_KEYS, keyProvidedByHarness, MODELS, CODEX_MODELS, HARNESSES, pickerOptions } from "./constants";
+import {
+  packGroups,
+  FIRST_PARTY_KEYS,
+  keyProvidedByHarness,
+  MODELS,
+  CODEX_MODELS,
+  HARNESSES,
+  pickerOptions,
+} from "./constants";
 
 const sk = (name: string, pack: string, packName = "") => ({ pack, packName });
 
@@ -20,7 +28,10 @@ describe("packGroups", () => {
       sk("pr-review", "dev"),
       sk("pr-review-antfleet", "antfleet-pr-review", "AntFleet PR Review"),
     ]);
-    assert.deepEqual(groups.map(g => g.key), ["core", "antfleet-pr-review", "dev"]);
+    assert.deepEqual(
+      groups.map(g => g.key),
+      ["core", "antfleet-pr-review", "dev"],
+    );
   });
 
   it("labels a community pack by its joined packName, marked community", () => {
@@ -44,12 +55,18 @@ describe("packGroups", () => {
 
   it("only emits packs that actually contain skills", () => {
     const groups = packGroups([sk("a", "core")]);
-    assert.deepEqual(groups.map(g => g.key), ["core"]);
+    assert.deepEqual(
+      groups.map(g => g.key),
+      ["core"],
+    );
   });
 
   it("defaults a missing pack to the lab catch-all", () => {
     const groups = packGroups([{ pack: "", packName: "" }]);
-    assert.deepEqual(groups.map(g => g.key), ["lab"]);
+    assert.deepEqual(
+      groups.map(g => g.key),
+      ["lab"],
+    );
   });
 });
 
@@ -73,7 +90,10 @@ describe("keyProvidedByHarness", () => {
 
 describe("MODELS", () => {
   it("offers exactly the current three Claude models", () => {
-    assert.deepEqual(MODELS.map(m => m.id), ["claude-sonnet-5-5", "claude-opus-5-5", "claude-haiku-5-5"]);
+    assert.deepEqual(
+      MODELS.map(m => m.id),
+      ["claude-sonnet-5-5", "claude-opus-5-5", "claude-haiku-5-5"],
+    );
   });
 });
 
@@ -94,15 +114,24 @@ describe("pickerOptions", () => {
 
 describe("CODEX_MODELS", () => {
   it("offers only GPT-6 Luna and GPT-6.1 Sol", () => {
-    assert.deepEqual(CODEX_MODELS.map(m => m.id), ["openai/gpt-6-luna", "openai/gpt-6.1-sol"]);
+    assert.deepEqual(
+      CODEX_MODELS.map(m => m.id),
+      ["openai/gpt-6-luna", "openai/gpt-6.1-sol"],
+    );
   });
   it("names an older codex pin that left the list", () => {
-    assert.equal(pickerOptions(CODEX_MODELS, "openai/gpt-5.1-codex-mini").at(-1)?.label, "GPT-5.1 Codex Mini (configured)");
+    assert.equal(
+      pickerOptions(CODEX_MODELS, "openai/gpt-5.1-codex-mini").at(-1)?.label,
+      "GPT-5.1 Codex Mini (configured)",
+    );
   });
 });
 
 describe("HARNESSES", () => {
   it("lists Claude, Codex, Grok, Kimi first", () => {
-    assert.deepEqual(HARNESSES.slice(0, 4).map(h => h.id), ["claude", "codex", "grok", "kimi"]);
+    assert.deepEqual(
+      HARNESSES.slice(0, 4).map(h => h.id),
+      ["claude", "codex", "grok", "kimi"],
+    );
   });
 });

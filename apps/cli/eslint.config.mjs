@@ -4,7 +4,4 @@
 // TypeScript sub-config is used - the CLI is not a React/Next app.
 import ts from '../dashboard/node_modules/eslint-config-next/dist/typescript.js'
 
-export default [
-  { ignores: ['node_modules/**'] },
-  ...ts,
-]
+export default [{ ignores: ['node_modules/**'] }, ...ts]

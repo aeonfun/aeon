@@ -92,7 +92,7 @@ export function loadSkills(repoRoot: string, logPrefix = "[aeon]"): Skill[] {
   }
   const manifest = JSON.parse(readFileSync(manifestPath, "utf-8")) as SkillsManifest;
   const cfg = readConfig(repoRoot);
-  return (manifest.skills ?? []).map((skill) => {
+  return (manifest.skills ?? []).map(skill => {
     const schedule = skillConfigLine(cfg, skill.slug)?.match(/schedule:\s*"([^"]*)"/)?.[1];
     return schedule ? { ...skill, schedule } : skill;
   });
@@ -105,17 +105,33 @@ export function loadSkills(repoRoot: string, logPrefix = "[aeon]"): Skill[] {
 export function buildSkillPrompt(slug: string, varValue: string): string {
   const today = new Date().toISOString().split("T")[0];
   let prompt = `Today is ${today}. Read and execute the skill defined in skills/${slug}/SKILL.md`;
-  if (varValue.trim()) {
-    prompt += `\n\nUse this variable (override the default in the skill file):\nvar=${varValue.trim()}`;
+  const value = sanitizeVar(varValue);
+  if (value) {
+    prompt += `\n\nUse this variable (override the default in the skill file):\nvar=${value}`;
   }
   return prompt;
+}
+
+/**
+ * The var is caller-supplied text that lands inside the prompt. Fold line breaks
+ * and other control characters into spaces so it stays one `var=` line and
+ * cannot start a new paragraph of instructions after it. Invisible format
+ * characters (zero-width space, BOM, bidi marks) are dropped, and surrounding
+ * whitespace is trimmed, so the value the model reads is the value the
+ * capability check sees: runSkillInner cleans the var once with this and passes
+ * that one value to resolveMode, the prompt and the log.
+ */
+export function sanitizeVar(varValue: string): string {
+  return varValue
+    .replace(/[\p{Cc}\p{Zl}\p{Zp}]+/gu, " ")
+    .replace(/\p{Cf}+/gu, "")
+    .trim();
 }
 
 /** Every harness harness-adapter's run-harness can dispatch to. */
 export const HARNESSES = ["claude", "grok", "codex", "pi", "vibe", "kimi", "fx", "cursor", "hermes"] as const;
 export type Harness = (typeof HARNESSES)[number];
-const isHarness = (v: string): v is Harness =>
-  (HARNESSES as readonly string[]).includes(v);
+const isHarness = (v: string): v is Harness => (HARNESSES as readonly string[]).includes(v);
 
 /**
  * Which agent harness runs the skill. Mirrors scripts/resolve-harness.sh's
@@ -133,9 +149,10 @@ export function resolveHarness(repoRoot: string, slug?: string): Harness {
     // Per-skill override, read from the whole entry (single-line or block),
     // like resolve-harness.sh does via scripts/skill_entry.sh.
     if (slug) {
-      picked = skillConfigLine(cfg, slug)
-        ?.match(/harness:\s*"([^"]*)"/)?.[1]
-        ?.toLowerCase() ?? "";
+      picked =
+        skillConfigLine(cfg, slug)
+          ?.match(/harness:\s*"([^"]*)"/)?.[1]
+          ?.toLowerCase() ?? "";
     }
     if (!picked) picked = cfg.match(/^harness:\s*["']?([A-Za-z]+)/m)?.[1].toLowerCase() ?? "";
   }
@@ -173,7 +190,7 @@ export function resolveModel(repoRoot: string, slug?: string): string {
   const input = inputModel();
   if (input) return input;
   const cfg = readConfig(repoRoot);
-  const skillModel = slug ? skillConfigLine(cfg, slug)?.match(/model:\s*"([^"]*)"/)?.[1] ?? "" : "";
+  const skillModel = slug ? (skillConfigLine(cfg, slug)?.match(/model:\s*"([^"]*)"/)?.[1] ?? "") : "";
   if (skillModel) return skillModel;
   return cfg.match(/^model:\s*["']?([^\s"'#]+)/m)?.[1] ?? "claude-sonnet-5-5";
 }
@@ -222,7 +239,9 @@ function resolveModelArgs(repoRoot: string, slug: string, harness: Harness, logP
  * vuln-scanner's Riva shadow/compare evaluation) applies on this dispatch path
  * too, not only aeon.yml's. That check used to live only in a script aeon.yml
  * sourced, so this path silently ran shadow evaluations at full write access
- * with every ambient credential attached.
+ * with every ambient credential attached. Pass the sanitizeVar() value, the
+ * same one the prompt gets: the selector match is exact, so a raw value with
+ * padding or a line break would miss it while the model still reads shadow.
  *
  * Returns null when the tier cannot be determined. Callers must fail rather than
  * assume `write`: guessing the permissive tier is exactly the mistake this
@@ -231,12 +250,11 @@ function resolveModelArgs(repoRoot: string, slug: string, harness: Harness, logP
 function resolveMode(
   repoRoot: string,
   slug: string,
-  varValue: string
+  varValue: string,
 ): { mode: string; allowedTools: string; runNotes: string; isShadow: boolean } | null {
   const script = join(repoRoot, "scripts", "skill_mode.sh");
   if (!existsSync(script)) return null;
-  const run = (...args: string[]) =>
-    spawnSync("bash", [script, ...args], { cwd: repoRoot, encoding: "utf-8" });
+  const run = (...args: string[]) => spawnSync("bash", [script, ...args], { cwd: repoRoot, encoding: "utf-8" });
 
   const shadowRes = run("is-shadow", slug, varValue);
   if (shadowRes.status !== 0) return null;
@@ -297,7 +315,7 @@ function enqueue<T>(task: () => Promise<T>): Promise<T> {
   // not wedge every later run.
   runQueue = result.then(
     () => undefined,
-    () => undefined
+    () => undefined,
   );
   return result;
 }
@@ -330,9 +348,9 @@ function spawnHarness(
     env: NodeJS.ProcessEnv;
     timeout: number;
     maxBuffer: number;
-  }
+  },
 ): Promise<HarnessResult> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     const child = spawn("bash", args, { cwd: opts.cwd, env: opts.env });
     let stdout = "";
     let stderr = "";
@@ -362,21 +380,13 @@ function spawnHarness(
       resolve(r);
     };
 
-    child.on("error", (err) =>
-      finish({ status: null, stdout, stderr, error: err as NodeJS.ErrnoException })
-    );
-    child.on("close", (code) => {
+    child.on("error", err => finish({ status: null, stdout, stderr, error: err as NodeJS.ErrnoException }));
+    child.on("close", code => {
       let error: NodeJS.ErrnoException | undefined;
       if (killReason === "timeout") {
-        error = Object.assign(
-          new Error(`run-harness timed out after ${opts.timeout} ms`),
-          { code: "ETIMEDOUT" }
-        );
+        error = Object.assign(new Error(`run-harness timed out after ${opts.timeout} ms`), { code: "ETIMEDOUT" });
       } else if (killReason === "buffer") {
-        error = Object.assign(
-          new Error(`run-harness output exceeded ${opts.maxBuffer} bytes`),
-          { code: "ENOBUFS" }
-        );
+        error = Object.assign(new Error(`run-harness output exceeded ${opts.maxBuffer} bytes`), { code: "ENOBUFS" });
       }
       finish({ status: code, stdout, stderr, error });
     });
@@ -389,13 +399,20 @@ function spawnHarness(
   });
 }
 
+/** A skill run's text plus whether it ran to completion, so callers can flag failures. */
+export interface SkillRunResult {
+  ok: boolean;
+  text: string;
+}
+
 /**
  * Run a skill and return its text output. Serialized through `enqueue` (one skill
  * at a time, since they share the repo working tree) and dispatched through
  * harness-adapter's `run-harness`, which emits one `{ result, usage }` envelope
  * for every harness, so parsing is shared. Failure modes (missing skill, missing
- * CLI, non-zero exit, empty output) are returned as human-readable strings rather
- * than thrown, so callers can surface them without special-casing.
+ * CLI, non-zero exit, empty output) come back as `{ ok: false, text }` with a
+ * human-readable message rather than thrown, and the MCP server marks those
+ * results `isError`, so callers can surface them without special-casing.
  *
  * Async so a running skill no longer freezes the whole stdio MCP server: the old
  * spawnSync parked the Node event loop for the whole run on every call, blocking
@@ -406,8 +423,8 @@ export function runSkill(
   repoRoot: string,
   slug: string,
   varValue: string,
-  logPrefix = "[aeon]"
-): Promise<string> {
+  logPrefix = "[aeon]",
+): Promise<SkillRunResult> {
   return enqueue(() => runSkillInner(repoRoot, slug, varValue, logPrefix));
 }
 
@@ -415,32 +432,42 @@ async function runSkillInner(
   repoRoot: string,
   slug: string,
   varValue: string,
-  logPrefix: string
-): Promise<string> {
+  logPrefix: string,
+): Promise<SkillRunResult> {
   const skillFile = join(repoRoot, "skills", slug, "SKILL.md");
   if (!existsSync(skillFile)) {
-    return [
-      `Error: skill '${slug}' not found.`,
-      `Expected SKILL.md at: ${skillFile}`,
-      `Make sure you're running from inside an Aeon repo clone.`,
-    ].join("\n");
+    return fail(
+      [
+        `Error: skill '${slug}' not found.`,
+        `Expected SKILL.md at: ${skillFile}`,
+        `Make sure you're running from inside an Aeon repo clone.`,
+      ].join("\n"),
+    );
   }
 
-  const capability = resolveMode(repoRoot, slug, varValue);
+  // Clean the var once and use that one value everywhere below. The capability
+  // check (skill_mode.sh's exact shadow/compare match) used to get the raw value
+  // while the prompt got the cleaned one, so " shadow" or "shadow\n" resolved to
+  // write mode with every credential attached while the model read var=shadow.
+  const cleanVar = sanitizeVar(varValue);
+
+  const capability = resolveMode(repoRoot, slug, cleanVar);
   if (!capability) {
-    return [
-      `Error: could not resolve the capability tier for '${slug}'.`,
-      `scripts/skill_mode.sh must be present and runnable from: ${repoRoot}`,
-      `Refusing to run rather than defaulting to write mode.`,
-    ].join("\n");
+    return fail(
+      [
+        `Error: could not resolve the capability tier for '${slug}'.`,
+        `scripts/skill_mode.sh must be present and runnable from: ${repoRoot}`,
+        `Refusing to run rather than defaulting to write mode.`,
+      ].join("\n"),
+    );
   }
 
-  const prompt = buildSkillPrompt(slug, varValue);
+  const prompt = buildSkillPrompt(slug, cleanVar);
   const harness = resolveHarness(repoRoot, slug);
   const modelArgs = resolveModelArgs(repoRoot, slug, harness, logPrefix);
   const modelLabel = modelArgs[1] ?? `${harness} default`;
   process.stderr.write(
-    `${logPrefix} Running skill: ${slug}${varValue ? ` (var=${varValue})` : ""} [harness: ${harness}, model: ${modelLabel}, mode: ${capability.mode}]\n`
+    `${logPrefix} Running skill: ${slug}${cleanVar ? ` (var=${cleanVar})` : ""} [harness: ${harness}, model: ${modelLabel}, mode: ${capability.mode}]\n`,
   );
 
   // Every harness goes through harness-adapter's run-harness — the same dispatcher
@@ -457,11 +484,15 @@ async function runSkillInner(
   // run silently used the CLI's own default instead of the skill's pinned model.
   const runHarness = join(repoRoot, "harness-adapter", "run-harness");
   const args = [
-    runHarness, harness,
+    runHarness,
+    harness,
     ...modelArgs,
-    "--mode", capability.mode,
-    "--allowed-tools", capability.allowedTools,
-    "--timeout", String(RUN_TIMEOUT_SECONDS),
+    "--mode",
+    capability.mode,
+    "--allowed-tools",
+    capability.allowedTools,
+    "--timeout",
+    String(RUN_TIMEOUT_SECONDS),
   ];
   if (capability.runNotes) {
     args.push("--append-system-prompt", capability.runNotes);
@@ -486,25 +517,29 @@ async function runSkillInner(
     const msg = enoent
       ? `'bash' or harness-adapter/run-harness not found — run from inside an Aeon repo clone.`
       : `Failed to spawn run-harness: ${result.error.message}`;
-    return `Error: ${msg}`;
+    return fail(`Error: ${msg}`);
   }
 
   if (result.status !== 0) {
     const output = (result.stderr || result.stdout || "").trim();
-    return `Skill '${slug}' failed (exit ${result.status}):\n${output}`;
+    return fail(`Skill '${slug}' failed (exit ${result.status}):\n${output}`);
   }
 
   const stdout = (result.stdout || "").trim();
   if (!stdout) {
-    return `Skill '${slug}' produced no output.`;
+    return fail(`Skill '${slug}' produced no output.`);
   }
 
   // run-harness normalizes every harness to { result: "..." }, so this parse is
   // harness-agnostic.
   try {
     const parsed = JSON.parse(stdout) as { result?: string };
-    return parsed.result ?? stdout;
+    return { ok: true, text: parsed.result ?? stdout };
   } catch {
-    return stdout;
+    return { ok: true, text: stdout };
   }
+}
+
+function fail(text: string): SkillRunResult {
+  return { ok: false, text };
 }

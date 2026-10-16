@@ -9,7 +9,7 @@ import { MCP_SECRET_OWNER, MCP_SECRET_RE } from './mcp-catalog'
 // LLM-gateway domains derive from the single registry so a new provider doesn't
 // need a hand-added row here.
 const GATEWAY_DOMAINS: Record<string, string> = Object.fromEntries(
-  Object.values(GATEWAY_REGISTRY).map((p) => [p.secretName, p.domain] as [string, string]),
+  Object.values(GATEWAY_REGISTRY).map(p => [p.secretName, p.domain] as [string, string]),
 )
 
 // Maps each credential / group to the brand domain whose logo we show. Logos

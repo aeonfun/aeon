@@ -27,7 +27,7 @@ interface TgUpdate {
 export function makeNonce(): string {
   const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789'
   const bytes = crypto.getRandomValues(new Uint8Array(16))
-  return Array.from(bytes, (b) => alphabet[b % alphabet.length]).join('')
+  return Array.from(bytes, b => alphabet[b % alphabet.length]).join('')
 }
 
 // The chat that sent "/start <nonce>", newest first. Pure.
@@ -50,11 +50,19 @@ export function parseBotToken(token: string): string | null {
   return token.trim().match(TOKEN_RE)?.[1] ?? null
 }
 
-export async function startLink(store: KvStore, token: string, fetchImpl: Fetch = fetch): Promise<{ username: string; nonce: string; link: string }> {
+export async function startLink(
+  store: KvStore,
+  token: string,
+  fetchImpl: Fetch = fetch,
+): Promise<{ username: string; nonce: string; link: string }> {
   const botId = parseBotToken(token)
   if (!botId) throw new Error('That does not look like a bot token (123456789:AA...).')
   const res = await fetchImpl(api(token.trim(), 'getMe'))
-  const body = await res.json().catch(() => ({})) as { ok?: boolean; result?: { username?: string }; description?: string }
+  const body = (await res.json().catch(() => ({}))) as {
+    ok?: boolean
+    result?: { username?: string }
+    description?: string
+  }
   if (!body.ok || !body.result?.username) throw new Error(body.description || 'Telegram rejected the bot token.')
   const nonce = makeNonce()
   await store.set(nonceKey(nonce), { botId }, LINK_TTL_SECONDS)
@@ -74,11 +82,16 @@ export type LinkCheck =
 // getUpdates returns at most this many updates per call.
 export const UPDATES_PAGE = 100
 
-export async function checkLink(store: KvStore, token: string, nonce: string, fetchImpl: Fetch = fetch): Promise<LinkCheck> {
+export async function checkLink(
+  store: KvStore,
+  token: string,
+  nonce: string,
+  fetchImpl: Fetch = fetch,
+): Promise<LinkCheck> {
   const pending = await store.get<{ botId: string }>(nonceKey(nonce))
   if (!pending || pending.botId !== parseBotToken(token)) return { status: 'expired' }
   const res = await fetchImpl(api(token.trim(), 'getUpdates'))
-  const body = await res.json().catch(() => ({})) as { ok?: boolean; result?: unknown; description?: string }
+  const body = (await res.json().catch(() => ({}))) as { ok?: boolean; result?: unknown; description?: string }
   if (res.status === 409) {
     // 409 is also "terminated by other getUpdates request" when the
     // messages.yml poller reads at the same moment: transient, keep waiting.
@@ -87,7 +100,9 @@ export async function checkLink(store: KvStore, token: string, nonce: string, fe
   if (!body.ok) throw new Error(body.description || `Telegram getUpdates failed (HTTP ${res.status})`)
   const chatId = findStartChat(body.result, nonce)
   if (chatId === null) {
-    return Array.isArray(body.result) && body.result.length >= UPDATES_PAGE ? { status: 'backlog' } : { status: 'waiting' }
+    return Array.isArray(body.result) && body.result.length >= UPDATES_PAGE
+      ? { status: 'backlog' }
+      : { status: 'waiting' }
   }
   await store.del(nonceKey(nonce))
   return { status: 'found', chatId: String(chatId) }

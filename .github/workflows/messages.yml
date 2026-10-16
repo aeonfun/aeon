@@ -1,5 +1,5 @@
 name: Aeon · Messages
-run-name: "${{ inputs.message && format('msg ({0}): {1}', inputs.source || 'user', inputs.message) || (github.event_name == 'repository_dispatch' && github.event.action != 'cron-tick' && format('msg ({0}): {1}', github.event.action, github.event.client_payload.message)) || 'poll' }}"
+run-name: "${{ inputs.message && format('msg ({0})', inputs.source || 'user') || (github.event_name == 'repository_dispatch' && github.event.action != 'cron-tick' && format('msg ({0})', github.event.action)) || 'poll' }}"
 
 on:
   schedule:
@@ -76,6 +76,10 @@ jobs:
           SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID }}
           SLACK_ALLOWED_USER_ID: ${{ vars.SLACK_ALLOWED_USER_ID || secrets.SLACK_ALLOWED_USER_ID }}
         run: |
+          # Never echo inbound message text: Actions logs are readable by anyone
+          # who can see the repo, which for a public fork is everyone. Log its
+          # length and a short hash instead, enough to tell messages apart.
+          msg_meta() { printf '%s chars, sha256 %s' "${#1}" "$(printf '%s' "$1" | sha256sum | cut -c1-12)"; }
           MESSAGES='[]'
 
           # --- Telegram (collect ALL pending updates) ---
@@ -138,13 +142,13 @@ jobs:
                 REPLY_TO=$(echo "$RESPONSE" | jq -r ".result[$i].message.reply_to_message.text // empty")
                 if [[ "$REPLY_TO" =~ \[[a-zA-Z0-9_-]+::[a-zA-Z0-9_-]+\] ]]; then
                   TG_REPLIES=$(echo "$TG_REPLIES" | jq --arg r "$REPLY_TO" --arg t "$TEXT" '. + [{reply_to:$r, text:$t}]')
-                  echo "Telegram reply -> $REPLY_TO"
+                  echo "Telegram reply ($(msg_meta "$TEXT"))"
                 elif [[ "$TEXT" == /* ]]; then
                   TG_COMMANDS=$(echo "$TG_COMMANDS" | jq --arg t "$TEXT" '. + [$t]')
-                  echo "Telegram command: $TEXT"
+                  echo "Telegram command: ${TEXT%% *} ($(msg_meta "$TEXT"))"
                 else
                   TG_MESSAGES=$(echo "$TG_MESSAGES" | jq --arg src "telegram" --arg txt "$TEXT" '. + [{source: $src, text: $txt}]')
-                  echo "Telegram: $TEXT"
+                  echo "Telegram message ($(msg_meta "$TEXT"))"
                 fi
               done
 
@@ -162,7 +166,7 @@ jobs:
                   N=$(echo "$TG_COMMANDS" | jq 'length')
                   for ((j=0; j<N; j++)); do
                     CMD_TEXT=$(echo "$TG_COMMANDS" | jq -r ".[$j]")
-                    bash scripts/telegram-route.sh command "$CMD_TEXT" || echo "::warning::route command failed: $CMD_TEXT"
+                    bash scripts/telegram-route.sh command "$CMD_TEXT" || echo "::warning::route command failed: ${CMD_TEXT%% *}"
                   done
                   N=$(echo "$TG_REPLIES" | jq 'length')
                   for ((j=0; j<N; j++)); do
@@ -211,7 +215,7 @@ jobs:
                 curl -s -X PUT -H "Authorization: Bot $DISCORD_BOT_TOKEN" \
                   "https://discord.com/api/v10/channels/$DISCORD_CHANNEL_ID/messages/$MSG_ID/reactions/%E2%9C%85/@me" > /dev/null
                 MESSAGES=$(echo "$MESSAGES" | jq --arg src "discord" --arg txt "$CONTENT" '. + [{source: $src, text: $txt}]')
-                echo "Discord: $CONTENT"
+                echo "Discord message ($(msg_meta "$CONTENT"))"
               fi
             done
           fi
@@ -247,7 +251,7 @@ jobs:
                     '{channel: $ch, timestamp: $ts, name: "white_check_mark"}')" \
                   "https://slack.com/api/reactions.add" > /dev/null
                 MESSAGES=$(echo "$MESSAGES" | jq --arg src "slack" --arg txt "$TEXT" '. + [{source: $src, text: $txt}]')
-                echo "Slack: $TEXT"
+                echo "Slack message ($(msg_meta "$TEXT"))"
               fi
             done
           fi
@@ -259,7 +263,7 @@ jobs:
           for ((i=0; i<MSG_COUNT; i++)); do
             SOURCE=$(echo "$MESSAGES" | jq -r ".[$i].source")
             TEXT=$(echo "$MESSAGES" | jq -r ".[$i].text")
-            echo "Dispatching [$SOURCE]: $TEXT"
+            echo "Dispatching [$SOURCE] message ($(msg_meta "$TEXT"))"
             gh workflow run messages.yml -R "$GITHUB_REPOSITORY" -f source="$SOURCE" -f message="$TEXT"
           done
 
@@ -802,6 +806,13 @@ jobs:
           echo "SKILL_TOTAL_TOKENS=$TOTAL_TOKENS" >> "$GITHUB_OUTPUT"
 
           echo "::notice::Token usage — input: $INPUT_TOKENS, output: $OUTPUT_TOKENS, cache_read: $CACHE_READ, cache_creation: $CACHE_CREATION, total: $TOTAL_TOKENS"
+
+      # The run can write .git/config, and "Commit results" pushes from this
+      # checkout. Drop the config that makes git run a program and pin hooks off
+      # (scripts/git-config-guard.sh, read from the starting commit).
+      - name: Lock git config
+        if: always() && steps.msg.outputs.source != ''
+        run: git show "$GITHUB_SHA:scripts/git-config-guard.sh" | bash
 
       # Sidecar gateway logs die with the VM — surface them in the job log on
       # failure (set the CCR_LOG=true repo variable for request-level detail).

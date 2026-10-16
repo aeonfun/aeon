@@ -213,6 +213,19 @@ jobs:
           git config user.name "aeonframework"
           git config user.email "aeonframework@proton.me"
 
+      # memory-flush with nothing new to fold in: skip the model call. `idle` exits 0
+      # only when no daily log changed since the last flush (fingerprints recorded by
+      # `stamp`) and that flush is under 7 days old; any doubt or error runs it as usual.
+      # The skipped run is recorded as a success so the slot is not retried.
+      - name: Idle gate (memory-flush)
+        id: idle
+        if: steps.work.outputs.mode != '' && steps.skill.outputs.name == 'memory-flush'
+        run: |
+          if python3 scripts/memory_prep.py idle; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::memory-flush skipped: no new log entries since the last flush"
+          fi
+
       # Egress hardening P1: default-deny outbound to link-local + cloud metadata.
       # No skill has a legitimate reason to reach 169.254.0.0/16. Kills the SSRF /
       # DNS-rebinding-to-metadata class before any skill runs. REJECT (not DROP) so a
@@ -327,38 +340,16 @@ jobs:
       # the same thing on all seven.
       - name: Install bubblewrap (read-only sandbox)
         if: steps.work.outputs.mode != ''
-        # Bound this step. apt can block on the runner's unattended-upgrades dpkg
-        # lock, and with no cap a stall here consumed the entire 50-min job wall and
-        # the run was cancelled before the skill ever executed (nur create-skill/
-        # digest/heartbeat + data kpi-daily all self-flagged run_failed 2026-08-19,
-        # each a ~50-min hang on this exact step). timeout-minutes fails the step
-        # fast; DPkg::Lock::Timeout waits a bounded time for the lock instead of
-        # hanging indefinitely.
-        # The lock is not the only stall: on 2026-10-07 `apt-get update` itself hung
-        # on a slow mirror for the full 5 min and killed an aeon-agent tweet-digest run
-        # before it ran. So try the install from the image's cached package lists
-        # first (no network index refresh), and only refresh on a miss, with each
-        # update capped at 90s and retried once. Acquire timeouts stop a single dead
-        # mirror from hanging.
+        # Bound this step: apt can block on the runner's dpkg lock or a slow mirror
+        # (a ~50-min hang 2026-08-19, a 5-min `apt-get update` hang 2026-10-07).
+        # The action installs from a cached .deb (no apt at all on a hit), falls
+        # back to the bounded apt path on a miss, and lifts Ubuntu 24.04's AppArmor
+        # userns restriction. Not strict: a blocked bwrap only warns here, and
+        # run-harness fails CLOSED on read-only skills on its own.
         timeout-minutes: 5
-        run: |
-          set -euo pipefail
-          APT_OPTS="-o DPkg::Lock::Timeout=120 -o Acquire::Retries=3 -o Acquire::http::Timeout=20 -o Acquire::https::Timeout=20"
-          if ! command -v bwrap >/dev/null 2>&1; then
-            if ! sudo apt-get $APT_OPTS install -y -qq bubblewrap; then
-              for attempt in 1 2; do
-                sudo timeout 90 apt-get $APT_OPTS update -qq && break
-                echo "::warning::apt-get update attempt $attempt timed out or failed"
-              done
-              sudo apt-get $APT_OPTS install -y -qq bubblewrap
-            fi
-          fi
-          # Ubuntu 24.04 (including GitHub's ubuntu-latest) restricts unprivileged
-          # user namespaces via AppArmor, so bwrap dies with 'setting up uid map:
-          # Permission denied' and run-harness fails CLOSED on every read-only
-          # skill. Measured on this runner 2026-07-21. Re-enable them for the job.
-          sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0 || true
-          bwrap --dev-bind / / --ro-bind /tmp /tmp true && echo 'bwrap: userns OK' || echo '::warning::bwrap still blocked'
+        uses: ./.github/actions/install-bubblewrap
+        with:
+          strict: 'false'
 
       - name: Install harness CLI
         if: steps.harness.outputs.HARNESS != '' && steps.harness.outputs.HARNESS != 'claude'
@@ -746,7 +737,7 @@ jobs:
       # uses the adapter's normalized result/usage/session_id envelope.
       - name: Run
         id: run
-        if: steps.work.outputs.mode != ''
+        if: steps.work.outputs.mode != '' && steps.idle.outputs.skip != 'true'
         env:
           # Secrets available to .mcp.json ${NAME} refs + per-skill `requires:`
           # injection. Built from an explicit allowlist of named secrets rather
@@ -1057,6 +1048,7 @@ jobs:
             echo "Riva shadow mode: declared and disclosure credentials withheld"
           fi
           [ -n "$INJECTED" ] && echo "::notice::Injected declared secrets for ${SKILL_NAME}:${INJECTED}"
+          export AEON_SECRETCURL_ALLOW="$([ "$SHADOW_MODE" = "1" ] || bash scripts/skill_requires.sh "$SKILL_NAME" 2>/dev/null | tr '\n' ' ')"
 
           unset ALL_SECRETS   # drop the secrets blob before any skill/Claude code runs
 
@@ -1116,8 +1108,8 @@ jobs:
           CLAUDE_OK=0
           RH=$(bash scripts/harness-adapter-snapshot.sh)
           RH_ARGS=(--mode "$SKILL_MODE" --allowed-tools "$ALLOWED" --timeout 1800)
-          # Tier notes (skill_mode.sh run-notes): notify via stdin, no shell file writes.
-          RUN_NOTES=$(bash scripts/skill_mode.sh run-notes "$SKILL_MODE")
+          # Tier notes (skill_mode.sh run-notes): notify, shell shape, keys set.
+          RUN_NOTES=$(bash scripts/skill_mode.sh run-notes "$SKILL_MODE" "$SKILL_NAME")
           if [ -n "$RUN_NOTES" ]; then RH_ARGS+=(--append-system-prompt "$RUN_NOTES"); fi
           # Pass --mcp-config only when the MCP preflight actually ENABLED MCP (every
           # required ${VAR} resolved) — MCP_FLAGS is set to the flags in that case and
@@ -1251,6 +1243,14 @@ jobs:
 
           echo "::notice::Token usage — model: ${EFFECTIVE_MODEL:-$BANNER_MODEL}, input: $INPUT_TOKENS, output: $OUTPUT_TOKENS, cache_read: $CACHE_READ, cache_creation: $CACHE_CREATION, total: $TOTAL_TOKENS"
 
+      # The run can write .git/config, and every later git step runs in this
+      # checkout with push credentials. Drop the config that makes git run a
+      # program (fsmonitor, filters, merge drivers, credential helpers, includes,
+      # ...) and pin hooks off, from the starting commit's copy of the script.
+      - name: Lock git config
+        if: always() && steps.work.outputs.mode != ''
+        run: git show "$GITHUB_SHA:scripts/git-config-guard.sh" | bash
+
       # Egress hardening P2: publish the warn-mode audit log. always() so it lands
       # even if the run failed; the host list is the allowlist oracle P3 builds from.
       - name: Upload egress audit log
@@ -1352,8 +1352,10 @@ jobs:
           SKILL:       ${{ steps.skill.outputs.name }}
           RUN_OUTCOME: ${{ steps.run.outcome }}
           AUDIT_REF:   ${{ steps.fleet_preflight.outputs.audit_ref }}
+          IDLE_SKIP:   ${{ steps.idle.outputs.skip }}
         run: |
           set -euo pipefail
+          [ "$IDLE_SKIP" = "true" ] && RUN_OUTCOME="success"
           case "$RUN_OUTCOME" in
             success) STATUS="ok" ;;
             failure) STATUS="error" ;;
@@ -1496,13 +1498,16 @@ jobs:
 
             # Tier 2 — SKILL.md frontmatter (author intent, travels with the skill).
             # Accepts legacy top-level `attest:` or the Agent Skills spec form
-            # nested under `metadata:` (indented).
-            FM_ATTEST=$(awk '/^---$/{n++; next}
+            # nested under `metadata:` (indented). Reads like scripts/skill_mode.sh:
+            # a trailing CR is stripped, a comment line does not end metadata:,
+            # and the value is compared in lowercase (True -> true).
+            FM_ATTEST=$(awk '{ sub(/\r$/,"") }
+              /^---$/{n++; next}
               n!=1{next}
-              /^[^ \t]/{im=0} /^metadata:/{im=1}
+              /^[^ \t#]/{im=0} /^metadata:/{im=1}
               /^attest:/ || (im && /^[ \t]+attest:/){
                 v=$0; sub(/^[ \t]*attest:[ \t]*/,"",v); sub(/[ \t]*#.*$/,"",v);
-                gsub(/^[ \t"]+|[ \t"]+$/,"",v); print v; exit
+                gsub(/^[ \t"]+|[ \t"]+$/,"",v); print tolower(v); exit
               }' "skills/${SKILL}/SKILL.md" 2>/dev/null || true)
 
             # Tier 3 — default policy: attest runs whose output is PUBLISHED to the
@@ -1681,7 +1686,7 @@ jobs:
           if [ "$HARNESS" = "claude" ]; then
             GATEWAY="${{ steps.run.outputs.GATEWAY }}"
             AEON_GATEWAY_QUIET=1 source "${GITHUB_WORKSPACE}/scripts/llm-gateway.sh"
-            AEON_OTEL_COMPONENT=scorer source "${GITHUB_WORKSPACE}/scripts/langfuse-otel.sh"
+            SKILL_NAME="$SKILL" AEON_OTEL_COMPONENT=scorer source "${GITHUB_WORKSPACE}/scripts/langfuse-otel.sh"
           fi
 
           # Grade the artifact the skill actually SENT, not its closing summary.
@@ -1846,6 +1851,8 @@ jobs:
 
           echo "QUALITY_SCORE=$SCORE" >> "$GITHUB_OUTPUT"
           echo "FLAGS=$FLAGS" >> "$GITHUB_OUTPUT"   # consumed by the votable-health step (§7)
+          # Same score to Langfuse, on the skill run's trace (no-op without LANGFUSE_* keys).
+          bash scripts/langfuse-score.sh "$SKILL" "$SCORE" "$ASSESSMENT" "$FLAGS" "$HARNESS" "${SCORE_MODEL:-}" || true
 
           # Write skill health file with rolling history
           mkdir -p memory/skill-health
@@ -2010,6 +2017,21 @@ jobs:
             if bash scripts/notify-deliver.sh "$p"; then ok=$((ok+1)); else echo "notify-deliver failed for $(basename "$p")"; fi
           done
           echo "Delivered $ok/${#payloads[@]} pending payload(s) via notify-deliver.sh"
+          # Same channel tests notify-deliver.sh uses. With none set it fails every
+          # payload by design, which is not worth a warning on every run.
+          channels=0
+          { [ -n "${TELEGRAM_BOT_TOKEN:-}" ] && [ -n "${TELEGRAM_CHAT_ID:-}" ]; } && channels=1
+          [ -n "${DISCORD_WEBHOOK_URL:-}" ] && channels=1
+          [ -n "${SLACK_WEBHOOK_URL:-}" ] && channels=1
+          { [ -n "${BUZZ_PRIVATE_KEY:-}" ] && [ -n "${BUZZ_CHANNEL_ID:-}" ]; } && channels=1
+          { [ -n "${RESEND_API_KEY:-}" ] && [ -n "${NOTIFY_EMAIL_TO:-}" ]; } && channels=1
+          if [ "$channels" -eq 0 ]; then
+            echo "No notify channel configured; ${#payloads[@]} notification(s) from ${SKILL_NAME:-this run} were not sent"
+          elif [ "$ok" -lt "${#payloads[@]}" ]; then
+            # The queue is removed below (the runner is discarded after this job), so
+            # an undelivered payload is gone; make that visible on the run.
+            echo "::warning::$(( ${#payloads[@]} - ok )) of ${#payloads[@]} notification(s) from ${SKILL_NAME:-this run} were not delivered on any channel and are dropped"
+          fi
           if [ -f "$AEON_AUDIT_LOG" ]; then
             echo "--- notify audit records ---"; cat "$AEON_AUDIT_LOG"
           fi
@@ -2097,7 +2119,12 @@ jobs:
             exit 0
           fi
           git commit -m "chore(${{ steps.skill.outputs.name }}): log read-only failure $(date +%Y-%m-%d)"
-          bash scripts/git-push-retry.sh
+          # Push helpers from the starting commit, as in "Commit results": they run
+          # with push credentials and the run could have edited the working tree.
+          HELPERS=$(mktemp -d "$RUNNER_TEMP/push-helpers.XXXXXX")
+          git show "$GITHUB_SHA:scripts/git-push-retry.sh" > "$HELPERS/git-push-retry.sh"
+          git show "$GITHUB_SHA:scripts/audit.sh" > "$HELPERS/audit.sh"
+          AEON_AUDIT_SCRIPT="$HELPERS/audit.sh" bash "$HELPERS/git-push-retry.sh"
 
       - name: Commit results
         # (Read-only failures are handled above, in "Commit read-only failure
@@ -2138,6 +2165,12 @@ jobs:
         env:
           STATE_BACKEND: ${{ vars.STATE_BACKEND }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LANGFUSE_PUBLIC_KEY: ${{ secrets.LANGFUSE_PUBLIC_KEY }}
+          LANGFUSE_SECRET_KEY: ${{ secrets.LANGFUSE_SECRET_KEY }}
+          LANGFUSE_HOST: ${{ vars.LANGFUSE_HOST }}
+          LANGFUSE_TRACING: ${{ vars.LANGFUSE_TRACING }}
+          RUN_HARNESS: ${{ steps.run.outputs.HARNESS }}
+          IDLE_SKIP: ${{ steps.idle.outputs.skip }}
         run: |
           SKILL="${{ steps.skill.outputs.name }}"
           RUN_OUTCOME="${{ steps.run.outcome }}"
@@ -2145,8 +2178,8 @@ jobs:
           STATE_FILE="memory/cron-state.json"
           QUALITY_SCORE="${{ steps.analyze.outputs.QUALITY_SCORE }}"
 
-          # Determine status from step outcome
-          if [ "$RUN_OUTCOME" = "success" ]; then
+          # Determine status from step outcome (an idle-gated memory-flush counts as done)
+          if [ "$RUN_OUTCOME" = "success" ] || [ "${IDLE_SKIP:-}" = "true" ]; then
             CRON_STATUS="success"
           else
             CRON_STATUS="failed"
@@ -2156,6 +2189,13 @@ jobs:
           ERROR_SIG=""
           if [ "$CRON_STATUS" = "failed" ] && [ -f /tmp/skill-error.txt ]; then
             ERROR_SIG=$(cat /tmp/skill-error.txt)
+          fi
+
+          # run_ok to Langfuse, on the skill run's trace (no-op without LANGFUSE_* keys).
+          # Not for an idle-gated skip: no run happened.
+          if [ "${IDLE_SKIP:-}" != "true" ]; then
+            RUN_OK=0; if [ "$CRON_STATUS" = "success" ]; then RUN_OK=1; fi
+            bash scripts/langfuse-score.sh --run-ok "$SKILL" "$RUN_OK" "${RUN_HARNESS:-}" "$ERROR_SIG" || true
           fi
 
           # Issues-as-state (hardening §3). STATE_BACKEND tri-state:

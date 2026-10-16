@@ -118,12 +118,16 @@ function analyzeCheckout(text) {
   const runStep = steps[runIdx];
   const runCond = normCond(runStep.ifCond);
 
-  // A preceding checkout "covers" Run if it is unconditional, or shares Run's exact
-  // condition, so it can never be skipped in a run where Run itself executes.
+  // A preceding checkout "covers" Run if it is unconditional, shares Run's exact
+  // condition, or is the leading conjunct of it (`C && X`), so it can never be
+  // skipped in a run where Run itself executes. An `||` on either side breaks that
+  // implication (`C && X || Y` runs without C), so it never counts as a conjunct.
   const covering = checkouts.find((s) => {
     if (steps.indexOf(s) >= runIdx) return false;
     const c = normCond(s.ifCond);
-    return c === null || c === runCond;
+    if (c === null || c === runCond) return true;
+    return runCond !== null && !c.includes('||') && !runCond.includes('||')
+      && runCond.startsWith(c + ' && ');
   });
 
   if (covering) {
@@ -369,6 +373,15 @@ const CRON_FIELDS = [
 const MONTH_NAMES = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 const DOW_NAMES = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 
+// Pure: a day-of-week field with names turned into numbers, as scripts/cron-due.sh
+// reads it. SUN closes a range as 7 (SAT-SUN is 6-7) unless the range also starts
+// on Sunday: SUN-SUN and 0-SUN stay Sunday only. A bare SUN stays 0.
+function dowToNumbers(field) {
+  let out = String(field).toUpperCase().replace(/(^|,)(SUN|0+)-SUN/g, '$1$2-0').split('-SUN').join('-7');
+  DOW_NAMES.forEach((n, i) => { out = out.split(n).join(String(i)); });
+  return out;
+}
+
 // Pure: returns null when valid, else a short reason.
 function validateSchedule(sched) {
   const s = String(sched).trim();
@@ -379,7 +392,7 @@ function validateSchedule(sched) {
     const [name, lo, hi] = CRON_FIELDS[f];
     let field = fields[f].toUpperCase();
     if (f === 3) MONTH_NAMES.forEach((n, i) => { field = field.split(n).join(String(i + 1)); });
-    if (f === 4) DOW_NAMES.forEach((n, i) => { field = field.split(n).join(String(i)); });
+    if (f === 4) field = dowToNumbers(field);
     for (const el of field.split(',')) {
       const m = el.match(/^(\*|(\d+)(?:-(\d+))?)(?:\/(\d+))?$/);
       if (!m) return 'bad ' + name + ' element "' + el + '"';
@@ -445,4 +458,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { analyzeCheckout, parseSteps, collectReactiveRefs, validateWhen, validateChainWhen, validateSchedule, collectSchedules };
+module.exports = { analyzeCheckout, parseSteps, collectReactiveRefs, validateWhen, validateChainWhen, validateSchedule, dowToNumbers, collectSchedules };

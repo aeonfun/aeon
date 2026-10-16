@@ -63,6 +63,7 @@ jobs:
         run: |
           NOW_ISO=$(date -u +%FT%TZ)
           NOW_EPOCH=$(date -u +%s)
+          CRON_ERR=$(mktemp)
 
           # Catch-up depth, in hours, for both skills and chains. GitHub delivers
           # only ~10% of the */5 ticks, so gaps routinely exceed a 2h window and a
@@ -229,8 +230,16 @@ jobs:
             # compares the most recent slot (within CATCHUP_HOURS) against the last
             # dispatch. Gates both the breaker probe and normal cron matching below.
             SLOT_OWED=0
-            if SLOT_ISO=$(bash scripts/cron-due.sh "$SCHED" "$NOW_EPOCH" "$LAST_DISPATCH_EPOCH" "$CATCHUP_HOURS"); then
+            if SLOT_ISO=$(bash scripts/cron-due.sh "$SCHED" "$NOW_EPOCH" "$LAST_DISPATCH_EPOCH" "$CATCHUP_HOURS" 2>"$CRON_ERR"); then
               SLOT_OWED=1
+            elif grep -q "invalid schedule" "$CRON_ERR"; then
+              # cron-due.sh exits 1 for both "not due" and "invalid"; only the
+              # message tells them apart. Surface it so the skill is not silently
+              # skipped forever.
+              echo "::warning::skill $SKILL has an invalid schedule and will never run: $(cat "$CRON_ERR")"
+            elif [ -s "$CRON_ERR" ]; then
+              # Any other stderr (a crash, a date error) still reaches the log.
+              cat "$CRON_ERR" >&2
             fi
 
             # --- Circuit breaker (auto-recovering) ---
@@ -293,13 +302,17 @@ jobs:
             if [ -f "$SKILL_FILE" ]; then
               # depends_on may be inline (`[a, b]`) or block (`- a` lines), top-level
               # or nested under `metadata:` (Agent Skills spec form). Emit comma-joined.
+              # Reads like scripts/skill_mode.sh: a trailing CR is stripped, and a
+              # comment line ends neither metadata: nor a block list.
               DEPS=$(awk '
+                { sub(/\r$/,"") }
                 /^---$/{n++; next} n!=1{next}
                 collecting {
+                  if ($0 ~ /^[ \t]*(#.*)?$/) next
                   if ($0 ~ /^[ \t]*-[ \t]*/) { it=$0; sub(/^[ \t]*-[ \t]*/,"",it); sub(/[ \t]*#.*/,"",it); gsub(/[ \t]/,"",it); if(it!="") acc=(acc==""?it:acc","it); next }
                   collecting=0; print acc; exit
                 }
-                /^[^ \t]/{im=0} /^metadata:/{im=1}
+                /^[^ \t#]/{im=0} /^metadata:/{im=1}
                 /^depends_on:/ || (im && /^[ \t]+depends_on:/){
                   if ($0 ~ /\[/) { line=$0; sub(/^[ \t]*depends_on:[ \t]*\[/,"",line); sub(/\].*/,"",line); gsub(/[ \t]/,"",line); print line; exit }
                   collecting=1; next
@@ -335,7 +348,14 @@ jobs:
             LAST_DISPATCH_EPOCH=$(date -u -d "$LAST_DISPATCH" +%s 2>/dev/null || echo 0)
 
             # Same exact-slot debt decision as the per-skill path (scripts/cron-due.sh).
-            bash scripts/cron-due.sh "$SCHED" "$NOW_EPOCH" "$LAST_DISPATCH_EPOCH" "$CATCHUP_HOURS" >/dev/null || continue
+            if ! bash scripts/cron-due.sh "$SCHED" "$NOW_EPOCH" "$LAST_DISPATCH_EPOCH" "$CATCHUP_HOURS" >/dev/null 2>"$CRON_ERR"; then
+              if grep -q "invalid schedule" "$CRON_ERR"; then
+                echo "::warning::chain $CH has an invalid schedule and will never run: $(cat "$CRON_ERR")"
+              elif [ -s "$CRON_ERR" ]; then
+                cat "$CRON_ERR" >&2
+              fi
+              continue
+            fi
 
             MATCHED_CHAINS+=("$CH")
             echo "Matched chain: $CH (schedule: $SCHED)"
@@ -513,9 +533,14 @@ jobs:
             echo "No state changes"
           else
             git commit -m "chore(scheduler): update cron state"
+            PERSISTED=0
+            # stderr of whichever git step failed last (pull, push or fetch), so the
+            # final error says why, not just that it failed.
+            GIT_ERR=$(mktemp)
             for i in 1 2 3 4 5; do
-              if git pull --rebase origin main 2>/dev/null && git push -u origin HEAD 2>/dev/null; then
+              if git pull --rebase origin main 2>"$GIT_ERR" && git push -u origin HEAD 2>"$GIT_ERR"; then
                 echo "State committed on attempt $i"
+                PERSISTED=1
                 break
               fi
               # Lost the race. Start over from upstream's cron-state and re-apply
@@ -524,7 +549,10 @@ jobs:
               # OUR copy from the index, so every retry replayed the same conflict
               # and the stamps were lost (double dispatch next tick).
               git rebase --abort 2>/dev/null || true
-              if ! git fetch origin main 2>/dev/null; then
+              # A fetch that works still writes progress to stderr, so keep its
+              # output only when it fails; the pull/push error stays otherwise.
+              if ! FETCH_OUT=$(git fetch origin main 2>&1); then
+                printf '%s\n' "$FETCH_OUT" > "$GIT_ERR"
                 sleep "$i"
                 continue
               fi
@@ -537,8 +565,14 @@ jobs:
               fi
               echo "$MERGED" | apply_stamps | jq '.' > "$STATE_FILE"
               git add "$STATE_FILE"
-              git diff --staged --quiet && { echo "State already up to date after merge"; break; }
+              git diff --staged --quiet && { echo "State already up to date after merge"; PERSISTED=1; break; }
               git commit -m "chore(scheduler): update cron state"
               sleep "$i"
             done
+            if [ "$PERSISTED" != 1 ]; then
+              # The dispatches already happened; without these stamps the same
+              # slots are owed again next tick and the skills run twice.
+              echo "::error::cron-state.json was not pushed after 5 attempts; owed skills will be dispatched again next tick. Last git error: $(tr '\n' ' ' < "$GIT_ERR")"
+              exit 1
+            fi
           fi

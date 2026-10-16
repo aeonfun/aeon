@@ -119,6 +119,12 @@ grep -q 'half-edited' "$D/run/notes.txt" && pass "aeon.yml: dirty working-tree e
 git -C "$D/remote.git" show main:notes.txt | grep -q 'half-edited' && bad "aeon.yml: dirty edit leaked into the cron commit" \
   || pass "aeon.yml: only cron-state was committed"
 
+# --- aeon.yml: idle-gated memory-flush (Run step skipped) counts as a success ---
+D="$TMP/a3"; setup "$D"
+out=$(cd "$D/run" && T_OUTCOME=skipped IDLE_SKIP=true bash -e "$TMP/aeon-step.sh" 2>&1)
+[ "$(jq -r '.digest.last_status' <<<"$(remote_state "$D")")" = success ] \
+  && pass "aeon.yml: idle skip recorded as success" || { bad "aeon.yml: idle skip not recorded as success"; echo "$out"; }
+
 # --- chain-runner.yml: push race ----------------------------------------------
 D="$TMP/c1"; setup "$D"; arm_race_on_first_push "$D"
 out=$(cd "$D/run" && _INPUT_CHAIN=morning CHAIN_STATUS=failed bash -e "$TMP/chain-step.sh" 2>&1)

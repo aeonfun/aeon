@@ -48,6 +48,7 @@ get_skill_updated() {
 #   fm <file> <field> strip  additionally strip all double-quotes (gsub /"/)
 fm() {
   awk -v f="$2" -v q="${3:-}" '
+    { sub(/\r$/,"") }
     /^---$/{n++; next}
     n==1 && $0 ~ "^"f":" {
       line=$0
@@ -60,6 +61,7 @@ fm() {
       if (q=="fold" && line ~ /^[|>][-+0-9]*$/) {
         val=""
         while ((getline nxt) > 0) {
+          sub(/\r$/, "", nxt)
           if (nxt ~ /^---$/ || nxt !~ /^[ \t]/) break
           gsub(/^[ \t]+/, "", nxt); gsub(/[ \t]+$/, "", nxt)
           if (nxt == "") continue
@@ -80,10 +82,11 @@ fm() {
 # coexist.
 fmeta() {
   awk -v k="$2" '
+    { sub(/\r$/,"") }
     /^---$/{n++; next}
     n!=1{next}
     /^metadata:/{inmeta=1; next}
-    inmeta && /^[^ \t]/{inmeta=0}
+    inmeta && /^[^ \t#]/{inmeta=0}
     inmeta && $0 ~ "^[ \t]+"k":" {
       line=$0
       sub("^[ \t]+"k": *", "", line)
@@ -128,12 +131,14 @@ for skill_dir in "$SKILLS_DIR"/*/; do
   # requires: [KEY, KEY2?]  →  [{"key":"KEY","optional":false},{"key":"KEY2","optional":true}]
   # `?` suffix marks a "works better" (optional) credential; bare names are required.
   requires_raw=$(awk '
+    { sub(/\r$/,"") }
     /^---$/{n++; next} n!=1{next}
     collecting {
+      if ($0 ~ /^[ \t]*(#.*)?$/) next
       if ($0 ~ /^[ \t]*-[ \t]*/) { it=$0; sub(/^[ \t]*-[ \t]*/,"",it); sub(/[ \t]*#.*/,"",it); gsub(/[ \t]/,"",it); if(it!="") acc=(acc==""?it:acc","it); next }
       collecting=0; print acc; exit
     }
-    /^[^ \t]/{im=0} /^metadata:/{im=1}
+    /^[^ \t#]/{im=0} /^metadata:/{im=1}
     /^requires:/ || (im && /^[ \t]+requires:/){
       if ($0 ~ /\[/) { line=$0; sub(/^[ \t]*requires:[ \t]*\[/,"",line); sub(/\].*/,"",line); print line; exit }
       collecting=1; next
@@ -156,12 +161,14 @@ for skill_dir in "$SKILLS_DIR"/*/; do
 
   # mcp: [base, glim?]  →  [{"slug":"base","optional":false},{"slug":"glim","optional":true}]
   mcp_raw=$(awk '
+    { sub(/\r$/,"") }
     /^---$/{n++; next} n!=1{next}
     collecting {
+      if ($0 ~ /^[ \t]*(#.*)?$/) next
       if ($0 ~ /^[ \t]*-[ \t]*/) { it=$0; sub(/^[ \t]*-[ \t]*/,"",it); sub(/[ \t]*#.*/,"",it); gsub(/[ \t]/,"",it); if(it!="") acc=(acc==""?it:acc","it); next }
       collecting=0; print acc; exit
     }
-    /^[^ \t]/{im=0} /^metadata:/{im=1}
+    /^[^ \t#]/{im=0} /^metadata:/{im=1}
     /^mcp:/ || (im && /^[ \t]+mcp:/){
       if ($0 ~ /\[/) { line=$0; sub(/^[ \t]*mcp:[ \t]*\[/,"",line); sub(/\].*/,"",line); print line; exit }
       collecting=1; next

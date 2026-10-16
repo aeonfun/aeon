@@ -1,0 +1,14 @@
+node_modules/
+.DS_Store
+*.log
+npm-debug.log*
+.env
+.env.*
+shots/
+audit.txt
+/capture.png
+.scratch/
+tmp/
+
+# Aeon: example pages are built, never committed (see UPSTREAM.md)
+examples/**/*.html

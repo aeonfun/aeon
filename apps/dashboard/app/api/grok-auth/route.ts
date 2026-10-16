@@ -43,7 +43,9 @@ function grokLogin(): Promise<void> {
       return reject(e)
     }
     let buf = ''
-    const onData = (chunk: Buffer) => { buf += chunk.toString() }
+    const onData = (chunk: Buffer) => {
+      buf += chunk.toString()
+    }
     child.stdout?.on('data', onData)
     child.stderr?.on('data', onData)
     // Read off the whole buffer at failure time rather than latching the first
@@ -53,16 +55,18 @@ function grokLogin(): Promise<void> {
     const timer = setTimeout(() => {
       child.kill()
       const url = verifyUrl()
-      reject(new Error(`Timed out waiting for approval. Approve in the browser and click Connect again.${url ? ` If no tab opened, visit ${url}` : ''}`))
+      reject(
+        new Error(
+          `Timed out waiting for approval. Approve in the browser and click Connect again.${url ? ` If no tab opened, visit ${url}` : ''}`,
+        ),
+      )
     }, LOGIN_TIMEOUT_MS)
 
     child.on('error', (e: NodeJS.ErrnoException) => {
       clearTimeout(timer)
-      reject(e.code === 'ENOENT'
-        ? new Error('grok CLI not found. Install it: npm i -g @xai-official/grok')
-        : e)
+      reject(e.code === 'ENOENT' ? new Error('grok CLI not found. Install it: npm i -g @xai-official/grok') : e)
     })
-    child.on('close', (code) => {
+    child.on('close', code => {
       clearTimeout(timer)
       if (code === 0) resolve()
       else reject(new Error(`grok login exited ${code}. ${buf.slice(-200)}`))
@@ -90,9 +94,13 @@ export async function POST(request: Request) {
     await grokLogin()
 
     if (!existsSync(join(home, AUTH_FILE))) {
-      return NextResponse.json({
-        error: 'Login completed but no ~/.grok/auth.json was found. Try `grok login` in a terminal, then click Connect again.',
-      }, { status: 400 })
+      return NextResponse.json(
+        {
+          error:
+            'Login completed but no ~/.grok/auth.json was found. Try `grok login` in a terminal, then click Connect again.',
+        },
+        { status: 400 },
+      )
     }
 
     // tar.gz just the credential (rooted at $HOME so it restores as ~/.grok/auth.json).
@@ -106,7 +114,13 @@ export async function POST(request: Request) {
     // gateway/tweet-skill secret.)
     const sync = await syncHarness('grok')
 
-    return NextResponse.json({ ok: true, method: 'oauth', secret: 'GROK_CREDENTIALS', harness: 'grok', synced: sync.synced })
+    return NextResponse.json({
+      ok: true,
+      method: 'oauth',
+      secret: 'GROK_CREDENTIALS',
+      harness: 'grok',
+      synced: sync.synced,
+    })
   } catch (error: unknown) {
     return errorResponse(error, 'Failed to connect Grok')
   }

@@ -64,6 +64,20 @@ fi
 [ -n "${RH_JSON_SCHEMA:-}" ] && ARGS+=(--json-schema "$RH_JSON_SCHEMA")
 [ -n "${RH_APPEND_SYSTEM_PROMPT:-}" ] && ARGS+=(--append-system-prompt "$RH_APPEND_SYSTEM_PROMPT")
 
+# OTel tracing on: hold the first turn ~1s with a SessionStart hook. With a
+# subscription OAuth token Claude Code starts its span exporter only after its
+# remote managed settings fetch, and the first turn does not wait for it, so the
+# interaction span started on a no-op tracer and every later span became its own
+# one-span trace (aeon-agent, every run since 2.1.287; also 2.1.301). Measured on
+# a runner: 0 of 6 runs kept the tree without the hook, 12 of 12 with a 0.5s or 1s
+# hook. AEON_OTEL_STARTUP_DELAY=0 turns it off.
+if [ "${CLAUDE_CODE_ENABLE_TELEMETRY:-}" = 1 ] && [ -n "${OTEL_TRACES_EXPORTER:-}" ] && [ "${OTEL_TRACES_EXPORTER}" != none ]; then
+  _delay="${AEON_OTEL_STARTUP_DELAY:-1}"
+  if [[ "$_delay" =~ ^[0-9]+(\.[0-9]+)?$ ]] && [ "$_delay" != 0 ]; then
+    ARGS+=(--settings "{\"hooks\":{\"SessionStart\":[{\"hooks\":[{\"type\":\"command\",\"command\":\"sleep $_delay\"}]}]}}")
+  fi
+fi
+
 # 2.1.285+ also assumes a model's 1M context window behind a custom
 # ANTHROPIC_BASE_URL. A gateway that stops at 200K would then fail a long run
 # instead of compacting it, so keep the 200K window there (as 2.1.168 did) unless

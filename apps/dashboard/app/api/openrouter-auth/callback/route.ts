@@ -10,7 +10,7 @@ import { setSecret } from '@/lib/secrets-catalog'
 // on 127.0.0.1 while this page loads on localhost.
 
 const escapeHtml = (s: string) =>
-  s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!)
+  s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!)
 
 function page(state: string, ok: boolean, title: string, detail: string): Response {
   const msg = JSON.stringify({ type: 'aeon-openrouter', state, status: ok ? 'done' : 'error' }).replace(/</g, '\\u003c')
@@ -29,16 +29,20 @@ function page(state: string, ok: boolean, title: string, detail: string): Respon
 export async function GET(request: Request) {
   const url = new URL(request.url)
   const state = url.searchParams.get('state') || ''
-  const result = await finishFlow(getConnectStore(), {
-    state,
-    code: url.searchParams.get('code'),
-    error: url.searchParams.get('error'),
-  }, {
-    save: async (key) => {
-      await setSecret('OPENROUTER_API_KEY', key)
-      return 'OPENROUTER_API_KEY'
+  const result = await finishFlow(
+    getConnectStore(),
+    {
+      state,
+      code: url.searchParams.get('code'),
+      error: url.searchParams.get('error'),
     },
-  })
+    {
+      save: async key => {
+        await setSecret('OPENROUTER_API_KEY', key)
+        return 'OPENROUTER_API_KEY'
+      },
+    },
+  )
   return result.status === 'done'
     ? page(state, true, 'OpenRouter connected', 'Saved as OPENROUTER_API_KEY. You can close this tab.')
     : page(state, false, 'OpenRouter connect failed', result.status === 'error' ? result.error : '')
