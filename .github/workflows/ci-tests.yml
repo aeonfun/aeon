@@ -58,9 +58,9 @@ jobs:
     # Blacksmith, not GitHub: ~50 short serial test steps, so single-core speed
     # decides. Median job 51s vs 64.5s on GitHub's public 4 vCPU runner (queue 7s
     # vs 2s), live bwrap checks pass; Blacksmith 4 vCPU was no faster (50s).
-    # Bench: runs 38823788873 + 38825096928. Back to ubuntu-24.04 if Blacksmith
-    # is down, since this job gates every PR through CI Gate.
-    runs-on: blacksmith-2vcpu-ubuntu-2404
+    # Bench: runs 38823788873 + 38825096928. The label comes from the
+    # AEON_RUNNER repo variable like every other job; unset = ubuntu-24.04.
+    runs-on: ${{ vars.AEON_RUNNER || 'ubuntu-24.04' }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: Install deps

@@ -122,6 +122,7 @@ Set with `gh variable set NAME "value"`.
 | `GLM_REASONING_EFFORT` | GLM gateway reasoning depth: `low` / `high` / `max` (default `high`) |
 | `STATE_BACKEND` | `file` (default) · `dual` · `issues` - where run state lives |
 | `HEALTH_ISSUES` | `0` disables the votable per-skill health Issues |
+| `AEON_RUNNER` | Runner label for every workflow job (default `ubuntu-24.04`), e.g. `blacksmith-2vcpu-ubuntu-2404` |
 | `NOTIFY_MIN_SEVERITY` | Suppress notifications below this level |
 | `NOTIFY_EMAIL_FROM` | Default `aeon@notifications.aeon.bot` - **must be a Resend-verified sender** |
 | `NOTIFY_EMAIL_SUBJECT_PREFIX` | Default `[Aeon]` |
