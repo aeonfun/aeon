@@ -465,4 +465,4 @@ If a `./aeon` command, an Aeon Connect MCP tool, or a step in this skill fails, 
 - `kind`: `bug` (wrong result or wrong guidance), `error` (a command or tool failed), `missing` (the skill does not cover it), `idea`.
 - `title` 5-200 characters, `details` up to 4000, `context` a small JSON object under 2 KB (mode, command, error line).
 - **Never include secrets, tokens, keys, `.env` values, or private repo contents.** If the report would carry the user's repo names, skill names, or any of their data, show them the exact report and ask before sending. Otherwise tell them you sent it.
-- One report per problem. A 429 means the limit is hit: don't retry.
+- One report per problem. Reading the answer: 201 or 200 = sent (200 means it joined an existing report as a vote); 502 or 503 = feedback is down, skip it; 400, 415 or 429 = don't retry.
