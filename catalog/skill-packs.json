@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "updated": "2026-10-16",
+  "updated": "2026-10-17",
   "description": "Machine-readable registry of community skill packs installable via bin/install-skill-pack. Mirrors the human-readable table in README.md.",
   "packs": [
     {
@@ -211,6 +211,25 @@
       "secrets_required": [],
       "capabilities": [
         "read_only",
+        "sends_notifications"
+      ]
+    },
+    {
+      "repo": "AragAgg/aeon-skill-pack-cohesivity",
+      "name": "Cohesivity",
+      "description": "Headless backend for AI agents with hosting, Postgres, storage, and 15+ services. deploy-site builds a small web app from your instance's signals and deploys it to a live URL on a free 72-hour tenant, then sends the URL, the expiry, and a claim link through ./notify. No API keys or signups required to get started.",
+      "author": "AragAgg",
+      "license": "MIT",
+      "homepage": "https://cohesivity.ai?ref=gh-aeon",
+      "category": "dev",
+      "trust_level": "community",
+      "skills": [
+        "deploy-site"
+      ],
+      "secrets_required": [],
+      "capabilities": [
+        "external_api",
+        "writes_external_host",
         "sends_notifications"
       ]
     }
