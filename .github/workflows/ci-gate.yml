@@ -11,7 +11,9 @@ concurrency:
 jobs:
   # The job id `gate` is the required status check on main - do not rename it.
   gate:
-    runs-on: ${{ vars.AEON_RUNNER || 'ubuntu-24.04' }}
+    # Pure polling, no build: GitHub's runner on purpose, not AEON_RUNNER (free
+    # on public repos, starts faster, and a paid runner would bill the whole wait).
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
       - name: Require all CI checks to pass
@@ -26,8 +28,15 @@ jobs:
           # SHA has completed, then judge. Workflow runs are created when the
           # pull_request event is processed, before their jobs register check
           # runs, so waiting on them covers slow path-filtered siblings without a
-          # fixed grace sleep. An all-done snapshot must hold for two polls in a
+          # fixed grace sleep. All sibling runs are created together with this
+          # one, so once a poll has seen any of them in progress, the first
+          # all-done poll is final. Only an all-done snapshot on the very first
+          # polls (siblings maybe not created yet) must hold for two polls in a
           # row before judging, in case a sibling registers late.
+          #
+          # Polls every 5s for the first 3 minutes so the gate ends within ~5s
+          # of the last sibling, then every 15s to stay well inside the
+          # GITHUB_TOKEN rate limit when a sibling runs long.
           #
           # Workflow runs are deduped to the newest run per workflow file (the
           # check-runs endpoint already returns only the latest run per name), so
@@ -38,11 +47,14 @@ jobs:
               | sort -t "$(printf '\t')" -k1,1 -k2,2nr \
               | awk -F'\t' 'NF>0 && !seen[$1]++ {print $3 "\t" $4 "\t" $5}'
           }
-          deadline=$(( $(date +%s) + 1500 ))
+          start=$(date +%s)
+          deadline=$(( start + 1500 ))
           stable=0
+          seen_pending=0
+          last_pending=""
           while :; do
             wf=$(workflow_runs)
-            runs=$(gh api "repos/$REPO/commits/$SHA/check-runs" --paginate \
+            runs=$(gh api "repos/$REPO/commits/$SHA/check-runs?per_page=100" --paginate \
               -q '.check_runs[] | select(.name != "gate") | [.name, .status, (.conclusion // "")] | @tsv')
             pending=$(
               printf '%s\n' "$wf" | awk -F'\t' 'NF>0 && $2 ~ /^(queued|in_progress|waiting|requested|pending)$/ {print "workflow: " $0}'
@@ -50,17 +62,22 @@ jobs:
             )
             if [ -z "$pending" ]; then
               stable=$(( stable + 1 ))
-              [ "$stable" -ge 2 ] && break
+              { [ "$seen_pending" -eq 1 ] || [ "$stable" -ge 2 ]; } && break
             else
               stable=0
-              echo "Waiting on runs still in progress:"
-              printf '%s\n' "$pending"
+              seen_pending=1
+              if [ "$pending" != "$last_pending" ]; then
+                echo "Waiting on runs still in progress:"
+                printf '%s\n' "$pending"
+                last_pending=$pending
+              fi
             fi
-            if [ "$(date +%s)" -ge "$deadline" ]; then
+            now=$(date +%s)
+            if [ "$now" -ge "$deadline" ]; then
               echo "Timed out waiting for CI checks to complete."
               exit 1
             fi
-            sleep 15
+            if [ $(( now - start )) -lt 180 ]; then sleep 5; else sleep 15; fi
           done
           # A workflow that fails before any job starts (e.g. invalid YAML) has no
           # check runs, so judge the workflow runs' conclusions as well.

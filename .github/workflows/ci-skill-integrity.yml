@@ -61,7 +61,9 @@ concurrency:
 
 jobs:
   verify:
-    runs-on: ${{ vars.AEON_RUNNER || 'ubuntu-24.04' }}
+    # A ~10s check: GitHub's runner on purpose, not AEON_RUNNER (free on public
+    # repos, starts faster, a bigger runner does not help).
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       # A skill added without regenerating the lockfile would otherwise be
