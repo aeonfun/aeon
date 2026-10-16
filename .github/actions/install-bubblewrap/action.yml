@@ -20,7 +20,7 @@ runs:
     - name: Bubblewrap cache key
       id: key
       shell: bash
-      run: echo "key=bubblewrap-${{ runner.os }}-${{ runner.arch }}-${ImageOS:-unknown}-$(date -u +%Y-%m)" >> "$GITHUB_OUTPUT"
+      run: echo "key=bubblewrap-${{ runner.os }}-${{ runner.arch }}-${ImageOS:-unknown}-$(date -u +%Y-%m)-verify1" >> "$GITHUB_OUTPUT"
 
     - name: Restore bubblewrap .deb
       id: restore
