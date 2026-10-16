@@ -131,6 +131,7 @@ ones by name. Proven in CI against a fake model and a fake stdio server (fast,
 | `--timeout <s>` | wall-clock guard (default 600) |
 | `--no-sandbox` | skip the wrapper OS sandbox on read-only runs |
 | `--no-compat-rules` | skip the Claude-idiom preamble on non-claude harnesses |
+| `--no-tools` | claude: no tools at all (`--tools ""`), for one-shot text calls like the post-run scorer; other harnesses ignore it |
 
 ## How each layer is translated
 

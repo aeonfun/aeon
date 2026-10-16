@@ -345,6 +345,8 @@ Set the secret → channel activates. No code changes needed.
 
 Want ~1s Telegram replies instead of up-to-5-min polling? See [Telegram instant mode](../apps/webhook/README.md).
 
+**Test runs on other branches stay quiet.** Only runs on the default branch deliver notifications; a skill dispatched on a test branch (e.g. `verify/*`) queues its message and drops it. Set the repo variable `NOTIFY_ON_BRANCH=1` to deliver from every branch while you test a card.
+
 ## Audit log
 
 Every run writes an append-only JSON-lines record of the privileged actions that reached outside it - notify sends, `secretcurl` calls, and git pushes - and uploads it as the `audit-log-<run_id>` artifact on the run (kept 30 days). It answers "what did this run actually do" without reading the whole Actions transcript. One line per action:

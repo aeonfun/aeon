@@ -87,7 +87,8 @@ STUB
 chmod +x "$TMP/cbin/curl"
 cat > "$TMP/claude-env.json" <<'JSON'
 {"result":"SENSITIVE-RESULT-TEXT","is_error":false,"num_turns":7,"total_cost_usd":0.42,
- "usage":{"input_tokens":30,"output_tokens":500,"cache_read_input_tokens":9000,"cache_creation_input_tokens":1000},
+ "usage":{"input_tokens":30,"output_tokens":500,"cache_read_input_tokens":9000,"cache_creation_input_tokens":1000,
+          "cache_creation":{"ephemeral_1h_input_tokens":750,"ephemeral_5m_input_tokens":250}},
  "modelUsage":{"claude-sonnet-5-5":{"inputTokens":20,"outputTokens":450,"cacheReadInputTokens":8000,"cacheCreationInputTokens":900},
                "claude-haiku-5-5":{"inputTokens":10,"outputTokens":50,"cacheReadInputTokens":1000,"cacheCreationInputTokens":100}}}
 JSON
@@ -123,6 +124,13 @@ if [ -f "$TMP/curl/body" ]; then
       | .parentSpanId == $s and $a["gen_ai.usage.input_tokens"].intValue == "8920" and $a["gen_ai.usage.output_tokens"].intValue == "450"
       and $a["gen_ai.usage.cache_read_input_tokens"].intValue == "8000" and $a["langfuse.observation.type"].stringValue == "generation"' "$B" >/dev/null \
     && ok "usage generation: cache-inclusive input, output, cache counts, parent = root" || bad "usage generation fields"
+  # usage_details names the Langfuse price keys: 1h writes at the 1h price, each
+  # model split by the run's 1h/5m ratio (75/25 here), input without cache.
+  ud() { jq -c --arg m "$1" '.resourceSpans[0].scopeSpans[0].spans[1:][] | select(.name == "usage " + $m) | .attributes[] | select(.key == "langfuse.observation.usage_details") | .value.stringValue | fromjson' "$B"; }
+  [ "$(ud claude-sonnet-5-5)" = '{"input":20,"output":450,"input_cache_read":8000,"input_cache_creation_1h":675,"input_cache_creation_5m":225}' ] \
+    && ok "usage_details: 1h/5m cache-write split (sonnet)" || bad "usage_details sonnet ($(ud claude-sonnet-5-5))"
+  [ "$(ud claude-haiku-5-5)" = '{"input":10,"output":50,"input_cache_read":1000,"input_cache_creation_1h":75,"input_cache_creation_5m":25}' ] \
+    && ok "usage_details: 1h/5m cache-write split (haiku)" || bad "usage_details haiku ($(ud claude-haiku-5-5))"
   jq -e '.resourceSpans[0].scopeSpans[0].spans as $s | $s[0].endTimeUnixNano as $end
       | [$s[1:][] | .startTimeUnixNano == $end and .endTimeUnixNano == $end
          and ([.attributes[] | select(.key == "langfuse.observation.metadata.rollup") | .value.stringValue] == ["true"])] | all' "$B" >/dev/null \
@@ -164,7 +172,7 @@ attrs 0 | jq -e '.["langfuse.observation.status_message"] == "timeout: rc 124" a
 cat > "$TMP/denied-env.json" <<'JSON'
 {"result":"x","is_error":true,"subtype":"error_max_turns","num_turns":40,
  "permission_denials":[{"tool_name":"Bash","tool_input":{"command":"SECRET-CMD"}},{"tool_name":"Write","tool_input":{}}],
- "usage":{"input_tokens":1,"output_tokens":2,"cache_read_input_tokens":0,"cache_creation_input_tokens":0}}
+ "usage":{"input_tokens":1,"output_tokens":2,"cache_read_input_tokens":0,"cache_creation_input_tokens":5}}
 JSON
 trace claude 0 "$TMP/denied-env.json" >/dev/null
 attrs 0 | jq -e '.["langfuse.observation.status_message"] == "budget_cap: error_max_turns" and .["langfuse.observation.level"] == "ERROR"
@@ -173,6 +181,8 @@ attrs 0 | jq -e '.["langfuse.observation.status_message"] == "budget_cap: error_
   && ok "error result: error_max_turns -> budget_cap, permission denial count" || bad "error result fields ($(attrs 0))"
 attrs 1 | jq -e '.["langfuse.trace.tags"] | index("status:error")' >/dev/null \
   && ok "usage generation of a failed run carries status:error" || bad "usage generation status tag"
+attrs 1 | jq -e '.["langfuse.observation.usage_details"] | fromjson == {"input":1,"output":2,"input_cache_read":0,"input_cache_creation":5}' >/dev/null \
+  && ok "usage_details without a TTL split keeps one cache-write count" || bad "usage_details fallback ($(attrs 1))"
 grep -q SECRET-CMD "$TMP/curl/body" && bad "denied tool input leaked" || ok "denied tool input never sent"
 # error_class: structured facts first (subtype, API status), then the result
 # text or the raw output head (read for the class only, never sent).

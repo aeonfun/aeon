@@ -100,7 +100,10 @@ for (const repo of repos) {
 // ---- pricing + formatters ----
 // Anthropic list prices, $ per 1M tokens, keyed by model VERSION (a family regex
 // alone mispriced every row: Opus 4.5+ is 5/25, not the old 15/75). Cache write
-// is 1.25x input (5-minute TTL); cache read is the listed read price.
+// is 2x input, the 1-hour TTL price: Claude Code on a Claude subscription writes
+// 1h caches (usage.cache_creation.ephemeral_1h_input_tokens), and token-usage.csv
+// has no TTL split. The 5-minute price (1.25x) priced every write 37.5% low.
+// Cache read is the listed read price.
 // Checked against models.dev (Anthropic rows) 2026-10-16.
 // Ids are normalized first (vendor prefix dropped, trailing -YYYYMMDD dropped,
 // dots to dashes), so claude-haiku-4-5-20251001, anthropic/claude-opus-5.5 and
@@ -144,7 +147,7 @@ function priceFor(model) {
     if (family) row = CLAUDE_PRICES[CLAUDE_FAMILY_FALLBACK[family]];
   }
   if (!row) return null;
-  return { in: row.in / 1e6, out: row.out / 1e6, cw: (row.in * 1.25) / 1e6, cr: row.cr / 1e6 };
+  return { in: row.in / 1e6, out: row.out / 1e6, cw: (row.in * 2) / 1e6, cr: row.cr / 1e6 };
 }
 const commafy = (x) => Math.trunc(x).toLocaleString('en-US');
 const hum = (n) => n >= 1e9 ? `${(n / 1e9).toFixed(2)}B` : n >= 1e6 ? `${(n / 1e6).toFixed(1)}M` : n >= 1e3 ? `${(n / 1e3).toFixed(1)}K` : `${Math.trunc(n)}`;

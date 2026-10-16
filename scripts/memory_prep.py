@@ -18,7 +18,8 @@ memory/MEMORY.md "*Last consolidated: <date>*" line is kept as a human mirror.
 
 Subcommands:
   window   pre-pass: rotate old logs, then print the scan window + the exact
-           list of in-window log files to stdout for the model to read.
+           list of in-window log files to stdout for the model to read, and
+           MEMORY.md's size against its byte / line-length budget.
   stamp    post-pass: write today's date to the watermark file, record a
            fingerprint of every recent log, and mirror the date into the
            MEMORY.md prose line.
@@ -48,6 +49,10 @@ ROTATE_THRESHOLD = 45   # only rotate once logs/ grows past this many dailies
 SCAN_CLAMP_DAYS = 14    # a gap longer than this clamps the scan window
 DEFAULT_LOOKBACK_DAYS = 3  # no watermark at all -> read the last 3 days
 MAX_IDLE_DAYS = 7       # never skip a flush when the last one is this old (pruning still matters)
+# MEMORY.md loads into every skill run, so its budget is bytes, not only lines:
+# a ~50-line index of 2 KB bullets still costs ~7k tokens on every run.
+MEMORY_MAX_BYTES = 8192
+MEMORY_MAX_LINE = 300   # chars; a longer line is detail that belongs in a topic file
 SKILL = "memory-flush"
 
 _DAILY_RE = re.compile(r"^(\d{4})-(\d{2})-(\d{2})\.md$")
@@ -157,6 +162,26 @@ def rotatable_months(filenames, today, threshold=ROTATE_THRESHOLD):
     for ym, items in by_month.items():
         if all(d < cutoff for d, _ in items):
             out[ym] = [f for _, f in sorted(items)]
+    return out
+
+
+def memory_size_report(text):
+    """Lines for the window output: MEMORY.md bytes / lines against the budget and
+    the over-long lines by number, so the model trims by measurement, not by eye."""
+    if text is None:
+        return ["MEMORY.md: missing."]
+    size = len(text.encode("utf-8"))
+    lines = text.splitlines()
+    long_lines = [(n, len(l)) for n, l in enumerate(lines, 1) if len(l) > MEMORY_MAX_LINE]
+    over = size > MEMORY_MAX_BYTES
+    out = ["MEMORY.md size: %d bytes, %d lines (budget %d bytes, ~50 lines, no line over %d chars)%s" % (
+        size, len(lines), MEMORY_MAX_BYTES, MEMORY_MAX_LINE,
+        ": OVER BUDGET by %d bytes, overflow per step 3d." % (size - MEMORY_MAX_BYTES) if over else ": within budget.")]
+    if long_lines:
+        worst = sorted(long_lines, key=lambda x: -x[1])[:10]
+        out.append("Lines over %d chars (line: chars), longest first: %s%s" % (
+            MEMORY_MAX_LINE, ", ".join("%d: %d" % w for w in worst),
+            " (+%d more)" % (len(long_lines) - len(worst)) if len(long_lines) > len(worst) else ""))
     return out
 
 
@@ -353,6 +378,7 @@ def do_window(root, today):
     remaining = len([e for e in entries if parse_daily(e) is not None])
     out.append("Log rotation: archived %d month(s); %d daily file(s) remain (threshold %d)." % (
         archived_months, remaining, ROTATE_THRESHOLD))
+    out.extend(memory_size_report(memory_md))
     out.append("Do NOT recompute the window or rotate logs yourself. Run "
                "`python3 scripts/memory_prep.py stamp` as your final step.")
     print("\n".join(out))

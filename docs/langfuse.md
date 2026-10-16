@@ -52,7 +52,13 @@ when the run fails). It carries the trace name (`aeon:<component>:<skill>`), tag
 `skill:<name>` and `component:<name>`, and one `usage <model>` GENERATION per
 model with the run's real token counts from the envelope's `modelUsage`.
 Langfuse prices those from its own model table, so traces, sessions and the cost
-dashboards show real tokens and dollars. Claude Code's own `total_cost_usd` is
+dashboards show real tokens and dollars. Each row sends
+`langfuse.observation.usage_details` with the Langfuse price keys (`input`,
+`output`, `input_cache_read`, `input_cache_creation_1h`, `input_cache_creation_5m`),
+so 1-hour cache writes (what Claude Code on a subscription writes) get the 1h
+price, 2x input, not the 5-minute 1.25x. The 1h/5m split comes from the
+envelope's `usage.cache_creation`; with more than one model each gets the run's
+1h share of its writes. Claude Code's own `total_cost_usd` is
 kept only as `aeon.cost_usd_reported` (it misprices model ids it does not know).
 
 The json-render feed convert (`scripts/notify-jsonrender.sh`) calls `claude -p`
@@ -105,7 +111,10 @@ first: rc 124 is `timeout`, `error_max_*` is `budget_cap`, API status 429 /
 output of a run that left no envelope) goes through the shared rule table. That
 text only picks the class and is never sent. The scorer root gets the same
 fields. Tool spans come from Claude Code and carry no class. Its metadata
-carries `permission_denials`, the number of tool calls the allowlist refused. Trace metadata also carries `instance` (repo name) and `trigger` (event).
+carries `permission_denials`, the number of tool calls the allowlist refused. Trace metadata also carries `instance` (repo name) and `trigger`: `cron` for a
+Scheduler dispatch (it passes the `trigger=cron` input), `chain` for a chain step
+(chain-runner passes `trigger=chain`), `manual` for any other Run now, else the
+event name.
 The usage rows carry the same trace name and tags, so cost groups by skill.
 They are zero-length at the end of the run and carry metadata `rollup=true`
 (a per-run token rollup, not a model call), so per-model latency charts show only

@@ -43,7 +43,7 @@ At the start of every task, read `memory/MEMORY.md` for high-level context and c
 After completing any task, append a log entry to `memory/logs/YYYY-MM-DD.md` under a `### <skill-name>` heading, as bullet points (the health loop parses this shape). **Exception: `mode: read-only` skills don't self-log** - the workflow appends that `### <skill-name>` entry for you from your final output (see Capability mode), so a self-written entry would be a duplicate.
 
 ### Memory structure
-- **`memory/MEMORY.md`** — Short index (~50 lines): current goals, active topics, and pointers to topic files. A table of contents, not a dumping ground.
+- **`memory/MEMORY.md`** - Short index (under 8 KB, ~50 lines, no line over 300 chars): current goals, active topics, and pointers to topic files. A table of contents, not a dumping ground.
 - **`memory/topics/`** — Detailed notes by topic (e.g. `crypto.md`, `research.md`). When a topic outgrows a few lines in MEMORY.md, move it here and link.
 - **`memory/logs/`** — Daily activity logs (`YYYY-MM-DD.md`), append-only.
 - **`memory/issues/`** — Structured issue tracker for skill failures and degradations. **The health skill (`skill-health`) files issues; repair skills (`skill-repair`) close them.** The schema (frontmatter fields, severity, categories, lifecycle) is owned by `skills/skill-health/SKILL.md`; the end-to-end loop is documented in `docs/CORE.md`. Only active once `INDEX.md` exists.

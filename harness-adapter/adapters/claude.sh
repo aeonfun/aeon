@@ -57,6 +57,8 @@ command -v claude >/dev/null 2>&1 || {
 ARGS=(-p - --output-format json --permission-mode default)
 [ -n "${RH_MODEL:-}" ] && ARGS+=(--model "$RH_MODEL")
 [ -n "${RH_ALLOWED_TOOLS:-}" ] && ARGS+=(--allowedTools "$RH_ALLOWED_TOOLS")
+# --no-tools: no tool schemas in the prompt (a one-shot text call like the scorer).
+[ "${RH_NO_TOOLS:-}" = 1 ] && ARGS+=(--tools "")
 if [ -n "${RH_MCP_CONFIG:-}" ] && [ -f "${RH_MCP_CONFIG:-}" ]; then
   ARGS+=(--mcp-config "$RH_MCP_CONFIG" --strict-mcp-config)
 fi
