@@ -708,7 +708,8 @@ jobs:
       # audit log; fail-open, so a proxy that never comes up just skips the audit and the
       # run proceeds. Env is exported via $GITHUB_ENV and reaches the claude process
       # inside bwrap (no --clearenv in the sandbox prefix). This is egress control +
-      # audit, NOT credential isolation on a same-box runner; WebFetch/WebSearch bypass it.
+      # audit, NOT credential isolation on a same-box runner; WebFetch/WebSearch bypass it
+      # (enforce also sets CLAUDE_CODE_DISABLE_WEB_FETCH=1; WebSearch still bypasses).
       - name: Egress audit
         if: steps.work.outputs.mode != '' && vars.EGRESS_AUDIT == '1'
         uses: ./.github/actions/egress-audit
