@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "updated": "2026-10-05",
+  "updated": "2026-10-16",
   "description": "Machine-readable registry of community skill packs installable via bin/install-skill-pack. Mirrors the human-readable table in README.md.",
   "packs": [
     {
@@ -193,6 +193,24 @@
       ],
       "capabilities": [
         "external_api",
+        "sends_notifications"
+      ]
+    },
+    {
+      "repo": "sentinelhood/robinhood-sentinel",
+      "name": "Sentinel Pack",
+      "description": "Keyless Robinhood Chain (4663) monitoring: block-stamped nonce, balance and bytecode diffs for watched addresses, alerting through ./notify only on change. Read-only, never signs.",
+      "author": "sentinelhood",
+      "license": "MIT",
+      "homepage": "https://sentinelhood.com",
+      "category": "crypto",
+      "trust_level": "community",
+      "skills": [
+        "robinhood-chain-monitor"
+      ],
+      "secrets_required": [],
+      "capabilities": [
+        "read_only",
         "sends_notifications"
       ]
     }

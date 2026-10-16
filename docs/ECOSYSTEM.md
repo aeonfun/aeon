@@ -73,6 +73,7 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 | <img src="https://pbs.twimg.com/profile_images/2048174647171268608/2UsSB2GA_400x400.jpg" width="36" height="36" alt="Revault logo"> | Revault | [@revaultdrops](https://x.com/revaultdrops) |
 | <img src="https://pbs.twimg.com/profile_images/2070604629688070144/xNwUGHgX_400x400.jpg" width="36" height="36" alt="RootAi logo"> | RootAi | [@root_edge](https://x.com/root_edge) |
 | <img src="https://pbs.twimg.com/profile_images/2056693584452300802/i6yxFLgW_400x400.jpg" width="36" height="36" alt="SAM logo"> | SAM | [@prmrsamm](https://x.com/prmrsamm) |
+| <img src="https://sentinelhood.com/favicon.png" width="36" height="36" alt="Sentinel logo"> | Sentinel | [@sentinelhood](https://x.com/sentinelhood) · [sentinelhood.com](https://sentinelhood.com) · Sentinel Pack: Robinhood Chain monitoring for Aeon |
 | <img src="https://pbs.twimg.com/profile_images/2056009745040121856/SkTibyEJ_400x400.jpg" width="36" height="36" alt="Sentysis logo"> | Sentysis | [@Sentysislabs](https://x.com/Sentysislabs) |
 | <img src="https://pbs.twimg.com/profile_images/2056291951084032000/QJiBIXV-_400x400.jpg" width="36" height="36" alt="Signa logo"> | Signa | [@Signa_Agent](https://x.com/Signa_Agent) |
 | <img src="https://pbs.twimg.com/profile_images/2064718491668889600/S23rFUM6_400x400.jpg" width="36" height="36" alt="Simmer logo"> | Simmer | [@simmer_markets](https://x.com/simmer_markets) |
