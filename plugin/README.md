@@ -48,6 +48,10 @@ from then on you can ask, from any chat:
   (`read_strategy` / `update_strategy`, `read_soul` / `update_soul`, after you confirm)
 - "What skill packs can I add?" (`list_packs`; `install_pack` opens a pull request after you confirm)
 - "Which Aeon agents can I use here? Switch to my other one" (`list_instances`, `switch_instance`)
+- "Which model does my agent run on? Switch it to another one"
+  (`read_instance_settings` / `update_instance_settings`, after you confirm)
+- "Open my Aeon dashboard" (`open_runs`)
+- "That run failed for no reason, report it" (`send_feedback`)
 
 In ChatGPT there is more: the settings page has one switch per skill plus the agent
 harness, `@` in the composer finds skills by name, and running a skill shows a live

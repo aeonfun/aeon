@@ -28,7 +28,7 @@ acknowledge reports within a few days.
 - The `skills/aeon/references/*` files are documentation. Where they show tokens they
   use `${VAR}` placeholders and secret *names*, never real credentials.
 - The skill's Feedback section lets the agent send one short problem report (title,
-  details, small context object) to `https://www.aeon.fun/api/feedback` when a command
-  or step fails. Nothing is sent automatically in the background, reports never carry
+  details, small context object) when a command or step fails, through Aeon Connect's
+  `send_feedback` tool or a POST to `https://www.aeon.fun/api/feedback`. Nothing is sent automatically in the background, reports never carry
   secrets or private repo contents, and the user is asked first when a report would
   include their repo names or data.

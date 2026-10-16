@@ -50,8 +50,10 @@ Tell the user what they can ask from now on, for example:
 - "What has my agent written down about this week?"
 - "Add 'grow the newsletter' to my strategy"
 - "What skill packs can I add?"
+- "Open my Aeon dashboard"
 
 ## Rules
 
-- `update_skill`, `update_strategy`, `update_soul`, `install_pack` (it opens a pull request), `switch_instance` and the settings switches change the user's setup. Say what will change and get a yes before calling them.
+- `update_skill`, `update_strategy`, `update_soul`, `install_pack` (it opens a pull request), `switch_instance`, `update_instance_settings` and the settings switches change the user's setup. Say what will change and get a yes before calling them.
 - Never ask for API keys, tokens or secrets. `setup_status` shows key names only; keys are added in Aeon Connect, not in chat.
+- If an Aeon tool fails or answers wrong, `send_feedback` reports it to the Aeon team (pass `run_id` for a failed run). Tell the user what you sent; never include secrets.

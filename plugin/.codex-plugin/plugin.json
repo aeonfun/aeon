@@ -15,7 +15,7 @@
   "interface": {
     "displayName": "Aeon",
     "shortDescription": "Run your own scheduled agent",
-    "longDescription": "Run your own Aeon agent from ChatGPT and Codex. Aeon is an open-source agent framework that runs skills on a schedule in your own GitHub repo using GitHub Actions. Connect your agent through Aeon Connect to see its skills, run one now and follow the run, read what a skill produced and why a run failed, and turn skills on or off or change their schedule. Check what setup is missing, search its memory, edit its STRATEGY.md north star and soul voice, and add skill packs. The plugin also ships the operator console skill for Codex: set up an agent from scratch, edit what a skill does, and mine past coding-agent chats into new scheduled skills.\n\nThe connection reaches only the repo you pick when you sign in with GitHub, plus your other Aeon repos if you allow switching. It never reads or changes your secrets. No agent yet? Create one in two minutes at https://www.aeon.fun/connect.",
+    "longDescription": "Run your own Aeon agent from ChatGPT and Codex. Aeon is an open-source agent framework that runs skills on a schedule in your own GitHub repo using GitHub Actions. Connect your agent through Aeon Connect to see its skills, run one now and follow the run, read what a skill produced and why a run failed, and turn skills on or off or change their schedule. Check what setup is missing, search its memory, edit its STRATEGY.md north star and soul voice, add skill packs, pick the model and harness it runs on, and open its dashboard right in the chat. The plugin also ships the operator console skill for Codex: set up an agent from scratch, edit what a skill does, and mine past coding-agent chats into new scheduled skills.\n\nThe connection reaches only the repo you pick when you sign in with GitHub, plus your other Aeon repos if you allow switching. It never reads or changes your secrets. No agent yet? Create one in two minutes at https://www.aeon.fun/connect.",
     "developerName": "Aeon Inc",
     "category": "Developer Tools",
     "capabilities": ["Interactive", "Read", "Write"],
@@ -85,6 +85,18 @@
               "prompt": "Add 'grow the newsletter to 1,000 readers' to my Aeon strategy.",
               "tools_triggered": "read_strategy, update_strategy",
               "expected_behavior": "Reads STRATEGY.md, shows the exact change, and asks for confirmation. After a yes, commits the updated STRATEGY.md and confirms it is saved."
+            },
+            {
+              "description": "Open the dashboard",
+              "prompt": "Open my Aeon dashboard.",
+              "tools_triggered": "open_runs",
+              "expected_behavior": "Opens the Aeon dashboard for the connected repo with its recent runs, skills, packs, strategy, soul, keys and settings. No changes are made."
+            },
+            {
+              "description": "Check the model",
+              "prompt": "Which model and harness does my Aeon agent run on?",
+              "tools_triggered": "read_instance_settings",
+              "expected_behavior": "Names the agent harness, the default model and the gateway, and lists the other choices. No changes are made."
             }
           ],
           "negative": [
@@ -106,7 +118,7 @@
         "commerce_description": "This plugin does not sell products or process payments."
       },
       "publication": {
-        "release_notes": "Connect your Aeon agent: list skills, run a skill and follow the run live, read a skill's output and why a run failed, turn skills on or off and change schedules, check what setup is missing, read and search memory, edit strategy and voice, and add skill packs. Switch between your Aeon repos if you allow it. Adds a get-started flow and keeps the Codex operator console skill."
+        "release_notes": "Connect your Aeon agent: list skills, run a skill and follow the run live, read a skill output and why a run failed, turn skills on or off and change schedules, check what setup is missing, read and search memory, edit strategy and voice, pick the model and harness, add skill packs, open the dashboard in the chat, and report a problem to the Aeon team. Switch between your Aeon repos if you allow it. Adds a get-started flow. The operator console skill gets clearer secrets handling, a feedback step and updated CI and setup guidance."
       }
     }
   }
