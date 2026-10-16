@@ -48,7 +48,7 @@
               "description": "Run a skill and follow it",
               "prompt": "Run the heartbeat skill now and tell me when it finishes.",
               "tools_triggered": "run_skill, get_run",
-              "expected_behavior": "Starts heartbeat on GitHub Actions, returns the run id and link, then reports the run's result once it completes (one to ten minutes)."
+              "expected_behavior": "Asks to confirm, then starts heartbeat on GitHub Actions, returns the run id and link, then reports the run's result once it completes (one to ten minutes)."
             },
             {
               "description": "Explain failures",
@@ -63,40 +63,10 @@
               "expected_behavior": "Says it will commit aeon.yml and asks for confirmation, then turns digest on with schedule 0 8 * * * and reports the new state."
             },
             {
-              "description": "Read a run's output",
-              "prompt": "Show me what my last heartbeat run found.",
-              "tools_triggered": "list_runs, read_output",
-              "expected_behavior": "Finds the latest heartbeat run, then summarizes the skill's latest saved output with a link to the run. If heartbeat has no saved output yet, says so."
-            },
-            {
               "description": "Check setup",
               "prompt": "What does my Aeon agent still need to be fully set up?",
               "tools_triggered": "setup_status",
               "expected_behavior": "Says whether a model is connected and names any API keys the enabled skills are missing, by name only, never values, and points to Aeon Connect to add them. No changes are made."
-            },
-            {
-              "description": "Search memory",
-              "prompt": "What has my Aeon agent written down about this week?",
-              "tools_triggered": "search_memory, read_memory",
-              "expected_behavior": "Searches and reads the agent's memory and daily logs, then summarizes what it noted this week and where each note lives. No changes are made."
-            },
-            {
-              "description": "Edit the north star",
-              "prompt": "Add 'grow the newsletter to 1,000 readers' to my Aeon strategy.",
-              "tools_triggered": "read_strategy, update_strategy",
-              "expected_behavior": "Reads STRATEGY.md, shows the exact change, and asks for confirmation. After a yes, commits the updated STRATEGY.md and confirms it is saved."
-            },
-            {
-              "description": "Open the dashboard",
-              "prompt": "Open my Aeon dashboard.",
-              "tools_triggered": "open_runs",
-              "expected_behavior": "Opens the Aeon dashboard for the connected repo with its recent runs, skills, packs, strategy, soul, keys and settings. No changes are made."
-            },
-            {
-              "description": "Check the model",
-              "prompt": "Which model and harness does my Aeon agent run on?",
-              "tools_triggered": "read_instance_settings",
-              "expected_behavior": "Names the agent harness, the default model and the gateway, and lists the other choices. No changes are made."
             }
           ],
           "negative": [
