@@ -5,6 +5,10 @@ inputs:
     description: "'true' fails the step when bwrap still cannot create a user namespace; 'false' only warns"
     required: false
     default: 'true'
+  save-cache:
+    description: "'false' skips saving the .deb on a cache miss. Set it on jobs that run beside another saver, so only one job reserves the key"
+    required: false
+    default: 'true'
 runs:
   using: composite
   steps:
@@ -79,8 +83,11 @@ runs:
           echo '::warning::bwrap still blocked'
         fi
 
+    # Parallel jobs that all miss would all race to reserve the same key; every
+    # loser logs "Unable to reserve cache". Callers pass save-cache: 'false' on
+    # all but one job so a single job saves.
     - name: Save bubblewrap .deb
-      if: steps.restore.outputs.cache-hit != 'true' && steps.install.outputs.staged == 'true'
+      if: inputs.save-cache == 'true' && steps.restore.outputs.cache-hit != 'true' && steps.install.outputs.staged == 'true'
       uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
       with:
         path: ~/.cache/bubblewrap

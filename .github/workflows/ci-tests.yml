@@ -70,6 +70,8 @@ jobs:
       # (read-only sandbox)" step: install it, lift Ubuntu 24.04's AppArmor userns
       # restriction, then fail HERE if bwrap still cannot run, so the live checks
       # never silently skip on CI (the test step also requires them, below).
+      # This job is the one that saves the .deb on a cache miss; ci-harness-cli's
+      # smoke jobs only restore it.
       - name: Install bubblewrap (live read-only sandbox test)
         timeout-minutes: 5
         uses: ./.github/actions/install-bubblewrap
