@@ -1947,10 +1947,12 @@ jobs:
           # treats that as `direct`, matching the old inline behavior.
           GATEWAY="${{ steps.run.outputs.GATEWAY }}"
           AEON_GATEWAY_QUIET=1 source "${GITHUB_WORKSPACE}/scripts/llm-gateway.sh"
-          AEON_OTEL_COMPONENT=feed source "${GITHUB_WORKSPACE}/scripts/langfuse-otel.sh"
           for pending in "${AEON_PENDING_DIR:-${RUNNER_TEMP:-/tmp}/aeon-pending}"/.pending-*.md; do
             [ -f "$pending" ] || continue
             SKILL=$(basename "$pending" .md | sed 's/^\.pending-//')
+            # Per skill, so the feed trace (root span + usage row that
+            # notify-jsonrender sends) carries the skill as its user and name.
+            SKILL_NAME="$SKILL" AEON_OTEL_COMPONENT=feed source "${GITHUB_WORKSPACE}/scripts/langfuse-otel.sh"
             echo "json-render: converting $SKILL..."
             ./notify-jsonrender "$SKILL" "$(cat "$pending")" && rm -f "$pending" || echo "json-render: $SKILL conversion failed (non-fatal)"
           done
@@ -2347,7 +2349,9 @@ jobs:
       # per-skill health Issue; humans 👍/👎 it to set repair priority. Silent on clean
       # runs (no Issue spam), so a healthy fleet creates zero issues.
       - name: Health regression to votable Issue
-        if: always() && steps.skill.outputs.name != ''
+        # Default branch only: a workflow_dispatch on a test branch (verify/*) must
+        # not open or comment on the production health Issues.
+        if: always() && steps.skill.outputs.name != '' && github.ref_name == github.event.repository.default_branch
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # Step outputs go through env, never inline ${{ }} in the script: FLAGS is

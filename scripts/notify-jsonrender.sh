@@ -7,6 +7,7 @@ set -euo pipefail
 
 SKILL="$1"
 CONTENT="$2"
+MODEL="claude-haiku-5-5"
 TIMESTAMP=$(date -u +"%Y-%m-%dT%H-%M-%SZ")
 OUTDIR="apps/dashboard/outputs"
 OUTFILE="$OUTDIR/${SKILL}-${TIMESTAMP}.json"
@@ -58,12 +59,44 @@ CRITICAL RULES:
 11. Use Separator between major sections.
 12. Wrap the whole output in one Card. Use the first heading or skill name as the Card title.'
 
-# Use claude CLI — works with both API key and OAuth token
-SPEC=$(echo "$CONTENT" | claude -p "Convert this skill output into a json-render spec. Skill: ${SKILL}" \
-  --model claude-haiku-5-5 \
-  --system-prompt "$SYSTEM" \
-  --max-turns 1 \
-  --output-format text 2>/dev/null)
+# Use claude CLI - works with both API key and OAuth token.
+# Tracing: this call runs outside run-harness, so it borrows run-harness's
+# tracing (harness-adapter/lib/otel-span.sh): a root span named
+# aeon:feed:<skill> plus a priced `usage <model>` row from the JSON envelope.
+# No-op unless the caller sourced scripts/langfuse-otel.sh.
+# Lean context: --tools "" drops the tool schemas, and running from an empty
+# scratch dir skips the repo CLAUDE.md, so the call carries only the system
+# prompt and the note (it used to load ~28k tokens to convert a short note).
+WORK=$(mktemp -d "${TMPDIR:-/tmp}/jsonrender.XXXXXX")
+RH_LIB_DIR="${GITHUB_WORKSPACE:-$PWD}/harness-adapter/lib"
+RH_ROOT_SPAN_ID=""
+if [ -f "$RH_LIB_DIR/otel-span.sh" ]; then
+  export RH_HARNESS=claude RH_MODEL="$MODEL"
+  # shellcheck source=/dev/null
+  . "$RH_LIB_DIR/otel-span.sh"
+  rh_trace_begin || true
+fi
+_jr_done() {
+  local rc=$?
+  if [ -n "${RH_ROOT_SPAN_ID:-}" ]; then rh_trace_end "$rc" "$WORK/out.json" || true; fi
+  rm -rf "$WORK"
+}
+trap _jr_done EXIT
+
+ARGS=(-p "Convert this skill output into a json-render spec. Skill: ${SKILL}"
+  --model "$MODEL" --system-prompt "$SYSTEM" --tools "" --max-turns 1 --output-format json)
+# Same ~1s first-turn hold as harness-adapter/adapters/claude.sh, so Claude
+# Code's own spans land under the root span (see the comment there).
+if [ -n "${RH_ROOT_SPAN_ID:-}" ] && [ "${CLAUDE_CODE_ENABLE_TELEMETRY:-}" = 1 ]; then
+  _delay="${AEON_OTEL_STARTUP_DELAY:-1}"
+  if [[ "$_delay" =~ ^[0-9]+(\.[0-9]+)?$ ]] && [ "$_delay" != 0 ]; then
+    ARGS+=(--settings "{\"hooks\":{\"SessionStart\":[{\"hooks\":[{\"type\":\"command\",\"command\":\"sleep $_delay\"}]}]}}")
+  fi
+fi
+
+printf '%s\n' "$CONTENT" | (cd "$WORK" && claude "${ARGS[@]}") > "$WORK/out.json" 2>/dev/null
+SPEC=$(jq -r '.result // empty | strings' "$WORK/out.json")
+[ -n "$SPEC" ] || { echo "json-render: $SKILL: empty result" >&2; exit 1; }
 
 # Strip markdown fences if Haiku wraps them
 SPEC=$(echo "$SPEC" | sed '/^```json$/d; /^```$/d')

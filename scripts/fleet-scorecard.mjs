@@ -101,10 +101,13 @@ for (const repo of repos) {
 // Anthropic list prices, $ per 1M tokens, keyed by model VERSION (a family regex
 // alone mispriced every row: Opus 4.5+ is 5/25, not the old 15/75). Cache write
 // is 1.25x input (5-minute TTL); cache read is the listed read price.
+// Checked against models.dev (Anthropic rows) 2026-10-16.
 // Ids are normalized first (vendor prefix dropped, trailing -YYYYMMDD dropped,
 // dots to dashes), so claude-haiku-4-5-20251001, anthropic/claude-opus-5.5 and
 // claude-opus-5-5 all land on their row.
 const CLAUDE_PRICES = {
+  'claude-fable-5-1': { in: 10, out: 50, cr: 0.25 },
+  'claude-fable-5': { in: 10, out: 50, cr: 1 },
   'claude-opus-5-5': { in: 4, out: 20, cr: 0.20 },
   'claude-opus-5': { in: 5, out: 25, cr: 0.50 },
   'claude-opus-4-8': { in: 5, out: 25, cr: 0.50 },
@@ -113,7 +116,7 @@ const CLAUDE_PRICES = {
   'claude-opus-4-5': { in: 5, out: 25, cr: 0.50 },
   'claude-opus-4-1': { in: 15, out: 75, cr: 1.50 },
   'claude-opus-4': { in: 15, out: 75, cr: 1.50 },
-  'claude-sonnet-5-5': { in: 2, out: 10, cr: 0.20 },
+  'claude-sonnet-5-5': { in: 2, out: 10, cr: 0.10 },
   'claude-sonnet-5': { in: 2, out: 10, cr: 0.20 },
   'claude-sonnet-4-6': { in: 3, out: 15, cr: 0.30 },
   'claude-sonnet-4-5': { in: 3, out: 15, cr: 0.30 },
@@ -125,7 +128,7 @@ const CLAUDE_PRICES = {
 // A Claude id with a version this table does not know yet (a new release) is
 // priced at its family's current flagship row, so it still shows up in the
 // cost columns instead of vanishing.
-const CLAUDE_FAMILY_FALLBACK = { opus: 'claude-opus-5-5', sonnet: 'claude-sonnet-5-5', haiku: 'claude-haiku-5-5' };
+const CLAUDE_FAMILY_FALLBACK = { fable: 'claude-fable-5-1', opus: 'claude-opus-5-5', sonnet: 'claude-sonnet-5-5', haiku: 'claude-haiku-5-5' };
 const normalizeModel = (model) => String(model || '').trim().toLowerCase()
   .replace(/^anthropic\//, '').replace(/-\d{8}$/, '').replace(/\./g, '-');
 // Rates in $ per token for a model, or null when it is not a Claude model. Rows

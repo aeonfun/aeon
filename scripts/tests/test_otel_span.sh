@@ -123,6 +123,10 @@ if [ -f "$TMP/curl/body" ]; then
       | .parentSpanId == $s and $a["gen_ai.usage.input_tokens"].intValue == "8920" and $a["gen_ai.usage.output_tokens"].intValue == "450"
       and $a["gen_ai.usage.cache_read_input_tokens"].intValue == "8000" and $a["langfuse.observation.type"].stringValue == "generation"' "$B" >/dev/null \
     && ok "usage generation: cache-inclusive input, output, cache counts, parent = root" || bad "usage generation fields"
+  jq -e '.resourceSpans[0].scopeSpans[0].spans as $s | $s[0].endTimeUnixNano as $end
+      | [$s[1:][] | .startTimeUnixNano == $end and .endTimeUnixNano == $end
+         and ([.attributes[] | select(.key == "langfuse.observation.metadata.rollup") | .value.stringValue] == ["true"])] | all' "$B" >/dev/null \
+    && ok "usage generations: zero-length at the run end, marked rollup (per-model latency stays real)" || bad "usage generation timing/rollup"
   attrs 0 | jq -e '.["langfuse.observation.type"] == "agent" and .["langfuse.version"] == "abc1234"
       and .["langfuse.user.id"] == "heartbeat" and .["langfuse.release"] == "canon-df013db"
       and (has("langfuse.observation.status_message") | not) and (has("langfuse.observation.metadata.error_class") | not)' >/dev/null \

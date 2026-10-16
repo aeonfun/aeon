@@ -55,6 +55,12 @@ Langfuse prices those from its own model table, so traces, sessions and the cost
 dashboards show real tokens and dollars. Claude Code's own `total_cost_usd` is
 kept only as `aeon.cost_usd_reported` (it misprices model ids it does not know).
 
+The json-render feed convert (`scripts/notify-jsonrender.sh`) calls `claude -p`
+outside run-harness, but sends the same root span (`aeon:feed:<skill>`) and usage
+rows through `harness-adapter/lib/otel-span.sh`. It runs with no tools
+(`--tools ""`) from an empty scratch directory, so it loads only its own system
+prompt and the note, not the tool schemas or the repo `CLAUDE.md`.
+
 `TRACEPARENT` puts Claude Code's interaction span under that root. With a
 subscription OAuth token, Claude Code starts its span exporter only after a
 remote managed settings fetch while its first turn does not wait, so the
@@ -101,6 +107,12 @@ text only picks the class and is never sent. The scorer root gets the same
 fields. Tool spans come from Claude Code and carry no class. Its metadata
 carries `permission_denials`, the number of tool calls the allowlist refused. Trace metadata also carries `instance` (repo name) and `trigger` (event).
 The usage rows carry the same trace name and tags, so cost groups by skill.
+They are zero-length at the end of the run and carry metadata `rollup=true`
+(a per-run token rollup, not a model call), so per-model latency charts show only
+real requests. If you run an `error_class` evaluator in Langfuse, scope its rule to
+root observations (`isRootObservation = true`): Claude Code marks every non-zero
+shell exit on its tool spans as ERROR, harmless existence probes included, while
+the root span carries the run's real class.
 
 ### The non-claude harnesses (grok / codex / pi / vibe / kimi / fx / cursor / hermes)
 

@@ -257,12 +257,16 @@ rh_trace_end() {
             status: {code: (if $err then 2 else 1 end)}}
            + (if $parent != "" then {parentSpanId: $parent} else {} end)]
           + [$gens | to_entries[] | select(.key < ($gids | length)) | .key as $n | .value as $g
+             # Zero-length at the end of the run: the row is a per-run token rollup,
+             # not a model call, so giving it the whole run duration skewed the
+             # per-model latency charts. metadata.rollup lets views filter it out.
              | {traceId: $tid, spanId: $gids[$n], parentSpanId: $sid, name: ("usage " + $g.m), kind: 3,
-                startTimeUnixNano: $start, endTimeUnixNano: $end,
+                startTimeUnixNano: $end, endTimeUnixNano: $end,
                 # Langfuse treats gen_ai.usage.input_tokens as cache-inclusive and
                 # subtracts the two cache counts from it; Anthropic reports input
                 # without cache, so send the sum to get the real input back.
                 attributes: ($lfa + [s("langfuse.observation.type"; "generation"), s("gen_ai.system"; "anthropic"),
+                  s("langfuse.observation.metadata.rollup"; "true"),
                   s("gen_ai.request.model"; $g.m), s("gen_ai.response.model"; $g.m),
                   i("gen_ai.usage.input_tokens"; $g.in + $g.cr + $g.cc), i("gen_ai.usage.output_tokens"; $g.out),
                   i("gen_ai.usage.cache_read_input_tokens"; $g.cr), i("gen_ai.usage.cache_creation_input_tokens"; $g.cc)])}]
