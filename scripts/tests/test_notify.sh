@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-echo "forced failure: proving the lane keeps going (reverted next commit)"; exit 3
 # Integration test for the ./notify writer/deliver split (#912 Phase 2).
 #   scripts/notify.sh          - queue-writer: writes ONE structured .json payload,
 #                                never reads a channel token, never hits the wire.
