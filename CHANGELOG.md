@@ -11,6 +11,36 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Added
 
+- **Langfuse: one root span per run, priced cost, scores and slicing.** Each claude call now
+  sends a root span (also on failed runs) with one priced `usage <model>` row per model, and
+  Claude Code's own spans nest under it again: a 1s SessionStart hold fixes the trace tree that
+  split into one trace per span on subscription tokens (`AEON_OTEL_STARTUP_DELAY=0` turns it off).
+  Cost rows carry the skill as trace name and user, plus environment (`production` on the default
+  branch, `branch` elsewhere), release, SKILL.md version and a `cron` / `chain` / `manual`
+  trigger (new optional `trigger` dispatch input). New scores: a NUMERIC quality score and a
+  BOOLEAN `run_ok` per run. Failed runs get an `error_class` (timeout, rate_limit, auth,
+  budget_cap, cancelled and the rest of the shared table) and a status message. 1-hour cache
+  writes are priced at the 1-hour rate (cost read about 35% low before). The feed render and the
+  scorer run traced and lean (`run-harness --no-tools`, empty scratch dir), and usage rows are
+  zero-length so latency charts show real requests only. See `docs/langfuse.md`. (#1221, #1222,
+  #1223, #1230, #1232, #1233)
+- **`memory-flush` cites a source on every fact and skips idle runs.** Facts it adds or changes
+  end with `[source: logs/YYYY-MM-DD#<skill>]`, and `memory_prep.py source <ref>` prints that log
+  section (archive too), so contradictions are settled from the log. A new `Idle gate
+  (memory-flush)` step skips the model call when no daily log changed since a flush under 7 days
+  old. It also holds `memory/MEMORY.md` to 8 KB with no line over 300 chars. (#1217, #1232)
+- **OpenRouter app attribution on every harness.** Every OpenRouter request (claude via
+  `gateway: openrouter`, codex, kimi, vibe, pi, hermes) carries `HTTP-Referer:
+  https://www.aeon.fun`, `X-OpenRouter-Title: Aeon` and `X-OpenRouter-Categories`. Override with
+  `OPENROUTER_SITE_URL`, `OPENROUTER_APP_TITLE` and the new `OPENROUTER_APP_CATEGORIES`.
+  (#1235, #1239)
+- **Feedback section in the aeon setup skill.** When a `./aeon` command, a Connect MCP tool or a
+  skill step fails, the agent may send one short report through Connect's `send_feedback` tool or
+  the keyless `https://www.aeon.fun/api/feedback`, never with secrets or private repo contents.
+  (#1226)
+- **Sentinel Pack listed** in the community registry: `robinhood-chain-monitor` watches addresses
+  on Robinhood Chain (4663), keyless, alerts only on change. (#1227)
+- **Ecosystem: bon travail and skopos** added to `docs/ECOSYSTEM.md`. (#1220)
 - **`anatomy`: interactive isometric SVG figures from a brief.** New `dev` skill (vendored from
   upstream at 689dcf9, MIT, provenance in `skills/anatomy/UPSTREAM.md`) that builds a crafted,
   interactive isometric figure explaining a technical idea as a physical object, with live readout,
@@ -202,6 +232,19 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Changed
 
+- **Claude Code pinned to 2.1.301.** Usage-limit waits are capped at 10 minutes
+  (`CLAUDE_CODE_RETRY_WATCHDOG`), and WebFetch is turned off when egress runs in `enforce` mode
+  with the proxy up, since it never passes through iron-proxy. (#1234)
+- **Test branches stay quiet.** Notifications and health-regression Issues now come only from
+  runs on the default branch; repo variable `NOTIFY_ON_BRANCH=1` opts a test branch back in.
+  (#1230, #1232)
+- **Runner label from `AEON_RUNNER`.** Workflow jobs read their runner from the `AEON_RUNNER`
+  repo variable (unset = `ubuntu-24.04`, e.g. `blacksmith-2vcpu-ubuntu-2404`); the CI gate and
+  small catalog checks stay on GitHub runners. (#1228, #1236)
+- **CONTRIBUTING lists every CI gate** with the local command that matches it, plus the test
+  lanes. (#1211, #1213, #1238)
+- **`SECURITY.md` has a contact email** (`aaron@aeon.fun`) for reporters who can't use GitHub's
+  private form. (#1219)
 - **Setup skill secrets guidance tightened.** A new "Handling secrets" rule in `SKILL.md` and
   `references/secrets.md`: never ask for a key in chat, never echo, log or commit one, never read
   credential files to fill one in; values go in through `./aeon secrets set NAME --stdin` or the
@@ -338,9 +381,24 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Fixed
 
+- **Scheduler:** `SAT-SUN` / `FRI-SUN` ranges run (SUN closes a range as 7) (#1200, #1212); an
+  invalid schedule now raises a `::warning::` naming the skill instead of a silent skip (#1206);
+  a cron-state push that fails every retry fails the tick, so owed skills are not dispatched
+  twice (#1207, #1213).
+- **CLI:** `aeon skills schedule` refuses a schedule CI would reject and `skills set --harness`
+  checks the name (#1212); `aeon mcp add` and `saveFile` (and the dashboard MCP, strategy and soul
+  routes) treat only a missing file as missing, so an auth or network error no longer overwrites
+  `.mcp.json` with one server (#1210, #1213).
+- **Frontmatter readers handle CRLF, comments and mixed case,** so a `mode: read-only` skill no
+  longer runs in the write tier and `requires:` / `depends_on:` / `attest:` lists stay intact.
+  (#1203, #1213)
+- **Dropped notifications are visible:** a payload no channel accepted raises a `::warning::`
+  with the count; no warning when no channel is configured. (#1208, #1213)
+- **MCP server:** a multi-line `var` is folded onto one prompt line (#1204), and a failed skill run
+  returns an MCP error result instead of looking like success (#1209).
 - **Post-run Git pushes retain trusted checkout authentication.** The config guard rebuilds
   host-scoped HTTP auth from workflow secrets after removing untrusted includes. Push failures
-  now show redacted diagnostics and retry only stale refs, with authenticated HTTP push coverage.
+  now show redacted diagnostics and retry only stale refs, with authenticated HTTP push coverage. (#1241)
 - **Stale Claude Code npm cache no longer blocks pin bumps.** `restore-keys` restored an old cache
   whose packument did not list the new version, so every run failed at "Install Claude Code"; an
   exact-key miss now downloads fresh. (#1169)
@@ -1234,6 +1292,20 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Security
 
+- **Run guards after a skill run.** On main, changes a run made under `scripts/`, `.github/` or
+  `harness-adapter/` are restored to a freshly fetched `main` with an `::error::`; feature-branch
+  PR flows are unaffected. Push helpers run from the starting commit with hooks off, and a new
+  `Lock git config` step drops `.git/config` keys that run programs, then restores checkout auth
+  from fresh secrets. (#1214, #1216, #1241)
+- **`./secretcurl` fills only secrets the skill declared** in `requires:` (plus `GH_TOKEN` /
+  `GITHUB_TOKEN`); curl runs with a stripped environment, and `--variable`, `--expand-*`, `-K` /
+  `--config` and `/proc` file reads are refused with an audit record. (#1215, #1216)
+- **`bin/add-skill` accepts only plain skill names,** so `..` or `/` can't write outside
+  `skills/`. (#1202)
+- **Inbound message text stays out of Actions run names and logs** in `messages.yml` (source,
+  length and a short hash only). (#1201, #1213)
+- **`vuln-poc-gate` hardening:** a PoC must sit inside the PoC dir (no `..` or links), and files
+  a PoC creates in the target count as mutation. (#1218)
 - **Security audit fixes (2026-10-01).** The dashboard binds to `127.0.0.1` only; the health step
   takes its values through `env:` (no shell injection); `secretcurl` escapes newlines, rejects
   malformed option tokens and no longer sends its config (with the substituted secret) as a
@@ -1288,6 +1360,10 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Maintenance
 
+- CI and housekeeping 2026-10-12 to 2026-10-17: catalog sha refresh (#1198), cached bubblewrap
+  `.deb` (#1205, #1231), one parallel shellcheck pass (#1224), CI on Blacksmith runners with small
+  checks on GitHub (#1225, #1228, #1236), test suites in 10 parallel lanes (#1238), aeon-agent refs
+  moved to aeonfun (#1229).
 - Dependency bumps 2026-10-07: `sharp`, `@modelcontextprotocol/sdk`, `proxy-addr`,
   `source-map-js` and an npm_and_yarn group (#1171, #1172, #1173, #1174, #1175). PR numbers for
   entries above that shipped without one: Aeon Connect onboarding docs (#1163), hosted MCP pointers

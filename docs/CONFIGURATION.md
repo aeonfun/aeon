@@ -124,6 +124,16 @@ mode: write       # full access (the default): adds Write / Edit / git / gh / py
 
 `read-only` strips the repo-mutation tools from Claude Code's `--allowedTools` (`Write`, `Edit`, `Bash(git:*)`, `Bash(gh:*)`, python) **and** the OS sandbox write-locks the workspace for the run (see [Capabilities → enforcement layers](CAPABILITIES.md)), so a research-and-notify skill **physically can't** commit, push, open a PR, or change code or config. The two state dirs are the exception: `memory/` and `output/` stay writable (via a shell redirection or `node`) so a read-only skill can keep its own state and artifacts (since #1042). Route the run's result through your **final message** (the run's captured output) and `./notify`. After the run the workflow persists your captured output to `output/.chains/`, **appends the `### <skill>` entry to `memory/logs/` on your behalf** (so read-only skills should not self-log, or the entry appears twice), and reverts any stray write outside `memory/` and `output/`. Use it for pure read-and-notify skills; `write` (the default, a strict superset) for anything that writes code. It's the runtime half of the install-time [`capabilities:`](../docs/CAPABILITIES.md) hint.
 
+## Run guards
+
+A skill run has push credentials, so the steps after it treat what it left behind as untrusted:
+
+- **Code that later runs stays off main.** On the default branch, any change a run made under `scripts/`, `.github/` or `harness-adapter/` (left in the tree or committed) is restored to a freshly fetched `main` and reported with an `::error::`; the rest of the run's state is committed as usual. Skills that change those paths on a feature branch and open a PR (`aeon-update`, `skill-repair`, `self-improve`, `create-skill` and others) are unaffected. (#1214, #1216)
+- **Push helpers come from the run's starting commit.** The commit steps run `git-push-retry.sh` and `audit.sh` from `$GITHUB_SHA`, never the working tree, with git hooks off. A `Lock git config` step right after `Run` drops `.git/config` keys that make git run a program (fsmonitor, filters, merge drivers, credential helpers, signing, includes, url rewrites) and then rebuilds the checkout's HTTP auth from fresh workflow secrets, so pushes keep working. (#1216, #1241)
+- **`./secretcurl` fills only declared secrets.** A placeholder is substituted only when the skill lists that name in `requires:` (`GH_TOKEN` and `GITHUB_TOKEN` are always allowed); curl runs with a stripped environment and options that make it read env vars or `/proc` are refused. A refused call leaves an audit record with names only. (#1215, #1216)
+
+These are backstops, not a hard boundary: a write-mode run still has `GH_GLOBAL` in its env.
+
 ## Dry-run gate for self-authored skills
 
 `create-skill` and `self-improve` write skills that reach `main` through auto-merging PRs. Left alone, the only thing between a generated skill and production is a Haiku score computed *after* it has already run with real secrets against real repos. For the part of the system that writes its own code, that ordering is backwards.
@@ -276,6 +286,8 @@ The template ships a few starter files under `memory/` (e.g. `MEMORY.md`, `watch
 | **Public repo** | **Unlimited free minutes** |
 
 Private repos: Free plan = 2,000 min/mo, Pro/Team = 3,000 + $0.008/min overage. To reduce usage: switch to `*/15` or hourly cron, disable unused skills, keep the repo public. Every run logs token usage to `memory/token-usage.csv` for a per-skill, per-model cost breakdown.
+
+`memory-flush` skips itself before the model starts when no daily log changed since its last flush and that flush is under 7 days old (the `Idle gate (memory-flush)` step; cron state still records a success). Any doubt means it runs, so the worst case is one extra run. (#1217)
 
 ---
 
