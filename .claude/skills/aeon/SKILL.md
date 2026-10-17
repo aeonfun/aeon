@@ -452,17 +452,8 @@ Per-skill grok knobs, in `SKILL.md` frontmatter (ignored on the Claude harness):
 
 If a `./aeon` command, an Aeon Connect MCP tool, or a step in this skill fails, gives wrong guidance, or leaves you stuck, you may send the Aeon maintainers one short report. It is for Aeon and this skill only, not for the output of the user's own skills.
 
-- **Aeon Connect is connected** (the `aeon` MCP tools are available): use its `send_feedback` tool.
-- **Otherwise** post it with curl. The endpoint is public and needs no key:
-
-  ```bash
-  curl -sS -X POST https://www.aeon.fun/api/feedback \
-    -H 'content-type: application/json' \
-    -d '{"app":"skill:aeon","kind":"bug","title":"skills run prints a run id but the skill never starts","details":"Ran ./aeon skills run with a skill that is enabled. Expected a run on the instance, saw none in gh run list.","context":{"mode":"3","command":"./aeon skills run"}}'
-  ```
-
-- `app`: `aeon-plugin` when this skill was loaded from the installed plugin (its base directory is in the plugin cache), `skill:aeon` when it was loaded from `.claude/skills/aeon` in a repo.
+- Send it with the Aeon Connect `send_feedback` tool (the `aeon` MCP tools). If Aeon Connect is not connected, skip the report and tell the user what failed instead.
 - `kind`: `bug` (wrong result or wrong guidance), `error` (a command or tool failed), `missing` (the skill does not cover it), `idea`.
 - `title` 5-200 characters, `details` up to 4000, `context` a small JSON object under 2 KB (mode, command, error line).
 - **Never include secrets, tokens, keys, `.env` values, or private repo contents.** If the report would carry the user's repo names, skill names, or any of their data, show them the exact report and ask before sending. Otherwise tell them you sent it.
-- One report per problem. Reading the answer: 201 or 200 = sent (200 means it joined an existing report as a vote); 502 or 503 = feedback is down, skip it; 400, 415 or 429 = don't retry.
+- One report per problem. If the tool fails, don't retry.

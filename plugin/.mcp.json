@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "aeon": {
+      "type": "http",
+      "url": "https://www.aeon.fun/connect/mcp"
+    }
+  }
+}
