@@ -83,7 +83,7 @@ SH
 mkdir -p "$TMP/or"
 OPENROUTER_API_KEY=sk-or-test PATH="$TMP/bin:$PATH" RH_LIB="$ROOT/harness-adapter/lib" \
   RH_TMPDIR="$TMP/or" RH_PROMPT_FILE="$TMP/prompt" bash "$ROOT/harness-adapter/adapters/hermes.sh" >/dev/null
-want=$(printf '%s\n' 'model:' '  default_headers:' '    "HTTP-Referer": "https://aeon.fun"' \
+want=$(printf '%s\n' 'model:' '  default_headers:' '    "HTTP-Referer": "https://www.aeon.fun"' \
   '    "X-OpenRouter-Title": "Aeon"' '    "X-Title": "Aeon"' '    "X-OpenRouter-Categories": "personal-agent,cloud-agent"')
 [ "$(cat "$TMP/or/seen-config" 2>/dev/null)" = "$want" ] || {
   echo "hermes OpenRouter attribution config wrong: $(cat "$TMP/or/seen-config" 2>/dev/null)" >&2

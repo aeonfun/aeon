@@ -1,7 +1,7 @@
 # shellcheck shell=bash
 # openrouter-attribution.sh - the app attribution headers every OpenRouter
 # inference request aeon makes carries, so the usage lands on aeon's OpenRouter
-# app page (openrouter.ai/apps?url=https://aeon.fun) instead of going
+# app page (openrouter.ai/apps?url=https://www.aeon.fun) instead of going
 # unattributed or counting toward the harness vendor's own app.
 #
 # The single source of the values. Sourced by scripts/llm-gateway.sh (Claude
@@ -10,11 +10,9 @@
 # config). Sets variables and functions only, no shell options: llm-gateway.sh
 # is itself sourced into the caller's shell.
 #
-# The referer is the APEX https://aeon.fun on purpose, not www: aeon's existing
-# OpenRouter app is keyed on that exact URL, and a www referer would start a
-# second, empty app. A fork can set its own via OPENROUTER_SITE_URL /
-# OPENROUTER_APP_TITLE / OPENROUTER_APP_CATEGORIES.
-OR_ATTR_REFERER="${OPENROUTER_SITE_URL:-https://aeon.fun}"
+# The referer is aeon's site URL. A fork can set its own via
+# OPENROUTER_SITE_URL / OPENROUTER_APP_TITLE / OPENROUTER_APP_CATEGORIES.
+OR_ATTR_REFERER="${OPENROUTER_SITE_URL:-https://www.aeon.fun}"
 OR_ATTR_TITLE="${OPENROUTER_APP_TITLE:-Aeon}"
 OR_ATTR_CATEGORIES="${OPENROUTER_APP_CATEGORIES:-personal-agent,cloud-agent}"
 

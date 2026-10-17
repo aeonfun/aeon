@@ -815,7 +815,7 @@ from or pin to; the template keeps serving the latest `main` to new forks.
   #924, #925)
 - **OpenRouter gateway traffic is now attributed to Aeon.** The `openrouter` case
   of `scripts/llm-gateway.sh` sets `ANTHROPIC_CUSTOM_HEADERS` so every Claude Code
-  request routed through `openrouter.ai` carries `HTTP-Referer: https://aeon.fun`
+  request routed through `openrouter.ai` carries `HTTP-Referer: https://www.aeon.fun`
   and `X-Title: Aeon`, ranking the usage on OpenRouter's public app leaderboard
   instead of counting as anonymous volume. Overridable per fork via the
   `OPENROUTER_SITE_URL` / `OPENROUTER_APP_TITLE` repo vars; base URL, auth, and

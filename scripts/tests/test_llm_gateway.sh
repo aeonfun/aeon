@@ -145,12 +145,12 @@ or_model() {  # $1 = run model id; prints the MODEL the arm resolves
   || bad "openrouter: per-tier repo vars override the slugs"
 
 # App attribution: every header OpenRouter reads, one "Name: Value" per line.
-# The referer is the apex https://aeon.fun (aeon's OpenRouter app is keyed on it).
+# The referer is aeon's site URL, https://www.aeon.fun.
 ( unset OPENROUTER_SITE_URL OPENROUTER_APP_TITLE OPENROUTER_APP_CATEGORIES
   export GATEWAY=openrouter OPENROUTER_API_KEY=test-key MODEL=claude-sonnet-5-5
   # shellcheck disable=SC1090
   source "$GW" >/dev/null
-  [ "$ANTHROPIC_CUSTOM_HEADERS" = "$(printf '%s\n' 'HTTP-Referer: https://aeon.fun' 'X-OpenRouter-Title: Aeon' \
+  [ "$ANTHROPIC_CUSTOM_HEADERS" = "$(printf '%s\n' 'HTTP-Referer: https://www.aeon.fun' 'X-OpenRouter-Title: Aeon' \
       'X-Title: Aeon' 'X-OpenRouter-Categories: personal-agent,cloud-agent')" ]
 ) && pass "openrouter: ANTHROPIC_CUSTOM_HEADERS carries referer, both titles and categories" \
   || bad "openrouter: ANTHROPIC_CUSTOM_HEADERS carries referer, both titles and categories"

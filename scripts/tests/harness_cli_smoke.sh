@@ -154,7 +154,7 @@ check_envelope() {  # check_envelope ENVELOPE_FILE WANT_USAGE(1|0)
 # setting install-harness.sh staged is one this CLI version really sends.
 check_attribution() {
   jq -se 'map(select(.method == "POST")) | length > 0 and all(.[]; .headers as $h
-            | $h["http-referer"] == "https://aeon.fun" and $h["x-openrouter-title"] == "Aeon"
+            | $h["http-referer"] == "https://www.aeon.fun" and $h["x-openrouter-title"] == "Aeon"
               and $h["x-title"] == "Aeon" and $h["x-openrouter-categories"] == "personal-agent,cloud-agent")' \
       "$FAKE_LOG" >/dev/null 2>&1 \
     && pass "every model call carried the OpenRouter app attribution headers" \
