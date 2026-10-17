@@ -1,0 +1,103 @@
+# ci-tests suites, run by scripts/tests/run_ci_lane.sh in 10 parallel lanes.
+# Format: <lane> | <name> | <command>   (lane 1-10, name shows as a log group)
+#
+# New test? Add one line here, in the lane with the least work (any lane is
+# fine; rebalance later). The coverage check in ci-tests fails if a
+# scripts/tests/test_* file is in no lane. Rebalance from a run's timings:
+#   gh run view <run id> --log -R aeonfun/aeon | python3 .github/scripts/ci-tests-lanes.py
+# Suites run side by side in one job, so each must use its own temp dirs
+# (mktemp), never fixed paths or ports shared with another suite.
+
+6 | notify_format unit tests | python3 scripts/tests/test_notify_format.py
+7 | notify integration tests | bash scripts/tests/test_notify.sh
+1 | telegram router tests | bash scripts/tests/test_telegram_route.sh
+10 | idea-pipeline dev-loop offer contract tests | bash scripts/tests/test_idea_pipeline_dev_loop_offer.sh
+8 | capability mode tests | bash scripts/tests/test_skill_mode.sh
+2 | read-only notify + claude denial warning tests | bash scripts/tests/test_readonly_notify.sh
+10 | vuln-scanner status contract tests | python3 scripts/tests/test_vuln_scanner_status.py
+2 | read-only guard run-log tests | bash scripts/tests/test_readonly_guard_log.sh
+1 | read-only failure-commit tests | bash scripts/tests/test_readonly_failure_commit.sh
+7 | per-skill requires parse tests | bash scripts/tests/test_skill_requires.sh
+10 | ALL_SECRETS covers every skill requires key | bash scripts/tests/test_all_secrets_allowlist.sh
+10 | gateway cascade failover classifier tests | bash scripts/tests/test_gateway_failover.sh
+3 | run actions summary tests | bash scripts/tests/test_run_actions_summary.sh
+4 | run context summary tests | bash scripts/tests/test_run_context_summary.sh
+9 | fleet scorecard classification tests | node --test scripts/tests/test_fleet_scorecard.mjs
+3 | skill-pack manifest validation tests | bash scripts/tests/test_validate_pack.sh
+5 | community pack registry validation tests | bash scripts/tests/test_validate_skill_packs.sh
+5 | README first-party catalog parity tests | bash scripts/tests/test_validate_readme_catalog.sh
+9 | community skill install catalog tests | bash scripts/tests/test_community_skill_install.sh
+7 | grok setup/auth tests | bash scripts/tests/test_run_grok.sh
+4 | harness-adapter grok tests | bash scripts/tests/test_harness_adapter_grok.sh
+7 | hermes adapter tests | bash scripts/tests/test_hermes_adapter.sh
+2 | cursor adapter tests | bash scripts/tests/test_cursor_adapter.sh
+8 | codex adapter model + token tests | bash scripts/tests/test_codex_adapter.sh
+8 | pi adapter MCP tests | bash scripts/tests/test_pi_adapter_mcp.sh
+8 | harness capability manifest tests | bash scripts/tests/test_generate_harnesses_json.sh
+9 | harness resolution tests | bash scripts/tests/test_resolve_harness.sh
+# harnesses.json credentials/default_model + gateways.json mirror code in
+# resolve-harness.sh, llm-gateway.sh, install-harness.sh, aeon.yml and the
+# dashboard registries; this fails the moment any of them drifts.
+10 | credential manifest consistency tests | bash scripts/tests/test_credential_manifest.sh
+1 | workflow harness choice tests | bash scripts/tests/test_workflow_harness_choices.sh
+3 | dashboard model lists vs workflow model choices + harness defaults | bash scripts/tests/test_dashboard_model_choices.sh
+3 | harness install/config tests | bash scripts/tests/test_install_harness.sh
+# Live halves need bwrap (installed by the job before the lanes start);
+# AEON_REQUIRE_LIVE_BWRAP=1 makes them fail instead of silently skipping.
+5 | run-harness sandbox-gate tests | AEON_REQUIRE_LIVE_BWRAP=1 bash scripts/tests/test_run_harness_sandbox_gate.sh
+# aeon.yml snapshots the harness config before the skill runs and restores it
+# before the scorer re-runs the harness unsandboxed (live half: snapshot
+# read-only in the sandbox, leftover process reaped).
+5 | harness config isolation tests | AEON_REQUIRE_LIVE_BWRAP=1 bash scripts/tests/test_harness_config_isolation.sh
+9 | pi adapter usage tests | bash scripts/tests/test_pi_adapter.sh
+# Hermetic (stub curl / sourced in subshells, no network); docs/mcp-oauth.md
+# and docs/langfuse.md cite the next two as their coverage.
+6 | harness envelope contract tests | bash scripts/tests/test_harness_envelope.sh
+3 | mcp-oauth-refresh tests | bash scripts/tests/test_mcp_oauth_refresh.sh
+1 | langfuse-otel tests | bash scripts/tests/test_langfuse_otel.sh
+2 | llm-gateway glm effort tests | bash scripts/tests/test_llm_gateway.sh
+8 | hivemindos ccr transformer tests | node scripts/tests/test_ccr_hivemindos.mjs
+10 | otel harness-span tests | bash scripts/tests/test_otel_span.sh
+9 | state reducer tests | python3 scripts/tests/test_state_reduce.py
+10 | state-store ensure-race tests | bash scripts/tests/test_state_store.sh
+5 | health triage tests | python3 scripts/tests/test_health_triage.py
+8 | skill-health recovery tests | python3 scripts/tests/test_skill_health_recovery.py
+6 | health-issue ensure-race tests | bash scripts/tests/test_health_issue.sh
+7 | skill-health harness routing tests | bash scripts/tests/test_skill_health_routing.sh
+4 | memory-flush prep tests | python3 scripts/tests/test_memory_prep.py
+3 | validate-config unit tests | node --test scripts/validate-config.test.js
+2 | validate-config aeon.yml structural check | node scripts/validate-config.js
+1 | cron-due scheduler decision tests | bash scripts/tests/test_cron_due.sh
+6 | scheduler aeon.yml parser tests | bash scripts/tests/test_parse_aeon_config.sh
+4 | scheduler tick end-to-end tests | bash scripts/tests/test_scheduler_tick.sh
+5 | notify step undelivered-payload warning test | bash scripts/tests/test_notify_step_undelivered.sh
+7 | circuit-breaker scheduler decision tests | bash scripts/tests/test_breaker.sh
+10 | reactive-trigger when-condition tests | bash scripts/tests/test_reactive_when.sh
+9 | chain when-routing tests | bash scripts/tests/test_chain_when.sh
+10 | chain-runner dispatch correlation tests | bash scripts/tests/test_chain_runner.sh
+5 | chain-runner invalid-dispatch cron-state tests | bash scripts/tests/test_chain_runner_invalid_dispatch.sh
+6 | chain-runner no-action status tests | bash scripts/tests/test_chain_runner_no_action.sh
+6 | cron-state commit retry tests (aeon.yml + chain-runner.yml) | bash scripts/tests/test_cron_state_commit.sh
+2 | git-push-retry conflict policy tests | bash scripts/tests/test_git_push_retry.sh
+1 | Commit results feature-branch state split tests | bash scripts/tests/test_commit_results_feature_branch.sh
+1 | git-config-guard tests (planted .git/config does not run) | bash scripts/tests/test_git_config_guard.sh
+6 | Standing instructions restore tests | bash scripts/tests/test_standing_instructions_restore.sh
+5 | dev-loop deterministic handoff tests | bash scripts/tests/test_dev_loop_handoff.sh
+7 | dev-loop review contract tests | bash scripts/tests/test_dev_loop_review.sh
+4 | dev-loop bounded repair gate tests | bash scripts/tests/test_dev_loop_repair.sh
+6 | dev-loop live proof gate tests | bash scripts/tests/test_dev_loop_proof.sh
+8 | feature open-PR and closing-issue checks | bash scripts/tests/test_feature_open_pr.sh
+4 | skill-scan calibration (fires on sinks, not benign syntax) | bash scripts/tests/test_skill_scan_calibration.sh
+7 | audit-log redaction tests | bash scripts/tests/test_audit.sh
+2 | dry-run gate (synthetic secrets, no real leak, pass criteria) | bash scripts/tests/test_dry_run.sh
+3 | dry-run harness/model dispatch boundary tests | bash scripts/tests/test_dry_run_dispatch.sh
+8 | secretcurl argv-exposure tests | bash scripts/tests/test_secretcurl.sh
+9 | secretcurl xai retry tests | bash scripts/tests/test_secretcurl_xai_retry.sh
+9 | hunter-22 expiration gate tests | bash scripts/tests/test_hunter_22_filter.sh
+4 | vuln-scanner PoC gate tests | bash scripts/tests/test_vuln_poc_gate.sh
+6 | vuln-scanner Riva dossier tests | bash scripts/tests/test_riva_context.sh
+9 | vuln-scanner Riva shadow isolation tests | bash scripts/tests/test_riva_shadow_guard.sh
+8 | vuln-scanner Riva shadow comparison tests | bash scripts/tests/test_riva_shadow_compare.sh
+5 | vuln-scanner Riva candidate validation tests | bash scripts/tests/test_riva_candidates.sh
+7 | vuln-scanner Riva kernel contract tests | bash scripts/tests/test_riva_kernel_contract.sh
+10 | anatomy skill integration tests | bash scripts/tests/test_anatomy_integration.sh

@@ -191,7 +191,7 @@ protect:
 | `ci-capabilities-parity` | the capabilities taxonomy stays in sync |
 | `ci-skill-packs` | `catalog/skill-packs.json` is well-formed **and** matches the Listed packs table in `docs/community-skill-packs.md` |
 | `ci-apps` | `apps/**` passes the biome format check; the dashboard typechecks, lints, tests and builds; the cli typechecks, lints and runs its `aeon init` sandbox tests; mcp-server builds; the webhook Worker lints, tests and bundles |
-| `ci-tests` | the `scripts/tests/` suites pass |
+| `ci-tests` | the `scripts/tests/` suites pass (a new `scripts/tests/test_*` file goes into a lane in `scripts/tests/ci-lanes.txt`, or ci-tests fails) |
 | `ci-agents-md` | `AGENTS.md` is regenerated from `STRATEGY.md` |
 | `ci-readme-catalog` | the README's skill tables and counts match `catalog/packs.json` |
 | `ci-shellcheck` | the root `aeon` script and shell under `scripts/`, `bin/`, `harness-adapter/` and skill helpers pass shellcheck |
