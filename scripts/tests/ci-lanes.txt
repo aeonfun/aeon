@@ -81,6 +81,7 @@
 9 | git-push-retry conflict policy tests | bash scripts/tests/test_git_push_retry.sh
 2 | Commit results feature-branch state split tests | bash scripts/tests/test_commit_results_feature_branch.sh
 4 | git-config-guard tests (planted .git/config does not run) | bash scripts/tests/test_git_config_guard.sh
+4 | git-config-guard authenticated HTTP push | python3 scripts/tests/test_git_config_auth.py
 3 | Standing instructions restore tests | bash scripts/tests/test_standing_instructions_restore.sh
 1 | dev-loop deterministic handoff tests | bash scripts/tests/test_dev_loop_handoff.sh
 8 | dev-loop review contract tests | bash scripts/tests/test_dev_loop_review.sh

@@ -1262,6 +1262,8 @@ jobs:
       # ...) and pin hooks off, from the starting commit's copy of the script.
       - name: Lock git config
         if: always() && steps.work.outputs.mode != ''
+        env:
+          AEON_GIT_TOKEN: ${{ secrets.GH_GLOBAL || secrets.GITHUB_TOKEN }}
         run: git show "$GITHUB_SHA:scripts/git-config-guard.sh" | bash
 
       # Egress hardening P2: publish the warn-mode audit log. always() so it lands

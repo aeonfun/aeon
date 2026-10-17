@@ -338,6 +338,9 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Fixed
 
+- **Post-run Git pushes retain trusted checkout authentication.** The config guard rebuilds
+  host-scoped HTTP auth from workflow secrets after removing untrusted includes. Push failures
+  now show redacted diagnostics and retry only stale refs, with authenticated HTTP push coverage.
 - **Stale Claude Code npm cache no longer blocks pin bumps.** `restore-keys` restored an old cache
   whose packument did not list the new version, so every run failed at "Install Claude Code"; an
   exact-key miss now downloads fresh. (#1169)

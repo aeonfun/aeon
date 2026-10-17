@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Regression test for scripts/git-push-retry.sh's rebase conflict policy.
+# Regression tests for push error handling and rebase conflict policy.
 # During `pull --rebase`, `checkout --theirs` keeps the LOCAL commit and drops
 # whatever concurrent runs pushed upstream. Two clones of one bare remote
 # collide on every class of file the script resolves; after the push, both
@@ -134,6 +134,141 @@ out=$(cd "$TMP/local" && bash "$SCRIPT" 2>&1)
 rc=$?
 [ "$rc" = 0 ] && grep -q '^unstaged$' "$TMP/local/notes.txt" \
   && pass "dirty tracked file: rebase + push succeed, local edit preserved" || { bad "dirty tracked file blocked push (rc=$rc)"; echo "$out"; }
+
+# Deterministic push failures: stub only external git/sleep, while exercising the
+# real helper, its exit status, diagnostics, classification, and retry loop.
+mkdir -p "$TMP/bin"
+cat > "$TMP/bin/git" <<'GIT'
+#!/usr/bin/env bash
+case "$1" in
+  branch|rev-parse) printf 'main\n' ;;
+  pull) printf 'pull\n' >> "$PUSH_TEST_STATE/pulls" ;;
+  push)
+    printf 'push\n' >> "$PUSH_TEST_STATE/pushes"
+    count=$(wc -l < "$PUSH_TEST_STATE/pushes")
+    if [ "$count" -gt 1 ] && [ "$PUSH_TEST_MODE" != exhausted ]; then
+      exit 0
+    fi
+    case "$PUSH_TEST_MODE" in
+      non-fast-forward|fetch-first|stale|exhausted)
+        case "$PUSH_TEST_MODE" in
+          fetch-first) reason='fetch first' ;;
+          stale) reason='stale info' ;;
+          *) reason='non-fast-forward' ;;
+        esac
+        printf '!\tHEAD:refs/heads/main\t[rejected] (%s)\n' "$reason"
+        printf "error: failed to push some refs to 'https://example.test/repo.git'\n" >&2
+        exit 1
+        ;;
+      stale-ref)
+        printf "remote: error: cannot lock ref 'refs/heads/main': is at abc123 but expected def456\n" >&2
+        printf '!\tHEAD:refs/heads/main\t[remote rejected] (failed to update ref)\n'
+        exit 1
+        ;;
+      auth)
+        printf "fatal: Authentication failed for 'https://user:URL_ONLY_SECRET@example.test/repo.git?token=QUERY_ONLY_SECRET'\n" >&2
+        printf 'remote: credential %s encoded %s base64 %s\n' "$PUSH_TEST_TOKEN" "$PUSH_TEST_URI" "$PUSH_TEST_B64" >&2
+        exit 128
+        ;;
+      permission)
+        printf 'remote: Permission to owner/repo.git denied to runner.\n' >&2
+        exit 128
+        ;;
+      hook)
+        printf '!\tHEAD:refs/heads/main\t[remote rejected] (pre-receive hook declined)\n'
+        printf 'remote: Policy requires non-fast-forward review; fetch first is not sufficient.\n' >&2
+        exit 1
+        ;;
+      transport)
+        printf 'fatal: unable to access remote: Could not resolve host: example.test\n' >&2
+        exit 128
+        ;;
+    esac
+    ;;
+  *) exit 99 ;;
+esac
+GIT
+cat > "$TMP/bin/sleep" <<'SLEEP'
+#!/usr/bin/env bash
+printf 'sleep\n' >> "$PUSH_TEST_STATE/sleeps"
+SLEEP
+chmod +x "$TMP/bin/git" "$TMP/bin/sleep"
+export PUSH_TEST_TOKEN='fake/push+secret=123'
+export PUSH_TEST_URI='fake%2Fpush%2Bsecret%3D123'
+export PUSH_TEST_B64
+PUSH_TEST_B64="$(printf '%s' "$PUSH_TEST_TOKEN" | base64 | tr -d '\n')"
+
+run_push_case() {
+  local mode="$1"
+  mkdir -p "$TMP/case-$mode"
+  out="$(PATH="$TMP/bin:$PATH" PUSH_TEST_STATE="$TMP/case-$mode" \
+    PUSH_TEST_MODE="$mode" AEON_AUDIT_SCRIPT=/dev/null bash "$SCRIPT" 2>&1)"
+  rc=$?
+}
+
+for mode in auth permission hook transport; do
+  run_push_case "$mode"
+  expected=128
+  [ "$mode" != hook ] || expected=1
+  if [ "$rc" -eq "$expected" ] \
+    && [ "$(wc -l < "$TMP/case-$mode/pushes")" -eq 1 ] \
+    && [ "$(wc -l < "$TMP/case-$mode/pulls")" -eq 1 ] \
+    && [ ! -e "$TMP/case-$mode/sleeps" ] \
+    && [[ "$out" == *"not retrying"* ]]; then
+    pass "$mode failure stops immediately and preserves the push exit status"
+  else
+    bad "$mode failure retried or lost its exit status (rc=$rc): $out"
+  fi
+  case "$mode" in
+    auth)
+      if [[ "$out" == *"Authentication failed"* ]] && [[ "$out" == *REDACTED* ]] \
+        && [[ "$out" != *URL_ONLY_SECRET* ]] && [[ "$out" != *QUERY_ONLY_SECRET* ]] \
+        && [[ "$out" != *"$PUSH_TEST_TOKEN"* ]] && [[ "$out" != *"$PUSH_TEST_URI"* ]] \
+        && [[ "$out" != *"$PUSH_TEST_B64"* ]]; then
+        pass "authentication diagnostic is visible without URL or exported credentials"
+      else
+        bad "authentication diagnostic missing or credentials leaked"
+      fi
+      ;;
+    permission)
+      [[ "$out" == *"Permission to owner/repo.git denied to runner."* ]] \
+        && pass "permission diagnostic is preserved" || bad "permission diagnostic missing"
+      ;;
+    hook)
+      [[ "$out" == *"pre-receive hook declined"* ]] \
+        && pass "hook rejection is reported, not mistaken for concurrent movement" || bad "hook diagnostic missing"
+      ;;
+    transport)
+      [[ "$out" == *"Could not resolve host: example.test"* ]] \
+        && pass "transport diagnostic is preserved" || bad "transport diagnostic missing"
+      ;;
+  esac
+done
+
+for mode in non-fast-forward fetch-first stale stale-ref; do
+  run_push_case "$mode"
+  if [ "$rc" -eq 0 ] \
+    && [ "$(wc -l < "$TMP/case-$mode/pushes")" -eq 2 ] \
+    && [ "$(wc -l < "$TMP/case-$mode/pulls")" -eq 2 ] \
+    && [ "$(wc -l < "$TMP/case-$mode/sleeps")" -eq 1 ] \
+    && [[ "$out" == *"rejected]"* ]] \
+    && [[ "$out" == *"Pushed successfully on attempt 2"* ]]; then
+    pass "$mode rejection is reported and retried after another pull"
+  else
+    bad "$mode rejection did not retry correctly (rc=$rc): $out"
+  fi
+done
+
+run_push_case exhausted
+if [ "$rc" -eq 1 ] \
+  && [ "$(wc -l < "$TMP/case-exhausted/pushes")" -eq 10 ] \
+  && [ "$(wc -l < "$TMP/case-exhausted/pulls")" -eq 10 ] \
+  && [ "$(wc -l < "$TMP/case-exhausted/sleeps")" -eq 9 ] \
+  && [[ "$out" == *"Failed to push after 10 attempts"* ]]; then
+  pass "concurrent update retries stop after ten attempts without a final sleep"
+else
+  bad "concurrent update retries exceeded their bound (rc=$rc): $out"
+fi
 
 [ "$fail" -eq 0 ] && echo "git-push-retry: all passed"
 exit "$fail"

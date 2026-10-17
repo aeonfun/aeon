@@ -106,6 +106,44 @@ rebase_in_progress() {
   [ -d "$(git rev-parse --git-path rebase-merge)" ] || [ -d "$(git rev-parse --git-path rebase-apply)" ]
 }
 
+# Push diagnostics can contain credential-bearing URLs or exported secrets.
+# Follow audit.sh's raw/base64/URI redaction, and hide whole URLs so credentials
+# in userinfo, paths, or query strings never reach the workflow log.
+report_push_error() {
+  local text="$1" name value encoded
+  while IFS= read -r name; do
+    case "$name" in
+      *_KEY|*_TOKEN|*_SECRET|*_PAT|*_PASSWORD|*_PASS|*_WEBHOOK_URL|GH_GLOBAL) ;;
+      *) continue ;;
+    esac
+    value="${!name-}"
+    [ -n "$value" ] || continue
+    text="${text//"$value"/REDACTED}"
+    encoded="$(printf '%s' "$value" | base64 | tr -d '\n')"
+    [ -z "$encoded" ] || text="${text//"$encoded"/REDACTED}"
+    encoded="$(printf '%s' "$value" | jq -sRr @uri 2>/dev/null || true)"
+    [ -z "$encoded" ] || text="${text//"$encoded"/REDACTED}"
+  done < <(compgen -e)
+  printf '%s\n' "$text" | sed -E 's#[[:alpha:]][[:alnum:]+.-]*://[^[:space:]]+#REDACTED_URL#g' >&2
+}
+
+retryable_push_rejection() {
+  # Porcelain status records distinguish real rejected refs from arbitrary
+  # remote diagnostics mentioning "non-fast-forward" or "fetch first".
+  local line pattern stale_pattern update_pattern stale_ref=0 rejected_update=0
+  pattern=$'^!\t[^\t]+\t\\[rejected\\] \\((non-fast-forward|fetch first|stale info)\\)$'
+  stale_pattern="cannot lock ref '[^']+': is at [[:xdigit:]]+ but expected [[:xdigit:]]+"
+  update_pattern=$'^!\t[^\t]+\t\\[remote rejected\\] \\(failed to update ref\\)$'
+  while IFS= read -r line; do
+    if [[ "$line" =~ $pattern ]]; then
+      return 0
+    fi
+    [[ "$line" =~ $stale_pattern ]] && stale_ref=1
+    [[ "$line" =~ $update_pattern ]] && rejected_update=1
+  done <<< "$1"
+  [ "$stale_ref" -eq 1 ] && [ "$rejected_update" -eq 1 ]
+}
+
 for i in 1 2 3 4 5 6 7 8 9 10; do
   # Pull and rebase onto latest remote. --autostash: a caller may leave
   # unstaged files behind (the read-only failure path stages only its log),
@@ -134,14 +172,23 @@ for i in 1 2 3 4 5 6 7 8 9 10; do
       git rebase --abort 2>/dev/null || true
     fi
   fi
-  # Try to push - if it fails, another job beat us, loop and re-pull
-  if git push -u origin HEAD 2>/dev/null; then
+  # Retry only concurrent ref updates, not authentication or server failures.
+  push_output="$(LC_ALL=C git push --porcelain -u origin HEAD 2>&1)"
+  push_status=$?
+  if [ "$push_status" -eq 0 ]; then
     echo "Pushed successfully on attempt $i"
     bash "${AEON_AUDIT_SCRIPT:-scripts/audit.sh}" "git.push" "${GITHUB_REPOSITORY:-}@$(git rev-parse --abbrev-ref HEAD)" 0 "GH_GLOBAL" || true
     exit 0
   fi
-  echo "Push attempt $i failed (ref moved), retrying in ${i}s..."
-  sleep "$(( (RANDOM % 4) + i ))"  # jittered backoff - a deterministic sleep re-collides lockstep writers under push contention
+  report_push_error "$push_output"
+  if ! retryable_push_rejection "$push_output"; then
+    echo "Push attempt $i failed (exit $push_status); not retrying." >&2
+    exit "$push_status"
+  fi
+  if [ "$i" -lt 10 ]; then
+    echo "Push attempt $i rejected (ref moved), retrying with backoff..."
+    sleep "$(( (RANDOM % 4) + i ))"  # jitter prevents lockstep writers from colliding again
+  fi
 done
 echo "Failed to push after 10 attempts"
 exit 1
