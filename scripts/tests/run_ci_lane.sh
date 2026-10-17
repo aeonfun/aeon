@@ -72,7 +72,8 @@ run_lane() {
     ran=$((ran + 1))
     echo "::group::${names[$i]}"
     start=$(now)
-    bash -c "${cmds[$i]}" </dev/null
+    # stderr into stdout: one stream keeps every line inside its own group.
+    bash -c "${cmds[$i]}" </dev/null 2>&1
     rc=$?
     secs=$(awk -v a="$start" -v b="$(now)" 'BEGIN { printf "%.1f", b - a }')
     echo "::endgroup::"
