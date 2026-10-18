@@ -76,7 +76,10 @@ if ! grep -Fq 'dispatch_id="prove-' "$SKILL"; then
   echo 'create-prove has no concrete prove--prefixed dispatch_id example' >&2
   exit 1
 fi
-if ! sed -n '/^  dev-loop:/,/^  # routine:/p' "$CONFIG" | grep -Fq 'max_dispatches: 5'; then
+# capture first: the block is over sed's 4 KB pipe buffer, so piping it into an
+# early-exiting grep -q can break sed's second write and fail under pipefail
+dev_loop_block=$(sed -n '/^  dev-loop:/,/^  # routine:/p' "$CONFIG")
+if ! grep -Fq 'max_dispatches: 5' <<<"$dev_loop_block"; then
   echo 'dev-loop dispatch budget is not five' >&2
   exit 1
 fi
