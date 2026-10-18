@@ -30,6 +30,14 @@ H="${1:-${H:-}}"
 HM="${HM:-}"
 AUTH_MODE="${AUTH_MODE:-openrouter}"
 
+# OpenRouter app attribution (HTTP-Referer, X-OpenRouter-Title, X-Title,
+# X-OpenRouter-Categories), baked into every OpenRouter provider config below
+# through each CLI's own custom-header setting, so harness runs count on aeon's
+# OpenRouter app page like the Claude gateway path does.
+# shellcheck source=../harness-adapter/lib/openrouter-attribution.sh
+. "$(dirname "${BASH_SOURCE[0]}")/../harness-adapter/lib/openrouter-attribution.sh"
+OR_HEADERS_TOML="$(or_attr_inline toml)"
+
 # Fail CLOSED on a missing provider credential, and say which one.
 #
 # Inside a workflow every key below is declared in the step's `env:` block, so it
@@ -191,6 +199,7 @@ name = "OpenRouter"
 base_url = "https://openrouter.ai/api/v1"
 env_key = "OPENROUTER_API_KEY"
 wire_api = "responses"
+http_headers = $OR_HEADERS_TOML
 TOML
         echo "codex: OpenRouter" ;;
     esac
@@ -205,7 +214,18 @@ TOML
     npm install -g --ignore-scripts @earendil-works/pi-coding-agent@0.99.2
     # pi picks its provider from whichever key is in env at RUN time
     # (ANTHROPIC_API_KEY / OPENAI_API_KEY native, else OPENROUTER_API_KEY with
-    # --model openrouter/…). No config file either way.
+    # --model openrouter/…), so auth needs no config. On OpenRouter, models.json
+    # adds headers to pi's built-in openrouter provider (a headers-only entry
+    # keeps its built-in models, and they override pi's own pi.dev attribution).
+    # Merged into an existing models.json, not written over it.
+    if [ "$AUTH_MODE" = "openrouter" ]; then
+      pi_dir="${PI_CODING_AGENT_DIR:-$HOME/.pi/agent}"
+      pi_models="${pi_dir/#\~/$HOME}/models.json"
+      mkdir -p "${pi_models%/*}"
+      [ -s "$pi_models" ] || echo '{}' > "$pi_models"
+      jq --argjson h "$(or_attr_inline json)" '.providers.openrouter.headers = $h' \
+        "$pi_models" > "$pi_models.tmp" && mv "$pi_models.tmp" "$pi_models"
+    fi
     echo "pi: $AUTH_MODE (env-driven)"
     ;;
   kimi)
@@ -257,6 +277,7 @@ default_model = "or-cheap"
 type = "openai"
 base_url = "https://openrouter.ai/api/v1"
 api_key = "$OPENROUTER_API_KEY"
+custom_headers = $OR_HEADERS_TOML
 
 [models.or-cheap]
 provider = "openrouter"
@@ -291,6 +312,7 @@ name = "openrouter"
 api_base = "https://openrouter.ai/api/v1"
 api_key_env_var = "OPENROUTER_API_KEY"
 api_style = "openai"
+extra_headers = $OR_HEADERS_TOML
 
 [[models]]
 name = "$HM"

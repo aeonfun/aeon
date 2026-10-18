@@ -18,7 +18,7 @@ unset LANGFUSE_PUBLIC_KEY LANGFUSE_SECRET_KEY LANGFUSE_HOST LANGFUSE_BASE_URL \
       OTEL_EXPORTER_OTLP_HEADERS OTEL_LOG_USER_PROMPTS OTEL_LOG_TOOL_CONTENT \
       OTEL_RESOURCE_ATTRIBUTES LANGFUSE_TRACING_ENVIRONMENT AEON_LF_VERSION \
       GITHUB_REF_NAME GITHUB_EVENT_PATH GITHUB_EVENT_NAME GITHUB_WORKSPACE GITHUB_SHA \
-      GITHUB_REPOSITORY 2>/dev/null || true
+      GITHUB_REPOSITORY AEON_DISPATCH_TRIGGER 2>/dev/null || true
 
 # 1. No keys → complete no-op (nothing exported), and returns success under -e.
 ( set -e
@@ -167,6 +167,20 @@ r=$(attrs_for SKILL_NAME=heartbeat GITHUB_REPOSITORY=aaronjmars/aeon-agent GITHU
 { has "$r" "langfuse.user.id=heartbeat," && has "$r" "langfuse.trace.metadata.instance=aeon-agent" \
   && has "$r" "langfuse.trace.metadata.trigger=workflow_dispatch"; } \
   && pass "userId = skill; instance + trigger metadata" || bad "user/metadata ($r)"
+# trigger: aeon.yml sets AEON_DISPATCH_TRIGGER from its trigger input (maybe empty).
+# The trigger is the last attribute here, or followed by aeon.run_attempt in CI.
+trig() { has "$1" "langfuse.trace.metadata.trigger=$2," || has "$1" "langfuse.trace.metadata.trigger=$2|"; }
+r=$(attrs_for GITHUB_EVENT_NAME=workflow_dispatch AEON_DISPATCH_TRIGGER=cron)
+trig "$r" cron && pass "trigger: Scheduler dispatch -> cron" || bad "trigger cron ($r)"
+r=$(attrs_for GITHUB_EVENT_NAME=workflow_dispatch AEON_DISPATCH_TRIGGER=chain)
+trig "$r" chain && pass "trigger: chain-runner dispatch -> chain" || bad "trigger chain ($r)"
+r=$(attrs_for GITHUB_EVENT_NAME=workflow_dispatch AEON_DISPATCH_TRIGGER=)
+trig "$r" manual && pass "trigger: plain Run now -> manual" || bad "trigger manual ($r)"
+r=$(attrs_for GITHUB_EVENT_NAME=workflow_dispatch AEON_DISPATCH_TRIGGER='cron2,langfuse.user.id=x')
+{ trig "$r" manual && ! has "$r" "cron2"; } \
+  && pass "trigger: unknown input value -> manual, never copied" || bad "trigger free text ($r)"
+r=$(attrs_for GITHUB_EVENT_NAME=issues AEON_DISPATCH_TRIGGER=)
+trig "$r" issues && pass "trigger: non-dispatch event keeps its name" || bad "trigger issues ($r)"
 r=$(attrs_for AEON_OTEL_COMPONENT=feed)
 has "$r" "langfuse.user.id=aeon:feed," && pass "no skill → userId aeon:<component>" || bad "feed user ($r)"
 r=$(attrs_for GITHUB_SHA=0123456789abcdef0123456789abcdef01234567)

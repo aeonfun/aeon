@@ -42,7 +42,7 @@ concurrency:
 jobs:
   poll:
     if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.message == '') || (github.event_name == 'repository_dispatch' && github.event.action == 'cron-tick')
-    runs-on: ubuntu-24.04
+    runs-on: ${{ vars.AEON_RUNNER || 'ubuntu-24.04' }}
     timeout-minutes: 5
 
     steps:
@@ -289,7 +289,7 @@ jobs:
     # mirroring what the poller does inline. See scripts/telegram-route.sh.
     if: >-
       github.event_name == 'repository_dispatch' && contains(fromJSON('["telegram-command","telegram-callback","telegram-reply"]'), github.event.action)
-    runs-on: ubuntu-24.04
+    runs-on: ${{ vars.AEON_RUNNER || 'ubuntu-24.04' }}
     timeout-minutes: 5
     steps:
       - name: Checkout repo
@@ -356,7 +356,7 @@ jobs:
     if: >-
       (github.event_name == 'repository_dispatch' && contains(fromJSON('["telegram-message","discord-message","slack-message"]'), github.event.action))
       || (github.event_name == 'workflow_dispatch' && inputs.message != '')
-    runs-on: ubuntu-24.04
+    runs-on: ${{ vars.AEON_RUNNER || 'ubuntu-24.04' }}
     timeout-minutes: 30
 
     steps:
@@ -414,13 +414,13 @@ jobs:
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
         with:
           path: ~/.npm
-          key: claude-code-${{ runner.os }}-2.1.287
+          key: claude-code-${{ runner.os }}-2.1.301
 
       - name: Install Claude Code
         if: steps.msg.outputs.source != ''
         # Pinned for supply-chain safety — keep in sync with aeon.yml's pin
         # (and the cache key version above).
-        run: npm install -g @anthropic-ai/claude-code@2.1.287 --prefer-offline
+        run: npm install -g @anthropic-ai/claude-code@2.1.301 --prefer-offline
 
       # Inbound messaging isn't a per-skill run, so no skill name is passed and
       # the repo-global `harness:`/`model:` keys decide — the same script aeon.yml
@@ -812,6 +812,8 @@ jobs:
       # (scripts/git-config-guard.sh, read from the starting commit).
       - name: Lock git config
         if: always() && steps.msg.outputs.source != ''
+        env:
+          AEON_GIT_TOKEN: ${{ secrets.GH_GLOBAL || secrets.GITHUB_TOKEN }}
         run: git show "$GITHUB_SHA:scripts/git-config-guard.sh" | bash
 
       # Sidecar gateway logs die with the VM — surface them in the job log on

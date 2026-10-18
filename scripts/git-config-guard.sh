@@ -15,6 +15,10 @@
 #
 # It removes those keys from the repo's own config and pins hooks off there.
 # User and system config are not the run's to write, so they are left alone.
+#
+# Workflows pass AEON_GIT_TOKEN from secrets after the run. Rebuild checkout's
+# host-scoped HTTP header from that trusted value, never from a removed include.
+# actions/checkout's post-job cleanup removes this header again.
 set -euo pipefail
 
 [ -d "$(git rev-parse --git-dir 2>/dev/null)" ] || { echo "git-config-guard: not a git checkout, nothing to do"; exit 0; }
@@ -42,3 +46,13 @@ if [ -n "$removed" ]; then
   echo "::warning::git-config-guard: removed config the run left in .git/config:$removed"
 fi
 echo "git-config-guard: .git/config cleaned, hooks off"
+
+# checkout stores auth behind includeIf, which the guard must remove along
+# with untrusted includes. Restore only HTTP auth, not the included config.
+if [ -n "${AEON_GIT_TOKEN:-}" ]; then
+  SERVER="${GITHUB_SERVER_URL:-https://github.com}"
+  AUTH=$(printf '%s' "x-access-token:$AEON_GIT_TOKEN" | base64 | tr -d '\r\n')
+  git config --file "$CFG" --replace-all "http.${SERVER%/}/.extraheader" "AUTHORIZATION: basic $AUTH"
+  unset AUTH
+  echo "git-config-guard: restored trusted checkout HTTP authentication"
+fi

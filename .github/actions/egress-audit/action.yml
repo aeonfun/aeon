@@ -106,6 +106,8 @@ runs:
 
     - name: Export proxy env
       shell: bash
+      env:
+        EGRESS_MODE: ${{ inputs.mode }}
       run: |
         if [ "${IRON_AUDIT_UP:-1}" = "0" ]; then
           echo "audit not active - proxy env not exported, run proceeds normally"
@@ -128,3 +130,10 @@ runs:
           echo "GIT_SSL_CAINFO=$CA"
         } >> "$GITHUB_ENV"
         echo "proxy env exported (audit active)"
+        # Claude's WebFetch runs Anthropic-side, so it never passes the proxy. In
+        # enforce mode turn it off (Claude Code 2.1.285+) so it cannot route around
+        # the allowlist; audit mode keeps it. WebSearch has no such switch.
+        if [ "$EGRESS_MODE" = "enforce" ]; then
+          echo "CLAUDE_CODE_DISABLE_WEB_FETCH=1" >> "$GITHUB_ENV"
+          echo "enforce mode: WebFetch disabled for this run"
+        fi

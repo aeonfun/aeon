@@ -92,6 +92,10 @@ on:
         description: 'Correlation ID for chain dispatches'
         required: false
         type: string
+      trigger:
+        description: 'What started the run: cron (Scheduler) or chain (chain-runner); empty = manual'
+        required: false
+        type: string
   workflow_call:
     inputs:
       skill:
@@ -118,6 +122,10 @@ on:
         description: 'Correlation ID for chain dispatches'
         required: false
         type: string
+      trigger:
+        description: 'What started the run: cron (Scheduler) or chain (chain-runner); empty = manual'
+        required: false
+        type: string
   issues:
     types: [labeled]
 
@@ -137,6 +145,10 @@ env:
   # actually see them. (Step-level env is NOT available in step `if:` clauses.)
   FLEET_ENDPOINT: ${{ secrets.FLEET_ENDPOINT }}
   FLEET_TOKEN:    ${{ secrets.FLEET_TOKEN }}
+  # Langfuse trigger label (scripts/langfuse-otel.sh): the Scheduler passes
+  # trigger=cron and chain-runner trigger=chain, so a cron run, a chain step and
+  # a manual Run now no longer all read workflow_dispatch.
+  AEON_DISPATCH_TRIGGER: ${{ inputs.trigger }}
 
 concurrency:
   # Keyed by skill name alone, `var` was ignored entirely: dispatching the
@@ -166,7 +178,7 @@ concurrency:
 jobs:
   run:
     if: github.event_name != 'issues' || github.event.label.name == 'ai-build'
-    runs-on: ubuntu-24.04
+    runs-on: ${{ vars.AEON_RUNNER || 'ubuntu-24.04' }}
     timeout-minutes: 50
 
     steps:
@@ -261,7 +273,7 @@ jobs:
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
         with:
           path: ~/.npm
-          key: claude-code-${{ runner.os }}-2.1.287
+          key: claude-code-${{ runner.os }}-2.1.301
 
       - name: Install Claude Code
         if: steps.work.outputs.mode != ''
@@ -270,7 +282,7 @@ jobs:
         # the release notes: https://github.com/anthropics/claude-code/releases
         # (--prefer-offline uses the cached tarball above; keep the pin and the
         # cache key version in sync.)
-        run: npm install -g @anthropic-ai/claude-code@2.1.287 --prefer-offline
+        run: npm install -g @anthropic-ai/claude-code@2.1.301 --prefer-offline
 
       # ──────────────────────────────────────────────────────────────────────
       # Harness swap: resolve the harness HERE, not in "Run"
@@ -696,7 +708,8 @@ jobs:
       # audit log; fail-open, so a proxy that never comes up just skips the audit and the
       # run proceeds. Env is exported via $GITHUB_ENV and reaches the claude process
       # inside bwrap (no --clearenv in the sandbox prefix). This is egress control +
-      # audit, NOT credential isolation on a same-box runner; WebFetch/WebSearch bypass it.
+      # audit, NOT credential isolation on a same-box runner; WebFetch/WebSearch bypass it
+      # (enforce also sets CLAUDE_CODE_DISABLE_WEB_FETCH=1; WebSearch still bypasses).
       - name: Egress audit
         if: steps.work.outputs.mode != '' && vars.EGRESS_AUDIT == '1'
         uses: ./.github/actions/egress-audit
@@ -1249,6 +1262,8 @@ jobs:
       # ...) and pin hooks off, from the starting commit's copy of the script.
       - name: Lock git config
         if: always() && steps.work.outputs.mode != ''
+        env:
+          AEON_GIT_TOKEN: ${{ secrets.GH_GLOBAL || secrets.GITHUB_TOKEN }}
         run: git show "$GITHUB_SHA:scripts/git-config-guard.sh" | bash
 
       # Egress hardening P2: publish the warn-mode audit log. always() so it lands
@@ -1773,11 +1788,15 @@ jobs:
           # below is tuned for that (composer/pi/vibe/kimi lack a native schema flag).
           RH="${GITHUB_WORKSPACE}/harness-adapter/run-harness"
           SCORE_ARGS=(--mode read-only --no-sandbox --timeout 300)
+          SCORE_CWD="$GITHUB_WORKSPACE"
           case "$HARNESS" in
             claude)
               # Runs under the gateway env sourced above; SCORE_MODEL is the cheap
-              # scoring model (haiku by default).
-              SCORE_ARGS+=(--model "$SCORE_MODEL") ;;
+              # scoring model (haiku by default). Lean, like the feed render:
+              # --no-tools drops the tool schemas and an empty scratch cwd skips the
+              # repo CLAUDE.md, which made every grade carry ~37k tokens.
+              SCORE_ARGS+=(--model "$SCORE_MODEL" --no-tools)
+              SCORE_CWD=$(mktemp -d "${RUNNER_TEMP:-/tmp}/scorer.XXXXXX") ;;
             grok)
               # Pin grok-4.7, the grok harness default and a model the X-account
               # (GROK_CREDENTIALS) login exposes (`grok models`, verified 2026-10-01).
@@ -1790,7 +1809,7 @@ jobs:
               # RH_MODEL_ARG is the same --model the run used (empty = harness default).
               [ -n "${RH_MODEL_ARG:-}" ] && SCORE_ARGS+=(--model "$RH_MODEL_ARG") ;;
           esac
-          if ! RAW=$(echo "$ANALYSIS_PROMPT" | bash "$RH" "$HARNESS" "${SCORE_ARGS[@]}" 2>/dev/null); then
+          if ! RAW=$(cd "$SCORE_CWD" && echo "$ANALYSIS_PROMPT" | bash "$RH" "$HARNESS" "${SCORE_ARGS[@]}" 2>/dev/null); then
             echo "::notice::Skill scoring skipped — $HARNESS scorer unavailable (non-fatal)"
             exit 0
           fi
@@ -1947,10 +1966,12 @@ jobs:
           # treats that as `direct`, matching the old inline behavior.
           GATEWAY="${{ steps.run.outputs.GATEWAY }}"
           AEON_GATEWAY_QUIET=1 source "${GITHUB_WORKSPACE}/scripts/llm-gateway.sh"
-          AEON_OTEL_COMPONENT=feed source "${GITHUB_WORKSPACE}/scripts/langfuse-otel.sh"
           for pending in "${AEON_PENDING_DIR:-${RUNNER_TEMP:-/tmp}/aeon-pending}"/.pending-*.md; do
             [ -f "$pending" ] || continue
             SKILL=$(basename "$pending" .md | sed 's/^\.pending-//')
+            # Per skill, so the feed trace (root span + usage row that
+            # notify-jsonrender sends) carries the skill as its user and name.
+            SKILL_NAME="$SKILL" AEON_OTEL_COMPONENT=feed source "${GITHUB_WORKSPACE}/scripts/langfuse-otel.sh"
             echo "json-render: converting $SKILL..."
             ./notify-jsonrender "$SKILL" "$(cat "$pending")" && rm -f "$pending" || echo "json-render: $SKILL conversion failed (non-fatal)"
           done
@@ -1975,7 +1996,10 @@ jobs:
         # !cancelled() (NOT a bare `mode != ''`, which GitHub implies success() onto
         # and would skip on a failed skill): a FAILED skill still delivers what it
         # queued (#912 R1). Cancellation is excluded so a killed job doesn't half-send.
-        if: ${{ !cancelled() && steps.work.outputs.mode != '' }}
+        # Default branch only, like the health-issue step: a test dispatch on a
+        # verify/* branch must not send real messages. Set the repo variable
+        # NOTIFY_ON_BRANCH=1 to see a test card; skipped payloads are dropped.
+        if: ${{ !cancelled() && steps.work.outputs.mode != '' && (github.ref_name == github.event.repository.default_branch || vars.NOTIFY_ON_BRANCH == '1') }}
         env:
           # #912 Phase 2: THIS step owns the channel tokens. ./notify (the queue-writer)
           # no longer reads them in the skill run env; notify-deliver.sh consumes them
@@ -2347,7 +2371,9 @@ jobs:
       # per-skill health Issue; humans 👍/👎 it to set repair priority. Silent on clean
       # runs (no Issue spam), so a healthy fleet creates zero issues.
       - name: Health regression to votable Issue
-        if: always() && steps.skill.outputs.name != ''
+        # Default branch only: a workflow_dispatch on a test branch (verify/*) must
+        # not open or comment on the production health Issues.
+        if: always() && steps.skill.outputs.name != '' && github.ref_name == github.event.repository.default_branch
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # Step outputs go through env, never inline ${{ }} in the script: FLAGS is

@@ -37,7 +37,7 @@ concurrency:
 
 jobs:
   schedule:
-    runs-on: ubuntu-24.04
+    runs-on: ${{ vars.AEON_RUNNER || 'ubuntu-24.04' }}
     # 10 min: a big catch-up tick (many owed slots after a delivery gap) does one
     # gh call + a 1s spacer per dispatch and persists state once at the end, so a
     # 5-min cap could cancel it mid-way and lose every stamp (all re-fire).
@@ -491,12 +491,19 @@ jobs:
 
             VAR="${SKILL_VAR[$SKILL]:-}"
             DISPATCH_OK=true
-            if [ -n "$VAR" ]; then
-              echo "Dispatching: $SKILL (var: $VAR)${SKILL_DEPS[$SKILL]:+ [depends_on: ${SKILL_DEPS[$SKILL]}]}"
-              gh workflow run aeon.yml -f skill="$SKILL" -f var="$VAR" || DISPATCH_OK=false
-            else
-              echo "Dispatching: $SKILL${SKILL_DEPS[$SKILL]:+ [depends_on: ${SKILL_DEPS[$SKILL]}]}"
-              gh workflow run aeon.yml -f skill="$SKILL" || DISPATCH_OK=false
+            # trigger=cron labels the run as scheduled (Langfuse trigger). An
+            # aeon.yml without the trigger input (an older fork) rejects the field
+            # before any run starts, so retry once without it.
+            ARGS=(-f skill="$SKILL")
+            [ -n "$VAR" ] && ARGS+=(-f var="$VAR")
+            echo "Dispatching: $SKILL${VAR:+ (var: $VAR)}${SKILL_DEPS[$SKILL]:+ [depends_on: ${SKILL_DEPS[$SKILL]}]}"
+            if ! OUT=$(gh workflow run aeon.yml "${ARGS[@]}" -f trigger=cron 2>&1); then
+              if printf '%s' "$OUT" | grep -qi 'unexpected inputs'; then
+                gh workflow run aeon.yml "${ARGS[@]}" || DISPATCH_OK=false
+              else
+                printf '%s\n' "$OUT" >&2
+                DISPATCH_OK=false
+              fi
             fi
 
             # Stamp state ONLY for a dispatch GitHub actually accepted. A rejected

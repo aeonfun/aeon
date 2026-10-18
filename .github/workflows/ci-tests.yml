@@ -55,12 +55,13 @@ concurrency:
 
 jobs:
   test:
-    # Blacksmith, not GitHub: ~50 short serial test steps, so single-core speed
-    # decides. Median job 51s vs 64.5s on GitHub's public 4 vCPU runner (queue 7s
-    # vs 2s), live bwrap checks pass; Blacksmith 4 vCPU was no faster (50s).
-    # Bench: runs 38823788873 + 38825096928. Back to ubuntu-24.04 if Blacksmith
-    # is down, since this job gates every PR through CI Gate.
-    runs-on: blacksmith-2vcpu-ubuntu-2404
+    # Blacksmith, not GitHub: measured when the suites ran as serial steps, where
+    # single-core speed decided. Median job 51s vs 64.5s on GitHub's public 4 vCPU
+    # runner (queue 7s vs 2s), live bwrap checks pass; Blacksmith 4 vCPU was no
+    # faster (50s).
+    # Bench: runs 38823788873 + 38825096928. The label comes from the
+    # AEON_RUNNER repo variable like every other job; unset = ubuntu-24.04.
+    runs-on: ${{ vars.AEON_RUNNER || 'ubuntu-24.04' }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: Install deps
@@ -70,185 +71,39 @@ jobs:
       # (read-only sandbox)" step: install it, lift Ubuntu 24.04's AppArmor userns
       # restriction, then fail HERE if bwrap still cannot run, so the live checks
       # never silently skip on CI (the test step also requires them, below).
+      # This job is the one that saves the .deb on a cache miss; ci-harness-cli's
+      # smoke jobs only restore it.
       - name: Install bubblewrap (live read-only sandbox test)
         timeout-minutes: 5
         uses: ./.github/actions/install-bubblewrap
-      - name: notify_format unit tests
-        run: python3 scripts/tests/test_notify_format.py
-      - name: notify integration tests
-        run: bash scripts/tests/test_notify.sh
-      - name: telegram router tests
-        run: bash scripts/tests/test_telegram_route.sh
-      - name: idea-pipeline dev-loop offer contract tests
-        run: bash scripts/tests/test_idea_pipeline_dev_loop_offer.sh
-      - name: capability mode tests
-        run: bash scripts/tests/test_skill_mode.sh
-      - name: read-only notify + claude denial warning tests
-        run: bash scripts/tests/test_readonly_notify.sh
-      - name: vuln-scanner status contract tests
-        run: python3 scripts/tests/test_vuln_scanner_status.py
-      - name: read-only guard run-log tests
-        run: bash scripts/tests/test_readonly_guard_log.sh
-      - name: read-only failure-commit tests
-        run: bash scripts/tests/test_readonly_failure_commit.sh
-      - name: per-skill requires parse tests
-        run: bash scripts/tests/test_skill_requires.sh
-      - name: ALL_SECRETS covers every skill requires key
-        run: bash scripts/tests/test_all_secrets_allowlist.sh
-      - name: gateway cascade failover classifier tests
-        run: bash scripts/tests/test_gateway_failover.sh
-      - name: run actions summary tests
-        run: bash scripts/tests/test_run_actions_summary.sh
-      - name: run context summary tests
-        run: bash scripts/tests/test_run_context_summary.sh
-      - name: fleet scorecard classification tests
-        run: node --test scripts/tests/test_fleet_scorecard.mjs
-      - name: skill-pack manifest validation tests
-        run: bash scripts/tests/test_validate_pack.sh
-      - name: community pack registry validation tests
-        run: bash scripts/tests/test_validate_skill_packs.sh
-      - name: README first-party catalog parity tests
-        run: bash scripts/tests/test_validate_readme_catalog.sh
-      - name: community skill install catalog tests
-        run: bash scripts/tests/test_community_skill_install.sh
-      - name: grok setup/auth tests
-        run: bash scripts/tests/test_run_grok.sh
-      - name: harness-adapter grok tests
-        run: bash scripts/tests/test_harness_adapter_grok.sh
-      - name: hermes adapter tests
-        run: bash scripts/tests/test_hermes_adapter.sh
-      - name: cursor adapter tests
-        run: bash scripts/tests/test_cursor_adapter.sh
-      - name: codex adapter model + token tests
-        run: bash scripts/tests/test_codex_adapter.sh
-      - name: pi adapter MCP tests
-        run: bash scripts/tests/test_pi_adapter_mcp.sh
-      - name: harness capability manifest tests
-        run: bash scripts/tests/test_generate_harnesses_json.sh
-      - name: harness resolution tests
-        run: bash scripts/tests/test_resolve_harness.sh
-      # harnesses.json credentials/default_model + gateways.json mirror code in
-      # resolve-harness.sh, llm-gateway.sh, install-harness.sh, aeon.yml and the
-      # dashboard registries; this fails the moment any of them drifts.
-      - name: credential manifest consistency tests
-        run: bash scripts/tests/test_credential_manifest.sh
-      - name: workflow harness choice tests
-        run: bash scripts/tests/test_workflow_harness_choices.sh
-      - name: dashboard model lists vs workflow model choices + harness defaults
-        run: bash scripts/tests/test_dashboard_model_choices.sh
-      - name: harness install/config tests
-        run: bash scripts/tests/test_install_harness.sh
-      - name: run-harness sandbox-gate tests
-        env:
-          AEON_REQUIRE_LIVE_BWRAP: '1'
-        run: bash scripts/tests/test_run_harness_sandbox_gate.sh
-      # aeon.yml snapshots the harness config before the skill runs and restores it
-      # before the scorer re-runs the harness unsandboxed. Live half needs bwrap
-      # (installed above): snapshot read-only in the sandbox, leftover process reaped.
-      - name: harness config isolation tests
-        env:
-          AEON_REQUIRE_LIVE_BWRAP: '1'
-        run: bash scripts/tests/test_harness_config_isolation.sh
-      - name: pi adapter usage tests
-        run: bash scripts/tests/test_pi_adapter.sh
-      # Both hermetic (stub curl / sourced in subshells, no network). They shipped
-      # with the scripts they cover and docs/mcp-oauth.md + docs/langfuse.md cite
-      # them as that coverage, but nothing ran them until now.
-      - name: harness envelope contract tests
-        run: bash scripts/tests/test_harness_envelope.sh
-      - name: mcp-oauth-refresh tests
-        run: bash scripts/tests/test_mcp_oauth_refresh.sh
-      - name: langfuse-otel tests
-        run: bash scripts/tests/test_langfuse_otel.sh
-      - name: llm-gateway glm effort tests
-        run: bash scripts/tests/test_llm_gateway.sh
-      - name: hivemindos ccr transformer tests
-        run: node scripts/tests/test_ccr_hivemindos.mjs
-      - name: otel harness-span tests
-        run: bash scripts/tests/test_otel_span.sh
-      - name: state reducer tests
-        run: python3 scripts/tests/test_state_reduce.py
-      - name: state-store ensure-race tests
-        run: bash scripts/tests/test_state_store.sh
-      - name: health triage tests
-        run: python3 scripts/tests/test_health_triage.py
-      - name: skill-health recovery tests
-        run: python3 scripts/tests/test_skill_health_recovery.py
-      - name: health-issue ensure-race tests
-        run: bash scripts/tests/test_health_issue.sh
-      - name: skill-health harness routing tests
-        run: bash scripts/tests/test_skill_health_routing.sh
-      - name: memory-flush prep tests
-        run: python3 scripts/tests/test_memory_prep.py
-      - name: validate-config unit tests
-        run: node --test scripts/validate-config.test.js
-      - name: validate-config aeon.yml structural check
-        run: node scripts/validate-config.js
-      - name: cron-due scheduler decision tests
-        run: bash scripts/tests/test_cron_due.sh
-      - name: scheduler aeon.yml parser tests
-        run: bash scripts/tests/test_parse_aeon_config.sh
-      - name: scheduler tick end-to-end tests
-        run: bash scripts/tests/test_scheduler_tick.sh
-      - name: notify step undelivered-payload warning test
-        run: bash scripts/tests/test_notify_step_undelivered.sh
-      - name: circuit-breaker scheduler decision tests
-        run: bash scripts/tests/test_breaker.sh
-      - name: reactive-trigger when-condition tests
-        run: bash scripts/tests/test_reactive_when.sh
-      - name: chain when-routing tests
-        run: bash scripts/tests/test_chain_when.sh
-      - name: chain-runner dispatch correlation tests
-        run: bash scripts/tests/test_chain_runner.sh
-      - name: chain-runner invalid-dispatch cron-state tests
-        run: bash scripts/tests/test_chain_runner_invalid_dispatch.sh
-      - name: chain-runner no-action status tests
-        run: bash scripts/tests/test_chain_runner_no_action.sh
-      - name: cron-state commit retry tests (aeon.yml + chain-runner.yml)
-        run: bash scripts/tests/test_cron_state_commit.sh
-      - name: git-push-retry conflict policy tests
-        run: bash scripts/tests/test_git_push_retry.sh
-      - name: Commit results feature-branch state split tests
-        run: bash scripts/tests/test_commit_results_feature_branch.sh
-      - name: git-config-guard tests (planted .git/config does not run)
-        run: bash scripts/tests/test_git_config_guard.sh
-      - name: Standing instructions restore tests
-        run: bash scripts/tests/test_standing_instructions_restore.sh
-      - name: dev-loop deterministic handoff tests
-        run: bash scripts/tests/test_dev_loop_handoff.sh
-      - name: dev-loop review contract tests
-        run: bash scripts/tests/test_dev_loop_review.sh
-      - name: dev-loop bounded repair gate tests
-        run: bash scripts/tests/test_dev_loop_repair.sh
-      - name: dev-loop live proof gate tests
-        run: bash scripts/tests/test_dev_loop_proof.sh
-      - name: feature open-PR and closing-issue checks
-        run: bash scripts/tests/test_feature_open_pr.sh
-      - name: skill-scan calibration (fires on sinks, not benign syntax)
-        run: bash scripts/tests/test_skill_scan_calibration.sh
-      - name: audit-log redaction tests
-        run: bash scripts/tests/test_audit.sh
-      - name: dry-run gate (synthetic secrets, no real leak, pass criteria)
-        run: bash scripts/tests/test_dry_run.sh
-      - name: dry-run harness/model dispatch boundary tests
-        run: bash scripts/tests/test_dry_run_dispatch.sh
-      - name: secretcurl argv-exposure tests
-        run: bash scripts/tests/test_secretcurl.sh
-      - name: secretcurl xai retry tests
-        run: bash scripts/tests/test_secretcurl_xai_retry.sh
-      - name: hunter-22 expiration gate tests
-        run: bash scripts/tests/test_hunter_22_filter.sh
-      - name: vuln-scanner PoC gate tests
-        run: bash scripts/tests/test_vuln_poc_gate.sh
-      - name: vuln-scanner Riva dossier tests
-        run: bash scripts/tests/test_riva_context.sh
-      - name: vuln-scanner Riva shadow isolation tests
-        run: bash scripts/tests/test_riva_shadow_guard.sh
-      - name: vuln-scanner Riva shadow comparison tests
-        run: bash scripts/tests/test_riva_shadow_compare.sh
-      - name: vuln-scanner Riva candidate validation tests
-        run: bash scripts/tests/test_riva_candidates.sh
-      - name: vuln-scanner Riva kernel contract tests
-        run: bash scripts/tests/test_riva_kernel_contract.sh
-      - name: anatomy skill integration tests
-        run: bash scripts/tests/test_anatomy_integration.sh
+      # The suites live in scripts/tests/ci-lanes.txt, split over 10 lanes that run
+      # at once (GitHub parallel steps, at most 10 concurrent; more parallel steps
+      # cost ~0.2s each at Blacksmith job teardown). Each lane runs every suite in
+      # it, one ::group:: per suite, then fails naming the suites that failed.
+      # Serial: median 49s; 10 lanes: 21-22s (aeon#1237).
+      - parallel:
+          - name: tests lane 1
+            run: bash scripts/tests/run_ci_lane.sh 1
+          - name: tests lane 2
+            run: bash scripts/tests/run_ci_lane.sh 2
+          - name: tests lane 3
+            run: bash scripts/tests/run_ci_lane.sh 3
+          - name: tests lane 4
+            run: bash scripts/tests/run_ci_lane.sh 4
+          - name: tests lane 5
+            run: bash scripts/tests/run_ci_lane.sh 5
+          - name: tests lane 6
+            run: bash scripts/tests/run_ci_lane.sh 6
+          - name: tests lane 7
+            run: bash scripts/tests/run_ci_lane.sh 7
+          - name: tests lane 8
+            run: bash scripts/tests/run_ci_lane.sh 8
+          - name: tests lane 9
+            run: bash scripts/tests/run_ci_lane.sh 9
+          - name: tests lane 10
+            run: bash scripts/tests/run_ci_lane.sh 10
+      # Runs even when a lane failed: a scripts/tests/test_* file in no lane (or a
+      # lane with no step above) fails here, so a new test is never skipped.
+      - name: every test file is in a lane
+        if: ${{ !cancelled() }}
+        run: bash scripts/tests/run_ci_lane.sh --check

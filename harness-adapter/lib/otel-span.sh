@@ -103,7 +103,8 @@ def error_class:
       ["rate_limit", "\\b429\\b|rate.?limit|too many requests|throttl|quota|resource_exhausted"],
       ["auth", "requires? a personal token|api key required|missing (api )?key|\\b40[13]\\b|unauthori[sz]ed|forbidden|invalid (api )?key|authenticat|login expired|token expired|not logged in"],
       ["upstream_error", "\\b5(0[0-9]|2[0-9])\\b|provider returned error|finish_reason=error|^provider \\d+|bad gateway|service unavailable|internal server error|overloaded|upstream|<!doctype html|cloudflare|gateway"],
-      ["network", "client has disconnected|econnreset|econnrefused|enotfound|socket|connection (reset|refused|error|closed)|fetch failed|network|dns|ssl|tls"],
+      ["cancelled", "client has disconnected"],
+      ["network", "econnreset|econnrefused|enotfound|socket|connection (reset|refused|error|closed)|fetch failed|network|dns|ssl|tls"],
       ["context_limit", "context (length|window)|too long|max(imum)? ?tokens|prompt is too long|finish_reason.?length|truncat"],
       ["budget_cap", "budget|max_turns|max turns|spend cap|cost cap|limit reached|session limit|usage limit|error_max"],
       ["no_tool_call", "no.?tool.?call|without (a )?tool call"],
@@ -237,6 +238,10 @@ rh_trace_end() {
          elif $e.usage then [{m: $model, in: ($e.usage.input_tokens // 0), out: ($e.usage.output_tokens // 0),
            cr: ($e.usage.cache_read_input_tokens // 0), cc: ($e.usage.cache_creation_input_tokens // 0)}]
          else [] end) as $gens
+    # Cache-write TTL split. Only the top-level usage has it (modelUsage gives one
+    # cacheCreationInputTokens per model), so each model gets the 1h share of the run
+    # of its writes. Claude Code writes 1h caches, priced 2x input vs 1.25x for 5m.
+    | [($e.usage.cache_creation.ephemeral_1h_input_tokens // 0), ($e.usage.cache_creation.ephemeral_5m_input_tokens // 0)] as [$w1h, $w5m]
     | {resourceSpans: [{
         resource: {attributes: ([$ra[] | s(.k; .v)] + (if $rm["service.name"] then [] else [s("service.name"; $svc)] end))},
         scopeSpans: [{scope: {name: "aeon.run-harness"}, spans: (
@@ -257,13 +262,26 @@ rh_trace_end() {
             status: {code: (if $err then 2 else 1 end)}}
            + (if $parent != "" then {parentSpanId: $parent} else {} end)]
           + [$gens | to_entries[] | select(.key < ($gids | length)) | .key as $n | .value as $g
+             # langfuse.observation.usage_details wins over the gen_ai.usage.* counts
+             # in Langfuse and names the priced keys, so 1h cache writes get the 1h
+             # price (gen_ai.usage.* has one cache-write count, priced at the 5m
+             # rate). Without a TTL split it sends the one count as before.
+             | (if ($w1h + $w5m) > 0 and $g.cc > 0
+                then (($g.cc * $w1h / ($w1h + $w5m)) | round) as $c1h
+                  | {input_cache_creation_1h: $c1h, input_cache_creation_5m: ($g.cc - $c1h)}
+                else {input_cache_creation: $g.cc} end) as $cw
+             # Zero-length at the end of the run: the row is a per-run token rollup,
+             # not a model call, so giving it the whole run duration skewed the
+             # per-model latency charts. metadata.rollup lets views filter it out.
              | {traceId: $tid, spanId: $gids[$n], parentSpanId: $sid, name: ("usage " + $g.m), kind: 3,
-                startTimeUnixNano: $start, endTimeUnixNano: $end,
-                # Langfuse treats gen_ai.usage.input_tokens as cache-inclusive and
-                # subtracts the two cache counts from it; Anthropic reports input
-                # without cache, so send the sum to get the real input back.
+                startTimeUnixNano: $end, endTimeUnixNano: $end,
+                # The gen_ai.usage.* counts stay for other OTLP backends. They read
+                # input_tokens as cache-inclusive and subtract the two cache counts;
+                # Anthropic reports input without cache, so send the sum.
                 attributes: ($lfa + [s("langfuse.observation.type"; "generation"), s("gen_ai.system"; "anthropic"),
+                  s("langfuse.observation.metadata.rollup"; "true"),
                   s("gen_ai.request.model"; $g.m), s("gen_ai.response.model"; $g.m),
+                  s("langfuse.observation.usage_details"; {input: $g.in, output: $g.out, input_cache_read: $g.cr} + $cw | tojson),
                   i("gen_ai.usage.input_tokens"; $g.in + $g.cr + $g.cc), i("gen_ai.usage.output_tokens"; $g.out),
                   i("gen_ai.usage.cache_read_input_tokens"; $g.cr), i("gen_ai.usage.cache_creation_input_tokens"; $g.cc)])}]
         )}]}]}' > "$body" 2>/dev/null; then

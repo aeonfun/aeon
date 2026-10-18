@@ -144,6 +144,26 @@ or_model() {  # $1 = run model id; prints the MODEL the arm resolves
 ) && pass "openrouter: per-tier repo vars override the slugs" \
   || bad "openrouter: per-tier repo vars override the slugs"
 
+# App attribution: every header OpenRouter reads, one "Name: Value" per line.
+# The referer is aeon's site URL, https://www.aeon.fun.
+( unset OPENROUTER_SITE_URL OPENROUTER_APP_TITLE OPENROUTER_APP_CATEGORIES
+  export GATEWAY=openrouter OPENROUTER_API_KEY=test-key MODEL=claude-sonnet-5-5
+  # shellcheck disable=SC1090
+  source "$GW" >/dev/null
+  [ "$ANTHROPIC_CUSTOM_HEADERS" = "$(printf '%s\n' 'HTTP-Referer: https://www.aeon.fun' 'X-OpenRouter-Title: Aeon' \
+      'X-Title: Aeon' 'X-OpenRouter-Categories: personal-agent,cloud-agent')" ]
+) && pass "openrouter: ANTHROPIC_CUSTOM_HEADERS carries referer, both titles and categories" \
+  || bad "openrouter: ANTHROPIC_CUSTOM_HEADERS carries referer, both titles and categories"
+( export GATEWAY=openrouter OPENROUTER_API_KEY=test-key MODEL=claude-sonnet-5-5 \
+    OPENROUTER_SITE_URL=https://fork.example OPENROUTER_APP_TITLE=Fork
+  # shellcheck disable=SC1090
+  source "$GW" >/dev/null
+  grep -qx 'HTTP-Referer: https://fork.example' <<<"$ANTHROPIC_CUSTOM_HEADERS" \
+    && grep -qx 'X-OpenRouter-Title: Fork' <<<"$ANTHROPIC_CUSTOM_HEADERS" \
+    && grep -qx 'X-Title: Fork' <<<"$ANTHROPIC_CUSTOM_HEADERS"
+) && pass "openrouter: OPENROUTER_SITE_URL / OPENROUTER_APP_TITLE still override" \
+  || bad "openrouter: OPENROUTER_SITE_URL / OPENROUTER_APP_TITLE still override"
+
 # --- grok arm ---------------------------------------------------------------
 # Native arm, no sidecar: every slot is pinned to one grok model, GROK_MODEL wins.
 grok_model() {  # $1 = GROK_MODEL value ("" = unset); prints the MODEL the arm resolves

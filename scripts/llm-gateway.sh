@@ -271,13 +271,16 @@ case "${GATEWAY:-direct}" in
       *haiku*) MODEL="$ANTHROPIC_DEFAULT_HAIKU_MODEL" ;;
       *)       MODEL="$ANTHROPIC_DEFAULT_SONNET_MODEL" ;;
     esac
-    # App attribution: HTTP-Referer + X-Title make aeon's OpenRouter traffic show
-    # up on openrouter.ai's public app leaderboard. Claude Code forwards
-    # ANTHROPIC_CUSTOM_HEADERS (one "Name: Value" per line) to the upstream even on
-    # a third-party gateway base URL. Override per fork with the repo vars
-    # OPENROUTER_SITE_URL / OPENROUTER_APP_TITLE.
-    export ANTHROPIC_CUSTOM_HEADERS="HTTP-Referer: ${OPENROUTER_SITE_URL:-https://aeon.fun}
-X-Title: ${OPENROUTER_APP_TITLE:-Aeon}"
+    # App attribution (HTTP-Referer, X-OpenRouter-Title + legacy X-Title,
+    # X-OpenRouter-Categories) puts aeon's OpenRouter traffic on its app page.
+    # Claude Code forwards ANTHROPIC_CUSTOM_HEADERS (one "Name: Value" per line)
+    # to the upstream even on a third-party gateway base URL. The values (and the
+    # OPENROUTER_SITE_URL / OPENROUTER_APP_TITLE overrides) live in
+    # harness-adapter/lib/openrouter-attribution.sh, shared with the other harnesses.
+    # shellcheck source=../harness-adapter/lib/openrouter-attribution.sh
+    . "$(dirname "${BASH_SOURCE[0]}")/../harness-adapter/lib/openrouter-attribution.sh"
+    ANTHROPIC_CUSTOM_HEADERS="$(or_attr_lines)"
+    export ANTHROPIC_CUSTOM_HEADERS
     gw_notice "Routing through OpenRouter (Anthropic-native) as ${MODEL}"
     ;;
 

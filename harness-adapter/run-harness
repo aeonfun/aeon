@@ -14,6 +14,7 @@
 #     --timeout <seconds>           wall-clock guard (default 600)
 #     --no-sandbox                  skip the wrapper OS sandbox on read-only runs
 #     --no-compat-rules             skip the Claude-idiom compatibility preamble on non-claude harnesses
+#     --no-tools                    claude: no tools at all (--tools ""), for one-shot text calls; others ignore it
 #
 #   contract (stdout): {"result": "...", "usage": {input_tokens, output_tokens,
 #     cache_read_input_tokens, cache_creation_input_tokens}, [session_id], [total_cost_usd]}
@@ -34,7 +35,7 @@ HARNESS="$1"; shift
 [ -f "$HERE/adapters/$HARNESS.sh" ] || { echo "unknown harness '$HARNESS'" >&2; usage; }
 
 MODEL="" MODE="" ALLOWED="" MCP="" MAXT="" SCHEMA="" APPEND=""
-TIMEOUT=600 SANDBOX=auto COMPAT=auto
+TIMEOUT=600 SANDBOX=auto COMPAT=auto NOTOOLS=
 while [ $# -gt 0 ]; do
   case "$1" in
     --model)                MODEL="$2"; shift 2 ;;
@@ -47,6 +48,7 @@ while [ $# -gt 0 ]; do
     --timeout)              TIMEOUT="$2"; shift 2 ;;
     --no-sandbox)           SANDBOX=off; shift ;;
     --no-compat-rules)      COMPAT=off; shift ;;
+    --no-tools)             NOTOOLS=1; shift ;;
     --output-format)        [ "$2" = "json" ] || { echo "only --output-format json is supported" >&2; exit 2; }; shift 2 ;;
     *) echo "unknown option: $1" >&2; usage ;;
   esac
@@ -114,7 +116,7 @@ export RH_HARNESS="$HARNESS"
 export RH_MODEL="$MODEL" RH_MODE="$MODE" RH_ALLOWED_TOOLS="$ALLOWED"
 export RH_MCP_CONFIG="$MCP" RH_MAX_TURNS="$MAXT" RH_JSON_SCHEMA="$SCHEMA"
 export RH_APPEND_SYSTEM_PROMPT="$APPEND" RH_COMPAT_RULES="$COMPAT_RULES"
-export RH_TIMEOUT="$TIMEOUT"
+export RH_TIMEOUT="$TIMEOUT" RH_NO_TOOLS="$NOTOOLS"
 
 CMD=(bash "$HERE/adapters/$HARNESS.sh")
 

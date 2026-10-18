@@ -276,7 +276,7 @@ Report only signal via ./notify - a clean run sends nothing.
 
 Conventions that matter:
 
-- **`requires:`** - exact env-var names. This drives the dashboard's "which skill needs which key" UI and your own pre-flight in §4.1. Secrets reach the run environment; secret-bearing calls go through `./secretcurl` with `{PLACEHOLDER}` tokens (a raw `curl …$KEY` is blocked by the permission layer).
+- **`requires:`** - exact env-var names. This drives the dashboard's "which skill needs which key" UI and your own pre-flight in §4.1. Secrets reach the run environment; secret-bearing calls go through `./secretcurl` with `{PLACEHOLDER}` tokens (a raw `curl …$KEY` is blocked by the permission layer). In a run, `./secretcurl` only fills placeholders for names listed in `requires:`, so a key you forget to declare is refused, not sent.
 - **`mode: read-only`** if the skill shouldn't touch the repo - write tools are stripped and stray writes reverted. Declare honest `capabilities` (§5.2) for everything else.
 - **If your product is an MCP server**, declare `mcp: [your-slug]` instead of raw API calls, and ship the server entry for `.mcp.json`. OAuth-connected MCPs get a Connect button in the dashboard.
 - **Notify on signal only.** The `./notify` tool fans out to whatever channels the operator configured (Telegram/Discord/Slack/email) - your skill's reports arrive where the operator already lives, for free.

@@ -162,6 +162,34 @@ else
     || bad "fx missing-credential error message"
 fi
 
+# --- 3b. OpenRouter app attribution ----------------------------------------
+# Every OpenRouter provider config carries aeon's attribution headers through
+# that CLI's own header setting (harness-adapter/lib/openrouter-attribution.sh),
+# so harness runs count on aeon's OpenRouter app page.
+OR_TOML='{ "HTTP-Referer" = "https://www.aeon.fun", "X-OpenRouter-Title" = "Aeon", "X-Title" = "Aeon", "X-OpenRouter-Categories" = "personal-agent,cloud-agent" }'
+for spec in "codex .codex/config.toml http_headers" "kimi .kimi-code/config.toml custom_headers" \
+            "vibe .vibe/config.toml extra_headers"; do
+  read -r h f key <<<"$spec"
+  run "$h" HM=x/y AUTH_MODE=openrouter OPENROUTER_API_KEY=sk-test
+  grep -qxF "$key = $OR_TOML" "$H_DIR/$f" 2>/dev/null \
+    && pass "$h/openrouter: $key carries the attribution headers" \
+    || bad "$h/openrouter: $key missing or wrong ($(grep "$key" "$H_DIR/$f" 2>/dev/null))"
+done
+# pi: a headers-only entry for its built-in openrouter provider, merged into an
+# existing models.json rather than over it; native auth stages none.
+H_DIR="$(mktemp -d)"; mkdir -p "$H_DIR/.pi/agent"
+echo '{"providers":{"ollama":{"baseUrl":"http://localhost:11434/v1"}}}' > "$H_DIR/.pi/agent/models.json"
+env PATH="$BIN:$PATH" HOME="$H_DIR" PKG_LOG=/dev/null GITHUB_PATH="" AUTH_MODE=openrouter \
+  OPENROUTER_API_KEY=sk-test bash "$I" pi >/dev/null 2>&1
+jq -e '.providers.openrouter == {headers: {"HTTP-Referer": "https://www.aeon.fun", "X-OpenRouter-Title": "Aeon",
+        "X-Title": "Aeon", "X-OpenRouter-Categories": "personal-agent,cloud-agent"}}
+       and .providers.ollama.baseUrl == "http://localhost:11434/v1"' "$H_DIR/.pi/agent/models.json" >/dev/null 2>&1 \
+  && pass "pi/openrouter: models.json gets the headers, existing providers kept" \
+  || bad "pi/openrouter: models.json wrong ($(cat "$H_DIR/.pi/agent/models.json" 2>/dev/null))"
+run pi AUTH_MODE=native-key
+[ ! -e "$H_DIR/.pi/agent/models.json" ] \
+  && pass "pi/native-key: no models.json" || bad "pi/native-key wrote a models.json"
+
 # --- 4. supply-chain pins ---------------------------------------------------
 # An unpinned `-g` install runs whatever the registry serves, in CI, with the
 # run's secrets in env. Two codex cells already failed this way when unpinned.

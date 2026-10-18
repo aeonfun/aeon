@@ -146,7 +146,19 @@ fi
 if [ -n "${GITHUB_REPOSITORY:-}" ]; then
   _lf_attrs="${_lf_attrs},aeon.repo=${GITHUB_REPOSITORY},langfuse.trace.metadata.instance=${GITHUB_REPOSITORY#*/}"
 fi
-if [ -n "${GITHUB_EVENT_NAME:-}" ]; then _lf_attrs="${_lf_attrs},langfuse.trace.metadata.trigger=${GITHUB_EVENT_NAME}"; fi
+# trigger: the Scheduler and chain-runner start every skill with workflow_dispatch,
+# so the event name alone cannot tell a cron run from a manual one. aeon.yml sets
+# AEON_DISPATCH_TRIGGER from its trigger input (cron from the Scheduler, chain
+# from chain-runner, empty for Run now). Only those values are used: the input
+# is free text. Other workflows (messages.yml) do not set it and keep the event.
+_lf_trig="${GITHUB_EVENT_NAME:-}"
+if [ "$_lf_trig" = workflow_dispatch ] && [ -n "${AEON_DISPATCH_TRIGGER+x}" ]; then
+  case "${AEON_DISPATCH_TRIGGER:-}" in
+    cron | chain) _lf_trig="$AEON_DISPATCH_TRIGGER" ;;
+    *) _lf_trig=manual ;;
+  esac
+fi
+if [ -n "$_lf_trig" ]; then _lf_attrs="${_lf_attrs},langfuse.trace.metadata.trigger=${_lf_trig}"; fi
 if [ -n "${GITHUB_RUN_ATTEMPT:-}" ];then _lf_attrs="${_lf_attrs},aeon.run_attempt=${GITHUB_RUN_ATTEMPT}"; fi
 export OTEL_RESOURCE_ATTRIBUTES="$_lf_attrs"
 
@@ -180,5 +192,5 @@ if [ -n "${SKILL_NAME:-}" ] && [ -f "$_lf_md" ]; then
 fi
 
 echo "::notice::Langfuse tracing on → ${_lf_host} (component=${AEON_OTEL_COMPONENT:-skill-run}, env=${_lf_env}, content=${LANGFUSE_LOG_CONTENT:-1})" >&2
-unset _lf_host _lf_auth _lf_attrs _lf_seed _lf_tid _lf_env _lf_default _lf_rel _lf_state _lf_md _lf_ver
+unset _lf_host _lf_auth _lf_attrs _lf_seed _lf_tid _lf_env _lf_default _lf_rel _lf_state _lf_md _lf_ver _lf_trig
 return 0 2>/dev/null || exit 0

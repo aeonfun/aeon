@@ -107,6 +107,8 @@ Claude Code's Bash permission analyzer **blocks any command containing a secret 
 
 Braces, not `$`. A skill that writes `-H "Authorization: Bearer $XAI_API_KEY"` will be blocked at run time, not at author time.
 
+In a scheduled run `./secretcurl` only fills placeholders for secrets the skill lists in `requires:` (plus `GH_TOKEN` / `GITHUB_TOKEN`). A placeholder for any other set key is refused with a message that names it, never its value, so declare every key you put in braces. curl runs with a stripped environment, and `--variable`, `--expand-*`, `-K` / `--config` and option values that read a file under `/proc` are refused. (#1215, #1216)
+
 There is **no network sandbox** - plain `curl` works for unauthenticated GETs.
 
 ## Memory
@@ -130,7 +132,7 @@ This is also the **dedup substrate**. The standard rule, and the one to add to a
 
 ### `memory/MEMORY.md` - the durable index (138 references across 59 skills)
 
-Long-lived facts, not run history. Skills read it for context; the `memory-flush` skill promotes important log lines into it and prunes stale ones. Don't append per-run noise here - that's what `logs/` is for.
+Long-lived facts, not run history. Skills read it for context; the `memory-flush` skill promotes important log lines into it and prunes stale ones, holds it under 8 KB with no line over 300 chars (it loads into every run), and ends each fact it adds with `[source: logs/YYYY-MM-DD#<skill>]`. Don't append per-run noise here - that's what `logs/` is for.
 
 ### Domain state files
 

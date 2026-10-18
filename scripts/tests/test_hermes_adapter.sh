@@ -73,4 +73,30 @@ HERMES_STUB_MODE=ok PATH="$TMP/bin:$PATH" RH_LIB="$ROOT/harness-adapter/lib" \
   exit 1
 }
 
+# OpenRouter mode stages aeon's app attribution as model.default_headers in the
+# scratch HOME (hermes would otherwise send its own); a Nous login stages none.
+cat > "$TMP/bin/hermes" <<'SH'
+#!/usr/bin/env bash
+cp "$HOME/.hermes/config.yaml" "$(dirname "$2")/seen-config" 2>/dev/null || true
+printf '%s\n' 'usable hermes result'
+SH
+mkdir -p "$TMP/or"
+OPENROUTER_API_KEY=sk-or-test PATH="$TMP/bin:$PATH" RH_LIB="$ROOT/harness-adapter/lib" \
+  RH_TMPDIR="$TMP/or" RH_PROMPT_FILE="$TMP/prompt" bash "$ROOT/harness-adapter/adapters/hermes.sh" >/dev/null
+want=$(printf '%s\n' 'model:' '  default_headers:' '    "HTTP-Referer": "https://www.aeon.fun"' \
+  '    "X-OpenRouter-Title": "Aeon"' '    "X-Title": "Aeon"' '    "X-OpenRouter-Categories": "personal-agent,cloud-agent"')
+[ "$(cat "$TMP/or/seen-config" 2>/dev/null)" = "$want" ] || {
+  echo "hermes OpenRouter attribution config wrong: $(cat "$TMP/or/seen-config" 2>/dev/null)" >&2
+  exit 1
+}
+if command -v python3 >/dev/null 2>&1 && python3 -c 'import yaml' 2>/dev/null; then
+  python3 -c 'import sys, yaml; h = yaml.safe_load(open(sys.argv[1]))["model"]["default_headers"]; sys.exit(h["X-OpenRouter-Title"] != "Aeon")' \
+    "$TMP/or/seen-config" || { echo 'hermes attribution config is not valid YAML' >&2; exit 1; }
+fi
+mkdir -p "$TMP/nous"
+OPENROUTER_API_KEY=sk-or-test HERMES_AUTH="$(tar czf - -C "$TMP" prompt | base64)" PATH="$TMP/bin:$PATH" \
+  RH_LIB="$ROOT/harness-adapter/lib" RH_TMPDIR="$TMP/nous" RH_PROMPT_FILE="$TMP/prompt" \
+  bash "$ROOT/harness-adapter/adapters/hermes.sh" >/dev/null
+[ ! -e "$TMP/nous/seen-config" ] || { echo 'hermes Nous login got OpenRouter attribution headers' >&2; exit 1; }
+
 echo 'hermes adapter error tests passed'

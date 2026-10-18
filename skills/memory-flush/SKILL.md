@@ -22,6 +22,7 @@ Read `memory/MEMORY.md` for current memory state. **The scan window and log rota
 Run `python3 scripts/memory_prep.py window` and read its stdout. It:
 - computes your **scan window** from the structured watermark `memory/memory-flush-state.json` (fallback for a first-run migration: the MEMORY.md `*Last consolidated:*` line; then the last 3 days; a gap over 14 days is clamped to 14 and flagged), and prints the exact in-window log files to read;
 - has **already rotated** whole old months out of `memory/logs/` into `memory/logs/archive/YYYY-MM.md` (content-preserving) once the directory passed ~45 files.
+- prints `MEMORY.md size` (bytes, lines, over-long lines) against the budget step 3e holds.
 
 Read exactly the files it lists. Do not recompute the window or rotate logs yourself - that work is now deterministic and unit-tested (`scripts/memory_prep.py`), so it never silently falls back to 3 days or gets skipped. This closed two old holes: entries older than 3 days were lost whenever the agent skipped runs, and a daily schedule re-scanned the same 3 days every time.
 
@@ -50,10 +51,11 @@ a. **Open Improvement PRs section**: Run `gh pr list --state open --search "impr
 b. **Next Priorities section**: Cross-check each listed priority against recent logs and current repo state. Remove priorities that are already done (e.g., "Merge open PRs" if 0 open PRs exist). Add any newly urgent priorities surfaced by recent logs.
 c. **Lessons Learned**: Remove lessons that are now outdated or resolved (e.g., a workaround for a bug that was later fixed).
 d. **Overflow any section that outgrows its budget** (keeps MEMORY.md an index, not a ledger): if a section has grown past the last ~10-15 rows - the Skills Built table is the usual first offender, but the rule is general - archive the oldest rows to `memory/topics/<section>-history.md` (e.g. `skills-history.md`) and leave a one-line pointer to that file. Trim newest-kept, oldest-archived.
+e. **Hold the byte budget** (MEMORY.md loads into every skill run, so size is cost): step 0 prints `MEMORY.md size` against the budget of **8 KB, ~50 lines, no line over 300 chars**, and lists the over-long lines by number. When it says OVER BUDGET or names long lines, cut those first: move the detail of a long bullet to its topic file (`memory/topics/lessons.md` for Lessons Learned, `memory/topics/priorities.md` for Next Priorities, or the matching topic) and keep a one-line summary with a pointer in MEMORY.md. Keep the `[source: ...]` tag with the detail you move. A flush that leaves MEMORY.md over budget must say so in its log entry.
 
 ### 4. Update memory
 
-- Add brief entries to MEMORY.md (keep it under ~50 lines as an index).
+- Add brief entries to MEMORY.md (keep it an index: under 8 KB, ~50 lines, no line over 300 chars).
 - If a topic needs more detail, write to `memory/topics/<topic>.md` instead (see step 6 - register it in the index).
 - Update tables (recent articles, recent digests) with new rows.
 - **Cite the log every fact came from.** End each bullet you add or change (in MEMORY.md or a topic file) with `[source: logs/YYYY-MM-DD#<skill>]`: the log file's date and the `### <skill>` heading the entry sat under. For a table row, put the tag at the end of the last cell. When you merge new detail into an existing line, replace its tag with the newer source. Never invent a source, and do not backfill tags on untouched legacy lines. The tag is what lets a later flush (or the operator) check a fact and trace a bad entry back to the run that wrote it.
@@ -86,7 +88,7 @@ If nothing was worth promoting or removing, log `MEMORY_FLUSH_OK` - but still ru
 
 ## Constraints
 
-- Keep MEMORY.md an index (~50 lines). Detail lives in `memory/topics/`.
+- Keep MEMORY.md an index: under 8 KB, ~50 lines, no line over 300 chars (step 0 measures it). Detail lives in `memory/topics/`.
 - Never duplicate an existing `## Heading` or an existing fact - update in place.
 - Pruning stale entries is as important as adding new ones.
 - The watermark and log rotation are owned by `scripts/memory_prep.py` (steps 0 and 8), not by hand. The model's job is judgment: what to promote, dedup, and prune.

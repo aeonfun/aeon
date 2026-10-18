@@ -55,10 +55,12 @@ Both catalog files carry a `generated` UTC timestamp that changes on every run -
 
 ## `ci-tests` in full
 
-Needs `pip install pyyaml==6.0.2` first. The suite list grows often, so read it from the workflow rather than from here:
+Needs `pip install pyyaml==6.0.2` first. The suites are listed in `scripts/tests/ci-lanes.txt` (`<lane> | <name> | <command>`), and CI runs its 10 lanes at once. A new `scripts/tests/test_*` file needs a line there, or the job's coverage check fails:
 
 ```bash
-yq '.jobs[].steps[].run' .github/workflows/ci-tests.yml | grep -v '^null$'
+bash scripts/tests/run_ci_lane.sh all       # every suite, serially; failures listed at the end
+bash scripts/tests/run_ci_lane.sh 3         # one lane
+bash scripts/tests/run_ci_lane.sh --check   # every test file is in a lane
 ```
 
 Editing `aeon.yml` alone is enough to fire this workflow - `node scripts/validate-config.js` (plus `node --test scripts/validate-config.test.js`) is the one to run after any hand-edit (Mode 4 step 4).
