@@ -143,7 +143,7 @@ Wallets use `alchemy_getAssetTransfers` — one call returns categorized in/out 
 
 Contracts use `eth_getLogs` against the same Alchemy URL. Alchemy allows any block range while the response stays under 10,000 logs, and unlimited results for ranges of 5,000 blocks or fewer; on `Log response size exceeded`, re-query in 5,000-block windows (a busy `robinhood` contract hits this within minutes of ~0.1s blocks).
 
-Chain → network slug: `ethereum=eth-mainnet`, `base=base-mainnet`, `arbitrum=arb-mainnet`, `optimism=opt-mainnet`, `polygon=polygon-mainnet`, `robinhood=robinhood-mainnet`.
+Chain → network slug: `ethereum=eth-mainnet`, `base=base-mainnet`, `arbitrum=arb-mainnet`, `optimism=opt-mainnet`, `polygon=polygon-mainnet`, `robinhood=robinhood-mainnet`. On `robinhood`, drop `"internal"` from the wallet `category` list: Alchemy rejects it there ("The 'internal' category is not supported for this network").
 
 **Path B — Etherscan v2 unified** (fallback, if Alchemy path fails or key unset).
 
@@ -163,11 +163,12 @@ Chain → chainid: `ethereum=1`, `base=8453`, `arbitrum=42161`, `optimism=10`, `
 
 **Path C — Robinhood Chain public RPC** (`robinhood` only; keyless fallback when Path A is unavailable and Path B is refused).
 
-Wallets: ERC-20 `Transfer` logs with the watch address as recipient, then as sender. The public RPC caps a query without an `address` filter at **30,000 blocks**, so walk `last_block → latest` in 30,000-block windows (≈ 20 windows per direction for 8h). Contracts: `eth_getLogs` with `address` set (no 30,000 cap; split the range if the RPC answers `logs matched by query exceeds limit of 10000`).
+Wallets: ERC-20 `Transfer` logs with the watch address as recipient, then as sender. The public RPC caps a query without an `address` filter at **30,000 blocks**, so walk `last_block → latest` in 30,000-block windows (≈ 10 windows per direction per 8h, ≈ 28 per day). Contracts: `eth_getLogs` with `address` set (no 30,000 cap; split the range if the RPC answers `logs matched by query exceeds limit of 10000`).
 ```bash
 T=0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef   # ERC-20 Transfer
 W=0x000000000000000000000000${address#0x}                               # 32-byte topic
-# per window [lo, hi] (hi - lo < 30000): incoming, then outgoing
+# per window [lo, hi] (hi - lo < 30000) as 0x-hex, e.g. lo=$(printf 0x%x "$n"); the RPC rejects decimal
+# incoming, then outgoing
 curl -m 15 -s -X POST https://rpc.mainnet.chain.robinhood.com -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","id":1,"method":"eth_getLogs","params":[{"fromBlock":"'$lo'","toBlock":"'$hi'","topics":["'$T'",null,"'$W'"]}]}'
 curl -m 15 -s -X POST https://rpc.mainnet.chain.robinhood.com -H "Content-Type: application/json" \
