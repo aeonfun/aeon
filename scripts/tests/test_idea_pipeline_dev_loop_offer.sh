@@ -24,16 +24,27 @@ grep -Fq '.reply_markup.force_reply == true' "$SKILL"
 grep -Fq 'Do not try to infer a GitHub target from the row' "$SKILL"
 grep -Fq 'reply with: offer:' "$SKILL"
 
-if sed -n '/### 0\. Force-reply interception/,/### 1\. Load the idea backlog/p' "$SKILL" \
-  | grep -Eq 'gh workflow run|dispatch_dev_loop'; then
+# capture first: this block is over 4 KB, the size of sed's own stdout buffer, so
+# piping it into an early-exiting grep -q can break sed's second write; under
+# pipefail that turns this negative check into a silent pass
+step0_block=$(sed -n '/### 0\. Force-reply interception/,/### 1\. Load the idea backlog/p' "$SKILL")
+if [ -z "$step0_block" ]; then
+  echo 'idea-pipeline step 0 force-reply block not found' >&2
+  exit 1
+fi
+if grep -Eq 'gh workflow run|dispatch_dev_loop' <<<"$step0_block"; then
   echo 'idea-pipeline pick handler must not dispatch the chain itself' >&2
   exit 1
 fi
 
 # the pick: path must not independently send its own force-reply prompt any more -
 # offer: (checked above) already owns that, gated and delivery-verified.
-if sed -n '/^Otherwise, if `\${var}` starts with `pick:`/,/^### 1\. Load the idea backlog/p' "$SKILL" \
-  | grep -Fq -- '--force-reply'; then
+pick_block=$(sed -n '/^Otherwise, if `\${var}` starts with `pick:`/,/^### 1\. Load the idea backlog/p' "$SKILL")
+if [ -z "$pick_block" ]; then
+  echo 'idea-pipeline pick: handler block not found' >&2
+  exit 1
+fi
+if grep -Fq -- '--force-reply' <<<"$pick_block"; then
   echo 'pick: must not send its own force-reply prompt - it should point to offer: instead' >&2
   exit 1
 fi
