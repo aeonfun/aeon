@@ -126,44 +126,6 @@ export function buildCron(
   return `${utc.minute} ${utc.hour} * * ${utcDays.includes(-1) ? '*' : [...utcDays].sort((a, b) => a - b).join(',')}`
 }
 
-const SCHEDULE_FIELDS = [
-  { lo: 0, hi: 59 },
-  { lo: 0, hi: 23 },
-  { lo: 1, hi: 31 },
-  { lo: 1, hi: 12 },
-  { lo: 0, hi: 7 },
-]
-const MONTH_NAMES = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
-const DOW_NAMES = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']
-
-// Whether a skill schedule is one the scheduler runs: "workflow_dispatch",
-// "reactive", or a 5-field cron. Mirrors validate_field in scripts/cron-due.sh,
-// which treats anything else as never due, so a bad value would save cleanly
-// and then silently never fire.
-export function isValidSchedule(schedule: string): boolean {
-  if (schedule === 'workflow_dispatch' || schedule === 'reactive') return true
-  if (!/^\S+( \S+){4}$/.test(schedule)) return false
-  return schedule.split(' ').every((field, i) => {
-    let f = field.toUpperCase()
-    if (i === 3) MONTH_NAMES.forEach((n, j) => (f = f.replaceAll(n, String(j + 1))))
-    if (i === 4) {
-      // SUN closes a range as 7, as cron-due.sh reads it: SAT-SUN is 6-7.
-      f = f.replaceAll('-SUN', '-7')
-      DOW_NAMES.forEach((n, j) => (f = f.replaceAll(n, String(j))))
-    }
-    const { lo, hi } = SCHEDULE_FIELDS[i]
-    return f.split(',').every(el => {
-      const m = /^(\*|(\d+)(?:-(\d+))?)(?:\/(\d+))?$/.exec(el)
-      if (!m) return false
-      if (m[4] !== undefined && Number(m[4]) < 1) return false
-      if (m[1] === '*') return true
-      const a = Number(m[2])
-      const b = m[3] === undefined ? a : Number(m[3])
-      return a >= lo && b <= hi && a <= b
-    })
-  })
-}
-
 export function timeAgo(date: string): string {
   const t = new Date(date).getTime()
   // Unparseable/empty timestamps would yield "NaNd ago" - show nothing instead.

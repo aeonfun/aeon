@@ -13,7 +13,7 @@ import type { Harness } from '@/lib/types'
 import { deleteDirectory } from '@/lib/github'
 import type { CommitResult } from '@/lib/github'
 import { getSkills } from '@/lib/skills'
-import { isValidSchedule } from '@/lib/utils'
+import { normalizeSchedule, scheduleError } from '@/lib/schedule'
 
 export async function GET() {
   try {
@@ -47,9 +47,11 @@ export async function PATCH(request: Request) {
       jsonrenderEnabled?: boolean
     }
 
-    if (typeof schedule === 'string' && schedule && !isValidSchedule(schedule)) {
+    const sched = typeof schedule === 'string' ? normalizeSchedule(schedule) : undefined
+    const schedProblem = sched ? scheduleError(sched) : null
+    if (schedProblem) {
       return NextResponse.json(
-        { error: 'Invalid schedule: use a 5-field cron, "workflow_dispatch" or "reactive"' },
+        { error: `Invalid schedule (${schedProblem}): use a 5-field cron, "workflow_dispatch" or "reactive"` },
         { status: 400 },
       )
     }
@@ -84,7 +86,7 @@ export async function PATCH(request: Request) {
         // SKILL.md). A plain update would silently no-op on it.
         updated = upsertSkillInConfig(updated, name, {
           ...(typeof enabled === 'boolean' ? { enabled } : {}),
-          ...(typeof schedule === 'string' && schedule ? { schedule } : {}),
+          ...(sched ? { schedule: sched } : {}),
           ...(typeof skillVar === 'string' ? { var: skillVar } : {}),
           ...(typeof skillModel === 'string' ? { model: skillModel } : {}),
           ...(typeof skillHarness === 'string' ? { harness: skillHarness } : {}),

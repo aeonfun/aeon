@@ -17,7 +17,6 @@ import {
   lastSuccessfulRunId,
   localToUtc24,
   slugify,
-  isValidSchedule,
 } from "./utils";
 import type { Run } from "./types";
 
@@ -262,45 +261,6 @@ describe("parseCron across the UTC day boundary", () => {
     assert.equal(p.mode, "time");
     if (p.mode === "time") {
       assert.deepEqual([p.hour12, p.minute, p.ampm, p.days], [12, 15, "AM", [-1]]);
-    }
-  });
-});
-
-describe("isValidSchedule", () => {
-  it("accepts the schedules the scheduler runs", () => {
-    for (const s of [
-      "workflow_dispatch",
-      "reactive",
-      "0 9 * * *",
-      "*/15 * * * *",
-      "30 23 * * 0,5",
-      "0 9-17/2 1,15 * 1-5",
-      "0 9 * JAN-MAR MON-FRI",
-      "0 9 * * sat-sun",
-      "0 0 1 12 7",
-    ]) {
-      assert.equal(isValidSchedule(s), true, s);
-    }
-  });
-
-  it("rejects what cron-due.sh treats as never due", () => {
-    for (const s of [
-      "",
-      "cron expression",
-      "0 9 * *",
-      "0 9 * * * *",
-      "0  9 * * *",
-      "60 9 * * *",
-      "0 24 * * *",
-      "0 9 0 * *",
-      "0 9 * 13 *",
-      "0 9 * * 8",
-      "*/0 * * * *",
-      "0 17-9 * * *",
-      "0 9 * * 1\nfoo: bar",
-      "0 9 * * 1\n",
-    ]) {
-      assert.equal(isValidSchedule(s), false, JSON.stringify(s));
     }
   });
 });
