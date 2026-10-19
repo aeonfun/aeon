@@ -68,6 +68,7 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 | <img src="https://pbs.twimg.com/profile_images/1858962630796603393/iIb9x5CQ_400x400.jpg" width="36" height="36" alt="Precog logo"> | Precog | [@precogmarkets](https://x.com/precogmarkets) |
 | <img src="https://pbs.twimg.com/profile_images/2059296486391717888/QL10hnaj_400x400.jpg" width="36" height="36" alt="Prism logo"> | Prism | [@prism_lp](https://x.com/prism_lp) |
 | <img src="https://pbs.twimg.com/profile_images/2039867838198890496/rwbQCLQe_400x400.jpg" width="36" height="36" alt="Reg Terminal logo"> | Reg Terminal | [@regterminal](https://x.com/regterminal) |
+|  | Repoken | [@launchrepoken](https://x.com/launchrepoken) · [repoken.fun](https://repoken.fun) · [Repoken Agent Pack](https://github.com/repoken/aeon-repoken-pack) |
 | <img src="https://pbs.twimg.com/profile_images/1993360165958303745/OQQCQNha_400x400.png" width="36" height="36" alt="Reppo logo"> | Reppo | [@reppo](https://x.com/reppo) · [reppo.xyz](https://reppo.xyz) |
 | <img src="https://pbs.twimg.com/profile_images/2020159691557335040/bSUQk1F2_400x400.jpg" width="36" height="36" alt="ResearchSwarm logo"> | ResearchSwarm | [@ResearchSwarmAI](https://x.com/ResearchSwarmAI) |
 | <img src="https://pbs.twimg.com/profile_images/2048174647171268608/2UsSB2GA_400x400.jpg" width="36" height="36" alt="Revault logo"> | Revault | [@revaultdrops](https://x.com/revaultdrops) |

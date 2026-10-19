@@ -213,6 +213,23 @@
         "read_only",
         "sends_notifications"
       ]
+    },
+    {
+      "repo": "repoken/aeon-repoken-pack",
+      "name": "Repoken Agent Pack",
+      "description": "Keyless summary of public Repoken token launches (Robinhood Chain + Solana) from the public registry. Read-only, never signs, no notifications.",
+      "author": "repoken",
+      "license": "MIT",
+      "homepage": "https://repoken.fun",
+      "category": "crypto",
+      "trust_level": "community",
+      "skills": [
+        "repoken-launches"
+      ],
+      "secrets_required": [],
+      "capabilities": [
+        "read_only"
+      ]
     }
   ]
 }
