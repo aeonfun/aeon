@@ -73,7 +73,7 @@ labels:
 }
 ```
 
-- `last_block` — start block for the next run's fetch. Initialise to `current_block − 2400` (≈ 8h ETH) on first run; on `robinhood` (~0.1s blocks) use `current_block − 280000` for the same ≈ 8h window.
+- `last_block` — start block for the next run's fetch. Initialise to `current_block − 2400` (≈ 8h ETH) on first run; on `robinhood` (~0.1s blocks) use `current_block − 280000` for the same ≈ 8h window. On `robinhood`, also cap every later run at that span: if `current_block − last_block` is more than 280000 (a delayed or caught-up run; 12h late is ~420k blocks, 15 windows per direction per watch), start from `current_block − 280000` and log `CLAMPED: skipped <n> blocks` for that watch, so a late run degrades to "last ~8h" instead of walking the whole gap.
 - `alerted_tx` — tx hashes alerted in last 7 days, capped at 200. Used for cross-run dedup.
 - `median_usd_30d` — rolling median USD size of transfers at this watch; powers the `WHALE-TRANSFER` tag.
 
@@ -163,7 +163,7 @@ Chain → chainid: `ethereum=1`, `base=8453`, `arbitrum=42161`, `optimism=10`, `
 
 **Path C — Robinhood Chain public RPC** (`robinhood` only; keyless fallback when Path A is unavailable and Path B is refused).
 
-Wallets: ERC-20 `Transfer` logs with the watch address as recipient, then as sender. The public RPC caps a query without an `address` filter at **30,000 blocks**, so walk `last_block → latest` in 30,000-block windows (≈ 10 windows per direction per 8h, ≈ 28 per day). Contracts: `eth_getLogs` with `address` set (no 30,000 cap; split the range if the RPC answers `logs matched by query exceeds limit of 10000`).
+Wallets: ERC-20 `Transfer` logs with the watch address as recipient, then as sender. The public RPC caps a query without an `address` filter at **30,000 blocks**, so walk `last_block → latest` in 30,000-block windows (≈ 10 windows per direction per 8h, ≈ 28 per day). Contracts: `eth_getLogs` with `address` set (no 30,000 cap). For **both** wallets and contracts, if a window answers `logs matched by query exceeds limit of 10000`, halve it and query both halves, repeating until each piece fits; a busy address hits this inside one 30,000-block window (the v4 PoolManager returns ~29.7k logs there, which takes 3 splits and 7 calls).
 ```bash
 T=0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef   # ERC-20 Transfer
 W=0x000000000000000000000000${address#0x}                               # 32-byte topic
@@ -174,9 +174,9 @@ curl -m 15 -s -X POST https://rpc.mainnet.chain.robinhood.com -H "Content-Type: 
 curl -m 15 -s -X POST https://rpc.mainnet.chain.robinhood.com -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","id":1,"method":"eth_getLogs","params":[{"fromBlock":"'$lo'","toBlock":"'$hi'","topics":["'$T'","'$W'"]}]}'
 ```
-Read `symbol()` / `decimals()` per distinct token with `eth_call` (`0x95d89b41` / `0x313ce567`) on the same RPC. Path C sees ERC-20 moves only, not native ETH transfers; note `path=rpc (erc20 only)` in the source footer. On HTTP 429, back off and retry the window; if it still fails, mark the watch `fail` as below.
+ERC-721 `Transfer` has the same topic0 and also matches these filters. Tell them apart by topic count: **3 topics** = ERC-20 (amount in `data`); **4 topics** = ERC-721 (`data` is empty, the token id is `topics[3]`). Keep 3-topic logs as `erc20`; tag 4-topic logs `erc721` and never call `decimals()` on them (NFT contracts revert). Read `symbol()` / `decimals()` per distinct ERC-20 token with `eth_call` (`0x95d89b41` / `0x313ce567`) on the same RPC. Path C sees token transfers only, not native ETH transfers; note `path=rpc (tokens only)` in the source footer. On HTTP 429, back off and retry the window; if it still fails, mark the watch `fail` as below.
 
-**Fetch fallback.** Both Alchemy and Etherscan carry their key in the URL via `./secretcurl` (`{ALCHEMY_API_KEY}` / `{ETHERSCAN_API_KEY}` placeholders), so if a call fails, retry the exact same URL via **WebFetch**. For POSTs, WebFetch accepts the JSON body.
+**Fetch fallback.** Both Alchemy and Etherscan carry their key in the URL via `./secretcurl` (`{ALCHEMY_API_KEY}` / `{ETHERSCAN_API_KEY}` placeholders), so if a call fails, retry the exact same URL via **WebFetch**. For POSTs, WebFetch accepts the JSON body. Path C needs no key; on a non-429 failure, retry the same RPC POST through WebFetch the same way before marking the watch `fail`.
 
 If every path for a watch fails, mark the watch `fail` in the source footer and continue to the next — never abort the whole run.
 
