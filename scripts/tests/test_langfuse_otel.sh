@@ -18,7 +18,7 @@ unset LANGFUSE_PUBLIC_KEY LANGFUSE_SECRET_KEY LANGFUSE_HOST LANGFUSE_BASE_URL \
       OTEL_EXPORTER_OTLP_HEADERS OTEL_LOG_USER_PROMPTS OTEL_LOG_TOOL_CONTENT \
       OTEL_RESOURCE_ATTRIBUTES LANGFUSE_TRACING_ENVIRONMENT AEON_LF_VERSION \
       GITHUB_REF_NAME GITHUB_EVENT_PATH GITHUB_EVENT_NAME GITHUB_WORKSPACE GITHUB_SHA \
-      GITHUB_REPOSITORY AEON_DISPATCH_TRIGGER 2>/dev/null || true
+      GITHUB_REPOSITORY AEON_DISPATCH_TRIGGER GATEWAY AEON_GATEWAY_ATTEMPT 2>/dev/null || true
 
 # 1. No keys → complete no-op (nothing exported), and returns success under -e.
 ( set -e
@@ -181,6 +181,14 @@ r=$(attrs_for GITHUB_EVENT_NAME=workflow_dispatch AEON_DISPATCH_TRIGGER='cron2,l
   && pass "trigger: unknown input value -> manual, never copied" || bad "trigger free text ($r)"
 r=$(attrs_for GITHUB_EVENT_NAME=issues AEON_DISPATCH_TRIGGER=)
 trig "$r" issues && pass "trigger: non-dispatch event keeps its name" || bad "trigger issues ($r)"
+# gateway: the provider llm-gateway.sh resolved + the cascade attempt number.
+r=$(attrs_for GATEWAY=glm AEON_GATEWAY_ATTEMPT=2)
+{ has "$r" "aeon.gateway=glm," && has "$r" "aeon.gateway_attempt=2|"; } \
+  && pass "gateway + attempt in the resource attributes" || bad "gateway attrs ($r)"
+r=$(attrs_for GATEWAY=auto AEON_GATEWAY_ATTEMPT=x)
+{ ! has "$r" "aeon.gateway"; } && pass "gateway: unresolved auto / bad attempt left out" || bad "gateway auto ($r)"
+r=$(attrs_for GATEWAY='glm,langfuse.user.id=x')
+{ ! has "$r" "aeon.gateway"; } && pass "gateway: unsafe value never copied" || bad "gateway free text ($r)"
 r=$(attrs_for AEON_OTEL_COMPONENT=feed)
 has "$r" "langfuse.user.id=aeon:feed," && pass "no skill → userId aeon:<component>" || bad "feed user ($r)"
 r=$(attrs_for GITHUB_SHA=0123456789abcdef0123456789abcdef01234567)

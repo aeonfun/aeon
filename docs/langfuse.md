@@ -98,14 +98,16 @@ something useful:
 | userId | the skill (`aeon:<component>` without one) | the Users page is a per-skill table of traces, tokens and cost |
 | release | `canon-<sha7>` of aeon-update's `baseline_sha`, else the short `GITHUB_SHA` | before and after a canon sync |
 | version | first 7 chars of the skill's `SKILL.md` blob hash (root span and usage rows) | a skill edit shows up as a new version |
-| tags | `skill:<name>`, `component:<name>`, `status:error` on a failed run | filter and group cost by skill |
+| tags | `skill:<name>`, `component:<name>`, `gateway:<provider>` for a claude run, `failover` on a failover attempt, `status:error` on a failed run | filter and group cost by skill or provider |
 
 The root span is type `agent` for the skill run and `evaluator` for the scorer;
 a failed run gets level ERROR, the `status:error` tag, metadata `error_class`
 and a status message `<error_class>: <reason>` (reason: `rc 124`, the result
 subtype such as `error_max_turns`, `exit <rc>` or `api_error <status>`). The
 class is one of the error classes every Langfuse sender shares, set from facts
-first: rc 124 is `timeout`, `error_max_*` is `budget_cap`, API status 429 /
+first: rc 124 is `timeout`, `error_max_*` is `budget_cap`, a spent subscription
+(`api_error` `usage_limit_reached`, "You've hit your weekly limit") is `plan_limit`
+(checked before the 429 it also carries), API status 429 /
 401-403 / 402 / other is `rate_limit` / `auth` / `credits` / `upstream_error`,
 `error_during_execution` is `tool_failed`; else the result text (or the raw
 output of a run that left no envelope) goes through the shared rule table. That
@@ -115,6 +117,14 @@ carries `permission_denials`, the number of tool calls the allowlist refused. Tr
 Scheduler dispatch (it passes the `trigger=cron` input), `chain` for a chain step
 (chain-runner passes `trigger=chain`), `manual` for any other Run now, else the
 event name.
+When the claude gateway cascade fails over, both attempts land in the same
+trace: each root span and its usage rows carry metadata `gateway` (the provider)
+and `gateway_attempt` (1 = first route), and a failover attempt's status message
+ends `(failover to <provider>)`. A failover attempt waits out 429s for at most
+`AEON_FAILOVER_MAX_WAIT_MS` (default 2 min) per request, so a dead fallback key
+fails in minutes with its 429 in the trace instead of hanging to the 1800 s run
+timeout. The saved error (cron state, `run_ok` comment) names each attempt, e.g.
+`claude: You've hit your weekly limit ... | glm: API Error: 429 ...`.
 The usage rows carry the same trace name and tags, so cost groups by skill.
 They are zero-length at the end of the run and carry metadata `rollup=true`
 (a per-run token rollup, not a model call), so per-model latency charts show only

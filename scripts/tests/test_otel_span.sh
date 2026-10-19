@@ -205,7 +205,15 @@ echo "{\"is_error\":true,\"subtype\":\"success\",\"result\":\"SECRET-RESULT Inva
 eclass 1 "$TMP/e5.json" auth "auth: exit 1" "login error in the result text"
 grep -q SECRET-RESULT "$TMP/curl/body" && bad "result text leaked via error_class" || ok "result text used for the class, never sent"
 echo "{\"is_error\":true,\"subtype\":\"success\",\"result\":\"You've hit your limit · resets 3pm\",$U}" > "$TMP/e6.json"
-eclass 1 "$TMP/e6.json" budget_cap "budget_cap: exit 1" "plan limit in the result text"
+eclass 1 "$TMP/e6.json" plan_limit "plan_limit: exit 1" "plan limit in the result text"
+# A spent weekly plan answers 429 too: plan_limit wins over rate_limit, from the
+# api_error field or the text alone.
+echo "{\"is_error\":true,\"subtype\":\"success\",\"api_error_status\":429,\"api_error\":\"usage_limit_reached\",\"result\":\"You've hit your weekly limit · resets Oct 20, 5pm (UTC)\",$U}" > "$TMP/e10.json"
+eclass 1 "$TMP/e10.json" plan_limit "plan_limit: exit 1" "weekly limit (429 + usage_limit_reached) is plan_limit, not rate_limit"
+echo "{\"is_error\":true,\"subtype\":\"success\",\"api_error_status\":429,\"result\":\"You've hit your weekly limit\",$U}" > "$TMP/e11.json"
+eclass 1 "$TMP/e11.json" plan_limit "plan_limit: exit 1" "weekly limit text with a 429 status"
+echo "{\"is_error\":true,\"subtype\":\"success\",\"api_error_status\":429,\"api_error\":\"usage_limit_reached\",$U}" > "$TMP/e12.json"
+eclass 1 "$TMP/e12.json" plan_limit "plan_limit: exit 1" "usage_limit_reached without result text"
 echo "{\"is_error\":true,\"subtype\":\"success\",\"result\":\"Prompt is too long\",$U}" > "$TMP/e7.json"
 eclass 0 "$TMP/e7.json" context_limit "context_limit: is_error" "shared rule table on the result text"
 echo "{\"is_error\":true,\"subtype\":\"success\",\"result\":\"The client has disconnected\",$U}" > "$TMP/e9.json"
@@ -217,6 +225,23 @@ eclass 1 "$TMP/raw.txt" auth "auth: exit 1" "raw output head without an envelope
 grep -q SECRET-RAW "$TMP/curl/body" && bad "raw output leaked" || ok "raw output used for the class, never sent"
 printf 'Error: connect ECONNREFUSED 127.0.0.1:8080\n' > "$TMP/raw2.txt"
 eclass 2 "$TMP/raw2.txt" network "network: exit 2" "raw output, shared table"
+# Gateway cascade: the first route carries gateway:<name>; a failover attempt
+# adds the failover tag and names the provider in its status message.
+trace claude 0 "$TMP/claude-env.json" OTEL_RESOURCE_ATTRIBUTES="$RES,aeon.gateway=claude,aeon.gateway_attempt=1" >/dev/null
+attrs 0 | jq -e '.["langfuse.trace.tags"] == ["skill:heartbeat","component:skill-run","gateway:claude"]
+    and .["langfuse.observation.metadata.gateway"] == "claude" and .["langfuse.observation.metadata.gateway_attempt"] == "1"' >/dev/null \
+  && ok "first route: gateway tag + metadata" || bad "first route gateway fields ($(attrs 0))"
+attrs 1 | jq -e '.["langfuse.observation.metadata.gateway"] == "claude" and (.["langfuse.trace.tags"] | index("gateway:claude"))' >/dev/null \
+  && ok "usage row carries the gateway (cost by provider)" || bad "usage row gateway ($(attrs 1))"
+echo "{\"is_error\":true,\"subtype\":\"success\",\"api_error_status\":429,\"result\":\"API Error: 429 SECRET-RESULT\",$U}" > "$TMP/e13.json"
+trace claude 1 "$TMP/e13.json" OTEL_RESOURCE_ATTRIBUTES="$RES,aeon.gateway=glm,aeon.gateway_attempt=2" RH_MODEL=glm-5.3-flash >/dev/null
+attrs 0 | jq -e '.["langfuse.observation.status_message"] == "rate_limit: exit 1 (failover to glm)"
+    and .["langfuse.trace.tags"] == ["skill:heartbeat","component:skill-run","gateway:glm","failover","status:error"]
+    and .["langfuse.observation.metadata.gateway_attempt"] == "2"' >/dev/null \
+  && ok "failover attempt: failover tag, gateway in the status message" || bad "failover attempt fields ($(attrs 0))"
+jq -e '.resourceSpans[0].scopeSpans[0].spans[1].name == "usage glm-5.3-flash"' "$TMP/curl/body" >/dev/null \
+  && ok "failover attempt with an envelope leaves a usage row" || bad "failover usage row"
+grep -q SECRET-RESULT "$TMP/curl/body" && bad "failover result text leaked" || ok "failover result text never sent"
 trace claude 0 "$TMP/claude-env.json" OTEL_RESOURCE_ATTRIBUTES="aeon.component=scorer,aeon.skill=heartbeat,langfuse.trace.name=aeon:scorer:heartbeat" >/dev/null
 attrs 0 | jq -e '.["langfuse.observation.type"] == "evaluator" and .["langfuse.trace.tags"] == ["skill:heartbeat","component:scorer"]' >/dev/null \
   && ok "scorer root: type evaluator" || bad "scorer root type ($(attrs 0))"
@@ -233,6 +258,7 @@ cat > "$TMP/fbin/claude" <<'STUB'
 #!/usr/bin/env bash
 cat >/dev/null
 printf '%s\n' "$@" > "$FAKE_ARGV"
+printf '%s\n' "${CLAUDE_CODE_RETRY_WATCHDOG_MAX_WAIT_MS:-unset}" > "$FAKE_ARGV.wait"
 echo '{"type":"result","result":"ok","is_error":false}'
 STUB
 chmod +x "$TMP/fbin/claude"
@@ -246,5 +272,14 @@ adapter CLAUDE_CODE_ENABLE_TELEMETRY=1 OTEL_TRACES_EXPORTER=otlp AEON_OTEL_START
 grep -q SessionStart "$TMP/argv" && bad "AEON_OTEL_STARTUP_DELAY=0 should drop the hook" || ok "AEON_OTEL_STARTUP_DELAY=0 drops the hook"
 adapter
 grep -q SessionStart "$TMP/argv" && bad "tracing off should add no hook" || ok "tracing off: no hook"
+# Gateway failover attempts cap how long Claude Code waits out 429s; the first
+# route keeps the unbounded watchdog wait, and an operator value wins.
+[ "$(cat "$TMP/argv.wait")" = unset ] && ok "first route: no 429 wait cap" || bad "first route wait cap ($(cat "$TMP/argv.wait"))"
+adapter AEON_GATEWAY_ATTEMPT=2
+[ "$(cat "$TMP/argv.wait")" = 120000 ] && ok "failover attempt: 429 wait capped at 2 min" || bad "failover wait cap ($(cat "$TMP/argv.wait"))"
+adapter AEON_GATEWAY_ATTEMPT=2 AEON_FAILOVER_MAX_WAIT_MS=30000
+[ "$(cat "$TMP/argv.wait")" = 30000 ] && ok "AEON_FAILOVER_MAX_WAIT_MS sets the cap" || bad "failover wait knob ($(cat "$TMP/argv.wait"))"
+adapter AEON_GATEWAY_ATTEMPT=2 CLAUDE_CODE_RETRY_WATCHDOG_MAX_WAIT_MS=5000
+[ "$(cat "$TMP/argv.wait")" = 5000 ] && ok "operator CLAUDE_CODE_RETRY_WATCHDOG_MAX_WAIT_MS wins" || bad "operator wait value ($(cat "$TMP/argv.wait"))"
 
 if [ "$FAIL" = 0 ]; then echo "All otel-span tests passed."; else echo "otel-span tests FAILED."; exit 1; fi

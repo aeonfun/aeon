@@ -94,6 +94,15 @@ fi
 # --timeout guard (1800s on a skill run). Operator values win.
 export CLAUDE_CODE_RETRY_WATCHDOG="${CLAUDE_CODE_RETRY_WATCHDOG:-1}"
 export CLAUDE_CODE_RETRY_WATCHDOG_MAX_USAGE_LIMIT_WAIT_MS="${CLAUDE_CODE_RETRY_WATCHDOG_MAX_USAGE_LIMIT_WAIT_MS:-600000}"
+# A failover attempt (AEON_GATEWAY_ATTEMPT 2+, set by the aeon.yml gateway
+# cascade) waits out 429/529s for at most AEON_FAILOVER_MAX_WAIT_MS (default
+# 2 min) per request. A dead fallback key answers 429 to every call with no
+# usage-limit header, so the watchdog above kept retrying until the 1800s guard
+# (GLM, 2026-10-19: 14 429s over 30 min per run); now the attempt fails in
+# minutes with the 429 in its envelope.
+if [[ "${AEON_GATEWAY_ATTEMPT:-1}" =~ ^[0-9]+$ ]] && [ "${AEON_GATEWAY_ATTEMPT:-1}" -gt 1 ]; then
+  export CLAUDE_CODE_RETRY_WATCHDOG_MAX_WAIT_MS="${CLAUDE_CODE_RETRY_WATCHDOG_MAX_WAIT_MS:-${AEON_FAILOVER_MAX_WAIT_MS:-120000}}"
+fi
 
 OUT="$RH_TMPDIR/claude-out.json"
 claude "${ARGS[@]}" < "$RH_PROMPT_FILE" > "$OUT"

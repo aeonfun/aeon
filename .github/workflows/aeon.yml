@@ -1137,13 +1137,15 @@ jobs:
             # then runs `run-harness claude`; only its stdout envelope is captured. A
             # gateway setup `exit 1` fails the attempt and falls over. Only a failover
             # is annotated; the first route is the gateway's own notice.
-            USED_GATEWAY=""
+            # AEON_GATEWAY_ATTEMPT: 2+ caps 429 waits (adapters/claude.sh) and tags the trace.
+            USED_GATEWAY=""; ATTEMPT=0; FAILS=""
             for cand in $CANDIDATES; do
               if [ "$cand" = "${CANDIDATES%% *}" ]; then echo "Routing attempt via '$cand'"; else echo "::notice::Failing over to '$cand'"; fi
-              rm -f /tmp/harness-stderr.txt; RC=0
+              rm -f /tmp/harness-stderr.txt; RC=0; ATTEMPT=$((ATTEMPT + 1))
               CLAUDE_OUTPUT=$(
                 GATEWAY="$cand"
                 MODEL="$BASE_MODEL"
+                export AEON_GATEWAY_ATTEMPT="$ATTEMPT"
                 source "$GW" >&2
                 source "$LF" >&2   # optional Langfuse tracing (no-op unless LANGFUSE_* set)
                 echo "$PROMPT" | bash "$RH" claude --model "$MODEL" "${RH_ARGS[@]}" 2>/tmp/harness-stderr.txt
@@ -1153,23 +1155,18 @@ jobs:
               if [ "$RC" -eq 0 ]; then
                 USED_GATEWAY="$cand"; CLAUDE_OK=1; break
               fi
-              # Full diagnostic goes to the step log unconditionally (matches the
-              # non-claude harness path below, which already does this at its
-              # `tail -c 4000 ... >&2` line) — the ::warning:: summary line stays
-              # short for a quick scan, but a truncated summary was previously the
-              # ONLY trace of a per-attempt failure, silently discarding the real
-              # cause whenever it exceeded ~160 chars (Claude Code's JSON result
-              # envelope puts is_error/api_error_status/result near the front and
-              # usage/modelUsage/uuid boilerplate at the end, so a tail-only view
-              # keeps the boilerplate and drops the actual error).
+              # Full stderr to the log; the summary keeps each attempt's own reason
+              # ("<provider>: <result text>", scripts/gateway-error.sh), not a stderr tail.
               tail -c 4000 /tmp/harness-stderr.txt >&2 || true
-              echo "::warning::provider '$cand' failed — $(tail -c 160 /tmp/harness-stderr.txt 2>/dev/null | tr '\n' ' ')"
+              WHY=$(bash scripts/gateway-error.sh "$cand" "$RC" /tmp/harness-stderr.txt || echo "$cand: exit $RC")
+              FAILS="${FAILS:+$FAILS | }$WHY"
+              echo "::warning::provider failed: $WHY"
               bash scripts/gateway-failover.sh "$RC" /tmp/harness-stderr.txt || { echo "::warning::exit $RC is not a provider failure; not failing over"; break; }
             done
             if [ "$CLAUDE_OK" != "1" ]; then
-              echo "::error::All gateway providers failed ($CANDIDATES). Last: $(tail -c 200 /tmp/harness-stderr.txt 2>/dev/null | tr '\n' ' ')"
-              # Save error signature for quality tracking (cron-state step reads this)
-              tail -c 500 /tmp/harness-stderr.txt 2>/dev/null | tr '\n' ' ' | cut -c1-200 > /tmp/skill-error.txt
+              echo "::error::Gateway cascade failed ($CANDIDATES): $FAILS"
+              # Error signature for quality tracking (cron-state step reads this)
+              printf '%s' "${FAILS:0:200}" > /tmp/skill-error.txt
               exit 1
             fi
             [ "$USED_GATEWAY" != "${CANDIDATES%% *}" ] && echo "::notice::Skill ran via fallback provider '$USED_GATEWAY'"

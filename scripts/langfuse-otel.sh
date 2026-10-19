@@ -160,6 +160,19 @@ if [ "$_lf_trig" = workflow_dispatch ] && [ -n "${AEON_DISPATCH_TRIGGER+x}" ]; t
 fi
 if [ -n "$_lf_trig" ]; then _lf_attrs="${_lf_attrs},langfuse.trace.metadata.trigger=${_lf_trig}"; fi
 if [ -n "${GITHUB_RUN_ATTEMPT:-}" ];then _lf_attrs="${_lf_attrs},aeon.run_attempt=${GITHUB_RUN_ATTEMPT}"; fi
+# Gateway: the provider scripts/llm-gateway.sh resolved for this call (GATEWAY,
+# sourced just before this file), and AEON_GATEWAY_ATTEMPT, its place in the Run
+# step's cascade (1 = first route, 2+ = failover). Both attempts of a failed-over
+# run share one trace, so run-harness puts these on each attempt's root span and
+# usage rows (metadata gateway / gateway_attempt, tags gateway:<name> + failover).
+case "${GATEWAY:-}" in
+  "" | auto | *[!a-z0-9_-]*) : ;;
+  *) _lf_attrs="${_lf_attrs},aeon.gateway=${GATEWAY}" ;;
+esac
+case "${AEON_GATEWAY_ATTEMPT:-}" in
+  "" | *[!0-9]*) : ;;
+  *) _lf_attrs="${_lf_attrs},aeon.gateway_attempt=${AEON_GATEWAY_ATTEMPT}" ;;
+esac
 export OTEL_RESOURCE_ATTRIBUTES="$_lf_attrs"
 
 # Trace id for this call site, derived from the run so other steps can find the

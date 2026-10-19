@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
-# Tests for scripts/gateway-failover.sh. Run: bash scripts/tests/test_gateway_failover.sh
+# Tests for scripts/gateway-failover.sh and scripts/gateway-error.sh.
+# Run: bash scripts/tests/test_gateway_failover.sh
 # The claude gateway cascade re-runs the whole skill on the next provider, so it may
 # only fail over on a provider-shaped failure: never on a timeout or a skill-side error.
+# gateway-error.sh gives the saved error one "<provider>: <reason>" part per attempt.
 set -uo pipefail
 cd "$(dirname "$0")/../.." || exit 1
 S="scripts/gateway-failover.sh"
@@ -28,5 +30,26 @@ expect over "rate limited"                             1   'API Error: 429 rate_
 expect over "connection refused"                       1   'API Error: Connection error. ECONNREFUSED'
 expect stop "max-turns / skill-side failure"           1   'claude exited 1: {"subtype":"error_max_turns","is_error":true,"num_turns":40}'
 expect stop "contract failure without provider error"  3   'error: adapter output failed contract validation; rejecting raw output'
+
+# why <want line> <desc> <provider> <rc> <stderr text, or __none__ for no file>
+why() {
+  local f="$T/err.txt" got; rm -f "$f"
+  [ "$5" = "__none__" ] || printf '%s\n' "$5" > "$f"
+  got=$(bash scripts/gateway-error.sh "$3" "$4" "$f")
+  [ "$got" = "$1" ] && pass "$2" || bad "$2 (want '$1', got '$got')"
+}
+
+LIMIT='claude exited 1: {"type":"result","subtype":"success","is_error":true,"api_error_status":429,"api_error":"usage_limit_reached","duration_ms":320,"num_turns":1,"result":"You\u0027ve hit your weekly limit · resets Oct 20, 5pm (UTC)","usage":{"input_tokens":0}}'
+why "claude: You've hit your weekly limit · resets Oct 20, 5pm (UTC)" "result text of the envelope, JSON-decoded" claude 1 "$LIMIT"
+why "glm: timeout" "run-harness timeout, Claude Code notice skipped" glm 124 '[claude-code:unrecognized_model] {"model":"glm-5.3-flash"}
+error: harness run exceeded --timeout 1800s'
+why 'glm: API Error: 429 {"error":"x"}' "escaped quotes in the result text" glm 1 'claude exited 1: {"is_error":true,"result":"API Error: 429 {\"error\":\"x\"}"}'
+why "openrouter: error: adapter output failed contract validation; rejecting raw output" "last real stderr line" openrouter 3 'read-only: workspace write-locked via bwrap
+error: adapter output failed contract validation; rejecting raw output
+::warning::claude denied tool call(s) under --allowedTools: Write x1'
+why "bankr: exit 1" "setup failed before the harness (no stderr file)" bankr 1 __none__
+long=$(printf 'x%.0s' $(seq 1 300))
+got=$(printf '{"result":"%s"}\n' "$long" > "$T/err.txt"; bash scripts/gateway-error.sh claude 1 "$T/err.txt")
+[ "${#got}" -eq $((8 + 140)) ] && pass "reason cut to 140 characters" || bad "reason length ${#got}"
 
 [ "$fail" -eq 0 ] && echo "PASS test_gateway_failover" || { echo "FAILURES in test_gateway_failover"; exit 1; }
