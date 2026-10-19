@@ -326,7 +326,7 @@ function enqueue<T>(task: () => Promise<T>): Promise<T> {
  */
 const RUN_TIMEOUT_SECONDS = 1800;
 
-interface HarnessResult {
+export interface HarnessResult {
   status: number | null;
   stdout: string;
   stderr: string;
@@ -339,8 +339,12 @@ interface HarnessResult {
  * `close` instead of blocking the Node event loop for the whole run.
  * Enforces the same timeout and combined output cap, surfacing each as `error`
  * the way spawnSync did (ETIMEDOUT / ENOBUFS).
+ *
+ * The harness runs in its own process group, and a kill takes the whole group:
+ * killing only bash leaves the agent CLI it started running, holding the
+ * stdout pipe open, so `close` waited on it and the timeout never returned.
  */
-function spawnHarness(
+export function spawnHarness(
   args: string[],
   opts: {
     input: string;
@@ -351,15 +355,24 @@ function spawnHarness(
   },
 ): Promise<HarnessResult> {
   return new Promise(resolve => {
-    const child = spawn("bash", args, { cwd: opts.cwd, env: opts.env });
+    const child = spawn("bash", args, { cwd: opts.cwd, env: opts.env, detached: true });
     let stdout = "";
     let stderr = "";
     let settled = false;
     let killReason: "timeout" | "buffer" | null = null;
 
+    const killGroup = () => {
+      try {
+        if (child.pid !== undefined) process.kill(-child.pid, "SIGKILL");
+      } catch {
+        // The group is already gone; kill the child itself in case it is not.
+        child.kill("SIGKILL");
+      }
+    };
+
     const timer = setTimeout(() => {
       killReason = "timeout";
-      child.kill("SIGKILL");
+      killGroup();
     }, opts.timeout);
 
     const capture = (chunk: Buffer, sink: "out" | "err") => {
@@ -367,7 +380,7 @@ function spawnHarness(
       else stderr += chunk.toString("utf-8");
       if (stdout.length + stderr.length > opts.maxBuffer) {
         killReason = "buffer";
-        child.kill("SIGKILL");
+        killGroup();
       }
     };
     child.stdout.on("data", (c: Buffer) => capture(c, "out"));

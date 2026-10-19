@@ -13,6 +13,7 @@ import type { Harness } from '@/lib/types'
 import { deleteDirectory } from '@/lib/github'
 import type { CommitResult } from '@/lib/github'
 import { getSkills } from '@/lib/skills'
+import { isValidSchedule } from '@/lib/utils'
 
 export async function GET() {
   try {
@@ -44,6 +45,13 @@ export async function PATCH(request: Request) {
       harness?: string
       skillHarness?: string
       jsonrenderEnabled?: boolean
+    }
+
+    if (typeof schedule === 'string' && schedule && !isValidSchedule(schedule)) {
+      return NextResponse.json(
+        { error: 'Invalid schedule: use a 5-field cron, "workflow_dispatch" or "reactive"' },
+        { status: 400 },
+      )
     }
 
     const sync = await withFileLock('aeon.yml', async () => {

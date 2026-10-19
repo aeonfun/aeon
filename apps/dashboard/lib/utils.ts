@@ -41,17 +41,32 @@ export function initials(slug: string): string {
   return words.length === 1 ? words[0].slice(0, 2).toUpperCase() : (words[0][0] + words[1][0]).toUpperCase()
 }
 
-function getUtcOffsetHours(): number {
-  return -(new Date().getTimezoneOffset() / 60)
-}
-function utcToLocal24(utcH: number): number {
-  return (((utcH + getUtcOffsetHours()) % 24) + 24) % 24
-}
-export function localToUtc24(localH: number): number {
-  return (((localH - getUtcOffsetHours()) % 24) + 24) % 24
+// Minutes east of UTC. Minutes, not hours: a half-hour zone (India +5:30,
+// Nepal +5:45, Newfoundland -3:30) moves the cron minute as well as the hour.
+function getUtcOffsetMinutes(): number {
+  return -new Date().getTimezoneOffset()
 }
 
-export function parseCron(cron: string) {
+// Shift a time of day by `offset` minutes. `dayShift` is how many days the
+// result crossed (-1, 0 or 1), so a weekday list moves with it: 1 AM Monday in
+// UTC+2 is 11 PM Sunday in UTC.
+function shiftTime(hour: number, minute: number, offset: number) {
+  const total = hour * 60 + minute + offset
+  const dayShift = Math.floor(total / 1440)
+  const inDay = total - dayShift * 1440
+  return { hour: Math.floor(inDay / 60), minute: inDay % 60, dayShift }
+}
+
+function shiftDays(days: number[], dayShift: number): number[] {
+  if (days.includes(-1) || dayShift === 0) return days
+  return [...new Set(days.map(d => (((d + dayShift) % 7) + 7) % 7))]
+}
+
+export function localToUtc24(localH: number, offset = getUtcOffsetMinutes()): number {
+  return shiftTime(localH, 0, -offset).hour
+}
+
+export function parseCron(cron: string, offset = getUtcOffsetMinutes()) {
   const [m, h, , , dow] = (cron ?? '').split(' ')
   // Schedules that aren't 5-field crons (e.g. "workflow_dispatch") have no
   // minute/hour fields - fall back to a daily 9 AM default so the editor renders
@@ -62,19 +77,21 @@ export function parseCron(cron: string) {
   if (m.includes('/')) return { mode: 'interval' as const, value: parseInt(m.split('/')[1]) || 5, unit: 'm' as const }
   if (h === '*' || h.includes('/'))
     return { mode: 'interval' as const, value: h === '*' ? 1 : parseInt(h.split('/')[1]) || 1, unit: 'h' as const }
-  const localH = utcToLocal24(parseInt(h))
+  const local = shiftTime(parseInt(h), parseInt(m) || 0, offset)
+  const localH = local.hour
+  const utcDays =
+    dow === '*'
+      ? [-1]
+      : dow
+          .split(',')
+          .map(d => parseInt(d))
+          .filter(d => !isNaN(d))
   return {
     mode: 'time' as const,
     hour12: localH > 12 ? localH - 12 : localH === 0 ? 12 : localH,
-    minute: parseInt(m) || 0,
+    minute: local.minute,
     ampm: (localH >= 12 ? 'PM' : 'AM') as 'AM' | 'PM',
-    days:
-      dow === '*'
-        ? [-1]
-        : dow
-            .split(',')
-            .map(d => parseInt(d))
-            .filter(d => !isNaN(d)),
+    days: shiftDays(utcDays, local.dayShift),
   }
 }
 
@@ -98,12 +115,53 @@ export function buildCron(
   min: number,
   ap: 'AM' | 'PM',
   days: number[],
+  offset = getUtcOffsetMinutes(),
 ): string {
   if (mode === 'interval') return iu === 'm' ? `*/${iv} * * * *` : `0 */${iv} * * *`
   let lh = h12
   if (ap === 'PM' && lh !== 12) lh += 12
   if (ap === 'AM' && lh === 12) lh = 0
-  return `${min} ${localToUtc24(lh)} * * ${days.includes(-1) ? '*' : days.sort((a, b) => a - b).join(',')}`
+  const utc = shiftTime(lh, min, -offset)
+  const utcDays = shiftDays(days, utc.dayShift)
+  return `${utc.minute} ${utc.hour} * * ${utcDays.includes(-1) ? '*' : [...utcDays].sort((a, b) => a - b).join(',')}`
+}
+
+const SCHEDULE_FIELDS = [
+  { lo: 0, hi: 59 },
+  { lo: 0, hi: 23 },
+  { lo: 1, hi: 31 },
+  { lo: 1, hi: 12 },
+  { lo: 0, hi: 7 },
+]
+const MONTH_NAMES = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
+const DOW_NAMES = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']
+
+// Whether a skill schedule is one the scheduler runs: "workflow_dispatch",
+// "reactive", or a 5-field cron. Mirrors validate_field in scripts/cron-due.sh,
+// which treats anything else as never due, so a bad value would save cleanly
+// and then silently never fire.
+export function isValidSchedule(schedule: string): boolean {
+  if (schedule === 'workflow_dispatch' || schedule === 'reactive') return true
+  if (!/^\S+( \S+){4}$/.test(schedule)) return false
+  return schedule.split(' ').every((field, i) => {
+    let f = field.toUpperCase()
+    if (i === 3) MONTH_NAMES.forEach((n, j) => (f = f.replaceAll(n, String(j + 1))))
+    if (i === 4) {
+      // SUN closes a range as 7, as cron-due.sh reads it: SAT-SUN is 6-7.
+      f = f.replaceAll('-SUN', '-7')
+      DOW_NAMES.forEach((n, j) => (f = f.replaceAll(n, String(j))))
+    }
+    const { lo, hi } = SCHEDULE_FIELDS[i]
+    return f.split(',').every(el => {
+      const m = /^(\*|(\d+)(?:-(\d+))?)(?:\/(\d+))?$/.exec(el)
+      if (!m) return false
+      if (m[4] !== undefined && Number(m[4]) < 1) return false
+      if (m[1] === '*') return true
+      const a = Number(m[2])
+      const b = m[3] === undefined ? a : Number(m[3])
+      return a >= lo && b <= hi && a <= b
+    })
+  })
 }
 
 export function timeAgo(date: string): string {
