@@ -324,7 +324,16 @@ function enqueue<T>(task: () => Promise<T>): Promise<T> {
  * Per-run budget in seconds, passed to run-harness as --timeout. Matches the
  * `--timeout 1800` aeon.yml passes on a scheduled run.
  */
-const RUN_TIMEOUT_SECONDS = 1800;
+export const RUN_TIMEOUT_SECONDS = 1800;
+
+/**
+ * How long the Node timer gives run-harness before killing it. run-harness
+ * wraps the CLI in `timeout -k 30 <budget>`, which TERMs it at the budget and
+ * KILLs it 30 seconds later; the timer fires after both, with a margin, so
+ * `timeout` ends the run wherever it is installed and this timer only matters
+ * on a host without it.
+ */
+export const HARNESS_TIMEOUT_MS = (RUN_TIMEOUT_SECONDS + 30 + 30) * 1000;
 
 export interface HarnessResult {
   status: number | null;
@@ -341,8 +350,12 @@ export interface HarnessResult {
  * the way spawnSync did (ETIMEDOUT / ENOBUFS).
  *
  * The harness runs in its own process group, and a kill takes the whole group:
- * killing only bash leaves the agent CLI it started running, holding the
- * stdout pipe open, so `close` waited on it and the timeout never returned.
+ * killing only bash leaves a child it started running, holding the stdout pipe
+ * open, so `close` waits on it. On Linux, run-harness starts the agent CLI
+ * under timeout(1), which moves it into a group of its own that this kill does
+ * not reach: there `timeout` enforces the budget (see HARNESS_TIMEOUT_MS), and
+ * the output cap stops bash while the CLI runs until `timeout` ends it. Without
+ * timeout(1) the CLI stays in this group and the kill here ends it.
  */
 export function spawnHarness(
   args: string[],
@@ -521,7 +534,7 @@ async function runSkillInner(
     input: prompt,
     cwd: repoRoot,
     env: capability.isShadow ? shadowSafeEnv(process.env) : process.env,
-    timeout: RUN_TIMEOUT_SECONDS * 1000,
+    timeout: HARNESS_TIMEOUT_MS,
     maxBuffer: 10 * 1024 * 1024, // 10 MB
   });
 

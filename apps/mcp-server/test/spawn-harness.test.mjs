@@ -6,7 +6,7 @@ import assert from "node:assert/strict";
 import { mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { spawnHarness } from "../dist/skill-executor.js";
+import { HARNESS_TIMEOUT_MS, RUN_TIMEOUT_SECONDS, spawnHarness } from "../dist/skill-executor.js";
 
 function alive(pid) {
   try {
@@ -51,4 +51,16 @@ test("a run inside the timeout returns its output", async () => {
   assert.equal(result.status, 0);
   assert.equal(result.stdout, "hello");
   assert.equal(result.stderr, "done\n");
+});
+
+// run-harness's timeout(1) puts the CLI in a process group spawnHarness cannot
+// kill on Linux, so the Node timer must leave `timeout` its TERM and its -k
+// grace first; it is only the backstop where timeout(1) is missing.
+test("the node timer fires after run-harness's own timeout and kill grace", () => {
+  const rh = readFileSync(new URL("../../../harness-adapter/run-harness", import.meta.url), "utf-8");
+  const killAfter = Number(/RH_KILL_AFTER:-(\d+)/.exec(rh)[1]);
+  assert.ok(
+    HARNESS_TIMEOUT_MS > (RUN_TIMEOUT_SECONDS + killAfter) * 1000,
+    `${HARNESS_TIMEOUT_MS}ms must exceed ${RUN_TIMEOUT_SECONDS}s + ${killAfter}s`,
+  );
 });
