@@ -252,6 +252,54 @@ Cap the notification body at 10 events; if more survived, append `+N more — se
 
 Send the alert with `./notify -f alert.md`.
 
+### 6.1 Evidence mode — make every alert replayable
+
+When at least one watch completes, write a compact evidence receipt to
+`memory/evidence/${today}-${run_id}.json` before sending the notification. This is
+an audit trail, not a safety verdict: it records what was queried and which source
+answered, but it does not prove that an external RPC is honest.
+
+`run_id` is the UTC start timestamp with `:` replaced by `-`. The receipt must contain:
+
+```json
+{
+  "schema": "aeon.onchain-monitor.evidence.v1",
+  "run_id": "2026-04-20T12-00-00Z",
+  "chain": "robinhood",
+  "chain_id": 4663,
+  "from_block": 92300000,
+  "to_block": 92347891,
+  "block_hash": "0x…",
+  "sources": {"rpc": "ok", "alchemy": "skipped", "coingecko": "ok"},
+  "query_windows": 12,
+  "watches": 2,
+  "raw_events": 16,
+  "kept_events": 2,
+  "dropped_events": 14,
+  "unpriced_events": 0,
+  "tx_hashes": ["0x…"],
+  "sha256": "<digest of this object without sha256>"
+}
+```
+
+Rules:
+
+- Pin `from_block` and `to_block` to the actual request range. Do not use `latest`
+  in the receipt; resolve it to a number first.
+- Fetch `block_hash` for `to_block` from the same source when possible. If the
+  source cannot provide it, use `null` and mark that source `degraded`.
+- Record every split query in `query_windows`; this makes the Robinhood 10,000-log
+  fallback visible instead of silently changing the sample.
+- Sort `tx_hashes` lexicographically and remove duplicates. Never include API keys,
+  full RPC URLs containing credentials, or raw response bodies.
+- Canonicalise the JSON with sorted keys and compact separators, compute SHA-256
+  using a standard-library implementation, then add the `sha256` field and write
+  atomically via a temporary file and `mv`.
+- Include the receipt path and digest in the alert footer before calling `./notify`:
+  `evidence: memory/evidence/<file> · sha256:<first 12 hex chars>`.
+- If receipt writing fails, continue the monitor run but mark the source footer
+  `evidence=fail`; never claim that the alert is independently verified.
+
 ### 7. Persist state and log
 
 For each watch whose fetch **succeeded** (success ≠ "events found"):
