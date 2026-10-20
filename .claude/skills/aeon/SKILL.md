@@ -133,7 +133,7 @@ Skills with `schedule: workflow_dispatch` are on-demand only - they never fire o
 "It didn't run." Check in this order and stop at the first hit:
 
 1. **Is it on?** `./aeon skills ls --enabled` - is it listed?
-2. **Duplicate key?** `node scripts/validate-config.js`. A repeated skill name in `aeon.yml` silently shadows the first one. Common after hand-edits.
+2. **Duplicate or misspelled key?** `node scripts/validate-config.js`. A repeated skill name in `aeon.yml` silently shadows the first one, and a misspelled entry key (`enabld:`, `shedule:`) is silently dropped, so the skill loses its schedule. The validator fails on both and suggests the right key. Common after hand-edits.
 3. **Is it even cron?** `workflow_dispatch` and `reactive` never fire on a schedule.
 4. **Are Actions disabled?** `gh api repos/{owner}/{repo}/actions/permissions`. GitHub auto-disables scheduled workflows after 60 days of repo inactivity - this silently kills forks and nothing in Aeon surfaces it. Re-enable in repo Settings.
 5. **Is the schedule valid cron?** `grep '^  <skill>:' aeon.yml`. The scheduler reads `aeon.yml` with yq (`scripts/parse-aeon-config.sh`), so quotes are optional:
@@ -207,7 +207,7 @@ They just did something in this chat and want it to happen on a schedule.
 
    Match the inline `{ … }` form every other entry uses, on one line. Per-skill `model:`/`harness:` overrides are read through `scripts/skill_entry.sh`, which also follows an entry split across lines, but the value must be double-quoted (see Harness below).
 
-   This is the one sanctioned exception to "never hand-edit the YAML". Validate after: `node scripts/validate-config.js`. It checks structure and schedule format, but not whether a `model:`/`harness:` override is quoted.
+   This is the one sanctioned exception to "never hand-edit the YAML". Validate after: `node scripts/validate-config.js`. It checks structure, schedule format and that every entry key is one Aeon reads (`enabled`, `schedule`, `var`, `model`, `harness`, `attest`), but not whether a `model:`/`harness:` override is quoted or names a real harness.
 
 5. **Regenerate BOTH catalogs, add the eyebrow entry, then ship it as a PR.** A new skill trips six CI gates (see `references/ci.md`), and **a red gate blocks the merge**: `main` requires the `gate` check, which `ci-gate` fails whenever any other check on the PR is red. Run them locally first. Commit `SKILL.md` on its own before regenerating (the catalog's `sha`/`updated` are git-derived):
 
