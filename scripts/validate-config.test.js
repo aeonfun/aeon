@@ -338,6 +338,36 @@ chains:
   assert.deepEqual(analyzeSkillKeys(lines), []);
 });
 
+test('PASS: a quoted chain step, a commented reactive target and a flow-form target all count as triggers', () => {
+  const lines = `skills:
+  feature: { enabled: true }
+  notify-operator: { enabled: true }
+  repair: { enabled: true }
+reactive:
+  notify-operator:                 # any skill you want to run on failure
+    trigger:
+      - { on: digest, when: "consecutive_failures >= 1" }
+  repair: { trigger: [ { on: "*", when: "consecutive_failures >= 3" } ] }
+chains:
+  ship:
+    schedule: "workflow_dispatch"
+    steps:
+      - { skill: "feature" }`.split('\n');
+  assert.deepEqual(analyzeSkillKeys(lines), []);
+  const r = collectReactiveRefs(lines);
+  assert.deepEqual(r.targets.map((t) => t.name), ['notify-operator', 'repair']);
+  assert.deepEqual(r.sources.map((s) => s.name), ['digest', '*']);
+});
+
+test("PASS: a doubled '' inside a single-quoted var is an escaped quote, not the end of the string", () => {
+  const lines = skillsBlock(`  a: { enabled: true, schedule: "0 8 * * *", var: 'it''s, x: y' }
+  b: { enabled: true, schedule: "0 9 * * *", var: 'it''s #1' }
+  c: { enabled: true, schedule: "0 10 * * *" }`).split('\n');
+  assert.deepEqual(analyzeSkillKeys(lines), []);
+  assert.deepEqual(collectSkillEntries(lines).map((e) => e.name), ['a', 'b', 'c']);
+  assert.equal(collectSkillEntries(lines)[1].keys.find((k) => k.key === 'var').value, "it''s #1");
+});
+
 test('PASS: workflow_dispatch is the explicit on-demand spelling and is not flagged', () => {
   assert.deepEqual(analyzeSkillKeys(skillsBlock('  tx-explain: { enabled: true, schedule: "workflow_dispatch" }').split('\n')), []);
 });

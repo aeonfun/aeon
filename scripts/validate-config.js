@@ -229,7 +229,7 @@ function collectChainRefs(lines) {
     if ((m = raw.match(/consume:\s*\[([^\]]*)\]/))) {
       m[1].split(',').forEach((s) => push(s, i + 1));
     }
-    if ((m = raw.match(/(?:^|[\s-])skill:\s*([a-z0-9-]+)/))) {
+    if ((m = raw.match(/(?:^|[\s-])skill:\s*["']?([a-z0-9-]+)/))) {
       push(m[1], i + 1);
     }
   }
@@ -295,12 +295,14 @@ function collectReactiveRefs(lines) {
   const conditions = [];
   for (const [i, raw] of blockLines(lines, 'reactive')) {
     if (/^\s*#/.test(raw)) continue;
+    const line = stripYamlComment(raw).trimEnd();
     let m;
-    // A target skill is a 2-space key with nothing after the colon (`trigger:` is
-    // deeper-indented and the `- { on:, when: }` rows carry no bare 2-space key).
-    if ((m = raw.match(/^ {2}([a-z][a-z0-9-]+):\s*$/))) targets.push({ name: m[1], lineNum: i + 1 });
-    if ((m = raw.match(/\bon:\s*"?([a-zA-Z0-9_*-]+)"?/))) sources.push({ name: m[1], lineNum: i + 1 });
-    if ((m = raw.match(/\bwhen:\s*"([^"]+)"/))) conditions.push({ when: m[1], lineNum: i + 1 });
+    // A target skill is a 2-space key with nothing after the colon, or a one-line
+    // flow map (`repair: { trigger: [...] }`); `trigger:` is deeper-indented and
+    // the `- { on:, when: }` rows carry no bare 2-space key.
+    if ((m = line.match(/^ {2}([a-z][a-z0-9-]+):\s*(\{.*)?$/))) targets.push({ name: m[1], lineNum: i + 1 });
+    if ((m = line.match(/\bon:\s*"?([a-zA-Z0-9_*-]+)"?/))) sources.push({ name: m[1], lineNum: i + 1 });
+    if ((m = line.match(/\bwhen:\s*"([^"]+)"/))) conditions.push({ when: m[1], lineNum: i + 1 });
   }
   return { targets, sources, conditions };
 }
@@ -455,6 +457,7 @@ function stripYamlComment(s) {
     const c = s[i];
     if (quote) {
       if (c === '\\' && quote === '"') i++;
+      else if (c === "'" && quote === "'" && s[i + 1] === "'") i++; // '' is an escaped quote
       else if (c === quote) quote = null;
     } else if (c === '"' || (c === "'" && (i === 0 || /[\s{[,:]/.test(s[i - 1])))) {
       quote = c;
@@ -474,6 +477,7 @@ function walkFlow(text, visit) {
     const c = text[i];
     if (quote) {
       if (c === '\\' && quote === '"') i++;
+      else if (c === "'" && quote === "'" && text[i + 1] === "'") i++; // '' is an escaped quote
       else if (c === quote) quote = null;
       continue;
     }
