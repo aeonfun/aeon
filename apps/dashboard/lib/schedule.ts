@@ -3,7 +3,7 @@ import validateConfig from '../../../scripts/validate-config.js'
 // The scheduler's cron rules live once, in scripts/validate-config.js, which
 // the CLI and CI already use; scripts/cron-due.sh treats anything they reject
 // as never due.
-const { validateSchedule } = validateConfig as { validateSchedule: (schedule: string) => string | null }
+const { validateSchedule } = validateConfig
 
 // normalizeSchedule collapses whitespace to single spaces, so the value saved to
 // aeon.yml is the one that was validated: the scheduler reads it back with a

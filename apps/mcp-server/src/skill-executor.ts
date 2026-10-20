@@ -328,12 +328,14 @@ export const RUN_TIMEOUT_SECONDS = 1800;
 
 /**
  * How long the Node timer gives run-harness before killing it. run-harness
- * wraps the CLI in `timeout -k 30 <budget>`, which TERMs it at the budget and
- * KILLs it 30 seconds later; the timer fires after both, with a margin, so
+ * wraps the CLI in `timeout -k $RH_KILL_AFTER <budget>` (default 30), which
+ * TERMs it at the budget and KILLs it that many seconds later; the timer fires
+ * after both, with a 30 second margin, so
  * `timeout` ends the run wherever it is installed and this timer only matters
  * on a host without it.
  */
-export const HARNESS_TIMEOUT_MS = (RUN_TIMEOUT_SECONDS + 30 + 30) * 1000;
+const KILL_AFTER_SECONDS = Number(process.env.RH_KILL_AFTER) || 30;
+export const HARNESS_TIMEOUT_MS = (RUN_TIMEOUT_SECONDS + KILL_AFTER_SECONDS + 30) * 1000;
 
 export interface HarnessResult {
   status: number | null;
@@ -351,9 +353,10 @@ export interface HarnessResult {
  *
  * The harness runs in its own process group, and a kill takes the whole group:
  * killing only bash leaves a child it started running, holding the stdout pipe
- * open, so `close` waits on it. On Linux, run-harness starts the agent CLI
- * under timeout(1), which moves it into a group of its own that this kill does
- * not reach: there `timeout` enforces the budget (see HARNESS_TIMEOUT_MS), and
+ * open, so `close` waits on it. Where timeout(1) or gtimeout(1) is installed,
+ * run-harness starts the agent CLI under it, which moves the CLI into a group
+ * of its own that this kill does not reach: there `timeout` enforces the
+ * budget (see HARNESS_TIMEOUT_MS), and
  * the output cap stops bash while the CLI runs until `timeout` ends it. Without
  * timeout(1) the CLI stays in this group and the kill here ends it.
  */

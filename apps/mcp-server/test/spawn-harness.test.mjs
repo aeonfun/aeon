@@ -54,7 +54,7 @@ test("a run inside the timeout returns its output", async () => {
 });
 
 // run-harness's timeout(1) puts the CLI in a process group spawnHarness cannot
-// kill on Linux, so the Node timer must leave `timeout` its TERM and its -k
+// kill, so the Node timer must leave `timeout` its TERM and its -k
 // grace first; it is only the backstop where timeout(1) is missing.
 test("the node timer fires after run-harness's own timeout and kill grace", () => {
   const rh = readFileSync(new URL("../../../harness-adapter/run-harness", import.meta.url), "utf-8");

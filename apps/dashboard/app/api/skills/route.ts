@@ -48,7 +48,8 @@ export async function PATCH(request: Request) {
     }
 
     const sched = typeof schedule === 'string' ? normalizeSchedule(schedule) : undefined
-    const schedProblem = sched ? scheduleError(sched) : null
+    // A blank but non-empty schedule ("  ") is rejected, as before; only "" means unchanged.
+    const schedProblem = typeof schedule === 'string' && schedule ? scheduleError(schedule) : null
     if (schedProblem) {
       return NextResponse.json(
         { error: `Invalid schedule (${schedProblem}): use a 5-field cron, "workflow_dispatch" or "reactive"` },
