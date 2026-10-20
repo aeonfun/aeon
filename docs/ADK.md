@@ -223,7 +223,7 @@ skills:
 
 The in-repo scheduler (`scheduler.yml`, a `*/5` cron) picks changes up automatically. Two power features you can also drive from config, no code - [skill chaining and reactive triggers](CONFIGURATION.md):
 
-- **Reactive triggers** - `schedule: "reactive"` + `trigger: { on: <skill>, when: "consecutive_failures >= 3" }`.
+- **Reactive triggers** - a top-level `reactive:` block (not a key in the skill's `skills:` entry) runs a handler skill when a source trips a condition: `<handler>: { trigger: [ { on: <skill>, when: "consecutive_failures >= 3" } ] }`.
 - **Chains** - multi-step pipelines with `parallel:` fan-out and `consume:` output-passing between skills.
 
 > GitHub delivers only ~10% of 5-minute schedule ticks. The scheduler also accepts `repository_dispatch` type `cron-tick`, so your backend can act as an uptime pinger for your users' instances - a genuinely useful value-add (the debt model makes double-firing impossible).
