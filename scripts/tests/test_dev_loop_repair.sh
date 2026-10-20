@@ -84,7 +84,11 @@ grep -Fq 'stopped after one repair pass: re-review remains actionable' "$WORKFLO
 grep -A4 'if \[ "$CHAIN_FAILED" = "true" \]; then' "$WORKFLOW" | grep -Fq 'exit 1'
 grep -Fq 'dev-loop-review.sh body "$FEATURE_PR" "$REVIEW_SHA"' "$WORKFLOW"
 grep -Fq 'repair:<owner/repo#N>@<40-character-lowercase-sha>' "$FEATURE"
-if ! sed -n '/^  dev-loop:/,/^  # routine:/p' "$CONFIG" | grep -Fq 'max_dispatches: 5'; then
+# capture first: the block is over 4 KB, the size of sed's own stdout buffer, so
+# piping it into an early-exiting grep -q can break sed's second write and fail
+# under pipefail
+dev_loop_block=$(sed -n '/^  dev-loop:/,/^  # routine:/p' "$CONFIG")
+if ! grep -Fq 'max_dispatches: 5' <<<"$dev_loop_block"; then
   echo 'dev-loop dispatch budget is not exactly five (feature, review, repair, re-review, proof)' >&2
   exit 1
 fi

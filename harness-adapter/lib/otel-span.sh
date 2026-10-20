@@ -86,7 +86,10 @@ _rh_hex() { od -An -N"$1" -tx1 /dev/urandom 2>/dev/null | tr -d ' \n'; }
 # jq def error_class: free text -> one of the error classes every Langfuse sender
 # shares (timeout, rate_limit, credits, auth, upstream_error, network,
 # bad_request, not_found, parse, empty_output, no_tool_call, context_limit,
-# refusal, tool_denied, tool_failed, budget_cap, breaker, cancelled, other).
+# refusal, tool_denied, tool_failed, budget_cap, breaker, cancelled, other,
+# plan_limit).
+# plan_limit = a subscription's usage cap (Claude's "You've hit your weekly limit",
+# usage_limit_reached): it lasts until the plan resets, unlike a short rate_limit.
 # The shared rule table, first match wins, on the first 400 chars; the Langfuse
 # error_class evaluator uses the same table. Keep the order.
 read -r -d '' _RH_ERROR_CLASS_JQ <<'JQ' || true
@@ -99,11 +102,13 @@ def error_class:
       ["tool_denied", "^blocked:|hook error|blocked by (a )?hook|isolated in the worktree|cannot create agent worktree"],
       ["bad_request", "has not been read yet|string to replace|inputvalidationerror|file has been modified since"],
       ["timeout", "time ?out|timed out|deadline|etimedout|wall_timeout|exceeded .*timeout|\\brc 124\\b|^timeout$"],
+      ["plan_limit", "usage_limit_(reached|exceeded)|(hit|reached) your ([\\w-]+ )?(usage |session )?limit|(weekly|daily|monthly|5-hour|plan|subscription) (usage )?limit"],
       ["credits", "credits_exhausted|quota_exceeded|\\b402\\b|insufficient (credit|fund|balance)|payment required|out of credits|credit balance"],
       ["rate_limit", "\\b429\\b|rate.?limit|too many requests|throttl|quota|resource_exhausted"],
       ["auth", "requires? a personal token|api key required|missing (api )?key|\\b40[13]\\b|unauthori[sz]ed|forbidden|invalid (api )?key|authenticat|login expired|token expired|not logged in"],
       ["upstream_error", "\\b5(0[0-9]|2[0-9])\\b|provider returned error|finish_reason=error|^provider \\d+|bad gateway|service unavailable|internal server error|overloaded|upstream|<!doctype html|cloudflare|gateway"],
-      ["network", "client has disconnected|econnreset|econnrefused|enotfound|socket|connection (reset|refused|error|closed)|fetch failed|network|dns|ssl|tls"],
+      ["cancelled", "client has disconnected"],
+      ["network", "econnreset|econnrefused|enotfound|socket|connection (reset|refused|error|closed)|fetch failed|network|dns|ssl|tls"],
       ["context_limit", "context (length|window)|too long|max(imum)? ?tokens|prompt is too long|finish_reason.?length|truncat"],
       ["budget_cap", "budget|max_turns|max turns|spend cap|cost cap|limit reached|session limit|usage limit|error_max"],
       ["no_tool_call", "no.?tool.?call|without (a )?tool call"],
@@ -209,19 +214,26 @@ rh_trace_end() {
     | (if ($err | not) then ""
        elif $rc == "124" then "timeout"
        elif ($e.subtype | type) == "string" and ($e.subtype | startswith("error_max")) then "budget_cap"
+       # A spent plan also answers 429, so check it before the 429 rule.
+       elif $e.api_error == "usage_limit_reached" or ($text | error_class) == "plan_limit" then "plan_limit"
        elif $api == "429" then "rate_limit"
        elif $api == "401" or $api == "403" then "auth"
        elif $api == "402" then "credits"
        elif $api != "" then "upstream_error"
        elif $e.subtype == "error_during_execution" then "tool_failed"
-       # Claude Code prints these for an expired or missing login and for a
-       # spent plan, in words the shared table does not cover.
+       # Claude Code prints these for an expired or missing login, in words the
+       # shared table does not cover.
        elif $text | test("run /login|oauth token"; "i") then "auth"
-       elif $text | test("hit your (usage |session )?limit"; "i") then "budget_cap"
        else ($text | error_class) as $c
          | if $c != "other" then $c else ($why | error_class) end
        end) as $class
+    # Gateway cascade (aeon.yml Run step): which provider this attempt used and
+    # its place in the cascade, so a failover attempt reads as one.
+    | ($rm["aeon.gateway"] // "") as $gw
+    | (($rm["aeon.gateway_attempt"] // "1") | tonumber? // 1) as $att
     | ([("skill:" + ($rm["aeon.skill"] // empty)), ("component:" + $component)]
+       + (if $gw != "" then ["gateway:" + $gw] else [] end)
+       + (if $att > 1 then ["failover"] else [] end)
        + (if $err then ["status:error"] else [] end)) as $tags
     # Langfuse keeps trace-level fields per observation and reads session / user /
     # release / trace name / tags from span attributes, so the langfuse.* resource
@@ -230,13 +242,19 @@ rh_trace_end() {
     | ([$ra[] | select(.k | startswith("langfuse.")) | select(.k != "langfuse.trace.name") | s(.k; .v)]
        + [s("langfuse.trace.name"; $name),
           {key: "langfuse.trace.tags", value: {arrayValue: {values: [$tags[] | {stringValue: .}]}}}]
-       + (if $ver != "" then [s("langfuse.version"; $ver)] else [] end)) as $lfa
+       + (if $ver != "" then [s("langfuse.version"; $ver)] else [] end)
+       + (if $gw != "" then [s("langfuse.observation.metadata.gateway"; $gw),
+           i("langfuse.observation.metadata.gateway_attempt"; $att)] else [] end)) as $lfa
     | ((($e.modelUsage // {}) | to_entries | map({m: .key, in: (.value.inputTokens // 0), out: (.value.outputTokens // 0),
           cr: (.value.cacheReadInputTokens // 0), cc: (.value.cacheCreationInputTokens // 0)}))
        | if length > 0 then .
          elif $e.usage then [{m: $model, in: ($e.usage.input_tokens // 0), out: ($e.usage.output_tokens // 0),
            cr: ($e.usage.cache_read_input_tokens // 0), cc: ($e.usage.cache_creation_input_tokens // 0)}]
          else [] end) as $gens
+    # Cache-write TTL split. Only the top-level usage has it (modelUsage gives one
+    # cacheCreationInputTokens per model), so each model gets the 1h share of the run
+    # of its writes. Claude Code writes 1h caches, priced 2x input vs 1.25x for 5m.
+    | [($e.usage.cache_creation.ephemeral_1h_input_tokens // 0), ($e.usage.cache_creation.ephemeral_5m_input_tokens // 0)] as [$w1h, $w5m]
     | {resourceSpans: [{
         resource: {attributes: ([$ra[] | s(.k; .v)] + (if $rm["service.name"] then [] else [s("service.name"; $svc)] end))},
         scopeSpans: [{scope: {name: "aeon.run-harness"}, spans: (
@@ -252,18 +270,32 @@ rh_trace_end() {
               # Tool calls the allowlist refused this run (count only, never the inputs).
               + (if ($e.permission_denials | type) == "array" then [i("langfuse.observation.metadata.permission_denials"; $e.permission_denials | length)] else [] end)
               + (if $err then [s("langfuse.observation.level"; "ERROR"),
-                  s("langfuse.observation.status_message"; ($class + ": " + $why)[0:200]),
+                  s("langfuse.observation.status_message"; ($class + ": " + $why
+                    + (if $att > 1 then " (failover to " + $gw + ")" else "" end))[0:200]),
                   s("langfuse.observation.metadata.error_class"; $class)] else [] end)),
             status: {code: (if $err then 2 else 1 end)}}
            + (if $parent != "" then {parentSpanId: $parent} else {} end)]
           + [$gens | to_entries[] | select(.key < ($gids | length)) | .key as $n | .value as $g
+             # langfuse.observation.usage_details wins over the gen_ai.usage.* counts
+             # in Langfuse and names the priced keys, so 1h cache writes get the 1h
+             # price (gen_ai.usage.* has one cache-write count, priced at the 5m
+             # rate). Without a TTL split it sends the one count as before.
+             | (if ($w1h + $w5m) > 0 and $g.cc > 0
+                then (($g.cc * $w1h / ($w1h + $w5m)) | round) as $c1h
+                  | {input_cache_creation_1h: $c1h, input_cache_creation_5m: ($g.cc - $c1h)}
+                else {input_cache_creation: $g.cc} end) as $cw
+             # Zero-length at the end of the run: the row is a per-run token rollup,
+             # not a model call, so giving it the whole run duration skewed the
+             # per-model latency charts. metadata.rollup lets views filter it out.
              | {traceId: $tid, spanId: $gids[$n], parentSpanId: $sid, name: ("usage " + $g.m), kind: 3,
-                startTimeUnixNano: $start, endTimeUnixNano: $end,
-                # Langfuse treats gen_ai.usage.input_tokens as cache-inclusive and
-                # subtracts the two cache counts from it; Anthropic reports input
-                # without cache, so send the sum to get the real input back.
+                startTimeUnixNano: $end, endTimeUnixNano: $end,
+                # The gen_ai.usage.* counts stay for other OTLP backends. They read
+                # input_tokens as cache-inclusive and subtract the two cache counts;
+                # Anthropic reports input without cache, so send the sum.
                 attributes: ($lfa + [s("langfuse.observation.type"; "generation"), s("gen_ai.system"; "anthropic"),
+                  s("langfuse.observation.metadata.rollup"; "true"),
                   s("gen_ai.request.model"; $g.m), s("gen_ai.response.model"; $g.m),
+                  s("langfuse.observation.usage_details"; {input: $g.in, output: $g.out, input_cache_read: $g.cr} + $cw | tojson),
                   i("gen_ai.usage.input_tokens"; $g.in + $g.cr + $g.cc), i("gen_ai.usage.output_tokens"; $g.out),
                   i("gen_ai.usage.cache_read_input_tokens"; $g.cr), i("gen_ai.usage.cache_creation_input_tokens"; $g.cc)])}]
         )}]}]}' > "$body" 2>/dev/null; then

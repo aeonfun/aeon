@@ -53,7 +53,7 @@ output **fails the run** — partial or empty results are never emitted as succe
 
 The six in this table round-trip the contract on real CLIs (claude ≥2.1, grok 0.2.101,
 codex-cli 0.144.6, pi 0.80.9, vibe 2.20.0, kimi 0.28.0; live runs on real models). The
-current pins (claude 2.1.287, grok 1.0.46, codex-cli 0.159.3, pi 0.99.2, vibe 2.25.8,
+current pins (claude 2.1.301, grok 1.0.46, codex-cli 0.159.3, pi 0.99.2, vibe 2.25.8,
 kimi 2.1.1) are checked on every change by `.github/workflows/ci-harness-cli.yml`:
 each CLI is installed at its pin, its `--help` must still list every flag its
 adapter passes, and a prompt goes through `run-harness` against a local fake model
@@ -131,6 +131,7 @@ ones by name. Proven in CI against a fake model and a fake stdio server (fast,
 | `--timeout <s>` | wall-clock guard (default 600) |
 | `--no-sandbox` | skip the wrapper OS sandbox on read-only runs |
 | `--no-compat-rules` | skip the Claude-idiom preamble on non-claude harnesses |
+| `--no-tools` | claude: no tools at all (`--tools ""`), for one-shot text calls like the post-run scorer; other harnesses ignore it |
 
 ## How each layer is translated
 
@@ -190,7 +191,7 @@ Only the harnesses you actually dispatch need to be installed.
 
 | Harness | Install | Auth |
 |---|---|---|
-| Claude Code | `npm i -g @anthropic-ai/claude-code@2.1.287` | `claude login` (Pro/Max or API key) |
+| Claude Code | `npm i -g @anthropic-ai/claude-code@2.1.301` | `claude login` (Pro/Max or API key) |
 | Grok Build | `npm i -g @xai-official/grok@1.0.46` | `grok login` (SuperGrok / X Premium+) or `XAI_API_KEY` |
 | Codex CLI | `brew install codex` or `npm i -g @openai/codex@0.159.3` | `codex login` (any ChatGPT plan) or `OPENAI_API_KEY` |
 | Pi | `npm i -g --ignore-scripts @earendil-works/pi-coding-agent@0.99.2` | provider env keys or `/login` OAuth in the TUI |

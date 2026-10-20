@@ -13,6 +13,7 @@ import type { Harness } from '@/lib/types'
 import { deleteDirectory } from '@/lib/github'
 import type { CommitResult } from '@/lib/github'
 import { getSkills } from '@/lib/skills'
+import { normalizeSchedule, scheduleError } from '@/lib/schedule'
 
 export async function GET() {
   try {
@@ -46,6 +47,16 @@ export async function PATCH(request: Request) {
       jsonrenderEnabled?: boolean
     }
 
+    const sched = typeof schedule === 'string' ? normalizeSchedule(schedule) : undefined
+    // A blank but non-empty schedule ("  ") is rejected, as before; only "" means unchanged.
+    const schedProblem = typeof schedule === 'string' && schedule ? scheduleError(schedule) : null
+    if (schedProblem) {
+      return NextResponse.json(
+        { error: `Invalid schedule (${schedProblem}): use a 5-field cron, "workflow_dispatch" or "reactive"` },
+        { status: 400 },
+      )
+    }
+
     const sync = await withFileLock('aeon.yml', async () => {
       const { content, sha } = await getFileContent('aeon.yml')
       let updated = content
@@ -76,7 +87,7 @@ export async function PATCH(request: Request) {
         // SKILL.md). A plain update would silently no-op on it.
         updated = upsertSkillInConfig(updated, name, {
           ...(typeof enabled === 'boolean' ? { enabled } : {}),
-          ...(typeof schedule === 'string' && schedule ? { schedule } : {}),
+          ...(sched ? { schedule: sched } : {}),
           ...(typeof skillVar === 'string' ? { var: skillVar } : {}),
           ...(typeof skillModel === 'string' ? { model: skillModel } : {}),
           ...(typeof skillHarness === 'string' ? { harness: skillHarness } : {}),

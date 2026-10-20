@@ -2,8 +2,9 @@ import { NextResponse } from 'next/server'
 import { createFile, getFileContent, updateFile, commitAndPush, withFileLock } from '@/lib/github'
 import { errorResponse, syncFields } from '@/lib/http'
 import { isRecord, slugify } from '@/lib/utils'
+import { deriveSkillName } from '@/lib/skill-upload'
 import { addSkillToConfig } from '@/lib/config'
-import { parseFrontmatter, setFrontmatterCategory, SKILL_CATEGORIES } from '@/lib/frontmatter'
+import { setFrontmatterCategory, SKILL_CATEGORIES } from '@/lib/frontmatter'
 import type { UploadFile } from '@/lib/types'
 
 function detectSecretsFromContent(content: string): string[] {
@@ -19,12 +20,6 @@ function detectSecretsFromContent(content: string): string[] {
   return [...matches]
 }
 
-function extractSkillName(content: string): string {
-  // Slugify the frontmatter name: "Fleet Scorecard" → "fleet-scorecard"
-  const { name } = parseFrontmatter(content)
-  return slugify(name)
-}
-
 // Validate a single element of an untrusted `files` array. We only require the
 // two fields this route actually reads (path, content); extra fields are kept,
 // so valid uploads carrying additional metadata still pass.
@@ -35,10 +30,6 @@ function isUploadFile(v: unknown): v is UploadFile {
 function isSkillFile(path: string): boolean {
   const lower = path.toLowerCase()
   return lower === 'skill.md' || lower.endsWith('/skill.md') || lower.endsWith('.skill')
-}
-
-function stripSkillExt(name: string): string {
-  return name.replace(/\.skill$/i, '')
 }
 
 /** Reject path traversal in untrusted upload paths. */
@@ -57,57 +48,6 @@ function assertSkillDestPath(skillName: string, relativePath: string): string | 
   const dest = `skills/${skillName}/${safe}`
   if (!dest.startsWith(`skills/${skillName}/`)) return null
   return dest
-}
-
-function deriveSkillName(files: UploadFile[]): { name: string; prefix: string } {
-  // First try SKILL.md
-  const skillFile = files.find(
-    f =>
-      f.path === 'SKILL.md' ||
-      f.path.endsWith('/SKILL.md') ||
-      f.path.toLowerCase() === 'skill.md' ||
-      f.path.toLowerCase().endsWith('/skill.md'),
-  )
-
-  // Then try *.skill files
-  const dotSkillFile = !skillFile ? files.find(f => f.path.toLowerCase().endsWith('.skill')) : null
-
-  if (dotSkillFile) {
-    const parts = dotSkillFile.path.split('/')
-    const fileName = parts[parts.length - 1]
-    const name = slugify(stripSkillExt(fileName))
-
-    if (parts.length === 1) {
-      // Single file: "my-skill.skill"
-      return { name, prefix: '' }
-    }
-    // In a folder: "folder/my-skill.skill"
-    const folderName = slugify(stripSkillExt(parts[0]))
-    return { name: folderName || name, prefix: parts.slice(0, -1).join('/') + '/' }
-  }
-
-  if (!skillFile) {
-    return { name: '', prefix: '' }
-  }
-
-  const parts = skillFile.path.split('/')
-
-  // Case 1: "soul/SKILL.md" → name is "soul", prefix is "soul/"
-  if (parts.length === 2) {
-    const name = stripSkillExt(parts[0])
-    return { name, prefix: parts[0] + '/' }
-  }
-
-  // Case 2: "some/deep/path/soul/SKILL.md" → name is "soul", prefix is "some/deep/path/soul/"
-  if (parts.length > 2) {
-    const name = stripSkillExt(parts[parts.length - 2])
-    const prefix = parts.slice(0, -1).join('/') + '/'
-    return { name, prefix }
-  }
-
-  // Case 3: Just "SKILL.md" (no folder) → extract name from frontmatter
-  const fmName = extractSkillName(skillFile.content)
-  return { name: fmName, prefix: '' }
 }
 
 export async function POST(request: Request) {

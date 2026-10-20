@@ -26,7 +26,7 @@ concurrency:
 
 jobs:
   run:
-    runs-on: ubuntu-24.04
+    runs-on: ${{ vars.AEON_RUNNER || 'ubuntu-24.04' }}
     # Each step waits up to wait_for_runs' cap (60 min) for one aeon.yml run, and
     # dev-loop chains five of them back to back (feature, review, repair,
     # re-review, proof). 60 here killed any chain mid-wait; 360 is the hosted
@@ -101,9 +101,16 @@ jobs:
             expected_title+=" [dispatch: $dispatch_id]"
 
             echo "  Dispatching: $skill"
-            if ! gh workflow run aeon.yml "${args[@]}"; then
-              echo "::error::gh workflow run failed for skill: $skill"
-              return 1
+            # trigger=chain labels the run as a chain step (Langfuse trigger). An
+            # aeon.yml without the trigger input rejects the field before any run
+            # starts, so retry once without it.
+            local out
+            if ! out=$(gh workflow run aeon.yml "${args[@]}" -f trigger=chain 2>&1); then
+              if ! { printf '%s' "$out" | grep -qi 'unexpected inputs' && gh workflow run aeon.yml "${args[@]}"; }; then
+                printf '%s\n' "$out" >&2
+                echo "::error::gh workflow run failed for skill: $skill"
+                return 1
+              fi
             fi
 
             # Poll for the run to appear (up to 60s). Match the exact run-name

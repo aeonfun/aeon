@@ -16,7 +16,7 @@ optimism	10	false	0x9a13f98cb987694c9f086b1f5eb990eea8264ec3	0xc18a3169788f4f75a
 base	8453	false	0x498581ff718922c3f8e6a244956af099b2652b2b	0xa3c0c9b65bad0b08107aa264b0f3db444b867a71	https://mainnet.base.org	https://basescan.org	base-mainnet
 arbitrum	42161	false	0x360e68faccca8ca495c1b759fd9eee466db9fb32	0x76fd297e2d437cd7f76d50f01afe6160f86e9990	https://arb1.arbitrum.io/rpc	https://arbiscan.io	arb-mainnet
 polygon	137	false	0x67366782805870060151383f4bbff9dab53e5cd6	0x5ea1bd7974c8a611cbab0bdcafcb1d9cc9b3ba5a	https://polygon-bor-rpc.publicnode.com	https://polygonscan.com	polygon-mainnet
-robinhood	4663	false	0x8366a39cc670b4001a1121b8f6a443a643e40951	0xf3334192d15450cdd385c8b70e03f9a6bd9e673b	https://rpc.mainnet.chain.robinhood.com	https://robinhoodchain.blockscout.com
+robinhood	4663	false	0x8366a39cc670b4001a1121b8f6a443a643e40951	0xf3334192d15450cdd385c8b70e03f9a6bd9e673b	https://rpc.mainnet.chain.robinhood.com	https://robinhoodchain.blockscout.com	robinhood-mainnet
 worldchain	480	false	0xb1860d529182ac3bc1f51fa2abd56662b7d13f33	0x51d394718bc09297262e368c1a481217fdeb71eb	https://worldchain-mainnet.g.alchemy.com/public	https://worldscan.org	worldchain-mainnet
 xlayer	196	false	0x360e68faccca8ca495c1b759fd9eee466db9fb32	0x76fd297e2d437cd7f76d50f01afe6160f86e9990	https://rpc.xlayer.tech	https://www.oklink.com/xlayer
 ink	57073	false	0x360e68faccca8ca495c1b759fd9eee466db9fb32	0x76fd297e2d437cd7f76d50f01afe6160f86e9990	https://rpc-gel.inkonchain.com	https://explorer.inkonchain.com	ink-mainnet

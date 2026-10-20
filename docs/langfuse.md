@@ -52,8 +52,20 @@ when the run fails). It carries the trace name (`aeon:<component>:<skill>`), tag
 `skill:<name>` and `component:<name>`, and one `usage <model>` GENERATION per
 model with the run's real token counts from the envelope's `modelUsage`.
 Langfuse prices those from its own model table, so traces, sessions and the cost
-dashboards show real tokens and dollars. Claude Code's own `total_cost_usd` is
+dashboards show real tokens and dollars. Each row sends
+`langfuse.observation.usage_details` with the Langfuse price keys (`input`,
+`output`, `input_cache_read`, `input_cache_creation_1h`, `input_cache_creation_5m`),
+so 1-hour cache writes (what Claude Code on a subscription writes) get the 1h
+price, 2x input, not the 5-minute 1.25x. The 1h/5m split comes from the
+envelope's `usage.cache_creation`; with more than one model each gets the run's
+1h share of its writes. Claude Code's own `total_cost_usd` is
 kept only as `aeon.cost_usd_reported` (it misprices model ids it does not know).
+
+The json-render feed convert (`scripts/notify-jsonrender.sh`) calls `claude -p`
+outside run-harness, but sends the same root span (`aeon:feed:<skill>`) and usage
+rows through `harness-adapter/lib/otel-span.sh`. It runs with no tools
+(`--tools ""`) from an empty scratch directory, so it loads only its own system
+prompt and the note, not the tool schemas or the repo `CLAUDE.md`.
 
 `TRACEPARENT` puts Claude Code's interaction span under that root. With a
 subscription OAuth token, Claude Code starts its span exporter only after a
@@ -86,21 +98,40 @@ something useful:
 | userId | the skill (`aeon:<component>` without one) | the Users page is a per-skill table of traces, tokens and cost |
 | release | `canon-<sha7>` of aeon-update's `baseline_sha`, else the short `GITHUB_SHA` | before and after a canon sync |
 | version | first 7 chars of the skill's `SKILL.md` blob hash (root span and usage rows) | a skill edit shows up as a new version |
-| tags | `skill:<name>`, `component:<name>`, `status:error` on a failed run | filter and group cost by skill |
+| tags | `skill:<name>`, `component:<name>`, `gateway:<provider>` for a claude run, `failover` on a failover attempt, `status:error` on a failed run | filter and group cost by skill or provider |
 
 The root span is type `agent` for the skill run and `evaluator` for the scorer;
 a failed run gets level ERROR, the `status:error` tag, metadata `error_class`
 and a status message `<error_class>: <reason>` (reason: `rc 124`, the result
 subtype such as `error_max_turns`, `exit <rc>` or `api_error <status>`). The
 class is one of the error classes every Langfuse sender shares, set from facts
-first: rc 124 is `timeout`, `error_max_*` is `budget_cap`, API status 429 /
+first: rc 124 is `timeout`, `error_max_*` is `budget_cap`, a spent subscription
+(`api_error` `usage_limit_reached`, "You've hit your weekly limit") is `plan_limit`
+(checked before the 429 it also carries), API status 429 /
 401-403 / 402 / other is `rate_limit` / `auth` / `credits` / `upstream_error`,
 `error_during_execution` is `tool_failed`; else the result text (or the raw
 output of a run that left no envelope) goes through the shared rule table. That
 text only picks the class and is never sent. The scorer root gets the same
 fields. Tool spans come from Claude Code and carry no class. Its metadata
-carries `permission_denials`, the number of tool calls the allowlist refused. Trace metadata also carries `instance` (repo name) and `trigger` (event).
+carries `permission_denials`, the number of tool calls the allowlist refused. Trace metadata also carries `instance` (repo name) and `trigger`: `cron` for a
+Scheduler dispatch (it passes the `trigger=cron` input), `chain` for a chain step
+(chain-runner passes `trigger=chain`), `manual` for any other Run now, else the
+event name.
+When the claude gateway cascade fails over, both attempts land in the same
+trace: each root span and its usage rows carry metadata `gateway` (the provider)
+and `gateway_attempt` (1 = first route), and a failover attempt's status message
+ends `(failover to <provider>)`. A failover attempt waits out 429s for at most
+`AEON_FAILOVER_MAX_WAIT_MS` (default 2 min) per request, so a dead fallback key
+fails in minutes with its 429 in the trace instead of hanging to the 1800 s run
+timeout. The saved error (cron state, `run_ok` comment) names each attempt, e.g.
+`claude: You've hit your weekly limit ... | glm: API Error: 429 ...`.
 The usage rows carry the same trace name and tags, so cost groups by skill.
+They are zero-length at the end of the run and carry metadata `rollup=true`
+(a per-run token rollup, not a model call), so per-model latency charts show only
+real requests. If you run an `error_class` evaluator in Langfuse, scope its rule to
+root observations (`isRootObservation = true`): Claude Code marks every non-zero
+shell exit on its tool spans as ERROR, harmless existence probes included, while
+the root span carries the run's real class.
 
 ### The non-claude harnesses (grok / codex / pi / vibe / kimi / fx / cursor / hermes)
 

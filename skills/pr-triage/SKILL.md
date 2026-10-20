@@ -28,7 +28,7 @@ Everything else is **external** and gets triaged.
 ```markdown
 # Watched Repos
 - aeonfun/aeon
-- aaronjmars/aeon-agent
+- aeonfun/aeon-agent
 
 ## Trusted Authors
 - alice

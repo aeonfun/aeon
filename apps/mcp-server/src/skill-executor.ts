@@ -324,9 +324,20 @@ function enqueue<T>(task: () => Promise<T>): Promise<T> {
  * Per-run budget in seconds, passed to run-harness as --timeout. Matches the
  * `--timeout 1800` aeon.yml passes on a scheduled run.
  */
-const RUN_TIMEOUT_SECONDS = 1800;
+export const RUN_TIMEOUT_SECONDS = 1800;
 
-interface HarnessResult {
+/**
+ * How long the Node timer gives run-harness before killing it. run-harness
+ * wraps the CLI in `timeout -k $RH_KILL_AFTER <budget>` (default 30), which
+ * TERMs it at the budget and KILLs it that many seconds later; the timer fires
+ * after both, with a 30 second margin, so
+ * `timeout` ends the run wherever it is installed and this timer only matters
+ * on a host without it.
+ */
+const KILL_AFTER_SECONDS = Number(process.env.RH_KILL_AFTER) || 30;
+export const HARNESS_TIMEOUT_MS = (RUN_TIMEOUT_SECONDS + KILL_AFTER_SECONDS + 30) * 1000;
+
+export interface HarnessResult {
   status: number | null;
   stdout: string;
   stderr: string;
@@ -339,8 +350,17 @@ interface HarnessResult {
  * `close` instead of blocking the Node event loop for the whole run.
  * Enforces the same timeout and combined output cap, surfacing each as `error`
  * the way spawnSync did (ETIMEDOUT / ENOBUFS).
+ *
+ * The harness runs in its own process group, and a kill takes the whole group:
+ * killing only bash leaves a child it started running, holding the stdout pipe
+ * open, so `close` waits on it. Where timeout(1) or gtimeout(1) is installed,
+ * run-harness starts the agent CLI under it, which moves the CLI into a group
+ * of its own that this kill does not reach: there `timeout` enforces the
+ * budget (see HARNESS_TIMEOUT_MS), and
+ * the output cap stops bash while the CLI runs until `timeout` ends it. Without
+ * timeout(1) the CLI stays in this group and the kill here ends it.
  */
-function spawnHarness(
+export function spawnHarness(
   args: string[],
   opts: {
     input: string;
@@ -351,15 +371,24 @@ function spawnHarness(
   },
 ): Promise<HarnessResult> {
   return new Promise(resolve => {
-    const child = spawn("bash", args, { cwd: opts.cwd, env: opts.env });
+    const child = spawn("bash", args, { cwd: opts.cwd, env: opts.env, detached: true });
     let stdout = "";
     let stderr = "";
     let settled = false;
     let killReason: "timeout" | "buffer" | null = null;
 
+    const killGroup = () => {
+      try {
+        if (child.pid !== undefined) process.kill(-child.pid, "SIGKILL");
+      } catch {
+        // The group is already gone; kill the child itself in case it is not.
+        child.kill("SIGKILL");
+      }
+    };
+
     const timer = setTimeout(() => {
       killReason = "timeout";
-      child.kill("SIGKILL");
+      killGroup();
     }, opts.timeout);
 
     const capture = (chunk: Buffer, sink: "out" | "err") => {
@@ -367,7 +396,7 @@ function spawnHarness(
       else stderr += chunk.toString("utf-8");
       if (stdout.length + stderr.length > opts.maxBuffer) {
         killReason = "buffer";
-        child.kill("SIGKILL");
+        killGroup();
       }
     };
     child.stdout.on("data", (c: Buffer) => capture(c, "out"));
@@ -508,7 +537,7 @@ async function runSkillInner(
     input: prompt,
     cwd: repoRoot,
     env: capability.isShadow ? shadowSafeEnv(process.env) : process.env,
-    timeout: RUN_TIMEOUT_SECONDS * 1000,
+    timeout: HARNESS_TIMEOUT_MS,
     maxBuffer: 10 * 1024 * 1024, // 10 MB
   });
 

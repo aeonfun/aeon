@@ -50,6 +50,16 @@ through OpenRouter: `moonshotai/kimi-k2.7-code` (default, code-tuned) and `kimi-
 routes through the same harness the skill
 ran on, so a repo with **no** Claude credentials still gets every run scored.
 
+### OpenRouter app attribution
+
+Every OpenRouter request aeon makes carries app attribution headers, so usage is credited to Aeon's
+OpenRouter app: `HTTP-Referer: https://www.aeon.fun`, `X-OpenRouter-Title: Aeon` (plus the legacy
+`X-Title`) and `X-OpenRouter-Categories: personal-agent,cloud-agent`. One helper
+(`harness-adapter/lib/openrouter-attribution.sh`) sets them for claude (via `gateway: openrouter`),
+codex, kimi, vibe, pi and hermes; cursor, fx and grok have no OpenRouter path. A fork can set its own
+with `OPENROUTER_SITE_URL`, `OPENROUTER_APP_TITLE` and `OPENROUTER_APP_CATEGORIES` in the run
+environment. (#1235, #1239)
+
 ### Native auth — run on your own provider account
 
 OpenRouter is the shared fallback; each harness can also run on its **own**

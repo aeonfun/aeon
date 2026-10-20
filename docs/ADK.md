@@ -223,7 +223,7 @@ skills:
 
 The in-repo scheduler (`scheduler.yml`, a `*/5` cron) picks changes up automatically. Two power features you can also drive from config, no code - [skill chaining and reactive triggers](CONFIGURATION.md):
 
-- **Reactive triggers** - `schedule: "reactive"` + `trigger: { on: <skill>, when: "consecutive_failures >= 3" }`.
+- **Reactive triggers** - a top-level `reactive:` block (not a key in the skill's `skills:` entry) runs a handler skill when a source trips a condition: `<handler>: { trigger: [ { on: <skill>, when: "consecutive_failures >= 3" } ] }`.
 - **Chains** - multi-step pipelines with `parallel:` fan-out and `consume:` output-passing between skills.
 
 > GitHub delivers only ~10% of 5-minute schedule ticks. The scheduler also accepts `repository_dispatch` type `cron-tick`, so your backend can act as an uptime pinger for your users' instances - a genuinely useful value-add (the debt model makes double-firing impossible).
@@ -276,7 +276,7 @@ Report only signal via ./notify - a clean run sends nothing.
 
 Conventions that matter:
 
-- **`requires:`** - exact env-var names. This drives the dashboard's "which skill needs which key" UI and your own pre-flight in §4.1. Secrets reach the run environment; secret-bearing calls go through `./secretcurl` with `{PLACEHOLDER}` tokens (a raw `curl …$KEY` is blocked by the permission layer).
+- **`requires:`** - exact env-var names. This drives the dashboard's "which skill needs which key" UI and your own pre-flight in §4.1. Secrets reach the run environment; secret-bearing calls go through `./secretcurl` with `{PLACEHOLDER}` tokens (a raw `curl …$KEY` is blocked by the permission layer). In a run, `./secretcurl` only fills placeholders for names listed in `requires:`, so a key you forget to declare is refused, not sent.
 - **`mode: read-only`** if the skill shouldn't touch the repo - write tools are stripped and stray writes reverted. Declare honest `capabilities` (§5.2) for everything else.
 - **If your product is an MCP server**, declare `mcp: [your-slug]` instead of raw API calls, and ship the server entry for `.mcp.json`. OAuth-connected MCPs get a Connect button in the dashboard.
 - **Notify on signal only.** The `./notify` tool fans out to whatever channels the operator configured (Telegram/Discord/Slack/email) - your skill's reports arrive where the operator already lives, for free.

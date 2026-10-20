@@ -97,7 +97,7 @@ describe("slugify", () => {
 
 describe("parseCron", () => {
   it("parses a daily cron schedule", () => {
-    const parsed = parseCron("0 12 * * *");
+    const parsed = parseCron("0 12 * * *", 0);
     assert.equal(parsed.mode, "time");
     if (parsed.mode === "time") {
       assert.equal(parsed.minute, 0);
@@ -125,7 +125,7 @@ describe("parseCron", () => {
   });
 
   it("parses a weekly schedule with days", () => {
-    const parsed = parseCron("0 14 * * 1");
+    const parsed = parseCron("0 14 * * 1", 0);
     assert.equal(parsed.mode, "time");
     if (parsed.mode === "time") {
       assert.deepEqual(parsed.days, [1]);
@@ -133,7 +133,7 @@ describe("parseCron", () => {
   });
 
   it("parses a multi-day schedule", () => {
-    const parsed = parseCron("0 9 * * 1,3,5");
+    const parsed = parseCron("0 9 * * 1,3,5", 0);
     assert.equal(parsed.mode, "time");
     if (parsed.mode === "time") {
       assert.deepEqual(parsed.days, [1, 3, 5]);
@@ -195,10 +195,73 @@ describe("buildCron", () => {
   });
 
   it("builds a daily cron with specific days", () => {
-    const cron = buildCron("time", 9, "m", 9, 0, "AM", [1, 3, 5]);
-    // 9 AM local - we just verify the cron structure
-    assert.ok(cron.includes("*"));
-    assert.ok(cron.includes("1,3,5"));
+    assert.equal(buildCron("time", 9, "m", 9, 0, "AM", [1, 3, 5], 0), "0 9 * * 1,3,5");
+  });
+
+  it("carries the weekday back across midnight east of UTC", () => {
+    // 1:00 AM Mon/Wed in UTC+2 is 11 PM Sun/Tue in UTC.
+    assert.equal(buildCron("time", 1, "m", 1, 0, "AM", [1, 3], 120), "0 23 * * 0,2");
+  });
+
+  it("carries the weekday forward across midnight west of UTC", () => {
+    // 8:00 PM Sat/Sun in UTC-5 is 1 AM Sun/Mon in UTC.
+    assert.equal(buildCron("time", 8, "m", 8, 0, "PM", [6, 0], -300), "0 1 * * 0,1");
+  });
+
+  it("keeps a daily schedule daily across midnight", () => {
+    assert.equal(buildCron("time", 1, "m", 1, 0, "AM", [-1], 120), "0 23 * * *");
+  });
+
+  it("moves the minute in half-hour and 45-minute zones", () => {
+    // 9:00 AM in India (+5:30) is 3:30 UTC; in Nepal (+5:45) 3:15 UTC.
+    assert.equal(buildCron("time", 9, "m", 9, 0, "AM", [-1], 330), "30 3 * * *");
+    assert.equal(buildCron("time", 9, "m", 9, 0, "AM", [-1], 345), "15 3 * * *");
+    // 12:15 AM Monday in Newfoundland (-3:30) is 3:45 AM Monday UTC.
+    assert.equal(buildCron("time", 1, "m", 12, 15, "AM", [1], -210), "45 3 * * 1");
+  });
+
+  it("round-trips through parseCron in any zone", () => {
+    for (const offset of [-600, -210, -300, 0, 120, 330, 345, 840]) {
+      for (const [h12, min, ap, days] of [
+        [12, 0, "AM", [1, 3]],
+        [11, 45, "PM", [0, 6]],
+        [9, 30, "AM", [-1]],
+        [1, 15, "AM", [2]],
+      ] as const) {
+        const cron = buildCron("time", 1, "m", h12, min, ap, [...days], offset);
+        const p = parseCron(cron, offset);
+        assert.equal(p.mode, "time", cron);
+        if (p.mode !== "time") continue;
+        assert.deepEqual([p.hour12, p.minute, p.ampm], [h12, min, ap], `${cron} at ${offset}`);
+        assert.deepEqual([...p.days].sort(), [...days].sort(), `${cron} at ${offset}`);
+      }
+    }
+  });
+});
+
+describe("parseCron across the UTC day boundary", () => {
+  it("shows a late UTC time as the next local day east of UTC", () => {
+    const p = parseCron("30 23 * * 0,5", 120);
+    assert.equal(p.mode, "time");
+    if (p.mode === "time") {
+      assert.deepEqual([p.hour12, p.minute, p.ampm, p.days], [1, 30, "AM", [1, 6]]);
+    }
+  });
+
+  it("shows an early UTC time as the previous local day west of UTC", () => {
+    const p = parseCron("0 3 * * 1", -300);
+    assert.equal(p.mode, "time");
+    if (p.mode === "time") {
+      assert.deepEqual([p.hour12, p.minute, p.ampm, p.days], [10, 0, "PM", [0]]);
+    }
+  });
+
+  it("adds a half-hour offset to the minute", () => {
+    const p = parseCron("45 18 * * *", 330);
+    assert.equal(p.mode, "time");
+    if (p.mode === "time") {
+      assert.deepEqual([p.hour12, p.minute, p.ampm, p.days], [12, 15, "AM", [-1]]);
+    }
   });
 });
 
@@ -281,6 +344,11 @@ describe("localToUtc24", () => {
   it("converts local noon to UTC correctly", () => {
     const result = localToUtc24(12);
     assert.ok(result >= 0 && result <= 23);
+  });
+
+  it("rounds a half-hour zone's hour down, west and east", () => {
+    assert.equal(localToUtc24(0, 330), 18);
+    assert.equal(localToUtc24(22, -210), 1);
   });
 });
 

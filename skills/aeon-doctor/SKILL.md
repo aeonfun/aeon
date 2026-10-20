@@ -39,7 +39,7 @@ Each printed line is an entry whose `schedule:` isn't double-quoted. **critical*
 ### 2 · Duplicate skill keys — silent shadow (critical)
 A repeated skill name under the `skills:` map silently disables the first copy (last-wins YAML).
 ```bash
-node scripts/validate-config.js                        # authoritative — dup keys + checkout ordering
+node scripts/validate-config.js                        # authoritative — dup keys, misspelled entry keys, checkout ordering
 node -e 'const k=require("fs").readFileSync("aeon.yml","utf8").match(/^  [a-z0-9-]+:/gm)||[];const c={};for(const x of k)c[x]=(c[x]||0)+1;for(const x in c)if(c[x]>1)console.log(x.trim().slice(0,-1))'    # names appearing more than once
 ```
 Any printed name (or a dup-key error from the validator) is a finding. **critical** if either copy is enabled. Fix: remove the shadow copy.

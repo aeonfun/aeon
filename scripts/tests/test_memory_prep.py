@@ -143,6 +143,28 @@ class TestStampIO(unittest.TestCase):
             self.assertNotIn("never", md)
 
 
+class TestMemorySize(unittest.TestCase):
+    def test_within_budget(self):
+        out = mp.memory_size_report("# M\n\n- short line\n")
+        self.assertEqual(len(out), 1)
+        self.assertIn("within budget", out[0])
+
+    def test_over_budget_names_long_lines(self):
+        text = "# M\n" + "\n".join("- " + "x" * 400 for _ in range(25)) + "\n"
+        out = mp.memory_size_report(text)
+        self.assertIn("OVER BUDGET by %d bytes" % (len(text.encode()) - mp.MEMORY_MAX_BYTES), out[0])
+        self.assertIn("Lines over 300 chars", out[1])
+        self.assertIn("2: 402", out[1])
+        self.assertIn("(+15 more)", out[1])
+
+    def test_counts_bytes_not_chars(self):
+        text = "\u00e9" * (mp.MEMORY_MAX_BYTES // 2 + 1)  # 2 bytes each in UTF-8
+        self.assertIn("OVER BUDGET", mp.memory_size_report(text)[0])
+
+    def test_missing(self):
+        self.assertEqual(mp.memory_size_report(None), ["MEMORY.md: missing."])
+
+
 class TestWindowIO(unittest.TestCase):
     def test_window_rotates_and_selects_in_git_repo(self):
         with tempfile.TemporaryDirectory() as root:

@@ -61,7 +61,7 @@ concurrency:
 jobs:
   smoke:
     name: smoke (${{ matrix.harness }})
-    runs-on: ubuntu-24.04
+    runs-on: ${{ vars.AEON_RUNNER || 'ubuntu-24.04' }}
     timeout-minutes: 15
     strategy:
       fail-fast: false
@@ -80,9 +80,13 @@ jobs:
       # same way aeon.yml and ci-tests.yml do. Skipped for ccr (not a sandboxable
       # harness: it is claude in front of the gateway sidecar, exercised in write
       # mode). On a dev laptop the read-only leg self-skips when bwrap is absent.
+      # Restore only: these 6 jobs run beside ci-tests' test job, which is the one
+      # job that saves the .deb on a miss (else all 7 race for the same key).
       - name: Install bubblewrap (read-only sandbox smoke)
         if: matrix.harness != 'ccr'
         timeout-minutes: 5
         uses: ./.github/actions/install-bubblewrap
+        with:
+          save-cache: 'false'
       - name: Install, version, flags, and fake-upstream round trip
         run: bash scripts/tests/harness_cli_smoke.sh "${{ matrix.harness }}"

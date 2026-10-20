@@ -87,7 +87,8 @@ STUB
 chmod +x "$TMP/cbin/curl"
 cat > "$TMP/claude-env.json" <<'JSON'
 {"result":"SENSITIVE-RESULT-TEXT","is_error":false,"num_turns":7,"total_cost_usd":0.42,
- "usage":{"input_tokens":30,"output_tokens":500,"cache_read_input_tokens":9000,"cache_creation_input_tokens":1000},
+ "usage":{"input_tokens":30,"output_tokens":500,"cache_read_input_tokens":9000,"cache_creation_input_tokens":1000,
+          "cache_creation":{"ephemeral_1h_input_tokens":750,"ephemeral_5m_input_tokens":250}},
  "modelUsage":{"claude-sonnet-5-5":{"inputTokens":20,"outputTokens":450,"cacheReadInputTokens":8000,"cacheCreationInputTokens":900},
                "claude-haiku-5-5":{"inputTokens":10,"outputTokens":50,"cacheReadInputTokens":1000,"cacheCreationInputTokens":100}}}
 JSON
@@ -123,6 +124,17 @@ if [ -f "$TMP/curl/body" ]; then
       | .parentSpanId == $s and $a["gen_ai.usage.input_tokens"].intValue == "8920" and $a["gen_ai.usage.output_tokens"].intValue == "450"
       and $a["gen_ai.usage.cache_read_input_tokens"].intValue == "8000" and $a["langfuse.observation.type"].stringValue == "generation"' "$B" >/dev/null \
     && ok "usage generation: cache-inclusive input, output, cache counts, parent = root" || bad "usage generation fields"
+  # usage_details names the Langfuse price keys: 1h writes at the 1h price, each
+  # model split by the run's 1h/5m ratio (75/25 here), input without cache.
+  ud() { jq -c --arg m "$1" '.resourceSpans[0].scopeSpans[0].spans[1:][] | select(.name == "usage " + $m) | .attributes[] | select(.key == "langfuse.observation.usage_details") | .value.stringValue | fromjson' "$B"; }
+  [ "$(ud claude-sonnet-5-5)" = '{"input":20,"output":450,"input_cache_read":8000,"input_cache_creation_1h":675,"input_cache_creation_5m":225}' ] \
+    && ok "usage_details: 1h/5m cache-write split (sonnet)" || bad "usage_details sonnet ($(ud claude-sonnet-5-5))"
+  [ "$(ud claude-haiku-5-5)" = '{"input":10,"output":50,"input_cache_read":1000,"input_cache_creation_1h":75,"input_cache_creation_5m":25}' ] \
+    && ok "usage_details: 1h/5m cache-write split (haiku)" || bad "usage_details haiku ($(ud claude-haiku-5-5))"
+  jq -e '.resourceSpans[0].scopeSpans[0].spans as $s | $s[0].endTimeUnixNano as $end
+      | [$s[1:][] | .startTimeUnixNano == $end and .endTimeUnixNano == $end
+         and ([.attributes[] | select(.key == "langfuse.observation.metadata.rollup") | .value.stringValue] == ["true"])] | all' "$B" >/dev/null \
+    && ok "usage generations: zero-length at the run end, marked rollup (per-model latency stays real)" || bad "usage generation timing/rollup"
   attrs 0 | jq -e '.["langfuse.observation.type"] == "agent" and .["langfuse.version"] == "abc1234"
       and .["langfuse.user.id"] == "heartbeat" and .["langfuse.release"] == "canon-df013db"
       and (has("langfuse.observation.status_message") | not) and (has("langfuse.observation.metadata.error_class") | not)' >/dev/null \
@@ -160,7 +172,7 @@ attrs 0 | jq -e '.["langfuse.observation.status_message"] == "timeout: rc 124" a
 cat > "$TMP/denied-env.json" <<'JSON'
 {"result":"x","is_error":true,"subtype":"error_max_turns","num_turns":40,
  "permission_denials":[{"tool_name":"Bash","tool_input":{"command":"SECRET-CMD"}},{"tool_name":"Write","tool_input":{}}],
- "usage":{"input_tokens":1,"output_tokens":2,"cache_read_input_tokens":0,"cache_creation_input_tokens":0}}
+ "usage":{"input_tokens":1,"output_tokens":2,"cache_read_input_tokens":0,"cache_creation_input_tokens":5}}
 JSON
 trace claude 0 "$TMP/denied-env.json" >/dev/null
 attrs 0 | jq -e '.["langfuse.observation.status_message"] == "budget_cap: error_max_turns" and .["langfuse.observation.level"] == "ERROR"
@@ -169,6 +181,8 @@ attrs 0 | jq -e '.["langfuse.observation.status_message"] == "budget_cap: error_
   && ok "error result: error_max_turns -> budget_cap, permission denial count" || bad "error result fields ($(attrs 0))"
 attrs 1 | jq -e '.["langfuse.trace.tags"] | index("status:error")' >/dev/null \
   && ok "usage generation of a failed run carries status:error" || bad "usage generation status tag"
+attrs 1 | jq -e '.["langfuse.observation.usage_details"] | fromjson == {"input":1,"output":2,"input_cache_read":0,"input_cache_creation":5}' >/dev/null \
+  && ok "usage_details without a TTL split keeps one cache-write count" || bad "usage_details fallback ($(attrs 1))"
 grep -q SECRET-CMD "$TMP/curl/body" && bad "denied tool input leaked" || ok "denied tool input never sent"
 # error_class: structured facts first (subtype, API status), then the result
 # text or the raw output head (read for the class only, never sent).
@@ -191,9 +205,19 @@ echo "{\"is_error\":true,\"subtype\":\"success\",\"result\":\"SECRET-RESULT Inva
 eclass 1 "$TMP/e5.json" auth "auth: exit 1" "login error in the result text"
 grep -q SECRET-RESULT "$TMP/curl/body" && bad "result text leaked via error_class" || ok "result text used for the class, never sent"
 echo "{\"is_error\":true,\"subtype\":\"success\",\"result\":\"You've hit your limit · resets 3pm\",$U}" > "$TMP/e6.json"
-eclass 1 "$TMP/e6.json" budget_cap "budget_cap: exit 1" "plan limit in the result text"
+eclass 1 "$TMP/e6.json" plan_limit "plan_limit: exit 1" "plan limit in the result text"
+# A spent weekly plan answers 429 too: plan_limit wins over rate_limit, from the
+# api_error field or the text alone.
+echo "{\"is_error\":true,\"subtype\":\"success\",\"api_error_status\":429,\"api_error\":\"usage_limit_reached\",\"result\":\"You've hit your weekly limit · resets Oct 20, 5pm (UTC)\",$U}" > "$TMP/e10.json"
+eclass 1 "$TMP/e10.json" plan_limit "plan_limit: exit 1" "weekly limit (429 + usage_limit_reached) is plan_limit, not rate_limit"
+echo "{\"is_error\":true,\"subtype\":\"success\",\"api_error_status\":429,\"result\":\"You've hit your weekly limit\",$U}" > "$TMP/e11.json"
+eclass 1 "$TMP/e11.json" plan_limit "plan_limit: exit 1" "weekly limit text with a 429 status"
+echo "{\"is_error\":true,\"subtype\":\"success\",\"api_error_status\":429,\"api_error\":\"usage_limit_reached\",$U}" > "$TMP/e12.json"
+eclass 1 "$TMP/e12.json" plan_limit "plan_limit: exit 1" "usage_limit_reached without result text"
 echo "{\"is_error\":true,\"subtype\":\"success\",\"result\":\"Prompt is too long\",$U}" > "$TMP/e7.json"
 eclass 0 "$TMP/e7.json" context_limit "context_limit: is_error" "shared rule table on the result text"
+echo "{\"is_error\":true,\"subtype\":\"success\",\"result\":\"The client has disconnected\",$U}" > "$TMP/e9.json"
+eclass 0 "$TMP/e9.json" cancelled "cancelled: is_error" "HTTP 499 client hang-up is cancelled, not network"
 echo "{\"is_error\":true,\"subtype\":\"success\",\"result\":\"something odd\",$U}" > "$TMP/e8.json"
 eclass 0 "$TMP/e8.json" other "other: is_error" "no rule matches"
 printf 'SECRET-RAW OAuth token has expired. Please obtain a new token.\n' > "$TMP/raw.txt"
@@ -201,6 +225,23 @@ eclass 1 "$TMP/raw.txt" auth "auth: exit 1" "raw output head without an envelope
 grep -q SECRET-RAW "$TMP/curl/body" && bad "raw output leaked" || ok "raw output used for the class, never sent"
 printf 'Error: connect ECONNREFUSED 127.0.0.1:8080\n' > "$TMP/raw2.txt"
 eclass 2 "$TMP/raw2.txt" network "network: exit 2" "raw output, shared table"
+# Gateway cascade: the first route carries gateway:<name>; a failover attempt
+# adds the failover tag and names the provider in its status message.
+trace claude 0 "$TMP/claude-env.json" OTEL_RESOURCE_ATTRIBUTES="$RES,aeon.gateway=claude,aeon.gateway_attempt=1" >/dev/null
+attrs 0 | jq -e '.["langfuse.trace.tags"] == ["skill:heartbeat","component:skill-run","gateway:claude"]
+    and .["langfuse.observation.metadata.gateway"] == "claude" and .["langfuse.observation.metadata.gateway_attempt"] == "1"' >/dev/null \
+  && ok "first route: gateway tag + metadata" || bad "first route gateway fields ($(attrs 0))"
+attrs 1 | jq -e '.["langfuse.observation.metadata.gateway"] == "claude" and (.["langfuse.trace.tags"] | index("gateway:claude"))' >/dev/null \
+  && ok "usage row carries the gateway (cost by provider)" || bad "usage row gateway ($(attrs 1))"
+echo "{\"is_error\":true,\"subtype\":\"success\",\"api_error_status\":429,\"result\":\"API Error: 429 SECRET-RESULT\",$U}" > "$TMP/e13.json"
+trace claude 1 "$TMP/e13.json" OTEL_RESOURCE_ATTRIBUTES="$RES,aeon.gateway=glm,aeon.gateway_attempt=2" RH_MODEL=glm-5.3-flash >/dev/null
+attrs 0 | jq -e '.["langfuse.observation.status_message"] == "rate_limit: exit 1 (failover to glm)"
+    and .["langfuse.trace.tags"] == ["skill:heartbeat","component:skill-run","gateway:glm","failover","status:error"]
+    and .["langfuse.observation.metadata.gateway_attempt"] == "2"' >/dev/null \
+  && ok "failover attempt: failover tag, gateway in the status message" || bad "failover attempt fields ($(attrs 0))"
+jq -e '.resourceSpans[0].scopeSpans[0].spans[1].name == "usage glm-5.3-flash"' "$TMP/curl/body" >/dev/null \
+  && ok "failover attempt with an envelope leaves a usage row" || bad "failover usage row"
+grep -q SECRET-RESULT "$TMP/curl/body" && bad "failover result text leaked" || ok "failover result text never sent"
 trace claude 0 "$TMP/claude-env.json" OTEL_RESOURCE_ATTRIBUTES="aeon.component=scorer,aeon.skill=heartbeat,langfuse.trace.name=aeon:scorer:heartbeat" >/dev/null
 attrs 0 | jq -e '.["langfuse.observation.type"] == "evaluator" and .["langfuse.trace.tags"] == ["skill:heartbeat","component:scorer"]' >/dev/null \
   && ok "scorer root: type evaluator" || bad "scorer root type ($(attrs 0))"
@@ -217,6 +258,7 @@ cat > "$TMP/fbin/claude" <<'STUB'
 #!/usr/bin/env bash
 cat >/dev/null
 printf '%s\n' "$@" > "$FAKE_ARGV"
+printf '%s\n' "${CLAUDE_CODE_RETRY_WATCHDOG_MAX_WAIT_MS:-unset}" > "$FAKE_ARGV.wait"
 echo '{"type":"result","result":"ok","is_error":false}'
 STUB
 chmod +x "$TMP/fbin/claude"
@@ -230,5 +272,14 @@ adapter CLAUDE_CODE_ENABLE_TELEMETRY=1 OTEL_TRACES_EXPORTER=otlp AEON_OTEL_START
 grep -q SessionStart "$TMP/argv" && bad "AEON_OTEL_STARTUP_DELAY=0 should drop the hook" || ok "AEON_OTEL_STARTUP_DELAY=0 drops the hook"
 adapter
 grep -q SessionStart "$TMP/argv" && bad "tracing off should add no hook" || ok "tracing off: no hook"
+# Gateway failover attempts cap how long Claude Code waits out 429s; the first
+# route keeps the unbounded watchdog wait, and an operator value wins.
+[ "$(cat "$TMP/argv.wait")" = unset ] && ok "first route: no 429 wait cap" || bad "first route wait cap ($(cat "$TMP/argv.wait"))"
+adapter AEON_GATEWAY_ATTEMPT=2
+[ "$(cat "$TMP/argv.wait")" = 120000 ] && ok "failover attempt: 429 wait capped at 2 min" || bad "failover wait cap ($(cat "$TMP/argv.wait"))"
+adapter AEON_GATEWAY_ATTEMPT=2 AEON_FAILOVER_MAX_WAIT_MS=30000
+[ "$(cat "$TMP/argv.wait")" = 30000 ] && ok "AEON_FAILOVER_MAX_WAIT_MS sets the cap" || bad "failover wait knob ($(cat "$TMP/argv.wait"))"
+adapter AEON_GATEWAY_ATTEMPT=2 CLAUDE_CODE_RETRY_WATCHDOG_MAX_WAIT_MS=5000
+[ "$(cat "$TMP/argv.wait")" = 5000 ] && ok "operator CLAUDE_CODE_RETRY_WATCHDOG_MAX_WAIT_MS wins" || bad "operator wait value ($(cat "$TMP/argv.wait"))"
 
 if [ "$FAIL" = 0 ]; then echo "All otel-span tests passed."; else echo "otel-span tests FAILED."; exit 1; fi

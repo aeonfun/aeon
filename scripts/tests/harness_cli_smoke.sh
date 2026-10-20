@@ -149,6 +149,18 @@ check_envelope() {  # check_envelope ENVELOPE_FILE WANT_USAGE(1|0)
     || bad "the fake upstream saw no request"
 }
 
+# check_attribution -> every model call the CLI made carried aeon's OpenRouter app
+# attribution (harness-adapter/lib/openrouter-attribution.sh), i.e. the header
+# setting install-harness.sh staged is one this CLI version really sends.
+check_attribution() {
+  jq -se 'map(select(.method == "POST")) | length > 0 and all(.[]; .headers as $h
+            | $h["http-referer"] == "https://www.aeon.fun" and $h["x-openrouter-title"] == "Aeon"
+              and $h["x-title"] == "Aeon" and $h["x-openrouter-categories"] == "personal-agent,cloud-agent")' \
+      "$FAKE_LOG" >/dev/null 2>&1 \
+    && pass "every model call carried the OpenRouter app attribution headers" \
+    || bad "attribution headers missing: $(jq -sc 'map(select(.method == "POST") | {path, referer: .headers["http-referer"], title: .headers["x-openrouter-title"], x_title: .headers["x-title"], cats: .headers["x-openrouter-categories"]})' "$FAKE_LOG")"
+}
+
 [ -n "$H" ] || die "usage: harness_cli_smoke.sh <harness>"
 command -v jq >/dev/null 2>&1 || die "jq is required"
 mkdir -p "$WORK/ws"
@@ -335,26 +347,32 @@ case "$H" in
     [ "$(jq -r '.model // ""' "$ENV_OUT")" = "$HM" ] \
       && pass "codex reports the model it ran ($HM) from its session rollout" \
       || bad "codex .model is '$(jq -r '.model // ""' "$ENV_OUT")', want $HM (stderr: $(tail -c 600 "$WORK/rh.err" | tr '\n' ' '))"
+    check_attribution
     run_harness_ro ;;
   kimi)
     sed -i.bak "s#https://openrouter.ai/api/v1#$FAKE_URL/api/v1#" "$HOME/.kimi-code/config.toml"
     grep -q "$FAKE_URL" "$HOME/.kimi-code/config.toml" || die "could not repoint the kimi config"
     run_harness > "$ENV_OUT"
     check_envelope "$ENV_OUT" 0
+    check_attribution
     run_harness_ro ;;
   vibe)
     sed -i.bak "s#https://openrouter.ai/api/v1#$FAKE_URL/api/v1#" "$HOME/.vibe/config.toml"
     grep -q "$FAKE_URL" "$HOME/.vibe/config.toml" || die "could not repoint the vibe config"
     run_harness > "$ENV_OUT"
     check_envelope "$ENV_OUT" 0
+    check_attribution
     run_harness_ro ;;
   pi)
     # pi's models.json can override a built-in provider's base URL; aeon runs pi
-    # on OpenRouter as --model openrouter/<id>.
-    mkdir -p "$HOME/.pi/agent"
-    printf '{"providers":{"openrouter":{"baseUrl":"%s/api/v1"}}}\n' "$FAKE_URL" > "$HOME/.pi/agent/models.json"
+    # on OpenRouter as --model openrouter/<id>. Merged in, so the attribution
+    # headers install-harness.sh staged there stay.
+    PM="$HOME/.pi/agent/models.json"
+    jq --arg u "$FAKE_URL/api/v1" '.providers.openrouter.baseUrl = $u' "$PM" > "$PM.tmp" && mv "$PM.tmp" "$PM" \
+      || die "could not repoint the pi models.json"
     run_harness --model openrouter/smoke-model > "$ENV_OUT"
     check_envelope "$ENV_OUT" 1
+    check_attribution
     # pi_mcp_checks (#1131) already runs pi in --mode read-only under the wrapper
     # OS sandbox (pi_mcp_run SLOW ... read-only), so it IS pi's read-only sandbox
     # leg under the new ro-root model; no separate run_harness_ro needed here.

@@ -9,16 +9,16 @@
       "124": "timeout"
     }
   },
-  "generated": "2026-10-03T15:37:24Z",
+  "generated": "2026-10-16T18:32:57Z",
   "count": 9,
   "harnesses": [
     {
       "id": "claude",
       "label": "Claude Code",
       "cli": {
-        "install": "npm i -g @anthropic-ai/claude-code@2.1.287",
+        "install": "npm i -g @anthropic-ai/claude-code@2.1.301",
         "bin": "claude",
-        "min_version": "2.1.287"
+        "min_version": "2.1.301"
       },
       "invoke": "claude -p - --output-format json",
       "round_trip": true,

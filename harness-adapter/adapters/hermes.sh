@@ -30,6 +30,12 @@ HERMES_HOME="$RH_TMPDIR/hermes-home"; mkdir -p "$HERMES_HOME/.hermes"; export HO
 if [ -n "${HERMES_AUTH:-}" ]; then
   printf '%s' "$HERMES_AUTH" | base64 -d | tar xzf - -C "$HOME" || { echo "hermes: invalid HERMES_AUTH archive" >&2; exit 1; }
   chmod 600 "$HOME/.hermes/auth.json" 2>/dev/null || true
+elif [ -n "${OPENROUTER_API_KEY:-}" ]; then
+  # OpenRouter: hermes sends its own app attribution unless config.yaml's
+  # model.default_headers overrides it (user headers win on the OpenAI wire), so
+  # stage aeon's (lib/openrouter-attribution.sh) in the scratch HOME.
+  . "$RH_LIB/openrouter-attribution.sh"
+  { echo "model:"; echo "  default_headers:"; or_attr_yaml "    "; } > "$HOME/.hermes/config.yaml"
 fi
 PROMPT="$(cat "$RH_PROMPT_FILE")"; PREFIX="${RH_COMPAT_RULES:-}"
 [ -n "${RH_APPEND_SYSTEM_PROMPT:-}" ] && PREFIX="${PREFIX:+$PREFIX$'\n'}${RH_APPEND_SYSTEM_PROMPT}"

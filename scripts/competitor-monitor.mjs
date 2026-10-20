@@ -29,7 +29,7 @@ import { createHash } from 'node:crypto'
 import { readFileSync, writeFileSync } from 'node:fs'
 
 const MONITOR_VERSION = 1
-const UA = 'Mozilla/5.0 (compatible; AeonCompetitorMonitor/1.0; +https://aeon.fun/bot) ' +
+const UA = 'Mozilla/5.0 (compatible; AeonCompetitorMonitor/1.0; +https://www.aeon.fun/bot) ' +
   'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36'
 const TIMEOUT_MS = 20000
 

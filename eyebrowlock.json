@@ -235,16 +235,17 @@
       "capabilities": {
         "network": [
           "api.coingecko.com",
-          "api.etherscan.io"
+          "api.etherscan.io",
+          "rpc.mainnet.chain.robinhood.com"
         ]
       },
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "747f0bbb3ecabc09977bd36cd5c6f439d1d5e3b6f655ed937222cde9442bdad3"
+          "hash": "139158507be796ddb8531c73335ec77deec2674ca935f70131a42d6a71a358b4"
         }
       ],
-      "contentHash": "sha256-d516ea01387b8ec8e2fd478268e1333a3507d6111d44c5bd77328b8bda935908",
+      "contentHash": "sha256-2ae41848240166d63703f76324ec722411f2d345ef8f34a0348170e904d5e6b1",
       "discoveredFrom": "skills/onchain-monitor/SKILL.md"
     },
     {

@@ -38,7 +38,7 @@ The reply routes back as `var=add-address:<0x… [chain]>`, handled by the confi
 watches:
   - label: My Wallet
     address: "0x1234...abcd"
-    chain: ethereum          # ethereum | base | arbitrum | optimism | polygon
+    chain: ethereum          # ethereum | base | arbitrum | optimism | polygon | robinhood
     type: wallet             # wallet | contract
     threshold_usd: 1000      # alert on transfers ≥ this USD value (default 1000)
   - label: Uniswap Pool
@@ -73,7 +73,7 @@ labels:
 }
 ```
 
-- `last_block` — start block for the next run's fetch. Initialise to `current_block − 2400` (≈ 8h ETH) on first run.
+- `last_block` — start block for the next run's fetch. Initialise to `current_block − 2400` (≈ 8h ETH) on first run; on `robinhood` (~0.1s blocks) use `current_block − 280000` for the same ≈ 8h window.
 - `alerted_tx` — tx hashes alerted in last 7 days, capped at 200. Used for cross-run dedup.
 - `median_usd_30d` — rolling median USD size of transfers at this watch; powers the `WHALE-TRANSFER` tag.
 
@@ -93,7 +93,7 @@ case "${var}" in
     REST="$(printf '%s' "${var#add-address:}" | sed 's/^[[:space:]]*//')"
     ADDR="$(printf '%s' "$REST" | awk '{print $1}')"
     CHAIN="$(printf '%s' "$REST" | awk '{print tolower($2)}')"; CHAIN="${CHAIN:-ethereum}"
-    case "$CHAIN" in ethereum|base|arbitrum|optimism|polygon) ;; *) CHAIN=ethereum ;; esac
+    case "$CHAIN" in ethereum|base|arbitrum|optimism|polygon|robinhood) ;; *) CHAIN=ethereum ;; esac
     if ! printf '%s' "$ADDR" | grep -qiE '^0x[0-9a-f]{40}$'; then
       ./notify "Couldn't read \"$ADDR\" as an address. Reply with a 0x… wallet, optionally a chain."
       exit 0
@@ -141,9 +141,9 @@ Wallets use `alchemy_getAssetTransfers` — one call returns categorized in/out 
   }]}'
 ```
 
-Contracts use `eth_getLogs` against the same Alchemy URL (Alchemy accepts up to ~10k block ranges).
+Contracts use `eth_getLogs` against the same Alchemy URL. Alchemy allows any block range while the response stays under 10,000 logs, and unlimited results for ranges of 5,000 blocks or fewer; on `Log response size exceeded`, re-query in 5,000-block windows (a busy `robinhood` contract hits this within minutes of ~0.1s blocks).
 
-Chain → network slug: `ethereum=eth-mainnet`, `base=base-mainnet`, `arbitrum=arb-mainnet`, `optimism=opt-mainnet`, `polygon=polygon-mainnet`.
+Chain → network slug: `ethereum=eth-mainnet`, `base=base-mainnet`, `arbitrum=arb-mainnet`, `optimism=opt-mainnet`, `polygon=polygon-mainnet`, `robinhood=robinhood-mainnet`. On `robinhood`, drop `"internal"` from the wallet `category` list: Alchemy rejects it there ("The 'internal' category is not supported for this network").
 
 **Path B — Etherscan v2 unified** (fallback, if Alchemy path fails or key unset).
 
@@ -159,7 +159,22 @@ KEYQ=""; [ -n "${ETHERSCAN_API_KEY:+x}" ] && KEYQ="&apikey={ETHERSCAN_API_KEY}"
 ./secretcurl -m 10 -s "https://api.etherscan.io/v2/api?chainid=${chainid}&module=logs&action=getLogs&address=${address}&fromBlock=${from_block}&toBlock=latest${KEYQ}"
 ```
 
-Chain → chainid: `ethereum=1`, `base=8453`, `arbitrum=42161`, `optimism=10`, `polygon=137`.
+Chain → chainid: `ethereum=1`, `base=8453`, `arbitrum=42161`, `optimism=10`, `polygon=137`, `robinhood=4663`. Etherscan's free tier refuses `chainid=4663` ("Free API access is not supported for this chain"), so a keyless `robinhood` watch skips Path B and uses Path C.
+
+**Path C — Robinhood Chain public RPC** (`robinhood` only; keyless fallback when Path A is unavailable and Path B is refused).
+
+Wallets: ERC-20 `Transfer` logs with the watch address as recipient, then as sender. The public RPC caps a query without an `address` filter at **30,000 blocks**, so walk `last_block → latest` in 30,000-block windows (≈ 10 windows per direction per 8h, ≈ 28 per day). Contracts: `eth_getLogs` with `address` set (no 30,000 cap; split the range if the RPC answers `logs matched by query exceeds limit of 10000`).
+```bash
+T=0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef   # ERC-20 Transfer
+W=0x000000000000000000000000${address#0x}                               # 32-byte topic
+# per window [lo, hi] (hi - lo < 30000) as 0x-hex, e.g. lo=$(printf 0x%x "$n"); the RPC rejects decimal
+# incoming, then outgoing
+curl -m 15 -s -X POST https://rpc.mainnet.chain.robinhood.com -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"eth_getLogs","params":[{"fromBlock":"'$lo'","toBlock":"'$hi'","topics":["'$T'",null,"'$W'"]}]}'
+curl -m 15 -s -X POST https://rpc.mainnet.chain.robinhood.com -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"eth_getLogs","params":[{"fromBlock":"'$lo'","toBlock":"'$hi'","topics":["'$T'","'$W'"]}]}'
+```
+Read `symbol()` / `decimals()` per distinct token with `eth_call` (`0x95d89b41` / `0x313ce567`) on the same RPC. Path C sees ERC-20 moves only, not native ETH transfers; note `path=rpc (erc20 only)` in the source footer. On HTTP 429, back off and retry the window; if it still fails, mark the watch `fail` as below.
 
 **Fetch fallback.** Both Alchemy and Etherscan carry their key in the URL via `./secretcurl` (`{ALCHEMY_API_KEY}` / `{ETHERSCAN_API_KEY}` placeholders), so if a call fails, retry the exact same URL via **WebFetch**. For POSTs, WebFetch accepts the JSON body.
 
@@ -233,7 +248,7 @@ TL;DR: My Wallet sent $1.2M USDC to Binance 14 (biggest move on any watch in 30d
 3 events on 2 watches | sources: alchemy=ok, coingecko=ok, etherscan=skipped | last_block→${block}
 ```
 
-Cap the notification body at 10 events; if more survived, append `+N more — see memory/logs/${today}.md`. The `./notify` call should use the explorer URL for each chain (`etherscan.io`, `basescan.org`, `arbiscan.io`, `optimistic.etherscan.io`, `polygonscan.com`).
+Cap the notification body at 10 events; if more survived, append `+N more — see memory/logs/${today}.md`. The `./notify` call should use the explorer URL for each chain (`etherscan.io`, `basescan.org`, `arbiscan.io`, `optimistic.etherscan.io`, `polygonscan.com`, `robinhoodchain.blockscout.com`).
 
 Send the alert with `./notify -f alert.md`.
 
