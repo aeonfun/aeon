@@ -17,6 +17,17 @@ function alive(pid) {
   }
 }
 
+// A SIGKILLed child stays visible to kill(pid, 0) until it is reaped, and once
+// bash is gone that is up to init, so give it a moment instead of checking once.
+async function gone(pid, ms = 2_000) {
+  const end = Date.now() + ms;
+  while (alive(pid)) {
+    if (Date.now() > end) return false;
+    await new Promise(r => setTimeout(r, 50));
+  }
+  return true;
+}
+
 test("a timeout kills the harness and every process it started", { timeout: 10_000 }, async () => {
   const dir = mkdtempSync(join(tmpdir(), "aeon-mcp-spawn-"));
   try {
@@ -33,7 +44,7 @@ test("a timeout kills the harness and every process it started", { timeout: 10_0
     assert.ok(Date.now() - started < 5_000, "spawnHarness should return soon after the timeout");
     const pid = Number(readFileSync(pidFile, "utf-8").trim());
     assert.ok(pid > 0);
-    assert.equal(alive(pid), false, "the harness's own child should be killed with it");
+    assert.equal(await gone(pid), true, "the harness's own child should be killed with it");
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
