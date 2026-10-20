@@ -67,6 +67,7 @@ labels:
   "My Wallet": {
     "last_block": 19345678,
     "last_run": "2026-04-20T12:00:00Z",
+    "last_block_hash": "0x…",
     "alerted_tx": ["0xabc...", "0xdef..."],
     "median_usd_30d": 8500
   }
@@ -74,6 +75,7 @@ labels:
 ```
 
 - `last_block` — start block for the next run's fetch. Initialise to `current_block − 2400` (≈ 8h ETH) on first run; on `robinhood` (~0.1s blocks) use `current_block − 280000` for the same ≈ 8h window. On `robinhood`, also cap every later run at that span: if `current_block − last_block` is more than 280000 (a delayed or caught-up run; 12h late is ~420k blocks, 15 windows per direction per watch), start from `current_block − 280000` and log `CLAMPED: skipped <n> blocks` for that watch, so a late run degrades to "last ~8h" instead of walking the whole gap.
+- `last_block_hash` — the canonical hash observed for `last_block` on the previous successful run. Before fetching new events, read that block again. If the hash differs, log `REORG: block <n> changed <old> → <new>`, rewind the watch to `max(0, last_block − 12)` (or the chain's documented finality depth), and replay the range. Do not send an alert until the replay completes. Keep normal transaction-hash dedup, but remove hashes first seen inside the replay range so a replacement event cannot be suppressed by stale state.
 - `alerted_tx` — tx hashes alerted in last 7 days, capped at 200. Used for cross-run dedup.
 - `median_usd_30d` — rolling median USD size of transfers at this watch; powers the `WHALE-TRANSFER` tag.
 
@@ -125,6 +127,11 @@ Defaults for a captured watch: `type: wallet`, `threshold_usd: 1000`, `label` = 
 For each watch (filtered by `${var}`):
 
 ### 1. Fetch raw activity from `last_block` → latest
+
+At the start of each watch, resolve `current_block` and save its hash. For a watch
+with `last_block_hash`, perform the reorg check above before constructing any query
+windows. All sources in this run must use the same numeric `from_block` and
+`to_block`; never mix a stale `latest` response with a pinned evidence receipt.
 
 **Path A — Alchemy** (preferred, if `ALCHEMY_API_KEY` set).
 
@@ -304,6 +311,7 @@ Rules:
 
 For each watch whose fetch **succeeded** (success ≠ "events found"):
 - `last_block ← current_block`
+  - `last_block_hash ← hash(current_block)` from the pinned block read used by the run
 - `last_run ← now` (ISO 8601 UTC)
 - `alerted_tx ← (new_tx_hashes + alerted_tx)[:200]`, purging entries > 7d old
 - `median_usd_30d ← median of all value_usd from this watch's transfers in last 30d` (read from recent logs; skip recomputation if < 5 samples)
