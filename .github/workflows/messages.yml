@@ -33,6 +33,8 @@ permissions:
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
   NODE_OPTIONS: '--no-deprecation'
+  BASE_RPC_URL: ${{ secrets.BASE_RPC_URL }}
+  RH_RPC_URL: ${{ secrets.RH_RPC_URL }}
 
 # Poll runs serialize (prevent duplicate polls). Message runs get unique groups (parallel execution).
 concurrency:
