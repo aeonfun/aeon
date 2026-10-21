@@ -4,7 +4,7 @@ watches:
     address: "0xA85A38796B951CE87B378538b32B3E6Ee3C4C373"
     chain: base
     type: wallet
-    threshold_usd: 500
+    threshold_usd: 200
 
   # xDEUS 灵魂绑定 NFT —— 铸造 / 赎回都会触发
   - label: "xDEUS"
