@@ -3,7 +3,7 @@ title: Note Systems (NOTE)
 description: Note Systems NOTE 代币 —— Robinhood Chain (4663) 上的结构化票据协议治理/激励代币，合约、供应、持仓与解锁排程
 tags: [robinhood-chain, token, unlock, note-systems]
 resource: https://note.systems/
-timestamp: 2026-10-21T10:15:00Z
+timestamp: 2026-10-21T10:25:00Z
 ---
 
 # Note Systems (NOTE)
@@ -74,6 +74,25 @@ owner EOA `0x0b64…` 是 PROPOSER（`hasRole` = 1）：可随时 schedule，48h
 
 即：把 24 万枚拆成 9 份固定大小、10 秒内连续抛售 —— 明显的拆单规避冲击成本手法，不是自然卖盘。
 
+## 第二次解锁的处置（2026-10-21，进行中）
+
+**同一个 240,000 的整数，提前了整整一天。**
+
+1. 10:19:04Z（blk 0x59d7de4，tx `0x2368258b…b7e0`）owner EOA 转出 **240,000 NOTE** 到 `0x69bb2e438b04109dc1ec0cc43f77f455649d7c63`
+2. 该钱包**全新**：nonce = 0，从未发过交易；ETH 余额 = 0
+3. 因此**当前无法卖出** —— 需先被 gas 充值
+
+关键差异 vs 上一轮：上一轮是 unlock 执行后 7h43m 才转账；这一轮在下一次 unlock（10-23 09:57Z）**之前**就先转了 24 万。说明 owner EOA 手里还有可自由支配的余额（转出前 960,000，转出后 720,000），不必等 timelock。
+
+**触发信号**：`0x69bb` 的**第一笔出账**，或**第一笔入账 ETH**。两者任一发生即视为抛售启动。
+
+## 价格背景（GeckoTerminal OHLCV，2026-10-21）
+
+- 10-15 高点 $0.0879 → 10-21 $0.0533，6 天 −39%
+- 10-19 单日区间 $0.0519–$0.0767（振幅 48%）
+- 10-20 22:52 那次 9 笔砸盘，池子价格 $0.0571 → $0.0559（−2.1%），说明 24 万的冲击被池子吸收了约 2%
+- 结论：240,000 ≈ 日成交量 7%，单次冲击温和；真正的压力来自 120 万 timelock 解锁
+
 ## 24h 资金流（2026-10-20T10:00Z → 2026-10-21T10:00Z，block 93333434 → 94197434）
 
 - Transfer 事件 1,712 个 / 1,211 笔 tx；发送方 168、接收方 204
@@ -86,10 +105,13 @@ owner EOA `0x0b64…` 是 PROPOSER（`hasRole` = 1）：可随时 schedule，48h
 - owner 是单 EOA，掌握 mint（cap 尚有 40M）、pause、以及 timelock 提案权 —— 单点完全控制
 - 每 48h 可解锁 120 万 NOTE ≈ 2% 供应 ≈ $65k；相对 $182k 的日成交量是显著压力
 - 解锁后惯用手法是新 EOA + 固定切单抛售，链上可提前 48h 看到
+- **owner 不需等 timelock**：它自持 720,000 NOTE，可随时自行转出（10-21 的 24 万即来自自有余额）
 
 # Citations
 
 - 链上数据：`https://rpc.mainnet.chain.robinhood.com`（eth_call / eth_getLogs），2026-10-21
 - 行情：DexScreener `api.dexscreener.com/latest/dex/tokens/0xc4f730335fb9e439ca5552f7b52b8e638c4245b0`
+- K 线：GeckoTerminal `api.geckoterminal.com/api/v2/networks/robinhood/pools/0x378b1023…7f9f91/ohlcv/hour|day`（keyless，200）
+- 市值：CoinGecko `api.coingecko.com/api/v3/coins/note-systems`（keyless 可用）
 - 项目：`https://note.systems/`、`https://note.systems/docs/`
 - 浏览器：`https://robinhoodchain.blockscout.com`（Cloudflare 403，未用）

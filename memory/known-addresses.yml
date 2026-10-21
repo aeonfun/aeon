@@ -4,4 +4,13 @@ labels:
   "0x940a319b75861014a220d9c6c144d108552b089b": "DEUS 代币"
   "0xe6d5f7439bc236c40054e2275f765f59343d4431": "xDEUS 合约"
   "0xa85a38796b951ce87b378538b32b3e6ee3c4c373": "DEUS escrow"
+  # --- NOTE / Note Systems (Robinhood Chain 4663) ---
+  "0xc4f730335fb9e439ca5552f7b52b8e638c4245b0": "NOTE 代币"
+  "0x4a53afd9c4d707c8fddd6415947ef0a1e67518b8": "NOTE timelock (48h)"
+  "0x0b64b35c6dd23944d6d4029864d2ca2aa1b66422": "NOTE owner EOA (单点控制)"
+  "0x8366a39cc670b4001a1121b8f6a443a643e40951": "Uniswap v4 PoolManager"
+  "0x69bb2e438b04109dc1ec0cc43f77f455649d7c63": "NOTE 抛售中转 A (10-21 新建)"
+  "0x6f62b43d8dfc378d3e2e8f8b1095919282691789": "NOTE 抛售中转 B (10-20 用过)"
+  "0xd000b458f6a194b10e3ff516b00b94f7234695d3": "NOTE 抛售执行 (10-20 切单)"
+  "0x5fc5360d0400a0fd4f2af552add042d716f1d168": "USDG 报价币"
   # ↓ 以后认得了团队/大户地址，加在这里

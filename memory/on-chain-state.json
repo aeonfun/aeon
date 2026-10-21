@@ -14,5 +14,43 @@
     "median_usd_30d": null,
     "note": "ERC-721. Incremental window 52893845->52894071: 0 mints, 0 burns, 0 moves. 24h (52850871->52894071): 6 mints (stake), 4 burns (unstake), 21 Transfer logs (11 non-mint/burn moves). Supply 1,711 unchanged; escrow holds 57 unchanged.",
     "source": "tenderly-rpc (eth_getLogs, erc721 Transfer)"
+  },
+  "NOTE": {
+    "alerted_tx": [
+      "0x2368258ba33c6f93991cdb5b97722f010e7b49919edf964385d4ce1e0744b7e0"
+    ],
+    "last_block": 94210020,
+    "last_run": "2026-10-21T10:24:00Z",
+    "median_usd_30d": null,
+    "note": "Watch added 2026-10-21 on operator command '盯 NOTE'. Baseline: NOTE totalSupply 60,000,000; timelock 15,254,442.02 (25.42%), PoolManager 5,257,717 (8.76%), owner EOA 720,000 (was 960,000 before staging), staging wallet 0x69bb 240,000. The 10:19:04Z staging tx is in alerted_tx so it will not re-alert.",
+    "source": "rpc.mainnet.chain.robinhood.com (eth_getLogs / eth_call, keyless)"
+  },
+  "NOTE timelock": {
+    "alerted_tx": [],
+    "last_block": 94210020,
+    "last_run": "2026-10-21T10:24:00Z",
+    "median_usd_30d": null,
+    "note": "OZ TimelockController 0x4a53afd9c4d707c8fddd6415947ef0a1e67518b8, delay 172,800s (48h). Watched with NO event_topic filter on purpose: CallScheduled is the 48h early-warning signal, CallExecuted is the actual unlock, Cancelled kills it -- all three matter. Open schedule: 1,200,000 NOTE scheduled 2026-10-21T09:57:36Z (tx 0xbf795b94…, blk 0x59d4d47), executable 2026-10-23T09:57:36Z. State as of this run: 0 new timelock events since blk 94197434.",
+    "source": "rpc.mainnet.chain.robinhood.com (eth_getLogs, unfiltered)"
+  },
+  "NOTE owner EOA": {
+    "alerted_tx": [
+      "0x2368258ba33c6f93991cdb5b97722f010e7b49919edf964385d4ce1e0744b7e0"
+    ],
+    "last_block": 94210020,
+    "last_run": "2026-10-21T10:24:00Z",
+    "median_usd_30d": null,
+    "note": "Plain EOA, no multisig/timelock guard. Holds mint (40M of 100M cap unissued), pause, and timelock PROPOSER. Balance 720,000 NOTE after sending 240,000 to 0x69bb at 2026-10-21T10:19:04Z (blk 0x59d7de4). Prior equivalent move: 2026-10-20 19:05Z sent 240,000 to 0x6f62b43d, which dumped it as 9 x 26,640 NOTE modifyLiquidities within 10s at 20:52Z.",
+    "source": "rpc.mainnet.chain.robinhood.com (eth_getLogs / eth_call)"
+  },
+  "NOTE staging 0x69bb": {
+    "alerted_tx": [
+      "0x2368258ba33c6f93991cdb5b97722f010e7b49919edf964385d4ce1e0744b7e0"
+    ],
+    "last_block": 94210020,
+    "last_run": "2026-10-21T10:24:00Z",
+    "median_usd_30d": null,
+    "note": "Newly created wallet 0x69bb2e438b04109dc1ec0cc43f77f455649d7c63. nonce 0 at discovery, native ETH balance 0 -- received 240,000 NOTE from owner at 2026-10-21T10:19:04Z but CANNOT SELL until it is gas-funded, so its first outgoing tx or first inbound ETH is the actionable trigger. Precedent timing: 10-20 staging 19:05Z -> dump 20:52Z = 1h47m.",
+    "source": "rpc.mainnet.chain.robinhood.com (eth_getLogs / eth_getBalance / eth_getTransactionCount)"
   }
 }
