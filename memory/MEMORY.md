@@ -1,8 +1,17 @@
 # Long-term Memory
-*Last consolidated: never*
+*Last consolidated: 2026-10-21*
 
 ## About This Repo
-- Autonomous agent running on GitHub Actions via a coding-agent harness (Claude Code by default)
+- Autonomous agent on GitHub Actions; **schedules fire** — `scheduler: cron` ran on a `schedule` event 2026-10-21T10:09:10Z. `enabled: true` ≠ has ever run. [source: logs/2026-10-21#telegram-reply]
+
+## Tracked Token
+
+| Token | Contract | Chain |
+|---|---|---|
+| DEUS | 0x940A319B75861014A220D9c6c144d108552B089B | base |
+
+> `price-alert` reads only this table's first row — one token at a time. Currently DEUS.
+> Escrow / xDEUS addresses: [DEUS escrow](/topics/deus-escrow.md).
 
 ## Recent Articles
 | Date | Title | Topic |
@@ -17,7 +26,10 @@
 |-------|------|-------|
 
 ## Lessons Learned
-- (none yet - durable lessons from runs get promoted here by `memory-flush` / `reflect`)
+- **xDEUS is ERC-721, not ERC-20** — `decimals()` reverts, `Transfer` carries `tokenId` in `topics[3]`. The ERC-20 topic0 hash still matches, so watch config needs no change. [source: logs/2026-10-21#onchain-monitor]
+- **Never trust a zero-log window.** Re-query a window with known activity and check the escrow balance via `eth_call`; only then is "quiet" real. [source: logs/2026-10-21#onchain-monitor]
+- **Keys are unset in this repo's runs** (`ALCHEMY_`, `ETHERSCAN_`, `COINGECKO_API_KEY`). Keyless Base reads work only via Tenderly's public gateway, capped at 1,000 blocks per `eth_getLogs`. [source: logs/2026-10-21#onchain-monitor]
+- Write **plain Markdown** in `./notify`; it renders per channel and auto-chunks. Don't hand-format for Telegram. Multi-line → `-f file.md`, never `"$(cat file.md)"`. [source: logs/2026-10-21#onchain-monitor]
 
 ## Next Priorities
 - Configure notification channels (Telegram, Discord, or Slack)
@@ -70,3 +82,13 @@ Telegram 的 Markdown **不支持表格**，且**中文是双宽字符**（一�
 ## Active Topics
 
 - [Note Systems (NOTE)](topics/tokens/note-systems.md) — Robinhood 链 4663。**2026-10-23T09:57Z timelock 解锁 120 万 NOTE**（≈2% 供应，$65k）。owner 单 EOA；上次解锁靠新地址 10 秒内 9 笔固定切单抛售。
+- Enable scheduled dispatch for `heartbeat` — 2 timeouts on 2026-10-21, since recovered (1 success, consecutive_failures=0). Watch GitHub issue #1; no repair skill is enabled to close it. [source: logs/2026-10-21#heartbeat]
+- Confirm `price-alert` completes an hourly run now that its state file exists; it has still never run. [source: logs/2026-10-21#telegram-reply]
+- Set `ALCHEMY_API_KEY` to restore decoded transfers + native ETH (currently ERC-20/721 logs only).
+
+## Reference
+- [DEUS / xDEUS watch addresses](/topics/deus-escrow.md) — contract, escrow, xDEUS NFT; stake/unstake pairing; scale reference.
+- [Base RPC access from the runner](/topics/base-rpc-access.md) — the one working keyless endpoint and its block cap.
+- [Scheduler & notification plumbing](/topics/ops-plumbing.md) — diagnosing schedule events, notify formatting.
+- [price-alert state file contract](/topics/price-alert-state.md) — field meanings and the seeding rule.
+- [Topics index](/topics/index.md) — all durable notes.
