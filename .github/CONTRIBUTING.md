@@ -207,7 +207,7 @@ Run the checks locally before pushing:
 bash scripts/check-skill-categories.sh
 bash scripts/check-capabilities-parity.sh
 node scripts/validate-skill-packs.mjs          # listing a community pack
-node scripts/validate-config.js                # aeon.yml structure and schedules
+node scripts/validate-config.js                # aeon.yml structure, schedules and skill keys
 node scripts/validate-readme-catalog.mjs       # README tables and counts vs packs.json
 node bin/generate-skill-icons --check          # every skill has an icon glyph
 node scripts/gen-agents-md.js --check

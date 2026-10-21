@@ -51,7 +51,7 @@ The left sidebar switches between the workspaces; the **Team** roster below the 
 
 On a phone (below 768px) the sidebar and the Feed / Runs / Analytics panel become slide-in drawers opened from a top bar, and Pull / Push move into the sidebar drawer.
 
-Selecting a skill from the roster opens its detail panel: description, schedule, the API keys and MCP servers it needs, a `var` input, a **model picker** (its options track the active harness), and **Run now**.
+Selecting a skill from the roster opens its detail panel: description, schedule, the API keys and MCP servers it needs, a `var` input, a **model picker** (its options track the active harness), and **Run now**. The schedule editor takes times in your local zone and saves the UTC cron, half-hour zones and day changes included; a malformed cron is refused with the reason instead of being saved as a schedule that never fires.
 
 ### Harness selector
 

@@ -1,7 +1,7 @@
 {
   "name": "aeon",
   "displayName": "Aeon",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Run your own scheduled agent: set up Aeon, turn skills on, schedule and debug runs.",
   "author": {
     "name": "Aeon Inc",

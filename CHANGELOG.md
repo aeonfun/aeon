@@ -11,6 +11,23 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Added
 
+- **`onchain-monitor` watches Robinhood Chain (4663).** `robinhood` joins the chain list, with
+  Alchemy (`robinhood-mainnet`) when `ALCHEMY_API_KEY` is set and a keyless fallback that reads
+  ERC-20 transfers from the public RPC in 30,000-block windows, since Etherscan's free tier
+  refuses that chain. `deploy-uni-hook` also uses the Alchemy key on Robinhood Chain instead of
+  always falling back to the rate-limited public RPC. (#1243, #1244)
+- **`validate-config.js` flags unknown and misspelled skill keys** (check 7, `skill-keys`). A
+  key outside `enabled, schedule, var, model, harness, attest` fails with a did-you-mean hint
+  (`enabld` -> `enabled`), and an `enabled: true` entry with no schedule that is not a reactive
+  target or chain step fails too. Before, a typo silently dropped the schedule. Forks that put
+  their own extra keys on a skill entry will now fail this check. (#1250)
+- **Spent subscriptions get their own `plan_limit` error class,** and failover attempts show in
+  Langfuse (`gateway:<name>` and `failover` tags, `gateway_attempt` metadata). The saved error
+  names each attempt (`claude: You've hit your weekly limit ... | glm: API Error: 429 ...`), and
+  a fallback attempt waits out 429/529s for at most `AEON_FAILOVER_MAX_WAIT_MS` (default 2 min)
+  per request, so a dead fallback key fails fast instead of holding the run for 30 minutes. See
+  `docs/langfuse.md`. (#1248)
+
 - **Langfuse: one root span per run, priced cost, scores and slicing.** Each claude call now
   sends a root span (also on failed runs) with one priced `usage <model>` row per model, and
   Claude Code's own spans nest under it again: a 1s SessionStart hold fixes the trace tree that
@@ -381,6 +398,13 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Fixed
 
+- **Dashboard schedules respect your time zone:** the picker carries the weekday across midnight
+  and handles half-hour and 45-minute zones (India, Nepal), and `PATCH /api/skills` refuses a
+  malformed cron with the reason, using the same rules as `validate-config.js`, instead of saving
+  one that never fires. Uploaded skill folders are slugified like `.skill` files. (#1247, #1249)
+- **MCP server harness timeouts end the run:** a timed-out harness is killed as a process group
+  and `timeout(1)` ends the run before the node backstop, so the 30-minute timeout always
+  resolves. (#1247, #1249)
 - **Scheduler:** `SAT-SUN` / `FRI-SUN` ranges run (SUN closes a range as 7) (#1200, #1212); an
   invalid schedule now raises a `::warning::` naming the skill instead of a silent skip (#1206);
   a cron-state push that fails every retry fails the tick, so owed skills are not dispatched
