@@ -23,6 +23,14 @@
 - Configure notification channels (Telegram, Discord, or Slack)
 - Run a first skill (`heartbeat` is on by default), then enable a few more
 
+## 已知故障
+- **定时调度从未运行**（2026-10-21 核实）：`scheduler.yml` 在 Actions 里 0 次运行，
+  仓库全部 30 次运行只有 `workflow_dispatch` / `push`，零次 `schedule`。本仓库是
+  04:36 UTC 创建的 fork，fork 的定时工作流默认关闭。后果：`aeon.yml` 里所有
+  schedule 都是摆设，`price-alert` 从未执行。需在 Actions 页面手动 Enable workflow。
+- 复跑诊断：全文搜索 `scheduler.yml` 之外的调度入口（无）。手动触发可用
+  `gh workflow run scheduler.yml`。
+
 ## Tracked Token
 
 | Token | Contract | Chain |

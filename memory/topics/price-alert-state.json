@@ -1,0 +1,42 @@
+{
+  "contract": "0x940A319B75861014A220D9c6c144d108552B089B",
+  "chain": "base",
+  "ath": {
+    "price_usd": 0.06876,
+    "observed_at": "2026-05-28T15:35:00Z",
+    "announced_at": "2026-05-28T15:35:00Z"
+  },
+  "last_alerts": {
+    "ath": null,
+    "sharp_move": null,
+    "target_hit": null
+  },
+  "targets": {
+    "0.025": {
+      "side": "above",
+      "first_seen_below_at": "2026-10-21T10:00:00Z",
+      "hit_at": null,
+      "announced_at": null
+    },
+    "0.032": {
+      "side": "above",
+      "first_seen_below_at": "2026-10-21T10:00:00Z",
+      "hit_at": null,
+      "announced_at": null
+    },
+    "0.041": {
+      "side": "above",
+      "first_seen_below_at": "2026-10-21T10:00:00Z",
+      "hit_at": null,
+      "announced_at": null
+    },
+    "0.012": {
+      "side": "below",
+      "first_seen_below_at": "2026-10-21T10:00:00Z",
+      "hit_at": null,
+      "announced_at": null
+    }
+  },
+  "last_run_at": "2026-10-21T10:00:20Z",
+  "notes": "Baseline seeded manually on 2026-10-21 (first state file for this contract). ath.price_usd is the true all-time high (CoinGecko, 2026-05-28), not the tracking-start price, so the ATH gate cannot false-fire until the token genuinely exceeds it. Targets pre-registered from aeon.yml var so a crossing between runs is caught rather than swallowed by the skill's first-observation rule."
+}
