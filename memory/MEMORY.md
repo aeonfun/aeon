@@ -27,6 +27,7 @@
 
 ## Lessons Learned
 - **新钱包 + 固定金额整数 = 先看 gas。** NOTE 团队抛售前会把整数枚转进全新 EOA；该 EOA 无 ETH 时无法卖出，所以"第一笔 ETH 入账"比"转账发生"更接近真实开砸时刻。盯 gas 充值，不要盯转账本身。 [source: logs/2026-10-21#telegram-reply]
+- **链上预警有保质期。** 一旦团队把"一次性砸盘"改成"线性释放"（如 NOTE 10-21 的 30 天 60 万），盯转账就失效了 —— 信号还在，但边际价值塌了。判断出货持续性要看**总量与节奏**，不是单笔。 [source: logs/2026-10-21#telegram-reply]
 - **owner 自有余额与 timelock 是两条独立供给。** 别只盯 unlock 排程：NOTE owner EOA 不等 10-23 解锁就自行转出了 24 万。 [source: logs/2026-10-21#telegram-reply]
 - **xDEUS is ERC-721, not ERC-20** — `decimals()` reverts, `Transfer` carries `tokenId` in `topics[3]`. The ERC-20 topic0 hash still matches, so watch config needs no change. [source: logs/2026-10-21#onchain-monitor]
 - **Never trust a zero-log window.** Re-query a window with known activity and check the escrow balance via `eth_call`; only then is "quiet" real. [source: logs/2026-10-21#onchain-monitor]
@@ -44,7 +45,7 @@
 
 ## Active Topics
 
-- [Note Systems (NOTE)](topics/tokens/note-systems.md) — Robinhood 4663，已加 4 个 watch，但 ETH-gas 触发器在盲区里（见 Lessons）。10-21 10:19Z owner EOA 转 240,000 NOTE 至新钱包 `0x69bb…7c63`；10:35Z 复核 nonce 0 / ETH 0 → 尚不能卖。**触发 = 该钱包第一笔出账或第一笔 ETH 入账**。另有 120 万 timelock 可执行 10-23 09:57Z。上一轮同额 24 万在 1h47m 后被 9 笔切单砸出。
+- [Note Systems (NOTE)](topics/tokens/note-systems.md) — Robinhood 4663。**10-21 第二轮砸盘已执行**：11:08:31–38Z 九笔 ×26,640 砸完 24 万，staging 0x69bb 清空。**11:09Z owner 把 60 万转进自有合约 0xfdd9，30 天线性 = 每天 ~2 万**（砸盘从事件变噪音）。owner EOA 现仅 120,000。10-23 09:57Z 的 120 万 unlock **未撤销**。
 - `heartbeat` 已恢复：2 次 `hivemindos: timeout` 之后成功，`consecutive_failures=0`；issue #1 已于 10:14:53Z 关闭，现在 0 open issue / 0 open PR。[source: logs/2026-10-21#heartbeat]
 - `price-alert` 已于 10:11 UTC 完成首次真实运行（success，`PRICE_ALERT_OK`，四门槛全未触及）。2026-10-23 UTC 的 hourly 轮次需继续观察是否稳定。[source: logs/2026-10-21#price-alert]
 
