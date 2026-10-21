@@ -88,3 +88,11 @@ NOTE 相关阈值均为 $5,000。timelock 刻意不加 `event_topics` 过滤 —
 - **失败时日志里写明 HTTP 状态码 + 错误体前 200 字符**。
 - 端点优先级：`$BASE_RPC_URL` / `$RH_RPC_URL` → 失败再退回公共 RPC。
 - `eth_getTransactionByHash`/`eth_getTransactionReceipt` 在 Robinhood 公共 RPC 上可用（用来拆多跳 tx 很关键）；`secretcurl` 只识别 `*_API_KEY` 形式的占位符，RPC env 走 `node` 内读取更稳。
+
+## Infura eth_getLogs 用法
+
+- **失败一律把窗口减半重试**，不要用同样范围重试。
+- 一律带 `address` + `topics` 过滤，绝不空过滤扫全网。
+- 429 / 5xx 指数退避（1s→2s→4s，最多 3 次）。
+- 失败时日志里写 **HTTP 状态码 + 错误体前 200 字符**。
+- 单次 run 的 RPC 调用上限 150 次，超了就记录进度、下次续扫。
