@@ -31,11 +31,14 @@ Today is ${today}. This is the fleet's **downstream updater** - the counterpart 
 
 ## Steps
 
+Every command below is **one Bash call**: run it, read the value it prints, and type that value into the next command (shown as `<UPSTREAM>`, `<HEAD_SHA>`, ...). Never assign shell variables (`X=$(...)`), chain with `&&`/`;`, redirect into a file, or write a script and run it with `bash`: the permission layer refuses all of those in this run. Create or change files with Write/Edit.
+
 ### S0. Bootstrap + load state
 
-```bash
-mkdir -p memory/topics
-[ -f memory/topics/aeon-update-state.json ] || echo '{"baseline_sha":null,"upstream":null,"last_run":null,"last_pr":null,"pending_conflicts":[]}' > memory/topics/aeon-update-state.json
+If `memory/topics/aeon-update-state.json` does not exist, create it with Write:
+
+```json
+{"baseline_sha": null, "upstream": null, "last_run": null, "last_pr": null, "pending_conflicts": []}
 ```
 
 Read `memory/MEMORY.md` for context and scan the last ~3 days of `memory/logs/` - drop anything already reported so a repeat run isn't re-sent. Read the state file:
@@ -51,49 +54,51 @@ Read `memory/MEMORY.md` for context and scan the last ~3 days of `memory/logs/` 
 ### S2. Resolve the upstream source
 
 ```bash
-SELF=$(gh repo view --json nameWithOwner -q .nameWithOwner)
-UPSTREAM="${REPO_OVERRIDE:-$(gh api "repos/${SELF}" --jq '.parent.full_name // empty')}"
-[ -z "$UPSTREAM" ] && UPSTREAM="aeonfun/aeon"
+gh repo view --json nameWithOwner -q .nameWithOwner                # -> SELF
+gh api "repos/<SELF>" --jq '.parent.full_name // empty'            # -> UPSTREAM (skip when REPO_OVERRIDE is set)
 ```
+
+`UPSTREAM` = `REPO_OVERRIDE`, else the parent, else `aeonfun/aeon` when the parent is empty.
 
 If `UPSTREAM` == `SELF`, this instance **is** canon - there is nothing upstream to pull. Write status `AEON_UPDATE_IS_UPSTREAM` to `memory/logs/${today}.md`, send **no** notification, and stop.
 
 ```bash
-UP_DEFAULT=$(gh api "repos/${UPSTREAM}" --jq '.default_branch')
-HEAD_SHA=$(gh api "repos/${UPSTREAM}/commits/${UP_DEFAULT}" --jq '.sha')
+gh api "repos/<UPSTREAM>" --jq '.default_branch'                    # -> UP_DEFAULT
+gh api "repos/<UPSTREAM>/commits/<UP_DEFAULT>" --jq '.sha'          # -> HEAD_SHA (HEAD7 = first 7 chars)
 ```
 
 ### S3. Establish / reset the baseline
 
-- **`reset=fork-point`** → `BASELINE=$(gh api "repos/${UPSTREAM}/compare/${HEAD_SHA}...$(git rev-parse HEAD)" --jq '.merge_base_commit.sha')`. `reset=<sha>` → `BASELINE=<sha>`. Persist immediately to state, then continue.
+- **`reset=fork-point`** → run `git rev-parse HEAD` (-> LOCAL_HEAD), then `gh api "repos/<UPSTREAM>/compare/<HEAD_SHA>...<LOCAL_HEAD>" --jq '.merge_base_commit.sha'` -> `BASELINE`. `reset=<sha>` → `BASELINE=<sha>`. Persist it to the state file with Edit, then continue.
 - **First run (`BASELINE` null and no `reset`):** a fresh instance already carries all of canon from fork time, so there is no delta to apply - just **anchor the watermark**. Set `baseline_sha = HEAD_SHA`, write state, log `AEON_UPDATE_BASELINE_SET`, send a one-line notify (`baseline initialized at <head7>; future runs sync from here`), and stop. (To backfill everything since the fork point instead, re-run with `reset=fork-point`.)
-- **`BASELINE` == `HEAD_SHA`:** in sync. Re-verify `PENDING` (S8) in case a prior conflict is now resolved, update state, log `AEON_UPDATE_IN_SYNC`, notify nothing, stop.
+- **`BASELINE` == `HEAD_SHA`:** in sync. Run the S4 `plan` command anyway: it returns `AEON_UPDATE_IN_SYNC` with `pending_conflicts` re-verified against HEAD. If that list differs from `PENDING` (a prior conflict was resolved), write it into the state file with Edit. Log `AEON_UPDATE_IN_SYNC`, notify nothing, stop.
 - **A sync PR is still open (sync mode):** the state file on `main` still holds the old baseline until that PR merges, so a second PR from it would carry the same commits again and two branches would each move the watermark. Check before doing any work, including before persisting a `reset=`:
 
   ```bash
-  OPEN_PR=$(gh pr list --repo "$SELF" --state open --base "$UP_DEFAULT" --limit 100 --json number,headRefName,url \
-    --jq '[.[] | select(.headRefName | startswith("aeon-update/sync-"))] | sort_by(.number) | last // empty | "\(.number) \(.headRefName) \(.url)"')
+  gh pr list --repo "<SELF>" --state open --base "<UP_DEFAULT>" --limit 100 --json number,headRefName,url --jq '[.[] | select(.headRefName | startswith("aeon-update/sync-"))] | sort_by(.number) | last // empty | "\(.number) \(.headRefName) \(.url)"'
   ```
 
-  If `OPEN_PR` is set: write nothing (no state file, no branch, no PR) and log `AEON_UPDATE_PR_OPEN` with the PR and its range. If its branch already ends in `HEAD_SHA`'s first 7 chars, stay silent; if upstream has moved past it, send one line (`PR #N still open; upstream is M commits past it, merge or close it and the next run syncs the rest`, `--mute-key "aeon-update:${HEAD7}"`). Stop. `report` mode skips this check and notes the open PR in its report.
+  If it prints a PR (`OPEN_PR`): write nothing (no state file, no branch, no PR) and log `AEON_UPDATE_PR_OPEN` with the PR and its range. If its branch already ends in `HEAD_SHA`'s first 7 chars, stay silent; if upstream has moved past it, send one line (`PR #N still open; upstream is M commits past it, merge or close it and the next run syncs the rest`, `--mute-key "aeon-update:${HEAD7}"`). Stop. `report` mode skips this check and notes the open PR in its report.
 
-### S4. Compare baseline → HEAD
+### S4-S6. Plan: compare, partition, 3-way classify
+
+All of S4-S8's file work is done by `scripts/aeon_update.py`, in single commands. **Do not re-implement it in the shell**: helper functions, loops, redirects into files and `bash <script>` are all refused in this run, so a hand-written classify script ends the run with nothing synced (miroshark-aeon, 2026-10-21). Run:
 
 ```bash
-gh api "repos/${UPSTREAM}/compare/${BASELINE}...${HEAD_SHA}" --jq '{
-  ahead: .ahead_by, behind: .behind_by, status,
-  commits: [.commits[]? | {sha: .sha[0:7], msg: (.commit.message | split("\n")[0]), date: .commit.author.date}],
-  files:   [.files[]?   | {filename, status, previous_filename, additions, deletions}]
-}' > /tmp/aeon-update-compare.json
+python3 scripts/aeon_update.py plan --upstream "<UPSTREAM>" --baseline "<BASELINE>" --head "<HEAD_SHA>"
 ```
 
-Error handling:
-- **404 / `status: "diverged"` with no merge base** (baseline not an ancestor of HEAD - history rewrite or unrelated repo): stop with `AEON_UPDATE_BASELINE_UNREACHABLE`; notify the operator to re-run with `reset=fork-point` or `reset=<sha>`.
-- Cross-repo compare returns at most **300 files**; if `.files` looks truncated, note `files_truncated=true` in the report - the operator can run again after merging to pick up the remainder.
+It prints a JSON summary and mutates nothing in the repo (its scratch goes to `${RUNNER_TEMP:-/tmp}/aeon-update/`). Read `status`:
+- `AEON_UPDATE_IN_SYNC`: handle as S3's in-sync case.
+- `AEON_UPDATE_BASELINE_UNREACHABLE` (exit 3; the baseline is not an ancestor of HEAD - history rewrite or unrelated repo): stop with that status and notify the operator to re-run with `reset=fork-point` or `reset=<sha>`.
+- `AEON_UPDATE_ERROR` (exit 2): stop, log the `error`, and notify it. Never fall back to classifying by hand.
+- `AEON_UPDATE_PLANNED`: the summary has `counts`, the `clean` paths per disposition, `conflicts` (path, reason, in-range `upstream_commits`, and a `diff` file with upstream's BASELINE..HEAD diff), `operator` (OPERATOR-owned paths upstream changed, each with a `diff` file), `unreadable`, the recomputed `pending_conflicts`, and the `commits` in range. Read the `diff` files you need with the Read tool.
 
-### S5. Partition changed files
+What the plan decides, so you can explain it in the PR:
 
-Classify every entry in `.files` by path. A file is **OPERATOR-owned** (surfaced, never auto-written) if its path matches any of:
+**Changed paths** are every path whose entry differs between upstream's BASELINE and HEAD trees (no 300-file compare cap). A rename is a delete of the old path plus an add of the new one.
+
+**OPERATOR-owned** (surfaced, never written):
 
 ```
 aeon.yml            STRATEGY.md         soul/**             memory/**
@@ -103,205 +108,63 @@ catalog/*.json  (except catalog/skill-packs.json)
 apps/dashboard/outputs/**       .github/dependabot.yml
 ```
 
-Everything else is **OWNED** (a candidate for auto-apply): `skills/**`, `scripts/**`, `bin/**`, `harness-adapter/**`, `.github/**` (except `.github/dependabot.yml`), `apps/**` (except `apps/dashboard/outputs/**`), `CLAUDE.md`, `AGENTS.md`, `docs/**`, `.github/README.md`, `LICENSE`, `CHANGELOG.md`, `.gitignore`, `eyebrow.policy.json`, `catalog/skill-packs.json`, and tracked root helpers (`aeon`, ...).
+Everything else is **OWNED**: `skills/**`, `scripts/**`, `bin/**`, `harness-adapter/**`, `.github/**`, `apps/**`, `docs/**`, `CLAUDE.md`, `AGENTS.md`, `CHANGELOG.md`, `.gitignore`, `eyebrow.policy.json`, `catalog/skill-packs.json`, root helpers. `catalog/*.json` and `eyebrowlock.json` are never copied from upstream: apply regenerates them from the synced sources.
 
-`catalog/*.json` and `eyebrowlock.json` are OPERATOR-owned here **only** so they are never blindly copied - they are **regenerated** from the synced sources in S7, which is the correct way to reconcile them.
+**`catalog/skill-packs.json` is synced, not regenerated** (it has no generator and is hand-maintained with the Listed packs table in `docs/community-skill-packs.md`; `ci-skill-packs` fails when they disagree, aeon-agent#232). Its **pack-registry unit** (`catalog/skill-packs.json`, `docs/community-skill-packs.md`, `scripts/validate-skill-packs.mjs`, `scripts/tests/test_validate_skill_packs.sh`, `.github/workflows/ci-skill-packs.yml`) is classified together and is all-or-nothing: one CONFLICT member demotes the rest to CONFLICT `skill-packs-unit`. A local registry that lists no pack upstream HEAD lacks is a frozen copy, not an edit, and is CLEAN-UPDATEd (`stale-copy`).
 
-**`catalog/skill-packs.json` is the exception: it is OWNED and synced, not regenerated.** `skills.json`, `packs.json` and `skill-icons.json` each have a `bin/generate-*` script; the community pack registry has none. It is hand-maintained as a pair with the Listed packs table in `docs/community-skill-packs.md`, and `scripts/validate-skill-packs.mjs` (`ci-skill-packs`) hard-fails when the two disagree. Filing it under "regenerate" meant it was never synced at all, so an instance's copy froze while the synced doc table moved on, and CI went red once the validator started enforcing parity (aeon-agent#232). Treat these paths as one **pack-registry unit**:
+**Dispositions** (local copy vs upstream@BASELINE vs upstream@HEAD; equal = same content and exec bit):
 
-```
-catalog/skill-packs.json    docs/community-skill-packs.md    scripts/validate-skill-packs.mjs
-scripts/tests/test_validate_skill_packs.sh                   .github/workflows/ci-skill-packs.yml
-```
+| Upstream | Local | Disposition |
+|----------|-------|-------------|
+| unchanged | any | SKIP |
+| added | absent / same as HEAD / different | CLEAN-ADD / SKIP / CONFLICT `local-collision` |
+| modified | same as HEAD | SKIP |
+| modified | same as BASELINE | CLEAN-UPDATE |
+| modified | absent | CONFLICT `deleted-locally` |
+| modified | customized | `git merge-file --diff3`: disjoint hunks -> CLEAN-MERGE (both edits kept), overlap -> CONFLICT `operator-customized` |
+| removed | absent / same as BASELINE / edited | SKIP / CLEAN-DELETE / CONFLICT `removed-upstream-local-edited` |
 
-- If `.files` touches any member, add every member to the S6 set (as `modified` when `.files` does not list it) so the unit is classified together. Always add `catalog/skill-packs.json` itself, even when this range did not touch it, so a copy frozen by the old rule gets caught up.
-- **All or nothing:** if any member ends up **CONFLICT**, demote the unit's other members to CONFLICT with reason `skill-packs-unit`, so the registry and the table never land out of step.
-- **Stale, not customized:** if local `catalog/skill-packs.json` would go to a 3-way MERGE but lists no pack that upstream HEAD lacks (every `jq -r '.packs[].repo'` of the local copy is also in HEAD's), it is a frozen copy, not an operator edit - **CLEAN-UPDATE** it to the HEAD blob.
+A removed path of a skill upstream retired (`skills/<name>/SKILL.md` gone from HEAD) whose `<name>` is `enabled: true` in the operator's `aeon.yml` is never deleted: CONFLICT `enabled-skill-removed-upstream`, its own loud PR-body section (S9). Fork-only skills are never touched (only upstream paths are ever in the change set). A blob the API cannot return is `UNREADABLE`: list it and continue with a partial sync.
 
-### S6. 3-way classify each OWNED file
+In `report` mode stop after the plan and go to S10.
 
-Set up a workspace and, for each OWNED file `f`, fetch upstream's HEAD and BASELINE blobs:
-
-```bash
-WORK=$(mktemp -d)
-fetch() { gh api "repos/${UPSTREAM}/contents/$1?ref=$2" --jq '.content' 2>/dev/null | base64 -d; }   # $1=path $2=ref
-h() { sha256sum 2>/dev/null | cut -d' ' -f1; }
-```
-
-Decide `f`'s disposition from its `status` and a content 3-way (local-current vs upstream@BASELINE vs upstream@HEAD):
-
-| `status` | Test | Disposition |
-|----------|------|-------------|
-| `added` | path absent locally | **CLEAN-ADD** (write HEAD blob) |
-| `added` | path present locally (collision, e.g. a fork-only skill) | **CONFLICT** |
-| `modified` | `sha256(local) == sha256(HEAD blob)` | already synced → **SKIP** |
-| `modified` | `sha256(local) == sha256(BASELINE blob)` (operator never touched it) | **CLEAN-UPDATE** (write HEAD blob) |
-| `modified` | otherwise (operator customized it) | **3-WAY MERGE** → CLEAN-MERGE or CONFLICT (see below) |
-| `removed` | `sha256(local) == sha256(BASELINE blob)` | **CLEAN-DELETE** (`git rm`) |
-| `removed` | local differs or absent | **CONFLICT** (or already gone → SKIP if absent) |
-| `renamed` | treat as `removed previous_filename` + `added filename` under the rules above | per-part |
-
-Never CLEAN-DELETE a `skills/<name>/` directory whose `<name>` is not present in upstream's tree - fork-only skills are operator work and are structurally untouched (upstream's compare can only reference paths that exist upstream).
-
-Also never CLEAN-DELETE a `skills/<name>/` directory if `<name>` is currently `enabled: true` in the operator's `aeon.yml` (`grep -E "^  ${name}: *\{[^}]*enabled: true" aeon.yml`) - upstream retiring a skill the operator has actively scheduled is exactly the case `validate-config.js`'s skill-refs check exists to catch, but only *after* the PR is merged; nothing in the PR review itself would otherwise flag it. Downgrade this case to **CONFLICT** (reason: `enabled-skill-removed-upstream`) instead of deleting - the directory stays, and S9 surfaces it as its own loud PR-body section rather than folding it into "Applied cleanly" or the generic conflict list.
-
-**3-way content merge (OWNED files only).** A `modified` file that reached the `otherwise` row means the operator diverged from BASELINE *and* upstream changed the file too. Do not give up on it - most of the time the two sets of edits are in different parts of the file (e.g. the operator narrowed the workflow's `env:` secrets block while upstream bumped a `timeout` and a retry loop elsewhere), and a real 3-way merge combines both losslessly. Attempt it before declaring a conflict:
+### S7-S8. Apply on a branch (sync mode only)
 
 ```bash
-fetch "$f" "$BASELINE"  > "$WORK/base"    # upstream@BASELINE (the common ancestor)
-fetch "$f" "$HEAD_SHA"  > "$WORK/head"    # upstream@HEAD (what to bring in)
-cp "$f" "$WORK/local"                      # operator's current copy (ours)
-if git merge-file -p --diff3 "$WORK/local" "$WORK/base" "$WORK/head" > "$WORK/merged.$$" 2>/dev/null; then
-  disposition=CLEAN-MERGE   # exit 0 = disjoint hunks; the merged file carries BOTH edits - write it in S7
-else
-  disposition=CONFLICT      # exit >0 = the same lines changed on both sides; surface for a human as before
-fi
+git checkout -b "aeon-update/sync-<HEAD7>"
+python3 scripts/aeon_update.py apply
 ```
 
-`git merge-file` exits `0` only when the merge is clean (operator and upstream touched disjoint regions); the merged output preserves the operator's customization AND applies upstream's change. A non-zero exit means a genuine overlap - keep it a **CONFLICT** and list it with the upstream diff (S9). **Only OWNED files are ever 3-way-merged; OPERATOR-owned paths are always surfaced, never written.** A merged file gets the same S7 YAML/JSON parse-check as any written file - if the merge produced something that no longer parses, abort that file back to CONFLICT rather than committing it.
+`apply` refuses to run off an `aeon-update/*` branch. It re-checks each file against the plan (a file that changed since is CONFLICT `changed-since-plan`), then:
 
-### S7. Apply CLEAN changes on a branch (sync mode only)
+1. Writes every CLEAN-ADD / CLEAN-UPDATE / CLEAN-MERGE (with upstream's exec bit) and `git rm`s every CLEAN-DELETE. A written `.json`/`.yml` that does not parse is put back and becomes CONFLICT `parse-failed`.
+2. Runs `node scripts/validate-skill-packs.mjs` when a pack-registry member was applied; on failure it puts the unit back as CONFLICT `skill-packs-parity` and returns the validator output as `skill_packs_validator`.
+3. **Eyebrow lock.** When any `skills/**` path was applied, it fetches the `eyebrow` binary at the exact version `ci-skill-integrity.yml` runs (the step's `version:` input), checks it against the release's `checksums.txt`, and rescans `eyebrowlock.json` with a scrubbed env (`eyebrow: "scanned"`). If the binary is unavailable or the scan fails, the fail-safe never ships a skill against a stale lock entry: for a new skill, an applied `SKILL.md` whose lock entry has findings (an edit that moves lines relocates a finding, which `eyebrow verify --ci` reports as capability expansion), or a skill whose upstream lock `capabilities` changed between BASELINE and HEAD (miroshark-aeon#183), it carries upstream's HEAD lock entry when the skill's tree is byte-identical to HEAD (`eyebrow_carried`), else puts the skill back as CONFLICT `needs-eyebrowlock-scan` (`eyebrow_held`).
+4. Copies each new skill's glyph from upstream's `catalog/skill-icons.json` (hand-authored, so the generator cannot invent it; `glyphs_carried`), then regenerates `bin/generate-skills-json`, `bin/generate-packs-json`, `bin/generate-skill-icons` and `node scripts/gen-agents-md.js` from the final tree. Failures are listed in `catalog_errors`.
+5. Runs `node scripts/validate-config.js aeon.yml`; its output, if it flagged anything, is `validate_config` (may be pre-existing drift: note it, do not abort).
+6. Recomputes `pending_conflicts`: this run's conflicts plus each prior entry that is still divergent (local differs from HEAD). Prior entries applied this run (CLEAN-UPDATE or CLEAN-MERGE) are resolved; an `enabled-skill-removed-upstream` entry resolves once the skill is disabled or upstream re-adds it.
+7. Writes `memory/topics/aeon-update-state.json` in the branch: `baseline_sha` = HEAD, `upstream`, `last_run`, `last_pr: null`, `applied` counts and `pending_conflicts` (other keys kept). It must reach `main` only through the PR merge: if the new baseline landed on `main` while the PR is open, the PR would conflict on the state file, and closing it unmerged would make the next run skip its commits.
 
-If `MODE == report`, skip to S9. Otherwise:
-
-```bash
-BR="aeon-update/sync-$(echo "$HEAD_SHA" | cut -c1-7)"
-git checkout -b "$BR"
-```
-
-Write every **CLEAN-ADD** / **CLEAN-UPDATE** (`mkdir -p "$(dirname f)"` then write the HEAD blob to `f`), write every **CLEAN-MERGE** (the merged file `$WORK/merged.$$` from S6, over the existing `f`), and `git rm` every **CLEAN-DELETE**. **CONFLICT** and **OPERATOR** files are *not* touched - they go in the PR body only. (CLEAN-MERGE counts as a clean apply for the "nothing CLEAN applied" test below.)
-
-If any `skills/**` path was applied, regenerate the derived catalogs from the synced sources (never copy them from upstream):
-
-```bash
-bin/generate-skills-json && bin/generate-packs-json && bin/generate-skill-icons
-node scripts/gen-agents-md.js || true
-```
-
-**Pack-registry parity check.** If any pack-registry unit member (S5) was applied, run the validator against the final tree:
-
-```bash
-node scripts/validate-skill-packs.mjs
-```
-
-A non-zero exit means the branch would turn `ci-skill-packs` red. Revert the unit's applied members (`git checkout ${UP_DEFAULT} -- <member>`, or `git rm --cached` for an add), re-classify them **CONFLICT** with reason `skill-packs-parity`, and include the validator output in S9 so the operator can fix the registry and the table in one edit.
-
-**Refresh the eyebrow integrity lock for any NEWLY-ADDED skill.** `ci-skill-integrity` fails a PR when a present skill's `skills/<slug>/SKILL.md` has no `"discoveredFrom": "skills/<slug>/SKILL.md"` entry in `eyebrowlock.json`. That entry is produced only by the `eyebrow` binary, which is **not preinstalled in this run** - so a CLEAN-ADD of a new skill would otherwise land the PR CI-red. Fetch the binary at the **exact version `ci-skill-integrity.yml` pins**, parsed from that workflow's `alexverify/eyebrow/action@<sha> # vX.Y.Z` line so it can never drift from CI - a hardcoded version writes a lock that CI's (newer) `eyebrow verify` then rejects as drift, which is the recurring cause of red sync PRs. Verify the downloaded tarball against the release's own `checksums.txt` before running it (the same checksum-verified install the action does), then rescan:
-
-```bash
-EYEBROW_OK=0
-EB=$(command -v eyebrow || true)
-if [ -z "$EB" ]; then
-  # Use the SAME eyebrow binary ci-skill-integrity.yml runs, parsed from the
-  # eyebrow step's `version:` input (the action downloads exactly that binary).
-  # Not the `# vX.Y.Z` comment on the `uses:` line: Dependabot bumps only the ref
-  # + comment, so the comment can drift ahead of the binary CI really runs, and a
-  # lock written with that newer binary then trips CI as drift (the recurring
-  # sync red). Fall back to the comment, then v0.5.6, if unparsable.
-  EBV=$(grep -A6 'alexverify/eyebrow/action@' .github/workflows/ci-skill-integrity.yml | grep -oE '^ *version: *v[0-9]+\.[0-9]+\.[0-9]+' | grep -oE 'v[0-9]+\.[0-9]+\.[0-9]+' | head -1)
-  [ -n "$EBV" ] || EBV=$(grep -oE 'alexverify/eyebrow/action@[0-9a-f]+ *# *v[0-9]+\.[0-9]+\.[0-9]+' .github/workflows/ci-skill-integrity.yml | grep -oE 'v[0-9]+\.[0-9]+\.[0-9]+' | head -1)
-  EBV=${EBV:-v0.5.6}
-  # Linux runner (ubuntu-latest) assumed; unknown arch => skip to the fail-safe.
-  case "$(uname -m)" in
-    x86_64)        A=amd64 ;;
-    aarch64|arm64) A=arm64 ;;
-    *)             A= ;;
-  esac
-  TB="eyebrow_${EBV#v}_linux_${A}.tar.gz"
-  # Download the tarball + the release's checksums.txt and verify the tarball
-  # against it BEFORE extract or exec (mirrors the action's checksum-verified
-  # install). A tampered or moved asset fails the check, so we do NOT run it and
-  # fall through to the fail-safe. --ignore-missing checks only the asset present.
-  if [ -n "$A" ] && gh release download "$EBV" -R alexverify/eyebrow -p "$TB" -p checksums.txt -D "$WORK/eb" 2>/dev/null; then
-    if (cd "$WORK/eb" && shasum -a 256 --check --ignore-missing --strict checksums.txt >/dev/null 2>&1); then
-      tar xzf "$WORK/eb/$TB" -C "$WORK/eb" 2>/dev/null \
-        && EB=$(find "$WORK/eb" -type f -name eyebrow | head -1) && chmod +x "$EB" 2>/dev/null || true
-    else
-      echo "::warning::eyebrow $TB failed checksums.txt verification - not executing"; EB=
-    fi
-  fi
-fi
-# Run with a SCRUBBED env (allowlist PATH+HOME only). eyebrow scan is a local
-# file-hasher - it needs no secrets and no network - so denying it the run's
-# secret env (GH_GLOBAL + provider/notify keys) means even a bad binary that
-# slipped the checksum cannot read or exfiltrate them. If the scan fails, EYEBROW_OK
-# stays 0 and the fail-safe below covers it.
-[ -n "$EB" ] && env -i PATH="$PATH" HOME="$HOME" "$EB" scan --path . --lockfile eyebrowlock.json 2>/dev/null && EYEBROW_OK=1
-```
-
-**Fail-safe - guarantees a green PR without the binary.** If `EYEBROW_OK` is still `0` (binary unavailable or scan failed), never ship a skill against a stale `eyebrowlock.json` entry. For each skill this run would invalidate, first try to **carry upstream's entry** (below); if that is not possible, revert it from the branch (`git rm -r --cached skills/<slug>` for a new skill, or `git checkout ${UP_DEFAULT} -- skills/<slug>/SKILL.md` to drop an edit to an existing one) and re-classify it as **CONFLICT** with reason `needs-eyebrowlock-scan`. S9 surfaces each with the exact operator command (`eyebrow scan --path . --lockfile eyebrowlock.json` then commit). Two cases invalidate the lock:
-
-- **CLEAN-ADD of a `skills/**` SKILL.md** - a brand-new skill has no lock entry, so `ci-skill-integrity`'s coverage precheck fails outright.
-- **CLEAN-UPDATE / CLEAN-MERGE of an existing skill's `SKILL.md` that already has one or more findings in `eyebrowlock.json`.** This is NOT safe to keep unscanned. `eyebrow.policy.json` sets `failOnCapabilityExpansion: true`, and an edit that changes the line count *above* a pinned finding relocates that finding to a new line - which `eyebrow verify --ci` reports as an expanded capability and fails, **even though `allowContentDrift: true`** (byte-level drift is allowed; a finding surfacing at a new location is not). This is the recurring cause of red sync PRs on prose-only edits. Detect it: the slug has a `"discoveredFrom": "skills/<slug>/SKILL.md"` entry in `eyebrowlock.json` **and** that entry's `findings` array is non-empty. Zero findings alone does not make an edit safe - see the next case.
-- **CLEAN-UPDATE / CLEAN-MERGE of an existing skill whose upstream lock entry `capabilities` changed between BASELINE and HEAD.** A skill with zero findings can still gain reach: upstream 46d1836 taught `hunter-22` to call `clawhunter.fun`, an unscanned sync shipped the new SKILL.md against the old lock entry, and `eyebrow verify --ci` failed with `policy: capability expansion - hunter-22 gained network: clawhunter.fun` (miroshark-aeon#183). Upstream's own `eyebrowlock.json` already records the change, so detect it with no binary by diffing the slug's entry at the two commits:
-
-```bash
-lockcaps() { fetch eyebrowlock.json "$1" | jq -cS --arg d "skills/$2/SKILL.md" '[.artifacts[] | select(.discoveredFrom == $d) | .capabilities]'; }   # $1=ref $2=slug
-[ "$(lockcaps "$BASELINE" "$slug")" != "$(lockcaps "$HEAD_SHA" "$slug")" ] && echo "$slug: capabilities changed upstream"
-```
-
-**Carry upstream's entry before holding.** For any of these cases, if the skill's final tree on the branch is byte-identical to upstream HEAD's (same blob SHAs, so no operator customization), upstream's HEAD lock entry for that slug is exactly what upstream's own CI verified against those bytes. Splice it in instead of reverting:
-
-```bash
-up=$(gh api "repos/${UPSTREAM}/git/trees/${HEAD_SHA}?recursive=1" | jq -r --arg p "skills/$slug/" '.tree[] | select(.type == "blob" and (.path | startswith($p))) | "\(.sha) \(.path)"' | sort)
-loc=$(git add -A "skills/$slug" && git ls-files -s "skills/$slug" | awk '{print $2" "$4}' | sort)
-if [ -n "$up" ] && [ "$up" = "$loc" ]; then
-  fetch eyebrowlock.json "$HEAD_SHA" > "$WORK/uplock.json"
-  jq --slurpfile up "$WORK/uplock.json" --arg d "skills/$slug/SKILL.md" '
-    ($up[0].artifacts | map(select(.discoveredFrom == $d))) as $e
-    | if ($e | length) != 1 then error("no upstream lock entry")
-      elif any(.artifacts[]; .discoveredFrom == $d) then .artifacts |= map(if .discoveredFrom == $d then $e[0] else . end)
-      else .artifacts += $e end' eyebrowlock.json > "$WORK/lock.new" && mv "$WORK/lock.new" eyebrowlock.json
-fi
-```
-
-If the trees differ (the operator customized the skill, e.g. a CLEAN-MERGE) or the splice errors, upstream's entry does not describe these bytes - hold the skill as above.
-
-After any such revert, re-run the S7 catalog regeneration (`bin/generate-skills-json && bin/generate-packs-json`) so `skills.json`/`packs.json` reflect the final tree, not the reverted-out file. This trades deferring a rescan-needing change (rare) for never landing a red PR; the change still arrives, just as a one-line manual step in the PR.
-
-Then validate config:
-
-```bash
-node scripts/validate-config.js aeon.yml || echo "validate-config flagged (may be pre-existing drift; note, do not abort on it)"
-```
-
-If **nothing CLEAN applied** (every upstream change was CONFLICT or OPERATOR): open no PR. Fold all changes into the report, log `AEON_UPDATE_MANUAL_ONLY`, and go to S10 (notify the operator that the sync needs a manual merge). If a file we wrote breaks YAML/JSON parsing, abort: `git checkout . && git checkout ${UP_DEFAULT} && git branch -D "$BR"`, exit `AEON_UPDATE_VALIDATION_FAILED`, notify with the failing file.
-
-### S8. Advance the baseline + reconcile conflicts (in the branch)
-
-Recompute `PENDING`: for every CONFLICT file this run **plus** every prior `PENDING` entry, keep it only if `sha256(local) != sha256(HEAD blob)` (still genuinely divergent). Drop the rest (resolved). **A file that was CLEAN-MERGE-applied this run is resolved - never carry it as pending** (its `sha256(local) != sha256(HEAD blob)` because it still holds the operator's edits, but the upstream change is now merged in, so the naive test would wrongly keep it forever; a 3-way-merged file is only a CONFLICT again if a *future* upstream change overlaps the operator's lines). Likewise drop any prior PENDING entry whose file was CLEAN-MERGE- or CLEAN-UPDATE-applied this run. Exception: `enabled-skill-removed-upstream` entries have no HEAD blob to diff (the path is deleted upstream) - resolve them instead when the skill is no longer `enabled: true` in the operator's current `aeon.yml` (they disabled it, so the CLEAN-DELETE rule can now apply next run) or upstream re-adds a path of that name (re-classify as CONFLICT/modified or CLEAN-UPDATE under the normal rules).
-
-Write `memory/topics/aeon-update-state.json` on the PR branch and commit it **with** the sync (S9) so merging advances the watermark. It must reach `main` only through that merge: if the new baseline lands on `main` while the PR is open, the PR conflicts on the state file, and closing the PR unmerged would make the next run skip its commits.
-
-```json
-{
-  "baseline_sha": "${HEAD_SHA}",
-  "upstream": "${UPSTREAM}",
-  "last_run": "${today}",
-  "last_pr": null,
-  "applied": { "added": N, "updated": N, "deleted": N },
-  "pending_conflicts": [
-    { "path": "scripts/foo.sh", "reason": "operator-customized", "upstream_commits": ["abc1234"] }
-  ]
-}
-```
-
-Advancing `baseline_sha` to HEAD means clean files never re-notify, while `pending_conflicts` carries unresolved merges forward independently - so they resurface each run until the operator actually reconciles them, and are also written to the PR body. (In `report` mode, do **not** write state - a dry run mutates nothing.)
+Its JSON result (`status`, the final `clean` lists, `conflicts`, `operator`, `pending_conflicts`, and the notes above) is also saved as `result.json` in its work dir. Statuses:
+- `AEON_UPDATE_APPLIED`: go to S9.
+- `AEON_UPDATE_MANUAL_ONLY` (nothing clean was left to apply): open no PR. Run `git checkout -- .`, then `git checkout <UP_DEFAULT>` and `git branch -D aeon-update/sync-<HEAD7>`, log `AEON_UPDATE_MANUAL_ONLY`, and go to S10 (notify that the sync needs a manual merge).
+- `AEON_UPDATE_ERROR`: same cleanup, log the error, notify it.
 
 ### S9. Commit + open the PR (sync mode; skip in report mode)
 
 Stage the synced files and the state file only. Never `memory/logs/`, `token-usage.csv`, `output/` or the dashboard feed: the run writes those again after this commit, and the post-run commit moves them to `main`, so a copy in the branch makes the PR conflict with `main` and drags the branch's state file onto `main` with it.
 
+Write `/tmp/aeon-update-commit.txt` and `/tmp/aeon-update-pr-body.md` (below) with the Write tool, then run each line as its own call (`notify`, `notify-jsonrender` and `secretcurl` are the run's generated helpers):
+
 ```bash
-git add -A -- . ':(exclude)memory' ':(exclude)output' ':(exclude)apps/dashboard/outputs' \
-  ':(exclude)notify' ':(exclude)notify-jsonrender' ':(exclude)secretcurl'   # the run's generated helpers
+git add -A -- . ':(exclude)memory' ':(exclude)output' ':(exclude)apps/dashboard/outputs' ':(exclude)notify' ':(exclude)notify-jsonrender' ':(exclude)secretcurl'
 git add -- memory/topics/aeon-update-state.json
-git commit -F /tmp/aeon-update-commit.txt      # never inline the message with -m (backticks/`$()` in commit text get shell-substituted)
-git push -u origin "$BR"
-gh pr create --repo "$SELF" --base "$UP_DEFAULT" \
-  --title "aeon-update: sync ${N_COMMITS} upstream commits (${BASE7}..${HEAD7})" \
-  --body-file /tmp/aeon-update-pr-body.md
+git commit -F /tmp/aeon-update-commit.txt
+git push -u origin "aeon-update/sync-<HEAD7>"
+gh pr create --repo "<SELF>" --base "<UP_DEFAULT>" --title "aeon-update: sync <N_COMMITS> upstream commits (<BASE7>..<HEAD7>)" --body-file /tmp/aeon-update-pr-body.md
 ```
+
+Never inline the commit message with `-m` (backticks or `$()` in it get shell-substituted).
 
 `/tmp/aeon-update-commit.txt`:
 ```
@@ -325,12 +188,12 @@ PR body (`/tmp/aeon-update-pr-body.md`) - only include sections that have conten
 - **Docs / other:** `docs/...`, `CLAUDE.md`, ...
 
 ### ⚠️ Currently-enabled skills removed upstream
-For each CONFLICT with reason `enabled-skill-removed-upstream` (S6):
+For each CONFLICT with reason `enabled-skill-removed-upstream`:
 - `verdikta-hunter` — enabled in your `aeon.yml`, deleted upstream in {commit(s)}. **Not deleted here** so nothing breaks. Pick one: keep it as a fork-only skill going forward (nothing else to do), or disable it in `aeon.yml` to match upstream's current default set.
 
 ### Needs manual review (conflicts - your local copy diverges from upstream)
 For each *other* conflict reason (`enabled-skill-removed-upstream` is covered above, don't duplicate it here): what upstream changed and why it wasn't auto-applied.
-- `scripts/foo.sh` — you customized this locally; upstream changed it in {commits}. Upstream diff:
+- `scripts/foo.sh` — you customized this locally; upstream changed it in {upstream_commits}. Upstream diff (from the conflict's `diff` file, trimmed):
   ```diff
   {short upstream base..head diff for the file}
   ```
@@ -345,7 +208,7 @@ For each *other* conflict reason (`enabled-skill-removed-upstream` is covered ab
 | abc1234 | ... |
 ```
 
-Capture the PR URL; write it back into `last_pr` in the branch's state file and amend with only that file (`git add -- memory/topics/aeon-update-state.json && git commit --amend --no-edit`) so the merged watermark records its own PR.
+Capture the PR URL; write it into `last_pr` in the branch's state file with Edit, then `git add -- memory/topics/aeon-update-state.json` and `git commit --amend --no-edit` (two calls; the post-run step pushes the amended branch) so the merged watermark records its own PR.
 
 ### S10. Log + notify
 
@@ -380,7 +243,7 @@ Pass `--mute-key "aeon-update:${HEAD7}"` so a muted sync doesn't re-ping for the
 | `AEON_UPDATE_BASELINE_SET` | First run - watermark anchored, nothing applied | One-line notify |
 | `AEON_UPDATE_IS_UPSTREAM` | This instance is the upstream repo itself | No (log only) |
 | `AEON_UPDATE_BASELINE_UNREACHABLE` | Baseline is not an ancestor of HEAD (history rewrite) | Yes - asks for `reset=` |
-| `AEON_UPDATE_VALIDATION_FAILED` | An applied file broke YAML/JSON parsing → branch reverted | Yes - failing file |
+| `AEON_UPDATE_ERROR` | `scripts/aeon_update.py` could not read upstream or the repo - nothing applied | Yes - the error |
 
 ## Constraints
 

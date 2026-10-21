@@ -398,6 +398,17 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Fixed
 
+- **`aeon-update` syncs again on Claude Code 2.1.301.** The skill described its compare,
+  3-way classify and apply steps as shell snippets (helper functions, per-file loops, redirects
+  into files), and Claude Code's permission layer refuses each of those shapes. The model then
+  wrote its own classify script and ran it with `bash`, which is refused too, so miroshark-aeon's
+  runs ended green with nothing synced. `scripts/aeon_update.py` now does that work in two
+  allowed commands: `plan` (compare, partition, 3-way classify, conflict diffs) and `apply`
+  (write, pack-registry check, eyebrow lock scan or fail-safe, glyphs, catalogs,
+  validate-config, pending conflicts, state file). It diffs upstream's two trees, so the
+  300-file compare cap no longer truncates a large sync. The skill's remaining steps are single
+  commands. Tests: `scripts/tests/test_aeon_update.py`.
+
 - **Dashboard schedules respect your time zone:** the picker carries the weekday across midnight
   and handles half-hour and 45-minute zones (India, Nepal), and `PATCH /api/skills` refuses a
   malformed cron with the reason, using the same rules as `validate-config.js`, instead of saving
