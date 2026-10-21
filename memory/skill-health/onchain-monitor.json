@@ -1,0 +1,16 @@
+{
+  "skill": "onchain-monitor",
+  "last_analyzed": "2026-10-21T08:18:40Z",
+  "quality_score": 4,
+  "assessment": "Solid, source-cited 24h scan that correctly stays silent (no trigger), reconciles escrow flows, gives exact distance-to-threshold math, and surfaces a real actionable finding (xDEUS is ERC-721, making the USD threshold inert); internal arithmetic largely checks out, though the 0.8% drift in implied avg price and 'median $179 / max $447' figures read slightly loose, and the write-up is longer than the operator's 'no long text' preference — acceptable here only because no push was actually sent.",
+  "flags": [],
+  "avg_score": 4,
+  "history": [
+    {
+      "date": "2026-10-21",
+      "score": 4,
+      "ts": "2026-10-21T08:18:40Z",
+      "harness": "claude"
+    }
+  ]
+}
