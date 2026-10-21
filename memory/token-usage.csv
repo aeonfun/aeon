@@ -3,3 +3,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-10-21,onchain-monitor,claude-opus-5-5,182469,38794,2911232,0
 2026-10-21,onchain-monitor,claude-opus-5-5,25192,18541,1484032,0
 2026-10-21,onchain-monitor,claude-opus-5-5,27714,20841,1385344,0
+2026-10-21,price-alert,claude-opus-5-5,80208,6192,538368,0

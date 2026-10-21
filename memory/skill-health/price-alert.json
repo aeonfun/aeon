@@ -1,0 +1,16 @@
+{
+  "skill": "price-alert",
+  "last_analyzed": "2026-10-21T10:10:59Z",
+  "quality_score": 4,
+  "assessment": "Clean no-trigger run: price, token address, pool depth and all four gate distances are internally consistent and traceable to a named DexScreener endpoint with raw body retained, matching the 'stay quiet unless triggered' and 'always cite source' rules; scores 4 rather than 5 only because a no-op scan offers limited insight and the report runs longer than the operator's brevity preference.",
+  "flags": [],
+  "avg_score": 4,
+  "history": [
+    {
+      "date": "2026-10-21",
+      "score": 4,
+      "ts": "2026-10-21T10:10:59Z",
+      "harness": "claude"
+    }
+  ]
+}
