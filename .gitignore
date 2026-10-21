@@ -63,3 +63,20 @@ skills/remotion/project/props.json
 
 # eyebrow local snapshot cache (content-addressed; not committed)
 .eyebrow/
+
+# Run scratch: the sandbox blocks reads of /tmp, so skills stage payloads, parsers
+# and notify bodies repo-locally, and the run's `git add -A` then commits them
+# (aeon-agent#274 removed 340 such files). All root-anchored so real files deeper
+# in the tree are never caught. output/.chains/ (chain artifacts) and
+# output/.attest/ (attestation snapshots) are real run output and stay tracked.
+/.aeon-update-*
+/.tmp*
+/.xai*
+/.notify*
+/output/.*
+!/output/.chains/
+!/output/.attest/
+/output/articles/.*
+!/output/articles/.gitkeep
+/output/*notify*.md
+/output/xai-*.json
