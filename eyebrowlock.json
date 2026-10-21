@@ -2632,7 +2632,7 @@
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "4ab815be27d66885528b40dbfa6349c5bf44fa3b7d965936075e511eb472b704"
+          "hash": "adfa693922e114982369ec459f17bbd9f81565878556bed0d90803bc3b7cccfc"
         }
       ],
       "findings": [
@@ -2641,12 +2641,12 @@
           "severity": "high",
           "owasp": "ASK-06",
           "file": "SKILL.md",
-          "line": 92,
+          "line": 100,
           "snippet": "output/**           .mcp.json           .env*               aeon.db",
           "explanation": "references sensitive credential or secret paths"
         }
       ],
-      "contentHash": "sha256-c971b622ae64e817e906e7646edd362e7e05d436c966b67c6b0cf924fa09f280",
+      "contentHash": "sha256-8ccbfe3a2e361876314154777eb3ed4b4a7a515a3c57126d2aac11eeacd9f28f",
       "discoveredFrom": "skills/aeon-update/SKILL.md"
     },
     {

@@ -135,12 +135,20 @@ HOOK
   D="$TMP/$wf/popconflict"; setup "$D"
   (
     cd "$D/run" || exit 1
-    git add memory/logs/2026-01-01.md
-    git commit -qm "skill committed its log on the branch"
+    # aeon-update commits its new baseline on the PR branch; it may reach main
+    # only when the PR merges.
+    mkdir -p memory/topics
+    printf '{"baseline_sha":"new"}\n' > memory/topics/aeon-update-state.json
+    git add memory/logs/2026-01-01.md memory/topics/aeon-update-state.json
+    git commit -qm "skill committed its log and state on the branch"
     printf 'post-commit line\n' >> memory/logs/2026-01-01.md
   )
   out=$(cd "$D/run" && bash -e "$STEP" 2>&1); rc=$?
   LOG=$(git -C "$D/remote.git" show main:memory/logs/2026-01-01.md)
+  ! git -C "$D/remote.git" cat-file -e main:memory/topics/aeon-update-state.json 2>/dev/null \
+    && git -C "$D/remote.git" show feat/demo:memory/topics/aeon-update-state.json 2>/dev/null | grep -q '"new"' \
+    && pass "$wf: a state file committed only on the branch stays off main after a pop conflict" \
+    || bad "$wf: branch-only state file leaked onto main through the pop-conflict fallback"
   [ "$rc" -eq 0 ] && grep -q 'opened a PR' <<<"$LOG" && grep -q 'post-commit line' <<<"$LOG" && ! grep -qE '^(<<<<<<<|>>>>>>>)' <<<"$LOG" \
     && pass "$wf: stash-pop conflict falls back to this run's copy, no markers" \
     || { bad "$wf: stash-pop conflict path broke (rc=$rc)"; echo "$out"; echo "$LOG"; }

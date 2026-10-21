@@ -25,7 +25,7 @@ Today is ${today}. This is the fleet's **downstream updater** - the counterpart 
 - **Never clobber operator config.** `aeon.yml`, `STRATEGY.md`, `soul/`, `memory/`, `output/`, `.mcp.json` and the git-derived catalogs are instance-owned. Upstream changes to them are **surfaced for manual review in the PR body**, never written into the tree.
 - **3-way, not blind overwrite.** A framework file the operator has already customized is **auto-merged** when its local edits and upstream's edits touch disjoint regions (a real `git merge-file` 3-way, S6); it is only listed as a **conflict** for a human when the same lines changed on both sides. This is what lets a hand-narrowed workflow keep receiving unrelated upstream fixes without a manual merge every run.
 - **Silent when in sync.** Baseline == upstream HEAD ⇒ nothing to do, no notification.
-- **The baseline is the watermark, and it advances by merge.** The new baseline SHA is written *into the PR branch*, so the watermark only moves when the operator merges the PR. Unresolved conflicts are tracked separately so advancing the baseline can never silently drop them.
+- **The baseline is the watermark, and it advances by merge.** The new baseline SHA is written *only into the PR branch commit* (never main, never the run log), so the watermark only moves when the operator merges the PR, and one sync PR is open at a time. Unresolved conflicts are tracked separately so advancing the baseline can never silently drop them.
 
 ---
 
@@ -68,6 +68,14 @@ HEAD_SHA=$(gh api "repos/${UPSTREAM}/commits/${UP_DEFAULT}" --jq '.sha')
 - **`reset=fork-point`** → `BASELINE=$(gh api "repos/${UPSTREAM}/compare/${HEAD_SHA}...$(git rev-parse HEAD)" --jq '.merge_base_commit.sha')`. `reset=<sha>` → `BASELINE=<sha>`. Persist immediately to state, then continue.
 - **First run (`BASELINE` null and no `reset`):** a fresh instance already carries all of canon from fork time, so there is no delta to apply - just **anchor the watermark**. Set `baseline_sha = HEAD_SHA`, write state, log `AEON_UPDATE_BASELINE_SET`, send a one-line notify (`baseline initialized at <head7>; future runs sync from here`), and stop. (To backfill everything since the fork point instead, re-run with `reset=fork-point`.)
 - **`BASELINE` == `HEAD_SHA`:** in sync. Re-verify `PENDING` (S8) in case a prior conflict is now resolved, update state, log `AEON_UPDATE_IN_SYNC`, notify nothing, stop.
+- **A sync PR is still open (sync mode):** the state file on `main` still holds the old baseline until that PR merges, so a second PR from it would carry the same commits again and two branches would each move the watermark. Check before doing any work, including before persisting a `reset=`:
+
+  ```bash
+  OPEN_PR=$(gh pr list --repo "$SELF" --state open --base "$UP_DEFAULT" --limit 100 --json number,headRefName,url \
+    --jq '[.[] | select(.headRefName | startswith("aeon-update/sync-"))] | sort_by(.number) | last // empty | "\(.number) \(.headRefName) \(.url)"')
+  ```
+
+  If `OPEN_PR` is set: write nothing (no state file, no branch, no PR) and log `AEON_UPDATE_PR_OPEN` with the PR and its range. If its branch already ends in `HEAD_SHA`'s first 7 chars, stay silent; if upstream has moved past it, send one line (`PR #N still open; upstream is M commits past it, merge or close it and the next run syncs the rest`, `--mute-key "aeon-update:${HEAD7}"`). Stop. `report` mode skips this check and notes the open PR in its report.
 
 ### S4. Compare baseline → HEAD
 
@@ -263,7 +271,7 @@ If **nothing CLEAN applied** (every upstream change was CONFLICT or OPERATOR): o
 
 Recompute `PENDING`: for every CONFLICT file this run **plus** every prior `PENDING` entry, keep it only if `sha256(local) != sha256(HEAD blob)` (still genuinely divergent). Drop the rest (resolved). **A file that was CLEAN-MERGE-applied this run is resolved - never carry it as pending** (its `sha256(local) != sha256(HEAD blob)` because it still holds the operator's edits, but the upstream change is now merged in, so the naive test would wrongly keep it forever; a 3-way-merged file is only a CONFLICT again if a *future* upstream change overlaps the operator's lines). Likewise drop any prior PENDING entry whose file was CLEAN-MERGE- or CLEAN-UPDATE-applied this run. Exception: `enabled-skill-removed-upstream` entries have no HEAD blob to diff (the path is deleted upstream) - resolve them instead when the skill is no longer `enabled: true` in the operator's current `aeon.yml` (they disabled it, so the CLEAN-DELETE rule can now apply next run) or upstream re-adds a path of that name (re-classify as CONFLICT/modified or CLEAN-UPDATE under the normal rules).
 
-Write `memory/topics/aeon-update-state.json` and commit it **with** the sync so merging advances the watermark:
+Write `memory/topics/aeon-update-state.json` on the PR branch and commit it **with** the sync (S9) so merging advances the watermark. It must reach `main` only through that merge: if the new baseline lands on `main` while the PR is open, the PR conflicts on the state file, and closing the PR unmerged would make the next run skip its commits.
 
 ```json
 {
@@ -282,8 +290,12 @@ Advancing `baseline_sha` to HEAD means clean files never re-notify, while `pendi
 
 ### S9. Commit + open the PR (sync mode; skip in report mode)
 
+Stage the synced files and the state file only. Never `memory/logs/`, `token-usage.csv`, `output/` or the dashboard feed: the run writes those again after this commit, and the post-run commit moves them to `main`, so a copy in the branch makes the PR conflict with `main` and drags the branch's state file onto `main` with it.
+
 ```bash
-git add -A
+git add -A -- . ':(exclude)memory' ':(exclude)output' ':(exclude)apps/dashboard/outputs' \
+  ':(exclude)notify' ':(exclude)notify-jsonrender' ':(exclude)secretcurl'   # the run's generated helpers
+git add -- memory/topics/aeon-update-state.json
 git commit -F /tmp/aeon-update-commit.txt      # never inline the message with -m (backticks/`$()` in commit text get shell-substituted)
 git push -u origin "$BR"
 gh pr create --repo "$SELF" --base "$UP_DEFAULT" \
@@ -333,9 +345,11 @@ For each *other* conflict reason (`enabled-skill-removed-upstream` is covered ab
 | abc1234 | ... |
 ```
 
-Capture the PR URL; write it back into `last_pr` in the branch's state file (amend the state commit) so the merged watermark records its own PR.
+Capture the PR URL; write it back into `last_pr` in the branch's state file and amend with only that file (`git add -- memory/topics/aeon-update-state.json && git commit --amend --no-edit`) so the merged watermark records its own PR.
 
 ### S10. Log + notify
+
+Stay on the PR branch and do not commit from here on: the post-run commit pushes the branch and records the log and other run state on `main`, while the state file stays in the branch. Do not check out `main` or touch the state file again.
 
 Append to `memory/logs/${today}.md` under `### aeon-update`: status, `UPSTREAM`, `${BASE7}..${HEAD7}`, applied/conflict counts, PR URL (or `report`/`manual-only`), and `pending_conflicts` count.
 
@@ -362,6 +376,7 @@ Pass `--mute-key "aeon-update:${HEAD7}"` so a muted sync doesn't re-ping for the
 | `AEON_UPDATE_MANUAL_ONLY` | Upstream changed only operator-owned / conflicting files - no clean apply, no PR | Yes - manual call-out |
 | `AEON_UPDATE_REPORT` | `report` mode - delta computed, nothing mutated | Yes - dry-run summary |
 | `AEON_UPDATE_IN_SYNC` | Baseline already == upstream HEAD | No (log only) |
+| `AEON_UPDATE_PR_OPEN` | An earlier `aeon-update/sync-*` PR is still open - nothing written | Only if upstream moved past it (one line) |
 | `AEON_UPDATE_BASELINE_SET` | First run - watermark anchored, nothing applied | One-line notify |
 | `AEON_UPDATE_IS_UPSTREAM` | This instance is the upstream repo itself | No (log only) |
 | `AEON_UPDATE_BASELINE_UNREACHABLE` | Baseline is not an ancestor of HEAD (history rewrite) | Yes - asks for `reset=` |
