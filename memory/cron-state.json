@@ -9,5 +9,15 @@
     "success_rate": 0.33,
     "last_error": "hivemindos: timeout",
     "last_success": "2026-10-21T06:59:43Z"
+  },
+  "onchain-monitor": {
+    "last_status": "success",
+    "last_success": "2026-10-21T08:18:43Z",
+    "total_runs": 1,
+    "total_successes": 1,
+    "total_failures": 0,
+    "consecutive_failures": 0,
+    "success_rate": 1,
+    "last_quality_score": 4
   }
 }
