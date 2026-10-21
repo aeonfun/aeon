@@ -140,6 +140,8 @@ permissions:
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
   NODE_OPTIONS: '--no-deprecation'
+  BASE_RPC_URL: ${{ secrets.BASE_RPC_URL }}
+  RH_RPC_URL: ${{ secrets.RH_RPC_URL }}
   # Fleet Watcher opt-in secrets — hoisted to workflow-level so that
   # `if: env.FLEET_ENDPOINT != ''` in the preflight/postflight steps can
   # actually see them. (Step-level env is NOT available in step `if:` clauses.)
