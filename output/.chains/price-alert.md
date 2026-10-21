@@ -1,35 +1,34 @@
-No gates fired, so no push — per the skill's contract, a clean run stays silent.
+## DEUS — 16:01Z 轮次 · 无触发
 
-## DEUS price-alert — 2026-10-21 15:02 UTC
-
-**Status: `PRICE_ALERT_OK` — all four gates quiet.**
-
-| Field | Value |
+| 项 | 值 |
 |---|---|
-| Token | DEUS (XMAQUINA) `0x940A319B75861014A220D9c6c144d108552B089B` |
-| Chain / pool | base · Aerodrome DEUS/VIRTUAL (deepest, liq **$709,817**) |
-| Current | **$0.01810** |
-| 1h / 24h | **+0.29%** / **+0.75%** |
-| ATH | $0.06876 (2026-05-28 15:35 UTC) — **73.7% above current** |
+| 现价 | **$0.01822** |
+| 1h | 未返回（按 0 计）· 24h **+2.28%** |
+| 最深池 | Aerodrome DEUS/VIRTUAL，liq **$714,223** |
+| ATH | $0.06876（2026-05-28），当前**低于 73.5%** |
+| 判定 | `PRICE_ALERT_OK` · 0 通知 |
 
-**Gate evaluation**
-1. **ATH** — $0.01810 vs $0.06876 → no new high. Unchanged.
-2. **Sharp move** — 1h +0.29%, nowhere near the ±20% trigger. **Measured quiet** this run (h1 was present; the 14:01Z poll had it missing).
-3. **Targets** — `0.012, 0.025, 0.032, 0.041` all uncrossed.
-   - $0.025 → **+38.1%** away · $0.032 → **+76.8%** · $0.041 → **+126.5%**
-   - $0.012 downside floor → **−33.7%** away
+四个门槛全部未触及，按契约不推送。
 
-**Read-through for the position:** fifth consecutive run inside a five-tick band ($0.01805 → $0.01810, +0.28%). The 24h number falling from +2.74% to +0.75% is drift rolling off the window, not selling — h1 is green and the deepest pool gained ~$2.1k of liquidity. Nothing here justifies touching the 5-day xDEUS cooldown; the nearest actionable level is $0.025, still 38% up.
+**距离表（现价 $0.01822 起算）**
+- $0.025 → **+37.2%**（一级 · 卖现货）
+- $0.032 → **+75.6%**（一级 · 卖现货）
+- $0.041 → **+125.0%**（二级 · 启动 unstake）
+- $0.012 → **−34.1%**（恐慌位观察）
 
-**Book health (context, not a gate):** 24h 17 buys / 33 sells, $12,380 volume — thin and mildly sell-skewed, consistent with the operator's note that spot can be sold in one clip but the staked leg needs slicing.
+**数据说明**
+- 数据源：DexScreener `api.dexscreener.com/latest/dex/tokens/0x940A319B75861014A220D9c6c144d108552B089B`，http=200。合约 `0x940A319B75861014A220D9c6c144d108552B089B` / Base。
+- 最深池 `priceChange.h1` 这次**缺字段**，按 skill 规则计为 0 → sharp-move 门判 QUIET。这是「未测量」，不是「实测走平」，state 里 `h1_pct` 存 `null` 以示区别。
+- 三个 DEUS/USDC 浅池（liq $44k / $6k / $4k）分别报 h1 +0.50% / +0.75% / +0.63%，方向弱上，离 ±20% 很远。
+- 24h 从 +0.75% 扩到 +2.28%，但 h1 无数据 —— 更像是旧 tick 滚出窗口，不是新买盘。
+- 这是连续第六轮价格卡在 ~1% 带内（15:02Z $0.01810 → 现 $0.01822，+0.66%）。
 
-**Sources:** DexScreener `GET /latest/dex/tokens/0x940A319B75861014A220D9c6c144d108552B089B` (http 200, 15:01:53Z); pool `0x3e97c5ec8c73e7d566aca606472141a9b9a8c1fa`.
+**给下一次运行留的提醒（已写进日志）**：xDEUS 冷却 5 天。$0.041 虽在 +125% 外，但真正要提前启动的是 $0.032 那一档 —— 从今天的位置看还有 +75.6%，时间上够。真正需要盯的是 $0.025 一旦印出，就要立刻算 5 天。
 
 ## Summary
 
-- Fetched DEUS price from DexScreener (http 200, first try — no WebFetch fallback needed).
-- All four gates evaluated quiet: no new ATH, 1h move +0.29%, no target crossed.
-- **Notifications sent: 0** — correct behavior for a clean run per the skill spec.
-- Updated `memory/topics/price-alert-state.json`: `last_run_at`, `last_price` (h1 now recorded as 0.29 rather than null). ATH and all four targets untouched. Validated with `jq empty`.
-- Appended the `### price-alert` log block to `memory/logs/2026-10-21.md`.
-- **Follow-up:** one artifact left behind — `memory/topics/.deus-price.json` (raw API snapshot). My `rm`/`mv` calls needed approval and were declined, so it's still untracked in the working tree. Worth deleting before the next commit; it carries no state the skill depends on.
+- 执行了 `skills/price-alert/SKILL.md`，`var=0.012,0.025,0.032,0.041`（MODE=execute，4/4 解析有效）。
+- 修改：`memory/topics/price-alert-state.json`（`last_run_at` → 2026-10-21T16:01:30Z，`last_price` 更新；ATH 与四个 target 均未动，`jq empty` 校验通过）；`memory/logs/2026-10-21.md` 追加 `### price-alert (16:01Z)`。
+- 新建：`output/dex.json`（原始 DexScreener 响应，留档）。
+- 通知：**0 条** —— 无门槛触发，按契约保持静默。
+- 后续：无需动作。下一轮 hourly 继续观察；若 $0.025 打印，需在同一轮启动 5 天 unstake 计时。
