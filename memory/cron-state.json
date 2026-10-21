@@ -12,7 +12,7 @@
     "last_dispatch": "2026-10-21T10:09:17Z"
   },
   "onchain-monitor": {
-    "last_status": "failed",
+    "last_status": "dispatched",
     "last_success": "2026-10-21T10:14:00Z",
     "total_runs": 5,
     "total_successes": 4,
@@ -20,7 +20,7 @@
     "consecutive_failures": 1,
     "success_rate": 0.8,
     "last_quality_score": 4,
-    "last_dispatch": "2026-10-21T10:09:17Z",
+    "last_dispatch": "2026-10-21T15:15:41Z",
     "last_failed": "2026-10-21T15:13:59Z",
     "last_error": "hivemindos: Failed to authenticate. API Error: 403 All target providers failed."
   },
