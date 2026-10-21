@@ -746,7 +746,7 @@ jobs:
           # notify. run-harness applies its OS sandbox only to read-only runs, so
           # there is nothing to opt out of here.
           RH="${GITHUB_WORKSPACE}/harness-adapter/run-harness"
-          RH_ARGS=(--mode write --allowed-tools "$ALLOWED" --timeout 600)
+          RH_ARGS=(--mode write --allowed-tools "$ALLOWED" --timeout 1200)
           # Pass --mcp-config only when the preflight actually ENABLED MCP (every
           # referenced ${VAR} resolved) — MCP_FLAGS doubles as that gate.
           # run-harness re-expands the config and translates it per harness; the
