@@ -1,18 +1,18 @@
 {
   "DEUS escrow": {
+    "alerted_tx": [],
     "last_block": 52893844,
     "last_run": "2026-10-21T10:03:56Z",
-    "alerted_tx": [],
     "median_usd_30d": 179,
-    "source": "tenderly-rpc (eth_getLogs, erc20 Transfer)",
-    "note": "Incremental window 52890402->52893844 (3,442 blocks, ~96 min): ZERO escrow DEUS transfers, zero xDEUS moves. Verified pipeline on control window (52889402-52890402 = 177 raw DEUS transfers network-wide) and confirmed escrow balance + xDEUS supply byte-identical to prior run. Rolling 24h 52847241->52893844 unchanged: in 66,150.23 DEUS / out 43,512.49 / net +22,637.74 (+0.077%). Unstake outflow 0.148% of escrow, far below 5% research trigger. No event >= threshold_usd 200."
+    "note": "Incremental window 52890402->52893844 (3,442 blocks, ~96 min): ZERO escrow DEUS transfers, zero xDEUS moves. Verified pipeline on control window (52889402-52890402 = 177 raw DEUS transfers network-wide) and confirmed escrow balance + xDEUS supply byte-identical to prior run. Rolling 24h 52847241->52893844 unchanged: in 66,150.23 DEUS / out 43,512.49 / net +22,637.74 (+0.077%). Unstake outflow 0.148% of escrow, far below 5% research trigger. No event >= threshold_usd 200.",
+    "source": "tenderly-rpc (eth_getLogs, erc20 Transfer, 1000-block windows)"
   },
   "xDEUS": {
+    "alerted_tx": [],
     "last_block": 52893844,
     "last_run": "2026-10-21T10:03:56Z",
-    "alerted_tx": [],
     "median_usd_30d": null,
-    "source": "tenderly-rpc (eth_getLogs, erc721 Transfer)",
-    "note": "ERC-721. Incremental window 52890402->52893844: 0 mints, 0 burns, 0 moves. 24h: 6 mints (stake), 4 burns (unstake), 21 Transfer logs (11 non-mint/burn moves). Supply 1,711 unchanged; escrow holds 57 unchanged."
+    "note": "ERC-721. Incremental window 52890402->52893844: 0 mints, 0 burns, 0 moves. 24h: 6 mints (stake), 4 burns (unstake), 21 Transfer logs (11 non-mint/burn moves). Supply 1,711 unchanged; escrow holds 57 unchanged.",
+    "source": "tenderly-rpc (eth_getLogs, erc721 Transfer, 1000-block windows)"
   }
 }

@@ -1,10 +1,7 @@
 {
-  "skill": "onchain-monitor",
-  "last_analyzed": "2026-10-21T10:04:51Z",
-  "quality_score": 4,
-  "assessment": "Solid zero-event run with real cross-verification (control windows, balance fingerprints), correct threshold-distance math, contract addresses and source status per the hard constraint; docked for length versus the 'no long-form' preference and minor loose ends (stray .new file, no native-ETH visibility).",
-  "flags": [],
+  "assessment": "Clean quiet-window report with a genuine control query to distinguish a real zero from a broken fetch, exact before/after balances, explicit threshold distances, and raw sources (contract addresses, block range, price feed). Loses a point for asserting prior-window log counts and per-transaction figures that cannot be verified from the delivered output alone, and for extending beyond the 1.9h window rather than a full 24h — though it honestly discloses that.",
   "avg_score": 4,
+  "flags": [],
   "history": [
     {
       "date": "2026-10-21",
@@ -17,6 +14,15 @@
       "score": 4,
       "ts": "2026-10-21T10:04:51Z",
       "harness": "claude"
+    },
+    {
+      "date": "2026-10-21",
+      "score": 4,
+      "ts": "2026-10-21T10:09:10Z",
+      "harness": "claude"
     }
-  ]
+  ],
+  "last_analyzed": "2026-10-21T10:09:10Z",
+  "quality_score": 4,
+  "skill": "onchain-monitor"
 }
