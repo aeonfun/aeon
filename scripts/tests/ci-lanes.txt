@@ -102,3 +102,4 @@
 3 | vuln-scanner Riva candidate validation tests | bash scripts/tests/test_riva_candidates.sh
 6 | vuln-scanner Riva kernel contract tests | bash scripts/tests/test_riva_kernel_contract.sh
 3 | anatomy skill integration tests | bash scripts/tests/test_anatomy_integration.sh
+1 | aeon-update plan/apply tests | python3 scripts/tests/test_aeon_update.py

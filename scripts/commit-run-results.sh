@@ -100,12 +100,16 @@ main() {
     git checkout main
     if [ "$STASHED" = "true" ] && ! git stash pop; then
       # Only when the agent's own branch commits touched these paths. Restore
-      # this run's end-of-run copy of the stashed paths from the stash
-      # itself (tracked part, then the untracked part in ^3).
+      # this run's end-of-run copy of the files the stash changed (tracked
+      # part, then the untracked part in ^3). Not whole directories: the
+      # stash tree is the branch head plus those changes, so that would also
+      # copy files the agent committed only on its branch onto main
+      # (aeon-update's new baseline, before its PR merges).
       echo "::warning::post-run state conflicted with main on pop; keeping this run's copy"
-      for p in "${STATE_PATHS[@]}"; do
-        git checkout 'stash@{0}' -- "$p" 2>/dev/null || true
-      done
+      git diff -z --name-only --no-renames 'stash@{0}^1' 'stash@{0}' -- "${STATE_PATHS[@]}" |
+        while IFS= read -r -d '' p; do
+          git checkout 'stash@{0}' -- "$p" 2>/dev/null || true
+        done
       if git rev-parse -q --verify 'stash@{0}^3' >/dev/null; then
         git checkout 'stash@{0}^3' -- . 2>/dev/null || true
       fi
