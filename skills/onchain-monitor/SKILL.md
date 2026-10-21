@@ -68,15 +68,18 @@ labels:
     "last_block": 19345678,
     "last_run": "2026-04-20T12:00:00Z",
     "last_block_hash": "0x…",
-    "alerted_tx": ["0xabc...", "0xdef..."],
+    "alerted_tx": [
+      {"hash": "0xabc...", "block_number": 19345690, "first_seen": "2026-04-20T12:00:00Z"},
+      {"hash": "0xdef...", "block_number": 19345702, "first_seen": "2026-04-20T12:00:00Z"}
+    ],
     "median_usd_30d": 8500
   }
 }
 ```
 
 - `last_block` — start block for the next run's fetch. Initialise to `current_block − 2400` (≈ 8h ETH) on first run; on `robinhood` (~0.1s blocks) use `current_block − 280000` for the same ≈ 8h window. On `robinhood`, also cap every later run at that span: if `current_block − last_block` is more than 280000 (a delayed or caught-up run; 12h late is ~420k blocks, 15 windows per direction per watch), start from `current_block − 280000` and log `CLAMPED: skipped <n> blocks` for that watch, so a late run degrades to "last ~8h" instead of walking the whole gap.
-- `last_block_hash` — the canonical hash observed for `last_block` on the previous successful run. Before fetching new events, read that block again. If the hash differs, log `REORG: block <n> changed <old> → <new>`, rewind the watch to `max(0, last_block − 12)` (or the chain's documented finality depth), and replay the range. Do not send an alert until the replay completes. Keep normal transaction-hash dedup, but remove hashes first seen inside the replay range so a replacement event cannot be suppressed by stale state.
-- `alerted_tx` — tx hashes alerted in last 7 days, capped at 200. Used for cross-run dedup.
+- `last_block_hash` — the canonical hash observed for `last_block` on the previous successful run. Before fetching new events, read that block again. If the hash differs, log `REORG: block <n> changed <old> → <new>`, rewind the watch to `max(0, last_block − 12)` (or the chain's documented finality depth), and replay the range. Do not send an alert until the replay completes. Keep normal transaction-hash dedup, but remove `alerted_tx` entries whose `block_number` is inside the replay range so a replacement event cannot be suppressed by stale state. Legacy string entries from pre-replay state may remain dedup-only, but every newly stored entry must include its block number.
+- `alerted_tx` — objects `{hash, block_number, first_seen}` for txs alerted in the last 7 days, capped at 200. Used for cross-run dedup; purge by `first_seen` and retain the block number needed for reorg replay.
 - `median_usd_30d` — rolling median USD size of transfers at this watch; powers the `WHALE-TRANSFER` tag.
 
 Write the file via `mv` from a tempfile so a mid-run failure cannot corrupt state.
@@ -219,7 +222,7 @@ Native ETH/MATIC/etc. use `simple/price?ids=ethereum,matic-network,...`. If Coin
 Drop an individual event if any of:
 - `value_usd < threshold_usd` (watch config, default $1000)
 - `value_usd < $0.10` (hard dust floor — prevents airdrop / phishing spam)
-- `tx_hash` already present in this watch's `alerted_tx` (cross-run dedup)
+- `tx_hash` matches the `hash` field of an entry in this watch's `alerted_tx` (cross-run dedup)
 - `category == "log"` and watch has `event_topics:` and the topic0 is not in the list
 
 ### 5. Categorize surviving events
@@ -272,36 +275,46 @@ answered, but it does not prove that an external RPC is honest.
 {
   "schema": "aeon.onchain-monitor.evidence.v1",
   "run_id": "2026-04-20T12-00-00Z",
-  "chain": "robinhood",
-  "chain_id": 4663,
-  "from_block": 92300000,
-  "to_block": 92347891,
-  "block_hash": "0x…",
-  "sources": {"rpc": "ok", "alchemy": "skipped", "coingecko": "ok"},
-  "query_windows": 12,
-  "watches": 2,
-  "raw_events": 16,
-  "kept_events": 2,
-  "dropped_events": 14,
-  "unpriced_events": 0,
-  "tx_hashes": ["0x…"],
+  "chains": [{
+    "chain": "robinhood",
+    "chain_id": 4663,
+    "from_block": 92300000,
+    "to_block": 92347891,
+    "block_hash": "0x…",
+    "sources": {"rpc": "ok", "alchemy": "skipped", "coingecko": "ok"},
+    "query_windows": 12,
+    "watches": 2,
+    "raw_events": 16,
+    "kept_events": 2,
+    "dropped_events": 14,
+    "unpriced_events": 0,
+    "tx_hashes": ["0x…"]
+  }],
   "sha256": "<digest of this object without sha256>"
 }
 ```
 
 Rules:
 
-- Pin `from_block` and `to_block` to the actual request range. Do not use `latest`
-  in the receipt; resolve it to a number first.
-- Fetch `block_hash` for `to_block` from the same source when possible. If the
-  source cannot provide it, use `null` and mark that source `degraded`.
-- Record every split query in `query_windows`; this makes the Robinhood 10,000-log
-  fallback visible instead of silently changing the sample.
-- Sort `tx_hashes` lexicographically and remove duplicates. Never include API keys,
-  full RPC URLs containing credentials, or raw response bodies.
+- Emit one entry in `chains` for every chain represented by the completed watches;
+  never merge ranges, block hashes, source statuses, counters, or tx hashes across
+  chains. A run may span multiple chains.
+- Pin each chain entry's `from_block` and `to_block` to its actual request range. Do
+  not use `latest` in the receipt; resolve it to a number first.
+- Fetch each chain entry's `block_hash` for `to_block` from the same source when
+  possible. If the source cannot provide it, use `null` and mark that source
+  `degraded`.
+- Record every split query in each chain entry's `query_windows`; this makes the
+  Robinhood 10,000-log fallback visible instead of silently changing the sample.
+- Sort each chain entry's `tx_hashes` lexicographically and remove duplicates. Never
+  include API keys, full RPC URLs containing credentials, or raw response bodies.
 - Canonicalise the JSON with sorted keys and compact separators, compute SHA-256
   using a standard-library implementation, then add the `sha256` field and write
   atomically via a temporary file and `mv`.
+- Before writing, create `memory/evidence/` if needed and prune regular evidence
+  files older than 30 days (`find memory/evidence -type f -name '*.json' -mtime +30
+  -delete`). A pruning failure is non-fatal but must make the source footer
+  `evidence=fail`.
 - Include the receipt path and digest in the alert footer before calling `./notify`:
   `evidence: memory/evidence/<file> · sha256:<first 12 hex chars>`.
 - If receipt writing fails, continue the monitor run but mark the source footer
@@ -313,7 +326,7 @@ For each watch whose fetch **succeeded** (success ≠ "events found"):
 - `last_block ← current_block`
   - `last_block_hash ← hash(current_block)` from the pinned block read used by the run
 - `last_run ← now` (ISO 8601 UTC)
-- `alerted_tx ← (new_tx_hashes + alerted_tx)[:200]`, purging entries > 7d old
+- `alerted_tx ← (new_alerted_entries + alerted_tx)[:200]`, where each new entry is `{hash: tx_hash, block_number, first_seen: now}`; purge entries whose `first_seen` is older than 7d
 - `median_usd_30d ← median of all value_usd from this watch's transfers in last 30d` (read from recent logs; skip recomputation if < 5 samples)
 
 Write `memory/on-chain-state.json` atomically (tempfile + `mv`).
