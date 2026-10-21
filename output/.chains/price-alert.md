@@ -1,36 +1,45 @@
-No notification sent — nothing fired. Here's the run record.
+No gate fired — staying silent per the operator's "只在触发条件成立时推送" rule. No `./notify` sent.
 
-## DEUS price check — 2026-10-21 12:01 UTC
+## DEUS Price-Alert — 2026-10-21 13:01:34Z
 
-**Current:** $0.01804 · 1h **+0.56%** · 24h **+2.64%**
+**Source:** DexScreener `api.dexscreener.com/latest/dex/tokens/0x940A319B75861014A220D9c6c144d108552B089B` → HTTP 200
+**Canonical mark:** deepest Base pool, Aerodrome DEUS/VIRTUAL `0x3E97c5EC8c73e7d566aCA606472141a9b9a8C1Fa`
+**Contract:** `0x940A319B75861014A220D9c6c144d108552B089B` (base)
 
-Source: DexScreener `api.dexscreener.com/latest/dex/tokens/0x940A319B75861014A220D9c6c144d108552B089B` (http 200), deepest Base pair — Aerodrome DEUS/VIRTUAL, `0x3E97c5EC8c73e7d566aCA606472141a9b9a8C1Fa`, liquidity $706,200.
+| Metric | Value |
+|---|---|
+| Price | **$0.01805** |
+| 1h | +0.06% |
+| 24h | +2.70% |
+| Pool liquidity | $707,703 |
+| 24h volume | $12,344 |
+| 24h txns | 17 buys / 74 sells |
 
 ### Gate evaluation
 
-| Gate | Threshold | Actual | Verdict |
-|---|---|---|---|
-| ATH | > $0.06876 | $0.01804 (73.8% below) | UNCHANGED |
-| Sharp 1h move | ±20% | +0.56% | QUIET |
-| Target $0.025 (sell spot) | ≥ | +38.6% away | NO_CROSS |
-| Target $0.032 (sell spot) | ≥ | +77.4% away | NO_CROSS |
-| Target $0.041 (unstake) | ≥ | +127.3% away | NO_CROSS |
-| Target $0.012 (panic watch) | ≤ | −33.5% away | NO_CROSS |
+| Gate | Threshold | Result |
+|---|---|---|
+| ATH | > $0.06876 | **QUIET** — 73.7% below, no new high |
+| Sharp move | \|1h\| ≥ 20% | **QUIET** — 0.06% |
+| Target $0.012 | ≤ 0.012 (below) | NO_CROSS — 33.5% away |
+| Target $0.025 | ≥ 0.025 (above) | NO_CROSS — +38.5% away |
+| Target $0.032 | ≥ 0.032 (above) | NO_CROSS — +77.3% away |
+| Target $0.041 | ≥ 0.041 (above) | NO_CROSS — +127.1% away |
 
 **Verdicts fired:** NONE · **Notifications sent:** 0 · **Status:** `PRICE_ALERT_OK`
 
-### What changed since the 10:10Z run
+### What changed since 12:01Z
+Essentially nothing. Price $0.01804 → $0.01805 (+0.06%), the 1h momentum cooled from +0.56% to +0.06%, liquidity ticked up $706.2k → $707.7k. Flat to four decimals across an hour.
 
-Nothing. Price drifted −0.06% ($0.01805 → $0.01804) and the 1h momentum cooled from +0.88% to +0.56%. The two-hour-old snapshot and this one are indistinguishable — DEUS is sitting still around $0.018, roughly a third above the $0.012 panic line and nearly 39% short of the first sell-spot level.
+One contextual note that is not a gate: order flow is still lopsided — 74 sells against 17 buys over 24h, on only $12.3k of volume. That is the thin-tape condition described in the position structure (spot is sellable in one clip, but only because the pool is quiet). It does not warrant an alert; it does mean a $0.041 approach would need a buyer wave, not a drift.
 
-Worth noting: the nearest actionable level ($0.025) needs a **+38.6% move**, and the $0.041 unstake trigger needs **+127%** — against a 24h volume of roughly $11.5k on the deep pool. At that liquidity, reaching either level is an event, not a drift, which is exactly what the trade design assumes.
+Nearest actionable level remains $0.025 (+38.5%). Nothing here justifies paying the 5-day unstake cost.
 
 ## Summary
 
-- Fetched DEUS price from DexScreener (keyless, http 200) — deepest Base pool selected per the skill's liquidity rule.
-- Evaluated all four gates (ATH, sharp 1h move, and four operator targets at 0.012 / 0.025 / 0.032 / 0.041). None crossed.
-- Updated `memory/topics/price-alert-state.json` — `last_run_at` and `last_price` only; ATH and target records untouched. Validated with `jq empty`.
-- Appended a `### price-alert (12:01Z)` block to `memory/logs/2026-10-21.md`.
-- Removed the temp fetch artifact from `output/`.
-- **No notification sent** — clean no-change run, consistent with "正常别吵我".
-- Follow-up for the next run: nothing pending. Targets remain un-hit and pre-registered; the ATH gate stays armed at $0.06876.
+- Executed `skills/price-alert/SKILL.md` with `var=0.012,0.025,0.032,0.041` (MODE=execute, 4/4 targets parsed valid).
+- Fetched live price via keyless DexScreener GET (HTTP 200), selected the deepest Base pair by liquidity.
+- Ran all three gate classes: ATH, sharp 1h move, and four operator target crossings. All quiet.
+- **Files modified:** `memory/topics/price-alert-state.json` (`last_run_at`, `last_price` advanced; ATH and all targets untouched, validated with `jq empty`) and `memory/logs/2026-10-21.md` (appended `### price-alert` block).
+- **File created:** `output/.deus-price.json` (raw API response, retained as the run's source artifact).
+- **Follow-up:** none required. Next hourly run at ~14:01Z. Watch item carried forward: any move toward $0.025 needs to be caught within 5 days of it becoming real, given xDEUS cooldown — but at +38.5% distance there is ample runway today.
