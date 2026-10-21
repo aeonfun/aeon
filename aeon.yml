@@ -240,7 +240,7 @@ chains:
 # The non-claude harnesses use their OWN model ids (codex openai/*, kimi moonshotai/*,
 # vibe mistralai/*, pi deepseek/*) — surfaced in the dashboard picker per harness; see
 # docs/harnesses.md. The value below only applies to the claude/grok harnesses.
-model: claude-sonnet-5-5
+model: openai/gpt-6-luna
 
 # Agent harness — which coding-agent CLI runs your skills.
 #   claude (default)  — Claude Code (`claude -p`); uses the AI Gateway below.
@@ -259,7 +259,7 @@ model: claude-sonnet-5-5
 # Override per-skill with `harness: "<name>"` in the skill entry, or per-run via
 # the workflow_dispatch `harness` input. Default stays claude — everything
 # already configured keeps working unchanged.
-harness: claude
+harness: codex
 
 # AI Gateway — route Claude Code requests through an LLM provider.
 #
