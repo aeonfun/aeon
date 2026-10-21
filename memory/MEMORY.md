@@ -69,3 +69,14 @@ NOTE 相关阈值均为 $5,000。timelock 刻意不加 `event_topics` 过滤 —
   RH: `rpc.mainnet.chain.robinhood.com` 限 30000 块）。
 - Infura 的 `eth_getLogs` 上限约 10,000 条日志/次，超了按窗口切分。
 - 每次取数成功后，日志里写明**实际用了哪个端点**。
+
+## Infura RPC 用法（重要）
+
+- `eth_getLogs` 单次约 10,000 条日志上限，区块范围也有限。
+  收到 `more than 10000 results` / `block range too large` 时**把窗口减半重试**，
+  不要用同样范围重试。
+- 一律带 `address` + `topics` 过滤，不要空过滤扫全网。
+- 窗口保守：Robinhood ≤30,000 块；Base ≤2,000 块。成功后记下可用大小复用。
+- 429 / 5xx 指数退避重试（1s → 2s → 4s，最多 3 次），别并发猛打。
+- **失败时日志里写明 HTTP 状态码 + 错误体前 200 字符**。
+- 端点优先级：`$BASE_RPC_URL` / `$RH_RPC_URL` → 失败再退回公共 RPC。
