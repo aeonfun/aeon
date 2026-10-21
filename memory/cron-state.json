@@ -2,13 +2,13 @@
   "heartbeat": {
     "last_status": "success",
     "last_failed": "2026-10-21T06:54:07Z",
-    "total_runs": 4,
-    "total_successes": 2,
+    "total_runs": 5,
+    "total_successes": 3,
     "total_failures": 2,
     "consecutive_failures": 0,
-    "success_rate": 0.5,
+    "success_rate": 0.6,
     "last_error": "hivemindos: timeout",
-    "last_success": "2026-10-21T10:20:34Z",
+    "last_success": "2026-10-21T10:40:42Z",
     "last_dispatch": "2026-10-21T10:09:17Z"
   },
   "onchain-monitor": {
