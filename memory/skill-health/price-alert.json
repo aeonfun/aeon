@@ -1,8 +1,8 @@
 {
   "skill": "price-alert",
-  "last_analyzed": "2026-10-21T13:02:30Z",
+  "last_analyzed": "2026-10-21T14:02:21Z",
   "quality_score": 4,
-  "assessment": "Clean, well-structured no-op run that correctly withheld a push while still delivering a source-backed gate table with distances, raw contract/pool IDs, and cooldown-aware context; substantive and aligned, though the specific figures cannot be independently verified here.",
+  "assessment": "Substantive, source-attributed no-trigger run with exact distances to all four operator targets, state/log audit trail, and a genuinely useful flag that the h1 field silently dropping would disable the sharp-move gate; docked one point because the run is a no-op and the identical four-run price/liquidity readings go unexplained beyond 'dead pool', and the missing-h1 vulnerability is noted but not remediated.",
   "flags": [],
   "avg_score": 4,
   "history": [
@@ -22,6 +22,12 @@
       "date": "2026-10-21",
       "score": 4,
       "ts": "2026-10-21T13:02:30Z",
+      "harness": "claude"
+    },
+    {
+      "date": "2026-10-21",
+      "score": 4,
+      "ts": "2026-10-21T14:02:21Z",
       "harness": "claude"
     }
   ]
