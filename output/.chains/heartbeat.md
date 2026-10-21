@@ -1,49 +1,31 @@
-No notification (nothing needs operator attention), and the working tree is now clean of side effects.
+⚠️ Priority Brief — 2026-10-21
 
-## Ambient fleet check — 2026-10-21 10:10–10:24 UTC
+## Priority Brief — 2026-10-21
 
-**Verdict: `HEARTBEAT_OK · STATUS_PAGE=OK`**
+### Focus today
 
-### The headline: scheduled dispatch came alive
-The standing finding in memory was that `scheduler.yml` had never run on a `schedule` event — all recorded runs were `workflow_dispatch` or `push`, which meant every cron in `aeon.yml` was decorative and `price-alert` had never executed.
+1. **给 NOTE staging 钱包 0x69bb 补上 native ETH 检测** — 现在这条 watch 只能看 ERC-20，看不到它被充 gas 的那一刻，所以预设的触发器实际上打不响。
+   why now：转账后 **17 分钟**，上一轮同额 24 万是 **1h47m** 后开砸 —— 还剩约 1.5 小时，但检测现在是瞎的。
 
-That is no longer true. Evidence:
+2. **1,200,000 NOTE timelock，2026-10-23 09:57Z 可执行** — 量级是这次 24 万的 5 倍。
+   why now：48h 前置窗口已开，而且 owner 这次**没等它**就自行动用了自有余额，两条供给通道是并行的。
 
-| Signal | Value |
-|---|---|
-| `scheduler: cron` run | success, **event: `schedule`**, 2026-10-21 10:09:10 UTC |
-| Workflow state | `active` (updated 05:12 UTC) |
-| Skills dispatched by that tick | 4 at 10:09:17 UTC |
-| Run-event census (35 runs) | dispatch 19, push 15, **schedule 1** |
+3. background：DEUS $0.01805，四门槛全未触及，最近一档 $0.025 还差 +38.5% —— 仓位不用动，今天也没有值得付 5 天冷却的涨幅。
 
-The single `schedule` event is that 10:09Z tick — the cron path turned on today, and it fired the whole enabled fleet in one pass.
+### Since yesterday
 
-### P0 — Findings by tier
-No failed skills. `heartbeat` recovered from its `hivemindos: timeout` episode (success 06:59:43Z, `consecutive_failures` back to 0). No stuck skills: every `dispatched` entry was stamped 10:09:17Z, seven minutes old at check time — inside the 45-minute window, and normal in-flight state. No API degradation (max `consecutive_failures` = 0). `heartbeat` sits at 33% success but has only 3 runs, under the 5-run chronic bar. Self-check clean — last success ~3.3h ago, far from the 36h threshold.
+- **NOTE 供给动作**：owner EOA `0x0b64b35c…b66422` 于 10-21 10:19:04Z 转出 **240,000 NOTE** 至全新钱包 `0x69bb2e43…d7c63`（blk 94210020，nonce 379）。
+- **该钱包仍然卖不掉**：刚查（10:35Z）nonce = 0、ETH = 0，NOTE 余额 240,000（$12,986 @ $0.05411）。第一笔出账或第一笔 ETH 入账 = 真实开砸前兆。
+- **⚠️ 监控盲区**：`onchain-monitor` 的 Path C 用 `eth_getLogs` 过滤 ERC-20 `Transfer`，**看不到 native ETH**（skill 第 177 行自认 "sees ERC-20 moves only"）。staging 钱包的触发条件恰好是"第一笔 ETH 入账" —— 这条 watch 永远等不到。需要加 `eth_getBalance` 轮询。
+- **10-23 的 120 万仍在排程上**：CallScheduled 10-21 09:57Z，可执行 10-23 09:57Z。timelock 自 blk 94197434 起 **0 个新事件**，未被撤销。
+- **NOTE 价格** $0.05411｜1h −0.32%｜24h −9.09%｜主池 liq $474.9k｜24h vol $187k → 这 24 万约合 **7% 日成交量**。
+- **fleet**：10:09Z 真实 `schedule` 事件恢复，四个 skill 全部 dispatched 且成功；issue #1 已于 10:14:53Z 关闭，现在 **0 open PR / 0 open issue**。
 
-### P2 — A real defect found and fixed
-`memory-flush` logged that it pruned the stale `## 已知故障` section and the duplicate `## Telegram 输出格式` block. The committed file still had both — confirmed via `git show f6f1db4:memory/MEMORY.md`. Worse, the surviving `已知故障` section still asserted *定时调度从未运行*, which today's runs had just falsified. Left alone, the next skill to read memory would have acted on the opposite of the truth.
+### Running today
 
-Fixed:
-- **`## 已知故障`** now records the falsification with date and evidence link instead of the dead claim.
-- **`## Telegram 输出格式`** replaced hand-formatting rules ("no `#` headings, no tables, don't wrap in `>`") with the actual contract: write plain Markdown, `notify_format.py` normalizes per channel and auto-chunks. The old rules contradict the formatter and would produce double-escaping.
-- Collapsed the duplicated `## Tracked Token` table (appeared twice verbatim).
-- Refreshed Active Topics — `price-alert` completed its first real run at 10:11:02Z (`PRICE_ALERT_OK`, all four price gates untouched), so the "has still never run" item was stale.
+- `price-alert` @ 每小时整点（下一次 11:00 UTC）
+- `onchain-monitor` @ 21:00 UTC
+- `memory-flush` @ 23:30 UTC
 
-MEMORY.md went from 94 lines / 5,363 B to 66 lines / 3,856 B — inside the 8 KB / ~50-line guideline with room to spare.
-
-### P1 / P3
-Zero open PRs. One open issue, #1 `health: heartbeat`, carrying two auto-filed regression comments from the timeout window; the fault has cleared but no repair skill is enabled to close it. All four enabled skills have cron-state entries, and `price-alert`'s last success is well inside 2× its hourly interval — no missing-skill findings.
-
-### Token pulse
-Omitted — no `output/articles/token-report-*.md` exists. Per the skill rules the section is dropped entirely rather than rendered with a blank row.
-
-### Two side-issues handled
-- Local `main` was **5 commits behind** `origin/main` — other skills finished mid-run. I fast-forwarded `85f7374 → f6f1db4` before writing, so this run's edits build on current state instead of silently reverting upstream work.
-- `AGENTS.md` was staged as deleted before I started. That file is the non-Claude harnesses' operating manual and `ci-agents-md.yml` exists to prevent exactly this drift, so I restored it from HEAD rather than let the auto-commit drop it.
-
-## Summary
-- **Files modified:** `docs/status.md` (regenerated, overall 🟢 OK), `memory/MEMORY.md` (removed two now-false sections, deduplicated, refreshed topics), `memory/logs/2026-10-21.md` (appended `### heartbeat (10:10Z)` entry).
-- **Files restored:** `AGENTS.md` (pre-existing deletion, reverted).
-- **Notification:** none sent — no finding required operator action, and the timeout episode was already reported at 06:5xZ.
-- **Follow-up worth naming:** the open question is no longer "will the scheduler fire" but "does the hourly `price-alert` hold up" — its next tick is 11:00 UTC. That's the one thing to check tomorrow.
+---
+*数据源：NOTE 合约 `0xc4f730335Fb9e439ca5552f7b52B8E638c4245B0`（Robinhood Chain 4663）· RPC `rpc.mainnet.chain.robinhood.com`（eth_call / eth_getLogs，keyless）· 价格 DexScreener 10:35Z*
