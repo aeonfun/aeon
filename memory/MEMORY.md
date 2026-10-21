@@ -61,5 +61,11 @@
 6 个 watch：DEUS escrow · xDEUS · **NOTE 本体** · **NOTE timelock** · **NOTE owner EOA** · **NOTE 抛售中转 0x69bb**。
 NOTE 相关阈值均为 $5,000。timelock 刻意不加 `event_topics` 过滤 —— `CallScheduled`（48h 预警）、`CallExecuted`（真解锁）、`Cancelled`（撤销）三种都要。新增 watch 后必须同步在 `memory/on-chain-state.json` 里建条目，`last_block` 设成当前块，否则首次运行会重放历史。
 
-## 链上取数
-- Base 链优先用 `$BASE_RPC_URL`（Infura，稳定、10k 日志上限），失败再退回公共 RPC。
+## 链上取数（RPC 优先级）
+
+- 环境变量 `$BASE_RPC_URL`（Base）和 `$RH_RPC_URL`（Robinhood 4663）已配好，**优先用它们**。
+- 若某个变量为空 → 说明 workflow 的 env 没挂上，日志里明确写出「RPC env 缺失」，不要静默退回。
+- 上面失败再退回公共 RPC（Base: `base.gateway.tenderly.co` 限 1000 块；
+  RH: `rpc.mainnet.chain.robinhood.com` 限 30000 块）。
+- Infura 的 `eth_getLogs` 上限约 10,000 条日志/次，超了按窗口切分。
+- 每次取数成功后，日志里写明**实际用了哪个端点**。
