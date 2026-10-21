@@ -39,12 +39,14 @@
   },
   "memory-flush": {
     "last_dispatch": "2026-10-21T23:30:42Z",
-    "last_status": "dispatched",
+    "last_status": "failed",
     "last_success": "2026-10-21T10:13:30Z",
-    "total_runs": 1,
+    "total_runs": 2,
     "total_successes": 1,
-    "total_failures": 0,
-    "consecutive_failures": 0,
-    "success_rate": 1
+    "total_failures": 1,
+    "consecutive_failures": 1,
+    "success_rate": 0.5,
+    "last_failed": "2026-10-21T23:31:05Z",
+    "last_error": "hivemindos: Failed to authenticate. API Error: 403 All target providers failed."
   }
 }
