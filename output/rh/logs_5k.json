@@ -1,0 +1,1 @@
+{"jsonrpc":"2.0","id":1,"method":"eth_getLogs","params":[{"address":"0xc4f730335fb9e439ca5552f7b52b8e638c4245b0","fromBlock":"0x59d3ca5","toBlock":"0x59d54f5"}]}
