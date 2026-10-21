@@ -22,3 +22,11 @@
 ## Next Priorities
 - Configure notification channels (Telegram, Discord, or Slack)
 - Run a first skill (`heartbeat` is on by default), then enable a few more
+
+## Tracked Token
+
+| Token | Contract | Chain |
+|---|---|---|
+| DEUS | 0x940A319B75861014A220D9c6c144d108552B089B | base |
+
+> price-alert 只读这张表第一行 —— 一次只能盯一个币。现在盯 DEUS。
