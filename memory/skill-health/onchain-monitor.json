@@ -1,10 +1,10 @@
 {
   "skill": "onchain-monitor",
-  "last_analyzed": "2026-10-21T10:13:56Z",
-  "quality_score": 4,
-  "assessment": "Substantive clean-scan report with internal arithmetic that checks out (net flow vs escrow %, trigger distance percentages, max event = 25k DEUS x price), explicit verification that the zero isn't a broken filter, source attribution, and strategy-aligned silence; docked for a verbose body and an impossible chronology (10:12Z run citing a 10:25Z prior run) plus truncated contract addresses.",
+  "last_analyzed": "2026-10-21T15:30:35Z",
+  "quality_score": 3,
+  "assessment": "Technically solid and self-correcting with real contract addresses, block ranges, and revert checks, but it pushes an off-strategy NOTE update that hits no DEUS trigger, and the one DEUS line lacks distances to the preset thresholds — violating the 'only push on trigger' and 'actionable at a glance' priorities.",
   "flags": [],
-  "avg_score": 4,
+  "avg_score": 3.8,
   "history": [
     {
       "date": "2026-10-21",
@@ -28,6 +28,12 @@
       "date": "2026-10-21",
       "score": 4,
       "ts": "2026-10-21T10:13:56Z",
+      "harness": "claude"
+    },
+    {
+      "date": "2026-10-21",
+      "score": 3,
+      "ts": "2026-10-21T15:30:35Z",
       "harness": "claude"
     }
   ]

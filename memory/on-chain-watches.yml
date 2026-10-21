@@ -45,7 +45,8 @@ watches:
     chain: robinhood
     type: wallet
     threshold_usd: 5000
-# 30 天线性释放合约 —— owner 10-21 11:09Z 打入 60 万，每天解锁约 2 万
+  # 30 天线性释放合约 —— owner 10-21 11:09Z 打入 60 万，每天解锁约 2 万
+  # 注意：截至 15:26Z 该合约 0 笔出账，"每天 2 万"尚未被链上证实
   - label: "NOTE vesting"
     address: "0xfdd983c66d4da2ef64769b6a2eba9cd838289962"
     chain: robinhood

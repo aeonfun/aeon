@@ -1,0 +1,206 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "onchain-monitor",
+        "description": "链上监控 · NOTE 线性释放追踪 · 2026-10-21"
+      },
+      "children": [
+        "alert-note",
+        "h-note",
+        "txt-correction",
+        "txt-4h18m",
+        "table-note",
+        "txt-conclusion-1",
+        "txt-conclusion-2",
+        "sep-1",
+        "h-onchain",
+        "txt-pool",
+        "txt-buy",
+        "txt-timelock",
+        "grid-price",
+        "sep-2",
+        "h-watch",
+        "txt-watch",
+        "txt-deus"
+      ]
+    },
+    "alert-note": {
+      "type": "Alert",
+      "props": {
+        "title": "NOTE：线性释放未启动，60 万仍整块悬着",
+        "message": "⚠️ 未观察到任何 NOTE 出账，风险未降级。",
+        "type": "warning"
+      }
+    },
+    "h-note": {
+      "type": "Heading",
+      "props": {
+        "text": "NOTE：那个「每天 2 万」还没开始放",
+        "level": "h2"
+      }
+    },
+    "txt-correction": {
+      "type": "Text",
+      "props": {
+        "text": "修正 11:56Z 的判断。60 万 NOTE 进 0xfdd9 已经 4h18m，一笔都没出来。",
+        "variant": "body"
+      }
+    },
+    "txt-4h18m": {
+      "type": "Text",
+      "props": {
+        "text": "观察窗口：blk 94236333 → 94383039（约 4.8h）",
+        "variant": "caption"
+      }
+    },
+    "table-note": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "项",
+          "值"
+        ],
+        "rows": [
+          [
+            "合约余额",
+            "2,003,279.815 NOTE（打款前 2,003,279，纹丝不动）"
+          ],
+          [
+            "期间 NOTE 出账",
+            "0 笔（blk 94236333 → 94383039）"
+          ],
+          [
+            "released() / start() / duration()",
+            "全部 revert"
+          ]
+        ]
+      }
+    },
+    "txt-conclusion-1": {
+      "type": "Text",
+      "props": {
+        "text": "→ 0x091e7db9 更像登记/配置调用，不是启动释放。合约不是标准线性释放形态。",
+        "variant": "body"
+      }
+    },
+    "txt-conclusion-2": {
+      "type": "Text",
+      "props": {
+        "text": "这意味着风险没降级，只是没兑现。60 万仍以单一整数躺在一个 owner 可随时处置的合约里 —— 和昨天那个 24 万一样的形状。它可以是「每天 2 万」，也可以是一次 60 万。",
+        "variant": "lead"
+      }
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "h-onchain": {
+      "type": "Heading",
+      "props": {
+        "text": "同期链上（4.8h）",
+        "level": "h2"
+      }
+    },
+    "txt-pool": {
+      "type": "Text",
+      "props": {
+        "text": "池子：卖 1,028,609 NOTE（$60.5k）/ 买 1,174,891 NOTE（$69.0k）→ 净流出池子 146,282 NOTE（净吸筹，不是砸盘）",
+        "variant": "body"
+      }
+    },
+    "txt-buy": {
+      "type": "Text",
+      "props": {
+        "text": "14:57Z 那笔 88,744 NOTE 是买入：买家付 $4,995 USDG 经四跳路由接走，别误读成大额砸盘。",
+        "variant": "body"
+      }
+    },
+    "txt-timelock": {
+      "type": "Text",
+      "props": {
+        "text": "timelock：全量重扫 0 事件，120 万仍挂在 10-23 09:57:36Z（42.5h 后），持 15,254,442（25.42%）",
+        "variant": "body"
+      }
+    },
+    "grid-price": {
+      "type": "Grid",
+      "props": {
+        "columns": 4,
+        "gap": "md"
+      },
+      "children": [
+        "stat-price",
+        "stat-liq",
+        "stat-vol",
+        "stat-outflow"
+      ]
+    },
+    "stat-price": {
+      "type": "Stat",
+      "props": {
+        "label": "NOTE 价格",
+        "value": "$0.05877",
+        "delta": "+8.41% (1h) · +0.94% (24h)",
+        "trend": "up"
+      }
+    },
+    "stat-liq": {
+      "type": "Stat",
+      "props": {
+        "label": "流动性",
+        "value": "$501k",
+        "trend": "neutral"
+      }
+    },
+    "stat-vol": {
+      "type": "Stat",
+      "props": {
+        "label": "24h 量",
+        "value": "$271k",
+        "trend": "neutral"
+      }
+    },
+    "stat-outflow": {
+      "type": "Stat",
+      "props": {
+        "label": "池子净流出",
+        "value": "146,282 NOTE",
+        "delta": "净吸筹",
+        "trend": "up"
+      }
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "h-watch": {
+      "type": "Heading",
+      "props": {
+        "text": "要盯的",
+        "level": "h2"
+      }
+    },
+    "txt-watch": {
+      "type": "Text",
+      "props": {
+        "text": "0xfdd9 的第一笔 NOTE 出账。那是「线性释放真的开始了」的唯一证据 —— 在那之前，按 60 万整块计提风险。",
+        "variant": "lead"
+      }
+    },
+    "txt-deus": {
+      "type": "Text",
+      "props": {
+        "text": "（DEUS 侧无事：托管净流入 23,615 DEUS，价 $0.01822，四门槛全未触及。）",
+        "variant": "muted"
+      }
+    }
+  }
+}

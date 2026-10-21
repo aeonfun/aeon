@@ -1,56 +1,76 @@
 {
   "DEUS escrow": {
     "alerted_tx": [],
-    "last_block": 52894071,
-    "last_run": "2026-10-21T10:12:35Z",
+    "last_block": 52903492,
+    "last_run": "2026-10-21T15:26:30Z",
     "median_usd_30d": 179,
-    "note": "Incremental window 52893845->52894071 (226 blocks, ~7.5 min): ZERO escrow DEUS transfers, zero xDEUS moves. Pipeline verified live: network-wide DEUS transfers in last 200 blocks = 35, so eth_getLogs is returning data; the quiet is real. Balance witness: escrow DEUS 29,362,657.93714045 and xDEUS supply 1,711 / escrow 57 -- byte-identical to the 08:25Z and 10:25Z runs, so no balance-moving tx could have been missed. Rolling 24h 52850871->52894071 identical to prior runs: in 66,150.23 DEUS / out 43,512.49 / net +22,637.74 (+0.077% of escrow). Unstake outflow 0.148% of escrow vs the 5% (1,468,133 DEUS) research trigger -- no counterparty escalation warranted. No event >= threshold_usd 200.",
-    "source": "tenderly-rpc (eth_getLogs, erc20 Transfer, 951-block windows)"
+    "note": "Incremental window 52894072->52903492 (9,421 blocks, ~5.2h). DEUS escrow is a WALLET watch: `eth_getLogs{address:escrow}` returns only the escrow contract's own custom events (topic0 0x71629844), NOT DEUS Transfer logs -- and it retured exactly 2 such events with garbage data. Correct shape is a topic filter on the DEUS contract: topics [Transfer, null, escrow] for in, [Transfer, escrow] for out. Rescanned that way: 3 inbound stake transfers, 0 outbound unstake. In: 200.00 DEUS (blk 52897937, 0x023ad2d5), 23,277.41 DEUS (blk 52899652, 0xe8f30a57), 137.65 DEUS (blk 52903418, 0x6d174ed3) = 23,615.06 DEUS total. Balance witness: escrow DEUS 29,362,657.937 -> 29,386,272.989 (+23,615.05, byte-consistent with the log scan). Supply 876,231,435. Escrow share 3.354%. Zero unstake outflow vs the 5% (1,468,133 DEUS) research trigger. xDEUS escrow holdings 57 -> 58.",
+    "source": "tenderly-rpc (topic-filtered eth_getLogs on DEUS contract, 900-block windows) + eth_call balance witness"
   },
   "xDEUS": {
     "alerted_tx": [],
-    "last_block": 52894071,
-    "last_run": "2026-10-21T10:12:35Z",
+    "last_block": 52903492,
+    "last_run": "2026-10-21T15:26:30Z",
     "median_usd_30d": null,
-    "note": "ERC-721. Incremental window 52893845->52894071: 0 mints, 0 burns, 0 moves. 24h (52850871->52894071): 6 mints (stake), 4 burns (unstake), 21 Transfer logs (11 non-mint/burn moves). Supply 1,711 unchanged; escrow holds 57 unchanged.",
-    "source": "tenderly-rpc (eth_getLogs, erc721 Transfer)"
+    "note": "ERC-721 (decimals() reverts). Window 52894072->52903492: 2 mints (stake, tokenIds 2460 to 0x023ad2d5 / 2461 to 0xe8f30a57), 0 burns, 1 move (tokenId 2232 0xcfbac29b -> escrow). totalSupply 1,711 -> 1,714; escrow balanceOf 57 -> 58. Matches the two DEUS stakes above.",
+    "source": "tenderly-rpc (erc721 Transfer on xDEUS contract, 900-block windows)"
   },
   "NOTE": {
     "alerted_tx": [
       "0x2368258ba33c6f93991cdb5b97722f010e7b49919edf964385d4ce1e0744b7e0"
     ],
-    "last_block": 94210020,
-    "last_run": "2026-10-21T10:24:00Z",
+    "last_block": 94383039,
+    "last_run": "2026-10-21T15:26:30Z",
     "median_usd_30d": null,
-    "note": "Watch added 2026-10-21 on operator command '盯 NOTE'. Baseline: NOTE totalSupply 60,000,000; timelock 15,254,442.02 (25.42%), PoolManager 5,257,717 (8.76%), owner EOA 720,000 (was 960,000 before staging), staging wallet 0x69bb 240,000. The 10:19:04Z staging tx is in alerted_tx so it will not re-alert.",
-    "source": "rpc.mainnet.chain.robinhood.com (eth_getLogs / eth_call, keyless)"
+    "note": "Contract watch: direction cannot come from `to == watch` (the watch address IS the token). Direction read off the pool: X -> PoolManager = SELL, PoolManager -> X = BUY. Window 94210021->94383039 (172,018 blocks, ~4.8h): 1,002 raw NOTE Transfer logs. Pool flows: 324 sells = 1,028,609 NOTE ($60.7k), 322 buys = 1,174,891 NOTE ($69.3k), net INTO-pool -146,281 NOTE (net WITHDRAWAL from pool, i.e. accumulation). 356 non-pool transfers. Zero mints, zero burns, totalSupply still 60,000,000. Largest single event: 88,744.01 NOTE OUT of pool at 14:57:13Z blk 94368585 tx 0xbb7116c4 -- this is a BUY (buyer paid $4,995.14 USDG through 0x24a4d86c/0x0da5899d/0xb92fe925 4-hop router to 0x2408ce75), NOT a dump. Price $0.05877, +8.41%/1h, +0.94%/24h, liq $501,429, vol24 $270,698.",
+    "source": "rpc.mainnet.chain.robinhood.com (eth_getLogs on NOTE contract, 24,000-block windows)"
   },
   "NOTE timelock": {
     "alerted_tx": [],
-    "last_block": 94210020,
-    "last_run": "2026-10-21T10:24:00Z",
+    "last_block": 94383039,
+    "last_run": "2026-10-21T15:26:30Z",
     "median_usd_30d": null,
-    "note": "OZ TimelockController 0x4a53afd9c4d707c8fddd6415947ef0a1e67518b8, delay 172,800s (48h). Watched with NO event_topic filter on purpose: CallScheduled is the 48h early-warning signal, CallExecuted is the actual unlock, Cancelled kills it -- all three matter. Open schedule: 1,200,000 NOTE scheduled 2026-10-21T09:57:36Z (tx 0xbf795b94…, blk 0x59d4d47), executable 2026-10-23T09:57:36Z. State as of this run: 0 new timelock events since blk 94197434.",
-    "source": "rpc.mainnet.chain.robinhood.com (eth_getLogs, unfiltered)"
+    "note": "OZ TimelockController, getMinDelay() = 172,800s (48h) re-confirmed this run. FULL unfiltered rescan 94210021->94383039: ZERO events of any topic (not just zero Transfers). The 1,200,000 NOTE CallScheduled at 2026-10-21T09:57:36Z (blk 94195015) still has no Cancelled and no Executed. Executable 2026-10-23T09:57:36Z. Timelock NOTE balance unchanged at 15,254,442.020047 (25.42% of supply).",
+    "source": "rpc.mainnet.chain.robinhood.com (eth_getLogs, NO topic filter)"
   },
   "NOTE owner EOA": {
     "alerted_tx": [
-      "0x2368258ba33c6f93991cdb5b97722f010e7b49919edf964385d4ce1e0744b7e0"
+      "0x2368258ba33c6f93991cdb5b97722f010e7b49919edf964385d4ce1e0744b7e0",
+      "0xf92ffb6b87105ba0e83f83ffe4d5af14da0aa3fcaee383d1002b476887d30f9c"
     ],
-    "last_block": 94210020,
-    "last_run": "2026-10-21T10:24:00Z",
+    "last_block": 94383039,
+    "last_run": "2026-10-21T15:26:30Z",
     "median_usd_30d": null,
-    "note": "Plain EOA, no multisig/timelock guard. Holds mint (40M of 100M cap unissued), pause, and timelock PROPOSER. Balance 720,000 NOTE after sending 240,000 to 0x69bb at 2026-10-21T10:19:04Z (blk 0x59d7de4). Prior equivalent move: 2026-10-20 19:05Z sent 240,000 to 0x6f62b43d, which dumped it as 9 x 26,640 NOTE modifyLiquidities within 10s at 20:52Z.",
-    "source": "rpc.mainnet.chain.robinhood.com (eth_getLogs / eth_call)"
+    "note": "WALLET watch -- `eth_getLogs{address:EOA}` always returns 0 because an EOA emits no logs. That was a FALSE ZERO in prior runs. Correct shape: topic filter on NOTE contract, [Transfer, null, padded(EOA)] for in and [Transfer, padded(EOA)] for out. Rescanned: 1 outbound, 0 inbound since blk 94210021 -- 600,000 NOTE to 0xfdd983c6 at 11:09:18Z (the vesting funding, already known). Balance 120,000 NOTE (verified via balanceOf), native ETH 0.013984, nonce 365. Nothing new moved.",
+    "source": "rpc.mainnet.chain.robinhood.com (topic-filtered eth_getLogs + eth_call balanceOf)"
   },
   "NOTE staging 0x69bb": {
     "alerted_tx": [
-      "0x2368258ba33c6f93991cdb5b97722f010e7b49919edf964385d4ce1e0744b7e0"
+      "0x2368258ba33c6f93991cdb5b97722f010e7b49919edf964385d4ce1e0744b7e0",
+      "0x84863f84f8f4726e85134eecc037633083c1d85d376c6d2ed121a3803a972f0b",
+      "0x8dd58f5d0b43c2872890dbfcf6d27638031fa3996b3397ba6e2c33d5dd99e622",
+      "0xf817c563f1a3a0311be93b191a87bc3612c6c05f4bf48abd40c406e29ee6ab1f",
+      "0x86808353e917d43d8fea89ad6f50ef52ca71f28876751b0314357edd1ccf94ee",
+      "0xa4e5b55b126aaadeb49cecd74b4fb2c835d800d8e61f8c9ec7176cbdcff8ad58",
+      "0xeeae7eabaa3bece5f2bc8250bc548765319ca40207847f35157d6237ffaaece5",
+      "0x0e90c611cd63cc0a02a3383dfb40ff1e54db61bfdfc2e4c506cb1e11f5e6e8d8",
+      "0xf1f7fcfe68d97a5e74b2a284e7bcaef86b67f0c8a665127c29ce46ff80b2362e",
+      "0x68341ac33bca4fa345a9d7bf9948da0b70d60e82440e4e0db5883564e0b80cb3"
     ],
-    "last_block": 94210020,
-    "last_run": "2026-10-21T10:24:00Z",
+    "last_block": 94383039,
+    "last_run": "2026-10-21T15:26:30Z",
     "median_usd_30d": null,
-    "note": "Newly created wallet 0x69bb2e438b04109dc1ec0cc43f77f455649d7c63. nonce 0 at discovery, native ETH balance 0 -- received 240,000 NOTE from owner at 2026-10-21T10:19:04Z but CANNOT SELL until it is gas-funded, so its first outgoing tx or first inbound ETH is the actionable trigger. Precedent timing: 10-20 staging 19:05Z -> dump 20:52Z = 1h47m.",
-    "source": "rpc.mainnet.chain.robinhood.com (eth_getLogs / eth_getBalance / eth_getTransactionCount)"
+    "note": "WALLET watch, same false-zero caveat as owner EOA -- rescanned with a topic filter. 9 outbound, 0 inbound: the 9 x 26,640 NOTE dumps at 11:08:31-38Z (blk 94235872-94235933) into PoolManager, already reported. Balance now 240 NOTE ($14), native ETH 0.008945, nonce 11. This wallet is DONE -- it dumped and is empty. Retire it from the active trigger set on the next config edit; keeping it costs a scan per run for nothing.",
+    "source": "rpc.mainnet.chain.robinhood.com (topic-filtered eth_getLogs + eth_call balanceOf/eth_getBalance)"
+  },
+  "NOTE vesting": {
+    "alerted_tx": [
+      "0xf92ffb6b87105ba0e83f83ffe4d5af14da0aa3fcaee383d1002b476887d30f9c"
+    ],
+    "last_block": 94383039,
+    "last_run": "2026-10-21T15:26:30Z",
+    "median_usd_30d": null,
+    "note": "NEW STATE ENTRY (the watch was added to on-chain-watches.yml without a state row -- first run would have replayed ~200k blocks). Seeded at blk 94320001 for this run. Contract 0xfdd983c6, owner() = 0x0b64b35c (confirmed via eth_call 0x8da5cb5b). Window 94236333->94383039 (~4.8h): 1 inbound (600,000 NOTE from owner at 11:09:18Z) and ZERO outbound NOTE transfers. Balance 2,003,279.815436415 NOTE, unchanged from the pre-funding 2,003,279 -> the '600k' simply topped up a balance that was already there; not one NOTE has been released in the 4h18m since funding. The claimed 30-day linear release (~20,000 NOTE/day) has NOT started. Probe of release()/released()/start()/duration() selectors all REVERT -- this is not a standard LinearVesting, so the 11:09 calldata was most likely a config/registration call, not an actual vesting start. Treat the 'daily 20k drip' as UNCONFIRMED until an outflow is observed.",
+    "source": "rpc.mainnet.chain.robinhood.com (topic-filtered eth_getLogs + eth_call owner()/balanceOf)"
   }
 }

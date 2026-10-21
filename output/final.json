@@ -1,0 +1,453 @@
+{
+ "generated_at": "2026-10-21T15:25:14.555Z",
+ "watches": {
+  "NOTE": {
+   "window": [
+    94210021,
+    94383039
+   ],
+   "raw_logs": 1002,
+   "sells": {
+    "n": 324,
+    "note": 1028609.330590928,
+    "usd": 60657.09222494701
+   },
+   "buys": {
+    "n": 322,
+    "note": 1174890.699568884,
+    "usd": 69283.3045535771
+   },
+   "other": {
+    "n": 356,
+    "note": 1825627.2390175983
+   },
+   "net_supply_into_pool": -146281.368977956,
+   "largest": [
+    {
+     "tx": "0xbb7116c43dbb52243b2b3a84ac4e22999173eb9d529fa0ba5f568d6123407c3b",
+     "block": 94368585,
+     "ts": 1792594633,
+     "from": "0x8366a39cc670b4001a1121b8f6a443a643e40951",
+     "to": "0x24a4d86c8a76b00ee9566ed9c9ff4f0c3faf0da7",
+     "amount": 88744.0093755516,
+     "usd": 5233.234232876278,
+     "kind": "BUY"
+    },
+    {
+     "tx": "0xa03d62de30d66833faf5e8e6dfc72a875a19d47077418b5e3f9fd589fca32dab",
+     "block": 94368990,
+     "ts": 1792594674,
+     "from": "0x0da5899dbb36bd741885d4228f04cd9c6304fc56",
+     "to": "0x8366a39cc670b4001a1121b8f6a443a643e40951",
+     "amount": 43075.139277720176,
+     "usd": 2540.140963207159,
+     "kind": "SELL"
+    },
+    {
+     "tx": "0x19ecdd6a5e938c856444bee1f0d82f3cef047a2d47cd6c79bdcb3a2948498a71",
+     "block": 94370147,
+     "ts": 1792594792,
+     "from": "0x8366a39cc670b4001a1121b8f6a443a643e40951",
+     "to": "0x0005ea38eb0a69d1253508ebdbdb9ea8cb26b5ef",
+     "amount": 35286.42950763592,
+     "usd": 2080.8407480652904,
+     "kind": "BUY"
+    },
+    {
+     "tx": "0x28a422847a21dafd66f3da27fcb9f67607f87bc2ea8b8831a5611b5edcd71c43",
+     "block": 94368901,
+     "ts": 1792594665,
+     "from": "0x8366a39cc670b4001a1121b8f6a443a643e40951",
+     "to": "0x6448ca549397721aa589c6b27341ff70a0ee89fd",
+     "amount": 29411.536459246716,
+     "usd": 1734.398305001779,
+     "kind": "BUY"
+    },
+    {
+     "tx": "0x84863f84f8f4726e85134eecc037633083c1d85d376c6d2ed121a3803a972f0b",
+     "block": 94235872,
+     "ts": 1792580911,
+     "from": "0x69bb2e438b04109dc1ec0cc43f77f455649d7c63",
+     "to": "0x8366a39cc670b4001a1121b8f6a443a643e40951",
+     "amount": 26640,
+     "usd": 1570.9608,
+     "kind": "SELL"
+    },
+    {
+     "tx": "0x8dd58f5d0b43c2872890dbfcf6d27638031fa3996b3397ba6e2c33d5dd99e622",
+     "block": 94235881,
+     "ts": 1792580912,
+     "from": "0x69bb2e438b04109dc1ec0cc43f77f455649d7c63",
+     "to": "0x8366a39cc670b4001a1121b8f6a443a643e40951",
+     "amount": 26640,
+     "usd": 1570.9608,
+     "kind": "SELL"
+    }
+   ],
+   "transfers": 356
+  },
+  "DEUS escrow": {
+   "raw_logs": 2,
+   "transfer_logs": 0,
+   "events": []
+  },
+  "xDEUS": {
+   "raw_logs": 3,
+   "mints": 2,
+   "burns": 0,
+   "moves": 1,
+   "events": [
+    {
+     "tx": "0x99fab6fd2623ceec2c35d7d0353d74426f41d42be658f8f651d439ef23ba9b91",
+     "block": 52896976,
+     "ts": 1792583299,
+     "from": "0xcfbac29b4096c2ac71b6da1b71f9364c6d25abe8",
+     "to": "0xa85a38796b951ce87b378538b32b3e6ee3c4c373",
+     "tokenId": 2232,
+     "kind": "MOVE"
+    },
+    {
+     "tx": "0x1c94576b7a035aea3f41e49cd255821a184f96502e1172896997f0673fb5c252",
+     "block": 52897937,
+     "ts": 1792585221,
+     "from": "0x0000000000000000000000000000000000000000",
+     "to": "0x023ad2d54a7d1bcd2f2272da7e57f8eec36dfc9c",
+     "tokenId": 2460,
+     "kind": "MINT"
+    },
+    {
+     "tx": "0xbfdceb46749d6bb000b93a729a62807a417485010168ac133f5ba2ade7b7b089",
+     "block": 52899652,
+     "ts": 1792588651,
+     "from": "0x0000000000000000000000000000000000000000",
+     "to": "0xe8f30a57112d4506af108d072a60337b39696063",
+     "tokenId": 2461,
+     "kind": "MINT"
+    }
+   ]
+  },
+  "NOTE owner EOA": {
+   "window": [
+    94210021,
+    94383503
+   ],
+   "ins": [],
+   "outs": [
+    {
+     "tx": "0xf92ffb6b87105ba0e83f83ffe4d5af14da0aa3fcaee383d1002b476887d30f9c",
+     "block": 94236333,
+     "ts": 1792580958,
+     "to": "0xfdd983c66d4da2ef64769b6a2eba9cd838289962",
+     "sec": "out",
+     "amount": 600000,
+     "usd": 35382
+    }
+   ]
+  },
+  "NOTE staging 0x69bb": {
+   "window": [
+    94210021,
+    94383503
+   ],
+   "ins": [],
+   "outs": [
+    {
+     "tx": "0x84863f84f8f4726e85134eecc037633083c1d85d376c6d2ed121a3803a972f0b",
+     "block": 94235872,
+     "ts": 1792580911,
+     "to": "0x8366a39cc670b4001a1121b8f6a443a643e40951",
+     "sec": "out",
+     "amount": 26640,
+     "usd": 1570.9608
+    },
+    {
+     "tx": "0x8dd58f5d0b43c2872890dbfcf6d27638031fa3996b3397ba6e2c33d5dd99e622",
+     "block": 94235881,
+     "ts": 1792580912,
+     "to": "0x8366a39cc670b4001a1121b8f6a443a643e40951",
+     "sec": "out",
+     "amount": 26640,
+     "usd": 1570.9608
+    },
+    {
+     "tx": "0xf817c563f1a3a0311be93b191a87bc3612c6c05f4bf48abd40c406e29ee6ab1f",
+     "block": 94235891,
+     "ts": 1792580913,
+     "to": "0x8366a39cc670b4001a1121b8f6a443a643e40951",
+     "sec": "out",
+     "amount": 26640,
+     "usd": 1570.9608
+    },
+    {
+     "tx": "0x86808353e917d43d8fea89ad6f50ef52ca71f28876751b0314357edd1ccf94ee",
+     "block": 94235897,
+     "ts": 1792580914,
+     "to": "0x8366a39cc670b4001a1121b8f6a443a643e40951",
+     "sec": "out",
+     "amount": 26640,
+     "usd": 1570.9608
+    },
+    {
+     "tx": "0xa4e5b55b126aaadeb49cecd74b4fb2c835d800d8e61f8c9ec7176cbdcff8ad58",
+     "block": 94235903,
+     "ts": 1792580914,
+     "to": "0x8366a39cc670b4001a1121b8f6a443a643e40951",
+     "sec": "out",
+     "amount": 26640,
+     "usd": 1570.9608
+    },
+    {
+     "tx": "0xeeae7eabaa3bece5f2bc8250bc548765319ca40207847f35157d6237ffaaece5",
+     "block": 94235912,
+     "ts": 1792580915,
+     "to": "0x8366a39cc670b4001a1121b8f6a443a643e40951",
+     "sec": "out",
+     "amount": 26640,
+     "usd": 1570.9608
+    },
+    {
+     "tx": "0x0e90c611cd63cc0a02a3383dfb40ff1e54db61bfdfc2e4c506cb1e11f5e6e8d8",
+     "block": 94235920,
+     "ts": 1792580916,
+     "to": "0x8366a39cc670b4001a1121b8f6a443a643e40951",
+     "sec": "out",
+     "amount": 26640,
+     "usd": 1570.9608
+    },
+    {
+     "tx": "0xf1f7fcfe68d97a5e74b2a284e7bcaef86b67f0c8a665127c29ce46ff80b2362e",
+     "block": 94235929,
+     "ts": 1792580917,
+     "to": "0x8366a39cc670b4001a1121b8f6a443a643e40951",
+     "sec": "out",
+     "amount": 26640,
+     "usd": 1570.9608
+    },
+    {
+     "tx": "0x68341ac33bca4fa345a9d7bf9948da0b70d60e82440e4e0db5883564e0b80cb3",
+     "block": 94235933,
+     "ts": 1792580918,
+     "to": "0x8366a39cc670b4001a1121b8f6a443a643e40951",
+     "sec": "out",
+     "amount": 26640,
+     "usd": 1570.9608
+    }
+   ]
+  },
+  "NOTE vesting": {
+   "window": [
+    94236333,
+    94383503
+   ],
+   "ins": [
+    {
+     "tx": "0xf92ffb6b87105ba0e83f83ffe4d5af14da0aa3fcaee383d1002b476887d30f9c",
+     "block": 94236333,
+     "ts": 1792580958,
+     "from": "0x0b64b35c6dd23944d6d4029864d2ca2aa1b66422",
+     "sec": "in",
+     "amount": 600000,
+     "usd": 35382
+    }
+   ],
+   "outs": []
+  }
+ },
+ "kept": [
+  {
+   "tx": "0xf92ffb6b87105ba0e83f83ffe4d5af14da0aa3fcaee383d1002b476887d30f9c",
+   "block": 94236333,
+   "ts": 1792580958,
+   "to": "0xfdd983c66d4da2ef64769b6a2eba9cd838289962",
+   "sec": "out",
+   "amount": 600000,
+   "usd": 35382,
+   "watch": "NOTE owner EOA",
+   "dir": "out"
+  },
+  {
+   "tx": "0xf92ffb6b87105ba0e83f83ffe4d5af14da0aa3fcaee383d1002b476887d30f9c",
+   "block": 94236333,
+   "ts": 1792580958,
+   "from": "0x0b64b35c6dd23944d6d4029864d2ca2aa1b66422",
+   "sec": "in",
+   "amount": 600000,
+   "usd": 35382,
+   "watch": "NOTE vesting",
+   "dir": "in"
+  },
+  {
+   "tx": "0xbb7116c43dbb52243b2b3a84ac4e22999173eb9d529fa0ba5f568d6123407c3b",
+   "block": 94368585,
+   "ts": 1792594633,
+   "from": "0x8366a39cc670b4001a1121b8f6a443a643e40951",
+   "to": "0x24a4d86c8a76b00ee9566ed9c9ff4f0c3faf0da7",
+   "amount": 88744.0093755516,
+   "usd": 5233.234232876278,
+   "kind": "BUY",
+   "watch": "NOTE",
+   "dir": "in"
+  }
+ ],
+ "dropped": [
+  {
+   "tx": "0xa03d62de30d66833faf5e8e6dfc72a875a19d47077418b5e3f9fd589fca32dab",
+   "block": 94368990,
+   "ts": 1792594674,
+   "from": "0x0da5899dbb36bd741885d4228f04cd9c6304fc56",
+   "to": "0x8366a39cc670b4001a1121b8f6a443a643e40951",
+   "amount": 43075.139277720176,
+   "usd": 2540.140963207159,
+   "kind": "SELL",
+   "watch": "NOTE",
+   "reason": "below_threshold"
+  },
+  {
+   "tx": "0x19ecdd6a5e938c856444bee1f0d82f3cef047a2d47cd6c79bdcb3a2948498a71",
+   "block": 94370147,
+   "ts": 1792594792,
+   "from": "0x8366a39cc670b4001a1121b8f6a443a643e40951",
+   "to": "0x0005ea38eb0a69d1253508ebdbdb9ea8cb26b5ef",
+   "amount": 35286.42950763592,
+   "usd": 2080.8407480652904,
+   "kind": "BUY",
+   "watch": "NOTE",
+   "reason": "below_threshold"
+  },
+  {
+   "tx": "0x28a422847a21dafd66f3da27fcb9f67607f87bc2ea8b8831a5611b5edcd71c43",
+   "block": 94368901,
+   "ts": 1792594665,
+   "from": "0x8366a39cc670b4001a1121b8f6a443a643e40951",
+   "to": "0x6448ca549397721aa589c6b27341ff70a0ee89fd",
+   "amount": 29411.536459246716,
+   "usd": 1734.398305001779,
+   "kind": "BUY",
+   "watch": "NOTE",
+   "reason": "below_threshold"
+  },
+  {
+   "tx": "0x84863f84f8f4726e85134eecc037633083c1d85d376c6d2ed121a3803a972f0b",
+   "block": 94235872,
+   "ts": 1792580911,
+   "from": "0x69bb2e438b04109dc1ec0cc43f77f455649d7c63",
+   "to": "0x8366a39cc670b4001a1121b8f6a443a643e40951",
+   "amount": 26640,
+   "usd": 1570.9608,
+   "kind": "SELL",
+   "watch": "NOTE",
+   "reason": "below_threshold"
+  },
+  {
+   "tx": "0x8dd58f5d0b43c2872890dbfcf6d27638031fa3996b3397ba6e2c33d5dd99e622",
+   "block": 94235881,
+   "ts": 1792580912,
+   "from": "0x69bb2e438b04109dc1ec0cc43f77f455649d7c63",
+   "to": "0x8366a39cc670b4001a1121b8f6a443a643e40951",
+   "amount": 26640,
+   "usd": 1570.9608,
+   "kind": "SELL",
+   "watch": "NOTE",
+   "reason": "below_threshold"
+  },
+  {
+   "tx": "0x84863f84f8f4726e85134eecc037633083c1d85d376c6d2ed121a3803a972f0b",
+   "block": 94235872,
+   "ts": 1792580911,
+   "to": "0x8366a39cc670b4001a1121b8f6a443a643e40951",
+   "sec": "out",
+   "amount": 26640,
+   "usd": 1570.9608,
+   "watch": "NOTE staging 0x69bb",
+   "reason": "below_threshold"
+  },
+  {
+   "tx": "0x8dd58f5d0b43c2872890dbfcf6d27638031fa3996b3397ba6e2c33d5dd99e622",
+   "block": 94235881,
+   "ts": 1792580912,
+   "to": "0x8366a39cc670b4001a1121b8f6a443a643e40951",
+   "sec": "out",
+   "amount": 26640,
+   "usd": 1570.9608,
+   "watch": "NOTE staging 0x69bb",
+   "reason": "below_threshold"
+  },
+  {
+   "tx": "0xf817c563f1a3a0311be93b191a87bc3612c6c05f4bf48abd40c406e29ee6ab1f",
+   "block": 94235891,
+   "ts": 1792580913,
+   "to": "0x8366a39cc670b4001a1121b8f6a443a643e40951",
+   "sec": "out",
+   "amount": 26640,
+   "usd": 1570.9608,
+   "watch": "NOTE staging 0x69bb",
+   "reason": "below_threshold"
+  },
+  {
+   "tx": "0x86808353e917d43d8fea89ad6f50ef52ca71f28876751b0314357edd1ccf94ee",
+   "block": 94235897,
+   "ts": 1792580914,
+   "to": "0x8366a39cc670b4001a1121b8f6a443a643e40951",
+   "sec": "out",
+   "amount": 26640,
+   "usd": 1570.9608,
+   "watch": "NOTE staging 0x69bb",
+   "reason": "below_threshold"
+  },
+  {
+   "tx": "0xa4e5b55b126aaadeb49cecd74b4fb2c835d800d8e61f8c9ec7176cbdcff8ad58",
+   "block": 94235903,
+   "ts": 1792580914,
+   "to": "0x8366a39cc670b4001a1121b8f6a443a643e40951",
+   "sec": "out",
+   "amount": 26640,
+   "usd": 1570.9608,
+   "watch": "NOTE staging 0x69bb",
+   "reason": "below_threshold"
+  },
+  {
+   "tx": "0xeeae7eabaa3bece5f2bc8250bc548765319ca40207847f35157d6237ffaaece5",
+   "block": 94235912,
+   "ts": 1792580915,
+   "to": "0x8366a39cc670b4001a1121b8f6a443a643e40951",
+   "sec": "out",
+   "amount": 26640,
+   "usd": 1570.9608,
+   "watch": "NOTE staging 0x69bb",
+   "reason": "below_threshold"
+  },
+  {
+   "tx": "0x0e90c611cd63cc0a02a3383dfb40ff1e54db61bfdfc2e4c506cb1e11f5e6e8d8",
+   "block": 94235920,
+   "ts": 1792580916,
+   "to": "0x8366a39cc670b4001a1121b8f6a443a643e40951",
+   "sec": "out",
+   "amount": 26640,
+   "usd": 1570.9608,
+   "watch": "NOTE staging 0x69bb",
+   "reason": "below_threshold"
+  },
+  {
+   "tx": "0xf1f7fcfe68d97a5e74b2a284e7bcaef86b67f0c8a665127c29ce46ff80b2362e",
+   "block": 94235929,
+   "ts": 1792580917,
+   "to": "0x8366a39cc670b4001a1121b8f6a443a643e40951",
+   "sec": "out",
+   "amount": 26640,
+   "usd": 1570.9608,
+   "watch": "NOTE staging 0x69bb",
+   "reason": "below_threshold"
+  },
+  {
+   "tx": "0x68341ac33bca4fa345a9d7bf9948da0b70d60e82440e4e0db5883564e0b80cb3",
+   "block": 94235933,
+   "ts": 1792580918,
+   "to": "0x8366a39cc670b4001a1121b8f6a443a643e40951",
+   "sec": "out",
+   "amount": 26640,
+   "usd": 1570.9608,
+   "watch": "NOTE staging 0x69bb",
+   "reason": "below_threshold"
+  }
+ ]
+}

@@ -1,56 +1,28 @@
-Run complete. Both watches scanned clean — no alert sent, per the "only notify on signal" rule.
+⚠️ NOTE: 线性释放未启动，60 万仍整块悬着
 
-## On-Chain Monitor — 2026-10-21T10:12:35Z
+## NOTE：那个「每天 2 万」还没开始放
 
-**Result: `ON_CHAIN_OK` (n_watches=2, n_raw=0, n_dropped=0). No notification sent.**
+**修正 11:56Z 的判断。** 60 万 NOTE 进 `0xfdd9` 已经 4h18m，**一笔都没出来**。
 
-### Scan window
-Incremental only — 226 blocks (≈7.5 min), `52893845 → 52894071` on Base. The prior run at 10:25Z had already closed out the rolling 24h backfill, so this is a pure delta check.
+| 项 | 值 |
+|---|---|
+| 合约余额 | 2,003,279.815 NOTE（打款前 2,003,279，纹丝不动） |
+| 期间 NOTE 出账 | **0 笔**（blk 94236333 → 94383039） |
+| `released()` / `start()` / `duration()` | **全部 revert** |
 
-| Watch | Source | Block range | Events |
-|---|---|---|---|
-| DEUS escrow `0xA85A…C373` | tenderly-rpc | 52,893,845 → 52,894,071 | 0 |
-| xDEUS `0xe6d5…4431` | tenderly-rpc | 52,893,845 → 52,894,071 | 0 mints, 0 burns, 0 moves |
+→ `0x091e7db9` 更像**登记/配置**调用，不是启动释放。合约不是标准线性释放形态。
 
-### Why the zero is trustworthy
-A zero from a log query looks identical to a broken filter, so I checked both directions:
+**这意味着风险没降级，只是没兑现。** 60 万仍以**单一整数**躺在一个 owner 可随时处置的合约里 —— 和昨天那个 24 万一样的形状。它可以是"每天 2 万"，也可以是一次 60 万。
 
-- **Pipeline live:** network-wide DEUS transfers in the last 200 blocks = **35**. `eth_getLogs` is returning data; the watches are genuinely idle.
-- **Balance witness:** escrow DEUS `29,362,657.93714045` and xDEUS supply `1,711` / escrow `57` were **byte-identical before and after**. No balance-moving transaction could have been missed.
+## 同期链上（4.8h）
 
-### Rolling 24h (`52850871 → 52894071`) — unchanged from the 08:25Z and 10:25Z runs
-- In: **66,150.23 DEUS** · Out: **43,512.49 DEUS** · Net: **+22,637.74 DEUS** (+0.077% of escrow — net inflow)
-- Research trigger (§ 情报, 5%/day): the gate sits at **1,468,133 DEUS**; actual outflow was **0.148%** of escrow. Not remotely close.
-- 10 escrow transfers, 6 xDEUS mints, 4 burns. Median event **$179**, max **$447** at $0.01789/DEUS — nothing clears the $200/$250 thresholds.
+- 池子：卖 1,028,609 NOTE（$60.5k）/ 买 1,174,891 NOTE（$69.0k）→ **净流出池子 146,282 NOTE**（净吸筹，不是砸盘）
+- 14:57Z 那笔 88,744 NOTE 是**买入**：买家付 $4,995 USDG 经四跳路由接走，别误读成大额砸盘
+- timelock：全量重扫 **0 事件**，120 万仍挂在 **10-23 09:57:36Z**（42.5h 后），持 15,254,442（25.42%）
+- 价格 **$0.05877**（1h +8.41%，24h +0.94%），liq $501k，24h 量 $271k
 
-### Counterparty pass (done anyway — cheap, and it's the "who" that matters)
-- `0x7901…0185` — **contract**, staked 25,000 DEUS twice in one day, holds 25,000 DEUS + 5 xDEUS. Largest accumulator.
-- `0x6e5f…cba5` — **contract**, round-tripper (13,385 in; 7,560 + 5,020 out). Resizing a position, not exiting.
-- `0xd5ff…c724` — **EOA**, unstaked 12,419.81 DEUS, still holds **52,837 DEUS liquid**. That's the one address with both size and demonstrated willingness to sell.
+## 要盯的
 
-### Price / trigger distance
-DEUS **$0.01805** (Aerodrome VIRTUAL pair, liq $705.9k, 24h vol $11.5k, +3.03%/24h); $0.01793 on the USDC pair.
+`0xfdd9` 的**第一笔 NOTE 出账**。那是"线性释放真的开始了"的唯一证据 —— 在那之前，按 60 万整块计提风险。
 
-`$0.025` +38.5% · `$0.032` +77.3% · `$0.012` −33.5% · `$0.041` +127.1% — **none touched.**
-
-### Source note
-`ALCHEMY_API_KEY` and `ETHERSCAN_API_KEY` are unset again, so this ran on the keyless Tenderly gateway. Native ETH moves on these watches remain invisible — only ERC-20/ERC-721 logs are seen.
-
-One RPC behaviour worth recording: a **203-block** range on the unfiltered xDEUS leg failed with `query exceeds max results 20000` — Base Transfer volume is now high enough that unfiltered `eth_getLogs` is unusable at any range. Fixed by adding the contract `address` filter instead of scanning all Transfers. That's in `base-rpc-access.md` now.
-
-## Summary
-
-**What I did:** Ran the `onchain-monitor` skill with no `var`. Fetched the current Base block, scanned the delta window on both watches, verified the empty result against a network-wide control query and an escrow-balance witness, recomputed rolling 24h flows, profiled all seven escrow counterparties (EOA vs contract + token holdings), and pulled current DEUS price to measure trigger distance.
-
-**Files created/modified:**
-- `memory/on-chain-state.json` — advanced `last_block` to 52,894,071, refreshed `last_run` and notes for both watches
-- `memory/logs/2026-10-21.md` — appended the `### onchain-monitor (10:12Z)` entry with full detail
-- `memory/topics/deus-escrow.md` — **new** living doc: the two watches, the 5% gate math, and the counterparty map
-- `memory/topics/base-rpc-access.md` — added the 20,000-result cap section, bumped `timestamp`
-
-**No alert sent** — zero surviving events and no strategy trigger, so nothing to report. Per the strategy, silence is the correct output here.
-
-**Follow-up actions:**
-1. `memory/on-chain-state.json.new` is a stale partial write from the 10:03Z run. The delete wasn't granted this run, so it's still on disk. It's inert (the skill reads `on-chain-state.json` only) but should be removed by a write-mode run.
-2. `0xd5ff…c724` is worth adding to `on-chain-watches.yml` — it's the only holder with meaningful liquid DEUS and a track record of unstaking.
-3. Setting `ALCHEMY_API_KEY` would restore decoded, categorized transfers plus native ETH visibility.
+（DEUS 侧无事：托管净流入 23,615 DEUS，价 $0.01822，四门槛全未触及。）

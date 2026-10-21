@@ -3,7 +3,7 @@ title: Note Systems (NOTE)
 description: Note Systems NOTE 代币 —— Robinhood Chain (4663) 上的结构化票据协议治理/激励代币，合约、供应、持仓与解锁排程
 tags: [robinhood-chain, token, unlock, note-systems]
 resource: https://note.systems/
-timestamp: 2026-10-21T12:00:00Z
+timestamp: 2026-10-21T15:26:30Z
 ---
 
 # Note Systems (NOTE)
@@ -94,7 +94,7 @@ owner EOA `0x0b64…` 是 PROPOSER（`hasRole` = 1）：可随时 schedule，48h
 
 ## 第四次动作：改成 30 天线性释放（2026-10-21 11:09:18Z）
 
-砸盘结束 **40 秒后**，owner EOA 调用 `0xfdd983c66d4da2ef64769b6a2eba9cd838289962`（自有合约，`owner()` = `0x0b64…`），selector `0x091e7db9`，转入 **600,000 NOTE**。calldata 解码：
+砸盘结束 **40 秒后**，owner EOA 调用 `0xfdd983c66d4da2ef64769b6a2eba9cd838289962`（自有合约，`owner()` = `0x0b64…`，本次已用 `eth_call 0x8da5cb5b` 复核），selector `0x091e7db9`，转入 **600,000 NOTE**。calldata 解码：
 
 | 字段 | 值 |
 |---|---|
@@ -103,11 +103,44 @@ owner EOA `0x0b64…` 是 PROPOSER（`hasRole` = 1）：可随时 schedule，48h
 | period | `2592000` 秒 = **30 天** |
 | 参数 3 | `3000`（疑似 cliff/bps，未确认） |
 
-→ **每天线性释放约 20,000 NOTE（≈$1,081，约日量 0.5%）**。
+→ 账面推算每天线性释放约 20,000 NOTE（≈$1,081，约日量 0.5%）。
 
-该合约全史：入 **36.42M / 174 笔**，主要发送方都是 owner EOA；出 **21.74M 回 owner EOA** + 一批 600k 整数分发；当前余额 **2,003,279 NOTE**。今日 08:29Z 仅 1 笔出账 10,398。
+### ⚠️ 但截至 15:26Z 释放并未启动（2026-10-21 复核，重要修正）
 
-**含义**：团队把"一次性砸盘"改成了"每天滴漏"。砸盘从事件变成背景噪音，链上预警的边际价值下降 —— 此后不能再靠"盯转账"预判，只能靠总量判断。
+四条独立证据表明**"每天 2 万"目前只是账面推测，不是链上事实**：
+
+1. 该合约自 11:09:18Z 起 **0 笔 NOTE 出账**（topic-filter 扫描 blk 94236333→94383039，约 4h18m）
+2. 余额 **2,003,279.815** 与打款前持平 —— 60 万只是把余额从 140 万补到 200 万，没有净流出
+3. `released(NOTE)` / `start()` / `duration()` / `totalReleased()` 四个标准线性释放 selector **全部 revert**
+4. `eth_getLogs` 扫该地址自 blk 0x59e0000 起 **零日志**（转入是 NOTE 合约的 Transfer，不是它自己发的事件）
+
+结论：`0x091e7db9` 更像是**登记/配置**调用，不是启动释放。合约不是标准 LinearVesting 形态。
+**在观察到真实出账之前，不要把"每天 2 万"当作已知供给压力** —— 上一版笔记据此下调了预警价值，那是建立在未验证的 calldata 解读上。
+
+该合约全史：入 **36.42M / 174 笔**，主要发送方都是 owner EOA；出 **21.74M 回 owner EOA** + 一批 600k 整数分发；当前余额 **2,003,279 NOTE**。
+
+## 方向判断陷阱：NOTE 是合约 watch，不能按 `to == watch` 算方向
+
+`NOTE` watch 的地址**就是代币合约本身**，所以"这笔 Transfer 是买还是卖"不能从 watch 地址推。正确做法是看池子：
+
+- `X → PoolManager (0x8366a39c…)` = **卖**（供应进池）
+- `PoolManager → X` = **买**（供应出池）
+
+2026-10-21 15:26Z 那次扫描里，一笔 88,744 NOTE 的单子按错误逻辑会显示成"大额转出"，实际是**买入**：买家 `0x2408ce75` 经 `0x24a4d86c → 0x0da5899d → 0xb92fe925` 四跳路由付了 **$4,995.14 USDG** 接走池内 NOTE。这类多跳 tx 里 NOTE 会被连续转手 4 次，按"每笔 Transfer"计数会把一笔交易记成 4 笔。
+
+## 钱包型 watch 的假零陷阱
+
+`eth_getLogs{address: <EOA>}` **永远返回 0** —— EOA 不发事件。owner EOA / staging / vesting 三个 watch 若按此写法扫描，会永久静默。
+
+正确形状是在**代币合约**上做 topic 过滤：
+
+```
+incoming: topics [Transfer, null, padded(wallet)]
+outgoing: topics [Transfer, padded(wallet)]
+```
+
+同一条规则也适用于 `DEUS escrow`（钱包型）：`eth_getLogs{address: escrow}` 只拿到该合约自己的自定义事件（topic0 `0x71629844`），拿不到 DEUS 的 Transfer。必须改成在 DEUS 合约上按 topic 扫。
+
 
 ## owner EOA 余额轨迹（2026-10-21 单日）
 
