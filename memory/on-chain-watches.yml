@@ -1,0 +1,16 @@
+watches:
+  # 质押托管合约 —— 净流出 = 有人在撤退
+  - label: "DEUS escrow"
+    address: "0xA85A38796B951CE87B378538b32B3E6Ee3C4C373"
+    chain: base
+    type: wallet
+    threshold_usd: 500
+
+  # xDEUS 灵魂绑定 NFT —— 铸造 / 赎回都会触发
+  - label: "xDEUS"
+    address: "0xe6d5f7439Bc236C40054e2275f765f59343D4431"
+    chain: base
+    type: contract
+    event_topics:
+      - "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"
+    threshold_usd: 250
