@@ -1,7 +1,10 @@
 {
-  "assessment": "Clean quiet-window report with a genuine control query to distinguish a real zero from a broken fetch, exact before/after balances, explicit threshold distances, and raw sources (contract addresses, block range, price feed). Loses a point for asserting prior-window log counts and per-transaction figures that cannot be verified from the delivered output alone, and for extending beyond the 1.9h window rather than a full 24h — though it honestly discloses that.",
-  "avg_score": 4,
+  "skill": "onchain-monitor",
+  "last_analyzed": "2026-10-21T10:13:56Z",
+  "quality_score": 4,
+  "assessment": "Substantive clean-scan report with internal arithmetic that checks out (net flow vs escrow %, trigger distance percentages, max event = 25k DEUS x price), explicit verification that the zero isn't a broken filter, source attribution, and strategy-aligned silence; docked for a verbose body and an impossible chronology (10:12Z run citing a 10:25Z prior run) plus truncated contract addresses.",
   "flags": [],
+  "avg_score": 4,
   "history": [
     {
       "date": "2026-10-21",
@@ -20,9 +23,12 @@
       "score": 4,
       "ts": "2026-10-21T10:09:10Z",
       "harness": "claude"
+    },
+    {
+      "date": "2026-10-21",
+      "score": 4,
+      "ts": "2026-10-21T10:13:56Z",
+      "harness": "claude"
     }
-  ],
-  "last_analyzed": "2026-10-21T10:09:10Z",
-  "quality_score": 4,
-  "skill": "onchain-monitor"
+  ]
 }

@@ -7,7 +7,7 @@ tags:
   - rpc
   - runbook
 resource: https://base.gateway.tenderly.co
-timestamp: 2026-10-21T10:25:00Z
+timestamp: 2026-10-21T10:12:35Z
 ---
 
 # Base RPC access from this runner
@@ -40,6 +40,23 @@ Block range too large for public access: maximum 1000 blocks.
 So walk any range in 1,000-block windows. At Base's ~2s blocks that is ~33 min per window, and a
 24h backfill is ~43 windows per direction — cheap in time, but the reason scans must be looped
 rather than issued as one call.
+
+## Always pass an `address` filter — the 20,000-result cap
+
+Observed 2026-10-21T10:12Z: a **203-block** range on the unfiltered xDEUS leg failed with
+
+```
+query exceeds max results 20000, retry with the range 52893845-52893896
+```
+
+A three-minute window was too wide once every Transfer on Base was in scope. Fix: put the contract
+address in the query (`"address": "0x…"`) rather than only in the topics, and scan that token's logs
+alone. Filtered queries returned cleanly for the same range. Base Transfer volume means an
+**unfiltered** `eth_getLogs` is no longer viable at any range — never scan "all Transfers on the
+chain" just because the topic filter would sort it out afterwards.
+
+Also note the error message suggests a *narrower* range; that works but is far slower than adding
+the address filter, which fixes the cause rather than the symptom.
 
 ## Topic filters work — don't misread a quiet window as a broken query
 
