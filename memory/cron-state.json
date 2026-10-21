@@ -1,11 +1,11 @@
 {
   "heartbeat": {
     "last_status": "failed",
-    "last_failed": "2026-10-21T05:56:54Z",
-    "total_runs": 1,
+    "last_failed": "2026-10-21T06:54:07Z",
+    "total_runs": 2,
     "total_successes": 0,
-    "total_failures": 1,
-    "consecutive_failures": 1,
+    "total_failures": 2,
+    "consecutive_failures": 2,
     "success_rate": 0,
     "last_error": "hivemindos: timeout"
   }
