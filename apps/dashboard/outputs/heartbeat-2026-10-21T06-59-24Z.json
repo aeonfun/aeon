@@ -1,0 +1,197 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Heartbeat — fleet health",
+        "description": "🟡 WATCH"
+      },
+      "children": [
+        "stack_overall",
+        "sep1",
+        "heading_failed",
+        "stack_failed",
+        "sep2",
+        "heading_watch",
+        "alert_issue",
+        "sep3",
+        "heading_notes",
+        "stack_notes"
+      ]
+    },
+    "stack_overall": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "text_overall",
+        "badge_overall"
+      ]
+    },
+    "text_overall": {
+      "type": "Text",
+      "props": {
+        "text": "Overall:",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "badge_overall": {
+      "type": "Badge",
+      "props": {
+        "text": "🟡 WATCH",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "heading_failed": {
+      "type": "Heading",
+      "props": {
+        "text": "🔴 Failed",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "stack_failed": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_heartbeat",
+        "text_failures",
+        "stat_success",
+        "text_cause",
+        "text_state"
+      ]
+    },
+    "heading_heartbeat": {
+      "type": "Heading",
+      "props": {
+        "text": "heartbeat",
+        "level": "h4"
+      },
+      "children": []
+    },
+    "text_failures": {
+      "type": "Text",
+      "props": {
+        "text": "2 consecutive failures (2026-10-21T05:56:59Z, 2026-10-21T06:54:07Z), success rate 0% over 2 runs.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "stat_success": {
+      "type": "Stat",
+      "props": {
+        "label": "Success rate",
+        "value": "0%",
+        "trend": "down"
+      },
+      "children": []
+    },
+    "text_cause": {
+      "type": "Text",
+      "props": {
+        "text": "Cause: hivemindos: timeout — the model gateway (hivemindos sidecar) timed out on both dispatches.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text_state": {
+      "type": "Text",
+      "props": {
+        "text": "State: this run is executing normally, so the gateway is reachable now. The next cron-state write (08:00 UTC) will confirm recovery.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "heading_watch": {
+      "type": "Heading",
+      "props": {
+        "text": "🟡 Watch",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "alert_issue": {
+      "type": "Alert",
+      "props": {
+        "title": "Issue #1 health: heartbeat",
+        "message": "Open with two auto-filed regression comments (score 1, flags [\"run_failed\"]). No repair skill is enabled to close it — it will keep accruing comments each failed run.",
+        "type": "warning"
+      },
+      "children": []
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "heading_notes": {
+      "type": "Heading",
+      "props": {
+        "text": "Notes",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "stack_notes": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_note1",
+        "text_note2",
+        "text_note3"
+      ]
+    },
+    "text_note1": {
+      "type": "Text",
+      "props": {
+        "text": "No open PRs. No urgent issues. No flagged memory items.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text_note2": {
+      "type": "Text",
+      "props": {
+        "text": "heartbeat is the only enabled skill in aeon.yml; nothing else is scheduled, so there is no wider fleet to degrade.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text_note3": {
+      "type": "Text",
+      "props": {
+        "text": "docs/status.md regenerated (🟡 WATCH) and will land on main via the auto-commit step.",
+        "variant": "body"
+      },
+      "children": []
+    }
+  }
+}
