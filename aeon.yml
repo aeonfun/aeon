@@ -36,7 +36,7 @@ skills:
 
   monitor-polymarket: { enabled: false, schedule: "30 12 * * *", var: "" } # prediction-market monitor (Polymarket + Kalshi) — 24h moves, volume, comments, conviction alerts. var: empty=both | polymarket | kalshi | polymarket:<slug> | kalshi:<ticker>
   token-pick: { enabled: false, schedule: "0 12 * * *" }
-  price-alert: { enabled: false, schedule: "*/30 * * * *", var: "" } # every 30 minutes — fire on tracked-token ATH, ±20% 1h move, or operator-set target crossing (var=target_price,target_price2,...). Silent on normal runs. Set var=dry-run to skip notify.
+  # price-alert: { enabled: false, schedule: "*/30 * * * *", var: "" } # every 30 minutes — fire on tracked-token ATH, ±20% 1h move, or operator-set target crossing (var=target_price,target_price2,...). Silent on normal runs. Set var=dry-run to skip notify.
   narrative-tracker: { enabled: false, schedule: "30 13 * * *" } # track rising/peaking/fading narratives
   unlock-monitor: { enabled: false, schedule: "0 10 * * 1" } # weekly token unlock/vesting tracker
 
@@ -142,7 +142,7 @@ skills:
   # Product / ops (config: memory/products.md)
 
   # Self-maintenance / meta
-  memory-flush: { enabled: false, schedule: "30 23 * * *" } # daily — promote important recent log entries into MEMORY.md
+  #memory-flush: { enabled: false, schedule: "30 23 * * *" } # daily — promote important recent log entries into MEMORY.md
 
   # Utilities / on-demand
 
