@@ -25,6 +25,7 @@
 2 | fleet scorecard classification tests | node --test scripts/tests/test_fleet_scorecard.mjs
 9 | skill-pack manifest validation tests | bash scripts/tests/test_validate_pack.sh
 10 | community pack registry validation tests | bash scripts/tests/test_validate_skill_packs.sh
+10 | on-chain evidence receipt verifier tests | bash scripts/tests/test_onchain_evidence.sh
 8 | README first-party catalog parity tests | bash scripts/tests/test_validate_readme_catalog.sh
 10 | community skill install catalog tests | bash scripts/tests/test_community_skill_install.sh
 10 | grok setup/auth tests | bash scripts/tests/test_run_grok.sh

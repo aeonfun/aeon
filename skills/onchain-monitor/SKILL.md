@@ -312,9 +312,12 @@ Rules:
   Robinhood 10,000-log fallback visible instead of silently changing the sample.
 - Sort each chain entry's `tx_hashes` lexicographically and remove duplicates. Never
   include API keys, full RPC URLs containing credentials, or raw response bodies.
-- Canonicalise the JSON with sorted keys and compact separators, compute SHA-256
-  using a standard-library implementation, then add the `sha256` field and write
-  atomically via a temporary file and `mv`.
+- Canonicalise the JSON with sorted keys, compact separators and UTF-8 text with
+  no `\u` escapes (in Python: `json.dumps(obj, sort_keys=True,
+  separators=(",", ":"), ensure_ascii=False).encode()`), compute SHA-256 using a
+  standard-library implementation, then add the `sha256` field and write
+  atomically via a temporary file and `mv`. Python's default `ensure_ascii=True`
+  produces a different digest as soon as a label contains non-ASCII text.
 - Before writing, create `memory/evidence/` if needed and prune receipts older than
   30 days by the date in the filename, not by mtime (every Actions run is a fresh
   checkout, so mtime is always today). Files that do not start with a
@@ -332,6 +335,30 @@ Rules:
   `evidence: memory/evidence/<file> · sha256:<first 12 hex chars>`.
 - If receipt writing fails, continue the monitor run but mark the source footer
   `evidence=fail`; never claim that the alert is independently verified.
+
+### 6.2 Verify a receipt offline (optional)
+
+Operators can verify a receipt written by step 6.1 without contacting a chain,
+RPC, price API, or GitHub:
+
+```bash
+node scripts/verify-onchain-evidence.mjs memory/evidence/<file>.json
+```
+
+The verifier accepts only `aeon.onchain-monitor.evidence.v1`. It recomputes the
+SHA-256 over the receipt with `sha256` removed, recursively sorts object keys,
+uses compact UTF-8 JSON, and checks chain-local ranges, counters, block hashes,
+source degradation, and sorted unique transaction hashes. It also rejects
+credential-bearing URLs, secret-like fields, and raw response-body fields.
+
+Exit code `0` means the file is internally consistent. Exit code `1` identifies
+the failed field or invariant; exit code `2` means the input path was omitted.
+This checks internal checksum and schema consistency only. Anyone able to replace
+the receipt can also recompute its digest, so this is not a signature or proof of
+authorship. It does not prove that an RPC was honest, that the chain was final, or
+that the receipt describes external reality. Secret detection is best-effort,
+not a guarantee that all sensitive content is absent. The verifier performs no
+network access.
 
 ### 7. Persist state and log
 
