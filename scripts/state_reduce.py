@@ -68,11 +68,24 @@ def _blank():
     }
 
 
+def _event_sort_key(event):
+    """Sort by timestamp instant, then canonical event data for deterministic ties."""
+    ts = event.get("ts")
+    if ts:
+        timestamp = _parse_ts(ts)
+        timestamped = 1
+    else:
+        timestamp = datetime.min.replace(tzinfo=timezone.utc)
+        timestamped = 0
+    canonical = json.dumps(event, sort_keys=True, separators=(",", ":"))
+    return timestamped, timestamp, canonical
+
+
 def reduce_events(events, now=None):
     """Fold a list of event dicts (any order) into {skill: aggregate}."""
     state = {}
     events = _valid_events(events, now)
-    for e in sorted(events, key=lambda x: (x.get("ts") or "")):
+    for e in sorted(events, key=_event_sort_key):
         skill = e.get("skill")
         if not skill:
             continue
