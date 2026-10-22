@@ -1,5 +1,18 @@
+# on-chain-watches.yml —— onchain-monitor 的扫描清单
+#
+# 契约（改这个文件必读）：
+#   1. 新增 watch 必须在 memory/on-chain-state.json 建同名条目，并把 last_block 设成当前块，
+#      否则首次运行会重放全部历史。删除 watch 时也要同步删掉 state 里的孤儿键。
+#   2. type: wallet  → 该地址是"对手方"，要在代币合约上做 topic 过滤扫它
+#                      （不能直接 eth_getLogs{address:<EOA>}，EOA 不发事件）
+#      type: contract → 该地址本身就是发事件的合约，直接扫它
+#   3. threshold_usd 是美元地板。相对规则（占池子比例 / 解锁量 ÷ 日成交量）见
+#      memory/alert-framework.md —— 这里的数字按那边算，不要凭感觉调。
+
 watches:
-  # 质押托管合约 —— 净流出 = 有人在撤退
+  # --- Base ---
+
+  # 质押托管合约 —— 净流出 = 有人在撤退（xDEUS 有 5 天冷却，这里是提前量）
   - label: "DEUS escrow"
     address: "0xA85A38796B951CE87B378538b32B3E6Ee3C4C373"
     chain: base
@@ -16,39 +29,46 @@ watches:
     threshold_usd: 250
 
   # --- NOTE (Note Systems, 2026-10-21 起盯) ---
-  # 代币本体：看 timelock 解锁 / owner 转出 / 大额进出池
-  - label: "NOTE"
-    address: "0xc4f730335Fb9e439ca5552f7b52B8E638c4245B0"
-    chain: robinhood
-    type: contract
-    event_topics:
-      - "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"
-    threshold_usd: 5000
 
-  # 48h timelock：CallScheduled → CallExecuted/Cancelled。解锁提前 48h 可见
+  # 48h timelock：CallScheduled → CallExecuted/Cancelled。解锁提前 48h 可见。
+  # 刻意不加 event_topics —— 三种事件都要。阈值压低，提案本身就是信号。
   - label: "NOTE timelock"
     address: "0x4a53afd9c4d707c8fddd6415947ef0a1e67518b8"
     chain: robinhood
     type: contract
-    threshold_usd: 5000
+    threshold_usd: 500
 
-  # owner 单 EOA：mint / pause / timelock 提案权都在这里
+  # owner 单 EOA：mint / pause / timelock 提案权都在这里。长期零动作，一动就是大事。
   - label: "NOTE owner EOA"
     address: "0x0b64b35c6dd23944d6d4029864d2ca2aa1b66422"
     chain: robinhood
     type: wallet
-    threshold_usd: 5000
+    threshold_usd: 500
 
-  # 10-21 10:19Z 新建的抛售中转钱包（nonce 0，无 ETH）。上一轮同类地址 1h47m 后开砸
-  - label: "NOTE staging 0x69bb"
-    address: "0x69bb2e438b04109dc1ec0cc43f77f455649d7c63"
-    chain: robinhood
-    type: wallet
-    threshold_usd: 5000
-  # 30 天线性释放合约 —— owner 10-21 11:09Z 打入 60 万，每天解锁约 2 万
-  # 注意：截至 15:26Z 该合约 0 笔出账，"每天 2 万"尚未被链上证实
+  # 线性释放合约 —— 日释放量按 scheduleId 差异巨大（7=21,446 · 11=2,954 · 18=191,793），
+  # 不要按"每天 2 万"估。阈值压低，出账本身就是信号。
   - label: "NOTE vesting"
     address: "0xfdd983c66d4da2ef64769b6a2eba9cd838289962"
     chain: robinhood
     type: wallet
-    threshold_usd: 1500
+    threshold_usd: 500
+
+  # --- 已删（需要时把注释去掉） ---
+  #
+  # 10-21 10:19Z 新建的抛售中转钱包。连续零活动（余 240 枚），投机性 watch，已摘。
+  # - label: "NOTE staging 0x69bb"
+  #   address: "0x69bb2e438b04109dc1ec0cc43f77f455649d7c63"
+  #   chain: robinhood
+  #   type: wallet
+  #   threshold_usd: 5000
+  #
+  # 代币本体全量 Transfer 扫描 —— 噪音最大（多跳路由会把一笔记成 4 笔）。
+  # 摘掉后看不到"是哪些陌生 EOA 在砸"，但供给侧已被上面三条覆盖。
+  # 想要回来：去掉注释，并把 threshold_usd 提到 25000 过滤噪音。
+  # - label: "NOTE"
+  #   address: "0xc4f730335Fb9e439ca5552f7b52B8E638c4245B0"
+  #   chain: robinhood
+  #   type: contract
+  #   event_topics:
+  #     - "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"
+  #   threshold_usd: 25000
