@@ -1,34 +1,43 @@
-## price-alert — 2026-10-22 14:01Z
+State validated, log appended, no notification sent. Here's the run output.
 
-**DEUS · Base · `0x940A319B75861014A220D9c6c144d108552B089B`**
+## price-alert — DEUS — 2026-10-22T15:16Z
 
-| | |
+**Verdict: PRICE_ALERT_OK — no gate fired, nothing sent.**
+
+| Metric | Value |
 |---|---|
-| 现价 | **$0.01793** |
-| 1h | −0.03%（实测） |
-| 6h | −0.16% |
-| 24h | −1.27% |
-| 最深池 | aerodrome DEUS/VIRTUAL，流动性 $687,268，24h 量 $14,448 |
-| 来源 | DexScreener `http=200`，2026-10-22T14:01Z |
+| Price | $0.01794 |
+| 1h | +0.36% (measured) |
+| 6h | +0.95% |
+| 24h | −1.86% |
+| Deep pool | Aerodrome DEUS/VIRTUAL, liq $689,133.69, 24h vol $13,194.33 |
+| ATH | $0.06876 (2026-05-28) — 73.9% above current, gate cannot fire |
 
-**四个门槛全部未触及。没有推送。**
+**Gates**
 
-- **$0.012**（下方，−33.1%）未穿
-- **$0.025**（上方，+39.4%）未穿
-- **$0.032**（上方，+78.5%）未穿
-- **$0.041**（上方，+128.7%）未穿
-- ATH 门槛：$0.06876（2026-05-28），现价低 73.9%，不可能触发
-- 急涨跌门槛：1h −0.03%，远低于 ±20%
+- **ATH** — no. $0.01794 vs stored $0.06876.
+- **Sharp-move (±20%/1h)** — QUIET. |0.36%| is a measurement, not a gap: the deep pool reported `priceChange.h1` this run.
+- **Targets** — all four uncrossed, `hit_at` still null on each.
 
-横向核对 5 个 Base 池：$0.01793 / $0.01803 / $0.01795 / $0.01813 / $0.01809，价差 1.11% 窄带，与 13:01Z 同宽。较一小时前逐 tick 持平（价格 0.00%，流动性 −0.04%，量 +0.09%）——**第 26 轮连续窄带**。
+| Target | Side | Status | Distance |
+|---|---|---|---|
+| $0.012 | below | no cross | −33.1% |
+| $0.025 | above | no cross | +39.4% |
+| $0.032 | above | no cross | +78.5% |
+| $0.041 | above | no cross | +128.6% |
 
-一个值得记的测量细节：本轮只有最深池给出了 `priceChange.h1`（−0.03%），其余 4 个池 `h1` 为 null。13:01Z 时五个池都有值。所以 QUIET 是实测而非缺测，但覆盖度在退。1h 由 +0.48% 翻到 −0.03% 而价格没动，说明上一小时那个上跳已经滚出窗口，属盘口内最后成交价噪音，不是行情。
+**One thing worth noting (not a trigger).** The cross-pair spread widened from 1.11% to 2.05%, and the deep VIRTUAL pool flipped from the *bottom* of the band to the *top* — while all four USDC-denominated pairs ticked **down** 1h (−1.00% to −2.53%). Same token, opposite signs: that's the quote asset moving, not DEUS being bid. The deep pool's USD mark follows VIRTUAL. Treat the +0.36% as a VIRTUAL artefact.
+
+Sources: DexScreener `api.dexscreener.com/latest/dex/tokens/0x940A319B75861014A220D9c6c144d108552B089B` (http 200), pool `0x3E97c5EC8c73e7d566aCA606472141a9b9a8C1Fa`, contract `0x940A319B75861014A220D9c6c144d108552B089B` on Base.
+
+27th consecutive run inside the $0.0177–$0.0186 band. The band is the signal now, not any point inside it — nothing has moved enough to act on, and per STRATEGY a quiet run shouldn't ping you.
 
 ## Summary
 
-- 执行 `skills/price-alert/SKILL.md`，`var=0.012,0.025,0.032,0.041`，MODE=execute，4/4 目标解析有效。
-- 取数：DexScreener 公共 API，`http=200`，8520 字节；最深 Base 池为 Aerodrome DEUS/VIRTUAL。
-- 门槛结果：ATH 不触发、sharp-move QUIET（实测 −0.03%）、四个目标全未穿越 → `PRICE_ALERT_OK`，通知 0 条（按契约，干净运行不发）。
-- 状态文件 `memory/topics/price-alert-state.json` 已重写（`last_run_at`、`last_price` 更新），`jq empty` → STATE_VALID；`.bak` 同步为 13:01Z 状态。
-- 日志已追加至 `memory/logs/2026-10-22.md`，`memory/MEMORY.md` 的 price-alert 行更新为 14:01Z / 26 轮。
-- 后续：shell `cp` 在本环境被权限层拒绝，`.bak` 改用 Write 直写内容——后续若脚本化备份需换路径。无其它待办。
+- Read `skills/price-alert/SKILL.md`, `memory/MEMORY.md`, state file, recent logs.
+- Parsed `var=0.012,0.025,0.032,0.041` → 4/4 valid targets, MODE=execute.
+- Resolved token from the Tracked Token table: DEUS on Base, contract unchanged from state.
+- Fetched DexScreener directly via `curl` (keyless, http 200) — no fallback needed. Selected deepest Base pair by liquidity.
+- Evaluated all three gate classes; none fired; zero `./notify` sends.
+- Modified: `memory/topics/price-alert-state.json` (last_run_at, last_price; `jq empty` → valid) and appended `### price-alert (15:16Z)` plus an under-the-hood block to `memory/logs/2026-10-22.md`.
+- Follow-up: none. Next trigger of note is $0.025 (+39.4%); the only nearer event is the $0.012 panic level, −33.1% away. Neither is close.
