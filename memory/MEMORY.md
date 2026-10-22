@@ -54,7 +54,7 @@
 
 - [Note Systems (NOTE)](topics/tokens/note-systems.md) — Robinhood 4663。**10-21 第二轮砸盘已执行**：11:08Z 九笔 ×26,640 砸完 24 万，staging 0x69bb 已退役（剩 240 枚）。owner 把 60 万转进 0xfdd9，但**链上无释放迹象**（零出账、标准 selector 全 revert）→ 60 万仍按整块风险计提。owner EOA 现 120,000。**10-23 09:57:36Z 的 120 万 unlock 未撤销**。
 - `heartbeat` 已恢复：2 次 `hivemindos: timeout` 后成功，`consecutive_failures=0`；issue #1 已于 10:14:53Z 关闭。 [source: logs/2026-10-21#heartbeat]
-- `price-alert` 自 10:11Z 首跑起连续 12 轮 success，DEUS 稳定在 $0.0180–0.0186 窄带，四门槛全未触及（$0.025 差 +35%）。**注意：缺少 `h1` 时按 0 处理，此时 sharp-move gate 是"未测量"而非"确认平静"。** [source: logs/2026-10-22#price-alert]
+- `price-alert` 自 10:11Z 首跑起连续 14 轮 success，DEUS 稳定在 $0.0180–0.0186 窄带（最新 01:01Z $0.01855，距 $0.025 还差 +34.8%，距 $0.012 有 −35.3%）。四门槛全未触及。**注意：缺少 `h1` 时按 0 处理，此时 sharp-move gate 是"未测量"而非"确认平静"** —— 01:01Z 这轮 h1 又缺席。 [source: logs/2026-10-22#price-alert]
 
 ## Reference
 - [DEUS / xDEUS watch addresses](/topics/deus-escrow.md) — contract, escrow, xDEUS NFT; stake/unstake pairing; scale reference.

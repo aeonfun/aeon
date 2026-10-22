@@ -1,39 +1,53 @@
-No gate fired — this run is silent (no notify, per strategy: only push when a threshold is real).
+## price-alert — DEUS (Base) — 2026-10-22 01:01Z
 
-## price-alert — DEUS · 2026-10-22T00:01Z
+**Verdict: no gates fired. Nothing worth waking you for.**
 
-**Price: $0.01855** · 24h **+4.29%** · 1h **flat (0 trades in the last hour)**
+| Field | Value |
+|---|---|
+| Token | DEUS `0x940A319B75861014A220D9c6c144d108552B089B` · base |
+| Deepest pool | aerodrome DEUS/VIRTUAL `0x3E97c5EC8c73e7d566aCA606472141a9b9a8C1Fa` |
+| Liquidity | $718,684.71 · 24h vol $16,415.65 |
+| Current | **$0.01855** |
+| 1h | n/a — `priceChange.h1` absent on the deepest pair |
+| 24h | +4.29% |
+| Source | DexScreener, http 200, 01:01:20Z |
 
-Source: DexScreener, deepest Base pool — Aerodrome DEUS/VIRTUAL `0x3E97c5EC8c73e7d566aCA606472141a9b9a8C1Fa`, liquidity **$718,684.71**, 24h volume **$16,415.65**. Token contract `0x940A319B75861014A220D9c6c144d108552B089B` (Base).
+### Gates
 
-### Gate evaluation
+**ATH — unchanged.** Stored ATH $0.06876 (2026-05-28 15:35 UTC). Current price is 73.0% below it. No new high.
 
-| Gate | Level | Status | Verdict |
+**Sharp-move — QUIET, but unmeasured.** The deepest pool returned no `h1` field this poll (third time in ~11h on this thin book). Per the skill contract a missing h1 is treated as 0, so the gate reports QUIET — but that is *absence of a measurement*, not evidence of calm. The state file stores `h1_pct: null` so the next run can still tell the two apart. Do not read this line as "the book was flat" — only the 24h (+4.29%) is real data.
+
+**Targets — all four uncrossed**, one-shot clocks untouched:
+
+| Target | Side | Distance | Verdict |
 |---|---|---|---|
-| ATH | $0.06876 (2026-05-28) | price 73% below | UNCHANGED |
-| Sharp move (±20% 1h) | — | h1 = 0.00%, 0 buys / 0 sells | QUIET |
-| Target $0.041 (unstake / 回本线) | $0.041 | −54.8% away | quiet |
-| Target $0.032 | $0.032 | −42.0% away | quiet |
-| Target $0.025 (卖现货) | $0.025 | **−25.8%** away | quiet |
-| Target $0.012 (恐慌位) | $0.012 | **+54.6%** away | quiet |
+| $0.025 | above | +34.8% | no cross |
+| $0.032 | above | +72.5% | no cross |
+| $0.041 | above | +121.0% | no cross |
+| $0.012 | below | −35.3% | no cross |
 
-Nearest actionable level is **$0.025**, and it needs a **+34.8%** move from here. Nothing is close. No notification sent.
+The first spot-sell level is +34.8% away; the panic watch is −35.3% away. Neither is close.
 
-### Two things worth knowing
+### Context that isn't a gate
 
-**1. The sharp-move gate is currently blind on this pool.** DexScreener returns no `h1` figure because there were literally zero trades in the past hour (h1 volume = $0, h1 txns = 0/0). The gate treats missing h1 as 0%, so a genuine spike only registers if it happens to land within a window where DexScreener has priced an h1 delta. On a market doing $16k/day, **a single trade can move price 20%** — and that trade may be the only data point in the hour. The gate can miss precisely the event it exists to catch. This will be caught by the target-crossing gates instead, which are price-based rather than delta-based, so the levels that matter for execution are still covered.
-
-**2. Sell-side dominance in the tape.** Over 24h: 14 buys vs 44 sells; over 6h: 3 buys vs 16 sells. Price still up 4.29% on the day, which means the sells are being absorbed into a thin book rather than driving it down — but the buy/sell count ratio (0.32) is not consistent with an accumulation phase.
+- Price is **identical to the 00:01Z run** — $0.01855 → $0.01855, liquidity identical to the cent at $718,684.71. The book has been frozen across two polls.
+- Cross-pair sanity check: the other Base pairs mark $0.01850 (USDC, $44.6k liq), $0.01859 (USDC, $6.3k), $0.01858 (Uniswap USDC), $0.01840 (dust, $57 liq). The deepest-pool mark is consistent with the rest of the book — no stale or off-market print.
+- Spread across the three meaningful pools is ~0.5%, i.e. nothing an arbitrageur has bothered to close.
 
 ### State
 
-- `memory/topics/price-alert-state.json` — updated `last_run_at` and `last_price`; ATH untouched at $0.06876; all four targets carry `hit_at: null` (none crossed); dedup clocks unmoved.
-- `memory/logs/2026-10-22.md` — created with this run's block.
+- `memory/topics/price-alert-state.json` — `last_run_at` → `2026-10-22T01:01:37Z`, `last_price` refreshed with `h1_pct: null`. ATH and all four targets untouched (verified with `jq empty` → STATE_VALID; rolling `.bak` refreshed).
+- `memory/logs/2026-10-22.md` — `### price-alert (01:01Z)` block appended.
+- `memory/MEMORY.md` — Active Topics line updated to 14 consecutive clean runs, current band, and the h1-absent caveat.
+- Notifications sent: **0**. A clean run sends nothing by contract.
 
 ## Summary
 
-Ran `price-alert` for DEUS with targets `0.012, 0.025, 0.032, 0.041` (matching the operator's two-tier thresholds in STRATEGY.md). Fetched price from DexScreener's deepest Base pool via keyless `curl` (HTTP 200). Evaluated all four gates: no ATH (baseline is the true May high, 73% above spot), no sharp move (zero trades in the last hour), no target crossings. **Verdict `PRICE_ALERT_OK`, zero notifications** — correct silence.
+Ran the `price-alert` skill with `var=0.012,0.025,0.032,0.041` (4/4 targets parsed valid, MODE=execute) against DEUS on Base.
 
-Files modified: `memory/topics/price-alert-state.json` (timestamps + last_price), `memory/logs/2026-10-22.md` (new). No commit made — left for the workflow's memory flush.
+**Result: PRICE_ALERT_OK — zero notifications.** Price $0.01855, 24h +4.29%, no new ATH (73% below the $0.06876 May high), no target within 34%, and the 1h sharp-move gate is unmeasured because DexScreener omitted `h1` again.
 
-Follow-ups: (a) the ±20% 1h gate can silently miss moves on this pool when DexScreener has no h1 delta — worth considering a fallback that compares against `last_price.price_usd` from the prior run for a delta-based check; (b) nearest live level is $0.025 at +34.8%, so the next meaningful decision point is not imminent.
+**Files modified:** `memory/topics/price-alert-state.json` (+ `.bak`), `memory/logs/2026-10-22.md`, `memory/MEMORY.md`.
+
+**Follow-up worth noting:** `priceChange.h1` has now been missing on the deepest pair three times in roughly eleven hours. The skill handles it correctly by recording `null`, but it means the sharp-move gate — one of the two triggers that justifies starting the 5-day unstake — is silently blind on this pool more often than the logs make obvious. If it keeps happening, the fix is to derive the 1h move from a secondary source (the DEUS/USDC Aerodrome pool does report reliably) rather than accept an unmeasured gate on the primary. Worth a small skill amendment rather than waiting for it to matter on a real move.
