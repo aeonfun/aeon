@@ -78,8 +78,8 @@ labels:
 ```
 
 - `last_block` — start block for the next run's fetch. Initialise to `current_block − 2400` (≈ 8h ETH) on first run; on `robinhood` (~0.1s blocks) use `current_block − 280000` for the same ≈ 8h window. On `robinhood`, also cap every later run at that span: if `current_block − last_block` is more than 280000 (a delayed or caught-up run; 12h late is ~420k blocks, 15 windows per direction per watch), start from `current_block − 280000` and log `CLAMPED: skipped <n> blocks` for that watch, so a late run degrades to "last ~8h" instead of walking the whole gap.
-- `last_block_hash` — the canonical hash observed for `last_block` on the previous successful run. Before fetching new events, read that block again. If the hash differs, log `REORG: block <n> changed <old> → <new>`, rewind the watch to `max(0, last_block − 12)` (or the chain's documented finality depth), and replay the range. Do not send an alert until the replay completes. Keep normal transaction-hash dedup, but remove `alerted_tx` entries whose `block_number` is inside the replay range so a replacement event cannot be suppressed by stale state. Legacy string entries from pre-replay state may remain dedup-only, but every newly stored entry must include its block number.
-- `alerted_tx` — objects `{hash, block_number, first_seen}` for txs alerted in the last 7 days, capped at 200. Used for cross-run dedup; purge by `first_seen` and retain the block number needed for reorg replay.
+- `last_block_hash` — the canonical hash observed for `last_block` on the previous successful run. Before fetching new events, read that block again. If the hash differs, log `REORG: block <n> changed <old> → <new>`, rewind the watch to `max(0, last_block − 12)` (or the chain's documented finality depth), and replay the range. Do not send an alert until the replay completes. Keep normal transaction-hash dedup during the replay: a reorg can re-mine the same transaction in a new block, and that must not alert twice. Legacy string entries from earlier state are hashes and dedup the same way.
+- `alerted_tx` — objects `{hash, block_number, first_seen}` for txs alerted in the last 7 days, capped at 200. Used for cross-run dedup by `hash`; purge by `first_seen`. `block_number` is the block the alert was seen in, kept for the audit trail.
 - `median_usd_30d` — rolling median USD size of transfers at this watch; powers the `WHALE-TRANSFER` tag.
 
 Write the file via `mv` from a tempfile so a mid-run failure cannot corrupt state.
@@ -129,12 +129,15 @@ Defaults for a captured watch: `type: wallet`, `threshold_usd: 1000`, `label` = 
 
 For each watch (filtered by `${var}`):
 
-### 1. Fetch raw activity from `last_block` → latest
+### 1. Fetch raw activity from `last_block` → the pinned `to_block`
 
-At the start of each watch, resolve `current_block` and save its hash. For a watch
-with `last_block_hash`, perform the reorg check above before constructing any query
-windows. All sources in this run must use the same numeric `from_block` and
-`to_block`; never mix a stale `latest` response with a pinned evidence receipt.
+Once per chain at the start of the run, resolve `current_block` and its hash. That
+number is the chain's `to_block`: every watch on that chain, and every source
+(Alchemy, Etherscan, RPC), queries up to it and no further. Never send `latest`,
+`endblock=99999999` or an open-ended range. Each watch keeps its own `from_block`
+(its `last_block`, after the clamp and any reorg rewind). For a watch with
+`last_block_hash`, perform the reorg check above before constructing any query
+windows.
 
 **Path A — Alchemy** (preferred, if `ALCHEMY_API_KEY` set).
 
@@ -145,13 +148,14 @@ Wallets use `alchemy_getAssetTransfers` — one call returns categorized in/out 
   -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","id":1,"method":"alchemy_getAssetTransfers","params":[{
     "fromBlock":"0x'${from_block_hex}'",
+    "toBlock":"0x'${to_block_hex}'",
     "toAddress":"'${address}'",
     "category":["external","internal","erc20","erc721","erc1155"],
     "withMetadata":true,"excludeZeroValue":true,"maxCount":"0x32"
   }]}'
 ```
 
-Contracts use `eth_getLogs` against the same Alchemy URL. Alchemy allows any block range while the response stays under 10,000 logs, and unlimited results for ranges of 5,000 blocks or fewer; on `Log response size exceeded`, re-query in 5,000-block windows (a busy `robinhood` contract hits this within minutes of ~0.1s blocks).
+Contracts use `eth_getLogs` against the same Alchemy URL, with numeric hex `fromBlock` / `toBlock` set to the watch's `from_block` / the chain's `to_block`. Alchemy allows any block range while the response stays under 10,000 logs, and unlimited results for ranges of 5,000 blocks or fewer; on `Log response size exceeded`, re-query in 5,000-block windows (a busy `robinhood` contract hits this within minutes of ~0.1s blocks).
 
 Chain → network slug: `ethereum=eth-mainnet`, `base=base-mainnet`, `arbitrum=arb-mainnet`, `optimism=opt-mainnet`, `polygon=polygon-mainnet`, `robinhood=robinhood-mainnet`. On `robinhood`, drop `"internal"` from the wallet `category` list: Alchemy rejects it there ("The 'internal' category is not supported for this network").
 
@@ -163,17 +167,17 @@ Single endpoint, all 50+ chains via `chainid`. Works keyless at lower rate limit
 # a bare $ETHERSCAN_API_KEY is refused by the Bash permission analyzer; keyless works.
 KEYQ=""; [ -n "${ETHERSCAN_API_KEY:+x}" ] && KEYQ="&apikey={ETHERSCAN_API_KEY}"
 # wallet
-./secretcurl -m 10 -s "https://api.etherscan.io/v2/api?chainid=${chainid}&module=account&action=tokentx&address=${address}&startblock=${from_block}&endblock=99999999&sort=desc${KEYQ}"
-./secretcurl -m 10 -s "https://api.etherscan.io/v2/api?chainid=${chainid}&module=account&action=txlist&address=${address}&startblock=${from_block}&endblock=99999999&sort=desc${KEYQ}"
+./secretcurl -m 10 -s "https://api.etherscan.io/v2/api?chainid=${chainid}&module=account&action=tokentx&address=${address}&startblock=${from_block}&endblock=${to_block}&sort=desc${KEYQ}"
+./secretcurl -m 10 -s "https://api.etherscan.io/v2/api?chainid=${chainid}&module=account&action=txlist&address=${address}&startblock=${from_block}&endblock=${to_block}&sort=desc${KEYQ}"
 # contract
-./secretcurl -m 10 -s "https://api.etherscan.io/v2/api?chainid=${chainid}&module=logs&action=getLogs&address=${address}&fromBlock=${from_block}&toBlock=latest${KEYQ}"
+./secretcurl -m 10 -s "https://api.etherscan.io/v2/api?chainid=${chainid}&module=logs&action=getLogs&address=${address}&fromBlock=${from_block}&toBlock=${to_block}${KEYQ}"
 ```
 
 Chain → chainid: `ethereum=1`, `base=8453`, `arbitrum=42161`, `optimism=10`, `polygon=137`, `robinhood=4663`. Etherscan's free tier refuses `chainid=4663` ("Free API access is not supported for this chain"), so a keyless `robinhood` watch skips Path B and uses Path C.
 
 **Path C — Robinhood Chain public RPC** (`robinhood` only; keyless fallback when Path A is unavailable and Path B is refused).
 
-Wallets: ERC-20 `Transfer` logs with the watch address as recipient, then as sender. The public RPC caps a query without an `address` filter at **30,000 blocks**, so walk `last_block → latest` in 30,000-block windows (≈ 10 windows per direction per 8h, ≈ 28 per day). Contracts: `eth_getLogs` with `address` set (no 30,000 cap). For **both** wallets and contracts, if a window answers `logs matched by query exceeds limit of 10000`, halve it and query both halves, repeating until each piece fits; a busy address hits this inside one 30,000-block window (the v4 PoolManager returns ~29.7k logs there, which takes 3 splits and 7 calls).
+Wallets: ERC-20 `Transfer` logs with the watch address as recipient, then as sender. The public RPC caps a query without an `address` filter at **30,000 blocks**, so walk `from_block → to_block` (the chain's pinned block) in 30,000-block windows (≈ 10 windows per direction per 8h, ≈ 28 per day). Contracts: `eth_getLogs` with `address` set (no 30,000 cap). For **both** wallets and contracts, if a window answers `logs matched by query exceeds limit of 10000`, halve it and query both halves, repeating until each piece fits; a busy address hits this inside one 30,000-block window (the v4 PoolManager returns ~29.7k logs there, which takes 3 splits and 7 calls).
 ```bash
 T=0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef   # ERC-20 Transfer
 W=0x000000000000000000000000${address#0x}                               # 32-byte topic
@@ -222,7 +226,7 @@ Native ETH/MATIC/etc. use `simple/price?ids=ethereum,matic-network,...`. If Coin
 Drop an individual event if any of:
 - `value_usd < threshold_usd` (watch config, default $1000)
 - `value_usd < $0.10` (hard dust floor — prevents airdrop / phishing spam)
-- `tx_hash` matches the `hash` field of an entry in this watch's `alerted_tx` (cross-run dedup)
+- `tx_hash` matches the `hash` field (or, for legacy entries, the string itself) of an entry in this watch's `alerted_tx` (cross-run dedup, also during a reorg replay)
 - `category == "log"` and watch has `event_topics:` and the topic0 is not in the list
 
 ### 5. Categorize surviving events
@@ -311,10 +315,19 @@ Rules:
 - Canonicalise the JSON with sorted keys and compact separators, compute SHA-256
   using a standard-library implementation, then add the `sha256` field and write
   atomically via a temporary file and `mv`.
-- Before writing, create `memory/evidence/` if needed and prune regular evidence
-  files older than 30 days (`find memory/evidence -type f -name '*.json' -mtime +30
-  -delete`). A pruning failure is non-fatal but must make the source footer
-  `evidence=fail`.
+- Before writing, create `memory/evidence/` if needed and prune receipts older than
+  30 days by the date in the filename, not by mtime (every Actions run is a fresh
+  checkout, so mtime is always today). Files that do not start with a
+  `YYYY-MM-DD-` date are left alone:
+  ```bash
+  cutoff=$(date -u -d '30 days ago' +%Y-%m-%d)
+  for f in memory/evidence/[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]-*.json; do
+    [ -f "$f" ] || continue
+    d=$(basename "$f")
+    if [[ "${d:0:10}" < "$cutoff" ]]; then rm -f -- "$f"; fi
+  done
+  ```
+  A pruning failure is non-fatal but must make the source footer `evidence=fail`.
 - Include the receipt path and digest in the alert footer before calling `./notify`:
   `evidence: memory/evidence/<file> · sha256:<first 12 hex chars>`.
 - If receipt writing fails, continue the monitor run but mark the source footer
@@ -323,8 +336,8 @@ Rules:
 ### 7. Persist state and log
 
 For each watch whose fetch **succeeded** (success ≠ "events found"):
-- `last_block ← current_block`
-  - `last_block_hash ← hash(current_block)` from the pinned block read used by the run
+- `last_block ← to_block` (the chain's pinned `current_block`)
+  - `last_block_hash ← hash(to_block)` from that same pinned block read
 - `last_run ← now` (ISO 8601 UTC)
 - `alerted_tx ← (new_alerted_entries + alerted_tx)[:200]`, where each new entry is `{hash: tx_hash, block_number, first_seen: now}`; purge entries whose `first_seen` is older than 7d
 - `median_usd_30d ← median of all value_usd from this watch's transfers in last 30d` (read from recent logs; skip recomputation if < 5 samples)

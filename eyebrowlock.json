@@ -242,10 +242,10 @@
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "fe025a397d941d4e1926a0f2945a68208ba2d55688f9b6d903cc983f7fc6d1b8"
+          "hash": "540b2657969bd4f7137d730dca5ebad24b70b454dd4159c5648852ceba3f88ca"
         }
       ],
-      "contentHash": "sha256-23aa62abf5f36afa1ce174f1b2604dda528b3fd49f53d2a3b9c96007884cb9c5",
+      "contentHash": "sha256-b0d10005808cd4881b23d52130c88b0bb5c6ef5390da88199247f8bd94429b2f",
       "discoveredFrom": "skills/onchain-monitor/SKILL.md"
     },
     {
