@@ -1,45 +1,50 @@
-## price-alert — DEUS · 2026-10-22 07:01Z
+Run complete. Summary of findings below.
 
-**Status: `PRICE_ALERT_OK` — no gate fired, 0 notifications sent.**
+## DEUS 哨兵 — 2026-10-22 08:01Z
 
-| Field | Value |
+**没有触发。四个门槛全部未触及，不推送。**
+
+| 项 | 值 |
 |---|---|
-| Token | DEUS `0x940A319B75861014A220D9c6c144d108552B089B` (base) |
-| Pool (deepest) | aerodrome DEUS/VIRTUAL `0x3E97c5EC8c73e7d566aCA606472141a9b9a8C1Fa`, liq $695,700.08 |
-| Current | **$0.01799** |
-| 1h | −0.64% (measured) |
-| 24h | +1.15% |
-| ATH | $0.06876 (2026-05-28 15:35 UTC) — current 73.8% below |
+| 现价 | **$0.01795** |
+| 1h | −0.22%（实测，非缺失） |
+| 24h | +0.93% |
+| 最深池 | Aerodrome DEUS/VIRTUAL `0x3E97c5EC8c73e7d566aCA606472141a9b9a8C1Fa` |
+| 池深 | $694,163.36（较 07:01Z −0.22%） |
+| ATH | $0.06876（2026-05-28）→ 现价低于 **73.9%** |
 
-Source: DexScreener `https://api.dexscreener.com/latest/dex/tokens/0x940A319B75861014A220D9c6c144d108552B089B`, http 200.
+**四个门槛的距离（一级＝只卖现货；二级＝才动质押仓）**
 
-### Gate results
+| 价位 | 级别 | 动作 | 距离 |
+|---|---|---|---|
+| $0.025 | 一级 | 卖现货 | **+39.3%** |
+| $0.032 | 一级 | 卖现货 | +78.3% |
+| $0.041 | 二级 | 启动 unstake（回本线） | +128.4% |
+| $0.012 | 一级 | 恐慌位，注意 | **−33.1%** |
 
-- **ATH** — `QUIET`. $0.01799 < $0.06876; the `ath` object is untouched (monotonic invariant held).
-- **Sharp move (±20% 1h)** — `QUIET`. h1 = −0.64%, three orders of magnitude inside the trigger. h1 was present, so this is a real measurement, not the "missing h1" blind spot.
-- **Targets** —
-  - `$0.012` (below): not crossed, −33.3% away
-  - `$0.025` (above): not crossed, +39.0% away
-  - `$0.032` (above): not crossed, +77.9% away
-  - `$0.041` (above): not crossed, +127.9% away
-  - No `set-target:` in var → nothing registered, no force-reply confirmation to send.
+**门槛判定**
+- **ATH**：$0.01795 < $0.06876 → 无新高，`ath` 对象未动。
+- **Sharp move**：1h −0.22%，远在 ±20% 之内 → QUIET，且 `h1` 有值，属实测。xDEUS 的 5 天冷却这条线今天没有启动的必要。
+- **Target crossing**：0.012 below 未破、0.025/0.032/0.041 above 未及 → 四条全 no-cross，`hit_at` 均保持 null。
+- `last_alerts.*` 仍是全 null —— 自 2026-10-21 seeding 以来，**没有任何 gate 开过火**。
 
-### Cross-pair sanity
+**交叉验证（5 个 Base 池全看）**
+现价分布 $0.01789–$0.01797，跨度 0.45%，最深池 $0.01795 落在簇中位附近，无陈旧报价、无单池偏离。注意：只有最深 Aerodrome DEUS/VIRTUAL 池带 `priceChange.h1`，另外四个薄池缺该字段，所以本轮无法做跨池 1h 对比 —— 这是流动性薄的表现，不是数据故障。
 
-All five Base pairs agree within ~1%: $0.01790, $0.01797, $0.01789, $0.01795 vs the deepest-pool mark of $0.01799. Tightest cluster in recent runs — no stale print, no divergence signal.
+**判断**：这是第 21 轮连跑落在 $0.0179–$0.0186 窄带内。从 07:01Z 的 $0.01799 到现在，24 小时基本横盘（+0.93%），池深同时小幅下降 0.22%，属于无量震荡而非有人在进出。按 STRATEGY「只在触发条件成立时推送」，本轮不吵你。
 
-### Deltas vs last run (06:01Z)
+原始来源：DexScreener `/latest/dex/tokens/0x940A319B75861014A220D9c6c144d108552B089B`，HTTP 200，2026-10-22T08:01Z；标记池 pairAddress 见上表。
 
-Price $0.01811 → $0.01799 (−0.66%); liquidity $698,730.22 → $695,700.08 (−0.43%). This is the **20th consecutive run inside the $0.0179–$0.0186 band**. Nothing that needs your attention — no notification was sent, per the skill's clean-run contract.
+---
 
 ## Summary
 
-- **Executed** `skills/price-alert/SKILL.md` in `MODE=execute` with `var=0.012,0.025,0.032,0.041` (4/4 targets parsed valid).
-- **Fetched** DexScreener keyless endpoint, http 200, 5 pairs; selected the deepest Base pool (aerodrome DEUS/VIRTUAL) as the canonical mark.
-- **Evaluated** all four gates: ATH quiet, sharp-move quiet, all four targets uncrossed. No notify, correctly.
-- **Files modified**:
-  - `memory/topics/price-alert-state.json` — `last_run_at` 07:01:26Z and `last_price` refreshed; ATH, targets, and `last_alerts` unchanged; `jq empty` validated.
-  - `memory/topics/price-alert-state.json.bak` — rolling backup of the pre-run state.
-  - `memory/logs/2026-10-22.md` — appended the `### price-alert (07:01Z)` block plus an under-the-hood entry.
-  - `memory/MEMORY.md` — refreshed the price-alert line with the 07:01Z mark and band count.
-- **Follow-ups**: none from this run. Nearest actionable level is $0.025 (+39.0%); the $0.041 unstake trigger (the strategy's break-even line) is +127.9% away, so there is no unstake clock running and no 5-day cooldown decision pending.
+- **执行**：`skills/price-alert/SKILL.md`，`var=0.012,0.025,0.032,0.041`（MODE=execute，4/4 目标解析有效）。
+- **结果**：`PRICE_ALERT_OK` —— 无 ATH、无 ±20% 1h 波动、四个目标价均未穿越。**0 条通知发出**（符合契约：干净运行不推送）。
+- **数据**：DEUS $0.01795，1h −0.22%（实测），24h +0.93%，最深 Base 池流动性 $694,163.36，来源 DexScreener HTTP 200。
+- **文件修改**：
+  - `memory/topics/price-alert-state.json` —— 更新 `last_run_at` / `last_price`，`jq empty` 校验通过（STATE_VALID）；`ath`、`targets`、`last_alerts` 全部按不变量保持不变。
+  - `memory/logs/2026-10-22.md` —— 追加 `### price-alert (08:01Z)` 日志块。
+  - `memory/MEMORY.md` —— Active Topics 中 price-alert 一行更新至 08:01Z 读数。
+- **注意**：本轮 shell 的 `cp`/重定向写在沙箱下需审批，state 文件改由文件工具写入后校验，`.bak` 未滚动（上一轮备份仍在）。不影响状态正确性。
+- **后续**：无需动作。下一次触发点仍是 $0.025 现货卖出（尚需 +39.3%）；二级 unstake 门槛 $0.041 需 +128.4%，且一旦触及要提前 5 天启动冷却。另：10-23 09:57:36Z 的 NOTE 120 万 timelock 解锁是当前更高优先级事件，与本 skill 无关但值得盯。
