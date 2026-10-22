@@ -1,34 +1,39 @@
-## DEUS — 16:01Z 轮次 · 无触发
+No gate fired — this run is silent (no notify, per strategy: only push when a threshold is real).
 
-| 项 | 值 |
-|---|---|
-| 现价 | **$0.01822** |
-| 1h | 未返回（按 0 计）· 24h **+2.28%** |
-| 最深池 | Aerodrome DEUS/VIRTUAL，liq **$714,223** |
-| ATH | $0.06876（2026-05-28），当前**低于 73.5%** |
-| 判定 | `PRICE_ALERT_OK` · 0 通知 |
+## price-alert — DEUS · 2026-10-22T00:01Z
 
-四个门槛全部未触及，按契约不推送。
+**Price: $0.01855** · 24h **+4.29%** · 1h **flat (0 trades in the last hour)**
 
-**距离表（现价 $0.01822 起算）**
-- $0.025 → **+37.2%**（一级 · 卖现货）
-- $0.032 → **+75.6%**（一级 · 卖现货）
-- $0.041 → **+125.0%**（二级 · 启动 unstake）
-- $0.012 → **−34.1%**（恐慌位观察）
+Source: DexScreener, deepest Base pool — Aerodrome DEUS/VIRTUAL `0x3E97c5EC8c73e7d566aCA606472141a9b9a8C1Fa`, liquidity **$718,684.71**, 24h volume **$16,415.65**. Token contract `0x940A319B75861014A220D9c6c144d108552B089B` (Base).
 
-**数据说明**
-- 数据源：DexScreener `api.dexscreener.com/latest/dex/tokens/0x940A319B75861014A220D9c6c144d108552B089B`，http=200。合约 `0x940A319B75861014A220D9c6c144d108552B089B` / Base。
-- 最深池 `priceChange.h1` 这次**缺字段**，按 skill 规则计为 0 → sharp-move 门判 QUIET。这是「未测量」，不是「实测走平」，state 里 `h1_pct` 存 `null` 以示区别。
-- 三个 DEUS/USDC 浅池（liq $44k / $6k / $4k）分别报 h1 +0.50% / +0.75% / +0.63%，方向弱上，离 ±20% 很远。
-- 24h 从 +0.75% 扩到 +2.28%，但 h1 无数据 —— 更像是旧 tick 滚出窗口，不是新买盘。
-- 这是连续第六轮价格卡在 ~1% 带内（15:02Z $0.01810 → 现 $0.01822，+0.66%）。
+### Gate evaluation
 
-**给下一次运行留的提醒（已写进日志）**：xDEUS 冷却 5 天。$0.041 虽在 +125% 外，但真正要提前启动的是 $0.032 那一档 —— 从今天的位置看还有 +75.6%，时间上够。真正需要盯的是 $0.025 一旦印出，就要立刻算 5 天。
+| Gate | Level | Status | Verdict |
+|---|---|---|---|
+| ATH | $0.06876 (2026-05-28) | price 73% below | UNCHANGED |
+| Sharp move (±20% 1h) | — | h1 = 0.00%, 0 buys / 0 sells | QUIET |
+| Target $0.041 (unstake / 回本线) | $0.041 | −54.8% away | quiet |
+| Target $0.032 | $0.032 | −42.0% away | quiet |
+| Target $0.025 (卖现货) | $0.025 | **−25.8%** away | quiet |
+| Target $0.012 (恐慌位) | $0.012 | **+54.6%** away | quiet |
+
+Nearest actionable level is **$0.025**, and it needs a **+34.8%** move from here. Nothing is close. No notification sent.
+
+### Two things worth knowing
+
+**1. The sharp-move gate is currently blind on this pool.** DexScreener returns no `h1` figure because there were literally zero trades in the past hour (h1 volume = $0, h1 txns = 0/0). The gate treats missing h1 as 0%, so a genuine spike only registers if it happens to land within a window where DexScreener has priced an h1 delta. On a market doing $16k/day, **a single trade can move price 20%** — and that trade may be the only data point in the hour. The gate can miss precisely the event it exists to catch. This will be caught by the target-crossing gates instead, which are price-based rather than delta-based, so the levels that matter for execution are still covered.
+
+**2. Sell-side dominance in the tape.** Over 24h: 14 buys vs 44 sells; over 6h: 3 buys vs 16 sells. Price still up 4.29% on the day, which means the sells are being absorbed into a thin book rather than driving it down — but the buy/sell count ratio (0.32) is not consistent with an accumulation phase.
+
+### State
+
+- `memory/topics/price-alert-state.json` — updated `last_run_at` and `last_price`; ATH untouched at $0.06876; all four targets carry `hit_at: null` (none crossed); dedup clocks unmoved.
+- `memory/logs/2026-10-22.md` — created with this run's block.
 
 ## Summary
 
-- 执行了 `skills/price-alert/SKILL.md`，`var=0.012,0.025,0.032,0.041`（MODE=execute，4/4 解析有效）。
-- 修改：`memory/topics/price-alert-state.json`（`last_run_at` → 2026-10-21T16:01:30Z，`last_price` 更新；ATH 与四个 target 均未动，`jq empty` 校验通过）；`memory/logs/2026-10-21.md` 追加 `### price-alert (16:01Z)`。
-- 新建：`output/dex.json`（原始 DexScreener 响应，留档）。
-- 通知：**0 条** —— 无门槛触发，按契约保持静默。
-- 后续：无需动作。下一轮 hourly 继续观察；若 $0.025 打印，需在同一轮启动 5 天 unstake 计时。
+Ran `price-alert` for DEUS with targets `0.012, 0.025, 0.032, 0.041` (matching the operator's two-tier thresholds in STRATEGY.md). Fetched price from DexScreener's deepest Base pool via keyless `curl` (HTTP 200). Evaluated all four gates: no ATH (baseline is the true May high, 73% above spot), no sharp move (zero trades in the last hour), no target crossings. **Verdict `PRICE_ALERT_OK`, zero notifications** — correct silence.
+
+Files modified: `memory/topics/price-alert-state.json` (timestamps + last_price), `memory/logs/2026-10-22.md` (new). No commit made — left for the workflow's memory flush.
+
+Follow-ups: (a) the ±20% 1h gate can silently miss moves on this pool when DexScreener has no h1 delta — worth considering a fallback that compares against `last_price.price_usd` from the prior run for a delta-based check; (b) nearest live level is $0.025 at +34.8%, so the next meaningful decision point is not imminent.
