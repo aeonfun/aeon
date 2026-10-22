@@ -1,27 +1,45 @@
-**DEUS — 06:01Z · 无触发**
+## price-alert — DEUS · 2026-10-22 07:01Z
 
-当前 **$0.01811**，1h **−0.71%**（实测，非缺失），24h **+2.42%**。
-最深的 Base 池：Aerodrome DEUS/VIRTUAL，流动性 $698,730（DexScreener，http 200）。
+**Status: `PRICE_ALERT_OK` — no gate fired, 0 notifications sent.**
 
-| 门槛 | 价位 | 现价距触发 | 状态 |
-|---|---|---|---|
-| 一级 · 卖现货 | $0.025 | +38.0% | 未触及 |
-| 一级 · 卖现货 | $0.032 | +76.7% | 未触及 |
-| 二级 · 动质押 | $0.041（回本线） | +126.4% | 未触及 |
-| 一级 · 恐慌位 | $0.012 | −33.7% | 未触及 |
-| 二级 · 1h ±20% | — | 实测 −0.71% | 未触及 |
-| ATH | $0.06876 | −73.7% | 未刷新 |
+| Field | Value |
+|---|---|
+| Token | DEUS `0x940A319B75861014A220D9c6c144d108552B089B` (base) |
+| Pool (deepest) | aerodrome DEUS/VIRTUAL `0x3E97c5EC8c73e7d566aCA606472141a9b9a8C1Fa`, liq $695,700.08 |
+| Current | **$0.01799** |
+| 1h | −0.64% (measured) |
+| 24h | +1.15% |
+| ATH | $0.06876 (2026-05-28 15:35 UTC) — current 73.8% below |
 
-**跨池校验**（全 Base，防单池假价）：$0.01818 / $0.01818 / $0.01829 / Uniswap $0.01819(h1 缺失)。最深池 $0.01811 略低于池群下沿，但离中位数仅 ~0.4bp —— 是正常价差，不是坏价或陈旧打印。
+Source: DexScreener `https://api.dexscreener.com/latest/dex/tokens/0x940A319B75861014A220D9c6c144d108552B089B`, http 200.
 
-**解读**：19 轮连续落在 $0.0181–$0.0186 窄带，比上一轮（05:01Z 的 $0.01824）再跌 0.71%，流动性同步 −0.76%。薄盘口依旧 —— 一笔 $10k 单就能推动报价，所以窄带内的百分点波动不构成信号。四条预设线一条未近，`last_alerts.*` 自 seeding 起仍全 null。
+### Gate results
 
-按策略「正常别吵我」，本轮 **不发推送**。
+- **ATH** — `QUIET`. $0.01799 < $0.06876; the `ath` object is untouched (monotonic invariant held).
+- **Sharp move (±20% 1h)** — `QUIET`. h1 = −0.64%, three orders of magnitude inside the trigger. h1 was present, so this is a real measurement, not the "missing h1" blind spot.
+- **Targets** —
+  - `$0.012` (below): not crossed, −33.3% away
+  - `$0.025` (above): not crossed, +39.0% away
+  - `$0.032` (above): not crossed, +77.9% away
+  - `$0.041` (above): not crossed, +127.9% away
+  - No `set-target:` in var → nothing registered, no force-reply confirmation to send.
+
+### Cross-pair sanity
+
+All five Base pairs agree within ~1%: $0.01790, $0.01797, $0.01789, $0.01795 vs the deepest-pool mark of $0.01799. Tightest cluster in recent runs — no stale print, no divergence signal.
+
+### Deltas vs last run (06:01Z)
+
+Price $0.01811 → $0.01799 (−0.66%); liquidity $698,730.22 → $695,700.08 (−0.43%). This is the **20th consecutive run inside the $0.0179–$0.0186 band**. Nothing that needs your attention — no notification was sent, per the skill's clean-run contract.
 
 ## Summary
 
-- 执行 `skills/price-alert/SKILL.md`，`var=0.012,0.025,0.032,0.041`，MODE=execute，4/4 目标解析成功
-- 数据源：DexScreener keyless 公共接口，http 200，取最深流动性 Base 池 `0x3E97c5EC8c73e7d566aCA606472141a9b9a8C1Fa`
-- 六个判定全部未开火 → 状态 `PRICE_ALERT_OK`，通知数 0
-- 修改文件：`memory/topics/price-alert-state.json`（`last_run_at` + `last_price` 更新，`jq empty` 校验通过）、`memory/logs/2026-10-22.md`（追加 `### price-alert` 块）、`memory/MEMORY.md`（Active Topics 一行刷新为 06:01Z 读数）
-- 后续：无操作。下一次复查只需关注 $0.012 下破（恐慌位）或 1h ±20% —— 后者一旦出现意味着要立刻启动 5 天冷却的 unstake 流程，不能等到日更。
+- **Executed** `skills/price-alert/SKILL.md` in `MODE=execute` with `var=0.012,0.025,0.032,0.041` (4/4 targets parsed valid).
+- **Fetched** DexScreener keyless endpoint, http 200, 5 pairs; selected the deepest Base pool (aerodrome DEUS/VIRTUAL) as the canonical mark.
+- **Evaluated** all four gates: ATH quiet, sharp-move quiet, all four targets uncrossed. No notify, correctly.
+- **Files modified**:
+  - `memory/topics/price-alert-state.json` — `last_run_at` 07:01:26Z and `last_price` refreshed; ATH, targets, and `last_alerts` unchanged; `jq empty` validated.
+  - `memory/topics/price-alert-state.json.bak` — rolling backup of the pre-run state.
+  - `memory/logs/2026-10-22.md` — appended the `### price-alert (07:01Z)` block plus an under-the-hood entry.
+  - `memory/MEMORY.md` — refreshed the price-alert line with the 07:01Z mark and band count.
+- **Follow-ups**: none from this run. Nearest actionable level is $0.025 (+39.0%); the $0.041 unstake trigger (the strategy's break-even line) is +127.9% away, so there is no unstake clock running and no 5-day cooldown decision pending.

@@ -54,7 +54,7 @@
 
 - [Note Systems (NOTE)](topics/tokens/note-systems.md) — Robinhood 4663。**10-22 03:45Z 复核：24h 池子净吸筹 −153,359 NOTE，价格 $0.05728（24h +7.11%），无新抛压。** vesting 0xfdd9 已确认是 **claim 制**（全史 2 笔 release，均出自老余额，受益人自提），60 万 schedule id 25 的受益人 `0x2807de7a` 零领取 → 「每天 2 万」**确认不成立**，仍按 60 万整块计提。owner EOA 仍 120,000，nonce 365，自 10-21 11:09Z 零动作。**10-23 09:57:36Z 的 120 万 unlock 仍未撤销（~30h）。**
 - `heartbeat` 已恢复：2 次 `hivemindos: timeout` 后成功，`consecutive_failures=0`；issue #1 已于 10:14:53Z 关闭。 [source: logs/2026-10-21#heartbeat]
-- `price-alert` 连续多轮 success，DEUS 稳定在 $0.0181–0.0186 窄带（最新 06:01Z $0.01811，1h −0.71%，距 $0.025 +38.0%，距 $0.012 −33.7%）。四门槛全未触及，`last_alerts.*` 仍全 null（自 seeding 未有任何 gate 开火）。**`h1` 已连续五轮有值，QUIET 是实测而非"未测量"。** [source: logs/2026-10-22#price-alert]
+- `price-alert` 连续多轮 success，DEUS 稳定在 $0.0179–0.0186 窄带（最新 07:01Z $0.01799，1h −0.64%，距 $0.025 +39.0%，距 $0.012 −33.3%）。四门槛全未触及，`last_alerts.*` 仍全 null（自 seeding 未有任何 gate 开火）。**`h1` 已连续六轮有值，QUIET 是实测而非"未测量"。** 20 轮连跑均在该带内，薄盘口下距 $0.025 仍需 +39%。 [source: logs/2026-10-22#price-alert]
 
 ## Reference
 - [DEUS / xDEUS watch addresses](/topics/deus-escrow.md) — contract, escrow, xDEUS NFT; stake/unstake pairing; scale reference.
