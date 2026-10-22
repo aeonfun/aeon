@@ -1,10 +1,10 @@
 {
   "skill": "price-alert",
-  "last_analyzed": "2026-10-22T11:02:46Z",
-  "quality_score": 5,
-  "assessment": "Clean no-gate run: all four preset targets parsed and evaluated with distances, sharp-move gate measured from a real h1 reading, raw source cited (token address, pool address, endpoint, http status, timestamp), plus cross-pool sanity check — verifiable and actionable without noise, exactly matching the 'only push when triggered' constraint.",
+  "last_analyzed": "2026-10-22T12:02:22Z",
+  "quality_score": 4,
+  "assessment": "Clean, correctly-silent no-gate run with raw source, contract/pool addresses, and measured-vs-missing-field discipline; specific and decision-ready, though somewhat verbose for a no-op and key figures are unconfirmed by an external check.",
   "flags": [],
-  "avg_score": 4.06,
+  "avg_score": 4.05,
   "history": [
     {
       "date": "2026-10-21",
@@ -112,6 +112,12 @@
       "date": "2026-10-22",
       "score": 5,
       "ts": "2026-10-22T11:02:46Z",
+      "harness": "claude"
+    },
+    {
+      "date": "2026-10-22",
+      "score": 4,
+      "ts": "2026-10-22T12:02:22Z",
       "harness": "claude"
     }
   ]
