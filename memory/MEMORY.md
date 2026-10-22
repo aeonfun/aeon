@@ -48,7 +48,7 @@
 
 ## Active Topics
 - [Note Systems (NOTE)](topics/tokens/note-systems.md) — Robinhood 4663。**10-22 14:35Z：24h 净卖压 +589,322 NOTE（≈1% 供应），$0.04405（24h −18.8%），今日低 $0.03721 后反弹 +18.4%。** 卖压来自四个独立 EOA（09:11–09:14Z）+ 单笔 299,998（13:10Z，`0xf22e13f4` 已清零），**不是 owner 切单手法**；owner 仍 120,000 / nonce 365 零动作。**10-23 09:57:36Z 的 120 万 unlock 仍未撤销。**
-- `price-alert` 长期 success，DEUS 在 $0.0177–0.0186 窄带，四门槛（0.012/0.025/0.032/0.041）全未触及，`last_alerts.*` 全 null。薄盘口特征未变，不构成信号。
+- `price-alert` 长期 success，DEUS 在 $0.0173–$0.0186 窄带（10-22 21:01Z：$0.01742，1h +0.17%，24h −5.49%），四门槛（0.012/0.025/0.032/0.041）全未触及，`last_alerts.*` 全 null。薄盘口特征未变，不构成信号。
 
 ## Reference
 - [DEUS / xDEUS watch addresses](/topics/deus-escrow.md) — contract, escrow, xDEUS NFT; stake/unstake pairing; scale reference.
