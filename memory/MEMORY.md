@@ -79,3 +79,10 @@
 - 最优组合：Robinhood → `rpc.mainnet.chain.robinhood.com`（24k 块窗口，免密钥）；Base → `base.gateway.tenderly.co`（900 块）。Infura 在 RH 只有 10k 块且易 429。
 - 一律带 `address` + `topics`；失败**减半窗口重试**，429/5xx 退避 1s→2s→4s（≤3 次）。**并发 ≤3**（9 路并发曾触发 104 次 429）。
 - `eth_getTransactionByHash`/`Receipt` 在 RH 公共 RPC 可用（拆多跳 tx 靠它）；`secretcurl` 只认 `*_API_KEY`，RPC env 用 `node` 内读取。
+
+## 预警框架（铁律）
+- 通用预警框架见 `memory/alert-framework.md`，做链上预警前先读
+- 用相对量（相对成本线 / 池子 / 日成交量），不用绝对美元阈值
+- 优先级：解锁 > 流动性 > 价格结构 > 筹码 > 协议事件
+- 推送分级：P0 立即、P1 汇总
+- 每条预警必须带：币、数值、命中的规则、下一步动作
