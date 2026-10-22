@@ -1,6 +1,6 @@
 {
   "heartbeat": {
-    "last_status": "success",
+    "last_status": "dispatched",
     "last_failed": "2026-10-21T06:54:07Z",
     "total_runs": 5,
     "total_successes": 3,
@@ -9,7 +9,7 @@
     "success_rate": 0.6,
     "last_error": "hivemindos: timeout",
     "last_success": "2026-10-21T10:40:42Z",
-    "last_dispatch": "2026-10-21T10:09:17Z"
+    "last_dispatch": "2026-10-22T08:00:40Z"
   },
   "onchain-monitor": {
     "last_status": "failed",
@@ -25,8 +25,8 @@
     "last_error": "hivemindos: Failed to authenticate. API Error: 403 All target providers failed."
   },
   "price-alert": {
-    "last_dispatch": "2026-10-22T07:00:43Z",
-    "last_status": "success",
+    "last_dispatch": "2026-10-22T08:00:40Z",
+    "last_status": "dispatched",
     "last_success": "2026-10-22T07:02:57Z",
     "total_runs": 17,
     "total_successes": 14,
