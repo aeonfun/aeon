@@ -33,7 +33,7 @@
 - **链上预警有保质期。** 出货持续性看**总量与节奏**，不是单笔。
 - **owner 自有余额与 timelock 是两条独立供给** —— 别只盯 unlock 排程。
 - **claim 制 vesting 的"日释放"要看 scheduleId。** 同合约不同 schedule 量级差异巨大（7=21,446 · 11=2,954 · 18=191,793），按均值估日供给会失真。
-- **缺 `h1` ≠ 平静。** DexScreener 薄盘口常省略 `priceChange.h1`，按 0 处理会让 sharp-move gate 显示 QUIET 而实际**未测量**；state 存 `null` 以区分。
+- **缺 `h1` ≠ 平静。** DexScreener 薄盘口常省略 `priceChange.h1`，按 0 处理会让 sharp-move gate 显示 QUIET 而实际**未测量**；state 存 `null` 以区分。**补测出 0.00% 也要看成交量** —— 0 买 / 1 卖、1h 成交 $0.018 时价格是陈旧标记，不是"走平"。
 
 **运维**
 - `./notify` 写**普通 Markdown**，别为 Telegram 手工转义；多行走 `-f file.md`。
@@ -49,7 +49,7 @@
 - **`hivemindos: 403 All target providers failed`** —— 网关侧，非 skill bug。判据：`run_failed` + score 1 + `num_turns:1` / 0 tool calls。历史上会在数小时后自愈。
 
 ## Active Topics
-- `price-alert` 长期 success，DEUS 在 $0.0173–$0.0186 窄带（10-22 22:02Z：$0.01742，1h +0.63%，24h −6.35%，1h 成交仅 $5.46 / 2 笔 = 迄今最薄），四门槛（0.012/0.025/0.032/0.041）全未触及，`last_alerts.*` 全 null。薄盘口特征未变，不构成信号。**取数注意：DexScreener 深层池常年省略 `priceChange.h1`，需用 GeckoTerminal 同 pair 补测；两源 h24 有 0.8–1.6pp 分歧，属窗口锚点差异。**
+- `price-alert` 长期 success，DEUS 在 $0.0173–$0.0186 窄带（10-22 23:01Z：$0.01742，1h 0.00%，24h −5.69%，**1h 成交 $0.018 / 1 笔 0 买 1 卖 = 近乎死盘**；三小时成交 $276.66 → $5.46 → $0.018，跌三个数量级，此价已是陈旧标记而非成交价），四门槛（0.012/0.025/0.032/0.041）全未触及，`last_alerts.*` 全 null。唯一仍可读的结构信号：24h 129 买 / 29 卖却 −6.8%，卖方单笔远大于买方。不构成信号。**取数注意：DexScreener 深层池常年省略 `priceChange.h1`，需用 GeckoTerminal 同 pair 补测；两源 h24 有 0.8–1.6pp 分歧，属窗口锚点差异。**
 - [Note Systems (NOTE)](topics/tokens/note-systems.md) — Robinhood 4663。**10-22 21:05Z：owner 复活 —— 18:09–18:51Z 三笔：转 10 万 → 新 EOA、自领 vesting schedule 25 得 401,682、再转 5 万 → 第二个新 EOA。两个收款钱包 nonce 0、已充 gas、零出账 = 上膛待砸。** 余额 120,000 → 371,682。24h 净卖压 +472,236（0.79%），$0.04059（24h −27.4%）。**10-23 09:57:36Z 的 120 万 unlock 仍未撤销，剩约 13h。**
 
 ## Reference
