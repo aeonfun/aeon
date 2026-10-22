@@ -3,7 +3,7 @@ title: Note Systems (NOTE)
 description: Note Systems NOTE 代币 —— Robinhood Chain (4663) 上的结构化票据协议治理/激励代币，合约、供应、持仓与解锁排程
 tags: [robinhood-chain, token, unlock, note-systems]
 resource: https://note.systems/
-timestamp: 2026-10-21T15:26:30Z
+timestamp: 2026-10-22T03:45:00Z
 ---
 
 # Note Systems (NOTE)
@@ -118,6 +118,31 @@ owner EOA `0x0b64…` 是 PROPOSER（`hasRole` = 1）：可随时 schedule，48h
 **在观察到真实出账之前，不要把"每天 2 万"当作已知供给压力** —— 上一版笔记据此下调了预警价值，那是建立在未验证的 calldata 解读上。
 
 该合约全史：入 **36.42M / 174 笔**，主要发送方都是 owner EOA；出 **21.74M 回 owner EOA** + 一批 600k 整数分发；当前余额 **2,003,279 NOTE**。
+
+### 修正（2026-10-22 03:45Z）：释放机制是 **claim 制**，60 万仍未动
+
+全史两笔 `release`（topic0 `0x3bfce8de`，indexed: scheduleId, beneficiary）：
+
+| 时间 | NOTE | 受益人 | 后续 |
+|---|---|---|---|
+| 2026-10-21 08:29:50Z | 10,398.240 | `0xbd0719c4` (nonce 60) | 至今持币未卖 |
+| 2026-10-21 19:53:38Z | 2,953.935 | `0x7d459cb7` (nonce 277) | 6 秒后转入分发合约 `0x11111605` |
+
+两笔都是**受益人自己发起**的 claim（tx.from = 受益人，selector `0x37bdc99b`，参数为 scheduleId），不是合约主动推送。
+
+**关键：这两笔都不出自 60 万。** 60 万建的是 schedule id **25**，受益人 `0x2807de7a…` —— NOTE 余额 0、nonce 0、一次未领。余额对账闭环：2,003,279.815（打款后）− 2,953.935 = **2,000,325.880**（现存，逐位吻合）。
+
+→ 「每天 2 万线性释放」**确认不成立**。schedule 25 的 calldata（amount 600,000 / start 1792580957 / period 2,592,000 / 参数 3000 / flag 1）只是**建立了一个可 claim 的额度**，受益人不 claim 就不流。已 40h 零领取。**仍按 60 万一次性可动计提。**
+
+数据源：`rpc.mainnet.chain.robinhood.com` eth_getLogs（topic-filtered）+ eth_call balanceOf，2026-10-22T03:45Z。
+
+## 24h 资金流（2026-10-21T03:45Z → 2026-10-22T03:45Z，blk 93978092 → 94812077）
+
+- Transfer 事件 2,992 个；进入池 3,211,799 NOTE / 流出池 3,365,158 NOTE → **净流出池 −153,359（净吸筹）**
+- 无 mint / 无 burn，totalSupply 60,000,000
+- 最大单笔卖单 120,219 NOTE @ 19:25Z，经 `0x24a4d86c` 路由 —— 路由型，非 owner 定手数切单
+- 最大买方 `0x39cadaa8` 净 +129,054；最大卖方 `0x8d89362e`（**是合约**，nonce 1）净 −126,438
+- price $0.05728 · 1h −1.78% · 6h −5.18% · 24h **+7.11%** · liq $488,914 · vol24 $335,077
 
 ## 方向判断陷阱：NOTE 是合约 watch，不能按 `to == watch` 算方向
 
