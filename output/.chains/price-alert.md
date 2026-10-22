@@ -1,32 +1,44 @@
-No gates fired — nothing to notify.
+**PRICE_ALERT_OK — DEUS, 2026-10-22 11:01Z. No gate fired. No notification sent.**
 
-## DEUS 每小时哨兵 · 2026-10-22 10:01Z
+## Readings
 
-**价格 $0.01777** · 24h −1.00% · 1h **未测到**（DexScreener 最深池本轮缺 `priceChange.h1`）
-最深池 aerodrome DEUS/VIRTUAL `0x3E97c5EC8c73e7d566aCA606472141a9b9a8C1Fa` · 流动性 $685,227.81 · 24h 量 $13,382.42 — DexScreener http 200，10:01Z。
+| Field | Value |
+|---|---|
+| Token | DEUS `0x940A319B75861014A220D9c6c144d108552B089B` (base) |
+| Deepest pool | Aerodrome DEUS/VIRTUAL `0x3E97c5EC8c73e7d566aCA606472141a9b9a8C1Fa` |
+| Price | **$0.01779** |
+| 1h | +0.08% (measured this poll) |
+| 6h | −2.48% |
+| 24h | −1.59% |
+| Liquidity | $685,335.56 |
+| 24h volume | $13,383.18 |
 
-| 门槛 | 状态 | 距触发 |
-|---|---|---|
-| 一级 · 卖现货 $0.025 | 未触及 | **+40.7%** |
-| 一级 · 卖现货 $0.032 | 未触及 | +80.1% |
-| 二级 · 启动 unstake $0.041 | 未触及 | +130.7% |
-| 一级 · 恐慌位 $0.012 | 未触及 | −32.5% |
-| ±20% / 1h | 未测（h1 缺失） | — |
-| 新 ATH $0.06876 | 不可能触发 | 现价低 74.2% |
+Source: DexScreener `api.dexscreener.com/latest/dex/tokens/…`, http 200, pulled 11:01:40Z.
 
-**两个要点：**
+## Gate evaluation
 
-1. **h1 缺口回来了。** 连续八轮都有 `h1` 的最深池，这一轮只报了 `h24`。按合同规则缺值按 0 处理，所以门槛判定是 QUIET —— 但这是**没测到**，不是"确认平静"。state 里存的是 `null` 而不是 0，两者保持可区分。其余四个更薄的池 h1 都是小负（−0.08%、−0.54%、−0.48%、−1.00%），整体偏软，不是假价。
-2. **价格与 09:01Z 完全相同**（$0.01777 → $0.01777），流动性 −0.10%、24h 量 −8.2%。第 22 轮仍在 $0.0177–0.0186 窄带。这类"分毫不动"在 $13k/24h 的薄盘口上意味着没人交易，不构成信号。
+- **ATH** — $0.01779 vs stored ATH $0.06876 (2026-05-28 15:35Z). 74.1% below. No new high; ATH object untouched.
+- **Sharp move (±20%/1h)** — +0.08%, nowhere near threshold. **QUIET, and measured** — the 10:01Z poll was missing `priceChange.h1` on the deepest pair, this one carries it, so the gate is a real reading rather than a blind spot.
+- **Targets** — 4/4 parsed valid: `0.012, 0.025, 0.032, 0.041`
 
-**结论：什么都不用做。** 最接近的门槛是 $0.025，还差 40.7%。`last_alerts.*` 自 10-21 seeding 以来全为 null，四条门槛一次都没开火过。
+| Target | Side | Distance | Verdict |
+|---|---|---|---|
+| 0.012 | below | −32.5% | no cross |
+| 0.025 | above | +40.5% | no cross |
+| 0.032 | above | +79.9% | no cross |
+| 0.041 | above | +130.5% | no cross |
+
+`last_alerts.*` remains all null — nothing has fired since seeding on 2026-10-21.
+
+## Context
+
+23rd consecutive run inside the $0.0177–$0.0186 band. Cross-pair check on the four thinner Base pools: $0.01767 (−0.66%) / $0.01775 (+0.23%) / $0.01777 (+0.24%) / Uniswap $0.01777 (+0.62%) — a 0.68% spread with the deepest-pool mark at the top of it. Every pool shows mild 1h gains against negative 24h prints: a small bounce inside a soft day, not a reversal. Liquidity and volume both flat vs 10:01Z (liq +0.02%, 24h vol unchanged). Thin-book profile unchanged; not a signal.
 
 ## Summary
 
-- 读取 `skills/price-alert/SKILL.md` + `memory/MEMORY.md` + 现有 state。
-- `var=0.012,0.025,0.032,0.041` 解析为 MODE=execute，4/4 有效，无 `dry-run`、无 `set-target:`。
-- DexScreener http 200，5 个 Base 池，按流动性选出最深池；价格 $0.01777，h1 缺失记 `null`。
-- 三道门槛全评：ATH 未刷新（0.06876 保持）、sharp-move QUIET（未测）、四个目标全未穿越。
-- 修改文件：`memory/topics/price-alert-state.json`（`last_run_at`、`last_price` 含新增 `volume_24h_usd`/`pool_url`；`.bak` 已滚动）、`memory/logs/2026-10-22.md`（追加 `### price-alert (10:01Z)`）。
-- 状态 `PRICE_ALERT_OK`，通知 0 条（合同要求干净运行不发）。
-- 后续：无需动作；下轮到点自动跑。
+- Executed `price-alert` with `var=0.012,0.025,0.032,0.041` in execute mode. All four targets valid, none crossed.
+- Fetched price from DexScreener (keyless public GET, http 200) — no fallback needed.
+- Files modified: `memory/topics/price-alert-state.json` (rewritten with `last_run_at`, `last_price`; added `h6_pct`), `memory/topics/price-alert-state.json.bak` (rolled), `memory/logs/2026-10-22.md` (appended `### price-alert (11:01Z)` block), `memory/MEMORY.md` (refreshed price-alert line, dropped a stale duplicate).
+- State validated: `jq empty` → OK.
+- No `./notify` — clean run, per the "only push when a gate fires" constraint.
+- Follow-up: the `$0.025` sell-the-spot level is 40.5% away and the `$0.041` unstake-start level 130.5% away; the xDEUS 5-day cooldown means the $0.041 trigger still leaves time to act, but nothing needs doing today.

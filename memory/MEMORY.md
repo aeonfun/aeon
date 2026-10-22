@@ -58,11 +58,8 @@
 
 - [Note Systems (NOTE)](topics/tokens/note-systems.md) — Robinhood 4663。**10-22 03:45Z 复核：24h 池子净吸筹 −153,359 NOTE，价格 $0.05728（24h +7.11%），无新抛压。** vesting 0xfdd9 已确认是 **claim 制**（全史 2 笔 release，均出自老余额，受益人自提），60 万 schedule id 25 的受益人 `0x2807de7a` 零领取 → 「每天 2 万」**确认不成立**，仍按 60 万整块计提。owner EOA 仍 120,000，nonce 365，自 10-21 11:09Z 零动作。**10-23 09:57:36Z 的 120 万 unlock 仍未撤销（~30h）。**
 - `heartbeat` 已恢复：2 次 `hivemindos: timeout` 后成功，`consecutive_failures=0`；issue #1 已于 10:14:53Z 关闭。 [source: logs/2026-10-21#heartbeat]
-- `price-alert` 连续多轮 success，DEUS 仍在 $0.0178–0.0186 窄带（最新 09:01Z $0.01777，1h −1.00%，距 $0.025 +40.7%，距 $0.012 −32.5%）。四门槛全未触及，`last_alerts.*` 仍全 null（自 seeding 未有任何 gate 开火）。**`h1` 已连续八轮有值，QUIET 是实测而非"未测量"。** 最深池流动性 4.6% 缩至 $685,880.96（01:01Z 为 $718,684.71），24h 量降至 $14,575.63 —— 薄盘口特征未变，不构成信号。 [source: logs/2026-10-22#price-alert]
+- `price-alert` 连续多轮 success，DEUS 仍在 $0.0177–0.0186 窄带（最新 11:01Z $0.01779，1h +0.08%，距 $0.025 +40.5%，距 $0.012 −32.5%）。四门槛全未触及，`last_alerts.*` 仍全 null（自 seeding 未有任何 gate 开火）。**`h1` 本轮已恢复有值，QUIET 是实测**（10:01Z 那一轮 `h1` 缺失，属"未测量"，state 存 `null` 以区分）。最深池流动性 $685,335.56，24h 量 $13,383.18 —— 薄盘口特征未变，不构成信号。 [source: logs/2026-10-22#price-alert]
 - [Note Systems (NOTE)](topics/tokens/note-systems.md) — Robinhood 4663。**10-22 09:01Z：资金流反转 —— 17.6h 净流入池 +307,990 NOTE（净卖压 0.51% 供应），$0.05061（6h −13.27%）。两个独立 EOA 清仓后归零（`0x1c4e90fc` 08:08Z 132,919 枚；`0x14a9c63d` 06:29Z 91,956 枚），非 owner 切单手法。vesting 首次真实出账 21,446 NOTE（scheduleId 7，受益人未卖），但 60 万（id 25）仍零领取。owner EOA 120,000 / nonce 365，22h 零动作。**10-23 09:57:36Z 的 120 万 unlock 未撤销（~25h）。**
-- `heartbeat` 已恢复；issue #1 已关闭。 [source: logs/2026-10-21#heartbeat]
-- `price-alert` 连续多轮 success，DEUS 在 $0.0178–0.0186 窄带（最新 $0.01777，1h −1.01%，距 $0.025 +40.7%、$0.012 −32.5%）。四门槛全未触及，`last_alerts.*` 全 null。**`h1` 连续多轮有值，QUIET 是实测而非"未测量"。** [source: logs/2026-10-22#price-alert]
-
 ## Reference
 - [DEUS / xDEUS watch addresses](/topics/deus-escrow.md) — contract, escrow, xDEUS NFT; stake/unstake pairing; scale reference.
 - [Base RPC access from the runner](/topics/base-rpc-access.md) — the one working keyless endpoint and its block cap.

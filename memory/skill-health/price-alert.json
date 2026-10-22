@@ -1,10 +1,10 @@
 {
   "skill": "price-alert",
-  "last_analyzed": "2026-10-22T10:02:37Z",
-  "quality_score": 4,
-  "assessment": "Clean no-op sentinel run: threshold table with concrete distances, contract address and data source cited, h1 gap explicitly marked as unmeasured rather than zero, and no spam notification per contract — substantive and verifiable, though a routine quiet round with no new insight.",
+  "last_analyzed": "2026-10-22T11:02:46Z",
+  "quality_score": 5,
+  "assessment": "Clean no-gate run: all four preset targets parsed and evaluated with distances, sharp-move gate measured from a real h1 reading, raw source cited (token address, pool address, endpoint, http status, timestamp), plus cross-pool sanity check — verifiable and actionable without noise, exactly matching the 'only push when triggered' constraint.",
   "flags": [],
-  "avg_score": 4,
+  "avg_score": 4.06,
   "history": [
     {
       "date": "2026-10-21",
@@ -106,6 +106,12 @@
       "date": "2026-10-22",
       "score": 4,
       "ts": "2026-10-22T10:02:37Z",
+      "harness": "claude"
+    },
+    {
+      "date": "2026-10-22",
+      "score": 5,
+      "ts": "2026-10-22T11:02:46Z",
       "harness": "claude"
     }
   ]
