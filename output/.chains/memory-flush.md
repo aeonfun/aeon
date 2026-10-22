@@ -1,25 +1,26 @@
-Memory flush complete. Nothing here warranted a `./notify` — this is bookkeeping with no actionable signal for the operator.
+No duplicate headings, no over-long lines, 7,213 B / 77 lines. Consolidation complete.
 
-## What was consolidated
+## What changed
 
-**Scan window:** 2026-10-18 → 2026-10-21 (no watermark yet, so first-run migration path; 1 log read, no rotation needed).
+**Budget fixed.** MEMORY.md started **1,375 bytes over** (9,567 B / 105 lines). Four bottom sections — `链上取数（RPC 优先级）`, `Infura RPC 用法（重要）`, `Infura eth_getLogs 用法`, `链上取数` — were all restating the same window-halving / backoff / address-filter rules in slightly different words. Collapsed into one 4-bullet section pointing at `base-rpc-access.md`. Also archived long-form lesson detail to `memory/topics/lessons.md`. **Ended at 7,213 B / 77 lines, within budget.**
 
-**Promoted into `## Lessons Learned`** — four durable, sourced facts from today's on-chain runs: xDEUS is an ERC-721 (so `decimals()` reverts and the `tokenId` sits in `topics[3]`, but the ERC-20 topic0 hash still matches and the watch config needs no change); a zero-log window must be verified with a control query plus an escrow `eth_call` balance before "quiet" is believable; the API keys are unset so keyless Base reads go through Tenderly's gateway at a 1,000-block cap; `./notify` takes plain Markdown and `-f` for multi-line.
+**Two new lessons promoted, both sourced:**
+- Missing `priceChange.h1` ≠ a quiet book. The skill treats absent h1 as 0, so the sharp-move gate reports QUIET when it's actually *unmeasured*. Storing `null` in the state file is what keeps "measured flat" separable from "didn't measure."
+- Gateway 403 masquerades as a skill regression. `hivemindos: 403 All target providers failed` killed 7 runs 17:00–23:31Z and the health loop filed each as `run_failed` score 1. I pulled three of those run logs to confirm — all `num_turns:1`, zero tool calls, `api_error_status:403`. Gateway auth, not skill bugs. It self-cleared by 00:00Z.
 
-**Corrected a contradiction rather than overwriting it.** MEMORY.md claimed 定时调度从未运行 and that `price-alert` had never executed. I checked the evidence: `gh run list` now shows `scheduler: cron` arriving as a genuine `schedule` event and succeeding at 10:09:10Z — the scheduler is firing. I reworded that into `About This Repo`, keeping the half that is still true and genuinely useful: `enabled: true` in `aeon.yml` does not prove a skill has ever run.
+**Three real defects fixed, not just tidying:**
+- `topics/deus-escrow.md` was **two documents spliced into one file** — a second frontmatter block, a second H1, a duplicate Citations section mid-file, and a stray `- onchain` fragment at the splice point. Merged into one coherent document.
+- `topics/note-systems.md` **contradicted itself**: its risk section asserted the `0xfdd9` 30-day linear release as fact while §4 of the same file documents that all four standard selectors revert and nothing has been released. Rewrote the risk line to carry the block-risk reading.
+- `## 已知故障` said "暂无" — stale and misleading, implying all runs clean. Now records the 403 outage with its diagnostic signature.
 
-**Pruned:** the entire stale `已知故障` section; the template `Next Priorities` defaults (both long satisfied); and the `## Telegram 输出格式` block, whose hand-formatting rules (no `#`, no tables, no `>`) are actively wrong — `scripts/notify_format.py` normalizes Markdown to Telegram HTML and auto-chunks, so following those rules just costs structure. Zero open PRs, so no improvement-PR section to reconcile.
-
-**Archived detail out of the index** into three new topic files — `deus-escrow.md`, `ops-plumbing.md`, `price-alert-state.md` — all registered in `memory/topics/index.md`. MEMORY.md went from 57 lines of mixed detail to 44 lines at 2,676 bytes while gaining content.
-
-One deliberate non-deletion: I kept the empty `Recent Articles` / `Recent Digests` / `Skills Built` headings, because `article`, `digest`, `operator-scorecard`, and `deploy-prototype` append rows to them *by heading name* — removing them would have silently orphaned those writes.
-
-Watermark stamped to 2026-10-21 (`memory-flush-state.json` + the MEMORY.md mirror line).
+**Pruned** a Next Priorities item that was already done: the wallet-topic-filter bug is fixed in `skills/onchain-monitor/SKILL.md` (verified at lines 166–176), so it came off the list. Corrected the stale "0 open issues" claim — there are now 3 machine-managed health threads (#3, #4, #5), none urgent. `gh pr list` confirms 0 open PRs.
 
 ## Summary
 
-**Files modified:** `memory/MEMORY.md` (rewritten as an index), `memory/logs/2026-10-21.md` (appended `### memory-flush`), `memory/topics/index.md` (3 pointers added).
-**Files created:** `memory/topics/deus-escrow.md`, `memory/topics/ops-plumbing.md`, `memory/topics/price-alert-state.md`, `memory/memory-flush-state.json`.
-**Status:** `MEMORY_FLUSH_OK`, within budget. Nothing committed — this run made no git operations beyond the working tree, consistent with the skill's scope.
+- **Scan window:** 2026-10-21 → 2026-10-22, both in-window logs read (415 lines total); no rotation needed.
+- **Modified:** `memory/MEMORY.md` (budget 9,567 → 7,213 B), `memory/topics/deus-escrow.md` (splice repair), `memory/topics/tokens/note-systems.md` (contradiction resolved), `memory/topics/index.md` (index repaired — the `## Tokens` heading was buried inside `# Reference`, and one Oct-21 edit had mis-nested three entries).
+- **Created:** `memory/topics/lessons.md` (long-form lesson archive).
+- **Logged:** `memory/logs/2026-10-22.md` under `### memory-flush`; watermark stamped to 2026-10-22 via `memory_prep.py stamp`.
+- **Follow-up:** set `ALCHEMY_API_KEY` to close the native-ETH blind spot on Path C — that's the one open gap that silently disables an operator trigger. Also worth deciding whether the health loop should down-rank `run_failed` events with `num_turns:1`, since it currently counts gateway outages as skill regressions.
 
-**Follow-ups worth acting on:** `heartbeat` needs scheduled dispatch enabled in the Actions UI, and `price-alert`'s first real hourly run is still the open question — its state file was only seeded by hand today, so its next scheduled execution is the thing to confirm. Setting `ALCHEMY_API_KEY` would also restore decoded transfers and native ETH, which are currently invisible.
+Nothing was notified — this was routine memory hygiene with no operator action required.
