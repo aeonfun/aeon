@@ -1,10 +1,10 @@
 {
   "skill": "price-alert",
-  "last_analyzed": "2026-10-22T17:03:17Z",
-  "quality_score": 4,
-  "assessment": "Honest, well-sourced no-op run: raw DexScreener quote with token/pool contract addresses, all four targets and the sharp-move gate explicitly evaluated with distances, state/log writes stated, and correctly no notification since nothing fired. Docked one point because it is a verbose retrospective for a clean scan and the 'trend change' / 29-run floor narrative is self-referential and not independently verifiable from the output.",
+  "last_analyzed": "2026-10-22T18:03:10Z",
+  "quality_score": 5,
+  "assessment": "Clean silent no-op that still delivers a decision-ready snapshot: mark, all four target distances, gate-by-gate verdicts, pool/contract provenance, and the honest caveat that h1 is unmeasured on 5 of 6 pools — exactly the 'numbers + source, no push when nothing fires' behavior the strategy asks for.",
   "flags": [],
-  "avg_score": 4.04,
+  "avg_score": 4.08,
   "history": [
     {
       "date": "2026-10-21",
@@ -148,6 +148,12 @@
       "date": "2026-10-22",
       "score": 4,
       "ts": "2026-10-22T17:03:17Z",
+      "harness": "claude"
+    },
+    {
+      "date": "2026-10-22",
+      "score": 5,
+      "ts": "2026-10-22T18:03:10Z",
       "harness": "claude"
     }
   ]
