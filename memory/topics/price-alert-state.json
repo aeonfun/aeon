@@ -39,16 +39,18 @@
   },
   "last_price": {
     "price_usd": 0.01742,
-    "h1_pct": 0.17,
-    "h6_pct": -2.58,
-    "h24_pct": -5.49,
+    "h1_pct": 0.63,
+    "h6_pct": -2.29,
+    "h24_pct": -6.35,
     "pool": "aerodrome DEUS/VIRTUAL",
-    "liquidity_usd": 673560.33,
-    "volume_24h_usd": 16797.04,
-    "volume_1h_usd": 276.66,
+    "liquidity_usd": 673571.08,
+    "volume_24h_usd": 16730.24,
+    "volume_1h_usd": 5.46,
     "pool_url": "https://dexscreener.com/base/0x3e97c5ec8c73e7d566aca606472141a9b9a8c1fa",
-    "observed_at": "2026-10-22T21:01:52Z"
+    "observed_at": "2026-10-22T22:02:28Z",
+    "h1_source": "geckoterminal",
+    "h1_note": "DexScreener omitted priceChange.h1 for the deepest pool; 1h change measured on GeckoTerminal for the same pair (0x3e97...c1fa), not defaulted to 0."
   },
-  "last_run_at": "2026-10-22T21:01:52Z",
+  "last_run_at": "2026-10-22T22:02:28Z",
   "notes": "Baseline seeded manually on 2026-10-21 (first state file for this contract). ath.price_usd is the true all-time high (CoinGecko, 2026-05-28), not the tracking-start price, so the ATH gate cannot false-fire until the token genuinely exceeds it. Targets pre-registered from aeon.yml var so a crossing between runs is caught rather than swallowed by the skill's first-observation rule."
 }

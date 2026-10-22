@@ -1,56 +1,32 @@
-## price-alert — 21:01Z run, DEUS
+DEUS 22:02Z 检查完毕，四条门槛全未触及，按技能约定不发推送。
 
-**No gate fired. Nothing sent.**
+## price-alert · 2026-10-22 22:02Z · DEUS on Base
 
-### Current state
-| | |
-|---|---|
-| Token | DEUS (`0x940A319B75861014A220D9c6c144d108552B089B`, base) |
-| Price | **$0.01742** |
-| 1h | +0.17% (measured, not omitted) |
-| 6h | −2.58% |
-| 24h | −5.49% |
-| Pool | Aerodrome DEUS/VIRTUAL `0x3E97c5EC8c73e7d566aCA606472141a9b9a8C1Fa` |
-| Liquidity | $673,560.33 |
-| 24h vol | $16,797.04 |
+**当前价格 $0.01742** — 最深池 `0x3E97c5EC…9a8C1Fa`（Aerodrome DEUS/VIRTUAL），流动性 $673,571，24h 成交 $16,730。数据源：DexScreener 200 + GeckoTerminal 200 交叉。
 
-Source: DexScreener `api.dexscreener.com/latest/dex/tokens/0x940A…089B`, http 200, 2026-10-22T21:01Z. Cross-checked on GeckoTerminal pool `0x3e97c5ec8c73e7d566aca606472141a9b9a8c1fa`: $0.0173628, liq $679,087.
+| 门槛 | 价位 | 现价距离 | 结果 |
+|---|---|---|---|
+| 恐慌位（below） | $0.012 | −31.11% | 未触及 |
+| 一级（above） | $0.025 | +43.51% | 未触及 |
+| 一级（above） | $0.032 | +83.70% | 未触及 |
+| 二级（above，回本线） | $0.041 | +135.36% | 未触及 |
 
-### Gate evaluation
-- **ATH** — $0.06876 (2026-05-28, CoinGecko). Spot is 74.66% below it. No new high, `ath` object untouched, gate structurally cannot fire here.
-- **Sharp move** — +0.17% against a ±20% threshold. QUIET. Direction flipped from −0.36% last hour, but on $276.66 of 1h volume across 7 trades that is noise, not a move.
-- **Targets** — all four uncrossed:
+**三条 gate 逐条判定**
+- **ATH**：$0.06876（2026-05-28 15:35 UTC）不变，现价低 74.66%，不可能触发。
+- **Sharp move**：1h **+0.63%**，阈值 ±20%，差得很远。未触发。
+- **Targets**：4 个全未穿越，`hit_at` 未动。`last_alerts.*` 仍全为 null —— 自 10-21 建基准以来一次都没响过。
 
-| Target | Side | Distance from spot |
-|---|---|---|
-| $0.012 | below | −31.11% |
-| $0.025 | above | +43.44% |
-| $0.032 | above | +83.70% |
-| $0.041 | above | +135.36% |
+**本次值得记的一处取数问题**
+DexScreener 对最深池又返回了 `priceChange.h1: null`。按 MEMORY.md 里那条教训，**缺 h1 ≠ 平静**，是"未测量"，所以我没有按 0 处理，而是用 GeckoTerminal 同一个 pair 补了 h1（+0.63%），并在 state 里写了 `h1_source: "geckoterminal"` + 说明，让下次运行知道这个数不是 DS 给的。两源 h24 有 0.83pp 分歧（DS −6.35% vs GT −5.52%），h6 甚至反号——价格和流动性两边完全一致，所以判为滚动窗口锚点差异，不是坏数据；但 h24 只能当约数看。
 
-Nothing is close. Nearest live level in either direction is 31% away.
+**盘口状态**：$0.0173–$0.0186 窄带已连续第五小时。本小时成交只有 **$5.46 / 2 笔**（1 买 1 卖），比 21:01Z 的 $276.66 / 7 笔掉了约 50 倍——迄今最薄的一小时。在这个量级单笔就能推动报价，+0.63% 不构成任何"动了"的证据。跨池价差 0.40%（比上小时 0.58% 更窄），无池间背离，无抽池迹象。
 
-### What changed since 20:01Z
-Price $0.01739 → $0.01742 (+0.17%), liquidity +0.10%, 24h volume +0.84%. Fourth consecutive hour inside the $0.0173–$0.0186 shelf — prints have been $0.01745, $0.01739, $0.01742. Flat, no direction.
-
-One thing worth watching: **GeckoTerminal's 24h reads −3.94% where DexScreener reads −5.49%**, a 1.55pp gap. Last run the two agreed to within 0.03pp. Almost certainly a rolling-window anchor difference rather than bad data — price, h1 sign, and liquidity all agree across both sources — but if it persists next run it's a marking discrepancy worth knowing about before trusting any 24h-based decision.
-
-Cross-pair spread tightened to 0.58% (deep pool $0.01742 vs $0.01745 on the second Aerodrome USDC pool). No pool divergence. 24h structure unchanged: 141 buys / 32 sells by count while price is −5.49% — sell sizes dominate per trade.
-
-### Action needed
-None. Per your thresholds, nothing here justifies paying the 5-day xDEUS cooldown.
+**结论：没有可操作信号。** 最近的活口是 $0.012（下方 31%）和 $0.025（上方 43.5%），都还远。
 
 ## Summary
 
-Ran the `price-alert` skill with `var=0.012,0.025,0.032,0.041`. Fetched DEUS from DexScreener (deepest Base pool by liquidity), cross-checked against GeckoTerminal, evaluated all four gates.
-
-**Result:** `PRICE_ALERT_OK` — zero verdicts fired, zero notifications sent.
-
-**Files modified:**
-- `memory/topics/price-alert-state.json` — `last_run_at` and `last_price` updated; ATH, `last_alerts`, and all four target states unchanged. Validated with `jq -e`.
-- `memory/logs/2026-10-22.md` — appended `### price-alert (21:01Z)` block plus under-the-hood notes.
-- `memory/MEMORY.md` — refreshed the price-alert line to the current band and print.
-
-**Follow-up:**
-- `.bak` could not be refreshed — `cp` into the repo now requires interactive approval, so this run's state write had no backup safety net. If that approval requirement is intentional, the skill's "restore from `.bak`" path is now effectively one generation stale; worth either granting `cp` for `memory/` or amending the skill to use `Write` for the backup too.
-- The GeckoTerminal vs DexScreener 24h divergence (1.55pp) should be re-checked next run to confirm it's transient.
+- 执行 `skills/price-alert/SKILL.md`，`var=0.012,0.025,0.032,0.041` 四项全部解析有效，MODE=execute。
+- **判定：`PRICE_ALERT_OK`**。ATH / sharp-move / target 三条 gate 全部安静，**发送 0 条通知**（技能契约：干净运行不发消息）。
+- 修改文件：`memory/topics/price-alert-state.json`（`last_run_at` + `last_price`，含 h1 来源标注；`jq empty` 校验通过）、`memory/logs/2026-10-22.md`（新增 `### price-alert (22:02Z)` 及 under-the-hood 段）、`memory/MEMORY.md`（更新 DEUS 窄带行，删掉一条重复条目）。
+- **两处待跟进**：① `.bak` 本次没能刷新——仓库内 `cp` 需要交互批准，备份仍是 21:01Z 之前的快照；② 留下了 `memory/.dex-deus.json`、`memory/.gt-deus.json` 两个未跟踪的原始响应文件（`rm` 不在 allowlist 内，非密钥、纯公开数据），建议给 `.gitignore` 加 `memory/.dex-*` / `memory/.gt-*` 一行。
+- 未提交 commit —— 按仓库规则内存类写入留给 workflow 自动提交。

@@ -49,10 +49,8 @@
 - **`hivemindos: 403 All target providers failed`** —— 网关侧，非 skill bug。判据：`run_failed` + score 1 + `num_turns:1` / 0 tool calls。历史上会在数小时后自愈。
 
 ## Active Topics
-- [Note Systems (NOTE)](topics/tokens/note-systems.md) — Robinhood 4663。**10-22 14:35Z：24h 净卖压 +589,322 NOTE（≈1% 供应），$0.04405（24h −18.8%），今日低 $0.03721 后反弹 +18.4%。** 卖压来自四个独立 EOA（09:11–09:14Z）+ 单笔 299,998（13:10Z，`0xf22e13f4` 已清零），**不是 owner 切单手法**；owner 仍 120,000 / nonce 365 零动作。**10-23 09:57:36Z 的 120 万 unlock 仍未撤销。**
-- `price-alert` 长期 success，DEUS 在 $0.0173–$0.0186 窄带（10-22 21:01Z：$0.01742，1h +0.17%，24h −5.49%），四门槛（0.012/0.025/0.032/0.041）全未触及，`last_alerts.*` 全 null。薄盘口特征未变，不构成信号。
+- `price-alert` 长期 success，DEUS 在 $0.0173–$0.0186 窄带（10-22 22:02Z：$0.01742，1h +0.63%，24h −6.35%，1h 成交仅 $5.46 / 2 笔 = 迄今最薄），四门槛（0.012/0.025/0.032/0.041）全未触及，`last_alerts.*` 全 null。薄盘口特征未变，不构成信号。**取数注意：DexScreener 深层池常年省略 `priceChange.h1`，需用 GeckoTerminal 同 pair 补测；两源 h24 有 0.8–1.6pp 分歧，属窗口锚点差异。**
 - [Note Systems (NOTE)](topics/tokens/note-systems.md) — Robinhood 4663。**10-22 21:05Z：owner 复活 —— 18:09–18:51Z 三笔：转 10 万 → 新 EOA、自领 vesting schedule 25 得 401,682、再转 5 万 → 第二个新 EOA。两个收款钱包 nonce 0、已充 gas、零出账 = 上膛待砸。** 余额 120,000 → 371,682。24h 净卖压 +472,236（0.79%），$0.04059（24h −27.4%）。**10-23 09:57:36Z 的 120 万 unlock 仍未撤销，剩约 13h。**
-- `price-alert` 长期 success，DEUS 在 $0.0177–0.0186 窄带，四门槛（0.012/0.025/0.032/0.041）全未触及，`last_alerts.*` 全 null。薄盘口特征未变，不构成信号。
 
 ## Reference
 - [DEUS / xDEUS watch addresses](/topics/deus-escrow.md) — contract, escrow, xDEUS NFT; stake/unstake pairing; scale reference.
