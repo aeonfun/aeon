@@ -1,45 +1,38 @@
-## price-alert — DEUS — 2026-10-22 04:01Z
+## price-alert — 05:01Z · PRICE_ALERT_OK
 
-**No gate fired. Nothing to act on.**
+**DEUS @ $0.01824** — no gate fired. Nothing pushed.
 
-| Field | Value |
+| | |
 |---|---|
-| Price | **$0.01834** |
-| 1h | +0.01% (measured, not missing) |
-| 24h | +4.84% |
-| ATH | $0.06876 (2026-05-28) — 73.3% above current |
-| Deepest pool | aerodrome DEUS/VIRTUAL, liq $709,256, 24h vol $13,538 |
-| Source | DexScreener `http=200`, 04:01:25Z — contract `0x940A319B75861014A220D9c6c144d108552B089B` |
+| Current | **$0.01824** |
+| 1h / 24h | −0.58% / +3.15% (h1 measured) |
+| Deepest pool | aerodrome DEUS/VIRTUAL, liq $704,104, 24h vol $13,342 |
+| ATH | $0.06876 (2026-05-28) — 73.5% above current |
 
-**Gate results**
+**Targets** (`0.012, 0.025, 0.032, 0.041`) — all four pre-registered, none crossed:
 
-1. **ATH — not triggered.** $0.01834 < $0.06876; the `ath` object is untouched. `last_alerts.ath` is still null, meaning nothing has fired since the state file was seeded.
-2. **Sharp move (±20% in 1h) — QUIET.** `h1` was present this run at +0.01%, so this is a real measurement for the third poll in a row, not a "missing field read as zero" false calm.
-3. **Targets — all four uncrossed.**
-   - `$0.012` (below, panic watch): −34.6% away, no cross
-   - `$0.025` (sell spot): +36.3% away
-   - `$0.032` (sell spot): +74.5% away
-   - `$0.041` (unstake, breakeven): +123.6% away
+| Target | Side | Distance | Verdict |
+|---|---|---|---|
+| $0.041 | above | +124.8% | no-cross (unstake trigger) |
+| $0.032 | above | +75.4% | no-cross |
+| $0.025 | above | +37.1% | no-cross |
+| $0.012 | below | −34.2% | no-cross (panic watch) |
 
-None have `hit_at` set, so all four remain live one-shot triggers.
+**Gates**
+1. **ATH** — $0.01824 vs stored ATH $0.06876 → no new high; ATH object untouched.
+2. **Sharp move** — h1 −0.58%, far inside ±20% → QUIET, and this is a *real* measurement (h1 present for the 4th consecutive poll, so not the thin-pool "unmeasured" case).
+3. **Targets** — four uncrossed; no `hit_at` change. No `set-target:` var this run → no registration, no confirmation send.
+4. `last_alerts.*` remains all-null: no gate has ever fired since the state file was seeded on 2026-10-21.
 
-**Cross-pair sanity** — the deepest-pool mark isn't a stale print. The other Base venues cluster tightly around it: Aerodrome USDC $0.01825 and $0.01840, Uniswap USDC $0.01819. $0.01834 sits dead-centre. Book is uniformly flat, no divergence to arbitrage.
+**Cross-pair sanity** (all Base): USDC $0.01822 / $0.01828 / $0.01839, Uniswap $0.01819 (h1 null). The deepest-pool mark $0.01824 sits at the low end of the cluster but inside the spread — no stale print.
 
-**Versus the last run (03:01Z):** price identical at $0.01834, liquidity $709,235.97 → $709,256.10 (+0.003%). This is the 17th consecutive run inside the $0.0183–0.0186 band. With 24h volume at $13.5k, the pool is thin enough that a single $10k order still moves the mark — the flat tape is genuine absence of flow, not depth absorbing it.
+**Delta since 04:01Z:** $0.01834 → $0.01824 (−0.55%), liquidity $709,256 → $704,104 (−0.73%). 18th consecutive run inside the $0.0182–0.0186 band. 24h volume $13.3k — a single $10k order still moves this mark, which is why the pooled cross-check matters.
 
-**Why this is quiet but not reassuring:** the two levels that matter for your north-star are both far. The unstake line at $0.041 needs +123.6%, and the 5-day cooldown means that decision has to start well before the price gets there. Nothing is close. The $0.012 panic line is −34.6% and would be the first thing to break the current band.
-
-**Actions taken**
-- `memory/topics/price-alert-state.json` — `last_run_at`, `last_price` written atomically (tmpfile + `os.replace`), validated, rolling `.bak` refreshed
-- `memory/logs/2026-10-22.md` — `### price-alert (04:01Z)` block appended
-- No `./notify` sent — clean run, per skill contract
+Sources: DexScreener `/latest/dex/tokens/0x940A319B75861014A220D9c6c144d108552B089B` (http 200), pool `0x3E97c5EC8c73e7d566aCA606472141a9b9a8C1Fa`.
 
 ## Summary
-
-Ran the price-alert skill for DEUS with `var=0.012,0.025,0.032,0.041`. All four targets parsed valid; mode `execute`. Fetched live data from DexScreener (HTTP 200) and used the deepest Base pair (Aerodrome DEUS/VIRTUAL, $709k liquidity) as the canonical mark.
-
-**Result: `PRICE_ALERT_OK`** — price $0.01834, 1h +0.01%, 24h +4.84%. No new ATH, no sharp move, no target crossed. Zero notifications sent, by design.
-
-Files modified: `memory/topics/price-alert-state.json`, `memory/logs/2026-10-22.md`, plus scratch artifacts in `output/`.
-
-**Follow-up needed: none.** Worth noting for later: the 5-day xDEUS cooldown means the $0.041 unstake trigger is not a same-day action — at +123.6% away there's ample runway, but if a 20%+ hour ever fires, that's the moment to start the clock, not when $0.041 prints.
+- Ran `price-alert` in execute mode with `var=0.012,0.025,0.032,0.041`; all 4 targets parsed valid.
+- Fetched DEUS price from DexScreener (http 200, keyless curl); selected deepest Base pair by liquidity.
+- Evaluated all three gates — ATH, sharp-move, target-crossing — none fired. No notification sent (clean run, per skill contract).
+- Modified `memory/topics/price-alert-state.json` (`last_run_at`, `last_price`; atomic write + JSON validation, `.bak` refreshed), `memory/logs/2026-10-22.md` (new log block), `memory/MEMORY.md` (refreshed the price-alert topic line).
+- Follow-up: the only actionable watch is the **$0.012** floor (−34.2%) and the **$0.025** first tier (+37.1%); at $13k daily volume, either could be reached between hourly polls, so a crossing is the one thing that would justify an out-of-band push.
