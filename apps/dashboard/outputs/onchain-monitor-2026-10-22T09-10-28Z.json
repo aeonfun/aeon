@@ -1,0 +1,419 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "链上预警 — 2026-10-22",
+        "description": "onchain-monitor"
+      },
+      "children": [
+        "alert1",
+        "tldr",
+        "sep1",
+        "h_note",
+        "t_n1",
+        "t_n2",
+        "t_n3",
+        "tbl_whales",
+        "grid_note",
+        "t_n4",
+        "sep2",
+        "h_tl",
+        "t_tl1",
+        "t_tl2",
+        "grid_tl",
+        "sep3",
+        "h_ve",
+        "t_ve1",
+        "t_ve2",
+        "t_ve3",
+        "sep4",
+        "h_deus",
+        "t_d1",
+        "grid_deus",
+        "t_d2",
+        "t_d3",
+        "sep5",
+        "h_src",
+        "t_src1",
+        "link_src1",
+        "link_src2",
+        "t_src2"
+      ]
+    },
+    "alert1": {
+      "type": "Alert",
+      "props": {
+        "title": "鲸鱼清仓 11.4k 美元 · 120万解锁剩25h",
+        "message": "NOTE 在两个小时内被两个鲸鱼清仓式砸出 22.5 万枚，24h 净卖压 +30.8 万，价格 6 小时 −13.3%，120 万 timelock 解锁剩 25 小时。",
+        "type": "warning"
+      }
+    },
+    "tldr": {
+      "type": "Text",
+      "props": {
+        "text": "TL;DR： NOTE 在两个小时内被两个鲸鱼清仓式砸出 22.5 万枚（$11.4k），24h 资金流转为净卖压 +30.8 万，价格 6 小时 −13.3%，而 120 万 timelock 解锁剩 25 小时。",
+        "variant": "lead"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "h_note": {
+      "type": "Heading",
+      "props": {
+        "text": "NOTE — 卖压转向",
+        "level": "h2"
+      }
+    },
+    "t_n1": {
+      "type": "Text",
+      "props": {
+        "text": "• 净流入池子 +307,990 NOTE（0.51% 供应）。昨天同期是 −153,359（净吸筹）→ 已反转",
+        "variant": "body"
+      }
+    },
+    "t_n2": {
+      "type": "Text",
+      "props": {
+        "text": "• 卖 774 笔 / 买 727 笔 · 砸 2,237,084 / 接 1,929,094",
+        "variant": "body"
+      }
+    },
+    "t_n3": {
+      "type": "Text",
+      "props": {
+        "text": "两个鲸鱼账户各卖光、余额归零：",
+        "variant": "body"
+      }
+    },
+    "tbl_whales": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "账户",
+          "时间",
+          "卖单",
+          "备注"
+        ],
+        "rows": [
+          [
+            "0x1c4e90fc",
+            "08:08:01Z",
+            "132,919 NOTE（$6,727）",
+            "经路由 0x24a4d86c，nonce 755"
+          ],
+          [
+            "0x14a9c63d",
+            "06:29:24Z",
+            "91,956 NOTE（$4,654）",
+            "窗口内合计 161,796"
+          ]
+        ]
+      }
+    },
+    "grid_note": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "stat_price",
+        "stat_6h",
+        "stat_24h",
+        "stat_pool",
+        "stat_vol"
+      ]
+    },
+    "stat_price": {
+      "type": "Stat",
+      "props": {
+        "label": "NOTE 价格",
+        "value": "$0.05061",
+        "delta": "1h −5.06%",
+        "trend": "down"
+      }
+    },
+    "stat_6h": {
+      "type": "Stat",
+      "props": {
+        "label": "6h 变化",
+        "value": "−13.27%",
+        "delta": "6h",
+        "trend": "down"
+      }
+    },
+    "stat_24h": {
+      "type": "Stat",
+      "props": {
+        "label": "24h 变化",
+        "value": "−6.13%",
+        "delta": "24h",
+        "trend": "down"
+      }
+    },
+    "stat_pool": {
+      "type": "Stat",
+      "props": {
+        "label": "池子",
+        "value": "$455k"
+      }
+    },
+    "stat_vol": {
+      "type": "Stat",
+      "props": {
+        "label": "24h 量",
+        "value": "$335k"
+      }
+    },
+    "t_n4": {
+      "type": "Text",
+      "props": {
+        "text": "判断：两个一次性清仓的独立 EOA，不是 owner 的 9 笔定手数切单。owner 没动（nonce 365、120,000 枚、22h 零动作）",
+        "variant": "body"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "h_tl": {
+      "type": "Heading",
+      "props": {
+        "text": "⏰ timelock — 剩 25 小时",
+        "level": "h2"
+      }
+    },
+    "t_tl1": {
+      "type": "Text",
+      "props": {
+        "text": "• 1,200,000 NOTE 于 2026-10-23 09:57:36Z 可执行，仍未撤销（全事件扫描零 Cancel、零 Execute）",
+        "variant": "body"
+      }
+    },
+    "t_tl2": {
+      "type": "Text",
+      "props": {
+        "text": "• timelock 余额 15,254,442（25.42% 供应）未变",
+        "variant": "body"
+      }
+    },
+    "grid_tl": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "stat_unlock",
+        "stat_unlock_val",
+        "stat_unlock_ratio",
+        "stat_eta"
+      ]
+    },
+    "stat_unlock": {
+      "type": "Stat",
+      "props": {
+        "label": "待解锁",
+        "value": "1,200,000 NOTE"
+      }
+    },
+    "stat_unlock_val": {
+      "type": "Stat",
+      "props": {
+        "label": "约合（$0.0506）",
+        "value": "$60.7k"
+      }
+    },
+    "stat_unlock_ratio": {
+      "type": "Stat",
+      "props": {
+        "label": "占日成交量",
+        "value": "0.18x"
+      }
+    },
+    "stat_eta": {
+      "type": "Stat",
+      "props": {
+        "label": "剩余时间",
+        "value": "25 小时",
+        "delta": "至 2026-10-23 09:57:36Z",
+        "trend": "neutral"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "h_ve": {
+      "type": "Heading",
+      "props": {
+        "text": "vesting 0xfdd9 — 首次真实出账（修正此前判断）",
+        "level": "h2"
+      }
+    },
+    "t_ve1": {
+      "type": "Text",
+      "props": {
+        "text": "• 06:28:31Z 受益人 0x274ce9da 自提 21,446 NOTE（scheduleId 7），余额 2,003,279 → 1,978,879",
+        "variant": "body"
+      }
+    },
+    "t_ve2": {
+      "type": "Text",
+      "props": {
+        "text": "• 但不是那 60 万：scheduleId 25（60 万）受益人 0x2807de7a 仍零领取 → 60 万继续按整块风险计提",
+        "variant": "body"
+      }
+    },
+    "t_ve3": {
+      "type": "Text",
+      "props": {
+        "text": "• 该受益人一枚未卖，全部持有",
+        "variant": "body"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "h_deus": {
+      "type": "Heading",
+      "props": {
+        "text": "DEUS — 平静",
+        "level": "h2"
+      }
+    },
+    "t_d1": {
+      "type": "Text",
+      "props": {
+        "text": "• 价格 $0.01777，四门槛全未触及（$0.025 需 +40.7%）",
+        "variant": "body"
+      }
+    },
+    "grid_deus": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "stat_deus_price",
+        "stat_deus_escrow",
+        "stat_deus_share",
+        "stat_deus_out",
+        "stat_deus_x"
+      ]
+    },
+    "stat_deus_price": {
+      "type": "Stat",
+      "props": {
+        "label": "DEUS 价格",
+        "value": "$0.01777",
+        "delta": "需 +40.7% 触 $0.025",
+        "trend": "neutral"
+      }
+    },
+    "stat_deus_escrow": {
+      "type": "Stat",
+      "props": {
+        "label": "escrow 净流入",
+        "value": "+16,823 DEUS",
+        "delta": "8 存 / 1 取（3,024）",
+        "trend": "up"
+      }
+    },
+    "stat_deus_share": {
+      "type": "Stat",
+      "props": {
+        "label": "escrow 余额 / 供应占比",
+        "value": "29,403,096 · 3.356%"
+      }
+    },
+    "stat_deus_out": {
+      "type": "Stat",
+      "props": {
+        "label": "取出占比",
+        "value": "0.010%",
+        "delta": "5%/日阈值 1,470,155",
+        "trend": "neutral"
+      }
+    },
+    "stat_deus_x": {
+      "type": "Stat",
+      "props": {
+        "label": "xDEUS 铸/烧",
+        "value": "8 铸 · 1 烧",
+        "delta": "escrow 持有 58 → 59",
+        "trend": "neutral"
+      }
+    },
+    "t_d2": {
+      "type": "Text",
+      "props": {
+        "text": "• 取出占比 0.010%，距 5%/日 研究阈值（1,470,155）极远 → 不构成撤退",
+        "variant": "body"
+      }
+    },
+    "t_d3": {
+      "type": "Text",
+      "props": {
+        "text": "• xDEUS：8 铸 1 烧，escrow 持有 58 → 59",
+        "variant": "body"
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "h_src": {
+      "type": "Heading",
+      "props": {
+        "text": "来源",
+        "level": "h3"
+      }
+    },
+    "t_src1": {
+      "type": "Text",
+      "props": {
+        "text": "eth_getLogs / eth_call · block 52935165 (base) / 94992964 (robinhood) · NOTE 合约 0xc4f730335fb9e439ca5552f7b52b8e638c4245b0 · 价格 DexScreener 09:03Z",
+        "variant": "caption"
+      }
+    },
+    "link_src1": {
+      "type": "Link",
+      "props": {
+        "label": "base.gateway.tenderly.co",
+        "href": "https://base.gateway.tenderly.co"
+      }
+    },
+    "link_src2": {
+      "type": "Link",
+      "props": {
+        "label": "rpc.mainnet.chain.robinhood.com",
+        "href": "https://rpc.mainnet.chain.robinhood.com"
+      }
+    },
+    "t_src2": {
+      "type": "Text",
+      "props": {
+        "text": "basescan blob: 0xc4f730335fb9e439ca5552f7b52b8e638c4245b0",
+        "variant": "muted"
+      }
+    }
+  }
+}

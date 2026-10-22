@@ -1,10 +1,10 @@
 {
   "skill": "onchain-monitor",
-  "last_analyzed": "2026-10-21T15:30:35Z",
-  "quality_score": 3,
-  "assessment": "Technically solid and self-correcting with real contract addresses, block ranges, and revert checks, but it pushes an off-strategy NOTE update that hits no DEUS trigger, and the one DEUS line lacks distances to the preset thresholds — violating the 'only push on trigger' and 'actionable at a glance' priorities.",
+  "last_analyzed": "2026-10-22T09:10:27Z",
+  "quality_score": 4,
+  "assessment": "Internally consistent, sourced on-chain report (full NOTE contract, block heights, RPCs, DexScreener timestamp); NOTE arithmetic reconciles across price/volume/netflow, and the 25h timelock unlock is a genuine timing item, but the push is headlined by a trivial $11.4k liquidation that doesn't match '正常别吵我', and the DEUS section omits its 1h move and distance to the $0.041 breakeven line — the two numbers that would make the 5-day unstake lead time decision-ready.",
   "flags": [],
-  "avg_score": 3.8,
+  "avg_score": 3.83,
   "history": [
     {
       "date": "2026-10-21",
@@ -34,6 +34,12 @@
       "date": "2026-10-21",
       "score": 3,
       "ts": "2026-10-21T15:30:35Z",
+      "harness": "claude"
+    },
+    {
+      "date": "2026-10-22",
+      "score": 4,
+      "ts": "2026-10-22T09:10:27Z",
       "harness": "claude"
     }
   ]
