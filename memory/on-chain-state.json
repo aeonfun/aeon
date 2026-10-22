@@ -15,22 +15,6 @@
     "note": "ERC-721 (decimals() reverts). 52903493->52935165: 8 mints (ids 2463-2470), 1 burn (2124, escrow->zero, paired with the 3,024.598 DEUS unstake at blk 52904971), 2 moves into escrow (2431 from 0x7083acf6, 1341 from 0xc2a7d003). totalSupply 1,714 -> 1,721. Escrow balanceOf 58 -> 59.",
     "source": "base.gateway.tenderly.co (erc721 Transfer on xDEUS, 500-blk windows)"
   },
-  "NOTE": {
-    "alerted_tx": [
-      "0x2368258ba33c6f93991cdb5b97722f010e7b49919edf964385d4ce1e0744b7e0",
-      "0x39b723143a5bde3e0a4940c9dee99998d11bfdf6d053e10a7188d284f393d76f",
-      "0xb823b8bc0d8247f0b4c777a897c2728c8f067bf38587fa73e442133b9d0d784f",
-      "0x2f1317c48e04c882b42672134b88b618a8f5b2b092690cdf5e94a913501cdd0a",
-      "0x0b3111931277d1a6e876b46feeaa2385506f7e964f57fadc6c6df7a4b12285c3",
-      "0x07e18a2a8541f1d7a3dc9debc3b79c70a002e090ad352c832fc4ef6aee7be5b5",
-      "0x49947ec1e9eacae0676814bb3b3b951588eba69fe60aef245ad96ee0dcb97cd7"
-    ],
-    "last_block": 94992964,
-    "last_run": "2026-10-22T09:01:18Z",
-    "median_usd_30d": null,
-    "note": "Contract watch; direction from pool (to==PoolManager = SELL, from==PoolManager = BUY). 94383040->94992964 (609,924 blk, ~17.6h): 1,995 raw Transfer, 0 mint/burn, supply 60,000,000. REVERSED vs yesterday: 774 sells = 2,237,084 NOTE in, 727 buys = 1,929,094 out -> net +307,990 NOTE INTO pool = NET SELL PRESSURE (0.51% supply), vs yesterday -153,359 accumulation. Price $0.05061, 1h -5.06%, 6h -13.27%, 24h -6.13%, liq $455,087, vol24 $334,635, 1008 buy / 1068 sell txns. Two whales fully exited in 2h: 0x1c4e90fc sold 132,919.44 NOTE ($6,727) in ONE tx at 08:08:01Z via router 0x24a4d86c, nonce 755, balance now 0; 0x14a9c63d sold 91,956.09 ($4,654) at 06:29:24Z, 161,796 total in window, balance now 0. Both EOAs emptied completely. The 126,437 NOTE 3-hop via 0xb92fe925->0x0da5899d->0x24a4d86c is router plumbing for one trade, not three transfers.",
-    "source": "rpc.mainnet.chain.robinhood.com (eth_getLogs on NOTE, 24,000-blk windows)"
-  },
   "NOTE timelock": {
     "alerted_tx": [],
     "last_block": 94992964,
@@ -48,16 +32,6 @@
     "last_run": "2026-10-22T09:01:18Z",
     "median_usd_30d": null,
     "note": "WALLET watch -> topic filter on NOTE contract. 94383040->94992964: 0 inbound, 0 outbound. Balance still 120,000 NOTE, ETH 0.013983, nonce 365 -- untouched since 2026-10-21T11:09Z (~22h). Owner is NOT front-running the 10-23 unlock from free balance this time.",
-    "source": "rpc.mainnet.chain.robinhood.com (topic-filtered eth_getLogs + eth_call balanceOf)"
-  },
-  "NOTE staging 0x69bb": {
-    "alerted_tx": [
-      "0x84863f84f8f4726e85134eecc037633083c1d85d376c6d2ed121a3803a972f0b"
-    ],
-    "last_block": 94992964,
-    "last_run": "2026-10-22T09:01:18Z",
-    "median_usd_30d": null,
-    "note": "WALLET watch -> topic filter. 94383040->94992964: 0 in / 0 out. Balance 240 NOTE ($12), ETH 0.008945, nonce 11 -- unchanged. Spent wallet, no reuse. RETIRE candidate: 3 consecutive runs with no activity.",
     "source": "rpc.mainnet.chain.robinhood.com (topic-filtered eth_getLogs + eth_call balanceOf)"
   },
   "NOTE vesting": {
