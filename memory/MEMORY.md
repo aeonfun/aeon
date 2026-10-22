@@ -1,5 +1,5 @@
 # Long-term Memory
-*Last consolidated: 2026-10-22（人工精简，2026-10-22）*
+*Last consolidated: 2026-10-22*
 
 ## About This Repo
 - Autonomous agent on GitHub Actions。**外部时钟** = Cloudflare Worker `aeon-cron`：每 15 分钟触发 `scheduler.yml`、每 10 分钟触发 `messages.yml`。GitHub 自带的 fork `schedule` 基本不投递，别指望它。
@@ -37,7 +37,7 @@
 
 **运维**
 - `./notify` 写**普通 Markdown**，别为 Telegram 手工转义；多行走 `-f file.md`。
-- **网关 403 会被误记成 skill 回归。** 判据：`num_turns:1` + 0 tool calls + `api_error_status:403` → 网关问题，不是 skill bug。
+- **网关 403 会被误记成 skill 回归。** 判据：`num_turns:1` + 0 tool calls + `api_error_status:403` → 网关问题，不是 skill bug。10-21 的 `hivemindos: 403 All target providers failed` 连杀 7 次 run，数小时自愈。
 
 ## Next Priorities
 - **上膛中的两个抛售钱包 —— 最高优先级、随时可能触发。** `0x3ace8e0a2937297be9488a8c235a616d1a929519`（100,000 NOTE，ETH 0.055798）与 `0xe4bf6f7efc32aad76e80916543d1277dbe8ecf9a`（50,000 NOTE，ETH 0.010764）都是 nonce 0、从未发过交易、gas 已到位、零出账。**任意一笔出账 = 开砸启动**，不需要再等充值。这是 10-20 / 10-21 同一套手法的前两步，已走完。
@@ -45,12 +45,9 @@
 - **vesting schedule 25 的受益人已更正为 owner 本人**（不是 `0x2807de7a`）。18:33Z owner 自领 401,682.037，schedule 25 剩余约 19.8 万仍可领。`owner()` = owner EOA。**别再把它当"第三方沉睡额度"。**
 - **vesting release 量级不是恒定的**：scheduleId 7=21,446 · 8=2,937 · 11=2,954 · 18=191,793 · **25=401,682（10-22 18:33Z，迄今最大）**。不要按"每天 2 万"估日供给。
 
-## 已知故障
-- **`hivemindos: 403 All target providers failed`** —— 网关侧，非 skill bug。判据：`run_failed` + score 1 + `num_turns:1` / 0 tool calls。历史上会在数小时后自愈。
-
 ## Active Topics
-- `price-alert` 长期 success，DEUS 在 $0.0173–$0.0186 窄带（10-22 23:01Z：$0.01742，1h 0.00%，24h −5.69%，**1h 成交 $0.018 / 1 笔 0 买 1 卖 = 近乎死盘**；三小时成交 $276.66 → $5.46 → $0.018，跌三个数量级，此价已是陈旧标记而非成交价），四门槛（0.012/0.025/0.032/0.041）全未触及，`last_alerts.*` 全 null。唯一仍可读的结构信号：24h 129 买 / 29 卖却 −6.8%，卖方单笔远大于买方。不构成信号。**取数注意：DexScreener 深层池常年省略 `priceChange.h1`，需用 GeckoTerminal 同 pair 补测；两源 h24 有 0.8–1.6pp 分歧，属窗口锚点差异。**
-- [Note Systems (NOTE)](topics/tokens/note-systems.md) — Robinhood 4663。**10-22 21:05Z：owner 复活 —— 18:09–18:51Z 三笔：转 10 万 → 新 EOA、自领 vesting schedule 25 得 401,682、再转 5 万 → 第二个新 EOA。两个收款钱包 nonce 0、已充 gas、零出账 = 上膛待砸。** 余额 120,000 → 371,682。24h 净卖压 +472,236（0.79%），$0.04059（24h −27.4%）。**10-23 09:57:36Z 的 120 万 unlock 仍未撤销，剩约 13h。**
+- `price-alert` 长期 success，DEUS 在 $0.0173–$0.0186 窄带（10-22 23:01Z：$0.01742，24h −5.69%，四门槛全未触及，`last_alerts.*` 全 null）。**1h 成交 $276.66 → $5.46 → $0.018，三个数量级塌陷，此价是陈旧标记不是成交价。** 唯一可读结构信号：24h 129 买 / 29 卖却 −6.8%，卖方单笔远大于买方。不构成信号。[source: logs/2026-10-22#price-alert]
+- [Note Systems (NOTE)](topics/tokens/note-systems.md) — Robinhood 4663。**10-22 owner 复活（18:09–18:51Z 三笔），余额 120,000→371,682，nonce 365→368。** 详见 Next Priorities 的上膛钱包。$0.04059（24h −27.4%），24h 净卖压 +472,236（0.79%），连续第三个净卖窗口。 [source: logs/2026-10-22#onchain-monitor]
 
 ## Reference
 - [DEUS / xDEUS watch addresses](/topics/deus-escrow.md) — contract, escrow, xDEUS NFT; stake/unstake pairing; scale reference.
@@ -68,10 +65,9 @@
 
 ## 链上取数（细节见 base-rpc-access.md）
 
-- **优先 `bash memory/rpc.sh`** —— 分窗、失败减半重试、错误体输出、BigInt 换算、熔断。
-- 首选 `$BASE_RPC_URL` / `$RH_RPC_URL`（已挂 workflow env）。兜底：RH 公共 `rpc.mainnet.chain.robinhood.com`（24k 块窗口、免密钥）；Base `base.gateway.tenderly.co`（900 块）。
-- 一律带 `address` + `topics`；失败**减半窗口重试**，429/5xx 退避 1s→2s→4s（≤3 次）。**并发 ≤3**（9 路并发曾触发 104 次 429）。
-- Infura 在 RH 只有 10k 块窗口且易 429，优先用公共 RPC 扫大范围。
+- **10-22 起 `$BASE_RPC_URL` / `$RH_RPC_URL` 已是 Infura 免费档，`eth_getLogs` 只允许 10 块** —— 分窗脚本会一路减半假装"卡住"或"零日志"。判据：错误体含 `Free tier plan` + `10 block range`。`memory/rpc.sh` 继承同一 env，同样会踩。**显式绕过 env 直打公共端点。** [source: logs/2026-10-22#onchain-monitor]
+- Base `base.gateway.tenderly.co`（1,000 块上限）· RH `rpc.mainnet.chain.robinhood.com`（24k 块，免密钥）。实测 22+18 calls / 0 retries [source: logs/2026-10-22#onchain-monitor]
+- 一律带 `address` + `topics`；失败减半重试，429 退避 1s→2s→4s（≤3 次）。**并发 ≤3**（9 路并发曾触发 104 次 429）。
 - `eth_getTransactionByHash`/`Receipt` 在 RH 公共 RPC 可用（拆多跳 tx 靠它）；`secretcurl` 只认 `*_API_KEY`，RPC env 用 `node` 内读取。
 
 ## 预警框架（铁律）

@@ -25,6 +25,12 @@
 .pending-*.md
 apps/dashboard/outputs/.pending-*.md
 
+# Raw API responses that price-alert stages next to its state file (DexScreener /
+# GeckoTerminal JSON). Public data, no secrets, but they are run scratch, not source —
+# `rm` is not in the sandbox allowlist so skills cannot clean them up themselves.
+memory/.dex-*.json
+memory/.gt-*.json
+
 # Audit log staged into the workspace only to be uploaded as a run artifact
 # (scripts/audit.sh). The authoritative copy lives outside the repo in
 # $AEON_PENDING_DIR; this staged copy must never be committed.

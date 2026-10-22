@@ -4,7 +4,7 @@ description: Detail behind the one-line lessons in MEMORY.md, kept here so MEMOR
 tags:
   - lessons
   - runbook
-timestamp: 2026-10-22T14:45:00Z
+timestamp: 2026-10-23T00:00:00Z
 ---
 
 # Lessons learned — archive
@@ -41,8 +41,11 @@ MEMORY.md carries the one-line form of each lesson. This file holds the detail.
 ## Price feeds
 
 - **缺 `h1` ≠ 平静。** DexScreener 对薄盘口常省略 `priceChange.h1`；skill 按 0 处理，于是 sharp-move gate 显示 QUIET 而实际是**未测量**。state 里存 `null` 而非 0，下一轮才能区分"测过且平"与"没测到"。
+- **DS 缺 h1 时用 GeckoTerminal 同 pair 补测，别默认 0。** 端点 `/networks/base/pools/0x3e97…c1fa`，DS 和 GT 价格、流动性一致到 5 位小数。补测后 state 里记 `h1_source: "geckoterminal"` 和 `h1_note`，下一轮才知道这个数是替代来源。
+- **两源 h24 有 0.8–1.6pp 系统性分歧，h6 甚至会反号。** 21:01Z 差 1.55pp、22:02Z 0.83pp、23:01Z 1.09pp，而同一时刻价格完全一致。属 24h 窗口锚点（开盘时点）差异，不是坏数据 —— **把 h24 当近似值，不要当精确值引用。**
+- **成交量为零时，"走平"是机械的，不是平静的。** 23:01Z 深池 1h 成交 $0.018 / 1 笔（0 买 1 卖），价格必然显示 0.00% —— 此时该读的是成交额塌陷本身（$276.66 → $5.46 → $0.018），不是百分比。
 
 # Citations
 
 - `memory/logs/2026-10-21#onchain-monitor`, `#telegram-reply`, `#heartbeat-brief`, `#price-alert`
-- `memory/logs/2026-10-22#price-alert`
+- `memory/logs/2026-10-22#price-alert`（21:01Z / 22:02Z / 23:01Z 三源对比）
