@@ -1,10 +1,10 @@
 {
   "skill": "price-alert",
-  "last_analyzed": "2026-10-22T15:17:54Z",
+  "last_analyzed": "2026-10-22T16:02:40Z",
   "quality_score": 4,
-  "assessment": "Quiet-run report with real source provenance (DexScreener URL, pool and contract addresses), correct no-ping behavior aligned with the quiet-run constraint, and a genuinely useful observation that the deep VIRTUAL pool's USD mark is driving the +0.36% rather than DEUS demand; docked for a mislabeled ATH distance ('73.9% above current' is really the drop from ATH), some log-style verbosity the strategy asks to avoid, and use of bare `curl` instead of the mandated ./secretcurl (keyless, so no key exposure).",
+  "assessment": "Clean no-trigger run: all four preset gates evaluated with distances, source addresses included, and a prior quote-asset misread explicitly retracted — substantive and strategy-aligned, though the internal history claims (28th run, prior 15:16Z band) can't be verified from the output itself and the log tail is heavier than the 'no long text' preference warrants.",
   "flags": [],
-  "avg_score": 4.05,
+  "avg_score": 4.04,
   "history": [
     {
       "date": "2026-10-21",
@@ -136,6 +136,12 @@
       "date": "2026-10-22",
       "score": 4,
       "ts": "2026-10-22T15:17:54Z",
+      "harness": "claude"
+    },
+    {
+      "date": "2026-10-22",
+      "score": 4,
+      "ts": "2026-10-22T16:02:40Z",
       "harness": "claude"
     }
   ]
