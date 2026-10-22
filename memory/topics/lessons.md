@@ -4,7 +4,7 @@ description: Detail behind the one-line lessons in MEMORY.md, kept here so MEMOR
 tags:
   - lessons
   - runbook
-timestamp: 2026-10-22T00:15:00Z
+timestamp: 2026-10-22T14:45:00Z
 ---
 
 # Lessons learned — archive
@@ -30,6 +30,13 @@ MEMORY.md carries the one-line form of each lesson. This file holds the detail.
 
 - **钱包型 watch 不能用 `eth_getLogs{address: <EOA>}`。** EOA 不发事件，该写法永久返回 0 —— owner EOA / staging / vesting / DEUS escrow 四个 watch 曾长期处于假零。正确形状是在**代币合约**上做 topic 过滤：`[Transfer, null, padded(wallet)]` 收、`[Transfer, padded(wallet)]` 发。
 - **xDEUS is ERC-721, not ERC-20** — `decimals()` reverts, `Transfer` carries `tokenId` in `topics[3]`. The ERC-20 topic0 hash still matches, so watch config needs no change.
+
+## 扫 timelock：窗口与 topics 两个坑
+
+1. **窗口别从"最近几天"往回数。** Robinhood 链实测约 34k 块/小时，48h 的排程跨度约 160 万块。2026-10-22 用 `from=94700000` 起扫，完全漏掉 blk 94195015 的 `CallScheduled`，结论一度变成"120 万解锁不存在/已撤销"。正确做法是从**已知排程块**往前推，而不是从当前块往回数。
+2. **`eth_getLogs` 不要传 `topics: null`。** 部分节点会返回空数组而不报错，静默变成"没有事件"。要扫全部事件就**省略 topics 字段**，而不是显式传 null。
+
+误判代价很高：这两条任何一条踩中，都会把"明天有 120 万解锁"读成"没有风险"。
 
 ## Price feeds
 

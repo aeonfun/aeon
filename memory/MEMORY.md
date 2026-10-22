@@ -1,7 +1,7 @@
 # Long-term Memory
 *Last consolidated: 2026-10-22*
 ## About This Repo
-- Autonomous agent on GitHub Actions; **schedules fire** — `scheduler: cron` ran on a `schedule` event 2026-10-21T10:09:10Z. `enabled: true` ≠ has ever run. [source: logs/2026-10-21#telegram-reply]
+- Autonomous agent on GitHub Actions; **schedules fire** — `scheduler: cron` 跑了 2026-10-21T10:09:10Z。`enabled: true` ≠ 跑过。 [source: logs/2026-10-21#telegram-reply]
 
 ## Tracked Token
 
@@ -41,25 +41,26 @@
 - `./notify` 写**普通 Markdown**，别为 Telegram 手工转义；多行走 `-f file.md`。 [source: logs/2026-10-21#onchain-monitor]
 - **缺 `h1` ≠ 平静。** DexScreener 薄盘口常省略 `priceChange.h1`，按 0 处理会让 sharp-move gate 显示 QUIET 而实际**未测量**；state 存 `null` 以区分。 [source: logs/2026-10-21#price-alert]
 - **网关 403 会被误记成 skill 回归。** 判据：`num_turns:1` + 0 tool calls + `api_error_status:403` → 网关问题。 [source: logs/2026-10-22#memory-flush]
-- **多跳路由把一笔交易记成 4 笔 Transfer。** `X → routerA → … → PoolManager` 是同一笔卖单；聚合只认最终进/出 PoolManager 的那一腿。 [source: logs/2026-10-22#onchain-monitor]
-- **claim 制 vesting 的"日释放"要看 scheduleId，不要看合约余额。** 同合约里既有老余额的 schedule（id 7/11），也有新打入的（id 25）；出账不代表"新钱"在动。 [source: logs/2026-10-22#onchain-monitor]
+- **多跳路由把一笔交易记成 4 笔 Transfer。** 聚合只认最终进/出 PoolManager 的那一腿。 [source: logs/2026-10-22#onchain-monitor]
+- **claim 制 vesting 的"日释放"要看 scheduleId。** 同合约不同 schedule 量级差异巨大（7=21,446 · 11=2,954 · 18=191,793），按均值估日供给会失真。 [source: logs/2026-10-22#telegram-reply]
+- **扫 timelock 别只扫"最近几天"。** RH 链 ~34k 块/小时，48h 排程跨 ~160 万块；锚点应从已知排程块往前推。另 `topics: null` 会静默返回空数组 —— 扫全部事件就省略该字段。 [source: logs/2026-10-22#telegram-reply]
 
 ## Next Priorities
-- **10-23 09:57:36Z 的 120 万 NOTE timelock 解锁（~25h）** —— 当前最高优先级。盯 `Cancelled`、解锁后是否出现新 EOA、该 EOA 第一笔 ETH 入账 / 首笔 NOTE 出账。10-22 09:01Z 确认 owner 未从自有余额提前动手。
-- **vesting `0xfdd9` 已出现真实出账**（10-22 06:28Z，21,446 NOTE，id 7）—— claim 驱动；60 万（id 25）仍零领取，按整块计提。下次看 id 25 首笔 release。
+- **10-23 09:57:36Z 的 120 万 NOTE timelock 解锁（~19h）—— 当前最高优先级，且 10-22 14:35Z 复核确认仍未撤销。** calldata 已解码为 `NOTE.transfer(owner, 1,200,000)`、delay 172800s；全量 timelock 扫描只有 1 条 `CallScheduled`、零 `Cancelled`。盯解锁后是否出现新 EOA、该 EOA 第一笔 ETH 入账 / 首笔 NOTE 出账。owner EOA 仍 120,000 / nonce 365，自 10-21 11:09Z 零动作。
+- **vesting release 量级不是恒定的**：scheduleId 7=21,446 · 11=2,954 · **18=191,793（10-22 09:22Z，迄今最大）**。不要按"每天 2 万"估日供给。schedule 18 的受益人在 10 分钟内把一半转进分发合约 `0xeb897819`（253 进/253 出、净 0、不直接砸池）。60 万（id 25）仍零领取。
 - `NOTE staging 0x69bb` 连续 3 次零活动（余 240 枚），下次改 config 时删掉。
 - Set `ALCHEMY_API_KEY` → 恢复 decoded transfers + native ETH（当前 Path C 只看 ERC-20，gas 充值这类触发器是盲区）。
 - `onchain-monitor` 在 10-21 21:00–22:06Z 连续 3 次 `hivemindos` 403，非 skill bug；若网关再次抖动，先看 `num_turns` 是否为 1 再判定回归。
 
 ## 已知故障
-- **`hivemindos: 403 All target providers failed`** 于 2026-10-21 17:00–23:31Z 打死 7 个 run（price-alert ×3、onchain-monitor ×3、memory-flush ×1）。00:00Z 已自愈。识别特征：`run_failed` + score 1 + `num_turns:1` / 0 tool calls → 是网关鉴权，不是 skill 的 bug。 [source: logs/2026-10-22#memory-flush]
+- **`hivemindos: 403 All target providers failed`** 10-21 17:00–23:31Z 打死 7 个 run，00:00Z 自愈。判据：`run_failed` + score 1 + `num_turns:1` / 0 tool calls → 网关，不是 skill bug。 [source: logs/2026-10-22#memory-flush]
 
 ## Active Topics
 
-- [Note Systems (NOTE)](topics/tokens/note-systems.md) — Robinhood 4663。**10-22 03:45Z 复核：24h 池子净吸筹 −153,359 NOTE，价格 $0.05728（24h +7.11%），无新抛压。** vesting 0xfdd9 已确认是 **claim 制**（全史 2 笔 release，均出自老余额，受益人自提），60 万 schedule id 25 的受益人 `0x2807de7a` 零领取 → 「每天 2 万」**确认不成立**，仍按 60 万整块计提。owner EOA 仍 120,000，nonce 365，自 10-21 11:09Z 零动作。**10-23 09:57:36Z 的 120 万 unlock 仍未撤销（~30h）。**
+- [Note Systems (NOTE)](topics/tokens/note-systems.md) — Robinhood 4663。**10-22 14:35Z：24h 净卖压 +589,322 NOTE（≈1% 供应），$0.04405（24h −18.8%），今日低 $0.03721 后已反弹 +18.4%。** 卖压来自四个独立 EOA（09:11–09:14Z）+ 单笔 299,998（13:10Z，`0xf22e13f4` 已清零），**不是 owner 切单手法**；owner 仍 120,000 / nonce 365 零动作。vesting 09:22Z 释放 191,793（id 18，迄今最大），一半转分发合约、未直接砸池。60 万（id 25）仍零领取。**10-23 09:57:36Z 的 120 万 unlock 仍未撤销（~19h）。**
 - `heartbeat` 已恢复：2 次 `hivemindos: timeout` 后成功，`consecutive_failures=0`；issue #1 已于 10:14:53Z 关闭。 [source: logs/2026-10-21#heartbeat]
-- `price-alert` 连续多轮 success，DEUS 仍在 $0.0177–0.0186 窄带（最新 14:01Z $0.01793，1h −0.03%，距 $0.025 +39.4%，距 $0.012 −33.1%）。26 轮连续窄带，四门槛全未触及，`last_alerts.*` 仍全 null（自 seeding 未有任何 gate 开火）。本轮仅最深池有 `h1`（−0.03%），其余 4 池 `h1` 为 null；QUIET 仍是实测。最深池流动性 $687,268.33，24h 量 $14,448.12 —— 与 13:01Z 逐 tick 持平，薄盘口特征未变，不构成信号。 [source: logs/2026-10-22#price-alert]
-- [Note Systems (NOTE)](topics/tokens/note-systems.md) — Robinhood 4663。**10-22 09:01Z：资金流反转 —— 17.6h 净流入池 +307,990 NOTE（净卖压 0.51% 供应），$0.05061（6h −13.27%）。两个独立 EOA 清仓后归零（`0x1c4e90fc` 08:08Z 132,919 枚；`0x14a9c63d` 06:29Z 91,956 枚），非 owner 切单手法。vesting 首次真实出账 21,446 NOTE（scheduleId 7，受益人未卖），但 60 万（id 25）仍零领取。owner EOA 120,000 / nonce 365，22h 零动作。**10-23 09:57:36Z 的 120 万 unlock 未撤销（~25h）。**
+- `price-alert` 连续多轮 success，DEUS 仍在 $0.0177–0.0186 窄带（14:01Z $0.01793，1h −0.03%，距 $0.025 +39.4%，距 $0.012 −33.1%）。26 轮窄带，四门槛全未触及，`last_alerts.*` 全 null。薄盘口特征未变，不构成信号。 [source: logs/2026-10-22#price-alert]
+
 ## Reference
 - [DEUS / xDEUS watch addresses](/topics/deus-escrow.md) — contract, escrow, xDEUS NFT; stake/unstake pairing; scale reference.
 - [Base RPC access from the runner](/topics/base-rpc-access.md) — the one working keyless endpoint and its block cap.
@@ -74,7 +75,7 @@
 
 ## 链上取数（细节见 base-rpc-access.md）
 
-- **优先 `bash memory/rpc.sh`** —— 内置分窗、失败减半重试、错误体输出、BigInt 换算、调用熔断。端点自动取 `$BASE_RPC_URL` / `$RH_RPC_URL`（两者**都是 Infura**）。
-- 实测最优组合：Robinhood → `rpc.mainnet.chain.robinhood.com`（24k 块窗口，免密钥）；Base → `base.gateway.tenderly.co`（900 块）。Infura 在 Robinhood 只有 10k 块/次且并发易 429。
-- 一律带 `address` + `topics`；失败**减半窗口重试**，429/5xx 指数退避 1s→2s→4s（≤3 次）。**并发 ≤3**：10-22 用 9 路并发跑 525 次调用触发 104 次 429。
-- `eth_getTransactionByHash`/`eth_getTransactionReceipt` 在 Robinhood 公共 RPC 可用（拆多跳 tx 靠它）；`secretcurl` 只认 `*_API_KEY` 占位符，RPC env 用 `node` 内读取。
+- **优先 `bash memory/rpc.sh`** —— 分窗、失败减半重试、错误体输出、BigInt 换算、熔断。
+- 最优组合：Robinhood → `rpc.mainnet.chain.robinhood.com`（24k 块窗口，免密钥）；Base → `base.gateway.tenderly.co`（900 块）。Infura 在 RH 只有 10k 块且易 429。
+- 一律带 `address` + `topics`；失败**减半窗口重试**，429/5xx 退避 1s→2s→4s（≤3 次）。**并发 ≤3**（9 路并发曾触发 104 次 429）。
+- `eth_getTransactionByHash`/`Receipt` 在 RH 公共 RPC 可用（拆多跳 tx 靠它）；`secretcurl` 只认 `*_API_KEY`，RPC env 用 `node` 内读取。
