@@ -1,0 +1,60 @@
+import fs from "node:fs";
+const p = "memory/on-chain-state.json";
+const prev = JSON.parse(fs.readFileSync(p, "utf8"));
+const now = "2026-10-22T21:05:00Z";
+const BASE = 52956772, RH = 95407836;
+
+const s = {
+  "DEUS escrow": {
+    alerted_tx: [],
+    last_block: BASE,
+    last_run: now,
+    median_usd_30d: 179,
+    note: `WALLET watch -> topic filter on DEUS contract. 52935166->52956772 (21,607 blk, ~11.5h): 3 in = 3,195.317 DEUS, ZERO out (no unstake). Balance 29,403,096.571 -> 29,406,291.888 (+3,195.317, byte-consistent). Inflows: 106.000 from 0xcc97bef8 (blk 52943156, minted xDEUS 2471 same tx), 2,065.019 from 0xba0bd0c9 (blk 52943569, minted 2472), 1,024.298 from 0x718d16fe (blk 52955665, minted 2473). All three are stake-ins, not withdrawals. Unstake outflow 0.000% of escrow vs 5%/day research trigger (1,470,315) -> no escalation. Escrow share 3.357% of 876,234,926 supply. DEUS $0.01742 (-5.49% 24h) -- none of 0.012/0.025/0.032/0.041 hit.`,
+    source: "base.gateway.tenderly.co (topic-filtered eth_getLogs on DEUS, 1000-blk windows, 22 calls 0 retries) + eth_call balanceOf",
+  },
+  xDEUS: {
+    alerted_tx: [],
+    last_block: BASE,
+    last_run: now,
+    median_usd_30d: null,
+    note: `ERC-721 (decimals() reverts). 52935166->52956772: 3 mints (ids 2471 -> 0xcc97bef8, 2472 -> 0xba0bd0c9, 2473 -> 0x718d16fe -- each paired 1:1 with a DEUS stake-in to escrow), 0 burns, 2 moves INTO escrow (2435 from 0x491af5ff, 69 from 0x0a317531). totalSupply 1,721 -> 1,724. Escrow balanceOf 59 -> 61. Pure accumulation side this window: no unstake, no cooldown started.`,
+    source: "base.gateway.tenderly.co (erc721 Transfer on xDEUS, 1000-blk windows)",
+  },
+  "NOTE timelock": {
+    alerted_tx: [],
+    last_block: RH,
+    last_run: now,
+    median_usd_30d: null,
+    note: `OZ TimelockController, getMinDelay() = 172,800s (48h) re-confirmed. FULL unfiltered scan 94992965->95407836 (414,872 blk, ~11.8h): ZERO events of any topic. The 1,200,000 NOTE CallScheduled of 2026-10-21T09:57:36Z (opId 0x77a7b0d6..., blk 94195015, tx 0xbf795b94) still has NO Cancelled and NO Executed -> executable 2026-10-23T09:57:36Z, ~13h out. Timelock balance 15,254,442.020047 unchanged (25.42% of supply). Inside the final decision window.`,
+    source: "rpc.mainnet.chain.robinhood.com (eth_getLogs, NO topic filter, 24k-blk windows)",
+  },
+  "NOTE owner EOA": {
+    alerted_tx: [
+      "0x1ce1202217d80323de3233193bd9ffa255e0d40b2d479c5e1832ab21f04d6420",
+      "0x01cbf4517d57c5463e8e1fe4aab14994799ca6a3093846e4bde251681514a9c6",
+      "0x230c5b403286a9e4775a89981c0e06601f1738559bb73d491a7e431abb680e07",
+    ],
+    last_block: RH,
+    last_run: now,
+    median_usd_30d: null,
+    note: `OWNER WOKE UP -- 3 txs, nonce 365 -> 368, first activity since 2026-10-21T11:09Z. Sequence: (1) 18:09:12Z blk 95308399 tx 0x01cbf451 -- transfer 100,000 NOTE -> 0x3ace8e0a (BRAND NEW EOA, nonce 0, ETH 0.055798, ZERO outgoing, still holds 100,000). (2) 18:33:25Z blk 95322436 tx 0x1ce12022 -- selector 0x20c5429b arg 25, i.e. CLAIMED scheduleId 25 on vesting 0xfdd9, pulling 401,682.037 NOTE vesting->owner. This is the 600k schedule -- its beneficiary is the OWNER HIMSELF, not 0x2807de7a as earlier notes assumed. (3) 18:51:42Z blk 95332921 tx 0x230c5b40 -- transfer 50,000 NOTE -> 0xe4bf6f7e (BRAND NEW EOA, nonce 0, ETH 0.010764, ZERO outgoing, still holds 50,000). Balance 120,000 -> 371,682.037 exactly (120,000-100,000+401,682.037-50,000). ETH 0.013980. This is the SAME pre-dump playbook as 10-20 and 10-21: owner -> fresh EOA -> batch sells. Two wallets now ARMED (gas-funded, never transacted).`,
+    source: "rpc.mainnet.chain.robinhood.com (topic-filtered eth_getLogs on NOTE + eth_getTransactionByHash/Receipt + eth_call balanceOf)",
+  },
+  "NOTE vesting": {
+    alerted_tx: [
+      "0xca3e702094b8b399eba68dd92c8a894b507c76ea78856ac47bd70c6dc2fabaad",
+      "0x1ce1202217d80323de3233193bd9ffa255e0d40b2d479c5e1832ab21f04d6420",
+      "0xb51b9e4135e34293c3a7bcef28548593ca039ffea05ba81ad7d0ef43076fb945",
+    ],
+    last_block: RH,
+    last_run: now,
+    median_usd_30d: null,
+    note: `THREE real outflows this window totalling 596,411.69 NOTE, balance 1,978,879.584 -> 1,382,467.892 (exact). (a) 09:22:38Z 191,792.830 -> 0x67f5b99e, scheduleId 18 (already reported 14:35Z). (b) 10:55:43Z 2,936.821 -> 0xbd0719c4, scheduleId 8, tx.from = beneficiary (normal claim, selector 0x37bdc99b). (c) 18:33:25Z **401,682.037 -> OWNER EOA 0x0b64**, scheduleId 25, tx 0x1ce12022, selector 0x20c5429b, tx.from = OWNER. CORRECTION TO PRIOR NOTES: schedule 25 (the 600k) is NOT a third-party beneficiary that never claims -- the beneficiary is the owner EOA and he claimed it today, taking 401,682.037 of it. The "600k one-block risk" HAS NOW PARTIALLY MATERIALISED and the proceeds are already staged into two fresh wallets. owner() of vesting contract = 0x0b64 confirmed by eth_call.`,
+    source: "rpc.mainnet.chain.robinhood.com (topic-filtered eth_getLogs + eth_getTransactionReceipt + eth_call owner()/balanceOf)",
+  },
+};
+const tmp = p + ".tmp";
+fs.writeFileSync(tmp, JSON.stringify(s, null, 2) + "\n");
+fs.renameSync(tmp, p);
+console.log("STATE_WRITTEN", Object.keys(s).length, "watches");

@@ -1,0 +1,374 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "onchain-monitor",
+        "description": "NOTE owner 拆 15 万进两个新钱包 · 13h 后 120 万解锁"
+      },
+      "children": [
+        "alert-1",
+        "h-main",
+        "lead",
+        "sep1",
+        "h-what",
+        "table-what",
+        "text-balance",
+        "h-why",
+        "why1",
+        "why2",
+        "h-correct",
+        "corr1",
+        "corr2",
+        "h-supply",
+        "supply1",
+        "supply2",
+        "supply3",
+        "supply4",
+        "h-price",
+        "stats-grid",
+        "h-do",
+        "do-mix",
+        "exit-calc",
+        "h-actions",
+        "action1",
+        "action2",
+        "action3",
+        "sep2",
+        "source-stack",
+        "tx-text"
+      ]
+    },
+    "alert-1": {
+      "type": "Alert",
+      "props": {
+        "title": "🚨 🔴 NOTE owner 拆 15 万进两个新钱包 · 13h 后 120 万解锁",
+        "message": "owner 已拆 15 万进两个全新钱包（gas 已到位），timelock 120 万将于 2026-10-23 09:57:36Z 解锁，剩余约 13h",
+        "type": "error"
+      }
+    },
+    "h-main": {
+      "type": "Heading",
+      "props": {
+        "text": "🔴 NOTE owner 出手了 —— 两个新钱包已上膛，13h 后 120 万解锁",
+        "level": "h2"
+      }
+    },
+    "lead": {
+      "type": "Text",
+      "props": {
+        "text": "一句话：owner 刚把 vesting 的 40 万领出来，立刻拆 15 万进两个全新钱包。这就是前两次砸盘前的同一套动作。",
+        "variant": "lead"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "h-what": {
+      "type": "Heading",
+      "props": {
+        "text": "发生了什么（今天 18:09–18:51Z，41 分钟内）",
+        "level": "h3"
+      }
+    },
+    "table-what": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "时间 (UTC)",
+          "动作",
+          "数量"
+        ],
+        "rows": [
+          [
+            "18:09:12",
+            "owner → 新钱包 0x3ace…9519",
+            "100,000 NOTE"
+          ],
+          [
+            "18:33:25",
+            "owner 自领 vesting schedule 25",
+            "+401,682.037 NOTE"
+          ],
+          [
+            "18:51:42",
+            "owner → 新钱包 0xe4bf…cf9a",
+            "50,000 NOTE"
+          ]
+        ]
+      }
+    },
+    "text-balance": {
+      "type": "Text",
+      "props": {
+        "text": "owner 余额：120,000 → 371,682.037（逐位吻合）。nonce 365 → 368，自 10-21 11:09Z 以来第一次动。",
+        "variant": "body"
+      }
+    },
+    "h-why": {
+      "type": "Heading",
+      "props": {
+        "text": "为什么这是开砸前兆（不是普通转账）",
+        "level": "h3"
+      }
+    },
+    "why1": {
+      "type": "Text",
+      "props": {
+        "text": "两个收款地址都是全新 EOA：nonce 0，从未发过一笔交易，但已经有 gas（0.055798 / 0.010764 ETH），且至今零出账。",
+        "variant": "body"
+      }
+    },
+    "why2": {
+      "type": "Text",
+      "props": {
+        "text": "对照 10-20 和 10-21 两次：owner 转 24 万到新 EOA → 等 gas 到账 → 7–10 秒内 9 笔定手数砸池。现在两个钱包的 gas 已经就位，只差扣扳机。",
+        "variant": "body"
+      }
+    },
+    "h-correct": {
+      "type": "Heading",
+      "props": {
+        "text": "一个必须更正的事",
+        "level": "h3"
+      }
+    },
+    "corr1": {
+      "type": "Text",
+      "props": {
+        "text": "此前笔记说 vesting 的 60 万是“第三方受益人 0x2807de7a 从不 claim，按整块风险计提”。错了。schedule 25 的受益人就是 owner 本人（0x0b64），他今天自己领了 401,682.037。eth_call owner() 也确认 vesting 合约归 owner。",
+        "variant": "body"
+      }
+    },
+    "corr2": {
+      "type": "Text",
+      "props": {
+        "text": "也就是说：那 60 万不是躺着不动的风险，是 owner 随时可以变现的自有弹药。今天已经变现了 2/3。",
+        "variant": "body"
+      }
+    },
+    "h-supply": {
+      "type": "Heading",
+      "props": {
+        "text": "供给侧其余情况",
+        "level": "h3"
+      }
+    },
+    "supply1": {
+      "type": "Text",
+      "props": {
+        "text": "• timelock：120 万仍未撤销，opId 0x77a7b0d6… 无 Cancelled、无 Executed → 2026-10-23 09:57:36Z 可执行，剩约 13h。余额 15,254,442.02 未动",
+        "variant": "body"
+      }
+    },
+    "supply2": {
+      "type": "Text",
+      "props": {
+        "text": "• vesting 本窗口共出 596,411.69 NOTE（191,793 + 2,937 + 401,682），余额 1,978,879.58 → 1,382,467.89",
+        "variant": "body"
+      }
+    },
+    "supply3": {
+      "type": "Text",
+      "props": {
+        "text": "• 24h 净流入池 +472,236 NOTE（0.79% 供应），卖 1,192 / 买 885 —— 连续第三个窗口净卖压",
+        "variant": "body"
+      }
+    },
+    "supply4": {
+      "type": "Text",
+      "props": {
+        "text": "• 池内 NOTE 5,907,301（9.84%），比 14:35Z 的 5,855,692 略增",
+        "variant": "body"
+      }
+    },
+    "h-price": {
+      "type": "Heading",
+      "props": {
+        "text": "价格",
+        "level": "h3"
+      }
+    },
+    "stats-grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 4,
+        "gap": "md"
+      },
+      "children": [
+        "stat-price",
+        "stat-1h",
+        "stat-6h",
+        "stat-24h",
+        "stat-liq",
+        "stat-vol",
+        "stat-high",
+        "stat-low"
+      ]
+    },
+    "stat-price": {
+      "type": "Stat",
+      "props": {
+        "label": "NOTE 价格",
+        "value": "$0.04059"
+      }
+    },
+    "stat-1h": {
+      "type": "Stat",
+      "props": {
+        "label": "1h",
+        "value": "−2.44%",
+        "delta": "−2.44%",
+        "trend": "down"
+      }
+    },
+    "stat-6h": {
+      "type": "Stat",
+      "props": {
+        "label": "6h",
+        "value": "−5.10%",
+        "delta": "−5.10%",
+        "trend": "down"
+      }
+    },
+    "stat-24h": {
+      "type": "Stat",
+      "props": {
+        "label": "24h",
+        "value": "−27.4%",
+        "delta": "−27.4%",
+        "trend": "down"
+      }
+    },
+    "stat-liq": {
+      "type": "Stat",
+      "props": {
+        "label": "主池流动性",
+        "value": "$402,288"
+      }
+    },
+    "stat-vol": {
+      "type": "Stat",
+      "props": {
+        "label": "24h 成交量",
+        "value": "$487,739"
+      }
+    },
+    "stat-high": {
+      "type": "Stat",
+      "props": {
+        "label": "距 10-03 高点 $0.1030",
+        "value": "−60.6%",
+        "delta": "−60.6%",
+        "trend": "down"
+      }
+    },
+    "stat-low": {
+      "type": "Stat",
+      "props": {
+        "label": "今日低点",
+        "value": "$0.03721"
+      }
+    },
+    "h-do": {
+      "type": "Heading",
+      "props": {
+        "text": "该做什么",
+        "level": "h3"
+      }
+    },
+    "do-mix": {
+      "type": "Text",
+      "props": {
+        "text": "现在是两个已知供给事件叠加在同一天：1. 已上膛的 15 万（两个新钱包，随时可砸）2. 13h 后 timelock 再放 120 万",
+        "variant": "body"
+      }
+    },
+    "exit-calc": {
+      "type": "Text",
+      "props": {
+        "text": "exit 测算：池子 $402k，日量 $488k。15 万 NOTE ≈ $6.1k ≈ 日量 1.2%，一次能吸收。1,200,000 NOTE ≈ $48.7k ≈ 日量 10% —— 历史手法是解锁后 1–2 天拆 9 笔抛，单次冲击约 −2%。",
+        "variant": "body"
+      }
+    },
+    "h-actions": {
+      "type": "Heading",
+      "props": {
+        "text": "actions：",
+        "level": "h4"
+      }
+    },
+    "action1": {
+      "type": "Text",
+      "props": {
+        "text": "• 盯 0x3ace…9519 和 0xe4bf…cf9a 的第一笔出账 —— 那就是开砸信号，gas 已到位所以会立刻发生",
+        "variant": "body"
+      }
+    },
+    "action2": {
+      "type": "Text",
+      "props": {
+        "text": "• 解锁执行（明天 09:57Z 后）若出现“新 EOA + 首笔 ETH 入账”，按同样流程当天处理",
+        "variant": "body"
+      }
+    },
+    "action3": {
+      "type": "Text",
+      "props": {
+        "text": "• 当前价 $0.04059 不建议市价割（已从 $0.03721 反弹 9%，且 30 万那笔卖方已清仓），但不要满仓过明天上午",
+        "variant": "body"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "source-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "source-label",
+        "source-link",
+        "source-rest"
+      ]
+    },
+    "source-label": {
+      "type": "Text",
+      "props": {
+        "text": "数据源：",
+        "variant": "caption"
+      }
+    },
+    "source-link": {
+      "type": "Link",
+      "props": {
+        "label": "rpc.mainnet.chain.robinhood.com",
+        "href": "https://rpc.mainnet.chain.robinhood.com"
+      }
+    },
+    "source-rest": {
+      "type": "Text",
+      "props": {
+        "text": "（eth_getLogs topic 过滤 + eth_getTransactionByHash/Receipt + eth_call），2026-10-22T21:05Z",
+        "variant": "caption"
+      }
+    },
+    "tx-text": {
+      "type": "Text",
+      "props": {
+        "text": "关键 tx：0x01cbf451…a9c6（10万）· 0x1ce12022…6420（领 40.168万）· 0x230c5b40…0e07（5万）",
+        "variant": "caption"
+      }
+    }
+  }
+}
