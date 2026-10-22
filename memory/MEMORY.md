@@ -42,7 +42,6 @@
 ## Next Priorities
 - **10-23 09:57:36Z 的 120 万 NOTE timelock 解锁 —— 最高优先级。** calldata 已解码为 `NOTE.transfer(owner, 1,200,000)`、delay 172800s；全量 timelock 扫描只有 1 条 `CallScheduled`、零 `Cancelled`，10-22 14:35Z 复核仍未撤销。盯解锁后是否出现新 EOA、该 EOA 第一笔 ETH 入账 / 首笔 NOTE 出账。
 - **vesting release 量级不是恒定的**：scheduleId 7=21,446 · 11=2,954 · **18=191,793（10-22 09:22Z，迄今最大）**。不要按"每天 2 万"估日供给。schedule 18 的受益人在 10 分钟内把一半转进分发合约 `0xeb897819`（253 进/253 出、净 0、不直接砸池）。60 万（id 25）仍零领取。
-- `NOTE staging 0x69bb` 连续零活动（余 240 枚）—— 下次改 config 时删掉。
 
 ## 已知故障
 - **`hivemindos: 403 All target providers failed`** —— 网关侧，非 skill bug。判据：`run_failed` + score 1 + `num_turns:1` / 0 tool calls。历史上会在数小时后自愈。
@@ -60,8 +59,9 @@
 
 ## 监控清单（memory/on-chain-watches.yml）
 
-watch：DEUS escrow · xDEUS · NOTE timelock · NOTE owner EOA · NOTE vesting 0xfdd9。NOTE 阈值 $5,000。timelock 刻意不加 `event_topics` —— `CallScheduled`/`CallExecuted`/`Cancelled` 三种都要。
-**新增 watch 必须同步在 `on-chain-state.json` 建条目并把 `last_block` 设成当前块，否则首次运行会重放历史。**
+当前 5 个：DEUS escrow · xDEUS · NOTE timelock · NOTE owner EOA · NOTE vesting 0xfdd9。Base 两条阈值 $200/$250；NOTE 供给侧三条阈值 $500（事件稀少，故意压低求敏感）。timelock 刻意不加 `event_topics` —— `CallScheduled`/`CallExecuted`/`Cancelled` 三种都要。
+已摘、文件里保留注释块：`NOTE` 本体（全量 Transfer 噪音大）、`NOTE staging 0x69bb`（连续零活动）。
+**新增 watch 必须同步在 `on-chain-state.json` 建条目并把 `last_block` 设成当前块，否则首次运行会重放历史；删除 watch 要同步删掉 state 里的孤儿键。**
 钱包型 watch **必须用 topic 过滤扫代币合约**，不能直接拿地址查 log —— 详见 Lessons Learned。
 
 ## 链上取数（细节见 base-rpc-access.md）
