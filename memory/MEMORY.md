@@ -58,7 +58,7 @@
 
 - [Note Systems (NOTE)](topics/tokens/note-systems.md) — Robinhood 4663。**10-22 03:45Z 复核：24h 池子净吸筹 −153,359 NOTE，价格 $0.05728（24h +7.11%），无新抛压。** vesting 0xfdd9 已确认是 **claim 制**（全史 2 笔 release，均出自老余额，受益人自提），60 万 schedule id 25 的受益人 `0x2807de7a` 零领取 → 「每天 2 万」**确认不成立**，仍按 60 万整块计提。owner EOA 仍 120,000，nonce 365，自 10-21 11:09Z 零动作。**10-23 09:57:36Z 的 120 万 unlock 仍未撤销（~30h）。**
 - `heartbeat` 已恢复：2 次 `hivemindos: timeout` 后成功，`consecutive_failures=0`；issue #1 已于 10:14:53Z 关闭。 [source: logs/2026-10-21#heartbeat]
-- `price-alert` 连续多轮 success，DEUS 仍在 $0.0177–0.0186 窄带（最新 12:01Z $0.01785，1h +0.34%，距 $0.025 +40.1%，距 $0.012 −32.8%）。四门槛全未触及，`last_alerts.*` 仍全 null（自 seeding 未有任何 gate 开火）。**`h1` 本轮有值，QUIET 是实测**；薄池两个仍缺 `h1`，但不影响最深池标记。最深池流动性 $685,855.41，24h 量 $14,153.76 —— 薄盘口特征未变，不构成信号。 [source: logs/2026-10-22#price-alert]
+- `price-alert` 连续多轮 success，DEUS 仍在 $0.0177–0.0186 窄带（最新 13:01Z $0.01793，1h +0.48%，距 $0.025 +39.4%，距 $0.012 −33.1%）。25 轮连续窄带，四门槛全未触及，`last_alerts.*` 仍全 null（自 seeding 未有任何 gate 开火）。本轮 5 个池 `h1` 全有值，QUIET 是实测。最深池流动性 $687,509.50，24h 量 $14,435.55 —— 薄盘口特征未变，不构成信号。 [source: logs/2026-10-22#price-alert]
 - [Note Systems (NOTE)](topics/tokens/note-systems.md) — Robinhood 4663。**10-22 09:01Z：资金流反转 —— 17.6h 净流入池 +307,990 NOTE（净卖压 0.51% 供应），$0.05061（6h −13.27%）。两个独立 EOA 清仓后归零（`0x1c4e90fc` 08:08Z 132,919 枚；`0x14a9c63d` 06:29Z 91,956 枚），非 owner 切单手法。vesting 首次真实出账 21,446 NOTE（scheduleId 7，受益人未卖），但 60 万（id 25）仍零领取。owner EOA 120,000 / nonce 365，22h 零动作。**10-23 09:57:36Z 的 120 万 unlock 未撤销（~25h）。**
 ## Reference
 - [DEUS / xDEUS watch addresses](/topics/deus-escrow.md) — contract, escrow, xDEUS NFT; stake/unstake pairing; scale reference.

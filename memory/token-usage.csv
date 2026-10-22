@@ -30,3 +30,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-10-22,price-alert,claude-opus-5-5,354569,7569,442130,0
 2026-10-22,price-alert,claude-opus-5-5,234394,9553,654590,0
 2026-10-22,price-alert,claude-opus-5-5,19164,6393,614656,0
+2026-10-22,price-alert,claude-opus-5-5,191357,8049,549504,0
