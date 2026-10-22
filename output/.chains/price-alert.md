@@ -1,40 +1,32 @@
-## price-alert — DEUS (Base) · 2026-10-22 09:01Z
+No gates fired — nothing to notify.
 
-**No gate fired. Nothing sent.**
+## DEUS 每小时哨兵 · 2026-10-22 10:01Z
 
-| | |
-|---|---|
-| Token | DEUS · `0x940A319B75861014A220D9c6c144d108552B089B` (base) |
-| Deepest pool | Aerodrome DEUS/VIRTUAL · `0x3E97c5EC8c73e7d566aCA606472141a9b9a8C1Fa` |
-| Price | **$0.01777** |
-| 1h | −1.00% |
-| 24h | −1.52% |
-| Liquidity | $685,880.96 · 24h vol $14,575.63 |
-| ATH | $0.06876 (2026-05-28) — unchanged, 74% above spot |
+**价格 $0.01777** · 24h −1.00% · 1h **未测到**（DexScreener 最深池本轮缺 `priceChange.h1`）
+最深池 aerodrome DEUS/VIRTUAL `0x3E97c5EC8c73e7d566aCA606472141a9b9a8C1Fa` · 流动性 $685,227.81 · 24h 量 $13,382.42 — DexScreener http 200，10:01Z。
 
-### Gate verdicts
+| 门槛 | 状态 | 距触发 |
+|---|---|---|
+| 一级 · 卖现货 $0.025 | 未触及 | **+40.7%** |
+| 一级 · 卖现货 $0.032 | 未触及 | +80.1% |
+| 二级 · 启动 unstake $0.041 | 未触及 | +130.7% |
+| 一级 · 恐慌位 $0.012 | 未触及 | −32.5% |
+| ±20% / 1h | 未测（h1 缺失） | — |
+| 新 ATH $0.06876 | 不可能触发 | 现价低 74.2% |
 
-1. **ATH — quiet.** Prior ATH $0.06876 vs current $0.01777. Gate cannot fire until the token roughly quadruples.
-2. **Sharp move — quiet.** −1.00% measured against a ±20% threshold. `priceChange.h1` was present on the deepest pair for the eighth consecutive run, so this is a real measurement, not an absent field.
-3. **Targets — all quiet, no crosses.**
+**两个要点：**
 
-| Target | Side | Distance | Verdict |
-|---|---|---|---|
-| $0.012 | below | −32.5% | quiet (panic watch) |
-| $0.025 | above | +40.7% | quiet (spot-sell L1) |
-| $0.032 | above | +80.1% | quiet (spot-sell L2) |
-| $0.041 | above | +130.7% | quiet (unstake / break-even) |
+1. **h1 缺口回来了。** 连续八轮都有 `h1` 的最深池，这一轮只报了 `h24`。按合同规则缺值按 0 处理，所以门槛判定是 QUIET —— 但这是**没测到**，不是"确认平静"。state 里存的是 `null` 而不是 0，两者保持可区分。其余四个更薄的池 h1 都是小负（−0.08%、−0.54%、−0.48%、−1.00%），整体偏软，不是假价。
+2. **价格与 09:01Z 完全相同**（$0.01777 → $0.01777），流动性 −0.10%、24h 量 −8.2%。第 22 轮仍在 $0.0177–0.0186 窄带。这类"分毫不动"在 $13k/24h 的薄盘口上意味着没人交易，不构成信号。
 
-`last_alerts.*` remains all-null — no gate has ever fired since the state file was seeded on 2026-10-21.
-
-### One observation worth a line
-
-Deepest-pool liquidity fell from $718,684.71 (01:01Z) to $685,880.96 — **−4.6% in eight hours** — while 24h volume sits at $14,575.63. That is a thinner book, not a move: price barely budged and the 1h is inside a percent. It doesn't trip any gate and I'm not reading anything into it, but it does mean the cost of clearing $0.025 keeps rising — +40.7% now versus +39.3% at 08:01Z. If liquidity keeps draining, the same buy pressure produces a bigger move, which cuts both ways when the 5-day xDEUS cooldown means you can't act instantly on the upside.
+**结论：什么都不用做。** 最接近的门槛是 $0.025，还差 40.7%。`last_alerts.*` 自 10-21 seeding 以来全为 null，四条门槛一次都没开火过。
 
 ## Summary
 
-- Executed `skills/price-alert` with `var=0.012,0.025,0.032,0.041` (MODE=execute, 4/4 targets parsed valid).
-- Fetched DexScreener `http=200` on first try; no WebFetch fallback needed. Selected the deepest Base pair by `.liquidity.usd` per the skill's liquid-pool rule.
-- Evaluated all three gates: ATH quiet, sharp-move quiet (−1.00% vs ±20%), all four targets quiet. **0 notifications sent** — correct behaviour for a clean run.
-- Files modified: `memory/topics/price-alert-state.json` (refreshed `last_price` and `last_run_at`; ATH, `last_alerts`, and `targets` untouched — valid per `jq empty`), `memory/logs/2026-10-22.md` (appended the `### price-alert` block), `memory/MEMORY.md` (updated the Active Topics line with the 09:01Z read and the liquidity change).
-- Follow-up: none required. The $0.012 / $0.025 targets are the ones to watch; at the current book, $0.025 needs roughly a 41% move.
+- 读取 `skills/price-alert/SKILL.md` + `memory/MEMORY.md` + 现有 state。
+- `var=0.012,0.025,0.032,0.041` 解析为 MODE=execute，4/4 有效，无 `dry-run`、无 `set-target:`。
+- DexScreener http 200，5 个 Base 池，按流动性选出最深池；价格 $0.01777，h1 缺失记 `null`。
+- 三道门槛全评：ATH 未刷新（0.06876 保持）、sharp-move QUIET（未测）、四个目标全未穿越。
+- 修改文件：`memory/topics/price-alert-state.json`（`last_run_at`、`last_price` 含新增 `volume_24h_usd`/`pool_url`；`.bak` 已滚动）、`memory/logs/2026-10-22.md`（追加 `### price-alert (10:01Z)`）。
+- 状态 `PRICE_ALERT_OK`，通知 0 条（合同要求干净运行不发）。
+- 后续：无需动作；下轮到点自动跑。
