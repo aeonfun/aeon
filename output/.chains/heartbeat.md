@@ -1,31 +1,24 @@
-⚠️ Priority Brief — 2026-10-21
+⚠️ ⚠️ onchain-monitor 连挂 3 次 · 距 120 万解锁 26h
 
-## Priority Brief — 2026-10-21
+## 🔴 onchain-monitor 连挂 3 次，而明天就是 120 万解锁日
 
-### Focus today
+`onchain-monitor` 自 2026-10-21 22:06Z 起 `consecutive_failures = 3`，最后一次成功是 15:30Z。三次都是网关 `hivemindos: 403 All target providers failed`，不是 skill 自身 bug。
 
-1. **给 NOTE staging 钱包 0x69bb 补上 native ETH 检测** — 现在这条 watch 只能看 ERC-20，看不到它被充 gas 的那一刻，所以预设的触发器实际上打不响。
-   why now：转账后 **17 分钟**，上一轮同额 24 万是 **1h47m** 后开砸 —— 还剩约 1.5 小时，但检测现在是瞎的。
+**为什么现在要管：** 它是唯一在盯 NOTE timelock 的 skill，而 timelock 的 120 万枚解锁在 **2026-10-23 09:57:36Z**，距今约 **26 小时**。它今天还有 09:00Z / 21:00Z 两个窗口。这两个窗口如果照旧 403，明天解锁当天你会是瞎的。
 
-2. **1,200,000 NOTE timelock，2026-10-23 09:57Z 可执行** — 量级是这次 24 万的 5 倍。
-   why now：48h 前置窗口已开，而且 owner 这次**没等它**就自行动用了自有余额，两条供给通道是并行的。
+同一波 403 里的另外两个 skill 都已自愈：`memory-flush` 00:11Z 成功，`price-alert` 07:02Z 成功。只有它还没被验证过——因为它从失败以后一直没轮到运行窗口，不是它恢复得慢。
 
-3. background：DEUS $0.01805，四门槛全未触及，最近一档 $0.025 还差 +38.5% —— 仓位不用动，今天也没有值得付 5 天冷却的涨幅。
+**下一步：** 09:00Z 那个窗口是判据。成功 → 一切正常，我明早的 heartbeat 会确认；再失败 → 需要开 `ALCHEMY_API_KEY` 走备用取数路径，或者今晚手动跑一次。
 
-### Since yesterday
+## 🟡 三条 health issue
 
-- **NOTE 供给动作**：owner EOA `0x0b64b35c…b66422` 于 10-21 10:19:04Z 转出 **240,000 NOTE** 至全新钱包 `0x69bb2e43…d7c63`（blk 94210020，nonce 379）。
-- **该钱包仍然卖不掉**：刚查（10:35Z）nonce = 0、ETH = 0，NOTE 余额 240,000（$12,986 @ $0.05411）。第一笔出账或第一笔 ETH 入账 = 真实开砸前兆。
-- **⚠️ 监控盲区**：`onchain-monitor` 的 Path C 用 `eth_getLogs` 过滤 ERC-20 `Transfer`，**看不到 native ETH**（skill 第 177 行自认 "sees ERC-20 moves only"）。staging 钱包的触发条件恰好是"第一笔 ETH 入账" —— 这条 watch 永远等不到。需要加 `eth_getBalance` 轮询。
-- **10-23 的 120 万仍在排程上**：CallScheduled 10-21 09:57Z，可执行 10-23 09:57Z。timelock 自 blk 94197434 起 **0 个新事件**，未被撤销。
-- **NOTE 价格** $0.05411｜1h −0.32%｜24h −9.09%｜主池 liq $474.9k｜24h vol $187k → 这 24 万约合 **7% 日成交量**。
-- **fleet**：10:09Z 真实 `schedule` 事件恢复，四个 skill 全部 dispatched 且成功；issue #1 已于 10:14:53Z 关闭，现在 **0 open PR / 0 open issue**。
+#3 `price-alert`、#5 `memory-flush` 对应的事件都已过去（两个 skill 后续都成功过），可以关掉。#4 `onchain-monitor` 留着，等 09:00Z。
 
-### Running today
+## 🔵 顺手更新
 
-- `price-alert` @ 每小时整点（下一次 11:00 UTC）
-- `onchain-monitor` @ 21:00 UTC
-- `memory-flush` @ 23:30 UTC
+- `price-alert` 20 轮连跑仍在 $0.0179–0.0186 窄带，最新 07:01Z $0.01799，四门槛全未触及（距 $0.025 需 +39.0%）。
+- `docs/status.md` 已重写，判定 🔴 DEGRADED（原因同上，仅 onchain-monitor）。
 
 ---
-*数据源：NOTE 合约 `0xc4f730335Fb9e439ca5552f7b52B8E638c4245B0`（Robinhood Chain 4663）· RPC `rpc.mainnet.chain.robinhood.com`（eth_call / eth_getLogs，keyless）· 价格 DexScreener 10:35Z*
+
+数据源：`memory/cron-state.json`、GitHub Actions run 记录、`aeon.yml`。

@@ -1,0 +1,278 @@
+{
+  "root": "card-root",
+  "state": {},
+  "elements": {
+    "card-root": {
+      "type": "Card",
+      "props": {
+        "title": "heartbeat",
+        "description": "onchain-monitor 连挂 3 次 · 距 120 万解锁 26h"
+      },
+      "children": [
+        "alert-top",
+        "heading-main",
+        "stats-grid",
+        "sep-1",
+        "text-onchain",
+        "text-why",
+        "text-selfheal",
+        "table-heal",
+        "alert-next",
+        "sep-2",
+        "heading-health",
+        "text-health",
+        "table-health",
+        "sep-3",
+        "heading-misc",
+        "text-price",
+        "badge-degraded",
+        "text-status",
+        "sep-4",
+        "text-source"
+      ]
+    },
+    "alert-top": {
+      "type": "Alert",
+      "props": {
+        "title": "⚠️ onchain-monitor 连挂 3 次",
+        "message": "距 120 万解锁 26h — 唯一在盯 NOTE timelock 的 skill 当前不可用。",
+        "type": "warning"
+      },
+      "children": []
+    },
+    "heading-main": {
+      "type": "Heading",
+      "props": {
+        "text": "🔴 onchain-monitor 连挂 3 次，而明天就是 120 万解锁日",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "stats-grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 4,
+        "gap": "md"
+      },
+      "children": [
+        "stat-failures",
+        "stat-unlock-time",
+        "stat-unlock-amount",
+        "stat-price"
+      ]
+    },
+    "stat-failures": {
+      "type": "Stat",
+      "props": {
+        "label": "consecutive_failures",
+        "value": "3",
+        "delta": "自 2026-10-21 22:06Z 起",
+        "trend": "up"
+      },
+      "children": []
+    },
+    "stat-unlock-time": {
+      "type": "Stat",
+      "props": {
+        "label": "距 NOTE 解锁",
+        "value": "26h",
+        "delta": "2026-10-23 09:57:36Z",
+        "trend": "neutral"
+      },
+      "children": []
+    },
+    "stat-unlock-amount": {
+      "type": "Stat",
+      "props": {
+        "label": "解锁数量",
+        "value": "1,200,000 NOTE",
+        "delta": "timelock",
+        "trend": "neutral"
+      },
+      "children": []
+    },
+    "stat-price": {
+      "type": "Stat",
+      "props": {
+        "label": "price-alert 最新（07:01Z）",
+        "value": "$0.01799",
+        "delta": "距 $0.025 需 +39.0%",
+        "trend": "up"
+      },
+      "children": []
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "text-onchain": {
+      "type": "Text",
+      "props": {
+        "text": "onchain-monitor 自 2026-10-21 22:06Z 起 consecutive_failures = 3，最后一次成功是 15:30Z。三次都是网关 hivemindos: 403 All target providers failed，不是 skill 自身 bug。",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text-why": {
+      "type": "Text",
+      "props": {
+        "text": "为什么现在要管：它是唯一在盯 NOTE timelock 的 skill，而 timelock 的 120 万枚解锁在 2026-10-23 09:57:36Z，距今约 26 小时。它今天还有 09:00Z / 21:00Z 两个窗口。这两个窗口如果照旧 403，明天解锁当天你会是瞎的。",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text-selfheal": {
+      "type": "Text",
+      "props": {
+        "text": "同一波 403 里的另外两个 skill 都已自愈：memory-flush 00:11Z 成功，price-alert 07:02Z 成功。只有它还没被验证过——因为它从失败以后一直没轮到运行窗口，不是它恢复得慢。",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "table-heal": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "skill",
+          "状态",
+          "时间"
+        ],
+        "rows": [
+          [
+            "memory-flush",
+            "成功",
+            "00:11Z"
+          ],
+          [
+            "price-alert",
+            "成功",
+            "07:02Z"
+          ],
+          [
+            "onchain-monitor",
+            "未验证（连挂 3 次）",
+            "自 22:06Z 起，最后成功 15:30Z"
+          ]
+        ]
+      },
+      "children": []
+    },
+    "alert-next": {
+      "type": "Alert",
+      "props": {
+        "title": "下一步：09:00Z 那个窗口是判据",
+        "message": "成功 → 一切正常，我明早的 heartbeat 会确认；再失败 → 需要开 ALCHEMY_API_KEY 走备用取数路径，或者今晚手动跑一次。",
+        "type": "info"
+      },
+      "children": []
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "heading-health": {
+      "type": "Heading",
+      "props": {
+        "text": "🟡 三条 health issue",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "text-health": {
+      "type": "Text",
+      "props": {
+        "text": "#3 price-alert、#5 memory-flush 对应的事件都已过去（两个 skill 后续都成功过），可以关掉。#4 onchain-monitor 留着，等 09:00Z。",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "table-health": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "issue",
+          "skill",
+          "建议"
+        ],
+        "rows": [
+          [
+            "#3",
+            "price-alert",
+            "事件已过，可关闭"
+          ],
+          [
+            "#5",
+            "memory-flush",
+            "事件已过，可关闭"
+          ],
+          [
+            "#4",
+            "onchain-monitor",
+            "保留，等 09:00Z"
+          ]
+        ]
+      },
+      "children": []
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "heading-misc": {
+      "type": "Heading",
+      "props": {
+        "text": "🔵 顺手更新",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "text-price": {
+      "type": "Text",
+      "props": {
+        "text": "price-alert 20 轮连跑仍在 $0.0179–0.0186 窄带，最新 07:01Z $0.01799，四门槛全未触及（距 $0.025 需 +39.0%）。",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "badge-degraded": {
+      "type": "Badge",
+      "props": {
+        "text": "🔴 DEGRADED",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "text-status": {
+      "type": "Text",
+      "props": {
+        "text": "docs/status.md 已重写，判定 🔴 DEGRADED（原因同上，仅 onchain-monitor）。",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "sep-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "text-source": {
+      "type": "Text",
+      "props": {
+        "text": "数据源：memory/cron-state.json、GitHub Actions run 记录、aeon.yml。",
+        "variant": "muted"
+      },
+      "children": []
+    }
+  }
+}
