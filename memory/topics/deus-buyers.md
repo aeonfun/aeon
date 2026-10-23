@@ -8,7 +8,7 @@ tags:
   - onchain
   - runbook
 resource: https://dexscreener.com/base/0x3e97c5ec8c73e7d566aca606472141a9b9a8c1fa
-timestamp: 2026-10-23T15:05:00Z
+timestamp: 2026-10-23T16:01:24Z
 ---
 
 # DEUS directional buyers
@@ -60,6 +60,14 @@ its attention to DEUS, not a freshly funded sniper.
 **Size reality:** $4.3k is ~0.6% of the pool's DEUS and roughly 20% of a day's volume. One real
 bid, **not a wave**. It only becomes a signal if it adds.
 
+**Follow-up, 2026-10-23 16:01Z — it did not add.** Balance still `255,416.29669795578` (identical
+to the wei), nonce still 135, ETH still 0.81946456. A directional DEUS topic scan over blocks
+52,989,180–52,991,014 (~56 min, chunked at 999 for the public RPC cap) returned **0 in / 0 out**.
+Meanwhile 1h volume on the deepest pool fell from $5,587 to **$145** (−97.4%) and the 24h total
+stopped rising. **Verdict: one clip, not accumulation.** The wallet remains the better candidate of
+the two — it is the only one with an established nonce and real gas — but the trigger to care is
+nonce **136**, not the original buy.
+
 ### `0xa2f42a10a8eb9089ac51108af68fa202bf2c3130` — first directional wallet
 
 - Bought ~$2,022.50 at 10:59Z on 2026-10-23 (tx `0xe6991c4b`, block `52981906`, from pool
@@ -71,7 +79,25 @@ bid, **not a wave**. It only becomes a signal if it adds.
 
 ## The look-alikes — do not count these as accumulation
 
-### Two-leg arbitrage (2026-10-23 11:18Z–14:01Z window)
+### Two-leg arbitrage (2026-10-23 11:18Z–14:01Z window, and again 15:22–15:58Z)
+
+**Apply this test to sells as well as buys.** The 16:01Z run found 8 "sells" on the VIRTUAL pool
+with zero buys — but every one was mirrored by a same-second *buy* on the USDC pool `0x58dba34e`
+from the same `tx_from_address`:
+
+| Time | Sender | VIRTUAL (sell) | USDC (buy) |
+|---|---|---|---|
+| 15:58:25Z | `0x666dbb00` | $13.56 | $13.79 |
+| 15:50:41Z | `0x666749ed` | $13.81 | $14.02 |
+| 15:27:03Z | `0x6663f952` | $13.29 | $13.56 |
+| 15:26:23Z | `0x666749ed` | $14.08 | $14.35 |
+| 15:22:27Z | `0x666968d9` | $10.84 | $10.97 |
+| 15:22:07Z | `0x666ba056` | $14.57 | $14.73 |
+
+Pool-level "0 buy / 8 sell" therefore **overstates selling to the point of being wrong** —
+directional flow was zero. The largest seller of the hour, `0x8c76ccfa` ($62.60 at 15:06:03Z),
+holds **0 DEUS** (nonce 50), confirming no retention.
+
 
 Cheapest tell: **the same sender buys in one pool and sells in another within the same second**,
 ending at zero balance. Confirmed instances:
