@@ -4,7 +4,7 @@ description: Detail behind the one-line lessons in MEMORY.md, kept here so MEMOR
 tags:
   - lessons
   - runbook
-timestamp: 2026-10-23T12:10:00Z
+timestamp: 2026-10-23T14:10:00Z
 ---
 
 # Lessons learned — archive
@@ -33,6 +33,7 @@ MEMORY.md carries the one-line form of each lesson. This file holds the detail.
 
 - **Keys are unset in this repo's runs** (`ALCHEMY_`, `ETHERSCAN_`, `COINGECKO_API_KEY`). Keyless Base reads work only via Tenderly's public gateway, capped at 1,000 blocks per `eth_getLogs` — and 20,000 results, so always pass an `address` filter. See [Base RPC access](/topics/base-rpc-access.md).
 - **Never trust a zero-log window.** Re-query a window with known activity and check the escrow balance via `eth_call`; only then is "quiet" real.
+- **`balanceOf` 的 calldata 要把地址**左**补零，右补零会静默返回 0。** 2026-10-23 14:05Z 的 price-alert 里，我用 `"0x70a08231" + addr.slice(2).padStart(64,"0")` 拼参数，结果地址落在低位、高 24 位补零，`eth_call` 不报错、直接返回 `0x0` —— 差点把「真买家仍持 113,627 DEUS」写成「已清仓」。正确形状：selector `0x70a08231` + **24 个 hex 零** + 40 位地址，合计 74 个 hex 字符（`data.length === 74`）。**凡余额为 0，先用一个已知非零地址做对照再下结论。**
 
 ## Watch configuration
 
