@@ -8,7 +8,7 @@ tags:
   - runbook
   - onchain
 resource: https://basescan.org/address/0xA85A38796B951CE87B378538b32B3E6Ee3C4C373
-timestamp: 2026-10-22T00:10:00Z
+timestamp: 2026-10-23T21:24:29Z
 ---
 
 # DEUS / xDEUS watch addresses
@@ -91,10 +91,64 @@ Spot DEUS liquidity is thin and the staked position carries a 5-day unstake cool
 outflow is therefore the *leading* indicator that someone decided the cooldown was worth paying —
 which is exactly the decision the sentinel exists to surface.
 
+## The CLAIM vault — 38.8% of supply, dripping ~$6.4k/day (2026-10-23)
+
+This is the largest structural fact about DEUS supply and it is **not** the escrow. Address
+`0x5cbf5dfaa5336ce0456e24217e7911365100879a` — `name()`/`symbol()` both return `DEUS` — is a
+vesting/distributor vault holding **340,146,039.82 DEUS = 38.82% of the 876,206,780.45 total
+supply**.
+
+It pays out at a strikingly constant rate:
+
+| Window | DEUS out | Per day |
+|---|---|---|
+| last 24h | 350,214.42 | 350,214.42 |
+| last 7d | 1,981,979.13 | 283,139.88 |
+| last 30d | 9,988,856.31 | 332,961.88 |
+
+That is ~0.040% of supply/day ≈ **$6.4k/day at $0.01820 — 40.8% of the deepest pool's entire 24h
+volume ($15,635)**. The drip is steady, not accelerating, so it reads as routine emissions rather
+than a regime change. **The risk is not the rate; it is that recipients dump.**
+
+### Claim-and-dump is measurable — use the ratio, not the payout
+
+Proof, 2026-10-23 00:32Z: plain EOA `0xbf328713670d3407e94c3ab60ff1c36f95748e70` (nonce 538)
+received 30,546.279 DEUS from distributor `0x20d29c8e…6fc5` at 00:32:21Z, another 61,019.563 from
+the CLAIM vault at 00:32:33Z, and sold **all 91,565.842 DEUS into the deepest pool at 00:32:53Z** —
+**32 seconds from first receipt to full exit**. It ended at `balanceOf` exactly 0 with 0.00756 ETH.
+Tx `0xe2edb1b0e96e9a2d336b80b931f172fc21ee5c7281068dd9ddc3c1d7b716e9ad`, block 52963113.
+
+**Price impact: −0.933% in that one block.** Reserves moved DEUS 19,303,121 → 19,393,771 and
+VIRTUAL 515,912 → 513,501. So **~$1.7k of notional moves this pool 1%**.
+
+That ratio converts a vague "overhang" into distance-to-trigger arithmetic:
+
+- The operator's **$0.012** floor is **−34%** away. At constant liquidity that needs ~**2.5M DEUS**
+  sold at market — seven full days of the entire claim drip dumped at once. **Routine emissions
+  cannot grind the price to $0.012.** It requires a deliberate large seller.
+- Conversely **$0.041** (the unstake line, +125%) cannot arrive from emissions either; it needs
+  genuine external buying.
+
+Other distributors in the same cluster: `0x0ae95bd7…c4a7` (`CLAIM W2`), `0xd4c450ac…9409`
+(`CLAIM`), plus `0x20d29c8e…6fc5` and `0xea247ce9…e6ae` (unnamed, both contracts, both holding
+~9.2M DEUS and having transferred **0** DEUS into the deep pool in 7d).
+
+### Emissions get re-staked too
+
+Same window, the opposite behaviour: EOA `0x5a46519659e3557112b90a8becb891873fe17406` (nonce 83)
+staked **10,000 DEUS** into escrow at 20:06:29Z (tx `0xf126500c…ab24`, block 52998321), now holding
+**24 xDEUS NFTs**. Funding chain ran claim → EIP-7702 router `0xcd920c78` → staker → escrow inside
+~6 minutes. **Not external new money** — recycled emission — but constructive: someone chose the
+5-day cooldown over selling. Escrow rose to 29,418,223.901 (+0.034%), still orders of magnitude
+below the 5%/day (~1.47M DEUS) intel trigger.
+
 # Citations
 
 - All balances, transfers and counterparty classification read live from Base via
   `https://base.gateway.tenderly.co` (`eth_getLogs`, `eth_call`, `eth_getCode`), 2026-10-21.
 - ERC-721 behaviour of xDEUS confirmed via `eth_call` (`decimals()` reverts), 2026-10-21.
 - Prices from DexScreener token endpoint for `0x940A319B75861014A220D9c6c144d108552B089B`, 2026-10-21.
+- CLAIM vault balance/emission, claim-and-dump tx, price impact and the 10,000-DEUS stake: live Base
+  reads via `https://base.gateway.tenderly.co` (`eth_getLogs` chunked ≤1000 blocks, `eth_call`
+  `balanceOf`/`totalSupply`/`name`/`symbol`, `eth_getTransactionReceipt`), head 53,000,418, 2026-10-23 21:16Z.
 - Escrow/xDEUS addresses from `memory/on-chain-watches.yml`; DEUS token from the `MEMORY.md` tracked-token table.
