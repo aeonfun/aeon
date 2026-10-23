@@ -3,7 +3,7 @@ title: Note Systems (NOTE)
 description: Note Systems NOTE 代币 —— Robinhood Chain (4663) 上的结构化票据协议治理/激励代币，合约、供应、持仓与解锁排程
 tags: [robinhood-chain, token, unlock, note-systems]
 resource: https://note.systems/
-timestamp: 2026-10-23T09:08:51Z
+timestamp: 2026-10-23T09:59:00Z
 ---
 
 # Note Systems (NOTE)
@@ -386,9 +386,84 @@ owner EOA `0x0b64…` 窗口内 **零动作**：余额 120,000、nonce 365，自
 - `0x0005ea38`（10-23 01:39Z 那条砸盘链路）本窗口又送 **183,271 NOTE** 进池 —— 同一套切单手法还在用
 - 1.2M 解锁 ≈ **$47,676 ≈ 日量 8.6%** → 未过 50% 黄线，但叠在已吸收 12.9 万净卖压的薄池上
 
+## 2026-10-23T10:00:35Z 解锁已执行：120 万进 owner 钱包
+
+`isOperationReady` 在 **09:57:36Z 由 0 翻 1**，**3 分钟后（10:00:35Z）即被执行** —— 不是"到期后拖着不动"，是踩着点打。
+
+| 项 | 值（直连 RH 公共 RPC 核验） |
+|---|---|
+| 事件 | `CallExecuted` topic0 `0xc2617efa69bab66782fa219543714338489c4e9e178271560a91b82c3f612b58` |
+| tx | `0xc1c80d83fd0cefd7f1dd7f2818898b7bf6d0468e1196a244a9a38e7202ed3f9b` |
+| blk / 时间 | 95,856,036 / 2026-10-23T10:00:35Z |
+| opId | `0x77a7b0d650cf28a45a80db71431d0790605733608d5c3e98508467a66b6974da` |
+| timelock NOTE | **15,254,442.020047 → 14,054,442.020047**（−1,200,000，逐位对上） |
+| owner NOTE | **281,682.037 → 1,481,682.037**，nonce **369 → 370** |
+| 执行后 owner 转出 | **0 笔**（自 blk 95,856,036 起 `eth_getLogs[Transfer, owner]` 为空，观察至 10:07Z） |
+| PoolManager NOTE | 6,013,185 |
+
+**观察窗口从 10:00:35Z 起算。** 按 10-20 那次的先例，owner 收到 120 万后当天即开始拆包外流（经上膛钱包 → 中转 → 切单合约 → PoolManager）。今天桌上已有两个上膛钱包待命（90k 无 gas + 50k 有 gas）。
+
+### 待命供给（10-23 10:07Z）
+
+| 位置 | NOTE | ≈USD | 状态 |
+|---|---|---|---|
+| owner EOA `0x0b64…` | 1,481,682 | $59.1k | 自由余额，随时可动 |
+| timelock `0x4a53…` | 14,054,442 | — | 未排程（下一笔 CallScheduled 未出现） |
+| 上膛钱包5 `0x572bb527` | 90,000 | $3.6k | **ETH 0 / nonce 0 —— 无 gas，尚未真正上膛** |
+| 上膛钱包4 `0xe4bf6f7e` | 50,000 | $2.0k | ETH 0.0108 / nonce 0 —— 有 gas，随时能动 |
+| vesting `0xfdd9` | 1,378,213 | — | 剩余可领 |
+
+**1,481,682 ≈ $59.1k = 24h 量 $571,727 的 10.3%。** 薄池（$400k 流动性）一次吸收得了，但会让价格走低 —— 10-23 全天 24h 已 −14.53%。
+
 ### 本节方法学教训
 
 **TimelockController 的 `isOperationPending/Ready/Done` 在公共 RPC 上 revert（返回 `data:0x`），不能当 false 读。** 判活要用 `getTimestamp(opId)` + 合约余额双证，opId 取 `CallScheduled` 事件的 **topics[1]**（不是 calldata 前 32 字节）。
+
+> **2026-10-23 09:57Z 更正：上面这条是错的 —— revert 是 selector 打错，不是 RPC 限制。** 正确的 `isOperationReady(bytes32)` selector 是 **`0x13bc9f20`**（4byte.directory 确认；旧笔记用的 `0xeba2f7f3` 未注册，故 revert）。用对 selector 后直连 `rpc.mainnet.chain.robinhood.com` 完全正常，且**观测到了状态翻转**：09:55:03Z 返回 `0`，09:57:36Z 到期后返回 `1`，09:59:15Z 仍 `1`。同理 `getTimestamp(bytes32)` = **`0xd45c4435`**（旧的 `0xd45dec21` 也是错的，同样 revert）。**结论：公共 RPC 支持这些 view，先查 4byte 再断言 RPC 不支持。**
+
+## 2026-10-23T09:57:36Z 解锁到期：已可执行，未执行
+
+| 项 | 值（直连 RH 公共 RPC 核验） |
+|---|---|
+| `isOperationReady(opId)` | **1**（09:57:36Z 由 0 翻 1；09:55:03Z 读到 0） |
+| `getTimestamp(opId)` | 1792749456 = 2026-10-23T09:57:36Z |
+| timelock NOTE 余额 | **15,254,442.020047** — 与 08:01Z / 10-22T21:05Z **逐位一致** |
+| timelock 事件（blk 95,850,000→95,854,858，全部 topic） | **0 条**（control：blk 94,195,010–94,195,020 → 2 条 `CallScheduled`+`CallSalt`） |
+| 解锁量 | **1,200,000 NOTE ≈ $47,892 = 24h 量 $571,727 的 8.4%** → 未过 50% 黄线 |
+| owner EOA | nonce **369**、NOTE **281,682.037**、ETH 0.013979 |
+| 上膛钱包 `0xe4bf6f7e`（第4把） | nonce **0**、NOTE **50,000**、ETH 0.010764 — 仍有 gas，未扣扳机 |
+| 上膛钱包 `0x572bb527`（第5把，今日新增） | nonce **0**、NOTE **90,000**、**ETH 0 — 无 gas，卖不了** |
+
+### 09:50:10Z owner 第三次上膛：90,000 → 全新空钱包
+
+tx `0xde384f68c3c985d0e9f3bbd93ae78ca18cfffd47151e03b2fc88e861d98835f6`，blk 95,850,102，`tx.to` = NOTE 合约，selector `0xa9059cbb`，owner nonce **368**。
+
+| 字段 | 值 |
+|---|---|
+| 接收方 | `0x572bb5272603889f5742e8b8ab2f1d4c6851a93e` |
+| `eth_getCode` | `0x` → **EOA** |
+| nonce / ETH / NOTE | **0 / 0 / 90,000** |
+| 出账 | **0 笔** |
+| 距解锁到期 | **7 分 26 秒** |
+
+owner 余额轨迹：371,682.037 → **281,682.037**（−90,000，逐位对上）。
+
+**判读：这是第三次同构上膛动作（10-22 18:09Z 100k、18:51Z 50k、10-23 09:50Z 90k），前两次都被卖出。区别在于前两次收款方都先充了 ETH（0.0558 / 0.0108），这次 ETH 仍是 0 —— 它现在连 gas 都没有，无法发起交易。因此真正的扳机不是「NOTE 到账」而是「第一笔 ETH 入账」。盯 `eth_getBalance` 由 0 变正。**
+
+### 待命供给总览（10-23 09:59Z）
+
+| 池子 | NOTE | ≈USD | 状态 |
+|---|---|---|---|
+| 上膛钱包5 `0x572bb527` | 90,000 | $3,592 | **无 gas，未上膛到可动状态** |
+| 上膛钱包4 `0xe4bf6f7e` | 50,000 | $1,996 | 有 gas，nonce 0，可随时动 |
+| owner EOA `0x0b64…` | 281,682 | $11,243 | 自由余额 |
+| timelock `0x4a53…` | 1,200,000 可执行 | $47,892 | **已到期，等 execute** |
+| timelock 其余 | 14,054,442 | — | 未排程 |
+
+### 市场快照（10-23 09:56Z，DexScreener）
+
+NOTE `$0.03991` · 1h −0.78% · 6h +0.77% · **24h −14.53%** · 流动性 $400,587 · 24h 量 $571,727（主池 `0x378b1023…`）。对比 08:01Z 的 $0.04125 = 一天 −3.2%。vesting 余额 1,378,212.988，PoolManager 6,006,805。
+
 
 
 # Citations
