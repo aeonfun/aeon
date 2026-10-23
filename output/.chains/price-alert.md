@@ -1,40 +1,46 @@
-**04:02Z run — no gate fired, nothing sent.**
+**price-alert · 05:01Z · DEUS — no gate fired**
 
-## DEUS (Base) — `0x940A319B75861014A220D9c6c144d108552B089B`
+四条门槛的价格全部保留，本轮无一触及。没有推送 —— 策略是"只在触发条件成立时推送"。
 
-| | |
-|---|---|
-| Mark (deepest pool) | **$0.01723** |
-| 1h | **UNMEASURED** |
-| 6h / 24h | −1.09% / −5.54% |
-| Liquidity | $670,727.63 |
-| ATH | $0.06876 (2026-05-28) — −74.9% away |
+## 本轮读数
 
-Source: DexScreener `aerodrome DEUS/VIRTUAL`, [0x3e97…c1fa](https://dexscreener.com/base/0x3e97c5ec8c73e7d566aca606472141a9b9a8c1fa).
+最深池 Aerodrome DEUS/VIRTUAL（liq $677,186.94）：
+- **现价 $0.01739** · 1h **+0.95%** · h6 −0.14% · h24 −4.48%
+- 1h 成交额 $31.27 · 24h $17,645.86
+- 来源：`https://dexscreener.com/base/0x3e97c5ec8c73e7d566aca606472141a9b9a8c1fa`
+- 合约 `0x940A319B75861014A220D9c6c144d108552B089B`（Base）
 
-### The tape is dead, not flat
+## 关键判读：连续三盘死寂结束了，但别把 +0.95% 当买盘
 
-This is the third consecutive run printing the identical $0.01723. DexScreener again omitted `priceChange.h1` and returned `volume.h1 = $0`, `txns.h1 = 0 buys / 0 sells`. GeckoTerminal corroborates independently: h1 0.0%, v1h $0.0, h1 transactions 0/0, while h6 volume is $3,575.63 across 5 buys / 5 sells.
+前三个 run（02:01Z / 03:01Z / 04:02Z）这个池子 `priceChange.h1` 缺失、v1h=$0、txns 0/0，最后一笔成交停在 01:30:29Z。**这轮 h1 读数回来了 —— 代价是它只反映一笔交易。**
 
-The trades endpoint pins it down: **last print on this pool was 2026-10-23 01:30:29Z — roughly 151 minutes of zero trades.** So the hour is unmeasured, not a 0.00% "walking flat" read. State stores `h1_pct: null` so this can't be mistaken for calm later.
+- DexScreener：txns.h1 = **0 买 / 1 卖**
+- GeckoTerminal 成交明细把那一笔钉在 **04:26:35Z，$31.46 的卖出**
+- GT 同池交叉：$0.017327，h1 **0.0%**，h1 成交 $31.46，h6 −2.56%，h24 −4.81%
 
-The secondary USDC pool (0x58dba3) also went dark after 02:47:25Z. Only two Base pools still carry a live h1, both dust: aerodrome 0x75bc at $0.01722 (h1 −0.01%, v1h $0.19) and uniswap 0x7df2 at $0.01727 (h1 +0.36%, v1h $14.98). Absolute marks cluster $0.01722–$0.01735, GT settling $0.01727 on USDC. Nothing inside ±20% on any measurable pool, so the sharp-move gate is QUIET on live data while the deepest pool's hour is genuinely empty.
+即：**一小时里就一笔灰尘级卖单，就是全部"行情"。** +0.95% 是薄盘口的单笔标记漂移，不是有人抢筹。按 skill 的硬编码规则，sharp-move 方向词由符号决定，但 +0.95% 离 ±20% 差得远，根本不进那条分支。
 
-### Gates
+各类报价横向对照：DexScreener 深池 $0.01739，USDC 池 $0.01722 / $0.01732，GT $0.01727 —— **全部落在 $0.01722–$0.01739**，那 0.4% 的差距是 VIRTUAL 孤立池的报价陈旧，不是价格在动。
 
-- **ATH** — $0.06876 stands, no new high.
-- **Sharp move** — QUIET (see above; unmeasured on the primary pool).
-- **Targets** — all four registered and un-hit:
-  - `$0.012` (below, panic line) — **−30.4%** away
-  - `$0.025` (above, sell spot) — **+45.1%** away
-  - `$0.032` (above, sell spot) — **+85.7%** away
-  - `$0.041` (above, unstake / breakeven) — **+137.9%** away
+## 距各触发位（现价 $0.01739）
 
-Mid-band on a dead tape. No action, no notification — per the standing rule, this only pings when a threshold actually fires.
+| 价位 | 距现价 | 动作 |
+|---|---|---|
+| $0.041 | **+135.8%** | 启动 unstake（二级） |
+| $0.032 | +84.0% | 卖现货（一级） |
+| $0.025 | +43.8% | 卖现货（一级） |
+| $0.012 | **−31.0%** | 恐慌位，注意（一级） |
+
+ATH $0.06876 仍在 +295.4% 之外，差距 −74.7%。
+
+## 状态
+
+`memory/topics/price-alert-state.json` 已更新 `last_price`（`h1_pct: 0.95`、`h1_source: dexscreener`、`volume_1h_usd: 31.27`、liq $677,186.94），`jq empty` 校验通过，写入前已留 `.bak`。ATH、`last_alerts.*`（三项仍为 null）、四个 target 的 `side`/`hit_at` 全部未变 —— 没有任何 target 被跨越，没有被吞掉的跨盘信号。
 
 ## Summary
 
-- **Status**: `PRICE_ALERT_OK` — 0 notifications, by design.
-- **Files modified**: `memory/topics/price-alert-state.json` (last_price refreshed: h1_pct null, vol_1h 0, liq $670,727.63, h1_note updated; ATH / last_alerts / all four target sides untouched), `memory/topics/price-alert-state.json.bak` (rolling backup, written before the state write), `memory/logs/2026-10-23.md` (appended `### price-alert`), `memory/MEMORY.md` (Active Topics line corrected — the "tape is live" read from earlier runs is superseded by 151 min of zero trades).
-- **Validation**: `jq empty` passed on the state file.
-- **Follow-up**: worth noting that a third straight zero-trade hour means the $0.01723 mark is stale, not stable. If the target gates matter, a live read needs a pool with actual flow — the dust pools at $0.19 and $14.98 v1h are the only live h1s left. If the drought extends, cross-check against GeckoTerminal's USDC-pool mark ($0.01727) rather than the primary pool before treating any level as "held".
+- 执行 `skills/price-alert/SKILL.md`，var = `0.012,0.025,0.032,0.041`（execute 模式，四个 target 均已在 state 中，非首次观察）
+- 取数：DexScreener 200（6 个 pair，5 个 Base）→ 深池 Aerodrome DEUS/VIRTUAL；GeckoTerminal pool + trades 端点交叉验证 200
+- 结果：**PRICE_ALERT_OK**，四门槛全部 not-crossed，sharp-move QUIET，0 条推送
+- 文件修改：`memory/topics/price-alert-state.json`（last_price 刷新）、`memory/topics/price-alert-state.json.bak`（写前备份）、`memory/logs/2026-10-23.md`（追加 `### price-alert` 块）、`output/{dex,gt,gttrades}.json`（原始响应留档）
+- 后续：无需动作。**下一处有意义的价格在 +43.8% 的 $0.025**；本轮唯一值得记住的是薄盘口下单笔成交就能造出 ±1% 的假读数，别当信号。

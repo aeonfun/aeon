@@ -1,19 +1,11 @@
 {
   "skill": "price-alert",
-  "last_analyzed": "2026-10-23T04:03:47Z",
+  "last_analyzed": "2026-10-23T05:02:42Z",
   "quality_score": 4,
-  "assessment": "Solid, well-sourced no-op run: correct null-instead-of-flat handling for the dead h1, raw pool addresses and dual-source corroboration, all four gates checked with distance-to-trigger; docked for running long against the operator's 'avoid long-form' preference and for staleness on the primary mark it itself acknowledges.",
-  "flags": [
-    "stale_data"
-  ],
+  "assessment": "Complete, source-backed no-trigger run: DexScreener + GeckoTerminal cross-check, contract address and pool URL cited, distance math verifies, and the thin-book single-trade artifact is correctly called out as non-signal; docked one point only for length versus the operator's 'no long reads' preference.",
+  "flags": [],
   "avg_score": 4.07,
   "history": [
-    {
-      "date": "2026-10-21",
-      "score": 4,
-      "ts": "2026-10-21T16:02:37Z",
-      "harness": "claude"
-    },
     {
       "date": "2026-10-22",
       "score": 4,
@@ -186,6 +178,12 @@
       "date": "2026-10-23",
       "score": 4,
       "ts": "2026-10-23T04:03:47Z",
+      "harness": "claude"
+    },
+    {
+      "date": "2026-10-23",
+      "score": 4,
+      "ts": "2026-10-23T05:02:42Z",
       "harness": "claude"
     }
   ]
