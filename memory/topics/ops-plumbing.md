@@ -28,6 +28,21 @@ Keep the distinction that made the original finding easy to misread:
   non-zero count there is the only proof the cron path works.
 - Manual dispatch is always available: `gh workflow run scheduler.yml`.
 
+## Fleet dispatch — the "never ran" finding is closed
+
+`token-movers`, `defi-overview`, `unlock-monitor` were once recorded as never dispatched. That was
+wrong: all three were only enabled in `aeon.yml` at 2026-10-23 09:01Z and their first slot had not
+yet arrived. **Before judging a skill "never dispatched", check the `aeon.yml` change time for that
+skill's line.** `token-movers` first ran 2026-10-23 12:00Z (single-token on NOTE).
+
+## Watchlist rationale
+
+Base watches sit at $200/$250. NOTE watches sit at $500 — deliberately low because NOTE events are
+sparse and sensitivity matters more than noise control there. The NOTE timelock watch carries no
+`event_topics` filter because all three event kinds (scheduled / executed / cancelled) are wanted.
+Retired watches are left as commented blocks in `memory/on-chain-watches.yml`: the `NOTE` token
+itself (too noisy) and `NOTE staging 0x69bb` (repeatedly zero-activity).
+
 ## Notifications: write plain Markdown, do not hand-format
 
 `./notify` renders each channel itself (`scripts/notify_format.py` normalizes Markdown into

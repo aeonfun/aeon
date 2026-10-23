@@ -1,0 +1,16 @@
+{
+  "skill": "token-movers",
+  "last_analyzed": "2026-10-23T12:16:38Z",
+  "quality_score": 3,
+  "assessment": "Structured, numeric mover alert with price/volume/flow and a pool link, but it covers $NOTE rather than DEUS/xDEUS, so none of the preset thresholds or unstake lead-time logic apply, and the wallet-cluster/whale specifics cite no raw source beyond the chart link.",
+  "flags": [],
+  "avg_score": 3,
+  "history": [
+    {
+      "date": "2026-10-23",
+      "score": 3,
+      "ts": "2026-10-23T12:16:38Z",
+      "harness": "claude"
+    }
+  ]
+}

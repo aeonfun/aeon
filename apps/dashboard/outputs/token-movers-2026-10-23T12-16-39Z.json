@@ -1,0 +1,143 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "$NOTE — BREAKDOWN",
+        "description": "token-movers"
+      },
+      "children": [
+        "breakdownAlert",
+        "summaryText",
+        "statsGrid",
+        "sep1",
+        "whalesHeading",
+        "whalesText",
+        "sep2",
+        "levelsHeading",
+        "levelsText",
+        "sep3",
+        "chartLink"
+      ]
+    },
+    "breakdownAlert": {
+      "type": "Alert",
+      "props": {
+        "title": "NOTE BREAKDOWN −10.5% · 3.2× volume",
+        "message": "⚠️ NOTE BREAKDOWN −10.5% · 3.2× volume",
+        "type": "warning"
+      }
+    },
+    "summaryText": {
+      "type": "Text",
+      "props": {
+        "text": "−10.5% 24h on 3.2× volume; sellers hit $0.0349 at 09:00Z and the bid reclaimed $0.041 — floor held, +17.5% off the low.",
+        "variant": "body"
+      }
+    },
+    "statsGrid": {
+      "type": "Grid",
+      "props": {
+        "columns": 4,
+        "gap": "md"
+      },
+      "children": [
+        "statPrice",
+        "statLiq",
+        "statVol",
+        "statBuysSells"
+      ]
+    },
+    "statPrice": {
+      "type": "Stat",
+      "props": {
+        "label": "Price",
+        "value": "$0.04103",
+        "delta": "−10.5% 24h",
+        "trend": "down"
+      }
+    },
+    "statLiq": {
+      "type": "Stat",
+      "props": {
+        "label": "Liq",
+        "value": "$406.8K",
+        "delta": "+1.1%",
+        "trend": "up"
+      }
+    },
+    "statVol": {
+      "type": "Stat",
+      "props": {
+        "label": "Vol",
+        "value": "$568.5K",
+        "delta": "3.2× 7d",
+        "trend": "neutral"
+      }
+    },
+    "statBuysSells": {
+      "type": "Stat",
+      "props": {
+        "label": "Buys/Sells",
+        "value": "1,523 / 1,777",
+        "delta": "ratio 0.857",
+        "trend": "down"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "whalesHeading": {
+      "type": "Heading",
+      "props": {
+        "text": "Whales (2h)",
+        "level": "h3"
+      }
+    },
+    "whalesText": {
+      "type": "Text",
+      "props": {
+        "text": "buy $1.9K @ $0.0407 · 12:01Z / sell $1.0K @ $0.0394 · 11:07Z",
+        "variant": "body"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "levelsHeading": {
+      "type": "Heading",
+      "props": {
+        "text": "Levels & Holdings",
+        "level": "h3"
+      }
+    },
+    "levelsText": {
+      "type": "Text",
+      "props": {
+        "text": "290K NOTE (~$11.9K) still armed on 3 wallets; owner holds 930K (~$38.2K). $0.035 is the level.",
+        "variant": "body"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "chartLink": {
+      "type": "Link",
+      "props": {
+        "label": "Chart: GeckoTerminal — NOTE pool",
+        "href": "https://www.geckoterminal.com/robinhood/pools/0x378b102395b2c4f9a9ebe650b5b501d0810c60126f886107d8812ca7ff7f9f91"
+      }
+    }
+  }
+}

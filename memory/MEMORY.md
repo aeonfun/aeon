@@ -24,11 +24,14 @@
 - **百分比过滤器要配绝对额地板** —— Aave V2「fees +39.4%」7d 手续费仅 $37k。加 `total7d >= $1M`。
 - **钱包型 watch 不能用 `eth_getLogs{address:<EOA>}`** —— EOA 不发事件，永久返回 0。正确形状是在**代币合约**上做 topic 过滤：`[Transfer, null, padded(wallet)]` 收、`[Transfer, padded(wallet)]` 发。
 - **代币合约作为 watch 地址时，`to == watch` 算不出买卖方向** —— 要看池子：`X → PoolManager` 卖，`PoolManager → X` 买。多跳路由会把一笔记成 4 笔 Transfer，聚合只认最终进/出 PoolManager 那腿。
+- **代币合约作为 watch 地址时，`to == watch` 算不出买卖方向** —— 要看池子：`X → PoolManager` 卖，`PoolManager → X` 买。
+- **多跳路由把一笔交易记成 4 笔 Transfer** —— 聚合只认最终进/出 PoolManager 的那一腿。
+- **24h 涨跌幅别用日线首尾收盘价算。** `ohlcv_list[0]` 是当日未走完的 K 线，拿它比 `[1]` 会得到符号相反的结论（10-23 NOTE 算成 +2.0%，实际 −10.5%）。用厂商 rolling 24h 交叉验证。
 - **xDEUS is ERC-721, not ERC-20** —— `decimals()` reverts，`tokenId` 在 `topics[3]`；topic0 哈希相同，无需改配置。
 - **扫 timelock 别只扫"最近几天"。** RH 链 ~34k 块/小时，48h 排程跨 ~160 万块；锚点从已知排程块往前推。另 `topics: null` 会静默返回空数组 —— 扫全部事件就省略该字段。
 - **Never trust a zero-log window** —— 报"平静"前，先重查一个已知活跃窗口 + `eth_call` 余额。
 - **Path C 只读 ERC-20 logs，看不到 native ETH** —— gas 充值类触发器是盲区，需另跑 `eth_getBalance`。
-- **RH 4663 完全免 key**，24k 块窗口可扫，行情用 GeckoTerminal/CoinGecko。
+- **RH 4663 完全免 key**，24k 块窗口可扫。**GT `robinhood` 网络可用**（不在 `/networks` 列表，直连 200）；trades feed 只回 300 笔。
 
 **判读**
 - **上膛钱包的真正扳机是「第一笔 ETH 入账」，不是「NOTE 到账」。** 没有 gas 就发不了交易；盯 `eth_getBalance` 由 0 变正比盯 nonce 更早。
@@ -45,7 +48,7 @@
 
 ## Next Priorities
 - **🔴 120 万 NOTE 已解锁（10-23 10:00:35Z）并开始处置。** owner 10:15:50Z 回锁 401,682 成 schedule 26（≈28.7 天，claim 制），10:25:06Z 转 150,000 到新空钱包上膛。owner 1,481,682 → **930,000**，nonce 373。详见 [note-systems](/topics/tokens/note-systems.md)。
-- **🔴 待命 290,000 NOTE ≈ $11.5k，四次上膛同一手法（先给币后充 gas）：** 上膛6 `0x3a9039c7` 150k · 上膛5 `0x572bb527` 90k（均无 gas）· 上膛4 `0xe4bf6f7e` 50k（有 gas）。**扳机 = 第一笔 ETH 入账。下次扫描 21:00Z —— 约 10.5 小时盲区。**
+- **待命 290,000 NOTE ≈ $11.5k，四次上膛同一手法（先给币后充 gas）：** 上膛6 `0x3a9039c7` 150k · 上膛5 `0x572bb527` 90k（均无 gas）· 上膛4 `0xe4bf6f7e` 50k（有 gas）。**扳机 = 第一笔 ETH 入账。**
 - **不要按"日供给"计 schedule 26。** schedule 25 当年同样 calldata 推算成"每天 2 万"，后被证伪为 claim 制（40h 零领取）。**见真实 `release`（topic0 `0x3bfce8de`）才算。**
 - ~~Fleet 洞：token-movers / defi-overview / unlock-monitor 从未派发~~ → **已证伪：三个 10-23 09:01Z 才 enable。判「从未派发」前先看 aeon.yml 改动时间。**
 
@@ -61,6 +64,14 @@
 - **读盘铁律：按 sender 跨池对齐**，别按单池笔数读方向；看余额留没留。详见 [lessons](/topics/lessons.md)。
 - [Note Systems (NOTE)](topics/tokens/note-systems.md) — Robinhood 4663。**解锁已执行并开始处置**：40.2 万回锁、15 万上膛，待命 29 万。$0.03965（h1 +10.7%，24h −12.46%），流动性 $404,001。详见 Next Priorities。
 
+## Active Topics
+- `price-alert` success。DEUS **$0.01763**（11:06Z），24h −1.24%，流动性 $680,952。四门槛全未触及：$0.012 −31.9% · $0.025 +41.8% · $0.032 +81.5% · $0.041 +132.6%。
+- **10:59:19Z 出现今日第一笔真方向性买盘 $2,022.50**（买家 `0xa2f42a10`，nonce 3，0.84 ETH 换 113,627 DEUS）。**链上验证留仓**：余额逐位等于买入量，0 出账 —— 与 08:37/09:49 两波套利不同。但仅占池子 0.3%，**不动 5 天冷却钟**；观察是否加仓或有第二钱包跟单。
+- **读盘铁律：按 sender 跨池对齐，别按单池买卖笔数读方向。** 判断吸筹看余额留没留（余额在 = 方向性买入；同秒另一池反向 = 套利）。详见 [lessons](/topics/lessons.md)。
+- **DEUS 今日两波买盘均已证伪为套利/单次下单**：08:36Z 的 $494（`0x1e70e2fd` 买完零追加）；09:49Z 的 $372.59（`0xb824534a` 同分钟 USDC 池反向卖，三买家余额≈0）。**不动 5 天冷却钟。**
+- [Note Systems (NOTE)](topics/tokens/note-systems.md) — Robinhood 4663。解锁已执行：40.2 万回锁、15 万上膛，待命 29 万。**10-23 BREAKDOWN：$0.04103，24h −10.5%，vol 3.2×；$0.0349 被买回 +17.5%，流动性 +1.1% —— 卖压被吸收。**
+- **`token-movers` var 坑：`geckoterminal:<chain>:<contract>` 被 rule 4 先吃掉。** 单币写 `<contract>:robinhood`，别加前缀。
+
 ## Reference
 - [DEUS / xDEUS watch addresses](/topics/deus-escrow.md) — contract, escrow, xDEUS NFT; stake/unstake pairing.
 - [Market context](/topics/market-context.md) — 滚动宏观快照，token-pick / narrative-tracker 消费。
@@ -69,6 +80,7 @@
 ## 监控清单（memory/on-chain-watches.yml）
 
 当前 5 个：DEUS escrow · xDEUS · NOTE timelock · NOTE owner EOA · NOTE vesting 0xfdd9。Base $200/$250；NOTE $500。timelock 不加 `event_topics`。已摘：`NOTE` 本体（噪音大）、`NOTE staging 0x69bb`。
+当前 5 个：DEUS escrow · xDEUS · NOTE timelock · NOTE owner EOA · NOTE vesting 0xfdd9。见 [ops-plumbing](/topics/ops-plumbing.md)。
 **新增 watch 必须同步在 `on-chain-state.json` 建条目并把 `last_block` 设成当前块，否则首次运行会重放历史；删除要同步删孤儿键。**
 钱包型 watch **必须用 topic 过滤扫代币合约**。
 
