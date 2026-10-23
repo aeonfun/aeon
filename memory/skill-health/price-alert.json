@@ -1,17 +1,11 @@
 {
   "skill": "price-alert",
-  "last_analyzed": "2026-10-23T00:02:24Z",
-  "quality_score": 4,
-  "assessment": "Clean no-trigger run with concrete price, threshold-by-threshold table, cited contract address and cross-source volume verification; concise and aligned with the 'only ping when triggered' strategy, though a bit longer than the operator's short-push preference.",
+  "last_analyzed": "2026-10-23T01:02:49Z",
+  "quality_score": 3,
+  "assessment": "Reaches a clear 'no action' conclusion with concrete percentage distances and reconciled volume figures, but omits the required raw source/contract address and spends most of its length on internal workflow bookkeeping rather than a decision-ready alert.",
   "flags": [],
-  "avg_score": 4.1,
+  "avg_score": 4.07,
   "history": [
-    {
-      "date": "2026-10-21",
-      "score": 4,
-      "ts": "2026-10-21T12:02:21Z",
-      "harness": "claude"
-    },
     {
       "date": "2026-10-21",
       "score": 4,
@@ -184,6 +178,12 @@
       "date": "2026-10-23",
       "score": 4,
       "ts": "2026-10-23T00:02:24Z",
+      "harness": "claude"
+    },
+    {
+      "date": "2026-10-23",
+      "score": 3,
+      "ts": "2026-10-23T01:02:49Z",
       "harness": "claude"
     }
   ]
