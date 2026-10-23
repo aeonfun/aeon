@@ -29,54 +29,63 @@ A self-healing loop runs on top: the **health skill** (`skill-health`) scores ru
 
 # Strategy
 
-Aeon's north-star. Every skill reads this — it's imported into `CLAUDE.md`, so it sits in context on **every** run. Skills should align their output to it: what to work on, what to prioritise, what to flag, what to skip.
+## North-star metric
 
-Keep it short (it costs tokens each run): one north-star, 3–5 priorities, the constraints. Replace the defaults below with your own.
+让 DEUS 仓位回到不亏，且不追加新现金。
 
-> **Status:** unconfigured defaults. Until you tailor this file, skills operate with general best judgment and no specific bias. Remove this line once it's yours.
+## Priorities
+
+1. 时机 > 观点。先保证"该动手时有人提醒"。
+2. xDEUS 有 5 天冷却 —— 任何减质押仓的决定必须提前 5 天启动。
+3. 只在预设价位动手。门槛冷静时定死，暴涨当天不临场纠结。
+4. 推送要"看完就能决定"，不要长文。
+
+## Audience
+
+只有我自己。
+
+## Hard constraints
+
+- 网络调用一律走 `./secretcurl`，密钥不上命令行。
+- 只在触发条件成立时推送，正常别吵我。
+- 每份报告必须带原始来源（合约地址 / 数据源）。
+
+## 仓位结构（不含具体数字）
+
+### DEUS (XMAQUINA)
+- 大部分已质押为 xDEUS，少量留作现货。
+- 质押是为了吃乘数，代价是 5 天冷却。
+- 现货刻意留得少，用途是暴涨时的即时弹药。
+- 日成交量很薄 —— 现货可一次卖，质押仓需分批。
+
+### 设计意图
+现货少是故意的。质押仓为了吃乘数，代价是冷却期。
+哨兵的任务：告诉我"哪次涨幅大到值得付出这个代价"。
+
+## 触发阈值（两级）
+
+**一级 · 低门槛 · 只卖现货**
+- 触及 $0.025 / $0.032 → 卖现货
+- 触及 $0.012 → 注意，可能是恐慌位
+
+**二级 · 高门槛 · 才动质押仓**
+- 1 小时涨/跌 >20%（有人在抢筹或砸盘）→ 立即启动 unstake
+- 触及 $0.041（回本线附近）→ 启动 unstake
+- 门槛已预设，不临场决定
+
+**情报 · 研究用**
+- escrow 内 DEUS 单日净流出 >5% → 看对手方是谁
+- 判断标准：一个巨鲸 vs 一堆小散。前者可能是内部动作。
+
+## Optimize for / avoid
+
+- **Optimize for:** 可执行的提醒、原始数据、提前量。
+- **Avoid:** 长文、复述新闻、没有数字的结论。
 
 ## 输出语言
 
 **一律简体中文。** 所有 notify、报告、日志正文都用中文写。
 代币名、合约地址、协议名、代码、命令保留原文，不翻译。
-
-## North-star metric
-
-The single outcome everything should move toward.
-*e.g. "weekly active users of my app", "MRR", "reach of my research".*
-
-**Default:** sustainable, compounding progress on the operator's active projects.
-
-## Priorities
-
-The few things that matter most right now, most important first.
-
-1. Correct, verifiable work over work that merely looks finished.
-2. Depth on the operator's core projects over broad, shallow coverage.
-3. Surface signal early — don't sit on something that needs a decision.
-
-*Replace with your own; cap at ~5.*
-
-## Audience
-
-Who the output is for, and their level.
-*e.g. "technical founders on X", "my internal team", "just me".*
-
-**Default:** the operator — assume technical and time-constrained.
-
-## Hard constraints
-
-Lines never to cross.
-
-- Never publish secrets, private data, or unverified claims as fact.
-- Stay within any configured spend and rate limits.
-
-*Add your own — budget caps, tone, topics to avoid, compliance limits.*
-
-## Optimize for / avoid
-
-- **Optimize for:** signal, correctness, and the priorities above.
-- **Avoid:** filler, hype, busywork, anything off-strategy.
 
 ## Voice
 
