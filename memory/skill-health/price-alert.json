@@ -1,17 +1,11 @@
 {
   "skill": "price-alert",
-  "last_analyzed": "2026-10-23T17:05:35Z",
-  "quality_score": 5,
-  "assessment": "四道门槛逐一量化核验（百分比换算与现价自洽），触发判定正确并克制未推送；深度拆解 $4.3k 脉冲为单笔 clip 而非趋势，用 eth_getCode/balanceOf/nonce 证伪同秒双池扫单，新增'买盘可能是代客成交'的可复用判据，escrow 余额与情报阈值对比明确无 unstake 压力，合约地址与数据源端点齐备、口径分歧（h6 符号相反）如实标注。",
+  "last_analyzed": "2026-10-23T18:17:48Z",
+  "quality_score": 4,
+  "assessment": "Substantive, source-backed non-trigger report in Chinese: all four thresholds correctly checked and untouched, escrow/no-unstake conclusion explicit, and it adds real analytical value by proving the 17:06Z buy was a whale replenishment via balance backtracking — only deduction is the length runs against the operator's 'no long essays' preference on a quiet day.",
   "flags": [],
   "avg_score": 4.17,
   "history": [
-    {
-      "date": "2026-10-22",
-      "score": 4,
-      "ts": "2026-10-22T12:02:22Z",
-      "harness": "claude"
-    },
     {
       "date": "2026-10-22",
       "score": 4,
@@ -184,6 +178,12 @@
       "date": "2026-10-23",
       "score": 5,
       "ts": "2026-10-23T17:05:35Z",
+      "harness": "claude"
+    },
+    {
+      "date": "2026-10-23",
+      "score": 4,
+      "ts": "2026-10-23T18:17:48Z",
       "harness": "claude"
     }
   ]

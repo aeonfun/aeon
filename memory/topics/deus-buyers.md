@@ -8,7 +8,7 @@ tags:
   - onchain
   - runbook
 resource: https://dexscreener.com/base/0x3e97c5ec8c73e7d566aca606472141a9b9a8c1fa
-timestamp: 2026-10-23T16:01:24Z
+timestamp: 2026-10-23T18:01:22Z
 ---
 
 # DEUS directional buyers
@@ -19,6 +19,30 @@ on this pair the two look nearly identical at the trade-count level.
 
 Related: [DEUS / xDEUS watch addresses](/topics/deus-escrow.md) · [lessons](/topics/lessons.md) ·
 [price-alert state contract](/topics/price-alert-state.md).
+
+## The incumbent whale — `0x09b383a627c3d35daf38cd77af0064c1848833c6`
+
+**Identified 2026-10-23 18:01Z.** Holds **2,136,607.370316 DEUS** (~$38.5k, 0.24% of the
+876.2M supply), nonce **7,292**, plain EOA (`code 0x`), ETH 0.0488. It had never appeared in
+this page before because it trades rarely and in small clips — the size lives in the *balance*,
+not the prints.
+
+| Time (2026-10-23) | Action | Pool | USD | Balance after |
+|---|---|---|---|---|
+| 12:05–14:05Z | — | — | — | 2,143,204.48 |
+| 14:55:09Z | sell | USDC `0x58dba34e` | $101.36 | |
+| 14:56:23Z | sell | USDC `0x58dba34e` | $145.61 | 2,129,185.78 |
+| 15:05–17:05Z | — | — | — | 2,129,185.78 (flat) |
+| 17:06:13Z | buy | VIRTUAL `0x3e97c5ec` | $62.78 | |
+| 17:06:13Z | buy | USDC `0x58dba34e` | $72.64 | **2,136,607.37** |
+
+**Why this matters:** the 17:06Z double-pool sweep was the only thing on the 18:01Z tape that
+looked like a bid. It is not new money — it is the same wallet that **sold $247 into
+`0x259f962e`'s 14:55Z bid** buying back $135 of it. Net position versus the start of the
+afternoon: **−6,597.11 DEUS**, i.e. still short. Do not count this as accumulation.
+
+Balance history for scale: 30d ago 2,083,761.32 · 14d ago 2,469,492.26 · 22nd 18:03Z
+2,127,642.87 · 7d ago 2,090,066.37. It has been drifting down for two weeks.
 
 ## Confirmed directional wallets
 
@@ -68,6 +92,10 @@ stopped rising. **Verdict: one clip, not accumulation.** The wallet remains the 
 the two — it is the only one with an established nonce and real gas — but the trigger to care is
 nonce **136**, not the original buy.
 
+**Follow-up, 2026-10-23 18:01Z — still nonce 135.** Balance `255,416.296698`, ETH 0.81946456,
+all byte-identical to the 14:55Z fill. **3h+ with zero accumulation.** The 17:06Z $135
+double-pool buy was **not** this wallet — it was `0x09b383a6` buying back (see top of page).
+
 ### `0xa2f42a10a8eb9089ac51108af68fa202bf2c3130` — first directional wallet
 
 - Bought ~$2,022.50 at 10:59Z on 2026-10-23 (tx `0xe6991c4b`, block `52981906`, from pool
@@ -75,7 +103,9 @@ nonce **136**, not the original buy.
 - Holds **113,627.090929296275135130 DEUS**, identical across five reads (11:06Z / 12:02Z / 13:01Z /
   14:05Z / 15:05Z).
 - Zero outbound DEUS logs from block `52970000` onward. ETH 0.00004395, nonce 0x4.
-- **Still no add-on.** Watching whether it follows the new wallet.
+- **Still no add-on.** Watching whether it follows the new wallet. As of 18:01Z: **nonce 4,
+  balance 113,627.090929 — 7h+ with zero movement.** This wallet has not touched DEUS since the
+  original 10:59Z buy.
 
 ## The look-alikes — do not count these as accumulation
 
@@ -120,10 +150,13 @@ favour.**
 
 | Wallet | Behaviour | Balance after |
 |---|---|---|
-| `0x96949fd549d0da5ca279662264085a93138bdb17` | 12 clips of ~$49, nonce 0x394c | still holds 19,360.7865 DEUS ($346) |
-| `0x6abea4998f9ef34ee1cda5715ccca0e4d4efb730` | clips of $78–$194, nonce 0x3efad (257,965) | 0 |
+| `0x96949fd549d0da5ca279662264085a93138bdb17` | 12 clips of ~$49, nonce 0x394c; still clipping at 18:01Z (nonce 14,776, holds 13,778.66 DEUS) | still holds inventory |
+| `0x6abea4998f9ef34ee1cda5715ccca0e4d4efb730` | clips of $78–$194 both sides, 257,965 → nonce 258,110 by 18:01Z | 0 (passes through) |
+| `0x49a782c2660e77dded753bb88ac57619298ad50e` | sold $40.32 at 17:06:17Z, nonce 5,368 | 30,643.59 (held 32,876 before) |
+| `0x6e831ebc833edb0160ba874ae934ca0981ac8ebb` | $36.18 + $53.15 buys 17:05–17:06Z, nonce 77,018, `code 0x` | **0 — pass-through router** |
 
 A seller that still holds its inventory after twelve clips is making a market, not exiting.
+A buyer that ends at zero bought for someone else.
 
 ## Methods that earned their place here
 
@@ -140,11 +173,24 @@ A seller that still holds its inventory after twelve clips is making a market, n
 - **`eth_getLogs` caps at 1,000 blocks** on the public Tenderly endpoint. Compute the window
   arithmetically (`latest - 999` to `latest`) rather than guessing; a range that is one block too
   wide returns an error, not a truncated result.
+- **A revert is not a zero balance.** At 18:03Z on 2026-10-23 `mainnet.base.org` reverted all five
+  `balanceOf` calls, including the escrow's, then returned correct values minutes later on the
+  same endpoint. When every call in a batch reverts identically, suspect the endpoint, not the
+  contract — retry, then cross-check a second RPC.
+- **Compare the trade to the wallet's own history, not just to the book.** A buy print from a
+  large holder can be a rebuy: `0x09b383a6` bought $135 at 17:06Z, but its balance was still
+  6,597 DEUS *below* where it stood before it sold $247 at 14:55Z. Pull `balanceOf` at
+  `latest`, `latest-1d`, `latest-48h` (2s blocks → 43,200/day) before calling direction.
+- **GeckoTerminal `/trades` returns both pools' legs** when queried per pool — a single sender
+  appearing in both lists at the same second is a sweep, not two buyers. Use it as the cheap
+  first pass before pulling raw logs.
 
 # Citations
 
 - Prices and volume: DexScreener token endpoint for
-  `0x940A319B75861014A220D9c6c144d108552B089B`; GeckoTerminal pool
-  `0x3e97c5ec8c73e7d566aca606472141a9b9a8c1fa`.
-- Balances, `eth_getCode`, `eth_getLogs`, receipts: Base mainnet via
-  `https://base.gateway.tenderly.co`, block `0x3288cfc` (52,989,180), 2026-10-23 15:05Z.
+  `0x940A319B75861014A220D9c6c144d108552B089B`; GeckoTerminal pools
+  `0x3e97c5ec8c73e7d566aca606472141a9b9a8c1fa` and `0x58dba34e6ee6eb76ef71a6ca0f18871cae817d3b`
+  (`/trades`, 167 records fetched 2026-10-23 18:0xZ).
+- Balances, `eth_getCode`, `totalSupply`, historical `balanceOf` at block tags: Base mainnet via
+  `https://mainnet.base.org` and `https://base.gateway.tenderly.co`, head block **52,994,830**,
+  2026-10-23 18:01Z. Earlier reads: block `0x3288cfc` (52,989,180), 2026-10-23 15:05Z.
