@@ -1,51 +1,58 @@
 {
   "DEUS escrow": {
     "alerted_tx": [],
-    "last_block": 52978378,
-    "last_run": "2026-10-23T09:08:51Z",
+    "last_block": 53000612,
+    "last_run": "2026-10-23T21:24:00Z",
     "median_usd_30d": 179,
-    "note": "WALLET watch -> topic filter on DEUS contract. 52956773->52978378 (21,606 blk, ~11.5h): 1 in = 1,000.000 DEUS, ZERO out (no unstake). Balance 29,406,291.888 -> 29,407,291.888 (+1,000.000, byte-consistent). Single inflow: blk 52976112 tx 0x47680062 from 0x16ff9fb4 (minted xDEUS 2474 in same tx = stake-in, not a withdrawal). Unstake outflow 0.000% of escrow vs 5%/day research trigger (1,470,365) -> no escalation. Escrow share 3.357% of 876,234,926 supply. DEUS $0.01739 (h1 -0.01%, 24h -2.17%) -- none of 0.012/0.025/0.032/0.041 hit. Distances: -31.0% / +43.8% / +84.0% / +135.8%.",
-    "source": "base.gateway.tenderly.co (topic-filtered eth_getLogs on DEUS, 1000-blk windows, 22 calls x2 dirs, 0 retries) + eth_call balanceOf"
+    "note": "WALLET watch -> topic filter on DEUS contract. 52978378->53000612 (22,234 blk, ~11.9h): 2 in, ZERO out (no unstake, 6th consecutive quiet window). Balance 29,407,291.888 -> 29,418,223.901194 (+10,932.013488). Inflows: blk 52983002 tx 0xc03d4ad8 932.013488 DEUS from 0xb18c38d9 (codeLen 23 = EIP-7702 delegation, nonce 786, holds 0 DEUS after — forwarded straight in); pairing xDEUS mint 2475 -> same 0xb18c38d9. blk 52998321 tx 0xf126500c 10,000.000000 DEUS from 0x5a465196 (EOA, nonce 83, holds 247.15 DEUS after = stake-in), pairing xDEUS mint 2476 -> 0x5a465196. BOTH stake-ins, not withdrawals. Unstake outflow 0.000% of escrow vs 5%/day research trigger (1,470,912) -> no escalation. Escrow share 3.357% of 876,206,780.447562 supply. CONTROL: escrow-out topic filter re-run on known-active window 52869612 -> 1 log (18,512.68 DEUS to 0xf196ccd7, tx 0xf53703b6), so the zero is measured, not a broken filter. DEUS $0.01820 (h1 n/a-thin, h6 +1.93%, 24h +4.53%) -- none of 0.012/0.025/0.032/0.041 hit. Distances: -34.1% / +37.4% / +75.8% / +125.3%.",
+    "source": "base.gateway.tenderly.co (topic-filtered eth_getLogs on DEUS, 1000-blk windows, 0 errs) + eth_call balanceOf/totalSupply + control window 52869612"
   },
   "xDEUS": {
     "alerted_tx": [],
-    "last_block": 52978378,
-    "last_run": "2026-10-23T09:08:51Z",
+    "last_block": 53000612,
+    "last_run": "2026-10-23T21:24:00Z",
     "median_usd_30d": null,
-    "note": "ERC-721 (decimals() reverts). 52956773->52978378: 1 mint (id 2474 -> 0x16ff9fb4, paired 1:1 with a 1,000 DEUS stake-in to escrow, ownerOf(2474) confirmed 0x16ff9fb4), 0 burns, 0 moves. totalSupply 1,724 -> 1,725. Escrow balanceOf 0x3d = 61 (unchanged). Pure accumulation side: no unstake, no cooldown started, fifth consecutive window of net stake-in.",
-    "source": "base.gateway.tenderly.co (erc721 Transfer on xDEUS, 1000-blk windows, 22 calls, 0 retries)"
+    "note": "ERC-721 (decimals() reverts). 52978378->53000612: 2 mints, 0 burns, 0 moves. id 2475 -> 0xb18c38d9 (blk 52983002, 11:35:51Z, paired with 932.013488 DEUS stake-in); id 2476 -> 0x5a465196 (blk 52998321, 20:06:29Z, paired with 10,000.000000 DEUS stake-in). totalSupply 1,725 -> 1,727. Pure accumulation side: no unstake, no cooldown started, 6th consecutive net stake-in window.",
+    "source": "base.gateway.tenderly.co (erc721 Transfer on xDEUS, 1000-blk windows, 0 errs)"
   },
   "NOTE timelock": {
-    "alerted_tx": [],
-    "last_block": 95826376,
-    "last_run": "2026-10-23T09:08:51Z",
+    "alerted_tx": [
+      "0xc1c80d83fd0cefd7f1dd7f2818898b7bf6d0468e1196a244a9a38e7202ed3f9b"
+    ],
+    "last_block": 96248638,
+    "last_run": "2026-10-23T21:24:00Z",
     "median_usd_30d": null,
-    "note": "OZ TimelockController. FULL unfiltered scan 95407837->95822221 (414,385 blk, ~11.8h): ZERO events of any topic. CONTROL-VERIFIED against the known CallScheduled block 94195015 -> 2 logs returned, so the filter is live and the window is genuinely quiet. The 1,200,000 NOTE operation (opId 0x77a7b0d650cf28a45a80db71431d0790605733608d5c3e98508467a66b6974da) is STILL PENDING: eth_call getTimestamp = 1792749456 = 2026-10-23T09:57:36Z, i.e. ~49 min after this run. getMinDelay re-confirmed 172,800s. Timelock NOTE balance 15,254,442.020047023418334577 -- byte-identical to the 2026-10-22T21:05Z reading -> neither executed nor cancelled. Unlock = 1,200,000 NOTE ~= $47,676 = 8.6% of the ~13.98M NOTE ($555,541) 24h volume -> below the 50% yellow bar, but lands on a book already absorbing tranches.",
-    "source": "rpc.mainnet.chain.robinhood.com (eth_getLogs, NO topic filter, 24k-blk windows, 18 calls, 0 retries) + eth_call getMinDelay/getTimestamp/balanceOf + control window at 94195000-94195030"
+    "note": "OZ TimelockController. 95826376->96248638 (422,262 blk, ~12.2h): ONE event -> THE 1.2M UNLOCK EXECUTED. blk 95856036 ts 2026-10-23T10:00:35Z tx 0xc1c80d83 (topic0 0xc2617efa = CallExecuted, nTopics 3), topics[1]=0x77a7b0d650cf28a45a80db71431d0790605733608d5c3e98508467a66b6974da (the known opId), data carries target 0xc4f730335fb9e439ca5552f7b52B8E638c4245B0, value 0, and calldata a9059cbb -> 0x0b64b35c6dd23944d6d4029864d2ca2aa1b66422. Timelock NOTE balance 15,254,442.020047 -> 14,054,442.020047 = EXACTLY -1,200,000.000000. Timeline: due 09:57:36Z, executed 10:00:35Z = 3 min after ready, not deferred. Earlier 09:08Z run had this as PENDING. No new CallScheduled in the window -> no fresh operation queued. CONTROL: unfiltered re-scan of blk 95856030-95856040 -> 1 log, filter live. Alerted (reported by the 10:0xZ heartbeat run); kept in alerted_tx for dedup.",
+    "source": "rpc.mainnet.chain.robinhood.com (eth_getLogs, NO topic filter, 24000-blk windows, 18 calls, 0 errs) + eth_call balanceOf + control window 95856030-95856040"
   },
   "NOTE owner EOA": {
     "alerted_tx": [
       "0x1ce1202217d80323de3233193bd9ffa255e0d40b2d479c5e1832ab21f04d6420",
       "0x01cbf4517d57c5463e8e1fe4aab14994799ca6a3093846e4bde251681514a9c6",
-      "0x230c5b403286a9e4775a89981c0e06601f1738559bb73d491a7e431abb680e07"
+      "0x230c5b403286a9e4775a89981c0e06601f1738559bb73d491a7e431abb680e07",
+      "0x6b0f685877e83dd8d09bdb0c43d64a5234e19ed084bf90077885c0b5ce244c88",
+      "0x683cebc038d1240e48ef3079bd48171b43e0cfabd3af76932eb5669efa01fd50",
+      "0x14910421036d549b0a85c76c1672d7d1f74402c6a9a06ecd4c2f56a673f84536"
     ],
-    "last_block": 95826376,
-    "last_run": "2026-10-23T09:08:51Z",
+    "last_block": 96248638,
+    "last_run": "2026-10-23T21:24:00Z",
     "median_usd_30d": null,
-    "note": "QUIET -- first zero-activity window since the 10-22 18:09Z wake. nonce still 368, NOTE balance still 371,682.037037037037037038 (byte-identical), ETH 0.013980010985576753. Topic-filtered scan of NOTE in/out over 95407837->95822221 returned ZERO transfers in either direction. CONTROL-VERIFIED against the known 100,000 NOTE outflow at blk 95308399 (topic filter returns it), so the emptiness is real, not a filter bug. Owner has NOT claimed more vesting, NOT re-armed new wallets, NOT cancelled the pending timelock. All three previously alerted txs still in alerted_tx for dedup.",
-    "source": "rpc.mainnet.chain.robinhood.com (topic-filtered eth_getLogs on NOTE, 24k-blk windows x2 dirs, 18 calls each, 0 retries) + eth_getTransactionCount + eth_call balanceOf + control window at 95308390-95308410"
+    "note": "FOUR NOTE movements in window, all already reported by the 09:0xZ and 10:0xZ runs. nonce 368 -> 374, NOTE 371,682.037037 -> 810,000.000000, ETH 0.013980 -> 0.013971. Flow: +1,200,000.000000 IN from timelock (blk 95856036, 10:00:35Z = the unlock executing); -401,682.037037 OUT to vesting 0xfdd983c6 (blk 95864662, 10:15:50Z, selector 0x091e7db9 = re-lock, schedule 26); -150,000.000000 OUT to armed 0x3a9039c7 (blk 95869960, 10:25:06Z); -120,000.000000 OUT to 0x33b7181e (blk 95880020, 10:42:46Z, NEW recipient). Arithmetic closes EXACTLY: 371,682.037037 + 1,200,000 - 401,682.037037 - 150,000 - 120,000 = 810,000.000000. ZERO activity after 10:42:46Z -> no re-arming, no further sells, no cancellation. CONTROL: owner-out topic filter on blk 95880010-95880030 -> 1 log.",
+    "source": "rpc.mainnet.chain.robinhood.com (topic-filtered eth_getLogs on NOTE both directions, 24000-blk windows) + eth_getTransactionCount + eth_call balanceOf + control window 95880010-95880030"
   },
   "NOTE vesting": {
     "alerted_tx": [
       "0xca3e702094b8b399eba68dd92c8a894b507c76ea78856ac47bd70c6dc2fabaad",
       "0x1ce1202217d80323de3233193bd9ffa255e0d40b2d479c5e1832ab21f04d6420",
       "0xb51b9e4135e34293c3a7bcef28548593ca039ffea05ba81ad7d0ef43076fb945",
-      "0x463e1b6f0ad070b2af0b42a4394b23d0a6f25f74e1eee3b1d58d7d33332021f8"
+      "0x463e1b6f0ad070b2af0b42a4394b23d0a6f25f74e1eee3b1d58d7d33332021f8",
+      "0x6b0f685877e83dd8d09bdb0c43d64a5234e19ed084bf90077885c0b5ce244c88",
+      "0x3db0b643e970117a23ee4b9c21447d518107588cc93b1c5c5520ccf44463f037"
     ],
-    "last_block": 95826376,
-    "last_run": "2026-10-23T09:08:51Z",
+    "last_block": 96248638,
+    "last_run": "2026-10-23T21:24:00Z",
     "median_usd_30d": null,
-    "note": "ONE small release. 2026-10-22T23:51:35Z blk 95505388 tx 0x463e1b6f: 3,219.341563786008230453 NOTE -> 0x274ce9da5d714c08b5f5b18974d51246f360b0c1, scheduleId 7, selector 0x37bdc99b, tx.from = 0x274ce9da (the beneficiary itself, nonce 72) = a normal third-party claim, NOT an owner withdrawal. Balance 1,382,467.892 -> 1,379,248.550470731227908334 (exact: -3,219.341563786008230453). Recipient 0x274ce9da already swept its NOTE to zero (balance 0.0000) -- consistent with a claimer that immediately routes. Schedule 7 is the 21,446-scale tranche; this takes 3,219 of it. 0 in, 1 out. Not a new supply event worth an alert.",
-    "source": "rpc.mainnet.chain.robinhood.com (topic-filtered eth_getLogs + eth_getTransactionByHash/Receipt + eth_call balanceOf + control window at 95505380-95505395)"
+    "note": "TWO events. (1) IN 401,682.037037 NOTE from owner 0x0b64b35c at blk 95864662, 10:15:50Z, tx 0x6b0f6858, selector 0x091e7db9 = re-lock, NOT a claim. (2) OUT 1,036.165123 NOTE to 0x7d459cb7 at blk 95827967, 09:11:45Z, tx 0x3db0b643, selector 0x37bdc99b, tx.from = 0x7d459cb7 = the beneficiary claiming, same shape as the schedule-7 third-party claims. Balance 1,379,248.550471 -> 1,379,248.550471 +401,682.037 -1,036.165 = 1,779,894.422384 (verified by eth_call). The re-lock is 33.5% of the 1.2M unlocked. Not a new supply event: it moves NOTE out of the circulating float and back onto a claim schedule (claim-model, per the schedule-25 precedent -- do NOT treat as daily emission).",
+    "source": "rpc.mainnet.chain.robinhood.com (topic-filtered eth_getLogs + eth_getTransactionByHash for selectors + eth_call balanceOf)"
   }
 }
