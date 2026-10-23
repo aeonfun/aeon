@@ -21,7 +21,7 @@ skills:
 
   # --- Midday (12 PM UTC) ---
   # token-movers: { enabled: false, schedule: "0 12 * * *", var: "" } # market-movers scan + single-token deep report. var: empty=movers (CoinGecko) | geckoterminal[:chain]=on-chain runners | category:<slug> | <address|symbol|token:sym>=single-token report. Optional COINGECKO/ALCHEMY/XAI/BASE_RPC keys.
-  token-movers: { enabled: true, schedule: "0 12 * * *", var: "geckoterminal:robinhood:0xc4f730335Fb9e439ca5552f7b52B8E638c4245B0" }
+  token-movers: { enabled: true, schedule: "0 12 * * *", var: "0xc4f730335Fb9e439ca5552f7b52B8E638c4245B0" }
   onchain-monitor: { enabled: true, schedule: "0 9,21 * * *" }
   price-alert:     { enabled: true, schedule: "0 * * * *", var: "0.012,0.025,0.032,0.041" }
   memory-flush:    { enabled: true, schedule: "30 23 * * *" } 
