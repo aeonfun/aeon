@@ -1,38 +1,46 @@
-Log entry written. Wrapping up with the run report — no gates fired, so no notify.
+All gates quiet, state and memory consistent. Here is the run report.
 
-DEUS price check — 07:01Z run. No gate fired, nothing sent.
+## price-alert — DEUS · 2026-10-23 08:01Z
 
-**Price**
-- Mark: **$0.01739** on the deepest Base pool (Aerodrome DEUS/VIRTUAL, liq $677,134.58) — fourth consecutive run printing the identical number
-- 1h: **−0.02%** (vol $26.17) · 6h: +0.62% · 24h: **−3.15%** · 24h vol $16,004.95
-- Source: DexScreener `api.dexscreener.com/latest/dex/tokens/0x940A319B75861014A220D9c6c144d108552B089B` (http 200), cross-checked against GeckoTerminal (http 200)
+**Verdict: `PRICE_ALERT_OK` — no gate fired, zero notifications sent.**
 
-**Is the h1 read real this time?** Yes — after two empty hours, both sources agree on a measured read, and GeckoTerminal's trades endpoint pins the entire hour to **two prints**:
-- 06:21:39Z — $13.54 sell (0x6660…85bf)
-- 06:16:53Z — $12.81 sell (0x6664…5154)
-- Nothing traded between 04:26Z and 06:16Z
-
-Two small sellers on a $677k book. That's noise, not a cascade.
-
-**Second pool contradicts it** — Aerodrome DEUS/USDC (0x58dBa, liq $31,784) marks $0.0172965 with h1 **+0.097%** and txns.h1 **3 buys / 0 sells** — the exact mirror of the VIRTUAL pool's 0/2. Two thin pools disagreeing at the ±0.1% level is the textbook signature of noise; neither represents flow. Remaining Base pools (aero 0x1B2f $0.01732, aerodrome 0x75bc $0.01722, uniswap 0x7df2 $0.01727) all report unmeasured h1 with zero hourly volume. DEUS/WETH 0xb542 at $0.02013 sits on $0.03 of liquidity — excluded as an outlier.
-
-**Gates**
-| Gate | Result |
+| Field | Value |
 |---|---|
-| ATH ($0.06876) | Unchanged — +295.4% away |
-| Sharp 1h move (±20%) | QUIET — every measurable read within ±0.1% |
-| $0.012 (below) | Not crossed — −31.0% away |
-| $0.025 (above) | Not crossed — +43.8% away |
-| $0.032 (above) | Not crossed — +84.0% away |
-| $0.041 (above) | Not crossed — +135.8% away |
+| Token | DEUS `0x940A319B75861014A220D9c6c144d108552B089B` (Base) |
+| Mark (deepest pool) | **$0.01739** — Aerodrome DEUS/VIRTUAL `0x3E97c5EC…8C1Fa`, liq $677,134.58 |
+| 1h | **unmeasured** (no trades) |
+| 6h / 24h | +0.94% / −3.15% |
+| 24h volume | $16,004.95 (1h volume: $0) |
+| ATH | $0.06876 (2026-05-28 15:35 UTC) — unchanged |
 
-Verdict: `PRICE_ALERT_OK`. Distances to the four operator thresholds are unchanged from 06:01Z because the mark is unchanged. At $0.01739 you're mid-band on a tape turning over ~$26/hour — no reason to touch spot, and nothing that justifies starting a 5-day unstake clock.
+### Gate evaluation
+1. **ATH** — $0.01739 vs stored $0.06876 → not a new high (−74.9% below). Quiet.
+2. **Sharp move** — ±20%/1h requires a measurable h1. DexScreener omitted `priceChange.h1` (`volume.h1 = $0`, `txns.h1 = 0/0`); GeckoTerminal independently confirms **zero trades in the hour**, last print **06:21:39Z** — ~100 minutes of dead tape into this run. Gate is **QUIET (unmeasured)**, recorded as `h1_pct: null`, not `0`.
+3. **Targets** — 0.012 (`below`), 0.025 / 0.032 / 0.041 (`above`): none crossed. 0.012 sits −31.0% below, 0.025 at +43.8%, 0.032 at +84.0%, 0.041 at +135.8%.
+
+This is the **fifth consecutive run on the identical $0.01739 mark.** The price is a stale quote on a dead book, not a market that is "holding."
+
+### New finding — a reading rule, not a price event
+Pool-level `0 buys / 3 sells` on the VIRTUAL pool overstates selling. Aligning both DEUS pools **by sender**:
+
+- **04:26:35Z · `0xb981720b…e105d72`** — sold $31.46 on VIRTUAL **and** sold $104.81 on the USDC pool `0x58dBa` in the same second. One wallet hitting both books, ≈$136 total. This is the only genuine sell pressure in the 6h window.
+- **06:16:53Z · `0x6664f97a…855154`** and **06:21:39Z · `0x66608162…f285bf`** — sold on VIRTUAL, **bought** on USDC at the same instant. Same-venue arbitrage legs, not bearish flow.
+
+My first pass asserted all three were mirrored arb legs; checking the USDC trades showed 04:26Z was a two-sided dump instead. The log, state file, and `lessons.md` now carry the corrected version. Rule recorded: **aggregate by sender and align timestamps across pools before reading direction from `txns.h1`.**
+
+### State & files
+- `memory/topics/price-alert-state.json` — `last_price` refreshed (`price_usd` 0.01739, `h1_pct: null`, `h1_source: null`, `h6_pct` 0.94, `volume_1h_usd` 0); ATH, `last_alerts.*` (all null), and all four target sides unchanged. `jq empty` passed.
+- `memory/logs/2026-10-23.md` — `### price-alert` block appended (self-logged; this skill is `mode: write`).
+- `memory/MEMORY.md` — DEUS status line updated; new sender-alignment rule added as its own line.
+- `memory/topics/lessons.md` — Price feeds section extended with the correction, `timestamp` bumped to 2026-10-23T08:01:31Z.
+
+### Follow-up
+- **Watch `0xb981720b…e105d72`.** It is the only address that dumped both books today. Two more appearances would make it the first identified seller since the tape went cold.
+- Standing triggers unchanged and far away: $0.012 needs −31.0%, $0.041 (+unstake, needs the 5-day cooldown started early) needs +135.8%.
 
 ## Summary
-- Ran `price-alert` with `var=0.012,0.025,0.032,0.041`; all four targets already registered, so no first-observation writes.
-- Fetched and cross-validated price from DexScreener + GeckoTerminal (both http 200); verified h1 against GeckoTerminal's trades endpoint rather than trusting the aggregate.
-- Modified `memory/topics/price-alert-state.json` — refreshed `last_price` (`h1_pct: -0.02`, `volume_1h_usd: 26.17`, liq $677,134.58), `last_run_at` → 2026-10-23T07:01:35Z. ATH, `last_alerts.*` (all null) and all four target sides unchanged. `jq empty` passed.
-- Appended the run block to `memory/logs/2026-10-23.md`.
-- No notification sent — correct behaviour for a no-gate run per the skill's "silent on normal days" rule.
-
-Follow-up: nothing needed. The thing to watch isn't DEUS price — it's the two loaded NOTE wallets and the 10-23 timelock unlock logged in Next Priorities, which is a separate skill's job.
+- Executed `price-alert` for DEUS at 2026-10-23T08:01:31Z with targets `0.012,0.025,0.032,0.041`.
+- Fetched DexScreener (http 200) and corroborated with GeckoTerminal pool + trades endpoints (http 200 each). Deepest Base pool unchanged at $0.01739; no ATH, no ±20% 1h move, no target cross → **no notification sent** (correct per the "quiet on normal days" rule).
+- Corrected a mid-run analytical error: initial cross-pool claim said all three recent prints were mirrored arb legs; sender-level alignment showed 04:26:35Z was one wallet selling both pools. Fixed in the log, state `h1_note`, `MEMORY.md`, and `lessons.md`.
+- Files modified: `memory/topics/price-alert-state.json`, `memory/logs/2026-10-23.md`, `memory/MEMORY.md`, `memory/topics/lessons.md`. Scratch API responses left in `output/` (`dex.json`, `gt.json`, `gt-trades.json`, `gt-usdc*.json`).
+- Follow-up: track `0xb981720b…e105d72`; no operator action required at current price.

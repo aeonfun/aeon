@@ -4,7 +4,7 @@ description: Detail behind the one-line lessons in MEMORY.md, kept here so MEMOR
 tags:
   - lessons
   - runbook
-timestamp: 2026-10-23T00:00:00Z
+timestamp: 2026-10-23T08:01:31Z
 ---
 
 # Lessons learned — archive
@@ -44,6 +44,7 @@ MEMORY.md carries the one-line form of each lesson. This file holds the detail.
 - **DS 缺 h1 时用 GeckoTerminal 同 pair 补测，别默认 0。** 端点 `/networks/base/pools/0x3e97…c1fa`，DS 和 GT 价格、流动性一致到 5 位小数。补测后 state 里记 `h1_source: "geckoterminal"` 和 `h1_note`，下一轮才知道这个数是替代来源。
 - **两源 h24 有 0.8–1.6pp 系统性分歧，h6 甚至会反号。** 21:01Z 差 1.55pp、22:02Z 0.83pp、23:01Z 1.09pp，而同一时刻价格完全一致。属 24h 窗口锚点（开盘时点）差异，不是坏数据 —— **把 h24 当近似值，不要当精确值引用。**
 - **成交量为零时，"走平"是机械的，不是平静的。** 23:01Z 深池 1h 成交 $0.018 / 1 笔（0 买 1 卖），价格必然显示 0.00% —— 此时该读的是成交额塌陷本身（$276.66 → $5.46 → $0.018），不是百分比。
+- **单池的 txns.h1 买卖计数不能读成资金流，必须跨池对齐 `sender + 时间戳`。** 10-23 08:01Z 把 DEUS 两个池的逐笔成交按 `tx_from_address` 对齐，三个时刻全部是**同一个地址在两边动作**，不是多路资金：①04:26:35Z `0xb9817…e105d72` 在 VIRTUAL 池**卖** $31.46、在 USDC 池也**卖** $104.81（同一人两边砸，共 ~$136）；②06:16:53Z `0x6664f…855154`、③06:21:39Z `0x66608…f285bf` 各在 VIRTUAL 池**卖**、USDC 池**买**（同价反向 = 自套利/路由，不是看空）。**教训：只看一个池的 0买/N卖 会读成"有人在抛"，实际可能是同一个人的套利腿。判断方向要按 sender 聚合，不是按单池笔数。** 也解释了此前两池 h1 反复反号（见上条）。
 
 # Citations
 
