@@ -638,7 +638,7 @@
           "owasp": "ASK-06",
           "file": "run.mjs",
           "line": 10,
-          "snippet": ".flatMap((key) =\u003e process.env[key] === undefined ? [] : [[key, process.env[key]]]),",
+          "snippet": ".flatMap((key) => process.env[key] === undefined ? [] : [[key, process.env[key]]]),",
           "explanation": "references sensitive credential or secret paths"
         }
       ],
@@ -1208,6 +1208,26 @@
       "discoveredFrom": "skills/idea-pipeline/SKILL.md"
     },
     {
+      "id": "197724ee01a0e845",
+      "tool": "aeon",
+      "scope": "project:.",
+      "type": "skill",
+      "name": "lazybrief",
+      "source": {
+        "kind": "local",
+        "ref": "skills/lazybrief"
+      },
+      "capabilities": {},
+      "files": [
+        {
+          "path": "SKILL.md",
+          "hash": "1acded141f8d459fb301e35e4d3d697d0840a633f5dc54b4f33a684ee31f6247"
+        }
+      ],
+      "contentHash": "sha256-30552dac391e6662eb89f72b5e11f9d62776706b90561e95357dc35698826e97",
+      "discoveredFrom": "skills/lazybrief/SKILL.md"
+    },
+    {
       "id": "807de2423d052a6f",
       "tool": "aeon",
       "scope": "project:.",
@@ -1656,7 +1676,7 @@
           "owasp": "ASK-06",
           "file": "hook-deploy.sh",
           "line": 213,
-          "snippet": "[ -f hook.env ] \u0026\u0026 . ./hook.env",
+          "snippet": "[ -f hook.env ] && . ./hook.env",
           "explanation": "references sensitive credential or secret paths"
         },
         {

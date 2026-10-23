@@ -72,6 +72,7 @@
     "taskmarket-delegate": "<rect x='3' y='4' width='10' height='16' rx='2'/><path d='M6 9h4M6 13h4'/><path d='M13 12h7'/><path d='M17 9l3 3-3 3'/>",
     "unlock-monitor": "<rect x='3' y='11' width='18' height='11' rx='2'/><path d='M7 11V7a5 5 0 0 1 9.9-1'/><circle cx='12' cy='16' r='1.4' fill='currentColor' stroke='none'/>",
     "idea-pipeline": "<path d='M22 3H2l8 9.5V19l4 2v-8.5z'/>",
+    "lazybrief": "<path d='M16.5 2.5a3.2 3.2 0 1 0 4 4 4.2 4.2 0 0 1-4-4z'/><path d='M22 14h-5l-2 3h-6l-2-3H2'/><path d='M4.5 9 2 14v5a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5L19.5 9'/>",
     "mention-radar": "<circle cx='12' cy='12' r='4'/><path d='M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8'/>",
     "operator-scorecard": "<path d='M12 14l4-4'/><path d='M3.3 19a10 10 0 1 1 17.3 0'/><circle cx='12' cy='14' r='1.4' fill='currentColor' stroke='none'/>",
     "reply-maker": "<path d='M9 17l-5-5 5-5'/><path d='M20 18v-2a4 4 0 0 0-4-4H4'/>",

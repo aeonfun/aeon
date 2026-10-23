@@ -108,6 +108,7 @@ skills:
 
   # Ideas & productivity
   idea-pipeline: { enabled: false, schedule: "0 18 * * 1" } # Monday — execution-gap audit: top 3 backlog ideas to build this week
+  lazybrief: { enabled: false, schedule: "0 5 * * *", var: "" } # overnight — do-it-later inbox sorted by a local Gemma via Ollama into a 5-line morning brief (self-hosted runner only: model lives on localhost:11434). var: path to the Lazybrief checkout (default apps/lazybrief)
 
   # Self-maintenance / meta
 
