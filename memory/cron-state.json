@@ -26,15 +26,15 @@
   },
   "price-alert": {
     "last_dispatch": "2026-10-23T23:00:44Z",
-    "last_status": "dispatched",
+    "last_status": "failed",
     "last_success": "2026-10-23T21:31:34Z",
-    "total_runs": 57,
+    "total_runs": 58,
     "total_successes": 52,
-    "total_failures": 5,
-    "consecutive_failures": 2,
-    "success_rate": 0.91,
+    "total_failures": 6,
+    "consecutive_failures": 3,
+    "success_rate": 0.9,
     "last_quality_score": 4,
-    "last_failed": "2026-10-23T22:31:37Z",
+    "last_failed": "2026-10-23T23:01:13Z",
     "last_error": "hivemindos: Failed to authenticate. API Error: 403 All target providers failed."
   },
   "memory-flush": {
