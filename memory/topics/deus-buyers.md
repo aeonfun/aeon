@@ -8,7 +8,7 @@ tags:
   - onchain
   - runbook
 resource: https://dexscreener.com/base/0x3e97c5ec8c73e7d566aca606472141a9b9a8c1fa
-timestamp: 2026-10-23T18:01:22Z
+timestamp: 2026-10-23T19:09:04Z
 ---
 
 # DEUS directional buyers
@@ -19,6 +19,42 @@ on this pair the two look nearly identical at the trade-count level.
 
 Related: [DEUS / xDEUS watch addresses](/topics/deus-escrow.md) · [lessons](/topics/lessons.md) ·
 [price-alert state contract](/topics/price-alert-state.md).
+
+## 🟢 NEW MONEY — 2026-10-23 19:09Z, the first genuine external inflow in four days
+
+Two wallets that had **never held a single DEUS** took **51,420.36 DEUS ≈ $932.25** out of the
+pools within 27 minutes (5.8% of the 24h volume). Both were verified at **exactly 0.000000** by
+historical `balanceOf` at **−1h / −6h / −24h / −7d / −30d**. This is categorically different from
+everything else on this page: it is not a rebuy, not a round-trip, not an arbitrage leg.
+
+| Time (UTC) | Wallet | DEUS | USD | Paid with | Venue |
+|---|---|---|---|---|---|
+| 18:11:07Z | `0x1184de98c71b565a7bc8313d89d74322c3df7f3b` | 46,199.7603 | $837.52 | 0.3509 WETH (3 clips) | deepest Slipstream pool only |
+| 18:38:11Z | `0x3fd516041851011f38a0e9367b9e67e2eefd9a96` | 5,225.2212 | $94.73 | 95.2583 USDC | 3 venues via 1inch v6 |
+
+**`0x1184de98`** — plain EOA (`code 0x`), nonce **920** (919 at −24h, 832 at −30d), ETH 0.0106.
+An established trader that had simply never touched DEUS. The tx
+(`0x2260508925dbd183…300104b`, block 52,994,860) routed through two one-shot helpers
+(`0x8d8f598c`, `0x0a2854fb` — both `code 0x60806040`, **nonce 1**, zero balance) and paid
+0.1123 + 0.1193 + 0.1193 WETH. It took the whole clip from the single deepest pool — the most
+expensive way to buy, i.e. someone who wanted size now, not a router squeezing basis points.
+
+**`0x3fd51604`** — EIP-7702 delegated account (`code 0xef0100…`), nonce **290**, ETH 0.0029.
+Routed through the **1inch v6 router** `0x111111125421ca6dc452d289314280a0f8842a65` and swept three
+venues: 1,199.5650 DEUS from USDC `0x58dba34e` + 1,516.1550 from pool `0x498581ff` + 2,509.5012
+from USDC `0x1b2f3f5c`, paying 21.9094 + 27.6249 + 45.7240 USDC.
+
+**Why the escrow matters here:** `0xA85A38796B951CE87B378538b32B3E6Ee3C4C373` was
+**29,408,223.901194 at both head and −6h**, and 29,405,267.589532 at −24h (+2,956.31 / +0.010% —
+two orders of magnitude under the ~1,470,411 DEUS 5%-per-day intel trigger). So the buying power
+is **external ETH/USDC, not unstaked coins recycling into the market.** The 5-day xDEUS cooldown
+clock is untouched.
+
+**What this does and does not prove.** $932 is 5.8% of a day's volume — real, but not a trend.
+It says: after four days of pure market-maker furniture and fake passes, somebody outside the
+existing holder set decided this level was worth buying. The test is whether either wallet adds a
+second clip. Prior form says most don't — see the two "confirmed directional wallets" below,
+both of which bought once and never added.
 
 ## The incumbent whale — `0x09b383a627c3d35daf38cd77af0064c1848833c6`
 
@@ -103,9 +139,17 @@ double-pool buy was **not** this wallet — it was `0x09b383a6` buying back (see
 - Holds **113,627.090929296275135130 DEUS**, identical across five reads (11:06Z / 12:02Z / 13:01Z /
   14:05Z / 15:05Z).
 - Zero outbound DEUS logs from block `52970000` onward. ETH 0.00004395, nonce 0x4.
-- **Still no add-on.** Watching whether it follows the new wallet. As of 18:01Z: **nonce 4,
-  balance 113,627.090929 — 7h+ with zero movement.** This wallet has not touched DEUS since the
+- **Still no add-on.** Watching whether it follows the new wallet. As of 19:09Z: **nonce 4,
+  balance 113,627.090929 — 8h+ with zero movement.** This wallet has not touched DEUS since the
   original 10:59Z buy.
+
+## The market maker bleeding inventory — `0x49a782c2660e77dded753bb88ac57619298ad50e`
+
+Not an exit, but worth watching: 32,876.368821 DEUS at −24h → 30,643.585751 at 18:01Z →
+**28,417.380092 at 19:09Z**. Sold 2,226.2057 DEUS into USDC `0x58dba34e` at 18:11:39Z
+(tx `0x85d488f5d09c3569fc65c80564327f8bb0cfaa5921146ca72086df93912a3a74`), nonce 5,374.
+Fifteen clips of ~$49 earlier in the day and it *still* holds inventory — so far this is
+rotation, but the direction is one-way. If it crosses below ~20k it is reclassifying.
 
 ## The look-alikes — do not count these as accumulation
 
@@ -184,13 +228,34 @@ A buyer that ends at zero bought for someone else.
 - **GeckoTerminal `/trades` returns both pools' legs** when queried per pool — a single sender
   appearing in both lists at the same second is a sweep, not two buyers. Use it as the cheap
   first pass before pulling raw logs.
+- **Aerodrome Slipstream Swap is a different event.** topic0 is `0xb3e27736`, **not** the Uniswap
+  V3 `0xc42079f9`, and its data is **4 words** (amount0, amount1, sqrtPriceX96, liquidity), not 5.
+  Scanning the deepest pool for `0xc42079f9` returns a clean **zero** and looks exactly like a
+  dead pool — this burned three scans on 2026-10-23 19:09Z while DexScreener was reporting $860/hr
+  of volume. If a pool shows no swaps but the aggregator shows volume, dump **all** logs for a
+  known-active block (no `topics` filter) and read the real topic0 set before believing the zero.
+- **New money vs. rebuy needs a multi-horizon `balanceOf` sweep.** Query at `head − {1800, 10800,
+  43200, 302400, 1296000}` (2s blocks ⇒ 1h / 6h / 24h / 7d / 30d). The 19:09Z inflow was confirmed
+  by all five horizons reading **exactly 0**. A 24h-only lookback cannot separate a first-time
+  buyer from a whale that round-tripped earlier in the session.
+- **A buy routed through 1inch is still real money — judge the terminal address.** The 18:38Z buy
+  went through `0x1111…42a65` (1inch v6), which is also the pass-through sink that made the 16:41Z
+  fake buy look real. The router is never the evidence; the end recipient's `balanceOf` is.
+- **A helper contract with `nonce 1` and code is plumbing, not a buyer.** The 18:11Z $838 flow had
+  two of them (`0x8d8f598c`, `0x0a2854fb`). Chase
+  `eth_getTransactionByHash().from` and where the DEUS actually lands.
 
 # Citations
 
-- Prices and volume: DexScreener token endpoint for
+- Prices and volume: DexScreener token endpoint and `/pairs/base/0x3E97c5EC…C1Fa` for
   `0x940A319B75861014A220D9c6c144d108552B089B`; GeckoTerminal pools
-  `0x3e97c5ec8c73e7d566aca606472141a9b9a8c1fa` and `0x58dba34e6ee6eb76ef71a6ca0f18871cae817d3b`
-  (`/trades`, 167 records fetched 2026-10-23 18:0xZ).
+  `0x3e97c5ec8c73e7d566aca606472141a9b9a8c1fa`, `0x58dba34e6ee6eb76ef71a6ca0f18871cae817d3b`,
+  `0x1b2f3f5c1b6037101fdd3ec14649e0d3f98fa642` (`/trades`, fetched 2026-10-23 19:0xZ).
 - Balances, `eth_getCode`, `totalSupply`, historical `balanceOf` at block tags: Base mainnet via
-  `https://mainnet.base.org` and `https://base.gateway.tenderly.co`, head block **52,994,830**,
-  2026-10-23 18:01Z. Earlier reads: block `0x3288cfc` (52,989,180), 2026-10-23 15:05Z.
+  `https://base.gateway.tenderly.co`, head block **52,996,569**, 2026-10-23 19:09Z. Earlier reads:
+  block `0x3288cfc` (52,989,180), 2026-10-23 15:05Z.
+- The 19:09Z new-money buys: tx `0x2260508925dbd183e8e579cc20e78f219aaf7c878bd4afc61d5b9c3de300104b`
+  (block 52,994,860, 18:11:07Z) and tx
+  `0xe89c0d6d07721e787659adad057b03fa0b9d0a1952cc7d437d5086143f9d0e95` (block 52,995,672,
+  18:38:11Z). Receipts decoded for ERC-20 `Transfer` legs; recipient balances read at five
+  historical block heights.

@@ -4,7 +4,7 @@ description: Detail behind the one-line lessons in MEMORY.md, kept here so MEMOR
 tags:
   - lessons
   - runbook
-timestamp: 2026-10-23T14:10:00Z
+timestamp: 2026-10-23T19:09:04Z
 ---
 
 # Lessons learned — archive
@@ -62,9 +62,13 @@ MEMORY.md carries the one-line form of each lesson. This file holds the detail.
 - **`eth_getCode` 以 `0xef0100` 开头 = EIP-7702 委托智能账户，不是普通 EOA。** 10-23 14:55Z 的 `0x259f962e…`（5 笔买 $4,564、余额全留）返回 `0xef0100` + `0x63c0c19a282a1b52b07dd5a65b58948a07dae32b`，delegate 是暴露 `0x84b0196e`/`0xd03c7914`/`0xd691c964`/`0xf23a6e61`/`0xffa1ad74` 的智能账户实现。配合 nonce 135 + 0.819 ETH，这是**有历史的成熟钱包新近转向**，不是新充值的小号。**分类时把 `eth_getCode` 编进判据：空返回 = EOA；`0xef0100…` = 7702 智能账户**（"fresh EOA 留仓"的说法会低估它）。
 - **薄盘口上，买卖"笔数"会给出与"美元额"相反的方向结论。** 10-23 15:05Z 1h 是 **4 买 / 18 卖**，看着像在派发；但 14:50Z 起按美元是 **买 $4,326 / 卖 $1,245 = 74/26**。原因：卖单全是做市夹子 —— `0x9694…`（nonce 0x394c）12 笔每笔 ~$49、**卖完仍持 19,360.79 DEUS**；`0x6abe…`（nonce 257,965）每笔 $78–194、余额 0。**读向先换算美元额，再看笔数。**
 - **`eth_getLogs` 在公共 Tenderly 端点上限 1000 块，且区间超一块就整单报错、不截断。** 要算 `latest-999 .. latest`；猜 `latest-1000` 会得到 `Block range too large for public access: maximum 1000 blocks`。同一条链上同一次运行里这个上限是硬性的，别试第二次。
+- **🔴 Aerodrome Slipstream 的 Swap topic0 是 `0xb3e27736`，不是 Uniswap V3 的 `0xc42079f9`；且 data 只有 4 个 word，不是 5 个。** 10-23 19:09Z 我用 `0xc42079f9` 扫最深池 `0x3E97…` 最近 2100 块，得到**干净的 0 笔 swap**，几乎据此写下"池子死了"，但 DexScreener 同池 v1h 报 $860。真因：Slipstream 池的 Swap 用另一套签名，`0xc42079f9` 那个 topic 在这个池上**根本不存在**。**判据（第三次踩「零日志」）：当厂商报价显示有量、而链上扫出 0 笔 swap 时，先对一个已知活跃块 `dump 全部 log`（不传 topics）看真实 topic0 集合，再决定信不信这个 0。** 正确解码：Slipstream Swap data = `amount0, amount1(带符号), sqrtPriceX96, liquidity` —— 4 个 word；DEUS 在这三个池里都是 token1。
+- **判「是不是新钱」要拉多 horizon 余额，只回看 24h 会把建仓误判成回补、只看单笔方向会把回补误判成建仓。** 10-23 19:09Z 两笔买入（$838 + $95）的收款方 `0x1184de98` / `0x3fd5`，在 −1h / −6h / −24h / −7d / −30d 的 `balanceOf` **全部精确为 0** —— 这是四天来第一批真外部新钱。**方法：`eth_call balanceOf` 打到 `head - {1800, 10800, 43200, 302400, 1296000}` 五个历史块，全 0 才叫「从未持有」。** 对照第 7 条（老鲸回补），两者只看 24h 会得出同一结论，加上 −7d/−30d 才分得开。
+- **经 1inch v6（`0x111111125421ca6dc452d289314280a0f8842a65`）或其它聚合器路由的买单，仍然可能是真钱。** 判据不是「有没有走路由」（走路由是常态），而是**终端收款地址的 `balanceOf` 是否升高且留住**。19:09Z 那笔 $95 就是经 1inch 跨三池扫出来的，但终点 `0x3fd5` 余额从 0 变成 5,225 DEUS 并留住 —— 真钱；而 16:41Z 那笔终点余额精确为 0 —— 代客成交。**同一个 router，两种性质，只能靠终点地址的余额分辨。**
+- **helper 合约 nonce 1 + 有代码 = 一次性路由/授权合约，不是买家。** 19:09Z 的 $838 买单里，`0x8d8f598c` 与 `0x0a2854fb` 都是 `code 0x60806040…`、nonce 1、余额归零的转账中转站；真正的买家是 tx 的 `from`（`0x1184de98`，nonce 920）。**追买家要追 `eth_getTransactionByHash().from` 与 DEUS 最终落点，别把 helper 当主体。**
 
 # Citations
 
 - `memory/logs/2026-10-21#onchain-monitor`, `#telegram-reply`, `#heartbeat-brief`, `#price-alert`
 - `memory/logs/2026-10-22#price-alert`（21:01Z / 22:02Z / 23:01Z 三源对比）
-- `memory/logs/2026-10-23#price-alert`（11:06Z 单笔方向性买盘 → 12:02Z 复核实证两笔跟进买盘为聚合器套利；15:05Z 第二个方向性钱包 `0x259f962e…` + 笔数/美元额反向 + 7702 识别）
+- `memory/logs/2026-10-23#price-alert`（11:06Z 单笔方向性买盘 → 12:02Z 复核实证两笔跟进买盘为聚合器套利；15:05Z 第二个方向性钱包 `0x259f962e…` + 笔数/美元额反向 + 7702 识别；19:09Z Slipstream topic0 坑 + 多 horizon 余额判新钱 + 1inch 路由终点判据）
