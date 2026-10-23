@@ -1,17 +1,11 @@
 {
   "skill": "price-alert",
-  "last_analyzed": "2026-10-23T19:12:45Z",
-  "quality_score": 4,
-  "assessment": "未触发门槛时正确保持静默，并给出内部一致的链上证据（金额×价格均与 $932.25 精确吻合，离门槛百分比计算正确），把「外部新资金 vs 质押解锁回流」这一战略问题用 escrow 余额交叉验证清楚；扣分在于夹杂文件字节数等自我汇报噪音，且部分地址被截断、Slipstream topic0 等断言无法独立核验。",
+  "last_analyzed": "2026-10-23T20:11:50Z",
+  "quality_score": 5,
+  "assessment": "Correctly held fire with no threshold hit, gave full raw-source provenance (contract addresses, tx hash, RPC head, endpoint status codes), quantified distance-to-trigger for every preset level, and surfaced a genuinely useful signal correction (single-pool buy counts are arbitrage-contaminated; escrow unmoved so no 5-day unstake clock pressure) with concrete follow-ups.",
   "flags": [],
-  "avg_score": 4.17,
+  "avg_score": 4.2,
   "history": [
-    {
-      "date": "2026-10-22",
-      "score": 4,
-      "ts": "2026-10-22T14:02:27Z",
-      "harness": "claude"
-    },
     {
       "date": "2026-10-22",
       "score": 4,
@@ -184,6 +178,12 @@
       "date": "2026-10-23",
       "score": 4,
       "ts": "2026-10-23T19:12:45Z",
+      "harness": "claude"
+    },
+    {
+      "date": "2026-10-23",
+      "score": 5,
+      "ts": "2026-10-23T20:11:50Z",
       "harness": "claude"
     }
   ]
