@@ -1,17 +1,11 @@
 {
   "skill": "price-alert",
-  "last_analyzed": "2026-10-23T06:03:22Z",
-  "quality_score": 5,
-  "assessment": "Correctly stayed silent since no gate fired, yet still delivered a fully sourced no-op report: mark, volume, all four thresholds with distance-to-trigger, dual-source corroboration, last-print timing, and an honest `h1_pct: null` instead of a fabricated 0%; the retroactive debunk of last run's +0.95% artifact and the outlier-pool exclusion are genuine analytic value, not padding.",
+  "last_analyzed": "2026-10-23T07:02:45Z",
+  "quality_score": 4,
+  "assessment": "Legitimate no-gate run report with internally consistent math (threshold distances and vol sum check out), dual-source cross-validation, and explicit reasoning about noisy pool disagreement; slightly verbose against the operator's 'no long-form' preference, and key figures are only partly verifiable via truncated tx hashes.",
   "flags": [],
   "avg_score": 4.1,
   "history": [
-    {
-      "date": "2026-10-22",
-      "score": 4,
-      "ts": "2026-10-22T01:02:27Z",
-      "harness": "claude"
-    },
     {
       "date": "2026-10-22",
       "score": 4,
@@ -184,6 +178,12 @@
       "date": "2026-10-23",
       "score": 5,
       "ts": "2026-10-23T06:03:22Z",
+      "harness": "claude"
+    },
+    {
+      "date": "2026-10-23",
+      "score": 4,
+      "ts": "2026-10-23T07:02:45Z",
       "harness": "claude"
     }
   ]

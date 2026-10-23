@@ -39,18 +39,18 @@
   },
   "last_price": {
     "price_usd": 0.01739,
-    "h1_pct": null,
-    "h6_pct": -0.69,
-    "h24_pct": -4.09,
+    "h1_pct": -0.02,
+    "h6_pct": 0.62,
+    "h24_pct": -3.15,
     "pool": "aerodrome DEUS/VIRTUAL",
-    "liquidity_usd": 677186.94,
-    "volume_24h_usd": 17450.92,
-    "volume_1h_usd": 0,
+    "liquidity_usd": 677134.58,
+    "volume_24h_usd": 16004.95,
+    "volume_1h_usd": 26.17,
     "pool_url": "https://dexscreener.com/base/0x3e97c5ec8c73e7d566aca606472141a9b9a8c1fa",
-    "observed_at": "2026-10-23T06:01:44Z",
-    "h1_source": null,
-    "h1_note": "06:01Z run. Deepest Base pool Aerodrome DEUS/VIRTUAL (liq $677,186.94) mark $0.01739, unchanged from 05:01Z. DexScreener omitted priceChange.h1 again and returned volume.h1 = $0, txns.h1 = 0 buys / 0 sells. GeckoTerminal independently: $0.017327, h1 0.0%, h1 vol $0.0, txns.h1 0/0, h6 -0.981%, h24 -4.592%. GT trades endpoint: last print on this pool 2026-10-23T04:26:35Z (the $31.46 sell noted last run) -> ~95 min of zero trades, so h1 is UNMEASURED (stored null), not flat. The 05:01Z +0.95% read is now confirmed as a single-trade artifact, not flow. Secondary USDC pool 0x58dBa also 0/0 in the hour (GT $0.017287, h1 0, v1h 0). Only live print anywhere in the hour is a $0.001 dust buy on aerodrome 0x75bc at 05:55:13Z - meaningless. DEUS/WETH pool 0xb542 quotes $0.02013 on $0.03 liquidity - outlier, excluded. Absolute marks cluster $0.01722-$0.01739; no measurable h1 near +/-20%. No gate fired."
+    "observed_at": "2026-10-23T07:01:35Z",
+    "h1_source": "dexscreener",
+    "h1_note": "07:01Z run. Deepest Base pool Aerodrome DEUS/VIRTUAL (liq $677,134.58) mark $0.01739, identical to 05:01Z/06:01Z. h1 is MEASURED again: DexScreener -0.02% on vol.h1 $26.17, txns.h1 0 buys / 2 sells. GeckoTerminal corroborates independently: same pool $0.0173317, h1 +0.012%, vol.h1 $26.35, txns.h1 0 buys / 2 sells; its trades endpoint pins exactly two prints in the hour - 06:21:39Z $13.54 sell (0x6660...85bf) and 06:16:53Z $12.81 sell (0x6664...5154) - no trade between 04:26Z and 06:16Z. Two small sellers, not a cascade. Secondary USDC pool 0x58dBa $0.0172965, h1 +0.097%, vol.h1 $26.28, txns.h1 3 buys / 0 sells (opposite sign of the VIRTUAL pool - classic thin-book noise both ways). All other Base pools: aero 0x1B2f $0.01732 (h1 unmeasured, v1h $0), aerodrome 0x75bc $0.01722 (unmeasured, v1h $0), uniswap 0x7df2 $0.01727 (unmeasured, v1h $0). DEUS/WETH 0xb542 quotes $0.02013 on $0.03 liquidity - outlier, excluded. Absolute marks cluster $0.01722-$0.01739; no measurable h1 near +/-20%. No gate fired."
   },
-  "last_run_at": "2026-10-23T06:01:44Z",
+  "last_run_at": "2026-10-23T07:01:35Z",
   "notes": "Baseline seeded manually on 2026-10-21 (first state file for this contract). ath.price_usd is the true all-time high (CoinGecko, 2026-05-28), not the tracking-start price, so the ATH gate cannot false-fire until the token genuinely exceeds it. Targets pre-registered from aeon.yml var so a crossing between runs is caught rather than swallowed by the skill's first-observation rule. h1_pct is stored as null when no trade occurred in the window (DexScreener omits h1 rather than printing 0) - do not read null as 'flat'."
 }
