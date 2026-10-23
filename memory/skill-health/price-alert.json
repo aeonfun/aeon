@@ -1,17 +1,13 @@
 {
   "skill": "price-alert",
-  "last_analyzed": "2026-10-23T03:03:10Z",
+  "last_analyzed": "2026-10-23T04:03:47Z",
   "quality_score": 4,
-  "assessment": "Substantive, source-cited no-fire run that correctly treats a missing h1 as unmeasured, cross-verifies the mark on live pools, and quantifies distance to every preset level — slightly long for the operator's 'short push' preference, though no push was sent.",
-  "flags": [],
+  "assessment": "Solid, well-sourced no-op run: correct null-instead-of-flat handling for the dead h1, raw pool addresses and dual-source corroboration, all four gates checked with distance-to-trigger; docked for running long against the operator's 'avoid long-form' preference and for staleness on the primary mark it itself acknowledges.",
+  "flags": [
+    "stale_data"
+  ],
   "avg_score": 4.07,
   "history": [
-    {
-      "date": "2026-10-21",
-      "score": 4,
-      "ts": "2026-10-21T15:02:53Z",
-      "harness": "claude"
-    },
     {
       "date": "2026-10-21",
       "score": 4,
@@ -184,6 +180,12 @@
       "date": "2026-10-23",
       "score": 4,
       "ts": "2026-10-23T03:03:10Z",
+      "harness": "claude"
+    },
+    {
+      "date": "2026-10-23",
+      "score": 4,
+      "ts": "2026-10-23T04:03:47Z",
       "harness": "claude"
     }
   ]

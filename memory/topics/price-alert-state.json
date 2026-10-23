@@ -40,17 +40,17 @@
   "last_price": {
     "price_usd": 0.01723,
     "h1_pct": null,
-    "h6_pct": -1.08,
-    "h24_pct": -6.09,
+    "h6_pct": -1.09,
+    "h24_pct": -5.54,
     "pool": "aerodrome DEUS/VIRTUAL",
-    "liquidity_usd": 670744.8,
-    "volume_24h_usd": 17659.36,
+    "liquidity_usd": 670727.63,
+    "volume_24h_usd": 17649.2,
     "volume_1h_usd": 0,
     "pool_url": "https://dexscreener.com/base/0x3e97c5ec8c73e7d566aca606472141a9b9a8c1fa",
-    "observed_at": "2026-10-23T03:01:48Z",
+    "observed_at": "2026-10-23T04:02:00Z",
     "h1_source": null,
-    "h1_note": "Deepest base pool Aerodrome DEUS/VIRTUAL (liq $670,745): $0.01723 unchanged from 02:01Z, but DexScreener omitted priceChange.h1 and reported volume.h1=$0 with txns.h1 = 0 buys / 0 sells. GeckoTerminal's last trade on this pair was 2026-10-23T01:30:29Z; its v1h $532.8 is a trailing-60min aggregate, so h1 is UNMEASURED, not flat. Secondary pools were live and agree on the mark: DEUS/USDC aerodrome $0.01733 (h1 +0.21%, v1h $59.57) and aero $0.01735 (h1 +0.60%, v1h $40.61); GT on the USDC pool $0.017269 (h1 +0.13%, 5 txns). No |h1| anywhere near 20%, so the sharp-move gate is QUIET on every live read, but the deepest-pool h1 is genuine no-trade, not a 0.00% print. No gate fired."
+    "h1_note": "04:02Z run, third consecutive unmeasured hour on the deepest pool. Aerodrome DEUS/VIRTUAL (liq $670,727) prints $0.01723 — identical to 02:01Z and 03:01Z — with DexScreener omitting priceChange.h1 and volume.h1=$0, txns.h1 = 0/0. GeckoTerminal agrees: h1 0.0%, v1h $0.0, txns.h1 0/0, h6 3575.63 with 5 buys / 5 sells. Tape check via GT trades endpoint: last print on this pool is 2026-10-23T01:30:29Z, so ~151 min with zero trades. h1 is UNMEASURED per the 10-22 lesson, not a 0.00% flat read. The USDC pool at 0x58dba3 also went dark after its 02:47:25Z print. Only two Base pools still carry a live h1 and both are tiny: aerodrome 0x75bc ($0.01722, h1 -0.01%, v1h $0.19) and uniswap 0x7df2 ($0.01727, h1 +0.36%, v1h $14.98). Absolute marks cluster $0.01722-$0.01735 with GT settling $0.01727 on the USDC pool. No live read approaches +/-20%, so the sharp-move gate is QUIET on every measurable pool while the deepest pool's hour is genuinely empty. No gate fired."
   },
-  "last_run_at": "2026-10-23T03:01:48Z",
+  "last_run_at": "2026-10-23T04:02:00Z",
   "notes": "Baseline seeded manually on 2026-10-21 (first state file for this contract). ath.price_usd is the true all-time high (CoinGecko, 2026-05-28), not the tracking-start price, so the ATH gate cannot false-fire until the token genuinely exceeds it. Targets pre-registered from aeon.yml var so a crossing between runs is caught rather than swallowed by the skill's first-observation rule. h1_pct is stored as null when no trade occurred in the window (DexScreener omits h1 rather than printing 0) — do not read null as 'flat'."
 }

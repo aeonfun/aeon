@@ -39,18 +39,18 @@
   },
   "last_price": {
     "price_usd": 0.01723,
-    "h1_pct": -0.32,
-    "h6_pct": -0.92,
-    "h24_pct": -5.72,
+    "h1_pct": null,
+    "h6_pct": -1.08,
+    "h24_pct": -6.09,
     "pool": "aerodrome DEUS/VIRTUAL",
     "liquidity_usd": 670744.8,
-    "volume_24h_usd": 18361.69,
-    "volume_1h_usd": 537.9,
+    "volume_24h_usd": 17659.36,
+    "volume_1h_usd": 0,
     "pool_url": "https://dexscreener.com/base/0x3e97c5ec8c73e7d566aca606472141a9b9a8c1fa",
-    "observed_at": "2026-10-23T02:01:33Z",
-    "h1_source": "dexscreener",
-    "h1_note": "Deepest base pool Aerodrome DEUS/VIRTUAL (liq $670,745): $0.01723, h1 -0.32%, h6 -0.92%, h24 -5.72%, vol1h $537.9. GeckoTerminal same pair: $0.016926, h1 0.00%, h24 -7.251%, vol1h $532.8. Both sources agree flat on the hour; GT mark 1.8% below DexScreener. No gate fired."
+    "observed_at": "2026-10-23T03:01:48Z",
+    "h1_source": null,
+    "h1_note": "Deepest base pool Aerodrome DEUS/VIRTUAL (liq $670,745): $0.01723 unchanged from 02:01Z, but DexScreener omitted priceChange.h1 and reported volume.h1=$0 with txns.h1 = 0 buys / 0 sells. GeckoTerminal's last trade on this pair was 2026-10-23T01:30:29Z; its v1h $532.8 is a trailing-60min aggregate, so h1 is UNMEASURED, not flat. Secondary pools were live and agree on the mark: DEUS/USDC aerodrome $0.01733 (h1 +0.21%, v1h $59.57) and aero $0.01735 (h1 +0.60%, v1h $40.61); GT on the USDC pool $0.017269 (h1 +0.13%, 5 txns). No |h1| anywhere near 20%, so the sharp-move gate is QUIET on every live read, but the deepest-pool h1 is genuine no-trade, not a 0.00% print. No gate fired."
   },
-  "last_run_at": "2026-10-23T02:01:33Z",
-  "notes": "Baseline seeded manually on 2026-10-21 (first state file for this contract). ath.price_usd is the true all-time high (CoinGecko, 2026-05-28), not the tracking-start price, so the ATH gate cannot false-fire until the token genuinely exceeds it. Targets pre-registered from aeon.yml var so a crossing between runs is caught rather than swallowed by the skill's first-observation rule."
+  "last_run_at": "2026-10-23T03:01:48Z",
+  "notes": "Baseline seeded manually on 2026-10-21 (first state file for this contract). ath.price_usd is the true all-time high (CoinGecko, 2026-05-28), not the tracking-start price, so the ATH gate cannot false-fire until the token genuinely exceeds it. Targets pre-registered from aeon.yml var so a crossing between runs is caught rather than swallowed by the skill's first-observation rule. h1_pct is stored as null when no trade occurred in the window (DexScreener omits h1 rather than printing 0) — do not read null as 'flat'."
 }
