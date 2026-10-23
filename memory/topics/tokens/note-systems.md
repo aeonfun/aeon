@@ -3,7 +3,7 @@ title: Note Systems (NOTE)
 description: Note Systems NOTE 代币 —— Robinhood Chain (4663) 上的结构化票据协议治理/激励代币，合约、供应、持仓与解锁排程
 tags: [robinhood-chain, token, unlock, note-systems]
 resource: https://note.systems/
-timestamp: 2026-10-23T09:59:00Z
+timestamp: 2026-10-23T10:35:00Z
 ---
 
 # Note Systems (NOTE)
@@ -464,7 +464,51 @@ owner 余额轨迹：371,682.037 → **281,682.037**（−90,000，逐位对上�
 
 NOTE `$0.03991` · 1h −0.78% · 6h +0.77% · **24h −14.53%** · 流动性 $400,587 · 24h 量 $571,727（主池 `0x378b1023…`）。对比 08:01Z 的 $0.04125 = 一天 −3.2%。vesting 余额 1,378,212.988，PoolManager 6,006,805。
 
+## 解锁后的第一轮处置（2026-10-23 10:15–10:25Z）
 
+解锁（10:00:35Z，1,200,000 NOTE → owner）之后 15 分钟，owner 开始处置。三笔交易，全部链上复核：
+
+| 时间 | 动作 | 金额 | 细节 |
+|---|---|---|---|
+| 10:14:xx Z | NOTE `Approval` owner → vesting | 401,682.037 | nonce **370**，blk 95,864,634 |
+| 10:15:50Z | `0x091e7db9` → vesting 建 **schedule 26** | 401,682.037 | nonce **371**，tx `0x6b0f6858…44c88`，blk 95,864,662 |
+| 10:25:06Z | `transfer` → 新空钱包 `0x3a9039c7…119f35e` | 150,000 | nonce **372**，tx `0x683cebc0…1fd50`，blk 95,869,960 |
+
+**schedule 26 calldata 解码：**
+
+| 字段 | 值 |
+|---|---|
+| beneficiary | `0x2807de7abda494f68bb281c9c8d961dc9f8ccb2a`（历史地址：`balanceOf` 0、nonce 0、ETH 0、从未动过） |
+| amount | 401,682.037037037037037038 NOTE |
+| start | `1792694005` = **2026-10-22T18:33:25Z**（沿用上一轮起点，不是当前时间） |
+| period | `2478952` 秒 ≈ **28.7 天** |
+| 参数 4/5 | 0 / 0 |
+| flag | 1 |
+
+事件 `0x8cd818b1`（indexed: scheduleId=26, beneficiary）在 blk 95,864,662 发出，与 NOTE `Transfer` 同 tx。
+
+**⚠️ 不要把 schedule 26 当自动日供给。** schedule 25（10-21 建立，同合约、同 selector `0x091e7db9`、同形状 calldata）当初被推算成"每天线性释放 2 万 NOTE"，随后被证伪：40 小时零领取、四个标准 linear-vesting selector 全 revert、余额逐位不变。真实机制是 **claim 制**（`release`，topic0 `0x3bfce8de`，受益人自己发起）。schedule 26 同构，**在看到真实 `release` 事件之前按"可 claim 额度"处理**。若真按 28.7 天线性释放，日率 ≈ 14,000 NOTE ≈ 24h 量的 2.4%。
+
+**上膛钱包6 `0x3a9039c7`（新）：** `getCode` = `0x`（EOA）、**ETH 0 / nonce 0 / 持 150,000 / 零出账**。与 10-22 两次、10-23 09:50Z 一次完全同构 —— **先给币、后充 gas**。扳机是「第一笔 ETH 入账」，不是转账本身。
+
+### 待命供给总览（10-23 10:35Z 复核）
+
+| 地址 | NOTE | ≈USD | 状态 |
+|---|---|---|---|
+| 上膛钱包6 `0x3a9039c7`（10-23 10:25Z） | 150,000 | $5,948 | **无 gas**（ETH 0）/ nonce 0 |
+| 上膛钱包5 `0x572bb527`（10-23 09:50Z） | 90,000 | $3,568 | **无 gas**（ETH 0）/ nonce 0 |
+| 上膛钱包4 `0xe4bf6f7e`（10-22） | 50,000 | $1,982 | **有 gas** 0.010764 / nonce 0 |
+| **合计** | **290,000** | **$11,499** | 三者均零出账 |
+| owner EOA `0x0b64…` | 930,000 | $36,875 | 自由余额，nonce 373 |
+| vesting `0xfdd9` | 1,779,894 | — | 其中 schedule 26 = 401,682 为本轮回锁 |
+
+**市场尚未吸收这批货：** 上膛动作后 PoolManager 仅再进 22,250 NOTE（10 笔），是既有碎单，不是这 29 万。NOTE `$0.03965` · h1 **+10.7%** · h6 +0.17% · 24h −12.46% · 流动性 $404,001 · 24h 量 $571,002。**09:30Z 那笔 $15,166 不是方向性买盘** —— `0xd692e8e0` 09:29:47Z 卖 $15,072、09:30:27Z 买 $15,166，同一钱包 40 秒对冲，是套利来回。
+
+## 取数踩坑（2026-10-23 10:3xZ）
+
+**RH 公共 RPC 的 429 返回的是空结果，不是错误。** 扫描 owner 交易时连续得到 `found: []`，一度据此判断"窗口内无 owner 交易"；实际响应体是 `{"code":429,"message":"Rate Limit Hit, limit will reset in 60 seconds"}`，被脚本的 `.catch()` / `Promise.all` 静默吞掉。改用单笔 `eth_getLogs` topic 过滤 + 2 秒退避重试后，立刻拿到真实的 2 笔出账。
+
+→ **在公共 RPC 上，"零结果"必须带 control 验活或重试确认，否则就是把限流读成静默。** 这是「Never trust a zero-log window」的又一个实例。并发扫描时尤其危险：`eth_getBlockByNumber` 逐块扫 9000 块必然触发。
 
 # Citations
 
