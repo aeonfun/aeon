@@ -1,10 +1,10 @@
 {
   "skill": "onchain-monitor",
-  "last_analyzed": "2026-10-22T21:18:58Z",
+  "last_analyzed": "2026-10-23T09:12:00Z",
   "quality_score": 3,
-  "assessment": "Substantive and well-sourced onchain alert with consistent figures and real tx/address detail, but it watches NOTE supply events rather than the DEUS/xDEUS thresholds, runs long against the operator's 'decide-in-one-glance' push rule, and adds discretionary exit advice that conflicts with the preset-trigger discipline.",
+  "assessment": "Internally consistent, source-cited onchain report with a genuine timing insight (the 11h monitoring blind spot around the 09:57Z unlock) and a clean one-line DEUS verdict, but it is mostly NOTE-specific intel that sits outside the DEUS-only preset thresholds — mild strategy drift and longer than the 'read it, decide, done' push the operator asked for.",
   "flags": [],
-  "avg_score": 3.71,
+  "avg_score": 3.63,
   "history": [
     {
       "date": "2026-10-21",
@@ -46,6 +46,12 @@
       "date": "2026-10-22",
       "score": 3,
       "ts": "2026-10-22T21:18:58Z",
+      "harness": "claude"
+    },
+    {
+      "date": "2026-10-23",
+      "score": 3,
+      "ts": "2026-10-23T09:12:00Z",
       "harness": "claude"
     }
   ]

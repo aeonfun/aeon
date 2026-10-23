@@ -34,6 +34,7 @@
 - **owner 自有余额与 timelock 是两条独立供给** —— 别只盯 unlock 排程。
 - **claim 制 vesting 的"日释放"要看 scheduleId。** 同合约不同 schedule 量级差异巨大（7=21,446 · 11=2,954 · 18=191,793），按均值估日供给会失真。
 - **缺 `h1` ≠ 平静。** DexScreener 薄盘口常省略 `priceChange.h1`，按 0 处理会让 sharp-move gate 显示 QUIET 而实际**未测量**；state 存 `null` 以区分。**补测出 0.00% 也要看成交量** —— 0 买 / 1 卖、1h 成交 $0.018 时价格是陈旧标记，不是"走平"。
+- **`isOperationPending/Ready/Done` 在公共 RPC 上 revert（`data:0x`），不能当 false 读。** 判 timelock 操作是否还活着要用 `getTimestamp(opId)` + 合约余额双证；opId 取 `CallScheduled` 的 **topics[1]**，不是 calldata 前 32 字节。
 
 **运维**
 - `./notify` 写**普通 Markdown**，别为 Telegram 手工转义；多行走 `-f file.md`。
@@ -42,7 +43,8 @@
 ## Next Priorities
 - **🔴 上膛钱包3 已开砸（10-23 01:39:41Z）。** `0x3ace8e0a` 100,000 NOTE 全额卖出，余额归零，nonce 0→1。4 跳经中转到 **Uniswap v4 PoolManager**（=卖出）。该链进池 105,000；全量流入 1,434,187 ≈$59.2k，约 24h 量 10.7%。**池子吸收住了：6h +5.82%。** [source: logs/2026-10-23#heartbeat]
 - **仅剩一把枪：`0xe4bf6f7efc32aad76e80916543d1277dbe8ecf9a`（50,000 NOTE，nonce 仍 0，零出账）。** 同批孪生钱包，第一把打完后它没动。**它出账 = 第二批开砸，盯 nonce 0→1。**
-- **10-23 09:57:36Z 的 120 万 NOTE timelock 解锁 —— 08:01Z 复核仍未执行。** opId `0x77a7b0d6…6974da`，`NOTE.transfer(owner, 1,200,000)`、delay 172800s。**`balanceOf(timelock)` = 15,254,442.02，与 10-22 21:05Z 完全一致** → 未执行、未撤销。窗口在 `onchain-monitor` 09:00Z 排程内。**第一波（10 万）已在解锁前 8h 发生，不再是"解锁后才砸"。**
+- **10-23 09:57:36Z 的 120 万 NOTE timelock 解锁 —— 09:08Z 复核仍未执行、未撤销。** opId `0x77a7b0d650cf28a45a80db71431d0790605733608d5c3e98508467a66b6974da`，`getTimestamp` = 1792749456 = 09:57:36Z。**`balanceOf(timelock)` = 15,254,442.020047023418334577，与前次逐位一致。** 解锁 ≈ $47.7k ≈ 日量 8.6%（未过 50% 黄线）。**第一波（10 万）已在解锁前 8h 发生，不再是"解锁后才砸"。** [source: logs/2026-10-23#onchain-monitor]
+- **09:08Z 全窗口复核：owner EOA 零动作（nonce 368、371,682.037 未动），上膛钱包4 `0xe4bf6f7e` 仍 nonce 0 / 50,000。** 5 个 watch 全部 ON_CHAIN_OK，无事件过阈值 → 未推送。**每个零日志窗口都已用已知活跃块做控制验证**（timelock 94,195,015 → 2 条）。
 - **vesting schedule 25 的受益人已更正为 owner 本人**（不是 `0x2807de7a`）。18:33Z owner 自领 401,682.037，schedule 25 剩余约 19.8 万仍可领。`owner()` = owner EOA。**别再把它当"第三方沉睡额度"。**
 - **vesting release 量级不是恒定的**：scheduleId 7=21,446 · 8=2,937 · 11=2,954 · 18=191,793 · **25=401,682（10-22 18:33Z，迄今最大）**。不要按"每天 2 万"估日供给。
 

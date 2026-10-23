@@ -1,0 +1,265 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "onchain-monitor",
+        "description": "NOTE 1.2M timelock 解锁倒计时监控"
+      },
+      "children": [
+        "alert1",
+        "heading1",
+        "text_intro",
+        "sep1",
+        "table1",
+        "text_exec",
+        "progress1",
+        "sep2",
+        "heading_next",
+        "stack_next",
+        "sep3",
+        "heading_pos",
+        "grid_stats",
+        "text_deus",
+        "sep4",
+        "heading_src",
+        "stack_src"
+      ]
+    },
+    "alert1": {
+      "type": "Alert",
+      "props": {
+        "title": "⚠️ ⏰ NOTE 120万解锁 49分钟后到期 · 未撤销",
+        "message": "timelock 未被撤销，也未被提前执行",
+        "type": "warning"
+      }
+    },
+    "heading1": {
+      "type": "Heading",
+      "props": {
+        "text": "⏰ NOTE 1.2M 解锁 · 49 分钟后到期（09:57:36Z）",
+        "level": "h2"
+      }
+    },
+    "text_intro": {
+      "type": "Text",
+      "props": {
+        "text": "没被撤销，也没被提前执行 —— 计时器还活着。",
+        "variant": "lead"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "table1": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "项",
+          "09:08Z 实测"
+        ],
+        "rows": [
+          [
+            "timelock 余额",
+            "15,254,442.020047023418334577（与 12h 前逐位一致）"
+          ],
+          [
+            "到期",
+            "09:57:36Z（getTimestamp = 1792749456）"
+          ],
+          [
+            "opId",
+            "0x77a7b0d650cf28a45a80db71431d0790605733608d5c3e98508467a66b6974da"
+          ],
+          [
+            "owner EOA",
+            "nonce 368 · 371,682.037 · 零动作"
+          ],
+          [
+            "上膛钱包4",
+            "0xe4bf6f7e…fcf9a nonce 0 · 50,000 · 未扣扳机"
+          ]
+        ]
+      }
+    },
+    "text_exec": {
+      "type": "Text",
+      "props": {
+        "text": "可执行量：1,200,000 NOTE ≈ $47.7k ≈ 日量 8.6%（未过 50% 黄线）。历史手法是解锁后拆 9 笔，单次冲击约 −2%。",
+        "variant": "body"
+      }
+    },
+    "progress1": {
+      "type": "Progress",
+      "props": {
+        "value": 8.6,
+        "max": 100,
+        "label": "可执行量占日量 8.6%（黄线 50%）"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_next": {
+      "type": "Heading",
+      "props": {
+        "text": "下一步",
+        "level": "h3"
+      }
+    },
+    "stack_next": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_next1",
+        "text_next2",
+        "text_next3"
+      ]
+    },
+    "text_next1": {
+      "type": "Text",
+      "props": {
+        "text": "你的 09:57Z 之后有个 11h 盲区 —— 下一次 onchain-monitor 是 21:00Z，price-alert 只盯 DEUS。若要盯执行瞬间，现在手动跑一次 onchain-monitor（约 10 分钟后），或等 21:00Z 一次看两层。",
+        "variant": "body"
+      }
+    },
+    "text_next2": {
+      "type": "Text",
+      "props": {
+        "text": "位置未变：NOTE $0.03973（h1 −3.55%，24h −21.37%），池子 $400,322（12h 净卖压 +128,768 已吸收）。",
+        "variant": "body"
+      }
+    },
+    "text_next3": {
+      "type": "Text",
+      "props": {
+        "text": "DEUS $0.01739，四门槛全未触及，距 $0.041 回本线 +135.8%。DEUS 侧无需动作。",
+        "variant": "body"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_pos": {
+      "type": "Heading",
+      "props": {
+        "text": "当前持仓位置",
+        "level": "h3"
+      }
+    },
+    "grid_stats": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "stat_note",
+        "stat_pool",
+        "stat_deus"
+      ]
+    },
+    "stat_note": {
+      "type": "Stat",
+      "props": {
+        "label": "NOTE",
+        "value": "$0.03973",
+        "delta": "h1 −3.55% · 24h −21.37%",
+        "trend": "down"
+      }
+    },
+    "stat_pool": {
+      "type": "Stat",
+      "props": {
+        "label": "池子（NOTE）",
+        "value": "$400,322",
+        "delta": "12h 净卖压 +128,768 已吸收",
+        "trend": "neutral"
+      }
+    },
+    "stat_deus": {
+      "type": "Stat",
+      "props": {
+        "label": "DEUS",
+        "value": "$0.01739",
+        "delta": "距 $0.041 回本线 +135.8%",
+        "trend": "neutral"
+      }
+    },
+    "text_deus": {
+      "type": "Text",
+      "props": {
+        "text": "DEUS 四门槛全未触及，DEUS 侧无需动作。",
+        "variant": "muted"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_src": {
+      "type": "Heading",
+      "props": {
+        "text": "来源",
+        "level": "h3"
+      }
+    },
+    "stack_src": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link_rpc",
+        "link_dex",
+        "text_addr",
+        "text_calls"
+      ]
+    },
+    "link_rpc": {
+      "type": "Link",
+      "props": {
+        "label": "rpc.mainnet.chain.robinhood.com",
+        "href": "https://rpc.mainnet.chain.robinhood.com"
+      }
+    },
+    "link_dex": {
+      "type": "Link",
+      "props": {
+        "label": "api.dexscreener.com",
+        "href": "https://api.dexscreener.com"
+      }
+    },
+    "text_addr": {
+      "type": "Text",
+      "props": {
+        "text": "NOTE 0xc4f730335Fb9e439ca5552f7b52B8E638c4245B0 · timelock 0x4a53afd9c4d707c8fddd6415947ef0a1e67518b8",
+        "variant": "caption"
+      }
+    },
+    "text_calls": {
+      "type": "Text",
+      "props": {
+        "text": "eth_getLogs / eth_call（18 calls × 5 job，0 retries）",
+        "variant": "caption"
+      }
+    }
+  }
+}
