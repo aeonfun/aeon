@@ -35,6 +35,11 @@ Keep it short (it costs tokens each run): one north-star, 3–5 priorities, the 
 
 > **Status:** unconfigured defaults. Until you tailor this file, skills operate with general best judgment and no specific bias. Remove this line once it's yours.
 
+## 输出语言
+
+**一律简体中文。** 所有 notify、报告、日志正文都用中文写。
+代币名、合约地址、协议名、代码、命令保留原文，不翻译。
+
 ## North-star metric
 
 The single outcome everything should move toward.
