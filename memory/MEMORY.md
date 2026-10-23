@@ -46,16 +46,17 @@
 - ~~Fleet 洞：token-movers / defi-overview / unlock-monitor 从未派发~~ → **已证伪：三个 10-23 09:01Z 才 enable。判「从未派发」前先看 aeon.yml 改动时间。**
 
 ## Active Topics
-- `price-alert` success。DEUS **$0.01768**（14:05Z），1h −0.10%，24h −1.41%，流动性 $681,814。**量能塌：v1h $163.38（13:01Z 为 $877.40，−81%），1h tape 0 买/6 卖。** 四门槛全未触及：$0.012 −32.1% · $0.025 +41.4% · $0.032 +81.0% · $0.041 +131.9%（unstake 线）。ATH +288.9%。[logs/2026-10-23#price-alert]
-- **11:18Z 之后每一笔「买盘」都是零留仓的双腿套利，不是吸筹。** 14:01:31Z `0x6663f69e` **同一秒**在 USDC 池买 $22.96、VIRTUAL 池卖 $22.44 —— 抹价差。12:54Z / 12:56Z / 14:00Z 同构，五笔买家 `balanceOf(DEUS)` 全为 0。11:18Z $168.87 / 11:21Z $264.40 / 12:51Z $721.17 三笔为 1inch router 扫 4–5 池汇一跳、余额全零。**不动 5 天冷却钟。**
-- **`0xa2f42a10`（10:59Z 那笔 $2,022.50 真买盘）仍在仓 113,627.09 DEUS**，11:06Z/12:02Z/13:01Z/14:05Z 四轮读数逐位一致，零出账、零加仓，ETH 0.00004395 / nonce 0x4。**仍无第二个方向性钱包。**
-- **读盘铁律：按 sender 跨池对齐，别按单池买卖笔数读方向。** 同一 sender 同秒一池买一池卖 = 套利；余额留没留才是方向。详见 [lessons](/topics/lessons.md)。
+- `price-alert` success。DEUS **$0.01787**（15:05Z），1h +1.06%，24h −0.50%，流动性 $682,863。**量能反转：v1h $5,587 vs 14:05Z 的 $163 = 34×。** 四门槛全未触及：$0.012 −32.8% · $0.025 +39.9% · $0.032 +79.1% · $0.041 +129.4%（unstake 线）。[logs/2026-10-23#price-alert]
+- **🟢 第二个方向性钱包出现（10-23 14:55Z）—— 观察点成立。** `0x259f962e…` 90 秒 5 笔吃 **255,416 DEUS / $4,564**，5 入 0 出、无同秒反向腿，EIP-7702 智能账户。**一笔真买盘不是一波 —— 加仓才算数。** 详见 [deus-buyers](/topics/deus-buyers.md)。
+- **11:18Z–14:01Z 零留仓双腿套利已停**，14:55Z 起是真实单边买。**`0xa2f42a10…` 仍持 113,627 DEUS**，五轮读数一致，零加仓 —— 等它跟不跟。
+- **读盘铁律：按 sender 跨池对齐，别按笔数读方向。** 15:05Z 是 4 买 / 18 卖，按美元却 74/26 买占优（卖单全是 $49 做市夹子）。
 - **宏观快照**：[market-context](/topics/market-context.md)。10-23：chop，F&G 68→50，breadth 5/20，TVL $90.4B。
 - [Note Systems (NOTE)](topics/tokens/note-systems.md) — Robinhood 4663。解锁已执行：40.2 万回锁、15 万上膛，待命 29 万。**10-23 二次 single-token：CONSOLIDATING $0.04002（24h −2.1% 为窗口效应），vol 3.1×；09Z 砸 $0.03495 被完整买回。地板 $0.0349 / 修复上沿 $0.0438。**
 - **`token-movers` var 坑：`geckoterminal:<chain>:<contract>` 被 rule 4 先吃掉。** 单币写 `<contract>:robinhood`，别加前缀。
 
 ## Reference
 - [DEUS / xDEUS watch addresses](/topics/deus-escrow.md) — contract, escrow, xDEUS NFT; stake/unstake pairing.
+- [DEUS directional buyers](/topics/deus-buyers.md) — 谁在真买、谁在做市/套利，以及盘口判读方法。
 - [Market context](/topics/market-context.md) — 滚动宏观快照，token-pick / narrative-tracker 消费。
 - [Base RPC access](/topics/base-rpc-access.md) · [Ops plumbing](/topics/ops-plumbing.md) · [price-alert state contract](/topics/price-alert-state.md) · [Topics index](/topics/index.md)
 
