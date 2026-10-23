@@ -1,0 +1,16 @@
+{
+  "skill": "defi-overview",
+  "last_analyzed": "2026-10-23T12:16:07Z",
+  "quality_score": 3,
+  "assessment": "Solid, internally consistent market dashboard with real API-sourced numbers and an explicit source-status line, but it is long-form and entirely disconnected from the operator's DEUS/xDEUS playbook — no DEUS price vs. the preset $0.012/$0.025/$0.032/$0.041 levels, no 5-day unstake lead-time reminder, and the one facet that would have served the strategy (positions) was skipped for missing config; the movers commentary (\"no driver found across 14 Arc listings\", \"soroban farm inflow\") asserts search-derived findings while the log shows websearch=fail.",
+  "flags": [],
+  "avg_score": 3,
+  "history": [
+    {
+      "date": "2026-10-23",
+      "score": 3,
+      "ts": "2026-10-23T12:16:07Z",
+      "harness": "claude"
+    }
+  ]
+}

@@ -4,7 +4,7 @@ description: Detail behind the one-line lessons in MEMORY.md, kept here so MEMOR
 tags:
   - lessons
   - runbook
-timestamp: 2026-10-23T08:01:31Z
+timestamp: 2026-10-23T12:10:00Z
 ---
 
 # Lessons learned — archive
@@ -20,6 +20,14 @@ MEMORY.md carries the one-line form of each lesson. This file holds the detail.
 - **owner 自有余额与 timelock 是两条独立供给。** 别只盯 unlock 排程：NOTE owner EOA 不等 10-23 解锁就自行转出了 24 万。
 - **Robinhood Chain (4663) 不需要 key。** `rpc.mainnet.chain.robinhood.com` 免密钥即可 `eth_getLogs` 宽区间；GeckoTerminal (`networks/robinhood`) 和 CoinGecko 都能报价。别浪费回合找端点。
 - **监控盲区：Path C 只读 ERC-20 logs，看不到 native ETH。** Robinhood 无 key 时 `onchain-monitor` 走 Path C，因此"staging 钱包被充 gas"这类触发器永远不会响，需要额外跑 `eth_getBalance` 轮询。
+
+## 行情取数形状（DeFiLlama / CoinGecko）
+
+- **DeFiLlama `/v2/chains` 已不再返回 `change_1d` / `change_7d`。** 2026-10-23 实测 421 条记录里 0 条带这两个字段。任何"直接取字段"的代码都会给每条链算出 `0.00%` 并显示成"全部持平"——一个静默的假阴性。链级涨跌要走 `/v2/historicalChainTvl/{chain}` 自己按日快照算。
+- **CoinGecko `/global` 的 `market_cap_change_percentage_24h_usd` 不可信。** 2026-10-23 该字段报 −3.83%，而用同一批 `/coins/markets` 前 20 名反推只有 −0.07%，且 BTC/ETH/SOL 24h 全在 ±0.15% 内（Coinbase 现货交叉验证 $81,582 vs CoinGecko $81,634）。要用总市值变动就用 top-N 加权重算，别引用这个聚合字段。
+- **链级 TVL 跳变先怀疑"上新"，别当净流入。** Hyperliquid L1 的 7d 显示 +122%，实际是 10-21 单日 chainTVL 从 $1.02B 阶跃到 $2.49B（协议收录变化），而 Hyperliquid Bridge *协议本身* 7d 是 −0.17%。任何链级异动都要下钻到协议级 `chainTvls` 才会发现。
+- **百分比过滤器必须配绝对额地板。** 「fees 7d 涨 >20% 且 TVL 7d <+5%」这条筛出了 Aave V2（+39.4%）——其 7d 手续费总额只有 **$37,212**。纯百分比会把灰尘当信号。加 `total7d >= $1M`。
+- **APY 高不代表可投。** Uniswap V3 的 USDC-WETH 池 `apyBase` 22% 过了所有"real yield"过滤（无 reward、非 outlier、置信度 3），但那是做市 LP 的手续费，不是无风险利率。报告里必须标"LP, not passive"，否则下游会把它当稳定币收益。
 
 ## Keyless Base reads
 

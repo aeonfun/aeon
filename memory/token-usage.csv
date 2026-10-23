@@ -60,3 +60,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-10-23,heartbeat,claude-opus-5-5,80733,96748,7537152,0
 2026-10-23,price-alert,claude-opus-5-5,30765,23601,1602816,0
 2026-10-23,price-alert,claude-opus-5-5,102185,17146,1552128,0
+2026-10-23,defi-overview,claude-opus-5-5,266837,74873,5690542,0
