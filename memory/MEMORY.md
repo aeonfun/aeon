@@ -40,14 +40,16 @@
 - **网关 403 会被误记成 skill 回归。** 判据：`num_turns:1` + 0 tool calls + `api_error_status:403` → 网关问题，不是 skill bug。10-21 的 `hivemindos: 403 All target providers failed` 连杀 7 次 run，数小时自愈。
 
 ## Next Priorities
-- **上膛中的两个抛售钱包 —— 最高优先级、随时可能触发。** `0x3ace8e0a2937297be9488a8c235a616d1a929519`（100,000 NOTE，ETH 0.055798）与 `0xe4bf6f7efc32aad76e80916543d1277dbe8ecf9a`（50,000 NOTE，ETH 0.010764）都是 nonce 0、从未发过交易、gas 已到位、零出账。**任意一笔出账 = 开砸启动**，不需要再等充值。这是 10-20 / 10-21 同一套手法的前两步，已走完。
-- **10-23 09:57:36Z 的 120 万 NOTE timelock 解锁 —— 与上面叠加。** opId `0x77a7b0d6…6974da`，calldata `NOTE.transfer(owner, 1,200,000)`、delay 172800s；全量扫描仍只有 1 条 `CallScheduled`、零 `Cancelled`、零 `Executed`，10-22 21:05Z 复核未撤销。**注意：这两天是两个已知供给事件同一天，不是单一的解锁日。**
+- **🔴 上膛钱包3 已开砸（10-23 01:39:41Z）。** `0x3ace8e0a` 100,000 NOTE 全额卖出，余额归零，nonce 0→1。4 跳经中转到 **Uniswap v4 PoolManager**（=卖出）。该链进池 105,000；全量流入 1,434,187 ≈$59.2k，约 24h 量 10.7%。**池子吸收住了：6h +5.82%。** [source: logs/2026-10-23#heartbeat]
+- **仅剩一把枪：`0xe4bf6f7efc32aad76e80916543d1277dbe8ecf9a`（50,000 NOTE，nonce 仍 0，零出账）。** 同批孪生钱包，第一把打完后它没动。**它出账 = 第二批开砸，盯 nonce 0→1。**
+- **10-23 09:57:36Z 的 120 万 NOTE timelock 解锁 —— 08:01Z 复核仍未执行。** opId `0x77a7b0d6…6974da`，`NOTE.transfer(owner, 1,200,000)`、delay 172800s。**`balanceOf(timelock)` = 15,254,442.02，与 10-22 21:05Z 完全一致** → 未执行、未撤销。窗口在 `onchain-monitor` 09:00Z 排程内。**第一波（10 万）已在解锁前 8h 发生，不再是"解锁后才砸"。**
 - **vesting schedule 25 的受益人已更正为 owner 本人**（不是 `0x2807de7a`）。18:33Z owner 自领 401,682.037，schedule 25 剩余约 19.8 万仍可领。`owner()` = owner EOA。**别再把它当"第三方沉睡额度"。**
 - **vesting release 量级不是恒定的**：scheduleId 7=21,446 · 8=2,937 · 11=2,954 · 18=191,793 · **25=401,682（10-22 18:33Z，迄今最大）**。不要按"每天 2 万"估日供给。
 
 ## Active Topics
 - `price-alert` success。DEUS 08:01Z $0.01739（连续第 5 个 run 同标记），24h −3.15%，四门槛未触及，`last_alerts.*` 全 null。深池最后成交 06:21:39Z，约 100 分钟零撮合，h1 `null`。距 $0.041 +135.8%、$0.012 −31.0%、ATH −74.9%。[logs/2026-10-23#price-alert]
 - **读盘铁律：按 sender 跨池对齐，别按单池买卖笔数读方向。** 06:16/06:21 是套利腿；04:26:35Z `0xb9817…e105d72` 两池同砸（≈$136），唯一真实抛压 —— 盯该地址。详见 [lessons](/topics/lessons.md)。
+- `price-alert` 长期 success，DEUS 在 $0.0172–$0.0174 窄带（10-23 07:02Z：$0.01739，24h −3.15%，四门槛全未触及）。**最深池反复零成交**：07:02Z 全小时仅 2 笔小卖（$13.54 + $12.81）。价格是陈旧标记，不是"走平"。距 $0.041 回本线 +135.8%。[source: logs/2026-10-23#price-alert]
 - [Note Systems (NOTE)](topics/tokens/note-systems.md) — Robinhood 4663。**10-22 owner 复活（18:09–18:51Z 三笔），余额 120,000→371,682，nonce 365→368。** 详见 Next Priorities 的上膛钱包。$0.04059（24h −27.4%），24h 净卖压 +472,236（0.79%），连续第三个净卖窗口。 [source: logs/2026-10-22#onchain-monitor]
 
 ## Reference

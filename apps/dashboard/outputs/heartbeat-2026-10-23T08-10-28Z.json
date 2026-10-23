@@ -1,0 +1,116 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "上一条标题数字更正",
+        "description": "heartbeat 更正推送"
+      },
+      "children": [
+        "alert1",
+        "lead1",
+        "text1",
+        "sep1",
+        "h2a",
+        "statRow",
+        "text2",
+        "sep2",
+        "h2b",
+        "text3"
+      ]
+    },
+    "alert1": {
+      "type": "Alert",
+      "props": {
+        "title": "⚠️ 更正",
+        "message": "剩余上膛钱包是 5 万，不是 50 万",
+        "type": "warning"
+      }
+    },
+    "lead1": {
+      "type": "Text",
+      "props": {
+        "text": "上条推送标题写「50 万仍上膛」，错了 10 倍。",
+        "variant": "lead"
+      }
+    },
+    "text1": {
+      "type": "Text",
+      "props": {
+        "text": "正确数字：0xe4bf6f7e 剩余 50,000 枚（5 万），不是 50 万。正文里的数字是对的，只有标题错。",
+        "variant": "body"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "h2a": {
+      "type": "Heading",
+      "props": {
+        "text": "对判断的影响",
+        "level": "h3"
+      }
+    },
+    "statRow": {
+      "type": "Grid",
+      "props": {
+        "columns": 2,
+        "gap": "md"
+      },
+      "children": [
+        "stat1",
+        "stat2"
+      ]
+    },
+    "stat1": {
+      "type": "Stat",
+      "props": {
+        "label": "0xe4bf6f7e 剩余未动",
+        "value": "50,000 枚（5 万）",
+        "delta": "≈ $2.1k",
+        "trend": "neutral"
+      }
+    },
+    "stat2": {
+      "type": "Stat",
+      "props": {
+        "label": "第一把已卖出",
+        "value": "100,000 枚（10 万）",
+        "delta": "01:39:41Z",
+        "trend": "down"
+      }
+    },
+    "text2": {
+      "type": "Text",
+      "props": {
+        "text": "剩余未动的供给是 5 万枚（约 $2.1k），不是 50 万（约 $20.6k）。第二把枪的火力是第一把（10 万）的一半，不是 5 倍。",
+        "variant": "body"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "h2b": {
+      "type": "Heading",
+      "props": {
+        "text": "其余结论不变",
+        "level": "h3"
+      }
+    },
+    "text3": {
+      "type": "Text",
+      "props": {
+        "text": "第一把已于 01:39:41Z 全额卖出 10 万，终点是 Uniswap v4 PoolManager，池子吸收住了。",
+        "variant": "body"
+      }
+    }
+  }
+}
