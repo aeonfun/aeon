@@ -1,17 +1,11 @@
 {
   "skill": "price-alert",
-  "last_analyzed": "2026-10-23T11:08:38Z",
+  "last_analyzed": "2026-10-23T12:05:27Z",
   "quality_score": 4,
-  "assessment": "Substantive, source-backed run that correctly withholds a notification when no gate fires, then adds genuine on-chain intelligence (tx/block/wallet, balance-retention check) that distinguishes directional buying from arb legs — though it is longer than the operator's 'decision-ready, no long-form' preference and includes some self-referential method-note padding.",
+  "assessment": "Quiet no-op correctly handled with threshold distances, raw contract/pool sources, and a genuinely insightful arb-leg-vs-directional-buy distinction backed by balance evidence and clear next triggers; docked for length against the 'no long-form' preference and chain-level specifics (tx prefixes, nonces, 18-decimal balances) that can't be independently confirmed here.",
   "flags": [],
   "avg_score": 4.13,
   "history": [
-    {
-      "date": "2026-10-22",
-      "score": 4,
-      "ts": "2026-10-22T06:02:36Z",
-      "harness": "claude"
-    },
     {
       "date": "2026-10-22",
       "score": 4,
@@ -184,6 +178,12 @@
       "date": "2026-10-23",
       "score": 4,
       "ts": "2026-10-23T11:08:38Z",
+      "harness": "claude"
+    },
+    {
+      "date": "2026-10-23",
+      "score": 4,
+      "ts": "2026-10-23T12:05:27Z",
       "harness": "claude"
     }
   ]
