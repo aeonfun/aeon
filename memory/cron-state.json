@@ -25,8 +25,8 @@
     "last_error": "hivemindos: Failed to authenticate. API Error: 403 All target providers failed."
   },
   "price-alert": {
-    "last_dispatch": "2026-10-23T19:00:46Z",
-    "last_status": "success",
+    "last_dispatch": "2026-10-23T20:00:44Z",
+    "last_status": "dispatched",
     "last_success": "2026-10-23T19:12:49Z",
     "total_runs": 53,
     "total_successes": 50,
