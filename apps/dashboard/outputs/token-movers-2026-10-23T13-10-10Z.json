@@ -1,0 +1,272 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "$NOTE — CONSOLIDATING",
+        "description": "地板 0.0349 守住 · 量 3.1x"
+      },
+      "children": [
+        "stack-main"
+      ]
+    },
+    "stack-main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "stats-grid",
+        "sep-1",
+        "why-heading",
+        "why-text",
+        "sep-2",
+        "buyers-heading",
+        "buyers-text",
+        "sep-3",
+        "liquidity-text",
+        "sep-4",
+        "levels-heading",
+        "levels-text",
+        "sep-5",
+        "structure-heading",
+        "structure-text",
+        "sep-6",
+        "chart-link",
+        "details-heading",
+        "contract-link",
+        "pool-link",
+        "badges-row"
+      ]
+    },
+    "stats-grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "stat-price",
+        "stat-liq",
+        "stat-vol",
+        "stat-buysells",
+        "stat-whales"
+      ]
+    },
+    "stat-price": {
+      "type": "Stat",
+      "props": {
+        "label": "Price",
+        "value": "$0.04002",
+        "delta": "±2.1% 24h",
+        "trend": "down"
+      }
+    },
+    "stat-liq": {
+      "type": "Stat",
+      "props": {
+        "label": "Liquidity",
+        "value": "$401.8K",
+        "delta": "−1.2%",
+        "trend": "down"
+      }
+    },
+    "stat-vol": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume",
+        "value": "$550.6K",
+        "delta": "3.1× 7d",
+        "trend": "up"
+      }
+    },
+    "stat-buysells": {
+      "type": "Stat",
+      "props": {
+        "label": "Buys / Sells",
+        "value": "1517 / 1738",
+        "delta": "ratio 0.87",
+        "trend": "down"
+      }
+    },
+    "stat-whales": {
+      "type": "Stat",
+      "props": {
+        "label": "Whales",
+        "value": "2",
+        "trend": "neutral"
+      }
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "why-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "为什么不是继续崩",
+        "level": "h3"
+      }
+    },
+    "why-text": {
+      "type": "Text",
+      "props": {
+        "text": "−2.1% 这个读数本身就是假象 —— 10-22 的 −30.5% 主跌段刚滚出 24h 窗口。真信息在小时线：09Z 砸到 $0.03495，收 $0.04040，单小时 $54.8K 是 48h 最重量柱，下影线被完整买回。之后四小时锁在 1.8% 窄带。",
+        "variant": "body"
+      }
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "buyers-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "买盘在往上接",
+        "level": "h3"
+      }
+    },
+    "buyers-text": {
+      "type": "Text",
+      "props": {
+        "text": "最近 2h 买 $19.0K / 卖 $17.9K 打平。12:01Z 鲸鱼买 $1.9K @ $0.0407（0xffe8a4c3），11:07Z 鲸鱼卖 $1.0K @ $0.0394（0xa1d8dec9）—— 买家价比卖家高 3.2%。",
+        "variant": "body"
+      }
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "liquidity-text": {
+      "type": "Text",
+      "props": {
+        "text": "流动性只掉 1.2%，价格横盘，量 3.1× → 池子在换手，不是撤离。",
+        "variant": "body"
+      }
+    },
+    "sep-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "levels-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "盯两个价",
+        "level": "h3"
+      }
+    },
+    "levels-text": {
+      "type": "Text",
+      "props": {
+        "text": "$0.0349 今日已测试并守住（地板）· $0.0438（10-22 收盘）是修复上沿。",
+        "variant": "body"
+      }
+    },
+    "sep-5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "structure-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "结构面",
+        "level": "h3"
+      }
+    },
+    "structure-text": {
+      "type": "Text",
+      "props": {
+        "text": "290K NOTE（≈$11.6K）三处上膛 + owner 930K（≈$37.2K），合计 ≈2.0% 单日池量，非即时抛压；扳机仍是「第一笔 ETH 入账」。",
+        "variant": "body"
+      }
+    },
+    "sep-6": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "chart-link": {
+      "type": "Link",
+      "props": {
+        "label": "Chart — GeckoTerminal Pool",
+        "href": "https://www.geckoterminal.com/robinhood/pools/0x378b102395b2c4f9a9ebe650b5b501d0810c60126f886107d8812ca7ff7f9f91"
+      }
+    },
+    "details-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Contract & Sources",
+        "level": "h4"
+      }
+    },
+    "contract-link": {
+      "type": "Text",
+      "props": {
+        "text": "Contract: 0xc4f730335Fb9e439ca5552f7b52B8E638c4245B0 | robinhood (4663)",
+        "variant": "caption"
+      }
+    },
+    "pool-link": {
+      "type": "Link",
+      "props": {
+        "label": "Pool — 0x378b1023...7f9f91",
+        "href": "https://www.geckoterminal.com/robinhood/pools/0x378b102395b2c4f9a9ebe650b5b501d0810c60126f886107d8812ca7ff7f9f91"
+      }
+    },
+    "badges-row": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-gt",
+        "badge-ds",
+        "badge-xai",
+        "badge-treasury"
+      ]
+    },
+    "badge-gt": {
+      "type": "Badge",
+      "props": {
+        "text": "gt=ok",
+        "variant": "secondary"
+      }
+    },
+    "badge-ds": {
+      "type": "Badge",
+      "props": {
+        "text": "ds=ok",
+        "variant": "secondary"
+      }
+    },
+    "badge-xai": {
+      "type": "Badge",
+      "props": {
+        "text": "xai=skip",
+        "variant": "outline"
+      }
+    },
+    "badge-treasury": {
+      "type": "Badge",
+      "props": {
+        "text": "treasury=skip",
+        "variant": "outline"
+      }
+    }
+  }
+}

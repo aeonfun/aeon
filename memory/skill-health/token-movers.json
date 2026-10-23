@@ -1,8 +1,8 @@
 {
   "skill": "token-movers",
-  "last_analyzed": "2026-10-23T12:16:38Z",
+  "last_analyzed": "2026-10-23T13:10:09Z",
   "quality_score": 3,
-  "assessment": "Structured, numeric mover alert with price/volume/flow and a pool link, but it covers $NOTE rather than DEUS/xDEUS, so none of the preset thresholds or unstake lead-time logic apply, and the wallet-cluster/whale specifics cite no raw source beyond the chart link.",
+  "assessment": "数据密集、结构清晰、含合约与图表来源，中文合规；但主体是 $NOTE 而非 operator 唯一关注的 DEUS 仓位，未推进'回本且不追加现金'的北极星，且属无触发条件的常态推送，与'只在触发时推送、别吵我'相悖，部分鲸鱼地址与成交计数难以独立核验。",
   "flags": [],
   "avg_score": 3,
   "history": [
@@ -10,6 +10,12 @@
       "date": "2026-10-23",
       "score": 3,
       "ts": "2026-10-23T12:16:38Z",
+      "harness": "claude"
+    },
+    {
+      "date": "2026-10-23",
+      "score": 3,
+      "ts": "2026-10-23T13:10:09Z",
       "harness": "claude"
     }
   ]

@@ -1,38 +1,39 @@
 # $NOTE — 2026-10-23
 
-**Verdict:** BREAKDOWN — −10.5% on 3.2× volume; sellers pushed it to $0.0349, then the bid reclaimed $0.041.
+**Verdict:** CONSOLIDATING — 24h 仅 −2.1%，但量能 3.1× 7d 均值；$0.0349 地板被买回，砸盘未续。
 
 ## 24h at a glance
 
 | Metric | Now | 24h Δ | vs 7d avg |
 |--------|-----|-------|-----------|
-| Price | $0.04103 | −10.5% | — |
-| Liquidity | $406.8K | +1.1%\* | — |
-| Volume (24h) | $568.5K | — | 3.2× |
-| Buys / Sells | 1,523 / 1,777 | ratio 0.857 (prev 0.842) | — |
-| Whale trades (≥$1k) | 2 (2h window) | — | — |
-| FDV | $2.46M | — | — |
+| Price | $0.04002 | −2.1% | — |
+| Liquidity | $401.8K | −1.2% | — |
+| Volume (24h) | $550.6K | — | 3.1× |
+| Buys / Sells | 1517 / 1738 | ratio 0.87 (昨 0.86) | — |
+| Whale trades (≥$1k) | 2 | — | — |
+| FDV | $2.41M | — | — |
 
 ## Trend
-- **7d:** −30.3% (rolling over — the $0.058 shelf broke on 10-22 and has not been reclaimed)
-- **30d:** −64.4% (persistent distribution from the $0.115 level)
+- **7d:** −37.5% — 从 $0.064 一路滚落，10-22 单日 −30.5% 是主跌段
+- **30d:** −61.5% — 9 月下旬 $0.104 起跌，趋势未反转
 
 ## What changed
 
-The 24h tape is a dump that was absorbed, not a freefall. Sellers took the pool to **$0.0349** in the 09:00Z hour on **$54.8K** of volume — the single heaviest hour of the last 48 — and price closed that same hour back at $0.0404, **+17.5% off the low**. That round trip is the story: the bid at $0.035 held.
+24h 窗口已把 10-22 的 −30.5% 主跌段滚出去，今天读数回到 −2.1%：**不是价格回稳，是崩盘那天出了窗口**。真实信息在小时线里 —— 09Z 那根针砸到 $0.03495，收在 $0.04040，单小时 $54.8K 是 48 小时最重的一根量柱，**下影线被完整买回**。此后 10Z–13Z 四小时全部收在 $0.0396–$0.0404 的 1.8% 窄带里，成交量回落到每小时 $18K。
 
-Volume is running **3.2× the 7-day mean** ($568.5K vs $178.2K), and liquidity actually rose **+1.1%** to $406.8K while price fell 10.5% — the pool is being replenished as it is sold into, which is the opposite of a liquidity vacuum. Buy/sell count is 1,523/1,777 (0.857) against 0.842 at the 10:35Z reading: the sell skew narrowed slightly, it did not widen.
+买盘开始压过卖盘：最近 2 小时 300 笔窗口里买 $19.0K / 卖 $17.9K，几乎打平（今日买卖笔数仍是 1517:1738 的 0.87）。两笔鲸鱼单都在这窗口内 —— 12:01Z 买 $1.9K @ $0.0407（`0xffe8a4c3`）、11:07Z 卖 $1.0K @ $0.0394（`0xa1d8dec9`），**买家价格高于卖家 3.2%，买方在往上接**。
 
-\*Liquidity baseline is the 10-22 21:05Z reading ($402,288) — the only same-pool figure in the last 24h of logs; no stored `TOKEN_REPORT_STATE` line exists yet, so this is a day-over-day proxy, not a measured 24h delta.
-
-Whale prints in the available 2h trade window: `buy $1.9K @ $0.0407 · 12:01Z` (`0xffe8a4c3`) and `sell $1.0K @ $0.0394 · 11:07Z` (`0xa1d8dec9`). No single print dominates — consistent with the split-order relay pattern, and no print was flagged anomalous by GeckoTerminal.
+流动性只掉 1.2%（$406.8K → $401.8K），而价格横盘、量能 3.1× —— **池子在换手，不是在撤离**。
 
 ## Context
 
-This is the same supply that the 10:00Z unlock released. **290,000 NOTE ≈ $11.9K** sits armed across three fresh wallets (`0x3a9039c7` 150K, `0x572bb527` 90K, `0xe4bf6f7e` 50K), and the owner EOA still holds **930,000 ≈ $38.2K** against a 24h pool volume of $568.5K. The armed 290K alone is **2.1%** of one day's NOTE volume (13.86M NOTE). The $0.035 floor is the level that matters — one prior test, held.
+现货盘口正在收窄：主池 NOTE/WETH 1% 报价 $0.04002，USDG 池 $0.03844（−3.9%），WETH 0.1% 池 $0.04002。价差 3.9% 偏向 USDG 池偏低，但该池 24h 仅 $2.3K 量、$7.2K 流动性 —— 是孤儿报价，不是真折价。
+
+结构面：290K NOTE（≈$11.6K）仍分三处上膛待命，owner 930K（≈$37.2K）。两者合计 ≈ **2.0%** 的单日池量（$550.6K），不构成即时抛压，但扳机仍是「第一笔 ETH 入账」。
+
+**$0.0349 是今日已测试并守住的地板；$0.0438（10-22 收盘价）是修复上沿。**
 
 ---
-
 *Chart: https://www.geckoterminal.com/robinhood/pools/0x378b102395b2c4f9a9ebe650b5b501d0810c60126f886107d8812ca7ff7f9f91*
 *Contract: 0xc4f730335Fb9e439ca5552f7b52B8E638c4245B0 | Chain: robinhood (4663)*
 *Sources: gt=ok · ds=ok · xai=skip · treasury=skip*
