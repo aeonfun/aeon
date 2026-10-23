@@ -25,8 +25,8 @@
     "last_error": "hivemindos: Failed to authenticate. API Error: 403 All target providers failed."
   },
   "price-alert": {
-    "last_dispatch": "2026-10-23T11:02:26Z",
-    "last_status": "success",
+    "last_dispatch": "2026-10-23T12:00:45Z",
+    "last_status": "dispatched",
     "last_success": "2026-10-23T11:08:41Z",
     "total_runs": 45,
     "total_successes": 42,
@@ -48,5 +48,13 @@
     "success_rate": 0.75,
     "last_failed": "2026-10-21T23:31:05Z",
     "last_error": "hivemindos: Failed to authenticate. API Error: 403 All target providers failed."
+  },
+  "token-movers": {
+    "last_dispatch": "2026-10-23T12:00:45Z",
+    "last_status": "dispatched"
+  },
+  "defi-overview": {
+    "last_dispatch": "2026-10-23T12:00:45Z",
+    "last_status": "dispatched"
   }
 }
