@@ -1,17 +1,11 @@
 {
   "skill": "price-alert",
-  "last_analyzed": "2026-10-23T01:02:49Z",
-  "quality_score": 3,
-  "assessment": "Reaches a clear 'no action' conclusion with concrete percentage distances and reconciled volume figures, but omits the required raw source/contract address and spends most of its length on internal workflow bookkeeping rather than a decision-ready alert.",
+  "last_analyzed": "2026-10-23T02:02:18Z",
+  "quality_score": 4,
+  "assessment": "Clean, gate-checked no-op run: actionable distance-to-threshold table, dual-source price with explicit 1.8% divergence disclosed, correct restraint (zero notifications per strategy), and full source citation — held back from 5 only because it is a routine quiet-market read with no new insight beyond confirming the stale-mark issue cleared.",
   "flags": [],
   "avg_score": 4.07,
   "history": [
-    {
-      "date": "2026-10-21",
-      "score": 4,
-      "ts": "2026-10-21T13:02:30Z",
-      "harness": "claude"
-    },
     {
       "date": "2026-10-21",
       "score": 4,
@@ -184,6 +178,12 @@
       "date": "2026-10-23",
       "score": 3,
       "ts": "2026-10-23T01:02:49Z",
+      "harness": "claude"
+    },
+    {
+      "date": "2026-10-23",
+      "score": 4,
+      "ts": "2026-10-23T02:02:18Z",
       "harness": "claude"
     }
   ]
