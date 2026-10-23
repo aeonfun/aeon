@@ -1,42 +1,45 @@
-No gate fired, so per the skill and the operator's "只在触发条件成立时推送" rule I'm not sending a push. The substantive finding is a correction to yesterday's read.
+Run complete. No trigger fired, so no notification was sent — per the strategy's "only ping when a gate trips" rule.
 
-## price-alert — DEUS — 2026-10-23 10:04Z
+## DEUS price-alert — 2026-10-23 11:06Z
 
-**Verdict: `PRICE_ALERT_OK` — 0 notifications, 0 gates fired.**
+**Status: `PRICE_ALERT_OK`** — no gate fired, but there is one piece of intelligence worth recording.
 
-| Field | Value |
-|---|---|
-| Mark (deepest pool) | **$0.01734** — Aerodrome DEUS/VIRTUAL, liq $673,981.97 |
-| 1h / 6h / 24h | −0.25% / +0.67% / −2.42% |
-| ATH | $0.06876 (2026-05-28) — unchanged, +296.5% away |
-| Sharp-move gate | QUIET (max \|h1\| across all Base pools = +0.92% vs ±20%) |
-| Targets | 0.012 / 0.025 / 0.032 / 0.041 — all not crossed |
+### Price
+- **Mark: $0.01763** on Aerodrome DEUS/VIRTUAL `0x3E97c5EC8c73e7d566aCA606472141a9b9a8C1Fa` (deepest Base pool, liq $680,952)
+- 1h **+1.63%** (measured) · 6h +1.34% · 24h −1.24% · v1h $2,012 · v24h $16,900
+- Prior run (10:04Z) was $0.01734, so +1.67% raw across the hour
 
-### The one thing worth reading: yesterday's "accumulation" did not follow through, and today's buying is arbitrage
+### Gates — all clear
+| Gate | Reading | Verdict |
+|---|---|---|
+| ATH | $0.01763 vs $0.06876 (2026-05-28) | +290.0% away, UNCHANGED |
+| Sharp move | +1.63% vs ±20% threshold | QUIET |
+| $0.012 (below) | −31.9% away | not hit |
+| $0.025 (above) | +41.8% away | not hit |
+| $0.032 (above) | +81.5% away | not hit |
+| $0.041 (above, unstake line) | +132.6% away | not hit |
 
-**Yesterday's buyer stopped.** `0x1e70e2fd…8dead` still holds **all 17,635.3151 DEUS**, byte-identical to the 08:37Z read — and has placed zero further trades. One opportunistic clip, not a buyer wave.
+### The actual finding: first genuinely directional buy of the day
+At **10:59:19Z** a single print of **$2,022.50** hit the VIRTUAL pool — 5.4× the largest earlier burst. I traced it on-chain rather than trusting the tape:
 
-**Today's burst is the opposite of accumulation.** The VIRTUAL pool printed **7 consecutive buys, 0 sells, $372.59** between 09:49:03–09:51:47Z. That looks like sweeping until you check balances:
+- tx `0xe6991c4bf8c688c3e225d90d558cd03b383bc4277f17fd3c3b33fba643388196`, block 52,981,906, status 1
+- Buyer `0xa2f42a10a8eb9089ac51108af68fa202bf2c3130` — nonce 3, brand-new wallet, not in `known-addresses.yml`
+- Route: 0.84 ETH → VIRTUAL/ETH pool → 3,046.66 VIRTUAL → DEUS/VIRTUAL pool → **113,627.09 DEUS out**
+- **It kept the position.** `balanceOf` is 113,627.09092929628 DEUS — byte-identical to the buy output. Transfer scan: 1 in, 0 out.
 
-- `0xb824534a…5ba4bb` (nonce 1,334 — not a fresh wallet) bought $56.57 + $62.64 + $62.66 + $75.40 while **simultaneously selling USDC on pool 0x58dBa** every 4–10 seconds. **DEUS balance: 1 wei.** It round-tripped and kept nothing.
-- `0x862304f5…e7597b` ($23.31 + $44.37) and `0x9f318458…6ae6492` ($44.34) — **both hold 0 DEUS.**
+That is the opposite of the two earlier bursts today. At 09:49Z, `0xb824534a` sold USDC in the same second and its DEUS balance is 1 wei; `0x862304f5` and `0x9f318458` hold zero. All three were arb legs. This one is directional — someone took size and held it.
 
-The cross-pool spread is the tell: VIRTUAL $0.01734 vs USDC $0.01751 = **+0.98% premium on the USDC book, the widest of the day** — and the premium-side pool is the only one showing sells (1 buy / 9 sells, h1 +0.80%, a 09:49:01Z burst of nine dust sells). Bots were eroding a 1% gap. Seven buys moved the deepest pool **0.1%** on $674k liquidity — pressure absorbed, not demand.
+Corroborating signal: the cross-pool spread **inverted**. At 10:04Z the VIRTUAL pool sat 0.98% *below* the USDC book, which is exactly what the arb bots were harvesting. Now VIRTUAL is $0.01763 vs USDC $0.01750 (−0.74%) — the gap flipped and closed because real buying pushed the VIRTUAL book up through the USDC mark.
 
-### Decision
+### Judgment: don't touch the 5-day cooldown
+$2,022 is **0.3% of pool liquidity**. Not a re-rating. The strategy's bar for spending the xDEUS cooldown is a move worth paying five days for, and one buy against $681k doesn't clear it. Watch two things over the next 2–3 runs: whether `0xa2f42a10` adds to the position, and whether a second distinct wallet follows. A single wallet adding, or two independent wallets buying, is what would justify starting the unstake clock early — not this print alone.
 
-Nothing here changes the taper plan. **I did not start the 5-day unstake clock** — no gate fired, and the flow that looked like a buyer is mechanical. $0.041 (回本线) remains +136.4% away; $0.012 (panic line) is −30.8%.
-
-Distances: $0.012 −30.8% · $0.025 +44.2% · $0.032 +84.5% · $0.041 +136.4%.
-
-### Sources
-- DexScreener `api.dexscreener.com/latest/dex/tokens/0x940A319B75861014A220D9c6c144d108552B089B` (HTTP 200)
-- GeckoTerminal trades — pools `0x3e97c5ec8c73e7d566aca606472141a9b9a8c1fa` (VIRTUAL) and `0x58dba34e6ee6eb76ef71a6ca0f18871cae817d3b` (USDC)
-- Base RPC `base.gateway.tenderly.co` — `balanceOf` ×4, `eth_getTransactionCount` ×1
+### Method note worth keeping
+My first transfer scan (six 500-block skip windows) returned **zero logs in both directions**. That was a false negative from an over-wide range, not a quiet wallet — precisely the "never trust a zero-log window" trap already in `MEMORY.md`. Re-scanning in 100-block windows with the tx receipt as a control group gave the real answer. The lesson held.
 
 ## Summary
-
-- **Ran** `skills/price-alert/SKILL.md` with `var=0.012,0.025,0.032,0.041`. Fetched DEUS from DexScreener (HTTP 200), selected the deepest Base pool, evaluated ATH / sharp-move / four target gates. **All quiet — `PRICE_ALERT_OK`.**
-- **Modified:** `memory/topics/price-alert-state.json` (`last_price` refreshed; ATH, `last_alerts.*` and all target sides unchanged; `jq empty` → STATE_VALID, `.bak` kept), `memory/logs/2026-10-23.md` (new `### price-alert` block), `memory/MEMORY.md` (Active Topics rewritten to correct yesterday's "真吸筹" read), `memory/topics/lessons.md` (two new rules: "N consecutive buys ≠ accumulation, check `balanceOf` first"; "single clip ≠ trend, re-check next day").
-- **Notified:** no — no gate fired, per the operator's rule to stay silent on normal runs.
-- **Follow-up:** the `0x1e70e2fd` wallet is now the one address worth watching. If it adds a second clip it's a position; if it sells, that's a 17.6k DEUS supply overhang on a $674k pool. Next scheduled run picks it up automatically.
+- Ran `price-alert` with `var=0.012,0.025,0.032,0.041`; all four targets already registered, none crossed. **No notification sent** (correct — no gate fired).
+- Fetched DexScreener `api.dexscreener.com/latest/dex/tokens/0x940A319B75861014A220D9c6c144d108552B089B` (http 200) and GeckoTerminal trade tape for the deepest Base pool.
+- Verified the 10:59:19Z $2,022.50 buy on-chain via Base `eth_getTransactionReceipt` / `balanceOf` / `eth_getLogs`; confirmed directional (position retained) vs. the day's two arb bursts.
+- Files modified: `memory/topics/price-alert-state.json` (state + price snapshot, jq-validated), `memory/logs/2026-10-23.md` (appended `### price-alert`), `memory/MEMORY.md` (Active Topics refreshed), `output/deus-pairs.json`, `output/deus-trades.json` (artifacts).
+- Follow-up: next run should check whether `0xa2f42a10` adds size or a second wallet appears. On-chain watch list is unaffected.

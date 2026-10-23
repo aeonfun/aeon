@@ -1,17 +1,11 @@
 {
   "skill": "price-alert",
-  "last_analyzed": "2026-10-23T10:05:58Z",
+  "last_analyzed": "2026-10-23T11:08:38Z",
   "quality_score": 4,
-  "assessment": "Correct no-push decision with cited sources, corrected a prior misread, and actionable follow-up (watch 0x1e70e2fd) — docked for running long against the operator's '不要长文 / 看完就能决定' preference, though the length sits in the log rather than a push.",
+  "assessment": "Substantive, source-backed run that correctly withholds a notification when no gate fires, then adds genuine on-chain intelligence (tx/block/wallet, balance-retention check) that distinguishes directional buying from arb legs — though it is longer than the operator's 'decision-ready, no long-form' preference and includes some self-referential method-note padding.",
   "flags": [],
   "avg_score": 4.13,
   "history": [
-    {
-      "date": "2026-10-22",
-      "score": 4,
-      "ts": "2026-10-22T05:02:15Z",
-      "harness": "claude"
-    },
     {
       "date": "2026-10-22",
       "score": 4,
@@ -184,6 +178,12 @@
       "date": "2026-10-23",
       "score": 4,
       "ts": "2026-10-23T10:05:58Z",
+      "harness": "claude"
+    },
+    {
+      "date": "2026-10-23",
+      "score": 4,
+      "ts": "2026-10-23T11:08:38Z",
       "harness": "claude"
     }
   ]
