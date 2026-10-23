@@ -53,6 +53,9 @@
 - `price-alert` success。DEUS $0.01734（09:56Z），1h −0.25%，24h −2.42%。四门槛全未触及。**08:36–08:37Z 死盘被两笔买入打破**（$494 ≈ 24h 量 3.3%），链上核对余额留在买家 → 真吸筹非套利腿。[logs/2026-10-23#price-alert]
 - **读盘铁律：按 sender 跨池对齐，别按单池买卖笔数读方向。** 判断吸筹还要看余额留没留（余额在 = 方向性买入；同秒另一池反向 = 套利）。详见 [lessons](/topics/lessons.md)。
 - [Note Systems (NOTE)](topics/tokens/note-systems.md) — Robinhood 4663。**09:57:36Z 解锁已到期可执行；09:50Z owner 第三次上膛 90k。** 详见 Next Priorities。$0.03991（24h −14.53%）。
+- `price-alert` success。DEUS 10:04Z **$0.01734**，24h −2.42%，1h −0.25%（连续第二小时可测），四门槛未触及，`last_alerts.*` 全 null。**昨日"首次真实吸筹"已证伪为单次机会主义下单**：`0x1e70e2fd` 余额仍是 17,635.3151 DEUS，**零追加**。09:49–09:51Z VIRTUAL 池 7 连买 / 0 卖 / $372.59 是**套利腿**：`0xb824534a`（nonce 1,334）同分钟在 USDC 池每 4–10s 卖出，**三买家余额 1 wei / 0 / 0**，全没留仓。旁证：两池价差 +0.98%（当日最阔），溢价池（USDC）才出现卖单 —— 机器人在抹平价差，不是有人在买。距 $0.041 +136.4%、$0.012 −30.8%、ATH +296.5%。**结论：不改变减质押计划，不动 5 天冷却钟。** [logs/2026-10-23#price-alert]
+- **读盘铁律：按 sender 跨池对齐，别按单池买卖笔数读方向。** 06:16/06:21 是套利腿；04:26:35Z `0xb9817…e105d72` 两池同砸（≈$136）—— 早盘唯一真实抛压。**新增正例：判断吸筹也要看余额留没留**（余额在 = 方向性买入；同秒另一池反向 = 套利）。详见 [lessons](/topics/lessons.md)。
+- [Note Systems (NOTE)](topics/tokens/note-systems.md) — Robinhood 4663。**10-22 owner 复活（18:09–18:51Z 三笔），余额 120,000→371,682，nonce 365→368。** 详见 Next Priorities 的上膛钱包。$0.04059（24h −27.4%），24h 净卖压 +472,236（0.79%），连续第三个净卖窗口。 [source: logs/2026-10-22#onchain-monitor]
 
 ## Reference
 - [DEUS / xDEUS watch addresses](/topics/deus-escrow.md) — contract, escrow, xDEUS NFT; stake/unstake pairing.

@@ -38,19 +38,19 @@
     }
   },
   "last_price": {
-    "price_usd": 0.01739,
-    "h1_pct": -0.01,
-    "h6_pct": 0.92,
-    "h24_pct": -2.08,
+    "price_usd": 0.01734,
+    "h1_pct": -0.25,
+    "h6_pct": 0.67,
+    "h24_pct": -2.42,
     "pool": "aerodrome DEUS/VIRTUAL",
-    "liquidity_usd": 676430.13,
-    "volume_24h_usd": 14933.53,
-    "volume_1h_usd": 309.52,
+    "liquidity_usd": 673981.97,
+    "volume_24h_usd": 15039.86,
+    "volume_1h_usd": 372.88,
     "pool_url": "https://dexscreener.com/base/0x3e97c5ec8c73e7d566aca606472141a9b9a8c1fa",
-    "observed_at": "2026-10-23T09:04:02Z",
+    "observed_at": "2026-10-23T10:04:23Z",
     "h1_source": "dexscreener",
-    "h1_note": "09:04Z run. Deepest Base pool Aerodrome DEUS/VIRTUAL (liq $676,430.13) mark $0.01739 - SIXTH consecutive run on the identical mark, but the dead tape FINALLY broke. h1 now MEASURED (-0.01%) after five consecutive unmeasured runs: DexScreener returned priceChange.h1 and GT confirmed vol.h1 $305.97 / txns.h1 1 buy 0 sells. The dead-tape streak ended at 08:36-08:37Z with a two-pool buying burst: (1) 08:36:17Z USDC pool 0x58dBa, sender 0x198a2324 nonce 2, BUY $187.62; (2) 08:37:53Z VIRTUAL pool 0x3e97, sender 0x1e70e2fd nonce 1 (WALLET'S FIRST-EVER TX, 0.00963 ETH gas), BUY $305.97 = 17,635.3152 DEUS at $0.017350. Traced the VIRTUAL buy on-chain via receipt: VIRTUAL in from pool 0xc200f21e (Uniswap v4) 468.632 VIRTUAL -> router 0x67d03631 -> pool 0x3e97; DEUS 17,635.3152 out pool -> buyer. Buyer retained ALL of it: balanceOf(0x1e70e2fd)=17,635.32 DEUS, no offsetting sell on the USDC pool by that sender (the USDC pool's only buy that minute was a different wallet, 0x198a2324). So this is directional ACCUMULATION, not an arb leg - opposite of the 06:16/06:21 arb pattern. Marginal: $306 = 2.05% of 24h volume, on $676k liq price impact sub-basis-point (mark moved $0.01735 -> $0.01739). Second wallet is ALSO fresh (nonce 2) and ALSO kept its DEUS. Two fresh wallets, 96s apart, buying both books = the first non-arb, non-dump flow in ~6h. Not a gate - cumulative $494 is 3.3% of 24h volume - but it is the first buy-side signal on a tape that had printed one $136 dump and two arb legs all day. Coincident flow: 0x6e831ebc (nonce 77,007, bot) chopped 13 x ~$5 USDC sells at 08:36:17-08:36:21. Other Base pools: aero 0x1B2f $0.01736 (h1 +0.30%, v1h $20), aerodrome 0x58dBa $0.01737 (h1 +0.66%, v1h $281.75, reserve $31,377), aerodrome 0x75bc $0.01722 (h1 null, v1h $0), uniswap 0x7df2 $0.01727 (h1 null, v1h $0). DEUS/WETH 0xb542 $0.02013 on $0.03 liquidity - outlier, excluded. Absolute marks cluster $0.01722-$0.01739; farthest h1 from zero is +0.66% (USDC pool) vs the +/-20% gate. No gate fired."
+    "h1_note": "10:04Z run. Deepest Base pool Aerodrome DEUS/VIRTUAL (liq $673,981.97) mark $0.01734 (prior run $0.01739). h1 MEASURED -0.25%, h6 +0.67%, h24 -2.42%. Second consecutive measured h1 after the five-run unmeasured streak. The 08:36-08:37Z two-wallet accumulation did NOT continue in size: 0x1e70e2fd still holds ALL 17,635.3151 DEUS (balance unchanged, byte-checked) but placed no further buy. A NEW burst hit the VIRTUAL pool at 09:49:03-09:51:47Z - 7 consecutive buys, 0 sells, $372.59 total (GT trades): 0x862304f5 buy $23.31 + $44.37; 0x9f318458 buy $44.34; 0xb824534a buy $56.57 + $62.64 + $62.66 + $75.40. TRACED ON-CHAIN and this is an ARB LEG, NOT accumulation: 0xb824534a (nonce 1,334) simultaneously SOLD USDC on pool 0x58dBa at 09:49:01Z and every 4-10s after, and its DEUS balance is 1 wei (0x...0001) - it round-tripped and kept nothing. The two other fresh buyers 0x862304f5 and 0x9f318458 also hold 0 DEUS. So the 09:49-09:51 flow is the opposite of the 08:37 wallet: no retained position anywhere. Mark stayed pinned $0.01733-$0.01735 through the whole burst - 7 buys moved the deepest pool 0.1% on $674k liquidity, i.e. pure arb pressure against the USDC pool's +0.8%. USDC pool 0x58dBa is the only book showing SELLS this hour (1 buy / 9 sells, h1 +0.80%): a 09:49:01Z single-tx burst of 9 dust sells ($0.13-$24.39) from 0x6e831ebc (nonce-high bot), 0xf5823ee3, 0xf0ad67d6, 0xb824534a. Cross-pool divergence: VIRTUAL $0.01734 vs USDC $0.01751 (+0.98% premium on USDC) - the widest spread of the day and exactly the gap the arb bots are harvesting. Other Base pools: aero 0x1B2f $0.01752 (h1 +0.92%, v1h $63.32), aerodrome 0x75bc $0.01737 (h1 +0.84%, v1h $31.14), uniswap 0x7df2 $0.01735 (h1 +0.47%, v1h $19.65). DEUS/WETH 0xb542 $0.02013 on $0.03 liquidity - outlier, excluded. Farthest h1 from zero across all pools is +0.92% vs the +/-20% gate. Distances to targets: -30.8% to $0.012, +44.2% to $0.025, +84.5% to $0.032, +136.4% to $0.041; ATH +296.5%. No gate fired."
   },
-  "last_run_at": "2026-10-23T09:04:02Z",
+  "last_run_at": "2026-10-23T10:04:23Z",
   "notes": "Baseline seeded manually on 2026-10-21 (first state file for this contract). ath.price_usd is the true all-time high (CoinGecko, 2026-05-28), not the tracking-start price, so the ATH gate cannot false-fire until the token genuinely exceeds it. Targets pre-registered from aeon.yml var so a crossing between runs is caught rather than swallowed by the skill's first-observation rule. h1_pct is stored as null when no trade occurred in the window (DexScreener omits h1 rather than printing 0) - do not read null as 'flat'."
 }
