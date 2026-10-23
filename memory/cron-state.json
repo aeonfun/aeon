@@ -26,13 +26,13 @@
   },
   "price-alert": {
     "last_dispatch": "2026-10-23T13:00:44Z",
-    "last_status": "dispatched",
-    "last_success": "2026-10-23T12:05:31Z",
-    "total_runs": 46,
-    "total_successes": 43,
+    "last_status": "success",
+    "last_success": "2026-10-23T13:05:36Z",
+    "total_runs": 47,
+    "total_successes": 44,
     "total_failures": 3,
     "consecutive_failures": 0,
-    "success_rate": 0.93,
+    "success_rate": 0.94,
     "last_quality_score": 4,
     "last_failed": "2026-10-21T18:01:11Z",
     "last_error": "hivemindos: Failed to authenticate. API Error: 403 All target providers failed."
