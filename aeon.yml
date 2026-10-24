@@ -164,10 +164,7 @@ skills:
   submit-hook: { enabled: false, schedule: "workflow_dispatch", var: "" } # submit a deployed Uniswap v4 hook to the univ4-hooks registry. var: hook address; empty = latest live deploy
   video-script: { enabled: false, schedule: "workflow_dispatch", var: "" } # receipts-first, recording-ready video script. var: <source> [--minutes N]
   weekly-aeoncard: { enabled: false, schedule: "workflow_dispatch", var: "" } # weekly token-consumption recap card (SVG) from memory/token-usage.csv. var: window + delivery control
-  
-  # --- 发现层 ---
-  arxiv-radar: { enabled: false, schedule: "30 7 * * *"}
-  
+
   # --- Fallback (must be last) ---
   heartbeat: { enabled: true, schedule: "0 8 * * *", var: "" } # ambient fleet-health check (default) — surfaces anything worth attention. var: empty=ambient check | <area>=ambient focused on that area | brief[:<area>]=priority brief (3 things to focus on, why now, what moved; folds in priority-brief)
 
