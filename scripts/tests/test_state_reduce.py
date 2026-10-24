@@ -154,6 +154,24 @@ class TestUntrustedEvents(unittest.TestCase):
         self.assertNotIn("x", st)
         self.assertIn("y", st)
 
+    def test_timestamp_offsets_sort_by_instant(self):
+        st = sr.reduce_events([
+            {"skill": "x", "status": "success", "ts": "2026-10-01T11:00:00Z"},
+            {"skill": "x", "status": "failed", "ts": "2026-10-01T07:00:00-05:00", "error": "later"},
+        ], now=self.NOW)
+        self.assertEqual(st["x"]["last_status"], "failed")
+        self.assertEqual(st["x"]["last_failed"], "2026-10-01T07:00:00-05:00")
+        self.assertEqual(st["x"]["consecutive_failures"], 1)
+
+    def test_same_timestamp_events_are_order_independent(self):
+        events = [
+            {"skill": "x", "status": "success", "ts": "2026-10-01T11:00:00Z"},
+            {"skill": "x", "status": "failed", "ts": "2026-10-01T11:00:00Z", "error": "same time"},
+        ]
+        forward = sr.reduce_events(events, now=self.NOW)
+        reverse = sr.reduce_events(list(reversed(events)), now=self.NOW)
+        self.assertEqual(forward, reverse)
+
     def test_reactive_source_is_folded(self):
         st = sr.reduce_events([
             {"skill": "skill-repair", "status": "dispatched", "ts": "2026-10-01T09:00:00Z", "source": "a"},
