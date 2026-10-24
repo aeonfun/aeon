@@ -5,6 +5,7 @@ set -euo pipefail
 
 AEON_ROOT="${AEON_ROOT:-$(cd "$(dirname "$0")/../.." && pwd)}"
 REGISTRY="${REGISTRY:-$AEON_ROOT/memory/filing-registry.json}"
+LOCKFILE="${LOCKFILE:-$REGISTRY.lock}"
 TODAY=$(date -u +%Y-%m-%d)
 NOW=$(date -u +%Y-%m-%dT%H:%M:%SZ)
 mkdir -p "$AEON_ROOT/memory"
@@ -14,7 +15,11 @@ mkdir -p "$AEON_ROOT/memory"
 init_registry() {
   if [[ ! -f "$REGISTRY" ]]; then
     mkdir -p "$(dirname "$REGISTRY")"
-    cat > "$REGISTRY" << EOF
+    registry_lock
+    # Re-check under the lock: two processes starting at once must not both write.
+    if [[ ! -f "$REGISTRY" ]]; then
+      local seeded
+      seeded=$(cat << EOF
 {
   "version": "1.0",
   "last_synced": "$NOW",
@@ -24,6 +29,9 @@ init_registry() {
   "activity_log": []
 }
 EOF
+      )
+      atomic_save "$seeded"
+    fi
   fi
 }
 
@@ -49,12 +57,34 @@ log_activity() {
   local updated
   updated=$(echo "$current" | jq --argjson entry "$entry" \
     '.activity_log += [$entry] | .last_synced = $entry.ts')
-  echo "$updated" > "$REGISTRY"
+  atomic_save "$updated"
 }
 
+# Serialize every read-modify-write across processes. The lock lives on a stable
+# sidecar path, NOT on $REGISTRY: the registry is replaced by rename (new inode), so a
+# lock taken on the registry file itself would not exclude a writer holding the new one.
+# fd 9 is re-entrant within a single process, so nested calls (cmd_add -> log_activity)
+# do not deadlock.
+registry_lock() {
+  mkdir -p "$(dirname "$LOCKFILE")"
+  exec 9>>"$LOCKFILE"
+  flock 9
+}
+
+# Publish registry content atomically: temp file in the same directory, refuse to
+# publish invalid JSON, then rename over the registry. Readers never see a half-written
+# file and a crashed writer leaves the previous registry intact.
+# NOTE: atomic replace only fixes TORN WRITES. The lost-update race is fixed by
+# registry_lock() spanning the whole read-modify-write; this function alone cannot.
 atomic_save() {
-  local tmp="$REGISTRY.tmp.$$"
-  jq '.' > "$tmp"
+  local content="$1"
+  local tmp
+  tmp=$(mktemp "$REGISTRY.tmp.XXXXXX")
+  if ! printf '%s\n' "$content" > "$tmp" || ! jq -e . "$tmp" >/dev/null 2>&1; then
+    rm -f "$tmp"
+    echo "Error: refusing to write invalid registry JSON (registry unchanged)" >&2
+    return 1
+  fi
   mv "$tmp" "$REGISTRY"
 }
 
@@ -73,20 +103,11 @@ cmd_add() {
     esac
   done
 
+  registry_lock
   init_registry
 
   if [[ -z "$id" || -z "$type" || -z "$title" ]]; then
     echo "Error: --id, --type, --title required" >&2; exit 1
-  fi
-
-  # Check duplicate
-  local existing
-  existing=$(cat "$REGISTRY" | jq --arg id "$id" \
-    '.pulls + .issues | map(select(.id == $id)) | .[0] // null')
-  if [[ "$existing" != "null" ]]; then
-    echo "FILING_EXISTS: $id already registered" >&2
-    echo "$existing" | jq '.url, .status, .next_action'
-    exit 1
   fi
 
   # Resolve owner/repo and number. A bare number id (no "owner/repo#N") is NOT enough:
@@ -117,6 +138,22 @@ cmd_add() {
     echo "  Use --id owner/repo#N, or pass --url pointing at the PR/issue." >&2
     exit 1
   fi
+  # The registry id is canonical `owner/repo#number` whichever input form was used.
+  # A bare --id resolved via --url used to be stored verbatim ("99999"), so exact-id
+  # dedup silently never matched it and only a lucky fuzzy title match caught re-files.
+  id="$repo#$number"
+
+  # Duplicate check runs on the canonical id, after resolution: the raw arg may be a
+  # bare number that equals no canonical id in the registry.
+  local existing
+  existing=$(cat "$REGISTRY" | jq --arg id "$id" \
+    '.pulls + .issues | map(select(.id == $id)) | .[0] // null')
+  if [[ "$existing" != "null" ]]; then
+    echo "FILING_EXISTS: $id already registered" >&2
+    echo "$existing" | jq '.url, .status, .next_action'
+    exit 1
+  fi
+
   if [[ -z "$url" ]]; then
     local kind="issues"
     [[ "$type" == "pr" ]] && kind="pull"
@@ -158,7 +195,7 @@ cmd_add() {
   local updated
   updated=$(echo "$current" | jq --argjson entry "$entry" --arg key "$key" \
     '.[$key] += [$entry] | .last_synced = '"$(now_str | jq -Rs .)"'')
-  echo "$updated" > "$REGISTRY"
+  atomic_save "$updated"
 
   log_activity "filed" "$id" "Filed: $title"
   echo "ADDED: $id — $title"
@@ -179,6 +216,7 @@ cmd_status() {
     esac
   done
 
+  registry_lock
   init_registry
 
   if [[ -z "$id" ]]; then
@@ -237,7 +275,7 @@ cmd_status() {
             | if ($upd | has("actions_add")) then .actions_taken = ((.actions_taken // []) + $upd.actions_add) else . end)
         else . end)
       | .last_synced = "'"$(now_str)"'"')
-    echo "$new_registry" > "$REGISTRY"
+    atomic_save "$new_registry"
     log_activity "status_update" "$id" "${set_status:+$set_status }${action:+$action}"
     echo "UPDATED: $id"
   else
@@ -297,6 +335,7 @@ cmd_sync() {
     esac
   done
 
+  registry_lock
   init_registry
 
   local current
@@ -408,7 +447,9 @@ cmd_sync() {
   done < <(echo "$items" | jq -c '.[]' 2>/dev/null)
 
   if [[ $changes -gt 0 ]]; then
-    echo "$updated_registry" | jq '.last_synced = "'"$(now_str)"'"' > "$REGISTRY"
+    local synced
+    synced=$(echo "$updated_registry" | jq '.last_synced = '"$(now_str)"'')
+    atomic_save "$synced"
     echo "SYNC_DONE: $changes items updated"
   fi
 
