@@ -6,7 +6,6 @@ set -euo pipefail
 AEON_ROOT="${AEON_ROOT:-$(cd "$(dirname "$0")/../.." && pwd)}"
 REGISTRY="${REGISTRY:-$AEON_ROOT/memory/filing-registry.json}"
 LOCKFILE="${LOCKFILE:-$REGISTRY.lock}"
-TODAY=$(date -u +%Y-%m-%d)
 NOW=$(date -u +%Y-%m-%dT%H:%M:%SZ)
 mkdir -p "$AEON_ROOT/memory"
 
@@ -284,7 +283,18 @@ cmd_status() {
 }
 
 cmd_triage() {
-  local filter="${1:-all}"
+  local filter="all"
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --filter) filter="${2:-}"; shift 2 ;;
+      needs_attention|pending_review|stale|all) filter="$1"; shift ;;
+      *)        echo "Unknown flag: $1" >&2; exit 1 ;;
+    esac
+  done
+  case "$filter" in
+    needs_attention|pending_review|stale|all) ;;
+    *) echo "Error: unknown filter '$filter' (needs_attention|pending_review|stale|all)" >&2; exit 1 ;;
+  esac
   init_registry
 
   local current
@@ -298,9 +308,13 @@ cmd_triage() {
   stale_threshold=$(date -u -d '7 days ago' +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -v-7d +%Y-%m-%dT%H:%M:%SZ)
 
   local needs_attn
-  needs_attn=$(echo "$all_items" | jq \
-    --arg threshold "$stale_threshold" \
-    'map(select(.status == "needs_attention" or .status == "pending_review" or .last_action < $threshold))')
+  case "$filter" in
+    all)            needs_attn=$(echo "$all_items" | jq --arg threshold "$stale_threshold" \
+                      'map(select(.status == "needs_attention" or .status == "pending_review" or .last_action < $threshold))') ;;
+    stale)          needs_attn=$(echo "$all_items" | jq --arg threshold "$stale_threshold" \
+                      'map(select(.last_action < $threshold))') ;;
+    *)              needs_attn=$(echo "$all_items" | jq --arg f "$filter" 'map(select(.status == $f))') ;;
+  esac
 
   local count
   count=$(echo "$needs_attn" | jq 'length')
@@ -312,17 +326,19 @@ cmd_triage() {
   echo "=== TRIAGE: $count items need attention ==="
   echo "$needs_attn" | jq -r '.[] | "[\(.status)] \(.id) (\(.type)) — \(.title[:60])"' | sort
 
-  echo ""
-  echo "=== STALE (>7d no action) ==="
-  echo "$needs_attn" | jq -r --arg threshold "$stale_threshold" \
-    'map(select(.last_action < $threshold)) | .[] | "  \(.id) (\(.last_action)) — \(.title[:60])"'
-
-  local crit_count
-  crit_count=$(echo "$needs_attn" | jq '[.[] | select(.severity == "critical")] | length')
-  if [[ "$crit_count" -gt 0 ]]; then
+  if [[ "$filter" == "all" ]]; then
     echo ""
-    echo "=== CRITICAL: $crit_count critical issues ==="
-    echo "$needs_attn" | jq -r 'map(select(.severity == "critical")) | .[] | "  \(.id) — \(.title[:60])"'
+    echo "=== STALE (>7d no action) ==="
+    echo "$needs_attn" | jq -r --arg threshold "$stale_threshold" \
+      'map(select(.last_action < $threshold)) | .[] | "  \(.id) (\(.last_action)) — \(.title[:60])"'
+
+    local crit_count
+    crit_count=$(echo "$needs_attn" | jq '[.[] | select(.severity == "critical")] | length')
+    if [[ "$crit_count" -gt 0 ]]; then
+      echo ""
+      echo "=== CRITICAL: $crit_count critical issues ==="
+      echo "$needs_attn" | jq -r 'map(select(.severity == "critical")) | .[] | "  \(.id) — \(.title[:60])"'
+    fi
   fi
 }
 
