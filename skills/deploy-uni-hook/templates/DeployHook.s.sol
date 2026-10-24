@@ -16,6 +16,7 @@ pragma solidity 0.8.26;
 import {Script, console2} from "forge-std/Script.sol";
 
 import {IPoolManager} from "@uniswap/v4-core/src/interfaces/IPoolManager.sol";
+import {SwapParams, ModifyLiquidityParams} from "@uniswap/v4-core/src/types/PoolOperation.sol";
 import {IHooks} from "@uniswap/v4-core/src/interfaces/IHooks.sol";
 import {PoolKey} from "@uniswap/v4-core/src/types/PoolKey.sol";
 import {Currency} from "@uniswap/v4-core/src/types/Currency.sol";
@@ -156,7 +157,7 @@ contract DeployHook is Script {
         tB.approve(address(swapRouter), type(uint256).max);
         lpRouter.modifyLiquidity(
             key,
-            IPoolManager.ModifyLiquidityParams({
+            ModifyLiquidityParams({
                 tickLower: TickMath.minUsableTick(60),
                 tickUpper: TickMath.maxUsableTick(60),
                 liquidityDelta: 1e21,
@@ -180,7 +181,7 @@ contract DeployHook is Script {
         bool seedSwapOk;
         try swapRouter.swap(
             key,
-            IPoolManager.SwapParams({
+            SwapParams({
                 zeroForOne: true,
                 amountSpecified: -1e15,
                 sqrtPriceLimitX96: TickMath.MIN_SQRT_PRICE + 1
@@ -196,7 +197,7 @@ contract DeployHook is Script {
             vm.startBroadcast();
             swapRouter.swap(
                 key,
-                IPoolManager.SwapParams({
+                SwapParams({
                     zeroForOne: true,
                     amountSpecified: -1e15,
                     sqrtPriceLimitX96: TickMath.MIN_SQRT_PRICE + 1
