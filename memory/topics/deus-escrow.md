@@ -8,7 +8,7 @@ tags:
   - runbook
   - onchain
 resource: https://basescan.org/address/0xA85A38796B951CE87B378538b32B3E6Ee3C4C373
-timestamp: 2026-10-23T21:24:29Z
+timestamp: 2026-10-24T00:48:00Z
 ---
 
 # DEUS / xDEUS watch addresses
@@ -141,6 +141,20 @@ staked **10,000 DEUS** into escrow at 20:06:29Z (tx `0xf126500c…ab24`, block 5
 ~6 minutes. **Not external new money** — recycled emission — but constructive: someone chose the
 5-day cooldown over selling. Escrow rose to 29,418,223.901 (+0.034%), still orders of magnitude
 below the 5%/day (~1.47M DEUS) intel trigger.
+
+### Supply is net inflationary — someone actively holds the mint
+
+Prior notes read "slowly deflationary" off single-window `totalSupply` reads. That is wrong:
+single reads often just miss a mint. Over the 7 days to 2026-10-23 there were **37 mints /
+201,697.86 DEUS** against **18 burns / 136,317.22** → **net +65,380.63 DEUS**. The run caught it
+directly: block 52,996,523, tx `0xce65a0e0371a564807fd20c8825578fc78cd44d1da76650445127b9c6ba19285`,
+**+14,413.4894 DEUS** minted by `0x2cca08ae69e0c44b18a57ab2a87644234daebae4` to
+`0xd8f8e00e9d9ab9600a910f133f8959737e143e84` (EIP-7702 delegated account). That recipient held
+20,785.16 for 30 days, 21,719.61 at −1h, **36,133.10** now — an entity exercising mint authority,
+not a passive contract.
+
+**Implication for the strategy:** dilution is a slow headwind against the $0.041 break-even line.
+Don't claim "deflationary" from a single unchanged read. [source: logs/2026-10-23#price-alert]
 
 # Citations
 

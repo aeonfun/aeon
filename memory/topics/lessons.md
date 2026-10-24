@@ -4,7 +4,7 @@ description: Detail behind the one-line lessons in MEMORY.md, kept here so MEMOR
 tags:
   - lessons
   - runbook
-timestamp: 2026-10-23T19:09:04Z
+timestamp: 2026-10-24T00:40:00Z
 ---
 
 # Lessons learned — archive
@@ -34,6 +34,10 @@ MEMORY.md carries the one-line form of each lesson. This file holds the detail.
 - **Keys are unset in this repo's runs** (`ALCHEMY_`, `ETHERSCAN_`, `COINGECKO_API_KEY`). Keyless Base reads work only via Tenderly's public gateway, capped at 1,000 blocks per `eth_getLogs` — and 20,000 results, so always pass an `address` filter. See [Base RPC access](/topics/base-rpc-access.md).
 - **Never trust a zero-log window.** Re-query a window with known activity and check the escrow balance via `eth_call`; only then is "quiet" real.
 - **`balanceOf` 的 calldata 要把地址**左**补零，右补零会静默返回 0。** 2026-10-23 14:05Z 的 price-alert 里，我用 `"0x70a08231" + addr.slice(2).padStart(64,"0")` 拼参数，结果地址落在低位、高 24 位补零，`eth_call` 不报错、直接返回 `0x0` —— 差点把「真买家仍持 113,627 DEUS」写成「已清仓」。正确形状：selector `0x70a08231` + **24 个 hex 零** + 40 位地址，合计 74 个 hex 字符（`data.length === 74`）。**凡余额为 0，先用一个已知非零地址做对照再下结论。**
+- **公共 RPC 的 429 会以「空结果」返回，被 `.catch()` 静默吞成「无活动」。** 2026-10-23 10:35Z 扫 NOTE owner 交易，连续几次得到 `found: []` 并据此判「窗口内无 owner 交易」；实际是 `{code:429, message:"Rate Limit Hit"}`，`Promise.all` 把它当空数组收了。改用**单笔 topic 过滤 + 2s 退避重试**才拿到真实的 2 笔出账。**判据：只要结果是「零」，先看重试计数与 HTTP 体，别把限流读成静默。**
+- **`mainnet.base.org` 会把合法的 `balanceOf` 整批 revert，几分钟后自愈 —— revert ≠ 余额 0，也 ≠ 合约问题。** 2026-10-23 18:03Z 五个不同的合法 `balanceOf` 同时 revert，换 `base.gateway.tenderly.co` 立刻返回正确值。**换端点复核，别改代码找 bug。**
+- **`eth_getLogs` 的 topic0 必须给满 64 hex。** 只传 4 字节选择器（`0xb3e27736`）在 Tenderly 上返回 `-32602 invalid params`，更糟的情况是**返回干净的 0 笔**，与死池无法区分。完整哈希 `0xb3e2773606abfd36b5bd91394b3a54d1398336c65005baf7bf7a05efeffaf75b`。
+- **扫描脚本要在扫描阶段就落盘或分批输出。** 2026-10-23 21:24Z 的 `trace.js` 先枚举完 5 地址 × 双方向 × 24k 窗的 `eth_getBlockByNumber` 才回填时间戳，10 分钟被后台杀掉、零输出 —— 一次全白跑。**边扫边写，别等全部枚举完再算元数据。**
 
 ## Watch configuration
 
@@ -66,9 +70,14 @@ MEMORY.md carries the one-line form of each lesson. This file holds the detail.
 - **判「是不是新钱」要拉多 horizon 余额，只回看 24h 会把建仓误判成回补、只看单笔方向会把回补误判成建仓。** 10-23 19:09Z 两笔买入（$838 + $95）的收款方 `0x1184de98` / `0x3fd5`，在 −1h / −6h / −24h / −7d / −30d 的 `balanceOf` **全部精确为 0** —— 这是四天来第一批真外部新钱。**方法：`eth_call balanceOf` 打到 `head - {1800, 10800, 43200, 302400, 1296000}` 五个历史块，全 0 才叫「从未持有」。** 对照第 7 条（老鲸回补），两者只看 24h 会得出同一结论，加上 −7d/−30d 才分得开。
 - **经 1inch v6（`0x111111125421ca6dc452d289314280a0f8842a65`）或其它聚合器路由的买单，仍然可能是真钱。** 判据不是「有没有走路由」（走路由是常态），而是**终端收款地址的 `balanceOf` 是否升高且留住**。19:09Z 那笔 $95 就是经 1inch 跨三池扫出来的，但终点 `0x3fd5` 余额从 0 变成 5,225 DEUS 并留住 —— 真钱；而 16:41Z 那笔终点余额精确为 0 —— 代客成交。**同一个 router，两种性质，只能靠终点地址的余额分辨。**
 - **helper 合约 nonce 1 + 有代码 = 一次性路由/授权合约，不是买家。** 19:09Z 的 $838 买单里，`0x8d8f598c` 与 `0x0a2854fb` 都是 `code 0x60806040…`、nonce 1、余额归零的转账中转站；真正的买家是 tx 的 `from`（`0x1184de98`，nonce 920）。**追买家要追 `eth_getTransactionByHash().from` 与 DEUS 最终落点，别把 helper 当主体。**
+- **「单池 N 买 / 0 卖」是第 9 条判据，也是最容易上当的一种外观。** 2026-10-23 19:07–19:37Z DexScreener 报最深池 **37 买 / 0 卖**、GT 同窗 35 笔腿清一色 `buy`（$718.91），看着像一波凶猛买盘。拆回执全是同秒双池套利：发起方是 `0x666…` / `0x6341d948` EOA 簇（nonce 4,459 / 215,435 / 213,982 / 216,683），**全部 `balanceOf` = 0**；DEUS 在同一笔交易里走 最深池 → helper `0xae629bf1` → USDC 池 `0x58dba34e`。**为什么单池页面看不出：一轮「A 池买、B 池卖」在 A 池记纯 BUY、在 B 池记纯 SELL，两边都看不到净额。** 跨池净额才 是方向：VIRTUAL 池 +$718.91 流入，USDC 池 买 $380.35 / 卖 $539.93 = **净卖 $159.58**。**方法：判买盘不看笔数、不看方向列，只看（a）发起方余额是否升高且留住，（b）DEUS 是否停在非「立即转发」的地址上。**
+- **第 6 条判据补强：买也可能是「代客成交」。** 2026-10-23 16:41:51Z 出现 $81.52（VIRTUAL 池）+ $249.79（USDC 池）同秒双池扫单，像买盘回归；sender `0x9a3811b1…dfbf` 是 `code 0x` 的普通 EOA、nonce **3,549**、`balanceOf(DEUS)` **精确为 0** —— 聚合器替别人成单后把货转走。**只有买家余额升高且留住才算数，这一条盖过所有 App 上看到的"买"。**
+- **第 8 条判据：`0x1184de98` / `0x3fd5` 是四天来第一批真外部新钱**，在 −1h/−6h/−24h/−7d/−30d 余额全 0。次日复核：`0x3fd51604` 19:24:01Z 又买 $45.77（nonce 290→291，余额 5,225 → 7,735），是新钱里第一个回头加仓的；`0x1184de98` 未再动（nonce 920、持 46,195 未卖）。**一加一持，结构偏建设性但量级仍小（$4.6 万）—— 这是"加仓才算数"的正面样本。**[source: logs/2026-10-23#price-alert]
 
 # Citations
 
 - `memory/logs/2026-10-21#onchain-monitor`, `#telegram-reply`, `#heartbeat-brief`, `#price-alert`
 - `memory/logs/2026-10-22#price-alert`（21:01Z / 22:02Z / 23:01Z 三源对比）
-- `memory/logs/2026-10-23#price-alert`（11:06Z 单笔方向性买盘 → 12:02Z 复核实证两笔跟进买盘为聚合器套利；15:05Z 第二个方向性钱包 `0x259f962e…` + 笔数/美元额反向 + 7702 识别；19:09Z Slipstream topic0 坑 + 多 horizon 余额判新钱 + 1inch 路由终点判据）
+- `memory/logs/2026-10-23#price-alert`（11:06Z 单笔方向性买盘 → 12:02Z 复核实证两笔跟进买盘为聚合器套利；15:05Z 第二个方向性钱包 `0x259f962e…` + 笔数/美元额反向 + 7702 识别；19:09Z Slipstream topic0 坑 + 多 horizon 余额判新钱 + 1inch 路由终点判据；20:05Z 单池 37 买 / 0 卖 实为同秒双池套利 + 供给口径改为净增发；17:01Z–21:16Z 两个方向性钱包冻结、h1 缺失 ≠ 平静）
+- `memory/logs/2026-10-23#onchain-monitor`（21:24Z 上膛4 扣扳机清仓 + 第七个上膛钱包 24 万 + 待命重算 48 万）
+- `memory/logs/2026-10-23#heartbeat`（RH 429 返回空结果而非错误；selector `isOperationReady`/`getTimestamp` 修正）

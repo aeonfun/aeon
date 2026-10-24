@@ -8,7 +8,7 @@ tags:
   - onchain
   - runbook
 resource: https://dexscreener.com/base/0x3e97c5ec8c73e7d566aca606472141a9b9a8c1fa
-timestamp: 2026-10-23T19:09:04Z
+timestamp: 2026-10-24T00:45:00Z
 ---
 
 # DEUS directional buyers
@@ -43,6 +43,11 @@ expensive way to buy, i.e. someone who wanted size now, not a router squeezing b
 Routed through the **1inch v6 router** `0x111111125421ca6dc452d289314280a0f8842a65` and swept three
 venues: 1,199.5650 DEUS from USDC `0x58dba34e` + 1,516.1550 from pool `0x498581ff` + 2,509.5012
 from USDC `0x1b2f3f5c`, paying 21.9094 + 27.6249 + 45.7240 USDC.
+
+**First cohort member to add — 19:24:01Z, $45.77.** nonce **290 → 291**, DEUS balance
+**5,225.22 → 7,735.37 (+2,510.15)**. Against `0x1184de98` (nonce 920 unchanged, 46,195.14 never
+sold), the cohort shape is **one adds, one holds** — mildly constructive, but the whole cohort is
+still only ~$4.6k. [source: logs/2026-10-23#price-alert]
 
 **Why the escrow matters here:** `0xA85A38796B951CE87B378538b32B3E6Ee3C4C373` was
 **29,408,223.901194 at both head and −6h**, and 29,405,267.589532 at −24h (+2,956.31 / +0.010% —
