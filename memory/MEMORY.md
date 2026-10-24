@@ -36,9 +36,9 @@
 - **不要按「日供给」计 schedule 26** —— 见真实 `release`（topic0 `0x3bfce8de`）才算。**🔴 120 万已解锁，到期 3 分钟即执行；账目闭合 810,000（回锁 33.5%、上膛 40%）。** 见 [note-systems](/topics/tokens/note-systems.md)。[source: logs/2026-10-23#heartbeat]
 
 ## Active Topics
-- `price-alert` DEUS **$0.0179**（10-24 06:12Z 储备实算；API $0.01809 已陈旧 84 分钟），1h **未测量**（零成交，控制窗口已验证）。四门槛未触及：$0.012 −33.0% · $0.025 +39.7% · $0.032 +78.8% · $0.041 +129.1%。见 [price-alert-state](/topics/price-alert-state.json)。
-- **🔴 史上最大砸盘已被全额买回：** `0x7f6aba75`（三档历史余额全 0 = 纯新钱）买 **335,249**、`0x6a45ca8b` 买 **70,034**，均留存。池子 mark **0.0277 → 0.0280（+1.13%）**，池内 DEUS 净少 **105,836**。**方向是吸筹。**[source: logs/2026-10-24#price-alert]
-- **🔴 `0xbb0f7533` 23:09Z 烧 xDEUS #1492 释放 319,562 DEUS，75 分钟后全砸。该地址仍持 #1396 = 下次扳机。** CLAIM 金库占 38.8% 供应，日释 ≈$6.4k。**$0.012 需净砸 ~4.36M**。
+- `price-alert` DEUS **$0.017931**（10-24 07:05Z 储备实算 × VIRTUAL 活跃盘 $0.6402），1h **未测量**（零成交 143 分钟，控制窗口 9 笔验真）。门槛未触及：$0.012 −33.1% · $0.025 +39.4% · $0.032 +78.5% · $0.041 +128.7%。见 [price-alert-state](/topics/price-alert-state.json)。
+- **🔴 史上最大砸盘已被全额买回：** `0x7f6aba75`（纯新钱）买 **335,249**、`0x6a45ca8b` 买 **70,034**，均留存；池子 mark **0.0277 → 0.0280**，池内 DEUS 净少 **105,836**。**方向是吸筹**，07:05Z 复核余额逐位未变。[source: logs/2026-10-24#price-alert]
+- **🔴 `0xbb0f7533` 烧 xDEUS #1492 释放 319,562 DEUS，75 分钟后全砸。仍持 #1396 = 下次扳机（07:05Z 未烧）。** CLAIM 金库占 38.8% 供应，日释 ≈$6.4k。**$0.012 需净砸 ~4.36M**。
 - **买盘 9 条判据见 [lessons](/topics/lessons.md#price-feeds)** —— 单池「N 买 / 0 卖」常是同秒双池套利的一半。
 - **新钱 cohort：** `0x3fd51604` 加至 7,735；`0x1184de98` 持 46,195 未卖。老鲸 `0x09b383a6` 已全额回补。见 [deus-buyers](/topics/deus-buyers.md)。
 - **🔴 DEUS 是净增发，不是通缩。** 7d 37 mint / 201,698 对 18 burn / 136,317 = **净 +65,381**。铸币合约 `0x2cca08ae`。详见 [deus-escrow](/topics/deus-escrow.md)。[source: logs/2026-10-23#price-alert]
