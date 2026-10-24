@@ -10,6 +10,7 @@ export const SKILL_ICONS: Record<string, string> = {
   "anatomy": "<path d='M12 2l8 5v10l-8 5-8-5V7z'/><path d='M4 7l8 5 8-5M12 12v10'/><path d='M9 5l6 3.5'/>",
   "arc-studio": "<path d='M22 17a10 10 0 0 0-20 0'/><path d='M18 17a6 6 0 0 0-12 0'/><path d='M14 17a2 2 0 0 0-4 0'/>",
   "article": "<path d='M4 22a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2'/><path d='M6 22a2 2 0 0 0 2-2V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2z'/><path d='M18 14h-8M15 18h-5'/><path d='M10 6h8v4h-8z'/>",
+  "arxiv-radar": "<path d='M5 3h9l5 5v13H5z'/><path d='M14 3v5h5'/><path d='M8 12h7'/><path d='M8 16h5'/>",
   "auto-merge": "<circle cx='6' cy='6' r='3'/><circle cx='18' cy='18' r='3'/><path d='M6 21V9a9 9 0 0 0 9 9'/>",
   "auto-workflow": "<rect x='3' y='3' width='8' height='8' rx='2'/><path d='M7 11v4a2 2 0 0 0 2 2h4'/><rect x='13' y='13' width='8' height='8' rx='2'/>",
   "autoresearch": "<path d='M14 2v6a2 2 0 0 0 .2 1l5.5 10a2 2 0 0 1-1.7 3H6a2 2 0 0 1-1.8-3l5.6-10a2 2 0 0 0 .2-1V2'/><path d='M6.5 15h11'/><path d='M8.5 2h7'/>",
