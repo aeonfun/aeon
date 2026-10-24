@@ -3,10 +3,10 @@ import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 
 const usage = 'usage: node scripts/verify-onchain-evidence.mjs <receipt.json>';
-const HASH = /^0x[0-9a-fA-F]{64}$/;
-const TX = /^0x[0-9a-fA-F]{64}$/;
-const FORBIDDEN_KEYS = /^(raw|raw_response|response_body|request_body|api_key|secret|token|password|private_key)$/i;
-const SECRET_VALUE = /(https?:\/\/[^\s/@]+:[^\s/@]+@|(?:api[_-]?key|private[_-]?key|secret|password|token)\s*[:=]\s*['"]?[^\s,'"]+)/i;
+// Lowercase only, as RPCs return them, so one tx cannot appear twice in different case.
+const HASH = /^0x[0-9a-f]{64}$/;
+const FORBIDDEN_KEYS = /^(raw|raw_response|response_body|request_body|secret|token|password)$|(api[_-]?key|private[_-]?key)$/i;
+const SECRET_VALUE = /(https?:\/\/[^\s/@]+:[^\s/@]+@|alchemy\.com\/v2\/[A-Za-z0-9_-]+|(?:api[_-]?key|private[_-]?key|secret|password|token)\s*[:=]\s*['"]?[^\s,'"]+)/i;
 
 function fail(message) {
   console.error(`invalid evidence: ${message}`);
@@ -26,12 +26,15 @@ function digest(receipt) {
   return createHash('sha256').update(JSON.stringify(canonical(unsigned))).digest('hex');
 }
 
+// Keys come from the receipt: quote odd ones so a newline cannot start a new log line.
+const segment = (key) => (/^[A-Za-z0-9_]+$/.test(key) ? `.${key}` : `[${JSON.stringify(key)}]`);
+
 function walk(value, path = '$') {
   if (Array.isArray(value)) value.forEach((item, i) => walk(item, `${path}[${i}]`));
   else if (value && typeof value === 'object') {
     for (const [key, item] of Object.entries(value)) {
-      if (FORBIDDEN_KEYS.test(key)) throw new Error(`${path}.${key} is not allowed`);
-      walk(item, `${path}.${key}`);
+      if (FORBIDDEN_KEYS.test(key)) throw new Error(`${path}${segment(key)} is not allowed`);
+      walk(item, `${path}${segment(key)}`);
     }
   } else if (typeof value === 'string' && SECRET_VALUE.test(value)) {
     throw new Error(`${path} looks like a credential or credential-bearing URL`);
@@ -50,15 +53,18 @@ function verifyChain(chain, index) {
   integer(chain.from_block, `${p}.from_block`);
   integer(chain.to_block, `${p}.to_block`);
   if (chain.from_block > chain.to_block) throw new Error(`${p} block range is invalid`);
-  if (chain.block_hash !== null && !HASH.test(chain.block_hash)) throw new Error(`${p}.block_hash must be 0x-prefixed 32-byte hash or null`);
+  if (chain.block_hash !== null && (typeof chain.block_hash !== 'string' || !HASH.test(chain.block_hash))) throw new Error(`${p}.block_hash must be 0x-prefixed 32-byte hash or null`);
   if (!chain.sources || typeof chain.sources !== 'object' || Array.isArray(chain.sources)) throw new Error(`${p}.sources is required`);
   if (Object.keys(chain.sources).length === 0 || Object.values(chain.sources).some((s) => !['ok', 'skipped', 'degraded', 'fail'].includes(s))) throw new Error(`${p}.sources contains an invalid status`);
   if (chain.block_hash === null && !Object.values(chain.sources).includes('degraded')) throw new Error(`${p}.block_hash null requires a degraded source`);
-  for (const field of ['query_windows', 'watches', 'raw_events', 'kept_events', 'dropped_events', 'unpriced_events']) integer(chain[field], `${p}.${field}`);
+  for (const field of ['query_windows', 'watches']) {
+    if (!Number.isSafeInteger(chain[field]) || chain[field] < 1) throw new Error(`${p}.${field} must be a positive safe integer`);
+  }
+  for (const field of ['raw_events', 'kept_events', 'dropped_events', 'unpriced_events']) integer(chain[field], `${p}.${field}`);
   if (chain.kept_events + chain.dropped_events !== chain.raw_events) throw new Error(`${p} kept_events + dropped_events must equal raw_events`);
   if (chain.unpriced_events > chain.raw_events) throw new Error(`${p}.unpriced_events exceeds raw_events`);
   if (!Array.isArray(chain.tx_hashes)) throw new Error(`${p}.tx_hashes must be an array`);
-  if (chain.tx_hashes.some((tx) => typeof tx !== 'string' || !TX.test(tx))) throw new Error(`${p}.tx_hashes contains an invalid hash`);
+  if (chain.tx_hashes.some((tx) => typeof tx !== 'string' || !HASH.test(tx))) throw new Error(`${p}.tx_hashes contains an invalid hash`);
   const sorted = [...new Set(chain.tx_hashes)].sort();
   if (sorted.length !== chain.tx_hashes.length) throw new Error(`${p}.tx_hashes must be unique`);
   if (JSON.stringify(sorted) !== JSON.stringify(chain.tx_hashes)) throw new Error(`${p}.tx_hashes must be sorted`);

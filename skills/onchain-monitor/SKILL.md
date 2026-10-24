@@ -310,7 +310,8 @@ Rules:
   `degraded`.
 - Record every split query in each chain entry's `query_windows`; this makes the
   Robinhood 10,000-log fallback visible instead of silently changing the sample.
-- Sort each chain entry's `tx_hashes` lexicographically and remove duplicates. Never
+- Lowercase each chain entry's `tx_hashes` and `block_hash`, sort the hashes
+  lexicographically and remove duplicates. Never
   include API keys, full RPC URLs containing credentials, or raw response bodies.
 - Canonicalise the JSON with sorted keys, compact separators and UTF-8 text with
   no `\u` escapes (in Python: `json.dumps(obj, sort_keys=True,

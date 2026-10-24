@@ -69,6 +69,14 @@ check('unsorted-tx', x => { x.chains[0].tx_hashes.push('0x' + '0'.repeat(64)); }
 check('missing-degraded', x => { x.chains[1].sources.rpc = 'ok'; }, 1, 'degraded');
 check('bad-status', x => { x.chains[0].sources.rpc = 'nonsense'; }, 1, 'status');
 check('bad-hash', x => { x.chains[0].block_hash = '0x123'; }, 1, 'block_hash');
+check('array-hash', x => { x.chains[0].block_hash = [x.chains[0].block_hash]; }, 1, 'block_hash');
+check('uppercase-tx', x => { x.chains[0].tx_hashes = ['0x' + 'A'.repeat(64)]; }, 1, 'invalid hash');
+check('zero-watches', x => { x.chains[0].watches = 0; }, 1, 'watches must be a positive');
+check('zero-windows', x => { x.chains[0].query_windows = 0; }, 1, 'query_windows must be a positive');
+check('vendor-key-field', x => { x.chains[0].sources.ALCHEMY_API_KEY = 'synthetic-secret'; }, 1, 'not allowed');
+check('camel-key-field', x => { x.apiKey = 'synthetic-secret'; }, 1, 'not allowed');
+check('alchemy-url', x => { x.note = 'https://base-mainnet.g.alchemy.com/v2/syntheticKey123'; }, 1, 'credential');
+check('newline-key', x => { x['a\n::error::x'] = { api_key: 'synthetic-secret' }; }, 1, '["a\\n::error::x"]');
 check('secret-field', x => { x.api_key = 'synthetic-secret'; }, 1, 'not allowed');
 check('credential-url', x => { x.note = 'https://user:synthetic-secret@example.test'; }, 1, 'credential');
 check('raw-body', x => { x.raw_response = {}; }, 1, 'not allowed');
@@ -102,6 +110,8 @@ PY
     echo 'ASCII-escaped digest unexpectedly matched; the 6.1 canonical form is ambiguous' >&2; exit 1
   fi
   echo 'PASS python receipt (ensure_ascii=False) verifies; escaped digest is rejected'
+else
+  echo 'SKIP python interop (python3 not found)'
 fi
 
 echo 'onchain evidence verifier: PASS'
