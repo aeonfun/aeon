@@ -179,6 +179,7 @@ contract DeployHook is Script {
         // doomed swap must never be recorded as broadcast in the first place.
         uint256 snap = vm.snapshotState();
         bool seedSwapOk;
+        vm.prank(me);
         try swapRouter.swap(
             key,
             SwapParams({
