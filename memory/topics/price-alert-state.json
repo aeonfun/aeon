@@ -38,21 +38,24 @@
     }
   },
   "last_price": {
-    "price_usd": 0.01809,
-    "h1_pct": -0.05,
+    "price_usd": 0.0179,
+    "h1_pct": null,
     "h6_pct": null,
     "h24_pct": 4.01,
     "pool": "aerodrome Slipstream DEUS/VIRTUAL",
-    "liquidity_usd": 682345.24,
-    "volume_24h_usd": 28372.8,
-    "volume_1h_usd": 0.0093,
-    "txns_1h": "0 buy / 1 sell (GeckoTerminal) - exactly 1 on-chain Swap log in the last hour, dust $0.0093",
+    "pool_address": "0x3E97c5EC8c73e7d566aCA606472141a9b9a8C1Fa",
+    "liquidity_usd": 687124.22,
+    "volume_24h_usd": 21997.46,
+    "volume_1h_usd": 0.0,
+    "txns_1h": "0 buy / 0 sell - MEASURED dead tape",
     "pool_url": "https://dexscreener.com/base/0x3e97c5ec8c73e7d566aca606472141a9b9a8c1fa",
-    "observed_at": "2026-10-24T05:08:55Z",
-    "h1_source": "dexscreener-omitted;verified-onchain",
-    "h1_note": "DexScreener omitted priceChange.h1 again. GeckoTerminal pool endpoint returned h1=0 with volume1h=0.0093275 and exactly 1 sell; eth_getLogs on the deepest pool for the last hour returned exactly 1 Swap log (tx 0x7b71081f, block 0x328ecd6, $0.0093 dust). So this hour is MEASURED as flat (-0.05%), unlike the 2026-10-23 21:16Z run where the window was genuinely dead. The completed 04:00-05:00Z candle ran 0.0178546 -> 0.0180709 = +1.21%; the -0.05% is the dust-tape measurement."
+    "observed_at": "2026-10-24T06:12:00Z",
+    "h1_source": "onchain-verified-absent",
+    "h1_note": "DexScreener omitted priceChange.h1 AGAIN (null) on all 5 base pairs except the shallow aero pool (+0.22%, liq $10.7k). GeckoTerminal pool endpoint returned h1=0 with volume1h=0.0 and 0 buys / 0 sells. eth_getLogs over the deepest pool for the last 2456 blocks (~82 min) returned ZERO Swap logs - and a CONTROL window (blocks 0x328ce0-0x328cff, the known 00:24Z dump) returned 9 swaps with the identical topic filter, so the zero is REAL, not a bad filter. LAST SWAP was block 53013718 / 2026-10-24T04:39:43Z (tx 0x7b71081f, $0.0093 dust sell). Tape is dead for 84 minutes at run time. h1 is therefore UNMEASURED, stored as null - NOT zero, NOT flat. All three secondary DEUS pools (0x58dBa34e, 0x1B2f3f5C, 0x75bc1495) also returned 0 swaps in the same 83-minute window, so this is a whole-market pause in DEUS trading, not a migration of flow to another venue.",
+    "mark_source": "pool reserves",
+    "mark_note": "Canonical mark from the deepest pool's own reserves, NOT the stale API print: DEUS 18,855,811.8533 / VIRTUAL 528,123.8274 = 0.02800854 VIRTUAL per DEUS; VIRTUAL $0.6454 (deepest VIRTUAL/WETH pool 0x21594b99, liq $3.34M) => DEUS = $0.017900. DexScreener's $0.01809 print is the last trade price from 04:39Z and is stale by 84 min. Constant-product k checks out (9.9582e12 both sides), so no rebase/fee-on-transfer distortion."
   },
-  "last_run_at": "2026-10-24T05:08:55Z",
+  "last_run_at": "2026-10-24T06:12:00Z",
   "supply_watch": {
     "claim_contract": "0x5cbf5dfaa5336ce0456e24217e7911365100879a",
     "claim_symbol": "DEUS (CLAIM vesting/distributor vault)",
@@ -82,7 +85,7 @@
     "read": "This is RECYCLED EMISSION BEING STAKED, not external new money. It is nonetheless constructive: someone took freshly-claimed DEUS and locked it for the 5-day xDEUS cooldown instead of selling it. Escrow rose 29,408,223.901 -> 29,418,223.901 (+10,000 / +0.034%), still two orders of magnitude below the 5%/day (~1.47M DEUS) unstake-pressure intel trigger. Cooldown clock untouched.",
     "observed_at": "2026-10-23T21:24:29Z"
   },
-  "notes": "BASELINE + PRIOR TELLS PRESERVED. ath.price_usd is the true all-time high (CoinGecko 2026-05-28), not a tracking-start price, so the ATH gate cannot false-fire until DEUS genuinely exceeds $0.06876. Targets pre-registered from aeon.yml var. CLASSIFYING BUYS/BUYS-vs-SUPPLY, tells 1-9 from prior runs all still stand: (1) single-venue print from a wallet that KEEPS the balance is directional; (2) same-block multi-pool sweep into one hop then forwarded to a shared sink ending at 0 is arb; (3) same sender buying one pool and selling another in the same second is two-leg arb - apply to SELLS too; (4) eth_getCode starting 0xef0100 is an EIP-7702 delegated smart account; (5) buy/sell COUNT is not buy/sell DOLLARS on a thin book; (6) a BUY can be fake - a pass-through router with balanceOf 0 filling someone else's order; (7) a buy from an incumbent holder may be a REBUY after selling earlier the same session - compare balanceOf to 24h/48h ago; (8) a buy is REAL new money when balanceOf at -1h/-6h/-24h/-7d/-30d is all EXACTLY 0; (9) 'N BUY / 0 SELL' on a single pool is NOT a bid - a round-trip buying venue A and selling venue B records as pure BUY on A and pure SELL on B, so ALWAYS sum both venues. TELL 10 (NEW, this run): A CLAIM/vesting vault that pays the same wallet and gets the full balance back within seconds is a DISTRIBUTION EVENT, not accumulation - and it can be measured. The definitive test is the recipient's balanceOf right after the receipt: if it returns to 0 and a DEUS Transfer lands in a pool in the same block, it was sold, full stop. Track the RATIO of claim-payout to pool price impact rather than the payout alone: here 91,566 DEUS cost the mark -0.933%, so ~$1.7k of notional moves this pool 1%. That converts a vague 'overhang' into an actionable distance-to-trigger. TELL 11 (NEW): DO NOT read a missing h1 as flat, and do not read an API 0-volume row as calm - VERIFY against the pool's own Swap logs. Aerodrome Slipstream Swap topic0 is 0xb3e2773606abfd36b5bd91394b3a54d1398336c65005baf7bf7a05efeffaf75b (3 topics, 4 data words) - and it must be given as the FULL 64-hex hash; passing the 4-byte selector 0xb3e27736 makes eth_getLogs return -32602 invalid params (or a clean zero, which would look identical to a dead pool). The deepest pool's last swap was 99 minutes before this run. RPC NOTE: base.gateway.tenderly.co anonymous eth_getLogs is capped at 1000 blocks and throws -32005 rate-limit under sustained scanning - back off 1s/2s/4s and cap concurrency at 3. eth_call against a HISTORICAL block number that has been pruned returns -32602 invalid params, not a zero balance; never read that as 0. Router 0x111111125421ca6dc452d289314280a0f8842a65 is 1inch v6 - judge the terminal recipient's balance, never the router. Supply is NET INFLATION (7d: 37 mints / 201,697.86 vs 18 burns / 136,317.22 = +65,380.63) - never call a single unchanged read deflationary. Total supply this run 876,206,780.447562. First state file for this contract seeded manually 2026-10-21. TELL 12 (NEW, 2026-10-24 run): AN UNSTAKE IS NOT A PRICE EVENT UNTIL IT IS SOLD, AND THE SALE CAN COME BATCHED AND DELAYED. The escrow Burn event on 0xA85A3879 (topic0 0xe08737ac48a1dab4b1a46c7dc9398bd5bfc6d7ad6fabb7cd8caa254de14def35, indexed[1]=owner, indexed[2]=tokenId, data = [amount, timestamp, escrowBalanceAfter]) tells you who just unlocked and how much - treat it as a LEADING indicator, because the operator of that position then chooses when to hit the book (here: 75 min later, all at once). Conversely, the escrow balance falling is NOT itself bearish until matched to a pool Swap from the same address. Measure impact from the POOL RESERVE move (balanceOf of the pool on the token, block before vs after), not from the swap event data alone - reserve delta / reserve = the true fractional depth used. TELL 13 (NEW): A LARGE DUMP INTO THIS POOL GETS ABSORBED IN THE SAME BLOCK. 319,562 DEUS produced -4.37%, but 137,397 DEUS of same-block buying took a third of it back and net inflow to the pool was only 178,969 DEUS. So do NOT extrapolate a linear \"X DEUS = Y%\" from one print; always net the same-block counterparties. The $0.012 gate now needs ~4.36M DEUS dumped with no offsetting bids (13.7x this record dump, or 15.4 days of the entire CLAIM drip) - it remains a deliberate-whale event, not an emission drift.",
+  "notes": "BASELINE + PRIOR TELLS PRESERVED. ath.price_usd is the true all-time high (CoinGecko 2026-05-28), not a tracking-start price, so the ATH gate cannot false-fire until DEUS genuinely exceeds $0.06876. Targets pre-registered from aeon.yml var. CLASSIFYING BUYS/BUYS-vs-SUPPLY, tells 1-9 from prior runs all still stand: (1) single-venue print from a wallet that KEEPS the balance is directional; (2) same-block multi-pool sweep into one hop then forwarded to a shared sink ending at 0 is arb; (3) same sender buying one pool and selling another in the same second is two-leg arb - apply to SELLS too; (4) eth_getCode starting 0xef0100 is an EIP-7702 delegated smart account; (5) buy/sell COUNT is not buy/sell DOLLARS on a thin book; (6) a BUY can be fake - a pass-through router with balanceOf 0 filling someone else's order; (7) a buy from an incumbent holder may be a REBUY after selling earlier the same session - compare balanceOf to 24h/48h ago; (8) a buy is REAL new money when balanceOf at -1h/-6h/-24h/-7d/-30d is all EXACTLY 0; (9) 'N BUY / 0 SELL' on a single pool is NOT a bid - a round-trip buying venue A and selling venue B records as pure BUY on A and pure SELL on B, so ALWAYS sum both venues. TELL 10 (NEW, this run): A CLAIM/vesting vault that pays the same wallet and gets the full balance back within seconds is a DISTRIBUTION EVENT, not accumulation - and it can be measured. The definitive test is the recipient's balanceOf right after the receipt: if it returns to 0 and a DEUS Transfer lands in a pool in the same block, it was sold, full stop. Track the RATIO of claim-payout to pool price impact rather than the payout alone: here 91,566 DEUS cost the mark -0.933%, so ~$1.7k of notional moves this pool 1%. That converts a vague 'overhang' into an actionable distance-to-trigger. TELL 11 (NEW): DO NOT read a missing h1 as flat, and do not read an API 0-volume row as calm - VERIFY against the pool's own Swap logs. Aerodrome Slipstream Swap topic0 is 0xb3e2773606abfd36b5bd91394b3a54d1398336c65005baf7bf7a05efeffaf75b (3 topics, 4 data words) - and it must be given as the FULL 64-hex hash; passing the 4-byte selector 0xb3e27736 makes eth_getLogs return -32602 invalid params (or a clean zero, which would look identical to a dead pool). The deepest pool's last swap was 99 minutes before this run. RPC NOTE: base.gateway.tenderly.co anonymous eth_getLogs is capped at 1000 blocks and throws -32005 rate-limit under sustained scanning - back off 1s/2s/4s and cap concurrency at 3. eth_call against a HISTORICAL block number that has been pruned returns -32602 invalid params, not a zero balance; never read that as 0. Router 0x111111125421ca6dc452d289314280a0f8842a65 is 1inch v6 - judge the terminal recipient's balance, never the router. Supply is NET INFLATION (7d: 37 mints / 201,697.86 vs 18 burns / 136,317.22 = +65,380.63) - never call a single unchanged read deflationary. Total supply this run 876,206,780.447562. First state file for this contract seeded manually 2026-10-21. TELL 12 (NEW, 2026-10-24 run): AN UNSTAKE IS NOT A PRICE EVENT UNTIL IT IS SOLD, AND THE SALE CAN COME BATCHED AND DELAYED. The escrow Burn event on 0xA85A3879 (topic0 0xe08737ac48a1dab4b1a46c7dc9398bd5bfc6d7ad6fabb7cd8caa254de14def35, indexed[1]=owner, indexed[2]=tokenId, data = [amount, timestamp, escrowBalanceAfter]) tells you who just unlocked and how much - treat it as a LEADING indicator, because the operator of that position then chooses when to hit the book (here: 75 min later, all at once). Conversely, the escrow balance falling is NOT itself bearish until matched to a pool Swap from the same address. Measure impact from the POOL RESERVE move (balanceOf of the pool on the token, block before vs after), not from the swap event data alone - reserve delta / reserve = the true fractional depth used. TELL 13 (NEW): A LARGE DUMP INTO THIS POOL GETS ABSORBED IN THE SAME BLOCK. 319,562 DEUS produced -4.37%, but 137,397 DEUS of same-block buying took a third of it back and net inflow to the pool was only 178,969 DEUS. So do NOT extrapolate a linear \"X DEUS = Y%\" from one print; always net the same-block counterparties. The $0.012 gate now needs ~4.36M DEUS dumped with no offsetting bids (13.7x this record dump, or 15.4 days of the entire CLAIM drip) - it remains a deliberate-whale event, not an emission drift. TELL 14 (NEW, 2026-10-24 06:12Z run): VERIFY RE-ACCUMULATION AGAINST THE POOL RESERVE MARK, NOT THE SIZE OF THE BUY PRINTS. The record 319,562 DEUS dump of 00:24:17Z was followed by 451,627 DEUS of buying routed through contract sink 0x939e398d -> LiFi diamond 0x1231deb6 -> back to the paying EOAs, and the deepest pool's own mark went 0.02769675 -> 0.02800854 VIRTUAL/DEUS (+1.13%), with net DEUS in the pool FALLING 105,836 below the pre-dump level. So the dump was fully reversed, not merely 'absorbed in the same block'. The lesson: same-block absorption and full reversal are different claims - only the NET reserve delta distinguishes them. ALSO: when a buy routes through an aggregator or relay CONTRACT, judge tell #6 by the WHOLE round trip. If the sink's total-in equals total-out AND the terminal EOA's balanceOf rises, it is a real buy. If the sink and the aggregator both end at 0.0000 and no EOA gained, it is a pass-through filling someone else's order. Here sink 451,627.3741 in == 451,627.3741 out, both sink and diamond at 0.0000, and 0x7f6aba75 rose 0 -> 335,249.4994 with balanceOf EXACTLY 0 at -24h/-48h/-7d (tell #8 satisfied) - unambiguously real new money, held. DIRECTIONAL READ FOR THE OPERATOR: this inverts the prior run's framing. Supply is leaving stakers and going into held hands, not onto the bid. The pool is TIGHTER than before the record unstake.",
   "unstake_and_dump": {
     "wallet": "0xbb0f753321e2b5fd29bd1d14b532f5b54959ae63",
     "what": "THE FIRST RECORDED UNSTAKE-AND-DUMP. Plain EOA (code 0x, nonce 105). At 2026-10-23T23:09:15Z (block 53002812, tx 0xb62d28fafa1454fb26d84ee5146483319941fb96eb2baabe8c969321b5c54dfd) escrow 0xA85A3879 BURNED xDEUS NFT #1492 held by this wallet and released 319,562.226531 DEUS to it. 75 minutes later at 2026-10-24T00:24:17Z (block 53006055, tx 0x156d9316ab040c0dd4c73ac02eafcfb9df2c58a930518dc8e476c5d9cbbaa762) it sold the ENTIRE 319,562.226531 DEUS into the deepest pool for 8,618.5315 VIRTUAL (~$5,488 at $0.6368/VIRTUAL). Post-sale DEUS balance: 0.000000 exactly. This is 3.49x the previous largest single dump on record (91,566 DEUS, 2026-10-23 00:32Z).",
@@ -112,5 +115,65 @@
     "prior_print_usd": 0.0179584527229686,
     "distance_math": "Constant product, price = k/D^2, so reaching $0.012 from $0.01809 needs D -> D*sqrt(0.01809/0.012) = D*1.2278, i.e. ~4.36M DEUS of NET pool inflow with zero offsetting bids. That is 13.6x this record dump, or 15.4 days of the ENTIRE CLAIM drip (283,140/day) sold at market in one go. The $0.012 gate remains a deliberate-whale event, not an emission drift.",
     "xdeus_supply_note": "xDEUS totalSupply 0x18160ddd: 1724 at -24h (0x3284782) -> 1727 pre-burn (0x328c61b) -> 1726 immediately post-burn (0x328c61c, the NFT #1492 burn removed exactly 1) -> 1727 now (0x328f042). So one NEW xDEUS position was minted shortly after this burn. Net 24h change is +3 NFTs, i.e. staking is still net ADDITIVE despite the record exit. Do not describe this event as an exodus."
+  },
+  "escrow_snapshot": {
+    "balance_deus": 29108661.675,
+    "prior_balance_deus": 29418223.901,
+    "change_deus": -309562.226,
+    "change_pct": -1.052,
+    "five_pct_line_deus": 1455433.08,
+    "observed_at": "2026-10-24T06:12:00Z",
+    "note": "The -309,562 DEUS is the xDEUS NFT #1492 unlock already documented under unstake_and_dump (23:09:15Z), NOT a new event. It is 1.05% of escrow, still ~4.7x below the 5%/day (~1.46M DEUS) unstake-pressure intel trigger. No new escrow Burn in the 82-minute window (both scan windows returned 0, control window around block 0x328c61b returned 1, so the filter is valid)."
+  },
+  "claim_snapshot": {
+    "balance_deus": 340083349.32,
+    "prior_balance_deus": 340146039.82272434,
+    "change_deus": -62690.5,
+    "observed_at": "2026-10-24T06:12:00Z",
+    "note": "CLAIM vault dripped -62,690 DEUS since the 2026-10-23T21:24Z snapshot (~8.7h), i.e. ~173k/day pace, in line with the 283k-350k/day 30d band. Routine emission, no regime change."
+  },
+  "xdeus_supply": {
+    "total_supply": 1727,
+    "prior": 1727,
+    "change_24h": 0,
+    "observed_at": "2026-10-24T06:12:00Z",
+    "note": "Unchanged since the last run (1727). Staking side is flat, not bleeding - do not describe the #1492 exit as an exodus."
+  },
+  "deus_total_supply": {
+    "total_supply": 876190001.5,
+    "prior": 876206780.447562,
+    "change": -16778.95,
+    "observed_at": "2026-10-24T06:12:00Z",
+    "note": "Slightly DOWN vs the last run, but a single-window totalSupply read is NOT a deflation signal - the 7d ledger is still net +65,380. See notes."
+  },
+  "post_dump_absorption": {
+    "what": "THE HEADLINE FINDING: the 319,562 DEUS record dump at 00:24:17Z was NOT absorbed by the same-block bids alone - it was fully reversed within 2 hours by two REAL new-money buyers, and the pool mark is now HIGHER than before the dump.",
+    "mark_pre_dump": 0.02769675352846641,
+    "mark_now": 0.028008543546618584,
+    "mark_change_pct": 1.126,
+    "pool_deus_pre_dump": 18961647.3772,
+    "pool_deus_now": 18855811.8533,
+    "net_deus": -105835.52,
+    "buyers": [
+      {
+        "addr": "0x7f6aba7563cb5d31980d440337d3d1a6e3db58f3",
+        "type": "plain EOA, nonce 861",
+        "bought_deus": 335249.4994,
+        "final_balance_deus": 335249.4994,
+        "history": "balanceOf EXACTLY 0 at -24h, -48h and -7d",
+        "verdict": "REAL NEW MONEY, HELD. Passes tell #8 (all lookbacks zero) and tell #6 (terminal recipient keeps the balance)."
+      },
+      {
+        "addr": "0x6a45ca8bb30f396f40721e105e0aa6cabf326657",
+        "type": "plain EOA, nonce 615",
+        "bought_deus": 70034.1403,
+        "final_balance_deus": 70034.1403,
+        "history": "0 at -24h and -48h; 29,079 at -7d",
+        "verdict": "REAL BUY, HELD. An incumbent that fully exited and is now REBUYING at size - tell #7 applies, but the net position is a genuine 70k long."
+      }
+    ],
+    "routing_note": "Both buyers reached the pool through a CONTRACT sink 0x939e398d2c31b0757d009222de99c6e461d3de15, not directly. Downstream chain: pool -> sink (451,627 DEUS over 17 transfers) -> LiFi diamond 0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae (405,284) -> back OUT to the same two EOAs (335,249 + 70,034). Total in == total out == 451,627.3741 exactly; both sink and diamond end at 0.0000. This is an aggregator/relay round-trip that RETURNS the tokens to the payer, so it is NOT a pass-through filling someone else's order (tell #6 does not apply) and NOT a wash (the EOAs' balances went from 0 to 335k/70k). Judge it by the EOA balances, not the router.",
+    "significance": "This INVERTS the 2026-10-23 reading. Last run concluded '$2.8k notional per 1% of depth' and framed the record unstake as a large but survivable supply event. The follow-through now shows the opposite of distribution: 319,562 DEUS left a staker's hands and 405,283 DEUS were bought and HELD by two wallets with no prior position (one of them brand new on every lookback). Net effect on the pool is -105,836 DEUS, i.e. the pool is now TIGHTER than before the dump.",
+    "observed_at": "2026-10-24T06:12:00Z"
   }
 }
