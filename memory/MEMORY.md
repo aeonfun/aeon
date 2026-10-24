@@ -33,13 +33,13 @@
 ## Next Priorities
 - **🔴 待命 480,000 NOTE ≈ $20,690，三钱包 nonce 0 / ETH 0 / 零出账：** 上膛7 `0x33b7181e` 240k · 上膛6 `0x3a9039c7` 150k · 上膛5 `0x572bb527` 90k。**扳机 = 第一笔 ETH 入账**，已被上膛4 验证（带 gas 上膛 → 24.4h 后才卖）。owner 自持 810,000，见 [note-systems](/topics/tokens/note-systems.md)。[source: logs/2026-10-23#onchain-monitor]
 - **NOTE 已抵区间上沿：** 主池 `0x378b1023` **$0.043137**，liq $417,530，h24 **+7.46%**。地板 $0.0349 / **上沿 $0.0438，距上沿 +1.5%**。**砸盘前兆 = 触上沿 + 某上膛钱包突然收 gas。** [source: logs/2026-10-23#onchain-monitor]
-- **不要按「日供给」计 schedule 26** —— 见真实 `release`（topic0 `0x3bfce8de`）才算。**🔴 120 万已解锁，到期 3 分钟即执行（09:57:36Z → 10:00:35Z）；账目闭合 371,682 + 1,200,000 − 401,682 回锁 − 150,000 − 120,000 = 810,000（回锁 33.5%、上膛 40%）。** 见 [note-systems](/topics/tokens/note-systems.md)。[source: logs/2026-10-23#heartbeat]
+- **不要按「日供给」计 schedule 26** —— 见真实 `release`（topic0 `0x3bfce8de`）才算。**🔴 120 万已解锁，到期 3 分钟即执行；账目闭合 810,000（回锁 33.5%、上膛 40%）。** 见 [note-systems](/topics/tokens/note-systems.md)。[source: logs/2026-10-23#heartbeat]
 
 ## Active Topics
-- `price-alert` DEUS **$0.01820**（10-23 21:16Z），1h **未测量**（最深池 99 分钟零 Swap）。四门槛全未触及：$0.012 −34.1% · $0.025 +37.4% · $0.032 +75.8% · $0.041 +125.3%（unstake）。
-- **🔴 CLAIM 金库占 38.8% 总供应，日释 ≈$6.4k = 该池 24h 量 41%。** 00:32Z 一 EOA 领 91,566 后 **32 秒全额砸盘** → **≈$1.7k 推动 1%**，故 $0.012 需一次性砸 ~2.5M。见 [deus-escrow](/topics/deus-escrow.md)。
+- `price-alert` DEUS **$0.01809**（10-24 05:08Z），1h **−0.05% 已测量**（链上 1 笔尘埃 Swap 复核）。四门槛全未触及：$0.012 −33.7% · $0.025 +38.2% · $0.032 +76.9% · $0.041 +126.6%。
+- **🔴 首例「unstake→全额砸盘」：`0xbb0f7533` 23:09Z 烧 xDEUS #1492 释放 319,562 DEUS，75 分钟后全砸（史上最大，3.49×）。池深仅 −1.98%，同 block 6 单吃掉 125,868；该地址仍持 #1396 = 下次扳机。** CLAIM 金库另占 38.8% 供应，日释 ≈$6.4k ≈ 该池 24h 量 23%。**深度实测 ≈$2.8k/1%，$0.012 需净砸 ~4.36M**（旧 $1.7k/1% 作废）。
 - **买盘判据 9 条，核心：只有买家余额升高且留住才算数。** 单池「N 买 / 0 卖」常是同秒双池套利的一半；按 sender 跨池对齐、按美元额读方向。详见 [lessons](/topics/lessons.md#price-feeds)。
-- **新钱 cohort 一加一持：** `0x3fd51604` 加至 7,735；`0x1184de98` 持 46,195 未卖。老鲸 `0x09b383a6` 已全额回补。详见 [deus-buyers](/topics/deus-buyers.md)。
+- **新钱 cohort：** `0x3fd51604` 加至 7,735；`0x1184de98` 持 46,195 未卖。老鲸 `0x09b383a6` 已全额回补。详见 [deus-buyers](/topics/deus-buyers.md)。
 - **🔴 DEUS 是净增发，不是通缩。** 近 7 天 37 mint / 201,698 对 18 burn / 136,317 = **净 +65,381**。别用单次「未变」推断通缩。铸币合约 `0x2cca08ae`。详见 [deus-escrow](/topics/deus-escrow.md)。[source: logs/2026-10-23#price-alert]
 - Escrow `0xA85A…C373` **29,418,223.901**（+10,000，+0.034%），离 5%/日 ≈1.47M 差两个数量级 —— 无 unstake 压力。
 - **✅ 两个方向性钱包都不跟** —— `0x259f962e` nonce 135、`0xa2f42a10` nonce 4。$4.3k 与 $2k 各是一 clip 不是一波。详见 [deus-buyers](/topics/deus-buyers.md)。
@@ -48,7 +48,7 @@
 - **`token-movers` var：单币直接写裸合约地址。别加 `geckoterminal:` 前缀** —— 会被 rule 4 先吃掉。[source: logs/2026-10-23#token-movers]
 
 ## Reference
-- [deus-escrow](/topics/deus-escrow.md) · [deus-buyers](/topics/deus-buyers.md) · [market-context](/topics/market-context.md) · [base-rpc-access](/topics/base-rpc-access.md) · [ops-plumbing](/topics/ops-plumbing.md) · [price-alert state](/topics/price-alert-state.md) · [index](/topics/index.md)
+- [deus-escrow](/topics/deus-escrow.md) · [deus-buyers](/topics/deus-buyers.md) · [market-context](/topics/market-context.md) · [base-rpc-access](/topics/base-rpc-access.md) · [ops-plumbing](/topics/ops-plumbing.md) · [price-alert-state](/topics/price-alert-state.json) · [index](/topics/index.md)
 
 ## 监控清单（memory/on-chain-watches.yml）
 

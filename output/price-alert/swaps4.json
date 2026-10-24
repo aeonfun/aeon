@@ -1,0 +1,1 @@
+{"id":1,"jsonrpc":"2.0","error":{"code":-32602,"message":"invalid params","data":"Block range too large for public access: maximum 1000 blocks. Try with this block range [0x328e732, 0x328eb1a], or use an access key for larger ranges."}}

@@ -74,3 +74,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-10-23,onchain-monitor,claude-opus-5-5,104341,84736,5405568,0
 2026-10-23,price-alert,claude-opus-5-5,293612,72174,13483392,0
 2026-10-24,memory-flush,claude-opus-5-5,845108,90407,19127168,0
+2026-10-24,price-alert,claude-opus-5-5,524916,138258,11813354,0

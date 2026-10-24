@@ -8,7 +8,7 @@ tags:
   - runbook
   - onchain
 resource: https://basescan.org/address/0xA85A38796B951CE87B378538b32B3E6Ee3C4C373
-timestamp: 2026-10-24T00:48:00Z
+timestamp: 2026-10-24T05:20:00Z
 ---
 
 # DEUS / xDEUS watch addresses
@@ -32,6 +32,42 @@ Configured in `memory/on-chain-watches.yml`; thresholds are per-watch USD.
 config: the ERC-20 `Transfer` topic0 hash
 (`0xddf252ad…23b3ef`) is the *same signature*, so the existing `event_topics` entry matches
 mints, burns, and moves correctly. Only the decoding differs — don't read a value out of `data`.
+
+## First recorded unstake → full dump (2026-10-24)
+
+The 5-day xDEUS cooldown has now been observed being **paid and converted into market selling**
+for the first time in the record. This is the clearest live proof of the STRATEGY premise: the
+cooldown is the real cost of the multiplier, and somebody did pay it to exit.
+
+- **23:09:15Z** — escrow `0xA85A…C373` burned **xDEUS NFT #1492** and released
+  **319,562.226531 DEUS** to `0xbb0f7533` (plain EOA, `code 0x`, nonce 105).
+  Tx `0xb62d28fafa1454fb26d84ee5146483319941fb96eb2baabe8c969321b5c54dfd`, block 53,002,812.
+- **00:24:17Z** (75 min later) — the same address sold the **entire** 319,562.226531 DEUS into the
+  deepest pool for 8,618.5315 VIRTUAL (~$5,488). Tx
+  `0x156d9316ab040c0dd4c73ac02eafcfb9df2c58a930518dc8e476c5d9cbbaa762`, block 53,006,055.
+  Post-sale DEUS balance: **0.000000** — full exit, nothing retained.
+- This is **3.49×** the previous largest single dump on record (91,566 DEUS, 2026-10-23 00:32Z).
+
+**Do not over-read the damage.** Measured off the pool reserves (constant-product mark
+VIRTUAL/DEUS `0.02769675 → 0.02714852`), the true depth cost was only **−1.98%**. The USD tape
+printed −4.37%, inflated by VIRTUAL's own move and a stale prior print. Recalibrated absorption:
+**~$2.8k of notional per 1%** ($5,488 / 1.979%), not the ~$1.7k/1% inferred from the 91.5k dump — the book is deeper
+than previously estimated. A record-sized unstake does **not** collapse this pool.
+
+**Why it did not cascade:** six buys printed in the *same block* totalling 125,867.74 DEUS
+($1,771) — largest `0x6011b76b` 62,825 DEUS, then `0x6abea499` 29,739 DEUS — plus a seventh
+(11,529.69 DEUS) in the next block. Absorption 137,397.44 DEUS; net DEUS left in the pool after the
+event **178,969.17** (after the 3,195.62 fee to `0x205db642`).
+
+**Open forward signal — the trigger for the next dump:** this wallet **still holds one more xDEUS
+NFT, tokenId #1396 (0x574)**, confirmed via `tokenOfOwnerByIndex(owner, 0)`. Since 1396 < 1492 it
+was staked *earlier*, so this is a multi-position staker unwinding in tranches, not a one-off. The
+size of #1396 is **not yet measured** — do not assume it matches 319,562. Watch escrow `Burn`
+(topic0 `0xe08737ac`) for tokenId 1396.
+
+**Not an exodus:** xDEUS `totalSupply` (`0x18160ddd`) went 1724 (−24h) → 1727 pre-burn → 1726
+immediately post-burn → 1727 now. A new position was minted right after the burn; net 24h is **+3
+NFTs**. Staking is still net additive. [source: logs/2026-10-24#price-alert]
 
 ## Reading stake vs unstake
 
@@ -159,10 +195,14 @@ Don't claim "deflationary" from a single unchanged read. [source: logs/2026-10-2
 # Citations
 
 - All balances, transfers and counterparty classification read live from Base via
-  `https://base.gateway.tenderly.co` (`eth_getLogs`, `eth_call`, `eth_getCode`), 2026-10-21.
-- ERC-721 behaviour of xDEUS confirmed via `eth_call` (`decimals()` reverts), 2026-10-21.
+  `https://base.gateway.tenderly.co` (`eth_getLogs`, `eth_call`, `eth_getCode`), 2026-10-21.- ERC-721 behaviour of xDEUS confirmed via `eth_call` (`decimals()` reverts), 2026-10-21.
 - Prices from DexScreener token endpoint for `0x940A319B75861014A220D9c6c144d108552B089B`, 2026-10-21.
 - CLAIM vault balance/emission, claim-and-dump tx, price impact and the 10,000-DEUS stake: live Base
   reads via `https://base.gateway.tenderly.co` (`eth_getLogs` chunked ≤1000 blocks, `eth_call`
   `balanceOf`/`totalSupply`/`name`/`symbol`, `eth_getTransactionReceipt`), head 53,000,418, 2026-10-23 21:16Z.
 - Escrow/xDEUS addresses from `memory/on-chain-watches.yml`; DEUS token from the `MEMORY.md` tracked-token table.
+- Unstake-and-dump (`0xbb0f7533`, NFT #1492, 319,562.226531 DEUS): escrow `Burn` topic0
+  `0xe08737ac…4def35` on `0xA85A…C373`; xDEUS `Transfer` (burn to `0x0`) topic0 `0xddf252ad…b3ef`;
+  pool reserves via `eth_call balanceOf` on DEUS and VIRTUAL `0x0b3e328455c4059eeb9e3f84b5543f74e24e7e1b`
+  at blocks `0x328cee6` / `0x328cee7`; xDEUS `totalSupply` `0x18160ddd`; `tokenOfOwnerByIndex`
+  `0x2f745c59`. Live Base reads via `https://base.gateway.tenderly.co`, head 53,014,594, 2026-10-24 05:08Z.
