@@ -277,6 +277,21 @@ rc=${PIPESTATUS[0]}
 set -e
 [ "$rc" -ne 0 ] && { rm -f "$LOG"; exit "$rc"; }
 
+# the pre-broadcast probe (DeployHook.s.sol) try/catches a dry-run swap so a
+# doomed swap is never recorded as broadcast, and logs SEED_SWAP_SKIPPED
+# instead of reverting the script. That makes it invisible to the rc check
+# above: forge exits 0 either way. A revert-gate hook correctly rejecting the
+# probe swap and a setup bug silently breaking it look identical here, so
+# treat every skip as a hard stop and let the operator tell them apart - this
+# is the one signal that would have caught the probe running outside
+# vm.startBroadcast() (fixed in 3f99dd9) before it shipped.
+if grep -q "SEED_SWAP_SKIPPED" "$LOG"; then
+  echo "!! SEED_SWAP_SKIPPED: the pre-broadcast probe swap did not go through" >&2
+  echo "   a revert-gate hook (a game/gate rejecting on purpose) and a broken probe" >&2
+  echo "   both log this; read the trace above to tell them apart before retrying" >&2
+  rm -f "$LOG"; exit 1
+fi
+
 # idempotency: the deploy script logs ALREADY_DEPLOYED <addr> and does nothing when
 # the mined hook address already holds code. Surface it cleanly (not an error).
 if grep -q "ALREADY_DEPLOYED" "$LOG"; then

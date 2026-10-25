@@ -179,6 +179,9 @@ contract DeployHook is Script {
         // doomed swap must never be recorded as broadcast in the first place.
         uint256 snap = vm.snapshotState();
         bool seedSwapOk;
+        // Outside vm.startBroadcast(), msg.sender here is this script contract,
+        // which holds no tokens - prank as the deployer so the probe spends from
+        // the right balance without being recorded as a broadcast transaction.
         vm.prank(me);
         try swapRouter.swap(
             key,
