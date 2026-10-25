@@ -383,6 +383,15 @@ cmd_sync() {
 
   local total
   total=$(echo "$items" | jq 'length')
+  # `--item` names ONE specific record; if it resolves to nothing, that is a
+  # not-found error, NOT agreement. Reporting "SYNC_OK: all 0 items match" for an
+  # id the registry does not contain is the same false-green the fail-closed guard
+  # below exists to prevent (a typo'd or stale id would read as verified forever).
+  if [[ -n "$target_item" && "$total" -eq 0 ]]; then
+    echo "SYNC_ITEM_NOT_FOUND: '$target_item' is not in the registry (nothing to verify)" >&2
+    echo "  Refusing to report success for an item the registry does not contain." >&2
+    return 1
+  fi
   local nmalformed=0
   [[ -n "$malformed_ids" ]] && nmalformed=$(wc -w <<<"$malformed_ids")
   echo "SYNC: checking $total items against GitHub... ($notgithub non-GitHub item(s) not checked)"

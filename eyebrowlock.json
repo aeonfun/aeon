@@ -3410,9 +3410,9 @@
       "source": {"kind": "local", "ref": "skills/github-filing-registry"},
       "capabilities": {"network": ["api.github.com"]},
       "files": [
-        {"path": "SKILL.md", "hash": "2a4cb6d8e851ad41ecce49489417c3f96f8a2719b6f47a99a1b0dbc8993e5a5b"}
+        {"path": "SKILL.md", "hash": "b95b9c6d984ff6eb0404559092b2d20d089986784255df96b86fefaa9f87c8a0"}
       ],
-      "contentHash": "sha256-2a4cb6d8e851ad41ecce49489417c3f96f8a2719b6f47a99a1b0dbc8993e5a5b",
+      "contentHash": "sha256-b95b9c6d984ff6eb0404559092b2d20d089986784255df96b86fefaa9f87c8a0",
       "discoveredFrom": "skills/github-filing-registry/SKILL.md"
     }
   ]

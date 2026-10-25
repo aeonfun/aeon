@@ -106,6 +106,8 @@ Sorts by `repo`, then `last_action` age. Shows:
 
 For each entry (or the specified one), calls GitHub API to get current `state` (`open`/`closed`). Updates `state` field if it changed. Sets `status` to `merged` if PR was merged, `closed` if issue/PR was closed.
 
+`sync` exits non-zero when it cannot verify an item — `--item` naming an id the registry does not contain (`SYNC_ITEM_NOT_FOUND`), a failed GitHub fetch (`SYNC_INCOMPLETE`), or a record with no resolvable `owner/repo` + number (`SYNC_MALFORMED`). A non-zero exit means "not verified", never agreement.
+
 ### log — Show activity history
 
 ```bash
