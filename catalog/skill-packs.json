@@ -199,14 +199,19 @@
     {
       "repo": "sentinelhood/robinhood-sentinel",
       "name": "Sentinel Pack",
-      "description": "Keyless Robinhood Chain (4663) monitoring: block-stamped nonce, balance and bytecode diffs for watched addresses, alerting through ./notify only on change. Read-only, never signs.",
+      "description": "Keyless Robinhood Chain (4663) monitoring: address diffs, real usage of Aeon's v4 hooks, lookalike alerts for new Pons launches, one-shot Pons token checks, alerts when a watched deployer launches again, and alerts when a Pons token graduates to a locked Uniswap v4 pool. Read-only, never signs.",
       "author": "sentinelhood",
       "license": "MIT",
       "homepage": "https://sentinelhood.com",
       "category": "crypto",
       "trust_level": "community",
       "skills": [
-        "robinhood-chain-monitor"
+        "robinhood-chain-monitor",
+        "hook-usage",
+        "pons-launch-watch",
+        "pons-token-check",
+        "pons-deployer-watch",
+        "pons-graduation-watch"
       ],
       "secrets_required": [],
       "capabilities": [
