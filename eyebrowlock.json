@@ -3400,6 +3400,20 @@
       ],
       "contentHash": "sha256-b230f3f81002d9247112aef5443c7aae9559de36f118d7308e548dbe9619d3ec",
       "discoveredFrom": "skills/anatomy/SKILL.md"
+    },
+    {
+      "id": "53303e97a714e88e",
+      "tool": "aeon",
+      "scope": "project:.",
+      "type": "skill",
+      "name": "github-filing-registry",
+      "source": {"kind": "local", "ref": "skills/github-filing-registry"},
+      "capabilities": {"network": ["api.github.com"]},
+      "files": [
+        {"path": "SKILL.md", "hash": "2a4cb6d8e851ad41ecce49489417c3f96f8a2719b6f47a99a1b0dbc8993e5a5b"}
+      ],
+      "contentHash": "sha256-2a4cb6d8e851ad41ecce49489417c3f96f8a2719b6f47a99a1b0dbc8993e5a5b",
+      "discoveredFrom": "skills/github-filing-registry/SKILL.md"
     }
   ]
 }

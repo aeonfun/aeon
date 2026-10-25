@@ -464,7 +464,7 @@ cmd_sync() {
 
   if [[ $changes -gt 0 ]]; then
     local synced
-    synced=$(echo "$updated_registry" | jq '.last_synced = '"$(now_str)"'')
+    synced=$(echo "$updated_registry" | jq --arg ts "$(now_str)" '.last_synced = $ts')
     atomic_save "$synced"
     echo "SYNC_DONE: $changes items updated"
   fi

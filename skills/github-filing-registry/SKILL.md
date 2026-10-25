@@ -1,9 +1,14 @@
 ---
-name: GitHub Filing Registry
+name: github-filing-registry
 description: Track every issue and PR filed across upstream repositories — status, evidence, next_action, and history. Replaces standalone Python scripts with a pure shell + gh CLI interface.
-var: ""
-category: dev
-tags: [dev, github, memory]
+metadata:
+  title: GitHub Filing Registry
+  category: dev
+  var: ""
+  tags:
+    - dev
+    - github
+    - memory
 ---
 
 > **${var}** — Optional. Accepts `owner/repo#N` for single-item ops, or a subcommand (`add`, `status`, `triage`, `sync`, `log`). Empty = run triage.
@@ -113,25 +118,8 @@ Prints activity log entries, newest first.
 
 All state lives in `memory/filing-registry.json`. The `./filing-registry` script is a shell dispatcher that reads/writes JSON with `jq`. No Python needed.
 
-### `./filing-registry` shell script
-
-```bash
-#!/usr/bin/env bash
-set -euo pipefail
-REGISTRY="${AEON_ROOT:-.}"/memory/filing-registry.json
-mkdir -p "$(dirname "$REGISTRY")"
-
-cmd="${1:-}"; shift || true
-case "$cmd" in
-  add)        filing_add "$@" ;;
-  status)     filing_status "$@" ;;
-  triage)     filing_triage "$@" ;;
-  sync)       filing_sync "$@" ;;
-  log)        filing_log "$@" ;;
-  "")         filing_triage ;;
-  *)          echo "Usage: filing-registry {add|status|triage|sync|log}" >&2; exit 1 ;;
-esac
-```
+It is a **helper other skills call**, not a standalone scheduled skill: from the repo root it runs as
+`skills/github-filing-registry/filing-registry <subcommand>` (invoked by `aeon` triage/sync/add/status/log and by `gh-filing-standards` pre-filing checks). It is disabled by default in `aeon.yml` (`enabled: false, schedule: "workflow_dispatch"`) and has no cron of its own.
 
 ## Pre-filing check
 
@@ -160,6 +148,7 @@ If the ID or a near-matching title already exists in the registry, output a warn
 
 - `jq` — JSON manipulation
 - `gh` — GitHub API
+- `flock` — serializes registry read-modify-write (see `registry_lock()`)
 - `bash` 4+
 
 No Python required.

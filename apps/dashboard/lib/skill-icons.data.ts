@@ -33,6 +33,7 @@ export const SKILL_ICONS: Record<string, string> = {
   "finance-district-mcp": "<path d='M3 22h18'/><path d='M6 18v-7M10 18v-7M14 18v-7M18 18v-7'/><path d='M12 2 20 7H4z'/>",
   "fleet-control": "<rect x='9' y='2' width='6' height='6' rx='1'/><rect x='2' y='16' width='6' height='6' rx='1'/><rect x='16' y='16' width='6' height='6' rx='1'/><path d='M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3'/><path d='M12 12V8'/>",
   "fork-fleet": "<circle cx='6' cy='6' r='3'/><circle cx='18' cy='6' r='3'/><circle cx='12' cy='18' r='3'/><path d='M18 9v1a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V9'/><path d='M12 12v3'/>",
+  "github-filing-registry": "<rect x='4' y='3' width='16' height='18' rx='2'/><path d='M8 8h8'/><path d='M8 12h8'/><path d='M8 16h5'/>",
   "github-monitor": "<path d='M2.1 12.3a1 1 0 0 1 0-.7 10.8 10.8 0 0 1 19.9 0 1 1 0 0 1 0 .7 10.8 10.8 0 0 1-19.9 0'/><circle cx='12' cy='12' r='3'/>",
   "github-trending": "<path d='M16 7h6v6'/><path d='M22 7l-8.5 8.5-5-5L2 17'/>",
   "glim-mcp": "<path d='M3 7V5a2 2 0 0 1 2-2h2'/><path d='M17 3h2a2 2 0 0 1 2 2v2'/><path d='M21 17v2a2 2 0 0 1-2 2h-2'/><path d='M7 21H5a2 2 0 0 1-2-2v-2'/><circle cx='12' cy='12' r='3'/><path d='M16 16l-1.9-1.9'/>",
