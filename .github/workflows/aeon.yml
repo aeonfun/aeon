@@ -1701,36 +1701,40 @@ jobs:
             SKILL_NAME="$SKILL" AEON_OTEL_COMPONENT=scorer source "${GITHUB_WORKSPACE}/scripts/langfuse-otel.sh"
           fi
 
-          # Grade the artifact the skill actually SENT, not its closing summary.
-          # For a notify-first skill the deliverable is the ./notify card, captured
-          # to output/.chains/<skill>.md (from .pending-<skill>.md) by the "Capture
-          # skill output" step above. The harness's final .result message is often
-          # just a terse "sent the card, 13 PRs, 769 runs" recap - which strips every
-          # figure of its labeled source and reliably draws an unverifiable_claim cap
-          # (kpi-daily, github-trending). Prefer the captured card; fall back to
-          # .result. Non-notify skills are unaffected: their chain file is a copy of
-          # /tmp/skill-result.txt (see the capture step's elif), so SRC is identical.
-          SRC=/tmp/skill-result.txt
+          # Most skills deliver their full output through notify, so prefer the
+          # captured card. Changelog delivers a repository change and only sends
+          # a short card: score its substantive final result alongside that card.
+          score_output_sample() {
+            local src="$1" head_bytes="$2" tail_bytes="$3" bytes ohead otail
+            if [ ! -f "$src" ] || [ ! -s "$src" ]; then
+              return
+            fi
+            bytes=$(wc -c < "$src")
+            if [ "$bytes" -le "$((head_bytes + tail_bytes))" ]; then
+              iconv -f UTF-8 -t UTF-8 -c < "$src"
+            else
+              ohead=$(head -c "$head_bytes" "$src" | iconv -f UTF-8 -t UTF-8 -c)
+              otail=$(tail -c "$tail_bytes" "$src" | iconv -f UTF-8 -t UTF-8 -c)
+              printf '%s\n\n[... middle truncated ...]\n\n%s' "$ohead" "$otail"
+            fi
+          }
+
+          RESULT=/tmp/skill-result.txt
+          SRC="$RESULT"
           CHAIN="output/.chains/${SKILL}.md"
           if [ -f "$CHAIN" ] && [ -s "$CHAIN" ] && [ "$(head -n1 "$CHAIN")" != "_No output captured._" ]; then
             SRC="$CHAIN"
           fi
 
-          # Sample head + tail so the judge sees the conclusion of long outputs, not
-          # just the intro - a flat 3KB head-truncate graded only the opening and
-          # biased the score against skills that build to their payoff (articles,
-          # digests, research compendia routinely exceed a few KB). `iconv -c` drops
-          # any partial UTF-8 char left at a byte cut.
+          # Head + tail sampling preserves conclusions while bounding judge input.
+          # Keep the same 14KB content budget when changelog needs both artifacts.
           OUTPUT=""
-          if [ -f "$SRC" ] && [ -s "$SRC" ]; then
-            BYTES=$(wc -c < "$SRC")
-            if [ "$BYTES" -le 14000 ]; then
-              OUTPUT=$(iconv -f UTF-8 -t UTF-8 -c < "$SRC")
-            else
-              OHEAD=$(head -c 10000 "$SRC" | iconv -f UTF-8 -t UTF-8 -c)
-              OTAIL=$(tail -c 4000 "$SRC" | iconv -f UTF-8 -t UTF-8 -c)
-              OUTPUT=$(printf '%s\n\n[... middle truncated ...]\n\n%s' "$OHEAD" "$OTAIL")
-            fi
+          if [ "$SKILL" = "changelog" ] && [ "$SRC" = "$CHAIN" ] && [ -s "$RESULT" ] && ! cmp -s "$SRC" "$RESULT"; then
+            RESULT_SAMPLE=$(score_output_sample "$RESULT" 7000 3000)
+            NOTIFY_SAMPLE=$(score_output_sample "$SRC" 3000 1000)
+            OUTPUT=$(printf 'Repository change result:\n%s\n\nNotification:\n%s' "$RESULT_SAMPLE" "$NOTIFY_SAMPLE")
+          else
+            OUTPUT=$(score_output_sample "$SRC" 10000 4000)
           fi
           [ -z "$OUTPUT" ] && { echo "No output to analyze"; exit 0; }
 

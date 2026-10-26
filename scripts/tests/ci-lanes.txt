@@ -41,6 +41,7 @@
 # dashboard registries; this fails the moment any of them drifts.
 4 | credential manifest consistency tests | bash scripts/tests/test_credential_manifest.sh
 10 | workflow harness choice tests | bash scripts/tests/test_workflow_harness_choices.sh
+10 | scorer artifact selection tests | bash scripts/tests/test_score_output.sh
 8 | dashboard model lists vs workflow model choices + harness defaults | bash scripts/tests/test_dashboard_model_choices.sh
 2 | harness install/config tests | bash scripts/tests/test_install_harness.sh
 # Live halves need bwrap (installed by the job before the lanes start);
