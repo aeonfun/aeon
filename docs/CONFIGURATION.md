@@ -130,6 +130,7 @@ A skill run has push credentials, so the steps after it treat what it left behin
 
 - **Code that later runs stays off main.** On the default branch, any change a run made under `scripts/`, `.github/` or `harness-adapter/` (left in the tree or committed) is restored to a freshly fetched `main` and reported with an `::error::`; the rest of the run's state is committed as usual. Skills that change those paths on a feature branch and open a PR (`aeon-update`, `skill-repair`, `self-improve`, `create-skill` and others) are unaffected. (#1214, #1216)
 - **Push helpers come from the run's starting commit.** The commit steps run `git-push-retry.sh` and `audit.sh` from `$GITHUB_SHA`, never the working tree, with git hooks off. A `Lock git config` step right after `Run` drops `.git/config` keys that make git run a program (fsmonitor, filters, merge drivers, credential helpers, signing, includes, url rewrites) and then rebuilds the checkout's HTTP auth from fresh workflow secrets, so pushes keep working. (#1216, #1241)
+- **Concurrent pushes retry ref races.** The push helper retries GitHub's inline `cannot lock ref ... is at ... but expected ...` rejection when another run moved the branch. Authentication failures, hook failures and unrelated remote rejections still stop immediately. (#1270)
 - **`./secretcurl` fills only declared secrets.** A placeholder is substituted only when the skill lists that name in `requires:` (`GH_TOKEN` and `GITHUB_TOKEN` are always allowed); curl runs with a stripped environment and options that make it read env vars or `/proc` are refused. A refused call leaves an audit record with names only. (#1215, #1216)
 
 These are backstops, not a hard boundary: a write-mode run still has `GH_GLOBAL` in its env.
@@ -264,7 +265,11 @@ This repo is a public template; your instance is your own repo next to it. Pick 
 
 API keys stay private either way: they are encrypted repo secrets, never files.
 
-To pull framework updates, run the `aeon-update` skill (it opens a PR that merges upstream into your instance and works for forks and copies alike), or merge by hand:
+To pull framework updates, run the `aeon-update` skill. It opens one PR at a time and works for forks and copies alike. The new `baseline_sha` stays on the PR branch until you merge it; closing an unmerged PR leaves the old baseline in place so the next run can offer those changes again. While a sync PR is open, another sync exits with `AEON_UPDATE_PR_OPEN` instead of making a duplicate. Logs and run output stay out of the sync commit.
+
+The skill uses `scripts/aeon_update.py plan` for a read-only comparison and `apply` on its sync branch for file changes, validation and catalog regeneration. Failed checks leave the affected files as conflicts for review. See the [aeon-update skill](../skills/aeon-update/SKILL.md) for its arguments, report mode and reset options.
+
+You can also merge by hand:
 
 ```bash
 git remote add upstream https://github.com/aeonfun/aeon.git
@@ -273,6 +278,18 @@ git merge upstream/main --no-edit
 ```
 
 The template ships a few starter files under `memory/` (e.g. `MEMORY.md`, `watched-repos.md`, `products.md`), `output/`, `soul/`, `STRATEGY.md`, and `aeon.yml`, so a merge can conflict where you edited one of those; keep your side (`git checkout --ours <path>`). Files you created that the template doesn't have (your logs, topics, articles) never conflict.
+
+## Onchain evidence receipts
+
+`onchain-monitor` records the last observed block hash and rechecks it on the next run. If the chain rewrites that block, it rewinds a safety window and replays observations before alerting, while deduplicating transactions. Completed watches write a receipt under `memory/evidence/` with block ranges, source status, event counters, sorted transaction hashes and a SHA-256 checksum; alerts include its path and digest.
+
+Check a saved receipt from your instance repo without RPC or API access:
+
+```bash
+node scripts/verify-onchain-evidence.mjs memory/evidence/<file>.json
+```
+
+The verifier checks the checksum, schema, ranges, counters and hashes, and rejects secret-like fields and credential-bearing URLs. Exit code `0` means internally consistent, `1` means invalid, and `2` means the file argument was omitted. The digest is not a signature: it does not prove authorship, RPC honesty or chain finality. See [onchain-monitor, steps 6.1-6.2](../skills/onchain-monitor/SKILL.md#61-evidence-mode--make-every-alert-replayable).
 
 ## GitHub Actions cost
 

@@ -56,6 +56,8 @@ codex plugin marketplace add aeonfun/aeon
 codex plugin add aeon@aeon
 ```
 
+From version 0.2.0, the plugin also bundles the [hosted Aeon Connect MCP connection](https://www.aeon.fun/connect/mcp) and a `get-started` onboarding skill. Sign in with GitHub and choose your agent repo, then ask it to check setup, run a skill, follow a run or read its output. Onboarding names missing keys without reading their values and offers a first `heartbeat` run. Changes to skills, strategy, soul, packs or instance settings require confirmation. Switching reaches only other Aeon repos you allowed when connecting. See the [plugin README](../plugin/README.md).
+
 ### Option C - install it globally by hand (use it from any folder)
 
 Prefer to copy files instead of using the plugin? Drop the skill into your personal Claude Code skills directory so `/aeon` works in every session:

@@ -11,6 +11,21 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Added
 
+- **Plugin 0.2.0 connects to the hosted Aeon MCP server.** The Claude Code and Codex
+  plugin bundles the connection and a `get-started` skill that checks setup, names missing
+  keys and offers a first heartbeat run. Setup changes require confirmation and secret
+  values are never read or written. (#1181)
+- **`onchain-monitor` replays evidence after a chain reorg.** It rechecks the saved block
+  hash, rewinds a safety window and replays before alerting, with transaction deduplication
+  and hashed receipts under `memory/evidence/`. (#1251)
+- **Offline onchain receipt verification.** `scripts/verify-onchain-evidence.mjs` checks
+  a saved receipt's SHA-256 and schema consistency without network access.
+  Receipts use compact UTF-8 JSON with sorted keys. This is not a signature or proof of
+  chain finality. (#1266)
+- **Cohesivity community pack listed.** `deploy-site` builds and deploys a small web app
+  to a free 72-hour tenant, with no API key or signup needed to start. The Sentinel listing
+  also gains its seventh skill, `pons-curve-movers`. Built-in skill count stays 86. (#1271)
+
 - **`onchain-monitor` watches Robinhood Chain (4663).** `robinhood` joins the chain list, with
   Alchemy (`robinhood-mainnet`) when `ALCHEMY_API_KEY` is set and a keyless fallback that reads
   ERC-20 transfers from the public RPC in 30,000-block windows, since Etherscan's free tier
@@ -249,6 +264,12 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Changed
 
+- **Sentinel Pack listing catches up with its six monitoring skills:** address diffs,
+  Aeon v4 hook usage, Pons launch lookalikes, token checks, repeat deployers and graduations
+  to locked v4 pools. The later seventh skill is recorded above. (#1269)
+- **Ecosystem drops the broken AI2Human website link** while retaining the partner entry
+  and X handle. (#1254)
+
 - **Claude Code pinned to 2.1.301.** Usage-limit waits are capped at 10 minutes
   (`CLAUDE_CODE_RETRY_WATCHDOG`), and WebFetch is turned off when egress runs in `enforce` mode
   with the proxy up, since it never passes through iron-proxy. (#1234)
@@ -397,6 +418,16 @@ from or pin to; the template keeps serving the latest `main` to new forks.
   showcase hooks in `aeonfun/univ4-hooks` carried the fee. (#1035)
 
 ### Fixed
+
+- **`aeon-update` keeps its new baseline off main until its PR merges.** Branch-only
+  state no longer leaks onto main after a stash conflict, logs and output stay out of the
+  sync commit, and an open sync PR prevents a duplicate. The plan/apply helper described
+  below handles the file work and validation. (#1256, #1258)
+- **Cron events sort by timestamp instant,** including UTC offsets, with deterministic
+  equal-time tie-breaking so input order cannot change failure counts or last status. (#1262)
+- **Concurrent run pushes retry GitHub's inline stale-ref rejection.** A `cannot lock ref`
+  record caused by another run advancing the branch is retried; authentication, hook and
+  unrelated remote failures still stop immediately. (#1270)
 
 - **`aeon-update` syncs again on Claude Code 2.1.301.** The skill described its compare,
   3-way classify and apply steps as shell snippets (helper functions, per-file loops, redirects
@@ -1394,6 +1425,10 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 - Bumped the dashboard `postcss` override past `GHSA-r28c-9q8g-f849`. (#783)
 
 ### Maintenance
+
+- **Maintenance.** The MCP harness test waits for killed children to be reaped, run
+  scratch under `output/` and the repo root is ignored, MCP SDK and hono are updated, and
+  the dashboard moves to Next 16.4.1. (#1253, #1257, #1263, #1264)
 
 - CI and housekeeping 2026-10-12 to 2026-10-17: catalog sha refresh (#1198), cached bubblewrap
   `.deb` (#1205, #1231), one parallel shellcheck pass (#1224), CI on Blacksmith runners with small

@@ -44,7 +44,7 @@ Site: https://www.aeon.fun
 
 ## Install as a plugin
 
-Aeon ships the operator console as a plugin for Claude Code and Codex.
+Aeon ships the operator console as a plugin for Claude Code and Codex. From version 0.2.0 it also bundles the hosted Aeon Connect MCP connection and a get-started onboarding skill: sign in with GitHub, choose your agent repo, check missing key names and confirm a first heartbeat run. It never reads or writes secret values; setup changes require confirmation.
 
 - Claude Code: `/plugin marketplace add aeonfun/aeon` then `/plugin install aeon@aeon`
 - Codex: `codex plugin marketplace add aeonfun/aeon` then `codex plugin add aeon@aeon`
