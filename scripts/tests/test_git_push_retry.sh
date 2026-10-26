@@ -165,6 +165,10 @@ case "$1" in
         printf '!\tHEAD:refs/heads/main\t[remote rejected] (failed to update ref)\n'
         exit 1
         ;;
+      stale-ref-inline)
+        printf '!\tHEAD:refs/heads/main\t[remote rejected] (cannot lock ref '"'refs/heads/main'"': is at abc123 but expected def456)\n'
+        exit 1
+        ;;
       auth)
         printf "fatal: Authentication failed for 'https://user:URL_ONLY_SECRET@example.test/repo.git?token=QUERY_ONLY_SECRET'\n" >&2
         printf 'remote: credential %s encoded %s base64 %s\n' "$PUSH_TEST_TOKEN" "$PUSH_TEST_URI" "$PUSH_TEST_B64" >&2
@@ -245,7 +249,7 @@ for mode in auth permission hook transport; do
   esac
 done
 
-for mode in non-fast-forward fetch-first stale stale-ref; do
+for mode in non-fast-forward fetch-first stale stale-ref stale-ref-inline; do
   run_push_case "$mode"
   if [ "$rc" -eq 0 ] \
     && [ "$(wc -l < "$TMP/case-$mode/pushes")" -eq 2 ] \

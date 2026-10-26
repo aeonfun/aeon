@@ -130,12 +130,14 @@ report_push_error() {
 retryable_push_rejection() {
   # Porcelain status records distinguish real rejected refs from arbitrary
   # remote diagnostics mentioning "non-fast-forward" or "fetch first".
-  local line pattern stale_pattern update_pattern stale_ref=0 rejected_update=0
+  local line pattern inline_pattern stale_pattern update_pattern stale_ref=0 rejected_update=0
   pattern=$'^!\t[^\t]+\t\\[rejected\\] \\((non-fast-forward|fetch first|stale info)\\)$'
   stale_pattern="cannot lock ref '[^']+': is at [[:xdigit:]]+ but expected [[:xdigit:]]+"
   update_pattern=$'^!\t[^\t]+\t\\[remote rejected\\] \\(failed to update ref\\)$'
+  # GitHub can also put the lock failure inside the status record itself.
+  inline_pattern=$'^!\t[^\t]+\t\\[remote rejected\\] \\('"$stale_pattern"$'\\)$'
   while IFS= read -r line; do
-    if [[ "$line" =~ $pattern ]]; then
+    if [[ "$line" =~ $pattern ]] || [[ "$line" =~ $inline_pattern ]]; then
       return 0
     fi
     [[ "$line" =~ $stale_pattern ]] && stale_ref=1
