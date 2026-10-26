@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "updated": "2026-10-17",
+  "updated": "2026-10-26",
   "description": "Machine-readable registry of community skill packs installable via bin/install-skill-pack. Mirrors the human-readable table in README.md.",
   "packs": [
     {
@@ -199,7 +199,7 @@
     {
       "repo": "sentinelhood/robinhood-sentinel",
       "name": "Sentinel Pack",
-      "description": "Keyless Robinhood Chain (4663) monitoring: address diffs, real usage of Aeon's v4 hooks, lookalike alerts for new Pons launches, one-shot Pons token checks, alerts when a watched deployer launches again, and alerts when a Pons token graduates to a locked Uniswap v4 pool. Read-only, never signs.",
+      "description": "Keyless Robinhood Chain (4663) monitoring: address diffs, real usage of Aeon's v4 hooks, lookalike alerts for new Pons launches, one-shot Pons token checks, alerts when a watched deployer launches again, alerts when a Pons token graduates to a locked Uniswap v4 pool, and the busiest Pons bonding curves DEX scanners cannot see yet. Read-only, never signs.",
       "author": "sentinelhood",
       "license": "MIT",
       "homepage": "https://sentinelhood.com",
@@ -211,7 +211,8 @@
         "pons-launch-watch",
         "pons-token-check",
         "pons-deployer-watch",
-        "pons-graduation-watch"
+        "pons-graduation-watch",
+        "pons-curve-movers"
       ],
       "secrets_required": [],
       "capabilities": [
