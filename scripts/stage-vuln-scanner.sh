@@ -14,8 +14,15 @@
 #      (semgrep/slither dodge this only because pip puts them on the global PATH.)
 #   2. Install vectors. `pip` (bare) and `curl | sh` aren't on the `claude -p`
 #      --allowedTools allowlist, so installing here (full capability, no
-#      allowlist) is simplest. `python3 -m pip` / `curl -o` ARE allowlisted, so
-#      the skill keeps an in-run install as a fallback when this step is absent.
+#      allowlist) is simplest. `python3 -m pip` IS allowlisted, so the skill
+#      keeps an in-run pip install as a fallback for semgrep/slither only; it
+#      never downloads a binary in-run (no pin or checksum check there).
+#
+# Supply chain: the Go binaries (trufflehog, osv-scanner) are pinned release
+# assets checked against the sha256 digests from each project's official
+# checksums file. A mismatch deletes the download and records `fail` (fail
+# closed: the skill then skips that scanner). Bumping a version means updating
+# the version AND both per-arch digests from the new release's checksums file.
 #
 # EXECUTION of the staged tools is a separate concern, gated by the write-tier
 # grant in scripts/skill_mode.sh (Bash(semgrep:*) etc.). Both halves are needed:
@@ -93,25 +100,64 @@ else
   record semgrep fail
 fi
 
-# --- TruffleHog (verified-secret scan) -> /tmp/bin ---
-if curl -sSfL https://raw.githubusercontent.com/trufflesecurity/trufflehog/main/scripts/install.sh \
-     | sh -s -- -b "$BIN" >/dev/null 2>&1 && [ -x "$BIN/trufflehog" ]; then
-  log "trufflehog installed -> $BIN/trufflehog ($("$BIN/trufflehog" --version 2>&1 | head -1))"
+# Runner arch -> release asset suffix. GHA hosted runners are linux/amd64; arm64
+# covers ARM runners (e.g. a Blacksmith ARM label via AEON_RUNNER).
+case "$(uname -m)" in
+x86_64 | amd64) ARCH=amd64 ;;
+aarch64 | arm64) ARCH=arm64 ;;
+*) ARCH="" ;;
+esac
+
+sha256_ok() { # file, expected hex digest
+  [ -n "$2" ] && echo "$2  $1" | sha256sum -c - >/dev/null 2>&1
+}
+
+# --- TruffleHog (verified-secret scan) -> /tmp/bin. Pinned release tarball.
+#     Digests from trufflehog_${TH_VERSION}_checksums.txt on the GitHub release.
+TH_VERSION=3.99.7
+case "$ARCH" in
+amd64) TH_SHA256=bdbea0508e439b144f49de14e775908de5f902f3d14ea7ae8354bae72b0b72ef ;;
+arm64) TH_SHA256=3060f7c9f18c70afdc432984cacabdd1e9103729b5d5fee7fb6755a90d1c59d4 ;;
+*) TH_SHA256="" ;;
+esac
+TH_TGZ=/tmp/vuln-scan/trufflehog.tar.gz
+TH_URL="https://github.com/trufflesecurity/trufflehog/releases/download/v${TH_VERSION}/trufflehog_${TH_VERSION}_linux_${ARCH}.tar.gz"
+rm -f "$TH_TGZ" "$BIN/trufflehog"
+if [ -n "$TH_SHA256" ] &&
+  curl -sSfL -o "$TH_TGZ" "$TH_URL" 2>/dev/null &&
+  sha256_ok "$TH_TGZ" "$TH_SHA256" &&
+  tar -xzf "$TH_TGZ" -C "$BIN" trufflehog &&
+  chmod +x "$BIN/trufflehog" &&
+  "$BIN/trufflehog" --version >/dev/null 2>&1; then
+  log "trufflehog ${TH_VERSION} installed -> $BIN/trufflehog (sha256 ok)"
   record trufflehog installed
 else
-  log "WARN trufflehog install failed"
+  rm -f "$BIN/trufflehog"
+  log "WARN trufflehog ${TH_VERSION} install failed (arch=${ARCH:-unsupported}, download or sha256 check)"
   record trufflehog fail
 fi
+rm -f "$TH_TGZ"
 
-# --- osv-scanner (dependency CVEs). GHA hosted runners are linux/amd64. ---
-OSV_URL="https://github.com/google/osv-scanner/releases/latest/download/osv-scanner_linux_amd64"
-if curl -sSfL -o "$BIN/osv-scanner" "$OSV_URL" 2>/dev/null \
-     && chmod +x "$BIN/osv-scanner" \
-     && "$BIN/osv-scanner" --version >/dev/null 2>&1; then
-  log "osv-scanner installed -> $BIN/osv-scanner"
+# --- osv-scanner (dependency CVEs) -> /tmp/bin. Pinned release binary.
+#     Digests from osv-scanner_SHA256SUMS on the GitHub release.
+OSV_VERSION=v2.7.0
+case "$ARCH" in
+amd64) OSV_SHA256=160c6253e2922e9e0a6a9771c5c4c40a4b3c6090b34a3cdd5e80c96cc2e4218b ;;
+arm64) OSV_SHA256=4061ef4c021ed3c47f203b818f337e351336cc5cd67c0274fc36bd1dfc728dd7 ;;
+*) OSV_SHA256="" ;;
+esac
+OSV_URL="https://github.com/google/osv-scanner/releases/download/${OSV_VERSION}/osv-scanner_linux_${ARCH}"
+rm -f "$BIN/osv-scanner"
+if [ -n "$OSV_SHA256" ] &&
+  curl -sSfL -o "$BIN/osv-scanner" "$OSV_URL" 2>/dev/null &&
+  sha256_ok "$BIN/osv-scanner" "$OSV_SHA256" &&
+  chmod +x "$BIN/osv-scanner" &&
+  "$BIN/osv-scanner" --version >/dev/null 2>&1; then
+  log "osv-scanner ${OSV_VERSION} installed -> $BIN/osv-scanner (sha256 ok)"
   record osv-scanner installed
 else
-  log "WARN osv-scanner install failed"
+  rm -f "$BIN/osv-scanner"
+  log "WARN osv-scanner ${OSV_VERSION} install failed (arch=${ARCH:-unsupported}, download or sha256 check)"
   record osv-scanner fail
 fi
 
