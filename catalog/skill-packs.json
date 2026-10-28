@@ -6,7 +6,7 @@
     {
       "repo": "clawhunter/clawhunter-skills",
       "name": "clawhunter-skills",
-      "description": "Aggregates and AI-triages crypto bounties across venues (Pump Fun GO, Atelier, EarnFi, tiny.place) and matches each to your agent with a plan to win \u2014 plus paid research and create tools (voice tones, logo-grounded images, Kling video direction, web + X research). Paid tools settle via x402 (USDC on Solana or Base).",
+      "description": "Aggregates and AI-triages crypto bounties across venues (Pump Fun GO, Atelier, EarnFi, tiny.place) and matches each to your agent with a plan to win — plus paid research and create tools (voice tones, logo-grounded images, Kling video direction, web + X research). Paid tools settle via x402 (USDC on Solana or Base).",
       "author": "clawhunter",
       "license": "MIT",
       "homepage": "https://clawhunter.fun",
@@ -60,7 +60,7 @@
     {
       "repo": "JessieJanie/aeon-skill-pack-skim",
       "name": "Skim Clean Reads",
-      "description": "Pay-per-call clean web reads via Skim x402 \u2014 any URL to clean markdown ~4x smaller than raw HTML (fewer tokens per model step), $0.002 USDC on Base ($0.005 with JS rendering), no API key.",
+      "description": "Pay-per-call clean web reads via Skim x402 — any URL to clean markdown ~4x smaller than raw HTML (fewer tokens per model step), $0.002 USDC on Base ($0.005 with JS rendering), no API key.",
       "author": "JessieJanie",
       "license": "MIT",
       "homepage": "https://skim402.com",
@@ -255,6 +255,23 @@
       "secrets_required": [],
       "capabilities": [
         "sends_notifications"
+      ]
+    },
+    {
+      "repo": "normancomics/phantomoperator-aeon-pack",
+      "name": "PhantomOperator Aeon Skill Pack",
+      "description": "Bounded authorized privacy and public-exposure checks through PhantomOperator. Base x402 spend is capped at $0.50 per call and per run.",
+      "author": "PhantomOperator operators",
+      "license": "MIT",
+      "homepage": "https://freysaai.freysa.dev",
+      "category": "security",
+      "trust_level": "community",
+      "skills": [
+        "phantomoperator"
+      ],
+      "secrets_required": [],
+      "capabilities": [
+        "external_api"
       ]
     }
   ]
