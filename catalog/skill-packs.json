@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "updated": "2026-10-26",
+  "updated": "2026-10-29",
   "description": "Machine-readable registry of community skill packs installable via bin/install-skill-pack. Mirrors the human-readable table in README.md.",
   "packs": [
     {
@@ -254,6 +254,25 @@
       ],
       "secrets_required": [],
       "capabilities": [
+        "sends_notifications"
+      ]
+    },
+    {
+      "repo": "vaubandev/vauban",
+      "path": "aeon",
+      "name": "Vauban Pack",
+      "description": "Read-only view of a Vauban vault on Robinhood Chain (4663): the sheet in force, remaining caps, what is held at the gate, and what changed since the last run. Never signs.",
+      "author": "vaubandev",
+      "license": "MIT",
+      "homepage": "https://vauban.works",
+      "category": "crypto",
+      "trust_level": "community",
+      "skills": [
+        "vauban-vault"
+      ],
+      "secrets_required": [],
+      "capabilities": [
+        "read_only",
         "sends_notifications"
       ]
     }
