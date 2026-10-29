@@ -70,4 +70,28 @@ set -e
 [[ $rc -ne 0 ]] || { echo "FAIL: sync with a failing fetch exited 0 (treated failure as agreement)" >&2; exit 1; }
 grep -q "SYNC_INCOMPLETE" <<<"$out" || { echo "FAIL: no SYNC_INCOMPLETE message; got: $out" >&2; exit 1; }
 
-echo "OK: sync writes last_synced end-to-end; --item-not-found and fetch-failure both fail closed"
+# --- Case D: sync --item validates the resolved record before querying GitHub ---
+# A hand-edited registry can carry a malformed repo/number; sync must fail closed on it
+# (SYNC_MALFORMED) instead of feeding a malformed path to `gh api` (which would surface as
+# a confusing fetch failure rather than a validation defect).
+cat > "$T/memory/filing-registry.json" <<'JSON'
+{"version":"1.0","last_synced":"2026-01-01T00:00:00Z","account":"t",
+ "pulls":[{"id":"78#78","repo":"78","number":78,"type":"pr","title":"hand-edited","state":"open","status":"pending_review","last_action":"2026-01-01T00:00:00Z"}],
+ "issues":[],"activity_log":[]}
+JSON
+cat > "$T/bin/gh" <<'SH'
+#!/usr/bin/env bash
+echo "$@" >> "${GH_CALLS:-/dev/null}"
+exit 1
+SH
+chmod +x "$T/bin/gh"
+export GH_CALLS="$T/gh-calls.log"
+: > "$GH_CALLS"
+set +e
+out="$(run sync --item 78#78 2>&1)"; rc=$?
+set -e
+[[ $rc -ne 0 ]] || { echo "FAIL: 'sync --item 78#78' exited 0 for a malformed repo/number" >&2; exit 1; }
+grep -q "SYNC_MALFORMED" <<<"$out" || { echo "FAIL: no SYNC_MALFORMED message; got: $out" >&2; exit 1; }
+[[ ! -s "$GH_CALLS" ]] || { echo "FAIL: sync --item hit the GitHub API with a malformed record: $(cat "$GH_CALLS")" >&2; exit 1; }
+
+echo "OK: sync writes last_synced end-to-end; --item-not-found, fetch-failure and malformed-item all fail closed"

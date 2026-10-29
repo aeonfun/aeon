@@ -392,8 +392,21 @@ cmd_sync() {
     echo "  Refusing to report success for an item the registry does not contain." >&2
     return 1
   fi
+  local bad_ids="$malformed_ids"
+  if [[ -n "$target_item" ]]; then
+    bad_ids=$(echo "$items" | jq -r --arg id "$target_item" \
+      'if length > 0 then (if type == "array" then .[0] else . end | select(((.repo // "") | test("^[^/]+/[^/]+$") | not) or (.number == null)) | .id) else empty end')
+  fi
   local nmalformed=0
-  [[ -n "$malformed_ids" ]] && nmalformed=$(wc -w <<<"$malformed_ids")
+  [[ -n "$bad_ids" ]] && nmalformed=$(wc -w <<<"$bad_ids")
+  # Fail closed BEFORE querying GitHub: a malformed registry record must never reach
+  # `gh api` as a path segment. The add-path regex check does not cover hand-edited
+  # registries, so sync validates the record it is about to query here too.
+  if [[ -n "$target_item" && $nmalformed -gt 0 ]]; then
+    echo "SYNC_MALFORMED: $nmalformed item(s) cannot be verified at all (no resolvable owner/repo or number): $bad_ids"
+    echo "The registry may be STALE for those items - this run is NOT proof of agreement."
+    return 1
+  fi
   echo "SYNC: checking $total items against GitHub... ($notgithub non-GitHub item(s) not checked)"
 
   local changes=0
@@ -480,7 +493,7 @@ cmd_sync() {
 
   # Fail closed: an unverifiable run is not evidence of agreement and must not exit 0.
   if [[ $unknown -gt 0 || $nmalformed -gt 0 ]]; then
-    [[ $nmalformed -gt 0 ]] && echo "SYNC_MALFORMED: $nmalformed item(s) cannot be verified at all (no resolvable owner/repo or number): $malformed_ids"
+    [[ $nmalformed -gt 0 ]] && echo "SYNC_MALFORMED: $nmalformed item(s) cannot be verified at all (no resolvable owner/repo or number): $bad_ids"
     [[ $unknown -gt 0 ]] && echo "SYNC_INCOMPLETE: $unknown of $total item(s) could NOT be verified against GitHub (fetch failed): $unverified"
     echo "The registry may be STALE for those items - this run is NOT proof of agreement."
     return 1
