@@ -30,7 +30,7 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 | <img src="https://pbs.twimg.com/profile_images/2026627252511977474/r8GGxl52_400x400.jpg" width="36" height="36" alt="Bean logo"> | Bean | [@minebean_](https://x.com/minebean_) |
 | <img src="https://pbs.twimg.com/profile_images/2047719472455438336/CFrEyoNZ_400x400.jpg" width="36" height="36" alt="Blue Agent logo"> | Blue Agent | [@blueagent_](https://x.com/blueagent_) |
 | <img src="https://bontravail.xyz/brand/mark-1024.png" width="36" height="36" alt="bon travail logo"> | bon travail | [bontravail.xyz](https://bontravail.xyz) · bon travail Pack: Aeon agents find bugs, check fixes and pay humans |
-| <img src="https://pbs.twimg.com/profile_images/2040249335284387840/hIisggkp_400x400.png" width="36" height="36" alt="Capacitr logo"> | Capacitr | [@capacitr_xyz](https://x.com/capacitr_xyz) |
+| <img src="https://pbs.twimg.com/profile_images/2108292590949015552/NI-eCzIH_400x400.jpg" width="36" height="36" alt="Capacitr logo"> | Capacitr | [@capacitr_xyz](https://x.com/capacitr_xyz) |
 | <img src="https://avatars.githubusercontent.com/u/7568424?v=4" width="36" height="36" alt="Careful Finance logo"> | Careful Finance | [GitHub](https://github.com/UIZorrot/careful-finance-aeon-skill-pack) |
 | <img src="https://pbs.twimg.com/profile_images/2062754968852221952/QcEP9JKW_400x400.jpg" width="36" height="36" alt="Charon logo"> | Charon | [@Charon_AI](https://x.com/Charon_AI) |
 | <img src="https://pbs.twimg.com/profile_images/2027296134939684866/eTsFmewn_400x400.jpg" width="36" height="36" alt="Claw Harbor logo"> | Claw Harbor | [@ClawHarbor](https://x.com/ClawHarbor) |
@@ -58,7 +58,7 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 | <img src="https://pbs.twimg.com/profile_images/2101998801850368000/KbN0fPRQ_400x400.png" width="36" height="36" alt="Levanto logo"> | Levanto | [@levantolabs](https://x.com/levantolabs) · [levanto.ai](https://levanto.ai) |
 | <img src="https://pbs.twimg.com/profile_images/2046582343587037184/TxgtMxAh_400x400.jpg" width="36" height="36" alt="Liq logo"> | Liq | [@liquid_launcher](https://x.com/liquid_launcher) |
 | <img src="https://signedlogbook.com/logbook-pfp-blue.png" width="36" height="36" alt="logbook logo"> | logbook | [@logbookonbase](https://x.com/logbookonbase) · [signedlogbook.com](https://signedlogbook.com) |
-| <img src="https://pbs.twimg.com/profile_images/2082499080148660224/i7qd1V5t_400x400.jpg" width="36" height="36" alt="LoneStarOracle logo"> | LoneStarOracle | [@LSO_AI](https://x.com/LSO_AI) · [lonestaroracle.xyz](https://lonestaroracle.xyz) |
+| <img src="https://pbs.twimg.com/profile_images/2115799532306849792/UGtZ4Vm5_400x400.png" width="36" height="36" alt="LoneStarOracle logo"> | LoneStarOracle | [@LSO_AI](https://x.com/LSO_AI) · [lonestaroracle.xyz](https://lonestaroracle.xyz) |
 | <img src="https://pbs.twimg.com/profile_images/2059995800902537220/IngKmW55_400x400.jpg" width="36" height="36" alt="MANAGR logo"> | MANAGR | [@USICAI](https://x.com/USICAI) |
 | <img src="https://pbs.twimg.com/profile_images/2105672150858297344/r6BrNQzJ_400x400.jpg" width="36" height="36" alt="Mei logo"> | Mei | [@MeiTerminal_x](https://x.com/MeiTerminal_x) |
 | <img src="https://pbs.twimg.com/profile_images/2060426975718592517/Jdj2fOzg_400x400.jpg" width="36" height="36" alt="MiroShark logo"> | MiroShark | [@miroshark_](https://x.com/miroshark_) |
