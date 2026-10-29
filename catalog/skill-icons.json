@@ -48,6 +48,7 @@
     "deploy-prototype": "<path d='M12 13v8'/><path d='M4 14.9A7 7 0 1 1 15.7 8h1.8a4.5 4.5 0 0 1 2.5 8.2'/><path d='M8 17l4-4 4 4'/>",
     "feedback-builder": "<path d='M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z'/><path d='M12 7v6'/><path d='M9 10h6'/>",
     "feature": "<path d='M15.5 2.6a1 1 0 0 0-1 0l-1.6.9a1 1 0 0 1-1 0l-1.5-.9a1 1 0 0 0-1.5.9v1.8a2.5 2.5 0 1 1-3 3H3.6a1 1 0 0 0-.9 1.5l.9 1.5a1 1 0 0 1 0 1l-.9 1.6a1 1 0 0 0 .9 1.4h1.9a2.5 2.5 0 1 1 3 3v1.9a1 1 0 0 0 1.4.9l1.6-.9a1 1 0 0 1 1 0l1.5.9a1 1 0 0 0 1.5-.9v-1.9a2.5 2.5 0 1 1 3-3h1.8a1 1 0 0 0 .9-1.5l-.9-1.5a1 1 0 0 1 0-1l.9-1.6a1 1 0 0 0-.9-1.4h-1.8a2.5 2.5 0 1 1-3-3z'/>",
+    "github-filing-registry": "<rect x='4' y='3' width='16' height='18' rx='2'/><path d='M8 8h8'/><path d='M8 12h8'/><path d='M8 16h5'/>",
     "github-monitor": "<path d='M2.1 12.3a1 1 0 0 1 0-.7 10.8 10.8 0 0 1 19.9 0 1 1 0 0 1 0 .7 10.8 10.8 0 0 1-19.9 0'/><circle cx='12' cy='12' r='3'/>",
     "inbox-triage": "<path d='M22 12h-6l-2 3h-4l-2-3H2'/><path d='M5.5 5.1 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.5-6.9A2 2 0 0 0 16.8 4H7.2a2 2 0 0 0-1.8 1.1z'/>",
     "posthog-errors": "<path d='M3 3v16a2 2 0 0 0 2 2h16'/><rect x='6' y='12' width='3' height='6' rx='.5'/><rect x='11' y='9' width='3' height='9' rx='.5'/><path d='M18 4l3 5h-6z'/><path d='M18 6v1.5'/>",

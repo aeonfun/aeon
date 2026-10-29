@@ -40,6 +40,8 @@ output/.dry-run/
 
 # Skill provenance lock (per-repo, not committed)
 /skills.lock
+# Registry write lock sidecar: filing-registry serializes read-modify-write on $REGISTRY.lock (memory/filing-registry.json.lock)
+memory/*.lock
 
 # Scratch / temp files
 /tmp_*

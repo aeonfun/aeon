@@ -105,3 +105,5 @@
 6 | vuln-scanner Riva kernel contract tests | bash scripts/tests/test_riva_kernel_contract.sh
 3 | anatomy skill integration tests | bash scripts/tests/test_anatomy_integration.sh
 1 | aeon-update plan/apply tests | python3 scripts/tests/test_aeon_update.py
+
+1 | filing-registry sync-with-change (last_synced) | bash scripts/tests/test_filing_registry_sync.sh
