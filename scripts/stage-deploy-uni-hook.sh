@@ -51,8 +51,12 @@ log "forge $(forge --version 2>/dev/null | head -1)"
 rm -rf "$DIR"; mkdir -p "$DIR"; cd "$DIR"
 forge init --force . >/dev/null 2>&1 || true
 rm -f src/Counter.sol script/Counter.s.sol test/Counter.t.sol
-forge install uniswap/v4-core >/dev/null 2>&1 || log "WARN v4-core install failed"
-forge install uniswap/v4-periphery >/dev/null 2>&1 || log "WARN v4-periphery install failed"
+# pinned to the commits the templates are tested against, not a tag: the
+# latest release tag (v4.0.0, Jan 2025) still nests SwapParams/ModifyLiquidityParams
+# in IPoolManager and has no src/types/PoolOperation.sol, so an unpinned
+# install here built a project the templates can't compile against.
+forge install uniswap/v4-core@bea7f6d1c11cd5dc4f0d5151ffa37a1c239feee6 >/dev/null 2>&1 || log "WARN v4-core install failed"
+forge install uniswap/v4-periphery@0c4e5bd3715ce2e72fd7609a1e2835f8300baf7b >/dev/null 2>&1 || log "WARN v4-periphery install failed"
 
 cat > remappings.txt <<'EOF'
 @uniswap/v4-core/=lib/v4-core/
