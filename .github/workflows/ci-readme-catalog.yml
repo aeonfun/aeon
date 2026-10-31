@@ -60,6 +60,7 @@ concurrency:
 
 jobs:
   check:
+    timeout-minutes: 5
     # A ~10s check: GitHub's runner on purpose, not AEON_RUNNER (free on public
     # repos, starts faster, a bigger runner does not help).
     runs-on: ubuntu-24.04
