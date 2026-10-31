@@ -50,6 +50,7 @@ concurrency:
 
 jobs:
   format:
+    timeout-minutes: 5
     name: format - biome
     runs-on: ${{ vars.AEON_RUNNER || 'ubuntu-24.04' }}
     steps:
@@ -65,6 +66,7 @@ jobs:
         run: npx --yes @biomejs/biome@2.5.15 ci --reporter=github .
 
   dashboard:
+    timeout-minutes: 5
     name: dashboard — typecheck, test, build
     runs-on: ${{ vars.AEON_RUNNER || 'ubuntu-24.04' }}
     defaults:
@@ -93,6 +95,7 @@ jobs:
         run: npm run build
 
   cli:
+    timeout-minutes: 5
     name: cli — typecheck
     runs-on: ${{ vars.AEON_RUNNER || 'ubuntu-24.04' }}
     steps:
@@ -129,6 +132,7 @@ jobs:
         run: bash apps/cli/test/init-sandbox.sh
 
   mcp-server:
+    timeout-minutes: 5
     name: mcp-server — build
     runs-on: ${{ vars.AEON_RUNNER || 'ubuntu-24.04' }}
     defaults:
@@ -155,6 +159,7 @@ jobs:
         run: npm test
 
   webhook:
+    timeout-minutes: 5
     name: webhook — worker bundle
     runs-on: ${{ vars.AEON_RUNNER || 'ubuntu-24.04' }}
     defaults:
