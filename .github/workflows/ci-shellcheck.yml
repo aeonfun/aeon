@@ -48,6 +48,7 @@ concurrency:
 
 jobs:
   shellcheck:
+    timeout-minutes: 5
     name: shellcheck (error-severity gate)
     runs-on: ${{ vars.AEON_RUNNER || 'ubuntu-24.04' }}
     steps:
