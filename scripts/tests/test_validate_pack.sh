@@ -576,33 +576,6 @@ else
   fi
 fi
 
-# ── Test 24-25: --path pack finds its LICENSE in the subdir or the repo root ─
-# make_sub_pack <dir> <where-the-license-goes: sub|root|none>
-make_sub_pack() {
-  mkdir -p "$1/sub/skills/foo"
-  printf -- '---\nname: foo\ndescription: Subdirectory skill\n---\n# Foo\n' > "$1/sub/skills/foo/SKILL.md"
-  printf '{"name":"sub-pack","version":"1.0","description":"d","author":"t","license":"MIT","skills":[{"slug":"foo","path":"skills/foo"}]}' > "$1/sub/skills-pack.json"
-  case "$2" in sub) echo MIT > "$1/sub/LICENSE" ;; root) echo MIT > "$1/LICENSE" ;; esac
-}
-
-TMP24=$(mktemp -d)
-make_sub_pack "$TMP24" sub
-out=$(bash "$V" "$TMP24" --path sub 2>&1)
-if echo "$out" | grep -qF "license file present (sub/LICENSE)" && ! echo "$out" | grep -q "no LICENSE file"; then
-  pass "--path pack with LICENSE in its subdir is not warned"
-else
-  bad "--path pack with LICENSE in its subdir should pass the license check: $out"
-fi
-
-TMP25=$(mktemp -d)
-make_sub_pack "$TMP25" root
-out=$(bash "$V" "$TMP25" --path sub 2>&1)
-if echo "$out" | grep -qF "license file present (LICENSE)" && ! echo "$out" | grep -q "no LICENSE file"; then
-  pass "--path pack with LICENSE only at the repo root is not warned"
-else
-  bad "--path pack with LICENSE at the repo root should pass the license check: $out"
-fi
-
 # ── Test 21-23: skill schedule must be something the scheduler can fire ─────
 # write_sched_manifest <dir> <schedule-for-foo>
 write_sched_manifest() {
@@ -652,6 +625,39 @@ if [[ "$rc" -eq 1 ]] && echo "$out" | grep -qF "schedule 'every morning' is not 
   pass "unrecognised schedule is an ERROR"
 else
   bad "unrecognised schedule should exit 1 with an error (rc=$rc): $out"
+fi
+
+# ── Test 24-25: --path pack finds its LICENSE in the subdir or the repo root ─
+# make_sub_pack <dir> <where-the-license-goes: sub|root|none>
+make_sub_pack() {
+  mkdir -p "$1/sub/skills/foo"
+  printf -- '---\nname: foo\ndescription: Subdirectory skill\n---\n# Foo\n' > "$1/sub/skills/foo/SKILL.md"
+  printf '{"name":"sub-pack","version":"1.0","description":"d","author":"t","license":"MIT","skills":[{"slug":"foo","path":"skills/foo"}]}' > "$1/sub/skills-pack.json"
+  case "$2" in sub) echo MIT > "$1/sub/LICENSE" ;; root) echo MIT > "$1/LICENSE" ;; esac
+}
+
+TMP24=$(mktemp -d)
+make_sub_pack "$TMP24" sub
+out=$(bash "$V" "$TMP24" --path sub 2>&1)
+if echo "$out" | grep -qF "license file present (sub/LICENSE)" && ! echo "$out" | grep -q "no LICENSE file"; then
+  pass "--path pack with LICENSE in its subdir is not warned"
+else
+  bad "--path pack with LICENSE in its subdir should pass the license check: $out"
+fi
+out=$(bash "$V" "$TMP24" --path sub/ 2>&1)
+if echo "$out" | grep -qF "license file present (sub/LICENSE)"; then
+  pass "--path with a trailing slash shows sub/LICENSE (no double slash)"
+else
+  bad "--path sub/ should show sub/LICENSE: $out"
+fi
+
+TMP25=$(mktemp -d)
+make_sub_pack "$TMP25" root
+out=$(bash "$V" "$TMP25" --path sub 2>&1)
+if echo "$out" | grep -qF "license file present (LICENSE)" && ! echo "$out" | grep -q "no LICENSE file"; then
+  pass "--path pack with LICENSE only at the repo root is not warned"
+else
+  bad "--path pack with LICENSE at the repo root should pass the license check: $out"
 fi
 
 # ── Clean up ────────────────────────────────────────────────────────────────

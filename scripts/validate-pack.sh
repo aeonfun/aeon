@@ -153,8 +153,10 @@ license_file=""
 for dir in "$MANIFEST_ROOT" "$PACK_DIR"; do
   for cand in LICENSE LICENSE.md LICENSE.txt COPYING; do
     if [[ -f "$dir/$cand" ]]; then
-      license_file="${dir#"$PACK_DIR"}"
-      license_file="${license_file#/}${license_file:+/}$cand"
+      rel="${dir#"$PACK_DIR"}"
+      rel="${rel#/}"
+      rel="${rel%/}"
+      license_file="${rel}${rel:+/}$cand"
       break 2
     fi
   done
@@ -162,7 +164,7 @@ done
 if [[ -n "$license_file" ]]; then
   ok "license file present ($license_file)"
 else
-  warn "no LICENSE file at pack root — publishing checklist requires a clear license"
+  warn "no LICENSE file next to skills-pack.json or at the repo root - publishing checklist requires a clear license"
 fi
 if [[ -z "$manifest_license" ]]; then
   warn "manifest has no \"license\" field (SPDX id, e.g. \"MIT\")"
