@@ -258,7 +258,7 @@ jobs:
 
       - name: Setup Node.js
         if: steps.work.outputs.mode != ''
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version: '22'
 
@@ -532,7 +532,7 @@ jobs:
         # Install before stage-vuln-scanner so that script can wrap forge and leave
         # machine-readable, redacted execution evidence.
         if: steps.work.outputs.mode != '' && steps.skill.outputs.name == 'vuln-scanner'
-        uses: foundry-rs/foundry-toolchain@908c540300062bd5a7e473851cdb4282204cee09 # v1
+        uses: foundry-rs/foundry-toolchain@dba66c27052e63476d886f22216e119ba7e615bf # v1
         with:
           version: stable
 
@@ -557,7 +557,7 @@ jobs:
         # `command -v forge` guard skips its own rate-limit-prone curl install -
         # same lesson as the deploy-uni-hook step below.
         if: steps.work.outputs.mode != '' && steps.skill.outputs.name == 'sc-audit'
-        uses: foundry-rs/foundry-toolchain@908c540300062bd5a7e473851cdb4282204cee09 # v1
+        uses: foundry-rs/foundry-toolchain@dba66c27052e63476d886f22216e119ba7e615bf # v1
         with:
           version: stable
 
@@ -584,7 +584,7 @@ jobs:
         # toolchain and silently did nothing. With forge already on PATH here, the
         # stage script's `command -v forge` guard skips its curl fallback entirely.
         if: steps.work.outputs.mode != '' && steps.skill.outputs.name == 'deploy-uni-hook'
-        uses: foundry-rs/foundry-toolchain@908c540300062bd5a7e473851cdb4282204cee09 # v1
+        uses: foundry-rs/foundry-toolchain@dba66c27052e63476d886f22216e119ba7e615bf # v1
         with:
           version: stable
 
@@ -1268,7 +1268,7 @@ jobs:
       - name: Upload egress audit log
         if: always() && vars.EGRESS_AUDIT == '1'
         continue-on-error: true
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         env:
           # This upload talks to Actions-internal artifact infra, not skill egress,
           # so it must bypass the iron-proxy MITM. NO_PROXY did not fully exclude the
@@ -2431,7 +2431,7 @@ jobs:
       - name: Upload audit log
         if: always()
         continue-on-error: true
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         env:
           # Same as the egress audit upload: bypass the iron-proxy MITM for this
           # Actions-internal artifact upload so a proxied run cannot 403 it, and keep
