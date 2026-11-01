@@ -149,16 +149,22 @@ echo ""
 echo "License:"
 manifest_license=$(jq -r '.license // ""' "$MANIFEST_PATH")
 license_file=""
-for cand in LICENSE LICENSE.md LICENSE.txt COPYING; do
-  if [[ -f "$PACK_DIR/$cand" ]]; then
-    license_file="$cand"
-    break
-  fi
+# A --path pack may carry its own LICENSE next to skills-pack.json; the repo root covers it too.
+for dir in "$MANIFEST_ROOT" "$PACK_DIR"; do
+  for cand in LICENSE LICENSE.md LICENSE.txt COPYING; do
+    if [[ -f "$dir/$cand" ]]; then
+      rel="${dir#"$PACK_DIR"}"
+      rel="${rel#/}"
+      rel="${rel%/}"
+      license_file="${rel}${rel:+/}$cand"
+      break 2
+    fi
+  done
 done
 if [[ -n "$license_file" ]]; then
   ok "license file present ($license_file)"
 else
-  warn "no LICENSE file at pack root — publishing checklist requires a clear license"
+  warn "no LICENSE file next to skills-pack.json or at the repo root - publishing checklist requires a clear license"
 fi
 if [[ -z "$manifest_license" ]]; then
   warn "manifest has no \"license\" field (SPDX id, e.g. \"MIT\")"
