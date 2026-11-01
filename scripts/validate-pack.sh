@@ -149,11 +149,15 @@ echo ""
 echo "License:"
 manifest_license=$(jq -r '.license // ""' "$MANIFEST_PATH")
 license_file=""
-for cand in LICENSE LICENSE.md LICENSE.txt COPYING; do
-  if [[ -f "$PACK_DIR/$cand" ]]; then
-    license_file="$cand"
-    break
-  fi
+# A --path pack may carry its own LICENSE next to skills-pack.json; the repo root covers it too.
+for dir in "$MANIFEST_ROOT" "$PACK_DIR"; do
+  for cand in LICENSE LICENSE.md LICENSE.txt COPYING; do
+    if [[ -f "$dir/$cand" ]]; then
+      license_file="${dir#"$PACK_DIR"}"
+      license_file="${license_file#/}${license_file:+/}$cand"
+      break 2
+    fi
+  done
 done
 if [[ -n "$license_file" ]]; then
   ok "license file present ($license_file)"

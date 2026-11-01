@@ -576,6 +576,33 @@ else
   fi
 fi
 
+# ── Test 24-25: --path pack finds its LICENSE in the subdir or the repo root ─
+# make_sub_pack <dir> <where-the-license-goes: sub|root|none>
+make_sub_pack() {
+  mkdir -p "$1/sub/skills/foo"
+  printf -- '---\nname: foo\ndescription: Subdirectory skill\n---\n# Foo\n' > "$1/sub/skills/foo/SKILL.md"
+  printf '{"name":"sub-pack","version":"1.0","description":"d","author":"t","license":"MIT","skills":[{"slug":"foo","path":"skills/foo"}]}' > "$1/sub/skills-pack.json"
+  case "$2" in sub) echo MIT > "$1/sub/LICENSE" ;; root) echo MIT > "$1/LICENSE" ;; esac
+}
+
+TMP24=$(mktemp -d)
+make_sub_pack "$TMP24" sub
+out=$(bash "$V" "$TMP24" --path sub 2>&1)
+if echo "$out" | grep -qF "license file present (sub/LICENSE)" && ! echo "$out" | grep -q "no LICENSE file"; then
+  pass "--path pack with LICENSE in its subdir is not warned"
+else
+  bad "--path pack with LICENSE in its subdir should pass the license check: $out"
+fi
+
+TMP25=$(mktemp -d)
+make_sub_pack "$TMP25" root
+out=$(bash "$V" "$TMP25" --path sub 2>&1)
+if echo "$out" | grep -qF "license file present (LICENSE)" && ! echo "$out" | grep -q "no LICENSE file"; then
+  pass "--path pack with LICENSE only at the repo root is not warned"
+else
+  bad "--path pack with LICENSE at the repo root should pass the license check: $out"
+fi
+
 # ── Test 21-23: skill schedule must be something the scheduler can fire ─────
 # write_sched_manifest <dir> <schedule-for-foo>
 write_sched_manifest() {
@@ -628,13 +655,13 @@ else
 fi
 
 # ── Clean up ────────────────────────────────────────────────────────────────
-for d in "$TMP1" "$TMP2" "$TMP3" "$TMP4" "$TMP5" "$TMP6" "$TMP7" "$TMP8" "$TMP9" "$TMP10" "$TMP11" "$TMP12" "$TMP13" "$TMP14" "$TMP15" "$TMP16" "$TMP17" "$TMP18" "$TMP19" "$TMP20" "$TMP21" "$TMP22" "$TMP23"; do
+for d in "$TMP1" "$TMP2" "$TMP3" "$TMP4" "$TMP5" "$TMP6" "$TMP7" "$TMP8" "$TMP9" "$TMP10" "$TMP11" "$TMP12" "$TMP13" "$TMP14" "$TMP15" "$TMP16" "$TMP17" "$TMP18" "$TMP19" "$TMP20" "$TMP21" "$TMP22" "$TMP23" "$TMP24" "$TMP25"; do
   rm -rf "$d"
 done
 
 if [[ "$fail" -eq 0 ]]; then
   echo ""
-  echo "All 23 validate-pack tests passed."
+  echo "All 25 validate-pack tests passed."
 else
   echo ""
   echo "SOME TESTS FAILED."
