@@ -22,6 +22,7 @@ pragma solidity 0.8.26;
 
 import {IHooks} from "@uniswap/v4-core/src/interfaces/IHooks.sol";
 import {IPoolManager} from "@uniswap/v4-core/src/interfaces/IPoolManager.sol";
+import {SwapParams} from "@uniswap/v4-core/src/types/PoolOperation.sol";
 import {PoolKey} from "@uniswap/v4-core/src/types/PoolKey.sol";
 import {Currency, CurrencyLibrary} from "@uniswap/v4-core/src/types/Currency.sol";
 import {BalanceDelta, BalanceDeltaLibrary} from "@uniswap/v4-core/src/types/BalanceDelta.sol";
@@ -58,7 +59,7 @@ abstract contract AeonFee {
     function afterSwap(
         address sender,
         PoolKey calldata key,
-        IPoolManager.SwapParams calldata params,
+        SwapParams calldata params,
         BalanceDelta delta,
         bytes calldata hookData
     ) external onlyPoolManager returns (bytes4, int128) {
@@ -100,7 +101,7 @@ abstract contract AeonFee {
     function _afterSwapExtra(
         address, /* sender */
         PoolKey calldata, /* key */
-        IPoolManager.SwapParams calldata, /* params */
+        SwapParams calldata, /* params */
         BalanceDelta, /* delta */
         bytes calldata /* hookData */
     )
