@@ -179,6 +179,10 @@ contract DeployHook is Script {
         // doomed swap must never be recorded as broadcast in the first place.
         uint256 snap = vm.snapshotState();
         bool seedSwapOk;
+        // Keep the probe's revert data so the operator can see WHY the seed swap
+        // was skipped (a memory var survives vm.revertToState, which only rolls
+        // back EVM state). Logged with the SEED_SWAP_SKIPPED marker below.
+        bytes memory seedSwapRevert;
         // Outside vm.startBroadcast(), msg.sender here is this script contract,
         // which holds no tokens - prank as the deployer so the probe spends from
         // the right balance without being recorded as a broadcast transaction.
@@ -194,7 +198,9 @@ contract DeployHook is Script {
             ""
         ) {
             seedSwapOk = true;
-        } catch {}
+        } catch (bytes memory reason) {
+            seedSwapRevert = reason;
+        }
         vm.revertToState(snap);
 
         if (seedSwapOk) {
@@ -212,6 +218,7 @@ contract DeployHook is Script {
             vm.stopBroadcast();
         } else {
             console2.log("SEED_SWAP_SKIPPED");
+            console2.logBytes(seedSwapRevert);
         }
 
         console2.log("kind        ", kind);

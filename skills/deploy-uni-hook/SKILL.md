@@ -94,6 +94,7 @@ These are standing defects measured on the live fleet. Freeform MUST NOT recreat
 - An extra skim helper must not copy a `<= 0` early return (second copy of the sign guard).
 
 **Gates** (only if the brief demands a revert-gate):
+- 0. A revert-gate hook that rejects the pre-broadcast seed probe on purpose must declare `HOOK_REVERT_GATE=1` in `$HOOKBUILD_DIR/hook.env`. Without it, a skipped probe is treated as a bug and simulation exits `1` (`DEPLOY_HOOK_SIM_FAILED`). The flag's only effect is to permit that intentional `SEED_SWAP_SKIPPED` during simulate; it suppresses nothing else. During broadcast the condition only warns and continues (the hook, pool and liquidity are already onchain), so the receipt and explorer verification still run.
 - 1a. Value that moves on its own (`block.number`): a `view` helper answered at head N is wrong at execution N+1. Target the execution block.
 - 1b. Value that moves when someone swaps (price low byte): exact match + zero tolerance is a contention DoS. Need a band, or do not gate.
 - 1c. Shared counter an attacker can park, not advanced on failure: griefing primitive.
@@ -180,6 +181,7 @@ These are standing defects measured on the live fleet. Freeform MUST NOT recreat
 - Freeform static audit fails (bad name / no callback / missing `onlyPoolManager` / no `test_` / `selfdestruct` / `delegatecall`) → `DEPLOY_HOOK_AUDIT_FAILED` (never deploy).
 - Freeform behavioral test fails or does not compile → `DEPLOY_HOOK_TEST_FAILED` (never deploy).
 - Simulation revert → `DEPLOY_HOOK_SIM_FAILED` (never broadcast after a failed sim).
+- Seed probe skipped during simulation and not declared intentional (`hook-deploy.sh` exit 1, logs `SEED_SWAP_SKIPPED`) → `DEPLOY_HOOK_SIM_FAILED`. A revert-gate hook rejecting the probe on purpose must set `HOOK_REVERT_GATE=1` in `hook.env` to pass; the caught revert bytes are logged beside the marker so the operator can tell an intentional gate from a broken probe. During **broadcast** this same condition only warns and continues — the deploy is already onchain, so exiting would strand it with no receipt or explorer verification.
 
 ## Notes
 
