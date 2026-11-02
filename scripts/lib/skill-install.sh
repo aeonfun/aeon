@@ -85,6 +85,27 @@ skill_fetch_repo() {
   printf '%s\n' "$root"
 }
 
+# skill_commit_sha <repo> <path> <ref>
+#   Echo the 40-hex sha of the last commit on <ref> that touched <path>, or
+#   "unknown". Tries `gh api` first (authenticated, higher rate limit), then the
+#   same public REST endpoint without auth, so a missing or expired gh login no
+#   longer leaves every skills.lock entry without provenance.
+skill_commit_sha() {
+  local repo="$1" path="$2" ref="$3" sha=""
+  # -X GET is required: `gh api` switches to POST as soon as a -f field is
+  # present, POST /repos/{o}/{r}/commits 404s, and gh prints that error body on
+  # STDOUT. -f sha= pins the log to the ref actually fetched, not the default.
+  sha=$(gh api -X GET "repos/$repo/commits" -f path="$path" -f sha="$ref" -f per_page=1 \
+    --jq '.[0].sha' 2>/dev/null || true)
+  if [[ ! "$sha" =~ ^[0-9a-f]{40}$ ]]; then
+    sha=$(curl -sfL --max-time 10 -G "https://api.github.com/repos/$repo/commits" \
+      --data-urlencode "path=$path" --data-urlencode "sha=$ref" -d per_page=1 2>/dev/null \
+      | jq -r '.[0].sha // empty' 2>/dev/null || true)
+  fi
+  [[ "$sha" =~ ^[0-9a-f]{40}$ ]] || sha="unknown"
+  printf '%s\n' "$sha"
+}
+
 # skill_lock_upsert <lock_file> <entry_json>
 #   Ensure <lock_file> holds a JSON array, then replace any existing element with
 #   the same .skill_name and append <entry_json>. Requires jq. This is the one
