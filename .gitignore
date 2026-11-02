@@ -82,3 +82,11 @@ skills/remotion/project/props.json
 !/output/articles/.gitkeep
 /output/*notify*.md
 /output/xai-*.json
+
+# Scratch that lands in output/ under plain names: raw API dumps a skill re-fetched
+# into the workspace (tw-*.json twitterapi.io timelines, tr-*.json token-report
+# payloads, output/tmp/, scratch-* copies). Not run output. Root-anchored.
+/output/tmp/
+/output/tw-*.json
+/output/tr-*.json
+/output/scratch-*

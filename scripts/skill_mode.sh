@@ -189,9 +189,13 @@ NOTES
 # `cat > f <<EOF`) even though Bash(cat:*)/Bash(echo:*) are granted, so a model
 # that appends memory/logs through the shell burns a denied call and retries with
 # Write (live-observed on heartbeat, claude-code 2.1.287). Say so up front.
+# The first write run of a UTC day finds no memory/logs/<date>.md and probed it
+# with ls/tail, which exits non-zero and shows as an ERROR span: 4 of 5 ERRORs in
+# a day of Langfuse traces (2026-11-02) were such probes on runs that went green.
 write_run_notes() {
   cat <<'NOTES'
 Write files only with Write/Edit: Write for a new file or a full rewrite, Edit to append or change (Read the file first). Never write files from Bash: `cat > f`, `cat >> f`, `echo ... >> f`, `printf ... > f`, `tee f` and heredocs redirected into a file are always refused in this run and waste a turn. This holds even where a skill's own example shows a shell redirect: make the same write with Write/Edit instead. Pipes between commands are fine.
+Today's memory/logs/<date>.md may not exist yet: the first write run of a UTC day creates it. Check with Glob; if it is there, Read it and append with Edit, else create it with Write. Do not probe for it with ls, tail, cat or test: a failed probe is logged as a tool error. Optional files a skill names (for example memory/treasury-wallets.json) may be absent too: check with Glob, not ls.
 NOTES
 }
 

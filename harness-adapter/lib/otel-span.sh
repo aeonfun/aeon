@@ -272,7 +272,16 @@ rh_trace_end() {
               + (if $err then [s("langfuse.observation.level"; "ERROR"),
                   s("langfuse.observation.status_message"; ($class + ": " + $why
                     + (if $att > 1 then " (failover to " + $gw + ")" else "" end))[0:200]),
-                  s("langfuse.observation.metadata.error_class"; $class)] else [] end)),
+                  s("langfuse.observation.metadata.error_class"; $class)]
+                # A run that went green but had tool calls refused: WARNING, so the
+                # wasted turns show in level filters and error_class views (17 a
+                # day across the instances, all at level DEFAULT before).
+                elif ($e.permission_denials | type) == "array" and ($e.permission_denials | length) > 0 then
+                  ($e.permission_denials | length | tostring) as $nd
+                  | [s("langfuse.observation.level"; "WARNING"),
+                     s("langfuse.observation.status_message"; "tool_denied: " + $nd + " refused tool calls"),
+                     s("langfuse.observation.metadata.error_class"; "tool_denied")]
+                else [] end)),
             status: {code: (if $err then 2 else 1 end)}}
            + (if $parent != "" then {parentSpanId: $parent} else {} end)]
           + [$gens | to_entries[] | select(.key < ($gids | length)) | .key as $n | .value as $g

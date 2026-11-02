@@ -184,6 +184,24 @@ attrs 1 | jq -e '.["langfuse.trace.tags"] | index("status:error")' >/dev/null \
 attrs 1 | jq -e '.["langfuse.observation.usage_details"] | fromjson == {"input":1,"output":2,"input_cache_read":0,"input_cache_creation":5}' >/dev/null \
   && ok "usage_details without a TTL split keeps one cache-write count" || bad "usage_details fallback ($(attrs 1))"
 grep -q SECRET-CMD "$TMP/curl/body" && bad "denied tool input leaked" || ok "denied tool input never sent"
+# A green run with refused tool calls: WARNING + tool_denied, status stays OK.
+cat > "$TMP/denied-ok-env.json" <<'JSON'
+{"result":"x","is_error":false,"subtype":"success","num_turns":9,
+ "permission_denials":[{"tool_name":"Bash","tool_input":{"command":"SECRET-CMD jq . /tmp/x.json"}},{"tool_name":"Bash","tool_input":{}},{"tool_name":"Write","tool_input":{}}],
+ "usage":{"input_tokens":1,"output_tokens":2}}
+JSON
+trace claude 0 "$TMP/denied-ok-env.json" >/dev/null
+attrs 0 | jq -e '.["langfuse.observation.level"] == "WARNING" and .["langfuse.observation.status_message"] == "tool_denied: 3 refused tool calls"
+    and .["langfuse.observation.metadata.error_class"] == "tool_denied" and .["langfuse.observation.metadata.permission_denials"] == "3"
+    and (.["langfuse.trace.tags"] | index("status:error") | not)' >/dev/null \
+  && ok "green run with denials: WARNING, tool_denied, no status:error tag" || bad "green run with denials ($(attrs 0))"
+jq -e '.resourceSpans[0].scopeSpans[0].spans[0].status.code == 1' "$TMP/curl/body" >/dev/null \
+  && ok "green run with denials keeps span status OK" || bad "green run with denials span status"
+grep -q SECRET-CMD "$TMP/curl/body" && bad "denied tool input leaked (green run)" || ok "denied tool input never sent (green run)"
+echo '{"result":"x","is_error":false,"permission_denials":[],"usage":{"input_tokens":1,"output_tokens":2}}' > "$TMP/denied-none.json"
+trace claude 0 "$TMP/denied-none.json" >/dev/null
+attrs 0 | jq -e '(has("langfuse.observation.level") | not) and .["langfuse.observation.metadata.permission_denials"] == "0"' >/dev/null \
+  && ok "empty permission_denials: no level set" || bad "empty permission_denials ($(attrs 0))"
 # error_class: structured facts first (subtype, API status), then the result
 # text or the raw output head (read for the class only, never sent).
 eclass() { # <rc> <file> <class> <status message> <label>
@@ -272,6 +290,14 @@ adapter CLAUDE_CODE_ENABLE_TELEMETRY=1 OTEL_TRACES_EXPORTER=otlp AEON_OTEL_START
 grep -q SessionStart "$TMP/argv" && bad "AEON_OTEL_STARTUP_DELAY=0 should drop the hook" || ok "AEON_OTEL_STARTUP_DELAY=0 drops the hook"
 adapter
 grep -q SessionStart "$TMP/argv" && bad "tracing off should add no hook" || ok "tracing off: no hook"
+# Scratch dirs: /tmp always, $RUNNER_TEMP when set, each right after the base
+# flags (--add-dir is variadic, so the next word must be another flag).
+grep -qx -- '--add-dir' "$TMP/argv" && sed -n '/^--add-dir$/{n;p;}' "$TMP/argv" | grep -qx /tmp \
+  && ok "--add-dir /tmp" || bad "expected --add-dir /tmp ($(tr '\n' ' ' < "$TMP/argv"))"
+[ "$(grep -cx -- '--add-dir' "$TMP/argv")" = 1 ] && ok "no RUNNER_TEMP: one --add-dir" || bad "no RUNNER_TEMP: --add-dir count"
+adapter RUNNER_TEMP=/home/runner/work/_temp
+[ "$(sed -n '/^--add-dir$/{n;p;}' "$TMP/argv" | tr '\n' ' ')" = "/tmp /home/runner/work/_temp " ] \
+  && ok "--add-dir RUNNER_TEMP when set" || bad "RUNNER_TEMP add-dir ($(tr '\n' ' ' < "$TMP/argv"))"
 # Gateway failover attempts cap how long Claude Code waits out 429s; the first
 # route keeps the unbounded watchdog wait, and an operator value wins.
 [ "$(cat "$TMP/argv.wait")" = unset ] && ok "first route: no 429 wait cap" || bad "first route wait cap ($(cat "$TMP/argv.wait"))"
