@@ -153,6 +153,25 @@ export const MCP_CATALOG: McpCatalogEntry[] = [
     oauth: true,
     oauthScopes: ['openid', 'email', 'offline_access'],
   },
+  {
+    slug: 'flovia',
+    name: 'Flovia',
+    url: 'https://api.flovia.dev/mcp',
+    logo: 'https://flovia.dev/apple-touch-icon.png',
+    description:
+      'Flovia - one connection to Nansen smart money, CoinGecko markets, direct chain reads (Quicknode), Zerion wallets, Exa web search and Firecrawl page reads. Free shared allowance for lookups; API key (flv_) or OAuth sign-in.',
+    // Standard OAuth, probed live 2026-11-02: PRM at api.flovia.dev/.well-known/
+    // oauth-protected-resource/mcp names AS https://console.flovia.dev/oauth
+    // (RFC 8414: authorization_code + refresh_token grants, PKCE S256, DCR
+    // registration_endpoint /oauth/oauth2/register, public client via auth method
+    // "none"). Flovia is NOT an OIDC provider: no openid scope - `openid` is
+    // refused with invalid_scope. Its only scopes are `flovia:use` (MCP access)
+    // and `offline_access` (refresh token); request both. Refresh tokens rotate
+    // per refresh (30-day life, 300 s grace for the previous token), so
+    // GH_SECRETS_PAT persistence matters - see docs/mcp-oauth.md.
+    oauth: true,
+    oauthScopes: ['flovia:use', 'offline_access'],
+  },
 ]
 
 export const MCP_BY_SLUG: Record<string, McpCatalogEntry> = Object.fromEntries(MCP_CATALOG.map(e => [e.slug, e]))
