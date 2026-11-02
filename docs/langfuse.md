@@ -113,7 +113,10 @@ first: rc 124 is `timeout`, `error_max_*` is `budget_cap`, a spent subscription
 output of a run that left no envelope) goes through the shared rule table. That
 text only picks the class and is never sent. The scorer root gets the same
 fields. Tool spans come from Claude Code and carry no class. Its metadata
-carries `permission_denials`, the number of tool calls the allowlist refused. Trace metadata also carries `instance` (repo name) and `trigger`: `cron` for a
+carries `permission_denials`, the number of tool calls the allowlist refused; a
+run that did not fail but had refused calls gets level WARNING, metadata
+`error_class` `tool_denied` and the status message `tool_denied: <N> refused tool
+calls`. Trace metadata also carries `instance` (repo name) and `trigger`: `cron` for a
 Scheduler dispatch (it passes the `trigger=cron` input), `chain` for a chain step
 (chain-runner passes `trigger=chain`), `manual` for any other Run now, else the
 event name.

@@ -55,6 +55,15 @@ command -v claude >/dev/null 2>&1 || {
 # APPROVE a tool outside --allowedTools; default mode denies it, which is what
 # the read-only / allowlist tiers rely on and what 2.1.168 did.
 ARGS=(-p - --output-format json --permission-mode default)
+# Scratch dirs outside the checkout. Skills stage API payloads in /tmp, and
+# ./notify queues under $RUNNER_TEMP; lib/sandbox.sh already binds both
+# read-write, but Claude Code's own path check refused allowed tools on them
+# (jq/cat/grep/cd on /tmp: 15 of 17 refused calls in one day of traces), so the
+# model re-fetched data into the committed output/ dir. --add-dir only widens
+# that path check, not the OS sandbox. Kept right after the base flags: the
+# option is variadic, so the next word must be another flag.
+ARGS+=(--add-dir /tmp)
+[ -n "${RUNNER_TEMP:-}" ] && [ "$RUNNER_TEMP" != /tmp ] && ARGS+=(--add-dir "$RUNNER_TEMP")
 [ -n "${RH_MODEL:-}" ] && ARGS+=(--model "$RH_MODEL")
 [ -n "${RH_ALLOWED_TOOLS:-}" ] && ARGS+=(--allowedTools "$RH_ALLOWED_TOOLS")
 # --no-tools: no tool schemas in the prompt (a one-shot text call like the scorer).

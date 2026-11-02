@@ -91,9 +91,9 @@ Edit `.github/workflows/scheduler.yml`:
 
 ```yaml
 schedule:
-  - cron: '*/5 * * * *'    # every 5 min (default)
-  - cron: '*/15 * * * *'   # every 15 min (saves Actions minutes)
-  - cron: '0 * * * *'      # hourly (most conservative)
+  - cron: '7,22,37,52 * * * *'  # every 15 min at off-peak minutes (default)
+  - cron: '*/5 * * * *'         # every 5 min (GitHub drops many of these ticks)
+  - cron: '7 * * * *'           # hourly (most conservative)
 ```
 
 Claude only installs and runs when a skill actually matches - non-matching ticks cost ~10s.
