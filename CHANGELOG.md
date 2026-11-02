@@ -261,9 +261,37 @@ from or pin to; the template keeps serving the latest `main` to new forks.
   invariant scan selectable alongside the legacy scanner, with a shadow mode that runs
   it side by side for comparison before switching over. It merged just after the prior
   sync window but is numbered below that watermark, so it is reconciled here. (#1039)
+- **New `github-filing-registry` skill (Dev & Code).** A persistent JSON ledger of every
+  issue and PR filed against upstream repos - status, evidence, next action and history -
+  so a run never files the same thing twice or loses track of what it filed. Pure shell +
+  `gh` CLI with add, status, triage, sync and log subcommands; concurrent writes are
+  flock-serialized and ids canonicalize to `owner/repo#number`. Catalog now 87 skills. (#1294)
+- **Lazybrief and Vauban community packs listed.** Lazybrief (`NurstarK/lazybrief`) turns an
+  overnight dump of links, notes and todos into a five-line morning brief via a local Gemma
+  on Ollama - local or self-hosted runs only, no secrets. Vauban (`vaubandev/vauban`,
+  `--path aeon`) reads one Vauban vault's spending policy on Robinhood Chain (4663):
+  owner, agent, freeze, allowlist, hourly and daily caps, and held moves; keyless and
+  read-only, `watch:0xVAULT` reports only what changed. (#1273, #1292)
+- **`sc-audit` documents standalone use in Claude Code.** A new `skills/sc-audit/README.md`
+  covers install (copy `sc-audit` + `vuln-scanner` into `.claude/skills/`), running without
+  `./secretcurl` or `./notify`, and a per-step table of what works outside an Aeon
+  instance, verified on a headless run that found the planted critical bug. (#1285)
 
 ### Changed
 
+- **Sentinel Pack listing catches up with its eight skills,** adding
+  `hook-registry-check`: it reads every address in `aeonfun/univ4-hooks` on its own
+  chain and reports when a listed address has no code, its flag bits do not match, or
+  the same hook exposes different functions on different chains. Read-only and keyless.
+  (#1287)
+- **Ecosystem page refreshed.** 18 rows with no public Aeon tie or a dead project removed
+  and the AgentLink link fixed; 26 projects building with Aeon added from X mentions,
+  GitHub forks and community chats; a later cleanup removed 6 of those rows and refreshed
+  two dead X avatar links, leaving 77 rows. The page mirrors `docs/ECOSYSTEM.md` live.
+  (#1274, #1288, #1289, #1290, #1291, #1293)
+- **Setup skill counts follow the catalog to 87** (`86` -> `87` in `SKILL.md`, `layout.md`,
+  `mcp.md` and the `skill-anatomy.md` survey, incl. `title` 78 -> 79 and the Dev pack
+  17 -> 18). Plugin copy kept in lockstep. (docs-sync)
 - **Sentinel Pack listing catches up with its six monitoring skills:** address diffs,
   Aeon v4 hook usage, Pons launch lookalikes, token checks, repeat deployers and graduations
   to locked v4 pools. The later seventh skill is recorded above. (#1269)
@@ -419,6 +447,10 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Fixed
 
+- **`validate-pack` finds a `--path` pack's LICENSE next to its manifest.** Packs that
+  keep `LICENSE` in their own folder (e.g. `vaubandev/vauban --path aeon`) no longer get
+  a false "no LICENSE file at pack root" warning; the repo root is still the fallback.
+  (#1301)
 - **`aeon-update` keeps its new baseline off main until its PR merges.** Branch-only
   state no longer leaks onto main after a stash conflict, logs and output stay out of the
   sync commit, and an open sync PR prevents a duplicate. The plan/apply helper described
@@ -1358,6 +1390,12 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Security
 
+- **`vuln-scanner` tooling is pinned and staged, not downloaded in-run.** The skill used
+  to fetch osv-scanner from `releases/latest` mid-run with no version pin or checksum,
+  in a run where `GH_GLOBAL` and the Resend keys are in the environment; the staging
+  script installed trufflehog by piping its main-branch `install.sh` into `sh`.
+  `scripts/stage-vuln-scanner.sh` now installs osv-scanner v2.7.0 and trufflehog v3.99.7
+  ahead of the run and the skill drops the in-run download. (#1286)
 - **Run guards after a skill run.** On main, changes a run made under `scripts/`, `.github/` or
   `harness-adapter/` are restored to a freshly fetched `main` with an `::error::`; feature-branch
   PR flows are unaffected. Push helpers run from the starting commit with hooks off, and a new
@@ -1426,6 +1464,10 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Maintenance
 
+- **Maintenance.** Dependabot bundles across the dashboard, webhook, mcp-server and Actions
+  deps, a zod override for Remotion's pinned nested copies (Dependabot alert 68), CI gets
+  concurrency cancellation and job timeouts, and the changelog scorer gets a bounded final
+  result. (#1275, #1282, #1295, #1296, #1302, #1303, #1304)
 - **Maintenance.** The MCP harness test waits for killed children to be reaped, run
   scratch under `output/` and the repo root is ignored, MCP SDK and hono are updated, and
   the dashboard moves to Next 16.4.1. (#1253, #1257, #1263, #1264)
