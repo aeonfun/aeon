@@ -10,6 +10,7 @@ metadata:
     - social
     - dev
   requires:
+    - TWITTER_API_KEY
     - XAI_API_KEY?
 ---
 > **${var}** — Comma-separated project names to track (e.g. "MyApp, my-lib"). If empty, derives targets from MEMORY.md and memory/topics/projects.md.
@@ -30,12 +31,28 @@ Read the last 3 days of memory/logs/ to avoid re-surfacing already-noted mention
    - The domain if known (e.g. `"myapp.xyz"`)
    - The repo if known (e.g. `site:github.com owner/myapp`)
 
-2. **Search for external mentions.** X/Twitter is fetched via the X.AI Responses API (**primary**); the rest of the public web (Reddit, Farcaster, blogs, newsletters, GitHub Discussions, HN, Product Hunt) goes through WebSearch, which is also the **last-resort fallback** for X itself. Derive the operator's handle from `soul/SOUL.md` if present (call it `$OPERATOR`) so you can exclude their own posts.
+2. **Search for external mentions.** X/Twitter is fetched via **twitterapi.io** (**primary**); xAI Grok `x_search` is the fallback; the rest of the public web (Reddit, Farcaster, blogs, newsletters, GitHub Discussions, HN, Product Hunt) goes through WebSearch, which is also the **last-resort fallback** for X itself. Derive the operator's handle from `soul/SOUL.md` if present (call it `$OPERATOR`) so you can exclude their own posts.
 
-   **Path A — X.AI API (primary, X/Twitter mentions).** For each target, ask Grok's `x_search` who is talking about the project on X. See the **Fetching** contract below — attempt this whenever the key is present, set the Bash tool `timeout` to ≥180000, and capture the HTTP status. Use a unique tmp filename per target if you loop (e.g. `/tmp/xai-mr-$SLUG.json`). `$NAME`/`$DOMAIN`/`$REPO` come from the target built in step 1 (`$DOMAIN`/`$REPO` may be empty — leave them out if so):
+   **Path A - twitterapi.io (primary, X/Twitter mentions).** For each target, structured search for other people mentioning the project. See the **Fetching** contract below. Use a unique tmp filename per target if you loop (e.g. `/tmp/tw-mr-$SLUG.json`). `$NAME`/`$DOMAIN`/`$REPO` come from the target built in step 1 (`$DOMAIN`/`$REPO` may be empty - leave them out if so). Put the date window inside the query with `since:`/`until:`; exclude the operator with `-from:`:
    ```bash
    FROM_DATE=$(date -u -d "7 days ago" +%Y-%m-%d 2>/dev/null || date -u -v-7d +%Y-%m-%d)
    TO_DATE=$(date -u +%Y-%m-%d)
+   Q="\"${NAME}\" -from:${OPERATOR} since:${FROM_DATE} until:${TO_DATE}"
+   [ -n "$DOMAIN" ] && Q="${Q} OR \"${DOMAIN}\""
+   [ -n "$REPO" ] && Q="${Q} OR \"${REPO}\""
+   HTTP=$(./secretcurl -s -o /tmp/tw-mr.json -w '%{http_code}' --max-time 60 -G "https://api.twitterapi.io/twitter/tweet/advanced_search" \
+     --data-urlencode "query=$Q" --data-urlencode "queryType=Latest" \
+     -H "X-API-Key: {TWITTER_API_KEY}")
+   echo "twitterapi http=$HTTP bytes=$(wc -c </tmp/tw-mr.json)"
+   ```
+   On `HTTP=200` with a non-empty `.tweets[]`, parse and mark `X_SOURCE=twitterapi`. Drop posts by `$OPERATOR` and the project's own accounts if any slipped through:
+   ```bash
+   jq -r '.tweets[] | [.id, .author.userName, .text, .url, .createdAt, .likeCount, .retweetCount, .replyCount] | @tsv' /tmp/tw-mr.json
+   ```
+   Engagement counts are exact; permalinks are `.url`. `createdAt` is Twitter-native (`Wed Sep 09 20:21:43 +0000 2026`); normalize with `strptime("%a %b %d %H:%M:%S %z %Y")` before any date compare. advanced_search does **not** return `author.followers` - omit follower counts on this path (Path B can supply them).
+
+   **Path B - xAI Grok `x_search` (fallback).** Only if Path A returned non-2xx / empty / timeout, or `TWITTER_API_KEY` is unset. See the **Fetching** contract - set the Bash tool `timeout` to ≥180000, and capture the HTTP status. Use a unique tmp filename per target if you loop (e.g. `/tmp/xai-mr-$SLUG.json`):
+   ```bash
    PROMPT="Search X for posts by OTHER people mentioning the project \"${NAME}\" (also its site ${DOMAIN} and repo ${REPO} when given), posted between ${FROM_DATE} and ${TO_DATE}. Exclude posts by the operator @${OPERATOR} and by the project's own accounts. For each mention return: @handle, the full post text, date, exact engagement counts (likes, retweets, replies; 0 if unknown), the poster's approximate follower count if visible, and the direct link https://x.com/handle/status/ID. Prioritize people discovering it for the first time, asking confused questions, hitting friction (setup/docs/missing feature), comparing it to a competitor, or requesting a feature. Return a numbered list; if nobody is talking about it, say so explicitly."
    jq -n --arg p "$PROMPT" --arg fd "$FROM_DATE" --arg td "$TO_DATE" \
      '{model:"grok-4.7", input:[{role:"user",content:$p}], tools:[{type:"x_search",from_date:$fd,to_date:$td}]}' \
@@ -48,12 +65,12 @@ Read the last 3 days of memory/logs/ to avoid re-surfacing already-noted mention
    ```
    On `HTTP=200` with a non-empty body, parse `/tmp/xai-mr.json` with `jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text'` and feed the X mentions into categorization (step 4). Record `X_SOURCE=api`.
 
-   **Path B — WebSearch (broader web + X fallback).** Always use WebSearch for the non-X surfaces — Reddit, Farcaster, personal blogs, newsletters, GitHub Discussions, HN, Product Hunt:
+   **Path C - WebSearch (broader web + X last resort).** Always use WebSearch for the non-X surfaces - Reddit, Farcaster, personal blogs, newsletters, GitHub Discussions, HN, Product Hunt:
    - Try both brand name and URL variants
    - Time-box to last 7 days where the search engine supports it
    - Skip results from the operator's own accounts and the project's own repos
 
-   WebSearch is **also** the fallback for X/Twitter, but only when Path A truly failed (`key-unset`, `http-<code>`, `empty`, or `timeout` — record the real reason per the **Fetching** contract, never "XAI_API_KEY unavailable" when the key was set). On the X fallback query `site:x.com "<project name>" after:${FROM_DATE}`; note in the log that X results came from WebSearch (lower quality) and set `X_SOURCE=websearch`.
+   WebSearch is **also** the last-resort fallback for X/Twitter, but only when Paths A and B both truly failed (`key-unset`, `http-<code>`, `empty`, or `timeout` - record the real reason per the **Fetching** contract, never "XAI_API_KEY unavailable" / "TWITTER_API_KEY unavailable" when a key was set). On the X fallback query `site:x.com "<project name>" after:${FROM_DATE}`; note in the log that X results came from WebSearch (lower quality) and set `X_SOURCE=websearch`.
 
 3. **Also check GitHub network signals** for each target with a known repo:
    ```bash
@@ -116,24 +133,25 @@ Read the last 3 days of memory/logs/ to avoid re-surfacing already-noted mention
 
 ## Fetching
 
-`XAI_API_KEY` is **injected into your environment** for this skill (declared in `requires:`). It is present and valid. **The primary fetch path for X/Twitter mentions is a direct `curl` to `https://api.x.ai/v1/responses` with `Authorization: Bearer {XAI_API_KEY}`** (step 2, Path A). There is no network sandbox blocking this; earlier versions of this skill claimed there was — that is stale and wrong. Just make the call.
+`TWITTER_API_KEY` is **injected into your environment** for this skill (declared in `requires:`). **The primary fetch path for X/Twitter mentions is a direct `curl` to `https://api.twitterapi.io/twitter/tweet/advanced_search` with header `X-API-Key: {TWITTER_API_KEY}`** (step 2, Path A). Grok `x_search` (`XAI_API_KEY`) is the fallback. There is no network sandbox blocking this. Just make the call.
 
-**You MUST attempt the direct curl before any X fallback.** The rules:
+**You MUST attempt twitterapi.io before any X fallback.** The rules:
 
-1. **Check, don't assume.** Run `[ -n "$XAI_API_KEY" ] && echo KEY_PRESENT || echo KEY_UNSET`. If `KEY_PRESENT` (it will be), you are required to try Path A.
-2. **Allow enough time.** The `x_search` call typically takes 30–120s (it searches X live). When you invoke the Bash tool for the curl, **set the tool's `timeout` to at least 180000 (180s)**, and keep **`--max-time 150`** on the curl itself so it fails cleanly rather than hanging. A curl that is slow is **not** a missing key — do not treat a timeout as "key unavailable".
-3. **Capture the HTTP status** so the fallback decision is based on fact, not assumption. Build the payload to the fixed file `/tmp/xai-mr-payload.json` first (the `jq -n --arg` in Path A), then send it with `-d @file` — the `./secretcurl` command must stay 100% literal (no `$VAR`):
+1. **Check, don't assume.** Run `[ -n "$TWITTER_API_KEY" ] && echo KEY_PRESENT || echo KEY_UNSET`. If `KEY_PRESENT`, you are required to try Path A.
+2. **Capture the HTTP status** so the fallback decision is based on fact. Print `http=<code>` before parsing. `HTTP=200` with a non-empty `.tweets[]` → use it (`X_SOURCE=twitterapi`). Put date windows **inside** the query with `since:YYYY-MM-DD until:YYYY-MM-DD`. `createdAt` is Twitter-native (`Wed Sep 09 20:21:43 +0000 2026`), not ISO - normalize with `strptime("%a %b %d %H:%M:%S %z %Y")` before any date compare.
+3. **Path B - xAI Grok `x_search` (fallback).** Only when Path A fails (non-2xx / empty / timeout) or `TWITTER_API_KEY` is unset. Direct `curl` to `https://api.x.ai/v1/responses` with `Authorization: Bearer {XAI_API_KEY}`. The `x_search` call typically takes 30-120s - **set the Bash tool `timeout` to at least 180000 (180s)** and keep **`--max-time 150`** on the curl. A slow curl is **not** a missing key. Build the payload to `/tmp/xai-mr-payload.json` first, then send with `-d @file` - the `./secretcurl` command must stay 100% literal (no `$VAR`):
    ```bash
    HTTP=$(./secretcurl -s -o /tmp/xai-mr.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
      -H "Content-Type: application/json" -H "Authorization: Bearer {XAI_API_KEY}" -d @/tmp/xai-mr-payload.json)
    echo "xai http=$HTTP bytes=$(wc -c </tmp/xai-mr.json)"
    ```
    Then parse `/tmp/xai-mr.json` with the standard `jq` extractor. `HTTP=200` with a non-empty body → use it (`X_SOURCE=api`).
-4. **Fall back only on a real failure**, and **record the true reason** — never write "XAI_API_KEY unavailable" when the key was set. Use one of: `key-unset` (only if step 1 said `KEY_UNSET`), `http-<code>` (non-2xx), `empty` (200 but no mentions parsed), `timeout` (curl exceeded `--max-time`).
+4. **Fall back only on a real failure**, and **record the true reason** - never write "XAI_API_KEY unavailable" / "TWITTER_API_KEY unavailable" when a key was set. Use one of: `key-unset` (only if step 1 said `KEY_UNSET`), `http-<code>` (non-2xx), `empty` (200 but no mentions parsed), `timeout` (curl exceeded `--max-time`).
 
-**WebSearch / WebFetch are last-resort fallbacks only** for X — lower quality (WebSearch favours old high-engagement tweets). They remain the primary tool for the non-X web surfaces (Reddit, HN, blogs, etc.). Never reach for the X WebSearch fallback while the key works.
+**WebSearch / WebFetch are last-resort fallbacks only** for X - lower quality (WebSearch favours old high-engagement tweets). They remain the primary tool for the non-X web surfaces (Reddit, HN, blogs, etc.). Never reach for the X WebSearch fallback while a key works.
 
 ## Environment Variables
 
-- `XAI_API_KEY` — X.AI API key for Grok's `x_search` tool. Declared in `requires:` (optional `?`), so it is **injected into this skill's environment** and is the primary path for X/Twitter mentions. If it is ever unset, X mentions degrade to the WebSearch fallback at lower quality; the broader-web search is unaffected.
+- `TWITTER_API_KEY` - twitterapi.io API key (sent as the `X-API-Key` header). Declared in `requires:`, so it is **injected into this skill's environment** and is the **primary** path for X/Twitter mentions.
+- `XAI_API_KEY` - X.AI API key for Grok's `x_search` tool. Declared in `requires:` (optional `?`). The **fallback** path when `TWITTER_API_KEY` is unset or twitterapi returns non-2xx / empty / timeout. If both keys are unset, X mentions degrade to the WebSearch fallback at lower quality; the broader-web search is unaffected.
 - `gh` CLI — pre-authenticated in GitHub Actions; used for the GitHub network-signal check (step 3). Not an env var you set here.

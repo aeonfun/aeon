@@ -528,16 +528,17 @@
       },
       "capabilities": {
         "network": [
+          "api.twitterapi.io",
           "api.x.ai"
         ]
       },
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "85d5f87189d45fc327a4280db7fd7d2cf64147f6bb82ff9a1e7091cd3e98db71"
+          "hash": "041cb83ae532fe49cd7fc90fdf2b98e7a7b46fe44ae275d6c71e15bde22db7cc"
         }
       ],
-      "contentHash": "sha256-5fb5998447998c31184d7df53bc14d58efc3df9c1d290992d3d4ae051329834c",
+      "contentHash": "sha256-47599fabb9eaf0f8c262515c58cabdd1a1d57a919c2f7da7b3eb36b65e19bf43",
       "discoveredFrom": "skills/mention-radar/SKILL.md"
     },
     {
@@ -1738,16 +1739,17 @@
       },
       "capabilities": {
         "network": [
+          "api.twitterapi.io",
           "api.x.ai"
         ]
       },
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "e5e47f590f2ac2a4236df4c1ff74b10e3ba6568a789e370bef1ac415aa073df1"
+          "hash": "83b50dbd462248a1a4476157c043f7c1f3585619c4579ea5956684ac971dbefe"
         }
       ],
-      "contentHash": "sha256-691c7527de3ff7bc86f80d9a6623df571aa9ff2cb00b8924504e0741f39f9449",
+      "contentHash": "sha256-98c4c6b8acf8222ce66492f6f750150888572f49ff787a3f526cf912e705e86c",
       "discoveredFrom": "skills/reply-maker/SKILL.md"
     },
     {
@@ -2088,6 +2090,7 @@
       },
       "capabilities": {
         "network": [
+          "api.twitterapi.io",
           "api.x.ai",
           "x.com"
         ]
@@ -2095,10 +2098,10 @@
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "6dd3aa21b17bc9e525802387f8cf0544c9387ce7d118081fca2b9523360114d5"
+          "hash": "c199d389f221acf2a9adf5dfa32c910d0258aaa5eb98f2ef7c16d7121f611999"
         }
       ],
-      "contentHash": "sha256-1d5e4c22d96d144b8a7ac5b9385ab413e947998674c13f7c92802010c2e67046",
+      "contentHash": "sha256-6a3aed8d975f9c5720217e1355500e55a31c96306e740c83daaee67a1ef63a18",
       "discoveredFrom": "skills/shiplog/SKILL.md"
     },
     {
@@ -2173,16 +2176,18 @@
       },
       "capabilities": {
         "network": [
-          "api.x.ai"
+          "api.twitterapi.io",
+          "api.x.ai",
+          "x.com"
         ]
       },
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "308e7ee0a21d3b4f0f3fbb1941aaec8e80cfd400965aadeaed31161f28762e3e"
+          "hash": "2584733fd76a69bcb12597811ac0e5be8da5e03ad68ee4c7eb5a8a6955ebee53"
         }
       ],
-      "contentHash": "sha256-8abe59187948ce2c01cf1863f464499adb6a655a3804ba9de8e45a56764823bf",
+      "contentHash": "sha256-94cc95f98af14746390bcc565e21ea69ca7c8edaed1899827436dfc1a6788541",
       "discoveredFrom": "skills/write-tweet/SKILL.md"
     },
     {
@@ -2505,6 +2510,7 @@
       },
       "capabilities": {
         "network": [
+          "api.twitterapi.io",
           "api.x.ai",
           "x.com"
         ]
@@ -2512,10 +2518,10 @@
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "6c7929ff6df3b4a4491ed6086dd1da018c1ed3c2729f8ea2f98ed14c914cfca7"
+          "hash": "5a3e611481743ba9f5752dce474245ba8c85222db0c3dc2bc516508c8e3d3491"
         }
       ],
-      "contentHash": "sha256-24193d664a2402d12cf7b55a3da16355dcb326e4b459616394fbfe7ee45e598b",
+      "contentHash": "sha256-7804454f681b6cc574b4b50e7851a4a3611351ff20c108b9800b5bcba4430570",
       "discoveredFrom": "skills/fetch-tweets/SKILL.md"
     },
     {

@@ -9,6 +9,7 @@ metadata:
     - social
     - content
   requires:
+    - TWITTER_API_KEY
     - XAI_API_KEY?
 ---
 > **${var}** — `[format] [argument]`. Pick one of three formats, then pass its argument. Empty ⇒ **drafts** (standalone tweet drafts). `thread …` ⇒ a multi-tweet **thread**. `remix …` ⇒ **remix** of your past tweets. `revise:<instruction>` ⇒ **revise** the last saved draft (the Telegram force-reply shape, e.g. `revise:make it punchier`). See Selector below.
@@ -77,7 +78,20 @@ Otherwise, read today's `memory/logs/${today}.md` and pick the **single most twe
 
 If the topic needs fresher context, use WebSearch to verify or expand.
 
-If `XAI_API_KEY` is set, search X for what people are already saying about the topic. A direct `curl` to the X.AI Responses API is the **primary** path for this X read (see **Fetching**; set the Bash tool `timeout` ≥180000):
+If `TWITTER_API_KEY` is set, search X for what people are already saying about the topic. **twitterapi.io is the primary** path for this X read (see **Fetching**):
+```bash
+FROM_DATE=$(date -u -d "yesterday" +%Y-%m-%d 2>/dev/null || date -u -v-1d +%Y-%m-%d)
+Q="${TOPIC} since:${FROM_DATE}"
+HTTP=$(./secretcurl -s -o /tmp/tw-wt.json -w '%{http_code}' --max-time 60 -G "https://api.twitterapi.io/twitter/tweet/advanced_search" \
+  --data-urlencode "query=$Q" --data-urlencode "queryType=Latest" \
+  -H "X-API-Key: {TWITTER_API_KEY}")
+echo "twitterapi http=$HTTP bytes=$(wc -c </tmp/tw-wt.json)"
+```
+On `HTTP=200` with a non-empty `.tweets[]`, parse and use the 5 most notable:
+```bash
+jq -r '.tweets[] | [.author.userName, .text, .url, .createdAt, .likeCount, .retweetCount, .replyCount] | @tsv' /tmp/tw-wt.json
+```
+This helps understand the existing conversation so you can add signal, not noise. **Path B - xAI Grok `x_search` (fallback)** (only if Path A returned non-2xx / empty / timeout, or `TWITTER_API_KEY` is unset; see **Fetching**; set the Bash tool `timeout` ≥180000):
 ```bash
 jq -n '{model:"grok-4.7", input:[{role:"user",content:"Search X for what people are saying about TOPIC in the last 24 hours. Return the 5 most notable tweets with @handle and summary."}], tools:[{type:"x_search"}]}' > /tmp/xai-wt-payload.json
 HTTP=$(./secretcurl -s -o /tmp/xai-wt.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
@@ -86,7 +100,7 @@ HTTP=$(./secretcurl -s -o /tmp/xai-wt.json -w '%{http_code}' --max-time 150 -X P
   -d @/tmp/xai-wt-payload.json)
 echo "xai http=$HTTP bytes=$(wc -c </tmp/xai-wt.json)"
 ```
-On `HTTP=200` with a non-empty body, parse `/tmp/xai-wt.json` with `jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text'`. This helps understand the existing conversation so you can add signal, not noise. `XAI_API_KEY` is **optional** for this branch — skip the X search only if it's `KEY_UNSET`; if the key is set but Path A truly fails (non-2xx / empty / timeout — record the real reason, never "unavailable" when the key was set), fall back to WebSearch (`site:x.com "<topic>"`, lower quality) as a last resort.
+On `HTTP=200` with a non-empty body, parse `/tmp/xai-wt.json` with `jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text'`. Skip the X search only if both keys are `KEY_UNSET`; if a key is set but that path truly fails (non-2xx / empty / timeout - record the real reason, never "unavailable" when the key was set), fall back to WebSearch (`site:x.com "<topic>"`, lower quality) as a last resort.
 
 ## Voice (drafts)
 
@@ -379,7 +393,7 @@ Fetch ~30 older tweets, pre-filter for remixability, then produce 10 new rephras
 
 <!-- autoresearch: variation B — sharper output via remixability pre-filter, strategy-rotation, skip-gate for un-remixable originals, post-write self-edit; folded in A's multi-angle queries + engagement counts and C's source-status footer + OK/EMPTY/ERROR branching -->
 
-This branch **requires `XAI_API_KEY`**. If it's unset, emit `REMIX_TWEETS_ERROR — no XAI_API_KEY configured`, notify the cause, and stop.
+This branch **requires `TWITTER_API_KEY` or `XAI_API_KEY`**. If both are unset, emit `REMIX_TWEETS_ERROR - no TWITTER_API_KEY or XAI_API_KEY configured`, notify the cause, and stop.
 
 Read `memory/MEMORY.md` for context on current topics and recent thinking.
 Scan the last **14 days** of `memory/logs/` for any `### write-tweet` entries with `**Format:** remix` (and legacy `## Remix Tweets` entries) and collect every tweet URL ever remixed — that's the persistent dedup set.
@@ -399,7 +413,9 @@ Otherwise, match the tone of the originals fetched in step 1.
 
 We over-fetch so the remixability pre-filter (step 2) has room to drop un-remixable candidates without reducing the output count below 10.
 
-**Fetch directly from the X.AI Responses API** — this is the primary path (see **Fetching**; set the Bash tool `timeout` ≥180000). Resolve the time window (from the branch argument) and call the API:
+**Path A - twitterapi.io (primary).** Pull this handle's timeline, then filter to the remix window client-side (`/user/last_tweets` has no server-side date filter). Paginate with `&cursor=<next_cursor>` while `.has_next_page` until you have ~30 in-window originals or pages run out. `createdAt` is Twitter-native; normalize with `strptime` before the window compare. See **Fetching**.
+
+Resolve the time window (from the branch argument):
 
 ```bash
 TIME_WINDOW="${ARG:-180d}"   # ARG = the remix argument parsed from ${var}; default 180d
@@ -418,7 +434,17 @@ fi
 
 Resolve the X handle. Look up in this order: (a) `$X_HANDLE` env var, (b) handle mentioned in `soul/SOUL.md` under "Identity", (c) abort with `REMIX_TWEETS_ERROR — no handle configured`.
 
-Run **two angled x_search queries** so the pre-filter has a diverse pool — don't rely on one query shape:
+```bash
+HTTP=$(./secretcurl -s -o /tmp/tw-wt-remix.json -w '%{http_code}' --max-time 60 -G "https://api.twitterapi.io/twitter/user/last_tweets" \
+  --data-urlencode "userName=$HANDLE" -H "X-API-Key: {TWITTER_API_KEY}")
+echo "twitterapi http=$HTTP bytes=$(wc -c </tmp/tw-wt-remix.json)"
+```
+On `HTTP=200` with a non-empty `.data.tweets[]`, parse originals in the window (drop `.isReply`, text starting `RT @`) and mark `twitterapi=ok`:
+```bash
+jq -r --arg FROM "$FROM_DATE" --arg TO "$TO_DATE" '.data.tweets[] | (try (.createdAt | strptime("%a %b %d %H:%M:%S %z %Y") | strftime("%Y-%m-%d")) catch "0000-00-00") as $d | select((.isReply | not) and ($d >= $FROM) and ($d <= $TO)) | [.id, .text, .url, $d, .likeCount, .retweetCount, .replyCount] | @tsv' /tmp/tw-wt-remix.json
+```
+
+**Path B - xAI Grok `x_search` (fallback).** Only if Path A returned non-2xx / empty / timeout, or `TWITTER_API_KEY` is unset (see **Fetching**; set the Bash tool `timeout` ≥180000). Run **two angled x_search queries** so the pre-filter has a diverse pool - don't rely on one query shape:
 
 - **Query 1 — opinion posts** (most remixable): original tweets that state a take, opinion, or principle (not news-tied, not announcements).
 - **Query 2 — standout posts** (high engagement = proven): top-engagement original tweets in the window.
@@ -443,7 +469,7 @@ Then repeat with a second body `Q2` (write to `/tmp/xai-wt-q2.json`) varying the
 
 Deduplicate by tweet ID across both queries. Log `xai=ok` / `xai=partial` / `xai=fail` based on how many queries returned data.
 
-**Fallback (last resort only)**: the direct curl above is the primary path and works — there is no network sandbox (see **Fetching**). Only if a query genuinely fails (non-2xx / empty / timeout — record the true reason, never "unavailable" when the key was set) retry that same POST body via the built-in WebFetch tool against `https://api.x.ai/v1/responses` as a last resort.
+**Path C - WebFetch (last resort only).** Only if Paths A and B both genuinely fail (non-2xx / empty / timeout - record the true reason, never "unavailable" when a key was set) retry via the built-in WebFetch tool against the public `https://x.com/HANDLE` profile.
 
 ### 2. Remixability pre-filter (drop before remixing)
 
@@ -520,14 +546,14 @@ Batch: [one-line strategy spread]. Drops: N.
 
 ... (all 10, or fewer if DEGRADED)
 
-source: xai=ok|partial|fail, fetched=N, kept=N, drops=N
+source: twitterapi=ok|fail|skip, xai=ok|partial|fail|skip, fetched=N, kept=N, drops=N
 ```
 
 **Status branching** (prepend to the notify body as the first line instead of `Batch:`):
 - `REMIX_TWEETS_OK` — 10 remixes produced, ≤3 drops.
 - `REMIX_TWEETS_DEGRADED` — <10 produced OR >3 drops. Include cause.
-- `REMIX_TWEETS_EMPTY` — XAI returned no usable tweets in the window. Notify once with cause and stop.
-- `REMIX_TWEETS_ERROR` — no handle configured, no `XAI_API_KEY`, OR both XAI queries failed AND WebFetch fallback failed. Notify cause and stop.
+- `REMIX_TWEETS_EMPTY` - no usable tweets in the window from twitterapi or xAI. Notify once with cause and stop.
+- `REMIX_TWEETS_ERROR` - no handle configured, neither `TWITTER_API_KEY` nor `XAI_API_KEY`, OR all fetch paths failed. Notify cause and stop.
 
 On a successful (`OK`/`DEGRADED`) run, after notifying, **save the draft and offer a revision** (see *Save draft + offer revision*) — persist the remix batch to `memory/drafts/write-tweet-latest.md`. Skip the save+offer on `EMPTY`/`ERROR` (nothing was produced).
 
@@ -546,7 +572,8 @@ Save the fetched originals (even the filtered-out ones) to `memory/topics/tweet-
 - Never output fewer than 10 without emitting `REMIX_TWEETS_DEGRADED` with a cause.
 
 ## Environment Variables (remix)
-- `XAI_API_KEY` — X.AI API key for Grok x_search. **Required** for this branch.
+- `TWITTER_API_KEY` - twitterapi.io API key. **Primary** for this branch.
+- `XAI_API_KEY` - X.AI API key for Grok x_search. **Fallback** when twitterapi fails or is unset.
 - `X_HANDLE` (optional) — X handle to search. Falls back to `soul/SOUL.md` Identity section if unset.
 
 ---
@@ -624,19 +651,19 @@ Append **one** entry to `memory/logs/${today}.md` under a single `### write-twee
 
 ## Fetching
 
-`XAI_API_KEY` is **injected into this skill's environment** (declared in `requires:`). It is present and valid. **The primary way to fetch X/Twitter context - the DRAFTS "what people are saying" search and the REMIX tweet pull - is a direct `curl` to `https://api.x.ai/v1/responses` with `Authorization: Bearer {XAI_API_KEY}`, model `grok-4.7`, and `"tools":[{"type":"x_search"}]`.** There is no network sandbox blocking this; earlier versions of this skill claimed there was - that is stale and wrong. Just make the call.
+`TWITTER_API_KEY` is **injected into this skill's environment** (declared in `requires:`). **The primary way to fetch X/Twitter context - the DRAFTS "what people are saying" search and the REMIX tweet pull - is a direct `curl` to `https://api.twitterapi.io/twitter/...` with header `X-API-Key: {TWITTER_API_KEY}`.** Drafts uses `/tweet/advanced_search?queryType=Latest` with `since:` inside the query. Remix uses `/user/last_tweets?userName=` (filter the window client-side on `.createdAt`; `createdAt` is Twitter-native, normalize with `strptime("%a %b %d %H:%M:%S %z %Y")` before date compares). Grok `x_search` (`XAI_API_KEY`) is the fallback. There is no network sandbox blocking this. Just make the call.
 
-**You MUST attempt the direct curl before any fallback.** The rules:
+**You MUST attempt twitterapi.io before any fallback.** The rules:
 
-1. **Check, don't assume.** Run `[ -n "$XAI_API_KEY" ] && echo KEY_PRESENT || echo KEY_UNSET`. If `KEY_PRESENT` (it will be), Path A is required. (Drafts treats the X search as optional enrichment — skip it entirely only when the key is `KEY_UNSET`, never because you assume curl won't work. Remix requires the key.)
-2. **Allow enough time.** The `x_search` call typically takes 30–120s (it searches X live). When you invoke the Bash tool for the curl, **set the tool's `timeout` to at least 180000 (180s)**, and add **`--max-time 150`** to the curl itself so it fails cleanly rather than hanging. A curl that is slow is **not** a missing key — do not treat a timeout as "key unavailable".
-3. **Capture the HTTP status** so the fallback decision is based on fact, not assumption. Build the JSON body to a fixed file with `jq -n` first (see the branch examples above), then send it with `-d @file` — the `./secretcurl` command must be 100% literal (no `$VAR`, or the permission layer blocks it):
+1. **Check, don't assume.** Run `[ -n "$TWITTER_API_KEY" ] && echo TW_PRESENT || echo TW_UNSET` and `[ -n "$XAI_API_KEY" ] && echo XAI_PRESENT || echo XAI_UNSET`. If `TW_PRESENT`, Path A is required. (Drafts treats the X search as optional enrichment - skip it entirely only when **both** keys are unset, never because you assume curl won't work. Remix requires at least one key.)
+2. **Capture the HTTP status** so the fallback decision is based on fact. Print `http=<code>` before parsing. `HTTP=200` with a non-empty tweet array → use it.
+3. **Path B - xAI Grok `x_search` (fallback).** Only when Path A fails (non-2xx / empty / timeout) or `TWITTER_API_KEY` is unset. Direct `curl` to `https://api.x.ai/v1/responses` with `Authorization: Bearer {XAI_API_KEY}`, model `grok-4.7`, and `"tools":[{"type":"x_search"}]`. The `x_search` call typically takes 30-120s - **set the Bash tool `timeout` to at least 180000 (180s)**, and add **`--max-time 150`** to the curl. A slow curl is **not** a missing key. Build the JSON body to a fixed file with `jq -n` first, then send with `-d @file` - the `./secretcurl` command must be 100% literal (no `$VAR`):
    ```bash
    HTTP=$(./secretcurl -s -o /tmp/xai-wt.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
      -H "Content-Type: application/json" -H "Authorization: Bearer {XAI_API_KEY}" -d @/tmp/xai-wt-payload.json)
    echo "xai http=$HTTP bytes=$(wc -c </tmp/xai-wt.json)"
    ```
-   When a branch loops (remix runs two queries), write each call to a unique file — `/tmp/xai-wt-q1.json`, `/tmp/xai-wt-q2.json`. Parse with the standard extractor `jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text'`. `HTTP=200` with a non-empty body → use it.
-4. **Fall back only on a real failure**, and **record the true reason** — never write "XAI_API_KEY unavailable" when the key was set. Use one of: `key-unset` (only if step 1 said `KEY_UNSET`), `http-<code>` (non-2xx), `empty` (200 but nothing parsed), `timeout` (curl exceeded `--max-time`).
+   When a branch loops (remix Path B runs two queries), write each call to a unique file - `/tmp/xai-wt-q1.json`, `/tmp/xai-wt-q2.json`. Parse with the standard extractor `jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text'`. `HTTP=200` with a non-empty body → use it.
+4. **Fall back only on a real failure**, and **record the true reason** - never write "XAI_API_KEY unavailable" / "TWITTER_API_KEY unavailable" when a key was set. Use one of: `key-unset` (only if step 1 said the relevant key was unset), `http-<code>` (non-2xx), `empty` (200 but nothing parsed), `timeout` (curl exceeded `--max-time`).
 
-**WebSearch / WebFetch are last-resort fallbacks only** — lower quality, never a primary or co-equal path. Reach for them only after a real Path A failure. The **thread** branch's WebSearch use is for general fresh context, not an X-tweet fetch, and is unaffected.
+**WebSearch / WebFetch are last-resort fallbacks only** - lower quality, never a primary or co-equal path. Reach for them only after a real Path A and Path B failure. The **thread** branch's WebSearch use is for general fresh context, not an X-tweet fetch, and is unaffected.
