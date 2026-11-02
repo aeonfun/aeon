@@ -277,6 +277,44 @@ rc=${PIPESTATUS[0]}
 set -e
 [ "$rc" -ne 0 ] && { rm -f "$LOG"; exit "$rc"; }
 
+# the pre-broadcast probe (DeployHook.s.sol) try/catches a dry-run swap so a
+# doomed swap is never recorded as broadcast, and logs SEED_SWAP_SKIPPED
+# instead of reverting the script. That makes it invisible to the rc check
+# above: forge exits 0 either way. A revert-gate hook correctly rejecting the
+# probe swap and a setup bug silently breaking it look identical here, so
+# treat every skip as a hard stop and let the operator tell them apart - this
+# is the one signal that would have caught the probe running outside
+# vm.startBroadcast() (fixed in 3f99dd9) before it shipped.
+if grep -q "SEED_SWAP_SKIPPED" "$LOG"; then
+  # An intentional revert-gate hook declares itself with HOOK_REVERT_GATE=1 in the
+  # staged project's hook.env (the same file the freeform branch sources). Read
+  # ONLY that flag in a subshell, so this never imports anything else from hook.env
+  # and its scope stays the SEED_SWAP_SKIPPED decision alone. An already-exported
+  # env var wins, so a caller can set it too.
+  REVERT_GATE="${HOOK_REVERT_GATE:-}"
+  if [ -z "$REVERT_GATE" ] && [ -f hook.env ]; then
+    REVERT_GATE="$(. ./hook.env >/dev/null 2>&1; printf '%s' "${HOOK_REVERT_GATE:-}")"
+  fi
+  if [ "$MODE" = "broadcast" ]; then
+    # The probe runs AFTER the hook, pool and liquidity are already onchain, so an
+    # exit here would strand a live deployment with no receipt or explorer verify.
+    # The probe swap was never recorded (DeployHook only broadcasts it when it
+    # succeeds), so warn and carry on through the receipt/verify/record flow below.
+    echo "!! WARN SEED_SWAP_SKIPPED during broadcast: the post-deploy probe swap did not go through" >&2
+    echo "   the hook, pool and liquidity are already deployed; the probe swap was not recorded" >&2
+    echo "   continuing so the receipt and explorer verification finish — read the trace above" >&2
+  elif [ "$REVERT_GATE" = "1" ]; then
+    echo "── SEED_SWAP_SKIPPED allowed: HOOK_REVERT_GATE=1 declares an intentional revert-gate hook ──"
+    echo "   the probe swap was rejected on purpose; continuing the simulation" >&2
+  else
+    echo "!! SEED_SWAP_SKIPPED: the pre-broadcast probe swap did not go through" >&2
+    echo "   a revert-gate hook (a game/gate rejecting on purpose) and a broken probe" >&2
+    echo "   both log this; read the trace above to tell them apart before retrying" >&2
+    echo "   if this hook rejects the probe on purpose, set HOOK_REVERT_GATE=1 in hook.env" >&2
+    rm -f "$LOG"; exit 1
+  fi
+fi
+
 # idempotency: the deploy script logs ALREADY_DEPLOYED <addr> and does nothing when
 # the mined hook address already holds code. Surface it cleanly (not an error).
 if grep -q "ALREADY_DEPLOYED" "$LOG"; then

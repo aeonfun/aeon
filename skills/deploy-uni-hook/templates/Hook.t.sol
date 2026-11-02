@@ -21,6 +21,7 @@ pragma solidity 0.8.26;
 import {Test} from "forge-std/Test.sol";
 
 import {IPoolManager} from "@uniswap/v4-core/src/interfaces/IPoolManager.sol";
+import {SwapParams, ModifyLiquidityParams} from "@uniswap/v4-core/src/types/PoolOperation.sol";
 import {IHooks} from "@uniswap/v4-core/src/interfaces/IHooks.sol";
 import {PoolKey} from "@uniswap/v4-core/src/types/PoolKey.sol";
 import {PoolId, PoolIdLibrary} from "@uniswap/v4-core/src/types/PoolId.sol";
@@ -84,7 +85,7 @@ contract HookBehaviorTest is Test {
         tB.approve(address(swapRouter), type(uint256).max);
         lpRouter.modifyLiquidity(
             key,
-            IPoolManager.ModifyLiquidityParams({
+            ModifyLiquidityParams({
                 tickLower: TickMath.minUsableTick(60),
                 tickUpper: TickMath.maxUsableTick(60),
                 liquidityDelta: 1e23,
@@ -98,7 +99,7 @@ contract HookBehaviorTest is Test {
     function _swap(bool zeroForOne, int256 amountSpecified) internal returns (BalanceDelta) {
         return swapRouter.swap(
             key,
-            IPoolManager.SwapParams({
+            SwapParams({
                 zeroForOne: zeroForOne,
                 amountSpecified: amountSpecified,
                 sqrtPriceLimitX96: zeroForOne ? TickMath.MIN_SQRT_PRICE + 1 : TickMath.MAX_SQRT_PRICE - 1
@@ -115,7 +116,7 @@ contract HookBehaviorTest is Test {
     function _expectSwapRevert(bool zeroForOne, int256 amountSpecified, bytes4 hookErrorSelector) internal {
         try swapRouter.swap(
             key,
-            IPoolManager.SwapParams({
+            SwapParams({
                 zeroForOne: zeroForOne,
                 amountSpecified: amountSpecified,
                 sqrtPriceLimitX96: zeroForOne ? TickMath.MIN_SQRT_PRICE + 1 : TickMath.MAX_SQRT_PRICE - 1
@@ -167,7 +168,7 @@ contract HookBehaviorTest is Test {
         tB.approve(address(swapRouter), type(uint256).max);
         lpRouter.modifyLiquidity(
             key,
-            IPoolManager.ModifyLiquidityParams({
+            ModifyLiquidityParams({
                 tickLower: TickMath.minUsableTick(60),
                 tickUpper: TickMath.maxUsableTick(60),
                 liquidityDelta: 1e23,
