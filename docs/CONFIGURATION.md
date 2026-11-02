@@ -91,7 +91,8 @@ Edit `.github/workflows/scheduler.yml`:
 
 ```yaml
 schedule:
-  - cron: '7,22,37,52 * * * *'  # every 15 min at off-peak minutes (default)
+  - cron: '11,41 * * * *'       # every 30 min at off-peak minutes (default)
+  - cron: '7,22,37,52 * * * *'  # every 15 min at off-peak minutes
   - cron: '*/5 * * * *'         # every 5 min (GitHub drops many of these ticks)
   - cron: '7 * * * *'           # hourly (most conservative)
 ```

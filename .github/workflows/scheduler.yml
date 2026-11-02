@@ -8,14 +8,14 @@ run-name: "scheduler: cron"
 # dispatches aeon.yml + chain-runner.yml, and commits memory/cron-state.json.
 #
 # GitHub drops many schedule ticks, more so at busy minutes (:00/:15/:30/:45),
-# so the cron runs every 15 min at off-peak minutes. An external uptime pinger
+# so the cron runs every 30 min at off-peak minutes. An external uptime pinger
 # may POST a `cron-tick` repository_dispatch to catch up missed slots (the debt
 # model below makes that safe — a slot can't double-fire). messages.yml also
 # listens to schedule + cron-tick to drive its poller; the two never overlap
 # because each workflow owns a disjoint step.
 on:
   schedule:
-    - cron: '7,22,37,52 * * * *'
+    - cron: '11,41 * * * *'
   workflow_dispatch:
   repository_dispatch:
     types: [cron-tick]
