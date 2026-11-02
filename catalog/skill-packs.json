@@ -199,7 +199,7 @@
     {
       "repo": "sentinelhood/robinhood-sentinel",
       "name": "Sentinel Pack",
-      "description": "Keyless Robinhood Chain (4663) monitoring: address diffs, real usage of Aeon's v4 hooks, an on-chain check of every address in Aeon's hook registry, lookalike alerts for new Pons launches, one-shot Pons token checks, alerts when a watched deployer launches again, alerts when a Pons token graduates to a locked Uniswap v4 pool, and the busiest Pons bonding curves DEX scanners cannot see yet. Read-only, never signs.",
+      "description": "Keyless Robinhood Chain (4663) monitoring: address diffs, real usage of Aeon's v4 hooks, an on-chain check of every address in Aeon's hook registry, lookalike alerts for new Pons launches, one-shot Pons token checks (including how much of its own launch buy the deployer still holds), alerts when a watched deployer launches again, alerts when a Pons token graduates to a locked Uniswap v4 pool, and the busiest Pons bonding curves DEX scanners cannot see yet. Read-only, never signs.",
       "author": "sentinelhood",
       "license": "MIT",
       "homepage": "https://sentinelhood.com",
