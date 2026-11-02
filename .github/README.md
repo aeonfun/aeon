@@ -125,7 +125,7 @@ The prompt *is* the skill. You schedule it, hand it a `var`, chain it into other
 
 <p align="center"><a href="../docs/community-skill-packs.md#listed-packs"><b>Community skill packs →</b></a></p>
 
-fetch-tweets, shiplog, and mention-radar read X through [TwitterAPI.io](https://twitterapi.io/?ref=wa6is4im) when `TWITTER_API_KEY` is set. This project uses TwitterAPI.io; if you sign up through the link, the author may receive API credits.
+fetch-tweets, shiplog, and mention-radar read X through [TwitterAPI.io](https://twitterapi.io/?ref=wa6is4im) when `TWITTER_API_KEY` is set. Disclosure: I receive TwitterAPI.io credits for this post through their Community Rewards program. Referral: https://twitterapi.io/?ref=wa6is4im
 
 ## Support nine harnesses: Claude, Grok, Codex, Pi, Vibe, Kimi, fx, Cursor, Hermes
 
