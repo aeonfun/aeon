@@ -1833,6 +1833,26 @@
       "discoveredFrom": "skills/finance-district-mcp/SKILL.md"
     },
     {
+      "id": "4f15ffa080e0bc18",
+      "tool": "aeon",
+      "scope": "project:.",
+      "type": "skill",
+      "name": "flovia",
+      "source": {
+        "kind": "local",
+        "ref": "skills/flovia"
+      },
+      "capabilities": {},
+      "files": [
+        {
+          "path": "SKILL.md",
+          "hash": "7bca662387350255bdeef307638a530bc7e982ddff3434f83afd136432d3482a"
+        }
+      ],
+      "contentHash": "sha256-55c78c75632ac43dad95c4e67adacf3a6463bfe206a35b5f0439e50f98ec0c88",
+      "discoveredFrom": "skills/flovia/SKILL.md"
+    },
+    {
       "id": "b36aee0061d7b8b5",
       "tool": "aeon",
       "scope": "project:.",
