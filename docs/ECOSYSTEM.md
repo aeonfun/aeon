@@ -60,7 +60,7 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 | <img src="https://pbs.twimg.com/profile_images/2059995800902537220/IngKmW55_400x400.jpg" width="36" height="36" alt="MANAGR logo"> | MANAGR | [@USICAI](https://x.com/USICAI) |
 | <img src="https://pbs.twimg.com/profile_images/2105672150858297344/r6BrNQzJ_400x400.jpg" width="36" height="36" alt="Mei logo"> | Mei | [@MeiTerminal_x](https://x.com/MeiTerminal_x) |
 | <img src="https://pbs.twimg.com/profile_images/2060426975718592517/Jdj2fOzg_400x400.jpg" width="36" height="36" alt="MiroShark logo"> | MiroShark | [@miroshark_](https://x.com/miroshark_) |
-| <img src="https://pbs.twimg.com/profile_images/2089264506991976448/9Ki_nVAN_400x400.jpg" width="36" height="36" alt="Mneme logo"> | Mneme | [@mnemeDB](https://x.com/mnemeDB) · [mnemedb.dev](https://mnemedb.dev) |
+| <img src="https://pbs.twimg.com/profile_images/2089264506991976448/9Ki_nVAN_400x400.jpg" width="36" height="36" alt="Mneme logo"> | Mneme | [@mnemeDB](https://x.com/mnemeDB) |
 | <img src="https://pbs.twimg.com/profile_images/2047658744750694400/7nFC4osf_400x400.jpg" width="36" height="36" alt="moltycash logo"> | moltycash | [@moltycash](https://x.com/moltycash) · [molty.cash](https://molty.cash) |
 | <img src="https://pbs.twimg.com/profile_images/2059382579107659778/pkh1HmwK_400x400.jpg" width="36" height="36" alt="Noctel logo"> | Noctel | [@noctelxbt](https://x.com/noctelxbt) · [noctel.xyz](https://www.noctel.xyz) |
 | <img src="https://pbs.twimg.com/profile_images/1927451957339250688/ylQmRDb7_400x400.jpg" width="36" height="36" alt="NoesisPraxis logo"> | NoesisPraxis | [@NunoElvis](https://x.com/NunoElvis) · [GitHub](https://github.com/enuno/noesis-aeon) |
@@ -81,7 +81,7 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 | <img src="https://pbs.twimg.com/profile_images/2056536399864827904/sJpI8LLl_400x400.jpg" width="36" height="36" alt="Skim logo"> | Skim | [@skim402](https://x.com/skim402) · [skim402.com](https://skim402.com) |
 | <img src="https://www.tryskopos.xyz/apple-touch-icon.png" width="36" height="36" alt="skopos logo"> | skopos | [@tryskopos](https://x.com/tryskopos) · [tryskopos.xyz](https://www.tryskopos.xyz) · market reads from a self-hosted Aeon fork |
 | <img src="https://pbs.twimg.com/profile_images/2074036017712320512/zeatSErP_400x400.jpg" width="36" height="36" alt="Solvr logo"> | Solvr | [@solvrbot](https://x.com/solvrbot) |
-| <img src="https://sparkleware.fun/logo.png" width="36" height="36" alt="Sparkleware logo"> | Sparkleware | [@sparklewarefun](https://x.com/sparklewarefun) · [sparkleware.fun](https://sparkleware.fun) |
+| <img src="https://sparkleware.fun/logo.png" width="36" height="36" alt="Sparkleware logo"> | Sparkleware | [@sparklewarefun](https://x.com/sparklewarefun) |
 | <img src="https://pbs.twimg.com/profile_images/2090466306067775488/JR83uOWW_400x400.png" width="36" height="36" alt="Spoolis logo"> | Spoolis | [@SpoolisHQ](https://x.com/SpoolisHQ) · [spoolis.com](https://spoolis.com) |
 | <img src="https://pbs.twimg.com/profile_images/2077110134409469952/ZYgPG9di_400x400.jpg" width="36" height="36" alt="Tachi logo"> | Tachi | [@smolekoma](https://x.com/smolekoma) |
 | <img src="https://pbs.twimg.com/profile_images/2081554686981939200/WqnWbHND_400x400.jpg" width="36" height="36" alt="TaskMarket logo"> | TaskMarket | [@daydreamsagents](https://x.com/daydreamsagents) · [taskmarket.dev](https://taskmarket.dev) |
