@@ -229,13 +229,25 @@ jobs:
       # only when no daily log changed since the last flush (fingerprints recorded by
       # `stamp`) and that flush is under 7 days old; any doubt or error runs it as usual.
       # The skipped run is recorded as a success so the slot is not retried.
-      - name: Idle gate (memory-flush)
+      # fetch-tweets in account mode gets the same skip when no tracked handle has a
+      # tweet the skill would report (none inside its window, or all already in its
+      # logs): scripts/fetch_tweets_idle.py asks twitterapi.io and fails open too.
+      - name: Idle gate (memory-flush, fetch-tweets)
         id: idle
-        if: steps.work.outputs.mode != '' && steps.skill.outputs.name == 'memory-flush'
+        if: steps.work.outputs.mode != '' && (steps.skill.outputs.name == 'memory-flush' || steps.skill.outputs.name == 'fetch-tweets')
+        env:
+          SKILL_NAME: ${{ steps.skill.outputs.name }}
+          SKILL_VAR: ${{ inputs.var }}
+          TWITTER_API_KEY: ${{ steps.skill.outputs.name == 'fetch-tweets' && secrets.TWITTER_API_KEY || '' }}
         run: |
-          if python3 scripts/memory_prep.py idle; then
+          if [ "$SKILL_NAME" = "memory-flush" ]; then
+            if python3 scripts/memory_prep.py idle; then
+              echo "skip=true" >> "$GITHUB_OUTPUT"
+              echo "::notice::memory-flush skipped: no new log entries since the last flush"
+            fi
+          elif python3 scripts/fetch_tweets_idle.py; then
             echo "skip=true" >> "$GITHUB_OUTPUT"
-            echo "::notice::memory-flush skipped: no new log entries since the last flush"
+            echo "::notice::fetch-tweets skipped: no new tweet from any tracked account"
           fi
 
       # Egress hardening P1: default-deny outbound to link-local + cloud metadata.
@@ -2229,7 +2241,7 @@ jobs:
           STATE_FILE="memory/cron-state.json"
           QUALITY_SCORE="${{ steps.analyze.outputs.QUALITY_SCORE }}"
 
-          # Determine status from step outcome (an idle-gated memory-flush counts as done)
+          # Determine status from step outcome (an idle-gated skip counts as done)
           if [ "$RUN_OUTCOME" = "success" ] || [ "${IDLE_SKIP:-}" = "true" ]; then
             CRON_STATUS="success"
           else
