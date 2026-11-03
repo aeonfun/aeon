@@ -52,6 +52,26 @@ check "never-dispatched"               "0 8 * * *"     2026-07-07T08:30:00Z neve
 check "stale-beyond-6h-cap"            "25 6 * * *"    2026-07-07T14:00:00Z 2026-07-06T06:25:00Z 6  skip
 check "wide-12h-cap-catches"           "25 6 * * *"    2026-07-07T14:00:00Z 2026-07-06T06:25:00Z 12 due
 
+# --- 23h cap (scheduler.yml): GitHub fires the scheduler only ~3-6x a day ---
+# 2026-11-02 (Mon): ticks at 06:42 then 22:42. A 12h window dropped the weekly
+# 08:00 / 09:00 slots for good; 23h pays them at the 22:42 tick.
+check "weekly-16h-gap-12h-drops"       "0 8 * * 1"     2026-11-02T22:42:00Z 2026-10-26T11:25:46Z 12 skip
+check "weekly-16h-gap-23h-catches"     "0 8 * * 1"     2026-11-02T22:42:00Z 2026-10-26T11:25:46Z 23 due
+check "weekly-9am-16h-gap-23h-catches" "0 9 * * 1"     2026-11-02T22:42:00Z 2026-10-26T09:04:12Z 23 due
+check "weekly-after-catchup-skip"      "0 8 * * 1"     2026-11-03T03:44:00Z 2026-11-02T22:42:00Z 23 skip
+# Daily slot missed by a ~23.5h gap: paid once late, then today's slot fires on
+# its own. Never both from one window, never the same slot twice.
+check "daily-23h-late-catches"         "0 6 * * *"     2026-07-07T05:30:00Z 2026-07-05T06:10:00Z 23 due
+check "daily-after-late-pay-skip"      "0 6 * * *"     2026-07-07T05:50:00Z 2026-07-07T05:30:00Z 23 skip
+check "daily-next-slot-still-fires"    "0 6 * * *"     2026-07-07T06:05:00Z 2026-07-07T05:30:00Z 23 due
+check "daily-after-next-slot-skip"     "0 6 * * *"     2026-07-07T09:00:00Z 2026-07-07T06:05:00Z 23 skip
+# Hour-granular boundary of the 23h cap (2026-07-06 = Mon).
+check "23h cap boundary reachable"     "0 8 * * 1"     2026-07-07T07:59:00Z 2026-06-29T08:00:00Z 23 due
+check "23h cap boundary just out"      "0 8 * * 1"     2026-07-07T08:00:00Z 2026-06-29T08:00:00Z 23 skip
+# No catchup_hours argument = the scheduler's 23h.
+check "default-cap-is-23h"             "0 8 * * 1"     2026-07-07T07:59:00Z 2026-06-29T08:00:00Z "" due
+check "default-cap-is-23h just out"    "0 8 * * 1"     2026-07-07T08:00:00Z 2026-06-29T08:00:00Z "" skip
+
 # --- twice-daily two-hour field (6,18) ---
 check "twice-daily-evening-slot"       "25 6,18 * * *" 2026-07-07T18:52:00Z 2026-07-07T06:30:00Z 6  due
 check "twice-daily-after-evening-run"  "25 6,18 * * *" 2026-07-07T20:00:00Z 2026-07-07T18:40:00Z 6  skip
