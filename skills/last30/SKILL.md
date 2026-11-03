@@ -30,15 +30,22 @@ Extract from `${var}`:
 - **--quick**: lighter mode (fewer sources, shorter report)
 - **--days=N**: custom lookback window (default: 30)
 
+**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`FROM_DATE=$(date ...)`, `UA="..."`, `HTTP=$(./secretcurl ...)`), uses `if` / `for` / `while` or a `[ -n ... ]` test, or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn. So get each date with a bare `date` call and write the printed value into later commands; write the topic, subreddits, handles, post IDs and dates into each command literally (the `<FROM_DATE>`, `<SUBREDDIT>` style placeholders in the snippets); make one call per subreddit, thread or query.
+
+`DAYS` is 30, or the `--days` value. Get the dates, each `date` as its own Bash call, with DAYS and then FROM_DATE written in literally:
 ```bash
-DAYS=30  # or from --days flag
-FROM_DATE=$(date -u -d "${DAYS} days ago" +%Y-%m-%d 2>/dev/null || date -u -v-${DAYS}d +%Y-%m-%d)
-TO_DATE=$(date -u +%Y-%m-%d)
-FROM_TS=$(date -u -d "${FROM_DATE}" +%s 2>/dev/null || date -u -j -f "%Y-%m-%d" "${FROM_DATE}" +%s)
-YEAR=$(date -u +%Y)
-TODAY=$(date -u +%Y-%m-%d)
-TOPIC_SLUG=$(echo "$TOPIC" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g; s/^-+|-+$//g')
+date -u -d '<DAYS> days ago' +%Y-%m-%d
 ```
+```bash
+date -u +%Y-%m-%d
+```
+```bash
+date -u -d '<FROM_DATE>' +%s
+```
+```bash
+date -u +%Y
+```
+The first prints FROM_DATE, the second TO_DATE (TODAY is the same value), the third FROM_TS, the fourth YEAR. Work out `TOPIC_SLUG` yourself: the topic lowercased, every run of characters outside `a-z0-9` turned into one `-`, leading and trailing `-` trimmed. `TOPIC_ENC` (used in the URLs below) is the topic URL-encoded.
 
 Read `memory/MEMORY.md` for tracked interests.
 Read `memory/topics/last30-${TOPIC_SLUG}.md` if it exists — it holds the prior snapshot used for the **What Changed** section below. If absent, this is a cold run.
@@ -72,19 +79,17 @@ Write the resolved entities to a scratch variable — you'll pin them into every
 
 User-Agent format: `aeon-bot:last30:v1 (by /u/aeon-agent)`
 
-For each identified subreddit (up to 4), fetch top posts from the window using `old.reddit.com`:
+For each identified subreddit (up to 4), fetch top posts from the window using `old.reddit.com` (subreddit-restricted top-of-month), one call per subreddit with the subreddit and `TOPIC_ENC` written in literally:
 
 ```bash
-UA="aeon-bot:last30:v1 (by /u/aeon-agent)"
-# Subreddit-restricted top-of-month
-curl -sL -A "$UA" \
-  "https://old.reddit.com/r/${SUBREDDIT}/search.json?q=${TOPIC_ENC}&restrict_sr=on&sort=top&t=month&limit=15"
+curl -sL -A 'aeon-bot:last30:v1 (by /u/aeon-agent)' \
+  "https://old.reddit.com/r/<SUBREDDIT>/search.json?q=<TOPIC_ENC>&restrict_sr=on&sort=top&t=month&limit=15"
 ```
 
 Broad cross-subreddit search:
 ```bash
-curl -sL -A "$UA" \
-  "https://old.reddit.com/search.json?q=${TOPIC_ENC}&sort=top&t=month&limit=25"
+curl -sL -A 'aeon-bot:last30:v1 (by /u/aeon-agent)' \
+  "https://old.reddit.com/search.json?q=<TOPIC_ENC>&sort=top&t=month&limit=25"
 ```
 
 **Empty-result detection**: if `data.children.length == 0` on a 200 response, that's a rate-limit, not a real empty. Back off 10s, retry once. If still empty, fall back to WebFetch on the same URL.
@@ -92,10 +97,10 @@ curl -sL -A "$UA" \
 Extract per post: `title`, `selftext` (first 500 chars), `score`, `num_comments`, `permalink` (build full URL), `created_utc`, `subreddit`, `url` (the external link if any — captured for canonical-URL dedup in step 7).
 
 **Quick mode:** broad search only, 15 posts.
-**Full mode:** all identified subreddits + broad search. For the top 3-5 threads by `score + num_comments`, fetch top comments:
+**Full mode:** all identified subreddits + broad search. For the top 3-5 threads by `score + num_comments`, fetch top comments, one call per thread:
 ```bash
-curl -sL -A "$UA" \
-  "https://old.reddit.com/r/${SUBREDDIT}/comments/${POST_ID}.json?sort=top&limit=10"
+curl -sL -A 'aeon-bot:last30:v1 (by /u/aeon-agent)' \
+  "https://old.reddit.com/r/<SUBREDDIT>/comments/<POST_ID>.json?sort=top&limit=10"
 ```
 
 **Topic-drift guard**: discard any post whose title + first 200 chars of selftext contains none of the topic terms or entity anchors from step 1.
@@ -108,17 +113,22 @@ curl -sL -A "$UA" \
 
 **Path A — X.AI API (primary).** Confirm the key, then run the topic-window query. Set the Bash tool `timeout` to **≥180000** (x_search takes 30–120s); the curl carries `--max-time 150`. A slow curl is **not** a missing key — never treat a timeout as key-unavailable.
 
+Check the key with its own call:
 ```bash
 [ -n "$XAI_API_KEY" ] && echo KEY_PRESENT || echo KEY_UNSET   # prints KEY_PRESENT — Path A is required
-# Build the payload to a file with jq --arg (no heredoc into a var) so the ./secretcurl command stays 100% literal:
-jq -n --arg topic "$TOPIC" --arg variants "$SEARCH_VARIANTS" --arg fd "$FROM_DATE" --arg td "$TO_DATE" \
+```
+Then build the payload to a file with `jq --arg`, the topic, search variants and both dates written in literally, so the `./secretcurl` command stays 100% literal:
+```bash
+jq -n --arg topic "<TOPIC>" --arg variants "<SEARCH_VARIANTS>" --arg fd "<FROM_DATE>" --arg td "<TO_DATE>" \
   '{model:"grok-4.7", input:[{role:"user",content:("Search X for tweets about: "+$topic+" (also try: "+$variants+"). Date range: "+$fd+" to "+$td+". Return 15-25 substantive tweets - mix high-engagement posts with smaller accounts that add a distinct angle. For each: @handle, full text, date posted, exact engagement counts (likes, retweets, replies; 0 if unknown), follower count if available, and the direct link https://x.com/handle/status/ID. Skip retweets and reply-guy near-duplicates.")}], tools:[{type:"x_search",from_date:$fd,to_date:$td}]}' \
   > /tmp/xai-last30-topic-payload.json
-HTTP=$(./secretcurl -s -o /tmp/xai-last30-topic.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
+```
+Then send it as its own call. It prints the HTTP status (secretcurl also prints an `http=... bytes=...` line on stderr):
+```bash
+./secretcurl -s -o /tmp/xai-last30-topic.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {XAI_API_KEY}" \
-  -d @/tmp/xai-last30-topic-payload.json)
-echo "xai http=$HTTP bytes=$(wc -c </tmp/xai-last30-topic.json)"
+  -d @/tmp/xai-last30-topic-payload.json
 ```
 
 On `HTTP=200` with a non-empty body, set `X_STATUS=api` and parse with the standard extractor:
@@ -127,16 +137,18 @@ jq -r '.output[]|select(.type=="message")|.content[]|select(.type=="output_text"
 ```
 
 **Full mode — handle-restricted second call.** Using the 2-3 X handles resolved in step 1, issue a second call scoped to them (the handles are named directly in the prompt; unique tmp filename so it doesn't clobber the topic call):
+Build the handle-restricted payload to its own file with `jq --arg` (keeps the `./secretcurl` command literal), topic, handles and dates written in literally:
 ```bash
-# Build the handle-restricted payload to its own file with jq --arg (keeps the ./secretcurl command literal):
-jq -n --arg topic "$TOPIC" --arg handles "$RESOLVED_HANDLES" --arg fd "$FROM_DATE" --arg td "$TO_DATE" \
+jq -n --arg topic "<TOPIC>" --arg handles "<RESOLVED_HANDLES>" --arg fd "<FROM_DATE>" --arg td "<TO_DATE>" \
   '{model:"grok-4.7", input:[{role:"user",content:("Search X for tweets from these accounts about "+$topic+": "+$handles+". Date range: "+$fd+" to "+$td+". For each: @handle, full text, date, engagement counts (likes, retweets, replies; 0 if unknown), and the direct link https://x.com/handle/status/ID.")}], tools:[{type:"x_search",from_date:$fd,to_date:$td}]}' \
   > /tmp/xai-last30-handles-payload.json
-HTTP=$(./secretcurl -s -o /tmp/xai-last30-handles.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
+```
+Then send it as its own call:
+```bash
+./secretcurl -s -o /tmp/xai-last30-handles.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {XAI_API_KEY}" \
-  -d @/tmp/xai-last30-handles-payload.json)
-echo "xai handles http=$HTTP bytes=$(wc -c </tmp/xai-last30-handles.json)"
+  -d @/tmp/xai-last30-handles-payload.json
 ```
 Parse with the same `jq` extractor. **Quick mode** runs the topic call only.
 
@@ -154,11 +166,13 @@ Extract from each tweet: `@handle`, full text, `date`, engagement (`likes`/`retw
 
 Use `search_by_date` — NOT `/search` — to keep the window honest (relevance ranking pulls in old viral posts). Add a `points>20` floor to cut noise.
 
+Stories, `TOPIC_ENC` and `FROM_TS` written in literally:
 ```bash
-# Stories
-curl -s "https://hn.algolia.com/api/v1/search_by_date?query=${TOPIC_ENC}&tags=story&numericFilters=created_at_i>${FROM_TS},points>20&hitsPerPage=25"
-# Comments (often where the real signal lives on HN)
-curl -s "https://hn.algolia.com/api/v1/search_by_date?query=${TOPIC_ENC}&tags=comment&numericFilters=created_at_i>${FROM_TS},points>10&hitsPerPage=15"
+curl -s "https://hn.algolia.com/api/v1/search_by_date?query=<TOPIC_ENC>&tags=story&numericFilters=created_at_i><FROM_TS>,points>20&hitsPerPage=25"
+```
+Comments (often where the real signal lives on HN), as a separate call:
+```bash
+curl -s "https://hn.algolia.com/api/v1/search_by_date?query=<TOPIC_ENC>&tags=comment&numericFilters=created_at_i><FROM_TS>,points>10&hitsPerPage=15"
 ```
 
 If curl fails, use **WebFetch** on the same URL.
@@ -388,7 +402,7 @@ For `LAST30_EMPTY` or `LAST30_ERROR`, skip the verdict/narrative lines and inste
 ## Notes
 
 - **Rate limits**: Reddit `.json` anon cap is ~10 req/min. With 4 subreddits + 1 broad + up to 5 comment threads, stay under. Add 1-2s spacing between requests.
-- **HN timestamps**: `numericFilters=created_at_i>${FROM_TS}` — Unix epoch integer, no quotes.
+- **HN timestamps**: `numericFilters=created_at_i><FROM_TS>` - Unix epoch integer, no quotes.
 - **Clustering is judgment**: don't force connections. A topic only visible on one platform is a Standalone Signal — that's fine, it may be early.
 - **Divergence is the point**: where platforms disagree on the same narrative, that's usually the most actionable signal in the whole report. Lead with it.
 - **No hallucination**: every quote, statistic, and claim traces to a fetched source. Never invent engagement numbers or counts.

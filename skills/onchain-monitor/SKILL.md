@@ -82,7 +82,7 @@ labels:
 - `alerted_tx` — objects `{hash, block_number, first_seen}` for txs alerted in the last 7 days, capped at 200. Used for cross-run dedup by `hash`; purge by `first_seen`. `block_number` is the block the alert was seen in, kept for the audit trail.
 - `median_usd_30d` — rolling median USD size of transfers at this watch; powers the `WHALE-TRANSFER` tag.
 
-Write the file via `mv` from a tempfile so a mid-run failure cannot corrupt state.
+Write the file via `mv` from a tempfile so a mid-run failure cannot corrupt state. `mv` is not an allowed Bash command here, so do that move inside one `python3 -c` call (write the tempfile, then `os.replace` it onto the target), or write the whole file in one step with Write.
 
 ## Steps
 
@@ -90,40 +90,31 @@ Read `memory/MEMORY.md`, `memory/on-chain-watches.yml`, `memory/on-chain-state.j
 
 ### 0. Config capture (Telegram force-reply)
 
-Before the per-watch loop, intercept the add-a-watch reply. When `${var}` starts with `add-address:`, the operator replied to the force-reply prompt (offered in the Config section on an empty config) — append a watch and **exit** (no monitoring this invocation). The remainder is `<address> [chain]`:
+Before the per-watch loop, intercept the add-a-watch reply. When `${var}` starts with `add-address:`, the operator replied to the force-reply prompt (offered in the Config section on an empty config) - append a watch and **exit** (no monitoring this invocation). The remainder is `<address> [chain]`.
 
-```bash
-case "${var}" in
-  add-address:*)
-    REST="$(printf '%s' "${var#add-address:}" | sed 's/^[[:space:]]*//')"
-    ADDR="$(printf '%s' "$REST" | awk '{print $1}')"
-    CHAIN="$(printf '%s' "$REST" | awk '{print tolower($2)}')"; CHAIN="${CHAIN:-ethereum}"
-    case "$CHAIN" in ethereum|base|arbitrum|optimism|polygon|robinhood) ;; *) CHAIN=ethereum ;; esac
-    if ! printf '%s' "$ADDR" | grep -qiE '^0x[0-9a-f]{40}$'; then
-      ./notify "Couldn't read \"$ADDR\" as an address. Reply with a 0x… wallet, optionally a chain."
-      exit 0
-    fi
-    mkdir -p memory; touch memory/on-chain-watches.yml
-    # Normalize an empty inline list so we can append block items, and ensure a watches: key exists.
-    sed -i.bak -E 's/^watches:[[:space:]]*\[\][[:space:]]*$/watches:/' memory/on-chain-watches.yml && rm -f memory/on-chain-watches.yml.bak
-    grep -q '^watches:' memory/on-chain-watches.yml || printf 'watches:\n' >> memory/on-chain-watches.yml
-    if grep -qi "$ADDR" memory/on-chain-watches.yml; then
-      ./notify "Already watching ${ADDR}."
-    else
-      SHORT="$(printf '%s' "$ADDR" | sed -E 's/^(0x.{4}).*(.{4})$/\1…\2/')"
-      cat >> memory/on-chain-watches.yml <<EOF
-  - label: "$SHORT"
-    address: "$ADDR"
-    chain: $CHAIN
-    type: wallet
-    threshold_usd: 1000
-EOF
-      ./notify "Now watching ${SHORT} on ${CHAIN} (wallet, moves ≥\$1000). Edit memory/on-chain-watches.yml to tune."
-    fi
-    # log under ### onchain-monitor: - view: add-address (var="${var}") → $ADDR on $CHAIN
-    exit 0 ;;
-esac
-```
+**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`ADDR="$(...)"`, `KEYQ=""`, `cutoff=$(date ...)`), uses `case` / `if` / `for` or a `[ ... ] &&` test, joins commands with `;`, `&&` or `||`, or appends to a repo file with `>>` / `cat >>`, and `sed`, `awk`, `printf`, `touch`, `rm` and `mv` are not allowed commands; each refusal costs a model turn. So parse `${var}` in your head, edit `memory/` files with Write/Edit, write every network slug, chain id, address, block number and window into each command literally (the `<ADDRESS>`, `<FROM_BLOCK>` style placeholders in the snippets), make one call per watch, direction and window, and do file pruning and atomic writes inside one `python3 -c` call.
+
+Work it out in your head, not in a shell script:
+1. `REST` = the text after `add-address:`, leading spaces trimmed. `ADDR` = its first word; `CHAIN` = its second word lowercased, or `ethereum` when there is none. A `CHAIN` that is not one of `ethereum|base|arbitrum|optimism|polygon|robinhood` becomes `ethereum`.
+2. If `ADDR` is not `0x` plus 40 hex characters (case-insensitive), send this (ADDR written in literally) and stop:
+   ```bash
+   ./notify "Couldn't read \"<ADDR>\" as an address. Reply with a 0x… wallet, optionally a chain."
+   ```
+3. Read `memory/on-chain-watches.yml` (Read; create it with Write as `watches:` if it is missing). With Edit, turn a `watches: []` line into `watches:`, and add a `watches:` line if there is none, so block items can be appended.
+4. If the file already contains `ADDR` (case-insensitive), send `./notify "Already watching <ADDR>."` and stop.
+5. Otherwise `SHORT` = `ADDR`'s first 6 characters (`0x` plus 4), then `…`, then its last 4. Append this block to the end of the file with Edit:
+   ```yaml
+     - label: "<SHORT>"
+       address: "<ADDR>"
+       chain: <CHAIN>
+       type: wallet
+       threshold_usd: 1000
+   ```
+   then send:
+   ```bash
+   ./notify 'Now watching <SHORT> on <CHAIN> (wallet, moves ≥$1000). Edit memory/on-chain-watches.yml to tune.'
+   ```
+6. Log under `### onchain-monitor`: `- view: add-address (var="${var}") → <ADDR> on <CHAIN>`, then **exit**.
 
 Defaults for a captured watch: `type: wallet`, `threshold_usd: 1000`, `label` = the shortened address. The operator refines chain/type/threshold by editing `memory/on-chain-watches.yml` directly. (This appends to the end of the file, which is correct because `watches:` is the only top-level key — if a future config grows more keys, insert under `watches:` instead of at EOF.)
 
@@ -141,15 +132,15 @@ windows.
 
 **Path A — Alchemy** (preferred, if `ALCHEMY_API_KEY` set).
 
-Wallets use `alchemy_getAssetTransfers` — one call returns categorized in/out history with `value`, `asset`, `category`, `hash`, `from`, `to`, `metadata.blockTimestamp`. Run it twice per watch (once with `toAddress`, once with `fromAddress`) and merge.
+Wallets use `alchemy_getAssetTransfers` - one call returns categorized in/out history with `value`, `asset`, `category`, `hash`, `from`, `to`, `metadata.blockTimestamp`. Run it twice per watch (once with `toAddress`, once with `fromAddress`) and merge. Write the network slug, the address and both blocks in literally; `<FROM_BLOCK_HEX>` / `<TO_BLOCK_HEX>` are the block numbers as hex digits without the `0x` (convert them yourself):
 
 ```bash
-./secretcurl -m 10 -s -X POST "https://${network}.g.alchemy.com/v2/{ALCHEMY_API_KEY}" \
+./secretcurl -m 10 -s -X POST "https://<NETWORK>.g.alchemy.com/v2/{ALCHEMY_API_KEY}" \
   -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","id":1,"method":"alchemy_getAssetTransfers","params":[{
-    "fromBlock":"0x'${from_block_hex}'",
-    "toBlock":"0x'${to_block_hex}'",
-    "toAddress":"'${address}'",
+    "fromBlock":"0x<FROM_BLOCK_HEX>",
+    "toBlock":"0x<TO_BLOCK_HEX>",
+    "toAddress":"<ADDRESS>",
     "category":["external","internal","erc20","erc721","erc1155"],
     "withMetadata":true,"excludeZeroValue":true,"maxCount":"0x32"
   }]}'
@@ -161,16 +152,19 @@ Chain → network slug: `ethereum=eth-mainnet`, `base=base-mainnet`, `arbitrum=a
 
 **Path B — Etherscan v2 unified** (fallback, if Alchemy path fails or key unset).
 
-Single endpoint, all 50+ chains via `chainid`. Works keyless at lower rate limit.
+Single endpoint, all 50+ chains via `chainid`. Works keyless at lower rate limit. Check the key once with its own call, `[ -n "${ETHERSCAN_API_KEY:+x}" ] && echo KEY_PRESENT || echo KEY_UNSET`, and append it only on `KEY_PRESENT`: then `<KEYQ>` below is `&apikey={ETHERSCAN_API_KEY}` (./secretcurl's placeholder; a bare `$ETHERSCAN_API_KEY` is refused by the Bash permission analyzer), otherwise `<KEYQ>` is left out (keyless works). Chain id, address and decimal blocks are written in literally, one call each.
+
+Wallet, token transfers:
 ```bash
-# Append the key only when set, via ./secretcurl's {ETHERSCAN_API_KEY} placeholder —
-# a bare $ETHERSCAN_API_KEY is refused by the Bash permission analyzer; keyless works.
-KEYQ=""; [ -n "${ETHERSCAN_API_KEY:+x}" ] && KEYQ="&apikey={ETHERSCAN_API_KEY}"
-# wallet
-./secretcurl -m 10 -s "https://api.etherscan.io/v2/api?chainid=${chainid}&module=account&action=tokentx&address=${address}&startblock=${from_block}&endblock=${to_block}&sort=desc${KEYQ}"
-./secretcurl -m 10 -s "https://api.etherscan.io/v2/api?chainid=${chainid}&module=account&action=txlist&address=${address}&startblock=${from_block}&endblock=${to_block}&sort=desc${KEYQ}"
-# contract
-./secretcurl -m 10 -s "https://api.etherscan.io/v2/api?chainid=${chainid}&module=logs&action=getLogs&address=${address}&fromBlock=${from_block}&toBlock=${to_block}${KEYQ}"
+./secretcurl -m 10 -s "https://api.etherscan.io/v2/api?chainid=<CHAINID>&module=account&action=tokentx&address=<ADDRESS>&startblock=<FROM_BLOCK>&endblock=<TO_BLOCK>&sort=desc<KEYQ>"
+```
+Wallet, normal transactions:
+```bash
+./secretcurl -m 10 -s "https://api.etherscan.io/v2/api?chainid=<CHAINID>&module=account&action=txlist&address=<ADDRESS>&startblock=<FROM_BLOCK>&endblock=<TO_BLOCK>&sort=desc<KEYQ>"
+```
+Contract:
+```bash
+./secretcurl -m 10 -s "https://api.etherscan.io/v2/api?chainid=<CHAINID>&module=logs&action=getLogs&address=<ADDRESS>&fromBlock=<FROM_BLOCK>&toBlock=<TO_BLOCK><KEYQ>"
 ```
 
 Chain → chainid: `ethereum=1`, `base=8453`, `arbitrum=42161`, `optimism=10`, `polygon=137`, `robinhood=4663`. Etherscan's free tier refuses `chainid=4663` ("Free API access is not supported for this chain"), so a keyless `robinhood` watch skips Path B and uses Path C.
@@ -178,15 +172,17 @@ Chain → chainid: `ethereum=1`, `base=8453`, `arbitrum=42161`, `optimism=10`, `
 **Path C — Robinhood Chain public RPC** (`robinhood` only; keyless fallback when Path A is unavailable and Path B is refused).
 
 Wallets: ERC-20 `Transfer` logs with the watch address as recipient, then as sender. The public RPC caps a query without an `address` filter at **30,000 blocks**, so walk `from_block → to_block` (the chain's pinned block) in 30,000-block windows (≈ 10 windows per direction per 8h, ≈ 28 per day). Contracts: `eth_getLogs` with `address` set (no 30,000 cap). For **both** wallets and contracts, if a window answers `logs matched by query exceeds limit of 10000`, halve it and query both halves, repeating until each piece fits; a busy address hits this inside one 30,000-block window (the v4 PoolManager returns ~29.7k logs there, which takes 3 splits and 7 calls).
+One call per window and direction, everything written in literally: topic0 `0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef` is the ERC-20 Transfer; `<ADDR_TOPIC>` is the 32-byte topic `0x000000000000000000000000` followed by the watch address without its `0x`; `<LO_HEX>` / `<HI_HEX>` are the window bounds (`hi - lo < 30000`) as `0x`-hex, converted yourself (the RPC rejects decimal).
+
+Incoming:
 ```bash
-T=0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef   # ERC-20 Transfer
-W=0x000000000000000000000000${address#0x}                               # 32-byte topic
-# per window [lo, hi] (hi - lo < 30000) as 0x-hex, e.g. lo=$(printf 0x%x "$n"); the RPC rejects decimal
-# incoming, then outgoing
 curl -m 15 -s -X POST https://rpc.mainnet.chain.robinhood.com -H "Content-Type: application/json" \
-  -d '{"jsonrpc":"2.0","id":1,"method":"eth_getLogs","params":[{"fromBlock":"'$lo'","toBlock":"'$hi'","topics":["'$T'",null,"'$W'"]}]}'
+  -d '{"jsonrpc":"2.0","id":1,"method":"eth_getLogs","params":[{"fromBlock":"<LO_HEX>","toBlock":"<HI_HEX>","topics":["0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",null,"<ADDR_TOPIC>"]}]}'
+```
+Outgoing:
+```bash
 curl -m 15 -s -X POST https://rpc.mainnet.chain.robinhood.com -H "Content-Type: application/json" \
-  -d '{"jsonrpc":"2.0","id":1,"method":"eth_getLogs","params":[{"fromBlock":"'$lo'","toBlock":"'$hi'","topics":["'$T'","'$W'"]}]}'
+  -d '{"jsonrpc":"2.0","id":1,"method":"eth_getLogs","params":[{"fromBlock":"<LO_HEX>","toBlock":"<HI_HEX>","topics":["0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef","<ADDR_TOPIC>"]}]}'
 ```
 ERC-721 `Transfer` has the same topic0 and also matches these filters. Tell them apart by topic count: **3 topics** = ERC-20 (amount in `data`); **4 topics** = ERC-721 (`data` is empty, the token id is `topics[3]`). Keep 3-topic logs as `erc20`; tag 4-topic logs `erc721` and never call `decimals()` on them (NFT contracts revert). Read `symbol()` / `decimals()` per distinct ERC-20 token with `eth_call` (`0x95d89b41` / `0x313ce567`) on the same RPC. Path C sees token transfers only, not native ETH transfers; note `path=rpc (tokens only)` in the source footer. On HTTP 429, back off and retry the window; if it still fails, mark the watch `fail` as below.
 
@@ -212,11 +208,10 @@ Required fields per event (normalised across Alchemy / Etherscan payloads):
 
 ### 3. USD-enrich in one bulk call
 
-Collect distinct `(chain, token_contract)` pairs from decoded transfers. Bulk price via CoinGecko:
+Collect distinct `(chain, token_contract)` pairs from decoded transfers. Bulk price via CoinGecko, one call per chain with the chain and the comma-joined contracts written in literally. `<CGQ>` is `&x_cg_demo_api_key={COINGECKO_API_KEY}` when `[ -n "${COINGECKO_API_KEY:+x}" ] && echo KEY_PRESENT || echo KEY_UNSET` (its own call) printed `KEY_PRESENT`, otherwise it is left out:
 
 ```bash
-CGQ=""; [ -n "${COINGECKO_API_KEY:+x}" ] && CGQ="&x_cg_demo_api_key={COINGECKO_API_KEY}"
-./secretcurl -m 10 -s "https://api.coingecko.com/api/v3/simple/token_price/${chain}?contract_addresses=${joined}&vs_currencies=usd${CGQ}"
+./secretcurl -m 10 -s "https://api.coingecko.com/api/v3/simple/token_price/<CHAIN>?contract_addresses=<JOINED>&vs_currencies=usd<CGQ>"
 ```
 
 Native ETH/MATIC/etc. use `simple/price?ids=ethereum,matic-network,...`. If CoinGecko is unreachable or returns no price for a token, set `value_usd = null` and tag the event `UNPRICED` — keep it in the log, drop it from the notification (can't meaningfully threshold without USD).
@@ -317,19 +312,18 @@ Rules:
   no `\u` escapes (in Python: `json.dumps(obj, sort_keys=True,
   separators=(",", ":"), ensure_ascii=False).encode()`), compute SHA-256 using a
   standard-library implementation, then add the `sha256` field and write
-  atomically via a temporary file and `mv`. Python's default `ensure_ascii=True`
+  atomically via a temporary file and `mv` (`os.replace` in the same
+  `python3 -c` call, since `mv` is not an allowed Bash command). Python's default `ensure_ascii=True`
   produces a different digest as soon as a label contains non-ASCII text.
 - Before writing, create `memory/evidence/` if needed and prune receipts older than
   30 days by the date in the filename, not by mtime (every Actions run is a fresh
   checkout, so mtime is always today). Files that do not start with a
   `YYYY-MM-DD-` date are left alone:
+  First `date -u -d '30 days ago' +%Y-%m-%d` as its own call (it prints CUTOFF),
+  then one `python3 -c` call with CUTOFF written in literally (a shell `for` loop
+  with `rm` is refused):
   ```bash
-  cutoff=$(date -u -d '30 days ago' +%Y-%m-%d)
-  for f in memory/evidence/[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]-*.json; do
-    [ -f "$f" ] || continue
-    d=$(basename "$f")
-    if [[ "${d:0:10}" < "$cutoff" ]]; then rm -f -- "$f"; fi
-  done
+  python3 -c 'import glob, os, re; [os.remove(f) for f in glob.glob("memory/evidence/*.json") if os.path.isfile(f) and re.match(r"\d{4}-\d{2}-\d{2}-", os.path.basename(f)) and os.path.basename(f)[:10] < "<CUTOFF>"]'
   ```
   A pruning failure is non-fatal but must make the source footer `evidence=fail`.
 - Include the receipt path and digest in the alert footer before calling `./notify`:
@@ -370,7 +364,7 @@ For each watch whose fetch **succeeded** (success ≠ "events found"):
 - `alerted_tx ← (new_alerted_entries + alerted_tx)[:200]`, where each new entry is `{hash: tx_hash, block_number, first_seen: now}`; purge entries whose `first_seen` is older than 7d
 - `median_usd_30d ← median of all value_usd from this watch's transfers in last 30d` (read from recent logs; skip recomputation if < 5 samples)
 
-Write `memory/on-chain-state.json` atomically (tempfile + `mv`).
+Write `memory/on-chain-state.json` atomically (tempfile + `mv`, done as `os.replace` inside `python3 -c`, or one Write; see **State**).
 
 Append **every** decoded event (including filtered-out ones) with full detail to `memory/logs/${today}.md`:
 ```

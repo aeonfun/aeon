@@ -234,6 +234,7 @@
       },
       "capabilities": {
         "network": [
+          "\u003cNETWORK\u003e.g.alchemy.com",
           "api.coingecko.com",
           "api.etherscan.io",
           "rpc.mainnet.chain.robinhood.com"
@@ -242,10 +243,10 @@
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "07d3d3fe646f3bcc3a98e1605137a6ca78480d61ab8f079761ef8b2c90e15e9f"
+          "hash": "0bac0e1eb1948a9ab56c998adaf9bd2ca9e14a75177908a4cfd9f15176f57b36"
         }
       ],
-      "contentHash": "sha256-4e37de88d4cd25030e67b0bb0a53d02338d69f436ce0135a55f7567065c8e646",
+      "contentHash": "sha256-6e3e8ca3e3b28de37ce7c12052daff41670a595f52ff2e45511d81158d345159",
       "discoveredFrom": "skills/onchain-monitor/SKILL.md"
     },
     {
@@ -2556,6 +2557,7 @@
       },
       "capabilities": {
         "network": [
+          "\u003cALCHEMY_NETWORK\u003e.g.alchemy.com",
           "api.coingecko.com",
           "api.dexscreener.com",
           "api.geckoterminal.com",
@@ -2565,10 +2567,10 @@
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "8f0226dbd33b1a83f2ebdb99a7c3c3d7c0e8953687976d2f04d877e0634efcd6"
+          "hash": "6c77f252eddbc5e85ac171530d873176cd8072ecdb2c50bb7fa45729031e213d"
         }
       ],
-      "contentHash": "sha256-9d849bd6685b3e74dcb8143e326a094bc56d30a7435fde03ca9a21ad5208e4cd",
+      "contentHash": "sha256-a974db183a0ddd44f30a8e8e0cd4437c26305755ad71219906e7e6aba822a10c",
       "discoveredFrom": "skills/token-movers/SKILL.md"
     },
     {

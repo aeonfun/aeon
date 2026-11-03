@@ -48,19 +48,11 @@ The monitoring (deltas, real budgets, signal thresholds) is the *trend context a
 
 1. Read `memory/MEMORY.md` for context and `memory/spend-config.md` for real-$ budgets, signal thresholds, and ignore-lists (see the config schema at the bottom). If `spend-config.md` is missing, run with the built-in defaults and note `NO_CONFIG` in the log — recommendations still work; they rank by signal regardless.
 2. Read the last 7 days of `memory/logs/` — used to detect *newly* expensive drivers vs ongoing, and to avoid repeat-nagging a recommendation already sent.
-3. Parse `${var}`:
-
-```bash
-RAW="$(printf '%s' "${var}" | tr '[:upper:]' '[:lower:]' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
-ARM=0;   case "$RAW" in arm:*) ARM=1; RAW="${RAW#arm:}";; esac
-DRYRUN=0; case "$RAW" in *dry-run*) DRYRUN=1; RAW="$(printf '%s' "$RAW" | sed 's/dry-run//g' | tr -s ' ')";; esac
-RAW="$(printf '%s' "$RAW" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
-case "$RAW" in
-  ""|all) SCOPE=all ;;
-  neon|vercel|railway|actions) SCOPE="$RAW" ;;
-  *) SCOPE=all ;;   # unrecognized -> full sweep, note it in the log
-esac
-```
+3. Parse `${var}` yourself, in these steps (not as a shell script; see **Shell shape** in the Network note):
+   - RAW = `${var}` lowercased, with leading and trailing spaces trimmed.
+   - If RAW starts with `arm:`, set ARM=1 and drop that prefix; else ARM=0.
+   - If RAW contains `dry-run`, set DRYRUN=1, remove every `dry-run` from it and squeeze repeated spaces; else DRYRUN=0. Trim RAW again.
+   - SCOPE: RAW empty or `all` → `all`; `neon`, `vercel`, `railway` or `actions` → that value; anything else → `all` (unrecognized → full sweep, note it in the log).
 
 4. Run the matching adapter(s). Each adapter **self-skips** if its secret is absent — log `<platform>: SKIP no-secret` and continue. In `all` mode, run every adapter whose secret is present, then run the **Synthesis** section.
 
@@ -112,25 +104,46 @@ Aeon runs *on* GitHub Actions, so this adapter optimizes the agent's own runner 
 
 **Billing is ONE account-wide pool.** Included minutes are a single global allowance and overage is billed on the account total — NOT per repo. So the budget check is global; per-repo is only for attributing *where* the global minutes go. Never gate savings on a per-repo dollar figure.
 
+Get the login first, as its own call:
+
 ```bash
-ME="$(gh api user --jq .login)"
-# Global account usage — the budget number. Probe both; branch on HTTP status.
-gh api "/users/$ME/settings/billing/usage" 2>/dev/null     # enhanced: per-repo-per-day rows {quantity(min),grossAmount,discountAmount,netAmount,repositoryName}. SUM across ALL rows = global minutes + global net $ this cycle.
-gh api "/users/$ME/settings/billing/actions" 2>/dev/null    # classic (410 on migrated accounts): total_minutes_used + included_minutes (the GLOBAL allowance) + minutes_used_breakdown{UBUNTU,MACOS,WINDOWS}
-gh api "/users/$ME/settings/billing/shared-storage" 2>/dev/null  # global artifacts+packages storage GB
+gh api user --jq .login
+```
+
+It prints ME. Then the global account usage - the budget number. Probe both billing endpoints, each as its own call with ME written in literally, and branch on the HTTP status each one reports.
+
+Enhanced: per-repo-per-day rows `{quantity(min),grossAmount,discountAmount,netAmount,repositoryName}`. SUM across ALL rows = global minutes + global net $ this cycle.
+
+```bash
+gh api "/users/<ME>/settings/billing/usage"
+```
+
+Classic (410 on migrated accounts): `total_minutes_used` + `included_minutes` (the GLOBAL allowance) + `minutes_used_breakdown{UBUNTU,MACOS,WINDOWS}`.
+
+```bash
+gh api "/users/<ME>/settings/billing/actions"
+```
+
+Global artifacts+packages storage GB:
+
+```bash
+gh api "/users/<ME>/settings/billing/shared-storage"
 ```
 
 Note on the enhanced endpoint: it returns per-repo rows, but that's a reporting breakdown of one global pool — **sum them for the account figure**, group by `repositoryName` only to attribute. `netAmount` is real billed $ after the included-minutes discount; sum of `netAmount` = your true global Actions bill. Public repos are free/unlimited and don't draw the pool; only private-repo minutes consume the global allowance.
 
+Attribution: which repos/workflows drive the global minutes. Scope = every repo with usage in the billing rows this cycle (NOT a fixed private-list). Optional `actions.repos` in config just narrows/orders which repos to fetch per-workflow detail for. For each repo appearing in the billing rows, make these three calls, one call per repo per endpoint, with the repo (`owner/name`) written in literally (no `for` loop). A repo whose call errors is tagged errored and the sweep continues:
+
 ```bash
-# Attribution: which repos/workflows drive the global minutes. Scope = every repo with usage
-# in the billing rows this cycle (NOT a fixed private-list). Optional actions.repos in config
-# just narrows/orders which repos to fetch per-workflow detail for.
-for repo in <repos appearing in the billing rows>; do
-  gh api "/repos/$repo/actions/cache/usage" 2>/dev/null
-  gh api "/repos/$repo/actions/artifacts?per_page=100" --jq '[.artifacts[]|{name,size:.size_in_bytes,created:.created_at,expires:.expires_at,id}]' 2>/dev/null
-  gh api "/repos/$repo/actions/runs?per_page=100" --jq '[.workflow_runs[]|{name,workflow_id,run_started_at,updated_at,conclusion}]' 2>/dev/null
-done
+gh api "/repos/<REPO>/actions/cache/usage"
+```
+
+```bash
+gh api "/repos/<REPO>/actions/artifacts?per_page=100" --jq '[.artifacts[]|{name,size:.size_in_bytes,created:.created_at,expires:.expires_at,id}]'
+```
+
+```bash
+gh api "/repos/<REPO>/actions/runs?per_page=100" --jq '[.workflow_runs[]|{name,workflow_id,run_started_at,updated_at,conclusion}]'
 ```
 
 ### 2. Budget check (global) + attribute (per-repo/workflow)
@@ -153,7 +166,7 @@ Savings are real **only when the account is over (or projected over) the global 
 
 ### 4. Arm (only if `ARM=1`)
 
-- **Delete stale artifacts** (any repo, since storage is global): re-read the list, delete artifacts older than `actions.artifact_stale_days` (default 14): `gh api -X DELETE "/repos/$repo/actions/artifacts/$id"`. Report count + freed GB.
+- **Delete stale artifacts** (any repo, since storage is global): re-read the list, delete artifacts older than `actions.artifact_stale_days` (default 14), one call per artifact with the repo and id written in literally: `gh api -X DELETE "/repos/<REPO>/actions/artifacts/<ARTIFACT_ID>"`. Report count + freed GB.
 - **Trim a cron**: open a PR editing the workflow that's the biggest global-pool draw (`gh` checkout, edit the one schedule line, `gh pr create`). One PR per run, never force-merge. Ties into `auto-workflow`. Never lower a schedule the config marks `pin:`.
 
 ### 5. Notify + log
@@ -168,14 +181,30 @@ Auth: `NEON_API_KEY` via `./secretcurl` (`{NEON_API_KEY}`). Base `https://consol
 
 ### 1. Pull usage
 
+Each call below is its own Bash call. First the project list:
+
 ```bash
 ./secretcurl -sS --max-time 30 -H 'Authorization: Bearer {NEON_API_KEY}' -H 'Accept: application/json' \
   'https://console.neon.tech/api/v2/projects'
-# per project:
-./secretcurl -sS -H 'Authorization: Bearer {NEON_API_KEY}' "https://console.neon.tech/api/v2/projects/$PID/branches"
-./secretcurl -sS -H 'Authorization: Bearer {NEON_API_KEY}' "https://console.neon.tech/api/v2/projects/$PID/endpoints"   # suspend_timeout_seconds, autoscaling_limit_min_cu/max_cu
+```
+
+Then per project, with the project id written in literally as `<PID>`. Branches:
+
+```bash
+./secretcurl -sS -H 'Authorization: Bearer {NEON_API_KEY}' "https://console.neon.tech/api/v2/projects/<PID>/branches"
+```
+
+Endpoints (`suspend_timeout_seconds`, `autoscaling_limit_min_cu`/`max_cu`):
+
+```bash
+./secretcurl -sS -H 'Authorization: Bearer {NEON_API_KEY}' "https://console.neon.tech/api/v2/projects/<PID>/endpoints"
+```
+
+Consumption history (`compute_time`, `active_time`, storage, `data_transfer`), with the window's start and end written in literally as `<FROM>` and `<TO>` (get them from bare `date -u` calls, never `FROM=$(date ...)`):
+
+```bash
 ./secretcurl -sS -H 'Authorization: Bearer {NEON_API_KEY}' \
-  "https://console.neon.tech/api/v2/consumption_history/projects?from=$FROM&to=$TO&granularity=daily&limit=100"          # compute_time, active_time, storage, data_transfer
+  "https://console.neon.tech/api/v2/consumption_history/projects?from=<FROM>&to=<TO>&granularity=daily&limit=100"
 ```
 Print `-w '\nhttp=%{http_code}\n'` and branch on it — only degrade on a real non-2xx/timeout/empty; log the true reason, never "sandbox". **Neon returns no billable dollars on lower plans** (`consumption_history` is Scale-plan-gated → 403), so this adapter is **signal-only — no `$` figures**. The usage signal still comes from the branch/endpoint objects' cumulative fields (`compute_time_seconds`, `active_time_seconds`, storage) even when `consumption_history` 403s.
 
@@ -194,7 +223,7 @@ Rank drivers by the **signal**, not dollars: `idle-awake %` (`active_time / elap
 Do NOT report `max_cu` shrink as a dollar saving — Neon bills consumed CU, so an unused ceiling costs $0; it's a right-sizing hygiene signal, not a saving.
 
 ### 4. Arm
-`PATCH /projects/$PID/endpoints/$EID` with `{"endpoint":{"suspend_timeout_seconds":60}}` or a lower `autoscaling_limit_max_cu`. `DELETE /projects/$PID/branches/$BID` — **only** after re-reading the branch and confirming it's idle (no recent compute in consumption history) and not the project default/primary branch. One class of mutation per run; report each change.
+`PATCH /projects/<PID>/endpoints/<EID>` with `{"endpoint":{"suspend_timeout_seconds":60}}` or a lower `autoscaling_limit_max_cu`. `DELETE /projects/<PID>/branches/<BID>` - **only** after re-reading the branch and confirming it's idle (no recent compute in consumption history) and not the project default/primary branch. One class of mutation per run; report each change.
 
 ### 5. State/log as in the shared contract → `memory/state/spend-neon.json`.
 
@@ -210,8 +239,9 @@ Auth: `RAILWAY_TOKEN` via secretcurl. GraphQL only at `https://backboard.railway
 
 The token may be a **workspace/team token** (no user context — a `me { … }` query returns `Not Authorized`). Do **not** start from `me`. Start from root `projects`, derive the `workspaceId`, then read billing off the workspace:
 
+Step A - projects + their workspaceId (root query works for a workspace token):
+
 ```bash
-# Step A — projects + their workspaceId (root query works for a workspace token)
 ./secretcurl -sS -w '\nhttp=%{http_code}\n' --max-time 30 \
   -H 'Authorization: Bearer {RAILWAY_TOKEN}' \
   -H 'Content-Type: application/json' \
@@ -256,10 +286,14 @@ Railway scaling is config/deploy-driven, not a clean API knob — **recommend on
 Auth: `VERCEL_TOKEN` via secretcurl. Base `https://api.vercel.com`; pass `teamId` where the token is a team token.
 
 ### 1. Pull usage (attribution by traffic proxy — $/route is NOT in the public API)
+Each as its own call. Projects:
 ```bash
 ./secretcurl -sS -H 'Authorization: Bearer {VERCEL_TOKEN}' 'https://api.vercel.com/v9/projects?limit=100'
+```
+Stale-preview candidates:
+```bash
 ./secretcurl -sS -H 'Authorization: Bearer {VERCEL_TOKEN}' \
-  'https://api.vercel.com/v6/deployments?target=preview&state=READY&limit=100'   # stale-preview candidates
+  'https://api.vercel.com/v6/deployments?target=preview&state=READY&limit=100'
 ```
 Traffic hotspots via the Vercel MCP `get_web_analytics` (top routes by requests) if connected; else note the gap. Config audit reads the project repo (cache headers, ISR/`unstable_cache`, image usage) — reuse the checklist from the `vercel-production-cost-review` skill as the heuristic library.
 
@@ -276,7 +310,7 @@ Traffic hotspots via the Vercel MCP `get_web_analytics` (top routes by requests)
 | oversized image/asset on a hot path | `next/image` / resize | asset bytes × traffic | code-change |
 
 ### 4. Arm
-`DELETE /v13/deployments/$ID` for previews older than `vercel.preview_stale_days` (default 14) — safe, non-prod. Never delete a production deployment. State/log → `memory/state/spend-vercel.json`.
+`DELETE /v13/deployments/<ID>` (one call per deployment, id written in literally) for previews older than `vercel.preview_stale_days` (default 14) - safe, non-prod. Never delete a production deployment. State/log → `memory/state/spend-vercel.json`.
 
 ---
 
@@ -320,6 +354,7 @@ End states: `SPEND_WATCH_OK` (ran, nothing actionable, silent) · `SPEND_WATCH_A
 - **neon / vercel / railway** adapters use `./secretcurl` with `{NEON_API_KEY}` / `{VERCEL_TOKEN}` / `{RAILWAY_TOKEN}` placeholders so the key never hits the analyzed command line. Always print `-w '\nhttp=%{http_code}\n'` and decide from the real HTTP status — degrade only on a genuine non-2xx, `--max-time` timeout, or a 200 with an empty body, and log the true reason (`http-<code>` / `timeout` / `empty`). Never write "sandbox" or "expansion blocked".
 - Railway needs a browser-like `User-Agent` header or Cloudflare returns 1010.
 - Each adapter's per-object calls are independent — one failing call (network/auth/404) tags that object as errored in the sources footer and the run continues; never retry in a tight loop.
+- **Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`ME="$(gh api user ...)"`, `RAW=...`), uses `if` / `for` / `while` / `case`, or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn. So parse `${var}` in your head, get the login with a bare `gh api user --jq .login` call, make one `gh api` or `./secretcurl` call per repo, project or endpoint instead of a loop, and write every value (login, repo, project id, dates, ids) into each command literally (the `<ME>`, `<REPO>`, `<PID>`, `<FROM>` placeholders).
 
 ## Config schema  (`memory/spend-config.md`)
 

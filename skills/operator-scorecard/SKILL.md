@@ -28,7 +28,7 @@ One skill, three recap views over Aeon's own activity. They share a preamble (re
 ## Shared preamble (run for every branch)
 
 1. Read `memory/MEMORY.md` for high-level context and scan the last ~3 days of `memory/logs/` for recent activity — drop anything already reported so you don't re-report the same signal.
-2. Compute `${today}` (UTC date, `YYYY-MM-DD`).
+2. Compute `${today}` (UTC date, `YYYY-MM-DD`). Run each lookup in this skill as one plain Bash call (see **Shell shape** in the Network note at the end).
 3. **Parse `${var}` → branch + branch argument** (trim whitespace first). Let `FIRST` be the lowercase first token (split on the first whitespace or `:`), `REST` the remainder:
    - `FIRST == "ops"` → `BRANCH=ops`, `ARG=REST` (a date override, or empty).
    - `FIRST == "push"` → `BRANCH=push`, `ARG=REST` (an `owner/repo` scope, or empty).
@@ -66,13 +66,13 @@ No outbound HTTP. No `gh api` calls. Pure file scanning + arithmetic.
 
 - If `${var}` matches `^dry-run` → `MODE=dry-run`. Strip the prefix; remainder treated as window override.
 - Otherwise `MODE=execute`.
-- If the remaining var parses as a positive integer N → `WINDOW_HOURS=N` and `WINDOW_DAYS=$((N / 24))` (round down). Cap at 720h (30 days).
+- If the remaining var parses as a positive integer N → `WINDOW_HOURS=N` and `WINDOW_DAYS` = N / 24 rounded down (work it out yourself and write the number in, no shell math). Cap at 720h (30 days).
 - Otherwise `WINDOW_HOURS=168`, `WINDOW_DAYS=7`.
 - Compute `WINDOW_START_DATE` = today minus `WINDOW_DAYS` days (UTC, ISO date).
 
 ### 2. Collect agent-health signals
 
-a. **Latest analytics article.** `LATEST_ANALYTICS=$(ls -1t output/articles/skill-analytics-*.md 2>/dev/null | head -1)`. If found AND its date suffix is within the window → parse the metadata line `*Window: ... · N runs across M skills · X% success · Y anomalies*` for `total_runs`, `distinct_skills`, `success_pct`, `anomaly_count`. If not found (`skill-health`'s analytics view didn't run this window): set all four to `null` and mark `agent_health_source=missing`.
+a. **Latest analytics article.** Run `ls -1t output/articles/skill-analytics-*.md | head -1` as its own Bash call; it prints LATEST_ANALYTICS (nothing, or a no-match error, when there is none). If found AND its date suffix is within the window → parse the metadata line `*Window: ... · N runs across M skills · X% success · Y anomalies*` for `total_runs`, `distinct_skills`, `success_pct`, `anomaly_count`. If not found (`skill-health`'s analytics view didn't run this window): set all four to `null` and mark `agent_health_source=missing`.
 
 b. **Heartbeat verdicts.** For every heartbeat run logged in the window, scan `memory/logs/YYYY-MM-DD.md` between `WINDOW_START_DATE` and today for `## Heartbeat` sections. Count occurrences of: `P0` / `P1` / `P2` / `P3` / `OK` markers. The simplest first-match wins per heartbeat block: an `OK` block (no P-flags) increments `heartbeat_ok`; any P-flag increments the matching `heartbeat_pX` counter and skips the OK count. If no heartbeat sections found, set counts to zero and mark `agent_health_source=partial`.
 
@@ -289,9 +289,9 @@ Read `memory/MEMORY.md` for context and `memory/issues/INDEX.md` for open issues
 
 ## Steps
 
-1. **Determine the date.** `ARG` from the selector is the optional date override.
+1. **Determine the date.** `ARG` from the selector is the optional date override. If `ARG` is set, `TODAY` = `ARG`. Otherwise run this as its own Bash call; it prints TODAY:
    ```bash
-   TODAY=${ARG:-$(date -u +%Y-%m-%d)}
+   date -u +%Y-%m-%d
    ```
 
 2. **Read today's activity log.** Open `memory/logs/${TODAY}.md`.
@@ -387,20 +387,26 @@ A flat chronological list of commits hides the answer readers actually want: **w
 
 ### 1. Gate on signal
 
-Fetch push events + commits for each watched repo from the last 24h:
+Fetch push events + commits for each watched repo from the last 24h. Each command below is its own Bash call (see **Shell shape** in the Network note), one call per repo with OWNER/REPO written in literally, and the window start written in literally where `<SINCE>` appears.
 
 ```bash
-SINCE="$(date -u -d '24 hours ago' +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -v-24H +%Y-%m-%dT%H:%M:%SZ)"
+date -u -d '24 hours ago' +%Y-%m-%dT%H:%M:%SZ
+```
 
+It prints SINCE.
+
+```bash
 gh api repos/OWNER/REPO/events --jq '[.[] | select(.type == "PushEvent") | {actor: .actor.login, created_at: .created_at, ref: .payload.ref, commits: [.payload.commits[] | {sha: .sha[0:7], message: .message, author: .author.name}]}]' --paginate
+```
 
-gh api repos/OWNER/REPO/commits -X GET -f since="$SINCE" --jq '.[] | {sha: .sha[0:7], full_sha: .sha, message: .commit.message, author: .commit.author.name, date: .commit.author.date}' --paginate
+```bash
+gh api repos/OWNER/REPO/commits -X GET -f since="<SINCE>" --jq '.[] | {sha: .sha[0:7], full_sha: .sha, message: .commit.message, author: .commit.author.name, date: .commit.author.date}' --paginate
 ```
 
 Also pull **merged PRs** in the same window (they anchor themes better than raw commits):
 
 ```bash
-gh pr list --repo OWNER/REPO --state merged --search "merged:>=$SINCE" --json number,title,author,mergedAt,mergeCommit,additions,deletions,files,body,labels --limit 50
+gh pr list --repo OWNER/REPO --state merged --search "merged:>=<SINCE>" --json number,title,author,mergedAt,mergeCommit,additions,deletions,files,body,labels --limit 50
 ```
 
 **Bot filter.** Drop commits whose author matches `dependabot[bot]`, `renovate[bot]`, `github-actions[bot]`, `*-bot`, or whose message starts with `chore(deps):` **unless** they touch files outside `package*.json`/`*.lock`/`.github/`. Note the dropped count — you'll surface it in the footer.
@@ -564,8 +570,10 @@ Under the hood:
 Shape: X user-visible · Y internal · Z infra · N bot-filtered · P merged PRs
 Volume: X files, +Y/-Z lines
 
-Full recap: https://github.com/$(git remote get-url origin | sed -E 's|.*github.com[:/]([^/]+/[^/.]+).*|\1|')/blob/main/output/articles/push-recap-${today}.md
+Full recap: https://github.com/<SELF_REPO>/blob/main/output/articles/push-recap-${today}.md
 ```
+
+`<SELF_REPO>` is this repo's `owner/repo`: run `git remote get-url origin` as its own Bash call and take the `owner/repo` part after `github.com/` or `github.com:` (drop any trailing `.git`) yourself, then write it in literally.
 
 The notification must let a reader know what shipped without clicking through. Names and numbers, not "various improvements." Each bullet must cite at least one: specific file, specific feature, specific user impact.
 
@@ -609,3 +617,4 @@ Append one block per run (never overwrite) so re-running the same branch on the 
 - **scorecard branch:** Pure local file I/O — no curl, no `gh api`, no secrets on the command line. Works in a GitHub Actions run without any of the extra auth handling the other branches need. The only outbound call is `./notify` itself, which stages to `.pending-notify/` for the workflow to re-deliver after the run.
 - **ops branch:** All inputs are local file reads (logs, issues index, cron-state). `gh pr list` runs through the GitHub CLI (auth handled internally) — if it fails, treat the source as unavailable and skip the PR-staleness check. `./notify` stages to `.pending-notify/` for re-delivery after the run, so delivery is reliable.
 - **push branch:** `gh api` and `gh pr list` handle auth internally and work in a GitHub Actions run. If a call returns a rate-limit error (403 with `X-RateLimit-Remaining: 0`), record it in the source-status footer and continue with what you have. For large diffs where the `patch` field is `null`, fall back to filename + additions/deletions stats. Never use raw `curl` against the GitHub API — always `gh api`.
+- **Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`LATEST_ANALYTICS=$(...)`, `SINCE="$(...)"`, `TODAY=${ARG:-$(...)}`), uses `$(( ))` math or a `$(...)` substitution, or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn. So every `date`, `ls` or `git remote` lookup is its own call: read the value it prints and write it into later commands and templates literally (`<SINCE>`, `<SELF_REPO>`), and work small numbers like `WINDOW_DAYS` out yourself.

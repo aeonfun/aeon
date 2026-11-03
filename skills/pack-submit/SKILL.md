@@ -39,42 +39,31 @@ A community pack is a **public GitHub repo** that holds one or more skills plus 
 
 ## Steps
 
-1. **Parse and validate `${var}`.** The first whitespace-separated token is the skill slug; the rest are flags (`--repo owner/name`, `--no-register`, `--dry-run`). The slug must match `^[a-z0-9][a-z0-9-]*$` and resolve to a real directory:
-   ```bash
-   SLUG=$(echo "${var}" | awk '{print $1}')
-   FLAGS=$(echo "${var}" | cut -s -d' ' -f2-)
-   if ! echo "$SLUG" | grep -qE '^[a-z0-9][a-z0-9-]*$'; then
-     ./notify "pack-submit aborted: \"$SLUG\" is not a valid skill slug (lowercase kebab-case)"; exit 0
-   fi
-   if [ ! -f "skills/$SLUG/SKILL.md" ]; then
-     ./notify "pack-submit aborted: skills/$SLUG/SKILL.md not found — run with a slug from \`ls skills/\`"; exit 0
-   fi
-   ```
-   If validation fails, exit `PACK_SUBMIT_BAD_VAR` with the notify above and stop. Extract the boolean flags from `$FLAGS` and the optional `--repo` value.
+**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`SLUG=$(...)`, `PACK_DIR=$(mktemp -d)`, `PR_URL=$(gh pr create ...)`), uses `if` / `while` or `[ ... ] &&` tests, or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn; `awk`, `cut`, `sed`, `cp`, `mv`, `mktemp` and `tee` are not allowed commands, and a `cd` does not carry over to the next call. So parse `${var}` and the frontmatter yourself, run each command below as its own call with every value (slug, owner, repo names, title) written in literally in place of the `<SLUG>`, `<OWNER>`, `<FULL_REPO>` style placeholders, work in the fixed dir `/tmp/pack-submit-work` with absolute paths (`git -C <dir>`, not `cd <dir> && git`), copy files with `node -e` (`fs.cpSync`, `fs.copyFileSync`), and write files (the manifest, README, LICENSE, PR body) with the Write tool.
 
-2. **Read the source skill's metadata.** Everything the manifest and registry entry need is already declared in `skills/$SLUG/SKILL.md`'s frontmatter — read it, don't invent it:
+1. **Parse and validate `${var}`** yourself, not with a shell script. The first whitespace-separated token is the skill slug SLUG; the rest are flags (`--repo owner/name`, `--no-register`, `--dry-run`). The slug must match `^[a-z0-9][a-z0-9-]*$` and resolve to a real directory:
+   - SLUG does not match `^[a-z0-9][a-z0-9-]*$`: run `./notify "pack-submit aborted: \"<SLUG>\" is not a valid skill slug (lowercase kebab-case)"` and stop.
+   - Check `skills/<SLUG>/SKILL.md` with Glob. If it is missing, run ``./notify "pack-submit aborted: skills/<SLUG>/SKILL.md not found - run with a slug from \`ls skills/\`"`` and stop.
+
+   If validation fails, exit `PACK_SUBMIT_BAD_VAR` with the notify above and stop. Note the boolean flags and the optional `--repo` value (REPO_OVERRIDE) from the rest of `${var}`.
+
+2. **Read the source skill's metadata.** Everything the manifest and registry entry need is already declared in `skills/<SLUG>/SKILL.md`'s frontmatter - read it, don't invent it:
    - **Display name** — `metadata.title`; fall back to the top-level `name:`.
    - **Description** — the top-level `description:` (one line).
    - **Category** — `metadata.category`. Registry categories are an open vocabulary, but first-party-only values (`core`, `evolution`, `basics`) don't describe a third-party pack — if you see one of those, pick the closest community category (`dev`, `crypto`, `productivity`, `research`, `social`) from what the skill actually does. Otherwise pass the category through.
    - **Secrets** — `metadata.requires`. An entry ending in `?` is **optional** → `secrets_optional`; an entry without `?` is **required** → `secrets_required`. Strip the `?`. Registry `secrets_required` must be UPPER_SNAKE env names.
    - **Capabilities** — `metadata.capabilities`, copied verbatim (already the locked taxonomy; see `docs/CAPABILITIES.md`). Omit if absent.
 
-   ```bash
-   fm(){ sed -n '/^---$/,/^---$/p' "skills/$SLUG/SKILL.md"; }
-   TITLE=$(fm | sed -n 's/^[[:space:]]*title:[[:space:]]*//p' | head -1)
-   [ -z "$TITLE" ] && TITLE=$(fm | sed -n 's/^name:[[:space:]]*//p' | head -1)
-   DESC=$(fm | sed -n 's/^description:[[:space:]]*//p' | head -1)
-   CATEGORY=$(fm | sed -n 's/^[[:space:]]*category:[[:space:]]*//p' | head -1)
-   ```
-   Collect `requires:`/`capabilities:` list items (lines under those keys beginning with `    - `) into shell arrays; split `requires` into required (no `?`) and optional (trailing `?`, stripped).
+   Read `skills/<SLUG>/SKILL.md` with the Read tool and take the values from its frontmatter (between the first two `---` lines): TITLE = `metadata.title` (else the top-level `name:`), DESC = the top-level `description:`, CATEGORY = `metadata.category`. Collect the `requires:`/`capabilities:` list items (lines under those keys beginning with `    - `); split `requires` into required (no `?`) and optional (trailing `?`, stripped).
 
-3. **Build the pack repo locally.** Stage a clean working tree — the manifest at root, the full skill directory copied verbatim (including any helper scripts/config, not just `SKILL.md`), a README, and an MIT `LICENSE`:
+3. **Build the pack repo locally.** Stage a clean working tree - the manifest at root, the full skill directory copied verbatim (including any helper scripts/config, not just `SKILL.md`), a README, and an MIT `LICENSE`. PACK_DIR is the fixed path `/tmp/pack-submit-work/pack`. Create it, then copy the skill, each as its own call:
    ```bash
-   PACK_DIR=$(mktemp -d)/pack
-   mkdir -p "$PACK_DIR/skills/$SLUG"
-   cp -R "skills/$SLUG/." "$PACK_DIR/skills/$SLUG/"
+   mkdir -p /tmp/pack-submit-work/pack/skills/<SLUG>
    ```
-   Write `$PACK_DIR/skills-pack.json` (build it with `python3`/`jq`, never string concatenation, so quoting is safe). Include only fields you actually have:
+   ```bash
+   node -e "require('fs').cpSync('skills/<SLUG>','/tmp/pack-submit-work/pack/skills/<SLUG>',{recursive:true})"
+   ```
+   Write `/tmp/pack-submit-work/pack/skills-pack.json` with the Write tool (valid JSON with every value properly escaped, never hand-joined strings, so quoting is safe). Include only fields you actually have:
    ```json
    {
      "name": "<TITLE>",
@@ -98,45 +87,70 @@ A community pack is a **public GitHub repo** that holds one or more skills plus 
      ]
    }
    ```
-   Write a `README.md` that names the skill, states its schedule assumption, lists required/optional secrets, and shows the one-line install (`bin/install-skill-pack <owner>/<pack-repo>`). Write a standard MIT `LICENSE` (year `${today}`'s year, copyright the operator handle). Resolve the operator handle once: `OWNER=$(gh api user --jq .login)`.
-
-4. **Pre-flight the pack.** Run the repo's own validator against the staged directory — it enforces exactly what `bin/install-skill-pack` requires (valid JSON manifest, clean slug, no `..` in paths, the `SKILL.md` present, locked-taxonomy capabilities):
+   Write a `README.md` that names the skill, states its schedule assumption, lists required/optional secrets, and shows the one-line install (`bin/install-skill-pack <owner>/<pack-repo>`). Write a standard MIT `LICENSE` (year `${today}`'s year, copyright the operator handle). Resolve the operator handle once, as its own call:
    ```bash
-   ./scripts/validate-pack.sh "$PACK_DIR" 2>&1 | tee /tmp/pack-validate.txt
+   gh api user --jq .login
+   ```
+   It prints OWNER.
+
+4. **Pre-flight the pack.** Run the repo's own validator against the staged directory - it enforces exactly what `bin/install-skill-pack` requires (valid JSON manifest, clean slug, no `..` in paths, the `SKILL.md` present, locked-taxonomy capabilities):
+   ```bash
+   ./scripts/validate-pack.sh /tmp/pack-submit-work/pack
    ```
    Exit non-zero (an `ERROR:` line) → exit `PACK_SUBMIT_INVALID_PACK`, notify with the failing line, and stop. **Do not** push an invalid pack. Warnings are fine to proceed on; surface them in the notify.
 
-   If `--dry-run` was passed, stop here: notify the operator that the pack built and validated cleanly at `$PACK_DIR`, list the manifest fields, and exit `PACK_SUBMIT_DRY_RUN` without touching GitHub.
+   If `--dry-run` was passed, stop here: notify the operator that the pack built and validated cleanly at `/tmp/pack-submit-work/pack`, list the manifest fields, and exit `PACK_SUBMIT_DRY_RUN` without touching GitHub.
 
-5. **Create and push the pack repo.** Default repo name `aeon-skill-pack-$SLUG` (or the `--repo` override). The pack must be **public** — the installer fetches its tarball, and a private pack can't be installed by anyone else:
+5. **Create and push the pack repo.** PACK_REPO is the `--repo` override if given, else `aeon-skill-pack-<SLUG>` (owner defaults to OWNER). The pack must be **public** - the installer fetches its tarball, and a private pack can't be installed by anyone else. First check the name is free:
    ```bash
-   PACK_REPO="${REPO_OVERRIDE:-aeon-skill-pack-$SLUG}"     # owner defaults to $OWNER
-   gh repo view "$PACK_REPO" >/dev/null 2>&1 \
-     && { ./notify "pack-submit aborted: repo $PACK_REPO already exists — pass --repo to pick another name"; exit 0; }
-   ( cd "$PACK_DIR" && git init -q && git add -A \
-       && git commit -q -m "Aeon community pack: $SLUG" \
-       && gh repo create "$PACK_REPO" --public --source=. --push )
+   gh repo view <PACK_REPO> --json nameWithOwner --jq .nameWithOwner
    ```
-   Capture the resulting `owner/repo` (`FULL_REPO=$(gh repo view "$PACK_REPO" --json nameWithOwner --jq .nameWithOwner)`). If repo creation fails (permission/name), exit `PACK_SUBMIT_REPO_FAILED`, notify with the `gh` error's shortest decisive line, and stop.
-
-6. **Submit the registry PR against `aeonfun/aeon`** (skip this whole step if `--no-register` was passed - then jump to step 7 reporting only the pack repo). The registry lives in the canonical repo, so work against a fork, not this instance's checkout - this instance's `catalog/skill-packs.json` and `docs/community-skill-packs.md` can be stale:
+   If that call succeeds (prints a name), the repo already exists: run `./notify "pack-submit aborted: repo <PACK_REPO> already exists - pass --repo to pick another name"` and stop. If it fails with "Could not resolve", the name is free. Then each as its own call:
    ```bash
-   WORK=$(mktemp -d)
-   gh repo fork aeonfun/aeon --clone=true --default-branch-only 2>/dev/null || true
-   git clone -q "https://github.com/$OWNER/aeon.git" "$WORK/aeon" || git clone -q https://github.com/aeonfun/aeon.git "$WORK/aeon"
-   cd "$WORK/aeon" && git checkout -b "pack-submit/$SLUG"
+   git -C /tmp/pack-submit-work/pack init -q
+   ```
+   ```bash
+   git -C /tmp/pack-submit-work/pack add -A
+   ```
+   ```bash
+   git -C /tmp/pack-submit-work/pack commit -q -m "Aeon community pack: <SLUG>"
+   ```
+   ```bash
+   gh repo create <PACK_REPO> --public --source=/tmp/pack-submit-work/pack --push
+   ```
+   Capture the resulting `owner/repo`:
+   ```bash
+   gh repo view <PACK_REPO> --json nameWithOwner --jq .nameWithOwner
+   ```
+   It prints FULL_REPO. If repo creation fails (permission/name), exit `PACK_SUBMIT_REPO_FAILED`, notify with the `gh` error's shortest decisive line, and stop.
+
+6. **Submit the registry PR against `aeonfun/aeon`** (skip this whole step if `--no-register` was passed - then jump to step 7 reporting only the pack repo). The registry lives in the canonical repo, so work against a fork, not this instance's checkout - this instance's `catalog/skill-packs.json` and `docs/community-skill-packs.md` can be stale. Each as its own call; if the fork call fails because the fork already exists, carry on:
+   ```bash
+   gh repo fork aeonfun/aeon --clone=false --default-branch-only
+   ```
+   ```bash
+   git clone -q https://github.com/<OWNER>/aeon.git /tmp/pack-submit-work/aeon
+   ```
+   If that clone fails, clone the canonical repo instead:
+   ```bash
+   git clone -q https://github.com/aeonfun/aeon.git /tmp/pack-submit-work/aeon
+   ```
+   ```bash
+   git -C /tmp/pack-submit-work/aeon checkout -b pack-submit/<SLUG>
    ```
    Make the two edits the validator (`scripts/validate-skill-packs.mjs`) checks for parity:
 
-   **(a) `catalog/skill-packs.json`** — append one object to `.packs`. Build it with `jq` from the values you resolved (mirror the pack's own manifest: `skills` is `["$SLUG"]`, `trust_level` is `"community"`, aggregate `secrets_required`/`capabilities` from the skill):
+   **(a) `catalog/skill-packs.json`** - append one object to `.packs`. Build it with `jq` from the values you resolved, written in literally (mirror the pack's own manifest: `skills` is `["<SLUG>"]`, `trust_level` is `"community"`, aggregate `secrets_required`/`capabilities` from the skill). One `jq` call writes the new file to `/tmp`, then a `node` call copies it over the clone's file:
    ```bash
-   jq --arg repo "$FULL_REPO" --arg name "$TITLE" --arg desc "$DESC" \
-      --arg author "$OWNER" --arg homepage "https://github.com/$FULL_REPO" \
-      --arg cat "$CATEGORY" --arg slug "$SLUG" \
+   jq --arg repo "<FULL_REPO>" --arg name "<TITLE>" --arg desc "<DESC>" \
+      --arg author "<OWNER>" --arg homepage "https://github.com/<FULL_REPO>" \
+      --arg cat "<CATEGORY>" --arg slug "<SLUG>" \
       '.packs += [ { repo:$repo, name:$name, description:$desc, author:$author,
         license:"MIT", homepage:$homepage, category:$cat, trust_level:"community",
-        skills:[$slug] } ]' catalog/skill-packs.json > /tmp/reg.json \
-     && mv /tmp/reg.json catalog/skill-packs.json
+        skills:[$slug] } ]' /tmp/pack-submit-work/aeon/catalog/skill-packs.json > /tmp/reg.json
+   ```
+   ```bash
+   node -e "require('fs').copyFileSync('/tmp/reg.json','/tmp/pack-submit-work/aeon/catalog/skill-packs.json')"
    ```
    Add `secrets_required` / `capabilities` keys to that object only when the skill declares them (keep it in sync with the pack manifest). Do **not** use `trust_level: trusted` — that requires the repo to be in `skills/security/trusted-sources.txt`, and the validator rejects an unearned `trusted`.
 
@@ -144,46 +158,56 @@ A community pack is a **public GitHub repo** that holds one or more skills plus 
    ```
    | [<pack-repo-name>](https://github.com/<FULL_REPO>) | 1 | <one-line description, ≤110 chars>. |
    ```
-   Use `python3` for a surgical insert. **The row must land inside the table's contiguous block** - insert it immediately *after the last existing `| [` row*, never after a blank line or other text. The parity validator parses rows only until the first non-`|` line, so a row placed past the table is invisible to it and the PR fails CI with "in the registry but has no row in the Community Packs table". Verify with a re-read that the row sits among the other rows:
+   Use `python3` for a surgical insert. **The row must land inside the table's contiguous block** - insert it immediately *after the last existing `| [` row*, never after a blank line or other text. The parity validator parses rows only until the first non-`|` line, so a row placed past the table is invisible to it and the PR fails CI with "in the registry but has no row in the Community Packs table". Verify with a re-read that the row sits among the other rows. Run it as one `python3 - <<'PY'` call (the heredoc is the script on stdin), with PACK_NAME (the pack repo's name), FULL_REPO and DESC written in literally as Python strings:
    ```python
    import re
-   lines = open("docs/community-skill-packs.md").read().split("\n")
+   PACK_NAME, FULL_REPO, DESC = "<PACK_REPO_NAME>", "<FULL_REPO>", "<DESC>"
+   F = "/tmp/pack-submit-work/aeon/docs/community-skill-packs.md"
+   lines = open(F).read().split("\n")
    sec = next(i for i,l in enumerate(lines) if re.match(r'^#+\s+Listed packs\s*$', l))
    hdr = next(i for i in range(sec,len(lines)) if re.match(r'^\|\s*Pack\s*\|\s*Skills\s*\|\s*Description\s*\|', lines[i]))
    i = hdr + 2; last = i
    while i < len(lines) and lines[i].startswith("|"): last = i; i += 1   # last data row
    lines.insert(last + 1, f"| [{PACK_NAME}](https://github.com/{FULL_REPO}) | 1 | {DESC} |")
-   open("docs/community-skill-packs.md","w").write("\n".join(lines))
+   open(F,"w").write("\n".join(lines))
    ```
 
-   **Validate parity before committing** — this is the exact CI gate the PR will hit:
+   **Validate parity before committing** - this is the exact CI gate the PR will hit (the script resolves its files from its own location, so the absolute path checks the clone):
    ```bash
-   node scripts/validate-skill-packs.mjs
+   node /tmp/pack-submit-work/aeon/scripts/validate-skill-packs.mjs
    ```
    A non-zero exit → fix the reported mismatch (skill count, a missing row, or a `--path` flag) and re-run until it prints `validate-skill-packs: OK`. Never open the PR on a red validator.
 
-   Then commit both files together, push the branch to your fork, and open the PR against the canonical repo:
+   Then commit both files together, push the branch to your fork, and open the PR against the canonical repo, each as its own call:
    ```bash
-   git add catalog/skill-packs.json docs/community-skill-packs.md
-   git commit -m "feat: list $TITLE community pack ($FULL_REPO)"
-   git push -u origin "pack-submit/$SLUG"
-   PR_URL=$(gh pr create --repo aeonfun/aeon --title "feat: list $TITLE community pack" --body "$(cat <<BODY
+   git -C /tmp/pack-submit-work/aeon add catalog/skill-packs.json docs/community-skill-packs.md
+   ```
+   ```bash
+   git -C /tmp/pack-submit-work/aeon commit -m "feat: list <TITLE> community pack (<FULL_REPO>)"
+   ```
+   ```bash
+   git -C /tmp/pack-submit-work/aeon push -u origin pack-submit/<SLUG>
+   ```
+   Write the PR body with the Write tool to `/tmp/pack-submit-work/pr-body.md`, values filled in:
+   ````markdown
    ## New community pack
 
-   **Pack:** [$FULL_REPO](https://github.com/$FULL_REPO)
-   **Skill:** \`$SLUG\` — $DESC
-   **Author:** @$OWNER · **License:** MIT · **Category:** $CATEGORY
+   **Pack:** [<FULL_REPO>](https://github.com/<FULL_REPO>)
+   **Skill:** `<SLUG>` - <DESC>
+   **Author:** @<OWNER> · **License:** MIT · **Category:** <CATEGORY>
 
-   Adds a row to the Listed packs table in \`docs/community-skill-packs.md\` and a matching \`catalog/skill-packs.json\` entry (both in this diff, per the publishing checklist). \`node scripts/validate-skill-packs.mjs\` passes locally.
+   Adds a row to the Listed packs table in `docs/community-skill-packs.md` and a matching `catalog/skill-packs.json` entry (both in this diff, per the publishing checklist). `node scripts/validate-skill-packs.mjs` passes locally.
 
    Install once merged:
-   \`\`\`
-   bin/install-skill-pack $FULL_REPO
-   \`\`\`
-   BODY
-   )")
    ```
-   Capture `PR_URL`. If `gh pr create` fails because a PR already exists for the branch, capture the existing URL instead of erroring. This PR is **not** self-merging — it lands in someone else's repo and is reviewed by the aeon maintainers.
+   bin/install-skill-pack <FULL_REPO>
+   ```
+   ````
+   Then open the PR. `--head` names the pushed branch, since the call does not run inside the clone (use `aeonfun:pack-submit/<SLUG>` if the clone fell back to the canonical repo):
+   ```bash
+   gh pr create --repo aeonfun/aeon --head <OWNER>:pack-submit/<SLUG> --title "feat: list <TITLE> community pack" --body-file /tmp/pack-submit-work/pr-body.md
+   ```
+   It prints PR_URL. If `gh pr create` fails because a PR already exists for the branch, capture the existing URL instead of erroring. This PR is **not** self-merging - it lands in someone else's repo and is reviewed by the aeon maintainers.
 
 7. **Log.** Append to `memory/logs/${today}.md`:
    ```

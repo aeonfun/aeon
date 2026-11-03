@@ -47,60 +47,73 @@ If neither `watched-repos.md` nor `products.md` yields a repo, exit `SHIPLOG_NO_
 
 ### 1. Compute the window — "since last run"
 
-```bash
-STATE="memory/state/shiplog-last.json"
-NOW=$(date -u +%Y-%m-%dT%H:%M:%SZ)
-TODAY=$(date -u +%Y-%m-%d)
-LAST=""
-[ -f "$STATE" ] && LAST=$(jq -r '.last_run_at // empty' "$STATE" 2>/dev/null)
-SINCE="${LAST:-$(date -u -d '7 days ago' +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -v-7d +%Y-%m-%dT%H:%M:%SZ)}"
-SINCE_DATE="${SINCE%%T*}"
-```
+Each `date` / `jq` below is its own Bash call (see **Shell shape** under Fetching & sources):
 
-- `since:YYYY-MM-DD` in `${var}` → `SINCE` = that date at `T00:00:00Z`; `days:N` → N days ago. These override the state file.
-- Use `$SINCE` for ALL time filtering — never substitute "since Monday" or other drift-prone shortcuts. The window is `[$SINCE, $NOW)`; state the span (`$SINCE_DATE → $TODAY`) in the output.
+```bash
+date -u +%Y-%m-%dT%H:%M:%SZ
+```
+```bash
+date -u +%Y-%m-%d
+```
+The first prints NOW, the second TODAY.
+
+Check for the state file `memory/state/shiplog-last.json` with Glob. If it exists, read the last run time:
+```bash
+jq -r '.last_run_at // empty' memory/state/shiplog-last.json
+```
+It prints LAST. `SINCE` = LAST. If the file is missing or LAST is empty, use the first-run default instead:
+```bash
+date -u -d '7 days ago' +%Y-%m-%dT%H:%M:%SZ
+```
+It prints SINCE. `SINCE_DATE` = the part of SINCE before the `T`. Every later command has these values (and OPERATOR, handles, repos) written in literally where it shows `<SINCE>`, `<SINCE_DATE>`, `<TODAY>`, `<NOW>`.
+
+- `since:YYYY-MM-DD` in `${var}` → `SINCE` = that date at `T00:00:00Z`; `days:N` → N days ago (`date -u -d '<N> days ago' +%Y-%m-%dT%H:%M:%SZ` as its own call). These override the state file.
+- Use `SINCE` for ALL time filtering - never substitute "since Monday" or other drift-prone shortcuts. The window is `[SINCE, NOW)`; state the span (`SINCE_DATE → TODAY`) in the output.
 - **Idempotency is the state file** (step 8 advances it each run, so windows never overlap). No once-per-day lock — a back-to-back re-run just yields an empty window → `SHIPLOG_NOTHING_NEW`. Write the digest to `output/articles/shiplog-${TODAY}.md`; if that name exists and there's genuinely new activity since the last run, use `output/articles/shiplog-${TODAY}-2.md` rather than clobbering.
 
 ### 2. GitHub activity (the bytes)
 
 Cross-repo PR/commit visibility needs the global token. When `GH_GLOBAL` is set the workflow already exports it as `gh`'s `GH_TOKEN`, so plain `gh` calls reach every repo it can see; don't put the token on the command line (a `$SECRET` expansion is refused):
 
+gh reads GH_TOKEN from the environment (GH_GLOBAL when set, else the repo-scoped token):
 ```bash
-# gh reads GH_TOKEN from the environment (GH_GLOBAL when set, else the repo-scoped token)
-OPERATOR=$(gh api user --jq .login 2>/dev/null)
+gh api user --jq .login
 ```
+It prints OPERATOR.
 
 Track success/failure per source in a `sources` map; on a single endpoint failure log `fail` and continue — never abort the whole skill.
 
 **a) Operator PRs across all repos in the window** (grouped by repo + totals):
 ```bash
-gh search prs --author "$OPERATOR" --created ">=$SINCE_DATE" \
+gh search prs --author "<OPERATOR>" --created ">=<SINCE_DATE>" \
   --json number,title,repository,state,createdAt,url --limit 100 \
   --jq 'group_by(.repository.nameWithOwner)[] | {repo: .[0].repository.nameWithOwner, count: length,
          prs: [.[] | {date: .createdAt[0:10], state, number, title}]}'
 ```
 If 100 rows come back, note the result may be truncated.
 
-**b) Flagship headline numbers** — for each `flagship_repos` entry, count commits + merged PRs in the window (the numbers the audience cares about):
+**b) Flagship headline numbers** - for each `flagship_repos` entry, count commits + merged PRs in the window (the numbers the audience cares about). Two calls per repo, with the repo and SINCE written in literally:
 ```bash
-for REPO in $FLAGSHIP_REPOS; do
-  gh api "repos/${REPO}/commits" -X GET -f since="$SINCE" \
-    --jq "\"$REPO commits: \" + ([.[] | .sha] | length | tostring)" 2>/dev/null
-  gh api "repos/${REPO}/pulls" -X GET -f state=closed -f sort=updated -f direction=desc \
-    --jq "\"$REPO merged PRs: \" + ([.[] | select(.merged_at != null and .merged_at > \"$SINCE\")] | length | tostring)" 2>/dev/null
-done
+gh api "repos/<REPO>/commits" -X GET -f since="<SINCE>" \
+  --jq '"<REPO> commits: " + ([.[] | .sha] | length | tostring)'
 ```
+```bash
+gh api "repos/<REPO>/pulls" -X GET -f state=closed -f sort=updated -f direction=desc \
+  --jq '"<REPO> merged PRs: " + ([.[] | select(.merged_at != null and .merged_at > "<SINCE>")] | length | tostring)'
+```
+If a call fails, log `fail` for that repo and move on.
 
 **c) The security flex** — PRs the operator landed in repos they do NOT own (the "a project merged a fix from us" candidates). Filter the Step-2a result to external repos whose title matches a security keyword (`security|ssrf|cve|credential|sandbox|escape|injection|vuln|redos|xss|toctou|path traversal|prototype pollution|deserial`). Merged ones are the marquee story — if it's a named org (not a random fork), that's a headline bullet.
 
 **d) Star delta** (north-star metric — flagships only, they're public):
 ```bash
 mkdir -p memory/state
-for REPO in $FLAGSHIP_REPOS; do
-  gh api "repos/${REPO}" --jq '.stargazers_count'   # current total for $REPO
-done
 ```
-Read the prior snapshot `memory/state/shiplog-stars.json` (if present): `delta = current_total − last_total` per repo. After computing, overwrite the snapshot with `{ "<repo>": {"count": N, "date": "${TODAY}"}, ... }`. If no prior snapshot exists, report totals only and note "no baseline yet — deltas start next run." Do NOT fabricate a delta.
+Then one call per flagship repo, written in literally (prints the current total):
+```bash
+gh api "repos/<REPO>" --jq '.stargazers_count'
+```
+Read the prior snapshot `memory/state/shiplog-stars.json` (if present): `delta = current_total − last_total` per repo. After computing, overwrite the snapshot with Write: `{ "<repo>": {"count": N, "date": "${TODAY}"}, ... }`. If no prior snapshot exists, report totals only and note "no baseline yet - deltas start next run." Do NOT fabricate a delta.
 
 ### 3. X activity (twitterapi.io - primary)
 
@@ -111,20 +124,18 @@ Read the prior snapshot `memory/state/shiplog-stars.json` (if present): `delta =
 [ -n "$TWITTER_API_KEY" ] && echo KEY_PRESENT || echo KEY_UNSET
 ```
 
-There are two X sources here - the **operator** handle (`$OPERATOR_HANDLE`, the operator's own X account from `memory/products.md`) and the **product/project** accounts (`$PRODUCT_HANDLES`). Fetch each independently into its own tmp file so one failing source can't clobber or sink another.
+There are two X sources here - the **operator** handle (`OPERATOR_HANDLE`, the operator's own X account from `memory/products.md`) and the **product/project** accounts (`PRODUCT_HANDLES`). Fetch each independently into its own tmp file so one failing source can't clobber or sink another.
 
-**Path A - twitterapi.io (primary).** Base `https://api.twitterapi.io/twitter`, auth header `X-API-Key: {TWITTER_API_KEY}` via `./secretcurl` (keep the key off the command line). Capture the status with `-w '%{http_code}'` and print it before parsing.
+**Path A - twitterapi.io (primary).** Base `https://api.twitterapi.io/twitter`, auth header `X-API-Key: {TWITTER_API_KEY}` via `./secretcurl` (keep the key off the command line). The `-w` label prints the status and size in the same call, before parsing.
 
-*Operator posts* (`SRC=operator`) - the operator's own timeline. `/user/last_tweets` has **no server-side date filter**, so keep only posts inside `[$SINCE_DATE, $TODAY]` client-side on `.createdAt`:
+*Operator posts* (`SRC=operator`) - the operator's own timeline. `/user/last_tweets` has **no server-side date filter**, so keep only posts inside `[SINCE_DATE, TODAY]` client-side on `.createdAt`. One call, the handle written in literally:
 ```bash
-H="$OPERATOR_HANDLE"
-HTTP=$(./secretcurl -s -o /tmp/tw-operator.json -w '%{http_code}' -G "https://api.twitterapi.io/twitter/user/last_tweets" \
-  --data-urlencode "userName=$H" -H "X-API-Key: {TWITTER_API_KEY}")
-echo "twitterapi http=$HTTP bytes=$(wc -c </tmp/tw-operator.json)"
+./secretcurl -s -o /tmp/tw-operator.json -w 'twitterapi http=%{http_code} bytes=%{size_download}\n' -G "https://api.twitterapi.io/twitter/user/last_tweets" \
+  --data-urlencode "userName=<OPERATOR_HANDLE>" -H "X-API-Key: {TWITTER_API_KEY}"
 ```
 On `HTTP=200`, parse `.data.tweets[]` (`createdAt` is Twitter's native `Day Mon DD HH:MM:SS +0000 YYYY` string; the `strptime` normalizes it to a date for the window compare); paginate with `&cursor=<next_cursor>` when `.has_next_page` is true and older in-window posts remain:
 ```bash
-jq -r --arg since "$SINCE_DATE" '
+jq -r --arg since "<SINCE_DATE>" '
   .data.tweets[]
   | (try (.createdAt | strptime("%a %b %d %H:%M:%S %z %Y") | strftime("%Y-%m-%d")) catch (.createdAt[0:10])) as $d
   | select($d >= $since)
@@ -132,13 +143,10 @@ jq -r --arg since "$SINCE_DATE" '
 ```
 Separate **original posts** from **replies/RTs** (`.isReply`, or text starting `RT @`) - RTs are amplification, not ships.
 
-*Product/project accounts* (`SRC=projects`) - one `advanced_search` across every product handle, with the date window inside the query string:
+*Product/project accounts* (`SRC=projects`) - one `advanced_search` across every product handle, with the date window inside the query string. Build `FROMQ` yourself (no shell text tools): split `PRODUCT_HANDLES` on commas/spaces, drop each leading `@` and any blanks, prefix each with `from:`, join with ` OR ` (e.g. `from:aeonframework OR from:miroshark_`). Then one call with the query written in literally:
 ```bash
-FROMQ=$(printf '%s' "$PRODUCT_HANDLES" | tr ',' ' ' | tr -s ' ' '\n' | sed 's/^@//;/^$/d;s/^/from:/' | paste -sd'|' - | sed 's/|/ OR /g')
-Q="($FROMQ) since:$SINCE_DATE until:$TODAY"
-HTTP=$(./secretcurl -s -o /tmp/tw-projects.json -w '%{http_code}' -G "https://api.twitterapi.io/twitter/tweet/advanced_search" \
-  --data-urlencode "query=$Q" --data-urlencode "queryType=Latest" -H "X-API-Key: {TWITTER_API_KEY}")
-echo "twitterapi http=$HTTP bytes=$(wc -c </tmp/tw-projects.json)"
+./secretcurl -s -o /tmp/tw-projects.json -w 'twitterapi http=%{http_code} bytes=%{size_download}\n' -G "https://api.twitterapi.io/twitter/tweet/advanced_search" \
+  --data-urlencode "query=(<FROMQ>) since:<SINCE_DATE> until:<TODAY>" --data-urlencode "queryType=Latest" -H "X-API-Key: {TWITTER_API_KEY}"
 ```
 On `HTTP=200`, parse `.tweets[]` (author under `.author.userName`); note the bangers by `.likeCount` / `.viewCount` - one or two feed the digest narrative. Skip retweets of others:
 ```bash
@@ -150,20 +158,24 @@ For each source, mark `x_source=twitterapi` on a `200` with parsed rows. **On a 
 
 **Path B - xAI Grok `x_search` (fallback).** Only if a source's Path A returned non-2xx, empty, or timed out. `XAI_API_KEY` is also injected (`requires:`). `x_search` runs a live X search and typically takes 30-120s - when you invoke the Bash tool for these curls, **set the tool's `timeout` to at least 180000 (180s)**; each curl carries `--max-time 150` so it fails cleanly instead of hanging. **A slow curl is not a missing key - never treat a timeout as key-unavailable.**
 
+Each source is two calls: build the body with `jq -n` (values written in literally), then send it in its own call. Keep `-w '%{http_code}'` exactly on the xAI send (secretcurl's retry reads it); secretcurl itself prints an `http=... bytes=...` line on stderr.
+
 *Operator posts* (`SRC=operator`):
 ```bash
-jq -n --arg h "$OPERATOR_HANDLE" --arg sd "$SINCE_DATE" --arg td "$TODAY" '{model:"grok-4.7", input:[{role:"user", content:("Search X for posts by @" + $h + " between " + $sd + " and " + $td + ". Return each post with full text, date, type (original|reply|RT - an RT text starts with \"RT @\"), exact engagement counts (likes, retweets, replies; 0 if unknown), and the direct link https://x.com/" + $h + "/status/ID. Return chronological.")}], tools:[{type:"x_search"}]}' > /tmp/xai-shiplog-operator-payload.json
-HTTP=$(./secretcurl -s -o /tmp/xai-shiplog-operator.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
-  -H "Content-Type: application/json" -H "Authorization: Bearer {XAI_API_KEY}" -d @/tmp/xai-shiplog-operator-payload.json)
-echo "xai http=$HTTP bytes=$(wc -c </tmp/xai-shiplog-operator.json)"
+jq -n --arg h "<OPERATOR_HANDLE>" --arg sd "<SINCE_DATE>" --arg td "<TODAY>" '{model:"grok-4.7", input:[{role:"user", content:("Search X for posts by @" + $h + " between " + $sd + " and " + $td + ". Return each post with full text, date, type (original|reply|RT - an RT text starts with \"RT @\"), exact engagement counts (likes, retweets, replies; 0 if unknown), and the direct link https://x.com/" + $h + "/status/ID. Return chronological.")}], tools:[{type:"x_search"}]}' > /tmp/xai-shiplog-operator-payload.json
+```
+```bash
+./secretcurl -s -o /tmp/xai-shiplog-operator.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
+  -H "Content-Type: application/json" -H "Authorization: Bearer {XAI_API_KEY}" -d @/tmp/xai-shiplog-operator-payload.json
 ```
 
 *Product/project accounts* (`SRC=projects`):
 ```bash
-jq -n --arg sd "$SINCE_DATE" --arg td "$TODAY" --arg ph "$PRODUCT_HANDLES" '{model:"grok-4.7", input:[{role:"user", content:("Search X for posts between " + $sd + " and " + $td + " from these accounts: " + $ph + ". Focus on launches, announcements, and any brag about a security fix merged into another project. For each: @handle, full text, date, exact engagement counts (likes, retweets, replies; 0 if unknown), and the direct link https://x.com/handle/status/ID. Skip retweets of others.")}], tools:[{type:"x_search"}]}' > /tmp/xai-shiplog-projects-payload.json
-HTTP=$(./secretcurl -s -o /tmp/xai-shiplog-projects.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
-  -H "Content-Type: application/json" -H "Authorization: Bearer {XAI_API_KEY}" -d @/tmp/xai-shiplog-projects-payload.json)
-echo "xai http=$HTTP bytes=$(wc -c </tmp/xai-shiplog-projects.json)"
+jq -n --arg sd "<SINCE_DATE>" --arg td "<TODAY>" --arg ph "<PRODUCT_HANDLES>" '{model:"grok-4.7", input:[{role:"user", content:("Search X for posts between " + $sd + " and " + $td + " from these accounts: " + $ph + ". Focus on launches, announcements, and any brag about a security fix merged into another project. For each: @handle, full text, date, exact engagement counts (likes, retweets, replies; 0 if unknown), and the direct link https://x.com/handle/status/ID. Skip retweets of others.")}], tools:[{type:"x_search"}]}' > /tmp/xai-shiplog-projects-payload.json
+```
+```bash
+./secretcurl -s -o /tmp/xai-shiplog-projects.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
+  -H "Content-Type: application/json" -H "Authorization: Bearer {XAI_API_KEY}" -d @/tmp/xai-shiplog-projects-payload.json
 ```
 
 For each source, on `HTTP=200` with a non-empty body, parse that source's file with the standard extractor and mark `x_source=xai`:
@@ -179,21 +191,22 @@ From the **operator** text, separate **original posts** from **RTs** (RT text st
 ### 4. Ecosystem + traction sweep (best-effort — skip gracefully)
 
 - **Ecosystem mentions** - only if `ecosystem_scouts` (`scouts:`) is configured. **Path A (primary): twitterapi.io `advanced_search`** across the scout handles, scoped to product terms and the window (`SRC=ecosystem`):
+  Build `SCOUTQ` yourself the same way as `FROMQ` (scout handles, `@` dropped, each prefixed `from:`, joined with ` OR `) and `TERMS` from `PRODUCT_HANDLES` (`@` dropped, no prefix, joined with ` OR `). Then one call with the query written in literally:
   ```bash
-  SCOUTQ=$(printf '%s' "$ECOSYSTEM_SCOUTS" | tr ',' ' ' | tr -s ' ' '\n' | sed 's/^@//;/^$/d;s/^/from:/' | paste -sd'|' - | sed 's/|/ OR /g')
-  TERMS=$(printf '%s' "$PRODUCT_HANDLES" | tr ',' ' ' | tr -s ' ' '\n' | sed 's/^@//;/^$/d' | paste -sd'|' - | sed 's/|/ OR /g')
-  Q="($SCOUTQ) ($TERMS) since:$SINCE_DATE until:$TODAY"
-  HTTP=$(./secretcurl -s -o /tmp/tw-ecosystem.json -w '%{http_code}' -G "https://api.twitterapi.io/twitter/tweet/advanced_search" \
-    --data-urlencode "query=$Q" --data-urlencode "queryType=Latest" -H "X-API-Key: {TWITTER_API_KEY}")
-  echo "twitterapi http=$HTTP bytes=$(wc -c </tmp/tw-ecosystem.json)"
-  # on HTTP 200: jq -r '.tweets[] | [.author.userName, (.author.followers // "?"), .createdAt, .url, .text] | @tsv' /tmp/tw-ecosystem.json
+  ./secretcurl -s -o /tmp/tw-ecosystem.json -w 'twitterapi http=%{http_code} bytes=%{size_download}\n' -G "https://api.twitterapi.io/twitter/tweet/advanced_search" \
+    --data-urlencode "query=(<SCOUTQ>) (<TERMS>) since:<SINCE_DATE> until:<TODAY>" --data-urlencode "queryType=Latest" -H "X-API-Key: {TWITTER_API_KEY}"
+  ```
+  On HTTP 200, parse it as its own call:
+  ```bash
+  jq -r '.tweets[] | [.author.userName, (.author.followers // "?"), .createdAt, .url, .text] | @tsv' /tmp/tw-ecosystem.json
   ```
   On `HTTP=200` with parsed rows, mark `x_source=twitterapi` and capture `.author.followers` when present for the flex ("featured by @X (Nk)"; follower counts are best-effort on search results). **Path B (fallback): xAI Grok `x_search`** - only on a real Path A failure (`http-<code>` / `empty` / `timeout` / `key-unset`), the same curl shape as Step 3 Path B, into its own tmp file:
   ```bash
-  jq -n --arg sd "$SINCE_DATE" --arg td "$TODAY" --arg es "$ECOSYSTEM_SCOUTS" --arg ph "$PRODUCT_HANDLES" '{model:"grok-4.7", input:[{role:"user", content:("Search X between " + $sd + " and " + $td + " for posts from these recap/scout accounts: " + $es + " that mention any of these products: " + $ph + ". Return each mention with @handle, follower_count, full text, date, and the direct link https://x.com/handle/status/ID - recaps, rankings, partner shares.")}], tools:[{type:"x_search"}]}' > /tmp/xai-shiplog-ecosystem-payload.json
-  HTTP=$(./secretcurl -s -o /tmp/xai-shiplog-ecosystem.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
-    -H "Content-Type: application/json" -H "Authorization: Bearer {XAI_API_KEY}" -d @/tmp/xai-shiplog-ecosystem-payload.json)
-  echo "xai http=$HTTP bytes=$(wc -c </tmp/xai-shiplog-ecosystem.json)"
+  jq -n --arg sd "<SINCE_DATE>" --arg td "<TODAY>" --arg es "<ECOSYSTEM_SCOUTS>" --arg ph "<PRODUCT_HANDLES>" '{model:"grok-4.7", input:[{role:"user", content:("Search X between " + $sd + " and " + $td + " for posts from these recap/scout accounts: " + $es + " that mention any of these products: " + $ph + ". Return each mention with @handle, follower_count, full text, date, and the direct link https://x.com/handle/status/ID - recaps, rankings, partner shares.")}], tools:[{type:"x_search"}]}' > /tmp/xai-shiplog-ecosystem-payload.json
+  ```
+  ```bash
+  ./secretcurl -s -o /tmp/xai-shiplog-ecosystem.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
+    -H "Content-Type: application/json" -H "Authorization: Bearer {XAI_API_KEY}" -d @/tmp/xai-shiplog-ecosystem-payload.json
   ```
   On `HTTP=200` + non-empty, parse `/tmp/xai-shiplog-ecosystem.json` with the standard extractor and mark `x_source=xai`. If both paths fail for a real reason (`http-<code>` / `empty` / `timeout`, or `key-unset`), skip this source with the true reason - **never fabricate a mention**. Confirm any handle is real before @-mentioning (a wrong tag in a public post is worse than none). Skip entirely if no `scouts:` configured.
 - **Product traction** (OpenRouter / x402 / analytics) — only if a source is configured for the product. If you have an app/server id, WebFetch its page; otherwise say "no product-traction sources wired yet" and move on. Keep any number exactly as measured — don't round 79 → ~80.
@@ -242,20 +255,24 @@ traction:
 Unless `dry-run`, record this run so the next one starts where this ended:
 ```bash
 mkdir -p memory/state
-HEAD_SHA=$(git rev-parse HEAD 2>/dev/null || echo "")
-jq -n --arg at "$NOW" --arg sha "$HEAD_SHA" --arg win "$SINCE" \
-  '{last_run_at:$at, last_commit_sha:$sha, window_start:$win}' > memory/state/shiplog-last.json
+```
+```bash
+git rev-parse HEAD
+```
+It prints HEAD_SHA (if it fails, HEAD_SHA is empty). Write `memory/state/shiplog-last.json` with Write, values written in literally:
+```json
+{"last_run_at":"<NOW>","last_commit_sha":"<HEAD_SHA>","window_start":"<SINCE>"}
 ```
 Advance on **every** completed run — including `SHIPLOG_NOTHING_NEW` / `SHIPLOG_LIGHT` / `SHIPLOG_NO_MATCH` — so the window always moves forward. The workflow auto-commits it (no `git` here). On `dry-run`, do NOT write it.
 
 ### 9. Notify
 
 ```bash
-REPO_URL=$(gh repo view --json url -q .url)
-ARTICLE_URL="${REPO_URL}/blob/main/output/articles/shiplog-${TODAY}.md"
+gh repo view --json url -q .url
 ```
+It prints REPO_URL. `ARTICLE_URL` = `<REPO_URL>/blob/main/output/articles/shiplog-<TODAY>.md`.
 
-Write the ready-to-post shiplog to a temp file — `/tmp/shiplog-notify.md` — and send it with `./notify -f /tmp/shiplog-notify.md` (use `-f` rather than `./notify "$(cat …)"` so a long multi-line post is passed as a file instead of a giant argv). Append `${ARTICLE_URL}` as the last line. For `SHIPLOG_NOTHING_NEW` / `SHIPLOG_NO_MATCH`, send a one-line status instead of the post (or stay silent on sub-daily cadences).
+Write the ready-to-post shiplog to a temp file with Write - `/tmp/shiplog-notify.md` - and send it with `./notify -f /tmp/shiplog-notify.md` (use `-f` rather than `./notify "$(cat …)"` so a long multi-line post is passed as a file instead of a giant argv). Append `${ARTICLE_URL}` as the last line. For `SHIPLOG_NOTHING_NEW` / `SHIPLOG_NO_MATCH`, send a one-line status instead of the post (or stay silent on sub-daily cadences).
 
 ### 10. Log
 
@@ -277,6 +294,7 @@ Append to `memory/logs/${TODAY}.md`:
 - **GitHub**: every call uses `gh` (auth handled internally) — never curl the GitHub API. For cross-repo reach set `GH_GLOBAL` (the workflow exports it as `GH_TOKEN`; never pass it inline); with only the built-in token you'll see this repo plus public repos, which still covers public flagships.
 - **X**: the primary path for every X source is **twitterapi.io** (`https://api.twitterapi.io/twitter`, header `X-API-Key: {TWITTER_API_KEY}` via `./secretcurl`) - fast (~700ms) structured tweet objects with exact engagement counts, real permalinks, and parsed dates, so no fabrication risk. Use `/user/last_tweets?userName=<h>` for a single timeline (filter the window client-side on `.createdAt`) and `/tweet/advanced_search?queryType=Latest` with `since:`/`until:` inside the query for multi-account or scout sweeps (Step 3). On a real failure (`key-unset` / `http-<code>` / `empty` / `timeout`) fall back to Grok `x_search` (`XAI_API_KEY`, `curl https://api.x.ai/v1/responses`, `--max-time 150`, Bash tool `timeout` >=180000), then WebFetch of the public `x.com/<handle>` profile as a last resort.
 - **Never abort on a single source failure** — note the gap in the digest and still write + notify.
+- **Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`X=$(...)`), uses `if` / `for` / `[ ... ] &&` tests, or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn. So each `date`, `jq`, `gh` and `./secretcurl` is its own call: read the value it prints and write it in literally where a later command shows `<NAME>`; loop over repos as one call per repo; build the `from:` queries yourself instead of with `printf | tr | sed | paste`; check the key with the skill's original one-line key check; and write state files with Write, not a shell redirect.
 
 ## Constraints
 
