@@ -30,7 +30,9 @@
 //      count matches, and its backtick-listed slug SET equals packs.json exactly
 //      (a missing/added/renamed skill is the failure this is really here for).
 //   3. HEADLINE COUNTS - every pack-count phrase (PACK_COUNT_PATTERNS below)
-//      == total_packs, and "all N skills by pack" == total_skills.
+//      == the first-party pack count, and "all N skills by pack" == the
+//      first-party skill count (both recomputed from the packs; a community
+//      `installed` pack from skills.lock is never counted).
 //   Each of 2-3 must match in at least one checked file: if a reword or a moved
 //   table leaves a check with nothing to verify, the run FAILS (retarget the
 //   check here) instead of passing as a silent no-op.
@@ -133,16 +135,20 @@ if (!Array.isArray(packs?.packs)) {
 }
 
 // key -> { count, slugs:Set }, in catalog order for stable messages.
+// Only first-party packs count. bin/generate-packs-json appends a synthetic
+// `installed` pack (kind "community") once skills.lock has entries, and folds
+// it into total_packs / total_skills; the README and docs describe the
+// first-party catalog only, so that pack is skipped and the totals are
+// recomputed here instead of read from the file (#1310).
 const catalog = new Map()
 for (const p of packs.packs) {
   if (typeof p?.key !== 'string') continue
+  if (p.kind === 'community') continue
   const slugs = Array.isArray(p.skills) ? p.skills.map((s) => (typeof s === 'string' ? s : s?.slug)).filter(Boolean) : []
   catalog.set(p.key, { count: slugs.length, slugs: new Set(slugs) })
 }
-const totalPacks = typeof packs.total_packs === 'number' ? packs.total_packs : catalog.size
-const totalSkills = typeof packs.total_skills === 'number'
-  ? packs.total_skills
-  : [...catalog.values()].reduce((n, p) => n + p.count, 0)
+const totalPacks = catalog.size
+const totalSkills = [...catalog.values()].reduce((n, p) => n + p.count, 0)
 
 const cellsOf = (line) => line.split('|').slice(1, -1).map((c) => c.trim())
 const isSeparator = (line) => /^\|[\s:|-]+\|$/.test(line)
