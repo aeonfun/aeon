@@ -72,9 +72,13 @@ jobs:
           # each skill/chain's last dispatch as a debt ledger and catches up any
           # slot missed within this many hours. It is also the de-facto max
           # lateness: a slot older than this is skipped rather than fired stale.
-          # 12h covers a bad half-day tick outage while staying same-day (a daily
-          # skill's slots are 24h apart, so this can never double-fire). Tune here.
-          CATCHUP_HOURS=12
+          # 23h, not 12h: GitHub fires this workflow only ~3-6 times a day, so
+          # 12-16h tick gaps are common and a 12h window dropped whole slots
+          # (Monday weekly runs that never fired). 23 keeps the window under one
+          # day (hour buckets 0..23 reach back at most 23h59m), so at most one slot
+          # of a daily skill is ever in view, and each dispatch pays only the
+          # newest owed slot: a daily skill cannot double-fire. Tune here.
+          CATCHUP_HOURS=23
 
           # Circuit breaker: once a skill has failed BREAKER_THRESHOLD times in a
           # row (consecutive_failures, folded by scripts/state_reduce.py), stop
