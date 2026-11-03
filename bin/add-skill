@@ -218,10 +218,7 @@ for skill in "${SKILL_NAMES[@]}"; do
 
   # Record provenance in skills.lock
   SKILL_REMOTE_PATH="skills/$skill/SKILL.md"
-  COMMIT_SHA=$(gh api -X GET "repos/$REPO/commits" \
-    -f path="$SKILL_REMOTE_PATH" -f sha="$BRANCH" -f per_page=1 \
-    --jq '.[0].sha' 2>/dev/null || true)
-  [[ "$COMMIT_SHA" =~ ^[0-9a-f]{40}$ ]] || COMMIT_SHA="unknown"
+  COMMIT_SHA=$(skill_commit_sha "$REPO" "$SKILL_REMOTE_PATH" "$BRANCH")
 
   NEW_ENTRY=$(jq -n \
     --arg name "$skill" \
