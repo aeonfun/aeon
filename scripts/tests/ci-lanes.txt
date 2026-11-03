@@ -67,6 +67,7 @@
 9 | health-issue ensure-race tests | bash scripts/tests/test_health_issue.sh
 2 | skill-health harness routing tests | bash scripts/tests/test_skill_health_routing.sh
 2 | memory-flush prep tests | python3 scripts/tests/test_memory_prep.py
+3 | fetch-tweets idle gate tests (fake twitterapi, no network) | python3 scripts/tests/test_fetch_tweets_idle.py
 7 | validate-config unit tests | node --test scripts/validate-config.test.js
 9 | validate-config aeon.yml structural check | node scripts/validate-config.js
 8 | cron-due scheduler decision tests | bash scripts/tests/test_cron_due.sh

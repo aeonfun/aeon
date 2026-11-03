@@ -203,12 +203,15 @@ NOTES
 # (Langfuse, 30 days): 11-19% of all Bash calls were refused, mostly probes for
 # whether a key is set (`env | grep`, `printenv X`, `echo ${X:+yes}`) and calls
 # that are not one allowlisted command (a leading VAR=..., if/for/while, `cd x &&`).
-# Each refusal costs a full model turn, so name the keys that are present.
+# Each refusal costs a full model turn, so name the keys that are present. The
+# 2026-11-03 Langfuse review still found refusals on shapes skills teach in their
+# own snippets (`CUTOFF=$(date ...)`, `for r in ...; do gh api ...`,
+# `jq ...; jq ...`), so the note names those shapes and the split that replaces them.
 # $2 = skill name; its declared keys (scripts/skill_requires.sh) are checked
 # against this process's env, which the Run step has already filled.
 shell_run_notes() {
   local skill="${1:-}" key have="" missing=""
-  echo "Each Bash call must be one allowed command; pipes are fine. A call that starts with VAR=value, uses if/for/while, or chains with ; or && is refused unless every part is itself allowed, so split it into separate calls."
+  echo "Each Bash call must be one allowed command; pipes are fine. Do not start a call with VAR=value or VAR=\$(...), use if/for/while, or join commands with ;, && or ||: those calls get refused and cost a turn, even where a skill's own example shows that shape. Split them instead: run date (or any lookup) as its own call and write the printed value into the next command, run one jq per call, and make one call per repo or item instead of a loop."
   [ -n "$skill" ] || return 0
   while IFS= read -r key; do
     [[ "$key" =~ ^[A-Za-z_][A-Za-z0-9_]*$ ]] || continue
