@@ -27,6 +27,10 @@
 #                         Self-hosted URLs work too. LANGFUSE_BASE_URL is an alias.
 #   LANGFUSE_TRACING      set to 0/false/off/no to force-disable even with keys set.
 #   LANGFUSE_LOG_CONTENT  1 (default) = capture prompts + responses + tool params.
+#                         Claude Code's spans carry no reply text (a logs-signal
+#                         event), so the final reply rides on run-harness's root
+#                         span instead, masked + bounded (harness-adapter/lib/
+#                         otel-span.sh reads OTEL_LOG_ASSISTANT_RESPONSES).
 #                         0 = metadata only (redact all content).
 #                         all = additionally capture tool input/output bodies.
 #   AEON_OTEL_COMPONENT   label for this call site (skill-run|scorer|feed|message);
