@@ -145,6 +145,14 @@ for tier in write read-only; do
   bash "$M" run-notes "$tier" | grep -q "Each Bash call must be one allowed command" \
     && pass "run-notes $tier: shell-shape note" || bad "run-notes $tier: shell-shape note"
 done
+# The shapes skills still taught (Langfuse review 2026-11-03: CUTOFF=$(date ...),
+# for loops, jq ...; jq ...) are named, with the split that replaces them.
+SHAPE=$(bash "$M" run-notes write)
+case "$SHAPE" in
+  *'VAR=$(...)'*"if/for/while"*";, && or ||"*"run date"*"one jq per call"*"one call per repo or item"*)
+    pass "run-notes: names VAR=\$(...), loops and ; chains, and the split" ;;
+  *) bad "run-notes: shape note wording ($SHAPE)" ;;
+esac
 N=$(ZZZ_SET_KEY=s3cr3t-value bash "$M" run-notes write "$KEYS")
 echo "$N" | grep -q "Keys set for this run: ZZZ_SET_KEY\." && pass "run-notes: present key named" || bad "run-notes: present key named"
 echo "$N" | grep -q "Keys NOT set for this run: ZZZ_UNSET_KEY\." && pass "run-notes: missing key named" || bad "run-notes: missing key named"

@@ -17,8 +17,10 @@
 # HTTP and reads OTEL_EXPORTER_OTLP_ENDPOINT / _HEADERS / _PROTOCOL from the
 # environment, exactly as langfuse-otel.sh sets them.
 #
-# CONTENT: only numeric usage + model + harness are recorded as gen_ai.*
-# attributes. The prompt and the result text are NEVER put on the span.
+# CONTENT: on this per-harness span only numeric usage + model + harness are
+# recorded as gen_ai.* attributes; the prompt and the result text are NEVER put
+# on it. (The claude root span below carries the final reply, masked, when
+# content logging is on; see rh_trace_end.)
 
 # A timestamp otel-cli accepts for --start/--end: Unix epoch "seconds.fraction"
 # (its docs' canonical form is `date +%s.%N`). NOT bare nanoseconds — otel-cli
@@ -79,9 +81,55 @@ rh_emit_harness_span() {
 #
 # Sent as OTLP/JSON with curl + jq, not otel-cli: otel-cli writes an all-zero
 # parent id (so Langfuse never sees its span as a root) and fails on Langfuse's
-# JSON reply. Never prompt or result text: names, model ids and counts only.
+# JSON reply. Never the prompt. The run's final reply goes on the root span as
+# its output only when content logging is on (OTEL_LOG_ASSISTANT_RESPONSES=1,
+# which scripts/langfuse-otel.sh sets for LANGFUSE_LOG_CONTENT=1 or all): Claude
+# Code's own spans never carry reply text (it is a logs-signal event Langfuse does
+# not ingest), so without this no trace shows what a run answered. Bounded to
+# RH_TRACE_OUTPUT_CHARS characters and masked by _rh_redact + mask first.
+
+RH_TRACE_OUTPUT_CHARS=4000
 
 _rh_hex() { od -An -N"$1" -tx1 /dev/urandom 2>/dev/null | tr -d ' \n'; }
+
+# _rh_redact <text>: prints <text> with every credential-shaped env var's value
+# (raw, base64 and url-encoded) replaced by REDACTED, the same rule as
+# scripts/audit.sh, plus names that rule misses (GH_GLOBAL, *_PASSWORD,
+# *_CREDENTIALS). Token shapes held in no env var (a key the model read from a
+# file) are caught by the jq mask below. Fails toward over-redaction.
+_rh_redact() {
+  local s="$1" name val enc
+  while IFS= read -r name; do
+    # *_API_KEY and *_PRIVATE_KEY are subsumed by *_KEY; kept as documentation,
+    # as in scripts/audit.sh.
+    # shellcheck disable=SC2221,SC2222
+    case "$name" in
+      *_API_KEY | *_KEY | *_TOKEN | *_SECRET | *_PAT | *_WEBHOOK_URL | *_PRIVATE_KEY | *_CHAT_ID | *_CHANNEL_ID) ;;
+      *_PASSWORD | *_CREDENTIALS | GH_GLOBAL) ;;
+      *) continue ;;
+    esac
+    val="${!name-}"
+    [ "${#val}" -lt 6 ] && continue
+    s="${s//"$val"/REDACTED}"
+    enc="$(printf '%s' "$val" | base64 | tr -d '\n')"
+    [ -n "$enc" ] && s="${s//"$enc"/REDACTED}"
+    enc="$(printf '%s' "$val" | jq -sRr @uri 2>/dev/null || true)"
+    [ -n "$enc" ] && [ "$enc" != "$val" ] && s="${s//"$enc"/REDACTED}"
+  done < <(compgen -e)
+  printf '%s' "$s"
+}
+
+# jq def mask: well-known token shapes -> REDACTED (GitHub, sk- keys such as
+# Anthropic, OpenAI, OpenRouter and Langfuse secret keys, Slack, AWS access key
+# ids, Bearer values).
+read -r -d '' _RH_MASK_JQ <<'JQ' || true
+def mask:
+  gsub("(gh[pousr]_|github_pat_)[A-Za-z0-9_]{20,}"; "REDACTED")
+  | gsub("\\bsk-[A-Za-z0-9_-]{16,}"; "REDACTED")
+  | gsub("\\bxox[abprs]-[A-Za-z0-9-]{10,}"; "REDACTED")
+  | gsub("\\bAKIA[0-9A-Z]{16}\\b"; "REDACTED")
+  | gsub("(?<b>[Bb]earer\\s+)[A-Za-z0-9._~+/=-]{16,}"; "\(.b)REDACTED");
+JQ
 
 # jq def error_class: free text -> one of the error classes every Langfuse sender
 # shares (timeout, rate_limit, credits, auth, upstream_error, network,
@@ -161,7 +209,7 @@ rh_trace_begin() {
 # output, which is all a failed run leaves). Always returns 0.
 rh_trace_end() {
   [ -n "${RH_ROOT_SPAN_ID:-}" ] || return 0
-  local rc="${1:-0}" f ef="" raw="" end body url gids
+  local rc="${1:-0}" f ef="" raw="" out="" end body url gids
   shift
   end=$(_rh_now_ns)
   for f in "$@"; do
@@ -181,6 +229,13 @@ rh_trace_end() {
       fi
     done
   fi
+  # The final reply, for the root span output: only with content logging on, the
+  # first RH_TRACE_OUTPUT_CHARS characters, env-held secret values masked here and
+  # token shapes masked in jq (mask).
+  if [ "${OTEL_LOG_ASSISTANT_RESPONSES:-}" = 1 ] && [ -n "$ef" ]; then
+    out=$(jq -r --argjson n "$RH_TRACE_OUTPUT_CHARS" '.result | strings | .[0:$n]' "$ef" 2>/dev/null) || out=""
+    [ -z "$out" ] || out=$(_rh_redact "$out")
+  fi
   gids=$(for _ in 1 2 3 4 5 6 7 8; do _rh_hex 8; echo; done | jq -R . | jq -sc .)
   body=$(mktemp "${TMPDIR:-/tmp}/rh-trace.XXXXXX") || return 0
   if ! jq -n --slurpfile envl "${ef:-/dev/null}" \
@@ -188,8 +243,8 @@ rh_trace_end() {
     --arg start "$RH_ROOT_START_NS" --arg end "$end" --arg rc "$rc" \
     --arg model "${RH_MODEL:-default}" --arg res "${OTEL_RESOURCE_ATTRIBUTES:-}" \
     --arg svc "${OTEL_SERVICE_NAME:-aeon}" --arg comp "${AEON_OTEL_COMPONENT:-skill-run}" \
-    --arg ver "${AEON_LF_VERSION:-}" --arg raw "$raw" \
-    --argjson gids "$gids" "$_RH_ERROR_CLASS_JQ"'
+    --arg ver "${AEON_LF_VERSION:-}" --arg raw "$raw" --arg out "$out" \
+    --argjson gids "$gids" "$_RH_ERROR_CLASS_JQ$_RH_MASK_JQ"'
     def s($k; $v): {key: $k, value: {stringValue: ($v | tostring)}};
     def i($k; $v): {key: $k, value: {intValue: ($v | tostring)}};
     ($envl[0] // {}) as $e
@@ -266,6 +321,9 @@ rh_trace_end() {
               + (({"skill-run": "agent", scorer: "evaluator"}[$component] // "") as $t
                  | if $t != "" then [s("langfuse.observation.type"; $t)] else [] end)
               + (if $e.num_turns then [i("aeon.num_turns"; $e.num_turns)] else [] end)
+              # The final reply of the run (content logging on only; bounded + masked above).
+              + (if $out != "" then ($out | mask) as $o
+                  | [s("langfuse.observation.output"; $o), s("langfuse.trace.output"; $o)] else [] end)
               + (if ($e.total_cost_usd | type) == "number" then [{key: "aeon.cost_usd_reported", value: {doubleValue: $e.total_cost_usd}}] else [] end)
               # Tool calls the allowlist refused this run (count only, never the inputs).
               + (if ($e.permission_denials | type) == "array" then [i("langfuse.observation.metadata.permission_denials"; $e.permission_denials | length)] else [] end)
