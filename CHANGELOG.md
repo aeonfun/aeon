@@ -11,6 +11,11 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Added
 
+- **`flovia` skill provides live lookups through the Flovia MCP.** Answer questions with live data
+  across Nansen smart money and token flows, CoinGecko markets, direct chain reads, Zerion wallets,
+  and Exa search, backed by one-click OAuth Connect in the dashboard. Catalog now 88 skills. (#1313)
+- **Sentinel community pack reports launch buys.** The token check reports the deployer's launch
+  buy on tracked tokens. (#1305)
 - **Plugin 0.2.0 connects to the hosted Aeon MCP server.** The Claude Code and Codex
   plugin bundles the connection and a `get-started` skill that checks setup, names missing
   keys and offers a first heartbeat run. Setup changes require confirmation and secret
@@ -279,6 +284,17 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Changed
 
+- **X-reading skills default to TwitterAPI.io with xAI fallback.** `fetch-tweets`, `mention-radar`,
+  `reply-maker`, `shiplog`, and `write-tweet` read through `TWITTER_API_KEY` when set, falling
+  back to `x_search`. (#1308, #1309)
+- **Scheduler cron moves to off-peak minutes.** `.github/workflows/scheduler.yml` runs every 30 minutes
+  at minutes `11,41` to avoid GitHub schedule-drop periods, and `docs/CONFIGURATION.md` documents
+  off-peak presets. (#1307)
+- **Ecosystem list removes dead links.** Unreachable website URLs for Sparkleware and Mneme are
+  dropped while keeping their project rows and X links. (#1311)
+- **Setup skill counts follow the catalog to 88** (`87` -> `88` in `SKILL.md`, `layout.md`,
+  `mcp.md` and the `skill-anatomy.md` survey, incl. `title` 79 -> 80, `Steps` 52 -> 53 and
+  the Crypto pack 19 -> 20). Plugin copy kept in lockstep. (docs-sync)
 - **Sentinel Pack listing catches up with its eight skills,** adding
   `hook-registry-check`: it reads every address in `aeonfun/univ4-hooks` on its own
   chain and reports when a listed address has no code, its flag bits do not match, or
@@ -447,6 +463,12 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Fixed
 
+- **`skill-install` records commit SHA when unauthenticated.** Resolves the commit SHA via git
+  ls-remote when `gh` CLI is logged out. (#1312)
+- **`validate-readme-catalog` counts only first-party packs.** Skips community packs installed
+  in `skills.lock` so fork checkouts validate accurately against the first-party catalog. (#1314)
+- **Harness Claude Code `/tmp` access and otel WARNING level.** `--add-dir /tmp` prevents path
+  refusals, and runs with denied tool calls emit otel level WARNING with `error_class tool_denied`. (#1307)
 - **`validate-pack` finds a `--path` pack's LICENSE next to its manifest.** Packs that
   keep `LICENSE` in their own folder (e.g. `vaubandev/vauban --path aeon`) no longer get
   a false "no LICENSE file at pack root" warning; the repo root is still the fallback.
