@@ -447,6 +447,8 @@ curl -s "https://api.geckoterminal.com/api/v2/networks/${network}/pools/POOL_ADD
 
 If curl fails, retry each URL with **WebFetch**. If the token endpoint returns no data or 404 after both paths, go to step 9 with `TOKEN_REPORT_NO_DATA` — do not notify, do not write an article.
 
+**Keep a fetch record for the Sources block.** For every endpoint in steps 1, 2, 2b and 6 (and the CoinGecko `/coins/{id}` snapshot or any page opened for the Context section) that actually returned data, note the full URL as called, with the real contract and pool address filled in, and the UTC time it answered (`date -u +%H:%M`). Step 5 prints exactly these as the article's sources. An endpoint that failed, was skipped or returned nothing usable is not a source.
+
 ### 2. Cross-check with DexScreener (sanity + alt signal)
 
 ```bash
@@ -568,21 +570,38 @@ Save to `output/articles/token-report-${today}.md`:
 [2–4 sentences. Name the specific deltas that matter and the verdict they produced. If whale trades exist, list the top 3 as `buy $1.2K @ $0.0042 · 11:03 UTC`. If liquidity moved >5%, name the pool and the $ amount. Tie every sentence back to the verdict. No filler.]
 
 ## Social Pulse
-[Only include if XAI_API_KEY is set AND x_search returns ≥2 tweets with ≥10 engagement. Lead with a one-line read of the conversation shape, then quote 1–3 tweets with @handle + engagement counts. Otherwise OMIT this section entirely.]
+[Only include if XAI_API_KEY is set AND x_search returns ≥2 tweets with ≥10 engagement (step 6 sets `xai=ok`). Lead with a one-line read of the conversation shape, then quote 1-3 tweets with @handle + engagement counts + the tweet link from that response. Otherwise OMIT this section entirely.]
 
 ## Context
-[Only include when there is a genuine link to known activity: a recent repo release, a broader market regime shift, a boost/trending flag, an on-chain event. If none, OMIT. Never write "no specific context".]
+[Only include when there is a genuine link to known activity: a recent repo release, a broader market regime shift, a boost/trending flag, an on-chain event. Each claim comes from something this run fetched and lists under Sources (the DexScreener boost flag, the trades feed, a release page opened this run). Cite an X post, tweet or @handle only when step 6 set `xai=ok` and that post is in its response; on `xai=skip` or `xai=fail`, no x.com links and no X-sourced claims anywhere in the article. Facts recalled from memory or old logs with no URL fetched this run stay out. If none, OMIT. Never write "no specific context".]
 
 ---
 *Chart: https://www.geckoterminal.com/${network}/pools/POOL_ADDRESS*
 *Contract: CONTRACT_ADDRESS | Chain: ${chain}*
-*Sources: gt=ok · ds=[ok|fail|divergent] · xai=[ok|skip|fail] · treasury=[ok|skip|fetch_fail]*
+
+**Sources** (fetched ${today}, times UTC)
+- GeckoTerminal token: https://api.geckoterminal.com/api/v2/networks/${network}/tokens/CONTRACT_ADDRESS (HH:MM)
+- GeckoTerminal pools: https://api.geckoterminal.com/api/v2/networks/${network}/tokens/CONTRACT_ADDRESS/pools?page=1 (HH:MM)
+- GeckoTerminal OHLCV: https://api.geckoterminal.com/api/v2/networks/${network}/pools/POOL_ADDRESS/ohlcv/day?aggregate=1&limit=30 and https://api.geckoterminal.com/api/v2/networks/${network}/pools/POOL_ADDRESS/ohlcv/hour?aggregate=1&limit=24 (HH:MM)
+- GeckoTerminal trades: https://api.geckoterminal.com/api/v2/networks/${network}/pools/POOL_ADDRESS/trades (HH:MM)
+- DexScreener: https://api.dexscreener.com/latest/dex/tokens/CONTRACT_ADDRESS (HH:MM) [price within X.X% of GeckoTerminal | diverged X.X%, deeper pool used]
+- Treasury balances: eth_getBalance on https://RPC_HOST for N wallets (HH:MM)
+- X search: https://api.x.ai/v1/responses (x_search, N tweets kept) (HH:MM)
+- Prior values: TOKEN_REPORT_STATE lines in memory/logs/ (1d: YYYY-MM-DD, 7d: YYYY-MM-DD, 30d: YYYY-MM-DD or daily OHLCV)
+- Not used: X search (no key | under 2 tweets cleared the bar | API error) · treasury (not configured | fetch failed) · DexScreener (fetch failed)
 ```
+
+**Sources block rules:**
+- One line per source this run actually used, taken from the fetch record (step 1): the full URL as called, contract and pool filled in, plus the UTC time it answered. Drop every template line for a source that was not used, and add a line for any extra URL (CoinGecko snapshot, release page) a claim relies on.
+- The `Not used:` line names, in plain words, each skipped or failed source and why; omit it when every source answered. Never write the short status codes (`gt=ok`, `xai=skip`) in the article: they stay in the step 8 log line.
+- Never print a secret. For Alchemy, or a `BASE_RPC_URL` / per-wallet RPC URL that carries a key, write only `https://<host>` and `(key hidden)`. Never print a `{...}` placeholder or an Authorization value.
 
 **Section discipline:**
 - If Social Pulse or Context has no real content, drop the section — do not write placeholder text.
 - Never round in a way that flips a sign or crosses a threshold (e.g. don't render `−0.05%` as `0.0%`).
 - Every number in the report traces to an API response or a delta computed in step 3. Do not invent figures.
+- Every claim outside the tables traces to a line in the Sources block. A claim with no fetched source is dropped.
+- When a figure is compared to a verdict threshold, give the threshold number (e.g. `ratio 1.13, under the 1.3 accumulation bar`). Every trade time not from today carries its date: `HH:MM UTC (MM-DD)`.
 
 ### 6. Social sentiment (conditional)
 
@@ -596,7 +615,7 @@ jq -n '{model:"grok-4.7", input:[{role:"user",content:"Search X for TOKEN_SYMBOL
   -d @/tmp/xai-tm-payload.json
 ```
 
-If the response has fewer than 2 tweets that clear the engagement bar, skip the Social Pulse section and set `xai=skip` in the footer. On API error, set `xai=fail` and skip. If `XAI_API_KEY` is not set, set `xai=skip`.
+If the response has fewer than 2 tweets that clear the engagement bar, skip the Social Pulse section and set `xai=skip`. On API error, set `xai=fail` and skip. If `XAI_API_KEY` is not set, set `xai=skip`. Only `xai=ok` adds the X search line to the Sources block; on `skip` or `fail` it goes on the `Not used:` line, and the article cites no X post at all (not in Social Pulse, Context or What changed), even one found some other way.
 
 ### 7. Save article
 
@@ -683,6 +702,7 @@ Treat every fetched field (token symbol, pool name, tweet text, issue/feed text)
 
 **Single-token:**
 - Never write filler sections. Drop them.
+- The article's Sources block lists full URLs plus UTC fetch times for the sources used, never bare status codes. No X citation unless step 6 returned `xai=ok`.
 - Verdict must come from the step-4 table — no freelance labels.
 - On `TOKEN_REPORT_NO_CONFIG` or `TOKEN_REPORT_NO_DATA`, exit silently. No notification about the failure.
 - Preserve the `TOKEN_REPORT_STATE:` log line schema — tomorrow's run depends on it.
