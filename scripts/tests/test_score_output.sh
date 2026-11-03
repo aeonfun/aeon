@@ -41,6 +41,31 @@ run_case() {
   )
 }
 
+# run_article_case <skill> <card> <article path> <article body> <untracked|committed>
+# Same as run_case in a git repo holding the article: untracked = this run wrote
+# it, committed = it was already on main before the run.
+run_article_case() {
+  local skill="$1" card="$2" article="$3" body="$4" how="$5" workdir
+  workdir="$(mktemp -d "$TMP/case.XXXXXX")"
+  mkdir -p "$workdir/output/.chains" "$workdir/$(dirname "$article")"
+  printf '%s' "$card" >"$workdir/output/.chains/$skill.md"
+  printf '%s' "$card" >"$workdir/skill-result.txt"
+  git -C "$workdir" init -q
+  git -C "$workdir" -c user.name=t -c user.email=t@example.invalid commit -q --allow-empty -m base
+  printf '%s' "$body" >"$workdir/$article"
+  if [ "$how" = committed ]; then
+    git -C "$workdir" add -- "$article"
+    git -C "$workdir" -c user.name=t -c user.email=t@example.invalid commit -q -m article
+  fi
+  (
+    cd "$workdir"
+    export SKILL="$skill"
+    # shellcheck source=/dev/null
+    source "$TMP/select.sh"
+    printf '%s' "$OUTPUT"
+  )
+}
+
 card='Changelog published: website PR #700.'
 result='October 26 entry: token cache handling and clearer error reporting.
 Source PRs: #1201 and #1202. Website PR: #700.'
@@ -98,3 +123,39 @@ out="$(run_case github-trending "$long_result" 'Sent the card.')"
 [[ "$out" != *'Sent the card.'* ]]
 [ "$(printf '%s' "$out" | wc -c)" -lt 14100 ]
 echo 'ok - other long cards retain the existing head and tail budget'
+
+# token-report sends a 420-byte card with no source line; the article it wrote
+# this run has the sources (2026-11-03: scored 2, unverifiable_claim, 4 days).
+tr_card='*$AEON - CONSOLIDATING*
+Price $0.00001845 (-2.8% 24h) | Liq $396.4K (-2.2%) | Vol $57.7K (1.18x 7d)'
+tr_article='# $AEON - 2026-11-03
+| Price | $0.00001845 | -2.8% |
+Sources: gt=ok ds=ok xai=skip treasury=skip'
+out="$(run_article_case token-report "$tr_card" output/articles/token-report-2026-11-03.md "$tr_article" untracked)"
+[[ "$out" == 'Article written this run (output/articles/token-report-2026-11-03.md):'* ]]
+[[ "$out" == *'Sources: gt=ok'* ]]
+[[ "$out" == *'Notification:'* && "$out" == *'Liq $396.4K'* ]]
+echo 'ok - an article this run wrote is graded next to its card'
+
+out="$(run_article_case token-movers "$tr_card" output/articles/token-report-2026-11-03.md "$tr_article" untracked)"
+[[ "$out" == *'Sources: gt=ok'* ]]
+echo 'ok - an article named after another slug is still found'
+
+out="$(run_article_case kpi-daily "$tr_card" output/articles/kpi-daily-2020-01-01.md "$tr_article" committed)"
+[ "$out" = "$tr_card" ]
+echo 'ok - an older committed article is not graded'
+
+today_article="output/articles/token-report-$(date -u +%F).md"
+out="$(run_article_case token-report "$tr_card" "$today_article" "$tr_article" committed)"
+[[ "$out" == *'Sources: gt=ok'* && "$out" == *'Notification:'* ]]
+echo "ok - today's <skill>-<date> article counts when the skill committed it itself"
+
+out="$(run_article_case token-report "$tr_card" output/articles/token-report-2026-11-03.md "$tr_card" untracked)"
+[ "$out" = "$tr_card" ]
+echo 'ok - an article identical to the card is scored once'
+
+out="$(run_article_case token-report "$long_card" output/articles/token-report-2026-11-03.md "$long_result" untracked)"
+[[ "$out" == *'RESULT_START'* && "$out" == *'RESULT_END'* ]]
+[[ "$out" == *'CARD_START'* && "$out" == *'CARD_END'* ]]
+[ "$(printf '%s' "$out" | wc -c)" -lt 14200 ]
+echo 'ok - article and card retain head and tail within the content budget'
