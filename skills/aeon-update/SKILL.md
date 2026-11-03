@@ -120,11 +120,14 @@ Everything else is **OWNED**: `skills/**`, `scripts/**`, `bin/**`, `harness-adap
 | added | absent / same as HEAD / different | CLEAN-ADD / SKIP / CONFLICT `local-collision` |
 | modified | same as HEAD | SKIP |
 | modified | same as BASELINE | CLEAN-UPDATE |
+| modified | an older upstream version, byte for byte | CLEAN-UPDATE `stale-copy` (never 3-way merged: the merge would read the upstream lines it lacks as local deletions and keep them out) |
 | modified | absent | CONFLICT `deleted-locally` |
 | modified | customized | `git merge-file --diff3`: disjoint hunks -> CLEAN-MERGE (both edits kept), overlap -> CONFLICT `operator-customized` |
 | removed | absent / same as BASELINE / edited | SKIP / CLEAN-DELETE / CONFLICT `removed-upstream-local-edited` |
 
 A removed path of a skill upstream retired (`skills/<name>/SKILL.md` gone from HEAD) whose `<name>` is `enabled: true` in the operator's `aeon.yml` is never deleted: CONFLICT `enabled-skill-removed-upstream`, its own loud PR-body section (S9). Fork-only skills are never touched (only upstream paths are ever in the change set). A blob the API cannot return is `UNREADABLE`: list it and continue with a partial sync.
+
+**Held stale copies.** Every `pending_conflicts` entry is re-checked on each run, also when upstream did not touch it in range. A local file byte-identical to one of its last 30 upstream versions was never customized (an earlier sync held it back), so it takes HEAD (CLEAN-UPDATE `stale-copy`) and leaves the list. The plan lists both kinds under `stale_copies`. To keep an older upstream version on purpose, change one line of it (a comment is enough) so it no longer matches upstream byte for byte.
 
 In `report` mode stop after the plan and go to S10.
 
@@ -184,6 +187,7 @@ PR body (`/tmp/aeon-update-pr-body.md`) - only include sections that have conten
 - **Modified skills:** `baz`
 - **Scripts / harness:** `scripts/notify.sh`, ...
 - **Workflows:** `.github/workflows/...`
+- **Stale copies replaced:** `scripts/langfuse-otel.sh`, ...  _(the plan's `stale_copies`: byte-identical to an older upstream version, so not a local edit; held or 3-way merged before)_
 - **Auto-merged (3-way):** `.github/workflows/aeon.yml`, ...  _(your local customization kept; upstream's disjoint changes applied - review the merged hunks)_
 - **Docs / other:** `docs/...`, `CLAUDE.md`, ...
 
