@@ -15,7 +15,7 @@ Pairs with [`ICP-INTEGRATION-PRD.md`](ICP-INTEGRATION-PRD.md). Newest first.
 | A | ICP connectivity | PR | `docs/icp/ICP-CONNECTIVITY.md` (in #1330); headless read path curl-verified (public IC dashboard/SNS APIs); identity-gated reads documented + fail-open |
 | B | ICP skill pack | PR | **PR #1330** — 4 skills; `test_skill_mode`/`requires`/`parse_aeon_config` all PASS; endpoints curl-verified; CI green |
 | C | ICP security audit | PR (CI-green) | **PR #1328** — `canister-audit`; CI fully green incl. eyebrow; awaits review approval to merge |
-| D | ICP Skills contribution | PR (prepared) | `docs/icp/contribution/icskills/` (in #1330) — 4 skills validate against the real `icskills` schema; prepared, not yet submitted to the external repo |
+| D | ICP Skills contribution | SUBMITTED | **dfinity/icskills#447** — icp-deploy-check submitted (skill-validator check pass + 4.17/5 + evals); 3 others prepared in #1330 to follow one-per-pr |
 
 ## Log
 
