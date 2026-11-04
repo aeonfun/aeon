@@ -70,6 +70,15 @@ Pairs with [`ICP-INTEGRATION-PRD.md`](ICP-INTEGRATION-PRD.md). Newest first.
 
 - **#1330 was NOT green when first reported — my verification error.** I checked for `conclusion=="FAILURE"` while checks were still in-progress and saw an empty list, so I wrongly called it green. #1330 was actually failing five gates (all pre-existing in the fork branch, not from the contribution files): stale `packs.json`, 4 new skills missing from `eyebrowlock.json`, `ICP_IDENTITY_PEM` missing from the ALL_SECRETS allowlist, stale 88→92 counts, and the 4 skills missing from the dev/crypto pack tables. All fixed (c0ba1b50) and now **verified green the rigorous way** (all checks COMPLETED, 0 non-success; 20 passed). #1328 similarly re-verified (22 passed). Lesson: verify completed+success, never "no failures yet".
 
+### 2026-11-04 (live dry-run evidence)
+
+- **Executed each skill's core logic against LIVE IC data** (dry-run; added to #1330 as `docs/icp/DEMO.md`):
+  - `sns-digest`: 3 open NNS proposals (II canister upgrades, a boundary-node update) + 5 SNS DAOs (ALICE, CANI DAO, CHAI, Catalyze, Cecil The Lion) — public/keyless.
+  - `canister-status`: II canister `rdmx6-…` → controller `r7inp-…`, module_hash `b09b4dda…`, 241 upgrades tracked; no public cycles field — public/keyless.
+  - `icp-deploy-check`: run over `token_vault/src/lib.rs` → correctly FAILED `claim_bonus` (#2/#8), passed fetch_root_key, N/A pre_upgrade, REVIEW controller-backup.
+  - `cycles-balance`: identity-gated, no public endpoint — cannot dry-run without a controller PEM (documented; fails open).
+- This satisfies **FR-A** ("a skill performs a live read and reports real data") and **FR-B** (dry-run evidence). `aeon-doctor`'s static checks are covered by the green `test_parse_aeon_config`/`test_skill_requires`/`test_skill_mode` suites (aeon-doctor is skill-only, no standalone binary). A *scheduled harness run* on a configured instance remains the next step, gated on the merges.
+
 ## Status taxonomy (2026-11-04)
 
 | Deliverable | Implemented | Locally tested | CI-verified | Live-executed | Merged | Ext. submitted |
