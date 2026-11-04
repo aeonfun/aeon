@@ -48,26 +48,19 @@ Gather from **every** source provided and **merge** everything useful — more s
 
 **X handle (`x`)** — the primary read is a **direct `curl` to the X.AI Responses API** (Grok's `x_search`); see the **Fetching the X account** contract below. Attempt Path A first whenever the key is present — set the Bash tool `timeout` to ≥180000 and capture the HTTP status. Fall through to the lower-quality paths only on a real failure. Read in this order, first with data wins but merge later ones:
 
-1. **Path A - X.AI API (primary):** one call for the account bio/profile plus a wide, diverse sample of original posts across a long window (topics, tones, engagement levels - not just the viral ones). `<HANDLE>` is the normalised handle from step 0, written in literally. Three calls (see **Shell shape** under Fetching the X account). First check the key:
+1. **Path A - X.AI API (primary):** one call for the account bio/profile plus a wide, diverse sample of original posts across a long window (topics, tones, engagement levels - not just the viral ones). `<HANDLE>` is the normalised handle from step 0, written in literally. One call (see **Shell shape** under Fetching the X account). First check the key: read the "Keys set for this run" line in your run notes, never a shell test (those are refused and cost a turn). `XAI_API_KEY` on that line = `KEY_PRESENT`, not on it = `KEY_UNSET`.
+   Build the request body with `jq -n`, the handle written into the filter literally (a jq `$name` variable and a `>` redirect into a file are both refused), and pipe it straight into the send, so its command line stays 100% literal (no shell var expansion in the argv - the permission analyzer blocks that). It prints the HTTP status; secretcurl also prints an `http=... bytes=...` line on stderr:
    ```bash
-   [ -n "$XAI_API_KEY" ] && echo KEY_PRESENT || echo KEY_UNSET
-   ```
-   Build the request body with jq into a FIXED file. The send below reads that file (`@/tmp/xai-soul-payload.json`), so its command line stays 100% literal (no shell var expansion in the argv - the permission analyzer blocks that):
-   ```bash
-   jq -n --arg h "<HANDLE>" '{
+   jq -n '{
      model: "grok-4.7",
-     input: [{role: "user", content: ("Build a voice and identity profile of X/Twitter account @" + $h + ". Step 1: return their profile — display name, bio/description, location, website, and what they pin or lead with. Step 2: return a WIDE, DIVERSE sample of 40-60 of their OWN ORIGINAL posts across a long window (not just the last day, not only the viral ones): mix short reactions, medium takes, and longer threads; span different topics, tones, and engagement levels; include some high-engagement and some quiet posts so their full range shows. Include representative replies and quote-tweets — they carry voice and opinion — but skip pure retweets of others. For EACH post return: the full text VERBATIM (never a paraphrase), the date, the type (original|reply|quote|thread-part), and the direct permalink https://x.com/" + $h + "/status/ID. Favour breadth of register over recency.")}],
+     input: [{role: "user", content: "Build a voice and identity profile of X/Twitter account @<HANDLE>. Step 1: return their profile — display name, bio/description, location, website, and what they pin or lead with. Step 2: return a WIDE, DIVERSE sample of 40-60 of their OWN ORIGINAL posts across a long window (not just the last day, not only the viral ones): mix short reactions, medium takes, and longer threads; span different topics, tones, and engagement levels; include some high-engagement and some quiet posts so their full range shows. Include representative replies and quote-tweets — they carry voice and opinion — but skip pure retweets of others. For EACH post return: the full text VERBATIM (never a paraphrase), the date, the type (original|reply|quote|thread-part), and the direct permalink https://x.com/<HANDLE>/status/ID. Favour breadth of register over recency."}],
      tools: [{type: "x_search"}]
-   }' > /tmp/xai-soul-payload.json
-   ```
-   Then send it in its own call (it prints the HTTP status; secretcurl also prints an `http=... bytes=...` line on stderr):
-   ```bash
-   ./secretcurl -s -o /tmp/xai-soul.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
+   }' | ./secretcurl -s -o /tmp/xai-soul.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
      -H "Content-Type: application/json" \
      -H "Authorization: Bearer {XAI_API_KEY}" \
-     -d @/tmp/xai-soul-payload.json
+     --data-binary @-
    ```
-   On `HTTP=200` with a non-empty body, parse with `jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text'` and mark `data_source=api`. (If a scheduled batch ever loops this over several handles, give each call a unique temp file, e.g. `/tmp/xai-soul-<HANDLE>.json` for the response and `/tmp/xai-soul-payload-<HANDLE>.json` for the request body, one call per handle with the handle written in literally.)
+   On `HTTP=200` with a non-empty body, parse with `jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text'` and mark `data_source=api`. (If a scheduled batch ever loops this over several handles, give each call a unique response file, e.g. `/tmp/xai-soul-<HANDLE>.json`, one call per handle with the handle written in literally.)
 2. **Path B — x-mcp (local mode):** only if the key is `KEY_UNSET`, or Path A returned a non-2xx / empty / timeout — if the `x-mcp` MCP server is available, call `get_user_profile` and `get_user_tweets`. Mark `data_source=x-mcp`.
 3. **Path C — WebSearch (last resort, lower quality):** only if the key is unset and x-mcp is unavailable, or every path above failed — `from:${handle}` and the handle's name → bio, recurring themes, a handful of representative posts. WebSearch favours old high-engagement posts, so it undersamples the quiet range that makes a voice recognisable; note the true reason it was reached (`key-unset` | `http-<code>` | `empty` | `timeout`, never "XAI_API_KEY unavailable" when the key was set). Mark `data_source=websearch`.
 
@@ -214,11 +207,10 @@ If `soul/SOUL.md` already had real (non-scaffold) operator content, the previous
 
 ### 8. Notify
 
-Write the body to a temp file and send with `./notify -f` (avoids the long-argv sandbox issue):
+Send the body on stdin with `./notify -f -` and a quoted heredoc, in ONE Bash call (avoids the long-argv sandbox issue; a `cat > file` redirect is refused in this run):
 
 ```bash
-mkdir -p .pending-notify-temp
-cat > ".pending-notify-temp/soul-builder-${today}.md" << 'NOTIF_EOF'
+./notify -f - <<'NOTIF_EOF'
 soul built — ${subject}
 
 identity: ${one-line identity}
@@ -229,7 +221,6 @@ ${1-2 sentence read on the voice in Aeon's own plain tone — the single most di
 
 review + edit in the dashboard Soul tab, then Pull to refresh.
 NOTIF_EOF
-./notify -f ".pending-notify-temp/soul-builder-${today}.md"
 ```
 
 ### 9. Log
@@ -259,12 +250,12 @@ Append to `memory/logs/${today}.md` under a `### soul-builder` heading (the heal
 
 `XAI_API_KEY` is **injected into this skill's environment** (declared in `requires:`). When it is present, **the primary way to read the X account is a direct `curl` to `https://api.x.ai/v1/responses` with `Authorization: Bearer {XAI_API_KEY}`** (Grok's `x_search`, model `grok-4.7`). There is no network sandbox blocking this - just make the call. The rules:
 
-1. **Check, don't assume.** Run `[ -n "$XAI_API_KEY" ] && echo KEY_PRESENT || echo KEY_UNSET`. If `KEY_PRESENT` (it will be on a normal run), you are required to try Path A before any fallback.
+1. **Check, don't assume.** Read the "Keys set for this run" line in your run notes, never a shell test (those are refused and cost a turn): `XAI_API_KEY` on that line = `KEY_PRESENT`, not on it = `KEY_UNSET`. If `KEY_PRESENT` (it will be on a normal run), you are required to try Path A before any fallback.
 2. **Allow enough time.** The `x_search` call typically takes 30–120s (it searches X live). When you invoke the Bash tool for the curl, **set the tool's `timeout` to at least 180000 (180s)**, and the curl carries **`--max-time 150`** so it fails cleanly instead of hanging. A curl that is slow is **not** a missing key — never treat a timeout as "key unavailable".
 3. **Capture the HTTP status** so the fallback decision is based on fact, not assumption (see the Path A snippet in step 1: the `./secretcurl ... -w '%{http_code}'` call prints it). `HTTP=200` with a non-empty body → use it (`data_source=api`) and parse with the standard `jq` extractor.
 4. **Fall back only on a real failure**, and **record the true reason** — never write "XAI_API_KEY unavailable" when the key was set. Use one of: `key-unset` (only if step 1 said `KEY_UNSET`), `http-<code>` (non-2xx), `empty` (200 but no posts parsed), `timeout` (curl exceeded `--max-time`).
 
-**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`HTTP=$(...)`), uses `[ ... ] &&` tests, or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn. So the key check keeps the skill's original one-line form, the `jq -n` body build and the `./secretcurl` send are separate calls, the handle is written in literally where the snippet shows `<HANDLE>`, and the status comes from the `-w` output instead of an `echo`.
+**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`HTTP=$(...)`), uses `[ ... ] &&` tests, or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn. So the key check reads the run notes' "Keys set for this run" line instead of a shell test, the `jq -n` body build is piped straight into the `./secretcurl` send in one call (a `>` redirect into a file and a `$name` in a jq filter are both refused), the handle is written in literally where the snippet shows `<HANDLE>`, and the status comes from the `-w` output instead of an `echo`.
 
 **x-mcp / WebSearch are last-resort fallbacks only** for the X read — lower quality (WebSearch favours old high-engagement posts and undersamples the quiet range). Never reach for them while the key works.
 

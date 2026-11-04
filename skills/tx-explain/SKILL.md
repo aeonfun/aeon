@@ -40,12 +40,10 @@ Record: `from`, `to`, native `value`, status (success/revert), gas used, block/t
 
 ### 2. Decode the method
 
-Take the first 4 bytes of `input` (the selector). Recognize common selectors directly; otherwise fetch the `to` contract's verified ABI via Etherscan v2 (`module=contract&action=getabi`) — keyless works, and the optional key is appended via `./secretcurl` (never a bare `$SECRET`):
+Take the first 4 bytes of `input` (the selector). Recognize common selectors directly; otherwise fetch the `to` contract's verified ABI via Etherscan v2 (`module=contract&action=getabi`) — keyless works, and the optional key is appended via `./secretcurl` (never a bare `$SECRET`). Key check: read the "Keys set for this run" line in your run notes, never a shell test (those are refused and cost a turn). When `ETHERSCAN_API_KEY` is on that line, `<KEYQ>` below is `&apikey={ETHERSCAN_API_KEY}`; when it is not, leave `<KEYQ>` out. `<TO>` is the tx's `to` contract address from step 1, written in literally:
 
 ```bash
-TO="<the tx's `to` contract address from step 1>"
-KEYQ=""; [ -n "${ETHERSCAN_API_KEY:+x}" ] && KEYQ="&apikey={ETHERSCAN_API_KEY}"
-./secretcurl -m 10 -s "https://api.etherscan.io/v2/api?chainid=8453&module=contract&action=getabi&address=${TO}${KEYQ}" | jq -r '.result'
+./secretcurl -m 10 -s "https://api.etherscan.io/v2/api?chainid=8453&module=contract&action=getabi&address=<TO><KEYQ>" | jq -r '.result'
 ```
 
 Common selectors:

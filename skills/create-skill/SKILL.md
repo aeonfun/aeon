@@ -54,10 +54,7 @@ Today is ${today}. Your task is to generate a complete, production-ready skill f
    - **Name present** → continue.
    - **Name missing** → record as `NEW_SECRET_REQUIRED`. The generated skill **must** gracefully degrade or skip when the secret is absent (no hard crash). Add a `### Required secrets` section to the PR body listing what the operator must add to GitHub Actions secrets before enabling.
 
-   If the secret has no graceful fallback, the generated skill's step 1 must do:
-   ```bash
-   if [ -z "$VAR" ]; then ./notify "{skill} skipped: VAR not set"; exit 0; fi
-   ```
+   If the secret has no graceful fallback, the generated skill's step 1 must say: read the "Keys set for this run" line in your run notes, never a shell test (those are refused and cost a turn); when `VAR` is not on that line, send `./notify "{skill} skipped: VAR not set"` and stop. Declare `VAR` in the generated skill's `requires:`: that is what puts it on the line.
 
 5. **Design the skill.** Decide:
    - **Skill name** — lowercase, hyphenated, 2-3 words max (e.g., `gas-alert`, `hn-papers`). Must not collide with any existing entry under `skills/`.
@@ -264,7 +261,7 @@ Today is ${today}. Your task is to generate a complete, production-ready skill f
 
 There is no network sandbox — `curl` works, with **WebFetch** as the fallback for a flaky public GET during research. For an auth'd API the new skill will call, route it through `./secretcurl` with a `{ENV_NAME}` placeholder (the key injected via the skill's `requires:`), and `gh api` for GitHub. **Irreversible side-effects** (email, spend, on-chain writes, deploys) run **in-run** via `./secretcurl` as the skill's final, fail-closed action — there is no deferred/postprocess step, and never defer a read (see CLAUDE.md).
 
-**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`X=$(...)`, `name=...`, `VAR=... cmd`), uses `for` / `if`, contains `$(...)`, starts with `bash`, or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn. So pick the duplicate-check keywords yourself and grep once per keyword, run each `git` step as its own call with the skill name written in literally, and pass the PR body with `--body-file` (written with Write) instead of `--body "$(cat <<'EOF' ...)"`. The `if [ -z "$VAR" ]` line in step 4 is text for the generated skill, not a command this run executes.
+**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`X=$(...)`, `name=...`, `VAR=... cmd`), uses `for` / `if`, contains `$(...)`, starts with `bash`, or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn. So pick the duplicate-check keywords yourself and grep once per keyword, run each `git` step as its own call with the skill name written in literally, and pass the PR body with `--body-file` (written with Write) instead of `--body "$(cat <<'EOF' ...)"`. The key check in step 4 is text for the generated skill, not a command this run executes.
 
 ## Constraints
 

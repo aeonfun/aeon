@@ -96,11 +96,10 @@ Write the file in this shape (match the repo's existing STRATEGY.md structure). 
 
 ### 5. Notify
 
-Write to a temp file and send with `./notify -f`:
+Send the body on stdin with `./notify -f -` and a quoted heredoc, in ONE Bash call (a `cat > file` redirect is refused in this run):
 
 ```bash
-mkdir -p .pending-notify-temp
-cat > ".pending-notify-temp/strategy-builder-${today}.md" << 'NOTIF_EOF'
+./notify -f - <<'NOTIF_EOF'
 strategy drafted
 
 north-star: ${one-line north-star}
@@ -111,7 +110,6 @@ ${1 sentence in Aeon's plain voice: the single bet this strategy makes}
 
 review + edit in the dashboard Strategy tab, then Pull to refresh.
 NOTIF_EOF
-./notify -f ".pending-notify-temp/strategy-builder-${today}.md"
 ```
 
 ### 6. Log

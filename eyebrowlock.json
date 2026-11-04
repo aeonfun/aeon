@@ -196,10 +196,10 @@
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "00f9d082404bc868f92c81542e241157a53374a19a86427820c8410b8ddf7969"
+          "hash": "d0713a60fca1f9cf0b9d34f03173abd4945431d6c047f60e620206b69cd1729d"
         }
       ],
-      "contentHash": "sha256-705d6cbecedb32e66c38041e682dcb31ee43319991c6dadfefe451b6610b017b",
+      "contentHash": "sha256-43a211e892761c1c964a59fe01e68beb4598e18fa0d123b9b2354a8eeaeb7696",
       "discoveredFrom": "skills/search-skill/SKILL.md"
     },
     {
@@ -243,10 +243,10 @@
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "0bac0e1eb1948a9ab56c998adaf9bd2ca9e14a75177908a4cfd9f15176f57b36"
+          "hash": "b5e5bbc5eb44b5ee3e01ea6eede7d700ff1c0f22a3443830d5ab9cf92737ac0b"
         }
       ],
-      "contentHash": "sha256-6e3e8ca3e3b28de37ce7c12052daff41670a595f52ff2e45511d81158d345159",
+      "contentHash": "sha256-23bbf759cb62ecd52aec8bbc32f9b742cc22d3cc995a95daa2022544b7dd2c3f",
       "discoveredFrom": "skills/onchain-monitor/SKILL.md"
     },
     {
@@ -556,10 +556,10 @@
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "86c10bfc5c4066d9bcbdd004459c4c957508f7ba2cbe2166074ed7e163b7f67b"
+          "hash": "b5f6727a31390930e0631b3e3f6d8e39bf5e95a5f4963e225a3c58007bfd4631"
         }
       ],
-      "contentHash": "sha256-02c5b0552fb2bfa8c70854abc72092db6f08bc00809491f8680581baf70db755",
+      "contentHash": "sha256-336d4c9a29b9bed2f9eb9929c2bb79319a718604b67434ea5f4020050de0896b",
       "discoveredFrom": "skills/skill-health/SKILL.md"
     },
     {
@@ -661,10 +661,10 @@
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "2d2d8b1a14668b1a59c8e1cd34ef47c39135e4134612f28aa14c39a61e412c9a"
+          "hash": "9f7a59cd0bcfd2ecf04752e6f07fecd72a5b8014e106d971a95545295f95e3e2"
         }
       ],
-      "contentHash": "sha256-3afd11a6cb741138ebe9e1fab5a7996684280713d82252ce2bc6501d1b53c6ac",
+      "contentHash": "sha256-220c94358d51a3c51747afc26718c1a6f668f2214335a0c065931b700ce7700e",
       "discoveredFrom": "skills/strategy-builder/SKILL.md"
     },
     {
@@ -1702,10 +1702,10 @@
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "fdbdb95af9aa06de96ab8a547623fdb82067078c839e8fa06ede720e5611f361"
+          "hash": "972a86bc0d2dfe86104a532e9602cd8de9eba2e2bdc7e1432cdbfec0719f15d9"
         }
       ],
-      "contentHash": "sha256-269c3ae428ae0258d45639b7c6e029a0a8260f21099d1c3ea6c01b466b12d095",
+      "contentHash": "sha256-7ea0a20c34944bd1c657751f4fdcc4747608f3b866a74017a187be4f075a3e85",
       "discoveredFrom": "skills/picks-tracker/SKILL.md"
     },
     {
@@ -2042,10 +2042,10 @@
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "01e96f1e5657a5739d04fd1a28b5405746d8a0ad0b56b4da1c2660596d1da810"
+          "hash": "744b164820ae16fae9a6313c00479f6eb23752a08e413efb4f49a42ceccc2d7a"
         }
       ],
-      "contentHash": "sha256-f769e0d47602e7323c7a0e33338b1f8a8c155e32567e9e2585c6d0d9e3005f7b",
+      "contentHash": "sha256-720d13e5e046f0fcdfebc4d3d906f4885470eb9ca10d03fcb1f1985f43bb5291",
       "discoveredFrom": "skills/defi-overview/SKILL.md"
     },
     {
@@ -2567,10 +2567,10 @@
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "6c77f252eddbc5e85ac171530d873176cd8072ecdb2c50bb7fa45729031e213d"
+          "hash": "3d86c1cf0d47cc379761c42791b726ccc192518e4f9c1e5328110c4dd6fb95fb"
         }
       ],
-      "contentHash": "sha256-a974db183a0ddd44f30a8e8e0cd4437c26305755ad71219906e7e6aba822a10c",
+      "contentHash": "sha256-8cc64b6391805e31ed98d84a74d00f5c4b15a3b9b27b4137d27044de1678ebd2",
       "discoveredFrom": "skills/token-movers/SKILL.md"
     },
     {

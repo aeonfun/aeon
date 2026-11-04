@@ -39,7 +39,7 @@ A community pack is a **public GitHub repo** that holds one or more skills plus 
 
 ## Steps
 
-**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`SLUG=$(...)`, `PACK_DIR=$(mktemp -d)`, `PR_URL=$(gh pr create ...)`), uses `if` / `while` or `[ ... ] &&` tests, or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn; `awk`, `cut`, `sed`, `cp`, `mv`, `mktemp` and `tee` are not allowed commands, and a `cd` does not carry over to the next call. So parse `${var}` and the frontmatter yourself, run each command below as its own call with every value (slug, owner, repo names, title) written in literally in place of the `<SLUG>`, `<OWNER>`, `<FULL_REPO>` style placeholders, work in the fixed dir `/tmp/pack-submit-work` with absolute paths (`git -C <dir>`, not `cd <dir> && git`), copy files with `node -e` (`fs.cpSync`, `fs.copyFileSync`), and write files (the manifest, README, LICENSE, PR body) with the Write tool.
+**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`SLUG=$(...)`, `PACK_DIR=$(mktemp -d)`, `PR_URL=$(gh pr create ...)`), uses `if` / `while` or `[ ... ] &&` tests, or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn; `awk`, `cut`, `sed`, `cp`, `mv`, `mktemp` and `tee` are not allowed commands, and a `cd` does not carry over to the next call. So parse `${var}` and the frontmatter yourself, run each command below as its own call with every value (slug, owner, repo names, title) written in literally in place of the `<SLUG>`, `<OWNER>`, `<FULL_REPO>` style placeholders, work in the fixed dir `/tmp/pack-submit-work` with absolute paths (`git -C <dir>`, not `cd <dir> && git`), copy files with `node -e` (`fs.cpSync`, `fs.copyFileSync`), and write files (the manifest, README, LICENSE, PR body) with the Write tool. A `>` redirect into a file is refused too (/tmp included), and so is a jq `$name` variable: the registry edit pipes `jq` into a `node` writer with every value written into the filter as a string.
 
 1. **Parse and validate `${var}`** yourself, not with a shell script. The first whitespace-separated token is the skill slug SLUG; the rest are flags (`--repo owner/name`, `--no-register`, `--dry-run`). The slug must match `^[a-z0-9][a-z0-9-]*$` and resolve to a real directory:
    - SLUG does not match `^[a-z0-9][a-z0-9-]*$`: run `./notify "pack-submit aborted: \"<SLUG>\" is not a valid skill slug (lowercase kebab-case)"` and stop.
@@ -140,17 +140,12 @@ A community pack is a **public GitHub repo** that holds one or more skills plus 
    ```
    Make the two edits the validator (`scripts/validate-skill-packs.mjs`) checks for parity:
 
-   **(a) `catalog/skill-packs.json`** - append one object to `.packs`. Build it with `jq` from the values you resolved, written in literally (mirror the pack's own manifest: `skills` is `["<SLUG>"]`, `trust_level` is `"community"`, aggregate `secrets_required`/`capabilities` from the skill). One `jq` call writes the new file to `/tmp`, then a `node` call copies it over the clone's file:
+   **(a) `catalog/skill-packs.json`** - append one object to `.packs`. Build it with `jq` from the values you resolved, written in literally (mirror the pack's own manifest: `skills` is `["<SLUG>"]`, `trust_level` is `"community"`, aggregate `secrets_required`/`capabilities` from the skill). One call: `jq` builds the new file and pipes it into a one-line `node` writer that saves it over the clone's file (node writes only after jq has read the whole input, so the same path is safe). Each value goes into the jq filter as a JSON string (a `"` inside it becomes `\"`, and reword any `'`): a jq `$name` variable from `--arg` and a `>` redirect into a file are both refused in this run:
    ```bash
-   jq --arg repo "<FULL_REPO>" --arg name "<TITLE>" --arg desc "<DESC>" \
-      --arg author "<OWNER>" --arg homepage "https://github.com/<FULL_REPO>" \
-      --arg cat "<CATEGORY>" --arg slug "<SLUG>" \
-      '.packs += [ { repo:$repo, name:$name, description:$desc, author:$author,
-        license:"MIT", homepage:$homepage, category:$cat, trust_level:"community",
-        skills:[$slug] } ]' /tmp/pack-submit-work/aeon/catalog/skill-packs.json > /tmp/reg.json
-   ```
-   ```bash
-   node -e "require('fs').copyFileSync('/tmp/reg.json','/tmp/pack-submit-work/aeon/catalog/skill-packs.json')"
+   jq '.packs += [ { repo:"<FULL_REPO>", name:"<TITLE>", description:"<DESC>", author:"<OWNER>",
+        license:"MIT", homepage:"https://github.com/<FULL_REPO>", category:"<CATEGORY>", trust_level:"community",
+        skills:["<SLUG>"] } ]' /tmp/pack-submit-work/aeon/catalog/skill-packs.json \
+     | node -e 'require("fs").writeFileSync("/tmp/pack-submit-work/aeon/catalog/skill-packs.json", require("fs").readFileSync(0))'
    ```
    Add `secrets_required` / `capabilities` keys to that object only when the skill declares them (keep it in sync with the pack manifest). Do **not** use `trust_level: trusted` — that requires the repo to be in `skills/security/trusted-sources.txt`, and the validator rejects an unearned `trusted`.
 

@@ -176,19 +176,6 @@ build_config() {
   done
 }
 
-CONFIG="$(build_config "${args[@]}")" || refuse
-
-# Every secret curl needs is in CONFIG by now, so curl runs with an environment
-# holding none: only what it needs to reach the network (proxy, CA bundle) and
-# no credential a `-d @/proc/self/environ` could read back. -q skips ~/.curlrc,
-# which the run could have written.
-CURL_ENV=("PATH=$PATH" "HOME=${HOME:-/}")
-for v in TMPDIR LANG LC_ALL LC_CTYPE http_proxy HTTP_PROXY https_proxy HTTPS_PROXY \
-  all_proxy ALL_PROXY no_proxy NO_PROXY CURL_CA_BUNDLE SSL_CERT_FILE SSL_CERT_DIR; do
-  [ -n "${!v+x}" ] && CURL_ENV+=("$v=${!v}")
-done
-run_curl() { env -i "${CURL_ENV[@]}" curl -q -K <(printf '%s' "$CONFIG"); }
-
 # x_search is a live, variable-latency request.  Every skill uses this helper,
 # so retry only the X.AI Responses endpoint here instead of duplicating subtly
 # different retry loops in eleven SKILL.md files.  Other authenticated requests
@@ -202,6 +189,43 @@ is_xai_search() {
   done
   return 1
 }
+
+# Skills pipe the request body straight in (`jq -n '{...}' | ./secretcurl ...
+# --data-binary @-`): Claude Code refuses a shell redirect into a file, so the
+# body cannot be written to /tmp first. Stdin can be read only once, but the
+# X.AI retry below runs curl up to three times, so buffer a piped body to a
+# private temp file and point the flag at it: every attempt sends the same body.
+STDIN_BODY=""
+cleanup_stdin_body() { [ -z "$STDIN_BODY" ] || rm -f "$STDIN_BODY"; }
+trap cleanup_stdin_body EXIT
+if is_xai_search "${args[@]}"; then
+  for ((i = 0; i < ${#args[@]}; i++)); do
+    case "${args[$i]}" in
+      -d|--data|--data-binary|--data-ascii|--json)
+        j=$((i + 1))
+        if [ "${args[$j]-}" = "@-" ]; then
+          if [ -z "$STDIN_BODY" ]; then
+            STDIN_BODY="$(mktemp)"
+            cat >"$STDIN_BODY"
+          fi
+          args[j]="@$STDIN_BODY"
+        fi ;;
+    esac
+  done
+fi
+
+CONFIG="$(build_config "${args[@]}")" || refuse
+
+# Every secret curl needs is in CONFIG by now, so curl runs with an environment
+# holding none: only what it needs to reach the network (proxy, CA bundle) and
+# no credential a `-d @/proc/self/environ` could read back. -q skips ~/.curlrc,
+# which the run could have written.
+CURL_ENV=("PATH=$PATH" "HOME=${HOME:-/}")
+for v in TMPDIR LANG LC_ALL LC_CTYPE http_proxy HTTP_PROXY https_proxy HTTPS_PROXY \
+  all_proxy ALL_PROXY no_proxy NO_PROXY CURL_CA_BUNDLE SSL_CERT_FILE SSL_CERT_DIR; do
+  [ -n "${!v+x}" ] && CURL_ENV+=("$v=${!v}")
+done
+run_curl() { env -i "${CURL_ENV[@]}" curl -q -K <(printf '%s' "$CONFIG"); }
 
 run_xai_search() {
   local -a a=("$@")

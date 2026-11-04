@@ -30,7 +30,7 @@ Extract from `${var}`:
 - **--quick**: lighter mode (fewer sources, shorter report)
 - **--days=N**: custom lookback window (default: 30)
 
-**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`FROM_DATE=$(date ...)`, `UA="..."`, `HTTP=$(./secretcurl ...)`), uses `if` / `for` / `while` or a `[ -n ... ]` test, or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn. So get each date with a bare `date` call and write the printed value into later commands; write the topic, subreddits, handles, post IDs and dates into each command literally (the `<FROM_DATE>`, `<SUBREDDIT>` style placeholders in the snippets); make one call per subreddit, thread or query.
+**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`FROM_DATE=$(date ...)`, `UA="..."`, `HTTP=$(./secretcurl ...)`), uses `if` / `for` / `while` or a `[ -n ... ]` test, or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn. So get each date with a bare `date` call and write the printed value into later commands; write the topic, subreddits, handles, post IDs and dates into each command literally (the `<FROM_DATE>`, `<SUBREDDIT>` style placeholders in the snippets), jq filters included; make one call per subreddit, thread or query. A `>` redirect into a file and a jq `$name` variable (`--arg topic ... '$topic'`) are refused too, so each xAI body is a `jq -n` filter with the values written in, piped straight into `./secretcurl ... --data-binary @-`.
 
 `DAYS` is 30, or the `--days` value. Get the dates, each `date` as its own Bash call, with DAYS and then FROM_DATE written in literally:
 ```bash
@@ -113,22 +113,15 @@ curl -sL -A 'aeon-bot:last30:v1 (by /u/aeon-agent)' \
 
 **Path A — X.AI API (primary).** Confirm the key, then run the topic-window query. Set the Bash tool `timeout` to **≥180000** (x_search takes 30–120s); the curl carries `--max-time 150`. A slow curl is **not** a missing key — never treat a timeout as key-unavailable.
 
-Check the key with its own call:
+Key check: read the "Keys set for this run" line in your run notes, never a shell test (those are refused and cost a turn). `XAI_API_KEY` on that line = `KEY_PRESENT` (it will be, so Path A is required), not on it = `KEY_UNSET`.
+
+Then build the payload with `jq -n`, the topic, search variants and both dates written into the filter literally (no `--arg`: a jq `$name` variable is refused, and so is a `>` redirect into a file; a `"` inside a value becomes `\"`, and reword any `'`), and pipe it straight into the send, so the `./secretcurl` command stays 100% literal. It prints the HTTP status (secretcurl also prints an `http=... bytes=...` line on stderr):
 ```bash
-[ -n "$XAI_API_KEY" ] && echo KEY_PRESENT || echo KEY_UNSET   # prints KEY_PRESENT — Path A is required
-```
-Then build the payload to a file with `jq --arg`, the topic, search variants and both dates written in literally, so the `./secretcurl` command stays 100% literal:
-```bash
-jq -n --arg topic "<TOPIC>" --arg variants "<SEARCH_VARIANTS>" --arg fd "<FROM_DATE>" --arg td "<TO_DATE>" \
-  '{model:"grok-4.7", input:[{role:"user",content:("Search X for tweets about: "+$topic+" (also try: "+$variants+"). Date range: "+$fd+" to "+$td+". Return 15-25 substantive tweets - mix high-engagement posts with smaller accounts that add a distinct angle. For each: @handle, full text, date posted, exact engagement counts (likes, retweets, replies; 0 if unknown), follower count if available, and the direct link https://x.com/handle/status/ID. Skip retweets and reply-guy near-duplicates.")}], tools:[{type:"x_search",from_date:$fd,to_date:$td}]}' \
-  > /tmp/xai-last30-topic-payload.json
-```
-Then send it as its own call. It prints the HTTP status (secretcurl also prints an `http=... bytes=...` line on stderr):
-```bash
-./secretcurl -s -o /tmp/xai-last30-topic.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
+jq -n '{model:"grok-4.7", input:[{role:"user",content:"Search X for tweets about: <TOPIC> (also try: <SEARCH_VARIANTS>). Date range: <FROM_DATE> to <TO_DATE>. Return 15-25 substantive tweets - mix high-engagement posts with smaller accounts that add a distinct angle. For each: @handle, full text, date posted, exact engagement counts (likes, retweets, replies; 0 if unknown), follower count if available, and the direct link https://x.com/handle/status/ID. Skip retweets and reply-guy near-duplicates."}], tools:[{type:"x_search",from_date:"<FROM_DATE>",to_date:"<TO_DATE>"}]}' \
+  | ./secretcurl -s -o /tmp/xai-last30-topic.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {XAI_API_KEY}" \
-  -d @/tmp/xai-last30-topic-payload.json
+  --data-binary @-
 ```
 
 On `HTTP=200` with a non-empty body, set `X_STATUS=api` and parse with the standard extractor:
@@ -137,18 +130,13 @@ jq -r '.output[]|select(.type=="message")|.content[]|select(.type=="output_text"
 ```
 
 **Full mode — handle-restricted second call.** Using the 2-3 X handles resolved in step 1, issue a second call scoped to them (the handles are named directly in the prompt; unique tmp filename so it doesn't clobber the topic call):
-Build the handle-restricted payload to its own file with `jq --arg` (keeps the `./secretcurl` command literal), topic, handles and dates written in literally:
+Build the handle-restricted payload with `jq -n` the same way (topic, handles and dates written into the filter literally) and pipe it straight into its own send:
 ```bash
-jq -n --arg topic "<TOPIC>" --arg handles "<RESOLVED_HANDLES>" --arg fd "<FROM_DATE>" --arg td "<TO_DATE>" \
-  '{model:"grok-4.7", input:[{role:"user",content:("Search X for tweets from these accounts about "+$topic+": "+$handles+". Date range: "+$fd+" to "+$td+". For each: @handle, full text, date, engagement counts (likes, retweets, replies; 0 if unknown), and the direct link https://x.com/handle/status/ID.")}], tools:[{type:"x_search",from_date:$fd,to_date:$td}]}' \
-  > /tmp/xai-last30-handles-payload.json
-```
-Then send it as its own call:
-```bash
-./secretcurl -s -o /tmp/xai-last30-handles.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
+jq -n '{model:"grok-4.7", input:[{role:"user",content:"Search X for tweets from these accounts about <TOPIC>: <RESOLVED_HANDLES>. Date range: <FROM_DATE> to <TO_DATE>. For each: @handle, full text, date, engagement counts (likes, retweets, replies; 0 if unknown), and the direct link https://x.com/handle/status/ID."}], tools:[{type:"x_search",from_date:"<FROM_DATE>",to_date:"<TO_DATE>"}]}' \
+  | ./secretcurl -s -o /tmp/xai-last30-handles.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {XAI_API_KEY}" \
-  -d @/tmp/xai-last30-handles-payload.json
+  --data-binary @-
 ```
 Parse with the same `jq` extractor. **Quick mode** runs the topic call only.
 
@@ -386,7 +374,7 @@ For `LAST30_EMPTY` or `LAST30_ERROR`, skip the verdict/narrative lines and inste
 `XAI_API_KEY` is **injected into this skill's environment** (declared in `requires:`) and is present and valid. The **primary** X/Twitter source is a direct `curl` to `https://api.x.ai/v1/responses` with `Authorization: Bearer {XAI_API_KEY}`, model `grok-4.7`, `"tools":[{"type":"x_search"}]`. There is **no** network sandbox blocking this - just make the call (see step 3).
 
 **You MUST attempt the direct curl before any fallback:**
-1. **Check, don't assume.** `[ -n "$XAI_API_KEY" ] && echo KEY_PRESENT || echo KEY_UNSET`. If `KEY_PRESENT` (it will be), Path A is required.
+1. **Check, don't assume.** Read the "Keys set for this run" line in your run notes, never a shell test (those are refused and cost a turn): `XAI_API_KEY` on that line = `KEY_PRESENT`, not on it = `KEY_UNSET`. If `KEY_PRESENT` (it will be), Path A is required.
 2. **Allow enough time.** `x_search` typically takes 30–120s (it searches X live). Set the Bash tool `timeout` to **≥180000 (180s)** and keep **`--max-time 150`** on the curl. A slow curl is **not** a missing key — never treat a timeout as key-unavailable.
 3. **Capture the HTTP status** (`-o /tmp/xai-last30*.json -w '%{http_code}'`) so the fallback decision is fact-based. `HTTP=200` + non-empty body → use it. Parse with `jq -r '.output[]|select(.type=="message")|.content[]|select(.type=="output_text")|.text'`.
 4. **Fall back only on a real failure**, recording the true reason — `key-unset` (only if step 1 said `KEY_UNSET`), `http-<code>` (non-2xx), `empty` (200 but nothing parsed), or `timeout`. Never write "XAI_API_KEY unavailable" when the key was set.

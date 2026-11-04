@@ -29,16 +29,14 @@ Produce ONE token call and ONE prediction-market call per day, each with a numer
 
 ### 1. Fetch token data
 
-```bash
-# Optional demo key rides ./secretcurl's {COINGECKO_API_KEY} placeholder (never a bare
-# $SECRET on the line); without a key the same public endpoint works at a lower rate limit.
-CG_HDR=(); [ -n "${COINGECKO_API_KEY:+x}" ] && CG_HDR=(-H "x-cg-demo-api-key: {COINGECKO_API_KEY}")
+The optional demo key rides ./secretcurl's `{COINGECKO_API_KEY}` placeholder (never a bare secret on the line). Key check: read the "Keys set for this run" line in your run notes, never a shell test (those are refused and cost a turn). When `COINGECKO_API_KEY` is on that line keep the `-H "x-cg-demo-api-key: {COINGECKO_API_KEY}"` shown below; when it is not, drop that `-H` (the same public endpoint works keyless at a lower rate limit).
 
+```bash
 # Trending coins
-./secretcurl -s "${CG_HDR[@]}" "https://api.coingecko.com/api/v3/search/trending"
+./secretcurl -s -H "x-cg-demo-api-key: {COINGECKO_API_KEY}" "https://api.coingecko.com/api/v3/search/trending"
 
 # Top 250 by market cap with 24h and 7d changes
-./secretcurl -s "${CG_HDR[@]}" "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=1&sparkline=false&price_change_percentage=24h,7d"
+./secretcurl -s -H "x-cg-demo-api-key: {COINGECKO_API_KEY}" "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=1&sparkline=false&price_change_percentage=24h,7d"
 
 # BTC + ETH 24h/7d for relative-strength benchmark (extract from the markets call above; no extra request needed)
 

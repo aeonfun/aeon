@@ -160,29 +160,31 @@ semgrep --config=p/security-audit --config=p/owasp-top-ten --config=p/secrets \
   -o /tmp/vuln-scan/semgrep.json . 2>/dev/null
 ```
 
-**Secrets: TruffleHog** (only-verified = actually authenticates). BOTH passes are bounded. Run these verbatim; if you invoke trufflehog (or any scanner) yourself, it still needs the `timeout 300` wrapper and must not be backgrounded with `&` - a scan still running when you write the report is a scan you did not finish, and a one-shot workflow_dispatch run cannot resume it. If the first call fails with `command not found` (or `timeout` reports it cannot run `trufflehog`), record `VULN_SCANNER_SKIPPED: trufflehog not available` and skip both passes.
+**Scanner output files.** A shell `>` redirect into a file is refused in this run (`/tmp` too), so a scanner that only writes to stdout runs under a one-line `python3` wrapper: it writes the scanner's stdout to the file named first, drops its stderr (as `2>/dev/null` did), and prints the scanner's exit code as `rc=<N>`. Read that printed `rc=` value wherever this section says "exit code".
+
+**Secrets: TruffleHog** (only-verified = actually authenticates). BOTH passes are bounded. Run these verbatim; if you invoke trufflehog (or any scanner) yourself, it still needs the `timeout 300` wrapper and must not be backgrounded with `&` - a scan still running when you write the report is a scan you did not finish, and a one-shot workflow_dispatch run cannot resume it. If the first call prints `rc=127` (`timeout` cannot run `trufflehog`: command not found), record `VULN_SCANNER_SKIPPED: trufflehog not available` and skip both passes.
 ```bash
-timeout 300 trufflehog filesystem . --only-verified --json > /tmp/vuln-scan/trufflehog.json 2>/dev/null
+python3 -c 'import subprocess,sys; r=subprocess.run(sys.argv[2:], stdout=open(sys.argv[1], "wb"), stderr=subprocess.DEVNULL); print("rc=%d" % r.returncode)' /tmp/vuln-scan/trufflehog.json timeout 300 trufflehog filesystem . --only-verified --json
 ```
-Its exit code is TRUFFLEHOG_RC. If it is `124`, record `VULN_SCANNER_TIMEOUT: trufflehog filesystem scan exceeded 300s on a very large tree - recorded as fail, not retried, not left unfinished`.
+Its exit code is TRUFFLEHOG_RC. (The wrapper prints it as `rc=<N>`.) If it is `124`, record `VULN_SCANNER_TIMEOUT: trufflehog filesystem scan exceeded 300s on a very large tree - recorded as fail, not retried, not left unfinished`.
 
 Also scan full git history for secrets - BOUNDED. An unbounded `trufflehog git` walks every commit's every tree, and a large packed history (measured: 200 commits / ~369MB on one real run) can eat the whole turn budget by itself, with nothing to show it happened until the run reports "success" anyway having produced no report at all. `timeout` turns that silent budget-burn into an ordinary, honestly-recorded `fail` - same as an install failure, never a reason to write a "still running, will resume" placeholder as the final output. There is no resume: a workflow_dispatch run is one shot, and a note promising to pick back up later is not truthful about what a single run can actually do.
 ```bash
-timeout 300 trufflehog git file://. --only-verified --json > /tmp/vuln-scan/trufflehog-git.json 2>/dev/null
+python3 -c 'import subprocess,sys; r=subprocess.run(sys.argv[2:], stdout=open(sys.argv[1], "wb"), stderr=subprocess.DEVNULL); print("rc=%d" % r.returncode)' /tmp/vuln-scan/trufflehog-git.json timeout 300 trufflehog git file://. --only-verified --json
 ```
-Its exit code is TRUFFLEHOG_GIT_RC. If it is `124`, record `VULN_SCANNER_TIMEOUT: trufflehog git history scan exceeded 300s on a large packed history - recorded as fail, not retried, not left unfinished`.
+Its exit code is TRUFFLEHOG_GIT_RC. (The wrapper prints it as `rc=<N>`.) If it is `124`, record `VULN_SCANNER_TIMEOUT: trufflehog git history scan exceeded 300s on a large packed history - recorded as fail, not retried, not left unfinished`.
 
-**Dependencies: osv-scanner** (unified CVE DB across ecosystems). osv-scanner v2 (the workflow step pins v2.7.0) moved scanning under the `scan source` subcommand. The v1 bare form (`osv-scanner --recursive .`) still works on 2.x, so try v2 first and fall back to v1 only if v2 wrote NOTHING (keyed on emptiness, NOT exit code - osv exits 1 when it FINDS vulns, which must not read as a syntax error). `--no-ignore` is REQUIRED: v2 `scan source` respects .gitignore by default, so a target repo that gitignores its (committed) lockfile - common for libraries/tools - yields the misleading "No package sources found" (exit 128) and zero dependency coverage. A shipped-but-gitignored lockfile still describes real deps, so a security scan must read it. It is a no-op when lockfiles are tracked. If the call fails with `command not found`: `OSV_STATUS=skipped`, record `VULN_SCANNER_SKIPPED: osv-scanner not available`, and skip the rest of this block.
+**Dependencies: osv-scanner** (unified CVE DB across ecosystems). osv-scanner v2 (the workflow step pins v2.7.0) moved scanning under the `scan source` subcommand. The v1 bare form (`osv-scanner --recursive .`) still works on 2.x, so try v2 first and fall back to v1 only if v2 wrote NOTHING (keyed on emptiness, NOT exit code - osv exits 1 when it FINDS vulns, which must not read as a syntax error). `--no-ignore` is REQUIRED: v2 `scan source` respects .gitignore by default, so a target repo that gitignores its (committed) lockfile - common for libraries/tools - yields the misleading "No package sources found" (exit 128) and zero dependency coverage. A shipped-but-gitignored lockfile still describes real deps, so a security scan must read it. It is a no-op when lockfiles are tracked. If the call fails with `command not found` (the wrapper prints a `FileNotFoundError` for `osv-scanner` instead of an `rc=` line): `OSV_STATUS=skipped`, record `VULN_SCANNER_SKIPPED: osv-scanner not available`, and skip the rest of this block.
 ```bash
-osv-scanner scan source --recursive --no-ignore --format=json . > /tmp/vuln-scan/osv.json 2>/dev/null
+python3 -c 'import subprocess,sys; r=subprocess.run(sys.argv[2:], stdout=open(sys.argv[1], "wb"), stderr=subprocess.DEVNULL); print("rc=%d" % r.returncode)' /tmp/vuln-scan/osv.json osv-scanner scan source --recursive --no-ignore --format=json .
 ```
-Its exit code is OSV_RC. Size the output:
+Its exit code is OSV_RC. (The wrapper prints it as `rc=<N>`.) Size the output:
 ```bash
 wc -c /tmp/vuln-scan/osv.json
 ```
 Only if that printed `0`, run the v1 form (its exit code replaces OSV_RC) and size it again:
 ```bash
-osv-scanner --format=json --recursive --no-ignore . > /tmp/vuln-scan/osv.json 2>/dev/null
+python3 -c 'import subprocess,sys; r=subprocess.run(sys.argv[2:], stdout=open(sys.argv[1], "wb"), stderr=subprocess.DEVNULL); print("rc=%d" % r.returncode)' /tmp/vuln-scan/osv.json osv-scanner --format=json --recursive --no-ignore .
 ```
 Classify: exit 128 = "No package sources found" = the repo has no lockfiles/manifests to scan. That is a clean N/A (nothing to do), NOT a scan failure - osv writes an EMPTY file in that case, so emptiness alone would mislabel it `fail`. Distinguish the states:
 - `osv.json` non-empty → `OSV_STATUS=ok` (ran; results present, 0 or N dep CVEs).
@@ -640,20 +642,15 @@ Private third-party reporting uses the /reports endpoint. Do NOT use the bare /s
 
 ⚠️ CRITICAL: the payload MUST include a non-empty `vulnerabilities` array. The REST docs mark it "optional", but the create handler returns **HTTP 500 (empty body)** when it is omitted. This single bug is why every bare-API PVR in this project historically failed and got routed to the web form - the form only works because it always collects "affected products" (= vulnerabilities). Verified 2026-06-26: identical {summary,description} payload → 500 without the array, 201 with it. Always send at least one {package:{ecosystem,name}}.
 
-Write the advisory markdown to `/tmp/pvr-body.md` first with the Write tool (Summary / Impact / Location / Proof / Suggested fix / Detected by). Then build the JSON payload with one `jq` call (`--rawfile` safely encodes the multi-line body, like the old `jq -Rs`); ecosystem ∈ pip|npm|go|maven|nuget|composer|rubygems|rust|erlang|actions|pub|swift|other:
+Write the advisory markdown to `/tmp/pvr-body.md` first with the Write tool (Summary / Impact / Location / Proof / Suggested fix / Detected by). Then build the JSON payload with one `jq -Rs` call (`-Rs` reads the whole file as one raw string, `.`, and safely encodes the multi-line body) and pipe it straight into the POST via `--input -`, one call, REPO written in literally. Do not write the payload to a file first or use `--rawfile d ... $d`: a `>` redirect into a file and a jq `$name` variable are both refused in this run. Ecosystem ∈ pip|npm|go|maven|nuget|composer|rubygems|rust|erlang|actions|pub|swift|other:
 
 ```bash
-jq -n --rawfile d /tmp/pvr-body.md '{summary:"<short title>", description:$d, severity:"<critical|high|medium|low>", cwe_ids:["CWE-89"], vulnerabilities:[{package:{ecosystem:"pip", name:"<pkg-or-repo-name>"}}]}' > /tmp/pvr.json
+jq -Rs '{summary:"<short title>", description:., severity:"<critical|high|medium|low>", cwe_ids:["CWE-89"], vulnerabilities:[{package:{ecosystem:"pip", name:"<pkg-or-repo-name>"}}]}' /tmp/pvr-body.md \
+  | gh api -X POST "/repos/<REPO>/security-advisories/reports" \
+  -H "X-GitHub-Api-Version: 2022-11-28" --input -
 ```
 
-Then POST it via `--input`, its own call, REPO written in literally:
-
-```bash
-gh api -X POST "/repos/<REPO>/security-advisories/reports" \
-  -H "X-GitHub-Api-Version: 2022-11-28" --input /tmp/pvr.json
-```
-
-**Always POST via `--input <file>`, never a long inline heredoc / `-f description="$(cat …)"`** — the latter can trip Claude Code's Bash command analyzer ("Unhandled node type: string"), and `vulnerabilities` is a nested array that `-f`/`-F` can't express cleanly. Write the full JSON payload (`{summary, description, severity, cwe_ids, vulnerabilities}` — `vulnerabilities` is **mandatory**, see the ⚠️ note above) to a temp file and `gh api -X POST … --input payload.json`.
+**Always POST the jq-built payload via `--input`, never a long inline heredoc / `-f description="$(cat …)"`** — the latter can trip Claude Code's Bash command analyzer ("Unhandled node type: string"), and `vulnerabilities` is a nested array that `-f`/`-F` can't express cleanly. The full JSON payload (`{summary, description, severity, cwe_ids, vulnerabilities}` — `vulnerabilities` is **mandatory**, see the ⚠️ note above) comes from the `jq -Rs` call piped into `gh api -X POST … --input -`.
 
 Read the HTTP response code and branch accordingly. **Never** fall back to a public issue or a code-fix PR for an *unpatched* flaw (that publishes a zero-day):
 - **`201`** → reported. Record the report/advisory id and link it in the local report.
@@ -1036,10 +1033,10 @@ sending. Only `./secretcurl`, `jq`, `python3`, `grep`, `date`, `echo`, `mkdir`, 
    ```bash
    echo "paused=${DISCLOSURE_EMAIL_PAUSED:-} max_per_run=${DISCLOSURE_EMAIL_MAX_PER_RUN:-1} daily_cap=${DISCLOSURE_EMAIL_DAILY_CAP:-1} max_attempts=${DISCLOSURE_EMAIL_MAX_ATTEMPTS:-3} cooldown_days=${DISCLOSURE_EMAIL_COOLDOWN_DAYS:-7}"
    ```
-2. **Config.** Presence-check with the `${VAR:+x}` form - a **bare** `$RESEND_API_KEY` trips the secret-expansion analyzer and falsely reads as unset (idiom documented in `narrative-tracker`): `[ -n "${RESEND_API_KEY:+x}" ] && echo KEY_PRESENT || echo KEY_UNSET` and `[ -n "${RESEND_FROM:+x}" ] && echo KEY_PRESENT || echo KEY_UNSET`, each as its own call. If either is unset → log `DISCLOSURE_EMAILER_SKIP: resend not configured`, stop (drafts stay queued; nothing lost).
+2. **Config.** Read the "Keys set for this run" line in your run notes, never a shell test (those are refused and cost a turn). If `RESEND_API_KEY` or `RESEND_FROM` is not on that line → log `DISCLOSURE_EMAILER_SKIP: resend not configured`, stop (drafts stay queued; nothing lost).
 3. **Budget.** Seed `memory/email-log.json` to `[]` if missing/corrupt. Get TODAY with `date -u +%F` (its own call), then count today's sends, TODAY written in literally:
    ```bash
-   jq --arg d "<TODAY>" '[.[]|select((.sent_at//"")|startswith($d))]|length' memory/email-log.json
+   jq '[.[]|select((.sent_at//"")|startswith("<TODAY>"))]|length' memory/email-log.json
    ```
    It prints SENT_TODAY. If that isn't a clean integer (ledger unreadable), **fail closed**: stop, send nothing. Else work out `BUDGET = min(max_per_run, daily_cap - SENT_TODAY)` yourself from step 1's values; if `BUDGET <= 0` → `DISCLOSURE_EMAILER_SKIP: daily cap`, stop.
 
@@ -1170,7 +1167,7 @@ specific bullets.
 
 ## Network note
 
-**Shell shape (all arms).** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`SEL=...`, `CANDS=$(grep ...)`, `PVR_RESP=$(gh api ...)`, `PAYLOAD=$(python3 ...)`), starts with `export`, uses `if` / `for` / `case` / `[ ... ]` tests or `$(( ))` math, or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn. `env`, `find`, `cp`, `sed`, `tr`, `awk`, `printf`, `basename`, `pwd` and `command -v` are not allowed commands either. So this skill runs every scanner, `gh api`, `jq` and `./secretcurl` step as its own call, writes each value it already knows (`<REPO>`, `<TARGET>`, `<SINCE>`, `<CLONE>`, `<DOMAIN>`, `<SLUG>`, ...) into later commands literally in place of the placeholder, makes each branch (selector, scanner status, PVR state, send gates) as a prose decision from what a call printed or its exit code, checks optional files with Glob, writes `sources.txt` with Write and appends to it with Edit, and runs the secret-scrubbed cargo steps through a `python3` launcher. Scanner output redirects into `/tmp/vuln-scan/` (`> /tmp/vuln-scan/osv.json 2>/dev/null`) stay: they write to /tmp, not into the repo.
+**Shell shape (all arms).** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`SEL=...`, `CANDS=$(grep ...)`, `PVR_RESP=$(gh api ...)`, `PAYLOAD=$(python3 ...)`), starts with `export`, uses `if` / `for` / `case` / `[ ... ]` tests or `$(( ))` math, or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn. `env`, `find`, `cp`, `sed`, `tr`, `awk`, `printf`, `basename`, `pwd` and `command -v` are not allowed commands either. So this skill runs every scanner, `gh api`, `jq` and `./secretcurl` step as its own call, writes each value it already knows (`<REPO>`, `<TARGET>`, `<SINCE>`, `<CLONE>`, `<DOMAIN>`, `<SLUG>`, ...) into later commands literally in place of the placeholder, makes each branch (selector, scanner status, PVR state, send gates) as a prose decision from what a call printed or its exit code, checks optional files with Glob, writes `sources.txt` with Write and appends to it with Edit, and runs the secret-scrubbed cargo steps through a `python3` launcher. A shell redirect into a file is refused in both tiers, /tmp included (`> /tmp/vuln-scan/osv.json` is refused like any other), so stdout-only scanners write their `/tmp/vuln-scan/` files through the `python3` wrapper in A3 (which prints `rc=<N>`), and the PVR payload is a `jq -Rs` call piped into `gh api ... --input -`. A jq filter never uses a `$name` variable (`--arg d ... '$d'` is refused too): write the value into the filter as a string (`startswith("<TODAY>")`).
 
 **Arm A (scan).** Getting the scanners to run under GitHub Actions takes **two** things:
 

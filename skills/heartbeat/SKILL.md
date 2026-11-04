@@ -277,7 +277,7 @@ Style rules:
 
 - Write the formatted brief to a file (e.g. `/tmp/brief.md`) and send it with `./notify -f /tmp/brief.md` (never a long inline `./notify "..."`; multi-line argv trips the sandbox).
 - Send email via Resend (**optional — skip cleanly when unconfigured**):
-  - **Preflight:** check presence with `[ -n "${RESEND_API_KEY:+x}" ]` (a bare `$RESEND_API_KEY` is a secret expansion the Bash permission layer refuses); if it is unset **or** `$BRIEF_RECIPIENTS` has no addresses, **skip the email step entirely** — the `./notify` send above already delivered the brief. Note the skip in the log (`email: skipped (no RESEND_API_KEY)`) and continue; do **not** fail the run. `RESEND_API_KEY` is an optional dependency.
+  - **Preflight:** read the "Keys set for this run" line in your run notes, never a shell test (those are refused and cost a turn); if `RESEND_API_KEY` is not on that line **or** `$BRIEF_RECIPIENTS` has no addresses, **skip the email step entirely** — the `./notify` send above already delivered the brief. Note the skip in the log (`email: skipped (no RESEND_API_KEY)`) and continue; do **not** fail the run. `RESEND_API_KEY` is an optional dependency.
   - When configured:
     - Build the brief as HTML (wrap each section in `<h2>` headers, `<ul>/<li>` bullets)
     - Also keep a plain-text copy (the `./notify` content above, as-is)

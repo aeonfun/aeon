@@ -39,11 +39,7 @@ This skill provides web search functionality via You.com's Search API, offering 
 
 ### Auth Mode
 
-Check whether the key is set via `${VAR:+x}` - a bare `$YDC_API_KEY` trips the secret-expansion analyzer (one call; an `if` block is refused, see **Shell shape** under Network):
-```bash
-[ -n "${YDC_API_KEY:+x}" ] && echo "youcom auth_mode=keyed" || echo "youcom auth_mode=keyless"
-```
-It prints AUTH_MODE. Read the two optional settings the same way:
+Key check: read the "Keys set for this run" line in your run notes, never a shell test (those are refused and cost a turn). `YDC_API_KEY` on that line = AUTH_MODE `keyed`, not on it = `keyless`. Read the two optional settings with one call:
 ```bash
 node -e 'console.log("freshness=" + (process.env.YOUCOM_FRESHNESS || "week") + " livecrawl=" + (process.env.YOUCOM_LIVECRAWL || ""))'
 ```
@@ -216,7 +212,7 @@ Record failure reasons for debugging:
 
 Both modes go through `./secretcurl` so one code path covers them: keyed calls carry the `{YDC_API_KEY}` placeholder (never a bare `$YDC_API_KEY` on the line); keyless calls carry no placeholder and are passed through unchanged. Every request sends `User-Agent: youdotcom-integration/aeonfun-aeon`.
 
-**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`X=$(...)`), uses `if` / `case` / `[ ... ] &&` tests, contains `$(...)`, or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn. So the key check keeps its original `${YDC_API_KEY:+x}` test as one call, the settings check is a `node -e` one-liner, the search is one `./secretcurl` call per auth mode with every value written in literally (`--data-urlencode` instead of `jq @uri`), the `-w` label replaces the `echo ... $(wc -c ...)` line, and the fallback decision is a prose step. This skill is read-only: any file it keeps (such as `memory/searches.md`) is written with a one-line `node -e` writer, never `>` or `>>`.
+**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`X=$(...)`), uses `if` / `case` / `[ ... ] &&` tests, contains `$(...)`, or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn. So the key check reads the run notes' "Keys set for this run" line instead of a shell test, the settings check is a `node -e` one-liner, the search is one `./secretcurl` call per auth mode with every value written in literally (`--data-urlencode` instead of `jq @uri`), the `-w` label replaces the `echo ... $(wc -c ...)` line, and the fallback decision is a prose step. This skill is read-only: any file it keeps (such as `memory/searches.md`) is written with a one-line `node -e` writer, never `>` or `>>`.
 
 ## Environment Variables
 
