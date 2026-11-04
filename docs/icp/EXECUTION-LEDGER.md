@@ -66,6 +66,10 @@ Pairs with [`ICP-INTEGRATION-PRD.md`](ICP-INTEGRATION-PRD.md). Newest first.
 - **Merge-order (#1328 ↔ #1330):** both regenerate `catalog/*.json` and bump README counts (true
   post-both total = 93). Plan: merge one, then I regenerate the other's catalog + counts and re-green.
 
+### 2026-11-04 (correction)
+
+- **#1330 was NOT green when first reported — my verification error.** I checked for `conclusion=="FAILURE"` while checks were still in-progress and saw an empty list, so I wrongly called it green. #1330 was actually failing five gates (all pre-existing in the fork branch, not from the contribution files): stale `packs.json`, 4 new skills missing from `eyebrowlock.json`, `ICP_IDENTITY_PEM` missing from the ALL_SECRETS allowlist, stale 88→92 counts, and the 4 skills missing from the dev/crypto pack tables. All fixed (c0ba1b50) and now **verified green the rigorous way** (all checks COMPLETED, 0 non-success; 20 passed). #1328 similarly re-verified (22 passed). Lesson: verify completed+success, never "no failures yet".
+
 ## Status taxonomy (2026-11-04)
 
 | Deliverable | Implemented | Locally tested | CI-verified | Live-executed | Merged | Ext. submitted |
