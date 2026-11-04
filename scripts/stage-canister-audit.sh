@@ -94,20 +94,27 @@ PIC_URL="https://github.com/dfinity/pocketic/releases/download/${POCKETIC_VERSIO
 PIC_GZ=/tmp/canister-audit/pocket-ic.gz
 sha256_ok() { [ -n "$2" ] && echo "$2  $1" | sha256sum -c - >/dev/null 2>&1; }
 rm -f "$PIC_GZ" "$BIN/pocket-ic"
-if [ -x "$CACHE_BIN/pocket-ic" ] && cp -f "$CACHE_BIN/pocket-ic" "$BIN/pocket-ic" 2>/dev/null \
-     && chmod +x "$BIN/pocket-ic" && [ -x "$BIN/pocket-ic" ]; then
-  log "pocket-ic ${POCKETIC_VERSION} restored from cache -> $BIN/pocket-ic"; record pocket-ic installed
-elif [ -n "$PIC_SHA256" ] \
-     && curl -sSfL -o "$PIC_GZ" "$PIC_URL" 2>/dev/null \
-     && sha256_ok "$PIC_GZ" "$PIC_SHA256" \
-     && gunzip -f "$PIC_GZ" \
-     && mv /tmp/canister-audit/pocket-ic "$BIN/pocket-ic" \
-     && chmod +x "$BIN/pocket-ic"; then
-  cp -f "$BIN/pocket-ic" "$CACHE_BIN/pocket-ic" 2>/dev/null || true
-  log "pocket-ic ${POCKETIC_VERSION} installed -> $BIN/pocket-ic (sha256 ok)"; record pocket-ic installed
+CACHE_GZ="$CACHE_BIN/pocket-ic-${POCKETIC_VERSION}-${PIC_ARCH}.gz"
+# Fetch the pinned .gz (cached or downloaded), then sha256-verify it BEFORE extracting on
+# BOTH paths - so a poisoned cache can't install an unverified server (the old code
+# trusted the cached binary blind). gunzip consumes the .gz, so re-seed the cache from
+# the verified copy first.
+if [ -f "$CACHE_GZ" ]; then
+  cp -f "$CACHE_GZ" "$PIC_GZ" 2>/dev/null || true
+elif [ -n "$PIC_SHA256" ]; then
+  curl -sSfL -o "$PIC_GZ" "$PIC_URL" 2>/dev/null || true
+fi
+if [ -f "$PIC_GZ" ] && sha256_ok "$PIC_GZ" "$PIC_SHA256"; then
+  cp -f "$PIC_GZ" "$CACHE_GZ" 2>/dev/null || true
+  if gunzip -f "$PIC_GZ" && mv /tmp/canister-audit/pocket-ic "$BIN/pocket-ic" && chmod +x "$BIN/pocket-ic"; then
+    log "pocket-ic ${POCKETIC_VERSION} installed -> $BIN/pocket-ic (sha256 ok)"; record pocket-ic installed
+  else
+    rm -f "$BIN/pocket-ic"
+    log "WARN pocket-ic ${POCKETIC_VERSION} extract failed - PoC arm skips"; record pocket-ic fail
+  fi
 else
-  rm -f "$BIN/pocket-ic"
-  log "WARN pocket-ic ${POCKETIC_VERSION} install failed (arch=${PIC_ARCH:-unsupported}, download or sha256) — PoC arm skips"
+  rm -f "$BIN/pocket-ic" "$PIC_GZ"
+  log "WARN pocket-ic ${POCKETIC_VERSION} unavailable (arch=${PIC_ARCH:-unsupported}, download or sha256 failed) - PoC arm skips"
   record pocket-ic fail
 fi
 # The pocket-ic CRATE locates the server via POCKET_IC_BIN; export it for later steps.

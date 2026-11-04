@@ -607,12 +607,10 @@ jobs:
         # and its per-call fresh shells (an in-run export doesn't survive Claude's per-call
         # shells). Without this the dependency-CVE pass and the PocketIC PoC arm degrade to
         # skipped and canister-audit falls back to the agentic source pass. In-run tool use
-        # is separately gated by the write-tier grant in scripts/skill_mode.sh. GH_TOKEN
-        # authenticates the release-asset download. Self-guards to the skill; best-effort,
-        # never fails the run.
+        # is separately gated by the write-tier grant in scripts/skill_mode.sh. The PocketIC
+        # release asset is a public download (plain curl, no auth). Self-guards to the
+        # skill; best-effort, never fails the run.
         if: steps.work.outputs.mode != '' && steps.skill.outputs.name == 'canister-audit'
-        env:
-          GH_TOKEN: ${{ github.token }}
         run: bash scripts/stage-canister-audit.sh "${{ steps.skill.outputs.name }}"
 
       - name: Install Foundry (deploy-uni-hook)
