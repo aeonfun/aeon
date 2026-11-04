@@ -82,6 +82,13 @@ main() {
     fi
 
     git add -A
+    # Scan skills clone the target into the run dir; git add -A would stage those
+    # nested repos as submodule gitlinks (mode 160000). aeon has no .gitmodules, so a
+    # staged gitlink is always an accidental scan clone that breaks later git ops
+    # (the next sync aborts: No url found for submodule path). Unstage them.
+    git ls-files --stage | awk '$1=="160000"{print $4}' | while IFS= read -r gl; do
+      [ -n "$gl" ] && git rm --cached -q -- "$gl" 2>/dev/null || true
+    done
     if ! git diff --staged --quiet; then
       git commit -m "chore($LABEL): auto-commit $(date +%Y-%m-%d)"
     fi
@@ -154,6 +161,10 @@ main() {
 
   # Commit any remaining changes on main
   git add -A
+  # Drop accidental scan-clone gitlinks before commit (see the feature-branch block).
+  git ls-files --stage | awk '$1=="160000"{print $4}' | while IFS= read -r gl; do
+    [ -n "$gl" ] && git rm --cached -q -- "$gl" 2>/dev/null || true
+  done
   if git diff --staged --quiet; then
     # Nothing new to commit - but the agent may have committed during its run.
     # Check for unpushed commits and push them if any exist.

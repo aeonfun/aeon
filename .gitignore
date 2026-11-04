@@ -91,14 +91,8 @@ skills/remotion/project/props.json
 /output/tr-*.json
 /output/scratch-*
 
-# Scanner skills (vuln-scanner, sc-audit, canister-audit) clone targets and stage
-# scratch under these during a run — NOT run output; never commit them. Without
-# this, a broad `git add` stages cloned scan-target repos as submodule gitlinks
-# (there is no .gitmodules) and later git operations break (e.g. an instance's
-# miniaeon sync). sc-audit's SKILL.md also assumes .scan/ is already ignored.
-.scan/
-.scan-tmp/
-.scan-bin*/
-.vuln-scan-tmp/
-.vuln-scan-out/
-.vuln-bin/
+# sc-audit stages its throwaway target clone + build artifacts under .scan/ and
+# assumes it is ignored. (vuln-scanner clones the target as <NAME>/ in the run dir;
+# commit-run-results.sh drops those gitlinks before committing, so no entry is
+# needed for them here.)
+/.scan/
