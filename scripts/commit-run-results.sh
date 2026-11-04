@@ -88,7 +88,7 @@ main() {
     # accidental scan clone that breaks the next sync ("No url found for submodule
     # path"). -f is required because the fresh gitlink differs from HEAD, so a plain
     # git rm --cached refuses it. A real submodule, if one is ever added, is kept.
-    registered_submodules="$(git config -f .gitmodules --get-regexp '\.path$' 2>/dev/null | awk '{print $2}')"
+    registered_submodules="$(git config -f .gitmodules --get-regexp '\.path$' 2>/dev/null | awk '{print $2}' || true)"
     git ls-files --stage | awk '$1=="160000"{print $4}' | while IFS= read -r gl; do
       printf '%s\n' "$registered_submodules" | grep -qxF -- "$gl" || git rm --cached -f -q -- "$gl" 2>/dev/null || true
     done
@@ -165,7 +165,7 @@ main() {
   # Commit any remaining changes on main
   git add -A
   # Drop accidental scan-clone gitlinks before commit (see the feature-branch block).
-  registered_submodules="$(git config -f .gitmodules --get-regexp '\.path$' 2>/dev/null | awk '{print $2}')"
+  registered_submodules="$(git config -f .gitmodules --get-regexp '\.path$' 2>/dev/null | awk '{print $2}' || true)"
   git ls-files --stage | awk '$1=="160000"{print $4}' | while IFS= read -r gl; do
     printf '%s\n' "$registered_submodules" | grep -qxF -- "$gl" || git rm --cached -f -q -- "$gl" 2>/dev/null || true
   done
