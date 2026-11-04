@@ -1,8 +1,8 @@
-# Internet Computer Rust-canister static rules for canister-audit (S4).
+# Internet Computer Rust-canister static rules for canister-audit (C4).
 #
 # A cheap, reliable FIRST PASS — not the audit. Semgrep's Rust support is still
 # experimental, so these rules are deliberately coarse and high-recall: they
-# surface candidates for the agentic pass (S5) and S6 triage to confirm or
+# surface candidates for the agentic pass (C5) and C6 triage to confirm or
 # refute, exactly as Slither feeds sc-audit. The agentic layer carries the audit;
 # these rules just make sure the obvious access-control footguns are never missed.
 #

@@ -6,7 +6,7 @@ description: The 12 Internet Computer canister-security pitfalls, adapted to Rus
 
 # IC canister security checklist (Rust)
 
-The agentic audit pass (SKILL.md §S5) reads this the way `sc-audit` reads
+The agentic audit pass (SKILL.md §C5) reads this the way `sc-audit` reads
 `references/hook-checklist.md`. Each item says **what** breaks, the **Rust
 signal**, whether it is caught **statically** (the Semgrep ruleset
 `ic-semgrep-rust.yml`) or needs **agentic** data-flow reasoning, and **how to
@@ -109,4 +109,4 @@ A static hit is a **candidate, not a finding**. For each: open the code, write o
 sentence of *what the attacker controls and what they gain*, confirm reachability
 from an external caller in production code, assign severity, then adversarially try
 to refute it (find the guard/bound/unreachable path you missed). Only a candidate
-that survives refutation is CONFIRMED and eligible for the PoC gate (§S6.5).
+that survives refutation is CONFIRMED and eligible for the PoC gate (§C6.5).
