@@ -1774,12 +1774,25 @@ jobs:
           fi
           [ -z "$OUTPUT" ] && { echo "No output to analyze"; exit 0; }
 
-          # Ground the rubric in the operator's north-star so the judge grades
-          # strategic alignment and correctness, not just surface polish. STRATEGY.md
-          # is short by design; inject it whole (byte-capped for safety). Absent or
-          # placeholder file leaves the block empty and grading falls back to generic.
+          # Grade a skill on its own job first: the SKILL.md description is the
+          # contract (a price report, digest or check). STRATEGY.md joins the rubric
+          # only for a skill whose SKILL.md tells it to read STRATEGY.md (idea-forge,
+          # bd-radar, shiplog...): a correct routine report was capped at 3 for not
+          # serving product priorities, and each low score feeds a health issue.
+          # STRATEGY.md is short by design; inject it whole (byte-capped for safety).
+          SKILL_JOB=""
           STRATEGY_CTX=""
-          [ -f STRATEGY.md ] && STRATEGY_CTX=$(head -c 4000 STRATEGY.md)
+          STRATEGY_BLOCK=""
+          if [ -f "$SKILL_MD" ]; then
+            SKILL_JOB=$(awk 'NR==1&&/^---/{f=1;next} f&&/^---/{exit} f&&/^description:/{sub(/^description:[[:space:]]*/,"");print;exit}' "$SKILL_MD" | head -c 600)
+            if [ -f STRATEGY.md ] && grep -qiE '(^|[^[:alpha:]])read[^[:alpha:]].*STRATEGY\.md' "$SKILL_MD"; then
+              STRATEGY_CTX=$(head -c 4000 STRATEGY.md)
+            fi
+          fi
+          [ -n "$SKILL_JOB" ] || SKILL_JOB="(no description; infer the job from the output)"
+          if [ -n "$STRATEGY_CTX" ]; then
+            STRATEGY_BLOCK=$(printf 'This skill works from the operator strategy (its SKILL.md reads STRATEGY.md), so also grade how well it serves the stated priorities: reward work that serves them, not work that merely looks finished.\n\nOperator strategy:\n%s' "$STRATEGY_CTX")
+          fi
 
           ANALYSIS_PROMPT="Score this autonomous agent skill output on a 1-5 scale. Respond with ONLY valid JSON.
 
@@ -1790,10 +1803,12 @@ jobs:
           4 = Good - substantive, well-structured, useful, and verifiable
           5 = Excellent - insightful, well-sourced, actionable
 
-          Correctness and verifiability outrank polish: a well-written output that invents specifics scores no higher than 2. Grade alignment to the operator strategy below - reward work that serves the stated priorities, not work that merely looks finished.
+          Correctness and verifiability outrank polish: a well-written output that invents specifics scores no higher than 2.
 
-          Operator strategy:
-          $STRATEGY_CTX
+          Grade the output against the skill's own job first. Skill job (from its SKILL.md): $SKILL_JOB
+          A correct, complete, verifiable output of that job scores 3 or higher on its own merits, and 4 or 5 when it is substantive or insightful. Never score it lower because its topic is not one of the operator's product priorities.
+
+          $STRATEGY_BLOCK
 
           Flag any issues from: api_error, empty_output, low_quality, stale_data, generic_content, rate_limited, unverifiable_claim
 
