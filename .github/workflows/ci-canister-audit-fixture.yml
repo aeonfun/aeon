@@ -1,0 +1,54 @@
+name: ci-canister-audit-fixture
+# Actually RUN the canister-audit PocketIC reproduction end to end (not just
+# `cargo test --no-run`), so the token_vault fixture's planted flaw is proven to
+# reproduce: the anonymous principal mints a free, withdrawable balance via
+# claim_bonus, breaking sum(balances) <= total_deposited. Deterministic, no secrets
+# — the IC analogue of the sc-audit fuzz-arm regression. Only runs when the fixture
+# or this workflow changes (empty paths filter = cheap no-op otherwise).
+on:
+  pull_request:
+    paths:
+      - 'skills/canister-audit/fixtures/**'
+      - '.github/workflows/ci-canister-audit-fixture.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'skills/canister-audit/fixtures/**'
+      - '.github/workflows/ci-canister-audit-fixture.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  pocketic-repro:
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: skills/canister-audit/fixtures/token_vault
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Add wasm32 target
+        run: rustup target add wasm32-unknown-unknown
+
+      - name: Stage PocketIC 16.1.0 (pinned + sha256)
+        working-directory: .
+        run: |
+          set -euo pipefail
+          url="https://github.com/dfinity/pocketic/releases/download/16.1.0/pocket-ic-x86_64-linux.gz"
+          curl -sSfL -o /tmp/pocket-ic.gz "$url"
+          echo "131219d90dcf9bf6f3ed8ee02d8f55504ea24a6db382f5680675b7bd6b7ed3bf  /tmp/pocket-ic.gz" | sha256sum -c -
+          gunzip -f /tmp/pocket-ic.gz
+          chmod +x /tmp/pocket-ic
+          echo "POCKET_IC_BIN=/tmp/pocket-ic" >> "$GITHUB_ENV"
+
+      - name: Build canister wasm
+        env:
+          CARGO_TARGET_DIR: /tmp/canister-audit-target
+        run: cargo build --target wasm32-unknown-unknown --release
+
+      - name: Run PocketIC reproduction
+        env:
+          CARGO_TARGET_DIR: /tmp/canister-audit-target
+          CANISTER_WASM: /tmp/canister-audit-target/wasm32-unknown-unknown/release/token_vault.wasm
+        run: cargo test --test repro -- --nocapture
