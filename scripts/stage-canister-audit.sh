@@ -114,6 +114,12 @@ fi
 if [ -x "$BIN/pocket-ic" ] && [ -n "${GITHUB_ENV:-}" ]; then
   echo "POCKET_IC_BIN=$BIN/pocket-ic" >> "$GITHUB_ENV"
 fi
+# Point cargo at a scratch target dir so canister builds never touch the tracked tree
+# (the SKILL relies on this being set here — `export` is refused in-run). /tmp/canister-audit
+# is created above.
+if [ -n "${GITHUB_ENV:-}" ]; then
+  echo "CARGO_TARGET_DIR=/tmp/canister-audit/target" >> "$GITHUB_ENV"
+fi
 
 log "manifest (/tmp/canister-audit/prefetch.txt):"
 cat "$MANIFEST"
