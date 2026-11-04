@@ -11,6 +11,9 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Added
 
+- **`fetch-tweets` skips the model when no tracked account posted.** `scripts/fetch_tweets_idle.py`
+  checks each handle on twitterapi.io before the run and records a success without a model call
+  when nothing new is in the window. Any doubt or error means the skill runs as usual. (#1323)
 - **`flovia` skill provides live lookups through the Flovia MCP.** Answer questions with live data
   across Nansen smart money and token flows, CoinGecko markets, direct chain reads, Zerion wallets,
   and Exa search, backed by one-click OAuth Connect in the dashboard. Catalog now 88 skills. (#1313)
@@ -284,6 +287,22 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Changed
 
+- **Scheduler catch-up window 12h -> 23h.** A slot missed because GitHub fired few ticks is still
+  paid by a later tick within 23 hours, never twice. (#1317)
+- **`aeon-update` takes upstream for stale copies.** A framework file that is a byte-for-byte copy of
+  an older upstream version is treated as stale, not customized, including files held in
+  `pending_conflicts`. (#1318)
+- **Scorer grades the article a run wrote.** The judge reads the written article, not only the short
+  notify card, so reports with a `Sources:` line stop scoring low. `token-movers` now lists real
+  source URLs and fetch times in its report. (#1319, #1320)
+- **Skills use only shell shapes the run accepts.** Key checks read the "Keys set for this run" line
+  instead of testing `$KEY`, and snippets drop shell variables, `$(...)`, `;`/`&&` chains and
+  redirects. Skill templates and the setup skill's `skill-anatomy.md` teach the same shapes
+  (mirrored to the plugin copy and hosted mirror). (#1324, #1326, #1327)
+- **Langfuse root span carries the final reply.** With `LANGFUSE_LOG_CONTENT` set to `1` or `all`
+  the first 4,000 characters of the reply (credentials masked) go on the run root span;
+  `docs/langfuse.md` updated. (#1322)
+- **Sentinel Pack listing is 9 skills,** adding `pack-registry-drift`. (#1333)
 - **X-reading skills default to TwitterAPI.io with xAI fallback.** `fetch-tweets`, `mention-radar`,
   `reply-maker`, `shiplog`, and `write-tweet` read through `TWITTER_API_KEY` when set, falling
   back to `x_search`. (#1308, #1309)
@@ -463,6 +482,12 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Fixed
 
+- **`git-push-retry.sh` retries transient GitHub push failures.** `[remote rejected] (failure)` and
+  `(Internal Server Error)` are retried up to 2 times after a pull; auth, permission, hook and
+  transport errors still stop at once. (#1332)
+- **`vuln-scanner` no longer stages scan clones as submodules.** Scanner scratch dirs are
+  gitignored and the dep-bump flow stages only the specific lockfile or manifest. (#1331)
+- **Maintenance:** minimatch forced to 11.0.4 in webhook and dashboard. (#1325)
 - **`skill-install` records commit SHA when unauthenticated.** Resolves the commit SHA via git
   ls-remote when `gh` CLI is logged out. (#1312)
 - **`validate-readme-catalog` counts only first-party packs.** Skips community packs installed
