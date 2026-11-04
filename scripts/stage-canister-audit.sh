@@ -101,10 +101,16 @@ CACHE_GZ="$CACHE_BIN/pocket-ic-${POCKETIC_VERSION}-${PIC_ARCH}.gz"
 # Fetch the pinned .gz (cached or downloaded), then sha256-verify it BEFORE extracting on
 # BOTH paths - so a poisoned cache can't install an unverified server (the old code
 # trusted the cached binary blind). gunzip consumes the .gz, so re-seed the cache from
-# the verified copy first.
+# the verified copy first. A cached .gz that fails its sha256 is deleted and fetched
+# again from the network, so one bad cache entry does not disable the PoC arm.
 if [ -f "$CACHE_GZ" ]; then
   cp -f "$CACHE_GZ" "$PIC_GZ" 2>/dev/null || true
-elif [ -n "$PIC_SHA256" ]; then
+  if ! sha256_ok "$PIC_GZ" "$PIC_SHA256"; then
+    log "WARN cached pocket-ic ${POCKETIC_VERSION} failed sha256 - dropping it and downloading again"
+    rm -f "$CACHE_GZ" "$PIC_GZ"
+  fi
+fi
+if [ ! -f "$PIC_GZ" ] && [ -n "$PIC_SHA256" ]; then
   curl -sSfL -o "$PIC_GZ" "$PIC_URL" 2>/dev/null || true
 fi
 if [ -f "$PIC_GZ" ] && sha256_ok "$PIC_GZ" "$PIC_SHA256"; then

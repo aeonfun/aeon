@@ -26,7 +26,7 @@ re-runnable and never disclosed.
 
 | Name | Bug | Expected result |
 |---|---|---|
-| `token_vault` | `claim_bonus` credits the caller's balance with no deposit, no anonymous-principal rejection, and no owner guard (pitfalls #2, #8) | Semgrep `ic-update-missing-caller-auth` flags `claim_bonus` (and `withdraw`) while clearing the guarded `deposit`/`admin_set_total`; the agentic pass confirms the accounting-invariant break; the PocketIC repro proves the anonymous principal mints a free, withdrawable balance (`sum(balances) > total_deposited`) |
+| `token_vault` | `claim_bonus` credits the caller's balance with no deposit, no anonymous-principal rejection, and no owner guard (pitfalls #2, #8) | Semgrep `ic-update-missing-caller-auth` flags `claim_bonus`, `withdraw` and `deposit` (a bare `== Principal::anonymous()` check is deliberately not treated as a guard, so `deposit` is a candidate for C6 triage to refute) while clearing only the owner-guarded `admin_set_total`; the agentic pass confirms the accounting-invariant break; the PocketIC repro proves the anonymous principal mints a free, withdrawable balance (`sum(balances) > total_deposited`) |
 
 `token_vault` is the controlled true-positive case: a guarded ledger with one
 unguarded mint path. It demonstrates the skill's premise - a static pass plus

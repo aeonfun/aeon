@@ -41,7 +41,10 @@ rules:
       # `== Principal::anonymous()` comparison or a mention in a comment: a comparison
       # that does not actually reject the caller is not a guard, and under-reporting is
       # worse than noise here (these are candidates, confirmed or refuted in C6).
-      - pattern-not-regex: "(require_owner|require_caller|require_controller|CallerGuard|is_controller|ic_cdk::api::is_controller|caller_guard|ensure_caller)"
+      # ic-cdk's own attribute guard (`#[update(guard = "is_owner")]`, also with `name = ...`)
+      # IS a real guard: the guard fn runs before the method and rejects by returning Err.
+      # Anchored to the attribute so a body-local `let guard = ...` does not suppress.
+      - pattern-not-regex: "(require_owner|require_caller|require_controller|CallerGuard|is_controller|ic_cdk::api::is_controller|caller_guard|ensure_caller|update\\([^)]*\\bguard\\s*=)"
 
   - id: ic-callerguard-immediate-drop
     languages: [rust]
