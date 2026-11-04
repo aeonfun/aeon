@@ -579,9 +579,9 @@ One Bash call per command, inside the clone:
 ```bash
 git checkout -b security/bump-<pkg>-<cve>
 ```
-Update the lockfile/manifest (Edit), then:
+Update the lockfile/manifest (Edit), then stage **only the files you edited** (never `git add -A` here). This runs inside the target clone, so a broad add would sweep the scan's own leftovers - fuzz `corpus/`, PoC files, build artifacts - into the dependency-bump PR you open against the target:
 ```bash
-git add -A
+git add <lockfile> <manifest>
 ```
 ```bash
 git commit -m "fix(deps): bump <pkg> to patch <CVE-YYYY-NNNN>
