@@ -21,77 +21,65 @@ Today is ${today}. Turn this instance's own token ledger (`memory/token-usage.cs
 
 ## Steps
 
-1. **Parse `${var}` → window + mode.**
+**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`V=$(...)`, `SUMMARY="$(python3 ...)"`), uses `if` / `case` / `[ ... ] &&` tests, pipes into `tr` / `xargs` / `sed`, or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn. So parse `${var}` and derive the instance name yourself, run each command in its own call, read printed values off the output and write them into later commands literally (the `<WINDOW_DAYS>`, `<INSTANCE>`, `<REPO>` placeholders), and write the notify body with Write.
+
+1. **Parse `${var}` → window + mode** in your head, not in a shell script. Lowercase and trim `${var}`:
+   - It starts with `dry-run`: `MODE` = `dry-run`, and drop that prefix (then trim again). Otherwise `MODE` = `execute`.
+   - What is left is all digits: `WINDOW_DAYS` = that number, then above 90 becomes 90 and below 1 becomes 7. Anything else (or empty): `WINDOW_DAYS` = 7.
+
+2. **Guard the ledger.** The recap is synthesis-only - no ledger, nothing to show. Check `memory/token-usage.csv` with Glob. If it is there, count its lines in one call:
    ```bash
-   V="$(echo "${var}" | tr '[:upper:]' '[:lower:]' | xargs)"
-   MODE=execute; case "$V" in dry-run*) MODE=dry-run; V="${V#dry-run}"; V="$(echo "$V" | xargs)";; esac
-   WINDOW_DAYS=7; case "$V" in ''|*[!0-9]*) : ;; *) WINDOW_DAYS="$V";; esac
-   [ "$WINDOW_DAYS" -gt 90 ] 2>/dev/null && WINDOW_DAYS=90
-   [ "$WINDOW_DAYS" -lt 1 ] 2>/dev/null && WINDOW_DAYS=7
+   wc -l memory/token-usage.csv
+   ```
+   If the file is absent, empty, or has fewer than 2 lines, send this, log `WEEKLY_AEONCARD_NO_DATA` and stop:
+   ```bash
+   ./notify "weekly-aeoncard skipped: memory/token-usage.csv absent or empty (no runs recorded yet)"
    ```
 
-2. **Guard the ledger.** The recap is synthesis-only — no ledger, nothing to show.
+3. **Derive the instance name + image link.** From the git origin, so the card self-labels and the notification deep-links the committed SVG:
    ```bash
-   CSV=memory/token-usage.csv
-   if [ ! -s "$CSV" ] || [ "$(wc -l < "$CSV")" -lt 2 ]; then
-     ./notify "weekly-aeoncard skipped: memory/token-usage.csv absent or empty (no runs recorded yet)"
-     exit 0   # WEEKLY_AEONCARD_NO_DATA
-   fi
+   git remote get-url origin
    ```
+   It prints the remote URL. Work out `REPO` = the `owner/name` after `github.com/` or `github.com:` (no trailing `.git` or `/`), and `INSTANCE` = the part of `REPO` after the `/` (`aeon` when that is empty or the call failed). Then `SVG` = `output/images/weekly-aeoncard-${today}.svg` and `IMG_LINK` = `https://github.com/<REPO>/blob/main/output/images/weekly-aeoncard-${today}.svg`.
 
-3. **Derive the instance name + image link.** From the git origin, so the card self-labels and the notification deep-links the committed SVG.
-   ```bash
-   REMOTE="$(git remote get-url origin 2>/dev/null)"
-   REPO="$(echo "$REMOTE" | sed -E 's#.*github.com[:/]([^/]+/[^/.]+)(\.git)?/?$#\1#')"
-   INSTANCE="${REPO#*/}"; [ -n "$INSTANCE" ] || INSTANCE=aeon
-   SVG="output/images/weekly-aeoncard-${today}.svg"
-   IMG_LINK="https://github.com/${REPO}/blob/main/${SVG}"
-   ```
-
-4. **Render the card + artifacts.** One call writes the SVG (canonical image), a best-effort PNG, the markdown report, the dashboard spec, and appends the run log. It prints a one-line JSON summary on stdout — capture it.
+4. **Render the card + artifacts.** One call writes the SVG (canonical image), a best-effort PNG, the markdown report, the dashboard spec, and appends the run log. It prints a one-line JSON summary on stdout - read it off the output. First create the folders as their own call:
    ```bash
    mkdir -p output/images output/articles apps/dashboard/outputs
-   # The PNG (a raster copy committed next to the SVG) needs a rasterizer. The workflow stages `rsvg-convert`
-   # (librsvg2-bin) for this skill before the run — the agent allowlist blocks in-run
-   # pip/apt. render_card.py uses cairosvg if importable, else rsvg-convert, else SVG-only.
-   SUMMARY="$(python3 skills/weekly-aeoncard/render_card.py \
-     --csv "$CSV" --today "${today}" --window-days "$WINDOW_DAYS" \
-     --instance "$INSTANCE" --img-link "$IMG_LINK" \
-     --out "$SVG" \
+   ```
+   The PNG (a raster copy committed next to the SVG) needs a rasterizer. The workflow stages `rsvg-convert` (librsvg2-bin) for this skill before the run - the agent allowlist blocks in-run pip/apt. render_card.py uses cairosvg if importable, else rsvg-convert, else SVG-only. Then one render call, with `<WINDOW_DAYS>`, `<INSTANCE>` and `<REPO>` written in literally:
+   ```bash
+   python3 skills/weekly-aeoncard/render_card.py \
+     --csv memory/token-usage.csv --today "${today}" --window-days "<WINDOW_DAYS>" \
+     --instance "<INSTANCE>" --img-link "https://github.com/<REPO>/blob/main/output/images/weekly-aeoncard-${today}.svg" \
+     --out "output/images/weekly-aeoncard-${today}.svg" \
      --png "output/images/weekly-aeoncard-${today}.png" \
      --report "output/articles/weekly-aeoncard-${today}.md" \
      --dashboard "apps/dashboard/outputs/weekly-aeoncard.json" \
-     --log "memory/logs/${today}.md")"
-   RC=$?
-   if [ "$RC" -ne 0 ]; then
-     ./notify "weekly-aeoncard: render failed (rc=$RC) — ledger unreadable"
-     exit 0
-   fi
+     --log "memory/logs/${today}.md"
+   ```
+   If the call exits non-zero (RC = its exit code), send this with the code written in and stop:
+   ```bash
+   ./notify "weekly-aeoncard: render failed (rc=<RC>) - ledger unreadable"
    ```
    All writes land under `output/` and `apps/dashboard/outputs/` - paths the run commits. The PNG is a raster copy committed next to the SVG (needs `cairosvg` or `rsvg-convert`); if neither is available the SVG stands alone as the canonical image. Either way the notify is a text recap + link.
 
-5. **Read the numbers back.** Parse `$SUMMARY` for the notification (it holds `week_human`, `week_runs`, `life_human`, `life_runs`, `since`, `cache_read_pct`, `top_week`):
-   ```bash
-   WK=$(echo "$SUMMARY" | jq -r .week_human); WKR=$(echo "$SUMMARY" | jq -r .week_runs)
-   LF=$(echo "$SUMMARY" | jq -r .life_human); LFR=$(echo "$SUMMARY" | jq -r .life_runs)
-   SINCE=$(echo "$SUMMARY" | jq -r .since)
-   TOP=$(echo "$SUMMARY" | jq -r '[.top_week[:3][] | "\(.[0]) \(.[1]/1e6|floor)M"] | join(", ")')
-   PNG=$(echo "$SUMMARY" | jq -r '.png // ""')   # empty when no rasterizer was available
-   ```
+5. **Read the numbers back.** Read them straight off the JSON summary the render call printed (it holds `week_human`, `week_runs`, `life_human`, `life_runs`, `since`, `cache_read_pct`, `top_week`, `png`); no extra call is needed:
+   - `WK` = `.week_human`, `WKR` = `.week_runs`, `LF` = `.life_human`, `LFR` = `.life_runs`, `SINCE` = `.since`.
+   - `TOP` = the first 3 entries of `.top_week` (each is `[skill, tokens]`), each written as `<skill> <tokens / 1e6 rounded down>M`, joined with `, ` (for example `heartbeat 12M, token-movers 8M`).
+   - `PNG` = `.png`, empty when no rasterizer was available.
 
 6. **Log.** The render step already appended a `### weekly-aeoncard` block to `memory/logs/${today}.md` (window, weekly + all-time totals, top skills, image path, `WEEKLY_AEONCARD_OK`). Do not duplicate it.
 
-7. **Notify.** If `MODE` is `dry-run`, skip this step (log `WEEKLY_AEONCARD_DRY_RUN` and stop - the image, report, and dashboard spec are already written). Otherwise send the recap + the committed card link via `./notify -f`. `./notify` is text-only: it has no `--photo`/`--video` flag (an unknown flag exits 2 and sends nothing), so never attach the image:
+7. **Notify.** If `MODE` is `dry-run`, skip this step (log `WEEKLY_AEONCARD_DRY_RUN` and stop - the image, report, and dashboard spec are already written). Otherwise send the recap + the committed card link via `./notify -f`. `./notify` is text-only: it has no `--photo`/`--video` flag (an unknown flag exits 2 and sends nothing), so never attach the image. Write the body (any length; the card itself ships as the IMG_LINK in the body) with the Write tool to `/tmp/weekly-aeoncard-notify.md`, values from step 5 written in:
+   ```
+   This week (<WINDOW_DAYS>d): <WK> tokens · <WKR> runs
+   All-time: <LF> tokens · <LFR> runs (since <SINCE>)
+   Top this week: <TOP>
+   Card: <IMG_LINK>
+   ```
+   Then send it in one call, with the instance written in literally:
    ```bash
-   [ "$MODE" = dry-run ] && exit 0
-   BODY="This week (${WINDOW_DAYS}d): ${WK} tokens · ${WKR} runs
-   All-time: ${LF} tokens · ${LFR} runs (since ${SINCE})
-   Top this week: ${TOP}
-   Card: ${IMG_LINK}"
-   # Body from a file (any length); the card itself ships as the IMG_LINK in the body.
-   NOTE_FILE="${TMPDIR:-/tmp}/weekly-aeoncard-notify.md"
-   echo "$BODY" > "$NOTE_FILE"
-   ./notify --title "Weekly Aeon Card - ${INSTANCE}" -f "$NOTE_FILE"
+   ./notify --title "Weekly Aeon Card - <INSTANCE>" -f /tmp/weekly-aeoncard-notify.md
    ```
 
 ## Network note

@@ -27,31 +27,41 @@ Produce a *decision-grade* narrative map: every narrative gets a mindshare score
 
 ### 1. Ingest signals
 
-**a. X/Twitter narratives — X.AI API (primary).** The primary signal is a direct `curl` to the X.AI Responses API with Grok's `x_search` tool — see **## Fetching** below for the full contract. `XAI_API_KEY` is injected into this skill's environment via `requires:`; it is present and valid, so this path is required whenever the key check prints `KEY_PRESENT`. Set the Bash tool `timeout` to ≥180000 when running the curl (x_search takes 30-120s) and capture the HTTP status:
+**a. X/Twitter narratives - X.AI API (primary).** The primary signal is a direct `curl` to the X.AI Responses API with Grok's `x_search` tool - see **## Fetching** below for the full contract. `XAI_API_KEY` is injected into this skill's environment via `requires:`; it is present and valid, so this path is required whenever the key check prints `KEY_PRESENT`. Set the Bash tool `timeout` to ≥180000 when running the curl (x_search takes 30-120s) and capture the HTTP status.
+
+**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`FROM_DATE=$(date ...)`, `PROMPT="..."`, `HTTP=$(./secretcurl ...)`), uses `[ ... ]` tests, or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn. So run each block below as its own Bash call, in order: get a date with a bare `date` call and write the printed value into later commands (the `<FROM_DATE>` / `<TO_DATE>` placeholders); put the prompt inline in the `jq -n` call; never put a `$VAR` in the `./secretcurl` line.
+
+Get the window dates, each `date` as its own call:
 ```bash
-FROM_DATE=$(date -u -d "3 days ago" +%Y-%m-%d 2>/dev/null || date -u -v-3d +%Y-%m-%d)
-TO_DATE=$(date -u +%Y-%m-%d)
-# Presence check uses the ${VAR:+x} modified expansion, NOT a bare $XAI_API_KEY — the bare
-# form trips the Bash secret-expansion analyzer; the :+ form does not (it never puts the value on the line).
+date -u -d '3 days ago' +%Y-%m-%d
+```
+```bash
+date -u +%Y-%m-%d
+```
+The first prints FROM_DATE, the second TO_DATE.
+
+Presence check, using the `${VAR:+x}` modified expansion, NOT a bare `$XAI_API_KEY` (the bare form trips the Bash secret-expansion analyzer; the `:+` form never puts the value on the line):
+```bash
 [ -n "${XAI_API_KEY:+x}" ] && echo KEY_PRESENT || echo KEY_UNSET
-# Build the JSON payload to a file with jq (do NOT hand-assemble it), then POST the file.
-# TWO SEPARATE commands on purpose: the jq (which interpolates $PROMPT/$FROM_DATE/$TO_DATE)
-# is kept OUT of the ./secretcurl command — never pipe jq into secretcurl, and never put a
-# $VAR in the secretcurl line, or the Bash permission analyzer blocks the network call.
-# The `>` redirect to /tmp is fine in read-only mode (it is not a repo path; nothing reverts it).
-PROMPT="Search X for the dominant crypto and tech narratives from ${FROM_DATE} to ${TO_DATE}. Return 12-15 distinct narrative threads. For each: 1) short label, 2) 3-5 representative @handles driving it, 3) 2-3 tweet permalinks, 4) rough mention-volume descriptor (niche / growing / saturating / cooling), 5) the strongest one-line bear case against it."
-jq -n --arg p "$PROMPT" --arg fd "$FROM_DATE" --arg td "$TO_DATE" \
+```
+It prints `KEY_PRESENT` or `KEY_UNSET`.
+
+Build the JSON payload to a file with jq (do NOT hand-assemble it), with the dates written in literally. The `>` redirect to /tmp is fine in read-only mode (it is not a repo path; nothing reverts it):
+```bash
+jq -n --arg p "Search X for the dominant crypto and tech narratives from <FROM_DATE> to <TO_DATE>. Return 12-15 distinct narrative threads. For each: 1) short label, 2) 3-5 representative @handles driving it, 3) 2-3 tweet permalinks, 4) rough mention-volume descriptor (niche / growing / saturating / cooling), 5) the strongest one-line bear case against it." --arg fd "<FROM_DATE>" --arg td "<TO_DATE>" \
   '{model:"grok-4.7", input:[{role:"user",content:$p}], tools:[{type:"x_search",from_date:$fd,to_date:$td}]}' \
   > /tmp/xai-nt-payload.json
-HTTP=$(./secretcurl -s -o /tmp/xai-nt.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
+```
+Then POST the file in its own call (never pipe jq into secretcurl):
+```bash
+./secretcurl -s -o /tmp/xai-nt.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {XAI_API_KEY}" \
-  -d @/tmp/xai-nt-payload.json)
-echo "xai http=$HTTP bytes=$(wc -c </tmp/xai-nt.json)"
+  -d @/tmp/xai-nt-payload.json
 ```
-Run that block **verbatim** (do not hand-reassemble the JSON — the `jq -n` builder exists precisely so quoting/expansion can't break; keep the jq and the `./secretcurl` as two separate commands). The `echo "xai http=$HTTP ..."` line **must appear in your output** — it is your proof the call ran. On `HTTP=200` with a non-empty body, parse `/tmp/xai-nt.json` with `jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text'` and use that as the primary narrative signal (`SOURCE=api`).
+Run those blocks **verbatim** apart from the placeholders (do not hand-reassemble the JSON - the `jq -n` builder exists precisely so quoting/expansion can't break; keep the jq and the `./secretcurl` as two separate commands). The curl prints the status code (`HTTP`), and `./secretcurl` prints a `secretcurl xai attempt=... http=<code> bytes=<n> ...` line on stderr; that `xai ... http=` line **must appear in your output** - it is your proof the call ran. On `HTTP=200` with a non-empty body, parse `/tmp/xai-nt.json` with `jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text'` and use that as the primary narrative signal (`SOURCE=api`).
 
-**b. WebSearch / WebFetch fallback (last-resort only).** You may reach for this **only after** you have shown an `xai http=<code>` line proving Path A actually ran and returned a non-2xx code (or an empty body, or timed out). If you have no `xai http=` line, you did not run the call - go back and run it. Reach for the fallback **only** when Path A genuinely fails - `KEY_UNSET`, a non-2xx HTTP code, an empty parse, or a timeout. It is lower quality (WebSearch favours old high-engagement posts) and is **never co-equal** with Path A. Record the fetch failure in your final output with the **true reason** - `key-unset` | `http-<code>` | `empty` | `timeout` - never "XAI_API_KEY unavailable" when the key was set (a slow curl is a `timeout`, not a missing key). Then compile narratives via WebSearch (`crypto narrative ${TO_DATE}`, `AI agent crypto trend this week`) and WebFetch on individual tweet URLs; discard anything older than the 3-day window.
+**b. WebSearch / WebFetch fallback (last-resort only).** You may reach for this **only after** you have shown a `secretcurl xai ... http=<code>` line proving Path A actually ran and returned a non-2xx code (or an empty body, or timed out). If you have no `xai ... http=` line, you did not run the call - go back and run it. Reach for the fallback **only** when Path A genuinely fails - `KEY_UNSET`, a non-2xx HTTP code, an empty parse, or a timeout. It is lower quality (WebSearch favours old high-engagement posts) and is **never co-equal** with Path A. Record the fetch failure in your final output with the **true reason** - `key-unset` | `http-<code>` | `empty` | `timeout` - never "XAI_API_KEY unavailable" when the key was set (a slow curl is a `timeout`, not a missing key). Then compile narratives via WebSearch (`crypto narrative ${TO_DATE}`, `AI agent crypto trend this week`) and WebFetch on individual tweet URLs; discard anything older than the 3-day window.
 
 **c. Quantitative reference points (supplement).** Independently of the fetch path, cross-check mindshare against external quantitative benchmarks with one WebSearch: `DefiLlama narrative tracker` OR `Kaito mindshare leaderboard`. Pull 1-2 concrete numbers (project name, metric, link) to calibrate the mindshare scores in step 2. This is a calibration cross-check, **not** a narrative source. Do not paraphrase — extract facts.
 

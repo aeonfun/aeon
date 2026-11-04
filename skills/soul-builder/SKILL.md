@@ -48,24 +48,26 @@ Gather from **every** source provided and **merge** everything useful — more s
 
 **X handle (`x`)** — the primary read is a **direct `curl` to the X.AI Responses API** (Grok's `x_search`); see the **Fetching the X account** contract below. Attempt Path A first whenever the key is present — set the Bash tool `timeout` to ≥180000 and capture the HTTP status. Fall through to the lower-quality paths only on a real failure. Read in this order, first with data wins but merge later ones:
 
-1. **Path A — X.AI API (primary):** one call for the account bio/profile plus a wide, diverse sample of original posts across a long window (topics, tones, engagement levels — not just the viral ones). `$HANDLE` is the normalised handle from step 0.
+1. **Path A - X.AI API (primary):** one call for the account bio/profile plus a wide, diverse sample of original posts across a long window (topics, tones, engagement levels - not just the viral ones). `<HANDLE>` is the normalised handle from step 0, written in literally. Three calls (see **Shell shape** under Fetching the X account). First check the key:
    ```bash
    [ -n "$XAI_API_KEY" ] && echo KEY_PRESENT || echo KEY_UNSET
-   # Build the request body with jq into a FIXED file, then pass it to secretcurl
-   # with -d @file so the secretcurl command itself stays 100% literal (no shell
-   # var expansion in the curl argv — the permission analyzer blocks that).
-   jq -n --arg h "$HANDLE" '{
+   ```
+   Build the request body with jq into a FIXED file. The send below reads that file (`@/tmp/xai-soul-payload.json`), so its command line stays 100% literal (no shell var expansion in the argv - the permission analyzer blocks that):
+   ```bash
+   jq -n --arg h "<HANDLE>" '{
      model: "grok-4.7",
      input: [{role: "user", content: ("Build a voice and identity profile of X/Twitter account @" + $h + ". Step 1: return their profile — display name, bio/description, location, website, and what they pin or lead with. Step 2: return a WIDE, DIVERSE sample of 40-60 of their OWN ORIGINAL posts across a long window (not just the last day, not only the viral ones): mix short reactions, medium takes, and longer threads; span different topics, tones, and engagement levels; include some high-engagement and some quiet posts so their full range shows. Include representative replies and quote-tweets — they carry voice and opinion — but skip pure retweets of others. For EACH post return: the full text VERBATIM (never a paraphrase), the date, the type (original|reply|quote|thread-part), and the direct permalink https://x.com/" + $h + "/status/ID. Favour breadth of register over recency.")}],
      tools: [{type: "x_search"}]
    }' > /tmp/xai-soul-payload.json
-   HTTP=$(./secretcurl -s -o /tmp/xai-soul.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
+   ```
+   Then send it in its own call (it prints the HTTP status; secretcurl also prints an `http=... bytes=...` line on stderr):
+   ```bash
+   ./secretcurl -s -o /tmp/xai-soul.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
      -H "Content-Type: application/json" \
      -H "Authorization: Bearer {XAI_API_KEY}" \
-     -d @/tmp/xai-soul-payload.json)
-   echo "xai http=$HTTP bytes=$(wc -c </tmp/xai-soul.json)"
+     -d @/tmp/xai-soul-payload.json
    ```
-   On `HTTP=200` with a non-empty body, parse with `jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text'` and mark `data_source=api`. (If a scheduled batch ever loops this over several handles, give each call a unique temp file, e.g. `/tmp/xai-soul-${HANDLE}.json` for the response and `/tmp/xai-soul-payload-${HANDLE}.json` for the request body.)
+   On `HTTP=200` with a non-empty body, parse with `jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text'` and mark `data_source=api`. (If a scheduled batch ever loops this over several handles, give each call a unique temp file, e.g. `/tmp/xai-soul-<HANDLE>.json` for the response and `/tmp/xai-soul-payload-<HANDLE>.json` for the request body, one call per handle with the handle written in literally.)
 2. **Path B — x-mcp (local mode):** only if the key is `KEY_UNSET`, or Path A returned a non-2xx / empty / timeout — if the `x-mcp` MCP server is available, call `get_user_profile` and `get_user_tweets`. Mark `data_source=x-mcp`.
 3. **Path C — WebSearch (last resort, lower quality):** only if the key is unset and x-mcp is unavailable, or every path above failed — `from:${handle}` and the handle's name → bio, recurring themes, a handful of representative posts. WebSearch favours old high-engagement posts, so it undersamples the quiet range that makes a voice recognisable; note the true reason it was reached (`key-unset` | `http-<code>` | `empty` | `timeout`, never "XAI_API_KEY unavailable" when the key was set). Mark `data_source=websearch`.
 
@@ -259,8 +261,10 @@ Append to `memory/logs/${today}.md` under a `### soul-builder` heading (the heal
 
 1. **Check, don't assume.** Run `[ -n "$XAI_API_KEY" ] && echo KEY_PRESENT || echo KEY_UNSET`. If `KEY_PRESENT` (it will be on a normal run), you are required to try Path A before any fallback.
 2. **Allow enough time.** The `x_search` call typically takes 30–120s (it searches X live). When you invoke the Bash tool for the curl, **set the tool's `timeout` to at least 180000 (180s)**, and the curl carries **`--max-time 150`** so it fails cleanly instead of hanging. A curl that is slow is **not** a missing key — never treat a timeout as "key unavailable".
-3. **Capture the HTTP status** so the fallback decision is based on fact, not assumption (see the Path A snippet in step 1: `HTTP=$(curl … -w '%{http_code}' …)`). `HTTP=200` with a non-empty body → use it (`data_source=api`) and parse with the standard `jq` extractor.
+3. **Capture the HTTP status** so the fallback decision is based on fact, not assumption (see the Path A snippet in step 1: the `./secretcurl ... -w '%{http_code}'` call prints it). `HTTP=200` with a non-empty body → use it (`data_source=api`) and parse with the standard `jq` extractor.
 4. **Fall back only on a real failure**, and **record the true reason** — never write "XAI_API_KEY unavailable" when the key was set. Use one of: `key-unset` (only if step 1 said `KEY_UNSET`), `http-<code>` (non-2xx), `empty` (200 but no posts parsed), `timeout` (curl exceeded `--max-time`).
+
+**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`HTTP=$(...)`), uses `[ ... ] &&` tests, or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn. So the key check keeps the skill's original one-line form, the `jq -n` body build and the `./secretcurl` send are separate calls, the handle is written in literally where the snippet shows `<HANDLE>`, and the status comes from the `-w` output instead of an `echo`.
 
 **x-mcp / WebSearch are last-resort fallbacks only** for the X read — lower quality (WebSearch favours old high-engagement posts and undersamples the quiet range). Never reach for them while the key works.
 

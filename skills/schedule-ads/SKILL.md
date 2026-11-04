@@ -60,6 +60,7 @@ Launching ads is an irreversible outbound side-effect (real ad spend), so it is 
 - Auth'd calls go through `./secretcurl` with the `{ADMANAGE_API_KEY}` placeholder — never a bare `$ADMANAGE_API_KEY` (the Bash permission layer refuses that). `ADMANAGE_API_KEY` is injected in-run via `requires:`.
 - The branch checks the daily spend cap (`GET /v1/spend/daily`), then per batch calls `POST /v1/launch`, polls `GET /v1/batch-status/{id}` to a terminal state, and reports via `./notify`.
 - If `ADMANAGE_API_KEY` is unset, or the launch/spend call fails, skip the launch and notify — do not retry blindly. There is no deferred postprocess fallback.
+- **Shell shape (both branches).** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`SPEND=$(./secretcurl ...)`, `RESP=$(./secretcurl ...)`), uses `if` / `for` / `while` or `[ ... ]` tests, calls `sleep`, or joins commands with `;`, `&&` or `||` (including `cmd || { ...; exit 0; }` guards), and each refusal costs a model turn. So run each lookup as its own call and write the printed value into later commands literally (the `<TODAY>`, `<SPEND>`, `<CAP>`, `<BATCH_ID>` style placeholders in the snippets); turn each guard into a prose decision on what the call printed; write each request body to a `/tmp` file with Write and send it with `-d @file` instead of `-d "$PAYLOAD"`; make one call per batch, campaign or ad set instead of a loop; wait between polls with a one-line `python3 -c "import time; time.sleep(5)"` call.
 
 ## Steps (schedule)
 
@@ -121,21 +122,36 @@ Launching ads is an irreversible outbound side-effect (real ad spend), so it is 
 
    a. **Config check.** `[ -n "${ADMANAGE_API_KEY:+x}" ]` (the `${VAR:+x}` form — a bare `$ADMANAGE_API_KEY` trips the secret-expansion analyzer and reads as unset). If unset → notify "ads computed but ADMANAGE_API_KEY missing — nothing launched" and stop.
 
-   b. **Daily spend circuit-breaker (once).** Take the strictest `dailySpendCap` (`CAP`) across today's payloads. If set, read today's spend and **fail closed** unless it's a clean number *below* the cap:
+   b. **Daily spend circuit-breaker (once).** Take the strictest `dailySpendCap` (`CAP`) across today's payloads. If set, read today's spend and **fail closed** unless it's a clean number *below* the cap. Each step is its own Bash call:
       ```bash
-      SPEND=$(./secretcurl -sS --max-time 30 -H "Authorization: Bearer {ADMANAGE_API_KEY}" \
-        "https://api.admanage.ai/v1/spend/daily?startDate=$TODAY&endDate=$TODAY" | jq -r '.metadata.totalSpend // ""')
-      echo "$SPEND" | grep -qE '^[0-9]+(\.[0-9]+)?$' || { echo "spend unverifiable — fail closed"; exit 0; }
-      echo "$CAP"   | grep -qE '^[0-9]+(\.[0-9]+)?$' || { echo "dailySpendCap not numeric — fail closed"; exit 0; }
-      python3 -c "import sys; sys.exit(0 if float(sys.argv[1])>=float(sys.argv[2]) else 1)" "$SPEND" "$CAP" \
-        && { echo "daily spend cap tripped (today=$SPEND cap=$CAP) — launching nothing"; exit 0; }
+      date -u +%Y-%m-%d
       ```
-   c. **Per batch: launch, then poll.** For each payload `{ ads: [ ... ] }`:
+      It prints `TODAY`. Then, with `TODAY` written in literally:
       ```bash
-      RESP=$(./secretcurl -sS --max-time 60 -w 'http=%{http_code}\n' -X POST "https://api.admanage.ai/v1/launch" \
-        -H "Authorization: Bearer {ADMANAGE_API_KEY}" -H "Content-Type: application/json" -d "$PAYLOAD")
-      # success => .success==true and .adBatchId set; else record FAILED (.message/.error) and continue.
-      # Poll GET /v1/batch-status/$BATCH_ID (~90s, 5s interval) until .summaryStatus is success|error.
+      ./secretcurl -sS --max-time 30 -H "Authorization: Bearer {ADMANAGE_API_KEY}" \
+        "https://api.admanage.ai/v1/spend/daily?startDate=<TODAY>&endDate=<TODAY>" | jq -r '.metadata.totalSpend // ""'
+      ```
+      It prints `SPEND`. Check that it is a clean number:
+      ```bash
+      echo "<SPEND>" | grep -E '^[0-9]+(\.[0-9]+)?$'
+      ```
+      If that prints nothing, say "spend unverifiable - fail closed" and stop (launch nothing). Check `CAP` the same way:
+      ```bash
+      echo "<CAP>" | grep -E '^[0-9]+(\.[0-9]+)?$'
+      ```
+      If that prints nothing, say "dailySpendCap not numeric - fail closed" and stop. Then compare:
+      ```bash
+      python3 -c "import sys; print('TRIPPED' if float(sys.argv[1])>=float(sys.argv[2]) else 'UNDER_CAP')" "<SPEND>" "<CAP>"
+      ```
+      If it prints `TRIPPED`, say "daily spend cap tripped (today=<SPEND> cap=<CAP>) - launching nothing" and stop. Only `UNDER_CAP` goes on to step c.
+   c. **Per batch: launch, then poll.** For each payload `{ ads: [ ... ] }`, write it with Write to `/tmp/schedule-ads-launch.json` (overwrite per batch), then one call:
+      ```bash
+      ./secretcurl -sS --max-time 60 -w 'http=%{http_code}\n' -X POST "https://api.admanage.ai/v1/launch" \
+        -H "Authorization: Bearer {ADMANAGE_API_KEY}" -H "Content-Type: application/json" -d @/tmp/schedule-ads-launch.json
+      ```
+      It prints the response (`RESP`) and an `http=` line. Success => `.success==true` and `.adBatchId` set; else record FAILED (`.message`/`.error`) and continue. Then poll the batch (~90s, 5s interval): repeat this one call, with `BATCH_ID` written in literally, until `.summaryStatus` is `success` or `error`, **at most 18 times**, waiting 5 s between calls with one `python3 -c "import time; time.sleep(5)"` call:
+      ```bash
+      ./secretcurl -sS --max-time 30 -H "Authorization: Bearer {ADMANAGE_API_KEY}" "https://api.admanage.ai/v1/batch-status/<BATCH_ID>"
       ```
       Record each batch's outcome (ok / error / still-running-after-timeout) for the notify. Ads launch **PAUSED** (the payload sets it) unless `launchPaused: false`.
 
@@ -328,16 +344,15 @@ Provisioning campaigns and ad sets is an irreversible outbound side-effect, so i
 
    a. **Config check.** `[ -n "${ADMANAGE_API_KEY:+x}" ]` (the `${VAR:+x}` form — a bare `$ADMANAGE_API_KEY` trips the secret-expansion analyzer and reads as unset). If unset, notify "campaigns computed but ADMANAGE_API_KEY missing — nothing created" and stop (state unchanged).
 
-   b. **Campaigns first.** For each *new* campaign, `POST /v1/manage/create-campaign`:
+   b. **Campaigns first.** For each *new* campaign, write its payload with Write to `/tmp/schedule-ads-create.json` (overwrite per campaign), then one `POST /v1/manage/create-campaign` call:
       ```bash
-      RESP=$(./secretcurl -sS --max-time 60 -w 'http=%{http_code}\n' -X POST \
+      ./secretcurl -sS --max-time 60 -w 'http=%{http_code}\n' -X POST \
         "https://api.admanage.ai/v1/manage/create-campaign" \
-        -H "Authorization: Bearer {ADMANAGE_API_KEY}" -H "Content-Type: application/json" -d "$PAYLOAD")
-      # success => .success==true and .campaignId set.
+        -H "Authorization: Bearer {ADMANAGE_API_KEY}" -H "Content-Type: application/json" -d @/tmp/schedule-ads-create.json
       ```
-      On success: remember `configName → campaignId` (for step 9c) and append `{configName, campaignId, adAccountId, createdAt, adSets:[]}` to `.admanage-state/campaigns.json`. On failure: record the error, skip this campaign's ad sets.
+      It prints the response (`RESP`) and an `http=` line. Success => `.success==true` and `.campaignId` set. On success: remember `configName → campaignId` (for step 9c) and append `{configName, campaignId, adAccountId, createdAt, adSets:[]}` to `.admanage-state/campaigns.json`. On failure: record the error, skip this campaign's ad sets.
 
-   c. **Then ad sets.** For each new ad set, resolve `campaignId`: if it's `__RESOLVE_FROM_PARENT__`, look it up by `parentCampaignConfigName` in the map from 9b **or** existing state — if the parent isn't found (its create failed), skip the ad set with a warning. Then `POST /v1/manage/create-adset` (same `./secretcurl` shape). On success: append `{configName, adSetId, createdAt}` under the parent campaign in `.admanage-state/campaigns.json` (via `python3`/`Write` — no `mv`).
+   c. **Then ad sets.** For each new ad set, resolve `campaignId`: if it's `__RESOLVE_FROM_PARENT__`, look it up by `parentCampaignConfigName` in the map from 9b **or** existing state - if the parent isn't found (its create failed), skip the ad set with a warning. Then `POST /v1/manage/create-adset` (same `./secretcurl` shape: payload written to `/tmp/schedule-ads-create.json` with Write, sent with `-d @/tmp/schedule-ads-create.json`, one call per ad set). On success: append `{configName, adSetId, createdAt}` under the parent campaign in `.admanage-state/campaigns.json` (via `python3`/`Write` - no `mv`).
 
    Ordering is explicit here (campaigns loop fully before the ad-sets loop), so children always reference a resolved parent ID.
 

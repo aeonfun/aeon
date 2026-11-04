@@ -81,11 +81,16 @@ Key invariants:
 
 ### 2. Resolve tracked token
 
+Each step below is one Bash call (see **Shell shape** in the Network note):
+
 ```bash
 mkdir -p memory/topics
-[ -f memory/topics/price-alert-state.json ] || cat > memory/topics/price-alert-state.json <<'EOF'
+```
+
+Check for `memory/topics/price-alert-state.json` with Glob. If it does not exist, create it with Write:
+
+```json
 {"contract":null,"chain":null,"ath":null,"last_alerts":{"ath":null,"sharp_move":null,"target_hit":null},"targets":{}}
-EOF
 ```
 
 Parse the "Tracked Token" table in `memory/MEMORY.md`. Pull `CONTRACT` (column 2 of the first data row) and `CHAIN` (column 3, lowercased). If the section is missing, the table is empty, or the contract field doesn't match `^0x[0-9a-fA-F]{40}$` → log `PRICE_ALERT_NO_TOKEN` and exit (no notify, no state write).
@@ -94,11 +99,13 @@ If the state file's `contract` is set and differs from the resolved contract →
 
 ### 3. Fetch current price (DexScreener primary)
 
+One call, with the contract written in literally:
+
 ```bash
-RESP=$(curl -fsS "https://api.dexscreener.com/latest/dex/tokens/${CONTRACT}" 2>/dev/null || echo "")
+curl -fsS -o /tmp/price-alert-dex.json "https://api.dexscreener.com/latest/dex/tokens/<CONTRACT>"
 ```
 
-If the response is empty, falsy, or `jq` can't parse it → fall back to **WebFetch** on the same URL with prompt `"Return the raw JSON body verbatim."` and try again. If both paths fail → log `PRICE_ALERT_FETCH_FAIL` and exit with status `ERROR` (no notify, no state mutation beyond touching `last_run_at`).
+Then parse it with `jq` as its own call (e.g. `jq '.pairs | length' /tmp/price-alert-dex.json`). If curl fails, or the response is empty, falsy, or `jq` can't parse it → fall back to **WebFetch** on the same URL with prompt `"Return the raw JSON body verbatim."` and try again. If both paths fail → log `PRICE_ALERT_FETCH_FAIL` and exit with status `ERROR` (no notify, no state mutation beyond touching `last_run_at`).
 
 From the parsed JSON:
 - Filter `.pairs[]` to entries where `.chainId == "${CHAIN}"`.
@@ -211,34 +218,27 @@ currently sits above `CURRENT_PRICE` (don't nag operators who already queued one
 the next level:
 
 ```bash
-./notify "New high — want an alert when $SYMBOL clears a level above this? Reply with a price." \
+./notify "New high - want an alert when <SYMBOL> clears a level above this? Reply with a price." \
   --force-reply --placeholder "e.g. 0.000005" \
   --context "price-alert::set-target"
 ```
 
 The reply routes back as `var=set-target:<price>` (handled in step 1). On that run, once the target
 is registered (step 6, first-observation — no cross alert), close the loop with a one-line
-confirmation: `./notify "Target set: \$<price> for $SYMBOL — I'll alert you when it crosses."`
+confirmation: `./notify "Target set: \$<price> for <SYMBOL> - I'll alert you when it crosses."` (symbol written in literally)
 (Send it only when a *new* target was actually registered this run.)
 
 ### 8. Persist state
 
-Rewrite `memory/topics/price-alert-state.json` atomically:
+Rewrite `memory/topics/price-alert-state.json` as one whole-file write. Get the timestamp as its own call:
 
 ```bash
-TMP=$(mktemp)
-jq --arg ts "$(date -u +%FT%TZ)" '
-  .last_run_at = $ts |
-  .contract = $contract |
-  .chain = $chain |
-  .ath = $ath_obj |
-  .last_alerts = $last_alerts_obj |
-  .targets = $targets_obj
-' memory/topics/price-alert-state.json > "$TMP"
-mv "$TMP" memory/topics/price-alert-state.json
+date -u +%FT%TZ
 ```
 
-Validate with `jq empty memory/topics/price-alert-state.json` after writing; if it fails, restore from a `.bak` copy and log `PRICE_ALERT_STATE_CORRUPT`. Keep one `.bak` rolling.
+It prints NOW. First save the current file's contents to `memory/topics/price-alert-state.json.bak` with Write (the one rolling `.bak`). Then Write the full new state: the old object with `last_run_at` = NOW (written in literally) and `contract`, `chain`, `ath`, `last_alerts` and `targets` set to this run's values.
+
+Validate with `jq empty memory/topics/price-alert-state.json` after writing; if it fails, restore from the `.bak` copy (Write its contents back) and log `PRICE_ALERT_STATE_CORRUPT`.
 
 Cap `state.targets` to 20 most-recent entries (LRU by `first_seen_below_at`) so a long-running fork doesn't accumulate stale operator targets.
 
@@ -281,6 +281,8 @@ The status field carries the *highest-priority* gate fired this run, or the most
 
 DexScreener is keyless and public — `curl` works; there is no network sandbox. If a public `curl` GET is flaky, the **WebFetch fallback** kicks in (built-in Claude tool, prompt: `"Return the raw JSON body verbatim."`). There's no auth header, and the URL doesn't change between runs. Notify goes through `./notify`, which stages to `.pending-notify/`; the workflow re-delivers any messages that failed to send after the run — no extra script needed.
 
+**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`X=$(...)`), uses `if` / `[ -f ... ] ||` tests, `mktemp` or `mv`, or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn. So the state-file check is a Glob, the DexScreener fetch is one `curl` to a file with the contract written in literally, timestamps come from a bare `date` call, and the state file is written with Write (never a shell redirect).
+
 ## Constraints
 
 - **One alert per event per 4h window.** The state file's `last_alerts.*` map is the only authority on whether to suppress.
@@ -288,7 +290,7 @@ DexScreener is keyless and public — `curl` works; there is no network sandbox.
 - **No baseline alert.** The first run after a fresh state file or token change must NOT send an ATH notification — the stored price is the baseline, not a "new high." Subsequent strict-higher prices alert.
 - **No freelance interpretation.** The sharp-move direction phrase is hard-coded by sign. Do not embellish with TA opinions ("looks like distribution", "could test support"). The verdict tells the operator *what* happened; the operator decides *what it means*.
 - **Liquid-pool selection only.** The deepest-liquidity pair on the configured chain wins. Don't compute prices from blended pool averages — the deepest pool's `priceUsd` is the canonical mark.
-- **State writes are atomic + validated.** Every state write goes through a tmpfile + `jq empty` validation step. Corrupt writes restore from `.bak`.
+- **State writes are whole-file + validated.** Every state write is one full Write followed by a `jq empty` validation step. Corrupt writes restore from `.bak`.
 - **Read-only across `memory/logs/`.** This skill never modifies past log files. It only appends to today's.
 - **Targets are absolute USD, not percentages.** This avoids ambiguity ("20% from where?"). If operators want move-from-now alerts they have the sharp-move gate.
 - **Idempotent under same-minute reruns.** Same-minute reruns with identical price input produce identical state and zero new notifications (every gate dedup-suppressed).

@@ -61,24 +61,20 @@ Produce an **actionable** movers report. Plain % change lists are noise — the 
 
 ### 1. Fetch data
 
-Fetch market data and trending coins in parallel. Request multi-timeframe changes for context:
+Fetch market data and trending coins in parallel. Request multi-timeframe changes for context.
 
+**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`CG_HDR=(...)`, `TMPDIR=$(mktemp -d)`, `RPC="..."`), uses `if` / `for` / `[ ... ] &&` tests, defines a shell function, uses `mktemp` or `sleep`, or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn. So each fetch below is its own call with every value (network, contract, pool, RPC URL) written in literally (the `<NETWORK>`, `<RPC_URL>` style placeholders), the key-or-no-key choice is made by you from the one-line key check, the rate-limit backoff is curl's own `--retry`, and every status flag is noted by you from what each call printed.
+
+CoinGecko auth: a free/Demo key (the common case) authenticates on `api.coingecko.com` with the `x-cg-demo-api-key` header - send it only when a key is set; without one the same public endpoint still works at a lower rate limit. (A paid Pro key instead uses `pro-api.coingecko.com` with `x-cg-pro-api-key`.) Pass the key through `./secretcurl`'s `{ENV_NAME}` placeholder so no `$SECRET` ever lands on the command line (a bare `$COINGECKO_API_KEY` is refused by the Bash permission analyzer). Check whether `COINGECKO_API_KEY` is set with its own call, `[ -n "${COINGECKO_API_KEY:+x}" ] && echo KEY_PRESENT || echo KEY_UNSET`: when it printed `KEY_PRESENT`, include `-H "x-cg-demo-api-key: {COINGECKO_API_KEY}"` as shown; when it is not, drop that `-H` so the call stays keyless-public. Two calls.
+
+Top 250 coins by market cap with 1h, 24h, and 7d % change:
 ```bash
-# CoinGecko auth: a free/Demo key (the common case) authenticates on
-# api.coingecko.com with the `x-cg-demo-api-key` header — send it only when a key
-# is set; without one the same public endpoint still works at a lower rate limit.
-# (A paid Pro key instead uses pro-api.coingecko.com with `x-cg-pro-api-key`.)
-# Pass the key through ./secretcurl's {ENV_NAME} placeholder so no `$SECRET` ever
-# lands on the command line (a bare $COINGECKO_API_KEY is refused by the Bash
-# permission analyzer). Build the header array only when the key is set, so the
-# call stays keyless-public when it isn't.
-CG_HDR=(); [ -n "${COINGECKO_API_KEY:+x}" ] && CG_HDR=(-H "x-cg-demo-api-key: {COINGECKO_API_KEY}")
+./secretcurl -s -H "x-cg-demo-api-key: {COINGECKO_API_KEY}" "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=1&sparkline=false&price_change_percentage=1h,24h,7d"
+```
 
-# Top 250 coins by market cap with 1h, 24h, and 7d % change
-./secretcurl -s "${CG_HDR[@]}" "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=1&sparkline=false&price_change_percentage=1h,24h,7d"
-
-# Trending searches (top coins people are searching for)
-./secretcurl -s "${CG_HDR[@]}" "https://api.coingecko.com/api/v3/search/trending"
+Trending searches (top coins people are searching for):
+```bash
+./secretcurl -s -H "x-cg-demo-api-key: {COINGECKO_API_KEY}" "https://api.coingecko.com/api/v3/search/trending"
 ```
 
 If curl fails or returns empty JSON, retry once with **WebFetch** against the same URL.
@@ -205,48 +201,31 @@ Each pool object includes:
 
 ### 1. Fetch data (sequential, rate-limit aware)
 
+Make the work folder first, as its own call (see **Shell shape** in the coingecko step 1):
 ```bash
-TMPDIR=$(mktemp -d)
-TODAY=$(date -u +%Y-%m-%d)
+mkdir -p /tmp/token-movers-work
+```
 
-# Networks to scan. If ${chain} was resolved in the preamble, restrict to that one.
-if [ -n "${chain}" ]; then
-  NETWORKS="${chain}"
-else
-  NETWORKS="solana eth base bsc arbitrum"
-fi
+Networks to scan (NETWORKS): if `${chain}` was resolved in the preamble, only that one; otherwise `solana eth base bsc arbitrum`. Fetch sequentially, one call per URL, never in a loop (the gap between your calls stands in for the old `sleep 1` spacing). Every call uses curl's own backoff (`--retry 2 --retry-delay 3`: up to 3 tries with ~6s of waiting, standing in for the old 0/2/4s loop) and prints its status:
+- A fetch **failed** when it printed `bytes=0`, or `http=429`, or the saved file holds `"status":"429"` (check that with `grep -c '"status":"429"' <file>` as its own call when in doubt). Otherwise it is `ok`.
+- Note each status yourself: `GLOBAL_OK` (1/0) for global trending, `NEW_OK` (1/0) for new pools, and NET_STATUS as `<N>-trend=ok|fail` and `<N>-vol=ok|fail` for each network.
 
-fetch_with_backoff() {
-  local url="$1" out="$2"
-  for delay in 0 2 4; do
-    [ $delay -gt 0 ] && sleep $delay
-    curl -s --max-time 15 "$url" > "$out"
-    if ! grep -q '"status":"429"' "$out" 2>/dev/null && [ -s "$out" ]; then
-      return 0
-    fi
-  done
-  return 1
-}
+Global trending:
+```bash
+curl -s --max-time 15 --retry 2 --retry-delay 3 -o /tmp/token-movers-work/global.json -w 'gt http=%{http_code} bytes=%{size_download}\n' "https://api.geckoterminal.com/api/v2/networks/trending_pools?page=1"
+```
 
-# Global trending
-fetch_with_backoff "https://api.geckoterminal.com/api/v2/networks/trending_pools?page=1" "$TMPDIR/global.json" \
-  && GLOBAL_OK=1 || GLOBAL_OK=0
-sleep 1
+Per-network trending + volume leaders: two calls per network, with the network slug `<N>` written in literally (it comes from `var`: write it in as a plain slug, never as shell code):
+```bash
+curl -s --max-time 15 --retry 2 --retry-delay 3 -o /tmp/token-movers-work/<N>-trend.json -w 'gt http=%{http_code} bytes=%{size_download}\n' "https://api.geckoterminal.com/api/v2/networks/<N>/trending_pools?page=1"
+```
+```bash
+curl -s --max-time 15 --retry 2 --retry-delay 3 -o /tmp/token-movers-work/<N>-vol.json -w 'gt http=%{http_code} bytes=%{size_download}\n' "https://api.geckoterminal.com/api/v2/networks/<N>/pools?page=1&sort=h24_volume_usd_desc"
+```
 
-# Per-network trending + volume leaders (per-source status, no eval: ${N} comes from var)
-NET_STATUS=""
-for N in $NETWORKS; do
-  fetch_with_backoff "https://api.geckoterminal.com/api/v2/networks/${N}/trending_pools?page=1" "$TMPDIR/${N}-trend.json" \
-    && NET_STATUS="$NET_STATUS ${N}-trend=ok" || NET_STATUS="$NET_STATUS ${N}-trend=fail"
-  sleep 1
-  fetch_with_backoff "https://api.geckoterminal.com/api/v2/networks/${N}/pools?page=1&sort=h24_volume_usd_desc" "$TMPDIR/${N}-vol.json" \
-    && NET_STATUS="$NET_STATUS ${N}-vol=ok" || NET_STATUS="$NET_STATUS ${N}-vol=fail"
-  sleep 1
-done
-
-# New pools (for BREAKOUT tagging)
-fetch_with_backoff "https://api.geckoterminal.com/api/v2/networks/new_pools?page=1" "$TMPDIR/new.json" \
-  && NEW_OK=1 || NEW_OK=0
+New pools (for BREAKOUT tagging):
+```bash
+curl -s --max-time 15 --retry 2 --retry-delay 3 -o /tmp/token-movers-work/new.json -w 'gt http=%{http_code} bytes=%{size_download}\n' "https://api.geckoterminal.com/api/v2/networks/new_pools?page=1"
 ```
 
 **Fetch fallback:** if `curl` fails for any URL (file is empty or has `"status":"429"` after retries), retry that URL with **WebFetch** using the same URL. Parse the JSON response body.
@@ -315,7 +294,7 @@ From the last 2 days of `memory/logs/`, extract any runner token names previousl
 Send via `./notify`. Format:
 
 ```
-*runners — ${TODAY}* — verdict: STRONG
+*runners - ${today}* - verdict: STRONG
 
 1. [TAG] TOKEN (chain) +X% 24h ★ repeat
 vol $X.Xm | liq $X.Xm | fdv $Xm | h1 +X% | buys:sells X:Y
@@ -341,12 +320,12 @@ vibe: [one-line read on overall tape mood]
 - The one-line take MUST say something the operator can act on — not a restatement of the numbers. Good: "clean breakout, pool <24h old but already $500k liq locked". Bad: "price went up a lot with high volume".
 
 **Edge cases:**
-- If verdict is **SLEEPY** (<5 pools passed): send a short note instead — `*runners — ${TODAY}* — sleepy session, only N pools cleared quality gate. Skipping top-5.` Include the 1-2 survivors if any.
-- If ALL sources failed (every `*_OK=0`): send `*runners — ${TODAY}* — MONITOR_RUNNERS_ERROR, all GeckoTerminal endpoints failed. Check rate-limits/network.` and skip the rest.
+- If verdict is **SLEEPY** (<5 pools passed): send a short note instead - `*runners - ${today}* - sleepy session, only N pools cleared quality gate. Skipping top-5.` Include the 1-2 survivors if any.
+- If ALL sources failed (every fetch in step 1 noted as failed: `GLOBAL_OK=0`, `NEW_OK=0` and every NET_STATUS entry `fail`): send `*runners - ${today}* - MONITOR_RUNNERS_ERROR, all GeckoTerminal endpoints failed. Check rate-limits/network.` and skip the rest.
 
 ### 8. Log (runners)
 
-Append to `memory/logs/${TODAY}.md`:
+Append to `memory/logs/${today}.md` with Edit (Write if the file is new):
 
 ```
 ### token-movers
@@ -436,13 +415,22 @@ Read the last **30 days** of `memory/logs/*.md` for prior `TOKEN_REPORT_STATE:` 
 
 ### 1. Fetch core market data (GeckoTerminal — primary)
 
+One call per URL (see **Shell shape** in the coingecko step 1), with the network slug written in literally as `<NETWORK>` (the `${network}` value) and the real contract in place of `CONTRACT_ADDRESS`:
 ```bash
-curl -s "https://api.geckoterminal.com/api/v2/networks/${network}/tokens/CONTRACT_ADDRESS"
-curl -s "https://api.geckoterminal.com/api/v2/networks/${network}/tokens/CONTRACT_ADDRESS/pools?page=1"
-# Top pool address from the pools response:
-curl -s "https://api.geckoterminal.com/api/v2/networks/${network}/pools/POOL_ADDRESS/ohlcv/day?aggregate=1&limit=30"
-curl -s "https://api.geckoterminal.com/api/v2/networks/${network}/pools/POOL_ADDRESS/ohlcv/hour?aggregate=1&limit=24"
-curl -s "https://api.geckoterminal.com/api/v2/networks/${network}/pools/POOL_ADDRESS/trades"
+curl -s "https://api.geckoterminal.com/api/v2/networks/<NETWORK>/tokens/CONTRACT_ADDRESS"
+```
+```bash
+curl -s "https://api.geckoterminal.com/api/v2/networks/<NETWORK>/tokens/CONTRACT_ADDRESS/pools?page=1"
+```
+Take the top pool address from the pools response and write it in place of `POOL_ADDRESS`:
+```bash
+curl -s "https://api.geckoterminal.com/api/v2/networks/<NETWORK>/pools/POOL_ADDRESS/ohlcv/day?aggregate=1&limit=30"
+```
+```bash
+curl -s "https://api.geckoterminal.com/api/v2/networks/<NETWORK>/pools/POOL_ADDRESS/ohlcv/hour?aggregate=1&limit=24"
+```
+```bash
+curl -s "https://api.geckoterminal.com/api/v2/networks/<NETWORK>/pools/POOL_ADDRESS/trades"
 ```
 
 If curl fails, retry each URL with **WebFetch**. If the token endpoint returns no data or 404 after both paths, go to step 9 with `TOKEN_REPORT_NO_DATA` — do not notify, do not write an article.
@@ -470,11 +458,9 @@ If `memory/token-report.md` declares a **Treasury Wallets** section, fetch nativ
 For each wallet, query the chain in this fallback order:
 
 1. **Public RPC `eth_getBalance` (primary, keyless):**
+   Pick `<RPC_URL>` yourself: the wallet's `RPC URL` from config, else the chain's default public endpoint (for base, `BASE_RPC_URL` overrides the default when set; else `https://mainnet.base.org`). One call per wallet, with the URL and the wallet address written in literally:
    ```bash
-   # Per-wallet RPC URL from config, else the chain's default public endpoint.
-   # For base, BASE_RPC_URL overrides the default when set.
-   RPC="${wallet_rpc_url:-${BASE_RPC_URL:-https://mainnet.base.org}}"
-   curl -m 10 -s -X POST "$RPC" -H "Content-Type: application/json" \
+   curl -m 10 -s -X POST "<RPC_URL>" -H "Content-Type: application/json" \
      -d '{"jsonrpc":"2.0","method":"eth_getBalance","params":["ADDRESS","latest"],"id":1}'
    ```
    Use a public, keyless JSON-RPC endpoint for the configured chain (e.g. `https://mainnet.base.org` for Base, `https://eth.llamarpc.com` for Ethereum), or the per-wallet `RPC URL` from config. Override Base via `BASE_RPC_URL` for an authenticated endpoint (the operator supplies the full URL with any key already embedded in the **path**; the static `-H "Content-Type: application/json"` carries no secret). Response is JSON-RPC `{"jsonrpc":"2.0","result":"0x<hex_wei>","id":1}`. Convert hex → decimal → ÷1e18. If the response has no `result`, the `result` is `null`/non-hex, or it carries an `error`, mark this wallet `eth=fetch_fail` and continue.
@@ -482,9 +468,9 @@ For each wallet, query the chain in this fallback order:
    > Note on explorers: the unified `api.etherscan.io/v2` endpoint gates several chains behind a paid plan, so a plain JSON-RPC `eth_getBalance` is the reliable keyless path — matching `tx-explain`.
 
 2. **Alchemy (secondary, only if `ALCHEMY_API_KEY` is set AND the public RPC failed):**
+   `<ALCHEMY_NETWORK>` = `base-mainnet` | `eth-mainnet` | `arb-mainnet` | `opt-mainnet` | `polygon-mainnet` …, written in literally with the wallet address:
    ```bash
-   # ${alchemy_network} = base-mainnet | eth-mainnet | arb-mainnet | opt-mainnet | polygon-mainnet …
-   ./secretcurl -m 10 -s -X POST "https://${alchemy_network}.g.alchemy.com/v2/{ALCHEMY_API_KEY}" \
+   ./secretcurl -m 10 -s -X POST "https://<ALCHEMY_NETWORK>.g.alchemy.com/v2/{ALCHEMY_API_KEY}" \
      -H "Content-Type: application/json" \
      -d '{"jsonrpc":"2.0","id":1,"method":"eth_getBalance","params":["ADDRESS","latest"]}'
    ```
@@ -609,6 +595,9 @@ If `XAI_API_KEY` is set:
 
 ```bash
 jq -n '{model:"grok-4.7", input:[{role:"user",content:"Search X for TOKEN_SYMBOL or CONTRACT_ADDRESS mentions in the last 24 hours with at least 10 likes. Return up to 5 notable tweets with @handle, engagement counts, and a one-line summary of the claim or vibe. Exclude obvious bots and generic shill posts."}], tools:[{type:"x_search"}]}' > /tmp/xai-tm-payload.json
+```
+Then send it in its own call:
+```bash
 ./secretcurl -s -X POST "https://api.x.ai/v1/responses" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {XAI_API_KEY}" \
