@@ -4,7 +4,7 @@ description: Digest Internet Computer governance - new and open NNS proposals an
 metadata:
   title: SNS Digest
   category: crypto
-  mode: read-only
+  mode: write
   var: ""
   tags:
     - crypto
@@ -28,25 +28,25 @@ what is still open, so the operator can act in time.
 
 ## Read path — fully public (verified)
 
-No secret. Two keyless APIs (verified 2026-11-04):
+No secret. Two keyless public APIs (verified 2026-11-04), fetched with `curl` so egress is declared:
 
-- **NNS proposals** — `GET https://ic-api.internetcomputer.org/api/v3/proposals?limit=<n>`
-  returns recent proposals with `id`, `action`, `latest_tally`, `deadline_timestamp_seconds`,
-  `executed/decided/failed` timestamps. Filter by topic with `&include_topic=<TOPIC_*>`
-  (e.g. `TOPIC_SNS_AND_COMMUNITY_FUND`).
-- **SNS list** — `GET https://sns-api.internetcomputer.org/api/v1/snses?limit=<n>&offset=0`
-  returns each DAO's `root_canister_id`, `name`, `swap_lifecycle`. Per-SNS proposals are
-  under the same aggregator host (`/api/v1/snses/<root>/proposals`); probe and parse
-  defensively — treat the shape as the source of truth, and on a non-2xx/empty read record
-  `source=http-<code>` for that DAO rather than inventing data.
+```bash
+curl -s --max-time 20 "https://ic-api.internetcomputer.org/api/v3/proposals?limit=50&include_status=OPEN" -o /tmp/nns-proposals.json
+```
+```bash
+curl -s --max-time 20 "https://sns-api.internetcomputer.org/api/v1/snses?limit=50&offset=0" -o /tmp/snses.json
+```
+
+- **NNS proposals** — each carries `proposal_id` (the governance proposal number — key dedup and reporting on this, **not** the row `id`), `action`, `latest_tally`, `deadline_timestamp_seconds`, and `executed/decided/failed` timestamps. `include_status=OPEN` returns only currently-votable proposals; a second call with `&include_status=EXECUTED` catches ones decided since the last run. Optionally narrow with `&include_topic=<TOPIC_*>` (e.g. `TOPIC_SNS_AND_COMMUNITY_FUND`).
+- **SNS list** — returns each DAO's `root_canister_id`, `name`, `swap_lifecycle`. Per-SNS proposals are under `https://sns-api.internetcomputer.org/api/v1/snses/<root>/proposals`; probe and parse defensively — on a non-2xx/empty read record `source=http-<code>` for that DAO rather than inventing data.
 
 ## Steps
 
 1. **Resolve scope** from `${var}`.
-2. **Fetch NNS** (unless scope is a specific SNS): `/api/v3/proposals?limit=50`. Keep those that are **open** (deadline in the future, not yet decided) plus any newly decided since the last run.
+2. **Fetch NNS** (unless scope is a specific SNS) with `include_status=OPEN` (above); for the full digest, a second call with `&include_status=EXECUTED` adds proposals decided since the last run.
 3. **Fetch SNS** (unless scope is `nns`): list active DAOs, then for the scoped DAO(s) fetch recent proposals. Cap the sweep (e.g. top ~10 DAOs by activity) to stay within the run budget.
-4. **Dedup** against `memory/topics/icp-governance-state.json` (last-seen proposal ids per source) and the recent logs. A proposal already reported is dropped.
-5. **Build the digest** — group by source (NNS / each SNS), newest/soonest-deadline first; one line per proposal: id, action/title, tally (yes/no %), and time-to-deadline. Nothing new/open → send nothing.
+4. **Dedup** against `memory/topics/icp-governance-state.json` (last-seen `proposal_id`s per source) and the recent logs. A proposal already reported is dropped.
+5. **Build the digest** — group by source (NNS / each SNS), newest/soonest-deadline first; one line per proposal: `proposal_id`, action/title, tally (yes/no %), and time-to-deadline. Nothing new/open → send nothing.
 6. **Notify + persist** — `./notify -f` the digest (info severity; use the warning tier only for a proposal closing within ~24h). Update the state file with the seen ids.
 
 ## Reporting

@@ -7,7 +7,7 @@ proposals — so the operator sees what is up for a vote and what is closing soo
 - NNS: `https://ic-api.internetcomputer.org/api/v3/proposals`
 - SNS list: `https://sns-api.internetcomputer.org/api/v1/snses`
 
-`mode: read-only`. Fires only when there is something new/open; dedups against prior runs.
+`mode: write`. Fires only when there is something new/open; dedups against prior runs.
 
 ## Run
 

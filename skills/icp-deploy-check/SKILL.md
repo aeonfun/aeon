@@ -48,8 +48,12 @@ Detect a Rust canister first (`Cargo.toml` with `ic-cdk`/`candid`, or `#[ic_cdk:
    **warn** (triage, not auto-fail).
 2. **Unguarded admin method (#8)** — mint/migrate/config/`set_*` updates must have an
    owner/controller check. **warn** on any that don't.
-3. **No mainnet `fetch_root_key` (#7)** — `fetch_root_key()` must be gated behind an
-   explicit local-only flag, never a default/mainnet path. Any ungated call = **fail**.
+3. **No mainnet `fetch_root_key` (#7)** — this is an **agent/client** call
+   (`@dfinity/agent` in JS/TS, or `ic-agent` in a Rust client), **not** canister code, so
+   check the repo's frontend/client, not the canister's Rust. `fetchRootKey()` /
+   `fetch_root_key()` disables replica-signature verification; it must be gated behind an
+   explicit local-only flag, never a default/mainnet path. Any ungated call = **fail**; a
+   repo with no client code = **n/a**.
 4. **Controller backup (#6)** — look for a `dfx.json`/deploy doc/README describing the
    controller set. A single-controller or plaintext-dev-key setup is **needs-human**:
    recommend a multisig/threshold or backup controller before mainnet.
@@ -75,7 +79,7 @@ nothing unless `${var}` explicitly requested a run report). `./notify -f` body:
 ```
 icp-deploy-check — <repo>: <N fail / M warn / K needs-human>
 
-fail: fetch_root_key on a default path (src/lib.rs:NN)
+fail: fetch_root_key on a default path (src/frontend/agent.ts:NN)
 needs-human: single controller — add a backup/multisig before mainnet
 link: <repo URL if known>
 ```

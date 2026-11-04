@@ -4,7 +4,7 @@ description: Monitor Internet Computer canisters for control-plane changes - a n
 metadata:
   title: Canister Status
   category: crypto
-  mode: read-only
+  mode: write
   var: ""
   tags:
     - crypto
@@ -34,9 +34,9 @@ A canister's **control plane** changing is a security event: a new/removed contr
 1. **Resolve targets** — `${var}` ids, else the `memory/topics/icp-canisters.md` watch list. For each id validate the textual-principal shape before use.
 2. **Read public state** — for each id:
    ```bash
-   curl -s --max-time 20 "https://ic-api.internetcomputer.org/api/v3/canisters/$ID" -o "$T/$ID.json"
+   curl -s --max-time 20 "https://ic-api.internetcomputer.org/api/v3/canisters/$ID" -o "/tmp/canister-$ID.json"
    ```
-   Parse `controllers`, `module_hash`, `canister_type`, `subnet_id`, `upgrades[-1]`. HTTP 404 → `unindexed`; a non-2xx/empty body → record `source=http-<code>` and skip that id (never claim a change on a failed read).
+   Parse `controllers`, `module_hash`, `canister_type`, `subnet_id`, and the latest upgrade `upgrades[0]` (the API lists newest first, so `[0]` is the most recent). HTTP 404 → `unindexed`; HTTP 422 → `invalid-id` (malformed principal); any other non-2xx or empty body → record `source=http-<code>` and skip that id (never claim a change on a failed read).
 3. **(Optional) live running-state** — only if `ICP_IDENTITY_PEM` is set: call `canister_status` for that id via the identity path (see connectivity doc). Never put the PEM on the command line — use `./secretcurl`/an identity file the agent reads. Fail-open: on any error, mark running-state `unavailable` and continue.
 4. **Diff against stored state** — `memory/topics/icp-canister-state.json` keyed by id holds the last `{controllers, module_hash, running}`. A change in `controllers` (added/removed) or `module_hash` (an upgrade) is the signal. First sight of an id = baseline only, no alert.
 5. **Alert on change only** — build one body per changed canister; send `./notify -f`. No change anywhere → send nothing (signal-only). Update the state file either way.
