@@ -579,9 +579,9 @@ One Bash call per command, inside the clone:
 ```bash
 git checkout -b security/bump-<pkg>-<cve>
 ```
-Update the lockfile/manifest (Edit), then:
+Update the lockfile/manifest (Edit), then stage **only the files you edited** — never `git add -A`, which sweeps the scanner's cloned targets (`.scan*/`, `.vuln-scan*/`) into the commit as broken submodule gitlinks:
 ```bash
-git add -A
+git add <lockfile> <manifest>
 ```
 ```bash
 git commit -m "fix(deps): bump <pkg> to patch <CVE-YYYY-NNNN>
