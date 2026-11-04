@@ -32,7 +32,7 @@ reads the repo in front of you and reports pass/fail per check.
 The checks are the deploy-relevant subset of the 12 canister-security pitfalls,
 embedded from `dfinity/icskills` canister-security. The full checklist lives at
 `skills/canister-audit/references/ic-security-checklist.md` (reuse the knowledge, do
-not install the ICP skill — see `docs/icp/ICP-SKILLS-COMPATIBILITY.md`). The
+not install the ICP skill). The
 load-bearing deploy checks are inlined below so this skill is self-contained.
 
 ## Checklist (read the source, report pass / warn / needs-human per check)

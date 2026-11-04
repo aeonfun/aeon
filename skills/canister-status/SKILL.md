@@ -27,7 +27,7 @@ A canister's **control plane** changing is a security event: a new/removed contr
 ## What is public vs identity-gated (verified)
 
 - **Public, no secret** — the IC dashboard API `GET https://ic-api.internetcomputer.org/api/v3/canisters/<id>` returns `controllers`, `module_hash`, `canister_type`, `subnet_id`, `name`, and an `upgrades[]` history for any **indexed** canister. This is the skill's default path. (Verified 2026-11-04; a non-indexed canister returns 404 — recorded as `unindexed`, not an error.)
-- **Identity-gated** — the live **running state** (`Running`/`Stopping`/`Stopped`) and `memory_size` come from the management canister `canister_status`, which only a **controller** may call. If `ICP_IDENTITY_PEM` is configured (a controller identity), the skill adds this via `icp-cli`/agent through `./secretcurl`; otherwise it reports control-plane facts only and notes running-state as `unavailable (needs controller identity)`. See `docs/icp/ICP-CONNECTIVITY.md`.
+- **Identity-gated** — the live **running state** (`Running`/`Stopping`/`Stopped`) and `memory_size` come from the management canister `canister_status`, which only a **controller** may call. If `ICP_IDENTITY_PEM` is configured (a controller identity), the skill adds this via `icp-cli`/agent through `./secretcurl`; otherwise it reports control-plane facts only and notes running-state as `unavailable (needs controller identity)`.
 
 ## Steps
 

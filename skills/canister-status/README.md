@@ -10,7 +10,7 @@ index — and alerts the moment one happens.
 - **Identity path (optional):** live running-state via the management-canister
   `canister_status` (controller-gated) when `ICP_IDENTITY_PEM` is configured.
 
-`mode: read-only`. See `docs/icp/ICP-CONNECTIVITY.md` for the connectivity model.
+`mode: read-only`.
 
 ## Run
 
