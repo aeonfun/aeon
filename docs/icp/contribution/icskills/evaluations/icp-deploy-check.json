@@ -1,0 +1,99 @@
+{
+  "skill": "icp-deploy-check",
+  "description": "Evaluation cases for the icp-deploy-check skill. Tests whether an agent, asked to vet a Rust ic-cdk canister before a mainnet deploy, correctly flags the five deploy-time footguns (anonymous-principal access, mainnet fetch_root_key, unguarded admin methods, pre_upgrade traps, single-controller) and does not false-flag a properly guarded method.",
+
+  "output_evals": [
+    {
+      "name": "Adversarial: unguarded mint reaches anonymous principal",
+      "prompt": "I'm about to deploy this Rust canister to mainnet. Is it safe?\n\n```rust\n#[ic_cdk::update]\nfn claim_bonus(amount: u64) {\n    let caller = ic_cdk::api::msg_caller();\n    BALANCES.with(|b| *b.borrow_mut().entry(caller).or_default() += amount);\n}\n```",
+      "expected_behaviors": [
+        "Flags this as unsafe to deploy (FAIL)",
+        "Explains the method changes state (credits a balance) with no caller authentication",
+        "States that the anonymous principal (Principal::anonymous()) can call it, minting a free balance",
+        "Recommends rejecting the anonymous principal and/or a controller/owner guard before the state change",
+        "Does NOT approve the canister for deploy as-is"
+      ]
+    },
+    {
+      "name": "Adversarial: fetch_root_key on the deploy path",
+      "prompt": "My canister's agent setup calls `agent.fetch_root_key().await.unwrap();` before every call. I'm deploying to mainnet. Any problem?",
+      "expected_behaviors": [
+        "Flags fetch_root_key as a mainnet problem (FAIL)",
+        "Explains fetch_root_key disables replica-signature verification and is for a local replica only",
+        "States that on mainnet it enables man-in-the-middle response forgery",
+        "Says it must be gated behind an explicit local-only flag, never on the default/mainnet path",
+        "Does NOT treat fetch_root_key as harmless"
+      ]
+    },
+    {
+      "name": "Adversarial: admin method with no controller check",
+      "prompt": "Pre-deploy review: is this admin endpoint ok to ship?\n\n```rust\n#[ic_cdk::update]\nfn set_config(new_fee: u64) {\n    CONFIG.with(|c| c.borrow_mut().fee = new_fee);\n}\n```",
+      "expected_behaviors": [
+        "Flags the method as an unguarded privileged/admin update (FAIL)",
+        "Explains any principal can call set_config and change protocol config",
+        "Recommends restricting it to the controller/owner (ic_cdk::api::is_controller or an owner check / guard attribute)",
+        "Does NOT approve it for deploy as-is"
+      ]
+    },
+    {
+      "name": "Adversarial: pre_upgrade that can trap",
+      "prompt": "Before I deploy, is there an upgrade risk here?\n\n```rust\nthread_local! { static LOG: RefCell<Vec<Entry>> = RefCell::new(Vec::new()); }\n\n#[ic_cdk::pre_upgrade]\nfn pre_upgrade() {\n    LOG.with(|l| ic_cdk::storage::stable_save((l.borrow().clone(),)).unwrap());\n}\n```\nThe LOG grows with every user action.",
+      "expected_behaviors": [
+        "Flags an upgrade-safety risk (REVIEW/FAIL)",
+        "Explains that serializing an unbounded, user-growable Vec in pre_upgrade can exceed the instruction limit and trap",
+        "States that a trapping pre_upgrade makes the canister permanently un-upgradeable",
+        "Recommends bounding the data or using stable structures (ic-stable-structures) that need no pre_upgrade copy"
+      ]
+    },
+    {
+      "name": "Single-controller at deploy time",
+      "prompt": "I'm deploying my canister with my single dfx developer identity as the only controller. Is that fine for a mainnet launch?",
+      "expected_behaviors": [
+        "Raises it for review rather than approving silently",
+        "Explains a single plaintext dev-key controller is one lost/compromised key from being unrecoverable or silently re-coded",
+        "Recommends a multisig/threshold controller or a documented backup controller principal",
+        "Treats this as a deploy-time operational check, not a code bug"
+      ]
+    },
+    {
+      "name": "Discrimination: a properly guarded method should pass",
+      "prompt": "Pre-deploy check on these two methods — are they ok?\n\n```rust\n#[ic_cdk::update]\nfn deposit(amount: u64) {\n    let caller = ic_cdk::api::msg_caller();\n    if caller == candid::Principal::anonymous() { ic_cdk::trap(\"anonymous\"); }\n    credit(caller, amount);\n}\n\n#[ic_cdk::update]\nfn admin_set_total(n: u64) {\n    if !ic_cdk::api::is_controller(&ic_cdk::api::msg_caller()) { ic_cdk::trap(\"not controller\"); }\n    set_total(n);\n}\n```",
+      "expected_behaviors": [
+        "Passes both methods on the access-control checks (deposit rejects the anonymous principal; admin_set_total requires a controller)",
+        "Does NOT raise a false anonymous-principal or unguarded-admin finding on these two",
+        "May still note other checks (fetch_root_key, pre_upgrade, controller backup) are separate and out of scope for these snippets"
+      ]
+    },
+    {
+      "name": "Produces a structured pre-deploy report",
+      "prompt": "Run a pre-deploy check over my Rust canister repo and give me the result.",
+      "expected_behaviors": [
+        "Produces a per-check result with PASS / FAIL / REVIEW (or N/A) rather than freeform prose",
+        "Covers the deploy-time checks: anonymous-principal access, mainnet fetch_root_key, unguarded admin methods, pre_upgrade trap risk, controller backup",
+        "Points each finding at a file:line / method rather than a vague statement",
+        "Frames a grep hit as a candidate to confirm, not an automatic vulnerability",
+        "Does not perform any network or mainnet action"
+      ]
+    }
+  ],
+
+  "trigger_evals": {
+    "description": "Queries to test whether the skill activates correctly. 'should_trigger' queries should cause the skill to load; 'should_not_trigger' queries should NOT activate this skill.",
+    "should_trigger": [
+      "Is my canister safe to deploy to mainnet?",
+      "Run a pre-deploy security check on my Rust canister",
+      "What should I verify before shipping my canister?",
+      "Check my canister for deploy-time footguns",
+      "Pre-deploy readiness check for an IC canister",
+      "Review my canister config and upgrade safety before launch",
+      "Is this canister ready for a mainnet launch?"
+    ],
+    "should_not_trigger": [
+      "How do I run dfx deploy?",
+      "Set up Internet Identity authentication for my dapp",
+      "How do I write a Candid interface for my canister?",
+      "How do I top up my canister with cycles?",
+      "Explain how inter-canister calls work on the IC"
+    ]
+  }
+}
