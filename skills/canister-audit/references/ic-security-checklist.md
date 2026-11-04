@@ -11,8 +11,7 @@ The agentic audit pass (SKILL.md §C5) reads this the way `sc-audit` reads
 signal**, whether it is caught **statically** (the Semgrep ruleset
 `ic-semgrep-rust.yml`) or needs **agentic** data-flow reasoning, and **how to
 confirm**. Knowledge adapted from the official `dfinity/icskills` `canister-security`
-skill; it is embedded here as reference, not installed as a runnable skill (see
-`docs/icp/ICP-SKILLS-COMPATIBILITY.md` for why).
+skill; it is embedded here as reference, not installed as a runnable skill.
 
 IC model in one paragraph: every ingress message has a **caller principal**; the
 unauthenticated one is `Principal::anonymous()` (`2vxsx-fae`). Update calls can

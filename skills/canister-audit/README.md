@@ -10,16 +10,15 @@ gate, and routes findings through the shared responsible-disclosure machinery.
 
 - **Scope:** Rust canisters only (`ic-cdk` / `candid`). Motoko is out of scope.
 - **No runtime IC access:** the audit operates on source — it needs no mainnet
-  identity, no cycles, and not the ICP MCP connector (see
-  `docs/icp/ICP-MCP-VERIFICATION.md`).
+  identity, no cycles, and not the ICP MCP connector.
 
 ## Design
 
 This skill is `sc-audit` with the EVM pieces swapped for IC pieces and the shared
 machinery reused unchanged — PoC gate (`command` mode), disclosure routing, dedup
-ledger, coverage manifest, report shape, staging/allowlist pattern. The rationale,
-the static-vs-agentic taxonomy, and the full architecture are in
-[`docs/icp/ICP-SECURITY-IMPLEMENTATION-DESIGN.md`](../../docs/icp/ICP-SECURITY-IMPLEMENTATION-DESIGN.md).
+ledger, coverage manifest, report shape, staging/allowlist pattern. The
+static-vs-agentic taxonomy and the per-pitfall rationale live in §C5 of `SKILL.md`
+and `references/ic-security-checklist.md`.
 
 ## Layout
 
