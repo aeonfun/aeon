@@ -66,16 +66,44 @@ Pairs with [`ICP-INTEGRATION-PRD.md`](ICP-INTEGRATION-PRD.md). Newest first.
 - **Merge-order (#1328 ↔ #1330):** both regenerate `catalog/*.json` and bump README counts (true
   post-both total = 93). Plan: merge one, then I regenerate the other's catalog + counts and re-green.
 
+## Status taxonomy (2026-11-04)
+
+| Deliverable | Implemented | Locally tested | CI-verified | Live-executed | Merged | Ext. submitted |
+|---|---|---|---|---|---|---|
+| C `canister-audit` (#1328) | ✅ | ✅ | ✅ green incl. eyebrow | ✅ **PocketIC repro ran in CI (`1 passed`)** | ❌ review | n/a |
+| B 4 skills (#1330) | ✅ | ✅ mode/requires/scheduler/lint | ✅ green | ⚠️ public reads curl-verified; full harness run needs a configured instance | ❌ review | n/a |
+| A connectivity (#1330) | ✅ | ✅ | — | ✅ public IC reads live-verified; cycles = controller-gated (no public field) | ❌ | n/a |
+| D icskills package (#1330) | ✅ 4 files | ✅ schema-valid | — | — | ❌ | ❌ prepared; blocked on DFINITY's eval-results gate |
+| hosted ICP MCP connector | ❌ not integrated — verified interactive-only + documented incompatible; **not claimed complete** | | | | | |
+
+## Why live skill execution isn't done from here
+
+`aeonfun/aeon` is the framework/upstream repo, **not a running Aeon instance**: zero
+`aeon.yml` skill runs ever, no repo secrets (no model key, no notify config), skills
+`enabled: false`. A live skill run needs a configured instance (a fork such as
+`svectors-lab`) with keys + notify + the skills enabled. That instance is not
+reachable from this session (`anu` MCP disconnected) and does not yet carry these
+skills. So "actual harness execution" of the 4 skills is environment-blocked here; the
+deterministic parts ARE executed — the PocketIC repro (CI), the public IC reads
+(curl), and the config/scheduler/lint suites.
+
+## Demo (on a configured instance, once merged)
+
+1. `gh workflow run aeon.yml -f skill=canister-audit -f var=fixture:token_vault` — static flag → agentic confirm → PocketIC PoC (already green in `ci-canister-audit-fixture`).
+2. `-f skill=sns-digest` — public NNS/SNS digest, no secret.
+3. `-f skill=canister-status -f var=<canister-id>`; `-f skill=cycles-balance` needs `ICP_IDENTITY_PEM`.
+4. `-f skill=icp-deploy-check -f var=<rust-canister-repo>`.
+5. icskills: one PR per skill to `dfinity/icskills` after the eval run (see `contribution/icskills/SUBMISSION.md`).
+
 ## Remaining / next
 
-1. **B:** implement the 4 skills (Aeon schema, read-only where applicable), each with a
-   scheduling example + dry-run evidence; exercise the Workstream-A read path live.
-2. **A:** document the headless read path concretely as used by B; confirm no-secret reads work.
-3. **D:** validate B skills against `dfinity/icskills` schema; prepare the contribution package
-   (knowledge-in-ICP-format where not schema-native).
-4. **Demo/handoff:** end-to-end walkthrough for DFINITY once B/C are merged.
+1. **Merges:** #1316/#1328/#1329/#1330 all green + mergeable, each BLOCKED only on review approval. On approval, merge; the second of {#1328,#1330} needs a catalog regen (true total 93).
+2. **Live skill runs:** execute the 4 skills on a configured instance; confirm the notify destination first.
+3. **D submission:** run DFINITY's eval suite (`SUBMISSION.md`), then one PR per skill.
+4. **cycles-balance identity path:** exercise with a real controller PEM (not configured here).
 
 ## Blockers
 
-- PR #1316 merge needs human approval (branch protection) — not bypassable.
-- PocketIC end-to-end reproduction evidence must come from a staged runner (Epoch), not dev.
+- All four PRs: review approval (branch protection) — not bypassable by me.
+- Live skill harness runs: no configured Aeon instance reachable from this session.
+- D external submission: DFINITY's mandatory eval-results gate (skill-validator + a claude-cli judge run).
