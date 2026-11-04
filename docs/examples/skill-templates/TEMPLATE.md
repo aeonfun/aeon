@@ -103,7 +103,7 @@ Replacement tokens use the form `[REPLACE: KEY]`. Keys are uppercase snake-case 
 ## Adding a new template
 
 1. Make a new directory under `templates/`.
-2. Drop a `SKILL.md` inside, with `[REPLACE: KEY]` tokens for the operator-specific parts and a `metadata.category` from the six valid ones (`core`, `evolution`, `basics`, `dev`, `crypto`, `productivity`); `ci-skill-category` checks templates too.
+2. Drop a `SKILL.md` inside, with `[REPLACE: KEY]` tokens for the operator-specific parts and a `metadata.category` from the six valid ones (`core`, `evolution`, `basics`, `dev`, `crypto`, `productivity`); `ci-skill-category` checks templates too. Write its shell snippets in shapes the run accepts: one command per Bash call with every value written in literally (no `VAR=$(...)`, `$(( ))`, `if` / `for`, or `$var` in a jq filter or on a `./secretcurl` line), request bodies piped in with `jq -n '<literal>' | ./secretcurl ... --data-binary @-`, replies saved with `-o /tmp/<file>` (never `>`), files written with Write/Edit, and key checks read from the "Keys set for this run" line (never `[ -n "$KEY" ]`).
 3. Add a row to the table at the top of this file.
 
 That's it — `bin/new-from-template --list` discovers templates by scanning for `SKILL.md` files under `templates/`, so no registry update is required.
