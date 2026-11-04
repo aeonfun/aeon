@@ -146,7 +146,7 @@ case "$1" in
   push)
     printf 'push\n' >> "$PUSH_TEST_STATE/pushes"
     count=$(wc -l < "$PUSH_TEST_STATE/pushes")
-    if [ "$count" -gt 1 ] && [ "$PUSH_TEST_MODE" != exhausted ]; then
+    if [ "$count" -gt 1 ] && [ "$PUSH_TEST_MODE" != exhausted ] && [ "$PUSH_TEST_MODE" != server-down ]; then
       exit 0
     fi
     case "$PUSH_TEST_MODE" in
@@ -167,6 +167,11 @@ case "$1" in
         ;;
       stale-ref-inline)
         printf '!\tHEAD:refs/heads/main\t[remote rejected] (cannot lock ref '"'refs/heads/main'"': is at abc123 but expected def456)\n'
+        exit 1
+        ;;
+      server-failure|server-down)
+        printf 'remote: fatal error in commit_refs\n' >&2
+        printf '!\tHEAD:refs/heads/main\t[remote rejected] (failure)\n'
         exit 1
         ;;
       auth)
@@ -262,6 +267,28 @@ for mode in non-fast-forward fetch-first stale stale-ref stale-ref-inline; do
     bad "$mode rejection did not retry correctly (rc=$rc): $out"
   fi
 done
+
+run_push_case server-failure
+if [ "$rc" -eq 0 ] \
+  && [ "$(wc -l < "$TMP/case-server-failure/pushes")" -eq 2 ] \
+  && [ "$(wc -l < "$TMP/case-server-failure/pulls")" -eq 2 ] \
+  && [ "$(wc -l < "$TMP/case-server-failure/sleeps")" -eq 1 ] \
+  && [[ "$out" == *"GitHub server error"* ]] \
+  && [[ "$out" == *"Pushed successfully on attempt 2"* ]]; then
+  pass "transient GitHub server failure is retried after another pull"
+else
+  bad "transient server failure did not retry correctly (rc=$rc): $out"
+fi
+
+run_push_case server-down
+if [ "$rc" -eq 1 ] \
+  && [ "$(wc -l < "$TMP/case-server-down/pushes")" -eq 3 ] \
+  && [ "$(wc -l < "$TMP/case-server-down/sleeps")" -eq 2 ] \
+  && [[ "$out" == *"not retrying"* ]]; then
+  pass "persistent GitHub server failure stops after two retries"
+else
+  bad "persistent server failure exceeded its retry bound (rc=$rc): $out"
+fi
 
 run_push_case exhausted
 if [ "$rc" -eq 1 ] \
