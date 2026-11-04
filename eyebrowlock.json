@@ -89,7 +89,12 @@
         "kind": "local",
         "ref": "skills/sns-digest"
       },
-      "capabilities": {},
+      "capabilities": {
+        "network": [
+          "ic-api.internetcomputer.org",
+          "sns-api.internetcomputer.org"
+        ]
+      },
       "files": [
         {
           "path": "README.md",
