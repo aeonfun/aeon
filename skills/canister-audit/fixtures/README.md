@@ -39,8 +39,14 @@ unguarded one.
 
 ```
 cd skills/canister-audit/fixtures/token_vault
-bash repro/repro.sh          # builds wasm32, runs the PocketIC reproduction (needs POCKET_IC_BIN)
+bash repro/repro.sh          # builds wasm32, runs the PocketIC reproduction
 ```
+
+`repro.sh` builds the crate in `$PWD` (so `cd` into it first, as above) and looks
+for the PocketIC server at `POCKET_IC_BIN`, defaulting to `/tmp/bin/pocket-ic`
+(where `scripts/stage-canister-audit.sh` installs it) - override the env var to
+point elsewhere. These defaults are what let the shared PoC gate run it under a
+scrubbed `env -i`.
 
 The static layer needs no build — `semgrep --config ../../references/ic-semgrep-rust.yml src/lib.rs`
 flags the flaw directly.

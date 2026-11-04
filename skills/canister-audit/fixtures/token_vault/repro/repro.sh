@@ -6,17 +6,22 @@
 # Shape matches scripts/vuln-poc-gate.sh `command` mode: deterministic, exits 0
 # ONLY when the boundary is crossed, and writes nothing into the audited worktree
 # (build output and PocketIC state go to $CARGO_TARGET_DIR / $TMPDIR, both outside
-# the repo). On a real target the gate invokes this as `(cd $REPO && bash repro.sh)`
-# with a credential-scrubbed env; here it also runs standalone in fixture mode.
+# the repo). The gate invokes this as `(cd $REPO && env -i ... bash repro.sh)`, so
+# the crate to build is the current directory ($REPO) and the scrubbed env drops
+# everything not on the gate's allowlist (PATH/HOME/TMPDIR) - including
+# POCKET_IC_BIN. Each var below therefore carries a fallback so the script is
+# self-sufficient under that stripped env; it also runs standalone in fixture mode
+# (`cd <crate> && bash repro/repro.sh`), where $PWD is the crate.
 #
 # Requires: a Rust toolchain with the wasm32-unknown-unknown target, and the
-# PocketIC server binary on $POCKET_IC_BIN (scripts/stage-canister-audit.sh
-# provisions both in the runner).
+# PocketIC server binary (scripts/stage-canister-audit.sh installs it at
+# /tmp/bin/pocket-ic, the default below; override with POCKET_IC_BIN).
 set -euo pipefail
 
-CRATE_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+CRATE_DIR="${CRATE_DIR:-$PWD}"
 export CARGO_TARGET_DIR="${CARGO_TARGET_DIR:-${TMPDIR:-/tmp}/canister-audit-target}"
 export CANISTER_WASM="$CARGO_TARGET_DIR/wasm32-unknown-unknown/release/token_vault.wasm"
+export POCKET_IC_BIN="${POCKET_IC_BIN:-/tmp/bin/pocket-ic}"
 
 echo "repro: building canister wasm -> $CANISTER_WASM"
 cargo build --manifest-path "$CRATE_DIR/Cargo.toml" \
