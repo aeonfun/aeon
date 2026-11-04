@@ -1,0 +1,13 @@
+{
+  "_comment": "Example finding emitted by canister-audit for the token_vault fixture, in the shape scripts/vuln-poc-gate.sh `command` mode validates. On a REAL target the skill fills target_repo/target_commit with the cloned repo and its audited HEAD (the gate rejects a commit that does not match the checkout); the value below is an illustrative placeholder.",
+  "id": "canister-audit-token_vault-anon-mint",
+  "target_repo": "aeonfun/aeon/skills/canister-audit/fixtures/token_vault",
+  "target_commit": "0000000000000000000000000000000000000000",
+  "severity": "critical",
+  "category": "access-control",
+  "attacker_controls": "Any caller, including the unauthenticated anonymous principal, invoking the claim_bonus(amount) update method with an arbitrary amount.",
+  "attacker_achieves": "Credits its own balance from nothing with no deposit and no owner guard, breaking sum(balances) <= total_deposited, then withdraws funds other users deposited (theft).",
+  "invariant": "sum(balances) <= total_deposited",
+  "pitfalls": ["#2 anonymous-principal accepted", "#8 unguarded state-changing admin method"],
+  "poc": "repro/repro.sh"
+}

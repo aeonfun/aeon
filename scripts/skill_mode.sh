@@ -122,6 +122,13 @@ WRITE_TOOLS="$WRITE_TOOLS,Bash(forge:*),Bash(cast:*),Bash(./hook-deploy.sh:*)"
 # in-run binary installs). slither/forge/cast/timeout are already granted above. Without
 # these the fuzz arm degrades to skipped and sc-audit falls back to the agentic pass.
 WRITE_TOOLS="$WRITE_TOOLS,Bash(solc-select:*),Bash(crytic-compile:*),Bash(echidna:*),Bash(medusa:*)"
+# canister-audit (SKILL.md §C4/§C6.5) bare-names cargo-audit (RustSec dependency CVEs)
+# and the pocket-ic server (the PoC proof arm loads the built canister wasm into
+# PocketIC). cargo, semgrep, timeout, and ./scripts/vuln-poc-gate.sh are already granted
+# above. Staged by scripts/stage-canister-audit.sh (the sandbox denies in-run toolchain
+# installs). Without these the dependency-CVE pass and the PocketIC arm degrade to
+# skipped and the audit falls back to the agentic source pass.
+WRITE_TOOLS="$WRITE_TOOLS,Bash(cargo-audit:*),Bash(pocket-ic:*)"
 
 resolve_mode() {
   # var (the runtime selector, e.g. SKILL_VAR from aeon.yml/mcp-server) is

@@ -1,0 +1,22 @@
+[package]
+name = "token_vault"
+version = "0.1.0"
+edition = "2021"
+description = "Deliberately-vulnerable IC ledger canister — canister-audit regression fixture. Do not deploy."
+publish = false
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+candid = "0.10"
+ic-cdk = "0.19"
+
+[dev-dependencies]
+# PocketIC drives the dynamic reproduction (repro/repro.sh -> tests/repro.rs).
+# The crate and the server binary share version numbering: crate 16.x pairs with
+# the 16.x server that scripts/stage-canister-audit.sh downloads. update_call/
+# query_call return Result<Vec<u8>, _> at 16.x (what tests/repro.rs decodes); bump
+# this, tests/repro.rs, and the server pin in the staging script together.
+candid = "0.10"
+pocket-ic = "16.1"

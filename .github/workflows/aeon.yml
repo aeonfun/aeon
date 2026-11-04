@@ -576,6 +576,33 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: bash scripts/stage-sc-audit.sh "${{ steps.skill.outputs.name }}"
 
+      - name: Cache canister-audit tools
+        # cargo-audit + the pinned PocketIC server binary live under ~/.aeon-canister/bin;
+        # stage-canister-audit.sh restores from here on a hit and seeds it on a miss, so a
+        # warm run skips the cargo build and the release download. The key carries the
+        # PocketIC pin; bump the -vN salt or the version to force-bust. Empty path for every
+        # other skill = cheap no-op.
+        if: steps.work.outputs.mode != '' && steps.skill.outputs.name == 'canister-audit'
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+        with:
+          path: ~/.aeon-canister/bin
+          key: canister-audit-${{ runner.os }}-v1-pocketic16.1.0
+
+      - name: Stage canister-audit tools
+        # Provisions the IC/Rust toolchain (wasm32-unknown-unknown target, cargo-audit, the
+        # pinned PocketIC server) and appends /tmp/bin to $GITHUB_PATH + POCKET_IC_BIN to
+        # $GITHUB_ENV so the bare names and the env var resolve in the later claude -p step
+        # and its per-call fresh shells (an in-run export doesn't survive Claude's per-call
+        # shells). Without this the dependency-CVE pass and the PocketIC PoC arm degrade to
+        # skipped and canister-audit falls back to the agentic source pass. In-run tool use
+        # is separately gated by the write-tier grant in scripts/skill_mode.sh. GH_TOKEN
+        # authenticates the release-asset download. Self-guards to the skill; best-effort,
+        # never fails the run.
+        if: steps.work.outputs.mode != '' && steps.skill.outputs.name == 'canister-audit'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash scripts/stage-canister-audit.sh "${{ steps.skill.outputs.name }}"
+
       - name: Install Foundry (deploy-uni-hook)
         # The official action installs a cached, pinned Foundry from GitHub
         # releases with retries. The old path (curl https://foundry.paradigm.xyz |
