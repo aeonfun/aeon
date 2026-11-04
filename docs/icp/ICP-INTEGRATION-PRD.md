@@ -113,12 +113,12 @@ negative control) with a PocketIC reproduction.
 | # | Milestone | Status |
 |---|---|---|
 | M1 | Investigation docs on `main` | PR #1316 open (needs human approval; `REVIEW_REQUIRED`) |
-| M2 | `canister-audit` skill + fixture + staging + catalog | **Delivered — PR #1328** |
-| M3 | PRD + execution ledger | **This PR** |
-| M4 | Skill pack (B: 4 skills) | In progress |
-| M5 | Connectivity path documented + exercised by a B skill (A) | In progress (with B) |
-| M6 | Contribution package validated (D) | Pending B |
-| M7 | Demo + handoff | Pending M4–M6 |
+| M2 | `canister-audit` skill + fixture + staging + catalog | **Delivered — PR #1328, CI-green incl. eyebrow; awaits review approval** |
+| M3 | PRD + execution ledger | **This PR (#1329)** |
+| M4 | Skill pack (B: 4 skills) | **Delivered — PR #1330; config/mode/requires/scheduler tests pass** |
+| M5 | Connectivity path documented + exercised by a B skill (A) | **Delivered — `ICP-CONNECTIVITY.md` (in #1330); public reads curl-verified** |
+| M6 | Contribution package validated (D) | **Delivered — `docs/icp/contribution/icskills/` (in #1330); schema-valid; prepared, not submitted** |
+| M7 | Demo + handoff | In progress — pending the two merges + a live skill-run demo |
 
 ## 6. Known limitations & deferred work
 
