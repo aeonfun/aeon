@@ -82,12 +82,15 @@ main() {
     fi
 
     git add -A
-    # Scan skills clone the target into the run dir; git add -A would stage those
-    # nested repos as submodule gitlinks (mode 160000). aeon has no .gitmodules, so a
-    # staged gitlink is always an accidental scan clone that breaks later git ops
-    # (the next sync aborts: No url found for submodule path). Unstage them.
+    # Scan skills clone the target into the run dir; git add -A stages those nested
+    # repos as submodule gitlinks (mode 160000). Drop any gitlink NOT registered in
+    # .gitmodules: on aeon (no .gitmodules) that is every one, and it is always an
+    # accidental scan clone that breaks the next sync ("No url found for submodule
+    # path"). -f is required because the fresh gitlink differs from HEAD, so a plain
+    # git rm --cached refuses it. A real submodule, if one is ever added, is kept.
+    registered_submodules="$(git config -f .gitmodules --get-regexp '\.path$' 2>/dev/null | awk '{print $2}')"
     git ls-files --stage | awk '$1=="160000"{print $4}' | while IFS= read -r gl; do
-      [ -n "$gl" ] && git rm --cached -q -- "$gl" 2>/dev/null || true
+      printf '%s\n' "$registered_submodules" | grep -qxF -- "$gl" || git rm --cached -f -q -- "$gl" 2>/dev/null || true
     done
     if ! git diff --staged --quiet; then
       git commit -m "chore($LABEL): auto-commit $(date +%Y-%m-%d)"
@@ -162,8 +165,9 @@ main() {
   # Commit any remaining changes on main
   git add -A
   # Drop accidental scan-clone gitlinks before commit (see the feature-branch block).
+  registered_submodules="$(git config -f .gitmodules --get-regexp '\.path$' 2>/dev/null | awk '{print $2}')"
   git ls-files --stage | awk '$1=="160000"{print $4}' | while IFS= read -r gl; do
-    [ -n "$gl" ] && git rm --cached -q -- "$gl" 2>/dev/null || true
+    printf '%s\n' "$registered_submodules" | grep -qxF -- "$gl" || git rm --cached -f -q -- "$gl" 2>/dev/null || true
   done
   if git diff --staged --quiet; then
     # Nothing new to commit - but the agent may have committed during its run.
