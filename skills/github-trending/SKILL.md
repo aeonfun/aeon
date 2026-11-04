@@ -169,26 +169,25 @@ Today is ${today}. The Hugging Face Hub is where new AI artifacts land first —
 
 ### B1. Fetch candidates
 
-The Hugging Face Hub REST API is fully keyless for the list endpoints used here. Pull trending across all three resource types unless the resolved sub-scope narrows it:
+The Hugging Face Hub REST API is fully keyless for the list endpoints used here. Pull trending across all three resource types unless the resolved sub-scope narrows it, one call each. Each call saves with curl's own `-o` (a shell `>` redirect into a file is refused in both tiers, /tmp included).
 
+Models (`sort=trendingScore` returns the same ranking that backs the HF front page):
 ```bash
-# Models — sort=trendingScore returns the same ranking that backs the HF front page
-curl -sf "https://huggingface.co/api/models?sort=trendingScore&direction=-1&limit=20" \
+curl -sf -o /tmp/hf-models.json "https://huggingface.co/api/models?sort=trendingScore&direction=-1&limit=20" \
   -H "accept: application/json" \
-  -H "user-agent: aeon/1.0 (+https://github.com/aeonfun/aeon)" \
-  > /tmp/hf-models.json
-
-# Datasets
-curl -sf "https://huggingface.co/api/datasets?sort=trendingScore&direction=-1&limit=15" \
+  -H "user-agent: aeon/1.0 (+https://github.com/aeonfun/aeon)"
+```
+Datasets:
+```bash
+curl -sf -o /tmp/hf-datasets.json "https://huggingface.co/api/datasets?sort=trendingScore&direction=-1&limit=15" \
   -H "accept: application/json" \
-  -H "user-agent: aeon/1.0 (+https://github.com/aeonfun/aeon)" \
-  > /tmp/hf-datasets.json
-
-# Spaces
-curl -sf "https://huggingface.co/api/spaces?sort=trendingScore&direction=-1&limit=15" \
+  -H "user-agent: aeon/1.0 (+https://github.com/aeonfun/aeon)"
+```
+Spaces:
+```bash
+curl -sf -o /tmp/hf-spaces.json "https://huggingface.co/api/spaces?sort=trendingScore&direction=-1&limit=15" \
   -H "accept: application/json" \
-  -H "user-agent: aeon/1.0 (+https://github.com/aeonfun/aeon)" \
-  > /tmp/hf-spaces.json
+  -H "user-agent: aeon/1.0 (+https://github.com/aeonfun/aeon)"
 ```
 
 If the sub-scope is `models` / `datasets` / `spaces`, fetch only that endpoint.

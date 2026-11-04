@@ -105,7 +105,13 @@ Read `memory/MEMORY.md` and scan the last ~3 days of `memory/logs/` for anything
 
 ## Step 0 — Parse the selector and dispatch
 
-Resolve time anchors up front: `today=$(date -u +%F)` and `today_utc="$today"`.
+**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`today=$(date ...)`, `JOB=$(./secretcurl ...)`, `RESP=$(./secretcurl ...)`), uses `if` / `for` / `while` or `[ ... ]` tests, calls `sleep` or `sed`, or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn. So get a date with a bare `date` call and write the printed value into later commands; write the repo, week bounds, logins, handles, job ids, addresses and amounts into each command literally (the `<TODAY>`, `<JOB_ID>`, `<ADDR>` style placeholders in the snippets); poll a Bankr job by repeating one call, never a loop; wait with a one-line `python3 -c "import time; time.sleep(N)"` call; create and change files under `memory/` with Write/Edit.
+
+Resolve time anchors up front with one bare call:
+```bash
+date -u +%F
+```
+It prints `today`; `today_utc` is the same value. Later steps write it in literally as `<TODAY>` (shown as `${today}` / `${today_utc}` in the templates below).
 
 Parse `${var}`:
 
@@ -113,7 +119,7 @@ Parse `${var}`:
 2. **Dry-run.** For `PHASE=plan`/`all`: if the remainder starts with `dry-run` (optionally `dry-run:`), set `MODE=dry-run` and strip that token; else `MODE=execute`. (For `PHASE=send`, the send phase parses `dry-run:` itself — see Send Step 1.)
 3. **Target.**
    - `PHASE=send`: the (unstripped) var is the send target — `dry-run:<label>` or `<label>` or empty.
-   - `PHASE=plan`/`all`: the remainder is an optional `<week>`. If it matches `^\d{4}-W\d{2}$`, set `TARGET_WEEK=<week>`; else compute `TARGET_WEEK=$(date -u +%G-W%V)` (ISO-8601 week-numbering year + week — `%G/%V` not `%Y/%U`, so Monday-anchored weeks roll over correctly across years).
+   - `PHASE=plan`/`all`: the remainder is an optional `<week>`. If it matches `^\d{4}-W\d{2}$`, set `TARGET_WEEK=<week>`; else run `date -u +%G-W%V` as its own Bash call and take the printed value as `TARGET_WEEK` (ISO-8601 week-numbering year + week - `%G/%V` not `%Y/%U`, so Monday-anchored weeks roll over correctly across years).
 
 Dispatch:
 - `PHASE=plan` → run **Phase A** only.
@@ -130,18 +136,18 @@ Ranks the target week's merged-PR authors (GitHub API) and turns that ranking in
 
 ### A1. Determine the target week and repo
 
-- `REPO="${GITHUB_REPOSITORY:-$(git config --get remote.origin.url | sed -E 's#.*[:/]([^/]+/[^/]+?)(\.git)?$#\1#')}"` — the running instance's repo.
+- `REPO` - the running instance's repo. Run `echo "$GITHUB_REPOSITORY"` as its own call; if it prints `owner/repo`, that is `REPO`. If it prints an empty line, run `git config --get remote.origin.url` as its own call and take the `owner/repo` part of the URL yourself (drop the host prefix and any trailing `.git`).
 - `TARGET_WEEK` comes from the selector; empty = the most recent **completed** ISO week (the last full Mon–Sun). Compute its UTC bounds `WEEK_START`..`WEEK_END` as ISO datetimes (`YYYY-MM-DDT00:00:00Z`).
 
 ### A2. Rank contributors by merged PRs in the week
 
 Compute the ranking directly from GitHub — no upstream skill or article required.
 
-- Fetch every PR **merged inside the window**, by author:
-  `gh api -X GET search/issues -f q="repo:${REPO} is:pr is:merged merged:${WEEK_START}..${WEEK_END}" --paginate --jq '.items[].user.login'`
+- Fetch every PR **merged inside the window**, by author (one call, with `REPO`, `WEEK_START` and `WEEK_END` written in literally):
+  `gh api -X GET search/issues -f q="repo:<REPO> is:pr is:merged merged:<WEEK_START>..<WEEK_END>" --paginate --jq '.items[].user.login'`
 - Drop bot authors (`*[bot]`, `dependabot*`, `github-actions*`). Count each remaining login's merged PRs → `score`. Rank by `score` descending; tie-break by earliest merge time, then login ascending.
-- **First-PR ✨** per ranked login — did they have any *prior* merged PR to the repo?
-  `gh api -X GET search/issues -f q="repo:${REPO} is:pr is:merged author:${login} merged:<${WEEK_START}" --jq '.total_count'` → `0` means this is their first-ever merged PR (set `first_pr_marker = ✨`).
+- **First-PR ✨** per ranked login - did they have any *prior* merged PR to the repo? One call per login, the login written in literally:
+  `gh api -X GET search/issues -f q="repo:<REPO> is:pr is:merged author:<LOGIN> merged:<<WEEK_START>" --jq '.total_count'` → `0` means this is their first-ever merged PR (set `first_pr_marker = ✨`).
 - If zero merged PRs in the window → log `CONTRIBUTOR_REWARD_NO_MERGED_PRS — week ${TARGET_WEEK}` to `memory/logs/${today}.md`, exit silently (no notify). Nothing shipped, nothing to reward.
 - If the GitHub API is unreachable (see Network note for the `gh api` → WebFetch fallback) → log `CONTRIBUTOR_REWARD_API_FAIL`, notify the operator, exit.
 
@@ -244,7 +250,7 @@ Recipient ordering matches plan order (rank ascending). Per-recipient `amount` i
 **Update strategy:**
 - If a list named `contributors-${TARGET_WEEK}` already exists in the YAML, **replace** it wholesale (the plan is the authoritative current state).
 - Otherwise append the block under `lists:` (preserving existing lists — never rewrite them).
-- Use a YAML-aware update (e.g. `python -c "import yaml; ..."` if available, otherwise a careful text-based block replacement keyed on the `^  contributors-${TARGET_WEEK}:$` line). If YAML parse fails on the existing file → log error, do not write, notify the operator (file is hand-edited; auto-edit would clobber).
+- Use a YAML-aware update: first check the existing file parses with one call, `python3 -c "import yaml; yaml.safe_load(open('memory/distributions.yml'))"`, then make a careful block replacement with Edit keyed on the `^  contributors-<TARGET_WEEK>:$` line (or insert the block under `lists:` with Edit). If YAML parse fails on the existing file → log error, do not write, notify the operator (file is hand-edited; auto-edit would clobber).
 
 Verify the write by re-reading the file and confirming the list is present and has `len(recipients) == len(plan)`.
 
@@ -254,7 +260,7 @@ Atomically write the updated state JSON to `memory/state/contributor-reward-stat
 - Set `weeks[TARGET_WEEK]` = `{ written_at: now_utc, label, source: "github:merged-prs", rewards: [{login, rank, score, amount, first_pr_bonus}, ...] }` (full replacement on RE_PROCESS, otherwise additive).
 - Append any logins where `first_pr_bonus == true` to `first_pr_bonus_paid` (deduplicated).
 
-Write to a tempfile and `mv` over the target so partial writes can't corrupt state.
+Write the whole updated JSON in one Write call (never piecemeal edits or a shell redirect) so partial writes can't corrupt state.
 
 ### A8. Notify  *(plan-only execute)*
 
@@ -304,16 +310,19 @@ Read `memory/state/distributions.json` (if present) for send idempotency state b
 If `BANKR_API_KEY` not set → `DISTRIBUTE_TOKENS_ERROR — BANKR_API_KEY not configured`, log, exit.
 
 ```bash
-ME=$(./secretcurl -fsS "https://api.bankr.bot/wallet/me" -H "X-API-Key: {BANKR_API_KEY}")
+./secretcurl -fsS "https://api.bankr.bot/wallet/me" -H "X-API-Key: {BANKR_API_KEY}"
 ```
+It prints the `/wallet/me` body (`ME`); on an HTTP error, curl's `-fsS` prints the status code instead.
 
 - HTTP 403 → `DISTRIBUTE_TOKENS_ERROR — API key is read-only; needs wallet write scope`, exit.
 - HTTP 429 → `DISTRIBUTE_TOKENS_ERROR — rate-limited at /wallet/me; aborting`, exit.
 - Network failure → use **WebFetch** fallback. If still failing → `DISTRIBUTE_TOKENS_ERROR — Bankr /wallet/me unreachable`, exit.
 
 ```bash
-PORTFOLIO=$(./secretcurl -fsS "https://api.bankr.bot/wallet/portfolio?chain=base" -H "X-API-Key: {BANKR_API_KEY}")
+./secretcurl -fsS "https://api.bankr.bot/wallet/portfolio?chain=base" -H "X-API-Key: {BANKR_API_KEY}"
 ```
+
+It prints the portfolio body (`PORTFOLIO`).
 
 Extract sender's balance for the target token. Compute `total_required` from the recipient list (sum of per-recipient amounts, applying overrides). If `balance < total_required * 1.05` (5% headroom for any failed retries) → `DISTRIBUTE_TOKENS_ERROR — insufficient balance: have X, need Y ${TOKEN}`, exit. Do not start a partial run.
 
@@ -323,19 +332,17 @@ For each recipient, build a row: `{key, type, amount, token, target_address, lab
 
 **Idempotency check** (before resolving): if `memory/state/distributions.json` contains `key` with `status=completed` → mark row `SKIPPED_DEDUP`, carry forward the prior `txHash`.
 
-**Handle resolution** (`@username`): use Bankr Agent API to look up the linked wallet:
+**Handle resolution** (`@username`): use Bankr Agent API to look up the linked wallet. One call per handle, the handle written in literally:
 ```bash
-JOB=$(./secretcurl -fsS -X POST "https://api.bankr.bot/agent/prompt" \
+./secretcurl -fsS -X POST "https://api.bankr.bot/agent/prompt" \
   -H "X-API-Key: {BANKR_API_KEY}" -H "Content-Type: application/json" \
-  -d "{\"prompt\":\"What is the EVM address linked to ${HANDLE} on Base? Respond with only the address.\"}" | jq -r '.jobId')
-# Poll every 2s, max 30s
-for i in $(seq 1 15); do
-  R=$(./secretcurl -fsS "https://api.bankr.bot/agent/job/${JOB}" -H "X-API-Key: {BANKR_API_KEY}")
-  S=$(echo "$R" | jq -r '.status')
-  [ "$S" = "completed" ] || [ "$S" = "failed" ] && break
-  sleep 2
-done
+  -d '{"prompt":"What is the EVM address linked to <HANDLE> on Base? Respond with only the address."}' | jq -r '.jobId'
 ```
+It prints `JOB_ID`. Then poll the job: repeat this one call, with `JOB_ID` written in literally, until its `.status` is `completed` or `failed`, **at most 15 times** (the old every-2s, max-30s budget):
+```bash
+./secretcurl -fsS "https://api.bankr.bot/agent/job/<JOB_ID>" -H "X-API-Key: {BANKR_API_KEY}"
+```
+It prints the job body (`R`). If `.status` is still pending, wait 2 s with one `python3 -c "import time; time.sleep(2)"` call, then repeat. After the 15th call without `completed` or `failed`, stop polling and treat the handle as unresolved (below).
 Extract the address from the response (regex `0x[a-fA-F0-9]{40}`). If extraction fails → mark row `RESOLVE_FAILED` with reason `NO_LINKED_WALLET`. Do **not** abort the whole plan; let the executor skip this row.
 
 **Address resolution** (`0x...`): validate format `^0x[a-fA-F0-9]{40}$`. If invalid → `RESOLVE_FAILED` reason `BAD_ADDRESS`.
@@ -358,13 +365,15 @@ If 0 rows are `READY` (everything deduped/failed) → notify the plan, log, exit
 
 ### B4. EXECUTE phase
 
-For each `READY` row, send via `/wallet/transfer` (the only sanctioned transfer endpoint per Bankr docs):
+For each `READY` row, send via `/wallet/transfer` (the only sanctioned transfer endpoint per Bankr docs). One call per row, with that row's address, token address, amount and native flag written in literally:
 
 ```bash
-RESP=$(./secretcurl -fsS -X POST "https://api.bankr.bot/wallet/transfer" \
+./secretcurl -fsS -X POST "https://api.bankr.bot/wallet/transfer" \
   -H "X-API-Key: {BANKR_API_KEY}" -H "Content-Type: application/json" \
-  -d "{\"recipientAddress\":\"${ADDR}\",\"tokenAddress\":\"${TOKEN_ADDR}\",\"amount\":\"${AMT}\",\"isNativeToken\":${IS_NATIVE}}")
+  -d '{"recipientAddress":"<ADDR>","tokenAddress":"<TOKEN_ADDR>","amount":"<AMT>","isNativeToken":<IS_NATIVE>}'
 ```
+
+It prints the response body (`RESP`), or curl's HTTP error code under `-fsS`. The sleeps below are each one `python3 -c "import time; time.sleep(N)"` call; a retry is the same transfer call again.
 
 Outcome handling:
 - HTTP 200 + `success: true` → status `COMPLETED`, store `txHash`. **Persist the state file immediately** (write after every recipient, not at the end — survives mid-run crashes).

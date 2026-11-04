@@ -41,13 +41,15 @@ across projects, rank by impact, separate new from ongoing, and write the digest
 `mode: read-only` is load-bearing and shapes **how** this skill writes. The read-only
 toolset (`scripts/skill_mode.sh`) drops `Write`, `Edit`, and `python`; it keeps `Read`,
 the MCP tools, `curl`, `jq`, and `Bash` for `node`/`cat`/`echo`/`mkdir`/`date`/`jq`. So
-every file this skill produces — the `./notify` body and the state snapshot — is
-written with a **`cat` heredoc (or `node`) redirection**, never the Write tool and
-never `python`. Reaching for `python` to build or send the digest gets denied mid-run
-and the notification silently never ships. `./notify` itself works in read-only, but
-its multi-line body must be a file written the way above — and that scratch file goes
-under **`/tmp/`**, never `memory/`/`output/` (those are committed; only the Step 4
-snapshot and Step 4b report are meant to persist).
+every file this skill produces — the state snapshot and the full report — is
+written by **piping into a one-line `node` writer** (a literal `jq -nc` filter for the
+JSON snapshot, a quoted heredoc for the markdown report), never the Write
+tool, never `python`, and never a shell redirect (`cat > f <<EOF` is refused in BOTH
+tiers, `/tmp` included). Reaching for `python` to build or send the digest gets denied
+mid-run and the notification silently never ships. `./notify` itself works in
+read-only and takes its multi-line body on stdin (`./notify -f - <<'NOTIFY'`), so the
+digest needs no scratch file at all; never write one under `memory/`/`output/` (those
+are committed; only the Step 4 snapshot and Step 4b report are meant to persist).
 
 ## Detection & auth
 
@@ -139,19 +141,23 @@ and issues **cleared since** (in the prior snapshot, absent or zero now). First 
 or no prior file → skip this and say "first run — no week-over-week baseline yet" once.
 
 Then write **today's** compact snapshot **before** notifying, so next week has a
-baseline even if the notify step fails. `mode: read-only` has no Write tool, so use a
-heredoc redirection (writes to `memory/`, which the read-only guard preserves) —
-copy the numeric fields straight from the tool results, don't retype from prose:
+baseline even if the notify step fails. `mode: read-only` has no Write tool and a
+`cat > file` redirect is refused, so build the JSON with a literal `jq -nc` filter
+(unquoted keys, every value written in) piped into a one-line `node` writer (writes to
+`memory/`, which the read-only guard preserves). Do not put the JSON in a heredoc: a
+`{` next to a quote in a heredoc body is refused as "expansion obfuscation". Copy the
+numeric fields straight from the tool results, don't retype from prose. Make the
+folder first, as its own call:
 
 ```bash
 mkdir -p memory/posthog-errors
-cat > memory/posthog-errors/${today}.json <<'JSON'
-{"date":"${today}","window_days":7,"projects":[
-  {"id":123,"name":"web-app","issues":[
-    {"id":"<issueId>","title":"TypeError: …","occurrences":3412,"users":890,"first_seen":"2026-07-15T…","last_seen":"2026-07-21T…","status":"active"}
+```
+```bash
+jq -nc '{date:"${today}", window_days:7, projects:[
+  {id:123, name:"web-app", issues:[
+    {id:"<issueId>", title:"TypeError: …", occurrences:3412, users:890, first_seen:"2026-07-15T…", last_seen:"2026-07-21T…", status:"active"}
   ]}
-]}
-JSON
+]}' | node -e 'require("fs").writeFileSync("memory/posthog-errors/${today}.json", require("fs").readFileSync(0))'
 ```
 
 This snapshot only powers next week's diff; if it can't be written, the digest still
@@ -161,13 +167,15 @@ ships — note the write failure in the log and move on.
 
 The notification is capped (top ~5 issues + a table); the **full report** is the
 complete picture it links to — **every** issue across **every** project, with full
-fields. Write it read-only-safe with a `cat` heredoc to a stable path under `output/`
-(preserved by the read-only guard). Overwrite it in full each run — it's current-state, not an archive. Copy
+fields. Write it read-only-safe with a quoted heredoc piped into the same `node`
+writer, to a stable path under `output/` (preserved by the read-only guard). Overwrite it in full each run — it's current-state, not an archive. Copy
 numbers verbatim from the tool results:
 
 ```bash
 mkdir -p output/posthog-errors
-cat > output/posthog-errors/report.md <<'REPORT'
+```
+```bash
+node -e 'require("fs").writeFileSync("output/posthog-errors/report.md", require("fs").readFileSync(0))' <<'REPORT'
 # PostHog errors — full report
 _<window> · <M> projects · <N> issues (<new> new) · generated ${today}_
 
@@ -192,29 +200,28 @@ summary is the deliverable, like seo-audit's periodic line — not silent-on-no-
 The exception: if PostHog was reachable and **zero** errors exist across all projects
 in the window, send a single all-clear line rather than an empty report.
 
-Build the message as ordinary Markdown, **write it to a file the read-only-safe way,
-then send that file.** `mode: read-only` has **no `Write`/`Edit` tool and no `python`**
-(`scripts/skill_mode.sh`) — so build the body with a `cat` heredoc (never `python`,
-never the Write tool, never a long inline `./notify "$(…)"` argv), then pass it to
-`./notify -f`:
+Build the message as ordinary Markdown and **send it on stdin in ONE Bash call:**
+`./notify -f -` with a quoted heredoc, the other `./notify` flags first.
+`mode: read-only` has **no `Write`/`Edit` tool and no `python`**
+(`scripts/skill_mode.sh`), and a `cat > /tmp/... <<EOF` scratch file is refused in both
+tiers — so never `python`, never the Write tool, never a shell redirect, never a long
+inline `./notify "$(…)"` argv:
 
 ```bash
-cat > /tmp/posthog-digest.md <<'NOTIFY'
+./notify --severity "<critical|warn|success|info>" \
+  --title "PostHog errors — last 7 days" \
+  --mute-key "posthog-errors" \
+  -f - <<'NOTIFY'
 <the full digest markdown, built from the shape below>
 NOTIFY
-[ -s /tmp/posthog-digest.md ] || { echo "digest file empty — aborting send"; exit 1; }
-./notify -f /tmp/posthog-digest.md \
-  --severity "<critical|warn|success|info>" \
-  --title "PostHog errors — last 7 days" \
-  --mute-key "posthog-errors"
 ```
 
-Pick a heredoc delimiter (`NOTIFY`) that does **not** appear in the body, and **verify
-the file is non-empty before calling `./notify`** — a `./notify` with no valid `-f`
+Pick a heredoc delimiter (`NOTIFY`) that does **not** appear in the body, and **make
+sure the body between the delimiters is the full digest** — a `./notify` with an empty
 body ships an empty/`--help` digest (exactly what a blocked `python`/Write attempt
 leaves behind in read-only mode).
 
-**The notify body file MUST live under `/tmp/` — never `memory/` or `output/`.** Those
+**Never write a notify body file under `memory/` or `output/`.** Those
 two are committed to the repo by the post-run step, so a scratch `.md` written there
 ships as junk. Only the Step 4 snapshot (`memory/posthog-errors/*.json`) and the Step 4b report
 (`output/posthog-errors/report.md`) are meant to persist; everything else is `/tmp`.

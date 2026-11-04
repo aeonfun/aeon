@@ -159,15 +159,9 @@ Record the chosen verification command in the issue file's `## Repair Attempt` s
 
 ## 6. Branch, commit, PR
 
-```bash
-TODAY="${today}"
-BRANCH="fix/skill-repair-{name}-${TODAY}"
-git checkout -b "$BRANCH"
-git add skills/{name}/SKILL.md  # plus aeon.yml or scripts/* iff in playbook
-git commit -m "fix({name}): [one-line root cause → fix]"
-git push -u origin "$BRANCH"
+Write the PR body with the Write tool to `/tmp/skill-repair-pr.md` (no heredoc, no redirect), using this outline:
 
-gh pr create --title "fix({name}): [short]" --body "$(cat <<'EOF'
+```markdown
 ## Symptom
 [what failed — error signature, run URL]
 
@@ -188,11 +182,19 @@ LOW | MED | HIGH — [rationale]
 
 ## Source status
 cron_state=ok | issues_index=ok | gh_runs=ok | gh_logs=ok | git_log=ok | check_runs=ok
-EOF
-)"
 ```
 
-If risk is HIGH, also: `gh pr edit "$PR_URL" --add-label manual-review`.
+Then one call per step, values written in literally (branch = `fix/skill-repair-<name>-<today>`):
+
+```bash
+git checkout -b fix/skill-repair-<name>-<today>
+git add skills/<name>/SKILL.md  # plus aeon.yml or scripts/* iff in playbook
+git commit -m "fix(<name>): <one-line root cause to fix>"
+git push -u origin fix/skill-repair-<name>-<today>
+gh pr create --title "fix(<name>): <short>" --body-file /tmp/skill-repair-pr.md
+```
+
+If risk is HIGH, also: `gh pr edit <pr-url> --add-label manual-review` (the URL `gh pr create` printed).
 
 ## 7. Update issue tracker (`memory/issues/`)
 

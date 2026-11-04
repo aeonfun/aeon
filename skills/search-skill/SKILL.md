@@ -33,12 +33,17 @@ Record which source produced the query — needed in step 8.
 
 ### 2. Enumerate installed skills (duplicate guard)
 
+List them in two calls and keep the printed names (no scratch files: a `>` redirect into a file, a `[ -f ]` test and a `||` chain are all refused in this run). First the local skill folders:
 ```bash
-ls skills/ > /tmp/installed-local.txt
-[ -f skills.lock ] && jq -r '.[].skill_name' skills.lock > /tmp/installed-lock.txt || : > /tmp/installed-lock.txt
+ls skills/
 ```
+Then, only if Glob finds `skills.lock`, the locked skill names:
+```bash
+jq -r '.[].skill_name' skills.lock
+```
+No `skills.lock` means an empty lock list.
 
-Any candidate whose `skill_name` appears in either file is a duplicate — drop from consideration. Do not recommend re-installing.
+Any candidate whose `skill_name` appears in either list is a duplicate — drop from consideration. Do not recommend re-installing.
 
 ### 3. Search the catalogs
 

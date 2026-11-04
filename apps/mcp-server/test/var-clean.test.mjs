@@ -21,10 +21,14 @@ function makeRepo() {
   const root = mkdtempSync(join(tmpdir(), "aeon-mcp-var-"));
   mkdirSync(join(root, "scripts"));
   copyFileSync(join(REPO, "scripts", "skill_mode.sh"), join(root, "scripts", "skill_mode.sh"));
+  copyFileSync(join(REPO, "scripts", "skill_requires.sh"), join(root, "scripts", "skill_requires.sh"));
   // No `mode:` line, so the skill's own tier is write: only the shadow selector
-  // can make a run read-only here.
+  // can make a run read-only here. The declared key feeds the run notes' key line.
   mkdirSync(join(root, "skills", "vuln-scanner"), { recursive: true });
-  writeFileSync(join(root, "skills", "vuln-scanner", "SKILL.md"), "---\nname: vuln-scanner\n---\nbody\n");
+  writeFileSync(
+    join(root, "skills", "vuln-scanner", "SKILL.md"),
+    "---\nname: vuln-scanner\nrequires: [RESEND_API_KEY]\n---\nbody\n",
+  );
   // Present so a non-shadow run passes --mcp-config and a shadow run must not.
   writeFileSync(join(root, ".mcp.json"), "{}\n");
   mkdirSync(join(root, "harness-adapter"));
@@ -90,6 +94,26 @@ test("a normal target keeps the skill's write tier and MCP config", async () => 
   assert.equal(modeOf(args), "write");
   assert.ok(args.includes("--mcp-config"));
   assert.ok(prompt.endsWith("\nvar=owner/repo"));
+});
+
+// The run notes carry the "Keys set for this run" line skills read instead of a
+// shell key test: names only, and a shadow run (credentials stripped) lists the
+// key as not set.
+test("run notes name the skill's set keys, never their values", async () => {
+  const fake = ["fake", "resend", "value", "1234"].join("-");
+  const saved = process.env.RESEND_API_KEY;
+  process.env.RESEND_API_KEY = fake;
+  try {
+    const notesOf = args => args[args.indexOf("--append-system-prompt") + 1] || "";
+    const normal = notesOf((await run("owner/repo")).args);
+    assert.match(normal, /Keys set for this run: RESEND_API_KEY\./);
+    const shadow = notesOf((await run("shadow")).args);
+    assert.match(shadow, /Keys NOT set for this run: RESEND_API_KEY\./);
+    assert.ok(!normal.includes(fake) && !shadow.includes(fake), "run notes must never carry a key value");
+  } finally {
+    if (saved === undefined) delete process.env.RESEND_API_KEY;
+    else process.env.RESEND_API_KEY = saved;
+  }
 });
 
 test("sanitizeVar folds line breaks, drops invisible characters, trims", () => {

@@ -268,7 +268,7 @@ API keys stay private either way: they are encrypted repo secrets, never files.
 
 To pull framework updates, run the `aeon-update` skill. It opens one PR at a time and works for forks and copies alike. The new `baseline_sha` stays on the PR branch until you merge it; closing an unmerged PR leaves the old baseline in place so the next run can offer those changes again. While a sync PR is open, another sync exits with `AEON_UPDATE_PR_OPEN` instead of making a duplicate. Logs and run output stay out of the sync commit.
 
-The skill uses `scripts/aeon_update.py plan` for a read-only comparison and `apply` on its sync branch for file changes, validation and catalog regeneration. Failed checks leave the affected files as conflicts for review. See the [aeon-update skill](../skills/aeon-update/SKILL.md) for its arguments, report mode and reset options.
+The skill uses `scripts/aeon_update.py plan` for a read-only comparison and `apply` on its sync branch for file changes, validation and catalog regeneration. Failed checks leave the affected files as conflicts for review. A framework file that is a byte-for-byte copy of an older upstream version counts as stale, not customized: it takes the upstream copy, also when an earlier sync left it in `pending_conflicts`. See the [aeon-update skill](../skills/aeon-update/SKILL.md) for its arguments, report mode and reset options.
 
 You can also merge by hand:
 
@@ -305,7 +305,9 @@ The verifier checks the checksum, schema, ranges, counters and hashes, and rejec
 
 Private repos: Free plan = 2,000 min/mo, Pro/Team = 3,000 + $0.008/min overage. To reduce usage: switch to `*/15` or hourly cron, disable unused skills, keep the repo public. Every run logs token usage to `memory/token-usage.csv` for a per-skill, per-model cost breakdown.
 
-`memory-flush` skips itself before the model starts when no daily log changed since its last flush and that flush is under 7 days old (the `Idle gate (memory-flush)` step; cron state still records a success). Any doubt means it runs, so the worst case is one extra run. (#1217)
+`memory-flush` skips itself before the model starts when no daily log changed since its last flush and that flush is under 7 days old (the `Idle gate (memory-flush, fetch-tweets)` step; cron state still records a success). Any doubt means it runs, so the worst case is one extra run. (#1217)
+
+`fetch-tweets` gets the same free skip in account mode (`var: account:` for every handle in `memory/topics/tracked-accounts.yml`, or `account:<handle>` / `@handle`): `scripts/fetch_tweets_idle.py` asks twitterapi.io (`TWITTER_API_KEY`) for each handle's latest tweets and skips the model only when none is inside the skill's window (3 days for tracked accounts, 2 for one handle) or every such tweet is already in a `### fetch-tweets` account entry of the last 2 days of logs. Other sources always run. A missing key, an API error, an empty timeline or anything it cannot read means the skill runs as usual.
 
 ---
 

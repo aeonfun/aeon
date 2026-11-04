@@ -210,12 +210,27 @@ NOTES
 # (Langfuse, 30 days): 11-19% of all Bash calls were refused, mostly probes for
 # whether a key is set (`env | grep`, `printenv X`, `echo ${X:+yes}`) and calls
 # that are not one allowlisted command (a leading VAR=..., if/for/while, `cd x &&`).
-# Each refusal costs a full model turn, so name the keys that are present.
+# Each refusal costs a full model turn, so name the keys that are present. The
+# 2026-11-03 Langfuse review still found refusals on shapes skills teach in their
+# own snippets (`CUTOFF=$(date ...)`, `for r in ...; do gh api ...`,
+# `jq ...; jq ...`), so the note names those shapes and the split that replaces them.
+# Claude Code 2.1.301 (checked 2026-11-03 on a local probe with the same flags as
+# harness-adapter/adapters/claude.sh, both tiers) also refuses every shell redirect
+# into a file, /tmp included and despite --add-dir /tmp (`jq -n ... > /tmp/x`,
+# `cat > f`, `curl > f`), and any jq filter that uses a $name variable
+# (`--arg x v '{a:$x}'`, `$ARGS.named.x`, `... as $d`): "Shell expansion syntax in
+# paths requires manual approval". A heredoc body holding JSON (`{"a":1}`, even
+# `{ "a": 1 }`) is refused too: "Contains brace with quote character (expansion
+# obfuscation)". Pipes, `-o FILE`, node writers, markdown heredocs and literal jq
+# filters pass, so the second line names those.
 # $2 = skill name; its declared keys (scripts/skill_requires.sh) are checked
 # against this process's env, which the Run step has already filled.
 shell_run_notes() {
   local skill="${1:-}" key have="" missing=""
-  echo "Each Bash call must be one allowed command; pipes are fine. A call that starts with VAR=value, uses if/for/while, or chains with ; or && is refused unless every part is itself allowed, so split it into separate calls."
+  echo "Each Bash call must be one allowed command; pipes are fine. Do not start a call with VAR=value or VAR=\$(...), use if/for/while, or join commands with ;, && or ||: those calls get refused and cost a turn, even where a skill's own example shows that shape. Split them instead: run date (or any lookup) as its own call and write the printed value into the next command, run one jq per call, and make one call per repo or item instead of a loop."
+  cat <<'NOTES'
+Never redirect output into a file in a Bash call, in either tier and /tmp included: `> f`, `>> f`, `cat > f <<EOF` and `tee f` are always refused, even where a skill example shows one. Pipe a request body straight into its consumer (`jq -n '{...}' | ./secretcurl ... --data-binary @-`), let curl or ./secretcurl save a response with `-o /tmp/f`, and save any other output with `... | node -e 'require("fs").writeFileSync("/tmp/f", require("fs").readFileSync(0))'` (the Write tool also works in the write tier). Build JSON for a file with a literal `jq -nc '{key:"value"}'` filter piped into that node writer, never inside a heredoc: a `{` next to a quote in a heredoc body is refused as expansion obfuscation (plain markdown heredocs are fine). A jq filter must not use a $name variable either (`--arg x v '{a:$x}'`, `$ARGS.named.x`, `... as $d`): that is refused too, so write each value into the filter as a JSON string (`'{a:"v"}'`, `select(.day >= "2026-11-01")`).
+NOTES
   [ -n "$skill" ] || return 0
   while IFS= read -r key; do
     [[ "$key" =~ ^[A-Za-z_][A-Za-z0-9_]*$ ]] || continue

@@ -74,18 +74,20 @@ Search X for tweets matching `ARG` and produce a curated digest grouped by sub-n
 
 2. **Fetch tweets.** Record `SOURCE_PATH=twitterapi|api|websearch` for the log.
 
+   Get the window dates first, each `date` as its own Bash call (see **Shell shape** below):
    ```bash
-   FROM_DATE=$(date -u -d "yesterday" +%Y-%m-%d 2>/dev/null || date -u -v-1d +%Y-%m-%d)
-   TO_DATE=$(date -u +%Y-%m-%d)
+   date -u -d yesterday +%Y-%m-%d
    ```
-
-   **Path A - twitterapi.io (primary; see the **Fetching (all branches)** contract):** structured X search, no prompt. Put the date window inside the query with `since:`. Pass `ARG` as the query **verbatim** (OR/AND honored) plus `since:$FROM_DATE`:
    ```bash
-   Q="${ARG} since:${FROM_DATE}"
-   HTTP=$(./secretcurl -s -o /tmp/tw-keyword.json -w '%{http_code}' --max-time 60 -G "https://api.twitterapi.io/twitter/tweet/advanced_search" \
-     --data-urlencode "query=$Q" --data-urlencode "queryType=Latest" \
-     -H "X-API-Key: {TWITTER_API_KEY}")
-   echo "twitterapi http=$HTTP bytes=$(wc -c </tmp/tw-keyword.json)"
+   date -u +%Y-%m-%d
+   ```
+   The first prints FROM_DATE, the second TO_DATE.
+
+   **Path A - twitterapi.io (primary; see the **Fetching (all branches)** contract):** structured X search, no prompt. Put the date window inside the query with `since:`. Pass `ARG` as the query **verbatim** (OR/AND honored) plus `since:<FROM_DATE>`, both written in literally:
+   ```bash
+   ./secretcurl -s -o /tmp/tw-keyword.json -w 'twitterapi http=%{http_code} bytes=%{size_download}\n' --max-time 60 -G "https://api.twitterapi.io/twitter/tweet/advanced_search" \
+     --data-urlencode "query=<ARG> since:<FROM_DATE>" --data-urlencode "queryType=Latest" \
+     -H "X-API-Key: {TWITTER_API_KEY}"
    ```
    On `HTTP=200` with a non-empty `.tweets[]`, parse and mark `SOURCE_PATH=twitterapi`:
    ```bash
@@ -95,13 +97,11 @@ Search X for tweets matching `ARG` and produce a curated digest grouped by sub-n
 
    **Path B - xAI Grok x_search (fallback)** (only if Path A returned non-2xx / empty / timeout, or `TWITTER_API_KEY` is unset; see the contract - set the Bash tool `timeout` >=180000, capture the HTTP status):
    ```bash
-   PROMPT="Search X for tweets about: ${ARG}. Date range: ${FROM_DATE} to ${TO_DATE}. Return at least 15-20 candidate tweets - mix of high-engagement posts and smaller accounts that add a distinct angle. For each tweet include: @handle, the full text, date posted, exact engagement counts (likes, retweets, replies - never N/A; if unknown, say 0), and the direct link (https://x.com/handle/status/ID). Return as a numbered list."
-   jq -n --arg p "$PROMPT" '{model:"grok-4.7", input:[{role:"user",content:$p}], tools:[{type:"x_search"}]}' > /tmp/xai-ft-keyword.json
-   HTTP=$(./secretcurl -s -o /tmp/xai.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
+   jq -n '{model:"grok-4.7", input:[{role:"user",content:"Search X for tweets about: <ARG>. Date range: <FROM_DATE> to <TO_DATE>. Return at least 15-20 candidate tweets - mix of high-engagement posts and smaller accounts that add a distinct angle. For each tweet include: @handle, the full text, date posted, exact engagement counts (likes, retweets, replies - never N/A; if unknown, say 0), and the direct link (https://x.com/handle/status/ID). Return as a numbered list."}], tools:[{type:"x_search"}]}' \
+     | ./secretcurl -s -o /tmp/xai.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
      -H "Content-Type: application/json" \
      -H "Authorization: Bearer {XAI_API_KEY}" \
-     -d @/tmp/xai-ft-keyword.json)
-   echo "xai http=$HTTP bytes=$(wc -c </tmp/xai.json)"
+     --data-binary @-
    ```
    On `HTTP=200`, parse `/tmp/xai.json` with: `jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text'` and mark `SOURCE_PATH=api`.
 
@@ -162,18 +162,20 @@ Gist of the latest X chatter on one or more configurable topics.
 
 2. **Fetch per topic** - track `SOURCE ∈ {twitterapi, api, websearch, failed}` per topic.
 
+   Get the window dates first, each `date` as its own Bash call (see **Shell shape** below):
    ```bash
-   FROM_DATE=$(date -u -d "yesterday" +%Y-%m-%d 2>/dev/null || date -u -v-1d +%Y-%m-%d)
-   TO_DATE=$(date -u +%Y-%m-%d)
+   date -u -d yesterday +%Y-%m-%d
    ```
-
-   **Path A - twitterapi.io (primary):** for each topic, structured search with the topic as the query and the window inside it via `since:`:
    ```bash
-   Q="${TOPIC} since:${FROM_DATE}"
-   HTTP=$(./secretcurl -s -o /tmp/tw-topic.json -w '%{http_code}' --max-time 60 -G "https://api.twitterapi.io/twitter/tweet/advanced_search" \
-     --data-urlencode "query=$Q" --data-urlencode "queryType=Latest" \
-     -H "X-API-Key: {TWITTER_API_KEY}")
-   echo "twitterapi http=$HTTP bytes=$(wc -c </tmp/tw-topic.json)"
+   date -u +%Y-%m-%d
+   ```
+   The first prints FROM_DATE, the second TO_DATE.
+
+   **Path A - twitterapi.io (primary):** for each topic, one call with the topic as the query and the window inside it via `since:`, both written in literally:
+   ```bash
+   ./secretcurl -s -o /tmp/tw-topic.json -w 'twitterapi http=%{http_code} bytes=%{size_download}\n' --max-time 60 -G "https://api.twitterapi.io/twitter/tweet/advanced_search" \
+     --data-urlencode "query=<TOPIC> since:<FROM_DATE>" --data-urlencode "queryType=Latest" \
+     -H "X-API-Key: {TWITTER_API_KEY}"
    ```
    On `HTTP=200` with a non-empty `.tweets[]`, parse and mark `SOURCE=twitterapi`. Extract each tweet's handle (`.author.userName`), text, engagement counts (`.likeCount`/`.retweetCount`/`.replyCount`), and permalink (`.url`); take up to the first 8 substantive tweets:
    ```bash
@@ -182,12 +184,11 @@ Gist of the latest X chatter on one or more configurable topics.
 
    **Path B - xAI Grok x_search (fallback)** (only if Path A returned non-2xx / empty / timeout, or `TWITTER_API_KEY` unset): for each topic, call Grok's `x_search`.
    ```bash
-   PROMPT="Search X for recent tweets about: ${TOPIC}. Date range: ${FROM_DATE} to ${TO_DATE}. Return up to 8 substantive tweets. For each: @handle, full text, date, exact engagement counts (likes, retweets, replies; 0 if unknown), and the direct link https://x.com/handle/status/ID."
-   jq -n --arg p "$PROMPT" '{model:"grok-4.7", input:[{role:"user",content:$p}], tools:[{type:"x_search"}]}' > /tmp/xai-ft-topic.json
-   ./secretcurl -s -o /tmp/xai-topic-out.json -X POST "https://api.x.ai/v1/responses" \
+   jq -n '{model:"grok-4.7", input:[{role:"user",content:"Search X for recent tweets about: <TOPIC>. Date range: <FROM_DATE> to <TO_DATE>. Return up to 8 substantive tweets. For each: @handle, full text, date, exact engagement counts (likes, retweets, replies; 0 if unknown), and the direct link https://x.com/handle/status/ID."}], tools:[{type:"x_search"}]}' \
+     | ./secretcurl -s -o /tmp/xai-topic-out.json -X POST "https://api.x.ai/v1/responses" \
      -H "Content-Type: application/json" \
      -H "Authorization: Bearer {XAI_API_KEY}" \
-     -d @/tmp/xai-ft-topic.json
+     --data-binary @-
    ```
    Parse with the standard `jq` extractor. If it yields text, `SOURCE=api`. Extract each tweet's `@handle`, text, engagement counts, and permalink.
 
@@ -233,24 +234,22 @@ Two sub-modes: **single handle** (decision-ready gist of one account) vs. **all 
 
 2. **Load tweets:**
    - **Path A - twitterapi.io (primary):** pull this account's recent timeline directly, then filter to the last 2 days client-side (no server-side date filter on this endpoint):
+     First `date -u -d '2 days ago' +%Y-%m-%d` as its own call (prints FROM_2D), then one call with the handle written in literally:
      ```bash
-     FROM_2D=$(date -u -d "2 days ago" +%Y-%m-%d 2>/dev/null || date -u -v-2d +%Y-%m-%d)
-     HTTP=$(./secretcurl -s -o /tmp/tw-account.json -w '%{http_code}' --max-time 60 -G "https://api.twitterapi.io/twitter/user/last_tweets" \
-       --data-urlencode "userName=$ACCOUNT" -H "X-API-Key: {TWITTER_API_KEY}")
-     echo "twitterapi http=$HTTP bytes=$(wc -c </tmp/tw-account.json)"
+     ./secretcurl -s -o /tmp/tw-account.json -w 'twitterapi http=%{http_code} bytes=%{size_download}\n' --max-time 60 -G "https://api.twitterapi.io/twitter/user/last_tweets" \
+       --data-urlencode "userName=<ACCOUNT>" -H "X-API-Key: {TWITTER_API_KEY}"
      ```
-     On `HTTP=200` with a non-empty `.data.tweets[]`, parse and mark `source=twitterapi`. Filter on `.createdAt` (drop tweets older than the window) and use `.isReply` to tag reply vs original (this endpoint has no quote flag - treat non-reply as original; if you need reliable quote detection fall back to Path B):
+     On `HTTP=200` with a non-empty `.data.tweets[]`, parse and mark `source=twitterapi`. Filter on `.createdAt` (drop tweets older than the window) and use `.isReply` to tag reply vs original (this endpoint has no quote flag - treat non-reply as original; if you need reliable quote detection fall back to Path B). One `jq` per call, FROM_2D written in literally:
      ```bash
-     jq -r --arg FROM "$FROM_2D" '.data.tweets[] | select((try (.createdAt | strptime("%a %b %d %H:%M:%S %z %Y") | strftime("%Y-%m-%d")) catch "0000-00-00") >= $FROM) | [.id, .author.userName, .text, .url, .createdAt, .likeCount, .retweetCount, .replyCount, .isReply] | @tsv' /tmp/tw-account.json
+     jq -r '.data.tweets[] | select((try (.createdAt | strptime("%a %b %d %H:%M:%S %z %Y") | strftime("%Y-%m-%d")) catch "0000-00-00") >= "<FROM_2D>") | [.id, .author.userName, .text, .url, .createdAt, .likeCount, .retweetCount, .replyCount, .isReply] | @tsv' /tmp/tw-account.json
      ```
    - **Path B - xAI Grok x_search (fallback)** (only if Path A returned non-2xx / empty / timeout, or `TWITTER_API_KEY` unset): search this account's recent tweets via Grok's `x_search`.
      ```bash
-     PROMPT="Search X for the latest tweets, replies, and quote tweets from @${ACCOUNT} in the last 2 days. Return each with full text, timestamp, type (original|reply|quote), what it replies to/quotes if any, exact engagement counts (likes, retweets, replies; 0 if unknown), and the permalink https://x.com/${ACCOUNT}/status/ID. Skip retweets of others. Return chronological."
-     jq -n --arg p "$PROMPT" '{model:"grok-4.7", input:[{role:"user",content:$p}], tools:[{type:"x_search"}]}' > /tmp/xai-ft-account.json
-     ./secretcurl -m 30 -s -o /tmp/xai-account-out.json -X POST "https://api.x.ai/v1/responses" \
+     jq -n '{model:"grok-4.7", input:[{role:"user",content:"Search X for the latest tweets, replies, and quote tweets from @<ACCOUNT> in the last 2 days. Return each with full text, timestamp, type (original|reply|quote), what it replies to/quotes if any, exact engagement counts (likes, retweets, replies; 0 if unknown), and the permalink https://x.com/<ACCOUNT>/status/ID. Skip retweets of others. Return chronological."}], tools:[{type:"x_search"}]}' \
+       | ./secretcurl -m 30 -s -o /tmp/xai-account-out.json -X POST "https://api.x.ai/v1/responses" \
        -H "Content-Type: application/json" \
        -H "Authorization: Bearer {XAI_API_KEY}" \
-       -d @/tmp/xai-ft-account.json
+       --data-binary @-
      ```
      Parse with the standard `jq` extractor. Record `source=api`.
    - **Path C - WebFetch (last resort)** (only if Paths A and B both failed / returned nothing): WebFetch `https://x.com/${ACCOUNT}` with prompt: *"List every tweet, reply, and quote tweet visible on this profile with its full text, timestamp, engagement counts (likes/retweets/replies) if shown, and the permalink https://x.com/handle/status/ID. Return a chronological list."* Record `source=webfetch`.
@@ -304,24 +303,22 @@ Use this to answer "what did *these specific people* post" across a watchlist.
 
 2. **Fetch recent tweets per account.** For each `handle`:
    - **Path A - twitterapi.io (primary):** pull the handle's recent timeline, filter to the last 3 days client-side, take the 5 most substantive; drop retweets of others:
+     Run `date -u -d '3 days ago' +%Y-%m-%d` once, as its own call (prints FROM_3D). Then per handle, one call with the handle written in literally:
      ```bash
-     FROM_3D=$(date -u -d "3 days ago" +%Y-%m-%d 2>/dev/null || date -u -v-3d +%Y-%m-%d)
-     HTTP=$(./secretcurl -s -o /tmp/tw-acct1.json -w '%{http_code}' --max-time 60 -G "https://api.twitterapi.io/twitter/user/last_tweets" \
-       --data-urlencode "userName=$HANDLE" -H "X-API-Key: {TWITTER_API_KEY}")
-     echo "twitterapi http=$HTTP bytes=$(wc -c </tmp/tw-acct1.json)"
+     ./secretcurl -s -o /tmp/tw-acct1.json -w 'twitterapi http=%{http_code} bytes=%{size_download}\n' --max-time 60 -G "https://api.twitterapi.io/twitter/user/last_tweets" \
+       --data-urlencode "userName=<HANDLE>" -H "X-API-Key: {TWITTER_API_KEY}"
      ```
-     On `HTTP=200` with a non-empty `.data.tweets[]`, parse and mark `source=twitterapi`:
+     On `HTTP=200` with a non-empty `.data.tweets[]`, parse and mark `source=twitterapi`. One `jq` per call, FROM_3D written in literally; if you also want a count, `jq '.data.tweets | length' /tmp/tw-acct1.json` is its own call, never joined with `;`:
      ```bash
-     jq -r --arg FROM "$FROM_3D" '.data.tweets[] | select((try (.createdAt | strptime("%a %b %d %H:%M:%S %z %Y") | strftime("%Y-%m-%d")) catch "0000-00-00") >= $FROM) | [.id, .author.userName, .text, .url, .createdAt, .likeCount, .retweetCount, .replyCount] | @tsv' /tmp/tw-acct1.json
+     jq -r '.data.tweets[] | select((try (.createdAt | strptime("%a %b %d %H:%M:%S %z %Y") | strftime("%Y-%m-%d")) catch "0000-00-00") >= "<FROM_3D>") | [.id, .author.userName, .text, .url, .createdAt, .likeCount, .retweetCount, .replyCount] | @tsv' /tmp/tw-acct1.json
      ```
    - **Path B - xAI Grok x_search (fallback)** (only if Path A returned non-2xx / empty / timeout, or `TWITTER_API_KEY` unset):
      ```bash
-     PROMPT="Search X for the latest tweets from:${HANDLE} in the last 3 days. Return the 5 most interesting or substantive tweets. For each: full text, date, direct link (https://x.com/${HANDLE}/status/ID). Skip retweets of others."
-     jq -n --arg p "$PROMPT" '{model:"grok-4.7", input:[{role:"user",content:$p}], tools:[{type:"x_search"}]}' > /tmp/xai-ft-acct1.json
-     ./secretcurl -m 30 -s -o /tmp/xai-acct1-out.json -X POST "https://api.x.ai/v1/responses" \
+     jq -n '{model:"grok-4.7", input:[{role:"user",content:"Search X for the latest tweets from:<HANDLE> in the last 3 days. Return the 5 most interesting or substantive tweets. For each: full text, date, direct link (https://x.com/<HANDLE>/status/ID). Skip retweets of others."}], tools:[{type:"x_search"}]}' \
+       | ./secretcurl -m 30 -s -o /tmp/xai-acct1-out.json -X POST "https://api.x.ai/v1/responses" \
        -H "Content-Type: application/json" \
        -H "Authorization: Bearer {XAI_API_KEY}" \
-       -d @/tmp/xai-ft-acct1.json
+       --data-binary @-
      ```
      Parse with the standard `jq` extractor.
    If neither `TWITTER_API_KEY` nor `XAI_API_KEY` is set, log `TWEET_DIGEST_NO_KEY: skill requires TWITTER_API_KEY (or XAI_API_KEY)` and exit (no notification).
@@ -354,40 +351,22 @@ Cross-list narrative resonance + signal-scored top tweets from tracked X lists i
 
 **Seen set:** `memory/list-digest-seen.txt` + last 2 days of logs.
 
-1. **Parse and validate `ARG`.**
-   ```bash
-   if [ -z "$ARG" ]; then
-     echo "LIST_DIGEST_NO_CONFIG: var must contain at least one X list ID" \
-       >> "memory/logs/$(date -u +%Y-%m-%d).md"
-     exit 0
-   fi
-   IDS_PART="${ARG%%|*}"
-   TOPIC_FILTER=""
-   [ "$ARG" != "$IDS_PART" ] && TOPIC_FILTER="${ARG#*|}"
-   for LIST_ID in $(echo "$IDS_PART" | tr ',' ' '); do
-     if ! [[ "$LIST_ID" =~ ^[0-9]+$ ]]; then
-       echo "LIST_DIGEST_NO_CONFIG: invalid list ID '$LIST_ID' (must be numeric)" \
-         >> "memory/logs/$(date -u +%Y-%m-%d).md"
-       exit 0
-     fi
-   done
-   ```
+1. **Parse and validate `ARG`** in your head, not in a shell script (an `if`/`for` block is refused):
+   - `ARG` empty: log `LIST_DIGEST_NO_CONFIG: var must contain at least one X list ID` to today's `memory/logs/<date>.md` and stop.
+   - `IDS_PART` = the text before the first `|`; `TOPIC_FILTER` = the text after it (empty when there is no `|`).
+   - Split `IDS_PART` on commas into `LIST_ID`s. Any ID that is not all digits: log `LIST_DIGEST_NO_CONFIG: invalid list ID '<id>' (must be numeric)` and stop.
+
    If `XAI_API_KEY` is unset, fall back to Path B. If no path returns data, log `LIST_DIGEST_NO_CONFIG: XAI_API_KEY required` and stop without notifying.
 
 2. **Fetch each list's top tweets (past 24h)** - xAI primary, WebSearch fallback.
    > Note: twitterapi.io has **no `list:` operator** (its advanced_search supports `from:` `to:` `url:` `lang:` `#tag` `@mention` `since:` `until:` only), so this branch keeps the xAI Grok `x_search` path as primary - it is the only path that can read an X list by ID. `TWITTER_API_KEY` does not apply to the `list` source.
-   **Path A - X.AI Responses API** (primary):
+   **Path A - X.AI Responses API** (primary). Get the window dates first, each `date` as its own Bash call: `date -u -d yesterday +%Y-%m-%d` (FROM_DATE) and `date -u +%Y-%m-%d` (TO_DATE). Then build the body and send it in one call (jq piped straight into `./secretcurl`), with the list ID and both dates written in literally:
    ```bash
-   FROM_DATE=$(date -u -d "yesterday" +%Y-%m-%d 2>/dev/null || date -u -v-1d +%Y-%m-%d)
-   TO_DATE=$(date -u +%Y-%m-%d)
-   PROMPT="Look at X list https://x.com/i/lists/${LIST_ID}. Step 1: report the list name and a one-line description. Step 2: identify the most engaging tweets posted by members of this list between ${FROM_DATE} and ${TO_DATE} UTC. Return the top 12 tweets ranked by engagement (likes, retweets, replies). For EACH tweet you MUST return: (a) @handle, (b) the full tweet text (not a paraphrase), (c) explicit engagement counts as separate fields — likes:N, retweets:N, replies:N, views:N if available, (d) the direct permalink in the form https://x.com/<handle>/status/<id>, (e) media type (image|video|none), (f) one-line context if it's a reply or quote tweet (who/what). Skip retweets of accounts NOT on this list. If a tweet has an image and you can analyze it, include a one-line image description."
-   jq -n --arg p "$PROMPT" --arg fd "$FROM_DATE" --arg td "$TO_DATE" \
-     '{model:"grok-4.7", input:[{role:"user",content:$p}], tools:[{type:"x_search", from_date:$fd, to_date:$td, enable_image_understanding:true}]}' \
-     > /tmp/xai-ft-list.json
-   ./secretcurl -s -o /tmp/xai-list-out.json --max-time 180 -X POST "https://api.x.ai/v1/responses" \
+   jq -n '{model:"grok-4.7", input:[{role:"user",content:"Look at X list https://x.com/i/lists/<LIST_ID>. Step 1: report the list name and a one-line description. Step 2: identify the most engaging tweets posted by members of this list between <FROM_DATE> and <TO_DATE> UTC. Return the top 12 tweets ranked by engagement (likes, retweets, replies). For EACH tweet you MUST return: (a) @handle, (b) the full tweet text (not a paraphrase), (c) explicit engagement counts as separate fields - likes:N, retweets:N, replies:N, views:N if available, (d) the direct permalink in the form https://x.com/<handle>/status/<id>, (e) media type (image|video|none), (f) one-line context if it is a reply or quote tweet (who/what). Skip retweets of accounts NOT on this list. If a tweet has an image and you can analyze it, include a one-line image description."}], tools:[{type:"x_search", from_date:"<FROM_DATE>", to_date:"<TO_DATE>", enable_image_understanding:true}]}' \
+     | ./secretcurl -s -o /tmp/xai-list-out.json --max-time 180 -X POST "https://api.x.ai/v1/responses" \
      -H "Content-Type: application/json" \
      -H "Authorization: Bearer {XAI_API_KEY}" \
-     -d @/tmp/xai-ft-list.json
+     --data-binary @-
    ```
    Parse with the standard `jq` extractor.
    **Path B — WebSearch fallback** (only if `XAI_API_KEY` unset, OR Path A errors / returns nothing): `site:x.com "i/lists/${LIST_ID}" OR list:${LIST_ID} after:${FROM_DATE}`. Lower quality; mark this list's source as `websearch`.
@@ -454,34 +433,34 @@ A topic-filtered preset: a curated, narrative-aware read on what the AI-agent sc
 **Seen set:** last 3 days of logs — extract every `https://x.com/.../status/<id>` already posted by this skill; treat those IDs as the dedup set.
 
 1. **Fetch candidates:**
+   Get the window dates first, each `date` as its own Bash call (see **Shell shape** below):
    ```bash
-   FROM_DATE=$(date -u -d "1 day ago" +%Y-%m-%d 2>/dev/null || date -u -v-1d +%Y-%m-%d)
-   TO_DATE=$(date -u +%Y-%m-%d)
+   date -u -d '1 day ago' +%Y-%m-%d
    ```
-   **Path A - twitterapi.io (primary):** structured search over the AI-agents conversation, window inside the query via `since:`:
    ```bash
-   Q='("AI agents" OR "autonomous agents" OR "agent framework" OR "agent frameworks" OR MCP OR "agent protocol" OR "agent benchmark") since:'"${FROM_DATE}"
-   HTTP=$(./secretcurl -s -o /tmp/tw-buzz.json -w '%{http_code}' --max-time 60 -G "https://api.twitterapi.io/twitter/tweet/advanced_search" \
-     --data-urlencode "query=$Q" --data-urlencode "queryType=Latest" \
-     -H "X-API-Key: {TWITTER_API_KEY}")
-   echo "twitterapi http=$HTTP bytes=$(wc -c </tmp/tw-buzz.json)"
+   date -u +%Y-%m-%d
+   ```
+   The first prints FROM_DATE, the second TO_DATE.
+
+   **Path A - twitterapi.io (primary):** structured search over the AI-agents conversation, window inside the query via `since:`, FROM_DATE written in literally:
+   ```bash
+   ./secretcurl -s -o /tmp/tw-buzz.json -w 'twitterapi http=%{http_code} bytes=%{size_download}\n' --max-time 60 -G "https://api.twitterapi.io/twitter/tweet/advanced_search" \
+     --data-urlencode 'query=("AI agents" OR "autonomous agents" OR "agent framework" OR "agent frameworks" OR MCP OR "agent protocol" OR "agent benchmark") since:<FROM_DATE>' \
+     --data-urlencode "queryType=Latest" -H "X-API-Key: {TWITTER_API_KEY}"
    ```
    On `HTTP=200` with a non-empty `.tweets[]`, parse and mark `source=twitterapi`. Collect up to ~40 candidates (paginate with `&cursor=<next_cursor>` while `.has_next_page` if the first page is thin):
    ```bash
    jq -r '.tweets[] | [.id, .author.userName, .author.isBlueVerified, .text, .url, .createdAt, .likeCount, .retweetCount, .replyCount] | @tsv' /tmp/tw-buzz.json
    ```
-   Note: advanced_search does **not** return `follower_count` or `role_guess`. On this path treat both as null (the step-3 role multiplier and the follower-ratio skip-gates simply don't fire); use `.author.isBlueVerified` as a weak credibility proxy and lean on raw engagement. If `ARG` is set, append its terms to `Q` (AND) or issue a second constrained search and merge.
+   Note: advanced_search does **not** return `follower_count` or `role_guess`. On this path treat both as null (the step-3 role multiplier and the follower-ratio skip-gates simply don't fire); use `.author.isBlueVerified` as a weak credibility proxy and lean on raw engagement. If `ARG` is set, append its terms to the query (AND) or issue a second constrained search and merge.
 
    **Path B - xAI Grok x_search (fallback)** (only if Path A returned non-2xx / empty / timeout, or `TWITTER_API_KEY` unset; the response for each tweet **must** include explicit engagement counts + follower count, or step 3 scoring can't run):
    ```bash
-   PROMPT="Search X from ${FROM_DATE} to ${TO_DATE} for tweets in the AI-agents conversation: autonomous agents, agent frameworks, MCP / agent protocols, agent products, agent benchmarks, agent research papers. Return up to 40 candidates. For EACH candidate you MUST return: @handle, follower_count (integer or null), role_guess (builder|founder|researcher|investor|commentator|anon), one-line claim (what they actually said - not a paraphrase, the thesis), likes (int), retweets (int), replies (int), posted_at (ISO), direct_link (https://x.com/username/status/ID). Prefer builders/founders/researchers. Skip obvious engagement-farming threads (\"RT if you agree\", reply-guy pileons, giveaways)."
-   jq -n --arg p "$PROMPT" --arg fd "$FROM_DATE" --arg td "$TO_DATE" \
-     '{model:"grok-4.7", input:[{role:"user",content:$p}], tools:[{type:"x_search", from_date:$fd, to_date:$td}]}' \
-     > /tmp/xai-ft-buzz.json
-   ./secretcurl -s -o /tmp/xai-buzz-out.json -X POST "https://api.x.ai/v1/responses" \
+   jq -n '{model:"grok-4.7", input:[{role:"user",content:"Search X from <FROM_DATE> to <TO_DATE> for tweets in the AI-agents conversation: autonomous agents, agent frameworks, MCP / agent protocols, agent products, agent benchmarks, agent research papers. Return up to 40 candidates. For EACH candidate you MUST return: @handle, follower_count (integer or null), role_guess (builder|founder|researcher|investor|commentator|anon), one-line claim (what they actually said - not a paraphrase, the thesis), likes (int), retweets (int), replies (int), posted_at (ISO), direct_link (https://x.com/username/status/ID). Prefer builders/founders/researchers. Skip obvious engagement-farming threads (\"RT if you agree\", reply-guy pileons, giveaways)."}], tools:[{type:"x_search", from_date:"<FROM_DATE>", to_date:"<TO_DATE>"}]}' \
+     | ./secretcurl -s -o /tmp/xai-buzz-out.json -X POST "https://api.x.ai/v1/responses" \
      -H "Content-Type: application/json" \
      -H "Authorization: Bearer {XAI_API_KEY}" \
-     -d @/tmp/xai-ft-buzz.json
+     --data-binary @-
    ```
    Parse with the standard `jq` extractor. Record `source=xai`.
    **Path C - WebSearch (last resort)** (only if Paths A and B both error/empty, or no key set): forced-fresh query `"AI agents twitter today ${today}"` - discard anything >48h old, expect degraded metadata. Record `source=websearch`.
@@ -555,15 +534,17 @@ No chain consumes this skill's output as of this commit (no `consume: [fetch-twe
 
 ## Fetching (all branches)
 
+**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`FROM_DATE=$(date ...)`, `HTTP=$(./secretcurl ...)`), uses `if` / `for` / `while`, or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn. So get a date with a bare `date` call and write the printed value into later commands; write `ARG`, handles, topics and dates into each command literally (the `<FROM_DATE>`, `<HANDLE>` style placeholders in the snippets); run one `jq` per call; loop over handles or topics by making one call per item. The run also refuses any redirect into a file (`> /tmp/x.json`, `cat > f`) and any `$name` in a jq filter (`--arg FROM ... '... $FROM'`), in both tiers: write each value into the jq filter as a JSON string (`>= "<FROM_2D>"`; a `"` inside a value becomes `\"`, and reword any `'`), and pipe a request body straight into `./secretcurl ... --data-binary @-`.
+
 Every branch fetches X in a **three-tier cascade**. Attempt each tier in order; only drop to the next on a *real* failure (non-2xx, empty body, or timeout), and always record the true reason.
 
 **Path A - twitterapi.io (primary).** `TWITTER_API_KEY` is **injected into your environment** for this skill (declared in `requires:`). The primary fetch path in every branch (except `list`, which has no twitterapi list operator) is a direct `curl` to `https://api.twitterapi.io/twitter/...` with the `X-API-Key: {TWITTER_API_KEY}` header. It is fast (~700ms), returns **structured ground-truth** JSON with **exact engagement counts** and **real permalinks** (`.url`) - so there is no fabrication risk and no prompt to coax. Two endpoints:
 - **Search:** `GET /tweet/advanced_search?query=<q>&queryType=Latest` -> `{tweets:[...], has_next_page, next_cursor}`. Put date windows **inside** the query with X operators `since:YYYY-MM-DD until:YYYY-MM-DD`; other operators: `from:` `to:` `url:` `lang:` `#tag` `@mention`, plus OR/AND and quotes. Tweets are under `.tweets[]`. (There is **no** `list:` operator - see the `list` branch.)
 - **Timeline:** `GET /user/last_tweets?userName=<handle>` -> `{status:"success", data:{tweets:[...]}, has_next_page, next_cursor}`. No server-side date filter - filter client-side on `.createdAt` or paginate with `&cursor=<next_cursor>`. Tweets are under `.data.tweets[]`.
 
-Fields: `id, text, url, createdAt, likeCount, retweetCount, replyCount, quoteCount, viewCount, author.userName, author.name, author.isBlueVerified` (last_tweets also `isReply`, `author.followers`). Capture the status with `-w '%{http_code}'` and **print `http=<code>` before deciding anything.** `HTTP=200` with a non-empty tweet array -> use it (`SOURCE_PATH=twitterapi`). No prefetch, no cache - just make the call.
+Fields: `id, text, url, createdAt, likeCount, retweetCount, replyCount, quoteCount, viewCount, author.userName, author.name, author.isBlueVerified` (last_tweets also `isReply`, `author.followers`). Capture the status with `-w 'twitterapi http=%{http_code} bytes=%{size_download}\n'` (curl prints it, so no `HTTP=$(...)` wrapper) and **read the `http=<code>` line before deciding anything.** `HTTP=200` with a non-empty tweet array -> use it (`SOURCE_PATH=twitterapi`). No prefetch, no cache - just make the call.
 
-**Path B - xAI Grok x_search (fallback).** Only when Path A fails (non-2xx / empty / timeout) or `TWITTER_API_KEY` is unset. Direct `curl` to `https://api.x.ai/v1/responses` with `Authorization: Bearer {XAI_API_KEY}` using Grok's `x_search` tool. The `x_search` call typically takes 30-120s (it searches X live), so **set the Bash tool `timeout` to at least 180000 (180s)** and add **`--max-time 150`** to the curl so it fails cleanly rather than hanging. A slow curl is **not** a missing key. Build the JSON body to a fixed file with `jq -n` first, then send with `-d @file` - every `./secretcurl` command must be 100% literal (no `$VAR`, or the permission layer blocks it). Parse with the standard extractor:
+**Path B - xAI Grok x_search (fallback).** Only when Path A fails (non-2xx / empty / timeout) or `TWITTER_API_KEY` is unset. Direct `curl` to `https://api.x.ai/v1/responses` with `Authorization: Bearer {XAI_API_KEY}` using Grok's `x_search` tool. The `x_search` call typically takes 30-120s (it searches X live), so **set the Bash tool `timeout` to at least 180000 (180s)** and add **`--max-time 150`** to the curl so it fails cleanly rather than hanging. A slow curl is **not** a missing key. Build the JSON body with `jq -n` (prompt and dates written into the filter literally) and pipe it straight into `./secretcurl` in the same call (its body flag reads stdin) - every `./secretcurl` command must be 100% literal (no shell variables, or the permission layer blocks it). Parse with the standard extractor:
    ```bash
    jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text' /tmp/xai.json
    ```

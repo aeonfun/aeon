@@ -144,8 +144,8 @@ Each skill receives the API keys it declares in its `requires:` frontmatter — 
 
 1. **Auth-required / secret-bearing calls: use `./secretcurl`, not raw `curl`.** `./secretcurl` takes the exact same arguments as `curl`, except you write the key as a `{ENV_NAME}` placeholder — it substitutes the real value internally, so your command line carries no `$SECRET` and the permission layer lets it through:
    ```bash
-   ./secretcurl -s -X POST "https://api.x.ai/v1/responses" \
-     -H "Authorization: Bearer {XAI_API_KEY}" -d "$PAYLOAD"        # auth header
+   jq -nc '{model:"grok-4.7", input:"<prompt>"}' | ./secretcurl -s -X POST "https://api.x.ai/v1/responses" \
+     -H "Authorization: Bearer {XAI_API_KEY}" -H "Content-Type: application/json" --data-binary @-   # auth header, body piped in
    ./secretcurl -s -H "x-cg-demo-api-key: {COINGECKO_API_KEY}" "https://api.coingecko.com/..."  # custom header
    ./secretcurl -s "https://eth-mainnet.g.alchemy.com/v2/{ALCHEMY_API_KEY}"                     # key in URL
    ```

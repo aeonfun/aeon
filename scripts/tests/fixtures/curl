@@ -15,6 +15,13 @@ attempt=0
 next=$((attempt + 1))
 echo "$next" > "$state"
 out=$(printf '%s\n' "$cfg" | sed -n 's/^-o "\(.*\)"$/\1/p' | head -1)
+# Record each attempt's request body (one line per attempt) so a test can check
+# that a retry resends what the first attempt sent.
+body=$(printf '%s\n' "$cfg" | sed -n 's/^--data-binary "@\(.*\)"$/\1/p' | head -1)
+if [ -n "$body" ]; then
+  if [ "$body" = "-" ]; then cat; else cat "$body"; fi | tr -d '\n' >> "$HOME/fake-curl-bodies"
+  echo >> "$HOME/fake-curl-bodies"
+fi
 if [ -n "${FAKE_CURL_HTTP:-}" ]; then
   [ -z "$out" ] || printf '%s' '{"error":"client"}' > "$out"
   printf '%s' "$FAKE_CURL_HTTP"

@@ -33,17 +33,22 @@ Read the last 3 days of memory/logs/ to avoid re-surfacing already-noted mention
 
 2. **Search for external mentions.** X/Twitter is fetched via **twitterapi.io** (**primary**); xAI Grok `x_search` is the fallback; the rest of the public web (Reddit, Farcaster, blogs, newsletters, GitHub Discussions, HN, Product Hunt) goes through WebSearch, which is also the **last-resort fallback** for X itself. Derive the operator's handle from `soul/SOUL.md` if present (call it `$OPERATOR`) so you can exclude their own posts.
 
-   **Path A - twitterapi.io (primary, X/Twitter mentions).** For each target, structured search for other people mentioning the project. See the **Fetching** contract below. Use a unique tmp filename per target if you loop (e.g. `/tmp/tw-mr-$SLUG.json`). `$NAME`/`$DOMAIN`/`$REPO` come from the target built in step 1 (`$DOMAIN`/`$REPO` may be empty - leave them out if so). Put the date window inside the query with `since:`/`until:`; exclude the operator with `-from:`:
+   **Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`FROM_DATE=$(date ...)`, `Q="..."`, `HTTP=$(./secretcurl ...)`), uses `if` / `for` / `while` or `[ -n ... ] &&` tests, or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn. So get a date with a bare `date` call and write the printed value into later commands; write each target's name, domain, repo, the operator handle and the dates into each command literally (the `<NAME>`, `<FROM_DATE>` style placeholders in the snippets), jq filters included (a jq `$name` variable from `--arg` is refused, and so is a `>` redirect into a file, so the xAI body is piped straight into `./secretcurl ... --data-binary @-`); loop over targets by making one call per target; run one `jq` per call.
+
+   Get the window dates first, each `date` as its own Bash call:
    ```bash
-   FROM_DATE=$(date -u -d "7 days ago" +%Y-%m-%d 2>/dev/null || date -u -v-7d +%Y-%m-%d)
-   TO_DATE=$(date -u +%Y-%m-%d)
-   Q="\"${NAME}\" -from:${OPERATOR} since:${FROM_DATE} until:${TO_DATE}"
-   [ -n "$DOMAIN" ] && Q="${Q} OR \"${DOMAIN}\""
-   [ -n "$REPO" ] && Q="${Q} OR \"${REPO}\""
-   HTTP=$(./secretcurl -s -o /tmp/tw-mr.json -w '%{http_code}' --max-time 60 -G "https://api.twitterapi.io/twitter/tweet/advanced_search" \
-     --data-urlencode "query=$Q" --data-urlencode "queryType=Latest" \
-     -H "X-API-Key: {TWITTER_API_KEY}")
-   echo "twitterapi http=$HTTP bytes=$(wc -c </tmp/tw-mr.json)"
+   date -u -d '7 days ago' +%Y-%m-%d
+   ```
+   ```bash
+   date -u +%Y-%m-%d
+   ```
+   The first prints FROM_DATE, the second TO_DATE.
+
+   **Path A - twitterapi.io (primary, X/Twitter mentions).** For each target, structured search for other people mentioning the project. See the **Fetching** contract below. Use a unique tmp filename per target if you loop (e.g. `/tmp/tw-mr-<SLUG>.json`). `<NAME>`/`<DOMAIN>`/`<REPO>` come from the target built in step 1, written in literally. Put the date window inside the query with `since:`/`until:`; exclude the operator with `-from:`. `<QUERY>` is `"<NAME>" -from:<OPERATOR> since:<FROM_DATE> until:<TO_DATE>`, then ` OR "<DOMAIN>"` added when the target has a domain and ` OR "<REPO>"` added when it has a repo (leave each out when empty), all written in literally. One call per target:
+   ```bash
+   ./secretcurl -s -o /tmp/tw-mr.json -w 'twitterapi http=%{http_code} bytes=%{size_download}\n' --max-time 60 -G "https://api.twitterapi.io/twitter/tweet/advanced_search" \
+     --data-urlencode 'query=<QUERY>' --data-urlencode "queryType=Latest" \
+     -H "X-API-Key: {TWITTER_API_KEY}"
    ```
    On `HTTP=200` with a non-empty `.tweets[]`, parse and mark `X_SOURCE=twitterapi`. Drop posts by `$OPERATOR` and the project's own accounts if any slipped through:
    ```bash
@@ -51,17 +56,13 @@ Read the last 3 days of memory/logs/ to avoid re-surfacing already-noted mention
    ```
    Engagement counts are exact; permalinks are `.url`. `createdAt` is Twitter-native (`Wed Sep 09 20:21:43 +0000 2026`); normalize with `strptime("%a %b %d %H:%M:%S %z %Y")` before any date compare. advanced_search does **not** return `author.followers` - omit follower counts on this path (Path B can supply them).
 
-   **Path B - xAI Grok `x_search` (fallback).** Only if Path A returned non-2xx / empty / timeout, or `TWITTER_API_KEY` is unset. See the **Fetching** contract - set the Bash tool `timeout` to ≥180000, and capture the HTTP status. Use a unique tmp filename per target if you loop (e.g. `/tmp/xai-mr-$SLUG.json`):
+   **Path B - xAI Grok `x_search` (fallback).** Only if Path A returned non-2xx / empty / timeout, or `TWITTER_API_KEY` is unset. See the **Fetching** contract - set the Bash tool `timeout` to ≥180000, and capture the HTTP status. Use a unique tmp filename per target if you loop (e.g. `/tmp/xai-mr-<SLUG>.json`). Build the body with the prompt inline and every value written into the jq filter literally (a `"` inside a value becomes `\"`, and reword any `'`), and pipe it straight into the send:
    ```bash
-   PROMPT="Search X for posts by OTHER people mentioning the project \"${NAME}\" (also its site ${DOMAIN} and repo ${REPO} when given), posted between ${FROM_DATE} and ${TO_DATE}. Exclude posts by the operator @${OPERATOR} and by the project's own accounts. For each mention return: @handle, the full post text, date, exact engagement counts (likes, retweets, replies; 0 if unknown), the poster's approximate follower count if visible, and the direct link https://x.com/handle/status/ID. Prioritize people discovering it for the first time, asking confused questions, hitting friction (setup/docs/missing feature), comparing it to a competitor, or requesting a feature. Return a numbered list; if nobody is talking about it, say so explicitly."
-   jq -n --arg p "$PROMPT" --arg fd "$FROM_DATE" --arg td "$TO_DATE" \
-     '{model:"grok-4.7", input:[{role:"user",content:$p}], tools:[{type:"x_search",from_date:$fd,to_date:$td}]}' \
-     > /tmp/xai-mr-payload.json
-   HTTP=$(./secretcurl -s -o /tmp/xai-mr.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
+   jq -n '{model:"grok-4.7", input:[{role:"user",content:"Search X for posts by OTHER people mentioning the project \"<NAME>\" (also its site <DOMAIN> and repo <REPO> when given), posted between <FROM_DATE> and <TO_DATE>. Exclude posts by the operator @<OPERATOR> and by the accounts of the project itself. For each mention return: @handle, the full post text, date, exact engagement counts (likes, retweets, replies; 0 if unknown), the approximate follower count of the poster if visible, and the direct link https://x.com/handle/status/ID. Prioritize people discovering it for the first time, asking confused questions, hitting friction (setup/docs/missing feature), comparing it to a competitor, or requesting a feature. Return a numbered list; if nobody is talking about it, say so explicitly."}], tools:[{type:"x_search",from_date:"<FROM_DATE>",to_date:"<TO_DATE>"}]}' \
+     | ./secretcurl -s -o /tmp/xai-mr.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
      -H "Content-Type: application/json" \
      -H "Authorization: Bearer {XAI_API_KEY}" \
-     -d @/tmp/xai-mr-payload.json)
-   echo "xai http=$HTTP bytes=$(wc -c </tmp/xai-mr.json)"
+     --data-binary @-
    ```
    On `HTTP=200` with a non-empty body, parse `/tmp/xai-mr.json` with `jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text'` and feed the X mentions into categorization (step 4). Record `X_SOURCE=api`.
 
@@ -137,15 +138,14 @@ Read the last 3 days of memory/logs/ to avoid re-surfacing already-noted mention
 
 **You MUST attempt twitterapi.io before any X fallback.** The rules:
 
-1. **Check, don't assume.** Run `[ -n "$TWITTER_API_KEY" ] && echo KEY_PRESENT || echo KEY_UNSET`. If `KEY_PRESENT`, you are required to try Path A.
+1. **Check, don't assume.** Read the "Keys set for this run" line in your run notes, never a shell test (those are refused and cost a turn): `TWITTER_API_KEY` on that line = `KEY_PRESENT`, not on it = `KEY_UNSET`. If `KEY_PRESENT`, you are required to try Path A.
 2. **Capture the HTTP status** so the fallback decision is based on fact. Print `http=<code>` before parsing. `HTTP=200` with a non-empty `.tweets[]` → use it (`X_SOURCE=twitterapi`). Put date windows **inside** the query with `since:YYYY-MM-DD until:YYYY-MM-DD`. `createdAt` is Twitter-native (`Wed Sep 09 20:21:43 +0000 2026`), not ISO - normalize with `strptime("%a %b %d %H:%M:%S %z %Y")` before any date compare.
-3. **Path B - xAI Grok `x_search` (fallback).** Only when Path A fails (non-2xx / empty / timeout) or `TWITTER_API_KEY` is unset. Direct `curl` to `https://api.x.ai/v1/responses` with `Authorization: Bearer {XAI_API_KEY}`. The `x_search` call typically takes 30-120s - **set the Bash tool `timeout` to at least 180000 (180s)** and keep **`--max-time 150`** on the curl. A slow curl is **not** a missing key. Build the payload to `/tmp/xai-mr-payload.json` first, then send with `-d @file` - the `./secretcurl` command must stay 100% literal (no `$VAR`):
+3. **Path B - xAI Grok `x_search` (fallback).** Only when Path A fails (non-2xx / empty / timeout) or `TWITTER_API_KEY` is unset. Direct `curl` to `https://api.x.ai/v1/responses` with `Authorization: Bearer {XAI_API_KEY}`. The `x_search` call typically takes 30-120s - **set the Bash tool `timeout` to at least 180000 (180s)** and keep **`--max-time 150`** on the curl. A slow curl is **not** a missing key. Build the payload with the `jq -n` filter shown in step 2 Path B (values written in literally) and pipe it straight into the send - a `>` redirect into a file is refused, and the `./secretcurl` command must stay 100% literal (no `$VAR`):
    ```bash
-   HTTP=$(./secretcurl -s -o /tmp/xai-mr.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
-     -H "Content-Type: application/json" -H "Authorization: Bearer {XAI_API_KEY}" -d @/tmp/xai-mr-payload.json)
-   echo "xai http=$HTTP bytes=$(wc -c </tmp/xai-mr.json)"
+   jq -n '{...}' | ./secretcurl -s -o /tmp/xai-mr.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
+     -H "Content-Type: application/json" -H "Authorization: Bearer {XAI_API_KEY}" --data-binary @-
    ```
-   Then parse `/tmp/xai-mr.json` with the standard `jq` extractor. `HTTP=200` with a non-empty body → use it (`X_SOURCE=api`).
+   It prints the status code (`HTTP`); `./secretcurl` also prints an `http=... bytes=...` line on stderr. Then parse `/tmp/xai-mr.json` with the standard `jq` extractor. `HTTP=200` with a non-empty body → use it (`X_SOURCE=api`).
 4. **Fall back only on a real failure**, and **record the true reason** - never write "XAI_API_KEY unavailable" / "TWITTER_API_KEY unavailable" when a key was set. Use one of: `key-unset` (only if step 1 said `KEY_UNSET`), `http-<code>` (non-2xx), `empty` (200 but no mentions parsed), `timeout` (curl exceeded `--max-time`).
 
 **WebSearch / WebFetch are last-resort fallbacks only** for X - lower quality (WebSearch favours old high-engagement tweets). They remain the primary tool for the non-X web surfaces (Reddit, HN, blogs, etc.). Never reach for the X WebSearch fallback while a key works.

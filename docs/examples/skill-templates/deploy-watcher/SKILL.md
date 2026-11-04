@@ -8,6 +8,7 @@ metadata:
     - dev
   requires:
     - VERCEL_TOKEN
+    - VERCEL_TEAM_ID?
 ---
 
 > **${var}** — Optional. Override the Vercel project slug. If empty, watches `[REPLACE: VERCEL_PROJECT]`.
@@ -19,26 +20,20 @@ Today is ${today}. Watch Vercel deployments for **[REPLACE: VERCEL_PROJECT]** an
 - `VERCEL_TOKEN` — personal access token from https://vercel.com/account/tokens. Read scope is enough.
 - (optional) `VERCEL_TEAM_ID` — if the project lives under a team, set this so the API queries the right scope.
 
-If either secret is missing, log `DEPLOY_WATCH_NO_TOKEN` and exit cleanly — never abort the workflow.
+Read the "Keys set for this run" line in your run notes, never a shell test (those are refused and cost a turn). If `VERCEL_TOKEN` is not on it, log `DEPLOY_WATCH_NO_TOKEN` and exit cleanly - never abort the workflow.
 
 ## Steps
 
-1. **Resolve scope**:
-   ```bash
-   PROJECT="${var:-[REPLACE: VERCEL_PROJECT]}"
-   SCOPE_QS=""
-   if [ -n "${VERCEL_TEAM_ID:-}" ]; then
-     SCOPE_QS="&teamId=$VERCEL_TEAM_ID"
-   fi
-   ```
+1. **Resolve scope**: the project is `${var}` if set, else `[REPLACE: VERCEL_PROJECT]`; write it into each URL literally (the `<PROJECT>` below). If `VERCEL_TEAM_ID` is on the "Keys set for this run" line, print it with its own call, `node -e 'console.log(process.env.VERCEL_TEAM_ID)'` (a team ID is not a credential, so `./secretcurl` does not fill a `{VERCEL_TEAM_ID}` placeholder), and add `&teamId=<TEAM_ID>` with the printed value to every Vercel URL below.
 
 2. **Fetch recent deploys** — Vercel API v6 lists deployments for a project:
+   Get the window start in milliseconds with its own call, `date -u -d '[REPLACE: LOOKBACK_HOURS] hours ago' +%s000`, and write the printed value in as `<SINCE_MS>`:
+
    ```bash
-   SINCE_MS=$(( $(date -u +%s) * 1000 - [REPLACE: LOOKBACK_HOURS] * 3600 * 1000 ))
-   URL="https://api.vercel.com/v6/deployments?projectId=$PROJECT&since=$SINCE_MS$SCOPE_QS&limit=20"
-   curl -sf -H "Authorization: Bearer $VERCEL_TOKEN" "$URL" > .vercel-deploys.json || \
-     echo "DEPLOY_WATCH_FETCH_FAIL: $?"
+   ./secretcurl -s -o /tmp/vercel-deploys.json -w 'vercel http=%{http_code}\n' -H "Authorization: Bearer {VERCEL_TOKEN}" "https://api.vercel.com/v6/deployments?projectId=<PROJECT>&since=<SINCE_MS>&limit=20"
    ```
+
+   On a non-2xx code, log `DEPLOY_WATCH_FETCH_FAIL http=<code>` and stop.
 
    Make every Vercel call in-run with `./secretcurl` (write the key as `{VERCEL_TOKEN}` — a bare `$VERCEL_TOKEN` on the line is refused by the Bash permission layer). Read-only status checks and any **irreversible action** (e.g. triggering a deploy) both run in-run — the irreversible one as the skill's final, fail-closed action. Never defer a read.
 
@@ -51,6 +46,10 @@ If either secret is missing, log `DEPLOY_WATCH_NO_TOKEN` and exit cleanly — ne
    - `all` → alert on every state transition (noisy — only useful while debugging the skill).
 
 5. **Compare against last-success baseline** — if alerting on a failure, also fetch the most recent successful production deploy and include in the notification: "last green: [commit] · [N hours] ago".
+
+   ```bash
+   ./secretcurl -s -o /tmp/vercel-last-green.json -w 'vercel http=%{http_code}\n' -H "Authorization: Bearer {VERCEL_TOKEN}" "https://api.vercel.com/v6/deployments?projectId=<PROJECT>&target=production&state=READY&limit=1"
+   ```
 
 6. **Dedup** — track alerted deploy UIDs in `memory/topics/[REPLACE: SKILL_NAME]-alerted.json`. Never re-alert for the same UID.
 
@@ -76,6 +75,8 @@ If either secret is missing, log `DEPLOY_WATCH_NO_TOKEN` and exit cleanly — ne
 ## Network note
 
 The Vercel API requires `Authorization: Bearer {VERCEL_TOKEN}`. A bare `$SECRET` on a command line is refused by the Bash permission layer, so make **every** Vercel call in-run with `./secretcurl` (write the key as the `{VERCEL_TOKEN}` placeholder — it keeps the secret off the line). Both the read-only status checks and any **irreversible** action (like triggering a deploy) run in-run; the irreversible one goes last, as the skill's final fail-closed action. Never defer a read.
+
+**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`PROJECT=...`, `SINCE_MS=$(( ... ))`), uses `if` / `for`, tests a key (`[ -n "$VERCEL_TEAM_ID" ]`), joins commands with `;`, `&&` or `||`, redirects into a file (`> .vercel-deploys.json`), or puts a shell variable on a `./secretcurl` line (`$URL`), and each refusal costs a model turn. So run `date` as its own call, write the project, team ID and window start into each URL literally, save replies with `-o /tmp/<file>`, and write `alerted.json`, the article and the log with Write/Edit.
 
 ## Constraints
 

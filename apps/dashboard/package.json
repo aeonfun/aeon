@@ -34,7 +34,8 @@
   },
   "overrides": {
     "postcss": "^8.5.18",
-    "sharp": "^0.35.5"
+    "sharp": "^0.35.5",
+    "minimatch": "^11.0.4"
   },
   "allowScripts": {
     "esbuild": true,

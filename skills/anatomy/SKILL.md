@@ -42,32 +42,59 @@ Run `date` at the start and at each step. The whole run (research, build, checks
 
 ### 4. Work outside the repo
 
-Never write anything inside `skills/anatomy/`: the run's commit step stages the whole worktree, so files built there would land in the repo. Copy the skill to a scratch directory and do all work there (examples, your figure, `shots/`, browser profiles):
+Never write anything inside `skills/anatomy/`: the run's commit step stages the whole worktree, so files built there would land in the repo. Copy the skill to a scratch directory and do all work there (examples, your figure, `shots/`, browser profiles). The scratch directory is the fixed path `/tmp/anatomy-run` (written `WORK` below).
+
+**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`REPO_ROOT=$(pwd)`, `REPO=$(gh ...)`), starts with `export`, uses `if` / `for` / `while`, or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn; `rm` and `cp` are not allowed commands either. So run each step below as its own call, clear and copy files with `node -e` (`fs.rmSync`, `fs.cpSync`, `fs.copyFileSync`), and never `cd` into the scratch copy: give every script its absolute path under `/tmp/anatomy-run/anatomy/` and every `--out` an absolute path under `/tmp/anatomy-run/anatomy/shots/` (a relative `--out` or the default `capture.png` would land in the repo worktree). Where the upstream text below says `node examples/<name>/build.mjs` or `scripts/capture.mjs`, use the absolute path in the copy.
+
+Clear any old copy, create the scratch dir, then copy the skill into it, each as its own call:
 
 ```bash
-REPO_ROOT=$(pwd)
-WORK="${RUNNER_TEMP:-/tmp}/anatomy-run"
-rm -rf "$WORK" && mkdir -p "$WORK" && cp -R skills/anatomy "$WORK/anatomy"
-cd "$WORK/anatomy"
-node examples/dial-indicator/build.mjs          # builds an example inside the copy
+node -e "require('fs').rmSync('/tmp/anatomy-run',{recursive:true,force:true})"
 ```
 
-The examples ship as source only (`build.mjs` and its modules); their built `.html` pages are not checked in. To look at one, build it in the copy as above (add `--light` for the light theme) and capture it; read `build.mjs` and its modules for the code. Put your own figure at `$WORK/anatomy/examples/<slug>/build.mjs`, where `<slug>` is a short name you pick from the brief (lowercase `a-z`, `0-9` and hyphens, at most 40 characters), so its `../../kit/` and `../../scripts/` imports resolve like the examples'. If the scripts cannot find Chrome, set `CHROME_PATH` (for example `/usr/bin/google-chrome`).
+```bash
+mkdir -p /tmp/anatomy-run/anatomy/shots
+```
+
+```bash
+node -e "require('fs').cpSync('skills/anatomy','/tmp/anatomy-run/anatomy',{recursive:true})"
+```
+
+Build an example inside the copy (it writes its HTML next to its `build.mjs`):
+
+```bash
+node /tmp/anatomy-run/anatomy/examples/dial-indicator/build.mjs
+```
+
+The examples ship as source only (`build.mjs` and its modules); their built `.html` pages are not checked in. To look at one, build it in the copy as above (add `--light` for the light theme) and capture it; read `build.mjs` and its modules for the code. Put your own figure at `/tmp/anatomy-run/anatomy/examples/<slug>/build.mjs`, where `<slug>` is a short name you pick from the brief (lowercase `a-z`, `0-9` and hyphens, at most 40 characters), so its `../../kit/` and `../../scripts/` imports resolve like the examples'. The scripts look in the usual Chrome and Chromium paths (`/usr/bin/google-chrome`, `/usr/bin/chromium` and others) on their own. `CHROME_PATH` is only needed for a binary somewhere else, and on Aeon it has to come from the job's environment: a `CHROME_PATH=... node ...` prefix is refused like any other variable assignment.
 
 ### 5. Deliver the figure
 
-The deliverable is one self-contained HTML page (kit inlined with `kitScript()`, no external files), dark theme unless the brief asks for light, plus a desktop screenshot. Copy them into the repo; the workflow's commit step commits `output/**` after the run:
+The deliverable is one self-contained HTML page (kit inlined with `kitScript()`, no external files), dark theme unless the brief asks for light, plus a desktop screenshot. Copy them into the repo; the workflow's commit step commits `output/**` after the run. `OUT` is `output/anatomy/${today}-<slug>`, written in literally. Each step is its own call, from the repo root (the session's start folder):
 
 ```bash
-cd "$REPO_ROOT"
-OUT="output/anatomy/${today}-<slug>"
 mkdir -p output/anatomy
-cp "$WORK/anatomy/examples/<slug>/<slug>.html" "$OUT.html"
-cp "$WORK/anatomy/shots/<slug>-desktop.png" "$OUT.png"    # if a capture was made
-REPO=$(gh repo view --json nameWithOwner -q .nameWithOwner)
 ```
 
-One figure per run. Links: `https://github.com/${REPO}/blob/main/${OUT}.png` shows the screenshot, and `https://github.com/${REPO}/raw/main/${OUT}.html` is the page (GitHub shows HTML as source, so download it and open it in a browser). They go live once the run's commit lands, about a minute after the run.
+```bash
+node -e "require('fs').copyFileSync('/tmp/anatomy-run/anatomy/examples/<slug>/<slug>.html','output/anatomy/${today}-<slug>.html')"
+```
+
+If a capture was made, copy the screenshot too:
+
+```bash
+node -e "require('fs').copyFileSync('/tmp/anatomy-run/anatomy/shots/<slug>-desktop.png','output/anatomy/${today}-<slug>.png')"
+```
+
+Then look up the repo name:
+
+```bash
+gh repo view --json nameWithOwner -q .nameWithOwner
+```
+
+It prints REPO (for example `your-org/your-instance`).
+
+One figure per run. Links: `https://github.com/<REPO>/blob/main/<OUT>.png` shows the screenshot, and `https://github.com/<REPO>/raw/main/<OUT>.html` is the page (GitHub shows HTML as source, so download it and open it in a browser). They go live once the run's commit lands, about a minute after the run.
 
 ### 6. Record, notify, log
 

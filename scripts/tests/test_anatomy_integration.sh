@@ -51,7 +51,7 @@ for (const needle of [
   'ANATOMY_NO_VAR', // empty var exits clean
   'never ask', // headless
   'Figure', // size cap for the 50-minute job
-  'RUNNER_TEMP', // build in a scratch copy
+  '/tmp/anatomy-run', // build in a scratch copy outside the worktree
   'inside `skills/anatomy/`', // never write into the skill dir
   'output/anatomy/', // committed deliverable
   './notify', // operator notify
