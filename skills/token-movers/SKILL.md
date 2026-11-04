@@ -415,22 +415,42 @@ Read the last **30 days** of `memory/logs/*.md` for prior `TOKEN_REPORT_STATE:` 
 
 ### 1. Fetch core market data (GeckoTerminal — primary)
 
-One call per URL (see **Shell shape** in the coingecko step 1), with the network slug written in literally as `<NETWORK>` (the `${network}` value) and the real contract in place of `CONTRACT_ADDRESS`:
+Save every response to a file and read only the fields you need, the same shape as the movers branch: **never print a raw API body** (a whole token, pools, OHLCV or trades response is thousands of tokens that every later turn re-reads) and **fetch each URL once per run** (read a saved file again instead of refetching). Make the work folder first, as its own call (see **Shell shape** in the coingecko step 1):
 ```bash
-curl -s "https://api.geckoterminal.com/api/v2/networks/<NETWORK>/tokens/CONTRACT_ADDRESS"
+mkdir -p /tmp/token-movers-work
+```
+
+The token and pools calls need only the contract: send both in one turn as two parallel calls, with the network slug written in literally as `<NETWORK>` (the `${network}` value) and the real contract in place of `CONTRACT_ADDRESS`:
+```bash
+curl -s --max-time 20 --retry 2 --retry-delay 3 -o /tmp/token-movers-work/token.json -w 'gt token http=%{http_code} bytes=%{size_download}\n' "https://api.geckoterminal.com/api/v2/networks/<NETWORK>/tokens/CONTRACT_ADDRESS"
 ```
 ```bash
-curl -s "https://api.geckoterminal.com/api/v2/networks/<NETWORK>/tokens/CONTRACT_ADDRESS/pools?page=1"
+curl -s --max-time 20 --retry 2 --retry-delay 3 -o /tmp/token-movers-work/pools.json -w 'gt pools http=%{http_code} bytes=%{size_download}\n' "https://api.geckoterminal.com/api/v2/networks/<NETWORK>/tokens/CONTRACT_ADDRESS/pools?page=1"
 ```
-Take the top pool address from the pools response and write it in place of `POOL_ADDRESS`:
+A fetch **failed** when it printed `bytes=0` or an `http=` other than 200. Then read each file with one literal `jq` call:
 ```bash
-curl -s "https://api.geckoterminal.com/api/v2/networks/<NETWORK>/pools/POOL_ADDRESS/ohlcv/day?aggregate=1&limit=30"
-```
-```bash
-curl -s "https://api.geckoterminal.com/api/v2/networks/<NETWORK>/pools/POOL_ADDRESS/ohlcv/hour?aggregate=1&limit=24"
+jq -c '.data.attributes | {symbol, name, price_usd, fdv_usd, market_cap_usd, total_reserve_in_usd, volume_h24: .volume_usd.h24}' /tmp/token-movers-work/token.json
 ```
 ```bash
-curl -s "https://api.geckoterminal.com/api/v2/networks/<NETWORK>/pools/POOL_ADDRESS/trades"
+jq -c '.data[:3][] | .attributes | {address, name, price_usd: .base_token_price_usd, reserve_in_usd, volume_h24: .volume_usd.h24, change_h24: .price_change_percentage.h24, tx_h24: .transactions.h24}' /tmp/token-movers-work/pools.json
+```
+Take the top pool's `address` and write it in place of `POOL_ADDRESS`, then fetch its candles and trades in one turn as three parallel calls:
+```bash
+curl -s --max-time 20 --retry 2 --retry-delay 3 -o /tmp/token-movers-work/ohlcv-day.json -w 'gt ohlcv-day http=%{http_code} bytes=%{size_download}\n' "https://api.geckoterminal.com/api/v2/networks/<NETWORK>/pools/POOL_ADDRESS/ohlcv/day?aggregate=1&limit=30"
+```
+```bash
+curl -s --max-time 20 --retry 2 --retry-delay 3 -o /tmp/token-movers-work/ohlcv-hour.json -w 'gt ohlcv-hour http=%{http_code} bytes=%{size_download}\n' "https://api.geckoterminal.com/api/v2/networks/<NETWORK>/pools/POOL_ADDRESS/ohlcv/hour?aggregate=1&limit=24"
+```
+```bash
+curl -s --max-time 20 --retry 2 --retry-delay 3 -o /tmp/token-movers-work/trades.json -w 'gt trades http=%{http_code} bytes=%{size_download}\n' "https://api.geckoterminal.com/api/v2/networks/<NETWORK>/pools/POOL_ADDRESS/trades"
+```
+Candles come back as `[unix time, close, volume]` rows, newest first (one call per file, `ohlcv-day.json` then `ohlcv-hour.json`):
+```bash
+jq -c '.data.attributes.ohlcv_list | map([.[0], .[4], .[5]])' /tmp/token-movers-work/ohlcv-day.json
+```
+Whale trades (`volume_in_usd >= 1000`), counted by side, with the 3 largest:
+```bash
+jq -c '[.data[].attributes | select((.volume_in_usd | tonumber) >= 1000) | {kind, usd: (.volume_in_usd | tonumber | floor), price_usd: ((select(.kind == "buy") | .price_to_in_usd) // .price_from_in_usd), time: .block_timestamp}] | {whales: length, whale_buys: (map(select(.kind == "buy")) | length), whale_sells: (map(select(.kind == "sell")) | length), top3: (sort_by(-.usd) | .[:3])}' /tmp/token-movers-work/trades.json
 ```
 
 If curl fails, retry each URL with **WebFetch**. If the token endpoint returns no data or 404 after both paths, go to step 9 with `TOKEN_REPORT_NO_DATA` — do not notify, do not write an article.
@@ -440,7 +460,11 @@ If curl fails, retry each URL with **WebFetch**. If the token endpoint returns n
 ### 2. Cross-check with DexScreener (sanity + alt signal)
 
 ```bash
-curl -s "https://api.dexscreener.com/latest/dex/tokens/CONTRACT_ADDRESS"
+curl -s --max-time 20 --retry 2 --retry-delay 3 -o /tmp/token-movers-work/dexscreener.json -w 'ds http=%{http_code} bytes=%{size_download}\n' "https://api.dexscreener.com/latest/dex/tokens/CONTRACT_ADDRESS"
+```
+Send it in the same turn as the token and pools calls (it needs only the contract), then read the 3 deepest pairs:
+```bash
+jq -c '[.pairs[]? | {chainId, dexId, pairAddress, priceUsd, liquidity_usd: (.liquidity.usd // 0), volume_h24: .volume.h24, boosts: .boosts.active}] | sort_by(-.liquidity_usd) | .[:3]' /tmp/token-movers-work/dexscreener.json
 ```
 
 Use DexScreener for two things only:
@@ -511,14 +535,16 @@ Pick exactly one label from the table. Thresholds use *today's true deltas* from
 |-------|---------|
 | `BREAKOUT` | Δprice ≥ +10% AND vol ratio ≥ 2.0 |
 | `BREAKDOWN` | Δprice ≤ −10% AND vol ratio ≥ 2.0 |
-| `RALLYING` | +3% ≤ Δprice < +10% AND vol ratio ≥ 1.0 |
-| `SLIDING` | −10% < Δprice ≤ −3% AND vol ratio ≥ 1.0 |
+| `RALLYING` | Δprice ≥ +3% AND (vol ratio ≥ 1.0 OR Δprice ≥ +10%) |
+| `SLIDING` | Δprice ≤ −3% AND (vol ratio ≥ 1.0 OR Δprice ≤ −10%) |
 | `ACCUMULATING` | abs(Δprice) < 3% AND buy/sell ratio ≥ 1.3 AND whale buys ≥ 1 |
 | `DISTRIBUTING` | abs(Δprice) < 3% AND buy/sell ratio ≤ 0.7 AND whale sells ≥ 1 |
 | `QUIET` | vol ratio < 0.5 AND whale trades = 0 |
 | `CONSOLIDATING` | (everything else) |
 
-Do not freelance labels. The verdict drives the lede, the TL;DR, and the notification.
+A move of 10% or more always lands on BREAKOUT/BREAKDOWN (vol ratio 2.0 or more) or RALLYING/SLIDING (any lower vol ratio), never on QUIET or CONSOLIDATING.
+
+Do not freelance labels. The verdict drives the lede, the TL;DR, and the notification. Explain the verdict through its numbers and thresholds (`+12.4% on 1.6x volume`); never mention this table, its steps or a missing row in the article or notification.
 
 ### 5. Compile the report
 
