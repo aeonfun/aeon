@@ -6,6 +6,13 @@ metadata:
   var: ""
   tags:
     - social
+  requires:
+    - DISCORD_BOT_TOKEN?
+    - DISCORD_CHANNEL_ID?
+    - TELEGRAM_BOT_TOKEN?
+    - TELEGRAM_CHAT_ID?
+    - SLACK_BOT_TOKEN?
+    - SLACK_CHANNEL_ID?
 ---
 
 > **${var}** — Optional. Override the channel name. If empty, summarises `[REPLACE: CHANNEL_NAME]`.
@@ -20,15 +27,24 @@ Today is ${today}. Read the last 24h of activity in **[REPLACE: CHANNEL_PLATFORM
 | `telegram` | `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID` | Bot must have been added to the chat (private chats and groups both work). |
 | `slack` | `SLACK_BOT_TOKEN`, `SLACK_CHANNEL_ID` | Bot needs `channels:history` (public) or `groups:history` (private) scope. |
 
-If the secrets for `[REPLACE: CHANNEL_PLATFORM]` aren't set, log `COMMUNITY_NO_TOKEN` and exit cleanly.
+Read the "Keys set for this run" line in your run notes, never a shell test (those are refused and cost a turn). If the secrets for `[REPLACE: CHANNEL_PLATFORM]` are not on it, log `COMMUNITY_NO_TOKEN` and exit cleanly.
 
 ## Steps
 
-1. **Resolve channel** — `CHANNEL="${var:-[REPLACE: CHANNEL_NAME]}"`. The exact API call depends on `[REPLACE: CHANNEL_PLATFORM]`:
+1. **Resolve channel** - the channel is `${var}` if set, else `[REPLACE: CHANNEL_NAME]`. A channel or chat ID is not a credential, so `./secretcurl` does not fill a `{DISCORD_CHANNEL_ID}` style placeholder: print the ID with its own call, `node -e 'console.log(process.env.DISCORD_CHANNEL_ID)'` (or `SLACK_CHANNEL_ID`), and write the printed value into the call literally (the `<CHANNEL_ID>` below). The exact API call depends on `[REPLACE: CHANNEL_PLATFORM]`, one call each:
 
-   - **discord** — `GET https://discord.com/api/v10/channels/$DISCORD_CHANNEL_ID/messages?limit=100`
-   - **telegram** — `getUpdates` polling has limits; better to read the bot's stored offset state from `memory/topics/[REPLACE: SKILL_NAME]-tg-offset.json`.
-   - **slack** — `POST https://slack.com/api/conversations.history` with channel + oldest=24h ago.
+   - **discord**:
+     ```bash
+     ./secretcurl -s -o /tmp/community-messages.json -w 'discord http=%{http_code}\n' -H "Authorization: Bot {DISCORD_BOT_TOKEN}" "https://discord.com/api/v10/channels/<CHANNEL_ID>/messages?limit=100"
+     ```
+   - **telegram** - `getUpdates` polling has limits; better to read the bot's stored offset state from `memory/topics/[REPLACE: SKILL_NAME]-tg-offset.json` (Read it, then write the offset in literally):
+     ```bash
+     ./secretcurl -s -o /tmp/community-messages.json -w 'telegram http=%{http_code}\n' "https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getUpdates?offset=<OFFSET>&limit=100"
+     ```
+   - **slack** - get the window start with its own call, `date -u -d '24 hours ago' +%s`, and write it in as `<OLDEST>`:
+     ```bash
+     ./secretcurl -s -o /tmp/community-messages.json -w 'slack http=%{http_code}\n' -H "Authorization: Bearer {SLACK_BOT_TOKEN}" -G "https://slack.com/api/conversations.history" -d channel=<CHANNEL_ID> -d oldest=<OLDEST> -d limit=200
+     ```
 
 2. **Filter to the last 24h** — drop messages older than `now - 24h`. Drop bot messages (most platforms expose `is_bot` / `bot_id`). Keep replies.
 
@@ -83,8 +99,9 @@ If the secrets for `[REPLACE: CHANNEL_PLATFORM]` aren't set, log `COMMUNITY_NO_T
 
 ## Network note
 
-Telegram, Discord, and Slack all need their bot token in the `Authorization` header. A bare `$TOKEN` on a `curl` line is refused by the Bash permission analyzer — so call `./secretcurl` with a `{ENV_NAME}` placeholder instead. The token (injected via the skill's `requires:`) is substituted inside the helper and never appears on the command line:
-`./secretcurl -H "Authorization: Bearer {TELEGRAM_BOT_TOKEN}" "https://api.telegram.org/..."`.
+Discord and Slack need their bot token in the `Authorization` header; Telegram puts it in the URL path (`/bot{TELEGRAM_BOT_TOKEN}/`). A bare `$TOKEN` on a `curl` line is refused by the Bash permission analyzer - so call `./secretcurl` with a `{ENV_NAME}` placeholder instead. The token (injected via the skill's `requires:`) is substituted inside the helper and never appears on the command line, as in the step 1 calls.
+
+**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`CHANNEL=...`), uses `if` / `for`, tests a key, joins commands with `;`, `&&` or `||`, redirects into a file, or puts a shell variable on a `./secretcurl` line (`$DISCORD_CHANNEL_ID`), and each refusal costs a model turn. So write IDs, offsets and dates into each call literally, save replies with `-o /tmp/<file>`, and write the offset file, the article and the log with Write/Edit.
 
 ## Constraints
 
