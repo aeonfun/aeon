@@ -122,6 +122,12 @@ WRITE_TOOLS="$WRITE_TOOLS,Bash(forge:*),Bash(cast:*),Bash(./hook-deploy.sh:*)"
 # in-run binary installs). slither/forge/cast/timeout are already granted above. Without
 # these the fuzz arm degrades to skipped and sc-audit falls back to the agentic pass.
 WRITE_TOOLS="$WRITE_TOOLS,Bash(solc-select:*),Bash(crytic-compile:*),Bash(echidna:*),Bash(medusa:*)"
+# canister-audit needs no extra grants: it reaches RustSec CVEs via `cargo audit` (the
+# `cargo` subcommand, already granted), runs `semgrep` bare (granted), and proves PoCs
+# through ./scripts/vuln-poc-gate.sh (granted above) - which launches the PocketIC server
+# via the `pocket-ic` crate + POCKET_IC_BIN, never as a bare `pocket-ic` command. The
+# binaries are put on PATH by scripts/stage-canister-audit.sh; that is a staging concern,
+# not a permission one, so no Bash(cargo-audit)/Bash(pocket-ic) grant is required.
 
 resolve_mode() {
   # var (the runtime selector, e.g. SKILL_VAR from aeon.yml/mcp-server) is
