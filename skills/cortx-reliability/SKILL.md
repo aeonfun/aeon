@@ -48,9 +48,15 @@ Normalize the URL to lowercase scheme and host, no trailing slash. This is your 
 
 ### 2. Look up the serviceId
 
+**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`SERVICE_ID=$(...)`), redirects into a repo file (`> .tmp/...`), or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn. So every command below is its own Bash call, `curl` saves with `-o` instead of `>`, and a value one call prints (the serviceId) is written into the next call literally in place of its `<SERVICE_ID>` placeholder.
+
 ```bash
 mkdir -p .tmp
-curl -sSL --fail-with-body "https://usecortx.dev/api/v1/lookup" --data-urlencode "url=${var}" > .tmp/cortx-lookup.json
+```
+```bash
+curl -sSL --fail-with-body "https://usecortx.dev/api/v1/lookup" --data-urlencode "url=${var}" -o .tmp/cortx-lookup.json
+```
+```bash
 cat .tmp/cortx-lookup.json
 ```
 
@@ -61,8 +67,13 @@ Extract `serviceId` from the response.
 ### 3. Fetch reliability data
 
 ```bash
-SERVICE_ID=$(cat .tmp/cortx-lookup.json | jq -r '.serviceId')
-curl -sSL --fail-with-body "https://usecortx.dev/api/v1/reliability/$SERVICE_ID" > .tmp/cortx-result.json
+jq -r '.serviceId' .tmp/cortx-lookup.json
+```
+It prints SERVICE_ID. Write it into the next call literally:
+```bash
+curl -sSL --fail-with-body "https://usecortx.dev/api/v1/reliability/<SERVICE_ID>" -o .tmp/cortx-result.json
+```
+```bash
 cat .tmp/cortx-result.json
 ```
 

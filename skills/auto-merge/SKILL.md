@@ -40,8 +40,8 @@ A PR merges only when every one of the following holds:
 0. **Bootstrap state** — per-PR retry counter lives in `memory/topics/auto-merge-state.json`:
    ```bash
    mkdir -p memory/topics
-   [ -f memory/topics/auto-merge-state.json ] || echo '{"prs":{},"last_run":null}' > memory/topics/auto-merge-state.json
    ```
+   Then check for `memory/topics/auto-merge-state.json` with Glob; if it is missing, create it with the Write tool holding `{"prs":{},"last_run":null}` (a `[ -f ] ||` test and an `echo ... > file` redirect are both refused in this run).
    Schema:
    ```json
    {

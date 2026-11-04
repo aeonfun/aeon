@@ -4,109 +4,72 @@
   "generator": "eyebrow/0.4.1",
   "artifacts": [
     {
-      "id": "ac741688c8cdedb9",
+      "id": "1fb64745b1710fc6",
       "tool": "aeon",
       "scope": "project:.",
       "type": "skill",
-      "name": "canister-status",
+      "name": "canister-audit",
       "source": {
         "kind": "local",
-        "ref": "skills/canister-status"
-      },
-      "capabilities": {
-        "network": [
-          "ic-api.internetcomputer.org"
-        ]
-      },
-      "files": [
-        {
-          "path": "README.md",
-          "hash": "89af569c8cc5436906672d401ac8e3b652dac60a0e02e2feaf52861c938c43eb"
-        },
-        {
-          "path": "SKILL.md",
-          "hash": "88f9f02874f0cd68b4aaddd106290e23fded0d185d4faefd8e5baac71988b2d6"
-        }
-      ],
-      "contentHash": "sha256-21729610ce32e186a769c14ece6338abc4e4ab56cc44d4111b186fdad818b34f",
-      "discoveredFrom": "skills/canister-status/SKILL.md"
-    },
-    {
-      "id": "b7147b90fbbd1d62",
-      "tool": "aeon",
-      "scope": "project:.",
-      "type": "skill",
-      "name": "cycles-balance",
-      "source": {
-        "kind": "local",
-        "ref": "skills/cycles-balance"
+        "ref": "skills/canister-audit"
       },
       "capabilities": {},
       "files": [
         {
           "path": "README.md",
-          "hash": "a2d61081171432457026f644f5171a38e50c75eac797c9c14789d9c88d624703"
+          "hash": "81c069188a693b0328be01ba7746e5d74e54b80dd095b6b0ec3f99ac558f0c87"
         },
         {
           "path": "SKILL.md",
-          "hash": "295b931f00f47baa82ed2b31afec3c036c06b1fb258f6c5a9d86e8a94bb072d7"
-        }
-      ],
-      "contentHash": "sha256-d88c7fd23e2a2deee1b06956299cf08e577c12ad3c640abc5e6c8d3a98d9f6b2",
-      "discoveredFrom": "skills/cycles-balance/SKILL.md"
-    },
-    {
-      "id": "21a3645b845f8948",
-      "tool": "aeon",
-      "scope": "project:.",
-      "type": "skill",
-      "name": "icp-deploy-check",
-      "source": {
-        "kind": "local",
-        "ref": "skills/icp-deploy-check"
-      },
-      "capabilities": {},
-      "files": [
-        {
-          "path": "README.md",
-          "hash": "3eb17280c6896ef829c363581b0c1f44de28d490a668a7028e41f75912a01bd9"
+          "hash": "11dfd3da3c8a2a4fb510ff9ad270a21e6097220713143a8f69f369d6a859d767"
         },
         {
-          "path": "SKILL.md",
-          "hash": "ac9518c7d0021c9293e23e99826a30be6a6f088f795fe681f6f94bdd2e973e50"
-        }
-      ],
-      "contentHash": "sha256-72d57cb18446d6213892f491c0be6b8f7b9ad661d8ac6de1a92af4cf32553799",
-      "discoveredFrom": "skills/icp-deploy-check/SKILL.md"
-    },
-    {
-      "id": "8c956ce889cadd94",
-      "tool": "aeon",
-      "scope": "project:.",
-      "type": "skill",
-      "name": "sns-digest",
-      "source": {
-        "kind": "local",
-        "ref": "skills/sns-digest"
-      },
-      "capabilities": {
-        "network": [
-          "ic-api.internetcomputer.org",
-          "sns-api.internetcomputer.org"
-        ]
-      },
-      "files": [
-        {
-          "path": "README.md",
-          "hash": "c19d6f3ea65f1d58ac895a86ed668625dabc060349f852172cbfbdbb45a3dabf"
+          "path": "fixtures/README.md",
+          "hash": "15898815e88dabc5b2ed67f74f1501f5402250bf515d8a0afbd6863447d23541"
         },
         {
-          "path": "SKILL.md",
-          "hash": "2942bb4c9f56c1b9ca1bcc65fc6e8a8e5b7166406b0c8b127d1fdb7e70ace8cd"
+          "path": "fixtures/token_vault/.gitignore",
+          "hash": "2ebe6cb6f5289849dce5a8a6cdd77e06b1385302c862982f8e181c4782d19214"
+        },
+        {
+          "path": "fixtures/token_vault/Cargo.toml",
+          "hash": "75cf2b4a78a7b9b114106622a4fd64a4b60c3d863ff7aa99360cbc72e9e6d453"
+        },
+        {
+          "path": "fixtures/token_vault/repro/finding.json",
+          "hash": "3dc362990ca35509f0a00295de16c59af508e5b01f773fe4768ba0d1834841a8"
+        },
+        {
+          "path": "fixtures/token_vault/repro/repro.sh",
+          "hash": "b960d82678d1a7e10b936a7dce0ec2e94f1e362a86312b7b66d841ad724641d8"
+        },
+        {
+          "path": "fixtures/token_vault/rust-toolchain.toml",
+          "hash": "045aa0b806e6faad4d96d385fd3825ec1186f58a7e20eca9f71be833fad12ca4"
+        },
+        {
+          "path": "fixtures/token_vault/src/lib.rs",
+          "hash": "d059d5211afb66a7bfe1f5d848ce39cd1a331f15270a9587a05b474a4258d28e"
+        },
+        {
+          "path": "fixtures/token_vault/tests/repro.rs",
+          "hash": "1d675de13789c4340cfd780a6f677f1f51f7ab6dcc49b0fbe16893644d7bbfcd"
+        },
+        {
+          "path": "fixtures/token_vault/token_vault.did",
+          "hash": "9167fba62d73b9b7a1dfe838e5f2d84ba7df2ec0b31389daaecdca4480c12246"
+        },
+        {
+          "path": "references/ic-security-checklist.md",
+          "hash": "593c9769b69ac5b1534319efb729fe993c53476d11e503d8cc37e67571c0b3f0"
+        },
+        {
+          "path": "references/ic-semgrep-rust.yml",
+          "hash": "ea3a8d37777a0b91236bb5fec925cee4423c1b5dc2bdc29a616b68bc724dbf2c"
         }
       ],
-      "contentHash": "sha256-aba235c8fa6062d92135c407c624349868a2e89f7b75fa42f594398471068c44",
-      "discoveredFrom": "skills/sns-digest/SKILL.md"
+      "contentHash": "sha256-f182e601476561a8b522ef306c5314c0d752119587da4a660af3c45711d2beda",
+      "discoveredFrom": "skills/canister-audit/SKILL.md"
     },
     {
       "id": "564d8f38dcfa4c55",
@@ -3547,6 +3510,87 @@
       ],
       "contentHash": "sha256-b95b9c6d984ff6eb0404559092b2d20d089986784255df96b86fefaa9f87c8a0",
       "discoveredFrom": "skills/github-filing-registry/SKILL.md"
+    },
+    {
+      "id": "ac741688c8cdedb9",
+      "tool": "aeon",
+      "scope": "project:.",
+      "type": "skill",
+      "name": "canister-status",
+      "source": {
+        "kind": "local",
+        "ref": "skills/canister-status"
+      },
+      "capabilities": {
+        "network": [
+          "ic-api.internetcomputer.org"
+        ]
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "hash": "89af569c8cc5436906672d401ac8e3b652dac60a0e02e2feaf52861c938c43eb"
+        },
+        {
+          "path": "SKILL.md",
+          "hash": "88f9f02874f0cd68b4aaddd106290e23fded0d185d4faefd8e5baac71988b2d6"
+        }
+      ],
+      "contentHash": "sha256-21729610ce32e186a769c14ece6338abc4e4ab56cc44d4111b186fdad818b34f",
+      "discoveredFrom": "skills/canister-status/SKILL.md"
+    },
+    {
+      "id": "8c956ce889cadd94",
+      "tool": "aeon",
+      "scope": "project:.",
+      "type": "skill",
+      "name": "sns-digest",
+      "source": {
+        "kind": "local",
+        "ref": "skills/sns-digest"
+      },
+      "capabilities": {
+        "network": [
+          "ic-api.internetcomputer.org",
+          "sns-api.internetcomputer.org"
+        ]
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "hash": "c19d6f3ea65f1d58ac895a86ed668625dabc060349f852172cbfbdbb45a3dabf"
+        },
+        {
+          "path": "SKILL.md",
+          "hash": "2942bb4c9f56c1b9ca1bcc65fc6e8a8e5b7166406b0c8b127d1fdb7e70ace8cd"
+        }
+      ],
+      "contentHash": "sha256-aba235c8fa6062d92135c407c624349868a2e89f7b75fa42f594398471068c44",
+      "discoveredFrom": "skills/sns-digest/SKILL.md"
+    },
+    {
+      "id": "21a3645b845f8948",
+      "tool": "aeon",
+      "scope": "project:.",
+      "type": "skill",
+      "name": "icp-deploy-check",
+      "source": {
+        "kind": "local",
+        "ref": "skills/icp-deploy-check"
+      },
+      "capabilities": {},
+      "files": [
+        {
+          "path": "README.md",
+          "hash": "3eb17280c6896ef829c363581b0c1f44de28d490a668a7028e41f75912a01bd9"
+        },
+        {
+          "path": "SKILL.md",
+          "hash": "ac9518c7d0021c9293e23e99826a30be6a6f088f795fe681f6f94bdd2e973e50"
+        }
+      ],
+      "contentHash": "sha256-72d57cb18446d6213892f491c0be6b8f7b9ad661d8ac6de1a92af4cf32553799",
+      "discoveredFrom": "skills/icp-deploy-check/SKILL.md"
     }
   ]
 }

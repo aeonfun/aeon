@@ -74,26 +74,30 @@ If `${var}` is set to a bare `owner/repo`, scan only that repo (skip the file li
 
 For each repo, isolate failures — one broken repo must not kill the run. Track status in a `sources` dict (`repo → ok|empty|fail`).
 
-Compute `SINCE` as UTC 7 days ago:
-```bash
-SINCE=$(date -u -d '7 days ago' +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -v-7d +%Y-%m-%dT%H:%M:%SZ)
-```
+**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`SINCE=$(date ...)`, `BRANCH=$(gh repo view ...)`, `BV=$(node -p ...)`), uses `if` / `for` / `while` or `[ -f ... ]` tests, uses `$(...)` (including `--body "$(cat <<'EOF' ...)"`), calls `rm` or `tr`, or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn. So get each value with a bare call and write the printed value into later commands (the `<SINCE>`, `<BRANCH>`, `<PRODUCT_REPO>` style placeholders in the snippets); make one call per repo instead of a loop; check whether a file exists with Glob; turn `if` blocks and `|| echo` fallbacks into prose decisions on what a call printed or whether it failed; write a PR body to a `/tmp` file with Write and pass it with `--body-file`.
 
-Detect the default branch (don't assume `main`):
+Compute `SINCE` as UTC 7 days ago, as its own call:
 ```bash
-BRANCH=$(gh repo view owner/repo --json defaultBranchRef --jq '.defaultBranchRef.name')
+date -u -d '7 days ago' +%Y-%m-%dT%H:%M:%SZ
 ```
+It prints `SINCE`.
+
+Detect the default branch (don't assume `main`), one call per repo:
+```bash
+gh repo view owner/repo --json defaultBranchRef --jq '.defaultBranchRef.name'
+```
+It prints `BRANCH`. The next commands take `BRANCH` and `SINCE` written in literally.
 
 Fetch commits on the default branch since `SINCE`:
 ```bash
-gh api -X GET "repos/owner/repo/commits" -f sha="$BRANCH" -f since="$SINCE" --paginate \
+gh api -X GET "repos/owner/repo/commits" -f sha="<BRANCH>" -f since="<SINCE>" --paginate \
   --jq '.[] | {sha: .sha, short: .sha[0:7], message: .commit.message, author: (.author.login // .commit.author.name), date: .commit.author.date, url: .html_url}'
 ```
 
 Also fetch merged PRs in the window — PR titles/bodies are usually cleaner than raw commit messages:
 ```bash
 gh pr list --repo owner/repo --state merged --limit 100 \
-  --search "merged:>=$SINCE" \
+  --search "merged:>=<SINCE>" \
   --json number,title,body,mergedAt,author,url,labels
 ```
 
@@ -215,32 +219,39 @@ If neither the selector nor `memory/docs-sync.md` yields **both** a product repo
 
 ## B.1. Gather merged PRs from the product repo
 
-Compute the window cutoff first — `lookback_days` ago (default 7), as an ISO timestamp:
+Compute the window cutoff first - `lookback_days` ago (default 7), as an ISO timestamp. One call, with the `lookback_days` number written in literally (see **Shell shape** in A.2):
 
 ```bash
-SINCE=$(date -u -d "${LOOKBACK_DAYS:-7} days ago" +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -v-"${LOOKBACK_DAYS:-7}"d +%Y-%m-%dT%H:%M:%SZ)
+date -u -d '<LOOKBACK_DAYS> days ago' +%Y-%m-%dT%H:%M:%SZ
 ```
 
-Then fetch the last 50 closed PRs and keep only those **merged within the window**, newest merge first:
+It prints `SINCE`. Then fetch the last 50 closed PRs and keep only those **merged within the window**, newest merge first, with `PRODUCT_REPO` and `SINCE` written in literally:
 
 ```bash
-gh api "repos/${PRODUCT_REPO}/pulls" -X GET -f state=closed -f sort=updated -f direction=desc -f per_page=50 \
-  --jq "[.[] | select(.merged_at != null) | select(.merged_at > \"$SINCE\") | {number, title, url: .html_url, author: .user.login, merged_at, labels: [.labels[].name], body: (.body // \"\" | .[0:500])}] | sort_by(.merged_at) | reverse"
+gh api "repos/<PRODUCT_REPO>/pulls" -X GET -f state=closed -f sort=updated -f direction=desc -f per_page=50 \
+  --jq '[.[] | select(.merged_at != null) | select(.merged_at > "<SINCE>") | {number, title, url: .html_url, author: .user.login, merged_at, labels: [.labels[].name], body: (.body // "" | .[0:500])}] | sort_by(.merged_at) | reverse'
 ```
 
 The window is the primary filter; the published-PR dedup in step B.2 is the idempotency guard against overlap and re-runs. Sandbox: if `gh api` fails transiently, retry once. Never use `curl` for the GitHub API — `gh` handles auth.
 
 ## B.2. Read what's already published (idempotency)
 
-Clone the website repo and read the existing changelog data:
+Clone the website repo into the fixed work dir `/tmp/docs-sync-work` and read the existing changelog data. Each line is its own Bash call, values written in literally. Clear any old copy first:
 
 ```bash
-WORK_DIR="/tmp/docs-sync-work"
-rm -rf "$WORK_DIR"
-gh repo clone "$WEBSITE_REPO" "$WORK_DIR" -- --depth 20
-cd "$WORK_DIR"
-git config user.name "$GIT_USER_NAME"
-git config user.email "$GIT_USER_EMAIL"
+python3 -c "import shutil; shutil.rmtree('/tmp/docs-sync-work', ignore_errors=True)"
+```
+```bash
+gh repo clone "<WEBSITE_REPO>" /tmp/docs-sync-work -- --depth 20
+```
+```bash
+cd /tmp/docs-sync-work
+```
+```bash
+git config user.name "<GIT_USER_NAME>"
+```
+```bash
+git config user.email "<GIT_USER_EMAIL>"
 ```
 
 **Pin the commit identity in the clone.** A freshly cloned repo does NOT inherit the workflow's git identity, so without these two lines the commit author falls back to an improvised/unlinked email. Set `GIT_USER_NAME` / `GIT_USER_EMAIL` from `memory/docs-sync.md` (`git_user_name` / `git_user_email`); when the config omits them, default to `aeon` / `aeon@users.noreply.github.com`. Always pin it so every changelog commit + PR is attributed to one stable, intentional identity — never an improvised one.
@@ -302,42 +313,60 @@ Match indentation, quote style, and naming of each repo exactly. After editing, 
 
 The website's CI runs a `format:check` gate (`biome ci .` or `prettier --check`). A hand-written `changelog-data.ts` entry almost never matches the formatter's exact output (quote style, trailing commas, indent, line wrapping), so an unformatted prepend lands the PR **CI-red** - this is the common failure, not an edge case. Format the file(s) you touched before committing, on **every** run (normal prepend and bootstrap alike):
 
-```bash
-# Detect the repo's formatter + PINNED version so output matches its `format:check`.
-# Use npx (no repo `npm ci` needed); a bare/newer formatter can format differently
-# than the pinned one and still fail the gate, so pin the version the repo declares.
-FILES="app/changelog-data.ts"   # add any other files a bootstrap run created/edited
-if [ -f biome.json ] || [ -f biome.jsonc ] || grep -q '"@biomejs/biome"' package.json 2>/dev/null; then
-  BV=$(node -p "require('./package.json').devDependencies?.['@biomejs/biome']||require('./package.json').dependencies?.['@biomejs/biome']||''" 2>/dev/null | tr -d '^~ ')
-  npx --yes @biomejs/biome@"${BV:-latest}" format --write $FILES || echo "::warning::biome format skipped"
-elif [ -f .prettierrc ] || [ -f .prettierrc.json ] || [ -f prettier.config.js ] || grep -q '"prettier"' package.json 2>/dev/null; then
-  PV=$(node -p "require('./package.json').devDependencies?.prettier||require('./package.json').dependencies?.prettier||''" 2>/dev/null | tr -d '^~ ')
-  npx --yes prettier@"${PV:-latest}" --write $FILES || echo "::warning::prettier format skipped"
-else
-  echo "no formatter config found - note in PR body"
-fi
-```
+Detect the repo's formatter + PINNED version so output matches its `format:check`. Use npx (no repo `npm ci` needed); a bare/newer formatter can format differently than the pinned one and still fail the gate, so pin the version the repo declares. `FILES` is `app/changelog-data.ts` plus any other files a bootstrap run created/edited, written in literally. Run these as separate calls from `/tmp/docs-sync-work` (see **Shell shape** in A.2):
+
+1. **Biome?** Use Glob for `biome.json` / `biome.jsonc` in the work dir, and run:
+   ```bash
+   grep -c '"@biomejs/biome"' package.json
+   ```
+   Biome is the formatter if either config file exists or that count is above 0. Then read its pinned version:
+   ```bash
+   node -p "require('./package.json').devDependencies?.['@biomejs/biome']||require('./package.json').dependencies?.['@biomejs/biome']||''"
+   ```
+   It prints `BV`; drop any `^`, `~` or spaces from it yourself, and use `latest` when it printed an empty line. Then:
+   ```bash
+   npx --yes @biomejs/biome@<BV> format --write <FILES>
+   ```
+   If that fails, note `biome format skipped` (a warning, not a stop).
+2. **Else Prettier?** Use Glob for `.prettierrc`, `.prettierrc.json`, `prettier.config.js`, and run:
+   ```bash
+   grep -c '"prettier"' package.json
+   ```
+   Prettier is the formatter if any of those files exists or the count is above 0. Then:
+   ```bash
+   node -p "require('./package.json').devDependencies?.prettier||require('./package.json').dependencies?.prettier||''"
+   ```
+   It prints `PV`; clean it the same way (`latest` when empty). Then:
+   ```bash
+   npx --yes prettier@<PV> --write <FILES>
+   ```
+   If that fails, note `prettier format skipped` (a warning, not a stop).
+3. **Else:** no formatter config found - note it in the PR body.
 
 If neither formatter is present, note it in the PR body. Do not skip this step silently on a normal run - the missing format is exactly what turns a one-line changelog prepend into a red PR.
 
 ## B.5. Branch, commit, PR
 
+The branch is `aeon/changelog-<TODAY>` (today's date written in literally). Each line is its own Bash call:
+
 ```bash
-BRANCH="aeon/changelog-${today}"
-git checkout -b "$BRANCH"
+git checkout -b "aeon/changelog-<TODAY>"
+```
+```bash
 git add -A
-git commit -m "docs(changelog): sync N merged PRs from ${PRODUCT_REPO}"
-git push -u origin "$BRANCH"
+```
+```bash
+git commit -m "docs(changelog): sync N merged PRs from <PRODUCT_REPO>"
+```
+```bash
+git push -u origin "aeon/changelog-<TODAY>"
 ```
 
-Open the PR on the **website** repo (draft unless config says otherwise):
+Open the PR on the **website** repo (draft unless config says otherwise). First write the body with Write to `/tmp/changelog-pr-body.md`:
 
-```bash
-gh pr create --repo "$WEBSITE_REPO" --draft \
-  --title "docs(changelog): ${today} - <entry title>" \
-  --body "$(cat <<'EOF'
+```markdown
 ## Summary
-Auto-generated changelog sync from merged PRs in `${PRODUCT_REPO}`.
+Auto-generated changelog sync from merged PRs in `<PRODUCT_REPO>`.
 
 ## Entry
 **<title>** - <summary>
@@ -348,8 +377,14 @@ Auto-generated changelog sync from merged PRs in `${PRODUCT_REPO}`.
 
 ---
 Generated by the aeon `changelog` skill (push-to mode). Review and merge to publish.
-EOF
-)"
+```
+
+Then one call:
+
+```bash
+gh pr create --repo "<WEBSITE_REPO>" --draft \
+  --title "docs(changelog): <TODAY> - <entry title>" \
+  --body-file /tmp/changelog-pr-body.md
 ```
 
 Use `--draft` when `draft` config is true (the default). Build the PR body from the real entry — never leave placeholders.
@@ -426,6 +461,6 @@ Consolidate both branches under ONE `### changelog` heading in `memory/logs/${to
 
 **Branch B (push-to):** GitHub Actions runs Claude Code in a non-interactive sandbox.
 - **GitHub API:** always `gh api` / `gh pr create` / `gh repo clone` — never `curl`. `gh` works because it handles auth internally, so no token touches the command line.
-- **Keep secrets off the command line:** the Bash permission layer blocks any command whose text contains a secret expansion (`$GH_GLOBAL`, `${TOKEN}`) - it can't prove such a command is safe. `gh` and `git` read auth from the environment ambiently, so no token needs to touch the command line. Ordinary compound commands and `$VAR`/`$(...)` over non-secret values (branch names, file lists, the pinned formatter version in B.4.1) are fine - the working directory also persists across calls, so a plain `cd "$WORK_DIR"` holds.
+- **Keep secrets off the command line:** the Bash permission layer blocks any command whose text contains a secret expansion (`$GH_GLOBAL`, `${TOKEN}`) - it can't prove such a command is safe. `gh` and `git` read auth from the environment ambiently, so no token needs to touch the command line. Compound commands and `$VAR`/`$(...)` are refused even over non-secret values (see **Shell shape** in A.2), so write branch names, file lists and the pinned formatter version in B.4.1 into each command literally - the working directory persists across calls, so a plain `cd /tmp/docs-sync-work` holds.
 - **npm/build may be unavailable:** if `npm run build`/`lint` isn't available or fails, skip it and note "build not verified" in the PR body rather than aborting.
 - **Requires `GH_GLOBAL`** (a token with cross-repo write to the website repo) — only this branch needs it. `GITHUB_TOKEN` alone only covers the current repo and cannot push to the website.

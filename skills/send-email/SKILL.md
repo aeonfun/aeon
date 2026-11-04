@@ -64,41 +64,56 @@ Otherwise (no `revise:` prefix), run the normal flow:
 
 The send is the skill's **final** action and is **fail-closed**: apply every check below in order, and any check that fails, is unset, or errors ⇒ **do not send** — log the reason and stop. Never fall through to sending. Only `./secretcurl`, `jq`, `python3`, `grep`, `date`, `echo`, and `Write` are available; no `mv`/`awk`/`sha256sum`.
 
-1. **Kill-switch.** If `$DISCLOSURE_EMAIL_PAUSED` is one of `1/true/yes/on` → `SEND_EMAIL_SKIP: paused`, stop.
-2. **Config.** Presence-check with the `${VAR:+x}` form — a **bare** `$RESEND_API_KEY` trips the secret-expansion analyzer and falsely reads as unset (same idiom `narrative-tracker` documents). If either is unset → `SEND_EMAIL_SKIP: resend not configured`, stop (nothing sent, nothing lost):
+**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`TODAY=$(date ...)`, `PAYLOAD=$(python3 ...)`), uses `if` / `case` / `[ ... ]` tests, or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn. So each check below is one call that prints a value, and you make the stop / continue decision from what it printed. Values you already know (`<TO>`, `<SLUG>`, `<TODAY>`, ...) are written into later commands literally in place of the placeholder.
+
+1. **Kill-switch.** If `$DISCLOSURE_EMAIL_PAUSED` is one of `1/true/yes/on` → `SEND_EMAIL_SKIP: paused`, stop. Read it, and the cap settings used below, with one call:
    ```bash
-   { [ -n "${RESEND_API_KEY:+x}" ] && [ -n "${RESEND_FROM:+x}" ]; } || { echo "SEND_EMAIL_SKIP: resend not configured"; exit 0; }
+   echo "paused=${DISCLOSURE_EMAIL_PAUSED:-} daily_cap=${DISCLOSURE_EMAIL_DAILY_CAP:-1} cooldown_days=${DISCLOSURE_EMAIL_COOLDOWN_DAYS:-7}"
    ```
-3. **Ledger + daily cap.** Seed `memory/email-log.json` to `[]` if missing/corrupt, then stop if the count is unreadable (**fail closed**) or today's budget is spent (cap default 1):
+2. **Config.** Read the "Keys set for this run" line in your run notes, never a shell test (those are refused and cost a turn). If `RESEND_API_KEY` or `RESEND_FROM` is not on that line → `SEND_EMAIL_SKIP: resend not configured`, stop (nothing sent, nothing lost).
+3. **Ledger + daily cap.** Seed `memory/email-log.json` to `[]` if missing/corrupt, then stop if the count is unreadable (**fail closed**) or today's budget is spent (cap default 1). Get the date first:
    ```bash
-   TODAY=$(date -u +%F)
-   SENT_TODAY=$(jq --arg d "$TODAY" '[.[]|select((.sent_at//"")|startswith($d))]|length' memory/email-log.json 2>/dev/null)
-   case "$SENT_TODAY" in ''|*[!0-9]*) echo "SEND_EMAIL_SKIP: ledger unreadable"; exit 0;; esac
-   [ "$SENT_TODAY" -lt "${DISCLOSURE_EMAIL_DAILY_CAP:-1}" ] || { echo "SEND_EMAIL_SKIP: daily cap"; exit 0; }
+   date -u +%F
    ```
+   It prints TODAY. Then count today's sends, TODAY written into the filter literally (a jq `$name` variable from `--arg` is refused in this run):
+   ```bash
+   jq '[.[]|select((.sent_at//"")|startswith("<TODAY>"))]|length' memory/email-log.json
+   ```
+   It prints SENT_TODAY. If it printed anything other than a plain whole number (an error, or nothing) → `SEND_EMAIL_SKIP: ledger unreadable`, stop. If SENT_TODAY is not below `daily_cap` from step 1 → `SEND_EMAIL_SKIP: daily cap`, stop.
 4. **Dedup.** Stop unless the ledger check *cleanly* reports "not present" — a jq error is **fail closed** (stop), never assume no-dup:
    ```bash
-   jq -e --arg s "$SLUG" 'any(.[];.slug==$s)' memory/email-log.json >/dev/null 2>&1
-   case $? in 0) echo "SEND_EMAIL_SKIP: dup"; exit 0;; 1) : ;; *) echo "SEND_EMAIL_SKIP: ledger unreadable"; exit 0;; esac
+   jq 'any(.[];.slug=="<SLUG>")' memory/email-log.json
    ```
-5. **Recipient sanity.** `$TO` must match `^[^@[:space:]]+@[^@[:space:]]+\.[^@[:space:]]+$` (`grep -qE`) → else `SEND_EMAIL_REFUSED: bad recipient`, stop.
-6. **Cooldown.** If `$TO` was emailed within `${DISCLOSURE_EMAIL_COOLDOWN_DAYS:-7}` days (find its latest `.sent_at` in the ledger and compare with a `python3` datetime diff) → `SEND_EMAIL_SKIP: cooldown`, stop.
-7. **Secret tripwire.** If subject+body match `grep -qE '(sk-[A-Za-z0-9]{20}|re_[A-Za-z0-9]{8}[A-Za-z0-9_]{12}|gh[pousr]_[A-Za-z0-9_]{20}|AKIA[0-9A-Z]{16}|AIza[0-9A-Za-z_-]{20}|-----BEGIN [A-Z ]*PRIVATE KEY-----)'` → `SEND_EMAIL_BLOCKED: secret in body`, stop (never exfiltrate a token).
-8. **Build cc** = the request's `cc` (comma-list or array) **plus** `$RESEND_CC` (operator audit copy), with blanks and `$TO` removed and deduped (`jq`).
-9. **Build payload + send.** Build the JSON with `python3` reading `RESEND_FROM`/`RESEND_REPLY_TO` from `os.environ` — so no secret-named var ever lands on a command line (a `--arg from "$RESEND_FROM"` would risk the analyzer block). Then POST with `./secretcurl` (the `{RESEND_API_KEY}` header placeholder is substituted inside the script; `$PAYLOAD` carries only the already-resolved from-address, not a secret-named expansion). `slug` is the idempotency key so a re-run can't double-send:
+   `true` → `SEND_EMAIL_SKIP: dup`, stop. `false` → continue. Anything else (an error, no output) → `SEND_EMAIL_SKIP: ledger unreadable`, stop.
+5. **Recipient sanity.** `$TO` must match `^[^@[:space:]]+@[^@[:space:]]+\.[^@[:space:]]+$` → else `SEND_EMAIL_REFUSED: bad recipient`, stop. One call, TO written in literally; it prints the address back only when it matches:
    ```bash
-   PAYLOAD=$(python3 - "$TO" "$SUBJECT" "$BODY" "$CC_JSON" <<'PY'
+   echo '<TO>' | grep -E '^[^@[:space:]]+@[^@[:space:]]+\.[^@[:space:]]+$'
+   ```
+6. **Cooldown.** If `$TO` was emailed within `${DISCLOSURE_EMAIL_COOLDOWN_DAYS:-7}` days (`cooldown_days` from step 1; find its latest `.sent_at` in the ledger and compare with a `python3` datetime diff) → `SEND_EMAIL_SKIP: cooldown`, stop.
+7. **Secret tripwire.** If subject+body match `grep -qE '(sk-[A-Za-z0-9]{20}|re_[A-Za-z0-9]{8}[A-Za-z0-9_]{12}|gh[pousr]_[A-Za-z0-9_]{20}|AKIA[0-9A-Z]{16}|AIza[0-9A-Za-z_-]{20}|-----BEGIN [A-Z ]*PRIVATE KEY-----)'` → `SEND_EMAIL_BLOCKED: secret in body`, stop (never exfiltrate a token). The review copy from step 4 holds the exact subject and body, so check it with one call; any count above `0` blocks:
+   ```bash
+   grep -cE '(sk-[A-Za-z0-9]{20}|re_[A-Za-z0-9]{8}[A-Za-z0-9_]{12}|gh[pousr]_[A-Za-z0-9_]{20}|AKIA[0-9A-Z]{16}|AIza[0-9A-Za-z_-]{20}|-----BEGIN [A-Z ]*PRIVATE KEY-----)' memory/drafts/send-email-latest.md
+   ```
+8. **Build cc** = the request's `cc` (comma-list or array) **plus** `$RESEND_CC` (operator audit copy), with blanks and `$TO` removed and deduped (`jq`). Read the audit copy with `echo "resend_cc=${RESEND_CC:-}"` as its own call. The result is CC_JSON (a JSON array, `[]` when empty).
+9. **Build payload + send.** Build the JSON with `python3` reading `RESEND_FROM`/`RESEND_REPLY_TO` from `os.environ` - so no secret-named var ever lands on a command line (a `--arg from "$RESEND_FROM"` would risk the analyzer block). Then POST with `./secretcurl` (the `{RESEND_API_KEY}` header placeholder is substituted inside the script; the payload file carries only the already-resolved from-address, not a secret-named expansion). `slug` is the idempotency key so a re-run can't double-send.
+   First write the exact body text (nothing else) to `.tmp/send-email-body.txt` with the Write tool. Then one `python3` call, with TO, SUBJECT and CC_JSON written in literally (single-quoted), writes the payload to `.tmp/send-email-payload.json` and prints `payload ok`:
+   ```bash
+   python3 - '<TO>' '<SUBJECT>' '<CC_JSON>' .tmp/send-email-body.txt .tmp/send-email-payload.json <<'PY'
    import os, sys, json
-   to, subject, text, cc = sys.argv[1], sys.argv[2], sys.argv[3], json.loads(sys.argv[4] or "[]")
+   to, subject, cc = sys.argv[1], sys.argv[2], json.loads(sys.argv[3] or "[]")
+   text = open(sys.argv[4], encoding="utf-8").read()
    p = {"from": os.environ["RESEND_FROM"], "to": [to], "subject": subject, "text": text}
    if os.environ.get("RESEND_REPLY_TO"): p["reply_to"] = os.environ["RESEND_REPLY_TO"]
    if cc: p["cc"] = cc
-   print(json.dumps(p))
+   open(sys.argv[5], "w", encoding="utf-8").write(json.dumps(p))
+   print("payload ok")
    PY
-   )
+   ```
+   Then the send, its own call, SLUG written in literally:
+   ```bash
    ./secretcurl -sS --max-time 30 -w 'http=%{http_code}\n' -X POST "https://api.resend.com/emails" \
      -H "Authorization: Bearer {RESEND_API_KEY}" -H "Content-Type: application/json" \
-     -H "Idempotency-Key: $SLUG" -d "$PAYLOAD"
+     -H "Idempotency-Key: <SLUG>" -d @.tmp/send-email-payload.json
    ```
    Print `http=<code>`. A response body with `.id` = sent; no `.id` (or non-2xx) = failed → `SEND_EMAIL_FAILED: <message>`, stop (it's a one-off — nothing to retry).
 10. **Record.** On success only, append one row to `memory/email-log.json` (via `python3` read-modify-write or the `Write` tool — there is no `mv`): `{slug:$SLUG, to:$TO, subject:$SUBJECT, resend_id:<id>, sent_at:<date -u +%FT%TZ>}`.

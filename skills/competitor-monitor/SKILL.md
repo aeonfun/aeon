@@ -65,38 +65,48 @@ This skill is `mode: read-only`, and that is load-bearing (same contract as
   refused mid-run. The read-only guard reverts writes to code/config paths but
   **preserves `memory/` and `output/`**, which is exactly where this skill writes.
 - No secrets, no `requires:`. It only makes outbound HTTPS GETs.
+- **Shell shape.** Each Bash call is one allowed command (pipes are fine). The
+  run refuses a call that sets a variable (`X=$(...)`), uses `case` / `if`,
+  `printf`, `sed` or `touch`, or joins commands with `;`, `&&` or `||`, and each
+  refusal costs a model turn. So parse `${var}` in your head (step 1), run each
+  `date` / `ls` / `node` as its own call, and write the value it prints in
+  literally where a later command shows `<STAMP>` / `<PREV>` / `<CAND>`. The one
+  append to `memory/competitors.md` goes through `node` too.
 
 ## Workflow
 
 ### 1. Resolve the watch list
 
-Parse `${var}`:
+Parse `${var}` in your head, not in a shell script (a `case`/`if` block is
+refused). `RAW` = `${var}` with leading and trailing whitespace trimmed.
 
-```bash
-RAW="$(printf '%s' "${var}" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
+**Config capture (Telegram force-reply):** `var="add:<url>"` appends to the watch
+list and ends. If `RAW` starts with `add:`:
 
-# Config capture (Telegram force-reply): var="add:<url>" appends to the watch list and ends.
-case "$RAW" in
-  add:*)
-    CAND="$(printf '%s' "${RAW#add:}" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]].*$//')"
-    case "$CAND" in http://*|https://*) ;; *) CAND="https://$CAND" ;; esac
-    if ! printf '%s' "$CAND" | grep -qiE '^https?://[a-z0-9.-]+\.[a-z]{2,}(/.*)?$'; then
-      ./notify "Couldn't read \"$CAND\" as a URL. Reply with a full page URL (e.g. https://rival.com/pricing)."
-      exit 0
-    fi
-    mkdir -p memory; touch memory/competitors.md
-    if grep -qiF "$CAND" memory/competitors.md; then
-      ./notify "Already watching $CAND."
-    else
-      printf -- '- %s\n' "$CAND" >> memory/competitors.md
-      ./notify "Now watching $CAND — it'll show up in the next Competitor Monitor run."
-    fi
-    exit 0 ;;
-esac
-```
+1. `CAND` = the text after `add:`, leading whitespace trimmed, cut at the first
+   whitespace. If it does not start with `http://` or `https://`, prepend `https://`.
+2. If `CAND` does not match `^https?://[a-z0-9.-]+\.[a-z]{2,}(/.*)?$`
+   (case-insensitive), send this (CAND written in literally) and end:
+   ```bash
+   ./notify "Couldn't read \"<CAND>\" as a URL. Reply with a full page URL (e.g. https://rival.com/pricing)."
+   ```
+3. Otherwise make sure the folder exists:
+   ```bash
+   mkdir -p memory
+   ```
+   Then check the watch list (a missing file means not watched yet):
+   ```bash
+   grep -ciF "<CAND>" memory/competitors.md
+   ```
+4. If it printed a count above 0, send `./notify "Already watching <CAND>."` and end.
+5. Otherwise append it with `node` (it creates the file if missing):
+   ```bash
+   node -e 'require("fs").appendFileSync("memory/competitors.md", "- " + process.argv[1] + "\n")' "<CAND>"
+   ```
+   Then send `./notify "Now watching <CAND> - it'll show up in the next Competitor Monitor run."` and end.
 
-If `$RAW` is non-empty, the targets are `$RAW` split on commas (trim each). If
-`$RAW` is empty, read the watch list from `memory/competitors.md`:
+If `RAW` is non-empty, the targets are `RAW` split on commas (trim each). If
+`RAW` is empty, read the watch list from `memory/competitors.md`:
 
 ```markdown
 # memory/competitors.md
@@ -107,7 +117,7 @@ If `$RAW` is non-empty, the targets are `$RAW` split on commas (trim each). If
 - https://vendor.com/security/acknowledgements/ [rows]
 ```
 
-If the file is missing or empty **and** `$RAW` is empty, offer to seed it via a
+If the file is missing or empty **and** `RAW` is empty, offer to seed it via a
 Telegram force-reply, but **only if no `add` prompt was already offered in the
 last 3 days of `memory/logs/`** (don't nag an unconfigured fork every run):
 
@@ -127,10 +137,17 @@ script writes the file itself with `--out` (read-only mode blocks `>`); **never
 retype its JSON** (a hand-copied snapshot is where invented numbers come from, and
 it's the file the next diff trusts):
 
+Three calls:
+
 ```bash
 mkdir -p memory/competitor-monitor
-STAMP=$(date -u +%Y-%m-%dT%H-%M-%SZ)
-node scripts/competitor-monitor.mjs snapshot <url1> <url2> ... --out "memory/competitor-monitor/${STAMP}.json"
+```
+```bash
+date -u +%Y-%m-%dT%H-%M-%SZ
+```
+It prints STAMP. Then, with STAMP written in literally:
+```bash
+node scripts/competitor-monitor.mjs snapshot <url1> <url2> ... --out "memory/competitor-monitor/<STAMP>.json"
 ```
 
 Pass the targets as arguments (`--out` may sit anywhere in the args). The script
@@ -154,17 +171,18 @@ reshuffle every deploy and would only churn.
 The baseline is the **newest snapshot that already exists** — i.e. the previous
 run's, since this run wrote its file in step 2. Exclude the file you just wrote:
 
+`CUR` = `memory/competitor-monitor/<STAMP>.json`. One call, STAMP written in literally:
+
 ```bash
-CUR="memory/competitor-monitor/${STAMP}.json"
-PREV=$(ls -1 memory/competitor-monitor/*.json 2>/dev/null | grep -vF "$CUR" | sort | tail -1)
+ls -1 memory/competitor-monitor/*.json | grep -vF "<STAMP>.json" | sort | tail -1
 ```
 
-If `$PREV` is empty, this is the **first run** — there is nothing to diff. Send a
+It prints PREV. If PREV is empty, this is the **first run** - there is nothing to diff. Send a
 one-line baseline note (`Competitor Monitor — tracking N page(s), baseline saved`)
 and skip to step 6. Otherwise:
 
 ```bash
-node scripts/competitor-monitor.mjs diff "$PREV" "$CUR"
+node scripts/competitor-monitor.mjs diff "<PREV>" "memory/competitor-monitor/<STAMP>.json"
 ```
 
 The diff output is `results[]`, one entry per page, each with a `changes[]` array

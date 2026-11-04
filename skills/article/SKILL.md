@@ -61,11 +61,11 @@ If a `soul/` directory exists, read the soul files for voice calibration: `soul/
 2. `"<topic>" benchmark OR results OR latency OR cost` — concrete numbers
 3. `"<topic>" limits OR criticism OR fails OR doesn't work` — failure modes and pushback
 
-If the topic is from a paper, also fetch the paper metadata and abstract:
+If the topic is from a paper, also fetch the paper metadata and abstract (one call, TOPIC written in literally):
 ```bash
-curl -s "https://api.semanticscholar.org/graph/v1/paper/search?query=TOPIC&limit=5&fields=title,authors,abstract,url,publicationDate,openAccessPdf" \
-  || echo "curl failed — use WebFetch on https://www.semanticscholar.org/search?q=TOPIC instead"
+curl -s "https://api.semanticscholar.org/graph/v1/paper/search?query=TOPIC&limit=5&fields=title,authors,abstract,url,publicationDate,openAccessPdf"
 ```
+If the curl fails, use WebFetch on `https://www.semanticscholar.org/search?q=TOPIC` instead (see **Shell shape** in the Network note).
 Use **WebFetch** to read the 2–3 best sources in depth. **At least one source must be primary**: a paper (arXiv / OpenReview / Semantic Scholar), official documentation, the project's own README, or a code repo. Blog summaries alone are not enough — they often mangle the mechanism.
 
 Extract:
@@ -126,9 +126,9 @@ Update `memory/MEMORY.md` to record the article and its topic (add to the `Recen
   ```
   New article written: [title]
 
-  https://github.com/${GITHUB_REPOSITORY}/blob/main/output/articles/${today}.md
+  https://github.com/<GITHUB_REPOSITORY>/blob/main/output/articles/${today}.md
   ```
-  Use the `$GITHUB_REPOSITORY` env var (GitHub Actions sets it to `owner/repo` of the running instance).
+  Use the `GITHUB_REPOSITORY` env var (GitHub Actions sets it to `owner/repo` of the running instance): print it with `gh repo view --json nameWithOwner -q .nameWithOwner` as its own call and write it in literally.
 
 - **Technical explainer:**
   ```
@@ -158,31 +158,48 @@ An article without a thesis is filler. This angle runs five phases and only adva
 
 ### Phase 1 — Research (gather, don't write yet)
 
-Run these in parallel where possible (substitute the resolved `owner/repo`):
+Run these in parallel where possible (substitute the resolved `owner/repo`), each its own Bash call. First the 7-day cutoff:
 ```bash
-# Repo metadata
+date -u -d '7 days ago' +%Y-%m-%dT%H:%M:%SZ
+```
+It prints SINCE; write it in literally where `<SINCE>` appears below.
+
+Repo metadata:
+```bash
 gh api repos/owner/repo --jq '{name, description, language, stargazers_count, forks_count, open_issues_count, topics, created_at, updated_at, pushed_at, default_branch}'
+```
 
-# Commits in last 7 days (paginated)
+Commits in last 7 days (paginated):
+```bash
 gh api repos/owner/repo/commits -X GET \
-  -f since="$(date -u -d '7 days ago' +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -v-7d +%Y-%m-%dT%H:%M:%SZ)" \
+  -f since="<SINCE>" \
   --jq '.[] | {sha: .sha[0:7], msg: .commit.message | split("\n")[0], author: .commit.author.name, date: .commit.author.date, url: .html_url}' --paginate
+```
 
-# Merged PRs in last 7 days
+Merged PRs in last 7 days:
+```bash
 gh api 'repos/owner/repo/pulls?state=closed&sort=updated&direction=desc&per_page=50' \
   --jq '[.[] | select(.merged_at and (.merged_at > (now - 86400*7 | todate))) | {number, title, user: .user.login, merged_at, additions, deletions, url: .html_url}]'
+```
 
-# Open PRs
+Open PRs:
+```bash
 gh api repos/owner/repo/pulls --jq '[.[] | {number, title, user: .user.login, created_at, draft, labels: [.labels[].name], url: .html_url}]'
+```
 
-# Issues opened/closed in last 7 days (exclude PRs)
-gh api 'repos/owner/repo/issues?state=all&since='$(date -u -d '7 days ago' +%Y-%m-%dT%H:%M:%SZ)'&per_page=100' --paginate \
+Issues opened/closed in last 7 days (exclude PRs):
+```bash
+gh api 'repos/owner/repo/issues?state=all&since=<SINCE>&per_page=100' --paginate \
   --jq '[.[] | select(.pull_request | not) | {number, title, state, created_at, closed_at, labels: [.labels[].name]}]'
+```
 
-# Last 3 releases
+Last 3 releases:
+```bash
 gh api repos/owner/repo/releases --jq '.[0:3] | .[] | {tag_name, name, published_at, body}'
+```
 
-# README (fallback: WebFetch raw URL if base64 decode fails)
+README (fallback: WebFetch raw URL if base64 decode fails):
+```bash
 gh api repos/owner/repo/readme --jq '.content' | base64 -d
 ```
 
@@ -451,7 +468,7 @@ Go through this checklist after the first draft. If any gate fails, rewrite the 
 
 Runs **only when `visual = true`**, after the article body is written and saved, for **any** angle. Use Replicate's Nano Banana Pro (Gemini 3 Pro Image). It renders **text labels well** — exploit that by writing prompts that ask for labeled diagrams or schematics, not stock-photo metaphors. Set `IMG_BASENAME` to match the article file for the angle: `explainer-${today}` (standard/explainer), `article-${today}` (standard/general), `repo-article-${today}` (repo), or `project-lens-${today}` (lens).
 
-1. **Preflight**: check presence with the `${VAR:+x}` form — `[ -n "${REPLICATE_API_TOKEN:+x}" ]` (a bare `$REPLICATE_API_TOKEN` trips the secret-expansion analyzer and falsely reads as unset). If it's unset, log `IMAGE_SKIPPED reason=no-token` and skip to step 5 (no-image path). Do not attempt any Replicate call. The article must ship without an image in this case.
+1. **Preflight**: read the "Keys set for this run" line in your run notes, never a shell test (those are refused and cost a turn). If `REPLICATE_API_TOKEN` is not on that line, log `IMAGE_SKIPPED reason=no-token` and skip to step 5 (no-image path). Do not attempt any Replicate call. The article must ship without an image in this case.
 
 2. **Craft the prompt**. Aim for technical illustration energy, not marketing. Strong prompt templates:
    - *Schematic*: "Technical schematic illustration of <mechanism>, dark navy background, thin cyan and amber lines, labeled boxes reading '<label1>', '<label2>', '<label3>', arrows showing data flow from <A> to <B> to <C>, blueprint aesthetic, 16:9"
@@ -476,18 +493,17 @@ Runs **only when `visual = true`**, after the article body is written and saved,
      }' \
      "https://api.replicate.com/v1/models/google/nano-banana-pro/predictions"
    ```
-   `Prefer: wait` usually returns the image inline in `.output`. If `.output` is empty, the prediction is still running — poll `.urls.get` for up to ~60s (`./secretcurl -s -H "Authorization: Bearer {REPLICATE_API_TOKEN}" "$PRED_URL"`), stopping when `.status` is `succeeded` (read `.output`) or `failed`/`canceled` (no-image path, step 5).
+   `Prefer: wait` usually returns the image inline in `.output`. If `.output` is empty, the prediction is still running - poll `.urls.get` for up to ~60s (`./secretcurl -s -H "Authorization: Bearer {REPLICATE_API_TOKEN}" "<PRED_URL>"`, the `.urls.get` value written in literally), stopping when `.status` is `succeeded` (read `.output`) or `failed`/`canceled` (no-image path, step 5).
 
 4. **Persist locally** — Replicate CDN URLs expire. Download and commit (the CDN URL carries no secret, so plain `curl` is fine):
    ```bash
    mkdir -p output/images
-   IMAGE_URL=<extracted from response.output>
-   EXT=$(echo "$IMAGE_URL" | grep -oE '\.(jpg|jpeg|png|webp)' | tail -1)
-   EXT="${EXT:-.jpg}"
-   LOCAL_PATH="output/images/${IMG_BASENAME}${EXT}"
-   curl -sL "$IMAGE_URL" -o "$LOCAL_PATH" \
-     || (echo "curl failed — retry via WebFetch or skip"; exit 0)
    ```
+   `IMAGE_URL` = the URL extracted from `response.output`. `EXT` = the last `.jpg`, `.jpeg`, `.png` or `.webp` in IMAGE_URL, or `.jpg` if it has none (work it out yourself). `LOCAL_PATH` = `output/images/<IMG_BASENAME><EXT>`. Then download with every value written in literally:
+   ```bash
+   curl -sL "<IMAGE_URL>" -o "<LOCAL_PATH>"
+   ```
+   If the curl fails, retry via WebFetch or skip (no-image path, step 5).
 
 5. **No-image path** (token missing, API down, rate-limited, or download failed): log `IMAGE_SKIPPED reason=<concrete reason>` and proceed with the article. Add a one-line note at the top of the article: `<!-- hero image skipped: <reason> -->`. The text must stand on its own. Never fail the whole skill because of an image problem.
 
@@ -545,6 +561,8 @@ Log **always — even on partial failure** (e.g. IMAGE_SKIPPED, REPO_ARTICLE_SKI
 ## Network note
 
 There is no network sandbox — `curl` works. For a flaky public GET, fall back to **WebFetch** on the same URL. For an auth'd API, call `./secretcurl` with a `{ENV_NAME}` placeholder (the key is injected via `requires:`) — never a bare `$SECRET` on the line. `gh api` handles GitHub auth internally — prefer it over raw curl for repo metadata.
+
+**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`EXT=$(...)`, `IMAGE_URL=...`), contains a `$(...)` substitution, uses a `[ ... ]` test, or joins commands with `;`, `&&` or `||` (including an `|| echo` fallback), and each refusal costs a model turn. So every command in this skill is its own call: a `date` lookup prints a value you write into later commands literally (`<SINCE>`, `<IMAGE_URL>`, `<EXT>`), the token preflight reads the run notes' "Keys set for this run" line instead of a shell test, and a fallback is a prose step you take when the call fails.
 
 The Replicate call runs **in-run** via `./secretcurl` (see the Visual add-on). If it fails, times out, or the download fails, go straight to the no-image path (step 5) — the article ships text-only. There is no deferred fallback; the image is best-effort and never blocks the article.
 

@@ -89,12 +89,14 @@ Embed the result at the top of the article file, next to the alts block:
 
 ## Step 6 — Deliver
 
-1. Write the article to `output/skill-articles/${today}-<skill-name>.md` (shell redirection; `mkdir -p` first). Include an `<!-- alts -->` comment block at the top with 2 alternative headline + thesis-heading pairs so the operator can iterate without a rewrite.
+1. Write the article to `output/skill-articles/${today}-<skill-name>.md` (Write tool; shell redirects into files are refused). Include an `<!-- alts -->` comment block at the top with 2 alternative headline + thesis-heading pairs so the operator can iterate without a rewrite.
 2. Notify with `./notify -f /tmp/skill-article-notify.md` (write the body under `/tmp/`): the headline, the thesis in one line, whether the stats are real or the headline fell back to mechanism, the banner URL when one was generated (with a save-it note if the URL is signed/expiring), and a **clickable** link built from the run's environment:
 
    ```bash
-   ARTICLE_URL="${GITHUB_SERVER_URL:-https://github.com}/${GITHUB_REPOSITORY}/blob/main/output/skill-articles/<file>.md"
+   git remote get-url origin
    ```
+
+   Take `owner/repo` from the printed URL and write it in literally: `https://github.com/<owner/repo>/blob/main/output/skill-articles/<file>.md`.
 
 3. Log to `memory/logs/${today}.md` under a `### skill-article` heading: target skill, headline, thesis pair, stats-real-or-mechanism, output path, and - when `--banner` was passed - a `banner:` line (`HIGGS_OK <url>` | `HIGGS_NOT_CONNECTED` | `HIGGS_AUTH_STALE` | `HIGGS_NO_CREDITS` | `HIGGS_FAILED` | `skipped`). Status codes: `SKILL_ARTICLE_OK` on success, `SKILL_ARTICLE_NO_TARGET` when `${var}` was empty and nothing article-worthy exists, `SKILL_ARTICLE_NOT_FOUND` when the named skill has no `SKILL.md`.
 

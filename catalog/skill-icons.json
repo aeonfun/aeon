@@ -4,7 +4,6 @@
   "icons": {
     "aeon-update": "<path d='M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4'/><path d='M7 10l5 5 5-5'/><path d='M12 15V3'/>",
     "canister-status": "<ellipse cx='12' cy='5' rx='6' ry='2.5'/><path d='M6 5v13c0 1.4 2.7 2.5 6 2.5s6-1.1 6-2.5V5'/><path d='M3 13h3l2-3 2 5 2-3h4'/>",
-    "cycles-balance": "<path d='M4 7a8 8 0 0 1 14-2'/><path d='M20 17a8 8 0 0 1-14 2'/><path d='M18 3v3h-3'/><path d='M6 21v-3h3'/><path d='M12 9v3l2 1'/>",
     "sns-digest": "<path d='M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z'/><path d='M14 3v6h6'/><path d='M8.5 14l2 2 4-4'/>",
     "icp-deploy-check": "<path d='M12 2 4 5v6c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V5z'/><path d='M9 12l2 2 4-4'/>",
     "auto-merge": "<circle cx='6' cy='6' r='3'/><circle cx='18' cy='18' r='3'/><path d='M6 21V9a9 9 0 0 0 9 9'/>",
@@ -14,6 +13,7 @@
     "heartbeat": "<path d='M22 12h-4l-3 9L9 3l-3 9H2'/>",
     "memory-flush": "<rect x='4' y='6' width='16' height='12' rx='2'/><path d='M8 6V3M12 6V3M16 6V3M8 21v-3M12 21v-3M16 21v-3'/><path d='M9 11h6'/><path d='M9 14h6'/>",
     "narrative-convergence": "<path d='M4 4l7 7'/><path d='M20 4l-7 7'/><path d='M12 11v9'/><circle cx='12' cy='11' r='1.6' fill='currentColor' stroke='none'/>",
+    "canister-audit": "<ellipse cx='9' cy='5' rx='5' ry='2'/><path d='M4 5v9c0 1.1 2.2 2 5 2 .5 0 1 0 1.4-.1'/><path d='M14 5v4'/><circle cx='16' cy='15' r='3.5'/><path d='M18.5 17.5 21 20'/>",
     "sc-audit": "<path d='M12 2 5 5v6c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V5z'/><path d='M13 10a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0'/><path d='M12.4 11.8 15 14.4'/>",
     "shiplog": "<path d='M4.5 16.5c-1.5 1.3-2 5-2 5s3.7-.5 5-2c.7-.8.7-2.1-.1-2.9a2.2 2.2 0 0 0-2.9-.1z'/><path d='M12 15l-3-3a22 22 0 0 1 2-4A12.9 12.9 0 0 1 22 2c0 2.7-.8 7.5-6 11a22 22 0 0 1-4 2z'/><path d='M9 12H4s.6-3 2-4c1.6-1.1 5 0 5 0'/><path d='M12 15v5s3-.6 4-2c1.1-1.6 0-5 0-5'/>",
     "skill-article": "<path d='M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h9'/><path d='M14 3v5h5'/><path d='M8 12h6M8 16h4'/><path d='M17 14l4 3-4 3v-6z'/>",

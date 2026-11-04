@@ -101,9 +101,11 @@ var=<value>
 Claude Code's Bash permission analyzer **blocks any command containing a secret expansion** (`$XAI_API_KEY`, `${XAI_API_KEY}`) because it can't statically prove safety. `./secretcurl` takes curl's arguments and substitutes `{ENV_NAME}` tokens *inside* the script, so the secret never reaches the agent's command line:
 
 ```bash
-./secretcurl -s -X POST https://api.x.ai/v1/responses \
-  -H 'Authorization: Bearer {XAI_API_KEY}' -d "$PAYLOAD"
+jq -nc '{model:"grok-4.7", input:"<prompt>"}' | ./secretcurl -s -X POST https://api.x.ai/v1/responses \
+  -H 'Authorization: Bearer {XAI_API_KEY}' -H 'Content-Type: application/json' --data-binary @-
 ```
+
+Every value on a `./secretcurl` line is written in literally: the run refuses a shell variable there (`-d "$PAYLOAD"`), a body built in a heredoc, and any redirect into a file. Pipe the body in with `--data-binary @-` and save the reply with `-o /tmp/<file>`. Keys are never tested from the shell either (`[ -n "$KEY" ]`, `printenv`): the run notes list them on a "Keys set for this run" line.
 
 Braces, not `$`. A skill that writes `-H "Authorization: Bearer $XAI_API_KEY"` will be blocked at run time, not at author time.
 

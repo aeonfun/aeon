@@ -231,9 +231,13 @@ cmd_run() {
     sandbox_prefix "$work" >/dev/null || { reject 'read-only OS sandbox unavailable'; return 1; }
   fi
   local args=("$harness" --mode "$mode" --allowed-tools "$tools" --timeout "$seconds")
-  # Same standing notes aeon.yml appends for the tier.
+  # Same standing notes aeon.yml appends for the tier, including the "Keys set for
+  # this run" line skills read instead of a shell key test. It is resolved under the
+  # synthetic env (names only, never values) from the checkout root, where
+  # skill_requires.sh finds skills/<name>/SKILL.md.
   local notes
-  notes="$(bash "$ROOT/scripts/skill_mode.sh" run-notes "$mode")" || { reject 'run-notes resolution failed'; return 1; }
+  # shellcheck source=/dev/null
+  notes="$(cd "$ROOT" && set -a && . "$envfile" && set +a && bash "$ROOT/scripts/skill_mode.sh" run-notes "$mode" "$skill")" || { reject 'run-notes resolution failed'; return 1; }
   [ -n "$notes" ] && args+=(--append-system-prompt "$notes")
   [ -n "$model" ] && [ "$model" != default ] && args+=(--model "$model")
   echo "dry-run: harness=$harness model=${model:-default} mode=$mode timeout=${seconds}s" >&2

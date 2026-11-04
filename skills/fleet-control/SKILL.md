@@ -44,7 +44,7 @@ The fleet is **discovered at runtime, never hardcoded**: it is this repo ("self"
 
 1. **Verify gh auth** — `gh auth status` must succeed. If not, log `FLEET_NO_AUTH` to `memory/logs/${today}.md` and notify `Fleet Control: gh auth missing — check GITHUB_TOKEN secret.` Stop.
 
-2. **Check rate limit** — `REMAINING=$(gh api rate_limit --jq '.resources.core.remaining')`. If `REMAINING < 50`, log `FLEET_RATE_LIMITED:remaining=${REMAINING}` and notify a one-line warning, then stop.
+2. **Check rate limit** - run `gh api rate_limit --jq '.resources.core.remaining'` as its own Bash call (see **Shell shape** in the Network note); it prints `REMAINING`. If `REMAINING < 50`, log `FLEET_RATE_LIMITED:remaining=${REMAINING}` and notify a one-line warning, then stop.
 
 3. **Load the registry** — read `memory/instances.json`. If the file is missing, write `{"instances": []}` to bootstrap. If `.instances` is absent or `[]`:
    - Log `FLEET_EMPTY: no managed instances` to `memory/logs/${today}.md`.
@@ -64,30 +64,30 @@ The fleet is **discovered at runtime, never hardcoded**: it is this repo ("self"
 
 ## Health Check Mode (default — control view)
 
-For each registered instance, skip rows with `archived: true` from per-instance work (count them separately). Run the three calls per instance in parallel using `&` + `wait` and write each to `/tmp/fleet/${SAFE}.{repo,runs,cron}.json`:
+For each registered instance, skip rows with `archived: true` from per-instance work (count them separately). Make the three calls per instance as three separate Bash calls with the instance's `owner/repo` written in literally as `<REPO>`, and read each result from the call's own output (stdout, or the error it prints). To run them in parallel, put several of these calls in one response instead of `&` + `wait` (keep ≤16 concurrent calls to stay under rate limit).
+
+First get the 24h window start once, as its own call:
+```bash
+date -u -d '24 hours ago' +%Y-%m-%dT%H:%M:%SZ
+```
+It prints `SINCE`, written in literally below.
 
 a. **Repo metadata**:
    ```bash
-   gh api "repos/${REPO}" \
-     --jq '{full_name, pushed_at, archived, default_branch, open_issues_count}' \
-     > "/tmp/fleet/${SAFE}.repo.json" 2>"/tmp/fleet/${SAFE}.repo.err" &
+   gh api "repos/<REPO>" \
+     --jq '{full_name, pushed_at, archived, default_branch, open_issues_count}'
    ```
 
 b. **Workflow runs in last 24h** (precise window, not "last 5"):
    ```bash
-   SINCE=$(date -u -d '24 hours ago' +%Y-%m-%dT%H:%M:%SZ)
-   gh api "repos/${REPO}/actions/runs?created=>${SINCE}&per_page=100&exclude_pull_requests=true" \
-     --jq '{total_count, runs:[.workflow_runs[]|{name,status,conclusion,created_at,html_url}]}' \
-     > "/tmp/fleet/${SAFE}.runs.json" 2>"/tmp/fleet/${SAFE}.runs.err" &
+   gh api "repos/<REPO>/actions/runs?created=><SINCE>&per_page=100&exclude_pull_requests=true" \
+     --jq '{total_count, runs:[.workflow_runs[]|{name,status,conclusion,created_at,html_url}]}'
    ```
 
 c. **Cron-state from child**:
    ```bash
-   gh api "repos/${REPO}/contents/memory/cron-state.json" --jq '.content' 2>"/tmp/fleet/${SAFE}.cron.err" \
-     | base64 -d > "/tmp/fleet/${SAFE}.cron.json" &
+   gh api "repos/<REPO>/contents/memory/cron-state.json" --jq '.content' | base64 -d
    ```
-
-`wait` after launching all three for an instance (or batch across all instances if you trust your parallelism — keep ≤16 concurrent calls to stay under rate limit).
 
 **Classify each instance** with precise thresholds:
 - **unreachable** — repo metadata call returned non-zero (404/403/etc.)
@@ -103,7 +103,7 @@ For each instance compute a **next_action** (one short imperative phrase):
 - `degraded` → `investigate <skill_name> (<consecutive_failures>× in a row, last_error: <signature, ≤60 chars>)`
 - `warning` → `monitor — <N>/<Total> runs failed in 24h`
 - `stale` → `confirm intent: no runs in 24h, last push <relative_date>; archive or re-enable` — if it *should* be running, dispatch `aeon-doctor` to that instance (Dispatch Mode) to lint for a silent config bug (unquoted `schedule:` / duplicate key / broken entry) before assuming it's abandoned
-- `unreachable` → `verify access: <reason from repo.err>`
+- `unreachable` → `verify access: <reason from the repo metadata call's error output>`
 - `healthy` → `none`
 - `archived` → `none (archived)`
 
@@ -169,31 +169,29 @@ Parse var: `dispatch <instance|*> <skill> [var=<value>]`.
 - If `<instance>` is `*`, target = every registry entry whose **current** health is `healthy`, `warning`, or `degraded` (skip unreachable, stale, pending, archived).
 - Otherwise, exact name match against the registry. Not found → notify `Fleet Dispatch: instance '<name>' not in registry` and stop.
 
-For each target instance:
+For each target instance, one call per step, with the instance's `<REPO>`, the `<SKILL>` name and any `<DISPATCH_VAR>` written in literally:
 
 1. **Validate skill exists in child**:
    ```bash
-   gh api "repos/${REPO}/contents/skills/${SKILL}/SKILL.md" >/dev/null 2>&1 \
-     || { OUTCOME="missing_skill"; continue; }
+   gh api "repos/<REPO>/contents/skills/<SKILL>/SKILL.md" --jq '.path'
    ```
+   If the call fails (404 or any error), the outcome is `missing_skill`; skip steps 2-3 for this instance and go on to the next one.
 
-2. **Check skill is enabled in child's aeon.yml** (best-effort warning, not a block — workflow_dispatch can override `enabled: false`):
+2. **Check skill is enabled in child's aeon.yml** (best-effort warning, not a block - workflow_dispatch can override `enabled: false`):
    ```bash
-   gh api "repos/${REPO}/contents/aeon.yml" --jq '.content' 2>/dev/null | base64 -d \
-     | grep -E "^[[:space:]]*${SKILL}:.*enabled:[[:space:]]*true" >/dev/null \
-     || NOT_ENABLED_WARN=1
+   gh api "repos/<REPO>/contents/aeon.yml" --jq '.content' | base64 -d | grep -E "^[[:space:]]*<SKILL>:.*enabled:[[:space:]]*true"
    ```
+   If it prints no matching line, set the `not_enabled_warn` flag for this instance.
 
-3. **Trigger the skill**:
+3. **Trigger the skill**. If the command gave a `var=<value>` (`DISPATCH_VAR`), run:
    ```bash
-   if [ -n "$DISPATCH_VAR" ]; then
-     gh workflow run aeon.yml --repo "${REPO}" -f skill="${SKILL}" -f var="${DISPATCH_VAR}" \
-       && OUTCOME="dispatched" || OUTCOME="api_failed:$?"
-   else
-     gh workflow run aeon.yml --repo "${REPO}" -f skill="${SKILL}" \
-       && OUTCOME="dispatched" || OUTCOME="api_failed:$?"
-   fi
+   gh workflow run aeon.yml --repo "<REPO>" -f skill="<SKILL>" -f var="<DISPATCH_VAR>"
    ```
+   Otherwise run:
+   ```bash
+   gh workflow run aeon.yml --repo "<REPO>" -f skill="<SKILL>"
+   ```
+   If the call succeeds, the outcome is `dispatched`; if it fails, the outcome is `api_failed:<exit code>`.
 
 Collect per-target outcomes: `dispatched | missing_skill | api_failed:<code>` (with optional `not_enabled_warn` flag).
 
@@ -231,12 +229,14 @@ For each registered instance (skip `archived` from detail blocks but count them 
 - Repo meta: `stargazers_count`, `pushed_at`, `open_issues_count`, `default_branch`
 - Last 10 workflow runs:
   ```bash
-  gh api "repos/${REPO}/actions/runs?per_page=10&exclude_pull_requests=true" \
+  gh api "repos/<REPO>/actions/runs?per_page=10&exclude_pull_requests=true" \
     --jq '[.workflow_runs[]|{name,status,conclusion,created_at,html_url}]'
   ```
 - Full `cron-state.json`
 - `aeon.yml` (parse enabled skills)
-- Last 5 commits (one-line `gh api repos/${REPO}/commits?per_page=5 --jq ...`)
+- Last 5 commits (one-line `gh api repos/<REPO>/commits?per_page=5 --jq ...`)
+
+Each item is its own Bash call with `<REPO>` written in literally; "in parallel" means several such calls in one response, never `&` + `wait`.
 
 Compute the same delta block, but compare against the most recent prior `output/articles/fleet-status-*.md` (parse the per-instance health rows; if none exists, mark the section "no prior status to diff against").
 
@@ -416,6 +416,8 @@ Every run logs exactly one of these to memory:
 ## Network note
 
 **Control view (health / status / dispatch):** always use `gh api` over raw curl (it handles auth internally, so no `$SECRET` appears on the command line for the Bash permission layer to refuse). All cross-repo calls go through `gh api` or `gh workflow run`. No outbound HTTP needed beyond what `gh` does internally.
+
+**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`REMAINING=$(gh api ...)`, `SINCE=$(date ...)`), uses `if` / `for` / `while` or `[ ... ]` tests, backgrounds with `&` + `wait`, or joins commands with `;`, `&&` or `||` (including `|| { OUTCOME=...; continue; }` guards), and each refusal costs a model turn. So get a date or count with a bare call and write the printed value into later commands; write each repo, skill and dispatch var into each command literally (the `<REPO>`, `<SKILL>`, `<SINCE>` style placeholders in the snippets); make one call per instance instead of a loop, and get parallelism by putting several calls in one response; decide outcomes in prose from whether a call succeeded or what it printed.
 
 **Scorecard view:** gathers its data **in-run** by executing `node scripts/fleet-scorecard.mjs` (step 0), which fetches workflow runs + token usage from the GitHub API and computes the tables into `/tmp/fleet-scorecard/`. The collector authenticates with `GH_READ_PAT` when set (a read-only PAT with cross-repo scope, declared in this skill's `requires:` and injected into the run) so **private** managed instances are readable; when unset, the run's `GH_TOKEN` (= `GH_GLOBAL`) reads the same private members, the standard single-key setup. It reads the token from `process.env` internally, so the secret never appears on a command line. A repo the token can't read is simply absent from the tables rather than crashing the collector.
 

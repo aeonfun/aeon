@@ -1,0 +1,7 @@
+# Pinned (not "stable") so the fixture build is reproducible: the checksummed PocketIC
+# release and committed Cargo.lock only mean something against a fixed compiler. Bump
+# deliberately. Covers the audited crate and the sibling repro/ crate alike (rustup
+# resolves this file by walking up from the build's working directory).
+[toolchain]
+channel = "1.97.1"
+targets = ["wasm32-unknown-unknown"]

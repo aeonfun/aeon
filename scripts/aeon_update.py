@@ -13,8 +13,9 @@ code, not by the model's reading of the steps.
 
   python3 scripts/aeon_update.py plan --upstream OWNER/REPO --baseline SHA --head SHA
       S4-S6. Diffs upstream's BASELINE and HEAD trees, partitions the changed
-      paths, 3-way classifies each OWNED file and stages every blob the apply
-      step needs under $WORK. Mutates nothing in the repo, so `report` mode
+      paths, 3-way classifies each OWNED file (a byte-identical copy of an older
+      upstream version, held or not, is stale and takes HEAD) and stages every
+      blob the apply step needs under $WORK. Mutates nothing in the repo, so `report` mode
       stops here. Prints a JSON summary; the full plan is $WORK/plan.json.
 
   python3 scripts/aeon_update.py apply
@@ -148,6 +149,34 @@ class GhUpstream:
         rows = self._api(f"commits?sha={head}&path={urllib.parse.quote(path)}&per_page=30") or []
         return [r["sha"] for r in rows]
 
+    def blob_history(self, paths, head):
+        """{path: blob shas the path had in its last 30 commits up to HEAD}, in one
+        GraphQL call per 20 paths instead of a REST call per (path, commit)."""
+        owner, name = self.repo.split("/", 1)
+        out = {}
+        for i in range(0, len(paths), 20):
+            chunk = paths[i:i + 20]
+            fields = " ".join(
+                f"p{j}: history(path: {json.dumps(p)}, first: 30) {{ nodes {{ file(path: {json.dumps(p)}) {{ oid }} }} }}"
+                for j, p in enumerate(chunk)
+            )
+            q = ("query($o: String!, $n: String!, $h: GitObjectID!) { repository(owner: $o, name: $n) "
+                 "{ object(oid: $h) { ... on Commit { " + fields + " } } } }")
+            r = run(["gh", "api", "graphql", "-f", f"query={q}", "-f", f"o={owner}", "-f", f"n={name}", "-f", f"h={head}"])
+            # A commit where the path is gone (a delete or rename) comes back as a
+            # NOT_FOUND error next to the data, and gh exits 1: keep the data.
+            try:
+                data = (json.loads(r.stdout or b"null") or {}).get("data")
+            except ValueError:
+                data = None
+            if not data:
+                raise RuntimeError(f"graphql history: {(r.stderr + r.stdout).decode(errors='replace').strip()[-300:]}")
+            obj = (data.get("repository") or {}).get("object") or {}
+            for j, path in enumerate(chunk):
+                nodes = (obj.get(f"p{j}") or {}).get("nodes") or []
+                out[path] = {n["file"]["oid"] for n in nodes if n.get("file")}
+        return out
+
 
 class GitUpstream:
     """Reads upstream from a local clone (tests, or an operator dry run)."""
@@ -188,6 +217,17 @@ class GitUpstream:
 
     def path_commits(self, path, head):
         return self._git("log", "--format=%H", "-n", "30", head, "--", path).stdout.decode().split()
+
+    def blob_history(self, paths, head):
+        out = {}
+        for path in paths:
+            shas = set()
+            for c in self.path_commits(path, head):
+                r = self._git("rev-parse", "--verify", "-q", f"{c}:{path}", check=False)
+                if r.returncode == 0:
+                    shas.add(r.stdout.decode().strip())
+            out[path] = shas
+        return out
 
 
 def upstream_backend(repo):
@@ -379,6 +419,39 @@ def cmd_plan(args):
         if e["disposition"] == "SKIP":
             continue
         entries.append(e)
+
+    # Stale copies. A local file byte-identical to an older upstream version of
+    # itself was never customized: an earlier sync held it back, or it predates the
+    # baseline. A 3-way merge against BASELINE reads the upstream lines it lacks as
+    # local deletions and keeps them out (miroshark-aeon#222 auto-merged
+    # scripts/langfuse-otel.sh and dropped the trigger-label block that way), and a
+    # held file upstream did not touch in range was never looked at again, so it
+    # sat in pending_conflicts for good (aeon-agent's trigger-label and otel-span
+    # fixes). Both take HEAD's copy: CLEAN-UPDATE `stale-copy`. Without the history
+    # (API error) nothing changes: merge or hold, never a blind overwrite.
+    held, planned = {}, {e["path"] for e in entries}
+    for p in load_state().get("pending_conflicts") or []:
+        path = p.get("path")
+        if not path or path in planned or operator_owned(path) or path not in head_tree:
+            continue
+        local = local_entry(path)
+        if local is None or local[0] == "040000" or head_tree[path][0] == "160000" or same(local, head_tree[path]):
+            continue
+        held[path] = local
+    cand = sorted({e["path"] for e in entries if e["disposition"] == "MERGE"} | set(held))
+    try:
+        history = up.blob_history(cand, args.head) if cand else {}
+    except RuntimeError:
+        history = {}
+    for e in entries:
+        if e["disposition"] == "MERGE" and e["local"][1] in history.get(e["path"], ()):
+            e["disposition"], e["reason"] = "CLEAN-UPDATE", "stale-copy"
+    for path, local in sorted(held.items()):
+        if local[1] in history.get(path, ()):
+            entries.append({"path": path, "base": base_tree.get(path), "head": head_tree[path], "local": local,
+                            "disposition": "CLEAN-UPDATE", "reason": "stale-copy"})
+
+    for e in entries:
         for side in ("base", "head"):
             if e[side] and e[side][0] != "160000":
                 fetch.add(e[side][1])
@@ -465,6 +538,7 @@ def summary(plan, entries, pending, work, extra=None):
         "ahead": plan["ahead"],
         "counts": {k: len(v) for k, v in sorted(by.items())},
         "clean": {k: by[k] for k in CLEAN if k in by},
+        "stale_copies": [e["path"] for e in entries if e["disposition"] == "CLEAN-UPDATE" and e["reason"] == "stale-copy"],
         "conflicts": [
             {"path": e["path"], "reason": e["reason"], "upstream_commits": e.get("upstream_commits", []), "diff": e.get("diff")}
             for e in entries if e["disposition"] == "CONFLICT"

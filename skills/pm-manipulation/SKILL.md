@@ -33,17 +33,21 @@ The keyword filter and locale table below are starting points — the operator c
 
 `curl` works — there is no network sandbox. For every curl call, if it fails or returns empty, use **WebFetch** as a fallback for a flaky public GET. The Polymarket APIs above are public (no auth). For news searches, prefer **WebSearch** with locale-specific queries — a built-in Claude tool that needs no curl.
 
+**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`TEMP=$(mktemp ...)`), uses `if` / `for` / `while`, or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn; it also refuses `mktemp` and a `cat > file` heredoc. So run each `curl` below as its own call with the token id, slug or event id written in literally (the `<TOKEN_ID>`, `<EVENT_SLUG>`, `<EVENT_ID>` placeholders), and write the notification body with the Write tool to the fixed path `/tmp/pm-manipulation-work/notify.md`.
+
 ## Steps
 
 ### 1. Build the candidate set (markets active in past 3 days)
 
 Pull the most-active markets across the categories most prone to manipulation: politics, geopolitics, conflict, elections (national and regional), regulatory rulings, and resolution-disputed markets.
 
+Top markets by 24h volume (repeat for last 3 days using volume24hr / volume1wk fields), as its own call:
 ```bash
-# Top markets by 24h volume — repeat for last 3 days using volume24hr / volume1wk fields
 curl -s "https://gamma-api.polymarket.com/markets?closed=false&order=volume24hr&ascending=false&limit=30"
+```
 
-# Also fetch by 7d volume to catch slower-burn manipulation
+Also fetch by 7d volume to catch slower-burn manipulation, as a second call:
+```bash
 curl -s "https://gamma-api.polymarket.com/markets?closed=false&order=volume1wk&ascending=false&limit=30"
 ```
 
@@ -57,10 +61,10 @@ Skip anything sports, weather, or pure crypto-price (BTC > $X by Y) — those ha
 
 ### 2. Pull 3-day price + trade data per candidate
 
-For each candidate market, get the YES-token (`clobTokenIds[0]`) and pull 3-day price history at hourly fidelity:
+For each candidate market, get the YES-token (`clobTokenIds[0]`) and pull 3-day price history at hourly fidelity, one call per market with the token id written in literally:
 
 ```bash
-curl -s "https://clob.polymarket.com/prices-history?market=$TOKEN_ID&interval=1w&fidelity=60"
+curl -s "https://clob.polymarket.com/prices-history?market=<TOKEN_ID>&interval=1w&fidelity=60"
 ```
 
 Compute, from the past 72h window only:
@@ -72,7 +76,7 @@ Compute, from the past 72h window only:
 
 Also pull the trades feed if available (some markets only) for whale concentration:
 ```bash
-curl -s "https://data-api.polymarket.com/trades?market=$TOKEN_ID&limit=500"
+curl -s "https://data-api.polymarket.com/trades?market=<TOKEN_ID>&limit=500"
 ```
 Compute **whale share** — % of 3d volume from the top-3 wallet addresses. If > 40%, flag `whale-concentrated`.
 
@@ -80,17 +84,22 @@ If the trades endpoint doesn't return per-market data, skip whale-share for that
 
 ### 3. Pull comments and detect coordination patterns
 
-For each candidate, fetch comments from the past 3 days:
+For each candidate, fetch comments from the past 3 days. Get the event id first (comments live on Event, not Market), with the slug written in literally:
 
 ```bash
-# Get the event id first (comments live on Event, not Market)
-curl -s "https://gamma-api.polymarket.com/events?slug=$EVENT_SLUG&limit=1"
+curl -s "https://gamma-api.polymarket.com/events?slug=<EVENT_SLUG>&limit=1"
+```
 
-# Top comments by reactions
-curl -s "https://gamma-api.polymarket.com/comments?parent_entity_type=Event&parent_entity_id=$EVENT_ID&limit=50&order=reactionCount&ascending=false"
+It prints the event; its `id` is EVENT_ID. Then top comments by reactions, as its own call:
 
-# Most recent
-curl -s "https://gamma-api.polymarket.com/comments?parent_entity_type=Event&parent_entity_id=$EVENT_ID&limit=50&order=createdAt&ascending=false"
+```bash
+curl -s "https://gamma-api.polymarket.com/comments?parent_entity_type=Event&parent_entity_id=<EVENT_ID>&limit=50&order=reactionCount&ascending=false"
+```
+
+And the most recent, as a third call:
+
+```bash
+curl -s "https://gamma-api.polymarket.com/comments?parent_entity_type=Event&parent_entity_id=<EVENT_ID>&limit=50&order=createdAt&ascending=false"
 ```
 
 Filter to comments from the last 72h (`createdAt` within window). Then look for:
@@ -153,11 +162,15 @@ Be honest about uncertainty. "Suspicious" is not "proof". The skill's value is p
 
 ### 6. Format the briefing
 
-Build the body in a temp file (multi-line content; never argv-pipe long strings):
+Build the body in a temp file (multi-line content; never argv-pipe long strings). Create the work dir as its own Bash call:
 
 ```bash
-TEMP=$(mktemp -t pm-manipulation.XXXXXX.md)
-cat > "$TEMP" <<'MSG'
+mkdir -p /tmp/pm-manipulation-work
+```
+
+Then write the body with the Write tool to `/tmp/pm-manipulation-work/notify.md` (not a `cat > file` heredoc; see **Shell shape** in the Network note), in this shape:
+
+```text
 PM Manipulation Watch — ${today} (past 3d)
 
 scanned: N markets · flagged: M · suspicious: K · high-conf: J
@@ -181,7 +194,6 @@ scanned: N markets · flagged: M · suspicious: K · high-conf: J
 N markets, no anomalies above threshold.
 
 read it: output/articles/pm-manipulation-${today}.md
-MSG
 ```
 
 Keep the notification under 3500 chars. If it exceeds, drop the CLEAN section and the WATCH bullets first; never truncate the SUSPICIOUS section mid-entry.
@@ -226,10 +238,10 @@ Cite every source with a URL. No untranslated quotes longer than ~10 words — r
 ### 8. Notify
 
 ```bash
-./notify -f "$TEMP"
+./notify -f /tmp/pm-manipulation-work/notify.md
 ```
 
-If status is **high-confidence (≥4)**, prepend `[URGENT] ` to the notification subject so it surfaces in chat.
+If status is **high-confidence (≥4)**, prepend `[URGENT] ` to the notification subject so it surfaces in chat (put it in the first line of the file when you write it with Write).
 
 ### 9. Log
 

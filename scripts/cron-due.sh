@@ -21,6 +21,9 @@
 # Usage:
 #   cron-due.sh "<min hour dom month dow>" <now_epoch> <last_dispatch_epoch> [catchup_hours]
 #
+# catchup_hours defaults to 23, the value scheduler.yml passes: under one day,
+# so a daily slot can never be paid twice.
+#
 # Exit 0 (DUE)  → prints the matched slot time (ISO 8601) to stdout.
 # Exit 1 (skip) → no output.
 #
@@ -31,7 +34,7 @@ set -euo pipefail
 SCHED="${1:?schedule required (5 cron fields)}"
 NOW_EPOCH="${2:?now epoch required}"
 LAST_EPOCH="${3:-0}"
-CATCHUP_HOURS="${4:-6}"
+CATCHUP_HOURS="${4:-23}"
 DATE="${AEON_DATE:-date}"
 
 if "$DATE" --version >/dev/null 2>&1; then

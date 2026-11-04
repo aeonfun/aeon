@@ -78,14 +78,15 @@ Otherwise, read today's `memory/logs/${today}.md` and pick the **single most twe
 
 If the topic needs fresher context, use WebSearch to verify or expand.
 
-If `TWITTER_API_KEY` is set, search X for what people are already saying about the topic. **twitterapi.io is the primary** path for this X read (see **Fetching**):
+If `TWITTER_API_KEY` is set, search X for what people are already saying about the topic. **twitterapi.io is the primary** path for this X read (see **Fetching**, including its **Shell shape** note). Get the window start first, as its own Bash call:
 ```bash
-FROM_DATE=$(date -u -d "yesterday" +%Y-%m-%d 2>/dev/null || date -u -v-1d +%Y-%m-%d)
-Q="${TOPIC} since:${FROM_DATE}"
-HTTP=$(./secretcurl -s -o /tmp/tw-wt.json -w '%{http_code}' --max-time 60 -G "https://api.twitterapi.io/twitter/tweet/advanced_search" \
-  --data-urlencode "query=$Q" --data-urlencode "queryType=Latest" \
-  -H "X-API-Key: {TWITTER_API_KEY}")
-echo "twitterapi http=$HTTP bytes=$(wc -c </tmp/tw-wt.json)"
+date -u -d yesterday +%Y-%m-%d
+```
+It prints FROM_DATE. Then one call, with the topic and FROM_DATE written in literally:
+```bash
+./secretcurl -s -o /tmp/tw-wt.json -w 'twitterapi http=%{http_code} bytes=%{size_download}\n' --max-time 60 -G "https://api.twitterapi.io/twitter/tweet/advanced_search" \
+  --data-urlencode "query=<TOPIC> since:<FROM_DATE>" --data-urlencode "queryType=Latest" \
+  -H "X-API-Key: {TWITTER_API_KEY}"
 ```
 On `HTTP=200` with a non-empty `.tweets[]`, parse and use the 5 most notable:
 ```bash
@@ -93,13 +94,13 @@ jq -r '.tweets[] | [.author.userName, .text, .url, .createdAt, .likeCount, .retw
 ```
 This helps understand the existing conversation so you can add signal, not noise. **Path B - xAI Grok `x_search` (fallback)** (only if Path A returned non-2xx / empty / timeout, or `TWITTER_API_KEY` is unset; see **Fetching**; set the Bash tool `timeout` ≥180000):
 ```bash
-jq -n '{model:"grok-4.7", input:[{role:"user",content:"Search X for what people are saying about TOPIC in the last 24 hours. Return the 5 most notable tweets with @handle and summary."}], tools:[{type:"x_search"}]}' > /tmp/xai-wt-payload.json
-HTTP=$(./secretcurl -s -o /tmp/xai-wt.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
+jq -n '{model:"grok-4.7", input:[{role:"user",content:"Search X for what people are saying about <TOPIC> in the last 24 hours. Return the 5 most notable tweets with @handle and summary."}], tools:[{type:"x_search"}]}' \
+  | ./secretcurl -s -o /tmp/xai-wt.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {XAI_API_KEY}" \
-  -d @/tmp/xai-wt-payload.json)
-echo "xai http=$HTTP bytes=$(wc -c </tmp/xai-wt.json)"
+  --data-binary @-
 ```
+It prints the HTTP status (secretcurl also prints an `http=... bytes=...` line on stderr).
 On `HTTP=200` with a non-empty body, parse `/tmp/xai-wt.json` with `jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text'`. Skip the X search only if both keys are `KEY_UNSET`; if a key is set but that path truly fails (non-2xx / empty / timeout - record the real reason, never "unavailable" when the key was set), fall back to WebSearch (`site:x.com "<topic>"`, lower quality) as a last resort.
 
 ## Voice (drafts)
@@ -205,7 +206,7 @@ After all 10, add a one-line pick for **best overall** and **best per tier**.
 
 ## Notify (drafts)
 
-Send the drafts via `./notify` — write the body to `/tmp/wt-drafts.md` first, then `./notify -f /tmp/wt-drafts.md` (keeps the long body off argv and out of the repo root):
+Send the drafts via `./notify` — write the body to `/tmp/wt-drafts.md` first with the Write tool (a shell redirect is refused), then `./notify -f /tmp/wt-drafts.md` (keeps the long body off argv and out of the repo root):
 ```
 tweet drafts: [topic]
 
@@ -370,7 +371,7 @@ The payoff. The implication, the action, or the reframe. Should feel like the po
 
 ## Notify (thread)
 
-Send via `./notify` — write the thread body to `/tmp/wt-thread.md` first, then `./notify -f /tmp/wt-thread.md` (keeps the long body off argv and out of the repo root):
+Send via `./notify` — write the thread body to `/tmp/wt-thread.md` first with the Write tool (a shell redirect is refused), then `./notify -f /tmp/wt-thread.md` (keeps the long body off argv and out of the repo root):
 ```
 thread: [topic — 3-5 words]
 
@@ -415,33 +416,27 @@ We over-fetch so the remixability pre-filter (step 2) has room to drop un-remixa
 
 **Path A - twitterapi.io (primary).** Pull this handle's timeline, then filter to the remix window client-side (`/user/last_tweets` has no server-side date filter). Paginate with `&cursor=<next_cursor>` while `.has_next_page` until you have ~30 in-window originals or pages run out. `createdAt` is Twitter-native; normalize with `strptime` before the window compare. See **Fetching**.
 
-Resolve the time window (from the branch argument):
+Resolve the time window (from the branch argument) in your head, not in a shell script (see **Shell shape** in **Fetching**). `TIME_WINDOW` = the remix argument parsed from `${var}`, default `180d`:
+- It contains `:` (for example `2025-01-01:2025-06-30`): FROM_DATE = the part before the `:`, TO_DATE = the part after it. No `date` call needed.
+- Otherwise: DAYS = its digits, UNIT = the rest. When UNIT is `y`, DAYS = DAYS x 365 (work the number out yourself). Then two `date` calls, each its own Bash call, with DAYS written in literally:
+  ```bash
+  date -u -d '<DAYS> days ago' +%Y-%m-%d
+  ```
+  ```bash
+  date -u -d '30 days ago' +%Y-%m-%d
+  ```
+  The first prints FROM_DATE, the second TO_DATE.
 
+Resolve the X handle. Look up in this order: (a) `$X_HANDLE` env var, (b) handle mentioned in `soul/SOUL.md` under "Identity", (c) abort with `REMIX_TWEETS_ERROR - no handle configured`.
+
+One call, with the handle written in literally:
 ```bash
-TIME_WINDOW="${ARG:-180d}"   # ARG = the remix argument parsed from ${var}; default 180d
-
-if echo "$TIME_WINDOW" | grep -q ':'; then
-  FROM_DATE=$(echo "$TIME_WINDOW" | cut -d: -f1)
-  TO_DATE=$(echo "$TIME_WINDOW" | cut -d: -f2)
-else
-  DAYS=$(echo "$TIME_WINDOW" | sed 's/[^0-9]//g')
-  UNIT=$(echo "$TIME_WINDOW" | sed 's/[0-9]//g')
-  [ "$UNIT" = "y" ] && DAYS=$((DAYS * 365))
-  FROM_DATE=$(date -u -d "$DAYS days ago" +%Y-%m-%d 2>/dev/null || date -u -v-${DAYS}d +%Y-%m-%d)
-  TO_DATE=$(date -u -d "30 days ago" +%Y-%m-%d 2>/dev/null || date -u -v-30d +%Y-%m-%d)
-fi
+./secretcurl -s -o /tmp/tw-wt-remix.json -w 'twitterapi http=%{http_code} bytes=%{size_download}\n' --max-time 60 -G "https://api.twitterapi.io/twitter/user/last_tweets" \
+  --data-urlencode "userName=<HANDLE>" -H "X-API-Key: {TWITTER_API_KEY}"
 ```
-
-Resolve the X handle. Look up in this order: (a) `$X_HANDLE` env var, (b) handle mentioned in `soul/SOUL.md` under "Identity", (c) abort with `REMIX_TWEETS_ERROR — no handle configured`.
-
+On `HTTP=200` with a non-empty `.data.tweets[]`, parse originals in the window (drop `.isReply`, text starting `RT @`) and mark `twitterapi=ok`. One `jq` per call, FROM_DATE and TO_DATE written in literally:
 ```bash
-HTTP=$(./secretcurl -s -o /tmp/tw-wt-remix.json -w '%{http_code}' --max-time 60 -G "https://api.twitterapi.io/twitter/user/last_tweets" \
-  --data-urlencode "userName=$HANDLE" -H "X-API-Key: {TWITTER_API_KEY}")
-echo "twitterapi http=$HTTP bytes=$(wc -c </tmp/tw-wt-remix.json)"
-```
-On `HTTP=200` with a non-empty `.data.tweets[]`, parse originals in the window (drop `.isReply`, text starting `RT @`) and mark `twitterapi=ok`:
-```bash
-jq -r --arg FROM "$FROM_DATE" --arg TO "$TO_DATE" '.data.tweets[] | (try (.createdAt | strptime("%a %b %d %H:%M:%S %z %Y") | strftime("%Y-%m-%d")) catch "0000-00-00") as $d | select((.isReply | not) and ($d >= $FROM) and ($d <= $TO)) | [.id, .text, .url, $d, .likeCount, .retweetCount, .replyCount] | @tsv' /tmp/tw-wt-remix.json
+jq -r '.data.tweets[] | .day = (try (.createdAt | strptime("%a %b %d %H:%M:%S %z %Y") | strftime("%Y-%m-%d")) catch "0000-00-00") | select((.isReply | not) and (.day >= "<FROM_DATE>") and (.day <= "<TO_DATE>")) | [.id, .text, .url, .day, .likeCount, .retweetCount, .replyCount] | @tsv' /tmp/tw-wt-remix.json
 ```
 
 **Path B - xAI Grok `x_search` (fallback).** Only if Path A returned non-2xx / empty / timeout, or `TWITTER_API_KEY` is unset (see **Fetching**; set the Bash tool `timeout` ≥180000). Run **two angled x_search queries** so the pre-filter has a diverse pool - don't rely on one query shape:
@@ -451,21 +446,17 @@ jq -r --arg FROM "$FROM_DATE" --arg TO "$TO_DATE" '.data.tweets[] | (try (.creat
 
 Each query must request for every tweet: full text, date posted, engagement stats (likes, retweets, replies), and the direct `https://x.com/HANDLE/status/ID` link. Ask explicitly for **original posts only** (not replies, not retweets, not quote tweets). Aim for ~15-20 tweets per query.
 
+Build the body with the resolved handle, FROM_DATE and TO_DATE written into the jq filter literally (prompt inline, no shell variables, no jq `$name` variables) and pipe it straight into the send (set the Bash tool timeout ≥180000, see Fetching):
 ```bash
-# Replace HANDLE with the resolved handle. Set the Bash tool timeout ≥180000 (see Fetching).
-Q1_PROMPT="Search X for original tweets (exclude replies, retweets, quote tweets) posted by @HANDLE from ${FROM_DATE} to ${TO_DATE}. I want OPINION/TAKE posts — tweets that state a view, principle, or observation (not news announcements, not project updates, not single-link posts). Return up to 15. For each: full tweet text, date (YYYY-MM-DD), likes, retweets, replies, direct link https://x.com/HANDLE/status/ID. Format as numbered list."
-jq -n --arg p "$Q1_PROMPT" --arg fd "$FROM_DATE" --arg td "$TO_DATE" \
-  '{model:"grok-4.7", input:[{role:"user",content:$p}], tools:[{type:"x_search", allowed_x_handles:["HANDLE"], from_date:$fd, to_date:$td}]}' \
-  > /tmp/xai-wt-q1-payload.json
-HTTP=$(./secretcurl -s -o /tmp/xai-wt-q1.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
+jq -n '{model:"grok-4.7", input:[{role:"user",content:"Search X for original tweets (exclude replies, retweets, quote tweets) posted by @<HANDLE> from <FROM_DATE> to <TO_DATE>. I want OPINION/TAKE posts - tweets that state a view, principle, or observation (not news announcements, not project updates, not single-link posts). Return up to 15. For each: full tweet text, date (YYYY-MM-DD), likes, retweets, replies, direct link https://x.com/<HANDLE>/status/ID. Format as numbered list."}], tools:[{type:"x_search", allowed_x_handles:["<HANDLE>"], from_date:"<FROM_DATE>", to_date:"<TO_DATE>"}]}' \
+  | ./secretcurl -s -o /tmp/xai-wt-q1.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {XAI_API_KEY}" \
-  -d @/tmp/xai-wt-q1-payload.json)
-echo "xai q1 http=$HTTP bytes=$(wc -c </tmp/xai-wt-q1.json)"
+  --data-binary @-
 ```
 On `HTTP=200` with a non-empty body, parse `/tmp/xai-wt-q1.json` with the standard extractor `jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text'`.
 
-Then repeat with a second body `Q2` (write to `/tmp/xai-wt-q2.json`) varying the prompt to "top-engagement original tweets (highest likes+retweets) in the same window. Return up to 15."
+Then repeat with a second body `Q2` (the same one call, response to `/tmp/xai-wt-q2.json`) varying the prompt to "top-engagement original tweets (highest likes+retweets) in the same window. Return up to 15."
 
 Deduplicate by tweet ID across both queries. Log `xai=ok` / `xai=partial` / `xai=fail` based on how many queries returned data.
 
@@ -533,7 +524,7 @@ Track drops in the log (step 7). If you drop more than 3, emit `REMIX_TWEETS_DEG
 
 Lead with a one-line **batch verdict** summarizing strategy spread (e.g., "3 sharpens, 2 flips, 2 updates, 2 concretizes, 1 escalate"). Keep the whole message ≤4000 chars. No leading indentation.
 
-Send via `./notify` — write the message body to `/tmp/wt-remix.md` first, then `./notify -f /tmp/wt-remix.md` (keeps the long body off argv and out of the repo root):
+Send via `./notify` — write the message body to `/tmp/wt-remix.md` first with the Write tool (a shell redirect is refused), then `./notify -f /tmp/wt-remix.md` (keeps the long body off argv and out of the repo root):
 ```
 *Remix Tweets — ${today}*
 Batch: [one-line strategy spread]. Drops: N.
@@ -655,15 +646,18 @@ Append **one** entry to `memory/logs/${today}.md` under a single `### write-twee
 
 **You MUST attempt twitterapi.io before any fallback.** The rules:
 
-1. **Check, don't assume.** Run `[ -n "$TWITTER_API_KEY" ] && echo TW_PRESENT || echo TW_UNSET` and `[ -n "$XAI_API_KEY" ] && echo XAI_PRESENT || echo XAI_UNSET`. If `TW_PRESENT`, Path A is required. (Drafts treats the X search as optional enrichment - skip it entirely only when **both** keys are unset, never because you assume curl won't work. Remix requires at least one key.)
+1. **Check, don't assume.** Read the "Keys set for this run" line in your run notes, never a shell test (those are refused and cost a turn): `TWITTER_API_KEY` on that line = `TW_PRESENT`, else `TW_UNSET`; `XAI_API_KEY` on it = `XAI_PRESENT`, else `XAI_UNSET`. If `TW_PRESENT`, Path A is required. (Drafts treats the X search as optional enrichment - skip it entirely only when **both** keys are unset, never because you assume curl won't work. Remix requires at least one key.)
 2. **Capture the HTTP status** so the fallback decision is based on fact. Print `http=<code>` before parsing. `HTTP=200` with a non-empty tweet array → use it.
-3. **Path B - xAI Grok `x_search` (fallback).** Only when Path A fails (non-2xx / empty / timeout) or `TWITTER_API_KEY` is unset. Direct `curl` to `https://api.x.ai/v1/responses` with `Authorization: Bearer {XAI_API_KEY}`, model `grok-4.7`, and `"tools":[{"type":"x_search"}]`. The `x_search` call typically takes 30-120s - **set the Bash tool `timeout` to at least 180000 (180s)**, and add **`--max-time 150`** to the curl. A slow curl is **not** a missing key. Build the JSON body to a fixed file with `jq -n` first, then send with `-d @file` - the `./secretcurl` command must be 100% literal (no `$VAR`):
+3. **Path B - xAI Grok `x_search` (fallback).** Only when Path A fails (non-2xx / empty / timeout) or `TWITTER_API_KEY` is unset. Direct `curl` to `https://api.x.ai/v1/responses` with `Authorization: Bearer {XAI_API_KEY}`, model `grok-4.7`, and `"tools":[{"type":"x_search"}]`. The `x_search` call typically takes 30-120s - **set the Bash tool `timeout` to at least 180000 (180s)**, and add **`--max-time 150`** to the curl. A slow curl is **not** a missing key. Build the JSON body with `jq -n` (every value written into the filter literally) and pipe it straight into the send - a `>` redirect into a file is refused, and the `./secretcurl` command must be 100% literal (no `$VAR`):
    ```bash
-   HTTP=$(./secretcurl -s -o /tmp/xai-wt.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
-     -H "Content-Type: application/json" -H "Authorization: Bearer {XAI_API_KEY}" -d @/tmp/xai-wt-payload.json)
-   echo "xai http=$HTTP bytes=$(wc -c </tmp/xai-wt.json)"
+   jq -n '{model:"grok-4.7", input:[{role:"user",content:"<PROMPT>"}], tools:[{type:"x_search"}]}' \
+     | ./secretcurl -s -o /tmp/xai-wt.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
+     -H "Content-Type: application/json" -H "Authorization: Bearer {XAI_API_KEY}" --data-binary @-
    ```
+   Keep `-w '%{http_code}'` exactly: secretcurl's retry reads the status from the end of stdout, and it prints its own `http=... bytes=...` line on stderr.
    When a branch loops (remix Path B runs two queries), write each call to a unique file - `/tmp/xai-wt-q1.json`, `/tmp/xai-wt-q2.json`. Parse with the standard extractor `jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text'`. `HTTP=200` with a non-empty body → use it.
 4. **Fall back only on a real failure**, and **record the true reason** - never write "XAI_API_KEY unavailable" / "TWITTER_API_KEY unavailable" when a key was set. Use one of: `key-unset` (only if step 1 said the relevant key was unset), `http-<code>` (non-2xx), `empty` (200 but nothing parsed), `timeout` (curl exceeded `--max-time`).
+
+**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`FROM_DATE=$(date ...)`, `HTTP=$(./secretcurl ...)`, `Q1_PROMPT="..."`), uses `if` / `[ ... ] &&` tests or `$(( ))` math, pipes into `cut` / `sed`, or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn. So get each date with a bare `date` call, work out the remix window and day counts yourself, write the topic, handle and dates into each `./secretcurl` and `jq` call literally (the `<TOPIC>`, `<HANDLE>`, `<FROM_DATE>` placeholders), put the xAI prompt inline in the `jq -n` body call and pipe it straight into the `./secretcurl` send (a `>` redirect into a file and a jq `$name` variable such as `--arg FROM ... '$FROM'` are both refused; a `"` inside a value becomes `\"`, and reword any `'`), and let twitterapi.io calls print their own `twitterapi http=... bytes=...` line through `-w`.
 
 **WebSearch / WebFetch are last-resort fallbacks only** - lower quality, never a primary or co-equal path. Reach for them only after a real Path A and Path B failure. The **thread** branch's WebSearch use is for general fresh context, not an X-tweet fetch, and is unaffected.

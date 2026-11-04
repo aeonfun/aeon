@@ -142,15 +142,69 @@ done
 KEYS="zzz-test-keys-$$"
 mk "$KEYS" "requires: [ZZZ_SET_KEY, ZZZ_UNSET_KEY?]"
 for tier in write read-only; do
-  bash "$M" run-notes "$tier" | grep -q "Each Bash call must be one allowed command" \
+  # Capture first: grep -q exits at the first match and, under pipefail, the
+  # SIGPIPE on the longer notes would fail the pipe.
+  RN=$(bash "$M" run-notes "$tier")
+  echo "$RN" | grep -q "Each Bash call must be one allowed command" \
     && pass "run-notes $tier: shell-shape note" || bad "run-notes $tier: shell-shape note"
 done
+# The shapes skills still taught (Langfuse review 2026-11-03: CUTOFF=$(date ...),
+# for loops, jq ...; jq ...) are named, with the split that replaces them.
+SHAPE=$(bash "$M" run-notes write)
+case "$SHAPE" in
+  *'VAR=$(...)'*"if/for/while"*";, && or ||"*"run date"*"one jq per call"*"one call per repo or item"*)
+    pass "run-notes: names VAR=\$(...), loops and ; chains, and the split" ;;
+  *) bad "run-notes: shape note wording ($SHAPE)" ;;
+esac
 N=$(ZZZ_SET_KEY=s3cr3t-value bash "$M" run-notes write "$KEYS")
 echo "$N" | grep -q "Keys set for this run: ZZZ_SET_KEY\." && pass "run-notes: present key named" || bad "run-notes: present key named"
 echo "$N" | grep -q "Keys NOT set for this run: ZZZ_UNSET_KEY\." && pass "run-notes: missing key named" || bad "run-notes: missing key named"
 echo "$N" | grep -q "s3cr3t-value" && bad "run-notes leaked a key value" || pass "run-notes never prints key values"
 bash "$M" run-notes write | grep -q "Keys" && bad "run-notes without a skill should not list keys" || pass "run-notes without a skill lists no keys"
 rm -rf "skills/$KEYS"
+
+# Skills learn which keys are set from the "Keys set for this run" line above, so
+# no SKILL.md may teach a shell key test: the run refuses every one of these
+# shapes and each refusal costs a model turn.
+KEYTEST='\[ -[nz] "?\$\{?[A-Z][A-Z0-9_]{2,}|echo "?\$\{[A-Z][A-Z0-9_]*:\+|printenv [A-Z]|env \| *(grep|rg) '
+HITS=$(grep -nE "$KEYTEST" skills/*/SKILL.md | grep -v '^skills/zzz-test-' || true)
+[ -z "$HITS" ] && pass "no skill teaches a shell key test" || bad "skills teach a shell key test, read the run notes' key line instead: $HITS"
+
+# Claude Code refuses every shell redirect into a file (both tiers, /tmp too) and
+# every jq filter with a $name variable, so the run notes on BOTH tiers say so and
+# name the shapes that work instead.
+for tier in write read-only; do
+  RN=$(bash "$M" run-notes "$tier")
+  case "$RN" in
+    *"Never redirect output into a file"*"in either tier and /tmp included"*"--data-binary @-"*"-o /tmp/f"*"node -e"*"writeFileSync"*)
+      pass "run-notes $tier: redirects refused, with the pipe / -o / node alternatives" ;;
+    *) bad "run-notes $tier: redirect note missing or incomplete" ;;
+  esac
+  case "$RN" in
+    *'must not use a $name variable'*'--arg x v'*'$ARGS.named.x'*"write each value into the filter as a JSON string"*)
+      pass "run-notes $tier: jq \$name variables refused, values written in" ;;
+    *) bad "run-notes $tier: jq \$name note missing or incomplete" ;;
+  esac
+  case "$RN" in
+    *"never inside a heredoc"*"expansion obfuscation"*) pass "run-notes $tier: JSON in a heredoc refused, jq -nc literal instead" ;;
+    *) bad "run-notes $tier: heredoc JSON note missing" ;;
+  esac
+done
+
+# So no SKILL.md code block may teach either shape: a redirect into a file
+# (`> /tmp/x.json`, `cat > f <<EOF`, `| tee f`, `> memory/...`) or a jq filter fed
+# by --arg/--argjson/--rawfile/--slurpfile, $ARGS or an `as $x` binding.
+FENCED=$(awk '
+  FNR == 1 { inf = 0 }
+  /^[ \t]*```/ { inf = !inf; next }
+  !inf { next }
+  /(^| )>>? *"?(\/tmp\/|\.tmp\/|\.\/|memory\/|output\/|\.pending|[A-Za-z0-9_.${}\/-]+\.(json|md|txt|log|csv|jsonl|html|out)([" ]|$))/ || /cat >/ || /\| *tee / {
+    print FILENAME ":" FNR ": redirect: " substr($0, 1, 100); next
+  }
+  /jq .*--(arg|argjson|rawfile|slurpfile) |\$ARGS|as \$[A-Za-z_]/ { print FILENAME ":" FNR ": jq var: " substr($0, 1, 100) }
+' skills/*/SKILL.md | grep -v '^skills/zzz-test-' || true)
+[ -z "$FENCED" ] && pass "no skill code block redirects into a file or uses a jq \$name variable" \
+  || bad "skill code blocks use refused shapes (pipe into the consumer, -o, a node writer, or literal jq values instead): $FENCED"
 
 echo "---"
 [ "$fail" = "0" ] && echo "ALL PASS" || echo "SOME FAILED"
