@@ -1,4 +1,4 @@
-//! token_vault — a minimal Internet Computer ledger canister used ONLY as a
+//! token_vault - a minimal Internet Computer ledger canister used ONLY as a
 //! canister-audit regression fixture. It is intentionally broken. Do not deploy
 //! or reuse.
 //!
@@ -38,7 +38,7 @@ fn require_owner() {
 
 /// Legitimate deposit: credits the caller and the running total together, so the
 /// invariant `sum(balances) <= total_deposited` is preserved. The anonymous
-/// principal is rejected — a deposit must be attributable to a real identity.
+/// principal is rejected - a deposit must be attributable to a real identity.
 #[ic_cdk::update]
 fn deposit(amount: u64) {
     let caller = msg_caller();
@@ -79,8 +79,8 @@ fn admin_set_total(new_total: u64) {
 /// INTENTIONAL FLAW (the point of this fixture): credits the caller's balance out
 /// of thin air. There is no anonymous-principal rejection, no owner guard, and it
 /// never touches `total_deposited`, so it breaks the accounting invariant
-/// `sum(balances) <= total_deposited` and lets ANY caller — the anonymous
-/// principal included — withdraw funds other users deposited. Pitfalls #2
+/// `sum(balances) <= total_deposited` and lets ANY caller - the anonymous
+/// principal included - withdraw funds other users deposited. Pitfalls #2
 /// (anonymous principal accepted) and #8 (unguarded state-changing admin method).
 #[ic_cdk::update]
 fn claim_bonus(amount: u64) {

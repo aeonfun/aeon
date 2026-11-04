@@ -34,7 +34,7 @@ Canister bugs are logic and economics on a message-passing model, not syntax. Th
 
 It is `sc-audit` with the EVM pieces swapped for IC pieces and the shared machinery reused unchanged: the PoC gate (`command` mode), disclosure routing, dedup ledger, coverage manifest, report shape, and the staging/allowlist pattern. The agentic source pass (§C5) is the **reliable core** and needs no toolchain; Semgrep and the PocketIC proof arm are best-effort extras, so a clean audit never depends on either succeeding.
 
-**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that **redirects into a file** (`> f`, `>> f`, `cat > f <<EOF`, `| tee f` — `/tmp` included), sets a variable (`REPO=...`), starts with `export`, uses `if` / `case` / `[ ... ]` tests, joins commands with `;` / `&&` / `||`, or uses `find` / `cp` / `rm` / `tr` / `printf` / `command -v`. So decide in prose from what each call printed, write the values you already know (`<WORKDIR>`, `<SCRATCH>`, `<TARGET_COMMIT>`, `<REPO>`, `<FIXTURE>`) into later commands **literally in place of the placeholder**, save tool output with a flag (`--output` / `-o`) or a `node -e` writer, copy files with `python3`, and write or append `sources.txt`/JSON artifacts with the **Write/Edit** tools. Only the working directory carries between calls; shell variables do not. `<SCRATCH>` is `/tmp/canister-audit` (the staging step sets `CARGO_TARGET_DIR` under it); `gh`, `git`, `cargo`, `semgrep`, `node`, `python3`, `mkdir`, `cd` are allowed by bare name (dep CVEs run via the `cargo audit` subcommand; the PocketIC server is launched by the repro's `pocket-ic` crate via `POCKET_IC_BIN`, not a bare command).
+**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that **redirects into a file** (`> f`, `>> f`, `cat > f <<EOF`, `| tee f` - `/tmp` included), sets a variable (`REPO=...`), starts with `export`, uses `if` / `case` / `[ ... ]` tests, joins commands with `;` / `&&` / `||`, or uses `find` / `cp` / `rm` / `tr` / `printf` / `command -v`. So decide in prose from what each call printed, write the values you already know (`<WORKDIR>`, `<SCRATCH>`, `<TARGET_COMMIT>`, `<REPO>`, `<FIXTURE>`) into later commands **literally in place of the placeholder**, save tool output with a flag (`--output` / `-o`) or a `node -e` writer, copy files with `python3`, and write or append `sources.txt`/JSON artifacts with the **Write/Edit** tools. Only the working directory carries between calls; shell variables do not. `<SCRATCH>` is `/tmp/canister-audit` (the staging step sets `CARGO_TARGET_DIR` under it); `gh`, `git`, `cargo`, `semgrep`, `node`, `python3`, `mkdir`, `cd` are allowed by bare name (dep CVEs run via the `cargo audit` subcommand; the PocketIC server is launched by the repro's `pocket-ic` crate via `POCKET_IC_BIN`, not a bare command).
 
 ## C1. Detect a Rust canister and select the target
 
@@ -50,7 +50,7 @@ Parse `${var}` in your head (don't script it): starts with `fixture:` → `MODE=
 
 ## C2. Get the code (fork a repo or copy a fixture)
 
-First capture `<WORKDIR>` (the aeon repo root — `memory/` and state live here) so every write lands in the real repo, not the throwaway target, and make the gitignored `.scan/` so build artifacts never touch the tracked tree:
+First capture `<WORKDIR>` (the aeon repo root - `memory/` and state live here) so every write lands in the real repo, not the throwaway target, and make the gitignored `.scan/` so build artifacts never touch the tracked tree:
 
 ```bash
 git rev-parse --show-toplevel
@@ -58,22 +58,22 @@ git rev-parse --show-toplevel
 
 Write that path in literally as `<WORKDIR>` from here on, then `mkdir -p <WORKDIR>/.scan`.
 
-- **`MODE=fixture`** — copy the bundled fixture into `.scan/` with `python3` (`cp`/`rm` are refused), then `cd` into the copy and audit it:
+- **`MODE=fixture`** - copy the bundled fixture into `.scan/` with `python3` (`cp`/`rm` are refused), then `cd` into the copy and audit it:
 
   ```bash
   python3 -c "import shutil,sys,os; d='<WORKDIR>/.scan/<FIXTURE>'; shutil.rmtree(d,ignore_errors=True); shutil.copytree('<WORKDIR>/skills/canister-audit/fixtures/<FIXTURE>', d); print('copied ->', d)"
   ```
 
   Then `cd <WORKDIR>/.scan/<FIXTURE>`. If the source dir is missing, record `no-fixture: <FIXTURE>` and exit clean.
-- **`MODE=repo`** — `cd <WORKDIR>/.scan`, then `gh repo fork <REPO> --clone --default-branch-only -- --depth 50 --quiet`, then `cd` into the clone's directory (the repo's basename).
+- **`MODE=repo`** - `cd <WORKDIR>/.scan`, then `gh repo fork <REPO> --clone --default-branch-only -- --depth 50 --quiet`, then `cd` into the clone's directory (the repo's basename).
 
 `<SCRATCH>` is `/tmp/canister-audit`; `mkdir -p /tmp/canister-audit` once. Each later Bash call is a fresh shell, so write `<SCRATCH>`/`<WORKDIR>` literally in every block (only `cd` carries over).
 
-Record the audited commit once — run `git rev-parse HEAD` and write the result in as `<TARGET_COMMIT>` (the PoC gate binds findings to it).
+Record the audited commit once - run `git rev-parse HEAD` and write the result in as `<TARGET_COMMIT>` (the PoC gate binds findings to it).
 
 ## C3. Stage the toolchain and harden the build
 
-`cargo` + the `wasm32-unknown-unknown` target, `cargo-audit` (RustSec dep CVEs), `semgrep`, and the **PocketIC** server binary are the canister toolchain. Each step self-guards with `command -v`, so a missing tool is skipped, never fatal - the agentic pass (§C5) is the reliable core. Staging splits two ways, same as sc-audit:
+`cargo` + the `wasm32-unknown-unknown` target, `cargo-audit` (RustSec dep CVEs), `semgrep`, and the **PocketIC** server binary are the canister toolchain. The workflow staging step guards each install with `command -v`; in-run you cannot (`command -v` is refused by Shell shape), so a tool that fails to run just means its step records `skipped` - decide that in prose from what the command printed, never fatal. The agentic pass (§C5) is the reliable core. Staging splits two ways, same as sc-audit:
 
 - **In-run (pip):** `semgrep` installs via the allow-listed `python3 -m pip`.
 - **Workflow-staged (binaries):** the `wasm32` target, `cargo-audit`, and the pinned PocketIC binary are provisioned by `scripts/stage-canister-audit.sh` before `claude -p` starts (the sandbox denies in-run toolchain installs, and a PATH export dies with the shell). When they are absent: Semgrep/cargo-audit degrade to `skipped` and the PoC arm (§C6.5) is skipped cleanly.
@@ -84,19 +84,19 @@ Record the audited commit once — run `git rev-parse HEAD` and write the result
 
 ## C4. Static scan - best-effort, degrade cleanly
 
-Run each tool as its own Bash call and save results with a **flag**, never a shell redirect (`>`/`>>`/`tee` into a file are refused — see Shell shape). IC Rust ruleset (a coarse first pass; see `references/ic-semgrep-rust.yml`) — `--output` writes the file:
+Run each tool as its own Bash call and save results with a **flag**, never a shell redirect (`>`/`>>`/`tee` into a file are refused - see Shell shape). IC Rust ruleset (a coarse first pass; see `references/ic-semgrep-rust.yml`) - `--output` writes the file:
 
 ```bash
 semgrep --quiet --json --output /tmp/canister-audit/semgrep.json --config <WORKDIR>/skills/canister-audit/references/ic-semgrep-rust.yml .
 ```
 
-Rust dependency CVEs (complements osv) — only when a `Cargo.lock` is present. `cargo audit` prints to stdout, so pipe it into a `node` writer (a `>` redirect is refused):
+Rust dependency CVEs (complements osv) - only when a `Cargo.lock` is present. `cargo audit` prints to stdout, so pipe it into a `node` writer (a `>` redirect is refused):
 
 ```bash
 cargo audit --json | node -e 'require("fs").writeFileSync("/tmp/canister-audit/cargo-audit.json", require("fs").readFileSync(0))'
 ```
 
-osv-scanner and TruffleHog `--only-verified` run exactly as vuln-scanner Arm A does (Rust `Cargo.lock` CVEs + verified secrets). Then record the tool statuses as the first lines of `/tmp/canister-audit/sources.txt` **with the Write tool** (`semgrep=ok|skipped`, `cargo-audit=ok|skipped`, `osv=...`, `trufflehog=...`) — a shell `>` is refused.
+osv-scanner and TruffleHog `--only-verified` run exactly as vuln-scanner Arm A does (Rust `Cargo.lock` CVEs + verified secrets). Then record the tool statuses as the first lines of `/tmp/canister-audit/sources.txt` **with the Write tool** (`semgrep=ok|skipped`, `cargo-audit=ok|skipped`, `osv=...`, `trufflehog=...`) - a shell `>` is refused.
 
 A static hit is a **candidate, not a finding** - every one goes through §C6. The ruleset is deliberately high-recall; the agentic pass is what confirms.
 
@@ -137,11 +137,14 @@ Merge `<SCRATCH>/semgrep.json` and `<SCRATCH>/agentic.json` and triage every can
 **HARD GATE - a clean audit NEVER builds a PoC.** Run this ONLY for a finding that survived §C6 with `severity` in `{high, critical}`. It reuses `scripts/vuln-poc-gate.sh` **`command` mode** - no new mode needed - which validates the finding JSON, binds it to `TARGET_COMMIT`, runs credential-isolated, and labels the finding `verified` only when the reproduction exits 0 without mutating the worktree.
 
 1. **Write the finding JSON** (`<SCRATCH>/poc/finding.json`): `{id, target_repo, target_commit, severity, attacker_controls, attacker_achieves}` - see `fixtures/token_vault/repro/finding.json` for the exact shape the gate validates (`attacker_controls`/`attacker_achieves` >= 10 chars, `target_commit` = `TARGET_COMMIT`).
-2. **Write the reproduction** (`<VULN_POC_DIR>/repro.sh`, default `/tmp/vuln-scan/poc`): build the audited commit to wasm32, load it into **PocketIC**, call the method as the **anonymous (or attacker) principal**, assert the prohibited outcome (the invariant break), and **exit 0 only when the boundary is crossed** - writing nothing into the target worktree (build + PocketIC state go to `$CARGO_TARGET_DIR`/`$TMPDIR`). `fixtures/token_vault/repro/repro.sh` + `tests/repro.rs` are the working template (anonymous principal mints a free balance).
-3. **Run the gate:**
+2. **Write the reproduction as its own crate - never edit the target's tree.** Adding a `pocket-ic` dev-dependency to the target's `Cargo.toml`, or dropping a `tests/repro.rs` into it, mutates the worktree and the gate rejects a dirty target (`target-worktree-dirty`). So stage a **separate repro crate** outside `<CLONE>` (under `<SCRATCH>/poc/repro-crate/`): its own `Cargo.toml` (`[dev-dependencies] pocket-ic`, `candid`, plus a `[workspace]` line so cargo treats it standalone) and a `tests/repro.rs`. The repro does **not** link the canister (ic-cdk canister code does not build for the host target) - it drives it through its wasm. Write the runner `repro.sh` to `/tmp/vuln-scan/poc/repro.sh` (the gate's default `POC_DIR`): it builds the audited commit with `cargo build --locked --manifest-path <CLONE>/Cargo.toml --target wasm32-unknown-unknown --release`, exports `CANISTER_WASM` to the built `.wasm`, then runs `cargo test --locked --manifest-path <SCRATCH>/poc/repro-crate/Cargo.toml --test repro`, which loads that wasm into **PocketIC**, calls the method as the **anonymous (or attacker) principal**, and asserts the prohibited outcome (the invariant break). Build + PocketIC state go to `$CARGO_TARGET_DIR`/`$TMPDIR`, so the target worktree stays pristine and the script **exits 0 only when the boundary is crossed**. `fixtures/token_vault/` is the working template: the pristine `token_vault` crate audited as the target, with the own-crate `repro/` (its `Cargo.toml` + `tests/repro.rs` + `repro.sh`) beside it - the anonymous principal mints a free balance.
+3. **Run the gate from the Aeon checkout, never from inside the clone.** §C2 left cwd inside the target; the gate must be the Aeon repo's own `./scripts/vuln-poc-gate.sh` (the write-tier allowlist is `Bash(./scripts/vuln-poc-gate.sh:*)`). Running `./scripts/...` from inside the clone would run a `scripts/vuln-poc-gate.sh` the target itself ships - unisolated, with the full env, free to fake a verdict - and is simply missing in fixture mode. So `cd <WORKDIR>` first, then pass the audited checkout as `--repo <CLONE>` - exactly as vuln-scanner §A4.5 does. `<CLONE>` is the dir you recorded `<TARGET_COMMIT>` from (`<WORKDIR>/.scan/<FIXTURE>` in fixture mode, the fork clone under `<WORKDIR>/.scan/` in repo mode). Two calls (one command each):
 
 ```bash
-./scripts/vuln-poc-gate.sh command --finding /tmp/canister-audit/poc/finding.json --repo . --script /tmp/vuln-scan/poc/repro.sh
+cd <WORKDIR>
+```
+```bash
+./scripts/vuln-poc-gate.sh command --finding /tmp/canister-audit/poc/finding.json --repo <CLONE> --script /tmp/vuln-scan/poc/repro.sh
 ```
 
 A `VULN_POC_VERIFIED` line = machine-proven; attach the prose repro privately (§C7). A clean/failed gate does **not** refute the §C5 reasoning - keep it and say so honestly. Needs the PocketIC binary (`POCKET_IC_BIN`) + wasm32 target staged (§C3); if `BUILD=fail` or PocketIC is absent, skip the arm and keep the agentic reasoning as the repro.

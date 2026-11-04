@@ -2,13 +2,15 @@
 //!
 //! Proves the boundary is crossed: the ANONYMOUS principal calls `claim_bonus`
 //! and walks away with a positive, withdrawable balance while `total_deposited`
-//! is still zero — breaking `sum(balances) <= total_deposited`.
+//! is still zero, breaking `sum(balances) <= total_deposited`.
 //!
-//! This is the dynamic proof arm (the IC analogue of sc-audit's Echidna/Medusa
-//! run). It is driven by `repro/repro.sh`, which builds the wasm first and sets
-//! `CANISTER_WASM`. It needs the PocketIC server binary (`POCKET_IC_BIN`),
-//! provisioned by `scripts/stage-canister-audit.sh` in the runner — so the test
-//! runs in CI / Epoch, not necessarily on a bare workstation.
+//! This test lives in a SEPARATE crate (token_vault_repro) beside the audited
+//! token_vault crate, so the pocket-ic dev-dep never touches the target's manifest.
+//! It drives the canister through its built wasm (no Rust dependency on token_vault;
+//! ic-cdk canister code does not link for the host). `repro/repro.sh` builds the
+//! audited crate to wasm32 first and sets `CANISTER_WASM`. It needs the PocketIC
+//! server binary (`POCKET_IC_BIN`), provisioned by `scripts/stage-canister-audit.sh`
+//! in the runner, so the test runs in CI / Epoch, not necessarily on a bare laptop.
 //!
 //! Pinned to the pocket-ic 16.x API (`update_call`/`query_call` return
 //! `Result<Vec<u8>, _>`). If you bump the crate in Cargo.toml and the call
@@ -58,7 +60,7 @@ fn anonymous_principal_mints_free_balance() {
     assert_eq!(anon_balance, 1_000, "anonymous principal minted a free balance");
     assert!(
         anon_balance > total_after,
-        "INVARIANT BROKEN: attacker balance {anon_balance} exceeds total_deposited {total_after} \
-         — this balance is withdrawable against other users' deposits"
+        "INVARIANT BROKEN: attacker balance {anon_balance} exceeds total_deposited {total_after}; \
+         this balance is withdrawable against other users' deposits"
     );
 }

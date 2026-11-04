@@ -3,7 +3,7 @@ name: ci-canister-audit-fixture
 # `cargo test --no-run`), so the token_vault fixture's planted flaw is proven to
 # reproduce: the anonymous principal mints a free, withdrawable balance via
 # claim_bonus, breaking sum(balances) <= total_deposited. Deterministic, no secrets
-# — the IC analogue of the sc-audit fuzz-arm regression. Only runs when the fixture
+# - the IC analogue of the sc-audit fuzz-arm regression. Only runs when the fixture
 # or this workflow changes (empty paths filter = cheap no-op otherwise).
 on:
   pull_request:
@@ -58,6 +58,9 @@ jobs:
         run: cargo build --locked --target wasm32-unknown-unknown --release
 
       - name: Run PocketIC reproduction (direct)
+        # The repro is a SEPARATE crate (repro/) so the audited token_vault crate stays
+        # pristine; run its test against the wasm the previous step built.
+        working-directory: skills/canister-audit/fixtures/token_vault/repro
         env:
           CARGO_TARGET_DIR: /tmp/canister-audit-target
           CANISTER_WASM: /tmp/canister-audit-target/wasm32-unknown-unknown/release/token_vault.wasm

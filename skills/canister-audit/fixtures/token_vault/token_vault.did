@@ -1,5 +1,5 @@
 service : {
-  // Legitimate paths — preserve sum(balances) <= total_deposited.
+  // Legitimate paths - preserve sum(balances) <= total_deposited.
   deposit : (nat64) -> ();
   withdraw : (nat64) -> ();
   // Properly guarded admin method (negative control: must NOT be flagged).

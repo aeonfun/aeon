@@ -5,18 +5,20 @@
 #   1. PATH/env persistence. Claude runs each Bash tool call in a FRESH shell, so an
 #      in-run `export PATH=/tmp/bin:$PATH` / `export POCKET_IC_BIN=...` is gone by the
 #      next call. Only a workflow step can append to $GITHUB_PATH / $GITHUB_ENV, which
-#      makes /tmp/bin and POCKET_IC_BIN visible to every SUBSEQUENT step — including
-#      `claude -p` and its per-call subshells — so the bare names and the env var
+#      makes /tmp/bin and POCKET_IC_BIN visible to every SUBSEQUENT step - including
+#      `claude -p` and its per-call subshells - so the bare names and the env var
 #      resolve.
 #   2. Install vectors. `rustup target add`, `cargo install`, and a release-binary
 #      download aren't on the `claude -p` --allowedTools allowlist, so staging here
 #      (full capability, no allowlist) is simplest. semgrep DOES install in-run via
 #      `python3 -m pip` (the skill keeps that as a fallback).
 #
-# EXECUTION of the staged tools is a separate concern, gated by the write-tier grant
-# in scripts/skill_mode.sh (Bash(cargo:*), Bash(cargo-audit:*), Bash(semgrep:*),
-# Bash(pocket-ic:*), Bash(./scripts/vuln-poc-gate.sh:*)). Both halves are needed:
-# staged + on PATH here, allowlisted there.
+# EXECUTION of the staged tools is a separate concern. The only extra write-tier grant
+# canister-audit needs is Bash(./scripts/vuln-poc-gate.sh:*) (see scripts/skill_mode.sh):
+# cargo and semgrep run via the base write-tier tools, cargo-audit is the `cargo audit`
+# subcommand (not a separate binary), and pocket-ic is launched by the `pocket-ic` crate
+# via POCKET_IC_BIN, never as a bare command - so neither takes its own grant. Both halves
+# are still needed: staged + on PATH here, allowlisted (or base-tier) there.
 #
 # The wasm32 target + cargo-audit power the static dependency pass; the PocketIC
 # server powers the OPTIONAL PoC proof arm (SKILL.md §C6.5). If any is absent the
@@ -28,9 +30,10 @@
 # updating POCKETIC_VERSION, BOTH per-arch digests, AND the `pocket-ic` crate pin in
 # skills/canister-audit/fixtures/*/Cargo.toml (crate and server share versioning).
 #
-# No-op for every skill except canister-audit. Best-effort: a tool that fails to
-# install is recorded `fail`/`skipped` and left for the skill to skip via its
-# `command -v` guard; a non-zero exit is non-fatal (the step does not gate the run).
+# No-op for every skill except canister-audit. Best-effort: a tool that fails to install
+# is recorded `fail`/`skipped` in the manifest; the skill then treats that tool's step as
+# skipped, deciding from what the tool prints (it cannot call `command -v` itself, per the
+# SKILL's Shell shape). A non-zero exit here is non-fatal (the step does not gate the run).
 set -uo pipefail
 
 SKILL="${1:-}"
@@ -63,7 +66,7 @@ fi
 # --- Rust wasm32 target + cargo-audit. GHA hosted runners ship stable Rust; add the
 #     canister build target and the RustSec dep auditor. cargo-audit is cache-backed. ---
 if ! command -v rustup >/dev/null 2>&1; then
-  log "WARN rustup absent — cannot add wasm32 target"; record wasm32 fail
+  log "WARN rustup absent - cannot add wasm32 target"; record wasm32 fail
 elif rustup target add wasm32-unknown-unknown >/dev/null 2>&1; then
   log "wasm32-unknown-unknown target added"; record wasm32 installed
 else
@@ -80,7 +83,7 @@ elif command -v cargo >/dev/null 2>&1 && cargo install cargo-audit --locked >/de
   cp -f "$(command -v cargo-audit)" "$CACHE_BIN/cargo-audit" 2>/dev/null || true
   log "cargo-audit installed"; record cargo-audit installed
 else
-  log "cargo-audit not installed (optional — dep CVEs still covered by osv)"; record cargo-audit skipped
+  log "cargo-audit not installed (optional - dep CVEs still covered by osv)"; record cargo-audit skipped
 fi
 
 # --- PocketIC server (PoC proof arm, §C6.5). Pinned release asset + sha256. ---
@@ -122,7 +125,7 @@ if [ -x "$BIN/pocket-ic" ] && [ -n "${GITHUB_ENV:-}" ]; then
   echo "POCKET_IC_BIN=$BIN/pocket-ic" >> "$GITHUB_ENV"
 fi
 # Point cargo at a scratch target dir so canister builds never touch the tracked tree
-# (the SKILL relies on this being set here — `export` is refused in-run). /tmp/canister-audit
+# (the SKILL relies on this being set here - `export` is refused in-run). /tmp/canister-audit
 # is created above.
 if [ -n "${GITHUB_ENV:-}" ]; then
   echo "CARGO_TARGET_DIR=/tmp/canister-audit/target" >> "$GITHUB_ENV"
