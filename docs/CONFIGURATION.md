@@ -99,6 +99,8 @@ schedule:
 
 Claude only installs and runs when a skill actually matches - non-matching ticks cost ~10s.
 
+GitHub often fires the scheduler only a few times a day, so a missed slot stays owed for up to 23 hours: any later tick inside that window dispatches it once (`CATCHUP_HOURS`, passed by `scheduler.yml` to `scripts/cron-due.sh`). The window stays under a day so a daily slot is never paid twice. (#1317)
+
 ## Circuit breaker (outage protection)
 
 The scheduler trips a per-skill circuit breaker once a skill logs **3 consecutive failures** (`consecutive_failures` in `memory/cron-state.json`). While tripped it stops dispatching that skill every tick - so a dead upstream API or a revoked key can't burn a run every `*/5` for hours - and instead lets **one probe run through every 6 hours** (half-open), but never more often than the skill's own schedule: a probe also waits for the skill's next scheduled slot, so a weekly skill in an outage is probed weekly, not 4 times a day. A probe that succeeds resets the counter and the skill resumes its normal schedule automatically; a probe that fails re-arms the cooldown. It is auto-recovering, not a kill switch, so an outage self-heals with no operator action. `skill-health` already reports CRITICAL at the same threshold, so a tripped breaker is visible.
