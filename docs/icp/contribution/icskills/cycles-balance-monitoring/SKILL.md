@@ -1,6 +1,8 @@
 ---
 name: cycles-balance-monitoring
 description: Watch an Internet Computer canister's cycles balance and alert before it drops below the runway needed to avoid freezing and halting.
+license: Apache-2.0
+compatibility: "dfx or ic-agent with a controller identity (cycles are controller-gated)"
 metadata:
   title: Cycles Balance Monitoring
   category: Infrastructure

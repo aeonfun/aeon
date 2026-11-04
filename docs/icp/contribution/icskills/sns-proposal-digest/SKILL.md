@@ -1,6 +1,8 @@
 ---
 name: sns-proposal-digest
 description: Summarize Internet Computer governance - new and open NNS proposals and SNS DAO proposals - so a reviewer sees what is up for a vote without watching the dashboard.
+license: Apache-2.0
+compatibility: "network access to the IC dashboard + SNS API"
 metadata:
   title: SNS Proposal Digest
   category: Governance

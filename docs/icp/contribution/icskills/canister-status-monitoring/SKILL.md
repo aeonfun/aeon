@@ -1,6 +1,8 @@
 ---
 name: canister-status-monitoring
 description: Monitor an Internet Computer canister's control plane - its controllers, module hash (upgrades), and whether it is still indexed - and detect the moment any of them changes.
+license: Apache-2.0
+compatibility: "network access to the IC dashboard API (ic-api.internetcomputer.org)"
 metadata:
   title: Canister Status Monitoring
   category: Infrastructure

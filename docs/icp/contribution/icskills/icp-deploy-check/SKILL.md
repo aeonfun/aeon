@@ -1,6 +1,8 @@
 ---
 name: icp-deploy-check
 description: A pre-deploy safety checklist for an Internet Computer Rust canister - verify the deploy-time footguns from the canister-security guidance before shipping to mainnet.
+license: Apache-2.0
+compatibility: "a local Rust canister repo to inspect; no network"
 metadata:
   title: ICP Deploy Check
   category: Security
