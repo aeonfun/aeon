@@ -227,10 +227,8 @@ Writes:
 
 ```bash
 mkdir -p memory/topics output/articles
-[ -f memory/topics/pr-merge-state.json ] || cat > memory/topics/pr-merge-state.json <<'EOF'
-{"last_run":null,"last_status":null,"last_repo":null,"prs":{}}
-EOF
 ```
+Then check for `memory/topics/pr-merge-state.json` with Glob; if it is missing, create it with the Write tool holding `{"last_run":null,"last_status":null,"last_repo":null,"prs":{}}`. (A `[ -f ] ||` test and a `cat > file` heredoc are both refused in this run.)
 
 If `jq empty` fails on the state file (corrupt JSON from an aborted write), back it up to `.bak`, reset to the empty template, and tag the run `STATE_CORRUPT`. Continue — a fresh state file means re-notifying every currently-open PR as "new" on this one run, which is the safer post-corruption outcome than silently skipping a SKILL_BLOCK PR the operator hadn't seen yet.
 
@@ -247,10 +245,11 @@ The `--survey`/`survey` token has already been consumed by the shared preamble. 
 
 ### 2. Pull the open-PR list
 
+With TARGET_REPO written in literally. A `>` redirect into a file is refused in this run, so the output reaches `/tmp/pr-merge-prs.json` through a piped one-line `node` writer (the same applies to every /tmp file below):
 ```bash
-gh api "repos/${TARGET_REPO}/pulls?state=open&per_page=100" --paginate \
+gh api "repos/<TARGET_REPO>/pulls?state=open&per_page=100" --paginate \
   --jq '[.[] | {number, title, user_login: .user.login, draft, base_ref: .base.ref, head_sha: .head.sha, created_at, updated_at, mergeable_state, labels: [.labels[].name]}]' \
-  > /tmp/pr-merge-prs.json
+  | node -e 'require("fs").writeFileSync("/tmp/pr-merge-prs.json", require("fs").readFileSync(0))'
 ```
 
 If `gh api` fails (non-zero exit) → log `PR_MERGE_QUEUE_API_FAIL: pulls list`, write a one-line notification (`pr-review --survey: GitHub API failed listing open PRs for ${TARGET_REPO}`), exit `API_FAIL`. The pulls endpoint is the floor — if it can't be read, every downstream step is meaningless.
@@ -263,10 +262,11 @@ Bot/trusted-author short-circuit: build `TRUSTED_LOGINS` from the `## Trusted Au
 
 For each PR (skip drafts and skip TRUSTED_AUTHOR PRs in this step — drafts are signals the contributor isn't done; trusted-author PRs route through auto-merge):
 
+One call per PR, TARGET_REPO and PR_NUMBER written in literally:
 ```bash
-gh api "repos/${TARGET_REPO}/pulls/${PR_NUMBER}/files?per_page=100" --paginate \
+gh api "repos/<TARGET_REPO>/pulls/<PR_NUMBER>/files?per_page=100" --paginate \
   --jq '[.[] | {filename, status}]' \
-  > "/tmp/pr-merge-files-${PR_NUMBER}.json"
+  | node -e 'require("fs").writeFileSync("/tmp/pr-merge-files-<PR_NUMBER>.json", require("fs").readFileSync(0))'
 ```
 
 If the files endpoint fails for a single PR → tag the PR `bucket=UNKNOWN`, `scan_verdict=files_api_fail`, skip its scan but **keep it in the digest** as an UNKNOWN row at the bottom (silently dropping a PR from a triage digest is the failure mode this skill exists to prevent). Continue to the next PR.
@@ -288,13 +288,17 @@ Note: **CORE_REVIEW takes precedence over INFRA_REVIEW takes precedence over SKI
 
 ### 5. Per-skill security scan (only for PRs that touched at least one `skills/*/SKILL.md`)
 
-For each `SKILL.md` path changed in such a PR:
+For each `SKILL.md` path changed in such a PR, two calls with TARGET_REPO, PR_NUMBER, the changed path (`<SKILL_PATH>`), the head SHA and `<PATH_SLUG>` (the path with every `/` turned into `_`, worked out by you) written in literally. Fetch the file:
 
 ```bash
-gh api "repos/${TARGET_REPO}/contents/${PATH}?ref=${HEAD_SHA}" \
-  --jq '.content' | base64 -d > "/tmp/pr-merge-scan-${PR_NUMBER}-$(echo ${PATH} | tr '/' '_').md"
-bash scripts/skill-scan.sh "/tmp/pr-merge-scan-${PR_NUMBER}-$(echo ${PATH} | tr '/' '_').md" > "/tmp/pr-merge-scan-${PR_NUMBER}.out" 2>&1
+gh api "repos/<TARGET_REPO>/contents/<SKILL_PATH>?ref=<HEAD_SHA>" \
+  --jq '.content' | base64 -d | node -e 'require("fs").writeFileSync("/tmp/pr-merge-scan-<PR_NUMBER>-<PATH_SLUG>.md", require("fs").readFileSync(0))'
 ```
+Then scan it; the scan prints its verdict, so read it from the call's output (no `.out` file):
+```bash
+timeout 120 bash scripts/skill-scan.sh "/tmp/pr-merge-scan-<PR_NUMBER>-<PATH_SLUG>.md" 2>&1
+```
+(`bash ...` on its own is refused; the `timeout` wrapper is the allowed form in this tier.)
 
 The scan output's first HIGH/MEDIUM/PASS verdict line is taken as the per-file verdict. PR-level verdict is the **worst** across all scanned files: any HIGH → `BLOCK`; otherwise any MEDIUM → `WARN`; otherwise `PASS`.
 

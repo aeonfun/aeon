@@ -238,8 +238,9 @@ If all skills healthy, the body-only shortcut from step 6 still fires (once per 
 
 ### 2. Pull the run snapshot
 
+With WINDOW_HOURS written in literally. A shell `>` redirect into a file is refused in this run, so the JSON reaches its file through a piped one-line `node` writer:
 ```bash
-./scripts/skill-runs --json --hours $WINDOW_HOURS > output/.chains/skill-analytics-runs.json 2>/dev/null
+./scripts/skill-runs --json --hours <WINDOW_HOURS> 2>/dev/null | node -e 'require("fs").writeFileSync("output/.chains/skill-analytics-runs.json", require("fs").readFileSync(0))'
 ```
 
 If the script fails (auth, rate limit, network error) or the JSON is empty:

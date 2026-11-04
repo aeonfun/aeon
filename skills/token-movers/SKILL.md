@@ -63,9 +63,9 @@ Produce an **actionable** movers report. Plain % change lists are noise — the 
 
 Fetch market data and trending coins in parallel. Request multi-timeframe changes for context.
 
-**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`CG_HDR=(...)`, `TMPDIR=$(mktemp -d)`, `RPC="..."`), uses `if` / `for` / `[ ... ] &&` tests, defines a shell function, uses `mktemp` or `sleep`, or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn. So each fetch below is its own call with every value (network, contract, pool, RPC URL) written in literally (the `<NETWORK>`, `<RPC_URL>` style placeholders), the key-or-no-key choice is made by you from the one-line key check, the rate-limit backoff is curl's own `--retry`, and every status flag is noted by you from what each call printed.
+**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`CG_HDR=(...)`, `TMPDIR=$(mktemp -d)`, `RPC="..."`), uses `if` / `for` / `[ ... ] &&` tests, defines a shell function, uses `mktemp` or `sleep`, or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn. So each fetch below is its own call with every value (network, contract, pool, RPC URL) written in literally (the `<NETWORK>`, `<RPC_URL>` style placeholders), the key-or-no-key choice is made by you from the run notes' key list, the rate-limit backoff is curl's own `--retry`, every status flag is noted by you from what each call printed, responses land in files through `-o` (a `>` redirect into a file is refused, /tmp included), and the xAI body is piped straight into `./secretcurl`.
 
-CoinGecko auth: a free/Demo key (the common case) authenticates on `api.coingecko.com` with the `x-cg-demo-api-key` header - send it only when a key is set; without one the same public endpoint still works at a lower rate limit. (A paid Pro key instead uses `pro-api.coingecko.com` with `x-cg-pro-api-key`.) Pass the key through `./secretcurl`'s `{ENV_NAME}` placeholder so no `$SECRET` ever lands on the command line (a bare `$COINGECKO_API_KEY` is refused by the Bash permission analyzer). Check whether `COINGECKO_API_KEY` is set with its own call, `[ -n "${COINGECKO_API_KEY:+x}" ] && echo KEY_PRESENT || echo KEY_UNSET`: when it printed `KEY_PRESENT`, include `-H "x-cg-demo-api-key: {COINGECKO_API_KEY}"` as shown; when it is not, drop that `-H` so the call stays keyless-public. Two calls.
+CoinGecko auth: a free/Demo key (the common case) authenticates on `api.coingecko.com` with the `x-cg-demo-api-key` header - send it only when a key is set; without one the same public endpoint still works at a lower rate limit. (A paid Pro key instead uses `pro-api.coingecko.com` with `x-cg-pro-api-key`.) Pass the key through `./secretcurl`'s `{ENV_NAME}` placeholder so no `$SECRET` ever lands on the command line (a bare `$COINGECKO_API_KEY` is refused by the Bash permission analyzer). Key check: read the "Keys set for this run" line in your run notes, never a shell test (those are refused and cost a turn). When `COINGECKO_API_KEY` is on that line, include `-H "x-cg-demo-api-key: {COINGECKO_API_KEY}"` as shown; when it is not, drop that `-H` so the call stays keyless-public. Two calls.
 
 Top 250 coins by market cap with 1h, 24h, and 7d % change:
 ```bash
@@ -591,17 +591,14 @@ Save to `output/articles/token-report-${today}.md`:
 
 ### 6. Social sentiment (conditional)
 
-If `XAI_API_KEY` is set:
+If `XAI_API_KEY` is set (it is on the run notes' "Keys set for this run" line), build the body with `jq -n`, the symbol and contract written into the filter literally, and pipe it straight into the send in one call (a `>` redirect into a file is refused in this run):
 
 ```bash
-jq -n '{model:"grok-4.7", input:[{role:"user",content:"Search X for TOKEN_SYMBOL or CONTRACT_ADDRESS mentions in the last 24 hours with at least 10 likes. Return up to 5 notable tweets with @handle, engagement counts, and a one-line summary of the claim or vibe. Exclude obvious bots and generic shill posts."}], tools:[{type:"x_search"}]}' > /tmp/xai-tm-payload.json
-```
-Then send it in its own call:
-```bash
-./secretcurl -s -X POST "https://api.x.ai/v1/responses" \
+jq -n '{model:"grok-4.7", input:[{role:"user",content:"Search X for TOKEN_SYMBOL or CONTRACT_ADDRESS mentions in the last 24 hours with at least 10 likes. Return up to 5 notable tweets with @handle, engagement counts, and a one-line summary of the claim or vibe. Exclude obvious bots and generic shill posts."}], tools:[{type:"x_search"}]}' \
+  | ./secretcurl -s -X POST "https://api.x.ai/v1/responses" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer {XAI_API_KEY}" \
-  -d @/tmp/xai-tm-payload.json
+  --data-binary @-
 ```
 
 If the response has fewer than 2 tweets that clear the engagement bar, skip the Social Pulse section and set `xai=skip`. On API error, set `xai=fail` and skip. If `XAI_API_KEY` is not set, set `xai=skip`. Only `xai=ok` adds the X search line to the Sources block; on `skip` or `fail` it goes on the `Not used:` line, and the article cites no X post at all (not in Social Pulse, Context or What changed), even one found some other way.

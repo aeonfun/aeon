@@ -65,6 +65,10 @@ run
 check jq -e '.passed and .harness == "claude" and .requested_model == ""' output/result.json
 check grep -qx read-only output/args
 check grep -q 'Bash(./notify:' output/args
+# The run notes name the declared key the synthetic env set, never its value.
+check grep -q 'Keys set for this run: XAI_API_KEY\.' output/args
+if grep -q 'DRYRUN' output/args; then echo 'FAIL: run notes leaked a synthetic key value'; exit 1; fi
+count=$((count+1))
 if grep -q 'Bash(git:' output/args; then echo 'FAIL: read-only got write tools'; exit 1; fi
 count=$((count+1))
 run 'literal demo input' --harness codex --model gpt-6-astra

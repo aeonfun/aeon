@@ -152,7 +152,7 @@ Chain → network slug: `ethereum=eth-mainnet`, `base=base-mainnet`, `arbitrum=a
 
 **Path B — Etherscan v2 unified** (fallback, if Alchemy path fails or key unset).
 
-Single endpoint, all 50+ chains via `chainid`. Works keyless at lower rate limit. Check the key once with its own call, `[ -n "${ETHERSCAN_API_KEY:+x}" ] && echo KEY_PRESENT || echo KEY_UNSET`, and append it only on `KEY_PRESENT`: then `<KEYQ>` below is `&apikey={ETHERSCAN_API_KEY}` (./secretcurl's placeholder; a bare `$ETHERSCAN_API_KEY` is refused by the Bash permission analyzer), otherwise `<KEYQ>` is left out (keyless works). Chain id, address and decimal blocks are written in literally, one call each.
+Single endpoint, all 50+ chains via `chainid`. Works keyless at lower rate limit. Key check: read the "Keys set for this run" line in your run notes, never a shell test (those are refused and cost a turn). Append the key only when `ETHERSCAN_API_KEY` is on that line: then `<KEYQ>` below is `&apikey={ETHERSCAN_API_KEY}` (./secretcurl's placeholder; a bare `$ETHERSCAN_API_KEY` is refused by the Bash permission analyzer), otherwise `<KEYQ>` is left out (keyless works). Chain id, address and decimal blocks are written in literally, one call each.
 
 Wallet, token transfers:
 ```bash
@@ -208,7 +208,7 @@ Required fields per event (normalised across Alchemy / Etherscan payloads):
 
 ### 3. USD-enrich in one bulk call
 
-Collect distinct `(chain, token_contract)` pairs from decoded transfers. Bulk price via CoinGecko, one call per chain with the chain and the comma-joined contracts written in literally. `<CGQ>` is `&x_cg_demo_api_key={COINGECKO_API_KEY}` when `[ -n "${COINGECKO_API_KEY:+x}" ] && echo KEY_PRESENT || echo KEY_UNSET` (its own call) printed `KEY_PRESENT`, otherwise it is left out:
+Collect distinct `(chain, token_contract)` pairs from decoded transfers. Bulk price via CoinGecko, one call per chain with the chain and the comma-joined contracts written in literally. `<CGQ>` is `&x_cg_demo_api_key={COINGECKO_API_KEY}` when `COINGECKO_API_KEY` is on the "Keys set for this run" line in your run notes (never a shell test: those are refused and cost a turn), otherwise it is left out:
 
 ```bash
 ./secretcurl -m 10 -s "https://api.coingecko.com/api/v3/simple/token_price/<CHAIN>?contract_addresses=<JOINED>&vs_currencies=usd<CGQ>"

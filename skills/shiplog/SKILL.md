@@ -119,10 +119,7 @@ Read the prior snapshot `memory/state/shiplog-stars.json` (if present): `delta =
 
 `TWITTER_API_KEY` is **injected into this skill's environment** (declared in `requires:`) and is the primary way to read X. twitterapi.io returns **structured tweet objects** - exact engagement counts, real permalinks, parsed fields - so you read ground-truth data instead of free text and **fabrication risk is gone**. It is also fast (~700ms). Grok `x_search` (`XAI_API_KEY`) stays wired as a demoted fallback.
 
-**Check the key first:**
-```bash
-[ -n "$TWITTER_API_KEY" ] && echo KEY_PRESENT || echo KEY_UNSET
-```
+**Check the key first:** read the "Keys set for this run" line in your run notes, never a shell test (those are refused and cost a turn). `TWITTER_API_KEY` on that line = `KEY_PRESENT`, not on it = `KEY_UNSET`.
 
 There are two X sources here - the **operator** handle (`OPERATOR_HANDLE`, the operator's own X account from `memory/products.md`) and the **product/project** accounts (`PRODUCT_HANDLES`). Fetch each independently into its own tmp file so one failing source can't clobber or sink another.
 
@@ -135,11 +132,11 @@ There are two X sources here - the **operator** handle (`OPERATOR_HANDLE`, the o
 ```
 On `HTTP=200`, parse `.data.tweets[]` (`createdAt` is Twitter's native `Day Mon DD HH:MM:SS +0000 YYYY` string; the `strptime` normalizes it to a date for the window compare); paginate with `&cursor=<next_cursor>` when `.has_next_page` is true and older in-window posts remain:
 ```bash
-jq -r --arg since "<SINCE_DATE>" '
+jq -r '
   .data.tweets[]
-  | (try (.createdAt | strptime("%a %b %d %H:%M:%S %z %Y") | strftime("%Y-%m-%d")) catch (.createdAt[0:10])) as $d
-  | select($d >= $since)
-  | [.id, $d, .isReply, .likeCount, .retweetCount, .replyCount, .url, .text] | @tsv' /tmp/tw-operator.json
+  | .day = (try (.createdAt | strptime("%a %b %d %H:%M:%S %z %Y") | strftime("%Y-%m-%d")) catch (.createdAt[0:10]))
+  | select(.day >= "<SINCE_DATE>")
+  | [.id, .day, .isReply, .likeCount, .retweetCount, .replyCount, .url, .text] | @tsv' /tmp/tw-operator.json
 ```
 Separate **original posts** from **replies/RTs** (`.isReply`, or text starting `RT @`) - RTs are amplification, not ships.
 
@@ -154,28 +151,24 @@ jq -r '.tweets[] | [.author.userName, .createdAt, .likeCount, .retweetCount, .re
 ```
 Supported query operators: `from: to: url: lang: #tag @mention since: until:`, `OR`/`AND`, quoted phrases. There is **no `list:` operator**.
 
-For each source, mark `x_source=twitterapi` on a `200` with parsed rows. **On a real failure, skip that source with the true reason - never fabricate posts** (with structured objects there is no fabrication risk, but the skip-on-real-failure rule still holds). Reason codes: `key-unset` (only if the check printed `KEY_UNSET`), `http-<code>` (non-2xx), `empty` (200 but no tweets parsed), `timeout` (exceeded `--max-time`).
+For each source, mark `x_source=twitterapi` on a `200` with parsed rows. **On a real failure, skip that source with the true reason - never fabricate posts** (with structured objects there is no fabrication risk, but the skip-on-real-failure rule still holds). Reason codes: `key-unset` (only if the key check gave `KEY_UNSET`), `http-<code>` (non-2xx), `empty` (200 but no tweets parsed), `timeout` (exceeded `--max-time`).
 
 **Path B - xAI Grok `x_search` (fallback).** Only if a source's Path A returned non-2xx, empty, or timed out. `XAI_API_KEY` is also injected (`requires:`). `x_search` runs a live X search and typically takes 30-120s - when you invoke the Bash tool for these curls, **set the tool's `timeout` to at least 180000 (180s)**; each curl carries `--max-time 150` so it fails cleanly instead of hanging. **A slow curl is not a missing key - never treat a timeout as key-unavailable.**
 
-Each source is two calls: build the body with `jq -n` (values written in literally), then send it in its own call. Keep `-w '%{http_code}'` exactly on the xAI send (secretcurl's retry reads it); secretcurl itself prints an `http=... bytes=...` line on stderr.
+Each source is one call: build the body with `jq -n` (values written into the filter literally: a jq `$name` variable and a `>` redirect into a file are both refused; a `"` inside a value becomes `\"`, and reword any `'`) and pipe it straight into the send. Keep `-w '%{http_code}'` exactly on the xAI send (secretcurl's retry reads it); secretcurl itself prints an `http=... bytes=...` line on stderr.
 
 *Operator posts* (`SRC=operator`):
 ```bash
-jq -n --arg h "<OPERATOR_HANDLE>" --arg sd "<SINCE_DATE>" --arg td "<TODAY>" '{model:"grok-4.7", input:[{role:"user", content:("Search X for posts by @" + $h + " between " + $sd + " and " + $td + ". Return each post with full text, date, type (original|reply|RT - an RT text starts with \"RT @\"), exact engagement counts (likes, retweets, replies; 0 if unknown), and the direct link https://x.com/" + $h + "/status/ID. Return chronological.")}], tools:[{type:"x_search"}]}' > /tmp/xai-shiplog-operator-payload.json
-```
-```bash
-./secretcurl -s -o /tmp/xai-shiplog-operator.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
-  -H "Content-Type: application/json" -H "Authorization: Bearer {XAI_API_KEY}" -d @/tmp/xai-shiplog-operator-payload.json
+jq -n '{model:"grok-4.7", input:[{role:"user", content:"Search X for posts by @<OPERATOR_HANDLE> between <SINCE_DATE> and <TODAY>. Return each post with full text, date, type (original|reply|RT - an RT text starts with \"RT @\"), exact engagement counts (likes, retweets, replies; 0 if unknown), and the direct link https://x.com/<OPERATOR_HANDLE>/status/ID. Return chronological."}], tools:[{type:"x_search"}]}' \
+  | ./secretcurl -s -o /tmp/xai-shiplog-operator.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
+  -H "Content-Type: application/json" -H "Authorization: Bearer {XAI_API_KEY}" --data-binary @-
 ```
 
 *Product/project accounts* (`SRC=projects`):
 ```bash
-jq -n --arg sd "<SINCE_DATE>" --arg td "<TODAY>" --arg ph "<PRODUCT_HANDLES>" '{model:"grok-4.7", input:[{role:"user", content:("Search X for posts between " + $sd + " and " + $td + " from these accounts: " + $ph + ". Focus on launches, announcements, and any brag about a security fix merged into another project. For each: @handle, full text, date, exact engagement counts (likes, retweets, replies; 0 if unknown), and the direct link https://x.com/handle/status/ID. Skip retweets of others.")}], tools:[{type:"x_search"}]}' > /tmp/xai-shiplog-projects-payload.json
-```
-```bash
-./secretcurl -s -o /tmp/xai-shiplog-projects.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
-  -H "Content-Type: application/json" -H "Authorization: Bearer {XAI_API_KEY}" -d @/tmp/xai-shiplog-projects-payload.json
+jq -n '{model:"grok-4.7", input:[{role:"user", content:"Search X for posts between <SINCE_DATE> and <TODAY> from these accounts: <PRODUCT_HANDLES>. Focus on launches, announcements, and any brag about a security fix merged into another project. For each: @handle, full text, date, exact engagement counts (likes, retweets, replies; 0 if unknown), and the direct link https://x.com/handle/status/ID. Skip retweets of others."}], tools:[{type:"x_search"}]}' \
+  | ./secretcurl -s -o /tmp/xai-shiplog-projects.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
+  -H "Content-Type: application/json" -H "Authorization: Bearer {XAI_API_KEY}" --data-binary @-
 ```
 
 For each source, on `HTTP=200` with a non-empty body, parse that source's file with the standard extractor and mark `x_source=xai`:
@@ -184,7 +177,7 @@ jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "ou
 ```
 From the **operator** text, separate **original posts** from **RTs** (RT text starts with `RT @`) — RTs are amplification, not ships. From the **projects** text, note the bangers (sort by likes/views) — one or two feed the digest's narrative section.
 
-**On a real failure, skip that source — never fabricate posts.** If a source's curl returns non-200, an empty/unparseable body, or times out, record the **true reason** for that source and continue with whatever other sources succeeded. Reason codes: `key-unset` (only if the check above printed `KEY_UNSET`), `http-<code>` (non-2xx), `empty` (200 but no posts parsed), `timeout` (exceeded `--max-time`). Never write "XAI_API_KEY unavailable" when the key was set.
+**On a real failure, skip that source — never fabricate posts.** If a source's curl returns non-200, an empty/unparseable body, or times out, record the **true reason** for that source and continue with whatever other sources succeeded. Reason codes: `key-unset` (only if the key check above gave `KEY_UNSET`), `http-<code>` (non-2xx), `empty` (200 but no posts parsed), `timeout` (exceeded `--max-time`). Never write "XAI_API_KEY unavailable" when the key was set.
 
 **Path C - WebFetch (last resort, per source).** Only if a source failed BOTH Path A and Path B for one of the real reasons above: WebFetch that source's public `https://x.com/<handle>` profile(s), no auth, and mark that source `x_source=webfetch` (lower quality; prefer posts inside the window). If every X source fails all paths, set `x_source=none` and write the GitHub-only shiplog (note the gap) - **never abort**.
 
@@ -202,11 +195,9 @@ From the **operator** text, separate **original posts** from **RTs** (RT text st
   ```
   On `HTTP=200` with parsed rows, mark `x_source=twitterapi` and capture `.author.followers` when present for the flex ("featured by @X (Nk)"; follower counts are best-effort on search results). **Path B (fallback): xAI Grok `x_search`** - only on a real Path A failure (`http-<code>` / `empty` / `timeout` / `key-unset`), the same curl shape as Step 3 Path B, into its own tmp file:
   ```bash
-  jq -n --arg sd "<SINCE_DATE>" --arg td "<TODAY>" --arg es "<ECOSYSTEM_SCOUTS>" --arg ph "<PRODUCT_HANDLES>" '{model:"grok-4.7", input:[{role:"user", content:("Search X between " + $sd + " and " + $td + " for posts from these recap/scout accounts: " + $es + " that mention any of these products: " + $ph + ". Return each mention with @handle, follower_count, full text, date, and the direct link https://x.com/handle/status/ID - recaps, rankings, partner shares.")}], tools:[{type:"x_search"}]}' > /tmp/xai-shiplog-ecosystem-payload.json
-  ```
-  ```bash
-  ./secretcurl -s -o /tmp/xai-shiplog-ecosystem.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
-    -H "Content-Type: application/json" -H "Authorization: Bearer {XAI_API_KEY}" -d @/tmp/xai-shiplog-ecosystem-payload.json
+  jq -n '{model:"grok-4.7", input:[{role:"user", content:"Search X between <SINCE_DATE> and <TODAY> for posts from these recap/scout accounts: <ECOSYSTEM_SCOUTS> that mention any of these products: <PRODUCT_HANDLES>. Return each mention with @handle, follower_count, full text, date, and the direct link https://x.com/handle/status/ID - recaps, rankings, partner shares."}], tools:[{type:"x_search"}]}' \
+    | ./secretcurl -s -o /tmp/xai-shiplog-ecosystem.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
+    -H "Content-Type: application/json" -H "Authorization: Bearer {XAI_API_KEY}" --data-binary @-
   ```
   On `HTTP=200` + non-empty, parse `/tmp/xai-shiplog-ecosystem.json` with the standard extractor and mark `x_source=xai`. If both paths fail for a real reason (`http-<code>` / `empty` / `timeout`, or `key-unset`), skip this source with the true reason - **never fabricate a mention**. Confirm any handle is real before @-mentioning (a wrong tag in a public post is worse than none). Skip entirely if no `scouts:` configured.
 - **Product traction** (OpenRouter / x402 / analytics) — only if a source is configured for the product. If you have an app/server id, WebFetch its page; otherwise say "no product-traction sources wired yet" and move on. Keep any number exactly as measured — don't round 79 → ~80.
@@ -294,7 +285,7 @@ Append to `memory/logs/${TODAY}.md`:
 - **GitHub**: every call uses `gh` (auth handled internally) — never curl the GitHub API. For cross-repo reach set `GH_GLOBAL` (the workflow exports it as `GH_TOKEN`; never pass it inline); with only the built-in token you'll see this repo plus public repos, which still covers public flagships.
 - **X**: the primary path for every X source is **twitterapi.io** (`https://api.twitterapi.io/twitter`, header `X-API-Key: {TWITTER_API_KEY}` via `./secretcurl`) - fast (~700ms) structured tweet objects with exact engagement counts, real permalinks, and parsed dates, so no fabrication risk. Use `/user/last_tweets?userName=<h>` for a single timeline (filter the window client-side on `.createdAt`) and `/tweet/advanced_search?queryType=Latest` with `since:`/`until:` inside the query for multi-account or scout sweeps (Step 3). On a real failure (`key-unset` / `http-<code>` / `empty` / `timeout`) fall back to Grok `x_search` (`XAI_API_KEY`, `curl https://api.x.ai/v1/responses`, `--max-time 150`, Bash tool `timeout` >=180000), then WebFetch of the public `x.com/<handle>` profile as a last resort.
 - **Never abort on a single source failure** — note the gap in the digest and still write + notify.
-- **Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`X=$(...)`), uses `if` / `for` / `[ ... ] &&` tests, or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn. So each `date`, `jq`, `gh` and `./secretcurl` is its own call: read the value it prints and write it in literally where a later command shows `<NAME>`; loop over repos as one call per repo; build the `from:` queries yourself instead of with `printf | tr | sed | paste`; check the key with the skill's original one-line key check; and write state files with Write, not a shell redirect.
+- **Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`X=$(...)`), uses `if` / `for` / `[ ... ] &&` tests, or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn. So each `date`, `jq`, `gh` and `./secretcurl` is its own call: read the value it prints and write it in literally where a later command shows `<NAME>`; loop over repos as one call per repo; build the `from:` queries yourself instead of with `printf | tr | sed | paste`; check the key on the run notes' "Keys set for this run" line, never with a shell test; build each X body with a `jq -n` filter that has every value written in (no `--arg` or `$name`: refused) and pipe it straight into `./secretcurl ... --data-binary @-`; and write state files with Write, not a shell redirect (a `>` into /tmp is refused too).
 
 ## Constraints
 

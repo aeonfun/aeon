@@ -120,7 +120,7 @@ Launching ads is an irreversible outbound side-effect (real ad spend), so it is 
 
 7. **Launch in-run.** This is the branch's final action — spends real money, so run the guardrails first. Only `./secretcurl`, `jq`, `date`, `echo`, `mkdir`, `grep`, `python3`, and the `Write` tool are available.
 
-   a. **Config check.** `[ -n "${ADMANAGE_API_KEY:+x}" ]` (the `${VAR:+x}` form — a bare `$ADMANAGE_API_KEY` trips the secret-expansion analyzer and reads as unset). If unset → notify "ads computed but ADMANAGE_API_KEY missing — nothing launched" and stop.
+   a. **Config check.** Read the "Keys set for this run" line in your run notes, never a shell test (those are refused and cost a turn). If `ADMANAGE_API_KEY` is not on that line → notify "ads computed but ADMANAGE_API_KEY missing — nothing launched" and stop.
 
    b. **Daily spend circuit-breaker (once).** Take the strictest `dailySpendCap` (`CAP`) across today's payloads. If set, read today's spend and **fail closed** unless it's a clean number *below* the cap. Each step is its own Bash call:
       ```bash
@@ -342,7 +342,7 @@ Provisioning campaigns and ad sets is an irreversible outbound side-effect, so i
 
 9. **Create in-run.** This is the branch's final action — provisions real entities, so run only after the diff + pre-flight pass. Only `./secretcurl`, `jq`, `date`, `echo`, `python3`, and the `Write` tool are available (no `mv`). Seed `.admanage-state/campaigns.json` to `{"campaigns":[]}` if missing.
 
-   a. **Config check.** `[ -n "${ADMANAGE_API_KEY:+x}" ]` (the `${VAR:+x}` form — a bare `$ADMANAGE_API_KEY` trips the secret-expansion analyzer and reads as unset). If unset, notify "campaigns computed but ADMANAGE_API_KEY missing — nothing created" and stop (state unchanged).
+   a. **Config check.** Read the "Keys set for this run" line in your run notes, never a shell test (those are refused and cost a turn). If `ADMANAGE_API_KEY` is not on that line, notify "campaigns computed but ADMANAGE_API_KEY missing — nothing created" and stop (state unchanged).
 
    b. **Campaigns first.** For each *new* campaign, write its payload with Write to `/tmp/schedule-ads-create.json` (overwrite per campaign), then one `POST /v1/manage/create-campaign` call:
       ```bash

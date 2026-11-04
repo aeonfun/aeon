@@ -42,7 +42,7 @@ This skill is four focused views of the same GitHub surface. The combined monito
      - `VIEW_TOKEN` is `issues`, `releases` or `prs`: `VIEW` = `VIEW_TOKEN`.
      - Anything else: `VIEW=monitor`, `SCOPE` = `RAW` (a bare owner/repo scopes the combined monitor).
 
-   **Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`RAW="$(...)"`, `ME=$(...)`), uses `if` / `case` / `[ ... ]`, appends with `>>`, or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn. So the var parse above happens in your head, file changes go through Edit/Write, every `date` or `gh api user` lookup is its own call whose printed value you write into later commands literally (`<YESTERDAY>`, `<ME>`), and each per-repo `gh` call has the repo written in literally (`<REPO>`), one call per repo.
+   **Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`RAW="$(...)"`, `ME=$(...)`), uses `if` / `case` / `[ ... ]`, redirects into a file with `>` or `>>` (/tmp included), puts a `$name` in a jq filter (`--arg prefix ... '$prefix'`), or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn. So the var parse above happens in your head, file changes go through Edit/Write (a command's output reaches a /tmp file through a piped `node -e` writer), values go into jq filters as literal strings (`startswith("<BRANCH_PREFIX>")`), every `date` or `gh api user` lookup is its own call whose printed value you write into later commands literally (`<YESTERDAY>`, `<ME>`), and each per-repo `gh` call has the repo written in literally (`<REPO>`), one call per repo.
 
 4. Dispatch to the matching view section below. Run exactly one view per invocation.
 
@@ -198,12 +198,12 @@ Read the last 2 days of `memory/logs/` and extract any GitHub issue URLs already
    - `SCOPE` contains `/` (owner/repo): `ISCOPE` = `repo:<SCOPE>`.
    - Otherwise (bare login): `ISCOPE` = `user:<SCOPE>`.
 
-2. Fetch every new open issue in scope with one advanced-search call (much cheaper than per-repo looping), ISCOPE and YESTERDAY written in literally:
+2. Fetch every new open issue in scope with one advanced-search call (much cheaper than per-repo looping), ISCOPE and YESTERDAY written in literally. A `>` redirect into a file is refused in this run, so the output reaches `/tmp/gh-issues.json` through a piped one-line `node` writer:
    ```bash
    gh search issues --limit 100 \
      --json number,title,url,createdAt,author,labels,repository,comments \
      -- "<ISCOPE> is:issue is:open created:><YESTERDAY> sort:created-desc" \
-     > /tmp/gh-issues.json
+     | node -e 'require("fs").writeFileSync("/tmp/gh-issues.json", require("fs").readFileSync(0))'
    ```
    If the call fails (422 / rate-limit / transient), fall back to one `gh issue list -R <repo>` call per repo (repo written in literally, never a loop) over the list printed by `gh repo list <ME> --limit 100 --json nameWithOwner,hasIssuesEnabled --jq '.[] | select(.hasIssuesEnabled) | .nameWithOwner'`, applying the same `createdAt > <YESTERDAY>` filter via `--jq`.
 
@@ -463,20 +463,19 @@ gh api graphql -f query='
     }
   }
 }
-' | jq --arg prefix "<BRANCH_PREFIX>" --arg email "<BOT_EMAIL>" \
-  '[.data.search.nodes[]
-    | select(.headRefName | startswith($prefix))
-    | select($email == "" or ((.commits.nodes[0].commit.author.email // "") == $email))]'
+' | jq '[.data.search.nodes[]
+    | select(.headRefName | startswith("<BRANCH_PREFIX>"))
+    | select("<BOT_EMAIL>" == "" or ((.commits.nodes[0].commit.author.email // "") == "<BOT_EMAIL>"))]'
 ```
 
 Fallback — if graphql errors. Filter by branch prefix client-side because `gh search prs` `head:` qualifier requires an exact branch name:
 ```bash
 gh search prs --author "<AUTHOR>" --state open   --json number,title,url,createdAt,headRepository,repository,headRefName --limit 60 \
-  | jq --arg prefix "<BRANCH_PREFIX>" '[.[] | select(.headRefName // "" | startswith($prefix))]'
+  | jq '[.[] | select(.headRefName // "" | startswith("<BRANCH_PREFIX>"))]'
 ```
 ```bash
 gh search prs --author "<AUTHOR>" --state merged --json number,title,url,mergedAt,repository,headRefName --limit 40 \
-  | jq --arg prefix "<BRANCH_PREFIX>" '[.[] | select(.headRefName // "" | startswith($prefix))]'
+  | jq '[.[] | select(.headRefName // "" | startswith("<BRANCH_PREFIX>"))]'
 ```
 
 #### 3. Categorize results

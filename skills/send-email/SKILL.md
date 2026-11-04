@@ -70,26 +70,19 @@ The send is the skill's **final** action and is **fail-closed**: apply every che
    ```bash
    echo "paused=${DISCLOSURE_EMAIL_PAUSED:-} daily_cap=${DISCLOSURE_EMAIL_DAILY_CAP:-1} cooldown_days=${DISCLOSURE_EMAIL_COOLDOWN_DAYS:-7}"
    ```
-2. **Config.** Presence-check with the `${VAR:+x}` form - a **bare** `$RESEND_API_KEY` trips the secret-expansion analyzer and falsely reads as unset (same idiom `narrative-tracker` documents). Two calls, each printing `KEY_PRESENT` or `KEY_UNSET`:
-   ```bash
-   [ -n "${RESEND_API_KEY:+x}" ] && echo KEY_PRESENT || echo KEY_UNSET
-   ```
-   ```bash
-   [ -n "${RESEND_FROM:+x}" ] && echo KEY_PRESENT || echo KEY_UNSET
-   ```
-   If either is unset → `SEND_EMAIL_SKIP: resend not configured`, stop (nothing sent, nothing lost).
+2. **Config.** Read the "Keys set for this run" line in your run notes, never a shell test (those are refused and cost a turn). If `RESEND_API_KEY` or `RESEND_FROM` is not on that line → `SEND_EMAIL_SKIP: resend not configured`, stop (nothing sent, nothing lost).
 3. **Ledger + daily cap.** Seed `memory/email-log.json` to `[]` if missing/corrupt, then stop if the count is unreadable (**fail closed**) or today's budget is spent (cap default 1). Get the date first:
    ```bash
    date -u +%F
    ```
-   It prints TODAY. Then count today's sends, TODAY written in literally:
+   It prints TODAY. Then count today's sends, TODAY written into the filter literally (a jq `$name` variable from `--arg` is refused in this run):
    ```bash
-   jq --arg d "<TODAY>" '[.[]|select((.sent_at//"")|startswith($d))]|length' memory/email-log.json
+   jq '[.[]|select((.sent_at//"")|startswith("<TODAY>"))]|length' memory/email-log.json
    ```
    It prints SENT_TODAY. If it printed anything other than a plain whole number (an error, or nothing) → `SEND_EMAIL_SKIP: ledger unreadable`, stop. If SENT_TODAY is not below `daily_cap` from step 1 → `SEND_EMAIL_SKIP: daily cap`, stop.
 4. **Dedup.** Stop unless the ledger check *cleanly* reports "not present" — a jq error is **fail closed** (stop), never assume no-dup:
    ```bash
-   jq --arg s "<SLUG>" 'any(.[];.slug==$s)' memory/email-log.json
+   jq 'any(.[];.slug=="<SLUG>")' memory/email-log.json
    ```
    `true` → `SEND_EMAIL_SKIP: dup`, stop. `false` → continue. Anything else (an error, no output) → `SEND_EMAIL_SKIP: ledger unreadable`, stop.
 5. **Recipient sanity.** `$TO` must match `^[^@[:space:]]+@[^@[:space:]]+\.[^@[:space:]]+$` → else `SEND_EMAIL_REFUSED: bad recipient`, stop. One call, TO written in literally; it prints the address back only when it matches:

@@ -128,7 +128,7 @@ python3 -c "import os,json
 c=json.loads((os.environ.get('COMPUTE_RESELL_CONFIG') or '').strip() or '{}')
 print(json.dumps({k:c.get(k) for k in ('floor','max_discount','discount_adaptive','discount_min','discount_max','discount_step','daily_budget_usd','min_market_volume_usd','cap_daily_usd','min_credit_days','payout_address','denied_models','model_map','bedrock_prices','vertex_prices')}))"
 ```
-Take `max_discount`, `daily_budget_usd`, `floor`, etc. from the parsed object; empty/unreadable/invalid JSON → use defaults. **Always log the resolved config** so a run makes plain whether the override took effect - `config: max_discount=0.80 daily_budget=5` vs `config: defaults (unset)`. (`printenv COMPUTE_RESELL_CONFIG` also works - same no-`$` principle - but the Python parse above is the reference.)
+Take `max_discount`, `daily_budget_usd`, `floor`, etc. from the parsed object; empty/unreadable/invalid JSON → use defaults. **Always log the resolved config** so a run makes plain whether the override took effect - `config: max_discount=0.80 daily_budget=5` vs `config: defaults (unset)`.
 
 **State:** `memory/state/compute-resell.json` - auto-written by the skill each run (you never edit this; it's how the pricing loop remembers across runs). Schema:
 ```json
