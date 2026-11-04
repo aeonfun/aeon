@@ -1,46 +1,112 @@
-# ICP Integration — Investigation Index, Implementation Sequence & 24h-Demo Risk
+# ICP (Internet Computer) in Aeon
 
-**Status:** Investigation only. Nothing modified, installed, committed, or pushed. Active Aeon MCP instance left as found (`Svector-anu/svectors-lab`).
-**Date:** 2026-11-03.
+How Aeon reaches the Internet Computer, what it ships for IC work, and the limits that
+shape those choices. Reference material - not a changelog.
 
-## Reports in this set
-1. **ICP-MCP-VERIFICATION.md** — the endpoint is live but interactive-OAuth-only → incompatible with headless Aeon.
-2. **ICP-AEON-MCP-ARCHITECTURE.md** — Aeon's server vs client MCP surfaces; full config→execution trace; why the client path can't reach ICP.
-3. **ICP-SKILLS-COMPATIBILITY.md** — official schema vs Aeon loader; reuse the *knowledge*, don't install interactive skills into the fleet.
-4. **ICP-SECURITY-IMPLEMENTATION-DESIGN.md** — the one net-new build: a Rust-canister `canister-audit` arm on the existing scanner architecture.
-5. **ICP-TEST-TARGETS.md** — reproducible targets (`dfinity/examples` rust/*) + the need for a planted-flaw fixture.
+## Why the hosted ICP MCP connector is not used
 
-## Core finding (ties it together)
-"Reuse everything suitable, extend what exists, build only what's missing" resolves cleanly:
-- **MCP integration → do NOT build against the official connector.** Verified interactive-only (`authorization_code`+PKCE+Internet Identity, no refresh, no machine grant). If runtime IC access is ever needed, go **direct-to-IC** (agent-js/`icp-cli` + PEM identity secret via `./secretcurl`). **The audit project needs no runtime IC access at all.**
-- **Verification → reuse Epoch.** A Rust canister compiles + runs PocketIC tests inside Epoch's no-secrets runner, via one committed `scripts/verify-canister.sh` (no pipe-installed `dfx`; local/compile scope; same-repo PRs).
-- **Security knowledge → reuse (embed) icskills `canister-security`.** Don't install it as a runnable Aeon skill.
-- **The only real build → `canister-audit`,** a new skill that is `sc-audit` with EVM pieces swapped for IC pieces, reusing the PoC gate (`command` mode), disclosure routing, dedup, report shape, and staging/allowlist pattern unchanged.
+The official endpoint, `https://mcp.internetcomputer.org/mcp`, is a real, spec-compliant
+MCP server, but it authenticates with **interactive OAuth only**. Its published metadata
+(`/.well-known/oauth-authorization-server`) advertises exactly one grant:
 
-## Recommended implementation sequence (on approval — NOT started)
-1. **Scaffold `skills/canister-audit/SKILL.md`** from `sc-audit` (detect Rust canister → stage → static → S5.0 threat model → agentic IC checklist → triage → PoC → route → report).
-2. **Embed** `references/ic-security-checklist.md` (the 12 canister-security pitfalls) + author a minimal **`references/ic-semgrep-rust.yml`** (anon-principal, `fetchRootKey`, `let _ = CallerGuard::new(`, unguarded admin).
-3. **Staging (both halves):** `scripts/stage-canister-audit.sh` (wasm32 target, pinned PocketIC, cargo-audit) + grants in `scripts/skill_mode.sh`.
-4. **Fixture:** `skills/canister-audit/fixtures/<name>/` — a tiny Rust canister with one planted flaw.
-5. **PoC verifier:** a `command`-mode PocketIC reproduction script; confirm `vuln-poc-gate.sh` accepts it commit-bound.
-6. **Epoch wrapper:** `scripts/verify-canister.sh` (single line: wasm32 build + `cargo test` + PocketIC) committed on the default branch; wire the Epoch order to it.
-7. **Dry run (shadow):** scan `rust/guards` + the fixture; verify 1–2 findings on the fixture; emit the professional report; route `shadow` (no send).
+- `grant_types_supported: ["authorization_code"]` - no `client_credentials`, so there is
+  no machine-to-machine grant.
+- no `refresh_token` - a token cannot be renewed without a human.
+- a PKCE public client (`code_challenge_methods_supported: ["S256"]`,
+  `token_endpoint_auth_methods_supported: ["none"]`); obtaining a code means driving a
+  browser redirect that signs in with Internet Identity.
+- Dynamic Client Registration is supported, but DCR only registers a client; the client
+  still has to complete the interactive `authorization_code` + PKCE flow to get a token.
 
-## Can we get a meaningful working demo in 24h? — Yes, with a narrowed scope
-**Demo = scan `dfinity/examples/rust/guards` + our planted-flaw fixture; static rules + agentic IC checklist; 1–2 PoC-verified findings on the fixture; a professional audit report; disclosure `shadow` (no external send); optionally Epoch-verified compile+test.** That is achievable because every stage except the IC specifics is reused.
+Aeon runs headless on GitHub Actions, with no browser and no human in the loop, so it
+cannot complete that flow or keep a session alive. This is a limit of the *hosted
+connector*, not of the IC: a headless MCP on the IC is a documented pattern - a
+canister-based MCP server built with [`ic-rmcp`](https://github.com/ByteSmithLabs/ic-rmcp)
+authenticates a machine caller with an `x-api-key` header (or OAuth), so an agent can
+reach it on a schedule. Aeon uses the direct-read path below for reads, and the direct
+agent (or such a canister MCP) for calls. The hosted connector's one row in the OAuth
+provider table is in [`docs/mcp-oauth.md`](../mcp-oauth.md).
 
-### Blockers / risks to that 24h demo
-| # | Risk | Severity | Mitigation |
-|---|---|---|---|
-| 1 | **CI toolchain staging** — PocketIC + `wasm32` target + cargo-audit must be pre-staged; `dfx` can't pipe-install in the sandboxed/Epoch runner | **Medium** | Pin a PocketIC binary like `stage-vuln-scanner.sh` pins trufflehog/osv; add `rustup target add wasm32…` in the wrapper |
-| 2 | **No off-the-shelf IC Semgrep ruleset** — must hand-author a minimal one | Low–Medium | The **agentic arm carries the demo**; ship 3–4 rules, grow later |
-| 3 | **PocketIC repro within the 20-min/line budget** | Medium | Keep the fixture tiny; cache the PocketIC binary; lean `cargo test` |
-| 4 | **Location decision still open** (svectors-lab where Epoch/vuln-scanner run, vs aeon upstream chosen as home but Epoch isn't ported there) | **Medium — user decision, gates WHERE the skill lands** | Decide before step 1; see below |
-| 5 | **ICP-skills install target/method** unresolved | Low | Recommended: embed knowledge into the new skill; install icskills locally only for interactive authoring |
-| **Not a blocker** | MCP connector | — | Verified incompatible and **not needed** for a source audit; removed from the critical path |
+## The read path Aeon does use
 
-## Two open decisions for you
-1. **Location:** keep the ICP work on **svectors-lab** (Epoch + vuln-scanner already run there) **or** port Epoch upstream to **aeon** first (your chosen home, but Epoch isn't there yet). This gates step 1.
-2. **ICP-skills:** embed the `canister-security` knowledge into the new skill (recommended), and/or `npx skills add dfinity/icskills` into a **local** `.claude/skills/` for interactive authoring only. Confirm before any install (standing rule: do not install).
+IC state that Aeon needs is read **directly over HTTPS, keyless**, from the public
+dashboard and SNS aggregator APIs:
 
-*(Report files currently live in the session scratchpad. On your OK I'll place them in the repo, e.g. `docs/icp/`, on a branch/PR — not pushed to main.)*
+- `ic-api.internetcomputer.org` - canister control-plane facts (controllers, module hash,
+  upgrade history) and NNS proposals.
+- `sns-api.internetcomputer.org` - the SNS DAO list and per-DAO proposals.
+
+These need no identity and no cycles. A controller-gated read (a canister's live running
+state via the management canister `canister_status`) is the one exception: it requires a
+controller identity, supplied as an `ICP_IDENTITY_PEM` secret and used through
+`./secretcurl` so the key never touches a command line. The skills degrade cleanly when
+that secret is absent, reporting control-plane facts only. No skill needs runtime IC
+access to do its core job.
+
+## Why the dfinity/icskills skills are reference, not installed
+
+dfinity publishes an `icskills` set authored to its own skill schema. Aeon's loader
+expects Aeon's `SKILL.md` shape, and several of those skills assume an interactive
+authoring context, so they are not installed into the fleet. Instead the useful
+**knowledge** is embedded in Aeon-native skills - for example the 12 canister-security
+pitfalls live in `skills/canister-audit/references/ic-security-checklist.md`, adapted from
+the icskills `canister-security` material. Reuse the knowledge; do not run the upstream
+skills as-is.
+
+## Security limits
+
+- **Source, not bytecode.** `canister-audit` audits a canister's Rust source. A canister's
+  logic is not recoverable from its deployed wasm the way verified EVM source is, so there
+  is no on-chain-by-address mode for IC.
+- **Rust only.** ic-cdk / candid canisters (ic-cdk is at 0.20.3). Motoko is out of scope.
+- **`fetch_root_key` is an agent/frontend concern, not canister code.** It is called by
+  the client talking to the IC (`@dfinity/agent` in JS/TS, or `ic-agent` in a Rust
+  client), never inside the canister, so `icp-deploy-check` looks for it in a repo's
+  frontend/client, not its canister Rust.
+- **The PocketIC proof arm is best-effort.** A confirmed high/critical finding is proven
+  by building the canister to wasm32 and reproducing the exploit in PocketIC through the
+  shared PoC gate; when the toolchain or server binary is absent, the arm is skipped and
+  the agentic source reasoning stands on its own.
+- **Reads can be stale or unindexed.** A non-indexed canister returns 404 (recorded as
+  `unindexed`, not an error); a failed read is recorded by its HTTP status and never
+  reported as a change.
+
+## Known gaps
+
+- **The hosted MCP connector is interactive-only.** It offers no machine grant (client
+  credentials) and no refresh token, so an autonomous agent cannot use the hosted server
+  directly. That is the one real coordination point with dfinity - a machine grant would
+  let agents use it. It is not a blocker for the IC itself: a headless MCP is available
+  today via a canister server (`ic-rmcp`, `x-api-key`/OAuth), and canisters are reachable
+  directly with an agent + key.
+- **No off-the-shelf IC Semgrep ruleset.** `canister-audit` ships a small hand-authored
+  one (`references/ic-semgrep-rust.yml`); the agentic source pass is the reliable core and
+  the ruleset is a high-recall first pass.
+- **Cycles balances are controller-gated.** There is no keyless public read for a
+  canister's cycle balance, so Aeon does not ship a cycles monitor.
+
+## What ships (file index)
+
+**Security audit (`canister-audit`)**
+- `skills/canister-audit/SKILL.md`, `README.md`
+- `skills/canister-audit/references/ic-security-checklist.md`, `ic-semgrep-rust.yml`
+- `skills/canister-audit/fixtures/token_vault/` - a planted-flaw fixture (anonymous
+  principal mints a free balance) with its PocketIC reproduction
+- `scripts/stage-canister-audit.sh` - stages the wasm32 target, cargo-audit, and the
+  pinned PocketIC server
+- `.github/workflows/ci-canister-audit-fixture.yml` - runs the reproduction end to end
+
+**Read + monitor skills**
+- `skills/canister-status/` - control-plane monitor (controllers, module hash, upgrades);
+  alerts on change
+- `skills/sns-digest/` - NNS + SNS governance proposal digest
+- `skills/icp-deploy-check/` - static pre-deploy checklist for an IC Rust canister repo
+
+Aeon is an open framework; project home is [www.aeon.fun](https://www.aeon.fun).
+
+# Citations
+
+- ICP MCP endpoint metadata and docs: `https://mcp.internetcomputer.org/mcp`,
+  `https://internetcomputer.org/icp-mcp/` (probed 2026-11-03).
+- IC dashboard + SNS APIs: `https://ic-api.internetcomputer.org`,
+  `https://sns-api.internetcomputer.org`.
