@@ -24,10 +24,10 @@ export CANISTER_WASM="$CARGO_TARGET_DIR/wasm32-unknown-unknown/release/token_vau
 export POCKET_IC_BIN="${POCKET_IC_BIN:-/tmp/bin/pocket-ic}"
 
 echo "repro: building canister wasm -> $CANISTER_WASM"
-cargo build --manifest-path "$CRATE_DIR/Cargo.toml" \
+cargo build --locked --manifest-path "$CRATE_DIR/Cargo.toml" \
   --target wasm32-unknown-unknown --release
 
 echo "repro: running PocketIC reproduction"
-cargo test --manifest-path "$CRATE_DIR/Cargo.toml" --test repro -- --nocapture
+cargo test --locked --manifest-path "$CRATE_DIR/Cargo.toml" --test repro -- --nocapture
 
 echo "repro: boundary crossed — anonymous principal minted a free balance (invariant broken)"

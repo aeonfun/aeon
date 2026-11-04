@@ -55,13 +55,13 @@ jobs:
       - name: Build canister wasm
         env:
           CARGO_TARGET_DIR: /tmp/canister-audit-target
-        run: cargo build --target wasm32-unknown-unknown --release
+        run: cargo build --locked --target wasm32-unknown-unknown --release
 
       - name: Run PocketIC reproduction (direct)
         env:
           CARGO_TARGET_DIR: /tmp/canister-audit-target
           CANISTER_WASM: /tmp/canister-audit-target/wasm32-unknown-unknown/release/token_vault.wasm
-        run: cargo test --test repro -- --nocapture
+        run: cargo test --locked --test repro -- --nocapture
 
       # The direct run above proves the repro; this proves the PRODUCTION path the
       # skill actually uses - the shared PoC gate, which runs repro.sh under a
