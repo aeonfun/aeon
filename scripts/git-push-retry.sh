@@ -146,6 +146,22 @@ retryable_push_rejection() {
   [ "$stale_ref" -eq 1 ] && [ "$rejected_update" -eq 1 ]
 }
 
+transient_server_failure() {
+  # GitHub sometimes fails a push on its side ("remote: fatal error in
+  # commit_refs", status "[remote rejected] (failure)"), occasionally after the
+  # ref was already updated. Matched on the porcelain status record only, so
+  # remote hook text can't trigger it. The next pull drops a commit that did
+  # land, and the push then succeeds as up to date.
+  local line pattern
+  pattern=$'^!\t[^\t]+\t\\[remote rejected\\] \\((failure|Internal Server Error)\\)$'
+  while IFS= read -r line; do
+    [[ "$line" =~ $pattern ]] && return 0
+  done <<< "$1"
+  return 1
+}
+
+MAX_SERVER_RETRIES=2
+server_retries=0
 for i in 1 2 3 4 5 6 7 8 9 10; do
   # Pull and rebase onto latest remote. --autostash: a caller may leave
   # unstaged files behind (the read-only failure path stages only its log),
@@ -174,7 +190,8 @@ for i in 1 2 3 4 5 6 7 8 9 10; do
       git rebase --abort 2>/dev/null || true
     fi
   fi
-  # Retry only concurrent ref updates, not authentication or server failures.
+  # Retry concurrent ref updates, plus a bounded number of transient GitHub
+  # server failures; never authentication, permission, hook or transport errors.
   push_output="$(LC_ALL=C git push --porcelain -u origin HEAD 2>&1)"
   push_status=$?
   if [ "$push_status" -eq 0 ]; then
@@ -183,6 +200,12 @@ for i in 1 2 3 4 5 6 7 8 9 10; do
     exit 0
   fi
   report_push_error "$push_output"
+  if transient_server_failure "$push_output" && [ "$server_retries" -lt "$MAX_SERVER_RETRIES" ]; then
+    server_retries=$((server_retries + 1))
+    echo "Push attempt $i hit a GitHub server error, retrying ($server_retries/$MAX_SERVER_RETRIES)..."
+    sleep "$(( (RANDOM % 4) + i + 2 ))"
+    continue
+  fi
   if ! retryable_push_rejection "$push_output"; then
     echo "Push attempt $i failed (exit $push_status); not retrying." >&2
     exit "$push_status"

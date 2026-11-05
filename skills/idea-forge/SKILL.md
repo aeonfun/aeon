@@ -67,8 +67,8 @@ Also, for current state, read the latest `bd-radar` digest if present.
 #### 0. Bootstrap
 ```bash
 mkdir -p memory/topics output/articles
-[ -f memory/topics/idea-forge-state.json ] || echo '{"ideas":[]}' > memory/topics/idea-forge-state.json
 ```
+Then check for `memory/topics/idea-forge-state.json` with Glob; if it is missing, create it with the Write tool holding `{"ideas":[]}` (a `[ -f ] ||` test and an `echo ... > file` redirect are both refused in this run).
 Load prior idea titles/one-liners into a dedup set (don't re-pitch the same wedge unless materially evolved). Also scan the last 21 days of `memory/logs/` for `### idea-forge` blocks.
 
 #### 1. Read the zeitgeist (this week)

@@ -135,41 +135,40 @@ If the file doesn't exist, treat all deltas as `n/a` on the first run.
 
 ### B1. Fetch (public, no auth — use WebFetch if curl fails)
 
+Run each command below as its own Bash call. Each saves its response with curl's own `-o` (a shell `>` redirect into a file is refused in this run). CoinGecko key check: read the "Keys set for this run" line in your run notes, never a shell test (those are refused and cost a turn). When `COINGECKO_API_KEY` is on that line keep the `-H "x-cg-demo-api-key: {COINGECKO_API_KEY}"` on the four CoinGecko calls below; when it is not, drop that `-H` (keyless public works at a lower rate limit).
+
 ```bash
 mkdir -p .tmp
 
 # --- DeFiLlama (shared by the DeFi read and the macro snapshot) ---
 # TVL
-curl -fsS "https://api.llama.fi/v2/chains"                        > .tmp/chains.json
-curl -fsS "https://api.llama.fi/protocols"                        > .tmp/protocols.json
+curl -fsS -o .tmp/chains.json "https://api.llama.fi/v2/chains"
+curl -fsS -o .tmp/protocols.json "https://api.llama.fi/protocols"
 # Volumes & fundamentals
-curl -fsS "https://api.llama.fi/overview/dexs?excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"  > .tmp/dexs.json
-curl -fsS "https://api.llama.fi/overview/fees?excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"  > .tmp/fees.json
+curl -fsS -o .tmp/dexs.json "https://api.llama.fi/overview/dexs?excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+curl -fsS -o .tmp/fees.json "https://api.llama.fi/overview/fees?excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
 # Stablecoins — includePrices=true (superset; supply totals feed the DeFi read, prices feed the macro snapshot)
-curl -fsS "https://stablecoins.llama.fi/stablecoins?includePrices=true"  > .tmp/stables.json
+curl -fsS -o .tmp/stables.json "https://stablecoins.llama.fi/stablecoins?includePrices=true"
 # Yields
-curl -fsS "https://yields.llama.fi/pools"                         > .tmp/pools.json
+curl -fsS -o .tmp/pools.json "https://yields.llama.fi/pools"
 
 # --- CoinGecko (macro majors, breadth, global, trending) ---
-# Send the demo key via ./secretcurl's {ENV_NAME} placeholder only when set — a bare
-# $COINGECKO_API_KEY is refused by the Bash permission analyzer; keyless-public works
-# without one (lower rate limit). Build the header array once, reuse for all four.
-CG_HDR=(); [ -n "${COINGECKO_API_KEY:+x}" ] && CG_HDR=(-H "x-cg-demo-api-key: {COINGECKO_API_KEY}")
+# Demo key via ./secretcurl's {ENV_NAME} placeholder; drop the -H when the key is not set (see above).
 # Simple price for BTC, ETH, SOL + 24h change + mcap
-./secretcurl -s "${CG_HDR[@]}" "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana&vs_currencies=usd&include_24hr_change=true&include_market_cap=true"  > .tmp/cg_price.json
+./secretcurl -s -o .tmp/cg_price.json -H "x-cg-demo-api-key: {COINGECKO_API_KEY}" "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana&vs_currencies=usd&include_24hr_change=true&include_market_cap=true"
 # Top 20 by mcap (movers + trend, 24h & 7d)
-./secretcurl -s "${CG_HDR[@]}" "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=20&page=1&sparkline=false&price_change_percentage=24h,7d"  > .tmp/cg_markets.json
+./secretcurl -s -o .tmp/cg_markets.json -H "x-cg-demo-api-key: {COINGECKO_API_KEY}" "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=20&page=1&sparkline=false&price_change_percentage=24h,7d"
 # Global stats (total mcap, volume, dominance)
-./secretcurl -s "${CG_HDR[@]}" "https://api.coingecko.com/api/v3/global"  > .tmp/cg_global.json
+./secretcurl -s -o .tmp/cg_global.json -H "x-cg-demo-api-key: {COINGECKO_API_KEY}" "https://api.coingecko.com/api/v3/global"
 # Trending coins
-./secretcurl -s "${CG_HDR[@]}" "https://api.coingecko.com/api/v3/search/trending"  > .tmp/cg_trending.json
+./secretcurl -s -o .tmp/cg_trending.json -H "x-cg-demo-api-key: {COINGECKO_API_KEY}" "https://api.coingecko.com/api/v3/search/trending"
 
 # --- Fear & Greed ---
-curl -s "https://api.alternative.me/fng/?limit=2"                > .tmp/fng.json
+curl -s -o .tmp/fng.json "https://api.alternative.me/fng/?limit=2"
 
 # --- Polymarket Gamma (prediction markets) ---
-curl -s "https://gamma-api.polymarket.com/markets?closed=false&order=volume24hr&ascending=false&limit=10"  > .tmp/poly_vol.json
-curl -s "https://gamma-api.polymarket.com/markets?closed=false&order=liquidity&ascending=false&limit=10"   > .tmp/poly_liq.json
+curl -s -o .tmp/poly_vol.json "https://gamma-api.polymarket.com/markets?closed=false&order=volume24hr&ascending=false&limit=10"
+curl -s -o .tmp/poly_liq.json "https://gamma-api.polymarket.com/markets?closed=false&order=liquidity&ascending=false&limit=10"
 ```
 
 For each endpoint, if curl fails or returns non-JSON, retry once with **WebFetch** against the same URL (for CoinGecko, WebFetch without the API-key header — free tiers work). Mark each source `ok` or `fail` and carry it into the footer / Source Status line. Never block the whole run on a single source.

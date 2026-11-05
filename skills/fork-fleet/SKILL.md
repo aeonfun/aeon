@@ -34,12 +34,16 @@ Today is ${today}. This is the fleet's **divergence monitor**. It answers two qu
 
 ### S0. Bootstrap + load state
 
+**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`X=$(...)`, `X="${Y##*/}"`), nests `$(...)`, uses a `[ -f ... ] ||` test, or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn. So every lookup below is its own call: read the value it prints and write it into later commands literally where they show `<NAME>` (e.g. `<PARENT_REPO>`, `<FORK_FULL_NAME>`). Missing state files are found with Glob and created with Write; one call per fork, never a loop.
+
 ```bash
 mkdir -p memory/topics
-[ -f memory/instances.json ] || echo '{}' > memory/instances.json
-[ -f memory/topics/fork-fleet-state.json ] || echo '{"forks":{},"last_run":null}' > memory/topics/fork-fleet-state.json
-[ -f memory/topics/fork-digest-state.json ] || echo '{"last_run":null}' > memory/topics/fork-digest-state.json
 ```
+
+Check each of these with Glob; create any that does not exist with Write, with this content:
+- `memory/instances.json` - `{}`
+- `memory/topics/fork-fleet-state.json` - `{"forks":{},"last_run":null}`
+- `memory/topics/fork-digest-state.json` - `{"last_run":null}`
 
 Read `memory/MEMORY.md` for high-level context and scan the last ~3 days of `memory/logs/` — drop anything already reported so a weekly signal isn't re-sent.
 
@@ -58,26 +62,31 @@ Parse `${var}` into tokens:
 
 Resolve `PARENT_REPO` in priority order:
 1. `REPO_OVERRIDE` if the `repo=` token was given.
-2. Else auto-resolve from this running instance:
+2. Else auto-resolve from this running instance, two calls:
    ```bash
-   PARENT_REPO=$(gh api repos/$(gh repo view --json nameWithOwner -q .nameWithOwner) --jq '.parent.full_name // .full_name')
+   gh repo view --json nameWithOwner -q .nameWithOwner
    ```
+   It prints SELF_REPO. Write it in literally:
+   ```bash
+   gh api repos/<SELF_REPO> --jq '.parent.full_name // .full_name'
+   ```
+   It prints PARENT_REPO.
 3. Else fall back to the first non-comment, non-empty line of `memory/watched-repos.md`.
 
 If none resolves, write status `FORK_DIVERGENCE_NO_TARGET` to `memory/logs/${today}.md` and stop (no notification).
 
+`PARENT_OWNER` = the part of `PARENT_REPO` before the `/`, `PARENT_NAME` = the part after it (work these out yourself, no shell). Then, with PARENT_REPO written in literally:
 ```bash
-PARENT_NAME="${PARENT_REPO##*/}"
-PARENT_OWNER="${PARENT_REPO%%/*}"
-PARENT_DEFAULT_BRANCH=$(gh api "repos/${PARENT_REPO}" --jq '.default_branch')
+gh api "repos/<PARENT_REPO>" --jq '.default_branch'
 ```
+It prints PARENT_DEFAULT_BRANCH.
 
 ### S3. List + classify forks (single call, shared by both branches)
 
 One paginated listing — includes `default_branch`, `archived`, `disabled`, `pushed_at`, stars, description:
 
 ```bash
-gh api "repos/${PARENT_REPO}/forks" --paginate \
+gh api "repos/<PARENT_REPO>/forks" --paginate \
   --jq '[.[] | {full_name, owner: .owner.login, default_branch, pushed_at, pushed_at_epoch: (.pushed_at | fromdateiso8601), stargazers_count, open_issues_count, archived, disabled, description}]'
 ```
 
@@ -102,10 +111,10 @@ Now dispatch: run **Branch A** if `SCOPE ∈ {code, both}`, **Branch B** if `SCO
 
 ### A1. Per-fork compare (one call each)
 
-For each active fork, call cross-repo compare using the fork's own `default_branch` and `full_name` (absorbs any repo-rename drift):
+For each active fork, call cross-repo compare using the fork's own `default_branch` and `full_name` (absorbs any repo-rename drift), one call per fork with every value written in literally:
 
 ```bash
-gh api "repos/${PARENT_REPO}/compare/${PARENT_OWNER}:${PARENT_DEFAULT_BRANCH}...${FORK_OWNER}:${FORK_DEFAULT_BRANCH}" \
+gh api "repos/<PARENT_REPO>/compare/<PARENT_OWNER>:<PARENT_DEFAULT_BRANCH>...<FORK_OWNER>:<FORK_DEFAULT_BRANCH>" \
   --jq '{ahead_by, behind_by, status, files: [.files[]? | {filename, status, additions, deletions}], commits: [.commits[]? | {sha: .sha[0:7], msg: .commit.message | split("\n")[0], author: .commit.author.name, date: .commit.author.date}]}'
 ```
 
@@ -145,7 +154,7 @@ Sort active forks by score descending. Flag any fork with ≥1 new skill file as
 For every PROMOTE fork (capped at 5), fetch each unique skill's SKILL.md from the fork's default branch:
 
 ```bash
-gh api "repos/${FORK_FULL_NAME}/contents/${SKILL_PATH}?ref=${FORK_DEFAULT_BRANCH}" --jq '.content' | base64 -d
+gh api "repos/<FORK_FULL_NAME>/contents/<SKILL_PATH>?ref=<FORK_DEFAULT_BRANCH>" --jq '.content' | base64 -d
 ```
 
 On failure fall back to the file-tree listing and note "could not read content". Synthesize each unique skill into a 1–2 sentence description of what it does. Do **not** deep-read REVIEW or NOTE forks (output stays actionable).
@@ -268,16 +277,16 @@ Read this running instance's local `aeon.yml` once. Build (these are baselines �
 
 ### B2. Per-fork enumeration (one tree call + one yml fetch each)
 
-Operate over the **active-fork set** from shared step S3 (already filtered to forks pushed in the last 30 days — the config branch's original cutoff). For each active fork, run **one** recursive git-tree call to enumerate files (cheaper than per-path contents):
+Operate over the **active-fork set** from shared step S3 (already filtered to forks pushed in the last 30 days - the config branch's original cutoff). For each active fork, run **one** recursive git-tree call to enumerate files (cheaper than per-path contents), one call per fork with the fork written in literally:
 
 ```bash
-gh api "repos/${FORK_FULL}/git/trees/HEAD?recursive=1" --jq '[.tree[] | select(.type == "blob") | .path]'
+gh api "repos/<FORK_FULL>/git/trees/HEAD?recursive=1" --jq '[.tree[] | select(.type == "blob") | .path]'
 ```
 
 Then fetch the fork's `aeon.yml` only if the tree contains it:
 
 ```bash
-gh api "repos/${FORK_FULL}/contents/aeon.yml?ref=${FORK_DEFAULT_BRANCH}" --jq '.content' | base64 -d
+gh api "repos/<FORK_FULL>/contents/aeon.yml?ref=<FORK_DEFAULT_BRANCH>" --jq '.content' | base64 -d
 ```
 
 Error handling:
@@ -552,10 +561,10 @@ Model consensus:
 {If config delta NEW_FORK_ONLY non-empty:}
 New fork-only skills: {comma-separated owner/skill, capped at 3}
 
-Full report: https://github.com/${GITHUB_REPOSITORY}/blob/main/output/articles/fork-divergence-${today}.md
+Full report: https://github.com/<SELF_REPO>/blob/main/output/articles/fork-divergence-${today}.md
 ```
 
-Use `$GITHUB_REPOSITORY` for the URL (the article lives in this running instance's repo, not the target repo).
+Use this running instance's repo (`GITHUB_REPOSITORY`) for the URL (the article lives in this running instance's repo, not the target repo). It is SELF_REPO, printed by `gh repo view --json nameWithOwner -q .nameWithOwner` (run that as its own call if S2 did not already); write it in literally.
 
 ### R3. Log
 

@@ -16,25 +16,27 @@ Today is ${today}. Review external PRs on **[REPLACE: WATCHED_REPO]** with a foc
 
 1. **List candidates** — every open PR opened in the last 24h that hasn't been reviewed by this skill yet:
 
+   If `${var}` is set, that PR number is the only candidate. Otherwise get the cutoff with its own call, `date -u -d '24 hours ago' +%Y-%m-%dT%H:%M:%SZ`, and write the printed value into the filter literally (the `<SINCE>` below):
+
    ```bash
-   if [ -n "${var:-}" ]; then
-     PRS="$var"
-   else
-     PRS=$(gh pr list -R [REPLACE: WATCHED_REPO] --state open --json number,author,createdAt,additions,deletions \
-       --jq '.[] | select(.author.login != "github-actions[bot]" and .author.login != "aeonframework") | .number')
-   fi
+   gh pr list -R [REPLACE: WATCHED_REPO] --state open --json number,author,createdAt,additions,deletions --jq '.[] | select(.createdAt >= "<SINCE>") | select(.author.login != "github-actions[bot]" and .author.login != "aeonframework") | .number'
    ```
 
    Track previously-reviewed PRs in `memory/topics/[REPLACE: SKILL_NAME]-reviewed.json` (a flat array of PR numbers). Skip anything already in there.
 
 2. **For each PR** — fetch metadata + diff:
 
+   One call per PR, with its number written in literally (the `<PR>` below). Read the output directly; do not save it to a file:
+
    ```bash
-   gh pr view "$PR" -R [REPLACE: WATCHED_REPO] --json title,body,additions,deletions,files,author > .pr-meta.json
-   gh pr diff "$PR" -R [REPLACE: WATCHED_REPO] > .pr-diff.patch
+   gh pr view <PR> -R [REPLACE: WATCHED_REPO] --json title,body,additions,deletions,files,author
    ```
 
-   Skip if `additions + deletions > [REPLACE: MAX_PR_LINES]` — flag it as `DEFERRED: too large for first-touch review`, leave a note, and move on.
+   ```bash
+   gh pr diff <PR> -R [REPLACE: WATCHED_REPO]
+   ```
+
+   Run the diff call only for a PR under the size limit. Skip if `additions + deletions > [REPLACE: MAX_PR_LINES]`: flag it as `DEFERRED: too large for first-touch review`, leave a note, and move on.
 
 3. **Apply the rubric** — assign one of four verdicts:
 
@@ -49,14 +51,22 @@ Today is ${today}. Review external PRs on **[REPLACE: WATCHED_REPO]** with a foc
 
 4. **Post a comment** — use a friendly, specific tone. Acknowledge the contributor, name the verdict, give 1-3 concrete bullets:
 
-   ```bash
-   gh pr comment "$PR" -R [REPLACE: WATCHED_REPO] --body "Thanks for the PR! [verdict text]
+   Write the comment to `/tmp/review-comment-<PR>.md` with Write:
+
+   ```markdown
+   Thanks for the PR! [verdict text]
 
    - [bullet 1]
-   - [bullet 2]"
+   - [bullet 2]
    ```
 
-5. **Label** the PR via `gh pr edit "$PR" -R [REPLACE: WATCHED_REPO] --add-label "<label>"` — use `accepted` / `needs-changes` / `defer` / `out-of-scope` (create the labels in the target repo first if they don't exist).
+   Then post it:
+
+   ```bash
+   gh pr comment <PR> -R [REPLACE: WATCHED_REPO] --body-file /tmp/review-comment-<PR>.md
+   ```
+
+5. **Label** the PR via `gh pr edit <PR> -R [REPLACE: WATCHED_REPO] --add-label "<label>"`: use `accepted` / `needs-changes` / `defer` / `out-of-scope` (create the labels in the target repo first if they don't exist).
 
 6. **Notify** via `./notify` only on `ACCEPT` or `OUT-OF-SCOPE` — those are the actionable verdicts for the operator. Silent on `NEEDS-CHANGES` and `DEFER` (the comment on the PR is the signal).
 
@@ -71,6 +81,8 @@ Today is ${today}. Review external PRs on **[REPLACE: WATCHED_REPO]** with a foc
 ## Network note
 
 `gh` handles auth via the workflow's `GITHUB_TOKEN`. To comment on or label a PR in **[REPLACE: WATCHED_REPO]**, the token needs `pull-requests: write` and `issues: write` permission on that repo — verify the workflow grants those, or this skill will silently fail to write.
+
+**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`PRS=$(gh pr list ...)`), uses `if` / `for`, joins commands with `;`, `&&` or `||`, or redirects into a file (`> .pr-meta.json`), and each refusal costs a model turn. So make one `gh` call per PR with the number written in literally, read `gh` output directly, and write the comment body, `reviewed.json` and the log with Write/Edit.
 
 ## Constraints
 

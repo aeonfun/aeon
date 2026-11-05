@@ -215,6 +215,59 @@ class AeonUpdateTest(unittest.TestCase):
         self.assertIn("skills/retired/SKILL.md", pending)
         self.assertIn("D  scripts/old.sh", self.git(self.inst, "status", "--porcelain"))
 
+    def test_stale_copy_takes_head(self):
+        """A copy byte-identical to an older upstream version is stale, not customized.
+
+        Before: stale.sh went through a 3-way merge against BASELINE, which kept the
+        lines it lacked out (a silent revert of v2), and held.sh, untouched upstream
+        in range, stayed in pending_conflicts on every run.
+        """
+        v1 = LINES
+        v2 = LINES.replace("line 2\n", "line 2 v2\n")
+        v3 = v2.replace("line 9\n", "line 9 v3\n")
+        self.git(self.root, "init", "-q", "-b", "main", str(self.up))
+        self.write(self.up, {"scripts/stale.sh": v1, "scripts/held.sh": v1, "scripts/mine.sh": v1, "aeon.yml": "skills:\n"})
+        self.git(self.up, "add", "-A")
+        self.git(self.up, "commit", "-qm", "v1")
+        self.write(self.up, {"scripts/stale.sh": v2, "scripts/held.sh": v2, "scripts/mine.sh": v2})
+        self.git(self.up, "commit", "-qam", "v2")
+        base = self.git(self.up, "rev-parse", "HEAD")
+        self.git(self.root, "clone", "-q", str(self.up), str(self.inst))
+        self.write(self.up, {"scripts/stale.sh": v3, "scripts/new.sh": "new\n"})
+        self.git(self.up, "add", "-A")
+        self.git(self.up, "commit", "-qm", "v3")
+        head = self.git(self.up, "rev-parse", "HEAD")
+        mine = v1.replace("line 5\n", "line 5 operator\n")
+        self.write(self.inst, {
+            "scripts/stale.sh": v1, "scripts/held.sh": v1, "scripts/mine.sh": mine,
+            "memory/topics/aeon-update-state.json": {"baseline_sha": base, "pending_conflicts": [
+                {"path": "scripts/held.sh", "reason": "operator-customized"},
+                {"path": "scripts/mine.sh", "reason": "operator-customized"},
+            ]},
+        })
+        self.git(self.inst, "add", "-A")
+        self.git(self.inst, "commit", "-qm", "old copies")
+
+        rc, plan, err = self.tool("plan", "--upstream", "acme/aeon", "--baseline", base, "--head", head)
+        self.assertEqual(rc, 0, err)
+        self.assertEqual(sorted(plan["clean"]["CLEAN-UPDATE"]), ["scripts/held.sh", "scripts/stale.sh"])
+        self.assertEqual(sorted(plan["stale_copies"]), ["scripts/held.sh", "scripts/stale.sh"])
+        self.assertNotIn("CLEAN-MERGE", plan["clean"])
+        self.assertEqual([p["path"] for p in plan["pending_conflicts"]], ["scripts/mine.sh"])
+
+        self.git(self.inst, "checkout", "-qb", f"aeon-update/sync-{head[:7]}")
+        rc, res, err = self.tool("apply")
+        self.assertEqual(rc, 0, err)
+        self.assertEqual(res["status"], "AEON_UPDATE_APPLIED")
+        self.assertEqual(sorted(res["stale_copies"]), ["scripts/held.sh", "scripts/stale.sh"])
+        f = lambda p: (self.inst / p).read_text()  # noqa: E731
+        self.assertEqual(f("scripts/stale.sh"), v3, "the v2 line must not be reverted")
+        self.assertEqual(f("scripts/held.sh"), v2)
+        self.assertEqual(f("scripts/mine.sh"), mine, "a real customization is never overwritten")
+        state = json.loads(f("memory/topics/aeon-update-state.json"))
+        self.assertEqual([p["path"] for p in state["pending_conflicts"]], ["scripts/mine.sh"])
+        self.assertEqual(state["applied"], {"added": 1, "updated": 2, "merged": 0, "deleted": 0})
+
     def test_in_sync_and_unreachable(self):
         self.build()
         rc, out, _ = self.tool("plan", "--upstream", "acme/aeon", "--baseline", self.head, "--head", self.head)

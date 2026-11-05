@@ -229,13 +229,25 @@ jobs:
       # only when no daily log changed since the last flush (fingerprints recorded by
       # `stamp`) and that flush is under 7 days old; any doubt or error runs it as usual.
       # The skipped run is recorded as a success so the slot is not retried.
-      - name: Idle gate (memory-flush)
+      # fetch-tweets in account mode gets the same skip when no tracked handle has a
+      # tweet the skill would report (none inside its window, or all already in its
+      # logs): scripts/fetch_tweets_idle.py asks twitterapi.io and fails open too.
+      - name: Idle gate (memory-flush, fetch-tweets)
         id: idle
-        if: steps.work.outputs.mode != '' && steps.skill.outputs.name == 'memory-flush'
+        if: steps.work.outputs.mode != '' && (steps.skill.outputs.name == 'memory-flush' || steps.skill.outputs.name == 'fetch-tweets')
+        env:
+          SKILL_NAME: ${{ steps.skill.outputs.name }}
+          SKILL_VAR: ${{ inputs.var }}
+          TWITTER_API_KEY: ${{ steps.skill.outputs.name == 'fetch-tweets' && secrets.TWITTER_API_KEY || '' }}
         run: |
-          if python3 scripts/memory_prep.py idle; then
+          if [ "$SKILL_NAME" = "memory-flush" ]; then
+            if python3 scripts/memory_prep.py idle; then
+              echo "skip=true" >> "$GITHUB_OUTPUT"
+              echo "::notice::memory-flush skipped: no new log entries since the last flush"
+            fi
+          elif python3 scripts/fetch_tweets_idle.py; then
             echo "skip=true" >> "$GITHUB_OUTPUT"
-            echo "::notice::memory-flush skipped: no new log entries since the last flush"
+            echo "::notice::fetch-tweets skipped: no new tweet from any tracked account"
           fi
 
       # Egress hardening P1: default-deny outbound to link-local + cloud metadata.
@@ -575,6 +587,32 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: bash scripts/stage-sc-audit.sh "${{ steps.skill.outputs.name }}"
+
+      - name: Cache canister-audit tools
+        # cargo-audit + the pinned PocketIC server binary live under ~/.aeon-canister/bin;
+        # stage-canister-audit.sh restores from here on a hit and seeds it on a miss, so a
+        # warm run skips the cargo build and the release download. The cached binaries are
+        # arch-specific (the PocketIC gz and cargo-audit), so the key carries OS *and* arch
+        # plus the PocketIC pin; bump the -vN salt or the version to force-bust. Empty path
+        # for every other skill = cheap no-op.
+        if: steps.work.outputs.mode != '' && steps.skill.outputs.name == 'canister-audit'
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+        with:
+          path: ~/.aeon-canister/bin
+          key: canister-audit-${{ runner.os }}-${{ runner.arch }}-v1-pocketic16.1.0
+
+      - name: Stage canister-audit tools
+        # Provisions the IC/Rust toolchain (wasm32-unknown-unknown target, cargo-audit, the
+        # pinned PocketIC server) and appends /tmp/bin to $GITHUB_PATH + POCKET_IC_BIN to
+        # $GITHUB_ENV so the bare names and the env var resolve in the later claude -p step
+        # and its per-call fresh shells (an in-run export doesn't survive Claude's per-call
+        # shells). Without this the dependency-CVE pass and the PocketIC PoC arm degrade to
+        # skipped and canister-audit falls back to the agentic source pass. In-run tool use
+        # is separately gated by the write-tier grant in scripts/skill_mode.sh. The PocketIC
+        # release asset is a public download (plain curl, no auth). Self-guards to the
+        # skill; best-effort, never fails the run.
+        if: steps.work.outputs.mode != '' && steps.skill.outputs.name == 'canister-audit'
+        run: bash scripts/stage-canister-audit.sh "${{ steps.skill.outputs.name }}"
 
       - name: Install Foundry (deploy-uni-hook)
         # The official action installs a cached, pinned Foundry from GitHub
@@ -1704,6 +1742,9 @@ jobs:
           # Most skills deliver their full output through notify, so prefer the
           # captured card. Changelog delivers a repository change and only sends
           # a short card: score its substantive final result alongside that card.
+          # Skills that write an article and send a short card (token-report: a
+          # 420-byte card, the sourced article in output/articles/) get the
+          # article this run wrote scored alongside the card.
           score_output_sample() {
             local src="$1" head_bytes="$2" tail_bytes="$3" bytes ohead otail
             if [ ! -f "$src" ] || [ ! -s "$src" ]; then
@@ -1726,24 +1767,58 @@ jobs:
             SRC="$CHAIN"
           fi
 
+          # The article: an output/articles/*.md this run added or changed (not yet
+          # committed here; one named <skill>-* wins, since token-movers writes
+          # token-report-<date>.md), else today's output/articles/<skill>-<date>.md
+          # for a skill that committed it itself.
+          ARTICLE=""
+          while IFS= read -r f; do
+            [ -n "$f" ] && [ -s "$f" ] || continue
+            case "${f##*/}" in "${SKILL}"-*) ARTICLE="$f"; break ;; esac
+            [ -n "$ARTICLE" ] || ARTICLE="$f"
+          done <<< "$(git ls-files --others --modified --exclude-standard -- 'output/articles/*.md' 2>/dev/null || true)"
+          if [ -z "$ARTICLE" ] && [ -s "output/articles/${SKILL}-$(date -u +%F).md" ]; then
+            ARTICLE="output/articles/${SKILL}-$(date -u +%F).md"
+          fi
+
           # Head + tail sampling preserves conclusions while bounding judge input.
-          # Keep the same 14KB content budget when changelog needs both artifacts.
+          # Keep the same 14KB content budget when a skill needs both artifacts.
           OUTPUT=""
           if [ "$SKILL" = "changelog" ] && [ "$SRC" = "$CHAIN" ] && [ -s "$RESULT" ] && ! cmp -s "$SRC" "$RESULT"; then
             RESULT_SAMPLE=$(score_output_sample "$RESULT" 7000 3000)
             NOTIFY_SAMPLE=$(score_output_sample "$SRC" 3000 1000)
             OUTPUT=$(printf 'Repository change result:\n%s\n\nNotification:\n%s' "$RESULT_SAMPLE" "$NOTIFY_SAMPLE")
+          elif [ -n "$ARTICLE" ] && ! cmp -s "$ARTICLE" "$SRC"; then
+            ARTICLE_SAMPLE=$(score_output_sample "$ARTICLE" 7000 3000)
+            CARD_SAMPLE=$(score_output_sample "$SRC" 3000 1000)
+            CARD_LABEL="Notification"
+            [ "$SRC" = "$RESULT" ] && CARD_LABEL="Final result"
+            OUTPUT=$(printf 'Article written this run (%s):\n%s' "$ARTICLE" "$ARTICLE_SAMPLE")
+            [ -n "$CARD_SAMPLE" ] && OUTPUT=$(printf '%s\n\n%s:\n%s' "$OUTPUT" "$CARD_LABEL" "$CARD_SAMPLE")
           else
             OUTPUT=$(score_output_sample "$SRC" 10000 4000)
           fi
           [ -z "$OUTPUT" ] && { echo "No output to analyze"; exit 0; }
 
-          # Ground the rubric in the operator's north-star so the judge grades
-          # strategic alignment and correctness, not just surface polish. STRATEGY.md
-          # is short by design; inject it whole (byte-capped for safety). Absent or
-          # placeholder file leaves the block empty and grading falls back to generic.
+          # Grade a skill on its own job first: the SKILL.md description is the
+          # contract (a price report, digest or check). STRATEGY.md joins the rubric
+          # only for a skill whose SKILL.md tells it to read STRATEGY.md (idea-forge,
+          # bd-radar, shiplog...): a correct routine report was capped at 3 for not
+          # serving product priorities, and each low score feeds a health issue.
+          # STRATEGY.md is short by design; inject it whole (byte-capped for safety).
+          SKILL_JOB=""
           STRATEGY_CTX=""
-          [ -f STRATEGY.md ] && STRATEGY_CTX=$(head -c 4000 STRATEGY.md)
+          STRATEGY_BLOCK=""
+          if [ -f "$SKILL_MD" ]; then
+            SKILL_JOB=$(awk 'NR==1&&/^---/{f=1;next} f&&/^---/{exit} f&&/^description:/{sub(/^description:[[:space:]]*/,"");print;exit}' "$SKILL_MD" | head -c 600)
+            if [ -f STRATEGY.md ] && grep -qiE '(^|[^[:alpha:]])read[^[:alpha:]].*STRATEGY\.md' "$SKILL_MD"; then
+              STRATEGY_CTX=$(head -c 4000 STRATEGY.md)
+            fi
+          fi
+          [ -n "$SKILL_JOB" ] || SKILL_JOB="(no description; infer the job from the output)"
+          if [ -n "$STRATEGY_CTX" ]; then
+            STRATEGY_BLOCK=$(printf 'This skill works from the operator strategy (its SKILL.md reads STRATEGY.md), so also grade how well it serves the stated priorities: reward work that serves them, not work that merely looks finished.\n\nOperator strategy:\n%s' "$STRATEGY_CTX")
+          fi
 
           ANALYSIS_PROMPT="Score this autonomous agent skill output on a 1-5 scale. Respond with ONLY valid JSON.
 
@@ -1754,10 +1829,12 @@ jobs:
           4 = Good - substantive, well-structured, useful, and verifiable
           5 = Excellent - insightful, well-sourced, actionable
 
-          Correctness and verifiability outrank polish: a well-written output that invents specifics scores no higher than 2. Grade alignment to the operator strategy below - reward work that serves the stated priorities, not work that merely looks finished.
+          Correctness and verifiability outrank polish: a well-written output that invents specifics scores no higher than 2.
 
-          Operator strategy:
-          $STRATEGY_CTX
+          Grade the output against the skill's own job first. Skill job (from its SKILL.md): $SKILL_JOB
+          A correct, complete, verifiable output of that job scores 3 or higher on its own merits, and 4 or 5 when it is substantive or insightful. Never score it lower because its topic is not one of the operator's product priorities.
+
+          $STRATEGY_BLOCK
 
           Flag any issues from: api_error, empty_output, low_quality, stale_data, generic_content, rate_limited, unverifiable_claim
 
@@ -1765,6 +1842,8 @@ jobs:
           - empty_output: ONLY when the skill produced no usable result (no report, analysis, or draft). A legitimate no-op - an empty inbox, an empty watchlist, 'nothing met the threshold', a clean scan with no findings - is a COMPLETED task, not empty_output. A run that delivered its output is not empty_output even if its log notes an upstream source came back empty.
           - api_error / rate_limited: ONLY when the error blocked the skill's output - not for a sub-call that was retried or fell back cleanly.
           - unverifiable_claim: the output asserts specific facts, IDs, URLs, figures, or quotes that read as invented or that the skill could not plausibly have obtained from a real source. Cap such an output at 2 and set this flag.
+
+          When the output holds an article the run wrote plus its notification or final result, the latter is a short summary of the article: judge sources and verifiability on the article.
 
           Skill: $SKILL
           Output:
@@ -2203,7 +2282,7 @@ jobs:
           STATE_FILE="memory/cron-state.json"
           QUALITY_SCORE="${{ steps.analyze.outputs.QUALITY_SCORE }}"
 
-          # Determine status from step outcome (an idle-gated memory-flush counts as done)
+          # Determine status from step outcome (an idle-gated skip counts as done)
           if [ "$RUN_OUTCOME" = "success" ] || [ "${IDLE_SKIP:-}" = "true" ]; then
             CRON_STATUS="success"
           else

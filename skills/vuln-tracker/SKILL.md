@@ -59,6 +59,7 @@ Then run the arm(s) selected by `scope`, and finish with the shared **Notify** a
 
 - **Arm A & Arm B (GitHub reads):** all data via `gh api` / `gh search` / `gh pr view`. `gh` handles auth internally via `GH_TOKEN` (and Arm B's private-advisory reads need the elevated `GH_GLOBAL` PAT). No env-var-authenticated `curl` from bash — a bare `$SECRET` on the command line is refused by the Bash permission layer, so `gh api` (auth handled internally) is the reliable path; no postprocess scripts needed. Arm B keeps a documented `curl` fallback for the advisory endpoint — see Arm B step B2 — but `gh api` is preferred.
 - **Arm C (local only):** reads only local files (`memory/pending-disclosures/`, `memory/issues/`, `memory/topics/pr-status.md`). No outbound network or auth required.
+- **Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`BOT_AUTHOR="..."`, `REPO="owner/repo"`, `PVR_NOW=$(gh api ...)`) or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn. So write the bot author, each repo, PR number and GHSA ID into each `gh` / `./secretcurl` call literally (the `<BOT_AUTHOR>`, `<REPO>`, `<NUM>`, `<GHSA>` placeholders), make one call per PR, repo or advisory instead of a loop, and turn each `|| echo fallback` into a prose rule for when the call fails. Append each arm's section to the notify buffer with Edit (Write when the file is new), never with a shell `>>`.
 
 ---
 
@@ -74,11 +75,9 @@ This arm cross-references `memory/vuln-scanned.json` against live GitHub state a
 
 ### A1. Load the canonical scan history
 
-**`memory/vuln-scanned.json` may be a flat top-level array of scan rows, not a `{scans: [...]}` object** - vuln-scanner writes the flat shape. Read it in a way that accepts both:
+**`memory/vuln-scanned.json` may be a flat top-level array of scan rows, not a `{scans: [...]}` object** - vuln-scanner writes the flat shape. Read it in a way that accepts both (the flat `[ {repo,scanned_at,findings,channel}, ... ]` shape and the legacy `{scans: [...]}` object), one `jq` call:
 
 ```bash
-# Accepts both the flat `[ {repo,scanned_at,findings,channel}, ... ]` shape
-# and the legacy `{scans: [...]}` object.
 jq -c 'if type=="array" then .[] else (.scans[]? // empty) end' memory/vuln-scanned.json 2>/dev/null
 ```
 
@@ -100,11 +99,10 @@ Each scan entry has at minimum: `repo`, `scanned_at`, `findings`, `channel`, `se
 
 The bot author is whoever the workflow uses (typically `github-actions[bot]` or a dedicated account configured in the workflow). Determine the author from `aeon.yml` or the workflow file; default to whatever account opened the most recent security-fix PR (any of the prefixes above) you can find.
 
-**Pass 1 (title prefixes, works everywhere):**
+**Pass 1 (title prefixes, works everywhere)**, with the resolved bot author written in literally as `<BOT_AUTHOR>`:
 
 ```bash
-BOT_AUTHOR="<resolved bot author>"
-gh search prs --author "$BOT_AUTHOR" --json number,title,url,state,createdAt,closedAt,repository --limit 200 \
+gh search prs --author "<BOT_AUTHOR>" --json number,title,url,state,createdAt,closedAt,repository --limit 200 \
   | jq '[.[] | select(
       (.title | startswith("fix(deps):")) or
       (.title | startswith("fix(security):")) or
@@ -112,12 +110,12 @@ gh search prs --author "$BOT_AUTHOR" --json number,title,url,state,createdAt,clo
     )]'
 ```
 
-**Pass 2 (GraphQL, required - picks up every `security/` branch whatever the title says):**
+**Pass 2 (GraphQL, required - picks up every `security/` branch whatever the title says)**, same author written in literally:
 
 ```bash
 gh api graphql -f query='
 {
-  search(query: "author:'"$BOT_AUTHOR"' is:pr sort:created-desc", type: ISSUE, first: 100) {
+  search(query: "author:<BOT_AUTHOR> is:pr sort:created-desc", type: ISSUE, first: 100) {
     nodes { ... on PullRequest {
       number title url state createdAt closedAt mergedAt
       repository { nameWithOwner }
@@ -137,10 +135,10 @@ Cross-reference with `vuln-scanned.json`:
 
 ### A3. Fetch live state for each open PR
 
-For each open PR (state from step A2):
+For each open PR (state from step A2), one call per PR, with `<REPO>` and `<NUM>` written in literally:
 
 ```bash
-gh pr view "$REPO/$NUM" --json state,merged,closedAt,createdAt,reviews,comments,reviewDecision,author
+gh pr view "<NUM>" -R "<REPO>" --json state,merged,closedAt,createdAt,reviews,comments,reviewDecision,author
 ```
 
 Per-PR signals:
@@ -148,20 +146,20 @@ Per-PR signals:
 - **Stale-no-review**: `state == "OPEN"` AND no review AND no maintainer comment AND `createdAt` > 7d ago.
 - **Aging-with-engagement**: `state == "OPEN"` AND any maintainer activity AND open > 14d.
 
-If a scan entry has `advisory_ids` (one or more GHSA IDs), check each one's published state:
+If a scan entry has `advisory_ids` (one or more GHSA IDs), check each one's published state, one call per GHSA ID with the origin repo and ID written in literally:
 
 ```bash
-gh api "repos/$ORIGIN_REPO/security-advisories/$GHSA_ID" --jq '.state // "not found"'
+gh api "repos/<ORIGIN_REPO>/security-advisories/<GHSA_ID>" --jq '.state // "not found"'
 ```
 
 `state == "published"` → public advisory visible. 404 → osv-scanner referenced it but the upstream repo never published its own advisory.
 
 ### A4. Fetch star counts for every secured repo
 
-For every unique `repo` across the union from step A2 (JSON history + bot-authored security PRs):
+For every unique `repo` across the union from step A2 (JSON history + bot-authored security PRs), one call per repo with the repo written in literally:
 
 ```bash
-gh api "repos/$REPO" --jq '{stars: .stargazers_count, archived: .archived}' 2>/dev/null
+gh api "repos/<REPO>" --jq '{stars: .stargazers_count, archived: .archived}' 2>/dev/null
 ```
 
 **Refetch every run.** Do NOT carry star counts forward from the previous `memory/topics/vuln-followup.md` — per-repo counts drift between runs and the secured-stars headline is the operator's load-bearing metric. Cache only within a single run, keyed by `nameWithOwner`, so a repo with multiple PRs is fetched once.
@@ -180,10 +178,10 @@ For each historical entry where the disclosure couldn't ship, re-check whether t
 
 - **`channel: "skipped"`** with `reason` containing "no PVR":
   ```bash
-  PVR_NOW=$(gh api "repos/$REPO/private-vulnerability-reporting" --jq .enabled 2>/dev/null || echo "false")
+  gh api "repos/<REPO>/private-vulnerability-reporting" --jq .enabled
   ```
-  If `PVR_NOW=true` and the original was `false`, surface as **newly-actionable**.
-- **`channel: "skipped"`** with `reason` containing "no SECURITY.md" — re-check `gh api repos/$REPO/contents/SECURITY.md` and `.github/SECURITY.md`. If now present, surface as **newly-actionable**.
+  It prints PVR_NOW. If the call fails, PVR_NOW is `false`. If `PVR_NOW=true` and the original was `false`, surface as **newly-actionable**.
+- **`channel: "skipped"`** with `reason` containing "no SECURITY.md" - re-check `gh api repos/<REPO>/contents/SECURITY.md` and `.github/SECURITY.md`. If now present, surface as **newly-actionable**.
 - **`channel: "pending-disclosure"`** — cross-reference with `memory/pending-disclosures/` to see if the draft is still on disk. If the file is gone but the JSON entry says `pending-disclosure`, mark as `lost-draft` so it stops being escalated forever.
 
 ### A6. Categorize every entry, then rewrite the dashboard
@@ -336,13 +334,10 @@ Record that Arm B status and skip Arm B (no notification section). In a `full` p
 
 ### B2. Probe each advisory's triage state
 
-For each entry, determine `repo` and `ghsa` from frontmatter.
+For each entry, determine `repo` and `ghsa` from frontmatter. Then one call per entry, with them written in literally (for example `owner/repo` and `GHSA-xxxx-xxxx-xxxx`):
 
 ```bash
-REPO="owner/repo"
-GHSA="GHSA-xxxx-xxxx-xxxx"
-
-gh api "repos/${REPO}/security-advisories/${GHSA}" \
+gh api "repos/<REPO>/security-advisories/<GHSA>" \
   --jq '{state: .state, cve_id: .cve_id, published_at: .published_at}' 2>&1
 ```
 
@@ -360,7 +355,7 @@ Expected outcomes:
 **Fallback:** `gh api` uses `GH_TOKEN` internally (workflow wires `GH_GLOBAL` for the elevated advisory read). If `gh` is somehow unavailable, fall back to `./secretcurl` with the `{GH_TOKEN}` placeholder (same token; `GH_GLOBAL` itself is not a substitutable name):
 ```bash
 ./secretcurl -s -H "Authorization: Bearer {GH_TOKEN}" \
-  "https://api.github.com/repos/${REPO}/security-advisories/${GHSA}" \
+  "https://api.github.com/repos/<REPO>/security-advisories/<GHSA>" \
   | grep -o '"state":"[a-z]*"'
 ```
 (Never write a raw `curl` with `$GH_GLOBAL` / `$GH_TOKEN`: a bare `$SECRET` on the command line is refused by the Bash permission layer. `gh api` stays the primary path.)

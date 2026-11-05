@@ -28,45 +28,21 @@ This skill is four focused views of the same GitHub surface. The combined monito
 
 1. Read `memory/MEMORY.md` for high-level context.
 2. Read the last 2 days of `memory/logs/` — used for dedup in the `monitor`, `issues`, and `releases` views.
-3. Parse `${var}` into a `VIEW` and a `SCOPE`:
+3. Parse `${var}` into a `VIEW` and a `SCOPE` in your head, not in a shell script (see **Shell shape** below). `RAW` = `${var}` with leading and trailing whitespace trimmed.
 
-```bash
-RAW="$(printf '%s' "${var}" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
+   **Config capture (Telegram force-reply)** - `RAW` starting with `add-repo:` appends to the watchlist, confirms, and ends. It is NOT a view, so it is handled before the VIEW parse:
+   - `CAND` = the text after `add-repo:`, with a leading `github.com/` prefix (and any `http://` or `https://` scheme before it) removed, a leading `@` removed, a trailing `.git` removed, leading whitespace trimmed, and everything from the first remaining whitespace on dropped.
+   - If `CAND` does not match `^[A-Za-z0-9._-]+/[A-Za-z0-9._-]+$`: send `./notify "Couldn't read \"<CAND>\" as a repo. Reply with owner/repo (e.g. acme/api)."`, log `- view: add-repo (var="${var}") → BAD_VALUE` under `### github-monitor`, and stop.
+   - Otherwise read `memory/watched-repos.md` (missing = empty). If a line matches `- <CAND>` (case-insensitive, surrounding whitespace ignored): send `./notify "Already watching <CAND>."`. Else append the line `- <CAND>` with Edit (Write if the file is new), then send `./notify "Now watching <CAND> - it'll show up in the next GitHub Monitor run."`.
+   - Log under `### github-monitor`: `- view: add-repo (var="${var}") → <CAND>`, and stop.
 
-# Config capture (Telegram force-reply): var="add-repo:<owner/repo>" appends to the watchlist,
-# confirms, and ends — it is NOT a view, so it must be intercepted before the VIEW parse below.
-case "$RAW" in
-  add-repo:*)
-    CAND="$(printf '%s' "${RAW#add-repo:}" \
-      | sed -e 's#^https\?://github.com/##' -e 's/^@//' -e 's/\.git$//' \
-            -e 's/^[[:space:]]*//' -e 's/[[:space:]].*$//')"
-    if ! printf '%s' "$CAND" | grep -qE '^[A-Za-z0-9._-]+/[A-Za-z0-9._-]+$'; then
-      ./notify "Couldn't read \"$CAND\" as a repo. Reply with owner/repo (e.g. acme/api)."
-      # log: - view: add-repo (var="${var}") → BAD_VALUE
-      exit 0
-    fi
-    mkdir -p memory; touch memory/watched-repos.md
-    if grep -qiE "^[[:space:]]*-[[:space:]]*${CAND}[[:space:]]*$" memory/watched-repos.md; then
-      ./notify "Already watching $CAND."
-    else
-      printf -- '- %s\n' "$CAND" >> memory/watched-repos.md
-      ./notify "Now watching $CAND — it'll show up in the next GitHub Monitor run."
-    fi
-    # log under ### github-monitor: - view: add-repo (var="${var}") → $CAND
-    exit 0 ;;
-esac
+   **View parse:**
+   - `RAW` empty: `VIEW=monitor`, `SCOPE` empty.
+   - Else `VIEW_TOKEN` = the first word of `RAW`, lowercased; `SCOPE` = everything after the first word (leading whitespace trimmed).
+     - `VIEW_TOKEN` is `issues`, `releases` or `prs`: `VIEW` = `VIEW_TOKEN`.
+     - Anything else: `VIEW=monitor`, `SCOPE` = `RAW` (a bare owner/repo scopes the combined monitor).
 
-if [ -z "$RAW" ]; then
-  VIEW=monitor; SCOPE=""
-else
-  VIEW_TOKEN="$(printf '%s' "$RAW" | awk '{print tolower($1)}')"
-  SCOPE="$(printf '%s' "$RAW" | sed -E 's/^[^[:space:]]+[[:space:]]*//')"   # everything after the first word
-  case "$VIEW_TOKEN" in
-    issues|releases|prs) VIEW="$VIEW_TOKEN" ;;
-    *)                   VIEW=monitor; SCOPE="$RAW" ;;   # bare owner/repo scopes the combined monitor
-  esac
-fi
-```
+   **Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`RAW="$(...)"`, `ME=$(...)`), uses `if` / `case` / `[ ... ]`, redirects into a file with `>` or `>>` (/tmp included), puts a `$name` in a jq filter (`--arg prefix ... '$prefix'`), or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn. So the var parse above happens in your head, file changes go through Edit/Write (a command's output reaches a /tmp file through a piped `node -e` writer), values go into jq filters as literal strings (`startswith("<BRANCH_PREFIX>")`), every `date` or `gh api user` lookup is its own call whose printed value you write into later commands literally (`<YESTERDAY>`, `<ME>`), and each per-repo `gh` call has the repo written in literally (`<REPO>`), one call per repo.
 
 4. Dispatch to the matching view section below. Run exactly one view per invocation.
 
@@ -102,24 +78,24 @@ If `SCOPE` is set (a bare `owner/repo`), monitor **only** that repo. Otherwise m
 
 ### 1. Collect
 
-For each repo, run these three `gh` calls. Capture the JSON; do not trust any shell expansion of untrusted fields.
+For each repo, run these three `gh` calls, each its own Bash call with the repo written in literally as `<REPO>`. Capture the JSON; do not trust any shell expansion of untrusted fields.
 
 **Open PRs** (full shape — the extra fields power the tier classifier):
 ```bash
-gh pr list -R $repo --state open --limit 30 \
+gh pr list -R <REPO> --state open --limit 30 \
   --json number,title,url,updatedAt,isDraft,reviewDecision,reviewRequests,statusCheckRollup,labels,author
 ```
 
 **Issues opened in the last 24h**:
 ```bash
-gh issue list -R $repo --state open --limit 20 \
+gh issue list -R <REPO> --state open --limit 20 \
   --json number,title,url,createdAt,labels,author
 ```
 Filter client-side to items where `createdAt` is within the last 24h.
 
 **Releases published in the last 24h** (skip drafts and prereleases):
 ```bash
-gh release list -R $repo --limit 5 --exclude-drafts --exclude-pre-releases \
+gh release list -R <REPO> --limit 5 --exclude-drafts --exclude-pre-releases \
   --json tagName,publishedAt,name,url
 ```
 Filter client-side to items where `publishedAt` is within the last 24h.
@@ -209,31 +185,27 @@ Read the last 2 days of `memory/logs/` and extract any GitHub issue URLs already
 
 ### Steps
 
-1. Resolve the 24-hour window and the search scope from `SCOPE`:
+1. Resolve the 24-hour window and the search scope from `SCOPE`. Each command is its own Bash call:
    ```bash
-   YESTERDAY=$(date -u -d "yesterday" +%Y-%m-%dT%H:%M:%SZ 2>/dev/null \
-              || date -u -v-1d +%Y-%m-%dT%H:%M:%SZ)
-   ME=$(gh api user --jq .login)
-
-   if [ -z "$SCOPE" ]; then
-     ISCOPE="user:$ME"
-   else
-     case "$SCOPE" in
-       *:*) ISCOPE="$SCOPE" ;;          # already qualified (org:foo, user:bar)
-       */*) ISCOPE="repo:$SCOPE" ;;     # owner/repo
-       *)   ISCOPE="user:$SCOPE" ;;     # bare login
-     esac
-   fi
+   date -u -d yesterday +%Y-%m-%dT%H:%M:%SZ
    ```
+   ```bash
+   gh api user --jq .login
+   ```
+   The first prints YESTERDAY, the second ME. Then pick `ISCOPE` yourself:
+   - `SCOPE` empty: `ISCOPE` = `user:<ME>`.
+   - `SCOPE` contains `:` (already qualified, e.g. `org:foo`, `user:bar`): `ISCOPE` = `SCOPE`.
+   - `SCOPE` contains `/` (owner/repo): `ISCOPE` = `repo:<SCOPE>`.
+   - Otherwise (bare login): `ISCOPE` = `user:<SCOPE>`.
 
-2. Fetch every new open issue in scope with one advanced-search call (much cheaper than per-repo looping):
+2. Fetch every new open issue in scope with one advanced-search call (much cheaper than per-repo looping), ISCOPE and YESTERDAY written in literally. A `>` redirect into a file is refused in this run, so the output reaches `/tmp/gh-issues.json` through a piped one-line `node` writer:
    ```bash
    gh search issues --limit 100 \
      --json number,title,url,createdAt,author,labels,repository,comments \
-     -- "$ISCOPE is:issue is:open created:>$YESTERDAY sort:created-desc" \
-     > /tmp/gh-issues.json
+     -- "<ISCOPE> is:issue is:open created:><YESTERDAY> sort:created-desc" \
+     | node -e 'require("fs").writeFileSync("/tmp/gh-issues.json", require("fs").readFileSync(0))'
    ```
-   If the call fails (422 / rate-limit / transient), fall back to looping `gh issue list -R <repo>` over `gh repo list "$ME" --limit 100 --json nameWithOwner,hasIssuesEnabled --jq '.[] | select(.hasIssuesEnabled) | .nameWithOwner'`, applying the same `createdAt > $YESTERDAY` filter via `--jq`.
+   If the call fails (422 / rate-limit / transient), fall back to one `gh issue list -R <repo>` call per repo (repo written in literally, never a loop) over the list printed by `gh repo list <ME> --limit 100 --json nameWithOwner,hasIssuesEnabled --jq '.[] | select(.hasIssuesEnabled) | .nameWithOwner'`, applying the same `createdAt > <YESTERDAY>` filter via `--jq`.
 
 3. Drop URLs already alerted in the previous 2 days of logs.
 
@@ -463,16 +435,16 @@ Bot PRs are typically **filed by the operator's GitHub account** while the commi
 
 #### 1. Resolve config
 
-Resolve `AUTHOR`, `BOT_EMAIL`, and `BRANCH_PREFIX` from the sources above. If `AUTHOR` cannot be resolved at all (no `aeon.yml` value, no env var, no token), log `PR_TRACKER_SKIP: no author configured` (under `### github-monitor`) and stop.
+Resolve `AUTHOR`, `BOT_EMAIL`, and `BRANCH_PREFIX` from the sources above (read an env var with its own call, e.g. `node -e 'console.log(process.env.AEON_PR_AUTHOR || "")'`, never `$AEON_PR_AUTHOR` in a shell line). If `AUTHOR` cannot be resolved at all (no `aeon.yml` value, no env var, no token), log `PR_TRACKER_SKIP: no author configured` (under `### github-monitor`) and stop.
 
 #### 2. Fetch PRs opened by the bot
 
-Primary — GraphQL: fetch PRs authored by `AUTHOR`, then keep only the ones whose head branch starts with `BRANCH_PREFIX`. If `BOT_EMAIL` is set, also verify the latest commit's author email matches.
+Primary - GraphQL: fetch PRs authored by `AUTHOR`, then keep only the ones whose head branch starts with `BRANCH_PREFIX`. If `BOT_EMAIL` is set, also verify the latest commit's author email matches. One call, with AUTHOR, BRANCH_PREFIX and BOT_EMAIL (empty string `""` when unset) written in literally:
 
 ```bash
 gh api graphql -f query='
 {
-  search(query: "author:'"$AUTHOR"' is:pr sort:updated-desc", type: ISSUE, first: 60) {
+  search(query: "author:<AUTHOR> is:pr sort:updated-desc", type: ISSUE, first: 60) {
     nodes {
       ... on PullRequest {
         number
@@ -491,18 +463,19 @@ gh api graphql -f query='
     }
   }
 }
-' | jq --arg prefix "$BRANCH_PREFIX" --arg email "$BOT_EMAIL" \
-  '[.data.search.nodes[]
-    | select(.headRefName | startswith($prefix))
-    | select($email == "" or ((.commits.nodes[0].commit.author.email // "") == $email))]'
+' | jq '[.data.search.nodes[]
+    | select(.headRefName | startswith("<BRANCH_PREFIX>"))
+    | select("<BOT_EMAIL>" == "" or ((.commits.nodes[0].commit.author.email // "") == "<BOT_EMAIL>"))]'
 ```
 
 Fallback — if graphql errors. Filter by branch prefix client-side because `gh search prs` `head:` qualifier requires an exact branch name:
 ```bash
-gh search prs --author "$AUTHOR" --state open   --json number,title,url,createdAt,headRepository,repository,headRefName --limit 60 \
-  | jq --arg prefix "$BRANCH_PREFIX" '[.[] | select(.headRefName // "" | startswith($prefix))]'
-gh search prs --author "$AUTHOR" --state merged --json number,title,url,mergedAt,repository,headRefName --limit 40 \
-  | jq --arg prefix "$BRANCH_PREFIX" '[.[] | select(.headRefName // "" | startswith($prefix))]'
+gh search prs --author "<AUTHOR>" --state open   --json number,title,url,createdAt,headRepository,repository,headRefName --limit 60 \
+  | jq '[.[] | select(.headRefName // "" | startswith("<BRANCH_PREFIX>"))]'
+```
+```bash
+gh search prs --author "<AUTHOR>" --state merged --json number,title,url,mergedAt,repository,headRefName --limit 40 \
+  | jq '[.[] | select(.headRefName // "" | startswith("<BRANCH_PREFIX>"))]'
 ```
 
 #### 3. Categorize results

@@ -40,31 +40,27 @@ This is the **write / action arm of the vuln-disclosure loop** — one skill cov
 
 ## Dispatch — parse `${var}`, then run one arm
 
-Parse the selector once, then jump to the matching arm below:
+Parse the selector once, in your head rather than in a shell script (a `case` block or an `X=...` assignment is refused; see **Shell shape** in the Network note), then jump to the matching arm below:
 
-```bash
-SEL="${var}"                     # the raw selector
-ACTION="${SEL%%:*}"              # token before ':' (or the whole thing)
-TARGET="${SEL#*:}"; [ "$TARGET" = "$SEL" ] && TARGET=""   # token after ':' (empty if no ':')
+- `SEL` = `${var}`, the raw selector. `ACTION` = the token before the first `:` (or the whole thing). `TARGET` = the token after the first `:` (empty if there is no `:`).
+- Map `ACTION` to an arm, first match wins:
 
-case "$ACTION" in
-  resubmit|watchlist|pvr)   ARM="resubmit" ;;            # → Arm B
-  disclose|email)           ARM="disclose" ;;            # → Arm C
-  poc-smoke|verify-gate)    ARM="poc-smoke" ;;           # → Arm D
-  riva|research)            ARM="scan"; KERNEL="riva" ;; # → Arm A, Riva kernel
-  shadow|compare)           ARM="scan"; KERNEL="shadow" ;; # → Arm A, private comparison
-  ""|scan)                  ARM="scan" ;;                # → Arm A (auto-select if TARGET empty)
-  */*)                      ARM="scan"; TARGET="$SEL" ;; # bare owner/repo → scan that repo
-  *)                        ARM="scan" ;;                # unknown → default to scan
-esac
+  | ACTION | ARM | Also |
+  |---|---|---|
+  | `resubmit`, `watchlist`, `pvr` | `resubmit` (→ Arm B) | |
+  | `disclose`, `email` | `disclose` (→ Arm C) | |
+  | `poc-smoke`, `verify-gate` | `poc-smoke` (→ Arm D) | |
+  | `riva`, `research` | `scan` (→ Arm A, Riva kernel) | `KERNEL=riva` |
+  | `shadow`, `compare` | `scan` (→ Arm A, private comparison) | `KERNEL=shadow` |
+  | empty, `scan` | `scan` (→ Arm A, auto-select if TARGET empty) | |
+  | contains a `/` (bare owner/repo) | `scan` (scan that repo) | `TARGET` = the whole `SEL` |
+  | anything else | `scan` (unknown → default to scan) | |
 
-# Legacy remains the safe default while Riva is evaluated. `shadow` produces a
-# private comparison artifact; only an explicit `riva` selector or a reviewed
-# environment override selects it for a scan. Neither mode changes disclosure
-# authority or bypasses A4/A4.5.
-KERNEL="${KERNEL:-${VULN_RESEARCH_KERNEL:-legacy}}"
-case "$KERNEL" in legacy|shadow|riva) ;; *) KERNEL="legacy" ;; esac
-```
+- Legacy remains the safe default while Riva is evaluated. `shadow` produces a private comparison artifact; only an explicit `riva` selector or a reviewed environment override selects it for a scan. Neither mode changes disclosure authority or bypasses A4/A4.5. So when the table set no `KERNEL`, read the environment override with one call:
+  ```bash
+  echo "kernel=${VULN_RESEARCH_KERNEL:-legacy}"
+  ```
+  `KERNEL` = what it printed. Any value other than `legacy`, `shadow` or `riva` becomes `legacy`.
 
 - `ARM=scan` → **Arm A — SCAN** (target = `$TARGET`, or auto-select if empty).
 - `ARM=resubmit` → **Arm B — RE-SUBMIT** (probe `$TARGET` if set, else the whole watchlist).
@@ -81,34 +77,24 @@ Find one trending repo, run purpose-built scanners (not raw grep), triage to rea
 
 ### A1. Pick a target
 
-If `$TARGET` is set, use it. Otherwise:
+If `TARGET` is set, use it. Otherwise, one Bash call per step:
 
-```bash
-# Prefer chained output from github-trending skill
-CANDS=""
-if [ -s output/.chains/github-trending.md ]; then
-  # Parse owner/repo targets. Accept BOTH the markdown form [owner/repo](url) and a
-  # bare github.com/owner/repo permalink (a feeder degraded under read-only can emit
-  # the latter). A repo name with no owner is NOT a candidate. Pick the first CANDS
-  # entry that matches the criteria below.
-  CANDS=$(grep -oE '\[[^]]+/[^]]+\]\(https?://[^)]+\)|https?://github\.com/[^/ )]+/[^/ )]+' output/.chains/github-trending.md \
-    | sed -E 's#.*github\.com/##; s#\).*##; s#^\[##; s#\].*##' | grep -E '^[^/ ]+/[^/ ]+$' | sort -u)
-fi
-# If the feed was absent OR present-but-unparseable (zero owner/repo lines, e.g. a
-# header-only / prose-only notify body), do NOT stop here - that starves the scan.
-if [ -z "$CANDS" ]; then
-  # Shadow runs have no GitHub credentials by design. A bare shadow selector
-  # may consume the chained trending output above, but otherwise must fail
-  # closed and be retried as shadow:owner/repo.
-  if [ "$KERNEL" = shadow ]; then
-    echo "VULN_SCANNER_SKIPPED shadow-target-required: use shadow:owner/repo or provide github-trending chain output"
-    exit 0
-  else
-    gh api "search/repositories?q=created:>$(date -u -d '14 days ago' +%Y-%m-%d)&sort=stars&order=desc&per_page=25" \
-      --jq '.items[] | select(.fork==false) | select(.stargazers_count>=50) | {full_name, language, description, security_and_analysis}'
-  fi
-fi
-```
+1. **Prefer chained output from the github-trending skill.** Check `output/.chains/github-trending.md` with Glob. If it is there and not empty, pull the link candidates:
+   ```bash
+   grep -oE '\[[^]]+/[^]]+\]\(https?://[^)]+\)|https?://github\.com/[^/ )]+/[^/ )]+' output/.chains/github-trending.md
+   ```
+   Parse owner/repo targets from what it printed (yourself; `sed` is not an allowed command). Accept BOTH the markdown form [owner/repo](url) and a bare github.com/owner/repo permalink (a feeder degraded under read-only can emit the latter). For each match, take the path after `github.com/` when the match has one, else the `[...]` text; keep only clean `owner/repo` values (exactly one `/`, no spaces) and dedupe them. A repo name with no owner is NOT a candidate. These are CANDS; pick the first CANDS entry that matches the criteria below.
+2. **If the feed was absent OR present-but-unparseable** (zero owner/repo lines, e.g. a header-only / prose-only notify body), do NOT stop here - that starves the scan:
+   - `KERNEL=shadow`: shadow runs have no GitHub credentials by design. A bare shadow selector may consume the chained trending output above, but otherwise must fail closed and be retried as shadow:owner/repo. Record `VULN_SCANNER_SKIPPED shadow-target-required: use shadow:owner/repo or provide github-trending chain output` and stop.
+   - Otherwise get the cutoff date:
+     ```bash
+     date -u -d '14 days ago' +%Y-%m-%d
+     ```
+     It prints SINCE. Then search, SINCE written in literally:
+     ```bash
+     gh api "search/repositories?q=created:><SINCE>&sort=stars&order=desc&per_page=25" \
+       --jq '.items[] | select(.fork==false) | select(.stargazers_count>=50) | {full_name, language, description, security_and_analysis}'
+     ```
 
 Selection criteria:
 - Language you can reason about (JS/TS, Python, Go, Rust, Solidity)
@@ -120,14 +106,20 @@ Selection criteria:
 
 ### A2. Fork and clone
 
+`REPO` = the chosen `owner/repo`, written into each command literally. One call, by kernel:
+
+- `KERNEL=shadow`:
+  ```bash
+  git clone --depth 200 --quiet "https://github.com/<REPO>.git"
+  ```
+- Otherwise:
+  ```bash
+  gh repo fork "<REPO>" --clone --default-branch-only -- --depth 200 --quiet
+  ```
+
+Then step into the clone, its own call (NAME = the repo part of REPO, after the `/`):
 ```bash
-REPO="owner/repo"
-if [ "$KERNEL" = shadow ]; then
-  git clone --depth 200 --quiet "https://github.com/${REPO}.git"
-else
-  gh repo fork "$REPO" --clone --default-branch-only -- --depth 200 --quiet
-fi
-cd "$(basename "$REPO")"
+cd <NAME>
 ```
 
 ### A3. Run purpose-built scanners
@@ -145,106 +137,80 @@ each tool by **bare name** — the bare names (`semgrep`, `trufflehog`,
 a binary is missing, log `VULN_SCANNER_SKIPPED` and continue (it records `fail`
 in `sources.txt` below) — never abort the whole run for one tool.
 
+Every command below is **one Bash call**, run from inside the clone (see **Shell shape** in the Network note). A scanner that is not installed fails its call with `command not found` (exit 127): that is the availability check, so there is no separate `command -v` probe. Note each call's exit code from the Bash result (`Exit code N`; no such line means 0), because the status lines at the end are built from them.
+
 ```bash
 mkdir -p /tmp/vuln-scan /tmp/bin
-export PATH="/tmp/bin:$PATH"
-# Re-stage only the Python scanners IN-RUN, best-effort, with the allow-listed
-# `python3 -m pip` (wrapped in `|| true`; a tool that fails is skipped by its guard below).
-# osv-scanner and trufflehog are NOT fetched in-run: the workflow step
-# scripts/stage-vuln-scanner.sh stages them pinned and sha256-checked before the run.
-python3 -m pip install --quiet --disable-pip-version-check semgrep slither-analyzer 2>/dev/null || true
-# If osv-scanner or trufflehog is missing here, do not download it: its `command -v`
-# guard below skips that scanner and records fail in sources.txt.
+```
 
-# --- SAST: Semgrep OSS ---
-if command -v semgrep >/dev/null 2>&1; then
-  semgrep --config=p/security-audit --config=p/owasp-top-ten --config=p/secrets \
-    --severity=ERROR --severity=WARNING --json --quiet --timeout=300 \
-    --exclude=test --exclude=tests --exclude=__tests__ --exclude=spec --exclude=specs \
-    --exclude=fixtures --exclude=examples --exclude=example --exclude=demo \
-    --exclude=vendor --exclude=node_modules --exclude=dist --exclude=build --exclude=.next \
-    -o /tmp/vuln-scan/semgrep.json . 2>/dev/null || true
-else
-  echo "VULN_SCANNER_SKIPPED: semgrep not available"
-fi
+Do not `export PATH`: the workflow step `scripts/stage-vuln-scanner.sh` already appended `/tmp/bin` to `$GITHUB_PATH`, so the bare names resolve in every call (an in-run export is refused, and would be gone by the next call anyway).
 
-# --- Secrets: TruffleHog (only-verified = actually authenticates) ---
-if command -v trufflehog >/dev/null 2>&1; then
-  # BOTH passes are bounded. Run these verbatim; if you invoke trufflehog (or any
-  # scanner) yourself, it still needs the `timeout 300` wrapper and must not be
-  # backgrounded with `&` — a scan still running when you write the report is a
-  # scan you did not finish, and a one-shot workflow_dispatch run cannot resume it.
-  TRUFFLEHOG_RC=0
-  timeout 300 trufflehog filesystem . --only-verified --json \
-    > /tmp/vuln-scan/trufflehog.json 2>/dev/null || TRUFFLEHOG_RC=$?
-  [ "$TRUFFLEHOG_RC" = 124 ] && echo "VULN_SCANNER_TIMEOUT: trufflehog filesystem scan exceeded 300s on a very large tree — recorded as fail, not retried, not left unfinished"
-  # Also scan full git history for secrets — BOUNDED. An unbounded `trufflehog git`
-  # walks every commit's every tree, and a large packed history (measured: 200
-  # commits / ~369MB on one real run) can eat the whole turn budget by itself,
-  # with nothing to show it happened until the run reports "success" anyway
-  # having produced no report at all. `timeout` turns that silent budget-burn
-  # into an ordinary, honestly-recorded `fail` — same as an install failure,
-  # never a reason to write a "still running, will resume" placeholder as the
-  # final output. There is no resume: a workflow_dispatch run is one shot, and
-  # a note promising to pick back up later is not truthful about what a single
-  # run can actually do.
-  TRUFFLEHOG_GIT_RC=0
-  timeout 300 trufflehog git file://. --only-verified --json \
-    > /tmp/vuln-scan/trufflehog-git.json 2>/dev/null || TRUFFLEHOG_GIT_RC=$?
-  [ "$TRUFFLEHOG_GIT_RC" = 124 ] && echo "VULN_SCANNER_TIMEOUT: trufflehog git history scan exceeded 300s on a large packed history — recorded as fail, not retried, not left unfinished"
-else
-  echo "VULN_SCANNER_SKIPPED: trufflehog not available"
-fi
+Re-stage only the Python scanners IN-RUN, best-effort, with the allow-listed `python3 -m pip` (if it fails, continue; a tool that fails is skipped by its own call below). osv-scanner and trufflehog are NOT fetched in-run: the workflow step scripts/stage-vuln-scanner.sh stages them pinned and sha256-checked before the run. If osv-scanner or trufflehog is missing here, do not download it: its call below fails with `command not found`, which skips that scanner and records fail in sources.txt.
+```bash
+python3 -m pip install --quiet --disable-pip-version-check semgrep slither-analyzer
+```
 
-# --- Dependencies: osv-scanner (unified CVE DB across ecosystems) ---
-# osv-scanner v2 (the workflow step pins v2.7.0) moved scanning under the
-# `scan source` subcommand. The v1 bare form (`osv-scanner --recursive .`) still works on
-# 2.x, so try v2 first and fall back to v1 only if v2 wrote NOTHING (keyed on emptiness,
-# NOT exit code - osv exits 1 when it FINDS vulns, which must not read as a syntax error).
-# `--no-ignore` is REQUIRED: v2 `scan source` respects .gitignore by default, so a target
-# repo that gitignores its (committed) lockfile - common for libraries/tools - yields the
-# misleading "No package sources found" (exit 128) and zero dependency coverage. A shipped-
-# but-gitignored lockfile still describes real deps, so a security scan must read it. It is
-# a no-op when lockfiles are tracked.
-if command -v osv-scanner >/dev/null 2>&1; then
-  osv-scanner scan source --recursive --no-ignore --format=json . > /tmp/vuln-scan/osv.json 2>/dev/null; OSV_RC=$?
-  [ -s /tmp/vuln-scan/osv.json ] || { osv-scanner --format=json --recursive --no-ignore . > /tmp/vuln-scan/osv.json 2>/dev/null; OSV_RC=$?; }
-  # Classify: exit 128 = "No package sources found" = the repo has no lockfiles/manifests
-  # to scan. That is a clean N/A (nothing to do), NOT a scan failure - osv writes an EMPTY
-  # file in that case, so `[ -s ]` alone would mislabel it `fail`. Distinguish the states:
-  if [ -s /tmp/vuln-scan/osv.json ]; then OSV_STATUS=ok        # ran; results present (0 or N dep CVEs)
-  elif [ "${OSV_RC:-}" = 128 ];   then OSV_STATUS=none         # ran; no dependency lockfiles -> n/a
-  else                                 OSV_STATUS=fail; fi      # genuine tool error
-else
-  OSV_STATUS=skipped
-  echo "VULN_SCANNER_SKIPPED: osv-scanner not available"
-fi
+**SAST: Semgrep OSS.** If the call fails with `command not found`, record `VULN_SCANNER_SKIPPED: semgrep not available`; any other failure, continue.
+```bash
+semgrep --config=p/security-audit --config=p/owasp-top-ten --config=p/secrets \
+  --severity=ERROR --severity=WARNING --json --quiet --timeout=300 \
+  --exclude=test --exclude=tests --exclude=__tests__ --exclude=spec --exclude=specs \
+  --exclude=fixtures --exclude=examples --exclude=example --exclude=demo \
+  --exclude=vendor --exclude=node_modules --exclude=dist --exclude=build --exclude=.next \
+  -o /tmp/vuln-scan/semgrep.json . 2>/dev/null
+```
 
-# --- Smart-contract scan (if Solidity present) ---
-if ls **/*.sol >/dev/null 2>&1 && command -v slither >/dev/null 2>&1; then
-  slither . --json /tmp/vuln-scan/slither.json --exclude-informational --exclude-low 2>/dev/null || true
-fi
+**Scanner output files.** A shell `>` redirect into a file is refused in this run (`/tmp` too), so a scanner that only writes to stdout runs under a one-line `python3` wrapper: it writes the scanner's stdout to the file named first, drops its stderr (as `2>/dev/null` did), and prints the scanner's exit code as `rc=<N>`. Read that printed `rc=` value wherever this section says "exit code".
 
-# Record what succeeded (empty output ≠ clean, could be tool failure)
-echo "semgrep=$([ -s /tmp/vuln-scan/semgrep.json ] && echo ok || echo fail)" >  /tmp/vuln-scan/sources.txt
-# TruffleHog JSON is finding-only: an exit-0 empty stream is a clean scan.
-if [ "${TRUFFLEHOG_RC:-1}" = 124 ]; then
-  echo "trufflehog=timeout"                                               >> /tmp/vuln-scan/sources.txt
-else
-  echo "trufflehog=$([ "${TRUFFLEHOG_RC:-1}" = 0 ] && echo ok || echo fail)" >> /tmp/vuln-scan/sources.txt
-fi
-# Recorded separately from the filesystem pass above: they can genuinely diverge
-# (filesystem scan clean and fast, git-history scan timed out on a large packed
-# repo, or vice versa) and collapsing both into one trufflehog= line hides
-# whichever one actually failed.
-if [ "${TRUFFLEHOG_GIT_RC:-1}" = 124 ]; then
-  echo "trufflehog-git=timeout"                                                  >> /tmp/vuln-scan/sources.txt
-elif [ "${TRUFFLEHOG_GIT_RC:-1}" = 0 ]; then
-  echo "trufflehog-git=ok"                                                       >> /tmp/vuln-scan/sources.txt
-else
-  echo "trufflehog-git=fail"                                                     >> /tmp/vuln-scan/sources.txt
-fi
-echo "osv=${OSV_STATUS:-fail}"                                                    >> /tmp/vuln-scan/sources.txt
+**Secrets: TruffleHog** (only-verified = actually authenticates). BOTH passes are bounded. Run these verbatim; if you invoke trufflehog (or any scanner) yourself, it still needs the `timeout 300` wrapper and must not be backgrounded with `&` - a scan still running when you write the report is a scan you did not finish, and a one-shot workflow_dispatch run cannot resume it. If the first call prints `rc=127` (`timeout` cannot run `trufflehog`: command not found), record `VULN_SCANNER_SKIPPED: trufflehog not available` and skip both passes.
+```bash
+python3 -c 'import subprocess,sys; r=subprocess.run(sys.argv[2:], stdout=open(sys.argv[1], "wb"), stderr=subprocess.DEVNULL); print("rc=%d" % r.returncode)' /tmp/vuln-scan/trufflehog.json timeout 300 trufflehog filesystem . --only-verified --json
+```
+Its exit code is TRUFFLEHOG_RC. (The wrapper prints it as `rc=<N>`.) If it is `124`, record `VULN_SCANNER_TIMEOUT: trufflehog filesystem scan exceeded 300s on a very large tree - recorded as fail, not retried, not left unfinished`.
+
+Also scan full git history for secrets - BOUNDED. An unbounded `trufflehog git` walks every commit's every tree, and a large packed history (measured: 200 commits / ~369MB on one real run) can eat the whole turn budget by itself, with nothing to show it happened until the run reports "success" anyway having produced no report at all. `timeout` turns that silent budget-burn into an ordinary, honestly-recorded `fail` - same as an install failure, never a reason to write a "still running, will resume" placeholder as the final output. There is no resume: a workflow_dispatch run is one shot, and a note promising to pick back up later is not truthful about what a single run can actually do.
+```bash
+python3 -c 'import subprocess,sys; r=subprocess.run(sys.argv[2:], stdout=open(sys.argv[1], "wb"), stderr=subprocess.DEVNULL); print("rc=%d" % r.returncode)' /tmp/vuln-scan/trufflehog-git.json timeout 300 trufflehog git file://. --only-verified --json
+```
+Its exit code is TRUFFLEHOG_GIT_RC. (The wrapper prints it as `rc=<N>`.) If it is `124`, record `VULN_SCANNER_TIMEOUT: trufflehog git history scan exceeded 300s on a large packed history - recorded as fail, not retried, not left unfinished`.
+
+**Dependencies: osv-scanner** (unified CVE DB across ecosystems). osv-scanner v2 (the workflow step pins v2.7.0) moved scanning under the `scan source` subcommand. The v1 bare form (`osv-scanner --recursive .`) still works on 2.x, so try v2 first and fall back to v1 only if v2 wrote NOTHING (keyed on emptiness, NOT exit code - osv exits 1 when it FINDS vulns, which must not read as a syntax error). `--no-ignore` is REQUIRED: v2 `scan source` respects .gitignore by default, so a target repo that gitignores its (committed) lockfile - common for libraries/tools - yields the misleading "No package sources found" (exit 128) and zero dependency coverage. A shipped-but-gitignored lockfile still describes real deps, so a security scan must read it. It is a no-op when lockfiles are tracked. If the call fails with `command not found` (the wrapper prints a `FileNotFoundError` for `osv-scanner` instead of an `rc=` line): `OSV_STATUS=skipped`, record `VULN_SCANNER_SKIPPED: osv-scanner not available`, and skip the rest of this block.
+```bash
+python3 -c 'import subprocess,sys; r=subprocess.run(sys.argv[2:], stdout=open(sys.argv[1], "wb"), stderr=subprocess.DEVNULL); print("rc=%d" % r.returncode)' /tmp/vuln-scan/osv.json osv-scanner scan source --recursive --no-ignore --format=json .
+```
+Its exit code is OSV_RC. (The wrapper prints it as `rc=<N>`.) Size the output:
+```bash
+wc -c /tmp/vuln-scan/osv.json
+```
+Only if that printed `0`, run the v1 form (its exit code replaces OSV_RC) and size it again:
+```bash
+python3 -c 'import subprocess,sys; r=subprocess.run(sys.argv[2:], stdout=open(sys.argv[1], "wb"), stderr=subprocess.DEVNULL); print("rc=%d" % r.returncode)' /tmp/vuln-scan/osv.json osv-scanner --format=json --recursive --no-ignore .
+```
+Classify: exit 128 = "No package sources found" = the repo has no lockfiles/manifests to scan. That is a clean N/A (nothing to do), NOT a scan failure - osv writes an EMPTY file in that case, so emptiness alone would mislabel it `fail`. Distinguish the states:
+- `osv.json` non-empty → `OSV_STATUS=ok` (ran; results present, 0 or N dep CVEs).
+- else OSV_RC is `128` → `OSV_STATUS=none` (ran; no dependency lockfiles → n/a).
+- else → `OSV_STATUS=fail` (genuine tool error).
+
+**Smart-contract scan** (if Solidity present): Glob `**/*.sol` in the clone. If there is any, run slither (a `command not found` or any failure just means no slither results; continue):
+```bash
+slither . --json /tmp/vuln-scan/slither.json --exclude-informational --exclude-low 2>/dev/null
+```
+
+**Record what succeeded** (empty output ≠ clean, could be tool failure). Size the semgrep output (a missing file counts as empty):
+```bash
+wc -c /tmp/vuln-scan/semgrep.json
+```
+Then write `/tmp/vuln-scan/sources.txt` with the Write tool (a new file), exactly these four lines in this order:
+- `semgrep=ok` when `semgrep.json` is non-empty, else `semgrep=fail`.
+- `trufflehog=timeout` when TRUFFLEHOG_RC is `124`; else `trufflehog=ok` when it is `0`; else `trufflehog=fail` (also when the pass never ran). TruffleHog JSON is finding-only: an exit-0 empty stream is a clean scan.
+- `trufflehog-git=timeout` when TRUFFLEHOG_GIT_RC is `124`; else `trufflehog-git=ok` when it is `0`; else `trufflehog-git=fail` (also when the pass never ran). Recorded separately from the filesystem pass above: they can genuinely diverge (filesystem scan clean and fast, git-history scan timed out on a large packed repo, or vice versa) and collapsing both into one trufflehog= line hides whichever one actually failed.
+- `osv=<OSV_STATUS>`, or `osv=fail` if no status was set.
+
+```
+semgrep=<ok|fail>
+trufflehog=<ok|fail|timeout>
+trufflehog-git=<ok|fail|timeout>
+osv=<ok|none|fail|skipped>
 ```
 
 ### A3.5. Dynamic testing: fuzz it if it already ships a harness
@@ -261,7 +227,7 @@ the runner already has stable Rust) so this step never needs an in-run install �
 it degrades to a skip exactly like a missing scanner does. Other ecosystems have
 their own fuzzers (libFuzzer/AFL for C/C++, go-fuzz, atheris for Python, Trident
 for Solana/Anchor) — worth adding the same way later, each gated on its own
-`command -v` guard, but out of scope here.
+availability check, but out of scope here.
 
 **This is a real trade-off, not a free scanner:** semgrep/trufflehog/osv-scanner
 only read the target's files. This *compiles and runs* the target's own code
@@ -272,45 +238,67 @@ step up from A3, so it only activates when the repo hands you a harness rather
 than probing for one, and it never touches the network beyond what cloning the
 repo already did.
 
-```bash
-if [ -d fuzz/fuzz_targets ] && command -v cargo-fuzz >/dev/null 2>&1; then
-  mkdir -p /tmp/vuln-scan/fuzz
-  # Seed real inputs where they exist — an empty corpus rarely gets a mutator
-  # past a magic-byte header, so this is the difference between a shallow run
-  # and one that reaches real parsing logic.
-  for target in $(cargo fuzz list 2>/dev/null); do
-    if [ -d "tests/fixtures" ]; then
-      mkdir -p "fuzz/corpus/$target"
-      find tests/fixtures -iname "*.${target}" -exec cp {} "fuzz/corpus/$target/" \; 2>/dev/null
-    fi
-  done
+One Bash call per command, from inside the clone. `env` is not an allowed command and a `for` loop is refused, so each target gets its own call with the target name written in literally, and the secret scrub happens inside a `python3` launcher.
 
-  # Bounded: a handful of targets, ~90s each. This is a smoke test for "does
-  # anything crash immediately," not a real fuzzing campaign — a real one runs
-  # for hours and belongs to the maintainer's own CI, not a weekly scan.
-  #
-  # This step compiles and runs the target's own code (and every dependency's
-  # build.rs) with network open. Scrub this skill's own secrets from the
-  # env first — a malicious target could otherwise exfiltrate them at compile
-  # time via a build script:
-  n=0
-  for target in $(cargo fuzz list 2>/dev/null); do
-    [ "$n" -ge 8 ] && break
-    n=$((n + 1))
-    env -u GH_TOKEN -u GH_GLOBAL -u RESEND_API_KEY -u RESEND_FROM -u RESEND_REPLY_TO \
-      cargo +nightly fuzz run "$target" -- -max_total_time=90 \
-      > "/tmp/vuln-scan/fuzz/${target}.log" 2>&1 || true
-  done
-  echo "fuzz=$([ -n "$(ls /tmp/vuln-scan/fuzz 2>/dev/null)" ] && echo ok || echo fail)" >> /tmp/vuln-scan/sources.txt
-else
-  echo "VULN_SCANNER_SKIPPED: no fuzz/fuzz_targets or cargo-fuzz unavailable"
-fi
-```
+1. **Gate.** Check `fuzz/fuzz_targets/` with Glob. Then list the targets (this call also proves cargo-fuzz is staged):
+   ```bash
+   cargo fuzz list
+   ```
+   If the dir is missing or that call fails, record `VULN_SCANNER_SKIPPED: no fuzz/fuzz_targets or cargo-fuzz unavailable` and skip the rest of A3.5 (no `fuzz=` line). Otherwise the printed names are the TARGETs.
+   ```bash
+   mkdir -p /tmp/vuln-scan/fuzz
+   ```
+2. **Seed real inputs where they exist** - an empty corpus rarely gets a mutator past a magic-byte header, so this is the difference between a shallow run and one that reaches real parsing logic. Only if `tests/fixtures/` exists (Glob): one call per TARGET, written in literally, that copies every `tests/fixtures` file named `*.<TARGET>` (case-insensitive) into `fuzz/corpus/<TARGET>/` (`find` and `cp` are not allowed commands):
+   ```bash
+   python3 - '<TARGET>' <<'PY'
+   import os, shutil, sys
+   t = sys.argv[1]
+   dst = os.path.join("fuzz/corpus", t)
+   os.makedirs(dst, exist_ok=True)
+   n = 0
+   for root, _, files in os.walk("tests/fixtures"):
+       for f in files:
+           if f.lower().endswith("." + t.lower()):
+               shutil.copy(os.path.join(root, f), dst)
+               n += 1
+   print(f"seeded {n} files into {dst}")
+   PY
+   ```
+3. **Run, bounded:** a handful of targets, ~90s each. This is a smoke test for "does anything crash immediately," not a real fuzzing campaign - a real one runs for hours and belongs to the maintainer's own CI, not a weekly scan. Take the first 8 TARGETs `cargo fuzz list` printed, one call each.
+
+   This step compiles and runs the target's own code (and every dependency's build.rs) with network open. Scrub this skill's own secrets from the env first - a malicious target could otherwise exfiltrate them at compile time via a build script. The launcher drops `GH_TOKEN`, `GH_GLOBAL`, `RESEND_API_KEY`, `RESEND_FROM`, `RESEND_REPLY_TO`, runs `cargo +nightly fuzz run <TARGET> -- -max_total_time=90`, and writes all of its output to `/tmp/vuln-scan/fuzz/<TARGET>.log`. A nonzero exit is fine; continue with the next target:
+   ```bash
+   python3 - '<TARGET>' <<'PY'
+   import os, subprocess, sys
+   t = sys.argv[1]
+   drop = {"GH_TOKEN", "GH_GLOBAL", "RESEND_API_KEY", "RESEND_FROM", "RESEND_REPLY_TO"}
+   env = {k: v for k, v in os.environ.items() if k not in drop}
+   with open(f"/tmp/vuln-scan/fuzz/{t}.log", "w") as log:
+       rc = subprocess.call(["cargo", "+nightly", "fuzz", "run", t, "--", "-max_total_time=90"],
+                            env=env, stdout=log, stderr=subprocess.STDOUT)
+   print(f"fuzz {t}: rc={rc}")
+   PY
+   ```
+4. **Status.**
+   ```bash
+   ls /tmp/vuln-scan/fuzz
+   ```
+   Any file listed → append `fuzz=ok` to `/tmp/vuln-scan/sources.txt` with Edit; an empty listing (or an error) → append `fuzz=fail`.
 
 A crash artifact lands at `fuzz/artifacts/<target>/crash-*`. Reproduce it clean
-before it counts as anything: `env -u GH_TOKEN -u GH_GLOBAL -u RESEND_API_KEY -u RESEND_FROM -u RESEND_REPLY_TO cargo fuzz run <target> fuzz/artifacts/<target>/crash-*`
-(same secret-scrubbing as the run above — this also compiles and executes the
-target's code) and read the actual panic message and call stack, not just the
+before it counts as anything, with the same secret-scrubbing as the run above (this
+also compiles and executes the target's code). One call, the target and the crash
+file (from Glob `fuzz/artifacts/<TARGET>/crash-*`) written in literally; the output
+prints straight to the call result:
+```bash
+python3 - '<TARGET>' '<CRASH_FILE>' <<'PY'
+import os, subprocess, sys
+drop = {"GH_TOKEN", "GH_GLOBAL", "RESEND_API_KEY", "RESEND_FROM", "RESEND_REPLY_TO"}
+env = {k: v for k, v in os.environ.items() if k not in drop}
+sys.exit(subprocess.call(["cargo", "fuzz", "run", sys.argv[1], sys.argv[2]], env=env))
+PY
+```
+Read the actual panic message and call stack, not just the
 "deadly signal" summary line.
 
 **Root-cause it before routing it** — a crash under `fuzz/` can mean three
@@ -349,16 +337,29 @@ while doing the Riva code-exploration pass. With `KERNEL=legacy`, follow the
 existing A3.6 procedure unchanged.
 
 Before the Riva pass, build the compact target dossier from the Aeon checkout
-(the current working directory may still be the target clone):
+(the current working directory may still be the target clone). One Bash call each:
 
-```bash
-RIVA_REPO="$PWD"
-cd "${GITHUB_WORKSPACE:-$(git rev-parse --show-toplevel)}"
-./scripts/build-vuln-context.sh --repo "$RIVA_REPO" \
-  --out /tmp/vuln-scan/riva-context.json \
-  --history "${GITHUB_WORKSPACE:-$(git rev-parse --show-toplevel)}/memory/vuln-scanned.json"
-cd "$RIVA_REPO"
-```
+1. From inside the clone, print its path (RIVA_REPO):
+   ```bash
+   git rev-parse --show-toplevel
+   ```
+2. Print the Aeon checkout path (AEON_ROOT):
+   ```bash
+   echo "$GITHUB_WORKSPACE"
+   ```
+   If that prints an empty line, AEON_ROOT is the directory you ran A2 from (the clone's parent).
+3. Build the dossier, the paths written in literally:
+   ```bash
+   cd <AEON_ROOT>
+   ```
+   ```bash
+   ./scripts/build-vuln-context.sh --repo <RIVA_REPO> \
+     --out /tmp/vuln-scan/riva-context.json \
+     --history <AEON_ROOT>/memory/vuln-scanned.json
+   ```
+   ```bash
+   cd <RIVA_REPO>
+   ```
 
 Read only `/tmp/vuln-scan/riva-context.json` plus the selected code slice during
 the Riva exploration pass. In `KERNEL=shadow`, write Riva's private candidate
@@ -369,17 +370,13 @@ Semgrep matches syntactic patterns and has weak dataflow reachability on custom 
 
 **Bounded so it can't run away on run time.** Size the repo first, then set the entrypoint review budget `N` from it - deep-review the **top-N highest-exposure** entrypoints only, and note the rest in the A7 report as reviewed-but-not-deep so coverage stays honest:
 
+Cheap size probe (excludes the usual noise dirs), one call from inside the clone. It drives the review budget below. `find` is not an allowed command; `grep -rc ''` prints one line per file it searched, so `wc -l` counts them:
 ```bash
-# Cheap size probe (excludes the usual noise dirs). Drives the review budget below.
-CODE_FILES=$(find . -type f \( -name '*.js' -o -name '*.ts' -o -name '*.jsx' -o -name '*.tsx' \
-  -o -name '*.py' -o -name '*.go' -o -name '*.rs' -o -name '*.sol' -o -name '*.rb' \
-  -o -name '*.java' -o -name '*.php' \) \
-  -not -path '*/node_modules/*' -not -path '*/vendor/*' -not -path '*/dist/*' \
-  -not -path '*/build/*' -not -path '*/.git/*' 2>/dev/null | wc -l | tr -d ' ')
-if   [ "${CODE_FILES:-0}" -le 300 ];  then N=15   # small repo - review broadly
-elif [ "${CODE_FILES:-0}" -le 1500 ]; then N=10
-else                                       N=6; fi # large repo - top exposure only
-echo "agentic-budget: CODE_FILES=$CODE_FILES N=$N"
+grep -rc --include='*.js' --include='*.ts' --include='*.jsx' --include='*.tsx' --include='*.py' --include='*.go' --include='*.rs' --include='*.sol' --include='*.rb' --include='*.java' --include='*.php' --exclude-dir=node_modules --exclude-dir=vendor --exclude-dir=dist --exclude-dir=build --exclude-dir=.git '' . | wc -l
+```
+It prints CODE_FILES. Set N yourself: CODE_FILES <= 300 → N = 15 (small repo - review broadly); <= 1500 → N = 10; else N = 6 (large repo - top exposure only). Then record the budget line:
+```bash
+echo "agentic-budget: CODE_FILES=<CODE_FILES> N=<N>"
 ```
 
 **0. Frame the threat model first (one paragraph, before you enumerate).** State what this app is, the 2-3 things an attacker most wants from it (RCE, auth bypass / IDOR, secret/data exfil, SSRF into internal infra), and its trust boundaries (who is authenticated where, what input is server- vs user-controlled). This targets the ranking in step 2 so the top-`N` budget lands on what actually matters, not just the first entrypoints you find. Keep it to a few lines; it is the plan, not a deliverable.
@@ -405,11 +402,9 @@ echo "agentic-budget: CODE_FILES=$CODE_FILES N=$N"
 ]
 ```
 
-```bash
-# after writing /tmp/vuln-scan/agentic.json, record the source status:
-echo "agentic=ok" >> /tmp/vuln-scan/sources.txt   # 0 candidates on a reviewed surface is still `ok`;
-                                                  # use `agentic=skipped` only if the repo is unreadable/opaque
-                                                  # (minified-only, generated, no source you can reason about)
+After writing `/tmp/vuln-scan/agentic.json`, record the source status: append this line to `/tmp/vuln-scan/sources.txt` with Edit (a shell `>>` append is refused). 0 candidates on a reviewed surface is still `ok`; use `agentic=skipped` only if the repo is unreadable/opaque (minified-only, generated, no source you can reason about):
+```
+agentic=ok
 ```
 
 **Optional - codex-security as an extra source.** If `OPENAI_API_KEY` is present **and** `npx` is allow-listed and the CLI is staged, `npx @openai/codex-security scan . --json` produces an independent agentic `findings.json`; merge its findings into `/tmp/vuln-scan/agentic.json` and record `codex=ok`. **Off by default** - it needs Node 22.13+, model credits, and an allow-listed `npx`; the Claude-native pass above is the baseline and needs no new infra. (Verify the subcommand/flags against the installed version first - it is early 0.1.x and churns.)
@@ -493,15 +488,15 @@ not edit the finding after verification; re-run the gate if the claim changes.
 Write a minimal Foundry test to `/tmp/vuln-scan/poc/<id>.t.sol`. Its `test_poc_*`
 function must assert the prohibited outcome — attacker profit/ownership, bypassed
 authorization, invariant loss, or other concrete impact — not merely “the call did
-not revert.” Then run:
+not revert.” Then run it. A2 left cwd inside the clone; the gate script lives in the Aeon repo. CLONE = the clone path (`git rev-parse --show-toplevel` from inside the clone prints it, as in A3.6) and AEON_ROOT = `$GITHUB_WORKSPACE` (`echo "$GITHUB_WORKSPACE"`), each its own call; then, with both written in literally:
 
 ```bash
-# A2 left cwd inside the clone. The gate script lives in the Aeon repo.
-CLONE="$PWD"
-cd "${GITHUB_WORKSPACE}"
+cd <AEON_ROOT>
+```
+```bash
 ./scripts/vuln-poc-gate.sh foundry \
   --finding /tmp/vuln-scan/poc/finding-1.json \
-  --repo "$CLONE" \
+  --repo <CLONE> \
   --test-file /tmp/vuln-scan/poc/finding-1.t.sol \
   --chain base \
   --match-contract AeonPoC \
@@ -518,14 +513,15 @@ Write `/tmp/vuln-scan/poc/<id>.sh` so it sets up only local fixtures, exercises 
 real production entrypoint, checks the concrete prohibited outcome, and exits nonzero
 when the claim is not reproduced. Put any fixtures or scratch files the script creates
 in a `mktemp -d` directory outside the clone: a new untracked (not gitignored) file left
-in the clone, or a commit that moves HEAD, fails the run as `target-mutated`. Then run:
+in the clone, or a commit that moves HEAD, fails the run as `target-mutated`. (The `mktemp -d` here lives inside the PoC script the gate runs, not in a Bash call of yours.) Then run it, CLONE and AEON_ROOT found the same way as in 2a:
 
 ```bash
-CLONE="$PWD"
-cd "${GITHUB_WORKSPACE}"
+cd <AEON_ROOT>
+```
+```bash
 ./scripts/vuln-poc-gate.sh command \
   --finding /tmp/vuln-scan/poc/finding-1.json \
-  --repo "$CLONE" \
+  --repo <CLONE> \
   --script /tmp/vuln-scan/poc/finding-1.sh
 ```
 
@@ -578,99 +574,83 @@ Otherwise, route by finding type:
 
 #### A5a. Public PR (dependency CVEs only)
 
+One Bash call per command, inside the clone:
+
 ```bash
 git checkout -b security/bump-<pkg>-<cve>
-# Update lockfile/manifest
-git add -A
+```
+Update the lockfile/manifest (Edit), then stage **only the files you edited** (never `git add -A` here). This runs inside the target clone, so a broad add would sweep the scan's own leftovers - fuzz `corpus/`, PoC files, build artifacts - into the dependency-bump PR you open against the target:
+```bash
+git add <lockfile> <manifest>
+```
+```bash
 git commit -m "fix(deps): bump <pkg> to patch <CVE-YYYY-NNNN>
 
 Advisory: <link to GHSA or NVD>
 Severity: <high/critical>
 Fixed in: <version>"
+```
+```bash
 git push -u origin HEAD
-gh pr create --repo "$REPO" \
-  --title "fix(deps): bump <pkg> to patch <CVE-YYYY-NNNN>" \
-  --body "$(cat <<EOF
+```
+Write the PR body to `/tmp/vuln-scan/pr-body.md` with the Write tool (a `--body "$(cat <<EOF ...)"` substitution is refused):
+```markdown
 Automated dependency bump to address a disclosed CVE.
 
 - **CVE:** <id>
 - **Advisory:** <url>
 - **Severity:** <severity>
-- **Package:** \`<name>\` → \`<fixed-version>\`
+- **Package:** `<name>` → `<fixed-version>`
 
 Detected by [osv-scanner](https://google.github.io/osv-scanner/). No code changes outside the lockfile/manifest.
 
 ---
 Filed by [Aeon](https://github.com/aeonframework/aeon).
-EOF
-)"
+```
+Then open the PR, REPO written in literally:
+```bash
+gh pr create --repo "<REPO>" \
+  --title "fix(deps): bump <pkg> to patch <CVE-YYYY-NNNN>" \
+  --body-file /tmp/vuln-scan/pr-body.md
 ```
 
 #### A5b. Private Vulnerability Report (code flaws, verified secrets, contract bugs)
 
 **Preflight - confirm PVR is actually enabled before composing or filing.** Do **not** infer PVR status from a POST failure; read the dedicated flag first. It returns an explicit `true`/`false`, which is distinct from an auth `403`, so a degraded `GH_GLOBAL` token can't masquerade as "PVR disabled" and silently misroute a code flaw to email (the exact false-negative that historically pushed enabled-PVR repos onto the email path).
 
-```bash
-# A5b.0 - preflight PVR status. Branch on the HTTP STATUS CODE, NOT on `--jq .enabled`:
-# on a non-200 response `gh api --jq` prints the ERROR BODY (a JSON blob), NOT empty - so the
-# old `--jq '.enabled' 2>/dev/null` returned `{"message":"Not Found",...}` on a 404 (private /
-# missing / renamed repo) and the same on a 403/429 rate-limit, which a naive `=="true"` test
-# silently reads as "not enabled" and MISROUTES a code flaw. That is the "clanky PVR API"
-# false-negative. Read the status code once and set an explicit state (verified 2026-07-15:
-# public repos = 200 {"enabled":true|false}; private/missing = 404 error blob):
-PVR_RESP=$(gh api "repos/$REPO/private-vulnerability-reporting" -i 2>/dev/null)
-PVR_CODE=$(printf '%s' "$PVR_RESP" | awk 'NR==1{print $2; exit}')
-case "$PVR_CODE" in
-  200) [ "$(printf '%s' "$PVR_RESP" | tail -1 | jq -r '.enabled')" = "true" ] \
-         && PVR_STATE=enabled || PVR_STATE=disabled ;;
-  404) PVR_STATE=unavailable ;;         # repo has no PVR surface (often private) - NOT "disabled"
-  403|429) PVR_STATE=access-unknown ;;  # auth / secondary rate-limit - could not read the flag
-  *)   PVR_STATE=access-unknown ;;      # 5xx / transient
-esac
-# enabled        : compose + POST /reports (below)
-# disabled       : SKIP the POST; out-of-band fallback (A5b 403 branch) + watchlist row
-# unavailable    : out-of-band fallback (often a private repo); no auth alarm needed
-# access-unknown : do NOT assume PVR-off. Raise the auth alarm (A5b 403 branch) and retry the
-#                  probe once; never silently email/misroute on a transient error.
-```
-
-Only when `PVR_STATE` is `enabled` do you compose and POST the report:
+A5b.0 - preflight PVR status. Branch on the HTTP STATUS CODE, NOT on `--jq .enabled`: on a non-200 response `gh api --jq` prints the ERROR BODY (a JSON blob), NOT empty - so the old `--jq '.enabled' 2>/dev/null` returned `{"message":"Not Found",...}` on a 404 (private / missing / renamed repo) and the same on a 403/429 rate-limit, which a naive `=="true"` test silently reads as "not enabled" and MISROUTES a code flaw. That is the "clanky PVR API" false-negative. Read the status code once and set an explicit state (verified 2026-07-15: public repos = 200 {"enabled":true|false}; private/missing = 404 error blob). One call, REPO written in literally; `-i` prints the status line first and the JSON body last:
 
 ```bash
-# Private third-party reporting uses the /reports endpoint. Do NOT use the bare
-# /security-advisories endpoint — that *creates* an advisory and requires
-# admin/security-manager rights on the target repo, so it returns 403 on any repo
-# you don't own. Classic `repo` scope is sufficient for /reports;
-# `repository_advisories:write` is NOT required for third-party reporting.
-#
-# ⚠️ CRITICAL: the payload MUST include a non-empty `vulnerabilities` array.
-# The REST docs mark it "optional", but the create handler returns **HTTP 500
-# (empty body)** when it is omitted. This single bug is why every bare-API PVR
-# in this project historically failed and got routed to the web form — the form
-# only works because it always collects "affected products" (= vulnerabilities).
-# Verified 2026-06-26: identical {summary,description} payload → 500 without the
-# array, 201 with it. Always send at least one {package:{ecosystem,name}}.
-#
-# Write the advisory markdown to /tmp/pvr-body.md first (Summary / Impact /
-# Location / Proof / Suggested fix / Detected by), then build the JSON payload
-# (jq -Rs safely encodes the multi-line body) and POST it via --input:
-cat > /tmp/pvr.json <<JSON
-{
-  "summary": "<short title>",
-  "description": $(jq -Rs . < /tmp/pvr-body.md),
-  "severity": "<critical|high|medium|low>",
-  "cwe_ids": ["CWE-89"],
-  "vulnerabilities": [
-    { "package": { "ecosystem": "pip", "name": "<pkg-or-repo-name>" } }
-  ]
-}
-JSON
-# ecosystem ∈ pip|npm|go|maven|nuget|composer|rubygems|rust|erlang|actions|pub|swift|other
-gh api -X POST "/repos/$REPO/security-advisories/reports" \
-  -H "X-GitHub-Api-Version: 2022-11-28" --input /tmp/pvr.json
+gh api "repos/<REPO>/private-vulnerability-reporting" -i
 ```
 
-**Always POST via `--input <file>`, never a long inline heredoc / `-f description="$(cat …)"`** — the latter can trip Claude Code's Bash command analyzer ("Unhandled node type: string"), and `vulnerabilities` is a nested array that `-f`/`-F` can't express cleanly. Write the full JSON payload (`{summary, description, severity, cwe_ids, vulnerabilities}` — `vulnerabilities` is **mandatory**, see the ⚠️ note above) to a temp file and `gh api -X POST … --input payload.json`.
+PVR_CODE = the status number on the first line (`HTTP/2.0 200 OK` → `200`). Set PVR_STATE from it:
+- `200` → `enabled` when the body's `.enabled` is `true`, else `disabled`.
+- `404` → `unavailable` (repo has no PVR surface, often private - NOT "disabled").
+- `403` or `429` → `access-unknown` (auth / secondary rate-limit - could not read the flag).
+- anything else → `access-unknown` (5xx / transient).
+
+Then act on PVR_STATE:
+- `enabled`: compose + POST /reports (below).
+- `disabled`: SKIP the POST; out-of-band fallback (A5b 403 branch) + watchlist row.
+- `unavailable`: out-of-band fallback (often a private repo); no auth alarm needed.
+- `access-unknown`: do NOT assume PVR-off. Raise the auth alarm (A5b 403 branch) and retry the probe once; never silently email/misroute on a transient error.
+
+Only when `PVR_STATE` is `enabled` do you compose and POST the report.
+
+Private third-party reporting uses the /reports endpoint. Do NOT use the bare /security-advisories endpoint - that *creates* an advisory and requires admin/security-manager rights on the target repo, so it returns 403 on any repo you don't own. Classic `repo` scope is sufficient for /reports; `repository_advisories:write` is NOT required for third-party reporting.
+
+⚠️ CRITICAL: the payload MUST include a non-empty `vulnerabilities` array. The REST docs mark it "optional", but the create handler returns **HTTP 500 (empty body)** when it is omitted. This single bug is why every bare-API PVR in this project historically failed and got routed to the web form - the form only works because it always collects "affected products" (= vulnerabilities). Verified 2026-06-26: identical {summary,description} payload → 500 without the array, 201 with it. Always send at least one {package:{ecosystem,name}}.
+
+Write the advisory markdown to `/tmp/pvr-body.md` first with the Write tool (Summary / Impact / Location / Proof / Suggested fix / Detected by). Then build the JSON payload with one `jq -Rs` call (`-Rs` reads the whole file as one raw string, `.`, and safely encodes the multi-line body) and pipe it straight into the POST via `--input -`, one call, REPO written in literally. Do not write the payload to a file first or use `--rawfile d ... $d`: a `>` redirect into a file and a jq `$name` variable are both refused in this run. Ecosystem ∈ pip|npm|go|maven|nuget|composer|rubygems|rust|erlang|actions|pub|swift|other:
+
+```bash
+jq -Rs '{summary:"<short title>", description:., severity:"<critical|high|medium|low>", cwe_ids:["CWE-89"], vulnerabilities:[{package:{ecosystem:"pip", name:"<pkg-or-repo-name>"}}]}' /tmp/pvr-body.md \
+  | gh api -X POST "/repos/<REPO>/security-advisories/reports" \
+  -H "X-GitHub-Api-Version: 2022-11-28" --input -
+```
+
+**Always POST the jq-built payload via `--input`, never a long inline heredoc / `-f description="$(cat …)"`** — the latter can trip Claude Code's Bash command analyzer ("Unhandled node type: string"), and `vulnerabilities` is a nested array that `-f`/`-F` can't express cleanly. The full JSON payload (`{summary, description, severity, cwe_ids, vulnerabilities}` — `vulnerabilities` is **mandatory**, see the ⚠️ note above) comes from the `jq -Rs` call piped into `gh api -X POST … --input -`.
 
 Read the HTTP response code and branch accordingly. **Never** fall back to a public issue or a code-fix PR for an *unpatched* flaw (that publishes a zero-day):
 - **`201`** → reported. Record the report/advisory id and link it in the local report.
@@ -726,13 +706,19 @@ Read the HTTP response code and branch accordingly. **Never** fall back to a pub
 
 If you have a minimal fix, push it to **your fork only** (not a PR to upstream) and link it in the PVR description so the maintainer can cherry-pick:
 
+One Bash call per command, inside the clone:
+
 ```bash
 git checkout -b private/fix-<slug>
-# apply fix
-git commit -m "draft: proposed patch for reported advisory"
-git push -u origin HEAD
-# DO NOT open a PR. Link the branch in the advisory body.
 ```
+Apply the fix (Edit), then:
+```bash
+git commit -m "draft: proposed patch for reported advisory"
+```
+```bash
+git push -u origin HEAD
+```
+DO NOT open a PR. Link the branch in the advisory body.
 
 ### A6. Update dedup state
 
@@ -829,7 +815,7 @@ Read `memory/security-watchlist.md`. Parse each row in the table:
 | owner/repo | severity | short-title | first-checked | last-checked | status |
 ```
 
-If `$TARGET` is set (`resubmit:owner/repo`), skip the file and probe only that target (one-off mode).
+If `TARGET` is set (`resubmit:owner/repo`), skip the file and probe only that target (one-off mode).
 
 If the watchlist is empty or the file doesn't exist:
 ```
@@ -839,11 +825,10 @@ Log it and stop. No notification needed.
 
 ### B2. Probe each entry for PVR status
 
-For each repo, run:
+For each repo, run one call with the repo written in literally (one call per repo, never a loop):
 
 ```bash
-REPO="owner/repo"
-gh api "repos/${REPO}/private-vulnerability-reporting" --jq '.enabled' 2>&1
+gh api "repos/<REPO>/private-vulnerability-reporting" --jq '.enabled' 2>&1
 ```
 
 Expected responses:
@@ -855,7 +840,7 @@ Expected responses:
 **Note:** `gh` CLI handles auth internally - no token-in-URL needed. If `gh api` is unavailable, fall back to `./secretcurl` with the `{GH_TOKEN}` placeholder (the workflow sets `GH_TOKEN` from `GH_GLOBAL`; never a raw `curl` with `$GH_GLOBAL`):
 ```bash
 ./secretcurl -s -H "Authorization: Bearer {GH_TOKEN}" \
-  "https://api.github.com/repos/${REPO}/private-vulnerability-reporting" | grep -o '"enabled":[a-z]*'
+  "https://api.github.com/repos/<REPO>/private-vulnerability-reporting" | grep -o '"enabled":[a-z]*'
 ```
 
 ### B3. Handle PVR-enabled flips
@@ -864,12 +849,7 @@ For each repo where PVR flipped to `true`:
 
 **a) Check for a recoverable draft**
 
-Look in `memory/pending-disclosures/` for a file whose name starts with the repo slug (replacing `/` with `-`).
-
-```bash
-SLUG=$(echo "$REPO" | tr '/' '-')
-ls memory/pending-disclosures/${SLUG}*.md 2>/dev/null
-```
+Look in `memory/pending-disclosures/` for a file whose name starts with the repo slug (replacing `/` with `-`). Work SLUG out yourself (`owner/repo` → `owner-repo`), then check with Glob `memory/pending-disclosures/<SLUG>*.md` (an `ls` of a missing file is logged as a tool error; Glob is not).
 
 **b) If a draft exists and status is not `shipped`:**
 
@@ -879,7 +859,7 @@ admin/security-manager rights on the target repo, so it `403`s on any repo you
 don't own). Classic `repo` scope is sufficient.
 
 ```bash
-gh api -X POST "repos/${REPO}/security-advisories/reports" \
+gh api -X POST "repos/<REPO>/security-advisories/reports" \
   -H "X-GitHub-Api-Version: 2022-11-28" \
   --input <draft-content-as-json>
 ```
@@ -994,9 +974,10 @@ If zero drafts are eligible → log `DISCLOSURE_EMAILER_SKIP: nothing armed` and
 
 ### C1. Load the queue and the sent-ledger
 
+List the queue with Glob `memory/pending-disclosures/*.md`. Check `memory/email-log.json` with Glob too; if it is missing, seed it as `[]` with the Write tool. Then read the ledger, one call:
+
 ```bash
-ls memory/pending-disclosures/*.md 2>/dev/null
-jq -c '.[]' memory/email-log.json 2>/dev/null   # [] if absent — seed it as [] if missing
+jq -c '.[]' memory/email-log.json
 ```
 
 If `memory/pending-disclosures/` is empty → `DISCLOSURE_EMAILER_SKIP: queue empty`, stop.
@@ -1045,42 +1026,61 @@ so **sort eligible drafts by severity (critical → high → medium → low), th
 Then send, in that order, applying every gate below. Any gate that fails, is unset, or
 errors ⇒ **do not send that draft** — leave it for a later run; never fall through to
 sending. Only `./secretcurl`, `jq`, `python3`, `grep`, `date`, `echo`, `mkdir`, and the
-`Write`/`Edit` tools are available (no `mv`/`awk`/`sha256sum`/`mktemp`).
+`Write`/`Edit` tools are available (no `mv`/`awk`/`sha256sum`/`mktemp`). Each gate is one Bash call that prints a value, and you make the send / skip decision from what it printed (see **Shell shape** in the Network note); "the loop" below is you working through the drafts one at a time, not a shell loop.
 
 **Global gates (once, before the loop):**
-1. **Kill-switch.** `$DISCLOSURE_EMAIL_PAUSED` in `1/true/yes/on` → log `DISCLOSURE_EMAILER_SKIP: paused`, stop.
-2. **Config.** Presence-check with the `${VAR:+x}` form — a **bare** `$RESEND_API_KEY` trips the secret-expansion analyzer and falsely reads as unset (idiom documented in `narrative-tracker`): `{ [ -n "${RESEND_API_KEY:+x}" ] && [ -n "${RESEND_FROM:+x}" ]; }`. If either is unset → log `DISCLOSURE_EMAILER_SKIP: resend not configured`, stop (drafts stay queued; nothing lost).
-3. **Budget.** Seed `memory/email-log.json` to `[]` if missing/corrupt. `SENT_TODAY = jq '[.[]|select((.sent_at//"")|startswith($TODAY))]|length'` — if that isn't a clean integer (ledger unreadable), **fail closed**: stop, send nothing. Else `BUDGET = min(${DISCLOSURE_EMAIL_MAX_PER_RUN:-1}, ${DISCLOSURE_EMAIL_DAILY_CAP:-1} - SENT_TODAY)`; if `BUDGET <= 0` → `DISCLOSURE_EMAILER_SKIP: daily cap`, stop.
+1. **Kill-switch.** `$DISCLOSURE_EMAIL_PAUSED` in `1/true/yes/on` → log `DISCLOSURE_EMAILER_SKIP: paused`, stop. Read it and the caps used below with one call:
+   ```bash
+   echo "paused=${DISCLOSURE_EMAIL_PAUSED:-} max_per_run=${DISCLOSURE_EMAIL_MAX_PER_RUN:-1} daily_cap=${DISCLOSURE_EMAIL_DAILY_CAP:-1} max_attempts=${DISCLOSURE_EMAIL_MAX_ATTEMPTS:-3} cooldown_days=${DISCLOSURE_EMAIL_COOLDOWN_DAYS:-7}"
+   ```
+2. **Config.** Read the "Keys set for this run" line in your run notes, never a shell test (those are refused and cost a turn). If `RESEND_API_KEY` or `RESEND_FROM` is not on that line → log `DISCLOSURE_EMAILER_SKIP: resend not configured`, stop (drafts stay queued; nothing lost).
+3. **Budget.** Seed `memory/email-log.json` to `[]` if missing/corrupt. Get TODAY with `date -u +%F` (its own call), then count today's sends, TODAY written in literally:
+   ```bash
+   jq '[.[]|select((.sent_at//"")|startswith("<TODAY>"))]|length' memory/email-log.json
+   ```
+   It prints SENT_TODAY. If that isn't a clean integer (ledger unreadable), **fail closed**: stop, send nothing. Else work out `BUDGET = min(max_per_run, daily_cap - SENT_TODAY)` yourself from step 1's values; if `BUDGET <= 0` → `DISCLOSURE_EMAILER_SKIP: daily cap`, stop.
 
 **Per draft (stop the loop once `BUDGET` sends have gone out):**
 4. **Dedup / status.** Skip if `slug` (repo with `/`→`-`) is already a row in `memory/email-log.json`, or the draft's own `status:` is already `email-sent`/`email-failed`.
-5. **Recipient sanity.** `to` must match `^[^@[:space:]]+@[^@[:space:]]+\.[^@[:space:]]+$` (`grep -qE`) — else skip + warn.
-5b. **Deliverability (MX/A), fail-closed.** A syntactically valid address can still be a dead or mistyped domain. Before an autonomous send, confirm the recipient **domain can actually receive mail** at the DNS level (port-25 SMTP probing is blocked on hosted runners, so verify over DNS-over-HTTPS - a plain GET, so `./secretcurl` passes the placeholder-free URL straight through):
+5. **Recipient sanity.** `to` must match `^[^@[:space:]]+@[^@[:space:]]+\.[^@[:space:]]+$` - else skip + warn. One call, TO written in literally; it prints the address back only when it matches:
    ```bash
-   DOMAIN="${TO#*@}"
-   DNS=$(./secretcurl -sS --max-time 10 "https://dns.google/resolve?name=${DOMAIN}&type=MX")
-   MXN=$(echo "$DNS" | jq -r '[.Answer[]? | select(.type==15)] | length' 2>/dev/null)
+   echo '<TO>' | grep -E '^[^@[:space:]]+@[^@[:space:]]+\.[^@[:space:]]+$'
+   ```
+5b. **Deliverability (MX/A), fail-closed.** A syntactically valid address can still be a dead or mistyped domain. Before an autonomous send, confirm the recipient **domain can actually receive mail** at the DNS level (port-25 SMTP probing is blocked on hosted runners, so verify over DNS-over-HTTPS - a plain GET, so `./secretcurl` passes the placeholder-free URL straight through):
+   DOMAIN = the part of `to` after the `@` (work it out yourself). One call, DOMAIN written in literally; it prints MXN:
+   ```bash
+   ./secretcurl -sS --max-time 10 "https://dns.google/resolve?name=<DOMAIN>&type=MX" | jq -r '[.Answer[]? | select(.type==15)] | length'
    ```
    - `MXN >= 1` (domain publishes MX) → **verified, proceed.**
-   - `MXN == 0`: retry once against Cloudflare (`./secretcurl -sS --max-time 10 -H 'accept: application/dns-json' "https://cloudflare-dns.com/dns-query?name=${DOMAIN}&type=MX"`). Still none → look up an A record (`&type=A`, `.type==1`): a domain with an A but no MX still accepts mail at that host (RFC 5321 §5.1), so treat a resolvable A as deliverable.
+   - `MXN == 0`: retry once against Cloudflare, the same shape (`./secretcurl -sS --max-time 10 -H 'accept: application/dns-json' "https://cloudflare-dns.com/dns-query?name=<DOMAIN>&type=MX" | jq -r '[.Answer[]? | select(.type==15)] | length'`). Still none → look up an A record (`&type=A`, `.type==1`): a domain with an A but no MX still accepts mail at that host (RFC 5321 §5.1), so treat a resolvable A as deliverable.
    - **No MX and no A, or both lookups error / time out → do NOT send (fail closed).** Flip the draft to `status: contact-unverified` and add a `deliverability: no-mx` frontmatter line so it drops out of the eligible set and surfaces to the operator; do not consume the budget.
-6. **Cooldown.** If this `to` was emailed within `${DISCLOSURE_EMAIL_COOLDOWN_DAYS:-7}` days (latest `.to`→`.sent_at` in the ledger, `python3` datetime diff) → skip, leave queued, retry after the window. A cooled-down draft does **not** consume the budget — move to the next.
-7. **Secret tripwire.** If subject+body match `grep -qE '(sk-[A-Za-z0-9]{20}|re_[A-Za-z0-9]{8}[A-Za-z0-9_]{12}|gh[pousr]_[A-Za-z0-9_]{20}|AKIA[0-9A-Z]{16}|AIza[0-9A-Za-z_-]{20}|-----BEGIN [A-Z ]*PRIVATE KEY-----)'` → **do not send**, log `BLOCKED: possible secret in body`, leave for operator review.
-8. **Build cc** = the draft's `cc` (array or comma-string) + `$RESEND_CC` (operator audit copy), minus blanks and the `to`, deduped (`jq`).
-9. **Build payload + send.** Build the JSON body with `python3`, reading `RESEND_FROM`/`RESEND_REPLY_TO` from `os.environ` (never a `--arg from "$RESEND_FROM"` on the line — that risks the analyzer block); pass only the non-secret `to`/`subject`/`body`/`cc` as argv. Then POST with `./secretcurl` (the `{RESEND_API_KEY}` header placeholder is substituted inside the script); the clean `slug` is the idempotency key:
+6. **Cooldown.** If this `to` was emailed within `${DISCLOSURE_EMAIL_COOLDOWN_DAYS:-7}` days (`cooldown_days` from gate 1; latest `.to`→`.sent_at` in the ledger, `python3` datetime diff) → skip, leave queued, retry after the window. A cooled-down draft does **not** consume the budget - move to the next.
+7. **Secret tripwire.** If subject+body match `grep -qE '(sk-[A-Za-z0-9]{20}|re_[A-Za-z0-9]{8}[A-Za-z0-9_]{12}|gh[pousr]_[A-Za-z0-9_]{20}|AKIA[0-9A-Z]{16}|AIza[0-9A-Za-z_-]{20}|-----BEGIN [A-Z ]*PRIVATE KEY-----)'` → **do not send**, log `BLOCKED: possible secret in body`, leave for operator review. To check it, write the extracted body (exactly as staged, nothing else) to `.tmp/vuln-disclose-body.txt` with the Write tool (step 9 reuses this file), then run two calls, SUBJECT written in literally; any count above `0` blocks:
    ```bash
-   PAYLOAD=$(python3 - "$TO" "$SUBJECT" "$BODY" "$CC_JSON" <<'PY'
+   grep -cE '(sk-[A-Za-z0-9]{20}|re_[A-Za-z0-9]{8}[A-Za-z0-9_]{12}|gh[pousr]_[A-Za-z0-9_]{20}|AKIA[0-9A-Z]{16}|AIza[0-9A-Za-z_-]{20}|-----BEGIN [A-Z ]*PRIVATE KEY-----)' .tmp/vuln-disclose-body.txt
+   ```
+   ```bash
+   echo '<SUBJECT>' | grep -cE '(sk-[A-Za-z0-9]{20}|re_[A-Za-z0-9]{8}[A-Za-z0-9_]{12}|gh[pousr]_[A-Za-z0-9_]{20}|AKIA[0-9A-Z]{16}|AIza[0-9A-Za-z_-]{20}|-----BEGIN [A-Z ]*PRIVATE KEY-----)'
+   ```
+8. **Build cc** = the draft's `cc` (array or comma-string) + `$RESEND_CC` (operator audit copy), minus blanks and the `to`, deduped (`jq`). Read the audit copy with `echo "resend_cc=${RESEND_CC:-}"` as its own call. The result is CC_JSON (a JSON array, `[]` when empty).
+9. **Build payload + send.** Build the JSON body with `python3`, reading `RESEND_FROM`/`RESEND_REPLY_TO` from `os.environ` (never a `--arg from "$RESEND_FROM"` on the line - that risks the analyzer block); pass only the non-secret `to`/`subject`/`cc` as argv and the body as the file from step 7. Then POST with `./secretcurl` (the `{RESEND_API_KEY}` header placeholder is substituted inside the script); the clean `slug` is the idempotency key. One `python3` call, TO, SUBJECT and CC_JSON written in literally (single-quoted), writes the payload to `.tmp/vuln-disclose-payload.json` and prints `payload ok`:
+   ```bash
+   python3 - '<TO>' '<SUBJECT>' '<CC_JSON>' .tmp/vuln-disclose-body.txt .tmp/vuln-disclose-payload.json <<'PY'
    import os, sys, json
-   to, subject, text, cc = sys.argv[1], sys.argv[2], sys.argv[3], json.loads(sys.argv[4] or "[]")
+   to, subject, cc = sys.argv[1], sys.argv[2], json.loads(sys.argv[3] or "[]")
+   text = open(sys.argv[4], encoding="utf-8").read()
    p = {"from": os.environ["RESEND_FROM"], "to": [to], "subject": subject, "text": text}
    if os.environ.get("RESEND_REPLY_TO"): p["reply_to"] = os.environ["RESEND_REPLY_TO"]
    if cc: p["cc"] = cc
-   print(json.dumps(p))
+   open(sys.argv[5], "w", encoding="utf-8").write(json.dumps(p))
+   print("payload ok")
    PY
-   )
+   ```
+   Then the send, its own call, SLUG written in literally:
+   ```bash
    ./secretcurl -sS --max-time 30 -w 'http=%{http_code}\n' -X POST "https://api.resend.com/emails" \
      -H "Authorization: Bearer {RESEND_API_KEY}" -H "Content-Type: application/json" \
-     -H "Idempotency-Key: $SLUG" -d "$PAYLOAD"
+     -H "Idempotency-Key: <SLUG>" -d @.tmp/vuln-disclose-payload.json
    ```
    Print `http=<code>`. Body has `.id` ⇒ **sent**; no `.id` / non-2xx ⇒ **failed**.
 10. **On send:** append `{slug,repo,to,subject,resend_id,sent_at}` to `memory/email-log.json` (via `python3`/`Write` — no `mv`), and flip the draft's frontmatter `status: email-sent` (+ `email_id`/`email_sent_at`/`email_to`) with `Edit`/`python3`. Decrement `BUDGET`.
@@ -1167,14 +1167,16 @@ specific bullets.
 
 ## Network note
 
+**Shell shape (all arms).** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`SEL=...`, `CANDS=$(grep ...)`, `PVR_RESP=$(gh api ...)`, `PAYLOAD=$(python3 ...)`), starts with `export`, uses `if` / `for` / `case` / `[ ... ]` tests or `$(( ))` math, or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn. `env`, `find`, `cp`, `sed`, `tr`, `awk`, `printf`, `basename`, `pwd` and `command -v` are not allowed commands either. So this skill runs every scanner, `gh api`, `jq` and `./secretcurl` step as its own call, writes each value it already knows (`<REPO>`, `<TARGET>`, `<SINCE>`, `<CLONE>`, `<DOMAIN>`, `<SLUG>`, ...) into later commands literally in place of the placeholder, makes each branch (selector, scanner status, PVR state, send gates) as a prose decision from what a call printed or its exit code, checks optional files with Glob, writes `sources.txt` with Write and appends to it with Edit, and runs the secret-scrubbed cargo steps through a `python3` launcher. A shell redirect into a file is refused in both tiers, /tmp included (`> /tmp/vuln-scan/osv.json` is refused like any other), so stdout-only scanners write their `/tmp/vuln-scan/` files through the `python3` wrapper in A3 (which prints `rc=<N>`), and the PVR payload is a `jq -Rs` call piped into `gh api ... --input -`. A jq filter never uses a `$name` variable (`--arg d ... '$d'` is refused too): write the value into the filter as a string (`startswith("<TODAY>")`).
+
 **Arm A (scan).** Getting the scanners to run under GitHub Actions takes **two** things:
 
-1. **Install** - the binaries (`semgrep`, `trufflehog`, `osv-scanner`, `slither`) are **not pre-installed**. The workflow step `scripts/stage-vuln-scanner.sh` stages them into `/tmp/bin` before `claude -p` starts: the Go binaries (osv-scanner, trufflehog) are pinned release assets checked against their sha256 digests, and semgrep/slither come from pip. In-run, step A3's preamble only re-runs `python3 -m pip install …` (semgrep, slither) as a fallback; scanner binaries are never downloaded in-run. Any tool that can't be staged is skipped by its `command -v` guard (`VULN_SCANNER_SKIPPED`); if **no** scanner is available, Arm A reports `SCAN_TOOLS_MISSING` and skips the scan cleanly rather than erroring the run.
+1. **Install** - the binaries (`semgrep`, `trufflehog`, `osv-scanner`, `slither`) are **not pre-installed**. The workflow step `scripts/stage-vuln-scanner.sh` stages them into `/tmp/bin` before `claude -p` starts: the Go binaries (osv-scanner, trufflehog) are pinned release assets checked against their sha256 digests, and semgrep/slither come from pip. In-run, step A3's preamble only re-runs `python3 -m pip install …` (semgrep, slither) as a fallback; scanner binaries are never downloaded in-run. Any tool that can't be staged is skipped when its call fails with `command not found` (`VULN_SCANNER_SKIPPED`); if **no** scanner is available, Arm A reports `SCAN_TOOLS_MISSING` and skips the scan cleanly rather than erroring the run.
 2. **Execute** — non-interactive `claude -p` runs under an `--allowedTools` allowlist, so any command not on it is **denied** ("requires approval") with no human to approve. The scanner *bare names* (`semgrep`, `osv-scanner`, `trufflehog`, `slither`) must be listed in the **write tier** of `scripts/skill_mode.sh` for bare invocation to be permitted; if a name is missing it's denied and that scanner is skipped (the scan arm degrades to manual code review — a denial reads as "requires approval", **not** a network/sandbox block). This is why step A3 puts `/tmp/bin` on `PATH` and calls each tool by bare name (`semgrep …`, not `/tmp/bin/semgrep …`) — an absolute-path invocation would not match the allowlist pattern.
 
 This two-part fix resolves ISS-001 (binaries installed *and* runnable). If any scanner binary is still missing at runtime, log `VULN_SCANNER_SKIPPED: <tool> not available`, record `tool=fail` in `sources.txt`, and continue with the remaining scanners rather than aborting the whole run. An all-scanners-fail run must report **error**, not **clean**.
 
-**A3.5 (fuzz)** follows the same two-part shape, but staging happens in the workflow step, not in-run: `scripts/stage-vuln-scanner.sh` installs a nightly Rust toolchain and `cargo-fuzz` before `claude -p` starts (the sandbox denies toolchain installs in-run, same reason `deploy-uni-hook` stages Foundry the same way — see `scripts/stage-deploy-uni-hook.sh`). Staging is unconditional (same tolerance as slither above — the target isn't known yet at staging time), so it always installs; only *use* is conditional on the clone actually shipping `fuzz/fuzz_targets`. Execution needs `Bash(cargo:*)` in the write tier of `scripts/skill_mode.sh` — broader than the single-purpose scanner grants, because `cargo fuzz` dispatches through the `cargo` binary itself, which also compiles the target's own code (and its build scripts). **This means the target's build scripts run with this skill's own secrets (`GH_GLOBAL`/`GH_TOKEN`, `RESEND_API_KEY`, `RESEND_FROM`, `RESEND_REPLY_TO`) live in the environment and network open — A3.5 scrubs them with `env -u` immediately before both the fuzz run and the crash-reproduction command, and nowhere else in this skill needs that scrub**, since only this step executes the target's own code. If either staging half is missing, the `command -v cargo-fuzz` guard in A3.5 skips cleanly.
+**A3.5 (fuzz)** follows the same two-part shape, but staging happens in the workflow step, not in-run: `scripts/stage-vuln-scanner.sh` installs a nightly Rust toolchain and `cargo-fuzz` before `claude -p` starts (the sandbox denies toolchain installs in-run, same reason `deploy-uni-hook` stages Foundry the same way - see `scripts/stage-deploy-uni-hook.sh`). Staging is unconditional (same tolerance as slither above - the target isn't known yet at staging time), so it always installs; only *use* is conditional on the clone actually shipping `fuzz/fuzz_targets`. Execution needs `Bash(cargo:*)` in the write tier of `scripts/skill_mode.sh` - broader than the single-purpose scanner grants, because `cargo fuzz` dispatches through the `cargo` binary itself, which also compiles the target's own code (and its build scripts). **This means the target's build scripts run with this skill's own secrets (`GH_GLOBAL`/`GH_TOKEN`, `RESEND_API_KEY`, `RESEND_FROM`, `RESEND_REPLY_TO`) live in the environment and network open - A3.5 scrubs them in its `python3` launcher (the env it passes to `cargo` drops them) for both the fuzz run and the crash-reproduction command, and nowhere else in this skill needs that scrub**, since only this step executes the target's own code. If either staging half is missing, the `cargo fuzz list` gate in A3.5 fails and the step skips cleanly.
 
 **A4.5 (PoC verification)** stages Foundry with the repository's pinned official
 action before the harness starts, then invokes only `./scripts/vuln-poc-gate.sh`.

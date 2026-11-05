@@ -1,0 +1,21 @@
+[package]
+name = "token_vault_repro"
+version = "0.1.0"
+edition = "2021"
+description = "PocketIC reproduction for the token_vault fixture. A SEPARATE crate on purpose: the pocket-ic dev-dep and the repro test live here, so proving the flaw never edits the audited token_vault crate's Cargo.toml (the PoC gate rejects a dirty target). Do not deploy."
+publish = false
+
+# Standalone: the audited crate sits one dir up, so without this cargo would try to
+# treat ../Cargo.toml as a workspace root and refuse to build. An empty [workspace]
+# makes this crate its own root. It does NOT depend on token_vault: ic-cdk canister
+# code does not link for the host target, so the repro drives the built wasm instead.
+[workspace]
+
+[dev-dependencies]
+# PocketIC drives the dynamic reproduction (repro.sh -> tests/repro.rs). The crate and
+# the server binary share version numbering: crate 16.x pairs with the 16.x server
+# scripts/stage-canister-audit.sh downloads. update_call/query_call return
+# Result<Vec<u8>, _> at 16.x (what tests/repro.rs decodes); bump this, tests/repro.rs,
+# and the server pin in the staging script together.
+candid = "0.10"
+pocket-ic = "16.1"

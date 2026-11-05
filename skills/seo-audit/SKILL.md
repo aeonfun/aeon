@@ -61,10 +61,20 @@ This skill is `mode: read-only`, and that is load-bearing:
 - It is **dependency-free stdlib Node**, matching every other helper in
   `scripts/`. There is no install step. If you find yourself wanting a package,
   you are about to break the thing that makes this skill cheap and safe.
-- **You have no Write or Edit tool.** Every file this skill produces is written
-  with a shell redirection (`>`/`>>`) from an allowed command. The workflow's
+- **You have no Write or Edit tool, and no shell redirection.** This tier also
+  refuses `>`, `>>` and `tee` into a file, so every file this skill produces is
+  written by `node -e` with `fs.writeFileSync` (Steps 5 and 6), and the notify
+  body goes to `./notify -f -` on a quoted heredoc (Step 7). The workflow's
   read-only guard reverts writes to code/config paths but **preserves `memory/`
   and `output/`**, which is exactly where this skill writes.
+- **Shell shape.** Each Bash call is one allowed command (pipes are fine). The
+  run refuses a call that sets a variable (`PREV=$(ls ...)`, `export STAMP=$(date ...)`,
+  `FIXES_URL=...`), uses `if` / `for` / `while` or `$(( ))`, joins commands with
+  `;`, `&&` or `||`, or redirects into a file, and each refusal costs a model
+  turn. So get the stamp with a bare `date` call and write the printed value into
+  later commands (the `<STAMP>`, `<ORIGIN>` style placeholders in the snippets);
+  run the auditor once per site with the origin written in literally; let one
+  `node -e` call fold the sites into the snapshot instead of a `for` loop.
 - The guard also appends the `### seo-audit` run-log entry from your final
   output, so put the log detail there (step 8), never a second self-written entry.
 
@@ -89,8 +99,10 @@ unset, Core Web Vitals are simply absent. That is a degraded run, not a failed o
 
 2. **Audit each site:**
 
+   One call per site, the origin written in literally:
+
    ```bash
-   node scripts/seo-audit.mjs --site <origin> --format json
+   node scripts/seo-audit.mjs --site <ORIGIN> --format json
    ```
 
    Useful flags: `--max N` (page cap, default 50) and `--concurrency N`
@@ -120,10 +132,11 @@ unset, Core Web Vitals are simply absent. That is a degraded run, not a failed o
    Filenames sort chronologically, so:
 
    ```bash
-   PREV=$(ls -1 memory/seo-audit/*.json 2>/dev/null | sort | tail -1)
+   ls -1 memory/seo-audit/ | grep '\.json$' | sort | tail -1
    ```
 
-   `$PREV` is the baseline (empty on the very first run). Match pages **by URL**,
+   It prints PREV, the baseline file name under `memory/seo-audit/` (nothing,
+   or a no-such-directory error, on the very first run). Match pages **by URL**,
    per site, and compare:
    - **New fails** — a check that was `pass`/`warn` yesterday and is `fail` today.
    - **Site score movement** — any change of 3+ points, either direction.
@@ -165,26 +178,35 @@ unset, Core Web Vitals are simply absent. That is a degraded run, not a failed o
    timestamp — never overwrite a date-named file. This is what makes a manual
    re-run (or a second scheduled run) safe: it can't clobber or fail to update an
    earlier run's snapshot, and the diff in step 4 always picks up the newest one.
-   Shell redirection, not the Write tool. Loop the script over every origin in
-   `${var}` and fold the per-site JSON into one snapshot — **redirect the
-   script's own output, never retype it:**
+   Node writes it, not the Write tool or a shell redirection. Three separate
+   calls. First the directory:
 
    ```bash
    mkdir -p memory/seo-audit
-   export STAMP=$(date -u +%Y-%m-%dT%H-%M-%SZ)   # e.g. 2026-07-24T13-00-07Z
-   i=0; files=""
-   for site in <each trimmed origin from ${var}>; do
-     i=$((i+1))
-     node scripts/seo-audit.mjs --site "$site" > "/tmp/seo-$i.json"
-     files="$files /tmp/seo-$i.json"
-   done
-   node -e 'const fs=require("fs"); const sites=process.argv.slice(1).map(f=>JSON.parse(fs.readFileSync(f)));
-     console.log(JSON.stringify({date:"${today}",run:process.env.STAMP,sites},null,2))' $files \
-     > "memory/seo-audit/${STAMP}.json"
    ```
 
-   **Redirect the script's own JSON; never retype it.** A hand-copied 20-page
-   report is where transcription errors and invented numbers come from — and it
+   Then the stamp:
+
+   ```bash
+   date -u +%Y-%m-%dT%H-%M-%SZ
+   ```
+
+   It prints STAMP (e.g. `2026-07-24T13-00-07Z`). Then one `node -e` runs the
+   script over every trimmed origin in `${var}` (each written in literally after
+   the stamp, in `${var}` order) and folds the per-site JSON into one snapshot,
+   **capturing the script's own output, never retyping it:**
+
+   ```bash
+   node -e 'const fs=require("fs"),cp=require("child_process"); const [out,date,run,...origins]=process.argv.slice(1);
+     const sites=origins.map(s=>{let o; try{o=cp.execFileSync("node",["scripts/seo-audit.mjs","--site",s],{encoding:"utf8",maxBuffer:1<<28})}catch(e){o=e.stdout} return JSON.parse(o)});
+     fs.writeFileSync(out,JSON.stringify({date,run,sites},null,2)+"\n")' memory/seo-audit/<STAMP>.json "${today}" <STAMP> <ORIGIN_1> <ORIGIN_2>
+   ```
+
+   A site that exits 1 (`"ok": false`) still prints its JSON, so the `catch`
+   keeps it in the snapshot, the same as the old redirect did.
+
+   **Capture the script's own JSON; never retype it.** A hand-copied 20-page
+   report is where transcription errors and invented numbers come from - and it
    is the file the next diff trusts.
 
    Snapshots accumulate one per run (older date-named files stay valid — they
@@ -196,8 +218,15 @@ unset, Core Web Vitals are simply absent. That is a degraded run, not a failed o
 6. **Update the remediation doc, `memory/seo-audit/FIXES.md`.** This is the
    durable half of the skill: the notification is a daily nudge that scrolls
    away, this is the standing work list someone can open and act on. Rewrite it
-   in full each run (shell redirection — no Write tool), preserving history from
-   the previous copy.
+   in full each run, preserving history from the previous copy. Node writes it
+   (no Write tool, no shell redirection), reading the new body from a quoted
+   heredoc on stdin, as one call:
+
+   ```bash
+   node -e 'require("fs").writeFileSync("memory/seo-audit/FIXES.md", require("fs").readFileSync(0, "utf8"))' <<'FIXES'
+   <the full FIXES.md markdown>
+   FIXES
+   ```
 
    Structure, highest-impact first (site names below are placeholders — use the
    real hosts from `${var}`):
@@ -288,20 +317,20 @@ unset, Core Web Vitals are simply absent. That is a degraded run, not a failed o
    one site is audited. Include the "weakest pages" line only when a page sits
    clearly below its site's average.
 
-   Send it with `./notify -f <file>.md` (multi-line always goes through `-f`).
-
-   **Write that body under `/tmp/`, never `memory/` or `output/`.** Those two are
-   preserved by the read-only guard and committed by the post-run step, so a
-   scratch notify body written there ships as junk on `main`, not a cosmetic
-   slip. This skill has no `rm`, so it cannot clean up
-   after itself; the fix is to never write it there:
+   Send it with `./notify -f -` (multi-line always goes through `-f`), the body
+   on a quoted heredoc, as one call:
 
    ```bash
-   cat > /tmp/seo-notify.md <<'NOTIFY'
+   ./notify -f - <<'NOTIFY'
    <the digest markdown>
    NOTIFY
-   ./notify -f /tmp/seo-notify.md
    ```
+
+   **Never write that body to a file under `memory/` or `output/`.** Those two are
+   preserved by the read-only guard and committed by the post-run step, so a
+   scratch notify body written there ships as junk on `main`, not a cosmetic
+   slip. This skill has no `rm`, so it cannot clean up after itself; the heredoc
+   above writes no file at all.
 
    The only files this skill is meant to persist are the Step 5 snapshot
    (`memory/seo-audit/<STAMP>.json`) and the Step 6 `memory/seo-audit/FIXES.md`.
@@ -314,10 +343,11 @@ unset, Core Web Vitals are simply absent. That is a degraded run, not a failed o
    stays correct in any fork:
 
    ```bash
-   FIXES_URL="${GITHUB_SERVER_URL:-https://github.com}/${GITHUB_REPOSITORY}/blob/main/memory/seo-audit/FIXES.md"
+   node -e 'console.log((process.env.GITHUB_SERVER_URL || "https://github.com") + "/" + process.env.GITHUB_REPOSITORY + "/blob/main/memory/seo-audit/FIXES.md")'
    ```
 
-   then write the pointer as `[FIXES.md]($FIXES_URL)`. Same rule for the audited
+   It prints FIXES_URL; write the pointer as `[FIXES.md](<FIXES_URL>)`, the URL
+   written in literally. Same rule for the audited
    pages — `[docs](https://www.example.com/docs)` rather than a naked path.
 
    Detail rules — the difference between a message that gets acted on and one

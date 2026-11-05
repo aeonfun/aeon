@@ -271,8 +271,17 @@ function resolveMode(
   if (!allowedTools) return null;
 
   // Standing tier notes (notify via stdin, no shell file writes), the same
-  // `run-notes <mode>` aeon.yml appends to the system prompt. Empty is allowed.
-  const notesRes = run("run-notes", mode);
+  // `run-notes <mode> <skill>` aeon.yml appends to the system prompt. Empty is
+  // allowed. With the slug it also prints the "Keys set for this run" line that
+  // skills read instead of a shell key test (names only, never values), so it is
+  // resolved under the env the harness will get: a shadow run lists its stripped
+  // keys as not set.
+  const notesEnv = isShadow ? shadowSafeEnv(process.env) : process.env;
+  const notesRes = spawnSync("bash", [script, "run-notes", mode, slug], {
+    cwd: repoRoot,
+    encoding: "utf-8",
+    env: notesEnv,
+  });
   if (notesRes.status !== 0) return null;
   const runNotes = (notesRes.stdout || "").trim();
 
