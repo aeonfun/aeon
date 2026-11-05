@@ -324,15 +324,15 @@ After every present adapter runs, build the combined digest. This is the reasoni
 4. Compose the notify body — dollars appear ONLY on lines that have real ones; every other line shows its signal:
 
 ```
-Spend Watch — ${today}   |   real spend: Railway $<R>/cyc · Actions $<A> (<pct>% of included)   |   <K> actions
+Spend Watch - ${today}   |   real spend: Railway $<R>/cyc · Actions $<A> (<pct>% of included)   |   <K> actions
 
 TOP DRIVERS (by signal)
-1. <platform> <object> — <signal>            <trend arrow>   [$<X> if real, else no $]
+1. <platform> <object> - <signal>            <trend arrow>   [$<X> if real, else no $]
 2. ...
 3. ...
 
 RECOMMENDATIONS
-① <platform>: <lever>   — <signal>   [<effort>]      (savings $<s> only if real)
+① <platform>: <lever>   - <signal>   [<effort>]      (savings $<s> only if real)
    why: <root cause>
 ② ...
 ③ ...

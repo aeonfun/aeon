@@ -107,10 +107,10 @@ Use this structure (a superset of the headings Aeon already reads). Fill every s
 <one-line summary of who they are>
 
 ## Identity
-<background that shapes how they think — not a resume>
+<background that shapes how they think - not a resume>
 
 ## Worldview
-- <specific belief> (— optionally: "from their take that '<short quote/paraphrase>'")
+- <specific belief> (- optionally: "from their take that '<short quote/paraphrase>'")
 
 ## Opinions
 ### <Domain>
@@ -131,7 +131,7 @@ Use this structure (a superset of the headings Aeon already reads). Fill every s
 - ...
 
 ## Vocabulary
-<!-- optional — include when the subject has signature terms -->
+<!-- optional - include when the subject has signature terms -->
 - **<term>**: <what it means when they say it>
 
 ## Tensions & Contradictions
@@ -142,7 +142,7 @@ Use this structure (a superset of the headings Aeon already reads). Fill every s
 - Express uncertainty on: <where they hedge rather than fake confidence>
 
 ## Pet Peeves
-<!-- optional — concrete things that visibly annoy them -->
+<!-- optional - concrete things that visibly annoy them -->
 - <pet peeve>
 ```
 
@@ -166,7 +166,7 @@ Use the optional sections (**Vocabulary**, **Tensions & Contradictions**, **Pet 
 <caps, em dashes, emoji, lowercase habits>
 
 ## Anti-patterns
-<what sounds obviously wrong attributed to them — be concrete>
+<what sounds obviously wrong attributed to them - be concrete>
 ```
 
 The **Anti-patterns** section is the most load-bearing: name the specific phrasings that would read as fake.
@@ -176,7 +176,7 @@ The **Anti-patterns** section is the most load-bearing: name the specific phrasi
 Curate **10–20** representative posts as voice-calibration examples — a mix of short reactions, medium takes, and longer ones. Lightly clean obvious typos; keep the voice intact. Prefer real posts from the sample over invented ones. If the sample is thin, write fewer real ones rather than fabricating — note the count.
 
 ```markdown
-# Voice Examples — @${handle}
+# Voice Examples - @${handle}
 
 <!-- Real posts that calibrate the voice. Read these to match cadence + register. -->
 

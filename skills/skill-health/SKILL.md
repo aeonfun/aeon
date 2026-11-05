@@ -166,17 +166,17 @@ Always write `memory/skill-health/last-report.json`:
 **Body (notify-channel format, max 1 message):**
 
 ```
-*Skill Health — ${today}*
-HEALTH: CRITICAL(2)  [systemic: api.coingecko.com rate_limit — 3 skills]
+*Skill Health - ${today}*
+HEALTH: CRITICAL(2)  [systemic: api.coingecko.com rate_limit - 3 skills]
 
 🔴 CRITICAL
-- token-movers — 5 fails, 3d down — WAIT-API (rate_limit) → ISS-042
-- defi-monitor — 4 fails, 2d down — WAIT-API (rate_limit) → ISS-042
+- token-movers - 5 fails, 3d down - WAIT-API (rate_limit) → ISS-042
+- defi-monitor - 4 fails, 2d down - WAIT-API (rate_limit) → ISS-042
 
 🟡 DEGRADED / FLAPPING
-- digest — 52% success (14d), avg quality 2.1 — INVESTIGATE → ISS-043
+- digest - 52% success (14d), avg quality 2.1 - INVESTIGATE → ISS-043
 
-⚪ NO DATA (2): skill-x, skill-y — DISPATCH-SKILL
+⚪ NO DATA (2): skill-x, skill-y - DISPATCH-SKILL
 🟢 HEALTHY: 34
 
 Open issues: 2 · Resolved this run: 1 (rss-digest)
@@ -195,7 +195,7 @@ Rules for formatting:
   ```
   ### skill-health
   - view: health
-  - SKILL_HEALTH_NOOP — state unchanged since <prev_run_at>, hash=<short>
+  - SKILL_HEALTH_NOOP - state unchanged since <prev_run_at>, hash=<short>
   ```
 
 On notify, log to memory/logs/${today}.md:
@@ -336,7 +336,7 @@ If gate says skip, still write the article and JSON spec, and log `SKILL_ANALYTI
 Path: `output/articles/skill-analytics-${today}.md`. Overwrite if it exists (idempotent same-day reruns).
 
 ```markdown
-# Skill Analytics — ${today}
+# Skill Analytics - ${today}
 
 **Verdict:** ${verdict_line}
 
@@ -346,14 +346,14 @@ Path: `output/articles/skill-analytics-${today}.md`. Overwrite if it exists (ide
 
 | Flag | Skill | Detail | Action |
 |------|-------|--------|--------|
-| 🔴 SILENT | name | scheduled `<cron>` but zero runs in window | run **aeon-doctor** — zero-runs-despite-schedule is usually a static config bug (unquoted `schedule:`, dup key) it can't be seen in run data |
+| 🔴 SILENT | name | scheduled `<cron>` but zero runs in window | run **aeon-doctor** - zero-runs-despite-schedule is usually a static config bug (unquoted `schedule:`, dup key) it can't be seen in run data |
 | 🔴 ALL_FAIL | name | N/N failed | investigate root cause |
 | 🟠 CONSECUTIVE_FAILURES | name | N-run streak (last_error: "...") | see health view for filed issue |
 | 🟠 LOW_SUCCESS | name | N% over M runs | review failures |
 | 🟡 ALL_SKIP | name | M runs, all skip-class | confirm SKIP_UNCHANGED is the intent |
 | 🟡 DUPLICATE_RUNS | name | M runs, expected ~K | check for manual reruns |
 
-(If `anomaly_count == 0`: write `No anomalies — fleet healthy across ${distinct_skills} skills.`)
+(If `anomaly_count == 0`: write `No anomalies - fleet healthy across ${distinct_skills} skills.`)
 
 ## Top runners (by run count)
 
@@ -384,20 +384,20 @@ Path: `output/articles/skill-analytics-${today}.md`. Overwrite if it exists (ide
 | partial       | N | XX% |   |
 | uncategorized | N | XX% |   |
 
-(Sourced from `memory/logs/*.md` — best-effort regex grep, see Step 5. Cell-aligns to summary cells above where available.)
+(Sourced from `memory/logs/*.md` - best-effort regex grep, see Step 5. Cell-aligns to summary cells above where available.)
 
 ## Silent scheduled skills (enabled, zero runs)
 
-${list of {skill, schedule} pairs OR "none — every enabled cron skill ran at least once."}
+${list of {skill, schedule} pairs OR "none - every enabled cron skill ran at least once."}
 
-> **Root-cause pointer:** an enabled cron skill with *zero* runs is most often a **static config** fault the run data can't reveal — an unquoted `schedule:` the scheduler regex silently skips, a duplicate `aeon.yml` key, or an entry pointing at a missing `SKILL.md`. That class is `aeon-doctor`'s job; dispatch it (`./aeon skills run aeon-doctor`) to pinpoint the cause instead of guessing at the scheduler.
+> **Root-cause pointer:** an enabled cron skill with *zero* runs is most often a **static config** fault the run data can't reveal - an unquoted `schedule:` the scheduler regex silently skips, a duplicate `aeon.yml` key, or an entry pointing at a missing `SKILL.md`. That class is `aeon-doctor`'s job; dispatch it (`./aeon skills run aeon-doctor`) to pinpoint the cause instead of guessing at the scheduler.
 
 ## Source status
 
 - skill-runs JSON: ${ok|empty|fetch_error}
 - Window: ${WINDOW_HOURS}h (${period.since} → ${period.until})
 - aeon.yml: ${ok|missing}
-- cron-state.json: ${ok|missing — first run for this fork?}
+- cron-state.json: ${ok|missing - first run for this fork?}
 - Daily logs scanned: ${N_LOG_FILES}/${expected_log_files} for exit taxonomy
 
 ---
@@ -469,7 +469,7 @@ If the file write fails (filesystem read-only, missing directory), log a warning
 Via `./notify`:
 
 ```
-*Skill Analytics — ${today}*
+*Skill Analytics - ${today}*
 ${verdict_line}
 
 Window: ${WINDOW_LABEL} · ${total_runs} runs · ${distinct_skills} skills · ${overall_success_pct}% success
@@ -477,15 +477,15 @@ Anomalies: ${anomaly_count}
 
 ${If 🔴 flags (cap top 3):}
 🔴 Critical:
-- ${skill} — ${flag}: ${detail}
+- ${skill} - ${flag}: ${detail}
 
 ${If 🟠 flags (cap top 3):}
 🟠 Degraded:
-- ${skill} — ${flag}: ${detail}
+- ${skill} - ${flag}: ${detail}
 
 ${If 🟡 flags (top 3, only if no 🔴/🟠 already filled the slots):}
 🟡 Watch:
-- ${skill} — ${flag}: ${detail}
+- ${skill} - ${flag}: ${detail}
 
 Top by runs: ${top_3_skills_by_run_count_with_counts}
 
@@ -511,7 +511,7 @@ Log under the shared `### skill-health` heading (the health loop parses this sha
 - **Verdict**: ${verdict_line}
 - **Article**: output/articles/skill-analytics-${today}.md
 - **Dashboard**: apps/dashboard/outputs/skill-analytics.json
-- **Notification sent**: ${yes|no — quiet (no anomalies)}
+- **Notification sent**: ${yes|no - quiet (no anomalies)}
 - **Status**: SKILL_ANALYTICS_OK | SKILL_ANALYTICS_QUIET | SKILL_ANALYTICS_NO_DATA
 ```
 

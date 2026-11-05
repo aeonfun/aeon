@@ -285,7 +285,7 @@ This skill is `read-only`, so the workflow's read-only guard writes its `### pos
 - Result: POSTHOG_OK | POSTHOG_ALL_CLEAR | POSTHOG_PARTIAL | POSTHOG_NOT_CONNECTED | POSTHOG_AUTH_STALE
 - Scope: <P> projects (<Q> reached) · window <N>d
 - Issues: <total> (<new> new, <spiking> spiking, <resolved> resolved) · MCP calls: <n>/60
-- Top: <project — top error — hits/users>
+- Top: <project - top error - hits/users>
 - Snapshot: memory/posthog-errors/${today}.json (written|skipped)
 ```
 

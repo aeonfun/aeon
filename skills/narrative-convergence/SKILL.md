@@ -30,7 +30,7 @@ The signal-category map is **operator-editable** and lives in `memory/topics/sig
 ```markdown
 # Signal Categories
 
-## Housekeeping (excluded — no external signals)
+## Housekeeping (excluded - no external signals)
 heartbeat, memory-flush, aeon-doctor, aeon-update, auto-merge,
 skill-health, skill-repair, self-improve, operator-scorecard,
 shiplog, fleet-control, fork-fleet, narrative-convergence
@@ -115,9 +115,9 @@ For each surviving top signal (minimum 2 signals to notify, else skip):
 
 Example format:
 ```
-<ENTITY> (score 11) — security + social + market
+<ENTITY> (score 11) - security + social + market
 → vuln-scanner: automated vuln-finding at scale; tweet-roundup: major platform deal; market-context: fraud-prevention win
-→ angle: AI-finds-vulns is becoming industrial — not a research project, a service. who charges for it?
+→ angle: AI-finds-vulns is becoming industrial - not a research project, a service. who charges for it?
 → hook: "the vulnerability bounty economy just got automated"
 ```
 
@@ -126,11 +126,11 @@ Example format:
 Write `memory/topics/convergence-signals.md` (overwrite if exists):
 
 ```markdown
-# Convergence Signals — Last Updated: ${today}
+# Convergence Signals - Last Updated: ${today}
 
 ## Active Signals (score ≥ 5)
 
-### [Entity/Theme] — Score: N
+### [Entity/Theme] - Score: N
 **Sources (N skills, N categories):** skill1 (category), skill2 (category), ...
 **Convergence story:** [what each source noticed, one line each]
 **Write angle:** [specific take, not generic]
@@ -153,12 +153,12 @@ If fewer than 2 signals survive after suppression: skip notification. Log `NARRA
 Otherwise, write to `.pending-notify-temp/narrative-convergence-${today}.md` (create the dir if needed):
 
 ```
-narrative convergence — ${today}
+narrative convergence - ${today}
 
 N entities surfaced by 3+ independent skills in 48h:
 
-1. [entity/theme] — N skills × N categories — [hook in one line]
-2. [entity/theme] — N skills × N categories — [hook in one line]
+1. [entity/theme] - N skills × N categories - [hook in one line]
+2. [entity/theme] - N skills × N categories - [hook in one line]
 [up to 5]
 
 these aren't single-source signals. they're bleedthrough.

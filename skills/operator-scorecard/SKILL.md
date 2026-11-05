@@ -120,9 +120,9 @@ b. **Compute economic verdict (paragraph 3):**
 Path: `output/articles/operator-scorecard-${today}.md`. Overwrite if exists (idempotent same-day reruns).
 
 ```markdown
-# Operator Scorecard — ${today}
+# Operator Scorecard - ${today}
 
-**Verdict:** ${verdict_emoji} ${verdict_label} — ${one_line_summary}
+**Verdict:** ${verdict_emoji} ${verdict_label} - ${one_line_summary}
 
 *Window: last ${WINDOW_DAYS}d (${WINDOW_START_DATE} → ${today})*
 
@@ -134,7 +134,7 @@ The fleet ran ${total_runs} times across ${distinct_skills} skills with a ${succ
 
 ## Community growth
 
-${watched_repo_1} added ${stars_1} stars and ${forks_1} forks. ${watched_repo_2} added ${stars_2} stars and ${forks_2} forks. ${total_stars_added} stars across the fleet — averaging ${stars_per_day} per day. ${new_contributors} new contributor(s) appeared on the leaderboard. ${notable_line_or_omit}
+${watched_repo_1} added ${stars_1} stars and ${forks_1} forks. ${watched_repo_2} added ${stars_2} stars and ${forks_2} forks. ${total_stars_added} stars across the fleet - averaging ${stars_per_day} per day. ${new_contributors} new contributor(s) appeared on the leaderboard. ${notable_line_or_omit}
 
 **Verdict:** ${growth_verdict}
 
@@ -146,7 +146,7 @@ $AEON distributed: $${total_distributed} across ${recipient_count} recipient(s) 
 
 ## What was notable
 
-${bullet list of up to 3 entries from MEMORY.md "Skills Built" rows where date is in window — keeps the week's autonomous accomplishments visible}
+${bullet list of up to 3 entries from MEMORY.md "Skills Built" rows where date is in window - keeps the week's autonomous accomplishments visible}
 
 ## Source status
 
@@ -157,7 +157,7 @@ ${bullet list of up to 3 entries from MEMORY.md "Skills Built" rows where date i
 - new-contributors: ${new_contributors or "GitHub API unavailable"}
 
 ---
-*Companion to `skill-health`'s analytics view (per-skill ranking) and heartbeat (per-run pulse). This branch answers the operator-level question those two don't: "given everything that happened, was this week worth it?" Methodology: every number is sourced from another skill's article — this branch measures nothing itself.*
+*Companion to `skill-health`'s analytics view (per-skill ranking) and heartbeat (per-run pulse). This branch answers the operator-level question those two don't: "given everything that happened, was this week worth it?" Methodology: every number is sourced from another skill's article - this branch measures nothing itself.*
 ```
 
 The "What was notable" section reads `memory/MEMORY.md` for rows in the `## Skills Built` table where the `Date` column falls in the window. List up to 3, formatted as `- {Skill} — {one-line summary truncated to ~120 chars}`. If zero new skills built this week, write `- No new skills built this week — agent ran on the existing fleet.`
@@ -224,8 +224,8 @@ If `MODE == dry-run`: skip notify, log `OPERATOR_SCORECARD_DRY_RUN`, exit.
 Otherwise call `./notify`:
 
 ```
-*Operator Scorecard — ${today}*
-${verdict_emoji} ${verdict_label} — ${one_line_summary}
+*Operator Scorecard - ${today}*
+${verdict_emoji} ${verdict_label} - ${one_line_summary}
 
 Agent health: ${success_pct}% across ${total_runs} runs (${anomaly_count} anomalies, ${heartbeat_ok} clean heartbeats)
 
@@ -257,7 +257,7 @@ Append under the shared `### operator-scorecard` heading (see the **Log** sectio
 - **Economic activity**: $${total_distributed} in $AEON to ${recipient_count} recipients · token ${token_7d_pct}% 7d (${token_verdict})
 - **Article**: output/articles/operator-scorecard-${today}.md
 - **Dashboard**: apps/dashboard/outputs/operator-scorecard.json
-- **Notification sent**: ${yes|no — dry-run|no — INSUFFICIENT_DATA}
+- **Notification sent**: ${yes|no - dry-run|no - INSUFFICIENT_DATA}
 - **Status**: OPERATOR_SCORECARD_OK | OPERATOR_SCORECARD_QUIET | OPERATOR_SCORECARD_NO_DATA
 ```
 
@@ -329,22 +329,22 @@ Read `memory/MEMORY.md` for context and `memory/issues/INDEX.md` for open issues
 9. **Compose and send the recap via `./notify`.**
 
    ```
-   *Ops Recap — ${TODAY}*
+   *Ops Recap - ${TODAY}*
    _TL;DR: <one-sentence verdict from step 8>_
 
    *Headlines:*
-   - [skill] — [one-line outcome] · <URL>
+   - [skill] - [one-line outcome] · <URL>
    - ...
 
    *Notable:*  (omit section if empty)
-   - [skill ×N] — [one-line]
+   - [skill ×N] - [one-line]
    - ...
 
    *Decisions for tomorrow:*  (omit if empty)
    - [specific ask, named target]
 
    *Blockers:*  (omit if empty)
-   - [skill] — [error in ≤8 words] · <run URL if available>
+   - [skill] - [error in ≤8 words] · <run URL if available>
 
    _+M routine runs collapsed · sources: log=[ok|missing|empty] cron-state=[ok|unavailable]_
    ```
@@ -473,7 +473,7 @@ If a theme has no user-visible commits, label it `Internal: <theme>` and push it
 Write to `output/articles/push-recap-${today}.md`:
 
 ```markdown
-# Push Recap — ${today}
+# Push Recap - ${today}
 
 ## Verdict
 > <one-line verdict>
@@ -485,29 +485,29 @@ Write to `output/articles/push-recap-${today}.md`:
 ---
 
 ## Top impact today
-1. `abc1234` — <commit message>. <one sentence: what the diff actually shows and who notices>. (<files> files, +X/-Y)
-2. `def5678` — <commit message>. <one sentence>. (<files> files, +X/-Y)
-3. `ghi9012` — <commit message>. <one sentence>. (<files> files, +X/-Y)
+1. `abc1234` - <commit message>. <one sentence: what the diff actually shows and who notices>. (<files> files, +X/-Y)
+2. `def5678` - <commit message>. <one sentence>. (<files> files, +X/-Y)
+3. `ghi9012` - <commit message>. <one sentence>. (<files> files, +X/-Y)
 
 ---
 
 ## owner/repo
 
-### [Theme 1 — descriptive name]
+### [Theme 1 - descriptive name]
 
-**What this is:** <2 sentences stating the user-facing or developer-facing outcome — not the commit messages repeated>.
+**What this is:** <2 sentences stating the user-facing or developer-facing outcome - not the commit messages repeated>.
 
 **Shipped to users**
-- `abc1234` — <message>
+- `abc1234` - <message>
   - `path/to/file.ts`: <what the patch actually introduces in plain language> (+85/−4)
   - `new/file.ts`: <what this new file contains> (+45/−0)
-- `def5678` — <message>
+- `def5678` - <message>
   - `path/to/other.ts`: <specific change> (+23/−4)
 
 **Under the hood** *(only if present)*
-- `ghi9012` — <message>: <one-liner>
+- `ghi9012` - <message>: <one-liner>
 
-### [Theme 2 — descriptive name]
+### [Theme 2 - descriptive name]
 ...
 
 ### Internal: [Theme 3] *(only if any purely-internal theme exists)*
@@ -518,15 +518,15 @@ Write to `output/articles/push-recap-${today}.md`:
 ## Developer notes
 - **New dependencies:** <list with versions, or "none">
 - **Breaking changes:** <API/config/schema changes that ripple, or "none">
-- **New public surface:** <new routes, CLI flags, config keys, exported functions — the things that show up in docs>
+- **New public surface:** <new routes, CLI flags, config keys, exported functions - the things that show up in docs>
 - **Tech debt added:** <new TODOs/FIXMEs introduced in the diff, or "none">
 
 ## Open threads
 - <branches pushed but not merged, with PR link if any>
-- <incomplete work visible in diffs — stubbed functions, commented-out blocks, TODO comments added>
+- <incomplete work visible in diffs - stubbed functions, commented-out blocks, TODO comments added>
 
 ## Sources
-<per-repo status line — see the Push source-status footer>
+<per-repo status line - see the Push source-status footer>
 ```
 
 Keep it substantive. If there are fewer than 3 user-visible commits, drop the `Top impact today` header and merge those commits into the theme section — don't pad.
@@ -556,13 +556,13 @@ Append to `memory/logs/${today}.md` under the shared `### operator-scorecard` he
 Otherwise send via `./notify`:
 
 ```
-*Push Recap — ${today}*
-<repo> — <verdict>
+*Push Recap - ${today}*
+<repo> - <verdict>
 
 Shipped to users:
 • <top user-visible commit, specific sentence>
 • <second>
-• <third — omit if fewer than 3 user-visible>
+• <third - omit if fewer than 3 user-visible>
 
 Under the hood:
 • <top internal change worth mentioning, or omit this block if noise>

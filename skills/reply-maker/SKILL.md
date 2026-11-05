@@ -219,7 +219,7 @@ If any score is < 4, **rewrite that reply once** before moving on. If the rewrit
 Send via `./notify` with this format (link first so the operator can open the source quickly):
 
 ```
-*Reply Maker — ${today}*
+*Reply Maker - ${today}*
 
 *1.* https://x.com/handle/status/123  (@handle, 42m ago, 18💬)
 > [first ~80 chars of tweet]…
@@ -288,9 +288,9 @@ If after filtering there are zero unactioned opps, log `ENGAGEMENT_ACT_SKIP: no 
 ### B6. Write output to a temp file, then send via `./notify -f`
 
 ```
-*Reply Maker (from-logs) — ${today}*
+*Reply Maker (from-logs) - ${today}*
 
-*1. @handle* (N days ago) — [one-line summary of what they did]
+*1. @handle* (N days ago) - [one-line summary of what they did]
 link: [URL or "no link found"]
 type: [X reply / X post / DM / GitHub comment]
 draft: "[ready-to-post text]"
@@ -298,7 +298,7 @@ draft: "[ready-to-post text]"
 *2. @handle* ...
 
 [if any opps are 5+ days old:]
-some opps aging — act or drop
+some opps aging - act or drop
 ```
 
 Write this to `/tmp/reply-maker-from-logs.md` then run `./notify -f /tmp/reply-maker-from-logs.md`.
@@ -376,7 +376,7 @@ If skipped: `ENGAGEMENT_ACT_SKIP: <reason>` (still under `### reply-maker`).
 ### reply-maker
 - **Mode:** revise
 - **Instruction:** [the operator's revision instruction]
-- **Base draft:** memory/drafts/reply-maker-latest.md (reloaded + re-saved)  (or: none — nothing to revise)
+- **Base draft:** memory/drafts/reply-maker-latest.md (reloaded + re-saved)  (or: none - nothing to revise)
 - **Notification:** sent
 ```
 

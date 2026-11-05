@@ -193,18 +193,18 @@ PR body (`/tmp/aeon-update-pr-body.md`) - only include sections that have conten
 
 ### ⚠️ Currently-enabled skills removed upstream
 For each CONFLICT with reason `enabled-skill-removed-upstream`:
-- `verdikta-hunter` — enabled in your `aeon.yml`, deleted upstream in {commit(s)}. **Not deleted here** so nothing breaks. Pick one: keep it as a fork-only skill going forward (nothing else to do), or disable it in `aeon.yml` to match upstream's current default set.
+- `verdikta-hunter` - enabled in your `aeon.yml`, deleted upstream in {commit(s)}. **Not deleted here** so nothing breaks. Pick one: keep it as a fork-only skill going forward (nothing else to do), or disable it in `aeon.yml` to match upstream's current default set.
 
 ### Needs manual review (conflicts - your local copy diverges from upstream)
 For each *other* conflict reason (`enabled-skill-removed-upstream` is covered above, don't duplicate it here): what upstream changed and why it wasn't auto-applied.
-- `scripts/foo.sh` — you customized this locally; upstream changed it in {upstream_commits}. Upstream diff (from the conflict's `diff` file, trimmed):
+- `scripts/foo.sh` - you customized this locally; upstream changed it in {upstream_commits}. Upstream diff (from the conflict's `diff` file, trimmed):
   ```diff
   {short upstream base..head diff for the file}
   ```
 
 ### Operator config changed upstream (not auto-applied - reconcile by hand)
-- `aeon.yml` — upstream added skills / changed defaults: {summary}. Merge the new entries you want (keep your enable/schedule/model choices).
-- `soul/…`, `STRATEGY.md` — {summary, if changed}
+- `aeon.yml` - upstream added skills / changed defaults: {summary}. Merge the new entries you want (keep your enable/schedule/model choices).
+- `soul/…`, `STRATEGY.md` - {summary, if changed}
 
 ### Upstream commits
 | SHA | Summary |
@@ -223,14 +223,14 @@ Append to `memory/logs/${today}.md` under `### aeon-update`: status, `UPSTREAM`,
 **Notify only on signal** - match `soul/` voice if present. Send when there is a PR, a report with changes, or a manual-only situation; stay silent for `IN_SYNC` / `BASELINE_SET`-with-nothing. Keep it ≤4000 chars:
 
 ```
-*aeon-update — ${today}*
+*aeon-update - ${today}*
 {verdict: "synced N commits → PR" | "N changes need manual merge" | "report: N commits behind"}
 
 Upstream `${UPSTREAM}` is ${AHEAD} commits ahead. Applied ${N_APPLIED} cleanly, ${N_CONFLICT} need review.
 {Top applied highlight: e.g. "new skill: `token-radar`; harness fix in run-harness"}
 {If conflicts: "Manual: `aeon.yml` (new skills), `scripts/foo.sh` (local edit)"}
 
-PR: {url}   (or "dry run — nothing changed")
+PR: {url}   (or "dry run - nothing changed")
 ```
 
 Pass `--mute-key "aeon-update:${HEAD7}"` so a muted sync doesn't re-ping for the same upstream HEAD.

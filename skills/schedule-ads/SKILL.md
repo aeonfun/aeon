@@ -157,19 +157,19 @@ Launching ads is an irreversible outbound side-effect (real ad spend), so it is 
 
 8. **Write artifact to `output/.chains/schedule-ads.md`** so downstream chain consumers can read what was queued. Format:
    ```markdown
-   # Schedule Ads — ${today}
+   # Schedule Ads - ${today}
 
    Queued: N launches across M schedules.
    Dry-run: yes|no.
 
    ## Entries
    - <schedule name>: <ad count> ads, platform=<meta|tiktok|…>, paused=<bool>
-     - <adName> — <title>
+     - <adName> - <title>
    ```
 
 9. **Notify** via `./notify`. Keep it tight:
    ```
-   *Ads queued — ${today}${dryRunSuffix}*
+   *Ads queued - ${today}${dryRunSuffix}*
 
    <N> launches queued from <M> schedules.
 
@@ -178,9 +178,9 @@ Launching ads is an irreversible outbound side-effect (real ad spend), so it is 
    - ...
 
    <if dry-run>
-   no API calls made — remove DRY_RUN to arm.
+   no API calls made - remove DRY_RUN to arm.
    <else>
-   launched via AdManage (PAUSED) — resume in the dashboard to start delivery.
+   launched via AdManage (PAUSED) - resume in the dashboard to start delivery.
    ```
    If nothing matched today (no launches), don't notify at all.
 
@@ -358,15 +358,15 @@ Provisioning campaigns and ad sets is an irreversible outbound side-effect, so i
 
 10. **Write artifact to `output/.chains/create-campaign.md`** so chain consumers can see what was queued:
     ```markdown
-    # Create Campaign — ${today}
+    # Create Campaign - ${today}
 
     New campaigns: N.
     New ad sets: M.
     Dry-run: yes|no.
 
     ## Campaigns
-    - <name> — <objective>, $<dailyBudget>/day
-      - ad set: <name> — <optimizationGoal>, $<dailyBudget>/day, <countries>
+    - <name> - <objective>, $<dailyBudget>/day
+      - ad set: <name> - <optimizationGoal>, $<dailyBudget>/day, <countries>
 
     ## Skipped (already exist)
     - <name>
@@ -374,15 +374,15 @@ Provisioning campaigns and ad sets is an irreversible outbound side-effect, so i
 
 11. **Notify via `./notify`.** Tight format:
     ```
-    *Campaigns queued — ${today}${dryRunSuffix}*
+    *Campaigns queued - ${today}${dryRunSuffix}*
 
     <N> campaigns, <M> ad sets queued for creation.
 
     - <campaign name>
-      - adset: <adset name> — <country>, $<budget>/day
+      - adset: <adset name> - <country>, $<budget>/day
 
     <if dry-run>
-    no API calls made — remove DRY_RUN to arm.
+    no API calls made - remove DRY_RUN to arm.
     <else>
     created via AdManage (PAUSED); new IDs written to .admanage-state/campaigns.json.
     ```

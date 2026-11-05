@@ -216,7 +216,7 @@ A community pack is a **public GitHub repo** that holds one or more skills plus 
 
 8. **Notify.** Send one concise line via `./notify` (≤4000 chars, clickable URLs):
    ```
-   *pack-submit — {TITLE}*
+   *pack-submit - {TITLE}*
    Pack repo: https://github.com/{FULL_REPO}
    Registry PR: {PR_URL}
    Install: `bin/install-skill-pack {FULL_REPO}`

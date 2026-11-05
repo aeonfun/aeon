@@ -121,16 +121,16 @@ Pick the single most interesting survivor (highest-signal regardless of category
 Send via `./notify`:
 
 ```
-*GitHub Trending — ${today}*
+*GitHub Trending - ${today}*
 
-*Top pick* — [owner/repo](url)
+*Top pick* - [owner/repo](url)
 One-sentence framing of why this is the standout today.
 
 *AI/ML*
-• [owner/repo](url) — ★ Xt today (Yk total) · LANG · [TAG]
+• [owner/repo](url) - ★ Xt today (Yk total) · LANG · [TAG]
 why notable (one line)
 
-• [owner/repo](url) — ...
+• [owner/repo](url) - ...
 
 *Devtools*
 • ...
@@ -261,26 +261,26 @@ Pick the single most interesting survivor (highest signal regardless of bucket) 
 Send via `./notify`:
 
 ```
-*Hugging Face Trending — ${today}*
+*Hugging Face Trending - ${today}*
 
-*Top pick* — [owner/name](url)
+*Top pick* - [owner/name](url)
 One-sentence framing of why this is the standout today.
 
 *LLMs / Reasoning*
-• [owner/name](url) — ❤ Xk · ↓ Yk · pipeline · [TAG]
+• [owner/name](url) - ❤ Xk · ↓ Yk · pipeline · [TAG]
 why notable (one line)
 
-• [owner/name](url) — ...
+• [owner/name](url) - ...
 
 *Multimodal*
 • ...
 
 *Datasets*
-• [owner/name](url) — ❤ Xk · ↓ Yk · [TAG]
+• [owner/name](url) - ❤ Xk · ↓ Yk · [TAG]
 why notable
 
 *Spaces*
-• [owner/name](url) — ❤ Xk · sdk · [TAG]
+• [owner/name](url) - ❤ Xk · sdk · [TAG]
 why notable
 
 ---

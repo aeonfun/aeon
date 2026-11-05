@@ -128,14 +128,14 @@ Today is ${today}. Your task is to ship a small, self-contained prototype that s
    One paragraph, plain language. Include the primary action a visitor takes.
 
    ## How it works
-   Brief technical notes — stack, data source, anything non-obvious. No code dumps.
+   Brief technical notes - stack, data source, anything non-obvious. No code dumps.
 
    ## Files
-   - `index.html` — brief description
+   - `index.html` - brief description
    - …
 
    ## Extend
-   Three bullets on what would make this a real product (not placeholder — concrete next steps).
+   Three bullets on what would make this a real product (not placeholder - concrete next steps).
    ```
 
    Append a one-line row to `memory/topics/prototypes.md` (create the file with a header row if missing):
@@ -193,8 +193,8 @@ Today is ${today}. Your task is to ship a small, self-contained prototype that s
     ```
     ### deploy-prototype
     - Exit: DEPLOY_PROTOTYPE_<MODE>
-    - Slug: aeon-prototype-<slug> (or — if empty)
-    - Live URL: <url or —>
+    - Slug: aeon-prototype-<slug> (or - if empty)
+    - Live URL: <url or ->
     - Signal: <signal_source>
     - Notes: <anything the next run should know>
     ```

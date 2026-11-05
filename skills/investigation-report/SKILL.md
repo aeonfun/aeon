@@ -298,7 +298,7 @@ curl -m 10 -s -X POST "$RPC" -H "Content-Type: application/json" \
 **If two or more checks ran**, merge the selected sections into one document with an at-a-glance header:
 
 ```
-# Investigation Report — 0xToken (Base)   ·   depth: deep · checks: rug,contract,deployer,holders,honeypot,lp
+# Investigation Report - 0xToken (Base)   ·   depth: deep · checks: rug,contract,deployer,holders,honeypot,lp
 
 **At a glance:** Rug risk ELEVATED · Source verified · Owner NOT renounced · Deployer 9/14 rugged · Top holder 42% · Honeypot SELLABLE · LP UNLOCKED ⚠️
 
@@ -334,7 +334,7 @@ Send **one** consolidated alert via `./notify` — never one per check (don't do
 Keep it under 4000 chars, lead with the verdict, use clickable URLs. Example (multi-check):
 
 ```
-*Investigation Report — 0xToken (Base)*
+*Investigation Report - 0xToken (Base)*
 At a glance: Rug HIGH · unverified · top holder 61% · LP UNLOCKED · honeypot LIKELY ⚠️
 
 Multiple red flags across rug, holders, lp and honeypot. Sells appear restricted
@@ -346,15 +346,15 @@ Token: https://basescan.org/token/0xToken
 Example single-check notify formats (use verbatim when only that check ran):
 
 ```
-*Rug Scan — TOKEN_NAME (Base)*        *Contract Audit — CONTRACT_NAME (Base)*
+*Rug Scan - TOKEN_NAME (Base)*        *Contract Audit - CONTRACT_NAME (Base)*
 Verdict: HIGH (score 7/12)            Verified: yes · Proxy: UUPS · Owner: multisig
 Red flags: • Mint authority live      Live powers: • Upgradeable • mint() • rescueTokens()
 Token: https://basescan.org/token/0xToken     Contract: https://basescan.org/address/0xAddr
 ```
 ```
-*Honeypot Check — 0xToken (Base)*     *LP Lock Check — 0xToken (Base)*
+*Honeypot Check - 0xToken (Base)*     *LP Lock Check - 0xToken (Base)*
 Verdict: LIKELY_HONEYPOT ⚠️            Verdict: UNLOCKED ⚠️
-A transfer from a real holder          Main pool 0xPool — ~0% of LP burned/locked;
+A transfer from a real holder          Main pool 0xPool - ~0% of LP burned/locked;
 reverted in simulation.                liquidity largely removable (rug risk).
 Token: https://basescan.org/token/0xToken     Pool: https://basescan.org/address/0xPool
 ```
@@ -366,12 +366,12 @@ This skill is `read-only`, so the workflow's read-only guard writes its `### inv
 ```
 ### investigation-report
 - Subject: 0x… (TOKEN_NAME) | checks: rug,contract,deployer,holders,honeypot,lp | depth: deep
-- rug: HIGH (7/12) — unverified=no, mint=yes, blacklist=no, fees-mutable=yes, owner-renounced=no, top1=41%
-- contract: FLAGGED — verified=yes, proxy=UUPS, owner=0x…(multisig), powers: upgrade=live,mint=live,drain=live
-- deployer: FLAGGED — 0x… | 14 deploys | rugged 9, abandoned 3, alive 2 | serial-launcher (template ×11)
-- holders: CONCENTRATED — HHI 3120 | holders 842 | top1 EOA 31.2% | top10 EOA 68% | 50%-in 4 | LP 22% unlocked, burn 5%
-- honeypot: LIKELY_HONEYPOT — sampled 0x… | simulated transfer reverted
-- lp: UNLOCKED — pool 0x… (v2) | locked 0%
+- rug: HIGH (7/12) - unverified=no, mint=yes, blacklist=no, fees-mutable=yes, owner-renounced=no, top1=41%
+- contract: FLAGGED - verified=yes, proxy=UUPS, owner=0x…(multisig), powers: upgrade=live,mint=live,drain=live
+- deployer: FLAGGED - 0x… | 14 deploys | rugged 9, abandoned 3, alive 2 | serial-launcher (template ×11)
+- holders: CONCENTRATED - HHI 3120 | holders 842 | top1 EOA 31.2% | top10 EOA 68% | 50%-in 4 | LP 22% unlocked, burn 5%
+- honeypot: LIKELY_HONEYPOT - sampled 0x… | simulated transfer reverted
+- lp: UNLOCKED - pool 0x… (v2) | locked 0%
 - Sources: etherscan=ok, rpc=ok (holders=partial if no key / rpc-reconstructed)
 ```
 

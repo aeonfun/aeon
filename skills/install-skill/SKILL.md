@@ -88,17 +88,17 @@ Your job is to drive that script, regenerate the catalog, and wrap the result in
    ```
    Write the PR body with the Write tool to `/tmp/install-skill-pr-body.md`:
    ```markdown
-   Installs the **<pack name>** community pack from `${var}` (clicked from the dashboard). Auto-merges once mergeable — skills land **disabled**, so nothing runs until enabled.
+   Installs the **<pack name>** community pack from `${var}` (clicked from the dashboard). Auto-merges once mergeable - skills land **disabled**, so nothing runs until enabled.
 
    ## Skills installed
-   - `<slug>` — <one-line description>
+   - `<slug>` - <one-line description>
 
    ## Security
    - Source trust: <trusted | scanned, N HIGH findings>
    - Skipped/blocked: <none | list with reason>
 
    ## Secrets required before enabling
-   - `<ENV_VAR>` — set in repo Actions secrets, then flip the skill to `enabled: true` in aeon.yml
+   - `<ENV_VAR>` - set in repo Actions secrets, then flip the skill to `enabled: true` in aeon.yml
 
    ## Provenance
    Recorded in skills.lock (source repo, branch, commit SHA).

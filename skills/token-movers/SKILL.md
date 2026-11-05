@@ -130,26 +130,26 @@ When the preamble resolved a `category` (rules 6 / 10), scope the whole pipeline
 Via `./notify`, under 4000 chars:
 
 ```
-*Token Movers — ${today}*
+*Token Movers: ${today}*
 
 _[one-sentence market pulse from step 5]_
 
 *Top Winners (24h)*
-1. SYMBOL (Name) — $price  +24.1% / 7d +18% / 1h +2.3%  •  $vol / #rank  [TAGS]
+1. SYMBOL (Name): $price  +24.1% / 7d +18% / 1h +2.3%  •  $vol / #rank  [TAGS]
 2. ...
 
 *Top Losers (24h)*
-1. SYMBOL (Name) — $price  −18.4% / 7d −22% / 1h −3.1%  •  $vol / #rank  [TAGS]
+1. SYMBOL (Name): $price  −18.4% / 7d −22% / 1h −3.1%  •  $vol / #rank  [TAGS]
 2. ...
 
 *Trending*
-1. NAME (SYMBOL) — #rank, $price, 24h ±X.X%  [TAGS]
+1. NAME (SYMBOL): #rank, $price, 24h ±X.X%  [TAGS]
 2. ...
 
 *Notable*
-• SYMBOL: trending + up 42% on 6× volume — strong signal
-• SYMBOL: #212 rank up 85% — PUMP-RISK, low liquidity
-• [1–4 bullets, skip section if none worth calling out]
+• SYMBOL: trending + up 42% on 6× volume - strong signal
+• SYMBOL: #212 rank up 85% - PUMP-RISK, low liquidity
+• [1-4 bullets, skip section if none worth calling out]
 ```
 
 Formatting rules:
@@ -298,11 +298,11 @@ Send via `./notify`. Format:
 
 1. [TAG] TOKEN (chain) +X% 24h ★ repeat
 vol $X.Xm | liq $X.Xm | fdv $Xm | h1 +X% | buys:sells X:Y
-— [one-line actionable take: e.g. "sustained multi-day momentum with deep liquidity — watch for continuation"]
+- [one-line actionable take: e.g. "sustained multi-day momentum with deep liquidity - watch for continuation"]
 
 2. [TAG] TOKEN (chain) +X% 24h
 vol $Xm | liq $Xk | fdv $Xm | h1 -X% | buys:sells X:Y
-— [one-line take]
+- [one-line take]
 
 3. ...
 4. ...
@@ -335,7 +335,7 @@ Append to `memory/logs/${today}.md` with Edit (Write if the file is new):
 - Pools pre-gate: N / post-gate: N
 - Verdict: STRONG|MIXED|SPECULATIVE|SLEEPY
 - Top 5:
-  1. [TAG] TOKEN (chain) +X% — score XX, vol $Xm, liq $Xk — [one-line take]
+  1. [TAG] TOKEN (chain) +X% - score XX, vol $Xm, liq $Xk - [one-line take]
   2. ...
 - Repeat runners (seen in prior 2 days): [list or "none"]
 - Gate rejections breakdown: thin-vol=N, dumping=N, honeypot=N, too-new=N, rug-like=N
@@ -400,7 +400,7 @@ Resolve the target token in this order:
 |------------|-------|
 | 0x…        | base  |
 
-## Treasury Wallets   (optional — omit the whole section if not used)
+## Treasury Wallets   (optional - omit the whole section if not used)
 | Address | Role     | RPC URL (optional)       |
 |---------|----------|--------------------------|
 | 0x…     | treasury | https://mainnet.base.org |
@@ -560,9 +560,9 @@ Do not freelance labels. The verdict drives the lede, the TL;DR, and the notific
 Save to `output/articles/token-report-${today}.md`:
 
 ```markdown
-# $TOKEN — ${today}
+# $TOKEN: ${today}
 
-**Verdict:** [LABEL] — [≤18 words, citing the 1–2 numbers that drove the label]
+**Verdict:** [LABEL] - [≤18 words, citing the 1-2 numbers that drove the label]
 
 ## 24h at a glance
 
@@ -590,7 +590,7 @@ Write the real hour count in the header (`Since last report (19h)`). With no pri
 | 0x…e3a2 | deployer | X.XXXX | ±Y.YY |
 
 ## What changed
-[2–4 sentences. Name the specific deltas that matter and the verdict they produced. If whale trades exist, list the top 3 as `buy $1.2K @ $0.0042 · 11:03 UTC`. If liquidity moved >5%, name the pool and the $ amount. Tie every sentence back to the verdict. No filler.]
+[2-4 sentences. Name the specific deltas that matter and the verdict they produced. If whale trades exist, list the top 3 as `buy $1.2K @ $0.0042 · 11:03 UTC`. If liquidity moved >5%, name the pool and the $ amount. Tie every sentence back to the verdict. No filler.]
 
 ## Social Pulse
 [Only include if XAI_API_KEY is set AND x_search returns ≥2 tweets with ≥10 engagement (step 6 sets `xai=ok`). Lead with a one-line read of the conversation shape, then quote 1-3 tweets with @handle + engagement counts + the tweet link from that response. Otherwise OMIT this section entirely.]
@@ -668,7 +668,7 @@ The `TOKEN_REPORT_STATE:` line is a contract — step 3 of the next single-token
 Lead with the verdict, not raw numbers. One short paragraph plus metrics.
 
 ```
-*$TOKEN — [LABEL]*
+*$TOKEN: [LABEL]*
 
 [One sentence citing the driving number(s).]
 
@@ -690,7 +690,7 @@ The `Treasury:` line is included ONLY when step 2b populated treasury_eth_total 
 **Treasury alert (independent of verdict):** if `treasury_low_alert` is true on any run, prepend this line to the notification body — even on QUIET, even on CONSOLIDATING:
 
 ```
-⚠️ *Treasury gas reserve low — X.XXXX on treasury (floor 0.01).*
+⚠️ *Treasury gas reserve low - X.XXXX on treasury (floor 0.01).*
 ```
 
 ---

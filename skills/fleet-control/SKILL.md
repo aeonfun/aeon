@@ -137,18 +137,18 @@ Otherwise skip notify (silent no-op when nothing changed mid-day — operator is
 
 **Notification body** (when sent):
 ```
-*Fleet Control — ${today}*
+*Fleet Control - ${today}*
 Verdict: <FLEET_OK | NEEDS_ATTENTION:N>
 
 [If deltas exist]:
 What changed:
-- NEW: <name> (<repo>) — <health>
-- DEGRADED: <name> — was <prior>, now <current>: <reason>
-- RECOVERED: <name> — was <prior>, now <current>
-- DROPPED: <name> — no longer in registry
+- NEW: <name> (<repo>) - <health>
+- DEGRADED: <name> - was <prior>, now <current>: <reason>
+- RECOVERED: <name> - was <prior>, now <current>
+- DROPPED: <name> - no longer in registry
 
 Fleet (N total):
-- <name> [<HEALTH>]: <repo> — <next_action>
+- <name> [<HEALTH>]: <repo> - <next_action>
 - ...
 
 [If first-of-day rollup]:
@@ -209,12 +209,12 @@ Collect per-target outcomes: `dispatched | missing_skill | api_failed:<code>` (w
 ```
 *Fleet Dispatch*
 Command: dispatch <inst|*> <skill>
-Targets: <N> — Dispatched: <N>
+Targets: <N> - Dispatched: <N>
 Successful: <comma-sep names>
 [If failures]:
 Failed: <name>: <reason>, ...
 [If not_enabled_warn]:
-Warning: <name> has skill disabled in aeon.yml — dispatched anyway
+Warning: <name> has skill disabled in aeon.yml - dispatched anyway
 ```
 
 If 0 dispatched out of N targets, the verdict line reads `Fleet Dispatch: 0/${N} — see failures below` and exit code logged is `FLEET_DISPATCH_FAILED:no_targets_succeeded`.
@@ -242,10 +242,10 @@ Compute the same delta block, but compare against the most recent prior `output/
 
 Write to `output/articles/fleet-status-${today}.md`:
 ```markdown
-# Fleet Status — ${today}
+# Fleet Status - ${today}
 
 ## Verdict
-<one line: FLEET_OK | NEEDS_ATTENTION:N | DEGRADED:N — top issue first>
+<one line: FLEET_OK | NEEDS_ATTENTION:N | DEGRADED:N - top issue first>
 
 ## Top Issue
 <one paragraph: the single highest-priority instance and what it needs, OR "none">
@@ -259,7 +259,7 @@ Write to `output/articles/fleet-status-${today}.md`:
 
 ## Per-Instance Detail
 
-### <name> — <repo>
+### <name> - <repo>
 - Purpose: <from registry>
 - Health: <status>, last checked <ISO>
 - Last 10 runs:
@@ -289,7 +289,7 @@ gh=ok · rate_remaining=N · registry=N instances · prior_status=<filename or "
 
 **Notify** (always, in status mode):
 ```
-*Fleet Status — ${today}*
+*Fleet Status - ${today}*
 <verdict>
 Top issue: <one line, or "none">
 Counts: healthy <H> · warning <W> · degraded <D> · stale <S> · pending <P> · unreachable <U>
@@ -343,7 +343,7 @@ Scan the computed tables in `scorecard-body.md` and flag:
 Structure (overwrite the file):
 
 ```
-# 🛰️ Aeon Fleet Scorecard — as of ${today}
+# 🛰️ Aeon Fleet Scorecard - as of ${today}
 
 _Auto-generated daily by skills/fleet-control (scorecard view). Tokens reported OpenRouter-style (cached_tokens ⊆ prompt_tokens)._
 
@@ -397,7 +397,7 @@ All modes append under **one** `### fleet-control` heading in `memory/logs/${tod
 ```
 ### fleet-control
 - Mode: scorecard
-- Scorecard: memory/scorecard.md updated — <total_runs> runs, ~$<est_cost_usd> notional, <total_tokens humanized>
+- Scorecard: memory/scorecard.md updated - <total_runs> runs, ~$<est_cost_usd> notional, <total_tokens humanized>
 - Deltas: <+runs> / <+$cost> since yesterday
 - Alerts: <alert summary or "none">
 ```

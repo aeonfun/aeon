@@ -113,8 +113,8 @@ gh pr create --title "improve(${var}): autoresearch evolution" --body "..."
 
 Send via `./notify`:
 ```
-*Autoresearch — ${var}*
-Winner: Variation [X] — [thesis]
+*Autoresearch - ${var}*
+Winner: Variation [X] - [thesis]
 Score: [total]/50
 Key changes: [summary]
 PR: [url]

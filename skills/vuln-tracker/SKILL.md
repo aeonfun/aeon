@@ -217,19 +217,19 @@ Round star counts to abbreviated form for the headline (12.4k, 1.8k, 940). Keep 
 - **Open-PR repos (in flight):** ★ <total_stars_in_flight> across <in_flight_repo_count> repos
 - **All tracked repos:** ★ <total_stars_tracked> across <total_repo_count> repos
 
-### Secured leaderboard — every merged PR ranked by repo stars
+### Secured leaderboard - every merged PR ranked by repo stars
 | Rank | Repo | Stars | PR | Merged | Severity | Title |
 |------|------|-------|----|--------|----------|-------|
 
-### Per-repo breakdown — secured (sorted by stars desc)
+### Per-repo breakdown - secured (sorted by stars desc)
 | Repo | Stars | Merged PRs | First merge | Latest merge | Severities landed |
 |------|-------|------------|-------------|--------------|-------------------|
 
-### Per-repo breakdown — in flight (sorted by stars desc)
+### Per-repo breakdown - in flight (sorted by stars desc)
 | Repo | Stars | Open PRs | Oldest open | Severities open |
 |------|-------|----------|-------------|-----------------|
 
-### Per-repo breakdown — queued / skipped / closed (sorted by stars desc)
+### Per-repo breakdown - queued / skipped / closed (sorted by stars desc)
 | Repo | Stars | Status | Severity | Note |
 |------|-------|--------|----------|------|
 
@@ -239,7 +239,7 @@ Round star counts to abbreviated form for the headline (12.4k, 1.8k, 940). Keep 
 | Repo | Stars | PR | Title | Last activity | Latest commenter |
 |------|-------|----|----|--------------|------------------|
 
-### Newly actionable — channel opened up since the original scan (<count>)
+### Newly actionable - channel opened up since the original scan (<count>)
 | Repo | Stars | Original date | Original blocker | Now |
 |------|-------|---------------|------------------|-----|
 
@@ -251,7 +251,7 @@ Round star counts to abbreviated form for the headline (12.4k, 1.8k, 940). Keep 
 | Date merged | Repo | Stars | PR | Severity | Title |
 |-------------|------|-------|----|----------|-------|
 
-## Open / clean (no operator action — wait, < 7d) (<count>)
+## Open / clean (no operator action - wait, < 7d) (<count>)
 | Repo | Stars | PR | Severity | Opened | Age |
 |------|-------|----|----------|--------|-----|
 
@@ -288,17 +288,17 @@ Append this section to the combined buffer (`.pending-notify-temp/vuln-tracker-$
 ★ secured: <total_stars_secured> across <secured_repo_count> repos  (in flight: <total_stars_in_flight> / <in_flight_repo_count>)
 
 needs answer: <N>
-<repo> (★<stars>) #<num> — <latest_commenter>: "<comment_excerpt_first_120_chars>"
+<repo> (★<stars>) #<num> - <latest_commenter>: "<comment_excerpt_first_120_chars>"
 
 newly actionable: <N>
-<repo> (★<stars>, queued <days>d) — <what_changed>
+<repo> (★<stars>, queued <days>d) - <what_changed>
 
 merged this week: <N>  <list_with_stars>
 opened, waiting: <N>
 stale: <N>
 queued: <N> (<critical>C / <high>H / <other>M+L)
 
-leaderboard top-3 (PRs by ★): #1 <repo1> ★<s1> (PR #<pr1>) — #2 <repo2> ★<s2> (PR #<pr2>) — #3 <repo3> ★<s3> (PR #<pr3>)
+leaderboard top-3 (PRs by ★): #1 <repo1> ★<s1> (PR #<pr1>) - #2 <repo2> ★<s2> (PR #<pr2>) - #3 <repo3> ★<s3> (PR #<pr3>)
 
 dashboard: memory/topics/vuln-followup.md (full leaderboard inside)
 ```
@@ -405,11 +405,11 @@ Append to the combined buffer:
 pvr triage: {total} advisories in flight. {changed_count} changed.
 
 CHANGED:
-- {repo} {ghsa} — {old_state} → {new_state}
+- {repo} {ghsa} - {old_state} → {new_state}
   {action_item}
 
 AGED (>30d no response):
-- {repo} {ghsa} — {days}d in triage. {severity}. escalate or close.
+- {repo} {ghsa} - {days}d in triage. {severity}. escalate or close.
   patch: {patch_branch}
 
 STILL TRIAGE:
@@ -552,17 +552,17 @@ Append to the combined buffer.
 disclosure queue: {escalate_count} past threshold (of {total} drafts).
 
 ESCALATE:
-- {repo} — {severity}, {age}d old (threshold: {N}d)
+- {repo} - {severity}, {age}d old (threshold: {N}d)
 [... others in `escalate` state ...]
 
 operator-todo ({operator_todo_count}):
-- {repo} — {severity}, {age}d — {operator-reason}
+- {repo} - {severity}, {age}d - {operator-reason}
 
 cleanup candidates ({cleanup_count}):
-- {repo} — [covered: PR #{N} / superseded-upstream / submitted] — safe to delete from memory/pending-disclosures/
+- {repo} - [covered: PR #{N} / superseded-upstream / submitted] - safe to delete from memory/pending-disclosures/
 
 {IF blocking issue tracked in memory/issues/INDEX.md}
-blocked by {ISS-ID} — {short reason}
+blocked by {ISS-ID} - {short reason}
 fix: {fix estimate} unblocks {N} of {escalate_count + pending_count}
 {end}
 ```
@@ -577,7 +577,7 @@ disclosure queue: {total} drafts. {critical_count} CRITICAL, {high_count} HIGH, 
 oldest in-window: {repo} ({age}d).
 {cleanup section if cleanup_count > 0}
 {IF blocking issue tracked in memory/issues/INDEX.md}
-blocked by {ISS-ID} — {short reason}.
+blocked by {ISS-ID} - {short reason}.
 {end}
 ```
 
@@ -602,10 +602,10 @@ Append to `memory/logs/${today}.md` under ONE heading (the health loop parses `#
 ```
 ### vuln-tracker
 - scope: <full | prs | pvr | queue | single-advisory:GHSA-…>
-- Arm A (PR/advisory): <status> — <total_in_json> JSON + <pre_history_prs> pre-history = <total> tracked; states: <merged> merged / <open_clean> open-clean / <needs_answer> needs-answer / <stale> stale / <aging> aging / <closed> closed / <queued> queued / <skipped> skipped-rechecked / <newly_actionable> newly-actionable
+- Arm A (PR/advisory): <status> - <total_in_json> JSON + <pre_history_prs> pre-history = <total> tracked; states: <merged> merged / <open_clean> open-clean / <needs_answer> needs-answer / <stale> stale / <aging> aging / <closed> closed / <queued> queued / <skipped> skipped-rechecked / <newly_actionable> newly-actionable
 - Stars: ★<total_stars_secured> secured (<secured_repo_count> repos) / ★<total_stars_in_flight> in flight (<in_flight_repo_count> repos) / ★<total_stars_tracked> tracked (<total_repo_count> repos)
-- Arm B (PVR triage): <status> — checked <total>; changed <changed_count> (<list>); aged>30d <aged_count>; still-triage <waiting_count>; tracking issue <url|none>
-- Arm C (disclosure queue): <status> — <total> drafts (<critical_count> CRITICAL / <high_count> HIGH / <other_count> MED/LOW); <escalate_count> escalate / <pending_count> in-window / <operator_todo_count> operator-todo / <cleanup_count> cleanup; oldest in-window <repo> (<age>d); blocking issue <ISS-ID|none>
+- Arm B (PVR triage): <status> - checked <total>; changed <changed_count> (<list>); aged>30d <aged_count>; still-triage <waiting_count>; tracking issue <url|none>
+- Arm C (disclosure queue): <status> - <total> drafts (<critical_count> CRITICAL / <high_count> HIGH / <other_count> MED/LOW); <escalate_count> escalate / <pending_count> in-window / <operator_todo_count> operator-todo / <cleanup_count> cleanup; oldest in-window <repo> (<age>d); blocking issue <ISS-ID|none>
 - Operator queue this run: <needs_answer + newly_actionable + aged PVRs + escalate_count>
 - Notification: <sent | skipped (no movement)>
 - VULN_TRACKER_OK

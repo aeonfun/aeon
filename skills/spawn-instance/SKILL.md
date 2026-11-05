@@ -199,7 +199,7 @@ Go to **Settings > Secrets and variables > Actions** and add these secrets:
 ### Required (pick one for Claude auth)
 | Secret | Description |
 |--------|------------|
-| `ANTHROPIC_API_KEY` | Anthropic API key — console.anthropic.com |
+| `ANTHROPIC_API_KEY` | Anthropic API key - console.anthropic.com |
 | `CLAUDE_CODE_OAUTH_TOKEN` | Alternative: Claude Code OAuth token |
 
 ### Recommended (notifications)
@@ -347,7 +347,7 @@ On success (`SPAWN_OK` or `SPAWN_FORK_EXISTS_RECOVERED`):
 Repo: ${OWNER}/${REPO_NAME}
 Purpose: ${PURPOSE}
 Skills (${N}): ${SKILLS_ENABLED_CSV}
-Status: ${EXIT_CODE} — PENDING SECRETS
+Status: ${EXIT_CODE} - PENDING SECRETS
 
 Activate:
 1. https://github.com/${OWNER}/${REPO_NAME}/settings/secrets/actions
@@ -359,7 +359,7 @@ See SETUP.md in the repo for the full secret list tailored to your enabled skill
 
 On refusal (`SPAWN_FORK_EXISTS_REGISTERED`, `SPAWN_INVALID_VAR`, `SPAWN_NO_SKILLS`):
 ```
-spawn-instance: ${EXIT_CODE} — ${one-line reason}. No changes made.
+spawn-instance: ${EXIT_CODE} - ${one-line reason}. No changes made.
 ```
 
 On failure (`SPAWN_FORK_FAILED`, `SPAWN_PUSH_FAILED`, `SPAWN_ACTIONS_FAILED`, `SPAWN_API_ERROR`):

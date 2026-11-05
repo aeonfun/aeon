@@ -142,7 +142,7 @@ Commit message → changelog line rules:
 Save to `output/articles/changelog-${today}.md`:
 
 ```markdown
-# Changelog — Week of ${today}
+# Changelog - Week of ${today}
 
 *Window: ${SINCE_date} → ${today} · Sources: repo1=ok, repo2=empty, repo3=fail*
 
@@ -183,7 +183,7 @@ Rules:
 Send one concise paragraph via `./notify`:
 
 ```
-*Changelog — Week of ${today}*
+*Changelog - Week of ${today}*
 ${total_repos} repos: ${total_user_facing} user-facing changes (${breaking_count} breaking, ${added_count} added, ${fixed_count} fixed, ${security_count} security). Top: ${one_line_most_important_change}. Full: output/articles/changelog-${today}.md
 ```
 
@@ -394,7 +394,7 @@ Use `--draft` when `draft` config is true (the default). Build the PR body from 
 Send only on `DOCS_SYNC_OK` / `DOCS_SYNC_BOOTSTRAP` (a real entry was written) and on `DOCS_SYNC_NO_CONFIG` (one-line config prompt). Stay silent on `DOCS_SYNC_NOTHING_NEW` / `DOCS_SYNC_BELOW_THRESHOLD`.
 
 ```
-*Changelog (push-to) — ${today}*
+*Changelog (push-to) - ${today}*
 ${PRODUCT_REPO} → ${WEBSITE_REPO}
 N new PRs → changelog entry "<title>"
 ```
@@ -416,7 +416,7 @@ Consolidate both branches under ONE `### changelog` heading in `memory/logs/${to
 - User-facing: ${breaking} breaking, ${added} added, ${changed} changed, ${fixed} fixed, ${security} security
 - Internal filtered: ${internal_count} commits, ${bot_count} bot commits
 - Article: output/articles/changelog-${today}.md
-- Notes: [anything surprising — e.g. big breaking change, repo with no activity, first run for a new repo]
+- Notes: [anything surprising - e.g. big breaking change, repo with no activity, first run for a new repo]
 ```
 
 **Branch B — push-to:**

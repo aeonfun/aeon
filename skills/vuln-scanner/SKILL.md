@@ -664,15 +664,15 @@ Read the HTTP response code and branch accordingly. **Never** fall back to a pub
   severity: <critical|high|medium|low>
   cwe: CWE-NN
   status: pending-operator-send
-  auto_send: <true|false>            # ARMING GATE — see the rule below
+  auto_send: <true|false>            # ARMING GATE - see the rule below
   contact_email: maintainer@example.com
-  cc: [security@example.com]         # optional — if SECURITY.md says "email X, cc Y/Z"
+  cc: [security@example.com]         # optional - if SECURITY.md says "email X, cc Y/Z"
   email_subject: "Security: <short title>"
   detected_at: <ISO-8601>
   ---
 
-  # Staged private disclosure — owner/repo
-  <operator-facing notes: contact resolution, why private — NOT emailed>
+  # Staged private disclosure - owner/repo
+  <operator-facing notes: contact resolution, why private - NOT emailed>
 
   <!-- EMAIL-BODY-START -->
   Hi <name>,
@@ -755,7 +755,7 @@ findings were confirmed. Do not describe incomplete coverage as a clean audit.
 Use `./notify`. One paragraph. Lead with the verdict.
 
 ```
-*Vuln Scanner — <repo>*
+*Vuln Scanner - <repo>*
 <N> confirmed findings (<severity-summary>).
 Disclosed via: <PVR: advisory #123 | public PR #45 | skipped (no channel)>
 Scanners: semgrep=<ok|fail>, trufflehog=<ok|fail|timeout>, trufflehog-git=<ok|fail|timeout>, osv=<ok|fail>, fuzz=<ok|fail|skip>. PoC gate: <verified|not-required|needs-verification>.
@@ -765,8 +765,8 @@ Scanners: semgrep=<ok|fail>, trufflehog=<ok|fail|timeout>, trufflehog-git=<ok|fa
 
 If no findings were confirmed (choose clean or limited according to actual coverage):
 ```
-*Vuln Scanner — <repo>*
-<Clean audit | Limited audit — name incomplete passes>. <M> candidates reviewed, 0 confirmed. Scanners: semgrep=<ok|fail>, trufflehog=<ok|fail|timeout>, trufflehog-git=<ok|fail|timeout>, osv=<ok|fail|none|skipped>, fuzz=<ok|fail|skip>, agentic=<ok|skipped>.
+*Vuln Scanner - <repo>*
+<Clean audit | Limited audit - name incomplete passes>. <M> candidates reviewed, 0 confirmed. Scanners: semgrep=<ok|fail>, trufflehog=<ok|fail|timeout>, trufflehog-git=<ok|fail|timeout>, osv=<ok|fail|none|skipped>, fuzz=<ok|fail|skip>, agentic=<ok|skipped>.
 ```
 
 Then log per the **Log** section below with `Mode: scan`.
@@ -901,7 +901,7 @@ Write to a temp file, then: `./notify -f .pending-notify-temp/pvr-watchlist-${to
 pvr watchlist: {total} repos. {flip_count} flipped this run.
 
 FLIPPED:
-- {repo} — {severity}, PVR now enabled. {draft_status}
+- {repo} - {severity}, PVR now enabled. {draft_status}
   [draft found → auto-submitted | draft found → bot 403, manual submit needed | no draft → re-research needed]
 
 STILL WAITING:
@@ -912,7 +912,7 @@ watchlist: memory/security-watchlist.md
 
 If a re-research is needed, escalate urgency:
 ```
-pvr watchlist: {repo} flipped. no draft — needs re-research before the window closes.
+pvr watchlist: {repo} flipped. no draft - needs re-research before the window closes.
 
 HIGH severity. scanned {first_checked}. {days_since}d ago.
 no draft on disk. need a targeted vuln-scanner run to recover the finding.
@@ -1100,22 +1100,22 @@ repo: owner/repo
 severity: medium
 cwe: CWE-88
 status: pending-operator-send       # eligible trigger
-auto_send: true                     # MASTER GATE — false if AI-report ban / unvalidated contact
+auto_send: true                     # MASTER GATE - false if AI-report ban / unvalidated contact
 contact_email: maintainer@example.com
-cc: [security@example.com, oss@example.com]   # optional — if SECURITY.md says "cc X and Y"
+cc: [security@example.com, oss@example.com]   # optional - if SECURITY.md says "cc X and Y"
 contact_x: https://x.com/handle     # optional secondary
 email_subject: "Security: <short title>"
 detected_at: 2026-06-26T19:26:00Z
 ---
 
-# Staged private disclosure — owner/repo
+# Staged private disclosure - owner/repo
 
 **Operator-facing notes** (NOT emailed): context, why private, contact resolution…
 
 <!-- EMAIL-BODY-START -->
 Hi <name>,
 
-<the exact private disclosure message — where, the issue, why it matters,
+<the exact private disclosure message - where, the issue, why it matters,
 severity, suggested fix, and an offer to share a patch/coordinate>
 
 Thanks,
@@ -1160,7 +1160,7 @@ specific bullets.
 ```
 - Drafts scanned: {N}
 - Eligible / queued: {M}  ({list of repo -> contact})
-- Skipped: {reasons — not-armed, already-sent, no-channel, unsafe-body}
+- Skipped: {reasons - not-armed, already-sent, no-channel, unsafe-body}
 - Note: Arm C sends in-run via Resend (`./secretcurl`) behind the C4 caps; the summary notify reports what went out
 - DISCLOSURE_EMAILER_OK   (or DISCLOSURE_EMAILER_SKIP: <reason>)
 ```

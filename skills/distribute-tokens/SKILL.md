@@ -191,7 +191,7 @@ If the plan is empty (zero eligible contributors after threshold + dedup) → lo
 ### A5. Render the plan
 
 ```
-Contributor Reward Plan — ${TARGET_WEEK} (${MODE})
+Contributor Reward Plan - ${TARGET_WEEK} (${MODE})
 
 Source: ${LEADERBOARD_FILE}
 Tier: rank 1=25, 2=15, 3=10, 4-5=5 USDC; first-PR bonus +5 once per login.
@@ -200,7 +200,7 @@ Tier: rank 1=25, 2=15, 3=10, 4-5=5 USDC; first-PR bonus +5 once per login.
   ✓ #2 @bob_builder    score 31  →  20 USDC (15 + 5 first-PR)[NEW + BONUS]
   ✓ #3 @carol_eng      score 24  →  10 USDC                  [NEW]
   ✓ #4 @dave_ops       score 18  →   5 USDC                  [NEW]
-  ↻ #5 @eve_hax        score 14  →   5 USDC                  [DEDUP — already in state]
+  ↻ #5 @eve_hax        score 14  →   5 USDC                  [DEDUP - already in state]
 
 Total to write: 60 USDC across 4 new entries.
 Total in state for ${TARGET_WEEK} after write: 5 entries, 65 USDC.
@@ -265,15 +265,15 @@ Write the whole updated JSON in one Write call (never piecemeal edits or a shell
 ### A8. Notify  *(plan-only execute)*
 
 ```
-*Contributor Reward Plan — ${TARGET_WEEK}*
+*Contributor Reward Plan - ${TARGET_WEEK}*
 
 Wrote ${N_NEW} new entries (${TOTAL_USDC} USDC) to memory/distributions.yml as `contributors-${TARGET_WEEK}`.
 
 Top of plan:
-  #1 @alice_dev   — 25 USDC
-  #2 @bob_builder — 20 USDC (✨ first-PR bonus)
-  #3 @carol_eng   — 10 USDC
-  #4 @dave_ops    —  5 USDC
+  #1 @alice_dev   - 25 USDC
+  #2 @bob_builder - 20 USDC (✨ first-PR bonus)
+  #3 @carol_eng   - 10 USDC
+  #4 @dave_ops    -  5 USDC
 ${IF_DEDUP}
 
 Source: ${LEADERBOARD_FILE}
@@ -351,9 +351,9 @@ After RESOLVE, print the plan to the console (and to the dry-run notification if
 
 ```
 Plan for list '${LABEL}' (${today_utc}):
-  ✓ @alice_dev → 0x1234... — 15 USDC          [READY]
-  ✓ Charlie    → 0x742d... — 20 USDC          [READY]
-  ↻ @bob_builder → 0xabcd... — 10 USDC        [SKIPPED_DEDUP] (tx 0xprev...)
+  ✓ @alice_dev → 0x1234... - 15 USDC          [READY]
+  ✓ Charlie    → 0x742d... - 20 USDC          [READY]
+  ↻ @bob_builder → 0xabcd... - 10 USDC        [SKIPPED_DEDUP] (tx 0xprev...)
   ✗ @inactive → ?                             [RESOLVE_FAILED: NO_LINKED_WALLET]
 
 Summary: 2 to send (35 USDC), 1 deduped, 1 unresolvable. Sender balance: 100 USDC.
@@ -404,7 +404,7 @@ State file shape (`memory/state/distributions.json`, append/upsert):
 Top line is a verdict: `COMPLETE` (all READY succeeded) / `PARTIAL` (some failed) / `FAILED` (none succeeded) / `DRY_RUN` / `NOTHING_TO_SEND`.
 
 ```
-*Token Distribution — ${today_utc}* — VERDICT
+*Token Distribution - ${today_utc}* - VERDICT
 
 List: ${LABEL} (${description})
 Token: ${TOKEN} on Base
@@ -412,10 +412,10 @@ Sent: ${total_sent} ${TOKEN} to ${n_success}/${n_attempted} recipients
 Skipped (already sent today): ${n_dedup}
 Unresolvable: ${n_unresolved}
 
-✓ @alice_dev — 15 USDC ([tx](https://basescan.org/tx/0xabc...))
-✓ Charlie (0x742d...) — 20 USDC ([tx](https://basescan.org/tx/0x123...))
-↻ @bob_builder — 10 USDC (already sent: [tx](https://basescan.org/tx/0xprev...))
-✗ @inactive_user — RESOLVE_FAILED: NO_LINKED_WALLET
+✓ @alice_dev - 15 USDC ([tx](https://basescan.org/tx/0xabc...))
+✓ Charlie (0x742d...) - 20 USDC ([tx](https://basescan.org/tx/0x123...))
+↻ @bob_builder - 10 USDC (already sent: [tx](https://basescan.org/tx/0xprev...))
+✗ @inactive_user - RESOLVE_FAILED: NO_LINKED_WALLET
 
 Sender balance after: ${remaining} ${TOKEN}
 ```
@@ -458,7 +458,7 @@ Append to `memory/logs/${today}.md` under **one** heading (the health loop parse
 - List: ${LABEL} | Token: ${TOKEN}
 - Verdict: ${VERDICT}
 - Sent: ${total_sent} ${TOKEN} to ${n_success}/${n_attempted}; deduped: ${n_dedup}; unresolved: ${n_unresolved}
-- Failures (if any): @x — REASON, @y — REASON
+- Failures (if any): @x - REASON, @y - REASON
 - State file: memory/state/distributions.json (${total_keys} entries)
 - Notification sent: yes/no
 ```

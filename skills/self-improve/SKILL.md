@@ -110,7 +110,7 @@ Improve the agent itself based on recent performance. **ONE change per run.**
 
 6. **Notify.** Send via `./notify`:
    ```
-   self-improve: [what was fixed] — PR: [url]
+   self-improve: [what was fixed] - PR: [url]
    ```
 
 7. **Log** (see the shared `## Log` section below).
@@ -156,7 +156,7 @@ Read `memory/MEMORY.md` for context and goals. Read ALL `memory/logs/` entries f
    - Update `feeds.yml` if feeds are dead
 7. **Send a summary** via `./notify`:
    ```
-   *Self Review — ${today}*
+   *Self Review - ${today}*
    Quality: assessment
    Reliability: X/Y skills ran
    Actions taken: what was fixed

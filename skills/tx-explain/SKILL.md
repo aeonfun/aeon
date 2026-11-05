@@ -71,8 +71,8 @@ Parse `Transfer` (topic0 `0xddf252ad...`) and `Approval` (`0x8c5be1e5...`) event
 This skill is usually invoked on demand. Notify via `./notify` only if a suspicious-approval or drain flag fires. Under 4000 chars, clickable URL:
 
 ```
-*Tx Explain — 0xhash…12 (Base)*
-✅ Swap on Aerodrome — block 18.2M
+*Tx Explain - 0xhash…12 (Base)*
+✅ Swap on Aerodrome - block 18.2M
 
 0xabc… swapped 1.5 ETH → 4,210 USDC via Aerodrome Router. Gas 0.0003 ETH.
 

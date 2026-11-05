@@ -36,8 +36,8 @@ Also extract prediction market picks from lines matching `**Market:**`:
 
 Expected log format (written by token-pick and monitor-polymarket):
 ```
-- **Token:** XMR — $350.52 (+1.17% 24h, +2.55% 7d)
-- **Market:** "US x Iran permanent peace deal by April 30?" — NO $0.615 (YES 38.5%)
+- **Token:** XMR - $350.52 (+1.17% 24h, +2.55% 7d)
+- **Market:** "US x Iran permanent peace deal by April 30?" - NO $0.615 (YES 38.5%)
 ```
 
 Focus on the last **30 days** of logs. If a token was picked multiple times, record each instance separately.
@@ -129,17 +129,17 @@ Keep it honest. No cherry-picking dates.
 Send via `./notify` (inline multi-line literal — do NOT pipe or use `$(cat)`):
 
 ```
-*picks scorecard — [START_DATE] → [TODAY]*
+*picks scorecard - [START_DATE] → [TODAY]*
 
 *token picks ([N] total)*
-[SYMBOL] [DATE] — picked $[PICK] → now $[CURRENT] ([PERF]%) [EMOJI]
+[SYMBOL] [DATE] - picked $[PICK] → now $[CURRENT] ([PERF]%) [EMOJI]
 ...sorted best to worst...
 
 *score: [WINS]W [HOLDS]H [LOSSES]L | avg [AVG]% | hit rate [HIT_RATE]%*
 *best: [SYMBOL] +[BEST]% | worst: [SYMBOL] [WORST]%*
 
 *market picks*
-[QUESTION_SNIPPET] — [POSITION] [STATUS_EMOJI]
+[QUESTION_SNIPPET] - [POSITION] [STATUS_EMOJI]
 ...
 
 no financial advice. just tracking the record.
@@ -153,7 +153,7 @@ Keep the message under 3000 chars. If too long, truncate to the most recent 10 p
 
 Write a brief scorecard to `output/articles/picks-scorecard-${today}.md`:
 ```markdown
-# Picks Scorecard — [DATE]
+# Picks Scorecard - [DATE]
 
 ## Token Performance
 | Symbol | Picked | Pick Price | Current | Change | Result |
