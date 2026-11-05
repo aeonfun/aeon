@@ -1264,17 +1264,9 @@ jobs:
             fi
             if [ "$CLAUDE_OK" != "1" ]; then
               echo "::error::run-harness $HARNESS failed: $(tail -c 200 /tmp/harness-stderr.txt | tr '\n' ' ')"
-              # Error signature (the cron-state step stores it as last_error): the
-              # envelope's error text (.result of an is_error envelope, or .error),
-              # else scripts/gateway-error.sh's reason from stderr. Never a byte slice
-              # of the raw stream: that saved cut JSON fragments as last_error.
-              SIG=$(printf '%s' "$CLAUDE_OUTPUT" | jq -r '((if .is_error == true then .result else null end) // (.error | if type == "object" then .message else . end) // empty) | strings' 2>/dev/null | tr '\r\n\t' '   ' || true)
-              if [ -n "${SIG//[[:space:]]/}" ]; then
-                SIG="$HARNESS: ${SIG:0:140}"
-              else
-                SIG=$(bash scripts/gateway-error.sh "$HARNESS" "$RH_RC" /tmp/harness-stderr.txt || echo "$HARNESS: exit $RH_RC")
-              fi
-              printf '%s' "${SIG:0:200}" > /tmp/skill-error.txt
+              # last_error: the envelope's error text, else the stderr reason
+              printf '%s' "$CLAUDE_OUTPUT" > /tmp/harness-out.json
+              bash scripts/gateway-error.sh "$HARNESS" "$RH_RC" /tmp/harness-stderr.txt /tmp/harness-out.json > /tmp/skill-error.txt || echo "$HARNESS: exit $RH_RC" > /tmp/skill-error.txt
               exit 1
             fi
           fi
