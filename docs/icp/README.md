@@ -20,12 +20,11 @@ MCP server, but it authenticates with **interactive OAuth only**. Its published 
 
 Aeon runs headless on GitHub Actions, with no browser and no human in the loop, so it
 cannot complete that flow or keep a session alive. This is a limit of the *hosted
-connector*, not of the IC: a headless MCP on the IC is a documented pattern - a
-canister-based MCP server built with [`ic-rmcp`](https://github.com/ByteSmithLabs/ic-rmcp)
-authenticates a machine caller with an `x-api-key` header (or OAuth), so an agent can
-reach it on a schedule. Aeon uses the direct-read path below for reads, and the direct
-agent (or such a canister MCP) for calls. The hosted connector's one row in the OAuth
-provider table is in [`docs/mcp-oauth.md`](../mcp-oauth.md).
+connector*, not of the IC: a self-hosted canister MCP (e.g. one built with the
+third-party [`ic-rmcp`](https://github.com/ByteSmithLabs/ic-rmcp) SDK, `x-api-key`
+auth, key visible to subnet nodes) is possible, but Aeon does not use one. Aeon uses the
+direct-read path below. The hosted connector's one row in the OAuth provider table is in
+[`docs/mcp-oauth.md`](../mcp-oauth.md).
 
 ## The read path Aeon does use
 
@@ -37,28 +36,28 @@ dashboard and SNS aggregator APIs:
 - `sns-api.internetcomputer.org` - the SNS DAO list and per-DAO proposals.
 
 These need no identity and no cycles. A controller-gated read (a canister's live running
-state via the management canister `canister_status`) is the one exception: it requires a
-controller identity, supplied as an `ICP_IDENTITY_PEM` secret and used through
-`./secretcurl` so the key never touches a command line. The skills degrade cleanly when
-that secret is absent, reporting control-plane facts only. No skill needs runtime IC
-access to do its core job.
+state via the management canister `canister_status`) is the one exception: it is
+optional and needs an IC agent (icp-cli, dfx or ic-agent) signing with a controller
+identity, which is not wired today. The read skills report control-plane facts only. No
+skill needs runtime IC access to do its core job.
 
 ## Why the dfinity/icskills skills are reference, not installed
 
-dfinity publishes an `icskills` set authored to its own skill schema. Aeon's loader
-expects Aeon's `SKILL.md` shape, and several of those skills assume an interactive
-authoring context, so they are not installed into the fleet. Instead the useful
-**knowledge** is embedded in Aeon-native skills - for example the 12 canister-security
-pitfalls live in `skills/canister-audit/references/ic-security-checklist.md`, adapted from
-the icskills `canister-security` material. Reuse the knowledge; do not run the upstream
+dfinity publishes an `icskills` set of dev-time coding guides for writing IC code, not
+scheduled tasks, and several assume an interactive authoring context, so they are not
+installed into the fleet. Instead the useful **knowledge** is embedded in Aeon-native
+skills - for example the 12 canister-security pitfalls live in
+`skills/canister-audit/references/ic-security-checklist.md`, adapted from the icskills
+`canister-security` material. Reuse the knowledge; do not run the upstream
 skills as-is.
 
 ## Security limits
 
-- **Source, not bytecode.** `canister-audit` audits a canister's Rust source. A canister's
-  logic is not recoverable from its deployed wasm the way verified EVM source is, so there
-  is no on-chain-by-address mode for IC.
-- **Rust only.** ic-cdk / candid canisters (ic-cdk is at 0.20.3). Motoko is out of scope.
+- **Source, not bytecode.** `canister-audit` audits a canister's Rust source. The IC has
+  no verified-source registry; the module hash only proves which wasm runs, so there is
+  no on-chain-by-address mode for IC.
+- **Rust only.** ic-cdk / candid canisters; latest ic-cdk 0.20.3 (2026-11), the fixture
+  pins 0.19. Motoko is out of scope.
 - **`fetch_root_key` is an agent/frontend concern, not canister code.** It is called by
   the client talking to the IC (`@dfinity/agent` in JS/TS, or `ic-agent` in a Rust
   client), never inside the canister, so `icp-deploy-check` looks for it in a repo's
@@ -73,12 +72,7 @@ skills as-is.
 
 ## Known gaps
 
-- **The hosted MCP connector is interactive-only.** It offers no machine grant (client
-  credentials) and no refresh token, so an autonomous agent cannot use the hosted server
-  directly. That is the one real coordination point with dfinity - a machine grant would
-  let agents use it. It is not a blocker for the IC itself: a headless MCP is available
-  today via a canister server (`ic-rmcp`, `x-api-key`/OAuth), and canisters are reachable
-  directly with an agent + key.
+- **The hosted MCP connector is interactive-only** (no machine grant, no refresh token).
 - **No off-the-shelf IC Semgrep ruleset.** `canister-audit` ships a small hand-authored
   one (`references/ic-semgrep-rust.yml`); the agentic source pass is the reliable core and
   the ruleset is a high-recall first pass.
@@ -96,15 +90,14 @@ skills as-is.
   pinned PocketIC server
 - `.github/workflows/ci-canister-audit-fixture.yml` - runs the reproduction end to end
 
-**Read + monitor skills**
-- `skills/canister-status/` - control-plane monitor (controllers, module hash, upgrades);
+**Read + monitor skills** (proposed in [#1330](https://github.com/aeonfun/aeon/pull/1330),
+not yet on main)
+- `canister-status` - control-plane monitor (controllers, module hash, upgrades);
   alerts on change
-- `skills/sns-digest/` - NNS + SNS governance proposal digest
-- `skills/icp-deploy-check/` - static pre-deploy checklist for an IC Rust canister repo
+- `sns-digest` - NNS + SNS governance proposal digest
+- `icp-deploy-check` - static pre-deploy checklist for an IC Rust canister repo
 
-Aeon is an open framework; project home is [www.aeon.fun](https://www.aeon.fun).
-
-# Citations
+## Citations
 
 - ICP MCP endpoint metadata and docs: `https://mcp.internetcomputer.org/mcp`,
   `https://internetcomputer.org/icp-mcp/` (probed 2026-11-03).

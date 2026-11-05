@@ -53,11 +53,11 @@ discovery notes) and their companion skills:
 | Finance District Agent Wallet (`finance-district`) | `wallet-mcp.fd.xyz` | `openid offline_access api://fd-agent-wallet-mcp/mcp:tools` (resource scope gates tool access) | yes | `finance-district-mcp` |
 | PostHog (`posthog`) | `mcp.posthog.com/mcp` | `openid user:read organization:read project:read error_tracking:read` (read scopes only; `user:read` is required or the session 403s on init) | unverified — assume yes (no `offline_access`; refresh via the `refresh_token` grant) | `posthog-errors` |
 | Higgsfield (`higgsfield`) | `mcp.higgsfield.ai/mcp` | `openid email offline_access` | yes | `higgsfield` |
-| Internet Computer (`icp`) | `mcp.internetcomputer.org/mcp` | `authorization_code` + PKCE via Internet Identity (interactive only; no `client_credentials`, no `offline_access`) | no - no refresh token or machine grant | *(not wired: interactive-only, so a headless agent cannot use the hosted server. Aeon reads the IC directly; a headless MCP is possible via a canister server with ic-rmcp. See [docs/icp/README.md](icp/README.md))* |
+| Internet Computer (`icp`) | `mcp.internetcomputer.org/mcp` | *(none - not wired)* | no - no refresh token or machine grant | *(not wired: `authorization_code` + PKCE via Internet Identity only; see [docs/icp/README.md](icp/README.md))* |
 
 The glim and Executor loops were verified end-to-end on a live instance
 (Connect → per-run refresh → PAT-persisted rotation → refresh off the persisted
-token, no re-connect): every catalog provider rotates, so treat a secrets-write
+token, no re-connect): every wired provider rotates, so treat a secrets-write
 token (`GH_GLOBAL`, or the optional `GH_SECRETS_PAT`) as **required** in practice.
 
 ## Code map
