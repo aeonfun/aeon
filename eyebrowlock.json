@@ -3510,6 +3510,87 @@
       ],
       "contentHash": "sha256-b95b9c6d984ff6eb0404559092b2d20d089986784255df96b86fefaa9f87c8a0",
       "discoveredFrom": "skills/github-filing-registry/SKILL.md"
+    },
+    {
+      "id": "ac741688c8cdedb9",
+      "tool": "aeon",
+      "scope": "project:.",
+      "type": "skill",
+      "name": "canister-status",
+      "source": {
+        "kind": "local",
+        "ref": "skills/canister-status"
+      },
+      "capabilities": {
+        "network": [
+          "ic-api.internetcomputer.org"
+        ]
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "hash": "89af569c8cc5436906672d401ac8e3b652dac60a0e02e2feaf52861c938c43eb"
+        },
+        {
+          "path": "SKILL.md",
+          "hash": "88f9f02874f0cd68b4aaddd106290e23fded0d185d4faefd8e5baac71988b2d6"
+        }
+      ],
+      "contentHash": "sha256-21729610ce32e186a769c14ece6338abc4e4ab56cc44d4111b186fdad818b34f",
+      "discoveredFrom": "skills/canister-status/SKILL.md"
+    },
+    {
+      "id": "8c956ce889cadd94",
+      "tool": "aeon",
+      "scope": "project:.",
+      "type": "skill",
+      "name": "sns-digest",
+      "source": {
+        "kind": "local",
+        "ref": "skills/sns-digest"
+      },
+      "capabilities": {
+        "network": [
+          "ic-api.internetcomputer.org",
+          "sns-api.internetcomputer.org"
+        ]
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "hash": "c19d6f3ea65f1d58ac895a86ed668625dabc060349f852172cbfbdbb45a3dabf"
+        },
+        {
+          "path": "SKILL.md",
+          "hash": "2942bb4c9f56c1b9ca1bcc65fc6e8a8e5b7166406b0c8b127d1fdb7e70ace8cd"
+        }
+      ],
+      "contentHash": "sha256-aba235c8fa6062d92135c407c624349868a2e89f7b75fa42f594398471068c44",
+      "discoveredFrom": "skills/sns-digest/SKILL.md"
+    },
+    {
+      "id": "21a3645b845f8948",
+      "tool": "aeon",
+      "scope": "project:.",
+      "type": "skill",
+      "name": "icp-deploy-check",
+      "source": {
+        "kind": "local",
+        "ref": "skills/icp-deploy-check"
+      },
+      "capabilities": {},
+      "files": [
+        {
+          "path": "README.md",
+          "hash": "3eb17280c6896ef829c363581b0c1f44de28d490a668a7028e41f75912a01bd9"
+        },
+        {
+          "path": "SKILL.md",
+          "hash": "ac9518c7d0021c9293e23e99826a30be6a6f088f795fe681f6f94bdd2e973e50"
+        }
+      ],
+      "contentHash": "sha256-72d57cb18446d6213892f491c0be6b8f7b9ad661d8ac6de1a92af4cf32553799",
+      "discoveredFrom": "skills/icp-deploy-check/SKILL.md"
     }
   ]
 }
