@@ -9,6 +9,8 @@
 # ... exceeded --timeout 1800s", with no word of the plan limit.
 #
 # Reason, first that applies:
+#   0. with an [envelope-file] (the harness's stdout, non-claude path): its error
+#      text, .result of an is_error envelope or .error (string or .message).
 #   1. the result text of the attempt's JSON envelope (the claude adapter echoes
 #      it on stderr as "claude exited N: {...}"); Claude Code puts the API error
 #      there, e.g. "You've hit your weekly limit ...".
@@ -17,14 +19,22 @@
 #   4. "exit <code>".
 # Each reason is cut to 140 characters and kept on one line.
 #
-# Usage: gateway-error.sh <provider> <attempt-exit-code> <harness-stderr-file>
+# Never a byte slice of the raw stream: that saved cut JSON fragments as last_error.
+#
+# Usage: gateway-error.sh <provider> <attempt-exit-code> <harness-stderr-file> [envelope-file]
 set -uo pipefail
 provider="${1:?provider required}"
 rc="${2:?attempt exit code required}"
 err="${3:?harness stderr file required}"
+env_file="${4:-}"
 
 reason=""
-if [ -s "$err" ]; then
+if [ -n "$env_file" ] && [ -s "$env_file" ]; then
+  reason=$(jq -r '((if .is_error == true then .result else null end)
+    // (.error | if type == "object" then .message else . end) // empty) | strings' \
+    "$env_file" 2>/dev/null || true)
+fi
+if [ -z "${reason//[[:space:]]/}" ] && [ -s "$err" ]; then
   # The envelope's "result" string (JSON-escaped), decoded with jq.
   m=$(grep -oE '"result":"([^"\\]|\\.)*"' "$err" 2>/dev/null | head -n 1 || true)
   if [ -n "$m" ]; then

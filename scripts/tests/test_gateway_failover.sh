@@ -52,4 +52,19 @@ long=$(printf 'x%.0s' $(seq 1 300))
 got=$(printf '{"result":"%s"}\n' "$long" > "$T/err.txt"; bash scripts/gateway-error.sh claude 1 "$T/err.txt")
 [ "${#got}" -eq $((8 + 140)) ] && pass "reason cut to 140 characters" || bad "reason length ${#got}"
 
+# Optional envelope file (non-claude path): its error text wins over stderr.
+printf 'some stderr line\n' > "$T/err.txt"
+printf '{"is_error":true,"result":"quota exceeded"}' > "$T/out.json"
+got=$(bash scripts/gateway-error.sh codex 1 "$T/err.txt" "$T/out.json")
+[ "$got" = "codex: quota exceeded" ] && pass "envelope .result of an is_error envelope" || bad "envelope is_error (got '$got')"
+printf '{"error":{"message":"bad auth"}}' > "$T/out.json"
+got=$(bash scripts/gateway-error.sh pi 1 "$T/err.txt" "$T/out.json")
+[ "$got" = "pi: bad auth" ] && pass "envelope .error.message" || bad "envelope .error.message (got '$got')"
+printf '{"is_error":false,"result":"normal output"}' > "$T/out.json"
+got=$(bash scripts/gateway-error.sh pi 1 "$T/err.txt" "$T/out.json")
+[ "$got" = "pi: some stderr line" ] && pass "non-error envelope falls back to stderr" || bad "non-error envelope (got '$got')"
+printf 'not json' > "$T/out.json"
+got=$(bash scripts/gateway-error.sh pi 124 "$T/err.txt" "$T/out.json")
+[ "$got" = "pi: timeout" ] && pass "non-JSON stdout falls back" || bad "non-JSON stdout (got '$got')"
+
 [ "$fail" -eq 0 ] && echo "PASS test_gateway_failover" || { echo "FAILURES in test_gateway_failover"; exit 1; }

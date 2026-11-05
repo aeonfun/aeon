@@ -258,54 +258,54 @@ Save to `output/articles/last30-${TOPIC_SLUG}-${TODAY}.md`.
 
 ```markdown
 # Last 30 Days: ${topic}
-*${TODAY} — ${DAYS}-day window — ${source_count} sources across ${platform_count} platforms*
+*${TODAY} - ${DAYS}-day window - ${source_count} sources across ${platform_count} platforms*
 
 ## Verdict
-*[One sentence, non-obvious, falsifiable. Not "people are discussing X" — something like "Consensus on Reddit has flipped bearish since last month while X remains bullish — the retail/insider split is wider than at any point this year."]*
+*[One sentence, non-obvious, falsifiable. Not "people are discussing X" - something like "Consensus on Reddit has flipped bearish since last month while X remains bullish - the retail/insider split is wider than at any point this year."]*
 
 ## What Changed (vs prior snapshot)
 *[Only if prior snapshot exists. Otherwise omit this section.]*
-- **NEW:** [Narrative] — [one line]
+- **NEW:** [Narrative] - [one line]
 - **FADED:** [Narrative]
-- **FLIPPED:** [Narrative] — was [X] on [platform], now [Y]
-- **HEATING:** [Narrative] — engagement 3x prior window
+- **FLIPPED:** [Narrative] - was [X] on [platform], now [Y]
+- **HEATING:** [Narrative] - engagement 3x prior window
 
 ## Narratives
 *Ranked by cross-platform presence × divergence × engagement. 3-5 in quick mode, 5-8 in full mode.*
 
-### 1. [Narrative title — the story, not the topic]
+### 1. [Narrative title - the story, not the topic]
 **Platforms:** Reddit, X, HN (3) | **Combined engagement:** X,XXX | **Sentiment:** Reddit bearish / X bullish / HN skeptical
 *[150-250 words synthesizing this thread. Lead with the non-obvious claim, not a summary. Where platforms disagree, name the disagreement explicitly.]*
 
 > "Direct quote from the single best take across all platforms"
-> — [source: u/user r/sub (X pts) | or @handle (X likes) | or HN user (X pts)] → [direct link]
+> - [source: u/user r/sub (X pts) | or @handle (X likes) | or HN user (X pts)] → [direct link]
 
 > "Counter-quote from the opposing view if one exists"
-> — [source] → [link]
+> - [source] → [link]
 
 ### 2. [Narrative title]
 ...
 
 ## Contrarian / Minority View
-*[1-3 bullets. What is the small but coherent minority saying that the top takes are missing? Must be specific, with a quote and link. If no coherent minority view exists, write "No coherent contrarian view surfaced in this window" — do not invent one.]*
+*[1-3 bullets. What is the small but coherent minority saying that the top takes are missing? Must be specific, with a quote and link. If no coherent minority view exists, write "No coherent contrarian view surfaced in this window" - do not invent one.]*
 
 ## Sentiment Map
 | Narrative | Reddit | X | HN | Web |
 |-----------|--------|---|-----|-----|
-| [N1] | bearish | bullish | skeptical | — |
-| [N2] | — | viral bull | — | cautious |
+| [N1] | bearish | bullish | skeptical | - |
+| [N2] | - | viral bull | - | cautious |
 
 ## Data Points
 *[Specific, sourced numbers. Prediction market odds, adoption stats, vote counts, price moves. Link each.]*
-- [Specific stat] — [source]
+- [Specific stat] - [source]
 
 ## Standalone Signals
 *[Interesting findings that appeared on only one platform. Include because they might be early.]*
-- [platform] [Signal description] — [source link]
+- [platform] [Signal description] - [source link]
 
 ## Top Voices
 *[3-5 people/accounts whose posts had the most signal. Skip if no clear standouts.]*
-- [@handle or u/user] — [what they said, why it mattered]
+- [@handle or u/user] - [what they said, why it mattered]
 
 ## Prediction Markets
 *[Only if matches found in step 5. Current odds + what they imply.]*
@@ -351,9 +351,9 @@ Append to `memory/logs/${TODAY}.md`:
 
 Send via `./notify`:
 ```
-*Last 30 Days — ${topic}*
+*Last 30 Days - ${topic}*
 
-${DAYS}d across ${platform_count} platforms — ${source_count} sources [${STATUS}]
+${DAYS}d across ${platform_count} platforms - ${source_count} sources [${STATUS}]
 
 Verdict: ${verdict_one_liner}
 

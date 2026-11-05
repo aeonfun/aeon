@@ -116,8 +116,8 @@ For each UNEXECUTED idea, compute a priority score:
 ```
 priority = narrative_fit + operator_fit_estimated + recency_bonus + ecosystem_gap_bonus
 
-narrative_fit:          0–4 (count of active narrative keywords that appear in idea name/one-liner/category; cap at 4)
-operator_fit_estimated: 0–2 — read `soul/SOUL.md` if present; +2 if the idea matches the operator's stated themes, +1 if it's solo-buildable AND adjacent to current work, 0 otherwise. If no soul file, score 0 here and let other factors decide.
+narrative_fit:          0-4 (count of active narrative keywords that appear in idea name/one-liner/category; cap at 4)
+operator_fit_estimated: 0-2 - read `soul/SOUL.md` if present; +2 if the idea matches the operator's stated themes, +1 if it's solo-buildable AND adjacent to current work, 0 otherwise. If no soul file, score 0 here and let other factors decide.
 recency_bonus:          2 if added in last 14 days; 1 if last 30 days; 0 otherwise
 ecosystem_gap_bonus:    3 if idea's category matches an `underserved_category` from step 5b; 2 if it matches an `adjacent_vertical`; 0 otherwise
 ```
@@ -133,7 +133,7 @@ Sort descending. Pick top 3. For each pick, in step 7's `Why now:` line, name th
 Write to `output/articles/idea-pipeline-${today}.md`:
 
 ```markdown
-# Idea Pipeline — ${today}
+# Idea Pipeline - ${today}
 
 **Total ideas:** N_total | **Screened:** N_screened | **Executed:** N_executed | **Gap:** N_gap
 
@@ -141,9 +141,9 @@ Write to `output/articles/idea-pipeline-${today}.md`:
 
 ### 1. [Idea Name]
 **One-liner:** [one-liner from backlog]
-**Why now:** [1–2 sentences connecting to active narratives or ecosystem signal]
-**Operator fit:** [why this fits the operator's stack/worldview — derived from soul/SOUL.md if present, otherwise the idea's general buildability]
-**Execution path:** [one sentence on fastest way to build — skill, prototype, or external PR]
+**Why now:** [1-2 sentences connecting to active narratives or ecosystem signal]
+**Operator fit:** [why this fits the operator's stack/worldview - derived from soul/SOUL.md if present, otherwise the idea's general buildability]
+**Execution path:** [one sentence on fastest way to build - skill, prototype, or external PR]
 
 ### 2. [Idea Name]
 ...
@@ -158,7 +158,7 @@ Ideas already shipped (skill/prototype/PR match found):
 
 ## High-Potential Unscreened
 Top 3 ideas not yet screened by `idea-forge validate` that look most promising by keyword signal alone:
-- [idea] — [one-liner]
+- [idea] - [one-liner]
 - ...
 
 ---
@@ -181,21 +181,21 @@ mkdir -p .pending-notify-temp
 **Notification format** — match the operator's voice if soul files are populated, otherwise direct and neutral:
 
 ```
-idea pipeline — ${today}
+idea pipeline - ${today}
 
 ${N_total} ideas. ${N_screened} screened. ${N_executed} executed. ${N_gap} waiting.
 
 build this week:
 
-1. [Idea Name] — [one-liner]
+1. [Idea Name] - [one-liner]
    why now: [1 sentence on timing/narrative fit]
    path: [skill / prototype / external-PR in ~N days]
 
-2. [Idea Name] — [one-liner]
+2. [Idea Name] - [one-liner]
    why now: [1 sentence]
    path: [...]
 
-3. [Idea Name] — [one-liner]
+3. [Idea Name] - [one-liner]
    why now: [1 sentence]
    path: [...]
 ```
@@ -226,11 +226,11 @@ Append to `memory/logs/${today}.md`:
 - **Screened:** N_screened (by `idea-forge validate`)
 - **Executed:** N_executed (skill/prototype/PR match)
 - **Gap:** N_gap unexecuted ideas
-- **Top pick:** [idea name] — [priority score]
-- **Ecosystem feed:** [available / unavailable] — [N underserved categories, M adjacent verticals] (from ecosystem.md, last written [date])
+- **Top pick:** [idea name] - [priority score]
+- **Ecosystem feed:** [available / unavailable] - [N underserved categories, M adjacent verticals] (from ecosystem.md, last written [date])
 - **Filter:** [var value or "none"]
 - **Notification:** sent
-- **Force-reply offer:** [offered / skipped — already offered in last 2 days / skipped — no picks]
+- **Force-reply offer:** [offered / skipped - already offered in last 2 days / skipped - no picks]
 - FORCE_REPLY_OFFERED: idea-pipeline::pick   ← include this exact line ONLY when the offer was actually sent (it's the once/day dedup marker)
 - IDEA_PIPELINE_OK
 ```

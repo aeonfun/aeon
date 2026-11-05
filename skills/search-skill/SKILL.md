@@ -111,10 +111,10 @@ Skip notify entirely for **SEARCH_SKILL_NO_GAP**, **SEARCH_SKILL_EMPTY**, and **
 For **SEARCH_SKILL_OK_INSTALLED** — send via `./notify`:
 
 ```
-*Search Skills — ${today}*
+*Search Skills - ${today}*
 Gap: <one-line gap description from step 1>
 Installed: <skill-name> from <owner/repo> (gap-fit X/5, sum Y/15, TRUSTED)
-Why: <one sentence — cites the failing skill, open issue, or priority by name>
+Why: <one sentence - cites the failing skill, open issue, or priority by name>
 Next: review skills/<skill-name>/SKILL.md and flip aeon.yml `enabled: true` when ready.
 
 Sources: npx=<ok|fail> vercel=<N> anthropics=<N> bankr=<N> skills.sh=<ok|fail>
@@ -123,11 +123,11 @@ Sources: npx=<ok|fail> vercel=<N> anthropics=<N> bankr=<N> skills.sh=<ok|fail>
 For **SEARCH_SKILL_OK_CANDIDATES** (weak matches or any UNTRUSTED):
 
 ```
-*Search Skills — ${today}*
+*Search Skills - ${today}*
 Gap: <one-line gap description>
 Candidates (not auto-installed):
-- <name> — <owner/repo> (gap-fit X/5, sum Y/15, <TRUSTED|UNTRUSTED|WEAK>) — <one-sentence why>
-- <name> — <owner/repo> (...)
+- <name> - <owner/repo> (gap-fit X/5, sum Y/15, <TRUSTED|UNTRUSTED|WEAK>) - <one-sentence why>
+- <name> - <owner/repo> (...)
 Manual install: bin/add-skill <owner/repo> <name>
 
 Sources: npx=<ok|fail> vercel=<N> anthropics=<N> bankr=<N> skills.sh=<ok|fail>
@@ -143,7 +143,7 @@ Append:
 - **Query:** "<query>" (source: <var|cron-state|issues|priorities|logs>)
 - **Catalogs:** npx=<ok|fail>, vercel=<N>, anthropics=<N>, bankr=<N>, skills.sh=<ok|fail>
 - **Duplicates dropped:** <comma list or "none">
-- **Top 3:** <name (source, sum)> — <name (source, sum)> — <name (source, sum)>
+- **Top 3:** <name (source, sum)> - <name (source, sum)> - <name (source, sum)>
 - **Installed:** <name from source | none>
 - **Notified:** <yes|no>
 ```

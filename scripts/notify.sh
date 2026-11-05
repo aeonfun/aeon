@@ -82,6 +82,13 @@ if [ -n "$CONTEXT" ]; then
   MSG=$(printf '[%s] %s' "$CONTEXT" "$MSG")
 fi
 
+# Em dash and en dash -> plain hyphen in the body and title, before dedup and the
+# queue, so no channel, email, feed card or chain file carries one (the renderers
+# in scripts/notify_format.py apply the same pass). UTF-8 bytes, not literals.
+_EMDASH=$'\xe2\x80\x94'; _ENDASH=$'\xe2\x80\x93'
+MSG=${MSG//"$_EMDASH"/-}; MSG=${MSG//"$_ENDASH"/-}
+TITLE=${TITLE//"$_EMDASH"/-}; TITLE=${TITLE//"$_ENDASH"/-}
+
 # Normalize severity
 SEVERITY=$(printf '%s' "$SEVERITY" | tr '[:upper:]' '[:lower:]')
 case "$SEVERITY" in info|success|warn|critical) ;; *) SEVERITY="info" ;; esac

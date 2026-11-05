@@ -17,7 +17,7 @@ metadata:
 
 If `${var}` is empty, stop and notify:
 ```
-cortx-reliability requires a URL — pass the x402 endpoint you want to check as var.
+cortx-reliability requires a URL - pass the x402 endpoint you want to check as var.
 ```
 
 ## What this skill does
@@ -101,7 +101,7 @@ cat .tmp/cortx-result.json
 ### 6. Output
 
 ```
-CORTX Reliability Check — <endpoint_url>
+CORTX Reliability Check - <endpoint_url>
 
 Status:         <status>
 Paid delivery:  <paid_delivery_percent>% (last 30 days)
@@ -110,7 +110,7 @@ Schema valid:   <schema_validity_percent>%
 Latency:        <median_latency_ms>ms median
 Last verified:  <last_verified_at>
 
-Active incident: <none | failure_stage — open since opened_at>
+Active incident: <none | failure_stage - open since opened_at>
 
 Recommendation: <BLOCK | WARN | reliability signal favorable>
 ```

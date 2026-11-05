@@ -108,6 +108,8 @@ def reduce_events(events, now=None):
             s["total_successes"] += 1
             s["consecutive_failures"] = 0
             s["last_status"] = "success"
+            # A success clears the error, same as the file backend in aeon.yml.
+            s["last_error"] = None
             if e.get("ts"):
                 s["last_success"] = e["ts"]
         else:

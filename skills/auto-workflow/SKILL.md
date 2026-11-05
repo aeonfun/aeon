@@ -200,16 +200,16 @@ Output shape (keep it tight — no tables for empty categories):
 
 ## MUST (apply now)
 
-- **rss-digest** — `ENABLE`, var: `"https://example.com/feed"`, schedule: `"0 7 * * *"`. Feed at /feed.xml, 12 posts in 30d. Secrets: OK.
-- **fetch-tweets** — `SET_VAR`, var append: `"@example"`, schedule unchanged. Handle active, 3 product threads last week. Secrets: MISSING_SECRET: X_API_BEARER.
+- **rss-digest** - `ENABLE`, var: `"https://example.com/feed"`, schedule: `"0 7 * * *"`. Feed at /feed.xml, 12 posts in 30d. Secrets: OK.
+- **fetch-tweets** - `SET_VAR`, var append: `"@example"`, schedule unchanged. Handle active, 3 product threads last week. Secrets: MISSING_SECRET: X_API_BEARER.
 
 ## SHOULD (consider this week)
 
-- **github-monitor** — ...
+- **github-monitor** - ...
 
 ## NICE (only if interested)
 
-- **paper-pick** — ...
+- **paper-pick** - ...
 
 ## aeon.yml diff
 
@@ -241,7 +241,7 @@ feeds:
 
 ## New skill proposals
 
-(none unless ≥2 URLs share a gap no installed skill fills — see constraints)
+(none unless ≥2 URLs share a gap no installed skill fills - see constraints)
 
 ## Source status
 
@@ -259,7 +259,7 @@ ${AUTO_WORKFLOW_OK | AUTO_WORKFLOW_NO_CHANGE | AUTO_WORKFLOW_EMPTY | AUTO_WORKFL
 Append to `memory/topics/auto-workflow-analyzed.md`:
 ```markdown
 ## ${today}
-- ${normalized_url} — ${category} — ${N_must} MUST / ${N_should} SHOULD — output/articles/auto-workflow-${today}.md
+- ${normalized_url} - ${category} - ${N_must} MUST / ${N_should} SHOULD - output/articles/auto-workflow-${today}.md
 ```
 
 Log to `memory/logs/${today}.md` (see the shared **Log** section — analyze discriminator).
@@ -268,7 +268,7 @@ Notify via `./notify` — but **only** if exit_mode ∈ {OK, FETCH_FAILED_PARTIA
 
 Template:
 ```
-*Auto-Workflow — ${today}*
+*Auto-Workflow - ${today}*
 ${exit_mode}
 
 ${verdict_one_line}
@@ -402,7 +402,7 @@ Capture the PR URL from `gh pr create`'s stdout. If `gh pr create` fails, log `S
 Send via `./notify`:
 
 ```
-*Auto-Workflow (enable) — ${today}*
+*Auto-Workflow (enable) - ${today}*
 
 Enabled ${N} skill(s) in aeon.yml via PR:
 ${bullet_list_eligible_slugs}
@@ -464,8 +464,8 @@ Append to `memory/logs/${today}.md` under ONE `### auto-workflow` heading (the h
 ### auto-workflow
 - Mode: enable (${execute|dry-run})
 - Input slugs: ${enable_remainder_of_var}
-- Eligible: ${N} — ${list_eligible}
-- Ineligible: ${M} — ${grouped_by_tag}
+- Eligible: ${N} - ${list_eligible}
+- Ineligible: ${M} - ${grouped_by_tag}
 - PR: ${pr_url_or_none}
 - Branch: ${branch_or_none}
 - File touched: aeon.yml

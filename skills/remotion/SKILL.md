@@ -149,7 +149,7 @@ On-demand skill → a completed run always notifies. Deliver via `./notify -f` (
 Body template:
 
 ```
-*Remotion — <short title>*
+*Remotion - <short title>*
 <one-line description of the video>
 ▶︎ watch: <blob URL>
 direct: <raw URL>

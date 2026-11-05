@@ -114,13 +114,13 @@ Pick the **3–5 strongest** items. Lead with the **single most actionable** one
 Format the digest exactly like this (**unified format** — used for `web`, `rss`, and `web+rss` runs):
 
 ```
-*${var} — ${today}*
+*${var} - ${today}*
 
 _TL;DR: <one sentence covering the day's gravity. Concrete, no adjectives.>_
 
 1. *<Headline-style title, ≤90 chars>*
-   <1–2 sentence summary. Lead with what happened, not who said it.>
-   Why it matters: <one short clause — concrete consequence, not vibes>
+   <1-2 sentence summary. Lead with what happened, not who said it.>
+   Why it matters: <one short clause - concrete consequence, not vibes>
    <link>
 
 2. *<Title>*
@@ -142,14 +142,14 @@ _TL;DR: <one sentence covering the day's gravity. Concrete, no adjectives.>_
 **Alternate RSS layout (RSS-only runs):** when `sources = rss`, you may instead group items by feed name if that reads better than a single ranked list — this preserves the original RSS-digest presentation:
 
 ```
-*RSS Digest — ${today}*
+*RSS Digest - ${today}*
 
 *Feed Name*
-- [Title](url) — summary
-- [Title](url) — summary
+- [Title](url) - summary
+- [Title](url) - summary
 
 *Feed Name*
-- [Title](url) — summary
+- [Title](url) - summary
 ```
 
 The grouped RSS layout stays **≤4000 chars**. Prefer the unified ranked format when the run mixes sources (`web+rss`) so the reader gets one prioritized list.
@@ -174,10 +174,10 @@ If the digest fails any check, fix it before sending. If after filtering you hav
    ```
    ### digest (${var})
    - Source mode: <web | rss | web+rss>
-   - Sources used: <list — e.g. WebSearch, xAI API (api|fallback:reason), feeds.yml (Feed A, Feed B)>
+   - Sources used: <list - e.g. WebSearch, xAI API (api|fallback:reason), feeds.yml (Feed A, Feed B)>
    - Raw candidates: <N> (web <Nw> / rss <Nr>), after filter: <M>, sent: <K>
    - Lead item: <title>
-   - Notes: <anything unusual — xAI fetch fallback + true reason (http-<code>/empty/timeout/key-unset), thin day (DIGEST_THIN/DIGEST_FETCH_EMPTY), RSS_DIGEST_OK, dedup against prior log>
+   - Notes: <anything unusual - xAI fetch fallback + true reason (http-<code>/empty/timeout/key-unset), thin day (DIGEST_THIN/DIGEST_FETCH_EMPTY), RSS_DIGEST_OK, dedup against prior log>
    ```
 3. Update `memory/MEMORY.md` "Recent Digests" table with one row: date, topic (or `${var}`), key topics (3 short keywords).
 

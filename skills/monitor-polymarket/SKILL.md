@@ -123,11 +123,11 @@ For each event, produce a summary block:
 
 | Market | YES | 24h Chg | High/Low | 24h Vol |
 |--------|-----|---------|----------|---------|
-| [question] | XX.X% | +X.Xpp ▲ | XX–XX% | $X.Xm |
-| [question] | XX.X% | -X.Xpp ▼ | XX–XX% | $X.Xm |
+| [question] | XX.X% | +X.Xpp ▲ | XX-XX% | $X.Xm |
+| [question] | XX.X% | -X.Xpp ▼ | XX-XX% | $X.Xm |
 ...
 
-Biggest mover: "[question]" — [direction] from X% to Y%
+Biggest mover: "[question]" - [direction] from X% to Y%
 
 Comments:
 - [user/anon]: "[comment excerpt]" (X upvotes)
@@ -236,24 +236,24 @@ Rank events by the max `move_score` of any market within them. Cap the report at
 ## K6. Build the Kalshi report
 
 ```
-*Kalshi monitor — ${today}*
-verdict: [1 sentence — dominant theme or "all quiet"]
+*Kalshi monitor - ${today}*
+verdict: [1 sentence - dominant theme or "all quiet"]
 
-**[Event Title]** (EVENT_TICKER) — category
+**[Event Title]** (EVENT_TICKER) - category
 | Market | prob | Δ24h | range | vol | spread |
 |--------|------|------|-------|-----|--------|
-| [title] | 62% | +4.1pp ▲ | 56–65% | $82k | 1pp |
-| [title] | 23% | −2.8pp ▼ | 22–28% | $14k | 3pp |
-mover: [title] — rising on $82k vol, tight book
+| [title] | 62% | +4.1pp ▲ | 56-65% | $82k | 1pp |
+| [title] | 23% | −2.8pp ▼ | 22-28% | $14k | 3pp |
+mover: [title] - rising on $82k vol, tight book
 
 [next event ...]
 
 **ALERTS** (moved >5pp on non-thin book)
-- [event/market]: 34% → 51% — *why it matters:* [one sentence grounded in the move's volume, spread, or news context if obvious from titles]
+- [event/market]: 34% → 51% - *why it matters:* [one sentence grounded in the move's volume, spread, or news context if obvious from titles]
 - ...
 
 **Trending (not tracked)**
-- [event] — $Xk 24h vol, consider adding
+- [event] - $Xk 24h vol, consider adding
 - ...
 
 sources: events=ok candlesticks=ok|degraded|fail orderbook=ok|degraded|fail
@@ -321,17 +321,17 @@ This skill is `read-only`, so the workflow's read-only guard writes its `### mon
 #### Polymarket        (only if the Polymarket branch ran)
 - **Events monitored:** N
 - **Markets tracked:** N (M open, K closed)
-- **Biggest mover:** "[question]" — X% → Y% (+/-Zpp)
+- **Biggest mover:** "[question]" - X% → Y% (+/-Zpp)
 - **Alert markets (>5pp move):** [list or "none"]
 - **Top comment:** "[excerpt]"
 
 #### Kalshi            (only if the Kalshi branch ran)
 - **Events monitored:** N (watchlist=W, discovered=D)
 - **Markets tracked:** N (M open, K skipped)
-- **Top mover:** "[title]" — X% → Y% (Δpp, move_score=S, vol=$V, spread=Sp)
+- **Top mover:** "[title]" - X% → Y% (Δpp, move_score=S, vol=$V, spread=Sp)
 - **Alerts (>5pp, non-thin):** [count; list titles or "none"]
 - **Continued-from-yesterday (demoted):** [count]
-- **Trending untracked:** [1–2 tickers or "none"]
+- **Trending untracked:** [1-2 tickers or "none"]
 - **Sources:** events=[status] candlesticks=[status] orderbook=[status]
 - **Status:** MONITOR_KALSHI_OK | MONITOR_KALSHI_DEGRADED | MONITOR_KALSHI_NO_CONFIG | MONITOR_KALSHI_ERROR
 

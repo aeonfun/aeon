@@ -1236,8 +1236,11 @@ jobs:
             # its own cascade above; here it is component=harness. No-op unless
             # telemetry is configured, and `|| true` so it never fails the run.
             AEON_OTEL_COMPONENT=harness source "$LF" >&2 || true
+            RH_RC=0
             if CLAUDE_OUTPUT=$(echo "$PROMPT" | bash "$RH" "$HARNESS" "${RH_MODEL_ARGS[@]}" "${RH_ARGS[@]}" 2>/tmp/harness-stderr.txt); then
               CLAUDE_OK=1
+            else
+              RH_RC=$?
             fi
             if [ "$HARNESS" != "grok" ]; then
               # Re-emit SKILL_MODEL (token-usage.csv, signed run manifest) with what
@@ -1261,7 +1264,9 @@ jobs:
             fi
             if [ "$CLAUDE_OK" != "1" ]; then
               echo "::error::run-harness $HARNESS failed: $(tail -c 200 /tmp/harness-stderr.txt | tr '\n' ' ')"
-              tail -c 500 /tmp/harness-stderr.txt | tr '\n' ' ' | cut -c1-200 > /tmp/skill-error.txt
+              # last_error: the envelope's error text, else the stderr reason
+              printf '%s' "$CLAUDE_OUTPUT" > /tmp/harness-out.json
+              bash scripts/gateway-error.sh "$HARNESS" "$RH_RC" /tmp/harness-stderr.txt /tmp/harness-out.json > /tmp/skill-error.txt || echo "$HARNESS: exit $RH_RC" > /tmp/skill-error.txt
               exit 1
             fi
           fi
@@ -2364,10 +2369,14 @@ jobs:
               .[$s].success_rate = $rate
             ')
 
-            # Record error signature on failure
+            # Record error signature on failure; a success clears it, so last_error
+            # only ever describes the run that is failing now (last_failed keeps the
+            # time of the most recent failure).
             if [ "$CRON_STATUS" = "failed" ] && [ -n "$ERROR_SIG" ]; then
               STATE=$(echo "$STATE" | jq --arg s "$SKILL" --arg err "$ERROR_SIG" \
                 '.[$s].last_error = $err')
+            elif [ "$CRON_STATUS" = "success" ]; then
+              STATE=$(echo "$STATE" | jq --arg s "$SKILL" '.[$s].last_error = null')
             fi
 
             # Record quality score on success (from analysis step)
@@ -2464,7 +2473,12 @@ jobs:
           SCORE_IN: ${{ steps.analyze.outputs.QUALITY_SCORE }}
           FLAGS_IN: ${{ steps.analyze.outputs.FLAGS }}
           RUN_OUTCOME: ${{ steps.run.outcome }}
+          IDLE_SKIP: ${{ steps.idle.outputs.skip }}
         run: |
+          # An idle-gated skip (memory-flush or fetch-tweets with nothing new) never ran
+          # the skill, so Run is 'skipped': not a regression. Cron state already records
+          # it as a success; without this it was posted as "score 1, run_failed".
+          if [ "${IDLE_SKIP:-}" = "true" ]; then echo "idle skip for $SKILL; health issue silent"; exit 0; fi
           # §7 is default-ON; disable only with repo var HEALTH_ISSUES=0. The toggle is
           # checked HERE in bash, NOT in the step `if:`. A GitHub Actions `if:` comparison
           # like `vars.HEALTH_ISSUES != '0'` does numeric coercion, and an UNSET var (null)
@@ -2484,7 +2498,7 @@ jobs:
             ISSUE=$(GH_REPO="$GITHUB_REPOSITORY" bash scripts/health_issue.sh ensure "$SKILL" 2>/dev/null || true)
             if [ -n "$ISSUE" ]; then
               GH_REPO="$GITHUB_REPOSITORY" bash scripts/health_issue.sh comment "$ISSUE" \
-                "⚠️ Regression — score $SCORE, flags $FLAGS ($(date -u +%FT%TZ)). 👍/👎 to set repair priority." \
+                "⚠️ Regression: score $SCORE, flags $FLAGS ($(date -u +%FT%TZ)). 👍/👎 to set repair priority." \
                 && echo "health regression -> issue #$ISSUE"
             fi
           else

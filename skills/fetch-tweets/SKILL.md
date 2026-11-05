@@ -124,20 +124,20 @@ Search X for tweets matching `ARG` and produce a curated digest grouped by sub-n
 
 7. **Notify via `./notify`** with the clustered output:
    ```
-   *Top Tweets — ${ARG} (${today})*
+   *Top Tweets - ${ARG} (${today})*
    _${signal_one_liner}_
 
    *${cluster_1_name}*
-   1. x.com/handle — [insight summary]
+   1. x.com/handle - [insight summary]
    Likes: X | RTs: Y | Replies: Z
    [View tweet](https://x.com/handle/status/ID)
 
-   2. x.com/handle — [insight summary]
+   2. x.com/handle - [insight summary]
    Likes: X | RTs: Y | Replies: Z
    [View tweet](https://x.com/handle/status/ID)
 
    *${cluster_2_name}*
-   3. x.com/handle — [insight summary]
+   3. x.com/handle - [insight summary]
    ...
    ```
    The signal one-liner is italic (`_..._`) directly under the title; cluster headers are `*bold*`.
@@ -204,15 +204,15 @@ Gist of the latest X chatter on one or more configurable topics.
 
 5. **Notify.** If every topic dropped: log `TWEET_ROUNDUP_EMPTY` and **stop — no notify**. Otherwise send via `./notify` (≤4000 chars):
    ```
-   *Tweet Roundup — ${today}*
+   *Tweet Roundup - ${today}*
    _Source: api:X websearch:Y failed:Z_
 
-   *[Topic 1]* — _conversation shape_
-   - x.com/handle — insight (signal: 12.3k) [View](https://x.com/handle/status/ID)
-   - x.com/handle — insight (signal: 4.1k) [View](https://x.com/handle/status/ID)
+   *[Topic 1]* - _conversation shape_
+   - x.com/handle - insight (signal: 12.3k) [View](https://x.com/handle/status/ID)
+   - x.com/handle - insight (signal: 4.1k) [View](https://x.com/handle/status/ID)
 
-   *[Topic 2]* — _conversation shape_
-   - x.com/handle — insight (signal: 8k) [View](https://x.com/handle/status/ID)
+   *[Topic 2]* - _conversation shape_
+   - x.com/handle - insight (signal: 8k) [View](https://x.com/handle/status/ID)
    ```
    Show `signal: <score>` only when engagement counts were available (api path); omit silently on WebSearch.
 
@@ -279,9 +279,9 @@ Two sub-modes: **single handle** (decision-ready gist of one account) vs. **all 
 
 10. **Notify via `./notify`.** On `REFRESH_X_OK`:
     ```
-    x refresh — @ACCOUNT ([VERDICT])
+    x refresh - @ACCOUNT ([VERDICT])
     [lede]
-    top cluster: [title] — "[≤80 char excerpt]" ([likes]❤)
+    top cluster: [title] - "[≤80 char excerpt]" ([likes]❤)
     [N tweets, T threads, K deduped]
     ```
     On `REFRESH_X_EMPTY` / `REFRESH_X_NO_NEW`: **skip notify** (write the log entry only). On `REFRESH_X_NO_API_KEY` / `REFRESH_X_ERROR` / `REFRESH_X_NO_VAR`: notify with the status code + a one-line hint (e.g. `"fetch-tweets: REFRESH_X_NO_API_KEY — set XAI_API_KEY in workflow secrets"`).
@@ -330,11 +330,11 @@ Use this to answer "what did *these specific people* post" across a watchlist.
 
 5. **Notify** via `./notify`:
    ```
-   *Tweet Digest — ${today}*
+   *Tweet Digest - ${today}*
 
    *Theme: <theme>*
-   @handle: <one-sentence summary> — [link](url)
-   @handle: <one-sentence summary> — [link](url)
+   @handle: <one-sentence summary> - [link](url)
+   @handle: <one-sentence summary> - [link](url)
 
    *Theme: <theme>*
    ...
@@ -395,21 +395,21 @@ Cross-list narrative resonance + signal-scored top tweets from tracked X lists i
 
 7. **Send the notification** via `./notify`, verbatim format (`x.com/handle`, `[label](url)`):
    ```
-   *List Digest — ${today}*
+   *List Digest - ${today}*
 
-   [VERDICT LINE — one line, ≤140 chars, plain text]
+   [VERDICT LINE - one line, ≤140 chars, plain text]
 
    🔗 *Cross-list narratives*
-   1. *[narrative title]* — appeared on [List A] + [List B]
-      x.com/handle: [insight, not paraphrase] (♥ likes, ↻ rt) — [View](url)
-      x.com/handle2: [insight] (♥ likes, ↻ rt) — [View](url)
+   1. *[narrative title]* - appeared on [List A] + [List B]
+      x.com/handle: [insight, not paraphrase] (♥ likes, ↻ rt) - [View](url)
+      x.com/handle2: [insight] (♥ likes, ↻ rt) - [View](url)
 
-   2. *[narrative title]* — appeared on [List A] + [List C]
+   2. *[narrative title]* - appeared on [List A] + [List C]
       ...
 
    *[List Name 1]*
-   - x.com/handle — [insight] (♥ likes, ↻ rt) — [View](url)
-   - x.com/handle — [insight] (♥ likes, ↻ rt) — [View](url)
+   - x.com/handle - [insight] (♥ likes, ↻ rt) - [View](url)
+   - x.com/handle - [insight] (♥ likes, ↻ rt) - [View](url)
 
    *[List Name 2]*
    - quiet day
@@ -484,17 +484,17 @@ A topic-filtered preset: a curated, narrative-aware read on what the AI-agent sc
 
 7. **Notify** via `./notify`:
    ```
-   *Agent Buzz — ${today}*
+   *Agent Buzz - ${today}*
    _<conversation-shape one-liner>_
 
    **<Cluster 1 name>**
-   • @handle — <insight>
+   • @handle - <insight>
      <link>
-   • @handle — <insight>
+   • @handle - <insight>
      <link>
 
    **<Cluster 2 name>**
-   • @handle — <insight>
+   • @handle - <insight>
      <link>
 
    <!-- _src: xai|websearch · candidates: N → kept: M_ -->
@@ -514,7 +514,7 @@ Append ONE entry per run to `memory/logs/${today}.md` under a single `### fetch-
 - mode: <keyword|topic|account|list|agent-buzz>
 - status: <STATUS_CODE for the branch that ran>
 - source: <SOURCE_PATH / per-source counts / per-list outcome, as applicable>
-- <branch-specific bullets — carry over each branch's fields:>
+- <branch-specific bullets - carry over each branch's fields:>
     - keyword:     signal one-liner; per-cluster URLs with `likes:N rts:N replies:N` + insight
     - topic:       `topics: [t1: N tweets, t2: 0 (dropped)]`; `source: cache:X websearch:Y failed:Z`
     - account(1):  Verdict + lede; Counts (N tweets, X orig/Y reply/Z quote, T threads, deduped K); Clusters; Threads; Vibe

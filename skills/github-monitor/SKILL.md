@@ -151,14 +151,14 @@ Compose **one** consolidated `./notify` message. Requirements:
 
 Template:
 ```
-*GitHub Monitor* — 4 repos scanned, 2 need action
+*GitHub Monitor* - 4 repos scanned, 2 need action
 ▶ ACT NOW
-  • Review owner/repo#12 — CI failing 3×, author pinged 26h ago — <url>
-  • Triage owner/repo!30 — security label, opened 2h ago — <url>
+  • Review owner/repo#12 - CI failing 3×, author pinged 26h ago - <url>
+  • Triage owner/repo!30 - security label, opened 2h ago - <url>
 ▶ REVIEW
-  • Review owner/repo#15 — review requested, 50h idle — <url>
+  • Review owner/repo#15 - review requested, 50h idle - <url>
 ▶ INFO
-  • Note owner/repo v1.2.0 shipped (minor) — <url>
+  • Note owner/repo v1.2.0 shipped (minor) - <url>
 sources: owner/repo=ok another/repo=gh_error(404)
 ```
 
@@ -221,20 +221,20 @@ Read the last 2 days of `memory/logs/` and extract any GitHub issue URLs already
 
 7. **Notify** (gated) — format and send via `./notify`. Skip empty buckets. Cap message at ~3500 chars; if over, truncate P3 first, then P2:
    ```
-   *GitHub Issues — ${today}*
+   *GitHub Issues - ${today}*
    <K> new issue(s) across <N> repo(s)
 
-   🔴 P0 — security/critical
-   • <repo> · #N Title (@author) [labels] — <url>
+   🔴 P0 - security/critical
+   • <repo> · #N Title (@author) [labels] - <url>
 
-   🟠 P1 — bugs
-   • <repo> · #N Title (@author) [labels] — <url>
+   🟠 P1 - bugs
+   • <repo> · #N Title (@author) [labels] - <url>
 
-   🟡 P2 — features
-   • <repo> · #N Title (@author) — <url>
+   🟡 P2 - features
+   • <repo> · #N Title (@author) - <url>
 
-   ⚪ P3 — other
-   • <repo> · #N Title (@author) — <url>
+   ⚪ P3 - other
+   • <repo> · #N Title (@author) - <url>
    ```
    If P3 has more than 5 entries, collapse the tail to `+X more low-priority`.
 
@@ -338,7 +338,7 @@ A prerelease that also has a `security` keyword promotes to 🔴 (security alway
 
 Always emit a **lead line**:
 ```
-*GitHub Releases — ${today}* — N updates · 🔴 A asap · 🟡 B soon · 🔵 C fyi · ⚪ D skipped
+*GitHub Releases - ${today}* - N updates · 🔴 A asap · 🟡 B soon · 🔵 C fyi · ⚪ D skipped
 ```
 
 If every tier is empty (N=0), log `GITHUB_RELEASES_NONE` and end — no notification.
@@ -347,7 +347,7 @@ Otherwise emit tiers in order 🔴 → 🟡 → 🔵 → ⚪. Omit empty tiers. 
 
 **Each item is one line:**
 ```
-🔴 [owner/repo v1.2.3](html_url) — <triage reason ≤15 words>
+🔴 [owner/repo v1.2.3](html_url) - <triage reason ≤15 words>
 ```
 
 **Triage-reason rules:**
@@ -530,22 +530,22 @@ Write to `.pending-notify-temp/pr-tracker-${today}.md`, then send:
 Message format:
 
 ```
-PR Tracker — ${today}
+PR Tracker - ${today}
 
 landed (7d): ${N}
 ${forEach recent_merge}
-- ${repo} #${number} — ${title}
+- ${repo} #${number} - ${title}
 ${end}
 
 stale open (>7d): ${N}
 ${forEach stale_open}
-- ${repo} #${number} — ${title} (${days}d)
+- ${repo} #${number} - ${title} (${days}d)
 ${end}
 
 ${if closed_no_merge}
 closed no-merge (7d): ${N}
 ${forEach closed}
-- ${repo} #${number} — ${title}
+- ${repo} #${number} - ${title}
 ${end}
 ${end}
 ```

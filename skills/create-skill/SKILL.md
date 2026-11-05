@@ -79,13 +79,13 @@ Today is ${today}. Your task is to generate a complete, production-ready skill f
      tags:
        - {tag}
    ---
-   > **${var}** — {What the variable controls}. {If-empty behavior}.
+   > **${var}** - {What the variable controls}. {If-empty behavior}.
 
    Today is ${today}. {One sentence describing the task.}
 
    ## Steps
 
-   1. **{Step title}.** {Specific instructions — endpoints, commands, formats.}
+   1. **{Step title}.** {Specific instructions - endpoints, commands, formats.}
 
    2. **{Step title}.** {More instructions. Code blocks for curl/bash when relevant.}
 
@@ -96,11 +96,11 @@ Today is ${today}. Your task is to generate a complete, production-ready skill f
    - What was done and key outputs
 
    N. **Notify.** Send via `./notify`:
-   {Output format template — specify ≤4000 chars, clickable URLs}
+   {Output format template - specify ≤4000 chars, clickable URLs}
 
    ## Network note
 
-   {How this skill reaches the network — ./secretcurl with an {ENV_NAME} placeholder for auth'd APIs, gh api for GitHub, curl + WebFetch fallback for public}
+   {How this skill reaches the network - ./secretcurl with an {ENV_NAME} placeholder for auth'd APIs, gh api for GitHub, curl + WebFetch fallback for public}
    ```
 
    Hard rules for the generated content:
@@ -202,7 +202,7 @@ Today is ${today}. Your task is to generate a complete, production-ready skill f
     - {URL 3}
 
     ## Required secrets
-    {list of NEW_SECRET_REQUIRED env vars OR "None — uses existing secrets"}
+    {list of NEW_SECRET_REQUIRED env vars OR "None - uses existing secrets"}
 
     ## Quality scores
     | Criterion | Score |
@@ -237,7 +237,7 @@ Today is ${today}. Your task is to generate a complete, production-ready skill f
 
 12. **Notify.** Send via `./notify`:
     ```
-    *create-skill — {skill-name}*
+    *create-skill - {skill-name}*
     {one-line description}
     Schedule: `{cron}` (disabled by default)
     {Required secrets line if any}
