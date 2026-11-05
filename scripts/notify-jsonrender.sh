@@ -101,6 +101,11 @@ SPEC=$(jq -r '.result // empty | strings' "$WORK/out.json")
 # Strip markdown fences if Haiku wraps them
 SPEC=$(echo "$SPEC" | sed '/^```json$/d; /^```$/d')
 
+# The card model adds em/en dashes of its own; the feed card gets plain hyphens,
+# same as notify. A dash is never JSON syntax, so the spec stays valid.
+_EMDASH=$'\xe2\x80\x94'; _ENDASH=$'\xe2\x80\x93'
+SPEC=${SPEC//"$_EMDASH"/-}; SPEC=${SPEC//"$_ENDASH"/-}
+
 # Validate it parses as JSON before writing
 echo "$SPEC" | jq . > "$OUTFILE"
 

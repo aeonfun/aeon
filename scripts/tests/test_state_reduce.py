@@ -40,6 +40,15 @@ class TestReduce(unittest.TestCase):
         self.assertEqual(x["last_failed"], "2026-06-17T13:00:00Z")
         self.assertEqual(x["last_success"], "2026-06-17T12:00:00Z")
 
+    def test_success_clears_last_error(self):
+        ev = [
+            {"skill": "x", "status": "failed", "ts": "2026-06-17T10:00:00Z", "error": "e1"},
+            {"skill": "x", "status": "success", "ts": "2026-06-17T11:00:00Z"},
+        ]
+        x = sr.reduce_events(ev)["x"]
+        self.assertIsNone(x["last_error"])
+        self.assertEqual(x["last_failed"], "2026-06-17T10:00:00Z")
+
     def test_order_independence(self):
         # events arrive out of order (concurrent appends) — ts ordering makes the fold deterministic
         ev_in_order = [
