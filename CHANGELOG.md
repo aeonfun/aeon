@@ -11,6 +11,9 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Added
 
+- **`canister-audit` skill audits Internet Computer Rust canisters.** It models invariants, runs a semgrep IC
+  ruleset and cargo-audit, checks the 12 canister-security pitfalls, and proves confirmed high or critical
+  findings with a PocketIC reproduction through the shared PoC gate. Catalog now 89 skills. (#1328)
 - **`fetch-tweets` skips the model when no tracked account posted.** `scripts/fetch_tweets_idle.py`
   checks each handle on twitterapi.io before the run and records a success without a model call
   when nothing new is in the window. Any doubt or error means the skill runs as usual. (#1323)
@@ -287,6 +290,10 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Changed
 
+- **Sentinel community pack listing is 10 skills,** adding `pons-pool-check`, which names a Pons token's
+  official Uniswap v4 pool on Robinhood Chain and lists the other pools for the same token. (#1336)
+- **ICP integration reference added** under `docs/icp/`: MCP verification, architecture, skills
+  compatibility, the `canister-audit` design and test targets (investigation only). (#1316)
 - **Scheduler catch-up window 12h -> 23h.** A slot missed because GitHub fired few ticks is still
   paid by a later tick within 23 hours, never twice. (#1317)
 - **`aeon-update` takes upstream for stale copies.** A framework file that is a byte-for-byte copy of
@@ -482,6 +489,19 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Fixed
 
+- **`token-movers` verdicts no longer skip big moves.** RALLYING and SLIDING now also cover a 10%+ day on
+  under 2.0x volume, which used to publish as CONSOLIDATING. Single-token mode saves each API response to a
+  file and reads it with one `jq` call, so raw JSON stays out of context. (#1335)
+- **`heartbeat` uses a real timestamp** in its status page instead of a made-up one, and the scorer's
+  strategy scope check is covered by a test. (#1335)
+- **`token-movers` reports a true 24h price change.** It comes from hourly candles instead of the last run's
+  state line, and a new "Since last report" column holds the run-to-run figures. `TOKEN_REPORT_STATE` gains a
+  `ts=` field. (#1337)
+- **Notifications and feed cards carry no em or en dashes.** `notify.sh`, `notify_format.py` and
+  `notify-jsonrender.sh` convert them to hyphens, and the text templates in 62 skills were cleaned. (#1338)
+- **Idle skips are not health regressions.** The health step exits cleanly on an idle-gate skip instead of
+  scoring `run_failed`. A successful run now clears `last_error` in the cron state (file and issues
+  backends), and non-claude harness failures save the real error text. (#1338)
 - **`git-push-retry.sh` retries transient GitHub push failures.** `[remote rejected] (failure)` and
   `(Internal Server Error)` are retried up to 2 times after a pull; auth, permission, hook and
   transport errors still stop at once. (#1332)
