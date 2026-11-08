@@ -150,7 +150,7 @@ Every PR (except `REPAIR_DIAGNOSED_NO_FIX`) must include a Verification section 
 **Expected result:**
 - Workflow conclusion: `success`
 - Output file matches `{evals.json output_pattern or "memory/logs/${today}.md mentions {name}"}`
-- {category-specific signal — e.g. "no `rate limit` strings in run logs" / "produces ≥ {min_words} words" / "annotation count ≤ 0"}
+- {category-specific signal - e.g. "no `rate limit` strings in run logs" / "produces ≥ {min_words} words" / "annotation count ≤ 0"}
 
 **If still failing after this PR:** delete `memory/state/skill-repair-history.json[{name}]` to remove the cooldown, then re-dispatch `skill-repair` with `var={name}` for a second pass.
 ```
@@ -163,7 +163,7 @@ Write the PR body with the Write tool to `/tmp/skill-repair-pr.md` (no heredoc, 
 
 ```markdown
 ## Symptom
-[what failed — error signature, run URL]
+[what failed - error signature, run URL]
 
 ## Diagnosis
 [dossier summary: regression commit if any, consistent vs intermittent, category]
@@ -175,7 +175,7 @@ Write the PR body with the Write tool to `/tmp/skill-repair-pr.md` (no heredoc, 
 [what changed and why]
 
 ## Risk
-LOW | MED | HIGH — [rationale]
+LOW | MED | HIGH - [rationale]
 
 ## Verification
 [copy from step 5]
@@ -226,7 +226,7 @@ Update `memory/state/skill-repair-history.json`:
 Send via `./notify` (one-paragraph max — verdict line first):
 
 ```
-*skill-repair — {EXIT_CODE}*
+*skill-repair - {EXIT_CODE}*
 Target: {name} (or systemic: skill-a, skill-b, ...)
 Root cause: [one line]
 Fix: [one line] (risk: LOW|MED|HIGH)
@@ -247,8 +247,8 @@ Append to `memory/logs/${today}.md`:
 - Fix: [what changed] (risk: {LOW|MED|HIGH})
 - Regression suspect: {commit SHA or "none in window"}
 - Failures observed: {N}/5 recent runs ({consistent|intermittent})
-- PR: {url or "—"}
-- Issue: {ISS-NNN created|updated|resolved or "—"}
+- PR: {url or "-"}
+- Issue: {ISS-NNN created|updated|resolved or "-"}
 - Source status: cron_state | issues_index | gh_runs | gh_logs | git_log | check_runs
 ```
 

@@ -136,7 +136,7 @@ Apply basic quality filters:
 Structure the output for easy consumption:
 
 ```
-*You.com Web Search Results — ${today}*
+*You.com Web Search Results - ${today}*
 
 Query: "${var}"
 Source: ${source}

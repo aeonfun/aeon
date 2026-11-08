@@ -92,10 +92,10 @@ Extract:
 2-3 sentences. What problem does this solve? Why now?
 
 ## The Intuition Pump
-A vivid analogy that builds the reader's mental model in 3-4 sentences. Then one sentence on **where the analogy breaks down** — that's where the real mechanism lives.
+A vivid analogy that builds the reader's mental model in 3-4 sentences. Then one sentence on **where the analogy breaks down** - that's where the real mechanism lives.
 
 ## How It Actually Works
-A numbered walkthrough of the mechanism in **3-7 steps**. Each step is one or two sentences. Use concrete examples — name the specific function, layer, message, opcode, contract. No "the system processes the input" — say what the system actually does.
+A numbered walkthrough of the mechanism in **3-7 steps**. Each step is one or two sentences. Use concrete examples - name the specific function, layer, message, opcode, contract. No "the system processes the input" - say what the system actually does.
 
 ## Numbers That Anchor It
 3-5 bullet points. Each bullet is a specific number with a source link, e.g.:
@@ -108,7 +108,7 @@ A numbered walkthrough of the mechanism in **3-7 steps**. Each step is one or tw
 2-3 sentences. What does this unlock? Who should care?
 
 ## Sources
-- [Title 1](url) — primary
+- [Title 1](url) - primary
 - [Title 2](url)
 - [Title 3](url)
 ```
@@ -136,7 +136,7 @@ Update `memory/MEMORY.md` to record the article and its topic (add to the `Recen
 
   [the one-sentence "key idea" line, verbatim]
 
-  [hero image URL if generated — original Replicate URL still works for ~24h]
+  [hero image URL if generated - original Replicate URL still works for ~24h]
 
   read it: output/articles/explainer-${today}.md
   ```
@@ -231,7 +231,7 @@ If an angle is forced (from `arg`), the thesis must relate to it (e.g. angle `ar
 ### Phase 3 — Draft (600–900 words, Markdown)
 
 ```markdown
-# [Title that asserts the thesis or a consequence of it — not "A look at X"]
+# [Title that asserts the thesis or a consequence of it - not "A look at X"]
 
 [1-paragraph hook, ≤80 words: lead with the thesis or a surprising number that sets it up.]
 
@@ -242,7 +242,7 @@ If an angle is forced (from `arg`), the thesis must relate to it (e.g. angle `ar
 [Two to four sub-paragraphs. Each MUST cite at least one specific commit SHA, PR#, file path, release tag, or external mention. Link the source inline.]
 
 ## Counter-evidence / what would change my mind
-[One paragraph. What recent signals argue against the thesis? Be honest. If genuinely nothing does, say so — but only after looking.]
+[One paragraph. What recent signals argue against the thesis? Be honest. If genuinely nothing does, say so - but only after looking.]
 
 ## Why it matters
 [One paragraph. Who benefits or loses if the thesis is true? Connect to an ecosystem trend, user need, or competing project.]
@@ -279,7 +279,7 @@ If any item still fails after one rewrite pass, publish with status `REPO_ARTICL
 
    Thesis: [one sentence]
 
-   Read: [link to output/articles/repo-article-${today}.md in THIS repo — get the repo name from `git remote get-url origin`, not the watched repo]
+   Read: [link to output/articles/repo-article-${today}.md in THIS repo - get the repo name from `git remote get-url origin`, not the watched repo]
    ```
 
 ### Banned phrase lexicon (repo angle)
@@ -390,20 +390,20 @@ Save to `output/articles/project-lens-${today}.md` with this structure:
 [¶1-2: external hook. Start with the trend/idea/event/question the reader already cares about. Do NOT name the project yet.]
 
 ## [Section: establishes the external frame]
-[Build the lens with one or more of your concrete facts — a quote, a number, a specific event.]
+[Build the lens with one or more of your concrete facts - a quote, a number, a specific event.]
 
 ## [Section: introduces the project through the frame]
-[Project enters here — but through the lens, not as a feature list. Describe how it embodies, challenges, or extends the idea with specific code/design references.]
+[Project enters here - but through the lens, not as a feature list. Describe how it embodies, challenges, or extends the idea with specific code/design references.]
 
 ## [Section: one non-obvious technical or strategic detail]
 [Where the article earns its existence. Point to something in the code, architecture, or approach a reader wouldn't get from the README.]
 
 ## [Section: zoom back out]
-[A concrete forward claim — specific enough to be wrong. Not "this is exciting." Something like "this suggests X won't happen for 2-3 years because Y" or "this is the same mistake [named case] made, and it took [duration] to recover."]
+[A concrete forward claim - specific enough to be wrong. Not "this is exciting." Something like "this suggests X won't happen for 2-3 years because Y" or "this is the same mistake [named case] made, and it took [duration] to recover."]
 
 ---
 *Sources:*
-- [source title](url) — what it was used for
+- [source title](url) - what it was used for
 - ...
 ```
 
@@ -444,7 +444,7 @@ Go through this checklist after the first draft. If any gate fails, rewrite the 
 
    [3-4 sentence summary: the external thing the article connects to, the thesis claim, one specific project detail.]
 
-   Read: [URL to output/articles/project-lens-${today}.md — use `git remote get-url origin` for this repo]
+   Read: [URL to output/articles/project-lens-${today}.md - use `git remote get-url origin` for this repo]
    ```
 4. **Log** the consolidated entry (see **Log**).
 

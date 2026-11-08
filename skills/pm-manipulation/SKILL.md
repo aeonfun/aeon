@@ -171,24 +171,24 @@ mkdir -p /tmp/pm-manipulation-work
 Then write the body with the Write tool to `/tmp/pm-manipulation-work/notify.md` (not a `cat > file` heredoc; see **Shell shape** in the Network note), in this shape:
 
 ```text
-PM Manipulation Watch — ${today} (past 3d)
+PM Manipulation Watch - ${today} (past 3d)
 
 scanned: N markets · flagged: M · suspicious: K · high-conf: J
 
 --- SUSPICIOUS / HIGH-CONFIDENCE ---
 
-1. "[market question]"  — score X/5
+1. "[market question]"  - score X/5
    slug: <event-slug>
    3d: $opens → $closes ($change pp), peak vol $X
    flags: <comma-separated flag names>
    local press: <one-line summary of what foreign-language coverage said and when>
    asymmetry: <english-silent | english-contradicts | english-confirms | n/a>
-   take: <one-sentence opinion — coordinated push? insider? unclear?>
+   take: <one-sentence opinion - coordinated push? insider? unclear?>
 
 2. ...
 
 --- WATCH (score 2) ---
-- "[question]" — <one-line note>
+- "[question]" - <one-line note>
 
 --- CLEAN (scanned but no flags) ---
 N markets, no anomalies above threshold.
@@ -203,26 +203,26 @@ Keep the notification under 3500 chars. If it exceeds, drop the CLEAN section an
 Write the unabridged report to `output/articles/pm-manipulation-${today}.md`:
 
 ```markdown
-# PM Manipulation Watch — ${today}
+# PM Manipulation Watch - ${today}
 
 **Window:** past 3 days · **Scanned:** N markets · **Suspicious (≥3):** K · **High-confidence (≥4):** J
 
 ## Methodology
-3-day price/volume/comment scan + multilingual press sweep. Each candidate scored 0–5 across 6 anomaly classes. See `skills/pm-manipulation/SKILL.md` for the full scoring rubric.
+3-day price/volume/comment scan + multilingual press sweep. Each candidate scored 0-5 across 6 anomaly classes. See `skills/pm-manipulation/SKILL.md` for the full scoring rubric.
 
 ## Suspicious Markets
 
-### 1. [Market question] — score X/5
+### 1. [Market question] - score X/5
 - **Slug:** <event-slug>
 - **3d action:** $open → $close (change pp), peak hour vol $X, whale share Y%
 - **Flags triggered:** <list>
 - **Comments:** <coordinated patterns observed>
 - **Local press:**
-  - <language>: <outlet> — <one-line summary, date, link>
-  - <language>: <outlet> — ...
-- **English press:** <outlet — date — link, or "silent">
+  - <language>: <outlet> - <one-line summary, date, link>
+  - <language>: <outlet> - ...
+- **English press:** <outlet - date - link, or "silent">
 - **Asymmetry:** <english-silent | english-contradicts | english-confirms | n/a>
-- **Take:** <2–3 sentences>
+- **Take:** <2-3 sentences>
 
 [repeat per suspicious market]
 
@@ -251,7 +251,7 @@ Append to `memory/logs/${today}.md`:
 - **Scanned:** N markets (past 3d)
 - **Suspicious (≥3):** K
 - **High-confidence (≥4):** J
-- **Top flag:** "[market]" — score X/5
+- **Top flag:** "[market]" - score X/5
 - **Languages searched:** <list>
 - **Issues filed:** [ISS-NNN list or "none"]
 - **Notification sent:** yes / no

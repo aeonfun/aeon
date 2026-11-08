@@ -190,20 +190,20 @@ Assemble this block (it becomes **Part 1** of the combined article in the final 
 - **Archived/deleted**: [list or "none"]
 (Omit the entire section if every bucket is empty.)
 
-## PROMOTE — upstream contribution candidates
+## PROMOTE - upstream contribution candidates
 
-### {fork_full_name} — score N [MANAGED | COMMUNITY]
+### {fork_full_name} - score N [MANAGED | COMMUNITY]
 **Activity:** last pushed YYYY-MM-DD · stars N · +N/-M commits vs upstream
 **Unique skills:**
-- `skills/foo/SKILL.md` — {one-line synthesis of what it does, from deep-read}
-- `skills/bar/SKILL.md` — {synthesis}
+- `skills/foo/SKILL.md` - {one-line synthesis of what it does, from deep-read}
+- `skills/bar/SKILL.md` - {synthesis}
 
-**Why promote:** {1–2 sentence take — what this skill does that upstream lacks, and whether it's generalizable}
+**Why promote:** {1-2 sentence take - what this skill does that upstream lacks, and whether it's generalizable}
 **Suggested action:** Open a PR cherry-picking `skills/foo/` (or reach out to {owner} to upstream themselves).
 
 (Repeat for each PROMOTE fork, capped at 5. If PROMOTE is empty: "No upstream candidates this week.")
 
-## REVIEW — worth a look
+## REVIEW - worth a look
 
 | Fork | Score | Ahead | New/Modified | Notable |
 |------|-------|-------|--------------|---------|
@@ -211,7 +211,7 @@ Assemble this block (it becomes **Part 1** of the combined article in the final 
 
 (Omit if empty.)
 
-## NOTE — low divergence
+## NOTE - low divergence
 
 Terse one-liner per fork: `owner/repo (+N/-M, schedule tweak only)`. Collapse into a count if >5 entries. Omit if empty.
 
@@ -417,14 +417,14 @@ Assemble this block (it becomes **Part 2** of the combined article):
 ### Enable upward (upstream off → fleet enables)
 | Skill | Forks enabled | % of configured | Δ vs last week |
 |-------|---------------|-----------------|----------------|
-| name  | N             | XX%             | NEW / STRENGTHENED / — |
+| name  | N             | XX%             | NEW / STRENGTHENED / - |
 
 (Only DEFAULT_FLIP_ENABLE. If empty: "No skills crossed the 50% enable-upward threshold this week.")
 
 ### Disable downward (upstream on → fleet disables)
 | Skill | Forks disabled | % of configured | Δ vs last week |
 |-------|----------------|-----------------|----------------|
-| name  | N              | XX%             | NEW / — |
+| name  | N              | XX%             | NEW / - |
 
 (Only DEFAULT_FLIP_DISABLE. If empty: "No skills crossed the 50% disable-downward threshold.")
 
@@ -434,12 +434,12 @@ Assemble this block (it becomes **Part 2** of the combined article):
 ${MODEL_CONSENSUS entries: "skill X - N forks → claude-sonnet-5-5 (40% of configured)" OR "none this week"}
 
 ### Var hotspots
-${VAR_HOTSPOT entries: "skill X — N forks set var to '${value}'" OR "none this week"}
+${VAR_HOTSPOT entries: "skill X - N forks set var to '${value}'" OR "none this week"}
 
 ### Schedule overrides
 ${skills where ≥2 forks share an alternative schedule, with the schedule string OR "none this week"}
 
-## Watchlist (emerging — 25–49% adoption)
+## Watchlist (emerging - 25-49% adoption)
 ${EMERGING skills with adoption % OR "none this week"}
 
 ## Heaviest customizers (top 5)
@@ -452,11 +452,11 @@ ${EMERGING skills with adoption % OR "none this week"}
 
 ${list of {fork, skill_name} pairs OR "none this week"}
 
-(These skills exist as `skills/<name>/SKILL.md` in a fork but not in upstream — fork experiments worth reviewing for upstreaming.)
+(These skills exist as `skills/<name>/SKILL.md` in a fork but not in upstream - fork experiments worth reviewing for upstreaming.)
 
 ## Config week-over-week
 
-${"First divergence snapshot — no comparison" OR list of NEW_FLIP / STRENGTHENED / FADED / NEW_FORK_ONLY / NEW_HEAVY_CUSTOMIZER}
+${"First divergence snapshot - no comparison" OR list of NEW_FLIP / STRENGTHENED / FADED / NEW_FORK_ONLY / NEW_HEAVY_CUSTOMIZER}
 
 ## Fleet composition (config tiers)
 
@@ -474,7 +474,7 @@ ${"First divergence snapshot — no comparison" OR list of NEW_FLIP / STRENGTHEN
 - Rate-limited: N_RATE_LIMITED
 - Fork-only skills inspected: N_FORK_ONLY_FILES
 
-## Appendix — full divergence table
+## Appendix - full divergence table
 
 (Every skill with ≥1 non-zero divergence signal, sorted by total override count desc. Columns: skill, enable_diff, var_overrides, model_overrides, schedule_overrides. Cap at 30 rows; if more, append "+ N more skills with low-signal divergence".)
 ```
@@ -497,9 +497,9 @@ ${"First divergence snapshot — no comparison" OR list of NEW_FLIP / STRENGTHEN
 To `output/articles/fork-divergence-${today}.md`. Header first, then whichever parts ran:
 
 ```markdown
-# Fork Divergence — ${today}
+# Fork Divergence - ${today}
 
-**Verdict:** {lead with the stronger of the two sub-verdicts — a code PROMOTE/NEW-UPSTREAM-CANDIDATE outranks a config flip only if it's a genuinely new skill; otherwise a DEFAULT_FLIP leads. Use judgment; one line.}
+**Verdict:** {lead with the stronger of the two sub-verdicts - a code PROMOTE/NEW-UPSTREAM-CANDIDATE outranks a config flip only if it's a genuinely new skill; otherwise a DEFAULT_FLIP leads. Use judgment; one line.}
 
 - **Code divergence:** {code verdict from A6, or "not run (scope=config)"}
 - **Config divergence:** {config verdict from B8, or "not run (scope=code)"}
@@ -508,16 +508,16 @@ Fleet: N_TOTAL total forks · N_ACTIVE active · N_MANAGED managed instances · 
 
 ---
 
-# Part 1 — Code divergence
+# Part 1 - Code divergence
 {Branch A article part from A7; omit this whole part if SCOPE=config}
 
 ---
 
-# Part 2 — Config divergence
+# Part 2 - Config divergence
 {Branch B article part from B9; omit this whole part if SCOPE=code}
 
 ---
-*Source: GitHub API — forks of ${PARENT_REPO}. Code divergence = per-fork unique commits/skills vs upstream. Config divergence = where configured forks' aeon.yml disagrees with upstream `enabled`/`var`/`model`/`schedule`; untouched templates are excluded from the config math. Companion to `skill-gap` (popularity).*
+*Source: GitHub API - forks of ${PARENT_REPO}. Code divergence = per-fork unique commits/skills vs upstream. Config divergence = where configured forks' aeon.yml disagrees with upstream `enabled`/`var`/`model`/`schedule`; untouched templates are excluded from the config math. Companion to `skill-gap` (popularity).*
 ```
 
 Cap the article at ~700 lines total (≈500 for code sections when both parts run). When only one branch ran, drop the other Part heading and the missing sub-verdict line.
@@ -533,10 +533,10 @@ If either branch hit `FORK_FLEET_API_FAIL`, send an **error** notify (`--severit
 Otherwise send one combined message via `./notify` (include only the sub-blocks whose branch produced signal; keep it tight):
 
 ```
-*Fork Divergence — ${today}*
+*Fork Divergence - ${today}*
 {combined verdict line}
 
-Fleet: N_ACTIVE active / N_TOTAL total. {1 sentence on shape — "mostly managed instances", "community picking up", "template-heavy", etc.}
+Fleet: N_ACTIVE active / N_TOTAL total. {1 sentence on shape - "mostly managed instances", "community picking up", "template-heavy", etc.}
 
 {If code PROMOTE non-empty:}
 Upstream candidate: {top PROMOTE fork}
@@ -544,15 +544,15 @@ Upstream candidate: {top PROMOTE fork}
 
 {If code delta has NEW_SKILLS:}
 New skills landed this week:
-- {fork} → `skills/foo/SKILL.md` — {synthesis}
+- {fork} → `skills/foo/SKILL.md` - {synthesis}
 
 {If DEFAULT_FLIP_ENABLE non-empty (top 3):}
 Flip enable (upstream off → fleet on):
-- {skill} — {N} forks ({pct}%)
+- {skill} - {N} forks ({pct}%)
 
 {If DEFAULT_FLIP_DISABLE non-empty (top 3):}
 Flip disable (upstream on → fleet off):
-- {skill} — {N} forks ({pct}%)
+- {skill} - {N} forks ({pct}%)
 
 {If MODEL_CONSENSUS non-empty (top 2):}
 Model consensus:

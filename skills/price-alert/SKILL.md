@@ -166,7 +166,7 @@ If multiple gates fired in the same run, send one notification per gate. Each ga
 **ATH:**
 
 ```
-*$TOKEN — New ATH — ${today}*
+*$TOKEN - New ATH - ${today}*
 
 $TOKEN just printed a new all-time high at $X.XXXXe-N.
 Previous ATH: $Y.YYYYe-N (set ${prior_ath_age} ago).
@@ -178,11 +178,11 @@ Chart: ${POOL_URL}
 **SHARP_MOVE:**
 
 ```
-*$TOKEN — Sharp 1h Move — ${today}*
+*$TOKEN - Sharp 1h Move - ${today}*
 
-$TOKEN ${up|down} ${abs(h1):.1f}% in the last hour — now $X.XXXXe-N.
+$TOKEN ${up|down} ${abs(h1):.1f}% in the last hour - now $X.XXXXe-N.
 24h: ±Z.Z%
-${one of: "Buyer wave — watch for follow-through." | "Selling pressure — watch the next hour for stabilisation." }
+${one of: "Buyer wave - watch for follow-through." | "Selling pressure - watch the next hour for stabilisation." }
 
 Chart: ${POOL_URL}
 ```
@@ -192,7 +192,7 @@ Chart: ${POOL_URL}
 **TARGET_HIT:**
 
 ```
-*$TOKEN — Target Hit — ${today}*
+*$TOKEN - Target Hit - ${today}*
 
 $TOKEN just crossed $${target} (now $X.XXXXe-N).
 Direction: ${above|below}

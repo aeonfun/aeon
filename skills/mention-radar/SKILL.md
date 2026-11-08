@@ -95,17 +95,17 @@ Read the last 3 days of memory/logs/ to avoid re-surfacing already-noted mention
 
 6. **Format the output** (under 4000 chars):
    ```
-   *Mention Radar — ${today}*
+   *Mention Radar - ${today}*
 
    {PROJECT NAME, uppercased}
-   - [source] — [what they said] — [category]
+   - [source] - [what they said] - [category]
    ...
    (one section per target)
 
    ENGAGEMENT OPPORTUNITIES
    - [handle/source]: [why worth replying]
 
-   QUIET: [project] — no external mentions found
+   QUIET: [project] - no external mentions found
    ```
    Use `QUIET: [project]` for any project with zero external mentions this cycle.
    Skip GitHub-only star delta if it's less than 5 — only mention notable jumps.

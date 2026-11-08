@@ -244,15 +244,15 @@ A single event can only carry one tag; pick by priority CEX > DEX > BRIDGE > MIN
 One notification per run. Sort all surviving events globally by `value_usd` desc; group the output by watch label (watches with zero surviving events are omitted entirely). Lead with a one-sentence TL;DR naming the single biggest move.
 
 ```
-*On-Chain Alert — ${today}*
+*On-Chain Alert - ${today}*
 TL;DR: My Wallet sent $1.2M USDC to Binance 14 (biggest move on any watch in 30d).
 
 *My Wallet* (ethereum)
-• CEX-OUT $1.2M USDC → Binance 14 — [tx](https://etherscan.io/tx/0x...)
-• DEX-SWAP $42k WETH → USDC via Uniswap V3 Router — [tx](https://etherscan.io/tx/0x...)
+• CEX-OUT $1.2M USDC → Binance 14 - [tx](https://etherscan.io/tx/0x...)
+• DEX-SWAP $42k WETH → USDC via Uniswap V3 Router - [tx](https://etherscan.io/tx/0x...)
 
 *Uniswap Pool* (ethereum)
-• WHALE-TRANSFER $850k WETH out → 0x9f...a1 — [tx](https://etherscan.io/tx/0x...)
+• WHALE-TRANSFER $850k WETH out → 0x9f...a1 - [tx](https://etherscan.io/tx/0x...)
 
 3 events on 2 watches | sources: alchemy=ok, coingecko=ok, etherscan=skipped | last_block→${block}
 ```
@@ -371,8 +371,8 @@ Append **every** decoded event (including filtered-out ones) with full detail to
 ### onchain-monitor
 - Watch: My Wallet (ethereum) | source: alchemy | last_block 19345670 → 19347891 (2,221 blocks)
 - Kept: 2 events | Dropped: 14 (12 below_threshold, 1 dust, 1 dedup) | Unpriced: 0
-- Event: CEX-OUT $1.2M USDC → Binance 14 — tx 0xabc... — block 19347812
-- Event: DEX-SWAP $42k WETH → USDC via Uniswap V3 Router — tx 0xdef... — block 19347500
+- Event: CEX-OUT $1.2M USDC → Binance 14 - tx 0xabc... - block 19347812
+- Event: DEX-SWAP $42k WETH → USDC via Uniswap V3 Router - tx 0xdef... - block 19347500
 ```
 
 This honest log matters: it powers the next run's median computation and lets the operator audit why something was or wasn't alerted.

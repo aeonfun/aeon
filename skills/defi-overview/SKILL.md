@@ -109,7 +109,7 @@ Compare current values against the last logged values for each position (grep pr
 Positions block template:
 
 ```
-*DeFi Monitor — ${today}*
+*DeFi Monitor - ${today}*
 
 *Pool/Protocol Label* (chain)
 TVL: $X | APR: Y%
@@ -206,14 +206,14 @@ The Take is the core macro output — everything else is input to it.
 
 **Market Take format (exactly 3 lines):**
 ```
-Take: <regime> — <one-sentence why, citing 2 concrete numbers>.
-Conviction: <high | medium | low> — <which signals agree; which disagree>.
+Take: <regime> - <one-sentence why, citing 2 concrete numbers>.
+Conviction: <high | medium | low> - <which signals agree; which disagree>.
 Evidence: <one sentence naming the single strongest datum behind this call>.
 ```
 Example:
 ```
-Take: risk-on — BTC +3.1% 24h with 17/20 top-cap majors green.
-Conviction: high — F&G, breadth, and 7d TVL all point up; only BTC dominance disagrees (flat).
+Take: risk-on - BTC +3.1% 24h with 17/20 top-cap majors green.
+Conviction: high - F&G, breadth, and 7d TVL all point up; only BTC dominance disagrees (flat).
 Evidence: DEX 24h volume $7.8B, highest since March and +42% vs 7d avg.
 ```
 
@@ -275,7 +275,7 @@ Overwrite `memory/topics/market-context.md` with this **exact** structure. Lead 
 ```markdown
 # Market Context (as of ${today})
 
-> **Take:** [regime] — [one-sentence why, citing 2 concrete numbers]. Conviction: [high|medium|low].
+> **Take:** [regime] - [one-sentence why, citing 2 concrete numbers]. Conviction: [high|medium|low].
 
 ## Signal Snapshot
 - BTC $X (±X% 24h, ±X% 7d) · dominance X% (±X pp 24h)
@@ -283,18 +283,18 @@ Overwrite `memory/topics/market-context.md` with this **exact** structure. Lead 
 - SOL $X (±X% 24h, ±X% 7d)
 - Total mcap $XT (±X% 24h) · DEX vol $XB 24h
 - Breadth: N/20 green 24h · N/20 green 7d
-- Fear & Greed: X (label) — yesterday X
+- Fear & Greed: X (label) - yesterday X
 
 ## What Changed Since Last Refresh
-- [Delta or event 1 — e.g. "F&G jumped 12 pts into Greed, first time in 14 days"]
+- [Delta or event 1 - e.g. "F&G jumped 12 pts into Greed, first time in 14 days"]
 - [Delta 2]
 - [Delta 3]
-Only real deltas. If no material change, write: "Quiet — all majors within ±1%, regime unchanged."
+Only real deltas. If no material change, write: "Quiet - all majors within ±1%, regime unchanged."
 
 ## Active Narratives
-- **[Narrative]** — phase: [emerging|rising|peak|fading]. Evidence: [concrete signal].
-- **[Narrative]** — phase: [...]. Evidence: [...].
-- **[Narrative]** — phase: [...]. Evidence: [...].
+- **[Narrative]** - phase: [emerging|rising|peak|fading]. Evidence: [concrete signal].
+- **[Narrative]** - phase: [...]. Evidence: [...].
+- **[Narrative]** - phase: [...]. Evidence: [...].
 
 ## Top DeFi Protocols (TVL, 7d change)
 - [Protocol]: $XB ([+/-X%])
@@ -312,9 +312,9 @@ Only real deltas. If no material change, write: "Quiet — all majors within ±1
 Total: $XB (±X% 7d). USDT $XB · USDC $XB · [next two] · combined share of mcap X%.
 
 ## Trending (CoinGecko)
-- [COIN] — [why trending, price + 24h%]
-- [COIN] — [...]
-- [COIN] — [...]
+- [COIN] - [why trending, price + 24h%]
+- [COIN] - [...]
+- [COIN] - [...]
 
 ## Prediction Markets (Polymarket, top by 24h vol)
 | Market | YES% | 24h Vol | Liquidity |
@@ -331,7 +331,7 @@ Omit this section entirely if nothing material. Do not pad with generic headline
 ## Implications for Downstream Skills
 - **token-pick:** [e.g. "favor [narrative] exposure; avoid [sector] on weak breadth"]
 - **narrative-tracker:** [e.g. "monitor [narrative] for phase transition emerging→rising"]
-Keep to 1-2 lines per skill. Only write implications that follow from the Take and deltas — don't generate generic advice.
+Keep to 1-2 lines per skill. Only write implications that follow from the Take and deltas - don't generate generic advice.
 
 ## Token Picks Made
 | Date | Token | Price | Thesis |
@@ -339,7 +339,7 @@ Keep to 1-2 lines per skill. Only write implications that follow from the Take a
 [Rebuild verbatim from the prior file. Do not truncate or reorder. Append any new picks found in the last 7 days of memory/logs/ that aren't already in the table.]
 
 ---
-*Sources — btc/eth: CoinGecko · defi: DeFiLlama · sentiment: alternative.me · markets: Polymarket*
+*Sources - btc/eth: CoinGecko · defi: DeFiLlama · sentiment: alternative.me · markets: Polymarket*
 *Source status: coingecko=[ok|fail] defillama=[ok|fail] fng=[ok|fail] polymarket=[ok|fail] websearch=[ok|fail]*
 ```
 
@@ -354,43 +354,43 @@ Send via `./notify` (single call, plain markdown). Cap the message at **4000 cha
 **Combined (empty var):** one notification, leading with the Take, then the positions alert block *only if any position flagged*, then the DeFi read, then the macro snapshot:
 
 ```
-*Crypto — ${today}* — <Take regime> (conviction <level>) | DeFi <Verdict>: <≤12-word regime read>
+*Crypto - ${today}* - <Take regime> (conviction <level>) | DeFi <Verdict>: <≤12-word regime read>
 
-<positions alert block — include ONLY if ≥1 position flagged (see Facet A template)>
+<positions alert block - include ONLY if ≥1 position flagged (see Facet A template)>
 
 *TVL:* $X.XXT (+X.X% 24h, +X.X% 7d)
 
 *Top chains*
-1. Ethereum — $XXXB (+X.X%)
-2. Solana — $XXB (+X.X%)
-3. Tron — $XXB
+1. Ethereum - $XXXB (+X.X%)
+2. Solana - $XXB (+X.X%)
+3. Tron - $XXB
 
 *Movers*
-↑ Sui +12% ($1.8B → $2.0B) — <≤15-word why>
-↓ Base −7%  ($9.2B → $8.6B) — <≤15-word why>
-↑ Pendle +18% ($4.0B → $4.7B) — <≤15-word why>
-↓ Ethena −11% ($5.1B → $4.5B) — <≤15-word why>
+↑ Sui +12% ($1.8B → $2.0B) - <≤15-word why>
+↓ Base −7%  ($9.2B → $8.6B) - <≤15-word why>
+↑ Pendle +18% ($4.0B → $4.7B) - <≤15-word why>
+↓ Ethena −11% ($5.1B → $4.5B) - <≤15-word why>
 
 *Fees leaders (24h)*
-1. Tether — $XXM (+X% vs 7d avg)
-2. Circle — $XXM (flat)
-3. Uniswap — $XXM (−X%)
+1. Tether - $XXM (+X% vs 7d avg)
+2. Circle - $XXM (flat)
+3. Uniswap - $XXM (−X%)
 
 *Fees beating TVL*
-• Hyperliquid — fees +42% / TVL +3% (7d) — demand outrunning deposits
+• Hyperliquid - fees +42% / TVL +3% (7d) - demand outrunning deposits
 
 *DEX vol (24h):* $X.XB (+X%)  top: Uniswap $XB, PancakeSwap $XB, Jupiter $XB
 
-*Stables:* $XXXB (+0.X%)  — USDe +1.2% only notable single-issuer move
+*Stables:* $XXXB (+0.X%)  - USDe +1.2% only notable single-issuer move
 
 *Real yield (sustainable, ≥$10M, filtered)*
-• stETH (Lido, ETH) — 3.2% apyBase ($21B TVL)
-• sUSDS (Sky, ETH) — 6.1% apyBase ($2.1B TVL)
-• GHO savings (Aave, ETH) — 7.0% apyBase ($400M TVL)
+• stETH (Lido, ETH) - 3.2% apyBase ($21B TVL)
+• sUSDS (Sky, ETH) - 6.1% apyBase ($2.1B TVL)
+• GHO savings (Aave, ETH) - 7.0% apyBase ($400M TVL)
 
 *Incentive yield (points / emissions, ≥$25M)*
-• <pool> — 18% apy via $XYZ rewards ($80M TVL)
-• <pool> — 14% apy via $ABC rewards ($60M TVL)
+• <pool> - 18% apy via $XYZ rewards ($80M TVL)
+• <pool> - 14% apy via $ABC rewards ($60M TVL)
 
 *Macro:* BTC $X (±X%) / ETH $X (±X%) · F&G X (label) · breadth N/20 · hot market: "[polymarket q]" YES X%
 _sources: llama_tvl=ok llama_dex=ok llama_fees=ok llama_stables=ok llama_yields=ok coingecko=ok fng=ok polymarket=ok websearch=ok | var: ${var:-none}_
@@ -402,7 +402,7 @@ _sources: llama_tvl=ok llama_dex=ok llama_fees=ok llama_stables=ok llama_yields=
 
 **Short macro-only alternative** (when you prefer the terse market-context ping, e.g. a `macro` focus with no DeFi movers surviving filters, under 500 chars):
 ```
-market context — ${today}
+market context - ${today}
 
 take: [regime] (conviction [level])
 BTC $X (±X%) / ETH $X (±X%) · F&G X ([label])
@@ -434,8 +434,8 @@ Append to `memory/logs/${today}.md`. Include the blocks for whichever facets ran
 ```
 ### defi-overview
 - Var: ${var:-none}
-- Take: <regime> (conviction <level>) — <regime read>
-- Verdict: <Risk-on|Risk-off|Sideways|Mixed> — <regime read>
+- Take: <regime> (conviction <level>) - <regime read>
+- Verdict: <Risk-on|Risk-off|Sideways|Mixed> - <regime read>
 - TVL: $X.XXT (+X.X% 24h) | BTC $X (±X%) ETH $X (±X%) F&G X (label)
 - Breadth: N/20 green
 - Top mover up: <chain/protocol> +X%   Top mover down: <chain/protocol> −X%

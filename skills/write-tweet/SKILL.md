@@ -158,35 +158,35 @@ Each tier's two variations should use **different** approach styles.
 ```
 ## Tweet Drafts: [topic]
 
-### Tier 1 — One-liner
+### Tier 1 - One-liner
 **1a. [style]**
 > [tweet text]
 
 **1b. [style]**
 > [tweet text]
 
-### Tier 2 — Two-punch
+### Tier 2 - Two-punch
 **2a. [style]**
 > [tweet text]
 
 **2b. [style]**
 > [tweet text]
 
-### Tier 3 — Paragraph
+### Tier 3 - Paragraph
 **3a. [style]**
 > [tweet text]
 
 **3b. [style]**
 > [tweet text]
 
-### Tier 4 — Long tweet
+### Tier 4 - Long tweet
 **4a. [style]**
 > [tweet text]
 
 **4b. [style]**
 > [tweet text]
 
-### Tier 5 — Thread opener
+### Tier 5 - Thread opener
 **5a. [style]**
 > [tweet text]
 ---
@@ -210,27 +210,27 @@ Send the drafts via `./notify` — write the body to `/tmp/wt-drafts.md` first w
 ```
 tweet drafts: [topic]
 
-— one-liner —
+- one-liner -
 1a. [tweet text]
 1b. [tweet text]
 
-— two-punch —
+- two-punch -
 2a. [tweet text]
 2b. [tweet text]
 
-— paragraph —
+- paragraph -
 3a. [tweet text]
 3b. [tweet text]
 
-— long tweet —
+- long tweet -
 4a. [tweet text]
 4b. [tweet text]
 
-— thread opener —
+- thread opener -
 5a. [tweet text]
 5b. [tweet text]
 
-best: #[n] — [reason]
+best: #[n] - [reason]
 ```
 
 Then **save the draft and offer a revision** (see *Save draft + offer revision*), and log (see **Log**, format `drafts`).
@@ -346,7 +346,7 @@ The payoff. The implication, the action, or the reframe. Should feel like the po
 ## Output Format (thread)
 
 ```
-## Thread: [topic — 3-5 words]
+## Thread: [topic - 3-5 words]
 
 **Format:** [data-driven / structural critique / builder's breakdown / narrative / thesis-first]
 **Length:** [n] tweets
@@ -354,15 +354,15 @@ The payoff. The implication, the action, or the reframe. Should feel like the po
 ---
 
 **1/**
-[tweet text — 280 chars max]
+[tweet text - 280 chars max]
 
 **2/**
-[tweet text — 280 chars max]
+[tweet text - 280 chars max]
 
 ...
 
 **n/**
-[tweet text — 280 chars max]
+[tweet text - 280 chars max]
 
 ---
 
@@ -373,7 +373,7 @@ The payoff. The implication, the action, or the reframe. Should feel like the po
 
 Send via `./notify` — write the thread body to `/tmp/wt-thread.md` first with the Write tool (a shell redirect is refused), then `./notify -f /tmp/wt-thread.md` (keeps the long body off argv and out of the repo root):
 ```
-thread: [topic — 3-5 words]
+thread: [topic - 3-5 words]
 
 1/ [tweet 1]
 
@@ -526,7 +526,7 @@ Lead with a one-line **batch verdict** summarizing strategy spread (e.g., "3 sha
 
 Send via `./notify` — write the message body to `/tmp/wt-remix.md` first with the Write tool (a shell redirect is refused), then `./notify -f /tmp/wt-remix.md` (keeps the long body off argv and out of the repo root):
 ```
-*Remix Tweets — ${today}*
+*Remix Tweets - ${today}*
 Batch: [one-line strategy spread]. Drops: N.
 
 1. *[strategy]*
@@ -601,7 +601,7 @@ Append **one** entry to `memory/logs/${today}.md` under a single `### write-twee
 - **Format:** drafts
 - **Topic:** [topic]
 - **Drafts:** 10 generated (5 tiers x 2 variations)
-- **Best overall:** #[n] — [style] / [tier]
+- **Best overall:** #[n] - [style] / [tier]
 - **Notification sent:** yes
 ```
 
@@ -609,7 +609,7 @@ Append **one** entry to `memory/logs/${today}.md` under a single `### write-twee
 ```
 ### write-tweet
 - **Format:** thread
-- **Topic:** [topic]   (or: SKIPPED — quiet day, top candidate < 3)
+- **Topic:** [topic]   (or: SKIPPED - quiet day, top candidate < 3)
 - **Thread format:** [data-driven / structural critique / builder's breakdown / narrative / thesis-first]
 - **Length:** [n] tweets
 - **Hook:** [first 60 chars of tweet 1]
@@ -621,7 +621,7 @@ Append **one** entry to `memory/logs/${today}.md` under a single `### write-twee
 ### write-tweet
 - **Format:** revise
 - **Instruction:** [the operator's revision instruction]
-- **Base draft:** memory/drafts/write-tweet-latest.md (reloaded + re-saved)  (or: none — nothing to revise)
+- **Base draft:** memory/drafts/write-tweet-latest.md (reloaded + re-saved)  (or: none - nothing to revise)
 - **Notification sent:** yes
 ```
 
@@ -636,7 +636,7 @@ Append **one** entry to `memory/logs/${today}.md` under a single `### write-twee
 - **Remixes produced:** N (drops: N)
 - **Strategy spread:** e.g. Sharpen ×3, Flip ×2, Update ×2, Concretize ×2, Escalate ×1
 - **Original tweets used:**
-  1. "tweet text excerpt" — @HANDLE, DATE (URL) [strategy]
+  1. "tweet text excerpt" - @HANDLE, DATE (URL) [strategy]
   2. ...
 ```
 

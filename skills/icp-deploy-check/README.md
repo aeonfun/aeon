@@ -7,6 +7,8 @@ checklist — anonymous-principal rejection (#2), unguarded admin (#8), no mainn
 footgun (#3), secrets in state (#9) — before the canister ships.
 
 **Static, read-only, no network, no identity, no mainnet action.** `mode: read-only`.
+Inputs are local paths only; `owner/repo` is intentionally unsupported. The skill
+uses Read/Glob/Grep rather than Semgrep because the latter is a write-tier scanner.
 It is the deploy-time sibling of the deeper `canister-audit` skill; for a full
 PoC-verified audit, use that. Knowledge is reused from
 `skills/canister-audit/references/ic-security-checklist.md`.

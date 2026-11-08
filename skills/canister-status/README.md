@@ -4,11 +4,12 @@ Monitors Internet Computer canisters for **control-plane changes** — a new/rem
 controller, a module-hash change (upgrade), or a canister dropping out of the public
 index — and alerts the moment one happens.
 
-- **Public path (default, no secret):** the IC dashboard API
+- **Public path (no secret):** the IC dashboard API
   `GET https://ic-api.internetcomputer.org/api/v3/canisters/<id>` — `controllers`,
   `module_hash`, `canister_type`, `subnet_id`, `upgrades[]`.
-- **Identity path (optional):** live running-state via the management-canister
-  `canister_status` (controller-gated) when `ICP_IDENTITY_PEM` is configured.
+
+The skill is limited to verified public fields and does not claim running state or
+memory size.
 
 `mode: write`.
 
@@ -25,7 +26,10 @@ Empty `var` reads a `## Watch` list from `memory/topics/icp-canisters.md`.
 The public read is verifiable with no secret:
 
 ```bash
-curl -s "https://ic-api.internetcomputer.org/api/v3/canisters/ryjl3-tyaaa-aaaaa-aaaba-cai" | jq '{controllers, module_hash, canister_type}'
+curl -sS -o /tmp/canister.json -w 'http=%{http_code}\n' "https://ic-api.internetcomputer.org/api/v3/canisters/ryjl3-tyaaa-aaaaa-aaaba-cai"
+jq '{controllers, module_hash, canister_type, latest_upgrade:.upgrades[0]}' /tmp/canister.json
 ```
 
-returns the ICP Ledger's controllers + module hash (confirmed 2026-11-04).
+returns HTTP 200 and the ICP Ledger's public control-plane snapshot. The reconciler
+at `reconcile.mjs` validates responses, writes snapshots atomically, and deduplicates
+controller, upgrade, missing, and reappearance alerts.

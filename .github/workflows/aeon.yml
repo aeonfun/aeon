@@ -805,7 +805,7 @@ jobs:
           # `requires:` key missing from this list.
           # Consumed by the MCP/requires loops below, then unset before Claude runs.
           ALL_SECRETS: >-
-            {"ADMANAGE_API_KEY":${{ toJSON(secrets.ADMANAGE_API_KEY) }},"AI_GATEWAY_API_KEY":${{ toJSON(secrets.AI_GATEWAY_API_KEY) }},"ALCHEMY_API_KEY":${{ toJSON(secrets.ALCHEMY_API_KEY) }},"ANTHROPIC_API_KEY":${{ toJSON(secrets.ANTHROPIC_API_KEY) }},"ANTHROPIC_OAUTH_TOKEN":${{ toJSON(secrets.ANTHROPIC_OAUTH_TOKEN) }},"ARC_STUDIO_TOKEN":${{ toJSON(secrets.ARC_STUDIO_TOKEN) }},"AWS_COMPUTE_RESELL_CONFIG":${{ toJSON(secrets.AWS_COMPUTE_RESELL_CONFIG) }},"BANKR_API_KEY":${{ toJSON(secrets.BANKR_API_KEY) }},"BANKR_LLM_KEY":${{ toJSON(secrets.BANKR_LLM_KEY) }},"BASESCAN_API_KEY":${{ toJSON(secrets.BASESCAN_API_KEY) }},"BASE_RPC_URL":${{ toJSON(secrets.BASE_RPC_URL) }},"BEDROCK_API_KEY":${{ toJSON(secrets.BEDROCK_API_KEY) }},"BLOCKSCOUT_API_KEY":${{ toJSON(secrets.BLOCKSCOUT_API_KEY) }},"CLAUDE_CODE_OAUTH_TOKEN":${{ toJSON(secrets.CLAUDE_CODE_OAUTH_TOKEN) }},"CODEX_AUTH":${{ toJSON(secrets.CODEX_AUTH) }},"COINGECKO_API_KEY":${{ toJSON(secrets.COINGECKO_API_KEY) }},"COMPUTE_RESELL_CONFIG":${{ toJSON(secrets.COMPUTE_RESELL_CONFIG) }},"ETHERSCAN_API_KEY":${{ toJSON(secrets.ETHERSCAN_API_KEY) }},"FEEDBACK_TOKEN":${{ toJSON(secrets.FEEDBACK_TOKEN) }},"FLEET_ENDPOINT":${{ toJSON(secrets.FLEET_ENDPOINT) }},"FLEET_TOKEN":${{ toJSON(secrets.FLEET_TOKEN) }},"GH_GLOBAL":${{ toJSON(secrets.GH_GLOBAL) }},"GH_READ_PAT":${{ toJSON(secrets.GH_READ_PAT) }},"GH_SECRETS_PAT":${{ toJSON(secrets.GH_SECRETS_PAT) }},"GITHUB_TOKEN":${{ toJSON(secrets.GITHUB_TOKEN) }},"GROK_CREDENTIALS":${{ toJSON(secrets.GROK_CREDENTIALS) }},"HOOK_DEPLOYER_PRIVATE_KEY":${{ toJSON(secrets.HOOK_DEPLOYER_PRIVATE_KEY) }},"ICP_IDENTITY_PEM":${{ toJSON(secrets.ICP_IDENTITY_PEM) }},"KIMI_AUTH":${{ toJSON(secrets.KIMI_AUTH) }},"LANGFUSE_PUBLIC_KEY":${{ toJSON(secrets.LANGFUSE_PUBLIC_KEY) }},"LANGFUSE_SECRET_KEY":${{ toJSON(secrets.LANGFUSE_SECRET_KEY) }},"MIROSHARK_AFFILIATE":${{ toJSON(secrets.MIROSHARK_AFFILIATE) }},"MISTRAL_API_KEY":${{ toJSON(secrets.MISTRAL_API_KEY) }},"MOONSHOT_API_KEY":${{ toJSON(secrets.MOONSHOT_API_KEY) }},"NEON_API_KEY":${{ toJSON(secrets.NEON_API_KEY) }},"OPENAI_API_KEY":${{ toJSON(secrets.OPENAI_API_KEY) }},"OPENROUTER_API_KEY":${{ toJSON(secrets.OPENROUTER_API_KEY) }},"PAGESPEED_API_KEY":${{ toJSON(secrets.PAGESPEED_API_KEY) }},"RAILWAY_TOKEN":${{ toJSON(secrets.RAILWAY_TOKEN) }},"REPLICATE_API_TOKEN":${{ toJSON(secrets.REPLICATE_API_TOKEN) }},"RESEND_API_KEY":${{ toJSON(secrets.RESEND_API_KEY) }},"RESEND_FROM":${{ toJSON(secrets.RESEND_FROM) }},"RESEND_REPLY_TO":${{ toJSON(secrets.RESEND_REPLY_TO) }},"SURPLUS_API_KEY":${{ toJSON(secrets.SURPLUS_API_KEY) }},"SURPLUS_SELLER_AWS_KEY":${{ toJSON(secrets.SURPLUS_SELLER_AWS_KEY) }},"SURPLUS_SELLER_KEY":${{ toJSON(secrets.SURPLUS_SELLER_KEY) }},"SURPLUS_SELLER_VERTEX_KEY":${{ toJSON(secrets.SURPLUS_SELLER_VERTEX_KEY) }},"TASKMARKET_API_KEY":${{ toJSON(secrets.TASKMARKET_API_KEY) }},"TASKMARKET_WORKER_ADDRESS":${{ toJSON(secrets.TASKMARKET_WORKER_ADDRESS) }},"TWITTER_API_KEY":${{ toJSON(secrets.TWITTER_API_KEY) }},"USEPOD_TOKEN":${{ toJSON(secrets.USEPOD_TOKEN) }},"VENICE_API_KEY":${{ toJSON(secrets.VENICE_API_KEY) }},"VERCEL_OIDC_TOKEN":${{ toJSON(secrets.VERCEL_OIDC_TOKEN) }},"VERCEL_TOKEN":${{ toJSON(secrets.VERCEL_TOKEN) }},"VERTEX_API_KEY":${{ toJSON(secrets.VERTEX_API_KEY) }},"VERTEX_COMPUTE_RESELL_CONFIG":${{ toJSON(secrets.VERTEX_COMPUTE_RESELL_CONFIG) }},"VERTEX_SERVICE_ACCOUNT_JSON":${{ toJSON(secrets.VERTEX_SERVICE_ACCOUNT_JSON) }},"XAI_API_KEY":${{ toJSON(secrets.XAI_API_KEY) }},"YDC_API_KEY":${{ toJSON(secrets.YDC_API_KEY) }}}
+            {"ADMANAGE_API_KEY":${{ toJSON(secrets.ADMANAGE_API_KEY) }},"AI_GATEWAY_API_KEY":${{ toJSON(secrets.AI_GATEWAY_API_KEY) }},"ALCHEMY_API_KEY":${{ toJSON(secrets.ALCHEMY_API_KEY) }},"ANTHROPIC_API_KEY":${{ toJSON(secrets.ANTHROPIC_API_KEY) }},"ANTHROPIC_OAUTH_TOKEN":${{ toJSON(secrets.ANTHROPIC_OAUTH_TOKEN) }},"ARC_STUDIO_TOKEN":${{ toJSON(secrets.ARC_STUDIO_TOKEN) }},"AWS_COMPUTE_RESELL_CONFIG":${{ toJSON(secrets.AWS_COMPUTE_RESELL_CONFIG) }},"BANKR_API_KEY":${{ toJSON(secrets.BANKR_API_KEY) }},"BANKR_LLM_KEY":${{ toJSON(secrets.BANKR_LLM_KEY) }},"BASESCAN_API_KEY":${{ toJSON(secrets.BASESCAN_API_KEY) }},"BASE_RPC_URL":${{ toJSON(secrets.BASE_RPC_URL) }},"BEDROCK_API_KEY":${{ toJSON(secrets.BEDROCK_API_KEY) }},"BLOCKSCOUT_API_KEY":${{ toJSON(secrets.BLOCKSCOUT_API_KEY) }},"CLAUDE_CODE_OAUTH_TOKEN":${{ toJSON(secrets.CLAUDE_CODE_OAUTH_TOKEN) }},"CODEX_AUTH":${{ toJSON(secrets.CODEX_AUTH) }},"COINGECKO_API_KEY":${{ toJSON(secrets.COINGECKO_API_KEY) }},"COMPUTE_RESELL_CONFIG":${{ toJSON(secrets.COMPUTE_RESELL_CONFIG) }},"ETHERSCAN_API_KEY":${{ toJSON(secrets.ETHERSCAN_API_KEY) }},"FEEDBACK_TOKEN":${{ toJSON(secrets.FEEDBACK_TOKEN) }},"FLEET_ENDPOINT":${{ toJSON(secrets.FLEET_ENDPOINT) }},"FLEET_TOKEN":${{ toJSON(secrets.FLEET_TOKEN) }},"GH_GLOBAL":${{ toJSON(secrets.GH_GLOBAL) }},"GH_READ_PAT":${{ toJSON(secrets.GH_READ_PAT) }},"GH_SECRETS_PAT":${{ toJSON(secrets.GH_SECRETS_PAT) }},"GITHUB_TOKEN":${{ toJSON(secrets.GITHUB_TOKEN) }},"GROK_CREDENTIALS":${{ toJSON(secrets.GROK_CREDENTIALS) }},"HOOK_DEPLOYER_PRIVATE_KEY":${{ toJSON(secrets.HOOK_DEPLOYER_PRIVATE_KEY) }},"KIMI_AUTH":${{ toJSON(secrets.KIMI_AUTH) }},"LANGFUSE_PUBLIC_KEY":${{ toJSON(secrets.LANGFUSE_PUBLIC_KEY) }},"LANGFUSE_SECRET_KEY":${{ toJSON(secrets.LANGFUSE_SECRET_KEY) }},"MIROSHARK_AFFILIATE":${{ toJSON(secrets.MIROSHARK_AFFILIATE) }},"MISTRAL_API_KEY":${{ toJSON(secrets.MISTRAL_API_KEY) }},"MOONSHOT_API_KEY":${{ toJSON(secrets.MOONSHOT_API_KEY) }},"NEON_API_KEY":${{ toJSON(secrets.NEON_API_KEY) }},"OPENAI_API_KEY":${{ toJSON(secrets.OPENAI_API_KEY) }},"OPENROUTER_API_KEY":${{ toJSON(secrets.OPENROUTER_API_KEY) }},"PAGESPEED_API_KEY":${{ toJSON(secrets.PAGESPEED_API_KEY) }},"RAILWAY_TOKEN":${{ toJSON(secrets.RAILWAY_TOKEN) }},"REPLICATE_API_TOKEN":${{ toJSON(secrets.REPLICATE_API_TOKEN) }},"RESEND_API_KEY":${{ toJSON(secrets.RESEND_API_KEY) }},"RESEND_FROM":${{ toJSON(secrets.RESEND_FROM) }},"RESEND_REPLY_TO":${{ toJSON(secrets.RESEND_REPLY_TO) }},"SURPLUS_API_KEY":${{ toJSON(secrets.SURPLUS_API_KEY) }},"SURPLUS_SELLER_AWS_KEY":${{ toJSON(secrets.SURPLUS_SELLER_AWS_KEY) }},"SURPLUS_SELLER_KEY":${{ toJSON(secrets.SURPLUS_SELLER_KEY) }},"SURPLUS_SELLER_VERTEX_KEY":${{ toJSON(secrets.SURPLUS_SELLER_VERTEX_KEY) }},"TASKMARKET_API_KEY":${{ toJSON(secrets.TASKMARKET_API_KEY) }},"TASKMARKET_WORKER_ADDRESS":${{ toJSON(secrets.TASKMARKET_WORKER_ADDRESS) }},"TWITTER_API_KEY":${{ toJSON(secrets.TWITTER_API_KEY) }},"USEPOD_TOKEN":${{ toJSON(secrets.USEPOD_TOKEN) }},"VENICE_API_KEY":${{ toJSON(secrets.VENICE_API_KEY) }},"VERCEL_OIDC_TOKEN":${{ toJSON(secrets.VERCEL_OIDC_TOKEN) }},"VERCEL_TOKEN":${{ toJSON(secrets.VERCEL_TOKEN) }},"VERTEX_API_KEY":${{ toJSON(secrets.VERTEX_API_KEY) }},"VERTEX_COMPUTE_RESELL_CONFIG":${{ toJSON(secrets.VERTEX_COMPUTE_RESELL_CONFIG) }},"VERTEX_SERVICE_ACCOUNT_JSON":${{ toJSON(secrets.VERTEX_SERVICE_ACCOUNT_JSON) }},"XAI_API_KEY":${{ toJSON(secrets.XAI_API_KEY) }},"YDC_API_KEY":${{ toJSON(secrets.YDC_API_KEY) }}}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           ANTHROPIC_BASE_URL: ${{ vars.ANTHROPIC_BASE_URL }}
@@ -1236,8 +1236,11 @@ jobs:
             # its own cascade above; here it is component=harness. No-op unless
             # telemetry is configured, and `|| true` so it never fails the run.
             AEON_OTEL_COMPONENT=harness source "$LF" >&2 || true
+            RH_RC=0
             if CLAUDE_OUTPUT=$(echo "$PROMPT" | bash "$RH" "$HARNESS" "${RH_MODEL_ARGS[@]}" "${RH_ARGS[@]}" 2>/tmp/harness-stderr.txt); then
               CLAUDE_OK=1
+            else
+              RH_RC=$?
             fi
             if [ "$HARNESS" != "grok" ]; then
               # Re-emit SKILL_MODEL (token-usage.csv, signed run manifest) with what
@@ -1261,7 +1264,9 @@ jobs:
             fi
             if [ "$CLAUDE_OK" != "1" ]; then
               echo "::error::run-harness $HARNESS failed: $(tail -c 200 /tmp/harness-stderr.txt | tr '\n' ' ')"
-              tail -c 500 /tmp/harness-stderr.txt | tr '\n' ' ' | cut -c1-200 > /tmp/skill-error.txt
+              # last_error: the envelope's error text, else the stderr reason
+              printf '%s' "$CLAUDE_OUTPUT" > /tmp/harness-out.json
+              bash scripts/gateway-error.sh "$HARNESS" "$RH_RC" /tmp/harness-stderr.txt /tmp/harness-out.json > /tmp/skill-error.txt || echo "$HARNESS: exit $RH_RC" > /tmp/skill-error.txt
               exit 1
             fi
           fi
@@ -2364,10 +2369,14 @@ jobs:
               .[$s].success_rate = $rate
             ')
 
-            # Record error signature on failure
+            # Record error signature on failure; a success clears it, so last_error
+            # only ever describes the run that is failing now (last_failed keeps the
+            # time of the most recent failure).
             if [ "$CRON_STATUS" = "failed" ] && [ -n "$ERROR_SIG" ]; then
               STATE=$(echo "$STATE" | jq --arg s "$SKILL" --arg err "$ERROR_SIG" \
                 '.[$s].last_error = $err')
+            elif [ "$CRON_STATUS" = "success" ]; then
+              STATE=$(echo "$STATE" | jq --arg s "$SKILL" '.[$s].last_error = null')
             fi
 
             # Record quality score on success (from analysis step)
@@ -2464,7 +2473,12 @@ jobs:
           SCORE_IN: ${{ steps.analyze.outputs.QUALITY_SCORE }}
           FLAGS_IN: ${{ steps.analyze.outputs.FLAGS }}
           RUN_OUTCOME: ${{ steps.run.outcome }}
+          IDLE_SKIP: ${{ steps.idle.outputs.skip }}
         run: |
+          # An idle-gated skip (memory-flush or fetch-tweets with nothing new) never ran
+          # the skill, so Run is 'skipped': not a regression. Cron state already records
+          # it as a success; without this it was posted as "score 1, run_failed".
+          if [ "${IDLE_SKIP:-}" = "true" ]; then echo "idle skip for $SKILL; health issue silent"; exit 0; fi
           # §7 is default-ON; disable only with repo var HEALTH_ISSUES=0. The toggle is
           # checked HERE in bash, NOT in the step `if:`. A GitHub Actions `if:` comparison
           # like `vars.HEALTH_ISSUES != '0'` does numeric coercion, and an UNSET var (null)
@@ -2484,7 +2498,7 @@ jobs:
             ISSUE=$(GH_REPO="$GITHUB_REPOSITORY" bash scripts/health_issue.sh ensure "$SKILL" 2>/dev/null || true)
             if [ -n "$ISSUE" ]; then
               GH_REPO="$GITHUB_REPOSITORY" bash scripts/health_issue.sh comment "$ISSUE" \
-                "⚠️ Regression — score $SCORE, flags $FLAGS ($(date -u +%FT%TZ)). 👍/👎 to set repair priority." \
+                "⚠️ Regression: score $SCORE, flags $FLAGS ($(date -u +%FT%TZ)). 👍/👎 to set repair priority." \
                 && echo "health regression -> issue #$ISSUE"
             fi
           else

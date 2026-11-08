@@ -99,21 +99,21 @@ Only flag explicit cases with a concrete example. "Reflexivity" without evidence
 Keep under 4000 chars. Lead with transitions and reflexivity — those are the decisions. Classification goes below.
 
 ```
-*Narrative Tracker — ${today}*
+*Narrative Tracker - ${today}*
 
 TRANSITIONS
-• NEW: <label> — <why it matters> — <link>
-• PROMOTED: <label> Rising → Peak — <what flipped>
-• DEMOTED: <label> Peak → Fading — <what cooled>
-• DEAD: <label> — gone
+• NEW: <label> - <why it matters> - <link>
+• PROMOTED: <label> Rising → Peak - <what flipped>
+• DEMOTED: <label> Peak → Fading - <what cooled>
+• DEAD: <label> - gone
 
 REFLEXIVITY ALERT
-• <narrative> — <concrete evidence the story is moving outcomes>
+• <narrative> - <concrete evidence the story is moving outcomes>
 
 POSITIONS
-• FRONT-RUN: <label> (mindshare 2 ↑↑, Bull) — <driver> — <bear case> — <link>
-• RIDE: <label> (3 ↑, Bull) — <driver> — <bear case>
-• FADE: <label> (5 → Cope) — <driver> — <reflexivity note>
+• FRONT-RUN: <label> (mindshare 2 ↑↑, Bull) - <driver> - <bear case> - <link>
+• RIDE: <label> (3 ↑, Bull) - <driver> - <bear case>
+• FADE: <label> (5 → Cope) - <driver> - <reflexivity note>
 
 MAP
 Emerging: <labels>

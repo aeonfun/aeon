@@ -240,12 +240,12 @@ unset, Core Web Vitals are simply absent. That is a degraded run, not a failed o
    # SEO fixes
    _Updated ${today} · auditor v<n> · example.com 94 (18 pages)_
 
-   ## example.com — open
+   ## example.com - open
 
-   ### 1. /docs — meta description is 512 chars (impact: high)
+   ### 1. /docs - meta description is 512 chars (impact: high)
    - **Page:** https://www.example.com/docs → `<head>`
    - **Now:** `"How the product works: ..."` (512 chars)
-   - **Target:** 120–160 chars
+   - **Target:** 120-160 chars
    - **Fix:**
      ```html
      <meta name="description" content="…the drafted replacement…">
@@ -254,12 +254,12 @@ unset, Core Web Vitals are simply absent. That is a degraded run, not a failed o
      reads as cut off.
    - **First seen:** 2026-07-21 · **Open for:** 3 runs
 
-   ### 2. site-wide — 18 pages have an image with no alt text (impact: medium)
-   - **Pages:** all 18 (`/`, `/docs`, `/blog/*`, …) — one shared component
+   ### 2. site-wide - 18 pages have an image with no alt text (impact: medium)
+   - **Pages:** all 18 (`/`, `/docs`, `/blog/*`, …) - one shared component
    - **Fix:** …
 
-   ## example.com — recently fixed
-   - 2026-07-24 — /blog: alt text added to all 4 images (was open 3 runs)
+   ## example.com - recently fixed
+   - 2026-07-24 - /blog: alt text added to all 4 images (was open 3 runs)
    ```
 
    Rules that keep it useful rather than decorative:
@@ -294,15 +294,15 @@ unset, Core Web Vitals are simply absent. That is a degraded run, not a failed o
    something moved:
 
    ```
-   SEO — example.com 94 (18 pages) · blog.example.com 92 (11 pages)
+   SEO - example.com 94 (18 pages) · blog.example.com 92 (11 pages)
 
    Regressed
-   · example.com /docs — meta description removed (was 148 chars, now absent)
+   · example.com /docs - meta description removed (was 148 chars, now absent)
      <meta name="description" content="How the product works: architecture,
      the self-healing loop, persistent memory.">  (118 chars)
 
    Weakest pages
-   · example.com /pricing 84 · /contact 88 — both short on body copy
+   · example.com /pricing 84 · /contact 88 - both short on body copy
 
    Top open fix
    · example.com /docs title 63 chars → trim to ≤60:

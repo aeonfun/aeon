@@ -228,7 +228,7 @@ Compose **one** consolidated `./notify` message. Rules:
 
 Template:
 ```
-*Competitor Monitor* — 3 pages, 2 changes
+*Competitor Monitor* - 3 pages, 2 changes
 ▶ rival.com/pricing
   • New Pro tier at $49/mo (added $49/mo; "Free" tier still listed)
   • New heading "Usage-based billing"

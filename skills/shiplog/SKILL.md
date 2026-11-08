@@ -226,7 +226,7 @@ shipped ~<N> PRs + <M> commits this window. the bytes:
 - <punchy ship 1>: <one-line what+why>. <@handles of projects involved>
 - <punchy ship 2>: ...
 - <punchy ship 3>: ...
-- security: fixes into other people's repos (<types>) — even got one merged into <@MarqueeOrg>'s <repo>
+- security: fixes into other people's repos (<types>) - even got one merged into <@MarqueeOrg>'s <repo>
 
 traction:
 - <product> <total> ⭐ (+<delta> this window)

@@ -135,7 +135,7 @@ Skip a PR if any of the following hold (record the skip reason for the run summa
    If there are no CRITICAL/ISSUE findings, skip inline comments and post the
    approve-ready line followed by its receipt:
    ```text
-   **Verdict**: approve-ready — no blockers.
+   **Verdict**: approve-ready - no blockers.
    <!-- aeon-review:{"schema":1,"target":"owner/repo#N","sha":"<full-headRefOid>","verdict":"approve-ready","critical":0,"issues":0} -->
    ```
 
@@ -159,9 +159,9 @@ the receipt, and the notification gate uses the verdict line as its signal.
 
 Send **one** combined message per run via `./notify`:
 ```
-*PR Review — ${today}*
+*PR Review - ${today}*
 Reviewed N, skipped K (drafts: x, bots: y, dup-SHA: z, bot-reviewed-recently: w).
-- owner/repo#123: [verdict] — N critical, M issues
+- owner/repo#123: [verdict] - N critical, M issues
 ```
 
 **Telegram summary.** When the run was scoped to a **single repo** (`${var}=owner/repo`), send a Telegram summary of the review with `./notify -f review.md` so the operator sees the verdict at a glance. Skip it on an all-repos run.
@@ -172,7 +172,7 @@ Log to `memory/logs/${today}.md` under the shared `### pr-review` heading with a
 ```
 ### pr-review
 - **Mode**: review (per-PR deep review)
-- owner/repo#123 (SHA abc1234): [verdict] — N critical, M issues
+- owner/repo#123 (SHA abc1234): [verdict] - N critical, M issues
 - Skipped: owner/repo#124 (draft), owner/repo#125 (bot-reviewed-recently)
 ```
 
@@ -322,7 +322,7 @@ Within each bucket, sort by `age_days DESC, then updated_age_days DESC, then num
 Overwrite `output/articles/pr-merge-${today}.md`:
 
 ```markdown
-# PR Merge Queue — ${TARGET_REPO} — ${today}
+# PR Merge Queue - ${TARGET_REPO} - ${today}
 
 *Open PRs surveyed: N · Drafts skipped: D · Trusted-author PRs (auto-merge handles): T*
 
@@ -357,7 +357,7 @@ Skill PR with security scan WARN or BLOCK. **Do not merge without resolving the 
 
 ## CORE_REVIEW ({core_review_count})
 
-Touches the runtime executor or `aeon.yml`. **Highest blast radius — review carefully.**
+Touches the runtime executor or `aeon.yml`. **Highest blast radius - review carefully.**
 
 | # | Title | Author | Age | Files touched | Scan (if any) |
 |---|-------|--------|-----|---------------|---------------|
@@ -398,7 +398,7 @@ When notifying, set `state.prs[k].last_notified_head_sha = head_sha` for every P
 ### 9. Notification format
 
 ```
-*PR Merge Queue — ${TARGET_REPO} — ${today}*
+*PR Merge Queue - ${TARGET_REPO} - ${today}*
 
 {open_count} open · {new_count} new since last run · {trusted_count} trusted (auto-merge)
 
@@ -407,7 +407,7 @@ INFRA_REVIEW ({n}): #D · #E   ← needs eyes
 SKILL_PASS ({n}): #F · #G   ← clean scan
 SKILL_WARN_OR_BLOCK ({n}): #H ⚠️ HIGH security finding · #I ⚠️ MEDIUM
 CORE_REVIEW ({n}): #J ⚠️ touches aeon.yml · #K
-{If unknown_count > 0:} UNKNOWN ({n}): #L — files API failed
+{If unknown_count > 0:} UNKNOWN ({n}): #L - files API failed
 
 Oldest in queue: #M (Nd, {bucket})
 Full digest: output/articles/pr-merge-${today}.md

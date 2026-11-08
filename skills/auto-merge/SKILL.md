@@ -97,17 +97,17 @@ A PR merges only when every one of the following holds:
 
    5a. **At least one merge succeeded:**
    ```
-   *Auto Merge — ${today}*
+   *Auto Merge - ${today}*
    Merged N PR(s) on owner/repo:
-   - #123: PR title (+45/-12, by @author) — squash merged abc1234   (the mergeCommit SHA GitHub returned)
+   - #123: PR title (+45/-12, by @author) - squash merged abc1234   (the mergeCommit SHA GitHub returned)
    Queue cleared. Self-improve cycle unblocked.
    ```
 
    5b. **Retry cap reached on ≥1 PR** (`AUTO_MERGE_RETRY_CAP`) — include in the same message if both fire, otherwise stand-alone:
    ```
-   *Auto Merge — retry cap*
+   *Auto Merge - retry cap*
    Hit retry cap (3 attempts) on:
-   - owner/repo#40 — last error: "Pull Request is in unstable state"
+   - owner/repo#40 - last error: "Pull Request is in unstable state"
    Stopping auto-merge attempts on this PR. Investigate manually.
    ```
    Dedup: suppress re-notify if the *exact same* set of cap-hit PR keys already notified within the last 24h (grep `memory/logs/` for prior `AUTO_MERGE_RETRY_CAP` entries).

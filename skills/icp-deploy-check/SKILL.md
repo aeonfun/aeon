@@ -12,7 +12,7 @@ metadata:
     - security
 ---
 
-> **${var}** — Path to a local canister repo/dir to check (default `.`). Pass `fixture:token_vault` to run against the bundled `canister-audit` fixture as a reproducible demo. This skill reads source only — it never deploys, calls mainnet, or needs an identity.
+> **${var}** — Repository-relative or absolute path to a local canister repo/dir (default `.`). Pass `fixture:token_vault` to read the bundled `canister-audit` fixture. Remote `owner/repo` selectors are not supported; this read-only skill does not clone or fetch. It never deploys, calls mainnet, or needs an identity.
 
 Today is ${today}. Read `memory/MEMORY.md` before starting.
 
@@ -41,11 +41,11 @@ Detect a Rust canister first (`Cargo.toml` with `ic-cdk`/`candid`, or `#[ic_cdk:
 
 1. **Anonymous-principal rejection (#2)** — for every `#[update]`/`#[query]` that
    changes or exposes privileged state, confirm it rejects `Principal::anonymous()` or
-   sits behind a guard. Signal: run the ruleset
-   `semgrep --config skills/canister-audit/references/ic-semgrep-rust.yml <src>` if
-   `semgrep` is available; otherwise grep for update methods lacking a
-   `Principal::anonymous()` / guard. Report each unguarded privileged entrypoint as
-   **warn** (triage, not auto-fail).
+   sits behind a guard. Use the harness Read, Glob, and Grep tools to find entrypoints,
+   then open each method and inspect its guard. Do not invoke Semgrep: bare `semgrep`
+   is intentionally restricted to write-mode scanner skills, while this checklist is
+   genuinely read-only. Report each unguarded privileged entrypoint as **warn**
+   (triage, not auto-fail).
 2. **Unguarded admin method (#8)** — mint/migrate/config/`set_*` updates must have an
    owner/controller check. **warn** on any that don't.
 3. **No mainnet `fetch_root_key` (#7)** — this is an **agent/client** call
@@ -81,14 +81,10 @@ icp-deploy-check — <repo>: <N fail / M warn / K needs-human>
 
 fail: fetch_root_key on a default path (src/frontend/agent.ts:NN)
 needs-human: single controller — add a backup/multisig before mainnet
-link: <repo URL if known>
+path: <local repo path>
 ```
 
 Full per-check table goes in the run output, not the notify body.
-
-## Log
-
-Append to `memory/logs/YYYY-MM-DD.md` under `### icp-deploy-check`: repo, per-check verdicts (pass/warn/fail/needs-human), tool used (semgrep vs grep).
 
 ## Network & secrets
 
@@ -98,4 +94,4 @@ it.
 
 ## Summary
 
-End with a `## Summary`: repo checked, per-check verdicts, the blocking items (fail/needs-human) the operator must resolve before deploy, and a pointer to `canister-audit` for a deep, PoC-verified audit.
+End with a `## Summary`: local repo checked, per-check verdicts, the blocking items (fail/needs-human) the operator must resolve before deploy, and a pointer to `canister-audit` for a deep, PoC-verified audit. Do not append a daily log yourself: read-only runs are logged by the surrounding workflow from this captured output.

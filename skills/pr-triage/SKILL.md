@@ -123,13 +123,13 @@ Exactly one comment per (PR, headRefOid). Format must start with `**Triage:**` s
 
 **ACCEPTED:**
 ```
-**Triage:** ACCEPTED — clean against the contribution rubric (scope ✓ / format ✓ / originality ✓ / size ✓).
+**Triage:** ACCEPTED - clean against the contribution rubric (scope ✓ / format ✓ / originality ✓ / size ✓).
 Thanks @author. A maintainer review pass will follow; in the meantime no changes requested from this triage layer.
 ```
 
 **NEEDS-CHANGES:**
 ```
-**Triage:** NEEDS-CHANGES — <one-line rubric reason>.
+**Triage:** NEEDS-CHANGES - <one-line rubric reason>.
 To proceed, please:
 1. <specific actionable change>
 2. <specific actionable change, if applicable>
@@ -138,13 +138,13 @@ Once updated, push to the same branch and this triage will re-run automatically.
 
 **DEFER:**
 ```
-**Triage:** DEFER — <one-line reason: size / RFC / external-secret / depends-on>.
+**Triage:** DEFER - <one-line reason: size / RFC / external-secret / depends-on>.
 This PR is sound but needs maintainer attention before it can move (reason above). Leaving open and labelled `triage:deferred`; @aaronjmars will pick it up on the next review pass.
 ```
 
 **OUT-OF-SCOPE:**
 ```
-**Triage:** OUT-OF-SCOPE — touches <protected path(s)> which external contributors cannot modify directly.
+**Triage:** OUT-OF-SCOPE - touches <protected path(s)> which external contributors cannot modify directly.
 For changes here, please open an issue describing the goal and a maintainer will land the change. Closing-as-not-planned to keep the queue tidy; the issue is the right venue.
 ```
 
@@ -208,10 +208,10 @@ Send `./notify` only if the run produced any:
 For routine NEEDS-CHANGES / DEFER outcomes, the comment on the PR is the signal — no notify.
 
 ```
-*PR Triage — ${today}*
+*PR Triage - ${today}*
 Triaged N across M repos. Accepted: a, needs-changes: nc, deferred: d, out-of-scope: oos.
-- owner/repo#143 — ACCEPTED (first PR by @newcomer): <title>
-- owner/repo#150 — OUT-OF-SCOPE (touches .github/workflows): closed
+- owner/repo#143 - ACCEPTED (first PR by @newcomer): <title>
+- owner/repo#150 - OUT-OF-SCOPE (touches .github/workflows): closed
 ```
 
 If nothing matches the gate, no notification.
@@ -229,7 +229,7 @@ Append to `memory/logs/${today}.md`:
 - Closed (out-of-scope): <comma-separated URLs, or "none">
 - Skipped: <count> (drafts=x, bots=y, trusted=z, already-triaged=w)
 - Overflow (budget > 8): <repos with count, or "none">
-- Source status: <per-repo: ok | fail — reason>
+- Source status: <per-repo: ok | fail - reason>
 ```
 
 Terminal log lines:

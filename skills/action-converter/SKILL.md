@@ -95,10 +95,10 @@ Order the 5 actions by descending quality score, then by descending urgency.
 Use this exact format (`./notify` renders the Markdown per-channel — just write it cleanly):
 
 ```
-*5 Actions — ${today}*
+*5 Actions - ${today}*
 Shape: <today's shape line>
 
-1. <action — one imperative sentence, names a specific entity>
+1. <action - one imperative sentence, names a specific entity>
 why: <≤18 words, what makes this leverage today, names a specific signal>
 done: <one observable check>
 loop: <loop id or "category:<name>" if filled from pool>

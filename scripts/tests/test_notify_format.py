@@ -13,6 +13,23 @@ def fences_balanced(s: str) -> bool:
     return nf._fence_count(s) % 2 == 0
 
 
+class TestPlainDashes(unittest.TestCase):
+    def test_em_and_en_dash_become_hyphen(self):
+        self.assertEqual(nf.plain_dashes("A \u2014 B, 1\u20132"), "A - B, 1-2")
+        self.assertEqual(nf.plain_dashes(""), "")
+
+    def test_renderers_get_no_dash_via_main(self):
+        import subprocess
+        fmt = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "notify_format.py")
+        out = subprocess.run(
+            [sys.executable, fmt, "slack", "--title", "T \u2014 x"],
+            input="body \u2014 here \u2013 now", capture_output=True, text=True, check=True,
+        ).stdout
+        blocks = json.loads(out)["blocks"]
+        self.assertEqual(blocks[0]["text"]["text"].split(" ", 1)[1], "T - x")
+        self.assertEqual(blocks[1]["text"]["text"], "body - here - now")
+
+
 class TestChunk(unittest.TestCase):
     def test_short_text_single_chunk_unchanged(self):
         self.assertEqual(nf.chunk("hello world", 3900), ["hello world"])
