@@ -35,11 +35,9 @@ dashboard and SNS aggregator APIs:
   upgrade history) and NNS proposals.
 - `sns-api.internetcomputer.org` - the SNS DAO list and per-DAO proposals.
 
-These need no identity and no cycles. A controller-gated read (a canister's live running
-state via the management canister `canister_status`) is the one exception: it is
-optional and needs an IC agent (icp-cli, dfx or ic-agent) signing with a controller
-identity, which is not wired today. The read skills report control-plane facts only. No
-skill needs runtime IC access to do its core job.
+These need no identity and no cycles. The read skills are deliberately limited to
+verified public control-plane facts; live management-canister state and cycles balances
+are out of scope. No skill needs runtime IC access to do its core job.
 
 ## Why the dfinity/icskills skills are reference, not installed
 
@@ -76,8 +74,8 @@ skills as-is.
 - **No off-the-shelf IC Semgrep ruleset.** `canister-audit` ships a small hand-authored
   one (`references/ic-semgrep-rust.yml`); the agentic source pass is the reliable core and
   the ruleset is a high-recall first pass.
-- **Cycles balances are controller-gated.** There is no keyless public read for a
-  canister's cycle balance, so Aeon does not ship a cycles monitor.
+- **No cycles monitor.** There is no verified keyless public read for a canister's cycle
+  balance, so Aeon does not ship one.
 
 ## What ships (file index)
 

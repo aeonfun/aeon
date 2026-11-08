@@ -3510,6 +3510,95 @@
       ],
       "contentHash": "sha256-b95b9c6d984ff6eb0404559092b2d20d089986784255df96b86fefaa9f87c8a0",
       "discoveredFrom": "skills/github-filing-registry/SKILL.md"
+    },
+    {
+      "id": "ac741688c8cdedb9",
+      "tool": "aeon",
+      "scope": "project:.",
+      "type": "skill",
+      "name": "canister-status",
+      "source": {
+        "kind": "local",
+        "ref": "skills/canister-status"
+      },
+      "capabilities": {
+        "network": [
+          "ic-api.internetcomputer.org"
+        ]
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "hash": "3d6cb3eef3de27c6bf145cb4227077612c480416016b753d9d934c45154bb6c7"
+        },
+        {
+          "path": "SKILL.md",
+          "hash": "7d9bf7ec00f126213610aa7f6bcc180b516fde256182c07cff3c10635f837614"
+        },
+        {
+          "path": "reconcile.mjs",
+          "hash": "85ec8f7b1909cfc241805fe42e8f3184d5a5a10896892fda7d25483d1b6aa23d"
+        }
+      ],
+      "contentHash": "sha256-7f052c4b160c9dce17242e0bd3d8a149961f444aee89152bfeb196b798b86ed5",
+      "discoveredFrom": "skills/canister-status/SKILL.md"
+    },
+    {
+      "id": "8c956ce889cadd94",
+      "tool": "aeon",
+      "scope": "project:.",
+      "type": "skill",
+      "name": "sns-digest",
+      "source": {
+        "kind": "local",
+        "ref": "skills/sns-digest"
+      },
+      "capabilities": {
+        "network": [
+          "ic-api.internetcomputer.org",
+          "sns-api.internetcomputer.org"
+        ]
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "hash": "9b841cf756bc6ee56bc74ae7c0f3a51584aa98009d51c32d82509f24711a2862"
+        },
+        {
+          "path": "SKILL.md",
+          "hash": "299cda7613db7d4bff36b39b17b6ccd7922f740bf30b3dbfe52b1b1e3b4254ce"
+        },
+        {
+          "path": "parse-proposals.mjs",
+          "hash": "db031a02c1cac858a460d40d1d6398772efa9755b1c9734f3a7079b55ada8c84"
+        }
+      ],
+      "contentHash": "sha256-597a9e7a5c6756fd7db78204d94d68c13093c63c976238953523c14c7a385f11",
+      "discoveredFrom": "skills/sns-digest/SKILL.md"
+    },
+    {
+      "id": "21a3645b845f8948",
+      "tool": "aeon",
+      "scope": "project:.",
+      "type": "skill",
+      "name": "icp-deploy-check",
+      "source": {
+        "kind": "local",
+        "ref": "skills/icp-deploy-check"
+      },
+      "capabilities": {},
+      "files": [
+        {
+          "path": "README.md",
+          "hash": "c3c86b340c63f18d2c917810ceef1b064a23eea9652ba7af48e2f3403625196f"
+        },
+        {
+          "path": "SKILL.md",
+          "hash": "8efdc284fececfff168f19170ed399ebee8aaa6fc0f5ebc1fd1a0a9fa0f350ee"
+        }
+      ],
+      "contentHash": "sha256-843b93076035aa6f117a50f524ccb9b595c52b54ec7b5b6a7d62e4097f49959e",
+      "discoveredFrom": "skills/icp-deploy-check/SKILL.md"
     }
   ]
 }
