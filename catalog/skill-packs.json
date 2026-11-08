@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "updated": "2026-10-29",
+  "updated": "2026-11-08",
   "description": "Machine-readable registry of community skill packs installable via bin/install-skill-pack. Mirrors the human-readable table in README.md.",
   "packs": [
     {
@@ -271,6 +271,24 @@
       "trust_level": "community",
       "skills": [
         "vauban-vault"
+      ],
+      "secrets_required": [],
+      "capabilities": [
+        "read_only",
+        "sends_notifications"
+      ]
+    },
+    {
+      "repo": "yusasecurity/yusa",
+      "name": "YUSA Pack",
+      "description": "Finds instructions hidden from the operator in installed skills, soul and strategy files: Unicode TAG smuggling, zero-width splits, look-alike letters, hidden HTML, base64. Keyless, read-only, no network.",
+      "author": "yusasecurity",
+      "license": "MIT",
+      "homepage": "https://yusasecurity.xyz",
+      "category": "dev",
+      "trust_level": "community",
+      "skills": [
+        "yusa-skill-audit"
       ],
       "secrets_required": [],
       "capabilities": [
