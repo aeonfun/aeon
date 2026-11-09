@@ -279,6 +279,24 @@
       ]
     },
     {
+      "repo": "yusasecurity/yusa",
+      "name": "YUSA Pack",
+      "description": "Finds instructions hidden from the operator in installed skills, soul and strategy files: Unicode TAG smuggling, zero-width splits, look-alike letters, hidden HTML, base64. Keyless, read-only, no network.",
+      "author": "yusasecurity",
+      "license": "MIT",
+      "homepage": "https://yusa-two.vercel.app",
+      "category": "dev",
+      "trust_level": "community",
+      "skills": [
+        "yusa-skill-audit"
+      ],
+      "secrets_required": [],
+      "capabilities": [
+        "read_only",
+        "sends_notifications"
+      ]
+    },
+    {
       "repo": "hypurr-inc/hyperliquid-cli",
       "path": "aeon",
       "name": "Hyperliquid CLI Pack",
