@@ -300,7 +300,7 @@
       "repo": "hypurr-inc/hyperliquid-cli",
       "path": "aeon",
       "name": "Hyperliquid CLI Pack",
-      "description": "Read-only Hyperliquid monitoring for Aeon with no install and no key: a daily account and risk brief, and a watchlist monitor for 24h move and funding that reports each crossing once.",
+      "description": "Read-only Hyperliquid monitoring for Aeon, run through the hyperliquid CLI: a daily account and risk brief, and a watchlist monitor for 24h move and funding that reports each crossing once. No key.",
       "author": "hypurr-inc",
       "license": "MIT",
       "homepage": "https://github.com/hypurr-inc/hyperliquid-cli",
