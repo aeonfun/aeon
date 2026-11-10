@@ -12,6 +12,10 @@
  *   • replies to a prompt   -> event_type "telegram-reply"    (force_reply follow-ups)
  *   • /slash + /start links -> event_type "telegram-command"  (dispatched, no LLM)
  *   • plain text            -> event_type "telegram-message"  (the agent interprets)
+ * Answered here directly, because Telegram needs a reply within 15 s:
+ *   • "📄 Details" taps     -> the skill's latest output, as an ephemeral reply
+ *   • /panel                -> an HTML widget (Bot API 10.4) listing recent runs
+ *   • widget taps           -> widget_query: refresh the panel or re-run a skill
  * The repo-side `route` job runs scripts/telegram-route.sh for the first three.
  *
  * Each user deploys this into their OWN Cloudflare account — there is no shared
@@ -33,6 +37,7 @@
  *   REPLAY_GUARD              Workers KV namespace binding (see wrangler.toml)
  */
 import { instrument, OTLPExporter } from "@microlabs/otel-cf-workers";
+import { PANEL_HTML, packRuns } from "./panel-widget.js";
 
 const handler = {
   async fetch(request, env, ctx) {
@@ -115,16 +120,34 @@ async function handleUpdate(env, update) {
   if (cb) {
     // Stop the client's spinner regardless of who sent it.
     await answerCallback(env, cb.id);
-    if (String(cb.message?.chat?.id) !== owner || String(cb.from?.id) !== ownerUid) {
+    const inOwnerChat = String(cb.message?.chat?.id) === owner;
+    if (!inOwnerChat || String(cb.from?.id) !== ownerUid) {
+      // A non-owner member of the owner's group tapped a button: tell only them,
+      // through an ephemeral reply (Bot API 10.4), instead of failing silently.
+      if (inOwnerChat) await sendEphemeral(env, cb.id, "Only the owner of this agent can use these buttons.");
       return new Response("ignored", { status: 200 });
     }
-    return dispatch(env, "telegram-callback", {
+    const [action, skill] = String(cb.data || "").split(":");
+    // "Details" is answered here, not in the repo: an ephemeral reply must go out
+    // within 15 s of the tap, far faster than a repository_dispatch round trip.
+    if (action === "details") {
+      await sendDetails(env, cb, skill);
+      return new Response("ok", { status: 200 });
+    }
+    const res = await dispatch(env, "telegram-callback", {
       data: cb.data,
       from_id: cb.from?.id,
       chat_id: cb.message?.chat?.id,
       message_id: cb.message?.message_id,
     });
+    const ack = res.status === 200 ? callbackAck(action, skill) : "";
+    if (ack) await sendEphemeral(env, cb.id, ack);
+    return res;
   }
+
+  // --- HTML widget query (the /panel widget) -----------------------------
+  const wq = update?.widget_query;
+  if (wq) return handleWidgetQuery(env, wq, owner, ownerUid);
 
   // --- Messages ----------------------------------------------------------
   const message = update?.message;
@@ -148,6 +171,11 @@ async function handleUpdate(env, update) {
   // Answer to a force_reply prompt (marker embedded as [skill::intent]).
   if (replyTo && /\[[A-Za-z0-9_-]+::[A-Za-z0-9_-]+\]/.test(replyTo)) {
     return dispatch(env, "telegram-reply", { ...base, reply_to_text: replyTo, text: message.text });
+  }
+  // /panel: answered here with an HTML widget, since widget queries need the
+  // Worker's 15 s answer window. Every other command goes to the repo router.
+  if (/^\/panel(@[A-Za-z0-9_]+)?\s*$/i.test(message.text)) {
+    return sendPanel(env, message.chat, ownerUid);
   }
   // Slash command or /start deep link — routed with no LLM in the loop.
   if (message.text.startsWith("/")) {
@@ -299,4 +327,165 @@ async function sendMessage(env, chatId, text) {
   } catch {
     /* ignore */
   }
+}
+
+// --- Bot API 10.4: ephemeral replies, Details, /panel widget ----------------
+
+// One Bot API call. Returns the parsed JSON reply, or null on a network error.
+// Never throws: every caller here is best-effort.
+async function tg(env, method, body) {
+  try {
+    const res = await fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/${method}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    return await res.json();
+  } catch {
+    return null;
+  }
+}
+
+// Reply only to the user who tapped a button. chat_id and receiver_user_id are
+// omitted on purpose: with just callback_query_id, Telegram shows the message to
+// the tapper alone (any chat but channel DMs). Must go out within 15 s of the tap.
+async function sendEphemeral(env, callbackQueryId, text) {
+  if (!callbackQueryId) return false;
+  const r = await tg(env, "sendMessage", {
+    text,
+    ephemeral_message_parameters: { callback_query_id: callbackQueryId },
+  });
+  return Boolean(r?.ok);
+}
+
+const commandName = skill => String(skill || "").replace(/-/g, "_");
+
+// Short private confirmation after an owner's tap was relayed to the repo.
+function callbackAck(action, skill) {
+  switch (action) {
+    case "run":
+      return `⏳ Queued a new run of /${commandName(skill)}. The result lands here when it finishes.`;
+    case "schedule":
+      return `📅 Scheduling /${commandName(skill)} weekly...`;
+    case "snooze":
+      return `💤 Snoozed these ${skill} alerts.`;
+    case "mute":
+      return `🔕 Muted these ${skill} alerts.`;
+    case "save":
+      return "🔖 Saved.";
+    default:
+      return "";
+  }
+}
+
+const githubHeaders = env => ({
+  Authorization: `Bearer ${env.GITHUB_TOKEN}`,
+  "User-Agent": "aeon-telegram-webhook",
+});
+
+// The latest captured output of a skill (output/.chains/<skill>.md, committed by
+// aeon.yml after every run). null when there is none or GitHub is unreachable.
+async function fetchSkillOutput(env, skill) {
+  try {
+    const res = await fetch(`https://api.github.com/repos/${env.GITHUB_REPO}/contents/output/.chains/${skill}.md`, {
+      headers: { ...githubHeaders(env), Accept: "application/vnd.github.raw+json" },
+      signal: AbortSignal.timeout(8000),
+    });
+    return res.ok ? await res.text() : null;
+  } catch {
+    return null;
+  }
+}
+
+const DETAILS_MAX = 3600;
+
+// "📄 Details" button: show the skill's full latest output to the tapper only,
+// so a long report never floods a shared chat.
+async function sendDetails(env, cb, skill) {
+  if (!/^[a-z0-9-]{1,48}$/.test(skill || "")) {
+    await sendEphemeral(env, cb.id, "Unknown skill.");
+    return;
+  }
+  const out = await fetchSkillOutput(env, skill);
+  let text;
+  if (out === null || !out.trim()) {
+    text = `No saved output for /${commandName(skill)} yet.`;
+  } else {
+    const link = `https://github.com/${env.GITHUB_REPO}/blob/HEAD/output/.chains/${skill}.md`;
+    const body = out.length > DETAILS_MAX ? `${out.slice(0, DETAILS_MAX)}\n\n... cut. Full output: ${link}` : out;
+    text = `📄 Latest /${commandName(skill)} output\n\n${body}`;
+  }
+  const sent = await sendEphemeral(env, cb.id, text);
+  // Fallback for a 1:1 DM, where a normal message is just as private.
+  if (!sent && cb.message?.chat?.type === "private") await sendMessage(env, cb.message.chat.id, text);
+}
+
+async function fetchRuns(env) {
+  try {
+    const res = await fetch(
+      `https://api.github.com/repos/${env.GITHUB_REPO}/actions/workflows/aeon.yml/runs?per_page=30`,
+      { headers: { ...githubHeaders(env), Accept: "application/vnd.github+json" }, signal: AbortSignal.timeout(8000) },
+    );
+    if (!res.ok) return [];
+    return (await res.json()).workflow_runs || [];
+  } catch {
+    return [];
+  }
+}
+
+// /panel: send the run panel widget. In production Telegram delivers widgets to
+// private chats only, so from the owner's group the panel goes to the owner's DM
+// with the bot (needs TELEGRAM_ALLOWED_USER_ID, and the owner must have started
+// the bot once).
+async function sendPanel(env, chat, ownerUid) {
+  const target = chat?.type === "private" ? chat.id : env.TELEGRAM_ALLOWED_USER_ID ? ownerUid : null;
+  if (!target) {
+    await sendMessage(env, chat.id, "The panel opens in a private chat: send /panel to the bot directly.");
+    return new Response("ok", { status: 200 });
+  }
+  const r = await tg(env, "sendWidget", {
+    chat_id: target,
+    html: PANEL_HTML,
+    chat_data: packRuns(await fetchRuns(env)),
+    allow_queries: true,
+  });
+  if (!r?.ok) {
+    await sendMessage(env, chat.id, `Could not open the panel${r?.description ? `: ${r.description}` : "."}`);
+  } else if (String(target) !== String(chat.id)) {
+    await sendMessage(env, chat.id, "Sent the panel to your private chat with the bot.");
+  }
+  return new Response("ok", { status: 200 });
+}
+
+// A tap inside the panel widget. Answered here within Telegram's 15 s window.
+// Always returns 200: the query is already answered, and a Telegram redelivery
+// could not be answered a second time.
+async function handleWidgetQuery(env, wq, owner, ownerUid) {
+  const answer = data => tg(env, "answerWidgetQuery", { widget_query_id: wq.id, data: JSON.stringify(data) });
+  const done = new Response("ok", { status: 200 });
+  const chatId = String(wq.chat?.id ?? wq.chat ?? "");
+  if (String(wq.from?.id) !== ownerUid || (chatId !== owner && chatId !== ownerUid)) {
+    await answer({ ok: 0, m: "owner only" });
+    return done;
+  }
+  const q = String(wq.data || "");
+  if (q === "refresh") {
+    const where = wq.inline_message_id
+      ? { inline_message_id: wq.inline_message_id }
+      : { chat_id: wq.chat?.id ?? wq.chat, message_id: wq.message_id };
+    const r = await tg(env, "editMessageWidgetData", { ...where, chat_data: packRuns(await fetchRuns(env)) });
+    await answer(r?.ok ? { ok: 1, m: "Updated" } : { ok: 0, m: "refresh failed" });
+    return done;
+  }
+  const run = /^run:([a-z0-9-]{1,48})$/.exec(q);
+  if (run) {
+    // chat_id is left out: the panel may live in the owner's DM while
+    // TELEGRAM_CHAT_ID is a group, and the repo-side route job re-checks
+    // chat_id against TELEGRAM_CHAT_ID. from_id is still re-checked there.
+    const res = await dispatch(env, "telegram-callback", { data: `run:${run[1]}`, from_id: wq.from?.id });
+    await answer(res.status === 200 ? { ok: 1, m: `Queued ${run[1]}` } : { ok: 0, m: "dispatch failed" });
+    return done;
+  }
+  await answer({ ok: 0, m: "unknown action" });
+  return done;
 }

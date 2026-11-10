@@ -11,6 +11,13 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Added
 
+- **Telegram private replies, a Details button and a `/panel` run widget (Bot API 10.4).** In
+  instant mode the webhook Worker now answers button taps with ephemeral replies only the tapper
+  sees, tells a non-owner group member privately that buttons are owner-only, and serves a new
+  global **📄 Details** button that shows the skill's full latest output to the tapper alone.
+  `/panel` sends an HTML widget with the latest run per skill plus Run and Refresh, answered by the
+  Worker through `widget_query`. The poller falls back to posting Details and a pointer for `/panel`.
+
 - **Internet Computer (ICP) skill pack adds three skills.** `canister-status` alerts on control-plane
   changes (new controller, module-hash upgrade, de-indexing), `sns-digest` posts an NNS and SNS proposal
   digest, and `icp-deploy-check` runs a static pre-deploy checklist over a local repo. Public reads are
