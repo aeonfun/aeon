@@ -130,7 +130,7 @@ It prints REPO (e.g. `your-org/your-instance`). Then URL = `https://github.com/<
 Append a metadata line to `memory/state/remotion-renders.jsonl`:
 
 ```json
-{"date":"${today}","brief":"<trimmed>","orientation":"landscape","scenes":3,"seconds":9.5,"path":"output/remotion/…​.mp4","url":"https://github.com/…","bytes":1740000}
+{"date":"${today}","brief":"<trimmed>","orientation":"landscape","scenes":3,"seconds":9.5,"path":"output/remotion/….mp4","url":"https://github.com/…","bytes":1740000}
 ```
 
 Copy the storyboard for reference: write the same JSON you wrote to `skills/remotion/project/props.json` to `memory/state/remotion-last-storyboard.json` with the Write tool (`cp` is not an allowed command). (The working `props.json` under the project is gitignored; the committed record + the MP4 under `output/remotion/` are what persist.)

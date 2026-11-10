@@ -233,6 +233,20 @@ LOW_PATTERNS=(
   '>[[:space:]]+/'
 )
 
+# Invisible characters: text the model reads but a reviewer never sees. Matched as
+# raw UTF-8 bytes under LC_ALL=C so it needs no grep -P and runs on BSD grep too.
+#   HIGH   Unicode TAG block U+E0000-E007F (ASCII smuggling: a whole hidden sentence)
+#   HIGH   bidi embedding/override/isolate U+202A-202E, U+2066-2069 (Trojan Source)
+#   MEDIUM zero-width U+200B-200C, U+2060-2064 (splits words past keyword rules)
+# Left out as harmless: U+FEFF (a leading BOM) and U+200D (the joiner inside emoji).
+# Subdivision flags (England, Scotland, Wales) are TAG sequences too, so a black flag
+# + 2-6 lowercase/digit tags + cancel tag is removed before matching; anything
+# longer, or any capital letter or space, is still a hidden sentence.
+HIDDEN_TAG=$'\xf3\xa0[\x80\x81]'
+TAG_FLAG=$'\xf0\x9f\x8f\xb4(\xf3\xa0\x80[\xb0-\xb9]|\xf3\xa0\x81[\xa1-\xba]){2,6}\xf3\xa0\x81\xbf'
+HIDDEN_BIDI=$'\xe2\x80[\xaa-\xae]|\xe2\x81[\xa6-\xa9]'
+HIDDEN_ZW=$'\xe2\x80[\x8b\x8c]|\xe2\x81[\xa0-\xa4]'
+
 # ---------- Scanner ----------
 
 TOTAL_PASS=0
@@ -283,6 +297,16 @@ scan_prose() {
   done
 }
 
+# scan_hidden <file> <label> <byte-pattern>  — one "L<n>: <label> ×<count>" line per
+# matching line. The matched text is never echoed: it is invisible, and for TAG
+# smuggling it is the payload itself. Same output contract as scan_tier.
+scan_hidden() {
+  local file="$1" label="$2" pattern="$3" line_num count
+  while IFS=: read -r line_num count; do
+    printf 'L%s: %s x%s [hidden characters]\n' "$line_num" "$label" "$count"
+  done < <(LC_ALL=C sed -E "s/$TAG_FLAG//g" "$file" 2>/dev/null | LC_ALL=C grep -noE "$pattern" | cut -d: -f1 | uniq -c | awk '{print $2":"$1}')
+}
+
 scan_file() {
   local file="$1"
   local skill_name
@@ -303,7 +327,10 @@ scan_file() {
   # (scan_prose, which drops defensive framing). Both feed the same highs array.
   while IFS= read -r _line; do highs+=("$_line");   done < <(scan_tier  "$file" "${HIGH_SINK_PATTERNS[@]}")
   while IFS= read -r _line; do highs+=("$_line");   done < <(scan_prose "$file" "${HIGH_INJECTION_PATTERNS[@]}")
+  while IFS= read -r _line; do highs+=("$_line");   done < <(scan_hidden "$file" "Unicode TAG chars (hidden ASCII text)" "$HIDDEN_TAG")
+  while IFS= read -r _line; do highs+=("$_line");   done < <(scan_hidden "$file" "bidi override chars (text reads differently than shown)" "$HIDDEN_BIDI")
   while IFS= read -r _line; do mediums+=("$_line"); done < <(scan_tier "$file" "${MEDIUM_PATTERNS[@]}")
+  while IFS= read -r _line; do mediums+=("$_line"); done < <(scan_hidden "$file" "zero-width chars" "$HIDDEN_ZW")
   while IFS= read -r _line; do lows+=("$_line");    done < <(scan_tier "$file" "${LOW_PATTERNS[@]}")
 
   # Determine result

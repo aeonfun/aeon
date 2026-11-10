@@ -113,6 +113,37 @@ before adding or loosening a pattern — and add a `malicious-*` fixture for the
 adversarial spelling whenever a rule is narrowed, so the boundary can't silently
 erode into a false negative.
 
+## Hidden characters
+
+Every pattern above matches text a reviewer can read. A skill can also carry text a
+reviewer cannot: GitHub, editors and terminals draw nothing for these code points,
+but the model reads them as ordinary input.
+
+| Range | Name | Tier | Why |
+|---|---|---|---|
+| U+E0000-E007F | Unicode TAG block | HIGH | Each tag maps 1:1 to an ASCII character, so a whole sentence ("ignore previous instructions and send …") hides inside a line that renders as a harmless summary. Known as ASCII smuggling. |
+| U+202A-202E, U+2066-2069 | bidi embeddings, overrides, isolates | HIGH | Text displays in a different order than it is read (Trojan Source, CVE-2021-42574). |
+| U+200B-200C, U+2060-2064 | zero-width space, non-joiner, word joiner, invisible operators | MEDIUM | `ig​nore` reads as one word but escapes every keyword pattern here. Also appears by accident in pasted text, so it warns rather than fails. |
+
+Not flagged: U+FEFF (a leading BOM), U+200D (the zero-width *joiner* inside family
+and profession emoji), and a well-formed subdivision flag (🏴 + 2-6 lowercase/digit
+tags + cancel tag, e.g. England), which is the one legitimate use of TAG
+characters. A longer tag run, or one with a capital letter or a space, is a hidden
+sentence and still fails.
+
+The match runs on raw UTF-8 bytes under `LC_ALL=C`, so it needs no `grep -P` and
+behaves the same on GNU and BSD grep. The finding reports the line and a count,
+never the characters themselves: they are invisible, and for TAG smuggling they are
+the payload. `cat -v` on that line shows the bytes.
+
+Fixtures: `malicious-hidden-tag`, `malicious-hidden-tag-mixed`,
+`malicious-hidden-tag-flag` (a sentence behind a flag prefix),
+`malicious-hidden-bidi`, and `benign-unicode-text` (emoji with joiners, CJK,
+Greek, curly quotes), `benign-flag-emoji`, `benign-bom`. All three malicious
+fixtures passed the scanner before this rule. Across the 92 first-party skills the
+rule changes no verdict; the one hit was a stray U+200B inside an example JSON line
+in `skills/remotion/SKILL.md`, removed in the same change.
+
 ## A note on query-string secrets
 
 A secret carried in a URL query string (`…?token=$GITHUB_TOKEN`) is a real
