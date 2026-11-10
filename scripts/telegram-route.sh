@@ -31,7 +31,7 @@ set -uo pipefail
 MODE="${1:-}"
 
 TG_API="https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN:-}"
-CALLBACK_ACTIONS="run snooze mute save dismiss schedule"
+CALLBACK_ACTIONS="run snooze mute save dismiss schedule details"
 
 # --- helpers ---------------------------------------------------------------
 
@@ -203,6 +203,11 @@ route_command() {
         send_tg "Type / to see available skills. Send /skillname to run one, or just message me in plain English."
       fi
       ;;
+    panel)
+      # The /panel widget needs a reply within 15 s of each tap, so only the
+      # instant-mode Worker serves it. The poller can only point there.
+      send_tg "The /panel widget needs instant mode (the Telegram webhook Worker). Setup: docs/telegram-instant.md"
+      ;;
     settings)
       local list; list=$(enabled_skills)
       [ -z "$list" ] && list="(none enabled)"
@@ -255,6 +260,21 @@ route_callback() {
       touch memory/saved.md
       printf -- '- %s\n' "${arg1:-$skill}" >> memory/saved.md
       log "saved ${arg1:-$skill}"
+      ;;
+    details)
+      # Poller mode only: the instant-mode Worker answers "Details" itself, as an
+      # ephemeral reply only the tapper sees. Here it can only post to the chat.
+      if ! [[ "$skill" =~ ^[a-z0-9-]+$ ]] || [ ! -s "output/.chains/${skill}.md" ]; then
+        send_tg "No saved output for /${skill//-/_} yet."
+        return 0
+      fi
+      local body; body=$(head -c 3600 "output/.chains/${skill}.md")
+      if [ "$(wc -c < "output/.chains/${skill}.md")" -gt 3600 ]; then
+        body="${body}
+
+... cut. Full output: output/.chains/${skill}.md in the repo"
+      fi
+      send_tg "$(printf '📄 Latest /%s output\n\n%s' "${skill//-/_}" "$body")"
       ;;
     dismiss)
       : ;;

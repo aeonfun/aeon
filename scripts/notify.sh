@@ -179,9 +179,11 @@ fi
 
 # --- Telegram reply_markup (computed in-run; needs the messages.yml state probe) ---
 # GLOBAL quick-action buttons: every skill notification gets a "Run again" +
-# "Schedule weekly" row, keyed to $SKILL_NAME so a tap re-runs it (callback
+# "Schedule weekly" + "Details" row, keyed to $SKILL_NAME so a tap re-runs it (callback
 # run:<skill>) or schedules it weekly (schedule:<skill>:weekly, handled in
-# scripts/telegram-route.sh). Skipped when there's no skill context, when the name is
+# scripts/telegram-route.sh). "Details" (details:<skill>) shows the skill's full
+# latest output; in instant mode the Worker sends it as an ephemeral reply only
+# the tapper sees, so a long report never floods a shared chat. Skipped when there's no skill context, when the name is
 # too long for callback_data's 64-byte budget, or on a force_reply prompt (Telegram
 # forbids inline buttons + force_reply on one message — the deliberate ask wins).
 #
@@ -227,7 +229,8 @@ GLOBAL_ROW=""
 if [ "$INBOUND_OK" = true ] && [ -n "${SKILL_NAME:-}" ] && [ -z "$FORCE_REPLY" ] && [ "${#SKILL_NAME}" -le 48 ]; then
   GLOBAL_ROW=$(jq -n --arg s "$SKILL_NAME" \
     '[{text:"🔁 Run again",       callback_data:("run:"+$s)},
-      {text:"📅 Schedule weekly", callback_data:("schedule:"+$s+":weekly")}]')
+      {text:"📅 Schedule weekly", callback_data:("schedule:"+$s+":weekly")},
+      {text:"📄 Details",         callback_data:("details:"+$s)}]')
 fi
 
 REPLY_MARKUP="null"

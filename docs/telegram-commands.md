@@ -51,15 +51,38 @@ Telegram caps the list at 100 commands; the setup workflow truncates + warns bey
 
 ### Global quick actions (automatic — no skill wiring)
 
-Every skill notification automatically carries two quick-action buttons — **🔁 Run
-again** and **📅 Schedule weekly** — keyed to the running skill (`$SKILL_NAME`).
+Every skill notification automatically carries three quick-action buttons — **🔁 Run
+again**, **📅 Schedule weekly** and **📄 Details** — keyed to the running skill (`$SKILL_NAME`).
 This is a global `notify` feature, not per-skill: `scripts/notify.sh` appends the
 row to any Telegram send. Tapping **Run again** re-dispatches the skill
 (`run:<skill>`); **Schedule weekly** enables it and sets a weekly cron in `aeon.yml`
-(`schedule:<skill>:weekly`), which the caller (the Messages workflow) commits. The
+(`schedule:<skill>:weekly`), which the caller (the Messages workflow) commits.
+**Details** (`details:<skill>`) shows the skill's full latest output
+(`output/.chains/<skill>.md`). The
 row is skipped when there is no skill context, when the skill name is too long to
 fit the 64-byte `callback_data` budget, or on a force-reply prompt (Telegram forbids
 inline buttons and `force_reply` on the same message).
+
+### Private replies and the run panel (instant mode, Bot API 10.4)
+
+Telegram only accepts these within **15 seconds** of a tap, so the
+[instant-mode Worker](telegram-instant.md) answers them itself. The 5-minute poller
+falls back as noted.
+
+- **Ephemeral replies.** After a tap, the Worker answers with a message only the
+  tapper sees: "Queued a new run of /skill", "Muted", and so on. In a group, a
+  non-owner who taps a button is told privately that only the owner can use it,
+  instead of nothing happening. Poller mode: no ack, as before.
+- **📄 Details.** The Worker reads the skill's latest output from the repo and shows
+  it to the tapper only (cut at ~3600 characters, with a link to the full file), so
+  a long report never floods a shared chat. Poller mode: posted to the chat.
+- **`/panel`.** Sends an HTML widget listing the latest run of up to 10 skills
+  (ok, failed, running), with **Run** per skill and **Refresh**. Telegram shows
+  widgets in private chats only, so `/panel` sent in the owner's group opens the panel in
+  the owner's DM with the bot (set `TELEGRAM_ALLOWED_USER_ID`, and start the bot once).
+  Taps inside the widget reach the Worker as `widget_query` updates. If you passed
+  `allowed_updates` to `setWebhook`, add `widget_query` to it. Poller mode: `/panel`
+  replies with a pointer to instant mode.
 
 ### Buttons follow the inbound workflow
 

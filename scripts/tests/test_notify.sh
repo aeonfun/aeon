@@ -155,8 +155,9 @@ TELEGRAM_BOT_TOKEN=x TELEGRAM_CHAT_ID=123 AEON_MESSAGES_WF_STATE=active SKILL_NA
   bash "$NOTIFY" "A normal skill digest long enough to clear the probe filter here" >/dev/null 2>&1
 p="$(payload)"
 { [ -n "$p" ] && jq -e '.reply_markup.inline_keyboard[-1][0].callback_data=="run:token-movers"' "$p" >/dev/null 2>&1 \
-  && jq -e '.reply_markup.inline_keyboard[-1][1].callback_data=="schedule:token-movers:weekly"' "$p" >/dev/null 2>&1; } \
-  && pass "global Run again + Schedule weekly buttons attached" || bad "global Run again + Schedule weekly buttons attached"
+  && jq -e '.reply_markup.inline_keyboard[-1][1].callback_data=="schedule:token-movers:weekly"' "$p" >/dev/null 2>&1 \
+  && jq -e '.reply_markup.inline_keyboard[-1][2].callback_data=="details:token-movers"' "$p" >/dev/null 2>&1; } \
+  && pass "global Run again + Schedule weekly + Details buttons attached" || bad "global Run again + Schedule weekly + Details buttons attached"
 
 # 13. skill --buttons rows are kept, with the global row appended beneath
 reset

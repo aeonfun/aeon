@@ -181,6 +181,29 @@ if [ "$before" = "$after" ] && grep -qi "unknown skill" "$CURL_LOG"; then
   pass "schedule unknown skill rejected, no aeon.yml write"
 else bad "schedule unknown skill rejected, no aeon.yml write"; fi
 
+# 16. callback details (poller mode) -> posts the saved output, no dispatch
+reset
+mkdir -p output/.chains
+printf 'Top movers today: BTC up\n' > output/.chains/token-movers.md
+run callback "details:token-movers"
+if ! grep -q "workflow run" "$GH_LOG" && grep -q "Top movers today" "$CURL_LOG" && grep -q "Latest /token_movers output" "$CURL_LOG"; then
+  pass "callback details -> saved output posted, no dispatch"
+else bad "callback details -> saved output posted, no dispatch"; fi
+
+# 17. callback details with no saved output -> told so, no dispatch
+reset
+run callback "details:pr-review"
+if ! grep -q "workflow run" "$GH_LOG" && grep -q "No saved output for /pr_review" "$CURL_LOG"; then
+  pass "callback details without output -> told, no dispatch"
+else bad "callback details without output -> told, no dispatch"; fi
+
+# 18. /panel in poller mode points at instant mode, no dispatch
+reset
+run command "/panel"
+if ! grep -q "workflow run" "$GH_LOG" && grep -q "needs instant mode" "$CURL_LOG"; then
+  pass "command /panel -> instant-mode hint, no dispatch"
+else bad "command /panel -> instant-mode hint, no dispatch"; fi
+
 rm -rf "$SANDBOX"
 echo "---"
 [ "$fail" = "0" ] && echo "ALL PASS" || echo "SOME FAILED"

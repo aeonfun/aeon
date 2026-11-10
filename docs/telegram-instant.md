@@ -24,5 +24,11 @@ In short:
    curl "https://api.telegram.org/bot<YOUR_TOKEN>/setWebhook?url=https://your-worker.workers.dev&secret_token=<YOUR_WEBHOOK_SECRET>"
    ```
 
+Instant mode also unlocks what Telegram must get an answer for within 15 seconds:
+private (ephemeral) replies to button taps, the **📄 Details** button shown only to the
+tapper, and the `/panel` run widget. See
+[private replies and the run panel](telegram-commands.md#private-replies-and-the-run-panel-instant-mode-bot-api-104).
+Redeploy the Worker after updating to pick them up.
+
 Once a webhook is active the poller detects it via `getWebhookInfo` and skips the
 Telegram branch, so polling and the webhook never conflict.
