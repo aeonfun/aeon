@@ -201,10 +201,19 @@ To read the richer metadata, verify the manifest and inspect its bytes:
 ```bash
 gh attestation verify output/.attest/<skill>-<run_id>.json --repo <owner>/<repo>
 cat output/.attest/<skill>-<run_id>.json
-# { "skill": "...", "model": "claude-opus-5-5", "mode": "read-only",
+# { "skill": "...", "model": "claude-sonnet-5-5", "model_requested": "claude-opus-4-8",
+#   "model_source": "reported", "gateway": "openrouter", "mode": "read-only",
 #   "trigger": "schedule", "commit": "<sha>", "run_id": "<id>",
 #   "output": { "path": "output/.attest/<skill>-<run_id>.md", "sha256": "<digest>" } }
 ```
+
+`model` is the model the run's own envelope reported (the adapter's `model`
+field, or for claude the `modelUsage` entry that wrote the most output).
+`model_requested` is what the config asked for, and `model_source` says which one
+`model` is: `reported`, or `requested` when the harness named nothing and the
+config value is all there is. A `requested` value is a request, not evidence of
+which model answered, since a gateway can remap it. It is still the harness's
+word and not signed by the provider.
 
 ### Why a run-scoped snapshot
 

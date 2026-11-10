@@ -1242,16 +1242,6 @@ jobs:
             else
               RH_RC=$?
             fi
-            if [ "$HARNESS" != "grok" ]; then
-              # Re-emit SKILL_MODEL (token-usage.csv, signed run manifest) with what
-              # ACTUALLY ran: the model the harness reports (codex: its session
-              # rollout), else RH_MODEL_ARG, else <harness>-default. Later writes win.
-              # Model-id charset only: later run: scripts interpolate it.
-              EFFECTIVE_MODEL=$(echo "$CLAUDE_OUTPUT" | jq -r '.model // empty | strings' 2>/dev/null || true)
-              [[ "$EFFECTIVE_MODEL" =~ ^[A-Za-z0-9._:/@+-]{1,100}$ ]] || EFFECTIVE_MODEL="${RH_MODEL_ARG:-$HARNESS-default}"
-              echo "SKILL_MODEL=$EFFECTIVE_MODEL" >> "$GITHUB_OUTPUT"
-              echo "::notice::effective model for $HARNESS: $EFFECTIVE_MODEL"   # no spaces: parsed by field
-            fi
             # run-harness's diagnostics are the only signal when a harness stalls;
             # surface them in the step log either way, not just on failure.
             tail -c 4000 /tmp/harness-stderr.txt >&2 || true
@@ -1270,6 +1260,11 @@ jobs:
               exit 1
             fi
           fi
+
+          # Record the model the run's envelope reports, not the one config asked
+          # for: a gateway can remap it. Writes SKILL_MODEL, SKILL_MODEL_REQUESTED
+          # and SKILL_MODEL_SOURCE (token-usage.csv, signed run manifest).
+          printf '%s' "$CLAUDE_OUTPUT" | bash scripts/effective-model.sh "$HARNESS" "$BASE_MODEL" "${RH_MODEL_ARG:-}" >> "$GITHUB_OUTPUT"
 
           # Extract and print the text result so logs still show skill output
           RESULT_TEXT=$(echo "$CLAUDE_OUTPUT" | jq -r '.result // empty')
@@ -1595,6 +1590,9 @@ jobs:
         env:
           SKILL_NAME: ${{ steps.skill.outputs.name }}
           SKILL_MODEL: ${{ steps.run.outputs.SKILL_MODEL }}
+          SKILL_MODEL_REQUESTED: ${{ steps.run.outputs.SKILL_MODEL_REQUESTED }}
+          SKILL_MODEL_SOURCE: ${{ steps.run.outputs.SKILL_MODEL_SOURCE }}
+          SKILL_GATEWAY: ${{ steps.run.outputs.GATEWAY }}
         run: |
           set -euo pipefail
           # Attest an IMMUTABLE, run-scoped snapshot — never the shared
@@ -1614,18 +1612,22 @@ jobs:
           jq -n \
             --arg skill   "$SKILL" \
             --arg model   "$SKILL_MODEL" \
+            --arg model_requested "$SKILL_MODEL_REQUESTED" \
+            --arg model_source    "$SKILL_MODEL_SOURCE" \
+            --arg gateway "$SKILL_GATEWAY" \
             --arg mode    "$MODE" \
             --arg trigger "${GITHUB_EVENT_NAME:-}" \
             --arg commit  "${GITHUB_SHA:-}" \
             --arg run_id  "${GITHUB_RUN_ID:-}" \
             --arg path    "$SNAPSHOT" \
             --arg sha     "$DIGEST" \
-            '{skill:$skill, model:$model, mode:$mode, trigger:$trigger,
+            '{skill:$skill, model:$model, model_requested:$model_requested,
+              model_source:$model_source, gateway:$gateway, mode:$mode, trigger:$trigger,
               commit:$commit, run_id:$run_id,
               output:{path:$path, sha256:$sha}}' > "$MANIFEST"
           echo "snapshot=$SNAPSHOT" >> "$GITHUB_OUTPUT"
           echo "manifest=$MANIFEST" >> "$GITHUB_OUTPUT"
-          echo "::notice::run manifest for ${SKILL}: model=${SKILL_MODEL} mode=${MODE} snapshot=${SNAPSHOT} sha256=${DIGEST}"
+          echo "::notice::run manifest for ${SKILL}: model=${SKILL_MODEL} (${SKILL_MODEL_SOURCE}) mode=${MODE} snapshot=${SNAPSHOT} sha256=${DIGEST}"
 
       - name: Attest skill execution
         if: steps.attest-gate.outputs.attest == 'true'
