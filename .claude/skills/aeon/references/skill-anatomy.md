@@ -1,10 +1,10 @@
 # How Aeon skills are actually written
 
-Surveyed across all 89 skills in `aeonfun/aeon`. Frequencies are real counts - match the dominant convention unless there's a reason not to. Bodies run 14-1228 lines (~221 median); a skill is a prompt, not a config file, and reads as prose.
+Surveyed across all 92 skills in `aeonfun/aeon`. Frequencies are real counts - match the dominant convention unless there's a reason not to. Bodies run 14-1228 lines (~221 median); a skill is a prompt, not a config file, and reads as prose.
 
 ## Frontmatter
 
-Near-universal - **all 89 skills** carry `name`, `description`, `category`, and `tags`; 81 also carry `title` (the other 8 fall back to the slug):
+Near-universal - **all 92 skills** carry `name`, `description`, `category`, and `tags`; 81 also carry `title` (the other 11 fall back to the slug):
 
 ```yaml
 name: my-skill       # the slug (matches the skills/<slug>/ directory)
@@ -117,7 +117,7 @@ There is **no network sandbox** - plain `curl` works for unauthenticated GETs.
 
 `memory/` is the durable state that survives between runs. Four conventions, in order of how often skills touch them:
 
-### `memory/logs/${today}.md` - the run log (71 of 89 skills)
+### `memory/logs/${today}.md` - the run log (73 of 92 skills)
 
 Every skill appends what it did, under **one** heading that is exactly its slug:
 
