@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "updated": "2026-11-08",
+  "updated": "2026-11-09",
   "description": "Machine-readable registry of community skill packs installable via bin/install-skill-pack. Mirrors the human-readable table in README.md.",
   "packs": [
     {
@@ -293,6 +293,27 @@
       "secrets_required": [],
       "capabilities": [
         "read_only",
+        "sends_notifications"
+      ]
+    },
+    {
+      "repo": "hypurr-inc/hyperliquid-cli",
+      "path": "aeon",
+      "name": "Hyperliquid CLI Pack",
+      "description": "Read-only Hyperliquid monitoring for Aeon, run through the hyperliquid CLI: a daily account and risk brief, and a watchlist monitor for 24h move and funding that reports each crossing once. No key.",
+      "author": "hypurr-inc",
+      "license": "MIT",
+      "homepage": "https://github.com/hypurr-inc/hyperliquid-cli",
+      "category": "crypto",
+      "trust_level": "community",
+      "skills": [
+        "hyperliquid-account-brief",
+        "hyperliquid-market-monitor"
+      ],
+      "secrets_required": [],
+      "capabilities": [
+        "read_only",
+        "external_api",
         "sends_notifications"
       ]
     }
