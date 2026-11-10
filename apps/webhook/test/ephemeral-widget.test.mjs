@@ -21,9 +21,24 @@ let calls = [];
 let skillOutput = "Full report: BTC up 4%.";
 let tgReply = () => ({ ok: true, result: {} });
 const runs = [
-  { display_title: "skill: token-movers", status: "completed", conclusion: "success", run_started_at: "2026-11-10T08:00:00Z" },
-  { display_title: "skill: token-movers (daily)", status: "completed", conclusion: "failure", run_started_at: "2026-11-09T08:00:00Z" },
-  { display_title: "skill: pr-review", status: "in_progress", conclusion: null, run_started_at: "2026-11-10T09:00:00Z" },
+  {
+    display_title: "skill: token-movers",
+    status: "completed",
+    conclusion: "success",
+    run_started_at: "2026-11-10T08:00:00Z",
+  },
+  {
+    display_title: "skill: token-movers (daily)",
+    status: "completed",
+    conclusion: "failure",
+    run_started_at: "2026-11-09T08:00:00Z",
+  },
+  {
+    display_title: "skill: pr-review",
+    status: "in_progress",
+    conclusion: null,
+    run_started_at: "2026-11-10T09:00:00Z",
+  },
   { display_title: "Messages", status: "completed", conclusion: "success", run_started_at: "2026-11-10T09:00:00Z" },
 ];
 
@@ -183,7 +198,16 @@ console.log("ok   - /panel from a non-owner is ignored");
 
 // 10. widget Refresh: edits the widget data and answers the query
 calls = [];
-await post({ widget_query: { id: "wq1", from: { id: 111 }, chat: { id: 111, type: "private" }, message_id: 9, type: { type: "data" }, data: "refresh" } });
+await post({
+  widget_query: {
+    id: "wq1",
+    from: { id: 111 },
+    chat: { id: 111, type: "private" },
+    message_id: 9,
+    type: { type: "data" },
+    data: "refresh",
+  },
+});
 const edit = tgCalls("editMessageWidgetData");
 assert.equal(edit.length, 1);
 assert.equal(edit[0].body.message_id, 9);
@@ -196,7 +220,15 @@ console.log("ok   - widget Refresh edits chat_data and answers the query");
 
 // 11. widget Run: dispatches run:<skill> without chat_id, answers ok
 calls = [];
-await post({ widget_query: { id: "wq2", from: { id: 111 }, chat: { id: 111, type: "private" }, message_id: 9, data: "run:pr-review" } });
+await post({
+  widget_query: {
+    id: "wq2",
+    from: { id: 111 },
+    chat: { id: 111, type: "private" },
+    message_id: 9,
+    data: "run:pr-review",
+  },
+});
 const d = dispatches();
 assert.equal(d.length, 1);
 assert.equal(d[0].body.event_type, "telegram-callback");
@@ -208,8 +240,18 @@ console.log("ok   - widget Run dispatches the skill and answers ok");
 
 // 12. widget queries from a non-owner, or with junk data, never dispatch
 calls = [];
-await post({ widget_query: { id: "wq3", from: { id: 222 }, chat: { id: 222, type: "private" }, message_id: 1, data: "run:pr-review" } });
-await post({ widget_query: { id: "wq4", from: { id: 111 }, chat: { id: 111, type: "private" }, message_id: 1, data: "run:../x" } });
+await post({
+  widget_query: {
+    id: "wq3",
+    from: { id: 222 },
+    chat: { id: 222, type: "private" },
+    message_id: 1,
+    data: "run:pr-review",
+  },
+});
+await post({
+  widget_query: { id: "wq4", from: { id: 111 }, chat: { id: 111, type: "private" }, message_id: 1, data: "run:../x" },
+});
 assert.equal(dispatches().length, 0);
 ans = tgCalls("answerWidgetQuery").map(c => JSON.parse(c.body.data));
 assert.deepEqual(

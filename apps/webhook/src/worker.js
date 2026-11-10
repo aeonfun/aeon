@@ -387,10 +387,10 @@ const githubHeaders = env => ({
 // aeon.yml after every run). null when there is none or GitHub is unreachable.
 async function fetchSkillOutput(env, skill) {
   try {
-    const res = await fetch(
-      `https://api.github.com/repos/${env.GITHUB_REPO}/contents/output/.chains/${skill}.md`,
-      { headers: { ...githubHeaders(env), Accept: "application/vnd.github.raw+json" }, signal: AbortSignal.timeout(8000) },
-    );
+    const res = await fetch(`https://api.github.com/repos/${env.GITHUB_REPO}/contents/output/.chains/${skill}.md`, {
+      headers: { ...githubHeaders(env), Accept: "application/vnd.github.raw+json" },
+      signal: AbortSignal.timeout(8000),
+    });
     return res.ok ? await res.text() : null;
   } catch {
     return null;
