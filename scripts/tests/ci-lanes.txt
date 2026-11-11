@@ -110,3 +110,4 @@
 8 | ICP skill-pack parser and state tests | node scripts/tests/test_icp_skill_pack.mjs
 
 1 | filing-registry sync-with-change (last_synced) | bash scripts/tests/test_filing_registry_sync.sh
+2 | effective-model unit tests | bash scripts/tests/test_effective_model.sh

@@ -94,7 +94,8 @@ function knownHarnessForModel(model, modelHints) {
   if (exact?.size > 1) return null;
 
   // `<harness>-default` is emitted by the adapter when a harness runs on its
-  // native default model (aeon.yml: EFFECTIVE_MODEL="${RH_MODEL_ARG:-$HARNESS-default}").
+  // native default model (aeon.yml: MODEL_REQUESTED="${RH_MODEL_ARG:-$HARNESS-default}",
+  // kept by scripts/effective-model.sh when the harness reports no model).
   // Validate the captured name against the resolve-harness.sh allowlist so a row is
   // never attributed to a non-harness. Do not broaden without a matching workflow
   // invariant and a test.
@@ -102,7 +103,8 @@ function knownHarnessForModel(model, modelHints) {
   if (nativeDefault && HARNESSES.has(nativeDefault[1])) return nativeDefault[1];
 
   // Family aliases follow what each harness actually writes as its model
-  // (EFFECTIVE_MODEL = resolve-harness.sh's MODEL_ARG): codex forwards a bare
+  // (scripts/effective-model.sh: the model the run reported, else
+  // resolve-harness.sh's MODEL_ARG): codex forwards a bare
   // OpenRouter id (openai/...), pi prefixes it with openrouter/, cursor forwards
   // its own bare ids (`auto`, its default router, or older gpt-5.1 rows), and
   // hermes forwards `default` (its configured provider). vibe/kimi never forward an id (they write `<harness>-default`),
