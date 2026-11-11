@@ -67,10 +67,14 @@ check "codex reports over its default"    codex  claude-opus-4-8 ""             
 check "invalid request becomes unknown"   claude 'bad id;x' ""                  '{"result":"ok"}' unknown unknown requested
 check "empty base model becomes unknown"  claude ""      ""                     '{"result":"ok"}' unknown unknown requested
 
-# the warning appears exactly when nothing was reported
-warn=$(printf '%s' '{"result":"ok"}' | bash "$SCRIPT" pi claude-opus-4-8 "" 2>&1 >/dev/null | grep -c '^::warning::pi reported no model')
-quiet=$(printf '%s' '{"model":"gpt-6-sol"}' | bash "$SCRIPT" codex claude-opus-4-8 "" 2>&1 >/dev/null | grep -c '^::warning::')
-if [ "$warn" = 1 ] && [ "$quiet" = 0 ]; then pass=$((pass+1)); else fail=$((fail+1)); echo "FAIL: warning only when no model reported (warn=$warn quiet=$quiet)"; fi
+check "request written with a window suffix" claude 'claude-opus-4-8[1m]' ""    '{"result":"ok"}' claude-opus-4-8 claude-opus-4-8 requested
+
+# the "reported no model" note appears exactly when nothing was reported, and it
+# is a notice: a warning would mark every such run as a problem on the dashboard
+note=$(printf '%s' '{"result":"ok"}' | bash "$SCRIPT" pi claude-opus-4-8 "" 2>&1 >/dev/null | grep -c '^::notice::pi reported no model')
+quiet=$(printf '%s' '{"model":"gpt-6-sol"}' | bash "$SCRIPT" codex claude-opus-4-8 "" 2>&1 >/dev/null | grep -c 'reported no model')
+warns=$(for e in '{"result":"ok"}' '{"model":"gpt-6-sol"}'; do printf '%s' "$e" | bash "$SCRIPT" pi claude-opus-4-8 "" 2>&1 >/dev/null; done | grep -c '^::warning::')
+if [ "$note" = 1 ] && [ "$quiet" = 0 ] && [ "$warns" = 0 ]; then pass=$((pass+1)); else fail=$((fail+1)); echo "FAIL: no-model notice only when no model reported, never a warning (note=$note quiet=$quiet warns=$warns)"; fi
 
 # The workflow must call the helper with the harness, base model and model arg,
 # and append its output to GITHUB_OUTPUT. Pull that call out of aeon.yml and run

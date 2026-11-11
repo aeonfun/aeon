@@ -213,7 +213,8 @@ field, or for claude the `modelUsage` entry that wrote the most output).
 `model` is: `reported`, or `requested` when the harness named nothing and the
 config value is all there is. A `requested` value is a request, not evidence of
 which model answered, since a gateway can remap it. It is still the harness's
-word and not signed by the provider.
+word and not signed by the provider. `gateway` is the provider a claude run went
+through; for every other harness it is just the harness name.
 
 ### Why a run-scoped snapshot
 

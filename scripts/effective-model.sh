@@ -6,7 +6,7 @@
 #   SKILL_MODEL=<id>
 #   SKILL_MODEL_REQUESTED=<id>
 #   SKILL_MODEL_SOURCE=<reported|requested>
-# and a ::notice:: (plus a ::warning:: when nothing was reported) on stderr.
+# and a ::notice:: (plus a second one when nothing was reported) on stderr.
 #
 # The requested model is what the config asked for: the base model for claude
 # and grok, the harness's own model arg for the adapter harnesses, else
@@ -51,8 +51,10 @@ reported=$(jq -r '
   end' 2>/dev/null || true)
 
 # Claude Code can key a model with its context window, e.g. claude-opus-4-8[1m].
-# The window is not part of the model's name; drop it.
+# The window is not part of the model's name; drop it. Same for a config model
+# written that way, so the request is not thrown away as "unknown".
 if [[ "$reported" =~ ^(.+)\[[A-Za-z0-9]+\]$ ]]; then reported="${BASH_REMATCH[1]}"; fi
+if [[ "$requested" =~ ^(.+)\[[A-Za-z0-9]+\]$ ]]; then requested="${BASH_REMATCH[1]}"; fi
 
 valid_id "$requested" || requested="unknown"
 model="$requested" source=requested
@@ -61,5 +63,7 @@ if [ -n "$reported" ] && valid_id "$reported"; then model="$reported" source=rep
 printf 'SKILL_MODEL=%s\nSKILL_MODEL_REQUESTED=%s\nSKILL_MODEL_SOURCE=%s\n' "$model" "$requested" "$source"
 echo "::notice::effective model for $harness: $model" >&2   # no spaces: parsed by field
 if [ "$source" = requested ]; then
-  echo "::warning::$harness reported no model; recording the requested one ($model), which may not be what ran" >&2
+  # A notice, not a warning: most harnesses never report a model, and the
+  # dashboard lists every warning line as a problem.
+  echo "::notice::$harness reported no model; recording the requested one ($model), which may not be what ran" >&2
 fi

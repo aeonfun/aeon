@@ -108,11 +108,13 @@ AppArmor sysctl (§7).
 **Modified — `Run`.** New leading branch
 `if [ "$HARNESS" != "claude" ] && [ "$HARNESS" != "grok" ]` that pipes the prompt
 to `run-harness "$HARNESS" --mode "$SKILL_MODE" --allowed-tools "$ALLOWED"
---timeout 900 [--model $RH_MODEL_ARG] [--mcp-config .mcp.json]`. It re-emits
-`SKILL_MODEL` with the model that **actually ran** (aeon's `BASE_MODEL` is a
-claude-*/grok-* id these CLIs can't resolve — leaving it would file the run's
-tokens and the signed manifest under a model that never executed). The claude
-cascade and grok branch below it are untouched.
+--timeout 900 [--model $RH_MODEL_ARG] [--mcp-config .mcp.json]`. After the harness call, for every harness,
+`scripts/effective-model.sh` re-emits `SKILL_MODEL` with the model the run's
+envelope **reported**, else the requested one (`RH_MODEL_ARG`, else
+`<harness>-default`), plus `SKILL_MODEL_REQUESTED` and `SKILL_MODEL_SOURCE`
+(aeon's `BASE_MODEL` is a claude-*/grok-* id these CLIs can't resolve; leaving
+it would file the run's tokens and the signed manifest under a model that never
+executed). The claude cascade and grok branch below it are untouched.
 
 **Modified — three gates flip from `!= 'grok'` to `== 'claude'`:**
 

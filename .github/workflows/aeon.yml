@@ -1265,6 +1265,8 @@ jobs:
           # for: a gateway can remap it. Writes SKILL_MODEL, SKILL_MODEL_REQUESTED
           # and SKILL_MODEL_SOURCE (token-usage.csv, signed run manifest).
           printf '%s' "$CLAUDE_OUTPUT" | bash scripts/effective-model.sh "$HARNESS" "$BASE_MODEL" "${RH_MODEL_ARG:-}" >> "$GITHUB_OUTPUT"
+          # Same value for the Token usage notice below (the helper's line is the last one).
+          EFFECTIVE_MODEL=$(sed -n 's/^SKILL_MODEL=//p' "$GITHUB_OUTPUT" | tail -1)
 
           # Extract and print the text result so logs still show skill output
           RESULT_TEXT=$(echo "$CLAUDE_OUTPUT" | jq -r '.result // empty')

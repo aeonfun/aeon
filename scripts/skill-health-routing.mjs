@@ -103,7 +103,8 @@ function knownHarnessForModel(model, modelHints) {
   if (nativeDefault && HARNESSES.has(nativeDefault[1])) return nativeDefault[1];
 
   // Family aliases follow what each harness actually writes as its model
-  // (EFFECTIVE_MODEL = resolve-harness.sh's MODEL_ARG): codex forwards a bare
+  // (scripts/effective-model.sh: the model the run reported, else
+  // resolve-harness.sh's MODEL_ARG): codex forwards a bare
   // OpenRouter id (openai/...), pi prefixes it with openrouter/, cursor forwards
   // its own bare ids (`auto`, its default router, or older gpt-5.1 rows), and
   // hermes forwards `default` (its configured provider). vibe/kimi never forward an id (they write `<harness>-default`),

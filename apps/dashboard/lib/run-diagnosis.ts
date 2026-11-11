@@ -52,7 +52,7 @@ const USAGE_NOTICE = /^(##\[notice\]|::notice::)Token usage\b.*\binput:\s*\d+/
 // The Run step prints this once it has picked the harness.
 const HARNESS_BANNER = /^Using harness:\s*([a-z]+)\b/
 // Fallback when the banner is missing: "::notice::effective model for X: M",
-// printed after the harness call (every harness but grok).
+// printed after the harness call by scripts/effective-model.sh (every harness).
 const HARNESS_NOTICE = /^(?:##\[notice\]|::notice::)effective model for ([a-z]+):/
 
 interface LogLine {
