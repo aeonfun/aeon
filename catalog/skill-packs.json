@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "updated": "2026-11-08",
+  "updated": "2026-11-09",
   "description": "Machine-readable registry of community skill packs installable via bin/install-skill-pack. Mirrors the human-readable table in README.md.",
   "packs": [
     {
@@ -293,6 +293,27 @@
       "secrets_required": [],
       "capabilities": [
         "read_only",
+        "sends_notifications"
+      ]
+    },
+    {
+      "repo": "bowmark-ai/skill",
+      "path": "aeon",
+      "name": "Bowmark Pack",
+      "description": "Scheduled reads of live websites through Bowmark: watch any page and get told what changed",
+      "author": "bowmark-ai",
+      "license": "MIT",
+      "homepage": "https://www.bowmark.ai",
+      "category": "basics",
+      "trust_level": "community",
+      "skills": [
+        "bowmark-page-watch"
+      ],
+      "secrets_required": [
+        "BOWMARK_API_KEY"
+      ],
+      "capabilities": [
+        "external_api",
         "sends_notifications"
       ]
     }
