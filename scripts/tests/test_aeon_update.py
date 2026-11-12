@@ -268,6 +268,62 @@ class AeonUpdateTest(unittest.TestCase):
         self.assertEqual([p["path"] for p in state["pending_conflicts"]], ["scripts/mine.sh"])
         self.assertEqual(state["applied"], {"added": 1, "updated": 2, "merged": 0, "deleted": 0})
 
+    def test_keep_local(self):
+        """Paths on the instance's keep_local list are never conflicts again.
+
+        Before: rewritten docs and files the instance deleted on purpose were CONFLICT
+        on every sync and pending_conflicts only grew (aeon-agent 14, miroshark-aeon
+        25), burying the workflow and harness drift that needs a human.
+        """
+        cust = lambda s: LINES.replace("line 4\n", f"line 4 {s}\n")  # noqa: E731
+        paths = ["CHANGELOG.md", "AGENTS.md", "docs/setup.md", "docs/deep/guide.md",
+                 "scripts/gone.sh", "harness-adapter/harnesses.json", "skills/dropped/SKILL.md"]
+        self.git(self.root, "init", "-q", "-b", "main", str(self.up))
+        self.write(self.up, {**{p: LINES for p in paths}, "aeon.yml": "skills:\n"})
+        self.git(self.up, "add", "-A")
+        self.git(self.up, "commit", "-qm", "base")
+        base = self.git(self.up, "rev-parse", "HEAD")
+        self.git(self.root, "clone", "-q", str(self.up), str(self.inst))
+        self.write(self.up, {p: cust("upstream") for p in paths})
+        self.git(self.up, "commit", "-qam", "upstream edits")
+        head = self.git(self.up, "rev-parse", "HEAD")
+        self.write(self.inst, {
+            **{p: cust("operator") for p in paths},
+            "scripts/gone.sh": None, "skills/dropped/SKILL.md": None,
+            "memory/topics/aeon-update-state.json": {
+                "baseline_sha": base,
+                "keep_local": ["CHANGELOG.md", "docs/**", "scripts/gone.sh", "skills/dropped/", 7, ""],
+                "pending_conflicts": [
+                    {"path": "CHANGELOG.md", "reason": "operator-customized"},
+                    {"path": "scripts/gone.sh", "reason": "deleted-locally"},
+                    {"path": "docs/old.md", "reason": "deleted-locally"},
+                ],
+            },
+        })
+        self.git(self.inst, "add", "-A")
+        self.git(self.inst, "commit", "-qm", "instance docs + deletions")
+
+        rc, plan, err = self.tool("plan", "--upstream", "acme/aeon", "--baseline", base, "--head", head)
+        self.assertEqual(rc, 0, err)
+        self.assertEqual(sorted(plan["kept_local"]), ["CHANGELOG.md", "docs/deep/guide.md", "docs/setup.md",
+                                                      "scripts/gone.sh", "skills/dropped/SKILL.md"])
+        # workflow/harness drift first, instance docs last
+        self.assertEqual([c["path"] for c in plan["conflicts"]], ["harness-adapter/harnesses.json", "AGENTS.md"])
+        self.assertEqual([p["path"] for p in plan["pending_conflicts"]], ["harness-adapter/harnesses.json", "AGENTS.md"])
+        self.assertNotIn("KEEP-LOCAL", plan["clean"])
+
+        self.git(self.inst, "checkout", "-qb", f"aeon-update/sync-{head[:7]}")
+        rc, res, err = self.tool("apply")
+        self.assertEqual(rc, 0, err)
+        self.assertEqual(res["status"], "AEON_UPDATE_MANUAL_ONLY")
+        self.assertEqual(self.git(self.inst, "status", "--porcelain"), "", "kept paths are never written")
+        self.assertFalse((self.inst / "scripts/gone.sh").exists())
+
+        # in sync: a kept path is dropped from the carried list too
+        rc, out, err = self.tool("plan", "--upstream", "acme/aeon", "--baseline", head, "--head", head)
+        self.assertEqual((rc, out["status"]), (0, "AEON_UPDATE_IN_SYNC"), err)
+        self.assertEqual(out["pending_conflicts"], [])
+
     def test_in_sync_and_unreachable(self):
         self.build()
         rc, out, _ = self.tool("plan", "--upstream", "acme/aeon", "--baseline", self.head, "--head", self.head)
