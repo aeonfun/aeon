@@ -4,14 +4,15 @@ import { discover, registerClient, makePkce, makeState, authorizeUrl, type Token
 import { pendingFlows, storeSecrets, OAUTH_TIMEOUT_MS, type PendingFlow } from '@/lib/mcp-oauth-server'
 import { openBrowser } from '@/lib/open-browser'
 
-// POST /api/mcp-auth — start (and complete) the OAuth Authorization Code + PKCE
-// flow for an MCP server, mirroring app/api/grok-auth's one-click UX: discover the
-// server's auth endpoints, register a client (or use a provided client_id), open
-// the operator's browser to authorize, wait for the callback to exchange the code,
-// then persist the tokens as repo secrets and wire the server into .mcp.json.
-//
-// Body: { slug, url, name?, scopes?, clientId? }. The request holds open until the
-// browser callback resolves (or OAUTH_TIMEOUT_MS elapses) — same as grok login.
+// POST /api/mcp-auth — OAuth Authorization Code + PKCE connect for an MCP server,
+// in two phases so the authorize URL is surfaced even when the browser can't open
+// itself (a headless, remote, or sandboxed host where `open`/`xdg-open` is a no-op):
+//   begin  { slug, url, name?, scopes?, clientId? } → registers the pending flow,
+//          opens the operator's browser, and returns { state, authorizeUrl } at once.
+//   await  { awaitState } → waits for the callback to exchange the code (up to
+//          OAUTH_TIMEOUT_MS), persists the tokens as secrets, and returns the server.
+// Splitting the wait out lets the panel show a "didn't open? authorize here" link
+// during the hold instead of spinning on "Connecting…" with no way through.
 export async function POST(request: Request) {
   try {
     const notReady = requireGh()
@@ -23,7 +24,12 @@ export async function POST(request: Request) {
       name?: string
       scopes?: string[]
       clientId?: string
+      awaitState?: string
     }
+
+    const awaitState = (body.awaitState || '').trim()
+    if (awaitState) return awaitFlow(awaitState)
+
     const slug = (body.slug || '').trim()
     const url = (body.url || '').trim()
     const name = (body.name || slug).trim()
@@ -56,51 +62,84 @@ export async function POST(request: Request) {
       clientSecret = reg.client_secret
     }
 
-    // 4. PKCE + state, then open the browser and wait for the callback.
+    // 4. PKCE + state. Register the pending flow (its promise is resolved by the
+    //    callback), open the browser, and return the authorize URL — the actual
+    //    wait happens in the second (awaitState) request.
     const { verifier, challenge } = makePkce()
     const state = makeState()
     const scopes = body.scopes?.length ? body.scopes : disc.metadata.scopes_supported
 
-    let flow!: PendingFlow
-    const tokens = await new Promise<TokenSet>((resolve, reject) => {
-      const timer = setTimeout(() => {
-        pendingFlows.delete(state)
-        reject(new Error('Timed out waiting for authorization. Approve in the browser, then click Connect again.'))
-      }, OAUTH_TIMEOUT_MS)
-      flow = {
-        slug,
-        name,
-        url,
-        tokenEndpoint: disc.metadata.token_endpoint,
-        clientId,
-        clientSecret,
-        verifier,
-        redirectUri,
-        resource: disc.resource,
-        resolve,
-        reject,
-        timer,
-      }
-      pendingFlows.set(state, flow)
-      openBrowser(
-        authorizeUrl({
-          metadata: disc.metadata,
-          clientId,
-          redirectUri,
-          challenge,
-          state,
-          resource: disc.resource,
-          scopes,
-        }),
-      )
+    let resolve!: (t: TokenSet) => void
+    let reject!: (e: Error) => void
+    const promise = new Promise<TokenSet>((res, rej) => {
+      resolve = res
+      reject = rej
     })
+    // If the timer rejects before an awaiter attaches (operator closed the tab and
+    // never finalized), don't let it surface as an unhandled promise rejection.
+    promise.catch(() => {})
 
-    // 5. Persist tokens as secrets; hand the server descriptor back for the panel
-    //    to add via its normal save path.
+    const timer = setTimeout(() => {
+      pendingFlows.delete(state)
+      reject(new Error('Timed out waiting for authorization. Approve in the browser, then click Connect again.'))
+    }, OAUTH_TIMEOUT_MS)
+
+    const flow: PendingFlow = {
+      slug,
+      name,
+      url,
+      tokenEndpoint: disc.metadata.token_endpoint,
+      clientId,
+      clientSecret,
+      verifier,
+      redirectUri,
+      resource: disc.resource,
+      resolve,
+      reject,
+      promise,
+      timer,
+    }
+    pendingFlows.set(state, flow)
+
+    const authorize = authorizeUrl({
+      metadata: disc.metadata,
+      clientId,
+      redirectUri,
+      challenge,
+      state,
+      resource: disc.resource,
+      scopes,
+    })
+    openBrowser(authorize)
+
+    return NextResponse.json({ ok: true, slug, state, authorizeUrl: authorize })
+  } catch (error: unknown) {
+    return errorResponse(error, 'Failed to connect the MCP server')
+  }
+}
+
+// Phase 2: wait for the browser callback to resolve the pending flow, then persist
+// the captured tokens as secrets and return the .mcp.json descriptor for the panel.
+// The flow reference is taken up front, so the callback deleting the map entry mid-
+// wait is safe.
+async function awaitFlow(state: string): Promise<Response> {
+  const flow = pendingFlows.get(state)
+  if (!flow) {
+    return NextResponse.json(
+      {
+        error:
+          'This authorization is no longer pending — it may have timed out or been ' +
+          'started elsewhere. Click Connect again.',
+      },
+      { status: 410 },
+    )
+  }
+  try {
+    const tokens = await flow.promise
     const { durable, server } = storeSecrets(flow, tokens)
     return NextResponse.json({
       ok: true,
-      slug,
+      slug: flow.slug,
       server,
       durable,
       ...(durable

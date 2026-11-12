@@ -84,6 +84,9 @@ export function McpPanel({
   // secrets and returns the server descriptor to add. Per-slug busy + error.
   const [oauthBusy, setOauthBusy] = useState<string | null>(null)
   const [oauthError, setOauthError] = useState('')
+  // The authorize URL from the begin phase, shown as a manual fallback while the
+  // flow waits — so a host where the browser didn't auto-open isn't a dead end.
+  const [oauthFallback, setOauthFallback] = useState<string | null>(null)
 
   // The operator never types a secret name. They paste the bearer token (which
   // IS the secret); tokenVar (lib/mcp-catalog) derives the env-var to store it
@@ -163,11 +166,26 @@ export function McpPanel({
     const slug = draft[f.slug] ? `${f.slug}-mcp` : f.slug
     setOauthBusy(f.slug)
     setOauthError('')
+    setOauthFallback(null)
     try {
-      const res = await fetch('/api/mcp-auth', {
+      // Phase 1 — begin: opens the browser and returns the state + authorize URL.
+      const begin = await fetch('/api/mcp-auth', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ slug, url: f.url, name: f.name, scopes: f.oauthScopes, clientId: f.oauthClientId }),
+      })
+      const started = (await begin.json().catch(() => ({}))) as McpAuthResponse
+      if (!begin.ok || !started.ok || !started.state) {
+        throw new Error(started.error || `Connect failed (${begin.status})`)
+      }
+      // Surface the URL in case the browser didn't open (headless/remote host).
+      if (started.authorizeUrl) setOauthFallback(started.authorizeUrl)
+
+      // Phase 2 — await: hold until the callback exchanges the code, then store.
+      const res = await fetch('/api/mcp-auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ awaitState: started.state }),
       })
       const data = (await res.json().catch(() => ({}))) as McpAuthResponse
       if (!res.ok || !data.ok) throw new Error(data.error || `Connect failed (${res.status})`)
@@ -180,6 +198,7 @@ export function McpPanel({
       setOauthError(e instanceof Error ? e.message : 'OAuth connect failed')
     } finally {
       setOauthBusy(null)
+      setOauthFallback(null)
     }
   }
 
@@ -278,6 +297,19 @@ export function McpPanel({
             )
           })}
         </div>
+        {oauthBusy && oauthFallback && (
+          <p className="mt-3 text-[11px] font-mono text-primary-40">
+            {"browser didn't open? "}
+            <a
+              href={oauthFallback}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-aeon-green underline"
+            >
+              authorize here
+            </a>
+          </p>
+        )}
         {oauthError && <p className="mt-3 text-[11px] font-mono text-aeon-red">{oauthError}</p>}
         {/* Secrets-PAT setup section. OAuth providers rotate their refresh token
             on every run; the runner can only save each rotation back if a

@@ -272,6 +272,10 @@ export interface McpAuthResponse {
   durable?: boolean
   warning?: string
   error?: string
+  // Begin-phase fields: `authorizeUrl` is surfaced as a manual fallback (if the
+  // browser didn't open), and `state` is echoed back to finalize the flow.
+  authorizeUrl?: string
+  state?: string
 }
 
 // GET /api/soul/examples - the gallery people available to install.

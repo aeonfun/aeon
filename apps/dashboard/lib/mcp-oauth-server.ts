@@ -19,6 +19,9 @@ export interface PendingFlow {
   resource: string
   resolve: (t: TokenSet) => void
   reject: (e: Error) => void
+  // Settles when the callback exchanges the code (or the timer fires). Held by the
+  // flow so the browser-open can be returned to the panel before the wait begins.
+  promise: Promise<TokenSet>
   timer: ReturnType<typeof setTimeout>
 }
 
