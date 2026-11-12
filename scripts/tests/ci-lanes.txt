@@ -120,3 +120,4 @@
 8 | aeon-compute provider interface tests | python3 scripts/tests/test_compute_providers.py
 9 | aeon-compute vastai normalizer tests | python3 scripts/tests/test_compute_vastai.py
 10 | aeon-compute discovery orchestrator tests | python3 scripts/tests/test_compute_discover.py
+1 | aeon-compute primeintellect normalizer tests | python3 scripts/tests/test_compute_primeintellect.py

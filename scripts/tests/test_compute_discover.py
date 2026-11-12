@@ -29,6 +29,10 @@ class TestBuildProvider(unittest.TestCase):
         with mock.patch.dict(os.environ, {"VAST_API_KEY": "k"}, clear=False):
             self.assertEqual(D.build_provider("vastai").name, "vastai")
 
+    def test_primeintellect(self):
+        with mock.patch.dict(os.environ, {"PRIME_INTELLECT_API_KEY": "k"}, clear=False):
+            self.assertEqual(D.build_provider("primeintellect").name, "primeintellect")
+
     def test_unknown_raises(self):
         with self.assertRaises(ValueError):
             D.build_provider("nope")

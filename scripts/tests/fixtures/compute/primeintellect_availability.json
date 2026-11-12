@@ -1,0 +1,54 @@
+{
+  "_synthetic": true,
+  "_note": "Synthetic, schema-faithful Prime Intellect /api/v1/availability/gpus sample. NOT real market data; shaped to the documented response (docs.primeintellect.ai, verified 2026-11-12) so the normalizer can be tested offline.",
+  "items": [
+    {
+      "cloudId": "NVIDIA H100 PCIe",
+      "gpuType": "H100_80GB",
+      "socket": "PCIe",
+      "provider": "runpod",
+      "region": "united_states",
+      "dataCenter": "US-KS-2",
+      "country": "US",
+      "gpuCount": 2,
+      "gpuMemory": 80,
+      "disk": {"minCount": 80, "defaultCount": 200, "maxCount": 1000, "pricePerUnit": 0.00014, "step": 1},
+      "vcpu": {"defaultCount": 32},
+      "memory": {"defaultCount": 251},
+      "stockStatus": "Low",
+      "security": "secure_cloud",
+      "prices": {"onDemand": 2.69, "isVariable": false, "currency": "USD"},
+      "images": ["ubuntu_22_cuda_12"]
+    },
+    {
+      "cloudId": "NVIDIA A100 SXM",
+      "gpuType": "A100_80GB",
+      "socket": "SXM",
+      "provider": "lambda",
+      "region": "europe_west",
+      "dataCenter": "EU-DE-1",
+      "gpuCount": 1,
+      "gpuMemory": 80,
+      "vcpu": {"defaultCount": 16},
+      "stockStatus": "High",
+      "prices": {"currency": "USD"}
+    },
+    {
+      "cloudId": "NVIDIA H200",
+      "gpuType": "H200",
+      "socket": "SXM",
+      "provider": "crusoe",
+      "region": "united_states",
+      "dataCenter": "US-TX-3",
+      "country": "US",
+      "gpuCount": 8,
+      "gpuMemory": 141,
+      "disk": {"defaultCount": 1000},
+      "vcpu": {"defaultCount": 192},
+      "memory": {"defaultCount": 2000},
+      "stockStatus": "None",
+      "prices": {"onDemand": 3.5, "isVariable": false, "currency": "USD"}
+    }
+  ],
+  "totalCount": 3
+}

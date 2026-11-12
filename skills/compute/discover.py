@@ -28,10 +28,11 @@ import matching
 import state as state_store
 from failures import ComputeError
 from mock_provider import MockProvider
+from primeintellect_provider import PrimeIntellectProvider
 from provider_base import ProviderAdapter
 from vastai_provider import VastAiProvider
 
-PROVIDERS = ("mock", "vastai")
+PROVIDERS = ("mock", "vastai", "primeintellect")
 
 
 def build_provider(name: str, **kwargs: Any) -> ProviderAdapter:
@@ -39,6 +40,8 @@ def build_provider(name: str, **kwargs: Any) -> ProviderAdapter:
         return MockProvider()
     if name == "vastai":
         return VastAiProvider.from_env(**kwargs)
+    if name == "primeintellect":
+        return PrimeIntellectProvider.from_env(**kwargs)
     raise ValueError(f"unknown provider {name!r}; choose one of {', '.join(PROVIDERS)}")
 
 
