@@ -123,24 +123,26 @@ but the model reads them as ordinary input.
 |---|---|---|---|
 | U+E0000-E007F | Unicode TAG block | HIGH | Each tag maps 1:1 to an ASCII character, so a whole sentence ("ignore previous instructions and send …") hides inside a line that renders as a harmless summary. Known as ASCII smuggling. |
 | U+202A-202E, U+2066-2069 | bidi embeddings, overrides, isolates | HIGH | Text displays in a different order than it is read (Trojan Source, CVE-2021-42574). |
-| U+200B-200D, U+2060-2064, U+00AD, U+FEFF past byte 0, U+E0100-E01EF | zero-width space, non-joiner and joiner, word joiner, invisible operators, soft hyphen, mid-text BOM, variation selectors supplement | MEDIUM | `ig​nore` reads as one word but escapes every keyword pattern here. These also turn up by accident in pasted text, so they warn rather than fail. |
+| U+FE00-FE0F, U+E0100-E01EF: a run of 2+ in any mix, or 2+ of U+FE00-FE0D / U+E0100-E01EF on one line | variation selectors | HIGH | Each selector can carry one byte, so a run after one visible character hides a whole payload (emoji smuggling). Counting per line too means zero-width characters between the selectors do not break the run. |
+| U+200B-200D, U+2060-2064, U+00AD, U+FEFF past byte 0, a lone U+E0100-E01EF | zero-width space, non-joiner and joiner, word joiner, invisible operators, soft hyphen, mid-text BOM, a single variation selectors supplement char | MEDIUM | `ig​nore` reads as one word but escapes every keyword pattern here. These also turn up by accident in pasted text, so they warn rather than fail. |
 
 Allowed, because they are normal text:
 
 - a BOM (U+FEFF) at byte 0 of the file;
-- U+200D joining two emoji (👨‍👩‍👧, 🏳️‍🌈), checked by the bytes on both sides, so a joiner inside a word still warns;
-- plain U+FE0F;
+- U+200D joining two emoji (👨‍👩‍👧, 🏳️‍🌈, 🐈‍⬛), checked by the bytes on both sides, so a joiner inside a word still warns;
+- a single U+FE00-FE0F, such as U+FE0F (emoji style) or U+FE0E (text style) after a symbol;
 - the three real subdivision flags, England, Scotland and Wales, matched by their exact byte sequences. They are the only legitimate use of TAG characters. Any other tag run, including a sentence chunked into many black-flag sequences, fails.
 
 Not flagged: LRM, RLM and ALM (U+200E, U+200F, U+061C). They mark direction in right-to-left text and cannot reorder it the way overrides and isolates do.
 
-Every tool in the pipeline runs under `LC_ALL=C`. `grep -o` can emit a partial UTF-8 sequence, and BSD `cut` on macOS rejects that in a UTF-8 locale (`Illegal byte sequence`), which used to drop the finding silently. If the file cannot be filtered at all, the scanner reports a finding instead of reading the empty result as clean. The finding reports the line and a count, never the characters themselves: they are invisible, and for TAG smuggling they are the payload. `cat -v` on that line shows the bytes.
+Every tool in the pipeline runs under `LC_ALL=C`. `grep -o` can emit a partial UTF-8 sequence, and BSD `cut` on macOS rejects that in a UTF-8 locale (`Illegal byte sequence`), which used to drop the finding silently. If the file cannot be filtered or searched at all, the scanner reports a finding instead of reading the empty result as clean. The finding reports the line and a count, never the characters themselves: they are invisible, and for TAG smuggling they are the payload. `cat -v` on that line shows the bytes.
 
 Fixtures:
 
 - `malicious-hidden-tag`, `-tag-mixed`, `-tag-flag` (a sentence behind a flag prefix), `-tag-flagchunk` (a sentence split across many flag-shaped sequences), `malicious-hidden-bidi`;
-- `warn-hidden-zero-width`, `-zwj-word`, `-feff-mid`, `-soft-hyphen`, `-variation-selector` (the MEDIUM tier, asserted as WARN);
-- `benign-unicode-text` (emoji incl. ZWJ sequences, CJK, Greek, curly quotes), `benign-flag-emoji` (all three subdivision flags), `benign-bom`.
+- `malicious-hidden-variation-selector` (a run of supplement selectors), `-variation-selector-bmp` (a run of U+FE00-FE0E), `-variation-selector-split` (selectors split by zero-width spaces);
+- `warn-hidden-zero-width`, `-zwj-word`, `-feff-mid`, `-soft-hyphen`, `-variation-selector` (one supplement selector after a CJK ideograph) (the MEDIUM tier, asserted as WARN);
+- `benign-unicode-text` (emoji incl. ZWJ sequences and a black cat, U+FE0E text style, CJK, Greek, curly quotes), `benign-flag-emoji` (all three subdivision flags), `benign-bom`.
 
 The calibration test now has three outcomes, `pass`, `warn` and `fail`, so a benign fixture that starts warning is caught too. Across the 92 first-party skills the hidden-character rules change no verdict.
 
