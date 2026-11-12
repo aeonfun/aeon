@@ -18,6 +18,7 @@ _ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__
 sys.path.insert(0, os.path.join(_ROOT, "skills", "compute"))
 import contracts as C  # noqa: E402
 import discover as D  # noqa: E402
+import failures as F  # noqa: E402
 import state as ST  # noqa: E402
 
 
@@ -134,6 +135,97 @@ class TestCLI(unittest.TestCase):
                 rc = D.main(["--provider", "vastai", "--state", self.state_path])
         self.assertEqual(rc, 1)
         self.assertIn("auth_permission", err.getvalue())
+
+
+_PI_PAYLOAD = {
+    "items": [
+        {"gpuType": "H100_80GB", "gpuCount": 1, "gpuMemory": 80, "provider": "runpod", "dataCenter": "US-1", "socket": "PCIe", "vcpu": {"defaultCount": 16}, "memory": {"defaultCount": 128}, "disk": {"defaultCount": 100}, "stockStatus": "High", "prices": {"onDemand": 2.0, "currency": "USD"}},
+        {"gpuType": "A100_80GB", "gpuCount": 1, "gpuMemory": 80, "provider": "lambda", "dataCenter": "EU-1", "socket": "SXM", "vcpu": {"defaultCount": 8}, "memory": {"defaultCount": 64}, "disk": {"defaultCount": 50}, "stockStatus": "Low", "prices": {"onDemand": 1.0, "currency": "USD"}},
+    ],
+    "totalCount": 2,
+}
+
+
+def _pi_provider():
+    return D.PrimeIntellectProvider(api_key="k", transport=lambda q, k: _PI_PAYLOAD)
+
+
+class TestAggregate(unittest.TestCase):
+    def setUp(self):
+        self._dir = tempfile.TemporaryDirectory()
+        self.state_path = os.path.join(self._dir.name, "resources.json")
+
+    def tearDown(self):
+        self._dir.cleanup()
+
+    def test_merges_and_ranks_cross_provider(self):
+        report = D.discover_all([D.MockProvider(), _pi_provider()], C.WorkloadSpec(), state_path=self.state_path)
+        self.assertEqual(len(report.resources), 6)          # 4 mock + 2 prime intellect
+        self.assertEqual(len(report.ranked), 6)
+        self.assertEqual([len(o.resources) for o in report.outcomes], [4, 2])
+        self.assertEqual(report.errors, [])
+        # cheapest matched across BOTH providers is mock:cpu-1 ($0.12), beating PI's $1.0.
+        self.assertEqual(report.best.resource_id, "mock:cpu-1")
+        self.assertEqual(len(ST.load(self.state_path)["resources"]), 6)
+
+    def test_provider_failure_is_isolated(self):
+        report = D.discover_all([D.MockProvider(), D.VastAiProvider(api_key=None)], C.WorkloadSpec(), state_path=self.state_path)
+        self.assertEqual(len(report.resources), 4)          # mock still contributes
+        self.assertEqual(len(report.errors), 1)
+        self.assertEqual(report.errors[0].provider, "vastai")
+        self.assertEqual(report.errors[0].error.category, F.FailureCategory.AUTH_PERMISSION)
+        self.assertIsNotNone(report.best)
+
+    def test_all_providers_fail(self):
+        report = D.discover_all([D.VastAiProvider(api_key=None), D.PrimeIntellectProvider(api_key=None)], C.WorkloadSpec(), state_path=self.state_path)
+        self.assertEqual(report.resources, [])
+        self.assertEqual(len(report.errors), 2)
+        self.assertIsNone(report.best)
+        self.assertEqual(report.matched, [])
+
+    def test_to_dict_and_format(self):
+        report = D.discover_all([D.MockProvider(), _pi_provider()], C.WorkloadSpec(), state_path=self.state_path)
+        d = report.to_dict()
+        self.assertEqual(d["discovered"], 6)
+        self.assertEqual(d["best"], "mock:cpu-1")
+        self.assertEqual(len(d["providers"]), 2)
+        text = D.format_aggregate_report(report)
+        for token in ("compute discovery (multi)", "providers:", "best:", "mock:cpu-1"):
+            self.assertIn(token, text)
+
+    def test_format_surfaces_provider_error(self):
+        report = D.discover_all([D.MockProvider(), D.VastAiProvider(api_key=None)], C.WorkloadSpec(), state_path=self.state_path)
+        text = D.format_aggregate_report(report)
+        self.assertIn("auth_permission", text)
+        self.assertIn("vastai", text)
+
+
+class TestCLIMulti(unittest.TestCase):
+    def setUp(self):
+        self._dir = tempfile.TemporaryDirectory()
+        self.state_path = os.path.join(self._dir.name, "resources.json")
+
+    def tearDown(self):
+        self._dir.cleanup()
+
+    def test_multi_json_run_isolates_keyless_provider(self):
+        out = io.StringIO()
+        with mock.patch.dict(os.environ, clear=False):
+            os.environ.pop("PRIME_INTELLECT_API_KEY", None)
+            with contextlib.redirect_stdout(out):
+                rc = D.main(["--providers", "mock,primeintellect", "--state", self.state_path, "--json"])
+        self.assertEqual(rc, 0)  # mock succeeded; PI error isolated
+        payload = json.loads(out.getvalue())
+        self.assertEqual(payload["discovered"], 4)
+        self.assertEqual(len(payload["providers"]), 2)
+        pi = [p for p in payload["providers"] if p["provider"] == "primeintellect"][0]
+        self.assertIsNotNone(pi["error"])
+
+    def test_multi_unknown_provider_returns_2(self):
+        err = io.StringIO()
+        with contextlib.redirect_stderr(err):
+            rc = D.main(["--providers", "mock,bogus", "--state", self.state_path])
+        self.assertEqual(rc, 2)
 
 
 if __name__ == "__main__":
