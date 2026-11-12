@@ -44,19 +44,19 @@ The cold open is never the pitch. It is the single most concrete, verifiable, su
 Header block:
 
 ```markdown
-# <project> — "<Working Title>" — Video Script
+# <project> - "<Working Title>" - Video Script
 
 **Runtime target:** ~M:SS
 **Framing:** receipts-first (open on <the artifact>)
 **Byline:** <the project's public handle>
 **One-line pitch:** <one sentence, no hype>
-**Rev:** v1, ${today} — plain-language pass baked in; every technical term explained in one line or cut.
+**Rev:** v1, ${today} - plain-language pass baked in; every technical term explained in one line or cut.
 ```
 
 Chapters, each with a time range:
 
 ```markdown
-## <Chapter name> — 0:00 – 0:25
+## <Chapter name> - 0:00 - 0:25
 
 **VO:**
 > Spoken text as blockquote. Short sentences. Operator voice.

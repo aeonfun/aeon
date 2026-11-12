@@ -34,12 +34,16 @@ Today is ${today}. This is the fleet's **divergence monitor**. It answers two qu
 
 ### S0. Bootstrap + load state
 
+**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`X=$(...)`, `X="${Y##*/}"`), nests `$(...)`, uses a `[ -f ... ] ||` test, or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn. So every lookup below is its own call: read the value it prints and write it into later commands literally where they show `<NAME>` (e.g. `<PARENT_REPO>`, `<FORK_FULL_NAME>`). Missing state files are found with Glob and created with Write; one call per fork, never a loop.
+
 ```bash
 mkdir -p memory/topics
-[ -f memory/instances.json ] || echo '{}' > memory/instances.json
-[ -f memory/topics/fork-fleet-state.json ] || echo '{"forks":{},"last_run":null}' > memory/topics/fork-fleet-state.json
-[ -f memory/topics/fork-digest-state.json ] || echo '{"last_run":null}' > memory/topics/fork-digest-state.json
 ```
+
+Check each of these with Glob; create any that does not exist with Write, with this content:
+- `memory/instances.json` - `{}`
+- `memory/topics/fork-fleet-state.json` - `{"forks":{},"last_run":null}`
+- `memory/topics/fork-digest-state.json` - `{"last_run":null}`
 
 Read `memory/MEMORY.md` for high-level context and scan the last ~3 days of `memory/logs/` — drop anything already reported so a weekly signal isn't re-sent.
 
@@ -58,26 +62,31 @@ Parse `${var}` into tokens:
 
 Resolve `PARENT_REPO` in priority order:
 1. `REPO_OVERRIDE` if the `repo=` token was given.
-2. Else auto-resolve from this running instance:
+2. Else auto-resolve from this running instance, two calls:
    ```bash
-   PARENT_REPO=$(gh api repos/$(gh repo view --json nameWithOwner -q .nameWithOwner) --jq '.parent.full_name // .full_name')
+   gh repo view --json nameWithOwner -q .nameWithOwner
    ```
+   It prints SELF_REPO. Write it in literally:
+   ```bash
+   gh api repos/<SELF_REPO> --jq '.parent.full_name // .full_name'
+   ```
+   It prints PARENT_REPO.
 3. Else fall back to the first non-comment, non-empty line of `memory/watched-repos.md`.
 
 If none resolves, write status `FORK_DIVERGENCE_NO_TARGET` to `memory/logs/${today}.md` and stop (no notification).
 
+`PARENT_OWNER` = the part of `PARENT_REPO` before the `/`, `PARENT_NAME` = the part after it (work these out yourself, no shell). Then, with PARENT_REPO written in literally:
 ```bash
-PARENT_NAME="${PARENT_REPO##*/}"
-PARENT_OWNER="${PARENT_REPO%%/*}"
-PARENT_DEFAULT_BRANCH=$(gh api "repos/${PARENT_REPO}" --jq '.default_branch')
+gh api "repos/<PARENT_REPO>" --jq '.default_branch'
 ```
+It prints PARENT_DEFAULT_BRANCH.
 
 ### S3. List + classify forks (single call, shared by both branches)
 
 One paginated listing — includes `default_branch`, `archived`, `disabled`, `pushed_at`, stars, description:
 
 ```bash
-gh api "repos/${PARENT_REPO}/forks" --paginate \
+gh api "repos/<PARENT_REPO>/forks" --paginate \
   --jq '[.[] | {full_name, owner: .owner.login, default_branch, pushed_at, pushed_at_epoch: (.pushed_at | fromdateiso8601), stargazers_count, open_issues_count, archived, disabled, description}]'
 ```
 
@@ -102,10 +111,10 @@ Now dispatch: run **Branch A** if `SCOPE ∈ {code, both}`, **Branch B** if `SCO
 
 ### A1. Per-fork compare (one call each)
 
-For each active fork, call cross-repo compare using the fork's own `default_branch` and `full_name` (absorbs any repo-rename drift):
+For each active fork, call cross-repo compare using the fork's own `default_branch` and `full_name` (absorbs any repo-rename drift), one call per fork with every value written in literally:
 
 ```bash
-gh api "repos/${PARENT_REPO}/compare/${PARENT_OWNER}:${PARENT_DEFAULT_BRANCH}...${FORK_OWNER}:${FORK_DEFAULT_BRANCH}" \
+gh api "repos/<PARENT_REPO>/compare/<PARENT_OWNER>:<PARENT_DEFAULT_BRANCH>...<FORK_OWNER>:<FORK_DEFAULT_BRANCH>" \
   --jq '{ahead_by, behind_by, status, files: [.files[]? | {filename, status, additions, deletions}], commits: [.commits[]? | {sha: .sha[0:7], msg: .commit.message | split("\n")[0], author: .commit.author.name, date: .commit.author.date}]}'
 ```
 
@@ -145,7 +154,7 @@ Sort active forks by score descending. Flag any fork with ≥1 new skill file as
 For every PROMOTE fork (capped at 5), fetch each unique skill's SKILL.md from the fork's default branch:
 
 ```bash
-gh api "repos/${FORK_FULL_NAME}/contents/${SKILL_PATH}?ref=${FORK_DEFAULT_BRANCH}" --jq '.content' | base64 -d
+gh api "repos/<FORK_FULL_NAME>/contents/<SKILL_PATH>?ref=<FORK_DEFAULT_BRANCH>" --jq '.content' | base64 -d
 ```
 
 On failure fall back to the file-tree listing and note "could not read content". Synthesize each unique skill into a 1–2 sentence description of what it does. Do **not** deep-read REVIEW or NOTE forks (output stays actionable).
@@ -181,20 +190,20 @@ Assemble this block (it becomes **Part 1** of the combined article in the final 
 - **Archived/deleted**: [list or "none"]
 (Omit the entire section if every bucket is empty.)
 
-## PROMOTE — upstream contribution candidates
+## PROMOTE - upstream contribution candidates
 
-### {fork_full_name} — score N [MANAGED | COMMUNITY]
+### {fork_full_name} - score N [MANAGED | COMMUNITY]
 **Activity:** last pushed YYYY-MM-DD · stars N · +N/-M commits vs upstream
 **Unique skills:**
-- `skills/foo/SKILL.md` — {one-line synthesis of what it does, from deep-read}
-- `skills/bar/SKILL.md` — {synthesis}
+- `skills/foo/SKILL.md` - {one-line synthesis of what it does, from deep-read}
+- `skills/bar/SKILL.md` - {synthesis}
 
-**Why promote:** {1–2 sentence take — what this skill does that upstream lacks, and whether it's generalizable}
+**Why promote:** {1-2 sentence take - what this skill does that upstream lacks, and whether it's generalizable}
 **Suggested action:** Open a PR cherry-picking `skills/foo/` (or reach out to {owner} to upstream themselves).
 
 (Repeat for each PROMOTE fork, capped at 5. If PROMOTE is empty: "No upstream candidates this week.")
 
-## REVIEW — worth a look
+## REVIEW - worth a look
 
 | Fork | Score | Ahead | New/Modified | Notable |
 |------|-------|-------|--------------|---------|
@@ -202,7 +211,7 @@ Assemble this block (it becomes **Part 1** of the combined article in the final 
 
 (Omit if empty.)
 
-## NOTE — low divergence
+## NOTE - low divergence
 
 Terse one-liner per fork: `owner/repo (+N/-M, schedule tweak only)`. Collapse into a count if >5 entries. Omit if empty.
 
@@ -268,16 +277,16 @@ Read this running instance's local `aeon.yml` once. Build (these are baselines �
 
 ### B2. Per-fork enumeration (one tree call + one yml fetch each)
 
-Operate over the **active-fork set** from shared step S3 (already filtered to forks pushed in the last 30 days — the config branch's original cutoff). For each active fork, run **one** recursive git-tree call to enumerate files (cheaper than per-path contents):
+Operate over the **active-fork set** from shared step S3 (already filtered to forks pushed in the last 30 days - the config branch's original cutoff). For each active fork, run **one** recursive git-tree call to enumerate files (cheaper than per-path contents), one call per fork with the fork written in literally:
 
 ```bash
-gh api "repos/${FORK_FULL}/git/trees/HEAD?recursive=1" --jq '[.tree[] | select(.type == "blob") | .path]'
+gh api "repos/<FORK_FULL>/git/trees/HEAD?recursive=1" --jq '[.tree[] | select(.type == "blob") | .path]'
 ```
 
 Then fetch the fork's `aeon.yml` only if the tree contains it:
 
 ```bash
-gh api "repos/${FORK_FULL}/contents/aeon.yml?ref=${FORK_DEFAULT_BRANCH}" --jq '.content' | base64 -d
+gh api "repos/<FORK_FULL>/contents/aeon.yml?ref=<FORK_DEFAULT_BRANCH>" --jq '.content' | base64 -d
 ```
 
 Error handling:
@@ -408,14 +417,14 @@ Assemble this block (it becomes **Part 2** of the combined article):
 ### Enable upward (upstream off → fleet enables)
 | Skill | Forks enabled | % of configured | Δ vs last week |
 |-------|---------------|-----------------|----------------|
-| name  | N             | XX%             | NEW / STRENGTHENED / — |
+| name  | N             | XX%             | NEW / STRENGTHENED / - |
 
 (Only DEFAULT_FLIP_ENABLE. If empty: "No skills crossed the 50% enable-upward threshold this week.")
 
 ### Disable downward (upstream on → fleet disables)
 | Skill | Forks disabled | % of configured | Δ vs last week |
 |-------|----------------|-----------------|----------------|
-| name  | N              | XX%             | NEW / — |
+| name  | N              | XX%             | NEW / - |
 
 (Only DEFAULT_FLIP_DISABLE. If empty: "No skills crossed the 50% disable-downward threshold.")
 
@@ -425,12 +434,12 @@ Assemble this block (it becomes **Part 2** of the combined article):
 ${MODEL_CONSENSUS entries: "skill X - N forks → claude-sonnet-5-5 (40% of configured)" OR "none this week"}
 
 ### Var hotspots
-${VAR_HOTSPOT entries: "skill X — N forks set var to '${value}'" OR "none this week"}
+${VAR_HOTSPOT entries: "skill X - N forks set var to '${value}'" OR "none this week"}
 
 ### Schedule overrides
 ${skills where ≥2 forks share an alternative schedule, with the schedule string OR "none this week"}
 
-## Watchlist (emerging — 25–49% adoption)
+## Watchlist (emerging - 25-49% adoption)
 ${EMERGING skills with adoption % OR "none this week"}
 
 ## Heaviest customizers (top 5)
@@ -443,11 +452,11 @@ ${EMERGING skills with adoption % OR "none this week"}
 
 ${list of {fork, skill_name} pairs OR "none this week"}
 
-(These skills exist as `skills/<name>/SKILL.md` in a fork but not in upstream — fork experiments worth reviewing for upstreaming.)
+(These skills exist as `skills/<name>/SKILL.md` in a fork but not in upstream - fork experiments worth reviewing for upstreaming.)
 
 ## Config week-over-week
 
-${"First divergence snapshot — no comparison" OR list of NEW_FLIP / STRENGTHENED / FADED / NEW_FORK_ONLY / NEW_HEAVY_CUSTOMIZER}
+${"First divergence snapshot - no comparison" OR list of NEW_FLIP / STRENGTHENED / FADED / NEW_FORK_ONLY / NEW_HEAVY_CUSTOMIZER}
 
 ## Fleet composition (config tiers)
 
@@ -465,7 +474,7 @@ ${"First divergence snapshot — no comparison" OR list of NEW_FLIP / STRENGTHEN
 - Rate-limited: N_RATE_LIMITED
 - Fork-only skills inspected: N_FORK_ONLY_FILES
 
-## Appendix — full divergence table
+## Appendix - full divergence table
 
 (Every skill with ≥1 non-zero divergence signal, sorted by total override count desc. Columns: skill, enable_diff, var_overrides, model_overrides, schedule_overrides. Cap at 30 rows; if more, append "+ N more skills with low-signal divergence".)
 ```
@@ -488,9 +497,9 @@ ${"First divergence snapshot — no comparison" OR list of NEW_FLIP / STRENGTHEN
 To `output/articles/fork-divergence-${today}.md`. Header first, then whichever parts ran:
 
 ```markdown
-# Fork Divergence — ${today}
+# Fork Divergence - ${today}
 
-**Verdict:** {lead with the stronger of the two sub-verdicts — a code PROMOTE/NEW-UPSTREAM-CANDIDATE outranks a config flip only if it's a genuinely new skill; otherwise a DEFAULT_FLIP leads. Use judgment; one line.}
+**Verdict:** {lead with the stronger of the two sub-verdicts - a code PROMOTE/NEW-UPSTREAM-CANDIDATE outranks a config flip only if it's a genuinely new skill; otherwise a DEFAULT_FLIP leads. Use judgment; one line.}
 
 - **Code divergence:** {code verdict from A6, or "not run (scope=config)"}
 - **Config divergence:** {config verdict from B8, or "not run (scope=code)"}
@@ -499,16 +508,16 @@ Fleet: N_TOTAL total forks · N_ACTIVE active · N_MANAGED managed instances · 
 
 ---
 
-# Part 1 — Code divergence
+# Part 1 - Code divergence
 {Branch A article part from A7; omit this whole part if SCOPE=config}
 
 ---
 
-# Part 2 — Config divergence
+# Part 2 - Config divergence
 {Branch B article part from B9; omit this whole part if SCOPE=code}
 
 ---
-*Source: GitHub API — forks of ${PARENT_REPO}. Code divergence = per-fork unique commits/skills vs upstream. Config divergence = where configured forks' aeon.yml disagrees with upstream `enabled`/`var`/`model`/`schedule`; untouched templates are excluded from the config math. Companion to `skill-gap` (popularity).*
+*Source: GitHub API - forks of ${PARENT_REPO}. Code divergence = per-fork unique commits/skills vs upstream. Config divergence = where configured forks' aeon.yml disagrees with upstream `enabled`/`var`/`model`/`schedule`; untouched templates are excluded from the config math. Companion to `skill-gap` (popularity).*
 ```
 
 Cap the article at ~700 lines total (≈500 for code sections when both parts run). When only one branch ran, drop the other Part heading and the missing sub-verdict line.
@@ -524,10 +533,10 @@ If either branch hit `FORK_FLEET_API_FAIL`, send an **error** notify (`--severit
 Otherwise send one combined message via `./notify` (include only the sub-blocks whose branch produced signal; keep it tight):
 
 ```
-*Fork Divergence — ${today}*
+*Fork Divergence - ${today}*
 {combined verdict line}
 
-Fleet: N_ACTIVE active / N_TOTAL total. {1 sentence on shape — "mostly managed instances", "community picking up", "template-heavy", etc.}
+Fleet: N_ACTIVE active / N_TOTAL total. {1 sentence on shape - "mostly managed instances", "community picking up", "template-heavy", etc.}
 
 {If code PROMOTE non-empty:}
 Upstream candidate: {top PROMOTE fork}
@@ -535,15 +544,15 @@ Upstream candidate: {top PROMOTE fork}
 
 {If code delta has NEW_SKILLS:}
 New skills landed this week:
-- {fork} → `skills/foo/SKILL.md` — {synthesis}
+- {fork} → `skills/foo/SKILL.md` - {synthesis}
 
 {If DEFAULT_FLIP_ENABLE non-empty (top 3):}
 Flip enable (upstream off → fleet on):
-- {skill} — {N} forks ({pct}%)
+- {skill} - {N} forks ({pct}%)
 
 {If DEFAULT_FLIP_DISABLE non-empty (top 3):}
 Flip disable (upstream on → fleet off):
-- {skill} — {N} forks ({pct}%)
+- {skill} - {N} forks ({pct}%)
 
 {If MODEL_CONSENSUS non-empty (top 2):}
 Model consensus:
@@ -552,10 +561,10 @@ Model consensus:
 {If config delta NEW_FORK_ONLY non-empty:}
 New fork-only skills: {comma-separated owner/skill, capped at 3}
 
-Full report: https://github.com/${GITHUB_REPOSITORY}/blob/main/output/articles/fork-divergence-${today}.md
+Full report: https://github.com/<SELF_REPO>/blob/main/output/articles/fork-divergence-${today}.md
 ```
 
-Use `$GITHUB_REPOSITORY` for the URL (the article lives in this running instance's repo, not the target repo).
+Use this running instance's repo (`GITHUB_REPOSITORY`) for the URL (the article lives in this running instance's repo, not the target repo). It is SELF_REPO, printed by `gh repo view --json nameWithOwner -q .nameWithOwner` (run that as its own call if S2 did not already); write it in literally.
 
 ### R3. Log
 

@@ -38,12 +38,13 @@ Every command below is **one Bash call**: run it, read the value it prints, and 
 If `memory/topics/aeon-update-state.json` does not exist, create it with Write:
 
 ```json
-{"baseline_sha": null, "upstream": null, "last_run": null, "last_pr": null, "pending_conflicts": []}
+{"baseline_sha": null, "upstream": null, "last_run": null, "last_pr": null, "pending_conflicts": [], "keep_local": []}
 ```
 
 Read `memory/MEMORY.md` for context and scan the last ~3 days of `memory/logs/` - drop anything already reported so a repeat run isn't re-sent. Read the state file:
 - `BASELINE` = `.baseline_sha` (the upstream commit this instance was last synced to).
 - `PENDING` = `.pending_conflicts` (files surfaced as conflicts in a prior run, not yet resolved).
+- `.keep_local` (optional, set by the operator) = glob patterns for OWNED paths this instance keeps its own way on purpose: docs it rewrote, files it deleted. See **Kept local** in S4-S6. The script reads it; never edit it yourself.
 
 ### S1. Parse `${var}`
 
@@ -92,7 +93,7 @@ It prints a JSON summary and mutates nothing in the repo (its scratch goes to `$
 - `AEON_UPDATE_IN_SYNC`: handle as S3's in-sync case.
 - `AEON_UPDATE_BASELINE_UNREACHABLE` (exit 3; the baseline is not an ancestor of HEAD - history rewrite or unrelated repo): stop with that status and notify the operator to re-run with `reset=fork-point` or `reset=<sha>`.
 - `AEON_UPDATE_ERROR` (exit 2): stop, log the `error`, and notify it. Never fall back to classifying by hand.
-- `AEON_UPDATE_PLANNED`: the summary has `counts`, the `clean` paths per disposition, `conflicts` (path, reason, in-range `upstream_commits`, and a `diff` file with upstream's BASELINE..HEAD diff), `operator` (OPERATOR-owned paths upstream changed, each with a `diff` file), `unreadable`, the recomputed `pending_conflicts`, and the `commits` in range. Read the `diff` files you need with the Read tool.
+- `AEON_UPDATE_PLANNED`: the summary has `counts`, the `clean` paths per disposition, `conflicts` (path, reason, in-range `upstream_commits`, and a `diff` file with upstream's BASELINE..HEAD diff), `operator` (OPERATOR-owned paths upstream changed, each with a `diff` file), `unreadable`, `kept_local` (paths skipped by the `keep_local` list), the recomputed `pending_conflicts`, and the `commits` in range. Read the `diff` files you need with the Read tool.
 
 What the plan decides, so you can explain it in the PR:
 
@@ -120,11 +121,16 @@ Everything else is **OWNED**: `skills/**`, `scripts/**`, `bin/**`, `harness-adap
 | added | absent / same as HEAD / different | CLEAN-ADD / SKIP / CONFLICT `local-collision` |
 | modified | same as HEAD | SKIP |
 | modified | same as BASELINE | CLEAN-UPDATE |
+| modified | an older upstream version, byte for byte | CLEAN-UPDATE `stale-copy` (never 3-way merged: the merge would read the upstream lines it lacks as local deletions and keep them out) |
 | modified | absent | CONFLICT `deleted-locally` |
 | modified | customized | `git merge-file --diff3`: disjoint hunks -> CLEAN-MERGE (both edits kept), overlap -> CONFLICT `operator-customized` |
 | removed | absent / same as BASELINE / edited | SKIP / CLEAN-DELETE / CONFLICT `removed-upstream-local-edited` |
 
 A removed path of a skill upstream retired (`skills/<name>/SKILL.md` gone from HEAD) whose `<name>` is `enabled: true` in the operator's `aeon.yml` is never deleted: CONFLICT `enabled-skill-removed-upstream`, its own loud PR-body section (S9). Fork-only skills are never touched (only upstream paths are ever in the change set). A blob the API cannot return is `UNREADABLE`: list it and continue with a partial sync.
+
+**Held stale copies.** Every `pending_conflicts` entry is re-checked on each run, also when upstream did not touch it in range. A local file byte-identical to one of its last 30 upstream versions was never customized (an earlier sync held it back), so it takes HEAD (CLEAN-UPDATE `stale-copy`) and leaves the list. The plan lists both kinds under `stale_copies`. To keep an older upstream version on purpose, change one line of it (a comment is enough) so it no longer matches upstream byte for byte.
+
+**Kept local.** A changed path matching a `keep_local` pattern in the state file is `KEEP-LOCAL`: never written, never a conflict, and dropped from `pending_conflicts`, also when a prior run carried it. The plan lists them under `kept_local`. Patterns are globs where `*` also crosses `/` (`docs/**`, `docs/*.md`), or a directory prefix ending in `/` (`skills/old-skill/`). Typical list: `["CHANGELOG.md", ".github/README.md", "docs/**", "skills/<deleted-skill>/"]`. Without it, a rewritten README or a skill deleted on purpose comes back as CONFLICT `operator-customized` / `deleted-locally` on every sync and the pending list only grows. Conflicts and `pending_conflicts` are ordered workflow and `harness-adapter/` paths first, docs and non-skill Markdown last.
 
 In `report` mode stop after the plan and go to S10.
 
@@ -184,23 +190,25 @@ PR body (`/tmp/aeon-update-pr-body.md`) - only include sections that have conten
 - **Modified skills:** `baz`
 - **Scripts / harness:** `scripts/notify.sh`, ...
 - **Workflows:** `.github/workflows/...`
+- **Stale copies replaced:** `scripts/langfuse-otel.sh`, ...  _(the plan's `stale_copies`: byte-identical to an older upstream version, so not a local edit; held or 3-way merged before)_
 - **Auto-merged (3-way):** `.github/workflows/aeon.yml`, ...  _(your local customization kept; upstream's disjoint changes applied - review the merged hunks)_
 - **Docs / other:** `docs/...`, `CLAUDE.md`, ...
 
 ### ⚠️ Currently-enabled skills removed upstream
 For each CONFLICT with reason `enabled-skill-removed-upstream`:
-- `verdikta-hunter` — enabled in your `aeon.yml`, deleted upstream in {commit(s)}. **Not deleted here** so nothing breaks. Pick one: keep it as a fork-only skill going forward (nothing else to do), or disable it in `aeon.yml` to match upstream's current default set.
+- `verdikta-hunter` - enabled in your `aeon.yml`, deleted upstream in {commit(s)}. **Not deleted here** so nothing breaks. Pick one: keep it as a fork-only skill going forward (nothing else to do), or disable it in `aeon.yml` to match upstream's current default set.
 
 ### Needs manual review (conflicts - your local copy diverges from upstream)
 For each *other* conflict reason (`enabled-skill-removed-upstream` is covered above, don't duplicate it here): what upstream changed and why it wasn't auto-applied.
-- `scripts/foo.sh` — you customized this locally; upstream changed it in {upstream_commits}. Upstream diff (from the conflict's `diff` file, trimmed):
+Keep the plan's order (workflow and harness drift first). If the same doc or deleted-on-purpose file shows up here run after run, add one line telling the operator to add it to `keep_local` in `memory/topics/aeon-update-state.json`.
+- `scripts/foo.sh` - you customized this locally; upstream changed it in {upstream_commits}. Upstream diff (from the conflict's `diff` file, trimmed):
   ```diff
   {short upstream base..head diff for the file}
   ```
 
 ### Operator config changed upstream (not auto-applied - reconcile by hand)
-- `aeon.yml` — upstream added skills / changed defaults: {summary}. Merge the new entries you want (keep your enable/schedule/model choices).
-- `soul/…`, `STRATEGY.md` — {summary, if changed}
+- `aeon.yml` - upstream added skills / changed defaults: {summary}. Merge the new entries you want (keep your enable/schedule/model choices).
+- `soul/…`, `STRATEGY.md` - {summary, if changed}
 
 ### Upstream commits
 | SHA | Summary |
@@ -219,14 +227,14 @@ Append to `memory/logs/${today}.md` under `### aeon-update`: status, `UPSTREAM`,
 **Notify only on signal** - match `soul/` voice if present. Send when there is a PR, a report with changes, or a manual-only situation; stay silent for `IN_SYNC` / `BASELINE_SET`-with-nothing. Keep it ≤4000 chars:
 
 ```
-*aeon-update — ${today}*
+*aeon-update - ${today}*
 {verdict: "synced N commits → PR" | "N changes need manual merge" | "report: N commits behind"}
 
 Upstream `${UPSTREAM}` is ${AHEAD} commits ahead. Applied ${N_APPLIED} cleanly, ${N_CONFLICT} need review.
 {Top applied highlight: e.g. "new skill: `token-radar`; harness fix in run-harness"}
 {If conflicts: "Manual: `aeon.yml` (new skills), `scripts/foo.sh` (local edit)"}
 
-PR: {url}   (or "dry run — nothing changed")
+PR: {url}   (or "dry run - nothing changed")
 ```
 
 Pass `--mute-key "aeon-update:${HEAD7}"` so a muted sync doesn't re-ping for the same upstream HEAD.

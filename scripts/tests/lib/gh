@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+# deterministic gh stub for tests: serves canned files from $GH_STUB_DIR, never touches the network.
+# `gh api PATH` reads the file named after PATH (non-alphanumerics become _). a sibling set
+# NAME.p1, NAME.p2 ... models pages: --paginate returns all of them, a plain call returns page 1 only.
+set -euo pipefail
+dir=${GH_STUB_DIR:?GH_STUB_DIR is required}
+echo "$*" >> "$dir/calls.log"
+
+munge() { printf '%s' "$1" | tr -c 'A-Za-z0-9' '_'; }
+
+serve() { # name paginate jq-filter
+  local name=$1 paginate=$2 filter=$3 out
+  if [ -f "$dir/$name.p1" ]; then
+    if [ "$paginate" = 1 ]; then out=$(cat "$dir"/"$name".p[0-9]*); else out=$(cat "$dir/$name.p1"); fi
+  elif [ -f "$dir/$name" ]; then
+    out=$(cat "$dir/$name")
+  else
+    echo "gh: Not Found (HTTP 404)" >&2
+    exit 1
+  fi
+  if [ -n "$filter" ]; then printf '%s' "$out" | jq -r "$filter"; else printf '%s\n' "$out"; fi
+}
+
+cmd=${1:-}
+shift || true
+case "$cmd" in
+  api)
+    paginate=0 filter="" path=""
+    while [ $# -gt 0 ]; do
+      case "$1" in
+        --paginate) paginate=1 ;;
+        --jq) filter=$2; shift ;;
+        -H|-F|-f|-X|--method) shift ;;
+        -*) ;;
+        *) path=$1 ;;
+      esac
+      shift
+    done
+    serve "$(munge "$path")" "$paginate" "$filter"
+    ;;
+  pr)
+    fields=""
+    while [ $# -gt 0 ]; do
+      [ "$1" = "--json" ] && fields=$2
+      shift
+    done
+    if [ "$fields" = headRefOid ]; then serve pr_view_head 0 ""; else serve pr_view 0 ""; fi
+    ;;
+  repo)
+    printf 'acme/widget\n'
+    ;;
+  *)
+    echo "gh stub: unsupported: $cmd $*" >&2
+    exit 1
+    ;;
+esac

@@ -13,6 +13,7 @@ pragma solidity 0.8.26;
 // take() reverts every swap and bricks the pool. Always simulate before deploy.
 
 import {IPoolManager} from "@uniswap/v4-core/src/interfaces/IPoolManager.sol";
+import {SwapParams} from "@uniswap/v4-core/src/types/PoolOperation.sol";
 import {PoolKey} from "@uniswap/v4-core/src/types/PoolKey.sol";
 import {Currency} from "@uniswap/v4-core/src/types/Currency.sol";
 import {BalanceDelta, BalanceDeltaLibrary} from "@uniswap/v4-core/src/types/BalanceDelta.sol";
@@ -39,7 +40,7 @@ contract HookFeeHook is AeonFee {
     function _afterSwapExtra(
         address,
         PoolKey calldata key,
-        IPoolManager.SwapParams calldata params,
+        SwapParams calldata params,
         BalanceDelta delta,
         bytes calldata
     ) internal override returns (int128) {

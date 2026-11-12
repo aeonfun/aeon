@@ -40,6 +40,8 @@ output/.dry-run/
 
 # Skill provenance lock (per-repo, not committed)
 /skills.lock
+# Registry write lock sidecar: filing-registry serializes read-modify-write on $REGISTRY.lock (memory/filing-registry.json.lock)
+memory/*.lock
 
 # Scratch / temp files
 /tmp_*
@@ -80,3 +82,17 @@ skills/remotion/project/props.json
 !/output/articles/.gitkeep
 /output/*notify*.md
 /output/xai-*.json
+
+# Scratch that lands in output/ under plain names: raw API dumps a skill re-fetched
+# into the workspace (tw-*.json twitterapi.io timelines, tr-*.json token-report
+# payloads, output/tmp/, scratch-* copies). Not run output. Root-anchored.
+/output/tmp/
+/output/tw-*.json
+/output/tr-*.json
+/output/scratch-*
+
+# sc-audit stages its throwaway target clone + build artifacts under .scan/ and
+# assumes it is ignored. (vuln-scanner clones the target as <NAME>/ in the run dir;
+# commit-run-results.sh drops those gitlinks before committing, so no entry is
+# needed for them here.)
+/.scan/

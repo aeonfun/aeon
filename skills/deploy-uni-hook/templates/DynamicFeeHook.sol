@@ -16,6 +16,7 @@ pragma solidity 0.8.26;
 
 import {IHooks} from "@uniswap/v4-core/src/interfaces/IHooks.sol";
 import {IPoolManager} from "@uniswap/v4-core/src/interfaces/IPoolManager.sol";
+import {SwapParams} from "@uniswap/v4-core/src/types/PoolOperation.sol";
 import {PoolKey} from "@uniswap/v4-core/src/types/PoolKey.sol";
 import {PoolId, PoolIdLibrary} from "@uniswap/v4-core/src/types/PoolId.sol";
 import {BalanceDelta} from "@uniswap/v4-core/src/types/BalanceDelta.sol";
@@ -51,7 +52,7 @@ contract DynamicFeeHook is AeonFee {
         return IHooks.afterInitialize.selector;
     }
 
-    function beforeSwap(address, PoolKey calldata key, IPoolManager.SwapParams calldata, bytes calldata)
+    function beforeSwap(address, PoolKey calldata key, SwapParams calldata, bytes calldata)
         external
         onlyPoolManager
         returns (bytes4, BeforeSwapDelta, uint24)
@@ -70,7 +71,7 @@ contract DynamicFeeHook is AeonFee {
     function _afterSwapExtra(
         address,
         PoolKey calldata key,
-        IPoolManager.SwapParams calldata,
+        SwapParams calldata,
         BalanceDelta,
         bytes calldata
     ) internal override returns (int128) {

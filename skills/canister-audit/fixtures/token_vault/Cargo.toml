@@ -1,0 +1,18 @@
+[package]
+name = "token_vault"
+version = "0.1.0"
+edition = "2021"
+description = "Deliberately-vulnerable IC ledger canister - canister-audit regression fixture. Do not deploy."
+publish = false
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+candid = "0.10"
+ic-cdk = "0.19"
+
+# No dev-dependencies and no tests/ here on purpose: this is the AUDITED TARGET, and
+# the canister-audit PoC gate rejects a dirty target worktree. The PocketIC
+# reproduction lives in the sibling `repro/` crate (its own Cargo.toml carries the
+# pocket-ic dev-dep), so proving the flaw never edits this manifest. See repro/.

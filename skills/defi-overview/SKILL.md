@@ -109,7 +109,7 @@ Compare current values against the last logged values for each position (grep pr
 Positions block template:
 
 ```
-*DeFi Monitor — ${today}*
+*DeFi Monitor - ${today}*
 
 *Pool/Protocol Label* (chain)
 TVL: $X | APR: Y%
@@ -135,41 +135,40 @@ If the file doesn't exist, treat all deltas as `n/a` on the first run.
 
 ### B1. Fetch (public, no auth — use WebFetch if curl fails)
 
+Run each command below as its own Bash call. Each saves its response with curl's own `-o` (a shell `>` redirect into a file is refused in this run). CoinGecko key check: read the "Keys set for this run" line in your run notes, never a shell test (those are refused and cost a turn). When `COINGECKO_API_KEY` is on that line keep the `-H "x-cg-demo-api-key: {COINGECKO_API_KEY}"` on the four CoinGecko calls below; when it is not, drop that `-H` (keyless public works at a lower rate limit).
+
 ```bash
 mkdir -p .tmp
 
 # --- DeFiLlama (shared by the DeFi read and the macro snapshot) ---
 # TVL
-curl -fsS "https://api.llama.fi/v2/chains"                        > .tmp/chains.json
-curl -fsS "https://api.llama.fi/protocols"                        > .tmp/protocols.json
+curl -fsS -o .tmp/chains.json "https://api.llama.fi/v2/chains"
+curl -fsS -o .tmp/protocols.json "https://api.llama.fi/protocols"
 # Volumes & fundamentals
-curl -fsS "https://api.llama.fi/overview/dexs?excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"  > .tmp/dexs.json
-curl -fsS "https://api.llama.fi/overview/fees?excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"  > .tmp/fees.json
+curl -fsS -o .tmp/dexs.json "https://api.llama.fi/overview/dexs?excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+curl -fsS -o .tmp/fees.json "https://api.llama.fi/overview/fees?excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
 # Stablecoins — includePrices=true (superset; supply totals feed the DeFi read, prices feed the macro snapshot)
-curl -fsS "https://stablecoins.llama.fi/stablecoins?includePrices=true"  > .tmp/stables.json
+curl -fsS -o .tmp/stables.json "https://stablecoins.llama.fi/stablecoins?includePrices=true"
 # Yields
-curl -fsS "https://yields.llama.fi/pools"                         > .tmp/pools.json
+curl -fsS -o .tmp/pools.json "https://yields.llama.fi/pools"
 
 # --- CoinGecko (macro majors, breadth, global, trending) ---
-# Send the demo key via ./secretcurl's {ENV_NAME} placeholder only when set — a bare
-# $COINGECKO_API_KEY is refused by the Bash permission analyzer; keyless-public works
-# without one (lower rate limit). Build the header array once, reuse for all four.
-CG_HDR=(); [ -n "${COINGECKO_API_KEY:+x}" ] && CG_HDR=(-H "x-cg-demo-api-key: {COINGECKO_API_KEY}")
+# Demo key via ./secretcurl's {ENV_NAME} placeholder; drop the -H when the key is not set (see above).
 # Simple price for BTC, ETH, SOL + 24h change + mcap
-./secretcurl -s "${CG_HDR[@]}" "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana&vs_currencies=usd&include_24hr_change=true&include_market_cap=true"  > .tmp/cg_price.json
+./secretcurl -s -o .tmp/cg_price.json -H "x-cg-demo-api-key: {COINGECKO_API_KEY}" "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana&vs_currencies=usd&include_24hr_change=true&include_market_cap=true"
 # Top 20 by mcap (movers + trend, 24h & 7d)
-./secretcurl -s "${CG_HDR[@]}" "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=20&page=1&sparkline=false&price_change_percentage=24h,7d"  > .tmp/cg_markets.json
+./secretcurl -s -o .tmp/cg_markets.json -H "x-cg-demo-api-key: {COINGECKO_API_KEY}" "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=20&page=1&sparkline=false&price_change_percentage=24h,7d"
 # Global stats (total mcap, volume, dominance)
-./secretcurl -s "${CG_HDR[@]}" "https://api.coingecko.com/api/v3/global"  > .tmp/cg_global.json
+./secretcurl -s -o .tmp/cg_global.json -H "x-cg-demo-api-key: {COINGECKO_API_KEY}" "https://api.coingecko.com/api/v3/global"
 # Trending coins
-./secretcurl -s "${CG_HDR[@]}" "https://api.coingecko.com/api/v3/search/trending"  > .tmp/cg_trending.json
+./secretcurl -s -o .tmp/cg_trending.json -H "x-cg-demo-api-key: {COINGECKO_API_KEY}" "https://api.coingecko.com/api/v3/search/trending"
 
 # --- Fear & Greed ---
-curl -s "https://api.alternative.me/fng/?limit=2"                > .tmp/fng.json
+curl -s -o .tmp/fng.json "https://api.alternative.me/fng/?limit=2"
 
 # --- Polymarket Gamma (prediction markets) ---
-curl -s "https://gamma-api.polymarket.com/markets?closed=false&order=volume24hr&ascending=false&limit=10"  > .tmp/poly_vol.json
-curl -s "https://gamma-api.polymarket.com/markets?closed=false&order=liquidity&ascending=false&limit=10"   > .tmp/poly_liq.json
+curl -s -o .tmp/poly_vol.json "https://gamma-api.polymarket.com/markets?closed=false&order=volume24hr&ascending=false&limit=10"
+curl -s -o .tmp/poly_liq.json "https://gamma-api.polymarket.com/markets?closed=false&order=liquidity&ascending=false&limit=10"
 ```
 
 For each endpoint, if curl fails or returns non-JSON, retry once with **WebFetch** against the same URL (for CoinGecko, WebFetch without the API-key header — free tiers work). Mark each source `ok` or `fail` and carry it into the footer / Source Status line. Never block the whole run on a single source.
@@ -207,14 +206,14 @@ The Take is the core macro output — everything else is input to it.
 
 **Market Take format (exactly 3 lines):**
 ```
-Take: <regime> — <one-sentence why, citing 2 concrete numbers>.
-Conviction: <high | medium | low> — <which signals agree; which disagree>.
+Take: <regime> - <one-sentence why, citing 2 concrete numbers>.
+Conviction: <high | medium | low> - <which signals agree; which disagree>.
 Evidence: <one sentence naming the single strongest datum behind this call>.
 ```
 Example:
 ```
-Take: risk-on — BTC +3.1% 24h with 17/20 top-cap majors green.
-Conviction: high — F&G, breadth, and 7d TVL all point up; only BTC dominance disagrees (flat).
+Take: risk-on - BTC +3.1% 24h with 17/20 top-cap majors green.
+Conviction: high - F&G, breadth, and 7d TVL all point up; only BTC dominance disagrees (flat).
 Evidence: DEX 24h volume $7.8B, highest since March and +42% vs 7d avg.
 ```
 
@@ -276,7 +275,7 @@ Overwrite `memory/topics/market-context.md` with this **exact** structure. Lead 
 ```markdown
 # Market Context (as of ${today})
 
-> **Take:** [regime] — [one-sentence why, citing 2 concrete numbers]. Conviction: [high|medium|low].
+> **Take:** [regime] - [one-sentence why, citing 2 concrete numbers]. Conviction: [high|medium|low].
 
 ## Signal Snapshot
 - BTC $X (±X% 24h, ±X% 7d) · dominance X% (±X pp 24h)
@@ -284,18 +283,18 @@ Overwrite `memory/topics/market-context.md` with this **exact** structure. Lead 
 - SOL $X (±X% 24h, ±X% 7d)
 - Total mcap $XT (±X% 24h) · DEX vol $XB 24h
 - Breadth: N/20 green 24h · N/20 green 7d
-- Fear & Greed: X (label) — yesterday X
+- Fear & Greed: X (label) - yesterday X
 
 ## What Changed Since Last Refresh
-- [Delta or event 1 — e.g. "F&G jumped 12 pts into Greed, first time in 14 days"]
+- [Delta or event 1 - e.g. "F&G jumped 12 pts into Greed, first time in 14 days"]
 - [Delta 2]
 - [Delta 3]
-Only real deltas. If no material change, write: "Quiet — all majors within ±1%, regime unchanged."
+Only real deltas. If no material change, write: "Quiet - all majors within ±1%, regime unchanged."
 
 ## Active Narratives
-- **[Narrative]** — phase: [emerging|rising|peak|fading]. Evidence: [concrete signal].
-- **[Narrative]** — phase: [...]. Evidence: [...].
-- **[Narrative]** — phase: [...]. Evidence: [...].
+- **[Narrative]** - phase: [emerging|rising|peak|fading]. Evidence: [concrete signal].
+- **[Narrative]** - phase: [...]. Evidence: [...].
+- **[Narrative]** - phase: [...]. Evidence: [...].
 
 ## Top DeFi Protocols (TVL, 7d change)
 - [Protocol]: $XB ([+/-X%])
@@ -313,9 +312,9 @@ Only real deltas. If no material change, write: "Quiet — all majors within ±1
 Total: $XB (±X% 7d). USDT $XB · USDC $XB · [next two] · combined share of mcap X%.
 
 ## Trending (CoinGecko)
-- [COIN] — [why trending, price + 24h%]
-- [COIN] — [...]
-- [COIN] — [...]
+- [COIN] - [why trending, price + 24h%]
+- [COIN] - [...]
+- [COIN] - [...]
 
 ## Prediction Markets (Polymarket, top by 24h vol)
 | Market | YES% | 24h Vol | Liquidity |
@@ -332,7 +331,7 @@ Omit this section entirely if nothing material. Do not pad with generic headline
 ## Implications for Downstream Skills
 - **token-pick:** [e.g. "favor [narrative] exposure; avoid [sector] on weak breadth"]
 - **narrative-tracker:** [e.g. "monitor [narrative] for phase transition emerging→rising"]
-Keep to 1-2 lines per skill. Only write implications that follow from the Take and deltas — don't generate generic advice.
+Keep to 1-2 lines per skill. Only write implications that follow from the Take and deltas - don't generate generic advice.
 
 ## Token Picks Made
 | Date | Token | Price | Thesis |
@@ -340,7 +339,7 @@ Keep to 1-2 lines per skill. Only write implications that follow from the Take a
 [Rebuild verbatim from the prior file. Do not truncate or reorder. Append any new picks found in the last 7 days of memory/logs/ that aren't already in the table.]
 
 ---
-*Sources — btc/eth: CoinGecko · defi: DeFiLlama · sentiment: alternative.me · markets: Polymarket*
+*Sources - btc/eth: CoinGecko · defi: DeFiLlama · sentiment: alternative.me · markets: Polymarket*
 *Source status: coingecko=[ok|fail] defillama=[ok|fail] fng=[ok|fail] polymarket=[ok|fail] websearch=[ok|fail]*
 ```
 
@@ -355,43 +354,43 @@ Send via `./notify` (single call, plain markdown). Cap the message at **4000 cha
 **Combined (empty var):** one notification, leading with the Take, then the positions alert block *only if any position flagged*, then the DeFi read, then the macro snapshot:
 
 ```
-*Crypto — ${today}* — <Take regime> (conviction <level>) | DeFi <Verdict>: <≤12-word regime read>
+*Crypto - ${today}* - <Take regime> (conviction <level>) | DeFi <Verdict>: <≤12-word regime read>
 
-<positions alert block — include ONLY if ≥1 position flagged (see Facet A template)>
+<positions alert block - include ONLY if ≥1 position flagged (see Facet A template)>
 
 *TVL:* $X.XXT (+X.X% 24h, +X.X% 7d)
 
 *Top chains*
-1. Ethereum — $XXXB (+X.X%)
-2. Solana — $XXB (+X.X%)
-3. Tron — $XXB
+1. Ethereum - $XXXB (+X.X%)
+2. Solana - $XXB (+X.X%)
+3. Tron - $XXB
 
 *Movers*
-↑ Sui +12% ($1.8B → $2.0B) — <≤15-word why>
-↓ Base −7%  ($9.2B → $8.6B) — <≤15-word why>
-↑ Pendle +18% ($4.0B → $4.7B) — <≤15-word why>
-↓ Ethena −11% ($5.1B → $4.5B) — <≤15-word why>
+↑ Sui +12% ($1.8B → $2.0B) - <≤15-word why>
+↓ Base −7%  ($9.2B → $8.6B) - <≤15-word why>
+↑ Pendle +18% ($4.0B → $4.7B) - <≤15-word why>
+↓ Ethena −11% ($5.1B → $4.5B) - <≤15-word why>
 
 *Fees leaders (24h)*
-1. Tether — $XXM (+X% vs 7d avg)
-2. Circle — $XXM (flat)
-3. Uniswap — $XXM (−X%)
+1. Tether - $XXM (+X% vs 7d avg)
+2. Circle - $XXM (flat)
+3. Uniswap - $XXM (−X%)
 
 *Fees beating TVL*
-• Hyperliquid — fees +42% / TVL +3% (7d) — demand outrunning deposits
+• Hyperliquid - fees +42% / TVL +3% (7d) - demand outrunning deposits
 
 *DEX vol (24h):* $X.XB (+X%)  top: Uniswap $XB, PancakeSwap $XB, Jupiter $XB
 
-*Stables:* $XXXB (+0.X%)  — USDe +1.2% only notable single-issuer move
+*Stables:* $XXXB (+0.X%)  - USDe +1.2% only notable single-issuer move
 
 *Real yield (sustainable, ≥$10M, filtered)*
-• stETH (Lido, ETH) — 3.2% apyBase ($21B TVL)
-• sUSDS (Sky, ETH) — 6.1% apyBase ($2.1B TVL)
-• GHO savings (Aave, ETH) — 7.0% apyBase ($400M TVL)
+• stETH (Lido, ETH) - 3.2% apyBase ($21B TVL)
+• sUSDS (Sky, ETH) - 6.1% apyBase ($2.1B TVL)
+• GHO savings (Aave, ETH) - 7.0% apyBase ($400M TVL)
 
 *Incentive yield (points / emissions, ≥$25M)*
-• <pool> — 18% apy via $XYZ rewards ($80M TVL)
-• <pool> — 14% apy via $ABC rewards ($60M TVL)
+• <pool> - 18% apy via $XYZ rewards ($80M TVL)
+• <pool> - 14% apy via $ABC rewards ($60M TVL)
 
 *Macro:* BTC $X (±X%) / ETH $X (±X%) · F&G X (label) · breadth N/20 · hot market: "[polymarket q]" YES X%
 _sources: llama_tvl=ok llama_dex=ok llama_fees=ok llama_stables=ok llama_yields=ok coingecko=ok fng=ok polymarket=ok websearch=ok | var: ${var:-none}_
@@ -403,7 +402,7 @@ _sources: llama_tvl=ok llama_dex=ok llama_fees=ok llama_stables=ok llama_yields=
 
 **Short macro-only alternative** (when you prefer the terse market-context ping, e.g. a `macro` focus with no DeFi movers surviving filters, under 500 chars):
 ```
-market context — ${today}
+market context - ${today}
 
 take: [regime] (conviction [level])
 BTC $X (±X%) / ETH $X (±X%) · F&G X ([label])
@@ -435,8 +434,8 @@ Append to `memory/logs/${today}.md`. Include the blocks for whichever facets ran
 ```
 ### defi-overview
 - Var: ${var:-none}
-- Take: <regime> (conviction <level>) — <regime read>
-- Verdict: <Risk-on|Risk-off|Sideways|Mixed> — <regime read>
+- Take: <regime> (conviction <level>) - <regime read>
+- Verdict: <Risk-on|Risk-off|Sideways|Mixed> - <regime read>
 - TVL: $X.XXT (+X.X% 24h) | BTC $X (±X%) ETH $X (±X%) F&G X (label)
 - Breadth: N/20 green
 - Top mover up: <chain/protocol> +X%   Top mover down: <chain/protocol> −X%

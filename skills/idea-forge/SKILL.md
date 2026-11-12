@@ -67,8 +67,8 @@ Also, for current state, read the latest `bd-radar` digest if present.
 #### 0. Bootstrap
 ```bash
 mkdir -p memory/topics output/articles
-[ -f memory/topics/idea-forge-state.json ] || echo '{"ideas":[]}' > memory/topics/idea-forge-state.json
 ```
+Then check for `memory/topics/idea-forge-state.json` with Glob; if it is missing, create it with the Write tool holding `{"ideas":[]}` (a `[ -f ] ||` test and an `echo ... > file` redirect are both refused in this run).
 Load prior idea titles/one-liners into a dedup set (don't re-pitch the same wedge unless materially evolved). Also scan the last 21 days of `memory/logs/` for `### idea-forge` blocks.
 
 #### 1. Read the zeitgeist (this week)
@@ -98,7 +98,7 @@ For each kept idea, write:
 - Append kept ideas to `idea-forge-state.json` (cap 60).
 - **Append to the shared backlog** `memory/topics/startup-ideas.md` so `validate` (this skill's screen mode), and `idea-pipeline` (execution-gap) have something to consume — this is what turns generation into a pipeline. Create the file with this header if missing, then append one row per kept idea:
   ```markdown
-  # Startup Ideas — backlog
+  # Startup Ideas - backlog
   | date | name | one-liner | fit | T+F+E |
   |------|------|-----------|-----|-------|
   ```
@@ -188,7 +188,7 @@ Max ~16. Sort descending.
 #### 4. Update the screening database
 Append to `memory/topics/startup-ideas-screened.md` (create if missing):
 ```markdown
-# Startup Ideas — Screening Notes
+# Startup Ideas - Screening Notes
 
 Each idea screened by idea-forge (validate mode). Sorted by date screened.
 
@@ -211,26 +211,26 @@ TEMP=".pending-notify-temp/idea-forge-validate-${today}.md"
 
 **Notification format** — match the operator's voice if soul files are populated, otherwise direct and neutral:
 ```
-idea screener — ${today}
+idea screener - ${today}
 
 screened: N ideas. top picks:
 
-1. [Name] — [one-liner]
+1. [Name] - [one-liner]
    competition: open/sparse | timing: X/5 | operator-fit: X/5
    gap: [why the space is open or under-served]
    tailwind: [what makes now the right time]
 
-2. [Name] — [one-liner]
+2. [Name] - [one-liner]
    competition: [density] | timing: X/5 | operator-fit: X/5
    gap: [...]
    tailwind: [...]
 
-3. [Name] — [one-liner]
+3. [Name] - [one-liner]
    competition: [density] | timing: X/5 | operator-fit: X/5
    gap: [...]
    tailwind: [...]
 
-skipped: [Name] — [crowded/saturated], [Name] — [too early]
+skipped: [Name] - [crowded/saturated], [Name] - [too early]
 
 full notes: memory/topics/startup-ideas-screened.md
 ```
@@ -290,18 +290,18 @@ Produce **exactly 2 ideas**:
 
 Each idea **must** fill every field below. If a field can't be filled with a concrete answer, drop the idea and try another.
 ```
-### Idea [1|2] — [Name]
+### Idea [1|2] - [Name]
 
 **Thesis** (1 sentence): why this wins
-**ICP** (role + trigger event): e.g. "Ops manager at 50–200-person logistics co who just lost a client to tracking failures"
+**ICP** (role + trigger event): e.g. "Ops manager at 50-200-person logistics co who just lost a client to tracking failures"
 **Wedge** (first 12 months): the single sharp product
 **Pain evidence** (2+ permalinks):
-  - [quote] — [url]
-  - [quote] — [url]
+  - [quote] - [url]
+  - [quote] - [url]
 **Monetization**: price point, target gross margin, rough unit economics
-**Distribution** (specific channel + CAC estimate): not "content marketing" — name the channel
+**Distribution** (specific channel + CAC estimate): not "content marketing" - name the channel
 **Moat** (what compounds): data, workflow lock-in, regulatory, network, proprietary integration
-**Why now (2026)**: one of — regulatory shift, capability unlock, cost-curve shift, distribution change
+**Why now (2026)**: one of - regulatory shift, capability unlock, cost-curve shift, distribution change
 **MVP test** (2 weeks): what to build, what metric proves/disproves demand
 **Kill criteria** (numeric): e.g. "<3 paid pilots in 60 days → kill"
 **Expansion** (what if it works): the adjacent market
@@ -321,16 +321,16 @@ Append the 2 memo ideas to the shared backlog `memory/topics/startup-ideas.md` (
 #### 6. Send via `./notify` (under 4000 chars)
 Unless `DRY_RUN`:
 ```
-*Startup Ideas — ${today}*${var ? ` (${var})` : ``}
+*Startup Ideas - ${today}*${var ? ` (${var})` : ``}
 
-*1. [Name]* (executable) — [thesis]
+*1. [Name]* (executable) - [thesis]
 ICP: [role + trigger]
 Wedge: [first product]
 Why now: [one sentence]
 MVP test: [what to build, metric]
 Kill: [numeric criteria]
 
-*2. [Name]* (ambitious) — [thesis]
+*2. [Name]* (ambitious) - [thesis]
 ICP: [role + trigger]
 Wedge: [first product]
 Why now: [one sentence]

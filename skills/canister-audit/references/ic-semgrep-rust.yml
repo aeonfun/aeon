@@ -1,0 +1,95 @@
+# Internet Computer Rust-canister static rules for canister-audit (C4).
+#
+# A cheap, reliable FIRST PASS - not the audit. Semgrep's Rust support is still
+# experimental, so these rules are deliberately coarse and high-recall: they
+# surface candidates for the agentic pass (C5) and C6 triage to confirm or
+# refute, exactly as Slither feeds sc-audit. The agentic layer carries the audit;
+# these rules just make sure the obvious access-control footguns are never missed.
+#
+# Pitfall numbers reference references/ic-security-checklist.md.
+# Run: semgrep --config references/ic-semgrep-rust.yml <canister-src>
+
+rules:
+  - id: ic-update-missing-caller-auth
+    languages: [rust]
+    severity: WARNING
+    message: >-
+      This #[update] entrypoint changes state but authenticates no caller: it
+      neither rejects the anonymous principal (Principal::anonymous()) nor sits
+      behind an owner/controller/CallerGuard check. Triage whether an
+      unauthenticated caller can reach a privileged state change
+      (canister-security #2 anonymous principal, #8 unguarded admin).
+    metadata:
+      pitfall: ["#2", "#8"]
+      confidence: LOW
+      layer: static-first-pass
+    patterns:
+      - pattern-either:
+          - pattern: |
+              #[ic_cdk::update]
+              fn $F(...) { ... }
+          - pattern: |
+              #[ic_cdk::update(...)]
+              fn $F(...) { ... }
+          - pattern: |
+              #[update]
+              fn $F(...) { ... }
+          - pattern: |
+              #[update(...)]
+              fn $F(...) { ... }
+      # Suppress only on a REAL caller guard. We deliberately do NOT suppress on a bare
+      # `== Principal::anonymous()` comparison or a mention in a comment: a comparison
+      # that does not actually reject the caller is not a guard, and under-reporting is
+      # worse than noise here (these are candidates, confirmed or refuted in C6).
+      # ic-cdk's own attribute guard (`#[update(guard = "is_owner")]`, also with `name = ...`)
+      # IS a real guard: the guard fn runs before the method and rejects by returning Err.
+      # Anchored to the attribute so a body-local `let guard = ...` does not suppress.
+      - pattern-not-regex: "(require_owner|require_caller|require_controller|CallerGuard|is_controller|ic_cdk::api::is_controller|caller_guard|ensure_caller|update\\([^)]*\\bguard\\s*=)"
+
+  - id: ic-callerguard-immediate-drop
+    languages: [rust]
+    severity: ERROR
+    message: >-
+      A CallerGuard bound to `_` is dropped at the end of the statement, so the
+      lock it is meant to hold is released immediately and the reentrancy/TOCTOU
+      protection is defeated. Bind it to a named variable that lives for the whole
+      critical section (canister-security #3).
+    metadata:
+      pitfall: ["#3"]
+      confidence: HIGH
+      layer: static
+    # Both the plain binding and the `?`-propagating form DFINITY's guide warns about;
+    # each drops the guard at the end of the statement.
+    pattern-either:
+      - pattern: let _ = CallerGuard::new(...);
+      - pattern: let _ = CallerGuard::new(...)?;
+
+  - id: ic-fetch-root-key-in-canister
+    languages: [rust]
+    severity: ERROR
+    message: >-
+      fetch_root_key() disables replica-signature verification and must run ONLY
+      against a local replica. Reaching it on mainnet lets a man-in-the-middle
+      forge responses. Gate it behind an explicit local-only flag, never a default
+      path (canister-security #7).
+    metadata:
+      pitfall: ["#7"]
+      confidence: HIGH
+      layer: static
+    pattern-either:
+      - pattern: $A.fetch_root_key()
+      - pattern: $A.fetch_root_key().$M(...)
+
+  - id: ic-deprecated-ic-cdk-caller
+    languages: [rust]
+    severity: INFO
+    message: >-
+      ic_cdk::caller() is deprecated in ic-cdk 0.18+ in favour of
+      ic_cdk::api::msg_caller(). Legacy call sites are worth a look - they often
+      predate the current anonymous-principal and guard conventions
+      (canister-security #2).
+    metadata:
+      pitfall: ["#2"]
+      confidence: LOW
+      layer: static
+    pattern: ic_cdk::caller()

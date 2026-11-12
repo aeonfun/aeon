@@ -234,24 +234,24 @@ For each repo with a shipped PR, send a separate `./notify` so the operator gets
 **Do NOT compress into 1–2 lines. Every section below is REQUIRED.**
 
 ```
-*Feature Built — ${today} — owner/repo*
+*Feature Built - ${today} - owner/repo*
 
 <Feature name>
-<2–3 sentence description of what the feature does in plain language. Explain it like you're telling a non-technical reader in the community what just got added to the project.>
+<2-3 sentence description of what the feature does in plain language. Explain it like you're telling a non-technical reader in the community what just got added to the project.>
 
 Why this matters:
-<2–3 sentences on why this is relevant to the project RIGHT NOW. What problem did users/developers have before? What triggered this — a repo-actions idea, a GitHub issue, a gap in the codebase? How does it move the project forward?>
+<2-3 sentences on why this is relevant to the project RIGHT NOW. What problem did users/developers have before? What triggered this - a repo-actions idea, a GitHub issue, a gap in the codebase? How does it move the project forward?>
 
 What was built:
-- <file/component>: <what was added/modified — be specific about the functionality, not just "added endpoint">
+- <file/component>: <what was added/modified - be specific about the functionality, not just "added endpoint">
 - <file/component>: <same level of detail>
 - <file/component (if applicable)>: ...
 
 How it works:
-<3–4 sentences on the technical implementation. Approach taken and why. Libraries/APIs used. How it integrates with existing code. Any interesting design decisions.>
+<3-4 sentences on the technical implementation. Approach taken and why. Libraries/APIs used. How it integrates with existing code. Any interesting design decisions.>
 
 What's next:
-<1–2 sentences on follow-up work or how this connects to the broader roadmap.>
+<1-2 sentences on follow-up work or how this connects to the broader roadmap.>
 
 PR: <url>
 ```
@@ -399,7 +399,7 @@ Built by [Aeon](https://github.com/aeon)}"
 Send via `./notify`:
 
 ```
-external-feature: [repo] — [what was done]
+external-feature: [repo] - [what was done]
 PR: [url]
 ```
 
@@ -524,12 +524,12 @@ Save to `/tmp/revival-tweet.md`.
 Write notification to `/tmp/repo-revive-notify.md`:
 
 ```
-*Repo Revive — ${today}*
+*Repo Revive - ${today}*
 
 **${owner/repo}** (${N}★, ${N}d dormant)
 
 fix: <one-line description>
-pr: <PR URL or "no PR — updated via API">
+pr: <PR URL or "no PR - updated via API">
 
 tweet draft:
 "<exact tweet text>"
@@ -551,7 +551,7 @@ Append **one** consolidated block under a single `### feature` heading in `memor
 ```markdown
 ### feature
 - Branch: watched
-- **Built:** <feature name> — owner/repo
+- **Built:** <feature name> - owner/repo
 - **Why:** <trigger>
 - **PR:** <url>
 - **Files:** <list>
@@ -566,7 +566,7 @@ Per-repo skips/failures each get their own line: `- FEATURE_SKIP: <repo> — <re
 - **Repo:** owner/repo
 - **What:** <description of enhancement>
 - **PR:** <url>
-- **Why:** <what prompted it — issue, TODO, proactive improvement>
+- **Why:** <what prompted it - issue, TODO, proactive improvement>
 ```
 No workable issue under `--fix-issues`: `- EXTERNAL_SKIP: <repo> — no workable open issue`.
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-notify_format — pure formatting/chunking core for ./notify.
+notify_format - pure formatting/chunking core for ./notify.
 
 No network, no env, no deps (stdlib only) so it is unit-testable in isolation.
 `notify.sh` shells out to this to build per-channel payloads; the channel POSTs
@@ -14,7 +14,7 @@ Channels & limits:
 
 Two correctness properties this guarantees and the tests pin:
   1. No chunk exceeds its channel limit.
-  2. No chunk ever ends inside an unbalanced ``` code fence — if a split lands
+  2. No chunk ever ends inside an unbalanced ``` code fence - if a split lands
      mid-fence, the open fence is closed and reopened on the next chunk, so every
      chunk renders as valid Markdown on its own.
 
@@ -22,7 +22,7 @@ Telegram note: skills write ordinary Markdown (`**bold**`, `## headings`,
 `- bullets`, `| tables |`). Telegram's legacy Markdown parse_mode supports none
 of those and 400s on any unbalanced `*`/`_` (which silently drops the whole
 message to raw-syntax plaintext). So the telegram() path normalizes Markdown to
-Telegram's safe HTML subset (<b>/<i>/<code>/<pre>/<a>/<blockquote>) — deterministic
+Telegram's safe HTML subset (<b>/<i>/<code>/<pre>/<a>/<blockquote>) - deterministic
 escaping means the output is always valid and never collapses to plaintext.
 Skills should NOT hand-format for Telegram; just write clean Markdown.
 """
@@ -39,6 +39,17 @@ SEVERITY = {
     "critical": {"emoji": "🚨",  "color": 0xE74C3C},
 }
 DEFAULT_SEVERITY = "info"
+
+# Em dash (U+2014) and en dash (U+2013) become a plain hyphen in every message and
+# title: the operator never wants either in a notification or feed card, and skill
+# templates (or the model writing them) keep slipping them in. Written as escapes
+# so editors and dash-rewriting hooks leave this table intact.
+_DASHES = str.maketrans({"\u2014": "-", "\u2013": "-"})
+
+
+def plain_dashes(s):
+    """Replace every em dash and en dash in s with '-'."""
+    return s.translate(_DASHES) if s else s
 
 
 def _fence_count(s: str) -> int:
@@ -140,7 +151,7 @@ def _inline(text):
         store.append(frag)
         return "\x00%d\x00" % (len(store) - 1)
 
-    # Protect code spans and links first — their contents must not be reprocessed.
+    # Protect code spans and links first - their contents must not be reprocessed.
     text = _RE_CODE.sub(lambda m: _stash("<code>%s</code>" % _esc(m.group(1))), text)
     text = _RE_LINK.sub(
         lambda m: _stash('<a href="%s">%s</a>' % (_esc(m.group(2)), _esc(m.group(1)))),
@@ -190,7 +201,7 @@ def md_to_telegram_html(text):
             continue
 
         # Table: a "| … |" row followed by a "| --- |" separator. Telegram can't
-        # render tables — flatten to bold-header + " | "-joined rows.
+        # render tables - flatten to bold-header + " | "-joined rows.
         if "|" in line and i + 1 < n and "-" in lines[i + 1] and _RE_TABLE_SEP.match(lines[i + 1]):
             out.append(" | ".join("<b>%s</b>" % _inline(c) for c in _split_row(line)))
             i += 2
@@ -208,7 +219,7 @@ def md_to_telegram_html(text):
 
         # Horizontal rule.
         if _RE_HR.match(line):
-            out.append("———")
+            out.append("---")
             i += 1
             continue
 
@@ -350,7 +361,7 @@ def slack(text, title, severity, limit=3000):
 
 def buzz(text, title, severity, limit=15000):
     # Buzz (Block's Nostr-relay workspace) renders Markdown natively, so unlike the
-    # Telegram/Slack paths there is no HTML or Block-Kit transform — just chunk the
+    # Telegram/Slack paths there is no HTML or Block-Kit transform - just chunk the
     # Markdown fence-safely. `limit` sits well under the relay's 65,536-byte per-message
     # cap and small enough to stay readable in a chat channel. One `buzz messages send`
     # per chunk; the caller base64-decodes each line and pipes it to the CLI's stdin.
@@ -372,7 +383,8 @@ def main():
     ap.add_argument("--severity", default=DEFAULT_SEVERITY)
     ap.add_argument("--limit", type=int, default=0)
     args = ap.parse_args()
-    text = sys.stdin.read()
+    text = plain_dashes(sys.stdin.read())
+    args.title = plain_dashes(args.title)
 
     if args.channel == "telegram":
         lim = args.limit or 3900

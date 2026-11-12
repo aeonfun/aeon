@@ -150,7 +150,7 @@ Every PR (except `REPAIR_DIAGNOSED_NO_FIX`) must include a Verification section 
 **Expected result:**
 - Workflow conclusion: `success`
 - Output file matches `{evals.json output_pattern or "memory/logs/${today}.md mentions {name}"}`
-- {category-specific signal — e.g. "no `rate limit` strings in run logs" / "produces ≥ {min_words} words" / "annotation count ≤ 0"}
+- {category-specific signal - e.g. "no `rate limit` strings in run logs" / "produces ≥ {min_words} words" / "annotation count ≤ 0"}
 
 **If still failing after this PR:** delete `memory/state/skill-repair-history.json[{name}]` to remove the cooldown, then re-dispatch `skill-repair` with `var={name}` for a second pass.
 ```
@@ -159,17 +159,11 @@ Record the chosen verification command in the issue file's `## Repair Attempt` s
 
 ## 6. Branch, commit, PR
 
-```bash
-TODAY="${today}"
-BRANCH="fix/skill-repair-{name}-${TODAY}"
-git checkout -b "$BRANCH"
-git add skills/{name}/SKILL.md  # plus aeon.yml or scripts/* iff in playbook
-git commit -m "fix({name}): [one-line root cause → fix]"
-git push -u origin "$BRANCH"
+Write the PR body with the Write tool to `/tmp/skill-repair-pr.md` (no heredoc, no redirect), using this outline:
 
-gh pr create --title "fix({name}): [short]" --body "$(cat <<'EOF'
+```markdown
 ## Symptom
-[what failed — error signature, run URL]
+[what failed - error signature, run URL]
 
 ## Diagnosis
 [dossier summary: regression commit if any, consistent vs intermittent, category]
@@ -181,18 +175,26 @@ gh pr create --title "fix({name}): [short]" --body "$(cat <<'EOF'
 [what changed and why]
 
 ## Risk
-LOW | MED | HIGH — [rationale]
+LOW | MED | HIGH - [rationale]
 
 ## Verification
 [copy from step 5]
 
 ## Source status
 cron_state=ok | issues_index=ok | gh_runs=ok | gh_logs=ok | git_log=ok | check_runs=ok
-EOF
-)"
 ```
 
-If risk is HIGH, also: `gh pr edit "$PR_URL" --add-label manual-review`.
+Then one call per step, values written in literally (branch = `fix/skill-repair-<name>-<today>`):
+
+```bash
+git checkout -b fix/skill-repair-<name>-<today>
+git add skills/<name>/SKILL.md  # plus aeon.yml or scripts/* iff in playbook
+git commit -m "fix(<name>): <one-line root cause to fix>"
+git push -u origin fix/skill-repair-<name>-<today>
+gh pr create --title "fix(<name>): <short>" --body-file /tmp/skill-repair-pr.md
+```
+
+If risk is HIGH, also: `gh pr edit <pr-url> --add-label manual-review` (the URL `gh pr create` printed).
 
 ## 7. Update issue tracker (`memory/issues/`)
 
@@ -224,7 +226,7 @@ Update `memory/state/skill-repair-history.json`:
 Send via `./notify` (one-paragraph max — verdict line first):
 
 ```
-*skill-repair — {EXIT_CODE}*
+*skill-repair - {EXIT_CODE}*
 Target: {name} (or systemic: skill-a, skill-b, ...)
 Root cause: [one line]
 Fix: [one line] (risk: LOW|MED|HIGH)
@@ -245,8 +247,8 @@ Append to `memory/logs/${today}.md`:
 - Fix: [what changed] (risk: {LOW|MED|HIGH})
 - Regression suspect: {commit SHA or "none in window"}
 - Failures observed: {N}/5 recent runs ({consistent|intermittent})
-- PR: {url or "—"}
-- Issue: {ISS-NNN created|updated|resolved or "—"}
+- PR: {url or "-"}
+- Issue: {ISS-NNN created|updated|resolved or "-"}
 - Source status: cron_state | issues_index | gh_runs | gh_logs | git_log | check_runs
 ```
 

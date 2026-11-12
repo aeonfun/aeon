@@ -650,21 +650,11 @@ record_provenance() {
   local slug="$1"
   local source_path="$2"
   local commit_sha
-  # -X GET is required: `gh api` switches to POST as soon as a -f field is
-  # present, and POST /repos/{o}/{r}/commits is not an endpoint — it 404s, and
-  # gh prints the error body on STDOUT, so the old form captured
-  # '{"message":"Not Found",...}unknown' and wrote that into skills.lock as the
-  # commit_sha of every installed skill. -f sha= pins the log to the branch we
-  # actually fetched instead of the repo default.
   # $source_path is relative to the PACK dir; the API wants it relative to the
   # repo root, so a --path pack has to carry that prefix or every lookup misses
   # and the whole pack records commit_sha "unknown".
   local api_path="${SUBPATH:+$SUBPATH/}$source_path/SKILL.md"
-  commit_sha=$(gh api -X GET "repos/$REPO/commits" \
-    -f path="$api_path" -f sha="$BRANCH" -f per_page=1 \
-    --jq '.[0].sha' 2>/dev/null || true)
-  # Anything that isn't a 40-char hex object name is a failure, not a sha.
-  [[ "$commit_sha" =~ ^[0-9a-f]{40}$ ]] || commit_sha="unknown"
+  commit_sha=$(skill_commit_sha "$REPO" "$api_path" "$BRANCH")
   local entry
   entry=$(jq -n \
     --arg name "$slug" \

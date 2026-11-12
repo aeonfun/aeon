@@ -1,0 +1,95 @@
+name: ci-canister-audit-fixture
+# Actually RUN the canister-audit PocketIC reproduction end to end (not just
+# `cargo test --no-run`), so the token_vault fixture's planted flaw is proven to
+# reproduce: the anonymous principal mints a free, withdrawable balance via
+# claim_bonus, breaking sum(balances) <= total_deposited. Deterministic, no secrets
+# - the IC analogue of the sc-audit fuzz-arm regression. Only runs when the fixture
+# or this workflow changes (empty paths filter = cheap no-op otherwise).
+on:
+  pull_request:
+    paths:
+      - 'skills/canister-audit/fixtures/**'
+      - '.github/workflows/ci-canister-audit-fixture.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'skills/canister-audit/fixtures/**'
+      - '.github/workflows/ci-canister-audit-fixture.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Cancel a superseded in-progress run on the same ref (PRs only; never main/tags).
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  pocketic-repro:
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: skills/canister-audit/fixtures/token_vault
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Add wasm32 target
+        run: rustup target add wasm32-unknown-unknown
+
+      - name: Stage PocketIC 16.1.0 (pinned + sha256)
+        working-directory: .
+        run: |
+          set -euo pipefail
+          url="https://github.com/dfinity/pocketic/releases/download/16.1.0/pocket-ic-x86_64-linux.gz"
+          curl -sSfL -o /tmp/pocket-ic.gz "$url"
+          echo "131219d90dcf9bf6f3ed8ee02d8f55504ea24a6db382f5680675b7bd6b7ed3bf  /tmp/pocket-ic.gz" | sha256sum -c -
+          gunzip -f /tmp/pocket-ic.gz
+          mkdir -p /tmp/bin
+          mv /tmp/pocket-ic /tmp/bin/pocket-ic
+          chmod +x /tmp/bin/pocket-ic
+          # /tmp/bin/pocket-ic is where stage-canister-audit.sh installs it and what
+          # repro.sh defaults to under the gate's scrubbed env.
+          echo "POCKET_IC_BIN=/tmp/bin/pocket-ic" >> "$GITHUB_ENV"
+
+      - name: Build canister wasm
+        env:
+          CARGO_TARGET_DIR: /tmp/canister-audit-target
+        run: cargo build --locked --target wasm32-unknown-unknown --release
+
+      - name: Run PocketIC reproduction (direct)
+        # The repro is a SEPARATE crate (repro/) so the audited token_vault crate stays
+        # pristine; run its test against the wasm the previous step built.
+        working-directory: skills/canister-audit/fixtures/token_vault/repro
+        env:
+          CARGO_TARGET_DIR: /tmp/canister-audit-target
+          CANISTER_WASM: /tmp/canister-audit-target/wasm32-unknown-unknown/release/token_vault.wasm
+        run: cargo test --locked --test repro -- --nocapture
+
+      # The direct run above proves the repro; this proves the PRODUCTION path the
+      # skill actually uses - the shared PoC gate, which runs repro.sh under a
+      # scrubbed `env -i` (POCKET_IC_BIN stripped -> repro.sh's default must find it)
+      # and fails on any worktree mutation or HEAD/target_commit mismatch. Run it
+      # against a self-contained copy with its own git repo (the "poc as its own
+      # crate" shape from SKILL.md §C6.5), so the gate's checks are deterministic and
+      # never touch the aeon checkout.
+      - name: Prove the reproduction THROUGH the shared PoC gate
+        working-directory: .
+        run: |
+          set -euo pipefail
+          target=/tmp/cg/token_vault
+          rm -rf "$target"; mkdir -p "$target"
+          cp -R skills/canister-audit/fixtures/token_vault/. "$target"/
+          git -C "$target" init -q
+          git -C "$target" add -A
+          git -C "$target" -c user.email=ci@aeon.local -c user.name=ci commit -qm fixture
+          head="$(git -C "$target" rev-parse HEAD)"
+          mkdir -p /tmp/vuln-scan/poc
+          jq --arg c "$head" '.target_commit=$c' "$target/repro/finding.json" > /tmp/vuln-scan/poc/finding.json
+          cp "$target/repro/repro.sh" /tmp/vuln-scan/poc/repro.sh
+          out="$(scripts/vuln-poc-gate.sh command \
+            --finding /tmp/vuln-scan/poc/finding.json \
+            --repo "$target" \
+            --script /tmp/vuln-scan/poc/repro.sh)"
+          echo "$out"
+          echo "$out" | grep -q '^VULN_POC_VERIFIED'

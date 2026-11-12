@@ -42,6 +42,17 @@ else
   bad "structured message queued as .json with title + severity"
 fi
 
+# 1b. em dash / en dash in the body or title is queued as a plain hyphen
+reset
+EMD=$'\xe2\x80\x94'; END_=$'\xe2\x80\x93'
+bash "$NOTIFY" --title "Movers ${EMD} today" "BTC ${EMD} up 1${END_}2 percent" >/dev/null 2>&1
+p="$(payload)"
+if [ -n "$p" ] && jq -e '.title=="Movers - today" and .body=="BTC - up 1-2 percent" and (.plain|contains("Movers - today"))' "$p" >/dev/null 2>&1; then
+  pass "em/en dashes queued as plain hyphens"
+else
+  bad "em/en dashes queued as plain hyphens"
+fi
+
 # 2. probe/test message is suppressed (no payload)
 reset
 bash "$NOTIFY" "quick test ping" >/dev/null 2>&1
@@ -144,8 +155,9 @@ TELEGRAM_BOT_TOKEN=x TELEGRAM_CHAT_ID=123 AEON_MESSAGES_WF_STATE=active SKILL_NA
   bash "$NOTIFY" "A normal skill digest long enough to clear the probe filter here" >/dev/null 2>&1
 p="$(payload)"
 { [ -n "$p" ] && jq -e '.reply_markup.inline_keyboard[-1][0].callback_data=="run:token-movers"' "$p" >/dev/null 2>&1 \
-  && jq -e '.reply_markup.inline_keyboard[-1][1].callback_data=="schedule:token-movers:weekly"' "$p" >/dev/null 2>&1; } \
-  && pass "global Run again + Schedule weekly buttons attached" || bad "global Run again + Schedule weekly buttons attached"
+  && jq -e '.reply_markup.inline_keyboard[-1][1].callback_data=="schedule:token-movers:weekly"' "$p" >/dev/null 2>&1 \
+  && jq -e '.reply_markup.inline_keyboard[-1][2].callback_data=="details:token-movers"' "$p" >/dev/null 2>&1; } \
+  && pass "global Run again + Schedule weekly + Details buttons attached" || bad "global Run again + Schedule weekly + Details buttons attached"
 
 # 13. skill --buttons rows are kept, with the global row appended beneath
 reset

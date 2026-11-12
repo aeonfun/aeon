@@ -148,6 +148,34 @@ out="$(node "$V" --packs "$d/packs.json" --readme "$d/README.md" --docs "$d/doc.
 if [[ $rc -ne 0 && "$out" == *"doc.md:3"* ]]; then pass "a stale count in a --docs file is rejected with its location"
 else bad "a stale count in a --docs file is rejected with its location"; echo "$out" | sed 's/^/       /'; fi
 
+# ── Community `installed` pack (#1310) ──────────────────────────────────────
+# bin/generate-packs-json appends a synthetic `installed` pack (kind community)
+# once skills.lock has entries and counts it in total_packs / total_skills. The
+# README describes the first-party catalog only, so neither may move.
+write_installed_packs() {
+  cat > "$1/packs.json" <<'EOF'
+{
+  "version": "1.0",
+  "total_packs": 3,
+  "total_skills": 4,
+  "packs": [
+    { "key": "alpha", "name": "Alpha", "kind": "first-party", "skills": [ { "slug": "a-one" }, { "slug": "a-two" } ] },
+    { "key": "beta",  "name": "Beta",  "kind": "first-party", "skills": [ { "slug": "b-one" } ] },
+    { "key": "installed", "name": "Installed", "kind": "community", "skills": [ { "slug": "c-one", "source_repo": "someone/pack" } ] }
+  ]
+}
+EOF
+}
+
+d=$(new_fixture installed_pack)
+write_installed_packs "$d"
+expect_ok "$d" "an installed community pack is not counted or required in the README"
+
+d=$(new_fixture installed_pack_stale)
+write_installed_packs "$d"
+write_readme "$d" Two 3 '`a-one`'
+expect_fail "$d" "missing: a-two" "first-party drift is still caught when a community pack is installed"
+
 # ── The committed catalog + README itself ───────────────────────────────────
 out="$(node "$V" 2>&1)"; rc=$?
 if [[ $rc -eq 0 ]]; then pass "the committed catalog/packs.json matches the committed README"

@@ -76,34 +76,49 @@ Write a compelling storyboard to `skills/remotion/project/props.json`, valid aga
 - **Images are optional and must be real** — only use an `imageUrl` you have an actual public https URL for (e.g. from step 2's research, an og:image, a known asset). **Never invent an image URL**, and never use a photo of a real, identifiable private person without a clear reason in the brief. If you have no real image, skip `image` scenes.
 - Pick an `accent`/`theme` that fits the subject unless flags forced them.
 
-Then validate it parses: `cat skills/remotion/project/props.json | jq . >/dev/null` — if `jq` errors, fix the JSON before rendering.
-
-### 4. Render — straight into the committed output dir
-
-The MP4 is **hosted from the repo itself** (the workflow commits `output/**` and pushes to `main`), so render it there. Pick a short, unique, slugified filename from the brief:
+Then validate it parses, as its own call (if `jq` errors, fix the JSON before rendering):
 
 ```bash
-SLUG=$(echo "${var}" | tr '[:upper:]' '[:lower:]' | sed -E 's/--[a-z]+ ?[^ ]*//g; s/[^a-z0-9]+/-/g; s/^-+|-+$//g' | cut -c1-40)
-OUT="output/remotion/${today}-${SLUG:-video}.mp4"
+jq empty skills/remotion/project/props.json
+```
+
+### 4. Render - straight into the committed output dir
+
+**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`SLUG=$(...)`, `OUT=...`, `REPO=$(gh ...)`), uses `[ ... ]` tests, joins commands with `;`, `&&` or `||`, or runs a `( cd ... && ... )` subshell, and each refusal costs a model turn; `tr`, `sed`, `cut` and `cp` are not allowed commands. So work out SLUG yourself, write SLUG, OUT and REPO into later commands literally (the `<SLUG>`, `<OUT>`, `<REPO>` placeholders), render with `npm --prefix` instead of `cd`, and check the file with `ls -l`.
+
+The MP4 is **hosted from the repo itself** (the workflow commits `output/**` and pushes to `main`), so render it there. Pick a short, unique, slugified filename from the brief: SLUG = `${var}` lowercased, with the `--flag value` pairs removed, every run of characters outside `a-z0-9` turned into one `-`, leading/trailing `-` trimmed, cut to 40 characters (`video` if nothing is left). OUT = `output/remotion/${today}-<SLUG>.mp4`. Each step is its own call:
+
+```bash
 mkdir -p output/remotion
-( cd skills/remotion/project && npx --no-install remotion render Video "$OLDPWD/$OUT" --props=./props.json --log=error )
+```
+
+`npm --prefix` runs the project's `render` script (`remotion render`) inside `skills/remotion/project`, so the output path is relative to that dir (`../../../` is the repo root):
+
+```bash
+npm --prefix skills/remotion/project run render -- Video ../../../output/remotion/${today}-<SLUG>.mp4 --props=./props.json --log=error
 ```
 
 - The composition id is `Video`. Resolution + duration come from the props (do not pass `--width`/`--height`/duration flags — duration is clamped to 10s in the composition).
 - One render per run. If it fails, capture the last ~20 lines of stderr, log `REMOTION_RENDER_FAILED`, notify the operator with the error tail + the one likely cause (usually a schema-invalid `props.json` or a bad `imageUrl`), and stop. **Do not** loop retrying with reworded props more than once.
 - If `npx remotion` reports the CLI/browser is missing (`command not found`, `No browser found`), staging didn't run — log `REMOTION_NOT_STAGED`, notify that the run needs the `remotion` skill's Stage step (this happens only if dispatched oddly), and stop.
 
-Confirm it exists and is non-trivial: `[ -s "$OUT" ]`. Note the size in MB for the notify.
+Confirm it exists and is non-trivial (a size above 0 bytes):
+
+```bash
+ls -l output/remotion/${today}-<SLUG>.mp4
+```
+
+Note the size in MB for the notify.
 
 ### 5. Build the delivery URL (durable, no external host)
 
 The clip is delivered as a **link** (step 7): `./notify` is text-only (it has no media-upload flag), so the notify carries a durable GitHub URL to the committed copy, which plays in the GitHub UI. The workflow's *Commit results* step (which runs after this) commits `output/**` and pushes to `main`, so that URL goes live within ~1 minute. Build it from the repo name - never hard-code the owner/repo:
 
 ```bash
-REPO=$(gh repo view --json nameWithOwner -q .nameWithOwner)   # e.g. your-org/your-instance
-URL="https://github.com/${REPO}/blob/main/${OUT}"             # inline player in the GitHub UI
-RAW="https://github.com/${REPO}/raw/main/${OUT}"              # direct file
+gh repo view --json nameWithOwner -q .nameWithOwner
 ```
+
+It prints REPO (e.g. `your-org/your-instance`). Then URL = `https://github.com/<REPO>/blob/main/<OUT>` (inline player in the GitHub UI) and RAW = `https://github.com/<REPO>/raw/main/<OUT>` (direct file).
 
 - The `blob` URL renders an inline video player on GitHub; the `raw` URL is the direct file. Deliver the `blob` URL as primary, the `raw` as a secondary line.
 - **Private-repo note:** on a private instance the link opens for anyone with repo access (the operator, logged in) — it is not world-public. Say so in the notify. On a public instance it's fully shareable.
@@ -115,10 +130,10 @@ RAW="https://github.com/${REPO}/raw/main/${OUT}"              # direct file
 Append a metadata line to `memory/state/remotion-renders.jsonl`:
 
 ```json
-{"date":"${today}","brief":"<trimmed>","orientation":"landscape","scenes":3,"seconds":9.5,"path":"output/remotion/…​.mp4","url":"https://github.com/…","bytes":1740000}
+{"date":"${today}","brief":"<trimmed>","orientation":"landscape","scenes":3,"seconds":9.5,"path":"output/remotion/….mp4","url":"https://github.com/…","bytes":1740000}
 ```
 
-Copy the storyboard for reference: `cp skills/remotion/project/props.json memory/state/remotion-last-storyboard.json`. (The working `props.json` under the project is gitignored; the committed record + the MP4 under `output/remotion/` are what persist.)
+Copy the storyboard for reference: write the same JSON you wrote to `skills/remotion/project/props.json` to `memory/state/remotion-last-storyboard.json` with the Write tool (`cp` is not an allowed command). (The working `props.json` under the project is gitignored; the committed record + the MP4 under `output/remotion/` are what persist.)
 
 ### 7. Notify
 
@@ -134,7 +149,7 @@ On-demand skill → a completed run always notifies. Deliver via `./notify -f` (
 Body template:
 
 ```
-*Remotion — <short title>*
+*Remotion - <short title>*
 <one-line description of the video>
 ▶︎ watch: <blob URL>
 direct: <raw URL>

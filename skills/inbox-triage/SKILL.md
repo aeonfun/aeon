@@ -99,14 +99,14 @@ Scanned: {N} unread notifications ({N} within 14 days)
 
 ### Security ({count})
 {for each SECURITY item, sorted by age:}
-- **{repo}**: {title} ({age_days}d) — {html_url}
+- **{repo}**: {title} ({age_days}d) - {html_url}
 
 {if none:}
 None.
 
 ### Vuln PR Replies ({count_critical} critical, {count_aging} aging)
 {for each VULN_REPLY sorted by age desc:}
-- **[{CRITICAL|AGING|FRESH}]** `{repo}` ({age_days}d): {title} — {html_url}
+- **[{CRITICAL|AGING|FRESH}]** `{repo}` ({age_days}d): {title} - {html_url}
   {if vuln-followup note found:} _{tracked note}_
 
 {if none:}
@@ -114,14 +114,14 @@ None.
 
 ### Review Requested ({count})
 {for each REVIEW_NEEDED item:}
-- **{repo}**: {title} — {html_url}
+- **{repo}**: {title} - {html_url}
 
 {if none:}
 None.
 
 ### Mentions ({count})
 {for each MENTION item:}
-- **{repo}**: {title} — {html_url}
+- **{repo}**: {title} - {html_url}
 
 {if none:}
 None.
@@ -136,7 +136,7 @@ Read `memory/MEMORY.md`. Find the `## Known Follow-ups` section.
 
 **Add** any VULN_REPLY CRITICAL item not already tracked there — append:
 ```
-- **{repo} #{number} NEEDS-ANSWER** — {age_days}d since maintainer activity ({url})
+- **{repo} #{number} NEEDS-ANSWER** - {age_days}d since maintainer activity ({url})
 ```
 
 **Update** any existing NEEDS-ANSWER item for a PR that now appears as FRESH in VULN_REPLY (maintainer responded recently) — change its note to `RESPONDED — verify resolution`.
@@ -154,10 +154,10 @@ Only send if at least one of:
 Write to `.pending-notify-temp/inbox-triage-${today}.md`:
 
 ```
-inbox — {today}
+inbox - {today}
 
 {if SECURITY:}
-security alert: {repo} — {title}
+security alert: {repo} - {title}
 
 {if VULN_REPLY CRITICAL:}
 vuln PRs aging: {comma-separated list of "repo (Nd)"}
@@ -189,7 +189,7 @@ Append to `memory/logs/${today}.md`:
 - **Vuln replies:** {N total} ({N_critical} critical, {N_aging} aging, {N_fresh} fresh)
 - **Review needed:** {N}
 - **Mentions:** {N}
-- **MEMORY.md follow-ups updated:** {yes/no — what changed}
+- **MEMORY.md follow-ups updated:** {yes/no - what changed}
 - **Notification sent:** {yes/no}
 - INBOX_TRIAGE_OK
 ```

@@ -28,21 +28,14 @@ A table of prices isn't useful. An operator reading this notification wants to a
 
 Parse `${var}` into a platform choice and an optional single-market override, then run the matching branch(es).
 
-```bash
-PLATFORM="both"   # both | polymarket | kalshi
-SINGLE=""         # optional single event slug (Polymarket) or ticker (Kalshi)
+**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`SLUGS=$(grep ...)`, `TOKEN_ID=$(...)`, `END_TS=$(date ...)`), uses `case` / `if` / `for` or `$(( ))`, or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn. So parse `${var}` in your head (below), get the timestamp with a bare `date` call and work out the window yourself, and write every slug, ticker, id and timestamp into each `curl` literally (the `<SLUG>`, `<EVENT_ID>` style placeholders in the snippets), one call per event or market.
 
-case "${var}" in
-  "")            PLATFORM="both" ;;
-  polymarket)   PLATFORM="polymarket" ;;
-  kalshi)       PLATFORM="kalshi" ;;
-  polymarket:*) PLATFORM="polymarket"; SINGLE="${var#polymarket:}" ;;
-  kalshi:*)     PLATFORM="kalshi";     SINGLE="${var#kalshi:}" ;;
-  *)            # unrecognised prefix — don't guess a venue; fall back to both watchlists
-                PLATFORM="both"; SINGLE=""
-                echo "unrecognised selector '${var}' — running both watchlists" ;;
-esac
-```
+Work the selector out in your head (`PLATFORM` is `both | polymarket | kalshi`; `SINGLE` is an optional single event slug for Polymarket or ticker for Kalshi, empty by default):
+- empty -> `PLATFORM=both`
+- `polymarket` -> `PLATFORM=polymarket`; `kalshi` -> `PLATFORM=kalshi`
+- `polymarket:<slug>` -> `PLATFORM=polymarket`, `SINGLE` = the text after `polymarket:`
+- `kalshi:<ticker>` -> `PLATFORM=kalshi`, `SINGLE` = the text after `kalshi:`
+- anything else is an unrecognised prefix: don't guess a venue; fall back to both watchlists (`PLATFORM=both`, `SINGLE` empty) and note `unrecognised selector '<var>' - running both watchlists` in your output.
 
 - `PLATFORM=both` → run the **Polymarket branch** and the **Kalshi branch**, each from its own watchlist, then emit a combined notification.
 - `PLATFORM=polymarket` → run only the Polymarket branch (whole watchlist, or `SINGLE` if set).
@@ -60,24 +53,20 @@ Watchlist: `skills/monitor-polymarket/watchlist-polymarket.md`. Each line is an 
 
 ## P1. Load watchlist
 
+If `SINGLE` is set, `SLUGS` is just that slug. Otherwise read the watchlist, one slug per line, skipping comments and blanks; the printed lines are `SLUGS`:
 ```bash
-if [ -n "$SINGLE" ]; then
-  SLUGS="$SINGLE"
-else
-  # One slug per line, skip comments and blanks
-  SLUGS=$(grep -v '^#' skills/monitor-polymarket/watchlist-polymarket.md | grep -v '^$')
-fi
+grep -v '^#' skills/monitor-polymarket/watchlist-polymarket.md | grep -v '^$'
 ```
 
 If the watchlist is empty and no single slug was given, there's nothing to do on Polymarket — note it and move on (don't fabricate a report).
 
 ## P2. For each event, fetch markets and price history
 
-For each event slug in `$SLUGS`:
+For each event slug in `SLUGS` (one call each, the slug written in literally):
 
 **a) Get the event and its markets:**
 ```bash
-curl -s "https://gamma-api.polymarket.com/events?slug=$SLUG&limit=1"
+curl -s "https://gamma-api.polymarket.com/events?slug=<SLUG>&limit=1"
 ```
 
 The response contains the event `id`, `title`, and a `markets` array. Each market has:
@@ -89,10 +78,9 @@ The response contains the event `id`, `title`, and a `markets` array. Each marke
 **Skip closed markets** — they've already resolved.
 
 **b) Get 24h price history for each open market:**
+The YES token is index 0 of `clobTokenIds` (a JSON-encoded string in the event response); read it straight from the P2a output, as `TOKEN_ID`, and write it in literally, one call per open market:
 ```bash
-# YES token is index 0 of clobTokenIds
-TOKEN_ID=$(echo "$CLOB_TOKEN_IDS" | jq -r '.[0]')   # jq, not python3: python3 is not in the read-only tool allowlist
-curl -s "https://clob.polymarket.com/prices-history?market=$TOKEN_ID&interval=1d&fidelity=60"
+curl -s "https://clob.polymarket.com/prices-history?market=<TOKEN_ID>&interval=1d&fidelity=60"
 ```
 
 Response: `{ "history": [{ "t": unix_timestamp, "p": "price_string" }, ...] }`
@@ -108,14 +96,13 @@ Response: `{ "history": [{ "t": unix_timestamp, "p": "price_string" }, ...] }`
 
 For each event, get top comments and latest comments:
 
+`EVENT_ID` is the event `id` from step P2a, written in literally. Top comments by reactions:
 ```bash
-EVENT_ID=... # from step P2a
-
-# Top comments by reactions
-curl -s "https://gamma-api.polymarket.com/comments?parent_entity_type=Event&parent_entity_id=$EVENT_ID&limit=10&order=reactionCount&ascending=false"
-
-# Latest comments (last 24h chatter)
-curl -s "https://gamma-api.polymarket.com/comments?parent_entity_type=Event&parent_entity_id=$EVENT_ID&limit=10&order=createdAt&ascending=false"
+curl -s "https://gamma-api.polymarket.com/comments?parent_entity_type=Event&parent_entity_id=<EVENT_ID>&limit=10&order=reactionCount&ascending=false"
+```
+Latest comments (last 24h chatter), as a separate call:
+```bash
+curl -s "https://gamma-api.polymarket.com/comments?parent_entity_type=Event&parent_entity_id=<EVENT_ID>&limit=10&order=createdAt&ascending=false"
 ```
 
 **Important:** `parent_entity_type` must be `Event` (capital E).
@@ -136,11 +123,11 @@ For each event, produce a summary block:
 
 | Market | YES | 24h Chg | High/Low | 24h Vol |
 |--------|-----|---------|----------|---------|
-| [question] | XX.X% | +X.Xpp ▲ | XX–XX% | $X.Xm |
-| [question] | XX.X% | -X.Xpp ▼ | XX–XX% | $X.Xm |
+| [question] | XX.X% | +X.Xpp ▲ | XX-XX% | $X.Xm |
+| [question] | XX.X% | -X.Xpp ▼ | XX-XX% | $X.Xm |
 ...
 
-Biggest mover: "[question]" — [direction] from X% to Y%
+Biggest mover: "[question]" - [direction] from X% to Y%
 
 Comments:
 - [user/anon]: "[comment excerpt]" (X upvotes)
@@ -168,12 +155,9 @@ Watchlist: `skills/monitor-polymarket/watchlist-kalshi.md`. Each line is an even
 
 ## K1. Load watchlist
 
+If `SINGLE` is set, `TICKERS` is just that ticker. Otherwise the printed lines of this call are `TICKERS`:
 ```bash
-if [ -n "$SINGLE" ]; then
-  TICKERS="$SINGLE"
-else
-  TICKERS=$(grep -v '^#' skills/monitor-polymarket/watchlist-kalshi.md | grep -v '^$')
-fi
+grep -v '^#' skills/monitor-polymarket/watchlist-kalshi.md | grep -v '^$'
 ```
 
 If the watchlist is empty and no single ticker was given, emit `MONITOR_KALSHI_NO_CONFIG`, notify with a one-line setup hint, and discover trending events for this run only:
@@ -184,33 +168,34 @@ Pick the 5 highest-volume events and monitor those.
 
 ## K2. For each event, fetch markets, prices, and liquidity
 
-For each event ticker:
+For each event ticker (one call each, the ticker written in literally):
 
 **a) Event + markets:**
 ```bash
-curl -s "https://api.elections.kalshi.com/trade-api/v2/events/$EVENT_TICKER?with_nested_markets=true"
+curl -s "https://api.elections.kalshi.com/trade-api/v2/events/<EVENT_TICKER>?with_nested_markets=true"
 ```
 Fields used: `event_ticker`, `title`, `category`, `mutually_exclusive`, `markets[]` with `ticker`, `title`, `subtitle`, `status`, `yes_bid`, `yes_ask`, `last_price`, `volume`, `volume_24h`, `open_interest`, `close_time`, `series_ticker`.
 
 **Skip non-open markets** (closed/settled are historical).
 
 **b) 24h candlesticks (batch where possible):**
-Prefer the batch endpoint — one call per event, not per market:
+Prefer the batch endpoint - one call per event, not per market. Get the window end once, as its own call:
 ```bash
-END_TS=$(date -u +%s)
-START_TS=$((END_TS - 86400))
-# Batch: up to 10,000 candlesticks total across requested tickers
-curl -s "https://api.elections.kalshi.com/trade-api/v2/markets/candlesticks?tickers=$COMMA_SEP_MARKET_TICKERS&start_ts=$START_TS&end_ts=$END_TS&period_interval=60"
+date -u +%s
 ```
-If the batch endpoint errors, fall back to the per-market endpoint:
+It prints END_TS; START_TS = END_TS minus 86400 (work it out yourself and write both in). Batch, up to 10,000 candlesticks total across the requested tickers, with the comma-separated market tickers written in literally:
 ```bash
-curl -s "https://api.elections.kalshi.com/trade-api/v2/series/$SERIES_TICKER/markets/$MARKET_TICKER/candlesticks?start_ts=$START_TS&end_ts=$END_TS&period_interval=60"
+curl -s "https://api.elections.kalshi.com/trade-api/v2/markets/candlesticks?tickers=<COMMA_SEP_MARKET_TICKERS>&start_ts=<START_TS>&end_ts=<END_TS>&period_interval=60"
+```
+If the batch endpoint errors, fall back to the per-market endpoint, one call per market:
+```bash
+curl -s "https://api.elections.kalshi.com/trade-api/v2/series/<SERIES_TICKER>/markets/<MARKET_TICKER>/candlesticks?start_ts=<START_TS>&end_ts=<END_TS>&period_interval=60"
 ```
 If both fail for a market, mark its source as `SRC=price_only` and use `last_price` vs yesterday's log entry.
 
 **c) Orderbook depth (liquidity / conviction signal):**
 ```bash
-curl -s "https://api.elections.kalshi.com/trade-api/v2/markets/$MARKET_TICKER/orderbook?depth=10"
+curl -s "https://api.elections.kalshi.com/trade-api/v2/markets/<MARKET_TICKER>/orderbook?depth=10"
 ```
 From the orderbook, compute:
 - `spread_pp` = `yes_ask − yes_bid` in percentage points. Wide spread = low conviction, thin book.
@@ -251,24 +236,24 @@ Rank events by the max `move_score` of any market within them. Cap the report at
 ## K6. Build the Kalshi report
 
 ```
-*Kalshi monitor — ${today}*
-verdict: [1 sentence — dominant theme or "all quiet"]
+*Kalshi monitor - ${today}*
+verdict: [1 sentence - dominant theme or "all quiet"]
 
-**[Event Title]** (EVENT_TICKER) — category
+**[Event Title]** (EVENT_TICKER) - category
 | Market | prob | Δ24h | range | vol | spread |
 |--------|------|------|-------|-----|--------|
-| [title] | 62% | +4.1pp ▲ | 56–65% | $82k | 1pp |
-| [title] | 23% | −2.8pp ▼ | 22–28% | $14k | 3pp |
-mover: [title] — rising on $82k vol, tight book
+| [title] | 62% | +4.1pp ▲ | 56-65% | $82k | 1pp |
+| [title] | 23% | −2.8pp ▼ | 22-28% | $14k | 3pp |
+mover: [title] - rising on $82k vol, tight book
 
 [next event ...]
 
 **ALERTS** (moved >5pp on non-thin book)
-- [event/market]: 34% → 51% — *why it matters:* [one sentence grounded in the move's volume, spread, or news context if obvious from titles]
+- [event/market]: 34% → 51% - *why it matters:* [one sentence grounded in the move's volume, spread, or news context if obvious from titles]
 - ...
 
 **Trending (not tracked)**
-- [event] — $Xk 24h vol, consider adding
+- [event] - $Xk 24h vol, consider adding
 - ...
 
 sources: events=ok candlesticks=ok|degraded|fail orderbook=ok|degraded|fail
@@ -310,7 +295,12 @@ Scan for events with high `volume_24h` (top 10) whose tickers are **not** in the
 
 # Notify
 
-Send via `./notify` (under 4000 chars). Emit only the section(s) for the branch(es) that ran.
+Send via `./notify` (under 4000 chars). Emit only the section(s) for the branch(es) that ran. This skill cannot write a body file (read-only, no redirection), so send a multi-line report on a quoted heredoc as one call:
+```bash
+./notify -f - <<'NOTIFY'
+<the report>
+NOTIFY
+```
 
 - **Polymarket only** — send the Polymarket report from P4.
 - **Kalshi only** — send the Kalshi report from K6.
@@ -331,17 +321,17 @@ This skill is `read-only`, so the workflow's read-only guard writes its `### mon
 #### Polymarket        (only if the Polymarket branch ran)
 - **Events monitored:** N
 - **Markets tracked:** N (M open, K closed)
-- **Biggest mover:** "[question]" — X% → Y% (+/-Zpp)
+- **Biggest mover:** "[question]" - X% → Y% (+/-Zpp)
 - **Alert markets (>5pp move):** [list or "none"]
 - **Top comment:** "[excerpt]"
 
 #### Kalshi            (only if the Kalshi branch ran)
 - **Events monitored:** N (watchlist=W, discovered=D)
 - **Markets tracked:** N (M open, K skipped)
-- **Top mover:** "[title]" — X% → Y% (Δpp, move_score=S, vol=$V, spread=Sp)
+- **Top mover:** "[title]" - X% → Y% (Δpp, move_score=S, vol=$V, spread=Sp)
 - **Alerts (>5pp, non-thin):** [count; list titles or "none"]
 - **Continued-from-yesterday (demoted):** [count]
-- **Trending untracked:** [1–2 tickers or "none"]
+- **Trending untracked:** [1-2 tickers or "none"]
 - **Sources:** events=[status] candlesticks=[status] orderbook=[status]
 - **Status:** MONITOR_KALSHI_OK | MONITOR_KALSHI_DEGRADED | MONITOR_KALSHI_NO_CONFIG | MONITOR_KALSHI_ERROR
 

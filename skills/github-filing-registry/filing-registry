@@ -1,0 +1,599 @@
+#!/usr/bin/env bash
+# filing-registry — CLI for github-filing-registry
+# Usage: ./filing-registry {add|status|triage|sync|log|check-duplicate} [args]
+set -euo pipefail
+
+AEON_ROOT="${AEON_ROOT:-$(cd "$(dirname "$0")/../.." && pwd)}"
+REGISTRY="${REGISTRY:-$AEON_ROOT/memory/filing-registry.json}"
+LOCKFILE="${LOCKFILE:-$REGISTRY.lock}"
+NOW=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+mkdir -p "$AEON_ROOT/memory"
+
+# ─── Init ────────────────────────────────────────────────────────────────────
+
+init_registry() {
+  if [[ ! -f "$REGISTRY" ]]; then
+    mkdir -p "$(dirname "$REGISTRY")"
+    registry_lock
+    # Re-check under the lock: two processes starting at once must not both write.
+    if [[ ! -f "$REGISTRY" ]]; then
+      local seeded
+      seeded=$(cat << EOF
+{
+  "version": "1.0",
+  "last_synced": "$NOW",
+  "account": "$(gh api user --jq '.login')",
+  "pulls": [],
+  "issues": [],
+  "activity_log": []
+}
+EOF
+      )
+      atomic_save "$seeded"
+    fi
+  fi
+}
+
+jq() { command jq "$@"; }
+
+now_str() { date -u +%Y-%m-%dT%H:%M:%SZ; }
+
+# ─── Helpers ─────────────────────────────────────────────────────────────────
+
+log_activity() {
+  local type="$1"; shift
+  local ref="$1"; shift
+  local desc="$*"
+  local entry
+  entry=$(jq -n \
+    --arg ts "$(now_str)" \
+    --arg type "$type" \
+    --arg ref "$ref" \
+    --arg desc "$desc" \
+    '{ts: $ts, type: $type, ref: $ref, desc: $desc}')
+  local current
+  current=$(cat "$REGISTRY")
+  local updated
+  updated=$(echo "$current" | jq --argjson entry "$entry" \
+    '.activity_log += [$entry] | .last_synced = $entry.ts')
+  atomic_save "$updated"
+}
+
+# Serialize every read-modify-write across processes. The lock lives on a stable
+# sidecar path, NOT on $REGISTRY: the registry is replaced by rename (new inode), so a
+# lock taken on the registry file itself would not exclude a writer holding the new one.
+# fd 9 is re-entrant within a single process, so nested calls (cmd_add -> log_activity)
+# do not deadlock.
+registry_lock() {
+  mkdir -p "$(dirname "$LOCKFILE")"
+  exec 9>>"$LOCKFILE"
+  flock 9
+}
+
+# Publish registry content atomically: temp file in the same directory, refuse to
+# publish invalid JSON, then rename over the registry. Readers never see a half-written
+# file and a crashed writer leaves the previous registry intact.
+# NOTE: atomic replace only fixes TORN WRITES. The lost-update race is fixed by
+# registry_lock() spanning the whole read-modify-write; this function alone cannot.
+atomic_save() {
+  local content="$1"
+  local tmp
+  tmp=$(mktemp "$REGISTRY.tmp.XXXXXX")
+  if ! printf '%s\n' "$content" > "$tmp" || ! jq -e . "$tmp" >/dev/null 2>&1; then
+    rm -f "$tmp"
+    echo "Error: refusing to write invalid registry JSON (registry unchanged)" >&2
+    return 1
+  fi
+  mv "$tmp" "$REGISTRY"
+}
+
+# ─── Commands ────────────────────────────────────────────────────────────────
+
+cmd_add() {
+  local id="" type="" title="" evidence="" url=""
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --id)      id="$2";  shift 2 ;;
+      --type)    type="$2"; shift 2 ;;
+      --title)   title="$2"; shift 2 ;;
+      --evidence) evidence="$2"; shift 2 ;;
+      --url)     url="$2"; shift 2 ;;
+      *)         echo "Unknown flag: $1" >&2; exit 1 ;;
+    esac
+  done
+
+  registry_lock
+  init_registry
+
+  if [[ -z "$id" || -z "$type" || -z "$title" ]]; then
+    echo "Error: --id, --type, --title required" >&2; exit 1
+  fi
+
+  # Resolve owner/repo and number. A bare number id (no "owner/repo#N") is NOT enough:
+  # deriving repo from the id writes repo="78", a record `gh api repos/78/issues/78` can
+  # never resolve, so sync could never verify it. Fall back to --url, else refuse to write.
+  [[ "$type" == "pull" ]] && type="pr"
+  local repo="" number=""
+  if [[ "$id" == *"#"* ]]; then
+    repo="${id%%#*}"
+    number="${id##*#}"
+  elif [[ "$id" =~ ^[0-9]+$ ]]; then
+    # A bare number is a valid NUMBER but says nothing about the repo: the repo must come
+    # from --url, while the number stays what the id gave.
+    number="$id"
+  fi
+  if [[ ! "$repo" =~ ^[^/]+/[^/]+$ && -n "$url" ]]; then
+    if [[ "$url" =~ ^https?://[^/]+/([^/]+/[^/]+)/(pull|issues|discussions)/([0-9]+) ]]; then
+      repo="${BASH_REMATCH[1]}"
+      [[ -z "$number" ]] && number="${BASH_REMATCH[3]}"
+      if [[ -n "$number" && "${BASH_REMATCH[3]}" != "$number" ]]; then
+        echo "Error: id '$id' and --url disagree on the number ($number vs ${BASH_REMATCH[3]})." >&2
+        exit 1
+      fi
+    fi
+  fi
+  if [[ ! "$repo" =~ ^[^/]+/[^/]+$ || ! "$number" =~ ^[0-9]+$ ]]; then
+    echo "Error: cannot resolve owner/repo and number from id '$id'${url:+ (url: $url)}." >&2
+    echo "  Use --id owner/repo#N, or pass --url pointing at the PR/issue." >&2
+    exit 1
+  fi
+  # The registry id is canonical `owner/repo#number` whichever input form was used.
+  # A bare --id resolved via --url used to be stored verbatim ("99999"), so exact-id
+  # dedup silently never matched it and only a lucky fuzzy title match caught re-files.
+  id="$repo#$number"
+
+  # Duplicate check runs on the canonical id, after resolution: the raw arg may be a
+  # bare number that equals no canonical id in the registry.
+  local existing
+  existing=$(cat "$REGISTRY" | jq --arg id "$id" \
+    '.pulls + .issues | map(select(.id == $id)) | .[0] // null')
+  if [[ "$existing" != "null" ]]; then
+    echo "FILING_EXISTS: $id already registered" >&2
+    echo "$existing" | jq '.url, .status, .next_action'
+    exit 1
+  fi
+
+  if [[ -z "$url" ]]; then
+    local kind="issues"
+    [[ "$type" == "pr" ]] && kind="pull"
+    url="https://github.com/$repo/$kind/$number"
+  fi
+
+  local entry
+  entry=$(jq -n \
+    --arg id "$id" \
+    --arg repo "$repo" \
+    --arg number "$number" \
+    --arg type "$type" \
+    --arg title "$title" \
+    --arg state "open" \
+    --arg status "pending_review" \
+    --arg next_action "Await upstream review" \
+    --arg evidence "$evidence" \
+    --arg filed_at "$(now_str)" \
+    --arg last_action "$(now_str)" \
+    --arg url "$url" \
+    --arg action_filed "Filed: $title" \
+    --arg notes "" \
+    --argjson labels "[]" \
+    --arg is_upstream "true" \
+    '{
+      id: $id, repo: $repo, number: ($number | tonumber),
+      type: $type, title: $title, state: $state,
+      status: $status, next_action: $next_action,
+      evidence_tier: $evidence, filed_at: $filed_at,
+      last_action: $last_action, url: $url,
+      actions_taken: [$action_filed], notes: $notes,
+      labels: $labels, is_upstream: ($is_upstream == "true")
+    }')
+
+  local current
+  current=$(cat "$REGISTRY")
+  local key
+  [[ "$type" == "pr" ]] && key="pulls" || key="issues"
+  local updated
+  updated=$(echo "$current" | jq --argjson entry "$entry" --arg key "$key" \
+    '.[$key] += [$entry] | .last_synced = '"$(now_str | jq -Rs .)"'')
+  atomic_save "$updated"
+
+  log_activity "filed" "$id" "Filed: $title"
+  echo "ADDED: $id — $title"
+}
+
+cmd_status() {
+  local id="" log_only=false set_status="" next_action="" action="" notes="" fix_pr=""
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --id)          id="$2";  shift 2 ;;
+      --set)         set_status="$2"; shift 2 ;;
+      --next)        next_action="$2"; shift 2 ;;
+      --action)      action="$2"; shift 2 ;;
+      --notes)       notes="$2"; shift 2 ;;
+      --fix-pr)      fix_pr="$2"; shift 2 ;;
+      --log-only)    log_only=true; shift ;;
+      *)             echo "Unknown flag: $1" >&2; exit 1 ;;
+    esac
+  done
+
+  registry_lock
+  init_registry
+
+  if [[ -z "$id" ]]; then
+    echo "Error: --id required" >&2; exit 1
+  fi
+
+  local current
+  current=$(cat "$REGISTRY")
+
+  # Find in pulls or issues
+  local entry result_key
+  entry=$(echo "$current" | jq --arg id "$id" \
+    '.pulls + .issues | map(select(.id == $id)) | .[0] // null')
+  result_key=$(echo "$current" | jq -r --arg id "$id" \
+    'if (.pulls | map(select(.id == $id)) | length) > 0 then "pulls" else "issues" end')
+
+  if [[ "$entry" == "null" ]]; then
+    echo "NOT_FOUND: $id not in registry" >&2; exit 1
+  fi
+
+  echo "Found: [$id]"
+  echo "$entry" | jq '{state, status, next_action, last_action, actions_taken}'
+
+  if [[ "$log_only" == "true" ]]; then
+    [[ -n "$action" ]] && log_activity "note" "$id" "$action"
+    echo "LOG_ONLY: no field changes"
+    exit 0
+  fi
+
+  # Build update as a JSON object
+  local upd_json="{}"
+  if [[ -n "$set_status" ]]; then
+    upd_json=$(echo "$upd_json" | jq --arg v "$set_status" '.status = $v')
+  fi
+  if [[ -n "$next_action" ]]; then
+    upd_json=$(echo "$upd_json" | jq --arg v "$next_action" '.next_action = $v')
+  fi
+  if [[ -n "$notes" ]]; then
+    upd_json=$(echo "$upd_json" | jq --arg v "$notes" '.notes = $v')
+  fi
+  if [[ -n "$action" ]]; then
+    upd_json=$(echo "$upd_json" | jq --arg v "$action" '.actions_add = [$v] | .last_action = "'"$(now_str)"'"')
+  fi
+  if [[ -n "$fix_pr" ]]; then
+    upd_json=$(echo "$upd_json" | jq --arg v "$fix_pr" '.has_fix_pr = true | .fix_pr_url = $v')
+    [[ -z "$set_status" ]] && upd_json=$(echo "$upd_json" | jq '.status = "has_fix_pr"')
+  fi
+
+  if [[ "$upd_json" != "{}" ]]; then
+    local new_registry
+    new_registry=$(echo "$current" | jq --argjson upd "$upd_json" --arg id "$id" --arg key "$result_key" \
+      'reduce (.[$key] | to_entries)[] as $item
+        (.;
+        if $item.value.id == $id then
+          .[$key][$item.key] |= (. + ($upd | del(.actions_add))
+            | if ($upd | has("actions_add")) then .actions_taken = ((.actions_taken // []) + $upd.actions_add) else . end)
+        else . end)
+      | .last_synced = "'"$(now_str)"'"')
+    atomic_save "$new_registry"
+    log_activity "status_update" "$id" "${set_status:+$set_status }${action:+$action}"
+    echo "UPDATED: $id"
+  else
+    echo "NO_CHANGES"
+  fi
+}
+
+cmd_triage() {
+  local filter="all"
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --filter) filter="${2:-}"; shift 2 ;;
+      needs_attention|pending_review|stale|all) filter="$1"; shift ;;
+      *)        echo "Unknown flag: $1" >&2; exit 1 ;;
+    esac
+  done
+  case "$filter" in
+    needs_attention|pending_review|stale|all) ;;
+    *) echo "Error: unknown filter '$filter' (needs_attention|pending_review|stale|all)" >&2; exit 1 ;;
+  esac
+  init_registry
+
+  local current
+  current=$(cat "$REGISTRY")
+
+  local all_items
+  all_items=$(echo "$current" | jq '[.pulls[], .issues[]] | map(select(.status != "closed" and .status != "merged"))')
+
+  # Stale: no action > 7 days
+  local stale_threshold
+  stale_threshold=$(date -u -d '7 days ago' +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -v-7d +%Y-%m-%dT%H:%M:%SZ)
+
+  local needs_attn
+  case "$filter" in
+    all)            needs_attn=$(echo "$all_items" | jq --arg threshold "$stale_threshold" \
+                      'map(select(.status == "needs_attention" or .status == "pending_review" or .last_action < $threshold))') ;;
+    stale)          needs_attn=$(echo "$all_items" | jq --arg threshold "$stale_threshold" \
+                      'map(select(.last_action < $threshold))') ;;
+    *)              needs_attn=$(echo "$all_items" | jq --arg f "$filter" 'map(select(.status == $f))') ;;
+  esac
+
+  local count
+  count=$(echo "$needs_attn" | jq 'length')
+  if [[ "$count" -eq 0 ]]; then
+    echo "TRIAGE_OK: nothing needs attention"
+    exit 0
+  fi
+
+  echo "=== TRIAGE: $count items need attention ==="
+  echo "$needs_attn" | jq -r '.[] | "[\(.status)] \(.id) (\(.type)) — \(.title[:60])"' | sort
+
+  if [[ "$filter" == "all" ]]; then
+    echo ""
+    echo "=== STALE (>7d no action) ==="
+    echo "$needs_attn" | jq -r --arg threshold "$stale_threshold" \
+      'map(select(.last_action < $threshold)) | .[] | "  \(.id) (\(.last_action)) — \(.title[:60])"'
+
+    local crit_count
+    crit_count=$(echo "$needs_attn" | jq '[.[] | select(.severity == "critical")] | length')
+    if [[ "$crit_count" -gt 0 ]]; then
+      echo ""
+      echo "=== CRITICAL: $crit_count critical issues ==="
+      echo "$needs_attn" | jq -r 'map(select(.severity == "critical")) | .[] | "  \(.id) — \(.title[:60])"'
+    fi
+  fi
+}
+
+cmd_sync() {
+  local target_item=""
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --item) target_item="$2"; shift 2 ;;
+      *)      echo "Unknown flag: $1" >&2; exit 1 ;;
+    esac
+  done
+
+  registry_lock
+  init_registry
+
+  local current
+  current=$(cat "$REGISTRY")
+
+  local items
+  local notgithub=0
+  local malformed_ids=""
+  if [[ -n "$target_item" ]]; then
+    items=$(echo "$current" | jq --arg id "$target_item" \
+      '.pulls + .issues | [map(select(.id == $id))] | .[0]')
+  else
+    # Split the active set three ways: (1) records we can actually check, (2) records that
+    # are deliberately not GitHub items (audits / registry-only), and (3) records that CLAIM
+    # to be GitHub items but have no resolvable owner/repo or number. Group 3 is a defect,
+    # not a skip: silently ignoring it is how a corrupt record stays "verified" forever.
+    items=$(echo "$current" | jq '[.pulls[], .issues[]]
+      | map(select(.status != "closed" and .status != "merged"))
+      | map(select(((.type // "") != "audit") and (.github != false))
+      | select(((.repo // "") | test("^[^/]+/[^/]+$")) and (.number != null)))')
+    notgithub=$(echo "$current" | jq '[.pulls[], .issues[]]
+      | map(select(.status != "closed" and .status != "merged"))
+      | map(select(((.type // "") == "audit") or (.github == false))) | length')
+    malformed_ids=$(echo "$current" | jq -r '[.pulls[], .issues[]]
+      | map(select(.status != "closed" and .status != "merged"))
+      | map(select(((.type // "") != "audit") and (.github != false))
+      | select((((.repo // "") | test("^[^/]+/[^/]+$")) | not) or (.number == null)) | .id) | join(" ")')
+  fi
+
+  local total
+  total=$(echo "$items" | jq 'length')
+  # `--item` names ONE specific record; if it resolves to nothing, that is a
+  # not-found error, NOT agreement. Reporting "SYNC_OK: all 0 items match" for an
+  # id the registry does not contain is the same false-green the fail-closed guard
+  # below exists to prevent (a typo'd or stale id would read as verified forever).
+  if [[ -n "$target_item" && "$total" -eq 0 ]]; then
+    echo "SYNC_ITEM_NOT_FOUND: '$target_item' is not in the registry (nothing to verify)" >&2
+    echo "  Refusing to report success for an item the registry does not contain." >&2
+    return 1
+  fi
+  local bad_ids="$malformed_ids"
+  if [[ -n "$target_item" ]]; then
+    bad_ids=$(echo "$items" | jq -r --arg id "$target_item" \
+      'if length > 0 then (if type == "array" then .[0] else . end | select(((.repo // "") | test("^[^/]+/[^/]+$") | not) or (.number == null)) | .id) else empty end')
+  fi
+  local nmalformed=0
+  [[ -n "$bad_ids" ]] && nmalformed=$(wc -w <<<"$bad_ids")
+  # Fail closed BEFORE querying GitHub: a malformed registry record must never reach
+  # `gh api` as a path segment. The add-path regex check does not cover hand-edited
+  # registries, so sync validates the record it is about to query here too.
+  if [[ -n "$target_item" && $nmalformed -gt 0 ]]; then
+    echo "SYNC_MALFORMED: $nmalformed item(s) cannot be verified at all (no resolvable owner/repo or number): $bad_ids"
+    echo "The registry may be STALE for those items - this run is NOT proof of agreement."
+    return 1
+  fi
+  echo "SYNC: checking $total items against GitHub... ($notgithub non-GitHub item(s) not checked)"
+
+  local changes=0
+  local unknown=0
+  local unverified=""
+  local updated_registry="$current"
+
+  # For each item, fetch live state
+  while IFS= read -r item_json; do
+    [[ -z "$item_json" || "$item_json" == "null" ]] && continue
+    local id type number repo
+    id=$(echo "$item_json" | jq -r '.id')
+    type=$(echo "$item_json" | jq -r '.type')
+    number=$(echo "$item_json" | jq -r '.number')
+    repo=$(echo "$item_json" | jq -r '.repo')
+
+    local gh_state
+    local gh_merged="false"
+    local gh_exit=0
+    if [[ "$type" == "pr" ]]; then
+      # `state` is "closed" for BOTH a merged PR and an abandoned one, so it cannot
+      # distinguish them. Consult merged_at as the discriminator: an abandoned or
+      # superseded PR has merged_at == null and must NOT be recorded as "merged".
+      local pr_json
+      pr_json=$(gh api "repos/$repo/pulls/$number" 2>/dev/null) || gh_exit=$?
+      if [[ $gh_exit -ne 0 ]]; then
+        gh_state="unknown"
+      else
+        gh_state=$(echo "$pr_json" | jq -r '.state')
+        # jq's `//` is the ALTERNATIVE operator, not a null test: for a merged PR
+        # `.merged_at` is a truthy string, so `(.merged_at // (.merged_at == null))`
+        # evaluates to that STRING, and `if <string>` is TRUE -> the old expression
+        # returned "false" for merged PRs AND for unmerged ones, so gh_merged was
+        # always false and new_status="merged" could never fire. Test nullness directly.
+        gh_merged=$(echo "$pr_json" | jq -r 'if .merged_at then "true" else "false" end')
+      fi
+    else
+      gh_state=$(gh api "repos/$repo/issues/$number" --jq '.state' 2>/dev/null) || gh_exit=$?
+      [[ $gh_exit -ne 0 ]] && gh_state="unknown"
+    fi
+
+    local registry_state
+    registry_state=$(echo "$item_json" | jq -r '.state')
+
+    # A failed fetch is NOT agreement. An unreachable or rate-limited GitHub must never
+    # be reported as a clean bill of health: count it, name it, and fail the run below.
+    if [[ "$gh_state" == "unknown" ]]; then
+      unknown=$((unknown + 1))
+      unverified="${unverified}${id} "
+      continue
+    fi
+
+    if [[ "$gh_state" != "$registry_state" ]]; then
+      changes=$((changes + 1))
+      local new_status="closed"
+      [[ "$type" == "pr" && "$gh_state" == "closed" && "$gh_merged" == "true" ]] && new_status="merged"
+      local updated
+      if [[ "$type" == "pr" ]]; then
+        updated=$(echo "$updated_registry" | jq \
+          --arg id "$id" \
+          --arg gh_state "$gh_state" \
+          --arg new_status "$new_status" \
+          '(.pulls | map(if .id == $id then .state = $gh_state | .status = $new_status else . end)) as $new_pulls |
+          {pulls: $new_pulls, issues: .issues, version: .version, last_synced: .last_synced, account: .account, activity_log: .activity_log}')
+      else
+        updated=$(echo "$updated_registry" | jq \
+          --arg id "$id" \
+          --arg gh_state "$gh_state" \
+          --arg new_status "$new_status" \
+          '(.issues | map(if .id == $id then .state = $gh_state | .status = $new_status else . end)) as $new_issues |
+          {pulls: .pulls, issues: $new_issues, version: .version, last_synced: .last_synced, account: .account, activity_log: .activity_log}')
+      fi
+      updated_registry="${updated:-$updated_registry}"
+      echo "  CHANGED: $id $registry_state → $gh_state (status → $new_status)"
+    fi
+  done < <(echo "$items" | jq -c '.[]' 2>/dev/null)
+
+  if [[ $changes -gt 0 ]]; then
+    local synced
+    synced=$(echo "$updated_registry" | jq --arg ts "$(now_str)" '.last_synced = $ts')
+    atomic_save "$synced"
+    echo "SYNC_DONE: $changes items updated"
+  fi
+
+  # Fail closed: an unverifiable run is not evidence of agreement and must not exit 0.
+  if [[ $unknown -gt 0 || $nmalformed -gt 0 ]]; then
+    [[ $nmalformed -gt 0 ]] && echo "SYNC_MALFORMED: $nmalformed item(s) cannot be verified at all (no resolvable owner/repo or number): $bad_ids"
+    [[ $unknown -gt 0 ]] && echo "SYNC_INCOMPLETE: $unknown of $total item(s) could NOT be verified against GitHub (fetch failed): $unverified"
+    echo "The registry may be STALE for those items - this run is NOT proof of agreement."
+    return 1
+  fi
+
+  if [[ $changes -eq 0 ]]; then
+    echo "SYNC_OK: all $total GitHub-backed item(s) match GitHub state"
+  fi
+  return 0
+}
+
+cmd_log() {
+  local ref="" lines=20
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --ref)  ref="$2"; shift 2 ;;
+      --lines) lines="$2"; shift 2 ;;
+      *)       echo "Unknown flag: $1" >&2; exit 1 ;;
+    esac
+  done
+
+  init_registry
+
+  local current
+  current=$(cat "$REGISTRY")
+
+  local entries
+  entries=$(echo "$current" | jq --arg ref "$ref" --argjson lines "$lines" \
+    '.activity_log |
+     (if $ref != "" then map(select(.ref == $ref)) else . end) |
+     sort_by(.ts) | reverse | .[:$lines]')
+
+  local count
+  count=$(echo "$entries" | jq 'length')
+  echo "=== ACTIVITY LOG ($count entries) ==="
+  echo "$entries" | jq -r '.[] | "[\(.ts)] \(.type) \(.ref): \(.desc)"'
+}
+
+cmd_check_duplicate() {
+  local id="" title=""
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --id)    id="$2"; shift 2 ;;
+      --title) title="$2"; shift 2 ;;
+      *)       echo "Unknown flag: $1" >&2; exit 1 ;;
+    esac
+  done
+
+  init_registry
+
+  local current
+  current=$(cat "$REGISTRY")
+
+  # Exact ID match
+  local exact
+  exact=$(echo "$current" | jq --arg id "$id" \
+    '.pulls + .issues | map(select(.id == $id)) | .[0] // null')
+
+  if [[ "$exact" != "null" ]]; then
+    echo "DUPLICATE_ID: $id already filed"
+    echo "$exact" | jq '{url, status, next_action}'
+    exit 0
+  fi
+
+  # Fuzzy title match (ignore common prefixes like "fix:", "feat:", etc.)
+  if [[ -n "$title" ]]; then
+    local clean_title
+    clean_title=$(echo "$title" | sed 's/^[a-zA-Z0-9_-]*: *//' | tr '[:upper:]' '[:lower:]')
+    local fuzzy
+    fuzzy=$(echo "$current" | jq --arg t "$clean_title" \
+      '[.pulls[], .issues[]] | map(select(
+        (.title // "" | ascii_downcase | gsub("^[a-z0-9_-]*: *"; "") | gsub("[^a-z0-9]"; "")) as $n
+        | ($t // "" | ascii_downcase | gsub("^[a-z0-9_-]*: *"; "") | gsub("[^a-z0-9]"; "")) as $q
+        | ($n != "" and $q != "" and (($n | contains($q)) or ($q | contains($n))))
+      )) | .[0] // null')
+
+    if [[ "$fuzzy" != "null" ]]; then
+      echo "POSSIBLE_DUPLICATE: similar title found"
+      echo "$fuzzy" | jq '{id, title, url, status}'
+      exit 0
+    fi
+  fi
+
+  echo "NO_DUPLICATE: $id is clear to file"
+}
+
+# ─── Dispatch ─────────────────────────────────────────────────────────────────
+
+CMD="${1:-}"; shift || true
+case "$CMD" in
+  add)            cmd_add "$@" ;;
+  status)         cmd_status "$@" ;;
+  triage)         cmd_triage "$@" ;;
+  sync)           cmd_sync "$@" ;;
+  log)            cmd_log "$@" ;;
+  check-duplicate) cmd_check_duplicate "$@" ;;
+  "")
+    echo "filing-registry: GitHub filing tracker"
+    echo "Commands: add, status, triage, sync, log, check-duplicate"
+    echo "Run with --help on any subcommand for usage"
+    ;;
+  *) echo "Unknown command: $CMD" >&2; exit 1 ;;
+esac

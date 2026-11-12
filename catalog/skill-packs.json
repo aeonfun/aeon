@@ -1,12 +1,12 @@
 {
   "version": "1.0",
-  "updated": "2026-10-26",
+  "updated": "2026-11-09",
   "description": "Machine-readable registry of community skill packs installable via bin/install-skill-pack. Mirrors the human-readable table in README.md.",
   "packs": [
     {
       "repo": "clawhunter/clawhunter-skills",
       "name": "clawhunter-skills",
-      "description": "Aggregates and AI-triages crypto bounties across venues (Pump Fun GO, Atelier, EarnFi, tiny.place) and matches each to your agent with a plan to win — plus paid research and create tools (voice tones, logo-grounded images, Kling video direction, web + X research). Paid tools settle via x402 (USDC on Solana or Base).",
+      "description": "Aggregates and AI-triages crypto bounties across venues (Pump Fun GO, Atelier, EarnFi, tiny.place) and matches each to your agent with a plan to win \u2014 plus paid research and create tools (voice tones, logo-grounded images, Kling video direction, web + X research). Paid tools settle via x402 (USDC on Solana or Base).",
       "author": "clawhunter",
       "license": "MIT",
       "homepage": "https://clawhunter.fun",
@@ -60,7 +60,7 @@
     {
       "repo": "JessieJanie/aeon-skill-pack-skim",
       "name": "Skim Clean Reads",
-      "description": "Pay-per-call clean web reads via Skim x402 — any URL to clean markdown ~4x smaller than raw HTML (fewer tokens per model step), $0.002 USDC on Base ($0.005 with JS rendering), no API key.",
+      "description": "Pay-per-call clean web reads via Skim x402 \u2014 any URL to clean markdown ~4x smaller than raw HTML (fewer tokens per model step), $0.002 USDC on Base ($0.005 with JS rendering), no API key.",
       "author": "JessieJanie",
       "license": "MIT",
       "homepage": "https://skim402.com",
@@ -199,7 +199,7 @@
     {
       "repo": "sentinelhood/robinhood-sentinel",
       "name": "Sentinel Pack",
-      "description": "Keyless Robinhood Chain (4663) monitoring: address diffs, real usage of Aeon's v4 hooks, an on-chain check of every address in Aeon's hook registry, lookalike alerts for new Pons launches, one-shot Pons token checks, alerts when a watched deployer launches again, alerts when a Pons token graduates to a locked Uniswap v4 pool, and the busiest Pons bonding curves DEX scanners cannot see yet. Read-only, never signs.",
+      "description": "Keyless Robinhood Chain (4663) monitoring: address diffs, real usage of Aeon's v4 hooks, an on-chain check of every address in Aeon's hook registry, a drift check of Aeon's skill-pack registry against each pack's own manifest, lookalike alerts for new Pons launches, one-shot Pons token checks (including how much of its own launch buy the deployer still holds), the official Uniswap v4 pool of a graduated Pons token next to every other v4 pool made for it, alerts when a watched deployer launches again, alerts when a Pons token graduates to a locked Uniswap v4 pool, and the busiest Pons bonding curves DEX scanners cannot see yet. Read-only, never signs.",
       "author": "sentinelhood",
       "license": "MIT",
       "homepage": "https://sentinelhood.com",
@@ -213,7 +213,9 @@
         "pons-deployer-watch",
         "pons-graduation-watch",
         "pons-curve-movers",
-        "hook-registry-check"
+        "hook-registry-check",
+        "pack-registry-drift",
+        "pons-pool-check"
       ],
       "secrets_required": [],
       "capabilities": [
@@ -258,10 +260,68 @@
       ]
     },
     {
+      "repo": "vaubandev/vauban",
+      "path": "aeon",
+      "name": "Vauban Pack",
+      "description": "Read-only view of a Vauban vault on Robinhood Chain (4663): the sheet in force, remaining caps, what is held at the gate, what changed since the last run, how it would rule on a call before it is sent, and which settings do not do what they look like. Never signs.",
+      "author": "vaubandev",
+      "license": "MIT",
+      "homepage": "https://vauban.works",
+      "category": "crypto",
+      "trust_level": "community",
+      "skills": [
+        "vauban-vault"
+      ],
+      "secrets_required": [],
+      "capabilities": [
+        "read_only",
+        "sends_notifications"
+      ]
+    },
+    {
+      "repo": "yusasecurity/yusa",
+      "name": "YUSA Pack",
+      "description": "Finds instructions hidden from the operator in installed skills, soul and strategy files: Unicode TAG smuggling, zero-width splits, look-alike letters, hidden HTML, base64. Keyless, read-only, no network.",
+      "author": "yusasecurity",
+      "license": "MIT",
+      "homepage": "https://yusa-two.vercel.app",
+      "category": "dev",
+      "trust_level": "community",
+      "skills": [
+        "yusa-skill-audit"
+      ],
+      "secrets_required": [],
+      "capabilities": [
+        "read_only",
+        "sends_notifications"
+      ]
+    },
+    {
+      "repo": "bowmark-ai/skill",
+      "path": "aeon",
+      "name": "Bowmark Pack",
+      "description": "Scheduled reads of live websites through Bowmark: watch any page and get told what changed",
+      "author": "bowmark-ai",
+      "license": "MIT",
+      "homepage": "https://www.bowmark.ai",
+      "category": "basics",
+      "trust_level": "community",
+      "skills": [
+        "bowmark-page-watch"
+      ],
+      "secrets_required": [
+        "BOWMARK_API_KEY"
+      ],
+      "capabilities": [
+        "external_api",
+        "sends_notifications"
+      ]
+    },
+    {
       "repo": "normancomics/phantomoperator-aeon-pack",
       "name": "PhantomOperator Aeon Skill Pack",
-      "description": "Bounded authorized privacy and public-exposure checks through PhantomOperator. Base x402 spend is capped at $0.50 per call and per run.",
-      "author": "PhantomOperator operators",
+      "description": "Authorized privacy and public-exposure checks through PhantomOperator, with documented Base x402 spend limits.",
+      "author": "normancomics",
       "license": "MIT",
       "homepage": "https://freysaai.freysa.dev",
       "category": "security",
@@ -269,9 +329,14 @@
       "skills": [
         "phantomoperator"
       ],
-      "secrets_required": [],
+      "secrets_required": [
+        "AEON_X402_WALLET_PRIVATE_KEY",
+        "PHANTOMOPERATOR_PERSON_LOOKUP_ALLOWLIST"
+      ],
       "capabilities": [
-        "external_api"
+        "external_api",
+        "writes_external_host",
+        "onchain_writes"
       ]
     }
   ]

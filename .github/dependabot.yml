@@ -55,6 +55,12 @@ updates:
       # eslint-config-next supports eslint 10.
       - dependency-name: "eslint"
         update-types: ["version-update:semver-major"]
+      # OpenTelemetry 3.x moves as one family: @opentelemetry/api 1.10 pairs with
+      # the 3.x SDK, and @vercel/otel 2.x (plus every 2.x SDK package) only accepts
+      # api <1.10, so a lone api bump fails npm install. Hold until @vercel/otel
+      # supports the 3.x SDK, then bump the whole family by hand.
+      - dependency-name: "@opentelemetry/api"
+        versions: [">=1.10.0"]
 
   # MCP server — exposes Aeon skills as Claude tools.
   - package-ecosystem: "npm"
@@ -71,6 +77,20 @@ updates:
       mcp-server:
         patterns:
           - "*"
+    # OpenTelemetry 3.x moves as one family (see the dashboard note): hold api 1.10,
+    # the 3.x SDK packages and the matching 0.300 exporter until all of them, and
+    # the dashboard's @vercel/otel, can move together in one hand-made bump.
+    ignore:
+      - dependency-name: "@opentelemetry/api"
+        versions: [">=1.10.0"]
+      - dependency-name: "@opentelemetry/exporter-trace-otlp-proto"
+        versions: [">=0.300.0"]
+      - dependency-name: "@opentelemetry/resources"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@opentelemetry/sdk-trace-base"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@opentelemetry/sdk-trace-node"
+        update-types: ["version-update:semver-major"]
 
   # CLI — non-interactive control of an Aeon repo; shares apps/dashboard/lib.
   - package-ecosystem: "npm"
@@ -112,3 +132,6 @@ updates:
         update-types: ["version-update:semver-major"]
       - dependency-name: "globals"
         update-types: ["version-update:semver-major"]
+      # OpenTelemetry 3.x moves as one family (see the dashboard note).
+      - dependency-name: "@opentelemetry/api"
+        versions: [">=1.10.0"]

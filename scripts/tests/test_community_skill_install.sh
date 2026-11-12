@@ -138,10 +138,19 @@ tar -czf "$d/fixture/repo.tar.gz" -C "$d/fixture" pack-main
 cat > "$d/fakebin/curl" <<'EOF'
 #!/usr/bin/env bash
 set -eu
-out=""
+out="" url=""
 while [[ $# -gt 0 ]]; do
-  if [[ "$1" == "-o" ]]; then out="$2"; shift 2; else shift; fi
+  case "$1" in
+    -o) out="$2"; shift 2 ;;
+    https://*) url="$1"; shift ;;
+    *) shift ;;
+  esac
 done
+if [[ "$url" == https://api.github.com/repos/*/commits ]]; then
+  printf '%s\n' "$url" >> "${CURL_API_LOG:-/dev/null}"
+  [[ -n "${CURL_SHA:-}" ]] && printf '[{"sha":"%s"}]\n' "$CURL_SHA" || exit 22
+  exit 0
+fi
 cp "$FIXTURE_TARBALL" "$out"
 EOF
 cat > "$d/fakebin/gh" <<'EOF'
@@ -176,6 +185,42 @@ if grep -q -- '-X GET repos/example/pack/commits -f path=skills/demo/SKILL.md -f
 else
   bad "add-skill queries the commits endpoint with GET and the fetched ref (got: '$(cat "$d/gh-args")')"
 fi
+# With gh logged out or broken, the public commits endpoint still supplies the sha.
+cat > "$d/fakebin/gh" <<'EOF'
+#!/usr/bin/env bash
+echo '{"message":"Bad credentials"}'
+exit 1
+EOF
+chmod +x "$d/fakebin/gh"
+rm -f "$d/skills.lock"
+out=$(cd "$d" && PATH="$d/fakebin:$PATH" FIXTURE_TARBALL="$d/fixture/repo.tar.gz" \
+  CURL_SHA="$sha" CURL_API_LOG="$d/curl-api" bin/add-skill example/pack demo 2>&1)
+recorded=$(jq -r '.[0].commit_sha' "$d/skills.lock" 2>/dev/null)
+if [[ "$recorded" == "$sha" ]] && grep -qx 'https://api.github.com/repos/example/pack/commits' "$d/curl-api"; then
+  pass "add-skill falls back to the public commits API when gh fails"
+else
+  bad "add-skill falls back to the public commits API when gh fails (got: '$recorded', api: '$(cat "$d/curl-api" 2>/dev/null)')"
+fi
+# And with neither source answering, the entry is still written, as "unknown".
+rm -f "$d/skills.lock"
+out=$(cd "$d" && PATH="$d/fakebin:$PATH" FIXTURE_TARBALL="$d/fixture/repo.tar.gz" \
+  bin/add-skill example/pack demo 2>&1)
+recorded=$(jq -r '.[0].commit_sha' "$d/skills.lock" 2>/dev/null)
+if [[ "$recorded" == "unknown" ]]; then
+  pass "add-skill records \"unknown\" when neither gh nor the public API answers"
+else
+  bad "add-skill records \"unknown\" when neither gh nor the public API answers (got: '$recorded')"
+fi
+cat > "$d/fakebin/gh" <<'EOF'
+#!/usr/bin/env bash
+set -eu
+printf '%s\n' "$*" > "$GH_ARGS_LOG"
+case " $* " in
+  *" -X GET "*) printf '%s\n' "$GH_SHA" ;;
+  *) exit 1 ;;
+esac
+EOF
+chmod +x "$d/fakebin/gh"
 # A name that is not a plain slug must not reach the rm -rf/cp of the destination.
 # Install the real skill first (above), then ask for a path outside skills/.
 for bad_name in ../scripts ../../etc .. scripts/x 'a b'; do

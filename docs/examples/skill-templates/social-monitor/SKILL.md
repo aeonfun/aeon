@@ -16,27 +16,31 @@ Today is ${today}. Monitor social mentions of **[REPLACE: KEYWORDS]** and produc
 
 ## Steps
 
-1. **Resolve keywords** — `KEYWORDS="${var:-[REPLACE: KEYWORDS]}"`. Split on commas, trim each, lower-case. Each token becomes its own search query.
+1. **Resolve keywords** - use `${var}` if set, else `[REPLACE: KEYWORDS]`. Split on commas, trim each, lower-case. Each token becomes its own search query, written into its own calls literally (the `<KEYWORD>` below; `<N>` is its position in the list).
 
 2. **Search X** — for each keyword, use the X / xAI search path (project's standard pattern):
 
+   Key check: read the "Keys set for this run" line in your run notes, never a shell test (those are refused and cost a turn). With `XAI_API_KEY` on that line, build the body with a literal `jq -n` filter and pipe it straight into `./secretcurl` (set the Bash tool `timeout` to at least 180000; the live X search takes 30-120s):
+
    ```bash
-   # Uses XAI_API_KEY in-run via ./secretcurl (the key is injected via requires:).
-   # Mirror the fetch-tweets skill: POST https://api.x.ai/v1/responses with
-   #   ./secretcurl -H "Authorization: Bearer {XAI_API_KEY}" -d @/tmp/payload.json
-   # WebFetch (or a Nitter mirror) is the last-resort fallback.
+   jq -n '{model:"grok-4.7", input:[{role:"user",content:"Search X for posts from the last 24 hours about: <KEYWORD>. Language: [REPLACE: LANGUAGE]. For each post include @handle, the full text, date posted, exact like, repost and reply counts, and the direct link (https://x.com/handle/status/ID). Return as a numbered list."}], tools:[{type:"x_search"}]}' \
+     | ./secretcurl -s -o /tmp/social-x-<N>.json -w 'xai http=%{http_code}\n' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
+     -H "Content-Type: application/json" \
+     -H "Authorization: Bearer {XAI_API_KEY}" \
+     --data-binary @-
    ```
+
+   On `http=200`, read the text with `jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text' /tmp/social-x-<N>.json`. Without the key, or on a non-2xx code, an empty reply or a timeout, fall back to WebFetch (or a Nitter mirror) and log the true reason.
 
    Restrict to language `[REPLACE: LANGUAGE]` (e.g. `en`, `fr`, `any`). Drop posts with fewer than `[REPLACE: MIN_LIKES]` likes — that filter is what protects the channel from low-signal noise.
 
 3. **Search Reddit** — for each keyword:
 
    ```bash
-   # Reddit's keyless JSON endpoint. WebFetch fallback if curl fails (sandbox).
-   curl -sf "https://www.reddit.com/search.json?q=$KEYWORD&t=day&restrict_sr=0" \
-     -H "User-Agent: aeon/1.0" > .reddit-cache.json || \
-     echo "use WebFetch on https://www.reddit.com/search.json?q=$KEYWORD&t=day"
+   curl -s -o /tmp/social-reddit-<N>.json -w 'reddit http=%{http_code}\n' -H "User-Agent: aeon/1.0" -G "https://www.reddit.com/search.json" --data-urlencode "q=<KEYWORD>" -d t=day -d restrict_sr=0
    ```
+
+   Reddit's JSON endpoint is keyless. On a non-2xx code (often 429), make a second call with WebFetch on `https://www.reddit.com/search.json?q=<KEYWORD>&t=day`.
 
 4. **Score and pick top 5 per platform** — score on engagement (likes, comments, score) × recency (last 24h gets full marks). Drop reposts and obvious bot accounts (handles like `*_bot`, account age < 7 days with > 100 posts).
 
@@ -74,6 +78,8 @@ Today is ${today}. Monitor social mentions of **[REPLACE: KEYWORDS]** and produc
 ## Network note
 
 X / xAI requires `XAI_API_KEY`; a bare `$XAI_API_KEY` on a `curl` line is refused by the Bash analyzer, so call `./secretcurl` with the `{XAI_API_KEY}` placeholder (the key is injected via `requires:`). Reddit's JSON endpoint is keyless but rate-limited per IP — `WebFetch` is the fallback when `curl` returns 429.
+
+**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`KEYWORDS=...`), uses `if` / `for`, tests a key, joins commands with `;`, `&&` or `||`, redirects into a file (`> .reddit-cache.json`), or puts a shell variable on a `./secretcurl` line (`-d "$PAYLOAD"`, `$KEYWORD`), and each refusal costs a model turn. So make one call per keyword with the keyword written in literally, pipe each request body into `./secretcurl ... --data-binary @-`, save replies with `-o /tmp/<file>`, and write the article and the log with Write/Edit.
 
 ## Constraints
 

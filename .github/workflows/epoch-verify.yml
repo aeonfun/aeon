@@ -1,0 +1,113 @@
+name: Epoch verify
+run-name: epoch-verify ${{ inputs.sha }} ${{ inputs.commands_sha256 }} ${{ inputs.dispatch_id }}
+
+# Runs one work order's verify commands against one pinned commit and prints a
+# delimited block that epoch-prove reads back. It has no write permissions and
+# reads no secrets, so a pull request branch that runs here can neither push nor
+# exfiltrate anything. The commands come from the order, never from the branch
+# under test; epoch-prove refuses to dispatch unless this file on the branch is
+# byte-identical to the default branch's copy. The run is titled with the sha and the sha256 of the
+# commands it ran; the gate recomputes that hash from the order on the default branch, so a run of
+# other commands (including `true`) does not prove the order. A run whose commands do not hash to
+# commands_sha256 fails before it runs anything.
+
+on:
+  workflow_dispatch:
+    inputs:
+      sha:
+        description: Full 40-character commit to check out and verify.
+        required: true
+      order:
+        description: Work order id the commands came from (recorded in the output block).
+        required: true
+      commands:
+        description: Verify commands from the order, one per line. Blank lines and lines starting with # are skipped.
+        required: true
+      commands_sha256:
+        description: sha256 of the command lines (blank and # lines removed, one per line, each ending in a newline).
+        required: true
+      dispatch_id:
+        description: Unique id, must start with verify-, so the caller can find this exact run by its title.
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: epoch-verify-${{ inputs.dispatch_id }}
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Validate inputs
+        env:
+          INPUT_SHA: ${{ inputs.sha }}
+          INPUT_ORDER: ${{ inputs.order }}
+          INPUT_DISPATCH_ID: ${{ inputs.dispatch_id }}
+          INPUT_COMMANDS: ${{ inputs.commands }}
+          INPUT_COMMANDS_SHA256: ${{ inputs.commands_sha256 }}
+        run: |
+          set -euo pipefail
+          [[ "$INPUT_SHA" =~ ^[0-9a-f]{40}$ ]] || { echo "sha must be 40 lowercase hex characters" >&2; exit 2; }
+          [[ "$INPUT_ORDER" =~ ^[a-z0-9][a-z0-9-]*$ ]] || { echo "order must be a kebab-case id" >&2; exit 2; }
+          [[ "$INPUT_DISPATCH_ID" =~ ^verify-[A-Za-z0-9._-]+$ ]] || { echo "dispatch_id must start with verify-" >&2; exit 2; }
+          [ "$GITHUB_SHA" = "$INPUT_SHA" ] || {
+            echo "dispatched ref resolved to $GITHUB_SHA, not the pinned $INPUT_SHA" >&2
+            exit 2
+          }
+          printf '%s\n' "$INPUT_COMMANDS" | grep -Evq '^[[:space:]]*(#|$)' || {
+            echo "no commands to run" >&2
+            exit 2
+          }
+          [[ "$INPUT_COMMANDS_SHA256" =~ ^[0-9a-f]{64}$ ]] || { echo "commands_sha256 must be 64 lowercase hex characters" >&2; exit 2; }
+          actual=$(printf '%s\n' "$INPUT_COMMANDS" | grep -Ev '^[[:space:]]*(#|$)' | sha256sum | cut -d' ' -f1)
+          [ "$actual" = "$INPUT_COMMANDS_SHA256" ] || {
+            echo "commands hash to $actual, not the $INPUT_COMMANDS_SHA256 in the run title" >&2
+            exit 2
+          }
+
+      - name: Checkout pinned commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ inputs.sha }}
+          persist-credentials: false
+
+      - name: Run order verify commands
+        env:
+          INPUT_SHA: ${{ inputs.sha }}
+          INPUT_ORDER: ${{ inputs.order }}
+          INPUT_DISPATCH_ID: ${{ inputs.dispatch_id }}
+          INPUT_COMMANDS: ${{ inputs.commands }}
+        run: |
+          set -uo pipefail
+          [ "$(git rev-parse HEAD)" = "$INPUT_SHA" ] || { echo "checkout is not at the pinned sha" >&2; exit 2; }
+          mkdir -p "$RUNNER_TEMP/epoch-verify"
+          log="$RUNNER_TEMP/epoch-verify/verify.log"
+          ran=0
+          status=pass
+          {
+            echo "--- epoch-verify ${INPUT_DISPATCH_ID} order=${INPUT_ORDER} sha=${INPUT_SHA}"
+            while IFS= read -r line; do
+              [[ "$line" =~ ^[[:space:]]*(#|$) ]] && continue
+              ran=$((ran + 1))
+              echo "\$ ${line}"
+              timeout 1200 bash -c "$line" </dev/null
+              code=$?
+              echo "exit=${code}"
+              if [ "$code" -ne 0 ]; then status=fail; break; fi
+            done <<<"$INPUT_COMMANDS"
+            echo
+            echo "--- end epoch-verify ${INPUT_DISPATCH_ID} order=${INPUT_ORDER} sha=${INPUT_SHA} status=${status} commands=${ran}"
+          } 2>&1 | tee "$log"
+          tail -n 1 "$log" | grep -Eq ' status=pass commands=[1-9][0-9]*$'
+
+      - name: Upload verify log
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: epoch-verify-${{ github.run_id }}
+          path: ${{ runner.temp }}/epoch-verify/verify.log
+          if-no-files-found: warn

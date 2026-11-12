@@ -1,10 +1,10 @@
 # How Aeon skills are actually written
 
-Surveyed across all 86 skills in `aeonfun/aeon`. Frequencies are real counts - match the dominant convention unless there's a reason not to. Bodies run 14-1228 lines (~221 median); a skill is a prompt, not a config file, and reads as prose.
+Surveyed across all 92 skills in `aeonfun/aeon`. Frequencies are real counts - match the dominant convention unless there's a reason not to. Bodies run 14-1228 lines (~221 median); a skill is a prompt, not a config file, and reads as prose.
 
 ## Frontmatter
 
-Near-universal - **all 86 skills** carry `name`, `description`, `category`, and `tags`; 78 also carry `title` (the other 8 fall back to the slug):
+Near-universal - **all 92 skills** carry `name`, `description`, `category`, and `tags`; 81 also carry `title` (the other 11 fall back to the slug):
 
 ```yaml
 name: my-skill       # the slug (matches the skills/<slug>/ directory)
@@ -87,11 +87,11 @@ var=<value>
 
 ## Calling external scripts
 
-**These do not exist in the repo.** The workflow copies them to the repo root before each run (`.github/workflows/aeon.yml:904-913`), which is why `ls` shows no `notify` but 77 skills call `./notify`. Don't "fix" the missing file, and don't expect them locally.
+**These do not exist in the repo.** The workflow copies them to the repo root before each run (`.github/workflows/aeon.yml:904-913`), which is why `ls` shows no `notify` but 78 skills call `./notify`. Don't "fix" the missing file, and don't expect them locally.
 
 | Call | Skills | Notes |
 |---|---|---|
-| `./notify "msg"` / `./notify -f body.md` | 77 | `-f` for anything multi-line; `-f -` reads the body from stdin, so a quoted heredoc into `./notify` works where the run cannot write a scratch file (read-only skills on claude). Structured form: `--title`, `--severity {info,success,warn,critical}`, `--link`. Falls back to `.pending-notify/` when the sandbox blocks outbound curl |
+| `./notify "msg"` / `./notify -f body.md` | 78 | `-f` for anything multi-line; `-f -` reads the body from stdin, so a quoted heredoc into `./notify` works where the run cannot write a scratch file (read-only skills on claude). Structured form: `--title`, `--severity {info,success,warn,critical}`, `--link`. Falls back to `.pending-notify/` when the sandbox blocks outbound curl |
 | `WebFetch` | 45 | preferred fallback for a flaky public GET |
 | `./secretcurl` | 35 | authenticated curl - **the only safe way to use a key** |
 | `gh api` | 34 | handles GitHub auth internally; prefer over raw curl for repo metadata |
@@ -101,9 +101,11 @@ var=<value>
 Claude Code's Bash permission analyzer **blocks any command containing a secret expansion** (`$XAI_API_KEY`, `${XAI_API_KEY}`) because it can't statically prove safety. `./secretcurl` takes curl's arguments and substitutes `{ENV_NAME}` tokens *inside* the script, so the secret never reaches the agent's command line:
 
 ```bash
-./secretcurl -s -X POST https://api.x.ai/v1/responses \
-  -H 'Authorization: Bearer {XAI_API_KEY}' -d "$PAYLOAD"
+jq -nc '{model:"grok-4.7", input:"<prompt>"}' | ./secretcurl -s -X POST https://api.x.ai/v1/responses \
+  -H 'Authorization: Bearer {XAI_API_KEY}' -H 'Content-Type: application/json' --data-binary @-
 ```
+
+Every value on a `./secretcurl` line is written in literally: the run refuses a shell variable there (`-d "$PAYLOAD"`), a body built in a heredoc, and any redirect into a file. Pipe the body in with `--data-binary @-` and save the reply with `-o /tmp/<file>`. Keys are never tested from the shell either (`[ -n "$KEY" ]`, `printenv`): the run notes list them on a "Keys set for this run" line.
 
 Braces, not `$`. A skill that writes `-H "Authorization: Bearer $XAI_API_KEY"` will be blocked at run time, not at author time.
 
@@ -115,7 +117,7 @@ There is **no network sandbox** - plain `curl` works for unauthenticated GETs.
 
 `memory/` is the durable state that survives between runs. Four conventions, in order of how often skills touch them:
 
-### `memory/logs/${today}.md` - the run log (70 of 86 skills)
+### `memory/logs/${today}.md` - the run log (73 of 92 skills)
 
 Every skill appends what it did, under **one** heading that is exactly its slug:
 

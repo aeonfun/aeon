@@ -16,20 +16,19 @@ Today is ${today}. Track [REPLACE: TOKEN_SYMBOL] price/volume and alert on anoma
 
 ## Steps
 
-1. **Fetch current state** — query CoinGecko for the latest price, 24h change, 24h volume. Use `COINGECKO_API_KEY` if set, else the keyless endpoint:
+1. **Fetch current state** - query CoinGecko for the latest price, 24h change, 24h volume. The ID is `${var}` if set, else `[REPLACE: COINGECKO_ID]`: write it into the URL literally (the `<ID>` below). Key check: read the "Keys set for this run" line in your run notes, never a shell test (those are refused and cost a turn). With `COINGECKO_API_KEY` on that line, use the pro endpoint:
 
    ```bash
-   ID="${var:-[REPLACE: COINGECKO_ID]}"
-   if [ -n "${COINGECKO_API_KEY:-}" ]; then
-     URL="https://pro-api.coingecko.com/api/v3/simple/price?ids=$ID&vs_currencies=usd&include_24hr_change=true&include_24hr_vol=true"
-     curl -sf -H "x-cg-pro-api-key: $COINGECKO_API_KEY" "$URL" > .token-cache.json
-   else
-     URL="https://api.coingecko.com/api/v3/simple/price?ids=$ID&vs_currencies=usd&include_24hr_change=true&include_24hr_vol=true"
-     curl -sf "$URL" > .token-cache.json
-   fi
+   ./secretcurl -s -o /tmp/token-price.json -w 'coingecko http=%{http_code}\n' -H "x-cg-pro-api-key: {COINGECKO_API_KEY}" "https://pro-api.coingecko.com/api/v3/simple/price?ids=<ID>&vs_currencies=usd&include_24hr_change=true&include_24hr_vol=true"
    ```
 
-   If a `curl` GET is flaky, use **WebFetch** on the same URL as a fallback (there is no network sandbox — WebFetch is just a convenience for flaky public reads).
+   Without it, use the keyless endpoint:
+
+   ```bash
+   curl -s -o /tmp/token-price.json -w 'coingecko http=%{http_code}\n' "https://api.coingecko.com/api/v3/simple/price?ids=<ID>&vs_currencies=usd&include_24hr_change=true&include_24hr_vol=true"
+   ```
+
+   Then read the reply with `jq '.["<ID>"]' /tmp/token-price.json`. If a `curl` GET is flaky, use **WebFetch** on the same URL as a fallback (there is no network sandbox; WebFetch is just a convenience for flaky public reads).
 
 2. **Read prior state** — last 7 days of `memory/logs/YYYY-MM-DD.md` for previous prices and volumes (parse lines like `**[REPLACE: TOKEN_SYMBOL]**: price=$N, volume_24h=$N`).
 
@@ -53,6 +52,8 @@ Today is ${today}. Track [REPLACE: TOKEN_SYMBOL] price/volume and alert on anoma
 ## Network note
 
 CoinGecko's keyless endpoint occasionally rate-limits. There is no network sandbox — `curl` works; use **WebFetch** as the fallback when a `curl` GET is flaky.
+
+**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`ID=...`, `URL=$(...)`), uses `if` / `for`, tests a key (`[ -n "$KEY" ]`), joins commands with `;`, `&&` or `||`, or redirects into a file (`> .token-cache.json`), and each refusal costs a model turn. So write the ID into each URL literally, save replies with `-o /tmp/<file>`, and write the article and the log with Write/Edit.
 
 ## Constraints
 

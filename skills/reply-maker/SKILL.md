@@ -10,6 +10,7 @@ metadata:
     - social
     - meta
   requires:
+    - TWITTER_API_KEY
     - XAI_API_KEY?
 ---
 <!-- autoresearch: variation B — sharper output via specificity gates, anti-sycophancy lint, post-write self-edit, and skip-gate for low-leverage tweets -->
@@ -76,60 +77,90 @@ Goal: assemble **10–15 candidates** posted in the **last 6 hours** (the high-l
 
 For every candidate, capture: `@handle`, full tweet text, tweet URL, `posted_at` (ISO), engagement counts (likes, replies, retweets if available), and a one-line **why-this-tweet** note.
 
-**Path A — X.AI API (primary).** `XAI_API_KEY` is injected into this skill's environment (declared in `requires:`), so the direct `curl` to `https://api.x.ai/v1/responses` is the primary fetch path (full contract in **Fetching** at the bottom). Preflight the key, then call Grok's `x_search`, capturing the HTTP status so any fallback decision is fact-based. `x_search` searches X live and takes 30–120s — **set the Bash tool `timeout` to ≥180000 when you run this** (a slow curl is not a missing key).
+**Path A - twitterapi.io (primary, except `list:`).** `TWITTER_API_KEY` is injected into this skill's environment (declared in `requires:`). Handle and topic scopes use structured twitterapi.io fetches (full contract in **Fetching**). twitterapi.io has **no `list:` operator**, so a numeric list ID stays on Path B (xAI) as its primary. Preflight the keys: read the "Keys set for this run" line in your run notes, never a shell test (those are refused and cost a turn). `TWITTER_API_KEY` on that line = `TW_PRESENT`, else `TW_UNSET`; `XAI_API_KEY` on it = `XAI_PRESENT`, else `XAI_UNSET`.
 
+**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`FROM_DATE=$(date ...)`, `HTTP=$(./secretcurl ...)`, `HANDLE="${var#@}"`), uses `if` / `for` / `while`, or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn. So get each date with a bare `date` call and write the printed value into later commands; write the handle, topic, list ID and dates into each command literally (the `<FROM_DAY>`, `<HANDLE>` style placeholders in the snippets), jq filters included (`>= "<FROM_DAY>"`, never `--arg` with a `$name`: refused); run one `jq` per call. A `>` redirect into a file is refused too, so the xAI body is piped straight into `./secretcurl ... --data-binary @-` and notify bodies are written with the Write tool.
+
+Get the window dates, each `date` as its own Bash call:
 ```bash
-[ -n "$XAI_API_KEY" ] && echo KEY_PRESENT || echo KEY_UNSET
-TO_DATE=$(date -u +%Y-%m-%dT%H:%M:%SZ)
-FROM_DATE=$(date -u -d "6 hours ago" +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -v-6H +%Y-%m-%dT%H:%M:%SZ)
+date -u +%Y-%m-%dT%H:%M:%SZ
+```
+```bash
+date -u -d '6 hours ago' +%Y-%m-%dT%H:%M:%SZ
+```
+```bash
+date -u -d '6 hours ago' +%Y-%m-%d
+```
+The first prints TO_DATE, the second FROM_DATE, the third FROM_DAY.
+
+**If `${var}` looks like a `@handle`** - pull that account's recent timeline, then filter to the 6h window client-side (`/user/last_tweets` has no server-side date filter). `createdAt` is Twitter-native; normalize with `strptime` before the compare. `<HANDLE>` is `${var}` without the leading `@`, written in literally:
+```bash
+./secretcurl -s -o /tmp/tw-rm.json -w 'twitterapi http=%{http_code} bytes=%{size_download}\n' --max-time 60 -G "https://api.twitterapi.io/twitter/user/last_tweets" \
+  --data-urlencode "userName=<HANDLE>" -H "X-API-Key: {TWITTER_API_KEY}"
+```
+On `HTTP=200` with a non-empty `.data.tweets[]`, parse, drop replies/RTs (`.isReply`, or text starting `RT @`), keep originals inside the window, and mark `twitterapi=ok`. FROM_DAY is written in literally:
+```bash
+jq -r '.data.tweets[] | select((.isReply | not) and ((try (.createdAt | strptime("%a %b %d %H:%M:%S %z %Y") | strftime("%Y-%m-%d")) catch "0000-00-00") >= "<FROM_DAY>")) | [.id, .author.userName, .text, .url, .createdAt, .likeCount, .retweetCount, .replyCount] | @tsv' /tmp/tw-rm.json
 ```
 
-If `KEY_PRESENT` (it will be), Path A is required. Build the payload **file** `/tmp/xai-rm-payload.json` per `${var}` (three shapes below — each branch writes the same fixed file), then:
-
+**If `${var}` is a topic** (or empty) - `advanced_search` with the topic (or the top 2-3 topics from `memory/MEMORY.md` when empty) and `since:<FROM_DAY>` inside the query, both written in literally. When empty, also pull tweet candidates surfaced in the last 2 days of `fetch-tweets` logs as a backup pool:
 ```bash
-HTTP=$(./secretcurl -s -o /tmp/xai-rm.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
-  -H "Content-Type: application/json" -H "Authorization: Bearer {XAI_API_KEY}" -d @/tmp/xai-rm-payload.json)
-echo "xai http=$HTTP bytes=$(wc -c </tmp/xai-rm.json)"
+./secretcurl -s -o /tmp/tw-rm.json -w 'twitterapi http=%{http_code} bytes=%{size_download}\n' --max-time 60 -G "https://api.twitterapi.io/twitter/tweet/advanced_search" \
+  --data-urlencode "query=<TOPIC> since:<FROM_DAY>" --data-urlencode "queryType=Latest" \
+  -H "X-API-Key: {TWITTER_API_KEY}"
 ```
+On `HTTP=200` with a non-empty `.tweets[]`, parse originals (skip replies) and mark `twitterapi=ok`:
+```bash
+jq -r '.tweets[] | [.id, .author.userName, .text, .url, .createdAt, .likeCount, .retweetCount, .replyCount] | @tsv' /tmp/tw-rm.json
+```
+Then keep only posts inside the 6h window (strptime-normalize `.createdAt`).
+
+**If `${var}` looks like an X list ID** (numeric): skip Path A (no twitterapi `list:` operator) and go to Path B.
+
+**Path B - xAI Grok `x_search` (fallback; primary for `list:`).** Only if Path A returned non-2xx / empty / timeout, `TWITTER_API_KEY` is unset, or `${var}` is a numeric list ID. Direct `curl` to `https://api.x.ai/v1/responses`. `x_search` searches X live and takes 30-120s - **set the Bash tool `timeout` to ≥180000 when you run this** (a slow curl is not a missing key). Build the payload per `${var}` (three shapes below) with `jq -n` and pipe it straight into the `./secretcurl` send, one call. It prints the HTTP status (secretcurl also prints an `http=... bytes=...` line on stderr).
 
 On `HTTP=200` with a non-empty body, parse `/tmp/xai-rm.json` and mark `xai=ok`:
 ```bash
 jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text' /tmp/xai-rm.json
 ```
 
-**The payload file `/tmp/xai-rm-payload.json` depends on `${var}`.** Whichever branch matches, build it with `jq -n --arg` (never a shell-interpolated string) and write it to that one fixed path — the `./secretcurl` call above then sends it with `-d @/tmp/xai-rm-payload.json`:
+**The payload depends on `${var}`.** Whichever branch matches, build it with `jq -n` (never a shell-interpolated string) and pipe it into `./secretcurl ... --data-binary @-` in the same call. Do not write it to a file first or pass values with `--arg`: a `>` redirect into a file and a jq `$name` variable are both refused in this run.
+
+In each shape the list ID, handle or topic and both dates are written into the jq filter literally (`<LIST_ID>`, `<HANDLE>`, `<TOPIC>`, `<FROM_DATE>`, `<TO_DATE>`); a `"` inside a value becomes `\"`, and reword any `'`.
 
 **If `${var}` looks like an X list ID** (numeric):
 ```bash
-LIST_ID="${var}"
-jq -n --arg list_id "$LIST_ID" --arg from "$FROM_DATE" --arg to "$TO_DATE" '{
+jq -n '{
   model: "grok-4.7",
-  input: [{role: "user", content: ("Look at X list https://x.com/i/lists/" + $list_id + ". Return the 12 most reply-worthy original posts (not retweets, not replies) by members of this list between " + $from + " and " + $to + ". Reply-worthy = has a take, claim, question, or framing worth engaging — NOT pure self-promo, breaking news without analysis, or threads already past 500 replies. For each: @handle, full tweet text, tweet URL, posted_at ISO timestamp, like/reply/retweet counts.")}],
-  tools: [{type: "x_search", from_date: $from, to_date: $to}]
-}' > /tmp/xai-rm-payload.json
+  input: [{role: "user", content: "Look at X list https://x.com/i/lists/<LIST_ID>. Return the 12 most reply-worthy original posts (not retweets, not replies) by members of this list between <FROM_DATE> and <TO_DATE>. Reply-worthy = has a take, claim, question, or framing worth engaging — NOT pure self-promo, breaking news without analysis, or threads already past 500 replies. For each: @handle, full tweet text, tweet URL, posted_at ISO timestamp, like/reply/retweet counts."}],
+  tools: [{type: "x_search", from_date: "<FROM_DATE>", to_date: "<TO_DATE>"}]
+}' | ./secretcurl -s -o /tmp/xai-rm.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
+  -H "Content-Type: application/json" -H "Authorization: Bearer {XAI_API_KEY}" --data-binary @-
 ```
 
 **If `${var}` looks like a `@handle`** — same query intent, scoped to that handle's recent original posts:
+Here `<HANDLE>` is `${var}` as given, with its `@`:
 ```bash
-HANDLE="${var}"
-jq -n --arg handle "$HANDLE" --arg from "$FROM_DATE" --arg to "$TO_DATE" '{
+jq -n '{
   model: "grok-4.7",
-  input: [{role: "user", content: ("Look at recent original posts (not retweets, not replies) by " + $handle + " on X between " + $from + " and " + $to + ". Return the 12 most reply-worthy. Reply-worthy = has a take, claim, question, or framing worth engaging — NOT pure self-promo, breaking news without analysis, or threads already past 500 replies. For each: @handle, full tweet text, tweet URL, posted_at ISO timestamp, like/reply/retweet counts.")}],
-  tools: [{type: "x_search", from_date: $from, to_date: $to}]
-}' > /tmp/xai-rm-payload.json
+  input: [{role: "user", content: "Look at recent original posts (not retweets, not replies) by <HANDLE> on X between <FROM_DATE> and <TO_DATE>. Return the 12 most reply-worthy. Reply-worthy = has a take, claim, question, or framing worth engaging — NOT pure self-promo, breaking news without analysis, or threads already past 500 replies. For each: @handle, full tweet text, tweet URL, posted_at ISO timestamp, like/reply/retweet counts."}],
+  tools: [{type: "x_search", from_date: "<FROM_DATE>", to_date: "<TO_DATE>"}]
+}' | ./secretcurl -s -o /tmp/xai-rm.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
+  -H "Content-Type: application/json" -H "Authorization: Bearer {XAI_API_KEY}" --data-binary @-
 ```
 
 **If `${var}` is a topic** (or empty) — same query intent with `${var}` (or the top 2–3 topics from `memory/MEMORY.md` when empty) as the search query. When empty, also pull tweet candidates surfaced in the last 2 days of `fetch-tweets` logs as a backup pool.
+When `${var}` is empty, write the top 2-3 topics from memory/MEMORY.md in as `<TOPIC>`:
 ```bash
-TOPIC="${var}"   # when empty, substitute the top 2–3 topics from memory/MEMORY.md
-jq -n --arg topic "$TOPIC" --arg from "$FROM_DATE" --arg to "$TO_DATE" '{
+jq -n '{
   model: "grok-4.7",
-  input: [{role: "user", content: ("Search X for the 12 most reply-worthy original posts (not retweets, not replies) about " + $topic + " between " + $from + " and " + $to + ". Reply-worthy = has a take, claim, question, or framing worth engaging — NOT pure self-promo, breaking news without analysis, or threads already past 500 replies. For each: @handle, full tweet text, tweet URL, posted_at ISO timestamp, like/reply/retweet counts.")}],
-  tools: [{type: "x_search", from_date: $from, to_date: $to}]
-}' > /tmp/xai-rm-payload.json
+  input: [{role: "user", content: "Search X for the 12 most reply-worthy original posts (not retweets, not replies) about <TOPIC> between <FROM_DATE> and <TO_DATE>. Reply-worthy = has a take, claim, question, or framing worth engaging — NOT pure self-promo, breaking news without analysis, or threads already past 500 replies. For each: @handle, full tweet text, tweet URL, posted_at ISO timestamp, like/reply/retweet counts."}],
+  tools: [{type: "x_search", from_date: "<FROM_DATE>", to_date: "<TO_DATE>"}]
+}' | ./secretcurl -s -o /tmp/xai-rm.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
+  -H "Content-Type: application/json" -H "Authorization: Bearer {XAI_API_KEY}" --data-binary @-
 ```
 
-**Path B — memory logs + WebSearch (last-resort fallback only).** Reach here **only** on a real Path A failure, and record the **true reason** — `key-unset` | `http-<code>` | `empty` | `timeout` — never "XAI_API_KEY unavailable" when the key was set. Use in order until you have ≥3 candidates:
+**Path C - memory logs + WebSearch (last-resort fallback only).** Reach here **only** on a real failure of Paths A and B, and record the **true reason** - `key-unset` | `http-<code>` | `empty` | `timeout` - never "XAI_API_KEY unavailable" / "TWITTER_API_KEY unavailable" when a key was set. Use in order until you have ≥3 candidates:
 1. Recent `fetch-tweets` outputs in `memory/logs/` — already have URLs and handles.
 2. WebSearch for very recent posts on memory topics (filter: posted within last 6h, original post not reply). Lower quality — WebSearch favours older high-engagement tweets, so prioritise results dated within the last 6h.
 
@@ -188,7 +219,7 @@ If any score is < 4, **rewrite that reply once** before moving on. If the rewrit
 Send via `./notify` with this format (link first so the operator can open the source quickly):
 
 ```
-*Reply Maker — ${today}*
+*Reply Maker - ${today}*
 
 *1.* https://x.com/handle/status/123  (@handle, 42m ago, 18💬)
 > [first ~80 chars of tweet]…
@@ -199,7 +230,7 @@ B: [frame-challenge reply]
 *2.* …
 … (5 total, or fewer with REPLY_MAKER_DEGRADED if skip gate trimmed below 5)
 
-source-status: xai=ok|fail|skip, memory=N, websearch=ok|fail|skip
+source-status: twitterapi=ok|fail|skip, xai=ok|fail|skip, memory=N, websearch=ok|fail|skip
 ```
 
 If zero candidates survive the skip gate from any source, send a single `REPLY_MAKER_EMPTY — [one-line reason]` notification and stop.
@@ -257,9 +288,9 @@ If after filtering there are zero unactioned opps, log `ENGAGEMENT_ACT_SKIP: no 
 ### B6. Write output to a temp file, then send via `./notify -f`
 
 ```
-*Reply Maker (from-logs) — ${today}*
+*Reply Maker (from-logs) - ${today}*
 
-*1. @handle* (N days ago) — [one-line summary of what they did]
+*1. @handle* (N days ago) - [one-line summary of what they did]
 link: [URL or "no link found"]
 type: [X reply / X post / DM / GitHub comment]
 draft: "[ready-to-post text]"
@@ -267,7 +298,7 @@ draft: "[ready-to-post text]"
 *2. @handle* ...
 
 [if any opps are 5+ days old:]
-some opps aging — act or drop
+some opps aging - act or drop
 ```
 
 Write this to `/tmp/reply-maker-from-logs.md` then run `./notify -f /tmp/reply-maker-from-logs.md`.
@@ -345,29 +376,29 @@ If skipped: `ENGAGEMENT_ACT_SKIP: <reason>` (still under `### reply-maker`).
 ### reply-maker
 - **Mode:** revise
 - **Instruction:** [the operator's revision instruction]
-- **Base draft:** memory/drafts/reply-maker-latest.md (reloaded + re-saved)  (or: none — nothing to revise)
+- **Base draft:** memory/drafts/reply-maker-latest.md (reloaded + re-saved)  (or: none - nothing to revise)
 - **Notification:** sent
 ```
 
 ## Fetching
 
-`XAI_API_KEY` is **injected into this skill's environment** (declared in `requires:`). It is present and valid. **Mode A's primary fetch path is a direct `curl` to `https://api.x.ai/v1/responses` with `Authorization: Bearer {XAI_API_KEY}`.** There is no network sandbox blocking this; earlier versions of this skill claimed there was — that is stale and wrong. Just make the call.
+`TWITTER_API_KEY` is **injected into this skill's environment** (declared in `requires:`). **Mode A's primary fetch path (handle and topic) is a direct `curl` to `https://api.twitterapi.io/twitter/...` with header `X-API-Key: {TWITTER_API_KEY}`.** Handle uses `/user/last_tweets?userName=` (filter the 6h window client-side on `.createdAt`; `createdAt` is Twitter-native, normalize with `strptime("%a %b %d %H:%M:%S %z %Y")`). Topic uses `/tweet/advanced_search?queryType=Latest` with `since:` inside the query. twitterapi.io has **no `list:` operator**, so a numeric list ID uses xAI `x_search` as its primary. Grok `x_search` (`XAI_API_KEY`) is the fallback for handle/topic. There is no network sandbox blocking this. Just make the call.
 
-**You MUST attempt the direct curl before any fallback.** The rules:
+**You MUST attempt twitterapi.io before any handle/topic fallback.** The rules:
 
-1. **Check, don't assume.** Run `[ -n "$XAI_API_KEY" ] && echo KEY_PRESENT || echo KEY_UNSET`. If `KEY_PRESENT` (it will be), you are required to try Path A.
-2. **Allow enough time.** The `x_search` call typically takes 30–120s (it searches X live). When you invoke the Bash tool for the curl, **set the tool's `timeout` to at least 180000 (180s)**, and add **`--max-time 150`** to the curl itself so it fails cleanly rather than hanging. A curl that is slow is **not** a missing key — do not treat a timeout as "key unavailable".
-3. **Capture the HTTP status** so the fallback decision is based on fact, not assumption. Build the payload to the fixed file `/tmp/xai-rm-payload.json` first (see the three `jq -n --arg` shapes in A1), then send it with `-d @/tmp/xai-rm-payload.json`:
+1. **Check, don't assume.** Read the "Keys set for this run" line in your run notes, never a shell test (those are refused and cost a turn): `TWITTER_API_KEY` on that line = `TW_PRESENT`, else `TW_UNSET`; `XAI_API_KEY` on it = `XAI_PRESENT`, else `XAI_UNSET`. If `TW_PRESENT`, Path A is required for handle/topic.
+2. **Capture the HTTP status** so the fallback decision is based on fact. The `-w 'twitterapi http=%{http_code} bytes=%{size_download}\n'` in the Path A call prints `http=<code>`; read it before parsing. `HTTP=200` with a non-empty tweet array → use it (`twitterapi=ok`).
+3. **Path B - xAI Grok `x_search` (fallback; primary for `list:`).** Only when Path A fails (non-2xx / empty / timeout), `TWITTER_API_KEY` is unset, or `${var}` is a numeric list ID. Direct `curl` to `https://api.x.ai/v1/responses` with `Authorization: Bearer {XAI_API_KEY}`. The `x_search` call typically takes 30-120s - **set the Bash tool `timeout` to at least 180000 (180s)**, and add **`--max-time 150`** to the curl. A slow curl is **not** a missing key. Build the payload with one of the three `jq -n` shapes in A1 (values written in literally) and pipe it straight into the send in the same call:
    ```bash
-   HTTP=$(./secretcurl -s -o /tmp/xai-rm.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
-     -H "Content-Type: application/json" -H "Authorization: Bearer {XAI_API_KEY}" -d @/tmp/xai-rm-payload.json)
-   echo "xai http=$HTTP bytes=$(wc -c </tmp/xai-rm.json)"
+   jq -n '{...}' | ./secretcurl -s -o /tmp/xai-rm.json -w '%{http_code}' --max-time 150 -X POST "https://api.x.ai/v1/responses" \
+     -H "Content-Type: application/json" -H "Authorization: Bearer {XAI_API_KEY}" --data-binary @-
    ```
    Then parse `/tmp/xai-rm.json` with the standard `jq` extractor. `HTTP=200` with a non-empty body → use it (`xai=ok`).
-4. **Fall back only on a real failure**, and **record the true reason** — never write "XAI_API_KEY unavailable" when the key was set. Use one of: `key-unset` (only if step 1 said `KEY_UNSET`), `http-<code>` (non-2xx), `empty` (200 but no tweets parsed), `timeout` (curl exceeded `--max-time`).
+4. **Fall back only on a real failure**, and **record the true reason** - never write "XAI_API_KEY unavailable" / "TWITTER_API_KEY unavailable" when a key was set. Use one of: `key-unset` (only if step 1 said the relevant key was unset), `http-<code>` (non-2xx), `empty` (200 but no tweets parsed), `timeout` (curl exceeded `--max-time`).
 
-**WebSearch and the memory-log candidate pool are last-resort fallbacks only** — lower quality (WebSearch favours old high-engagement tweets). Never reach for them while the key works. **Mode B** is fetch-free by design: it reads only local `memory/` files, so it makes no curl and no API call; `./notify -f` still handles delivery via `.pending-notify/` if needed.
+**WebSearch and the memory-log candidate pool are last-resort fallbacks only** - lower quality (WebSearch favours old high-engagement tweets). Never reach for them while a key works. **Mode B** is fetch-free by design: it reads only local `memory/` files, so it makes no curl and no API call; `./notify -f` still handles delivery via `.pending-notify/` if needed.
 
 ## Environment Variables Required
 
-- `XAI_API_KEY` — X.AI API key for Grok's `x_search` tool. Declared in `requires:`, so it is **injected into this skill's environment** and is **Mode A's primary fetch path**. If it is ever unset, Mode A degrades to the memory-log pool + WebSearch at lower quality. **Mode B requires no environment variables** and uses only local memory files and `./notify`.
+- `TWITTER_API_KEY` - twitterapi.io API key (sent as the `X-API-Key` header). Declared in `requires:`, so it is **injected into this skill's environment** and is **Mode A's primary fetch path** for handle and topic scopes.
+- `XAI_API_KEY` - X.AI API key for Grok's `x_search` tool. Declared in `requires:` (optional `?`). The **fallback** path when twitterapi fails or the key is unset, and the **primary** path for numeric X list IDs. If both keys are unset, Mode A degrades to the memory-log pool + WebSearch at lower quality. **Mode B requires no environment variables** and uses only local memory files and `./notify`.

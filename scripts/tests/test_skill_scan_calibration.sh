@@ -1,14 +1,22 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# test_skill_scan_calibration.sh — asserts the scanner fires on real sinks, not on
-# benign shell syntax or a skill's own anti-injection documentation.
+# test_skill_scan_calibration.sh — asserts the scanner fires on real sinks and hidden
+# characters, not on benign shell syntax, normal Unicode text, or a skill's own
+# anti-injection documentation.
 #
 # Fixtures live in skill-scan-fixtures/:
-#   benign-*     MUST pass  (exit 0) — template vars, command substitution,
-#                authenticated API calls, and defensive injection prose.
-#   malicious-*  MUST fail  (exit 1) — curl|sh RCE, secret exfiltration,
-#                destructive rm, and a bare prompt-injection imperative.
+#   benign-*     MUST pass with no warning — template vars, command substitution,
+#                authenticated API calls, defensive injection prose, emoji (incl. ZWJ
+#                sequences), CJK, subdivision flags, a leading BOM.
+#   warn-*       MUST warn (MEDIUM, exit 0): zero-width, soft hyphen, ZWJ inside a
+#                word, BOM past byte 0, a lone variation selectors supplement char.
+#   malicious-*  MUST fail (exit 1): curl|sh RCE, secret exfiltration, destructive
+#                rm, a bare prompt-injection imperative, TAG smuggling, bidi overrides,
+#                variation selector smuggling.
+#
+# Run it under a UTF-8 locale too: that is where a non-C tool in the hidden-character
+# pipeline breaks on BSD/macOS.
 #
 # Exit 0 if every fixture lands on its expected verdict, else 1.
 
@@ -19,11 +27,15 @@ FIXTURES="$SCRIPT_DIR/skill-scan-fixtures"
 fails=0
 for dir in "$FIXTURES"/*/; do
   name="$(basename "$dir")"
-  if "$SCANNER" "$dir/SKILL.md" >/dev/null 2>&1; then verdict="pass"; else verdict="fail"; fi
+  out=$("$SCANNER" "$dir/SKILL.md" 2>&1) && rc=0 || rc=$?
+  if [[ $rc -ne 0 ]]; then verdict="fail"
+  elif printf '%s' "$out" | grep -q '\[WARN\]'; then verdict="warn"
+  else verdict="pass"; fi
   case "$name" in
     benign-*)    want="pass" ;;
+    warn-*)      want="warn" ;;
     malicious-*) want="fail" ;;
-    *) echo "?? $name — fixture must be named benign-* or malicious-*"; fails=$((fails+1)); continue ;;
+    *) echo "?? $name — fixture must be named benign-*, warn-* or malicious-*"; fails=$((fails+1)); continue ;;
   esac
   if [[ "$verdict" == "$want" ]]; then
     echo "ok   $name ($verdict)"

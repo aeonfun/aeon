@@ -233,6 +233,36 @@ LOW_PATTERNS=(
   '>[[:space:]]+/'
 )
 
+# Invisible characters: text the model reads but a reviewer never sees. Matched as
+# raw UTF-8 bytes; every tool in the pipeline runs under LC_ALL=C because grep -o
+# can emit a partial (invalid UTF-8) sequence that BSD tools reject in a UTF-8 locale.
+#   HIGH   Unicode TAG block U+E0000-E007F (ASCII smuggling: a whole hidden sentence)
+#   HIGH   bidi embedding/override/isolate U+202A-202E, U+2066-2069 (Trojan Source)
+#   HIGH   variation selectors that can carry a payload (emoji smuggling: each one
+#          encodes a byte): a run of 2+ of U+FE00-FE0F / U+E0100-E01EF in any mix,
+#          or 2+ of U+FE00-FE0D / U+E0100-E01EF anywhere on one line (so invisible
+#          separators between them do not break the count)
+#   MEDIUM zero-width U+200B-200C, U+2060-2064; soft hyphen U+00AD; a lone
+#          variation selector supplement char U+E0100-E01EF; U+FEFF past byte 0;
+#          U+200D not between two emoji (all can split a word past the keyword rules)
+# Allowed: a BOM at byte 0, U+200D joining two emoji, a lone U+FE00-FE0F (U+FE0F and
+# U+FE0E pick emoji or text style), and the three real subdivision flags (England,
+# Scotland, Wales), matched by exact bytes.
+# Not flagged: LRM/RLM/ALM (U+200E, U+200F, U+061C); they mark direction in RTL text
+# and cannot reorder it the way overrides and isolates do.
+HIDDEN_TAG=$'\xf3\xa0[\x80\x81]'
+HIDDEN_BIDI=$'\xe2\x80[\xaa-\xae]|\xe2\x81[\xa6-\xa9]'
+HIDDEN_VS_RUN=$'(\xef\xb8[\x80-\x8f]|\xf3\xa0[\x84-\x87][\x80-\xbf]){2,}'
+HIDDEN_VS_RARE=$'\xef\xb8[\x80-\x8d]|\xf3\xa0[\x84-\x87]'
+HIDDEN_ZW=$'\xe2\x80[\x8b\x8c\x8d]|\xe2\x81[\xa0-\xa4]|\xc2\xad|\xef\xbb\xbf|\xf3\xa0[\x84-\x87]'
+_TAG_GB=$'\xf3\xa0\x81\xa7\xf3\xa0\x81\xa2'
+_TAG_END=$'\xf3\xa0\x81\xbf'
+TAG_FLAG=$'\xf0\x9f\x8f\xb4'"$_TAG_GB"$'(\xf3\xa0\x81\xa5\xf3\xa0\x81\xae\xf3\xa0\x81\xa7|\xf3\xa0\x81\xb3\xf3\xa0\x81\xa3\xf3\xa0\x81\xb4|\xf3\xa0\x81\xb7\xf3\xa0\x81\xac\xf3\xa0\x81\xb3)'"$_TAG_END"
+# 4-byte emoji (U+1F000-1FAFF) or a BMP pictograph (U+2600-27BF, U+2B00-2B7F for the
+# black square in a black cat or bird), optional FE0F, then ZWJ, then another emoji.
+_EMOJI=$'(\xf0\x9f[\x80-\xab][\x80-\xbf]|\xe2[\x98-\x9e][\x80-\xbf]|\xe2[\xac\xad][\x80-\xbf])(\xef\xb8\x8f)?'
+EMOJI_ZWJ="${_EMOJI}"$'\xe2\x80\x8d'"(${_EMOJI})"
+
 # ---------- Scanner ----------
 
 TOTAL_PASS=0
@@ -283,6 +313,35 @@ scan_prose() {
   done
 }
 
+# strip_allowed <file>  — the file with the allowed invisible sequences removed
+# (real subdivision flags, emoji ZWJ joins, a BOM at byte 0), byte for byte otherwise.
+strip_allowed() {
+  local bom=$'\xef\xbb\xbf'
+  LC_ALL=C sed -E -e "1s/^$bom//" -e "s/$TAG_FLAG//g" -e ":z" -e "s/$EMOJI_ZWJ/\\1\\2\\4/g" -e "tz" "$1"
+}
+
+# scan_hidden <file> <label> <byte-pattern> [min]: one "L<n>: <label> x<count>" line
+# per line with at least <min> matches (default 1). The matched text is never echoed: it is invisible, and for TAG
+# smuggling it is the payload itself. Same output contract as scan_tier.
+# Fails closed: if the file can't be filtered or searched, that is reported as a finding.
+# NUL bytes are dropped before $(...) would drop them with a noisy bash warning.
+scan_hidden() {
+  local file="$1" label="$2" pattern="$3" min="${4:-1}" stripped hits rc line_num count
+  if ! stripped=$(strip_allowed "$file" 2>/dev/null | LC_ALL=C tr -d '\000'); then
+    printf 'L0: %s: could not scan file for hidden characters [hidden characters]\n' "$label"
+    return
+  fi
+  hits=$(printf '%s\n' "$stripped" | LC_ALL=C grep -noE "$pattern") && rc=0 || rc=$?
+  if [[ $rc -gt 1 ]]; then
+    printf 'L0: %s: could not scan file for hidden characters [hidden characters]\n' "$label"
+    return
+  fi
+  [[ -n "$hits" ]] || return 0
+  while IFS=: read -r line_num count; do
+    printf 'L%s: %s x%s [hidden characters]\n' "$line_num" "$label" "$count"
+  done < <(printf '%s\n' "$hits" | LC_ALL=C cut -d: -f1 | LC_ALL=C uniq -c | LC_ALL=C awk -v min="$min" '$1 >= min {print $2":"$1}')
+}
+
 scan_file() {
   local file="$1"
   local skill_name
@@ -303,7 +362,12 @@ scan_file() {
   # (scan_prose, which drops defensive framing). Both feed the same highs array.
   while IFS= read -r _line; do highs+=("$_line");   done < <(scan_tier  "$file" "${HIGH_SINK_PATTERNS[@]}")
   while IFS= read -r _line; do highs+=("$_line");   done < <(scan_prose "$file" "${HIGH_INJECTION_PATTERNS[@]}")
+  while IFS= read -r _line; do highs+=("$_line");   done < <(scan_hidden "$file" "Unicode TAG chars (hidden ASCII text)" "$HIDDEN_TAG")
+  while IFS= read -r _line; do highs+=("$_line");   done < <(scan_hidden "$file" "bidi override chars (text reads differently than shown)" "$HIDDEN_BIDI")
+  while IFS= read -r _line; do highs+=("$_line");   done < <(scan_hidden "$file" "variation selector run (hidden encoded payload)" "$HIDDEN_VS_RUN")
+  while IFS= read -r _line; do highs+=("$_line");   done < <(scan_hidden "$file" "variation selectors (hidden encoded payload)" "$HIDDEN_VS_RARE" 2)
   while IFS= read -r _line; do mediums+=("$_line"); done < <(scan_tier "$file" "${MEDIUM_PATTERNS[@]}")
+  while IFS= read -r _line; do mediums+=("$_line"); done < <(scan_hidden "$file" "invisible chars (zero-width, soft hyphen, variation selector, mid-file BOM)" "$HIDDEN_ZW")
   while IFS= read -r _line; do lows+=("$_line");    done < <(scan_tier "$file" "${LOW_PATTERNS[@]}")
 
   # Determine result

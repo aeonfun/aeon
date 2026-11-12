@@ -6,7 +6,8 @@
 #   2. it emits the expected gen_ai.* span for a non-claude harness
 #   3. it NEVER puts result content on the span, and skips claude (self-traces)
 # plus the claude root span (rh_trace_begin/rh_trace_end: ids, usage, auth on
-# stdin) and the claude adapter's startup-delay hook.
+# stdin, the final reply as output only with content logging on, masked and
+# bounded) and the claude adapter's startup-delay hook.
 set -uo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
@@ -184,6 +185,24 @@ attrs 1 | jq -e '.["langfuse.trace.tags"] | index("status:error")' >/dev/null \
 attrs 1 | jq -e '.["langfuse.observation.usage_details"] | fromjson == {"input":1,"output":2,"input_cache_read":0,"input_cache_creation":5}' >/dev/null \
   && ok "usage_details without a TTL split keeps one cache-write count" || bad "usage_details fallback ($(attrs 1))"
 grep -q SECRET-CMD "$TMP/curl/body" && bad "denied tool input leaked" || ok "denied tool input never sent"
+# A green run with refused tool calls: WARNING + tool_denied, status stays OK.
+cat > "$TMP/denied-ok-env.json" <<'JSON'
+{"result":"x","is_error":false,"subtype":"success","num_turns":9,
+ "permission_denials":[{"tool_name":"Bash","tool_input":{"command":"SECRET-CMD jq . /tmp/x.json"}},{"tool_name":"Bash","tool_input":{}},{"tool_name":"Write","tool_input":{}}],
+ "usage":{"input_tokens":1,"output_tokens":2}}
+JSON
+trace claude 0 "$TMP/denied-ok-env.json" >/dev/null
+attrs 0 | jq -e '.["langfuse.observation.level"] == "WARNING" and .["langfuse.observation.status_message"] == "tool_denied: 3 refused tool calls"
+    and .["langfuse.observation.metadata.error_class"] == "tool_denied" and .["langfuse.observation.metadata.permission_denials"] == "3"
+    and (.["langfuse.trace.tags"] | index("status:error") | not)' >/dev/null \
+  && ok "green run with denials: WARNING, tool_denied, no status:error tag" || bad "green run with denials ($(attrs 0))"
+jq -e '.resourceSpans[0].scopeSpans[0].spans[0].status.code == 1' "$TMP/curl/body" >/dev/null \
+  && ok "green run with denials keeps span status OK" || bad "green run with denials span status"
+grep -q SECRET-CMD "$TMP/curl/body" && bad "denied tool input leaked (green run)" || ok "denied tool input never sent (green run)"
+echo '{"result":"x","is_error":false,"permission_denials":[],"usage":{"input_tokens":1,"output_tokens":2}}' > "$TMP/denied-none.json"
+trace claude 0 "$TMP/denied-none.json" >/dev/null
+attrs 0 | jq -e '(has("langfuse.observation.level") | not) and .["langfuse.observation.metadata.permission_denials"] == "0"' >/dev/null \
+  && ok "empty permission_denials: no level set" || bad "empty permission_denials ($(attrs 0))"
 # error_class: structured facts first (subtype, API status), then the result
 # text or the raw output head (read for the class only, never sent).
 eclass() { # <rc> <file> <class> <status message> <label>
@@ -249,6 +268,40 @@ trace claude 0 "$TMP/claude-env.json" OTEL_RESOURCE_ATTRIBUTES="aeon.component=m
 attrs 0 | jq -e '(has("langfuse.observation.type") | not) and (has("langfuse.version") | not)' >/dev/null \
   && ok "other component, no version: plain span, no version attribute" || bad "other component root ($(attrs 0))"
 
+# Content logging on (OTEL_LOG_ASSISTANT_RESPONSES=1, set by langfuse-otel.sh for
+# LANGFUSE_LOG_CONTENT=1/all): the final reply becomes the root span output and
+# the trace output, bounded and masked. Usage rows never carry it.
+SECRET_VAL=zz-env-secret-value-123
+SECRET_B64=$(printf '%s' "$SECRET_VAL" | base64 | tr -d '\n')
+# Fake token shapes, assembled from parts so secret scanners see no literal token.
+FAKE_GH="gh""p_abcdefghijklmnopqrstuvwxyz0123"
+FAKE_BEARER="Bear""er abcdefghijklmnop.qrstuv"
+FAKE_SK="sk""-lf-0123456789abcdef01"
+jq -n --arg v "$SECRET_VAL" --arg b "$SECRET_B64" --arg gh "$FAKE_GH" --arg br "$FAKE_BEARER" --arg sk "$FAKE_SK" --arg pad "$(printf 'y%.0s' $(seq 1 5000))" \
+  '{result: ("REPLY-HEAD key=" + $v + " b64=" + $b + " gh=" + $gh + " auth=" + $br + " sk=" + $sk + " " + $pad + "REPLY-TAIL"),
+    is_error: false, permission_denials: [{tool_name: "Bash", tool_input: {command: "SECRET-CMD"}}],
+    usage: {input_tokens: 1, output_tokens: 2}}' > "$TMP/reply-env.json"
+trace claude 0 "$TMP/reply-env.json" OTEL_LOG_ASSISTANT_RESPONSES=1 ZZ_TEST_API_KEY="$SECRET_VAL" >/dev/null
+O=$(attrs 0 | jq -r '.["langfuse.observation.output"] // empty')
+case "$O" in REPLY-HEAD*) ok "content on: final reply on the root span output" ;; *) bad "content on: root output missing ($(attrs 0 | head -c 300))" ;; esac
+attrs 0 | jq -e '.["langfuse.trace.output"] == .["langfuse.observation.output"]' >/dev/null \
+  && ok "content on: trace output = root output" || bad "content on: trace output"
+[ "${#O}" -le 4000 ] && ok "content on: output bounded to 4000 chars (${#O})" || bad "content on: output not bounded (${#O})"
+case "$O" in *REPLY-TAIL*) bad "content on: output not cut" ;; *) ok "content on: long reply cut" ;; esac
+grep -q -e "$SECRET_VAL" -e "$SECRET_B64" "$TMP/curl/body" && bad "content on: env secret value leaked" || ok "content on: env secret values masked (raw + base64)"
+grep -q -e ghp_abcdefghij -e abcdefghijklmnop.qrstuv -e sk-lf-0123 "$TMP/curl/body" && bad "content on: token shape leaked" || ok "content on: token shapes masked (ghp_, Bearer, sk-)"
+case "$O" in *"key=REDACTED b64=REDACTED gh=REDACTED auth=Bearer REDACTED sk=REDACTED"*) ok "content on: masks read REDACTED in place" ;; *) bad "content on: mask shape ($(printf '%s' "$O" | head -c 200))" ;; esac
+attrs 0 | jq -e '.["langfuse.observation.level"] == "WARNING" and .["langfuse.observation.metadata.error_class"] == "tool_denied"' >/dev/null \
+  && ok "content on: tool_denied WARNING kept" || bad "content on: WARNING lost ($(attrs 0 | head -c 300))"
+attrs 1 | jq -e '(has("langfuse.observation.output") | not) and (has("langfuse.trace.output") | not)' >/dev/null \
+  && ok "content on: usage row carries no output" || bad "content on: usage row output"
+grep -q SECRET-CMD "$TMP/curl/body" && bad "content on: denied tool input leaked" || ok "content on: denied tool input never sent"
+trace claude 0 "$TMP/reply-env.json" OTEL_LOG_ASSISTANT_RESPONSES=0 >/dev/null
+grep -q REPLY-HEAD "$TMP/curl/body" && bad "content off: reply sent" || ok "content off (OTEL_LOG_ASSISTANT_RESPONSES unset/0): no reply sent"
+trace claude 1 "$TMP/raw.txt" OTEL_LOG_ASSISTANT_RESPONSES=1 >/dev/null
+attrs 0 | jq -e 'has("langfuse.observation.output") | not' >/dev/null && ! grep -q SECRET-RAW "$TMP/curl/body" \
+  && ok "content on, no envelope: raw output head never sent as output" || bad "content on: raw output sent"
+
 tp=$(trace grok 0 "$TMP/claude-env.json")
 { [ -z "$tp" ] && [ ! -f "$TMP/curl/body" ]; } && ok "non-claude: no TRACEPARENT, no root span" || bad "non-claude should not trace"
 
@@ -272,6 +325,14 @@ adapter CLAUDE_CODE_ENABLE_TELEMETRY=1 OTEL_TRACES_EXPORTER=otlp AEON_OTEL_START
 grep -q SessionStart "$TMP/argv" && bad "AEON_OTEL_STARTUP_DELAY=0 should drop the hook" || ok "AEON_OTEL_STARTUP_DELAY=0 drops the hook"
 adapter
 grep -q SessionStart "$TMP/argv" && bad "tracing off should add no hook" || ok "tracing off: no hook"
+# Scratch dirs: /tmp always, $RUNNER_TEMP when set, each right after the base
+# flags (--add-dir is variadic, so the next word must be another flag).
+grep -qx -- '--add-dir' "$TMP/argv" && sed -n '/^--add-dir$/{n;p;}' "$TMP/argv" | grep -qx /tmp \
+  && ok "--add-dir /tmp" || bad "expected --add-dir /tmp ($(tr '\n' ' ' < "$TMP/argv"))"
+[ "$(grep -cx -- '--add-dir' "$TMP/argv")" = 1 ] && ok "no RUNNER_TEMP: one --add-dir" || bad "no RUNNER_TEMP: --add-dir count"
+adapter RUNNER_TEMP=/home/runner/work/_temp
+[ "$(sed -n '/^--add-dir$/{n;p;}' "$TMP/argv" | tr '\n' ' ')" = "/tmp /home/runner/work/_temp " ] \
+  && ok "--add-dir RUNNER_TEMP when set" || bad "RUNNER_TEMP add-dir ($(tr '\n' ' ' < "$TMP/argv"))"
 # Gateway failover attempts cap how long Claude Code waits out 429s; the first
 # route keeps the unbounded watchdog wait, and an operator value wins.
 [ "$(cat "$TMP/argv.wait")" = unset ] && ok "first route: no 429 wait cap" || bad "first route wait cap ($(cat "$TMP/argv.wait"))"

@@ -8,7 +8,7 @@
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
     "lint": "eslint .",
-    "test": "node test/replay-guard.test.mjs && node test/otel-redact.test.mjs"
+    "test": "node test/replay-guard.test.mjs && node test/otel-redact.test.mjs && node test/ephemeral-widget.test.mjs"
   },
   "cloudflare": {
     "bindings": {
@@ -32,7 +32,7 @@
   "devDependencies": {
     "eslint": "^9.39.5",
     "globals": "^15.15.0",
-    "wrangler": "4.142.0"
+    "wrangler": "4.155.0"
   },
   "dependencies": {
     "@microlabs/otel-cf-workers": "^1.0.0-rc.52",
@@ -41,6 +41,7 @@
   "overrides": {
     "undici": "^7.29.0",
     "@opentelemetry/core": ">=2.8.0",
-    "sharp": "^0.35.4"
+    "sharp": "^0.35.4",
+    "minimatch": "^11.0.4"
   }
 }

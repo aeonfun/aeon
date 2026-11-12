@@ -45,6 +45,20 @@ main() {
   done
   export GIT_CONFIG_COUNT="$N_CFG"
 
+  drop_stray_gitlinks() {
+    local entry path
+    local -a reg=()
+    while IFS= read -r -d '' entry; do reg+=("${entry#*$'\n'}"); done \
+      < <(git config -z -f .gitmodules --get-regexp '^submodule\..*\.path$' 2>/dev/null || true)
+    while IFS= read -r -d '' entry; do
+      [ "${entry%% *}" = 160000 ] || continue
+      path=${entry#*$'\t'}
+      if [ "${#reg[@]}" -gt 0 ] && printf '%s\n' "${reg[@]}" | grep -qxF -- "$path"; then continue; fi
+      git --literal-pathspecs rm --cached -f -q -- "$path" \
+        || echo "::warning::could not unstage gitlink $path"
+    done < <(git ls-files -z --stage)
+  }
+
   # A failed feature-branch push still records this run's state on main
   # below, then fails the step so the lost PR work is visible.
   finish() {
@@ -82,6 +96,13 @@ main() {
     fi
 
     git add -A
+    # Scan skills clone the target into the run dir; git add -A stages those nested
+    # repos as submodule gitlinks (mode 160000). Drop any gitlink NOT registered in
+    # .gitmodules: on aeon (no .gitmodules) that is every one, and it is always an
+    # accidental scan clone that breaks the next sync ("No url found for submodule
+    # path"). -f is required because the fresh gitlink differs from HEAD, so a plain
+    # git rm --cached refuses it. A real submodule, if one is ever added, is kept.
+    drop_stray_gitlinks
     if ! git diff --staged --quiet; then
       git commit -m "chore($LABEL): auto-commit $(date +%Y-%m-%d)"
     fi
@@ -154,6 +175,8 @@ main() {
 
   # Commit any remaining changes on main
   git add -A
+  # Drop accidental scan-clone gitlinks before commit (see the feature-branch block).
+  drop_stray_gitlinks
   if git diff --staged --quiet; then
     # Nothing new to commit - but the agent may have committed during its run.
     # Check for unpushed commits and push them if any exist.

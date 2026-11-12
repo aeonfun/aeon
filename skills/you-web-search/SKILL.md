@@ -39,11 +39,11 @@ This skill provides web search functionality via You.com's Search API, offering 
 
 ### Auth Mode
 
-Check whether the key is set via `${VAR:+x}` — a bare `$YDC_API_KEY` trips the secret-expansion analyzer:
+Key check: read the "Keys set for this run" line in your run notes, never a shell test (those are refused and cost a turn). `YDC_API_KEY` on that line = AUTH_MODE `keyed`, not on it = `keyless`. Read the two optional settings with one call:
 ```bash
-if [ -n "${YDC_API_KEY:+x}" ]; then AUTH_MODE="keyed"; else AUTH_MODE="keyless"; fi
-echo "youcom auth_mode=$AUTH_MODE"
+node -e 'console.log("freshness=" + (process.env.YOUCOM_FRESHNESS || "week") + " livecrawl=" + (process.env.YOUCOM_LIVECRAWL || ""))'
 ```
+It prints FRESHNESS (default `week`) and LIVECRAWL (empty when unset).
 
 A missing key is **not** an error — the skill runs on the keyless tier.
 
@@ -51,83 +51,59 @@ A missing key is **not** an error — the skill runs on the keyless tier.
 
 Both modes call the same REST contract through `./secretcurl`. In `keyed` mode the `{YDC_API_KEY}` placeholder is substituted inside the helper; in `keyless` mode no key header is sent at all.
 
+`QUERY` = `${var}`, or `current notable developments in AI, crypto, and technology` when it is empty. `COUNT` = `10`. Make exactly one call for the AUTH_MODE you got, with QUERY, FRESHNESS and LIVECRAWL written in literally (`--data-urlencode` does the URL encoding).
+
+**`keyed`** (livecrawl is a keyed-tier feature; the keyless endpoint answers it with 402). Add the `livecrawl` line only when LIVECRAWL is non-empty:
 ```bash
-QUERY="${var:-current notable developments in AI, crypto, and technology}"
-COUNT="10"
-
-FRESHNESS="${YOUCOM_FRESHNESS:-week}"
-LIVECRAWL="${YOUCOM_LIVECRAWL:-}"
-PARAMS="query=$(echo "$QUERY" | jq -Rr @uri)&count=$COUNT&safesearch=strict&freshness=$(echo "$FRESHNESS" | jq -Rr @uri)"
-
-if [ "$AUTH_MODE" = "keyed" ]; then
-  SEARCH_URL="https://api.you.com/v1/search?$PARAMS"
-  # livecrawl is a keyed-tier feature; the keyless endpoint answers it with 402.
-  if [ -n "${LIVECRAWL:+x}" ]; then
-    SEARCH_URL="$SEARCH_URL&livecrawl=$(echo "$LIVECRAWL" | jq -Rr @uri)"
-  fi
-  HTTP=$(./secretcurl -s -o /tmp/youcom-search.json -w '%{http_code}' \
-    --max-time 30 -X GET \
-    "$SEARCH_URL" \
-    -H "X-API-Key: {YDC_API_KEY}" \
-    -H "User-Agent: youdotcom-integration/aeonfun-aeon")
-else
-  SEARCH_URL="https://api.you.com/v1/agents/search?$PARAMS"
-  [ -n "${LIVECRAWL:+x}" ] && echo "youcom livecrawl=skipped reason=keyless (set YDC_API_KEY to enable)"
-  HTTP=$(./secretcurl -s -o /tmp/youcom-search.json -w '%{http_code}' \
-    --max-time 30 -X GET \
-    "$SEARCH_URL" \
-    -H "User-Agent: youdotcom-integration/aeonfun-aeon")
-fi
-
-echo "youcom http=$HTTP auth_mode=$AUTH_MODE bytes=$(wc -c </tmp/youcom-search.json)"
+./secretcurl -s -o /tmp/youcom-search.json -w 'youcom http=%{http_code} auth_mode=keyed bytes=%{size_download}\n' \
+  --max-time 30 -G "https://api.you.com/v1/search" \
+  --data-urlencode "query=<QUERY>" --data-urlencode "count=10" --data-urlencode "safesearch=strict" --data-urlencode "freshness=<FRESHNESS>" \
+  --data-urlencode "livecrawl=<LIVECRAWL>" \
+  -H "X-API-Key: {YDC_API_KEY}" \
+  -H "User-Agent: youdotcom-integration/aeonfun-aeon"
 ```
+
+**`keyless`**. If LIVECRAWL is non-empty, first record that it is skipped:
+```bash
+echo "youcom livecrawl=skipped reason=keyless (set YDC_API_KEY to enable)"
+```
+Then:
+```bash
+./secretcurl -s -o /tmp/youcom-search.json -w 'youcom http=%{http_code} auth_mode=keyless bytes=%{size_download}\n' \
+  --max-time 30 -G "https://api.you.com/v1/agents/search" \
+  --data-urlencode "query=<QUERY>" --data-urlencode "count=10" --data-urlencode "safesearch=strict" --data-urlencode "freshness=<FRESHNESS>" \
+  -H "User-Agent: youdotcom-integration/aeonfun-aeon"
+```
+
+The `-w` label prints HTTP (`000` on a network failure) and the body size.
 
 Never send the key to the keyless endpoint, and never call the keyed endpoint without a key (it answers with a `402` payment challenge rather than results).
 
 ### Response Processing
 
-On `HTTP=200` with non-empty body, parse the response:
+On `HTTP=200` with a non-empty body (`bytes` above 0), extract web and news results using the documented Search API shape, one call:
 
 ```bash
-if [ "$HTTP" = "200" ] && [ -s /tmp/youcom-search.json ]; then
-  # Extract web and news results using the documented Search API shape.
-  if jq -r '
-    [
-      (.results.web[]?  | ["web",  (.title // ""), (.url // ""), ((.snippets // []) | join(" ")), (.page_age // "recent")]),
-      (.results.news[]? | ["news", (.title // ""), (.url // ""), ((.snippets // []) | join(" ")), (.page_age // "recent")])
-    ] | .[] | @tsv
-  ' /tmp/youcom-search.json > /tmp/youcom-results.txt; then
-    PARSE_OK=1
-  else
-    PARSE_OK=0
-    : > /tmp/youcom-results.txt
-  fi
-  
-  # Count results
-  RESULT_COUNT=$(wc -l < /tmp/youcom-results.txt)
-  echo "Extracted $RESULT_COUNT search results"
-else
-  PARSE_OK=1
-  RESULT_COUNT=0
-fi
-
-# Any non-200 (or a 200 with nothing usable) hands the run to the built-in WebSearch.
-if [ "$RESULT_COUNT" -eq 0 ]; then
-  case "$HTTP" in
-    200) if [ "$PARSE_OK" = "1" ]; then REASON="EMPTY"; else REASON="PARSE"; fi ;;
-    000) REASON="NETWORK" ;;
-    *)   REASON="HTTP_$HTTP" ;;
-  esac
-  SOURCE_PATH="websearch"
-  echo "youcom fallback=websearch reason=$REASON auth_mode=$AUTH_MODE"
-else
-  SOURCE_PATH="youcom"
-fi
+jq -r '
+  [
+    (.results.web[]?  | ["web",  (.title // ""), (.url // ""), ((.snippets // []) | join(" ")), (.page_age // "recent")]),
+    (.results.news[]? | ["news", (.title // ""), (.url // ""), ((.snippets // []) | join(" ")), (.page_age // "recent")])
+  ] | .[] | @tsv
+' /tmp/youcom-search.json
 ```
+
+`RESULT_COUNT` = the number of rows it printed (state `Extracted <N> search results`). If `jq` failed, the parse failed and `RESULT_COUNT` = 0. On any other HTTP, `RESULT_COUNT` = 0.
+
+Then decide (in prose, no `if`/`case` block). Any non-200, or a 200 with nothing usable, hands the run to the built-in WebSearch:
+- `RESULT_COUNT` above 0: `SOURCE_PATH=youcom`.
+- `RESULT_COUNT` = 0: `SOURCE_PATH=websearch`, with `REASON` = `EMPTY` (HTTP 200, parse OK), `PARSE` (HTTP 200, `jq` failed), `NETWORK` (HTTP `000`), else `HTTP_<code>`. Record it with one call, values written in literally:
+  ```bash
+  echo "youcom fallback=websearch reason=<REASON> auth_mode=<AUTH_MODE>"
+  ```
 
 ### WebSearch Fallback
 
-When `SOURCE_PATH=websearch`, don't end the run empty. Run the same query (`$QUERY`) through the built-in **WebSearch** tool and continue to Phase 2 with those results. The log line above is the record of why:
+When `SOURCE_PATH=websearch`, don't end the run empty. Run the same query (`QUERY`) through the built-in **WebSearch** tool and continue to Phase 2 with those results. The log line above is the record of why:
 
 ```
 youcom fallback=websearch reason=HTTP_401 auth_mode=keyless
@@ -160,7 +136,7 @@ Apply basic quality filters:
 Structure the output for easy consumption:
 
 ```
-*You.com Web Search Results — ${today}*
+*You.com Web Search Results - ${today}*
 
 Query: "${var}"
 Source: ${source}
@@ -205,7 +181,7 @@ Log the search for future reference:
    - Quality score: X/5 (relevance, freshness, diversity)
    ```
 
-2. **Update search memory** — Add successful searches to `memory/searches.md` for pattern tracking
+2. **Update search memory** - Add successful searches to `memory/searches.md` for pattern tracking (append with a one-line `node -e` writer, e.g. `node -e 'require("fs").appendFileSync("memory/searches.md", process.argv[1] + "\n")' "<line>"`)
 
 ## Error Handling
 
@@ -235,6 +211,8 @@ Record failure reasons for debugging:
 ## Network
 
 Both modes go through `./secretcurl` so one code path covers them: keyed calls carry the `{YDC_API_KEY}` placeholder (never a bare `$YDC_API_KEY` on the line); keyless calls carry no placeholder and are passed through unchanged. Every request sends `User-Agent: youdotcom-integration/aeonfun-aeon`.
+
+**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`X=$(...)`), uses `if` / `case` / `[ ... ] &&` tests, contains `$(...)`, or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn. So the key check reads the run notes' "Keys set for this run" line instead of a shell test, the settings check is a `node -e` one-liner, the search is one `./secretcurl` call per auth mode with every value written in literally (`--data-urlencode` instead of `jq @uri`), the `-w` label replaces the `echo ... $(wc -c ...)` line, and the fallback decision is a prose step. This skill is read-only: any file it keeps (such as `memory/searches.md`) is written with a one-line `node -e` writer, never `>` or `>>`.
 
 ## Environment Variables
 

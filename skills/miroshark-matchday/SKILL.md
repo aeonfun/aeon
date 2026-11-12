@@ -80,9 +80,9 @@ One `./notify -f <file>` with a block per league, and the same record in your fi
 
 ```
 ### miroshark-matchday
-## <League> — Matchday <N>
+## <League> - Matchday <N>
 - Sim: https://x402.miroshark.xyz/share/<sim_id>
-- Market: "<pinned question>" — closed at <final probability>
+- Market: "<pinned question>" - closed at <final probability>
 - <agents> agents · <actions> actions · <rounds> rounds
 - Report: https://x402.miroshark.xyz/report/<run_id>?format=md
 - Video: <local mp4 path, or "render locally: <skill url> + report url">

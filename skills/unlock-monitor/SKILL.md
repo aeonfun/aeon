@@ -101,23 +101,23 @@ If the resulting list is empty, that's a real signal — output `UNLOCK_MONITOR_
 Lead with the headline — the single most-leveraged unlock — then tiered groups, then the read.
 
 ```
-*Unlock Monitor — week of ${date}*
+*Unlock Monitor - week of ${date}*
 
 This week's most leveraged: **$TOKEN** unlocks Wed at $XM (Y× daily vol). [market read]
 
 CRISIS (> 2.4× daily vol)
-- **$TOKEN** — Mon Apr 22 — X tokens (Z% supply, $YM)
+- **$TOKEN** - Mon Apr 22 - X tokens (Z% supply, $YM)
   cliff · investor · 3.1× vol · 30d -8% → market asleep
-  Note: cliff pattern — expect weakness running into the date
+  Note: cliff pattern - expect weakness running into the date
 
-STRAIN (1.0×–2.4×)
-- **$TOKEN** — details · 1.6× vol · 30d -25% → priced in
+STRAIN (1.0×-2.4×)
+- **$TOKEN** - details · 1.6× vol · 30d -25% → priced in
 
-DIGESTIBLE (0.3×–1.0×)
-- **$TOKEN** — details · 0.6× vol · linear · ecosystem → absorbable
+DIGESTIBLE (0.3×-1.0×)
+- **$TOKEN** - details · 0.6× vol · linear · ecosystem → absorbable
 
 FORCED
-- **$TOKEN** — Mon — court-ordered creditor batch, $XM, no schedule discretion
+- **$TOKEN** - Mon - court-ordered creditor batch, $XM, no schedule discretion
 
 *Supply read:* 2-3 sentences. Where's the real pressure, where's the noise, where's the asymmetry. Reference any cliff timing patterns. If the week is quiet, say so plainly.
 

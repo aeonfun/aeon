@@ -7,7 +7,7 @@ title: Langfuse Observability
 
 Aeon can stream every Claude Code run to a [Langfuse](https://langfuse.com) project
 as a **trace** — the LLM requests (model, tokens, cost, latency), the tool calls,
-and, when content logging is on, the prompts and responses themselves. It is
+and, when content logging is on, the prompts and each run's final reply. It is
 **opt-in and no-op**: set two secrets and traces start appearing; leave them unset
 and nothing changes.
 
@@ -61,6 +61,18 @@ envelope's `usage.cache_creation`; with more than one model each gets the run's
 1h share of its writes. Claude Code's own `total_cost_usd` is
 kept only as `aeon.cost_usd_reported` (it misprices model ids it does not know).
 
+With content logging on (`LANGFUSE_LOG_CONTENT` `1` or `all`, the default), the
+root span also carries the run's **final reply** (the envelope's `result`) as its
+output and the trace output, so the trace list shows what each run answered.
+Claude Code's own spans never carry reply text (see Known gaps), so this is the
+only place it appears. It is the first 4,000 characters, masked before it is
+sent: the value of every credential-shaped env var (`*_KEY`, `*_TOKEN`,
+`*_SECRET`, `*_PAT`, `*_PASSWORD`, `*_CREDENTIALS`, `GH_GLOBAL` and the rest of
+`scripts/audit.sh`'s list), raw, base64 and url-encoded, plus well-known token
+shapes (`ghp_`/`github_pat_`, `sk-...`, Slack `xox*-`, AWS `AKIA...`, `Bearer`
+values) become `REDACTED`. `LANGFUSE_LOG_CONTENT=0` sends no reply. The usage
+rows never carry it.
+
 The json-render feed convert (`scripts/notify-jsonrender.sh`) calls `claude -p`
 outside run-harness, but sends the same root span (`aeon:feed:<skill>`) and usage
 rows through `harness-adapter/lib/otel-span.sh`. It runs with no tools
@@ -111,9 +123,14 @@ first: rc 124 is `timeout`, `error_max_*` is `budget_cap`, a spent subscription
 401-403 / 402 / other is `rate_limit` / `auth` / `credits` / `upstream_error`,
 `error_during_execution` is `tool_failed`; else the result text (or the raw
 output of a run that left no envelope) goes through the shared rule table. That
-text only picks the class and is never sent. The scorer root gets the same
+text only picks the class (the raw output head is never sent; the result text
+goes out only as the masked root output described above, when content logging
+is on). The scorer root gets the same
 fields. Tool spans come from Claude Code and carry no class. Its metadata
-carries `permission_denials`, the number of tool calls the allowlist refused. Trace metadata also carries `instance` (repo name) and `trigger`: `cron` for a
+carries `permission_denials`, the number of tool calls the allowlist refused; a
+run that did not fail but had refused calls gets level WARNING, metadata
+`error_class` `tool_denied` and the status message `tool_denied: <N> refused tool
+calls`. Trace metadata also carries `instance` (repo name) and `trigger`: `cron` for a
 Scheduler dispatch (it passes the `trigger=cron` input), `chain` for a chain step
 (chain-runner passes `trigger=chain`), `manual` for any other Run now, else the
 event name.
@@ -190,12 +207,13 @@ see the whole run in one place rather than one session per process.
 | `LANGFUSE_HOST` | variable | `https://cloud.langfuse.com` | Langfuse base URL / region. `LANGFUSE_BASE_URL` is accepted as an alias. |
 | `LANGFUSE_TRACING` | variable | `1` | Set to `0`/`false`/`off` to force-disable even with keys set. |
 | `LANGFUSE_TRACING_ENVIRONMENT` | env | branch-based | Force the Langfuse environment (lowercase letters, digits, `-`, `_`). |
-| `LANGFUSE_LOG_CONTENT` | variable | `1` | `1` = capture prompts + responses + tool params; `0` = metadata only (redact all content); `all` = also capture tool input/output bodies. |
+| `LANGFUSE_LOG_CONTENT` | variable | `1` | `1` = capture prompts + tool params, plus each run's final reply (masked, first 4,000 characters) on the root span; `0` = metadata only (redact all content); `all` = also capture tool input/output bodies. |
 
 ## Privacy
 
-By default (`LANGFUSE_LOG_CONTENT=1`) prompts, responses, and tool **parameters**
-are sent to your Langfuse project — that's the point of tracing the inference.
+By default (`LANGFUSE_LOG_CONTENT=1`) prompts, tool **parameters**, and each
+run's final reply (first 4,000 characters, credential values and token shapes
+masked, see above) are sent to your Langfuse project — that's the point of tracing the inference.
 Tool input/output **bodies** (which can include command output) stay off unless
 you set `LANGFUSE_LOG_CONTENT=all`. Set `LANGFUSE_LOG_CONTENT=0` for
 metadata-only traces (tokens, cost, latency, structure — no text). All data goes
@@ -205,27 +223,40 @@ the normal model call.
 ## Known gaps (and what we deliberately don't do)
 
 Confirmed against a live run (Claude Code `2.1.168`): traces, span tree, latency,
-tool commands, prompts, and the `aeon.*` tags all flow correctly. Two gaps remain,
-both upstream — **neither is fixable from this shim's env vars**:
+tool commands, prompts, and the `aeon.*` tags all flow correctly. These gaps
+remain, all upstream; **none is fixable from this shim's env vars**:
 
 - **Per-call token counts stay unaggregated.** Langfuse reads usage from
   `gen_ai.usage.*`, but Claude Code emits **bare** `input_tokens` on each
   `claude_code.llm_request`, so those land in `metadata.attributes.*`. Per-run
   totals and cost are covered by the root span's `usage <model>` generations
   (above); per-call cost would still need a collector.
-- **Assistant response text never appears.** Claude Code puts it on the
-  `claude_code.assistant_response` **event** (the OTEL *logs* signal), which
-  Langfuse's OTLP endpoint doesn't ingest (traces only).
+- **No per-turn assistant text on Claude Code's spans.** Claude Code puts it on
+  the `claude_code.assistant_response` **event** (the OTEL *logs* signal), which
+  Langfuse's OTLP endpoint doesn't ingest (traces only), so
+  `OTEL_LOG_ASSISTANT_RESPONSES=1` adds nothing to the trace (checked on Claude
+  Code 2.1.301: 0 of 864 rows on the two live instances had reply text). The
+  run's final reply reaches the trace through the root span instead (above);
+  the text of earlier turns stays out.
+- **Permission-check spans carry nothing.** Every tool call adds a
+  `claude_code.tool.blocked_on_user` span (about a quarter of all rows on the live
+  instances, nearly all `decision=accept source=config`, 0-4 ms) next to its tool
+  and `claude_code.tool.execution` spans. Claude Code has no switch to turn one
+  span kind off and Langfuse has no ingest filter, so dropping them would take a
+  collector (below). Refusals are not lost by ignoring them: the root span counts
+  them (`permission_denials`) and marks the run WARNING `tool_denied`. To hide them
+  in a view, filter on name `!= claude_code.tool.blocked_on_user`.
 
 **We deliberately do NOT run an OTEL-collector / rewrite-proxy sidecar to fix
-cost mapping.** Rationale: it adds a networked process to the critical path of
+cost mapping or drop span kinds.** Rationale: it adds a networked process to the critical path of
 every run (a reliability risk for a reporting nicety), it's hand-rolled OTLP
 parsing, and it shims *beta* Claude Code attribute names that will most likely
 align with `gen_ai.usage.*` upstream (or Langfuse will add native Claude-Code
 mapping), at which point the proxy is dead code. Per-run tokens and cost already
 reach Langfuse through the run root span (and `memory/token-usage.csv`), so only
 per-call cost is missing. Revisit only if upstream stays unaligned **and**
-per-call cost in Langfuse becomes worth a sidecar.
+per-call cost (or the Langfuse units of the permission-check spans) becomes worth
+a sidecar.
 
 ## Network note
 

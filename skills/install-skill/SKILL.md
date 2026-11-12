@@ -37,6 +37,8 @@ Your job is to drive that script, regenerate the catalog, and wrap the result in
 
 ## Steps
 
+**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`REPO_NAME=$(...)`, `PR_URL=$(gh pr create ...)`), pipes into `awk` / `sed` / `tee`, uses `$(cat <<EOF ...)` inside an argument, or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn. So work out values like `REPO_NAME` yourself and write them into later commands literally (the `<REPO_NAME>` placeholders), run each command in its own call, write the PR body with Write and pass it with `--body-file`, and turn each `||` fallback into a second call you make only if the first one failed.
+
 1. **Parse and validate `${var}`.** The first whitespace-separated token is the repo; it must match `owner/repo` (strip a leading `https://github.com/` and a trailing `.git`). Anything after it is either skill slugs or flags passed straight through. If the first token isn't `owner/repo`, exit `INSTALL_SKILL_BAD_VAR`:
    ```bash
    ./notify "install-skill aborted: \"${var}\" is not owner/repo format"
@@ -47,60 +49,79 @@ Your job is to drive that script, regenerate the catalog, and wrap the result in
 
 2. **Preview first (dry run).** See what would land before writing anything:
    ```bash
-   bin/install-skill-pack ${var} --dry-run 2>&1 | tee /tmp/install-preview.txt
+   bin/install-skill-pack ${var} --dry-run 2>&1
    ```
-   If the preview shows 0 skills or fails to fetch the repo, exit `INSTALL_SKILL_FETCH_FAILED` and notify with the error — don't open an empty PR.
+   Read the preview straight from the call's output. If the preview shows 0 skills or fails to fetch the repo, exit `INSTALL_SKILL_FETCH_FAILED` and notify with the error - don't open an empty PR.
 
-3. **Branch.** Derive a slug from the repo name and create a branch — never work on `main`:
+3. **Branch.** Derive a slug from the repo name and create a branch - never work on `main`. Work out `REPO_NAME` yourself: the first token of `${var}`, the part after its last `/`, with a trailing `.git` removed (for `clawhunter/clawhunter-skills` it is `clawhunter-skills`). Then one call, with it written in literally:
    ```bash
-   REPO_NAME=$(echo "${var}" | awk '{print $1}' | sed 's#.*/##; s/\.git$//')
-   git checkout -b "install-pack/${REPO_NAME}"
+   git checkout -b "install-pack/<REPO_NAME>"
    ```
 
 4. **Install for real.**
    ```bash
-   bin/install-skill-pack ${var} 2>&1 | tee /tmp/install-result.txt
+   bin/install-skill-pack ${var} 2>&1
    ```
-   Read the output. Note: how many installed, how many were **skipped/blocked** by the security scan, any **`secrets_required`** warnings, and any declared **capabilities**. Trusted sources will say "skipping deep security scan". If everything was blocked and nothing installed, exit `INSTALL_SKILL_BLOCKED`, notify the operator that the source tripped HIGH-severity findings and that they can review and re-run `bin/install-skill-pack ${var} --force` from a local clone if they trust it. Then stop.
+   Read the output from the call itself. Note: how many installed, how many were **skipped/blocked** by the security scan, any **`secrets_required`** warnings, and any declared **capabilities**. Trusted sources will say "skipping deep security scan". If everything was blocked and nothing installed, exit `INSTALL_SKILL_BLOCKED`, notify the operator that the source tripped HIGH-severity findings and that they can review and re-run `bin/install-skill-pack ${var} --force` from a local clone if they trust it. Then stop.
 
 5. **Confirm the catalog regenerated.** `bin/install-skill-pack` already regenerates **both** `skills.json` and `packs.json` at the end of a successful install — `packs.json` is what routes the new skills into the dashboard's always-visible **Installed** pack, so it must not be skipped. Re-run them yourself only as a safety net (idempotent), and verify both files actually changed before committing — a `skills.json` bump without a matching `packs.json` bump means the skill will be invisible:
    ```bash
-   bin/generate-skills-json && bin/generate-packs-json
-   git status --short skills.json packs.json   # both should be listed
+   bin/generate-skills-json
    ```
-
-6. **Commit, open a PR, and auto-merge it** — never push to `main` directly; the PR is the audit trail and CI gate. Stage **all** install changes so no manifest is missed — `git add -A` (the install touched only skill dirs + `aeon.yml`, `skills.json`, `skills.lock`, `packs.json`), commit, push the branch, then open the PR and capture its URL:
    ```bash
-   PR_URL=$(gh pr create --title "feat: install ${REPO_NAME} community pack" --body "$(cat <<'BODY'
-   Installs the **<pack name>** community pack from `${var}` (clicked from the dashboard). Auto-merges once mergeable — skills land **disabled**, so nothing runs until enabled.
+   bin/generate-packs-json
+   ```
+   ```bash
+   git status --short skills.json packs.json
+   ```
+   Both files should be listed.
+
+6. **Commit, open a PR, and auto-merge it** - never push to `main` directly; the PR is the audit trail and CI gate. Stage **all** install changes so no manifest is missed - `git add -A` (the install touched only skill dirs + `aeon.yml`, `skills.json`, `skills.lock`, `packs.json`), commit, push the branch, then open the PR and capture its URL. Each git step is its own call:
+   ```bash
+   git add -A
+   ```
+   ```bash
+   git commit -m "feat: install <REPO_NAME> community pack"
+   ```
+   ```bash
+   git push -u origin "install-pack/<REPO_NAME>"
+   ```
+   Write the PR body with the Write tool to `/tmp/install-skill-pr-body.md`:
+   ```markdown
+   Installs the **<pack name>** community pack from `${var}` (clicked from the dashboard). Auto-merges once mergeable - skills land **disabled**, so nothing runs until enabled.
 
    ## Skills installed
-   - `<slug>` — <one-line description>
+   - `<slug>` - <one-line description>
 
    ## Security
    - Source trust: <trusted | scanned, N HIGH findings>
    - Skipped/blocked: <none | list with reason>
 
    ## Secrets required before enabling
-   - `<ENV_VAR>` — set in repo Actions secrets, then flip the skill to `enabled: true` in aeon.yml
+   - `<ENV_VAR>` - set in repo Actions secrets, then flip the skill to `enabled: true` in aeon.yml
 
    ## Provenance
    Recorded in skills.lock (source repo, branch, commit SHA).
-   BODY
-   )")
    ```
-   Fill the placeholders from the install output. Then merge it (unless `--no-merge` was passed in step 1). Prefer queued auto-merge so CI gates it; fall back to an immediate squash-merge when the repo doesn't have auto-merge enabled:
+   Fill the placeholders from the install output. Then open the PR in one call; it prints the PR URL (PR_URL):
    ```bash
-   gh pr merge "$PR_URL" --squash --delete-branch --auto \
-     || gh pr merge "$PR_URL" --squash --delete-branch
+   gh pr create --title "feat: install <REPO_NAME> community pack" --body-file /tmp/install-skill-pr-body.md
+   ```
+   Then merge it (unless `--no-merge` was passed in step 1). Prefer queued auto-merge so CI gates it, with the URL written in literally:
+   ```bash
+   gh pr merge "<PR_URL>" --squash --delete-branch --auto
+   ```
+   If that fails (the repo doesn't have auto-merge enabled), fall back to an immediate squash-merge as a second call:
+   ```bash
+   gh pr merge "<PR_URL>" --squash --delete-branch
    ```
    If **both** merge attempts fail, the repo's "Allow GitHub Actions to create and approve pull requests" setting is likely still off (the dashboard normally enables it before dispatching this skill; a cron/CLI run may not have). Don't error — leave the PR open and tell the operator to merge it (and to turn that setting on: re-run `./aeon init`, open the instance in Aeon Connect, which turns it on, or enable it under Settings → Actions → General). All installed skills land **disabled** — say so in the PR so the operator knows they must enable them.
 
 7. **Notify** one concise line with the result. On auto-merge success, point the operator at the dashboard (new skills sit in their pack — enable that pack in the **Packs** view to see them):
    ```bash
-   ./notify "Installed & merged ${REPO_NAME} (<N> skills) to main — they land disabled in the <pack> pack; enable the pack in the dashboard, set any required secrets, then flip enabled: true."
+   ./notify "Installed & merged <REPO_NAME> (<N> skills) to main - they land disabled in the <pack> pack; enable the pack in the dashboard, set any required secrets, then flip enabled: true."
    ```
-   If you opened a PR without merging (`--no-merge`, or the merge was blocked), say so instead and include the review link: `"Installed ${REPO_NAME} (<N> skills) — review & merge: <pr-url>. Skills land disabled."`
+   If you opened a PR without merging (`--no-merge`, or the merge was blocked), say so instead and include the review link: `"Installed <REPO_NAME> (<N> skills) - review & merge: <pr-url>. Skills land disabled."`
 
 ## Exit taxonomy
 

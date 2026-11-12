@@ -28,7 +28,7 @@ One skill, three recap views over Aeon's own activity. They share a preamble (re
 ## Shared preamble (run for every branch)
 
 1. Read `memory/MEMORY.md` for high-level context and scan the last ~3 days of `memory/logs/` for recent activity — drop anything already reported so you don't re-report the same signal.
-2. Compute `${today}` (UTC date, `YYYY-MM-DD`).
+2. Compute `${today}` (UTC date, `YYYY-MM-DD`). Run each lookup in this skill as one plain Bash call (see **Shell shape** in the Network note at the end).
 3. **Parse `${var}` → branch + branch argument** (trim whitespace first). Let `FIRST` be the lowercase first token (split on the first whitespace or `:`), `REST` the remainder:
    - `FIRST == "ops"` → `BRANCH=ops`, `ARG=REST` (a date override, or empty).
    - `FIRST == "push"` → `BRANCH=push`, `ARG=REST` (an `owner/repo` scope, or empty).
@@ -66,13 +66,13 @@ No outbound HTTP. No `gh api` calls. Pure file scanning + arithmetic.
 
 - If `${var}` matches `^dry-run` → `MODE=dry-run`. Strip the prefix; remainder treated as window override.
 - Otherwise `MODE=execute`.
-- If the remaining var parses as a positive integer N → `WINDOW_HOURS=N` and `WINDOW_DAYS=$((N / 24))` (round down). Cap at 720h (30 days).
+- If the remaining var parses as a positive integer N → `WINDOW_HOURS=N` and `WINDOW_DAYS` = N / 24 rounded down (work it out yourself and write the number in, no shell math). Cap at 720h (30 days).
 - Otherwise `WINDOW_HOURS=168`, `WINDOW_DAYS=7`.
 - Compute `WINDOW_START_DATE` = today minus `WINDOW_DAYS` days (UTC, ISO date).
 
 ### 2. Collect agent-health signals
 
-a. **Latest analytics article.** `LATEST_ANALYTICS=$(ls -1t output/articles/skill-analytics-*.md 2>/dev/null | head -1)`. If found AND its date suffix is within the window → parse the metadata line `*Window: ... · N runs across M skills · X% success · Y anomalies*` for `total_runs`, `distinct_skills`, `success_pct`, `anomaly_count`. If not found (`skill-health`'s analytics view didn't run this window): set all four to `null` and mark `agent_health_source=missing`.
+a. **Latest analytics article.** Run `ls -1t output/articles/skill-analytics-*.md | head -1` as its own Bash call; it prints LATEST_ANALYTICS (nothing, or a no-match error, when there is none). If found AND its date suffix is within the window → parse the metadata line `*Window: ... · N runs across M skills · X% success · Y anomalies*` for `total_runs`, `distinct_skills`, `success_pct`, `anomaly_count`. If not found (`skill-health`'s analytics view didn't run this window): set all four to `null` and mark `agent_health_source=missing`.
 
 b. **Heartbeat verdicts.** For every heartbeat run logged in the window, scan `memory/logs/YYYY-MM-DD.md` between `WINDOW_START_DATE` and today for `## Heartbeat` sections. Count occurrences of: `P0` / `P1` / `P2` / `P3` / `OK` markers. The simplest first-match wins per heartbeat block: an `OK` block (no P-flags) increments `heartbeat_ok`; any P-flag increments the matching `heartbeat_pX` counter and skips the OK count. If no heartbeat sections found, set counts to zero and mark `agent_health_source=partial`.
 
@@ -120,9 +120,9 @@ b. **Compute economic verdict (paragraph 3):**
 Path: `output/articles/operator-scorecard-${today}.md`. Overwrite if exists (idempotent same-day reruns).
 
 ```markdown
-# Operator Scorecard — ${today}
+# Operator Scorecard - ${today}
 
-**Verdict:** ${verdict_emoji} ${verdict_label} — ${one_line_summary}
+**Verdict:** ${verdict_emoji} ${verdict_label} - ${one_line_summary}
 
 *Window: last ${WINDOW_DAYS}d (${WINDOW_START_DATE} → ${today})*
 
@@ -134,7 +134,7 @@ The fleet ran ${total_runs} times across ${distinct_skills} skills with a ${succ
 
 ## Community growth
 
-${watched_repo_1} added ${stars_1} stars and ${forks_1} forks. ${watched_repo_2} added ${stars_2} stars and ${forks_2} forks. ${total_stars_added} stars across the fleet — averaging ${stars_per_day} per day. ${new_contributors} new contributor(s) appeared on the leaderboard. ${notable_line_or_omit}
+${watched_repo_1} added ${stars_1} stars and ${forks_1} forks. ${watched_repo_2} added ${stars_2} stars and ${forks_2} forks. ${total_stars_added} stars across the fleet - averaging ${stars_per_day} per day. ${new_contributors} new contributor(s) appeared on the leaderboard. ${notable_line_or_omit}
 
 **Verdict:** ${growth_verdict}
 
@@ -146,7 +146,7 @@ $AEON distributed: $${total_distributed} across ${recipient_count} recipient(s) 
 
 ## What was notable
 
-${bullet list of up to 3 entries from MEMORY.md "Skills Built" rows where date is in window — keeps the week's autonomous accomplishments visible}
+${bullet list of up to 3 entries from MEMORY.md "Skills Built" rows where date is in window - keeps the week's autonomous accomplishments visible}
 
 ## Source status
 
@@ -157,7 +157,7 @@ ${bullet list of up to 3 entries from MEMORY.md "Skills Built" rows where date i
 - new-contributors: ${new_contributors or "GitHub API unavailable"}
 
 ---
-*Companion to `skill-health`'s analytics view (per-skill ranking) and heartbeat (per-run pulse). This branch answers the operator-level question those two don't: "given everything that happened, was this week worth it?" Methodology: every number is sourced from another skill's article — this branch measures nothing itself.*
+*Companion to `skill-health`'s analytics view (per-skill ranking) and heartbeat (per-run pulse). This branch answers the operator-level question those two don't: "given everything that happened, was this week worth it?" Methodology: every number is sourced from another skill's article - this branch measures nothing itself.*
 ```
 
 The "What was notable" section reads `memory/MEMORY.md` for rows in the `## Skills Built` table where the `Date` column falls in the window. List up to 3, formatted as `- {Skill} — {one-line summary truncated to ~120 chars}`. If zero new skills built this week, write `- No new skills built this week — agent ran on the existing fleet.`
@@ -224,8 +224,8 @@ If `MODE == dry-run`: skip notify, log `OPERATOR_SCORECARD_DRY_RUN`, exit.
 Otherwise call `./notify`:
 
 ```
-*Operator Scorecard — ${today}*
-${verdict_emoji} ${verdict_label} — ${one_line_summary}
+*Operator Scorecard - ${today}*
+${verdict_emoji} ${verdict_label} - ${one_line_summary}
 
 Agent health: ${success_pct}% across ${total_runs} runs (${anomaly_count} anomalies, ${heartbeat_ok} clean heartbeats)
 
@@ -257,7 +257,7 @@ Append under the shared `### operator-scorecard` heading (see the **Log** sectio
 - **Economic activity**: $${total_distributed} in $AEON to ${recipient_count} recipients · token ${token_7d_pct}% 7d (${token_verdict})
 - **Article**: output/articles/operator-scorecard-${today}.md
 - **Dashboard**: apps/dashboard/outputs/operator-scorecard.json
-- **Notification sent**: ${yes|no — dry-run|no — INSUFFICIENT_DATA}
+- **Notification sent**: ${yes|no - dry-run|no - INSUFFICIENT_DATA}
 - **Status**: OPERATOR_SCORECARD_OK | OPERATOR_SCORECARD_QUIET | OPERATOR_SCORECARD_NO_DATA
 ```
 
@@ -289,9 +289,9 @@ Read `memory/MEMORY.md` for context and `memory/issues/INDEX.md` for open issues
 
 ## Steps
 
-1. **Determine the date.** `ARG` from the selector is the optional date override.
+1. **Determine the date.** `ARG` from the selector is the optional date override. If `ARG` is set, `TODAY` = `ARG`. Otherwise run this as its own Bash call; it prints TODAY:
    ```bash
-   TODAY=${ARG:-$(date -u +%Y-%m-%d)}
+   date -u +%Y-%m-%d
    ```
 
 2. **Read today's activity log.** Open `memory/logs/${TODAY}.md`.
@@ -329,22 +329,22 @@ Read `memory/MEMORY.md` for context and `memory/issues/INDEX.md` for open issues
 9. **Compose and send the recap via `./notify`.**
 
    ```
-   *Ops Recap — ${TODAY}*
+   *Ops Recap - ${TODAY}*
    _TL;DR: <one-sentence verdict from step 8>_
 
    *Headlines:*
-   - [skill] — [one-line outcome] · <URL>
+   - [skill] - [one-line outcome] · <URL>
    - ...
 
    *Notable:*  (omit section if empty)
-   - [skill ×N] — [one-line]
+   - [skill ×N] - [one-line]
    - ...
 
    *Decisions for tomorrow:*  (omit if empty)
    - [specific ask, named target]
 
    *Blockers:*  (omit if empty)
-   - [skill] — [error in ≤8 words] · <run URL if available>
+   - [skill] - [error in ≤8 words] · <run URL if available>
 
    _+M routine runs collapsed · sources: log=[ok|missing|empty] cron-state=[ok|unavailable]_
    ```
@@ -387,20 +387,26 @@ A flat chronological list of commits hides the answer readers actually want: **w
 
 ### 1. Gate on signal
 
-Fetch push events + commits for each watched repo from the last 24h:
+Fetch push events + commits for each watched repo from the last 24h. Each command below is its own Bash call (see **Shell shape** in the Network note), one call per repo with OWNER/REPO written in literally, and the window start written in literally where `<SINCE>` appears.
 
 ```bash
-SINCE="$(date -u -d '24 hours ago' +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -v-24H +%Y-%m-%dT%H:%M:%SZ)"
+date -u -d '24 hours ago' +%Y-%m-%dT%H:%M:%SZ
+```
 
+It prints SINCE.
+
+```bash
 gh api repos/OWNER/REPO/events --jq '[.[] | select(.type == "PushEvent") | {actor: .actor.login, created_at: .created_at, ref: .payload.ref, commits: [.payload.commits[] | {sha: .sha[0:7], message: .message, author: .author.name}]}]' --paginate
+```
 
-gh api repos/OWNER/REPO/commits -X GET -f since="$SINCE" --jq '.[] | {sha: .sha[0:7], full_sha: .sha, message: .commit.message, author: .commit.author.name, date: .commit.author.date}' --paginate
+```bash
+gh api repos/OWNER/REPO/commits -X GET -f since="<SINCE>" --jq '.[] | {sha: .sha[0:7], full_sha: .sha, message: .commit.message, author: .commit.author.name, date: .commit.author.date}' --paginate
 ```
 
 Also pull **merged PRs** in the same window (they anchor themes better than raw commits):
 
 ```bash
-gh pr list --repo OWNER/REPO --state merged --search "merged:>=$SINCE" --json number,title,author,mergedAt,mergeCommit,additions,deletions,files,body,labels --limit 50
+gh pr list --repo OWNER/REPO --state merged --search "merged:>=<SINCE>" --json number,title,author,mergedAt,mergeCommit,additions,deletions,files,body,labels --limit 50
 ```
 
 **Bot filter.** Drop commits whose author matches `dependabot[bot]`, `renovate[bot]`, `github-actions[bot]`, `*-bot`, or whose message starts with `chore(deps):` **unless** they touch files outside `package*.json`/`*.lock`/`.github/`. Note the dropped count — you'll surface it in the footer.
@@ -467,7 +473,7 @@ If a theme has no user-visible commits, label it `Internal: <theme>` and push it
 Write to `output/articles/push-recap-${today}.md`:
 
 ```markdown
-# Push Recap — ${today}
+# Push Recap - ${today}
 
 ## Verdict
 > <one-line verdict>
@@ -479,29 +485,29 @@ Write to `output/articles/push-recap-${today}.md`:
 ---
 
 ## Top impact today
-1. `abc1234` — <commit message>. <one sentence: what the diff actually shows and who notices>. (<files> files, +X/-Y)
-2. `def5678` — <commit message>. <one sentence>. (<files> files, +X/-Y)
-3. `ghi9012` — <commit message>. <one sentence>. (<files> files, +X/-Y)
+1. `abc1234` - <commit message>. <one sentence: what the diff actually shows and who notices>. (<files> files, +X/-Y)
+2. `def5678` - <commit message>. <one sentence>. (<files> files, +X/-Y)
+3. `ghi9012` - <commit message>. <one sentence>. (<files> files, +X/-Y)
 
 ---
 
 ## owner/repo
 
-### [Theme 1 — descriptive name]
+### [Theme 1 - descriptive name]
 
-**What this is:** <2 sentences stating the user-facing or developer-facing outcome — not the commit messages repeated>.
+**What this is:** <2 sentences stating the user-facing or developer-facing outcome - not the commit messages repeated>.
 
 **Shipped to users**
-- `abc1234` — <message>
+- `abc1234` - <message>
   - `path/to/file.ts`: <what the patch actually introduces in plain language> (+85/−4)
   - `new/file.ts`: <what this new file contains> (+45/−0)
-- `def5678` — <message>
+- `def5678` - <message>
   - `path/to/other.ts`: <specific change> (+23/−4)
 
 **Under the hood** *(only if present)*
-- `ghi9012` — <message>: <one-liner>
+- `ghi9012` - <message>: <one-liner>
 
-### [Theme 2 — descriptive name]
+### [Theme 2 - descriptive name]
 ...
 
 ### Internal: [Theme 3] *(only if any purely-internal theme exists)*
@@ -512,15 +518,15 @@ Write to `output/articles/push-recap-${today}.md`:
 ## Developer notes
 - **New dependencies:** <list with versions, or "none">
 - **Breaking changes:** <API/config/schema changes that ripple, or "none">
-- **New public surface:** <new routes, CLI flags, config keys, exported functions — the things that show up in docs>
+- **New public surface:** <new routes, CLI flags, config keys, exported functions - the things that show up in docs>
 - **Tech debt added:** <new TODOs/FIXMEs introduced in the diff, or "none">
 
 ## Open threads
 - <branches pushed but not merged, with PR link if any>
-- <incomplete work visible in diffs — stubbed functions, commented-out blocks, TODO comments added>
+- <incomplete work visible in diffs - stubbed functions, commented-out blocks, TODO comments added>
 
 ## Sources
-<per-repo status line — see the Push source-status footer>
+<per-repo status line - see the Push source-status footer>
 ```
 
 Keep it substantive. If there are fewer than 3 user-visible commits, drop the `Top impact today` header and merge those commits into the theme section — don't pad.
@@ -550,13 +556,13 @@ Append to `memory/logs/${today}.md` under the shared `### operator-scorecard` he
 Otherwise send via `./notify`:
 
 ```
-*Push Recap — ${today}*
-<repo> — <verdict>
+*Push Recap - ${today}*
+<repo> - <verdict>
 
 Shipped to users:
 • <top user-visible commit, specific sentence>
 • <second>
-• <third — omit if fewer than 3 user-visible>
+• <third - omit if fewer than 3 user-visible>
 
 Under the hood:
 • <top internal change worth mentioning, or omit this block if noise>
@@ -564,8 +570,10 @@ Under the hood:
 Shape: X user-visible · Y internal · Z infra · N bot-filtered · P merged PRs
 Volume: X files, +Y/-Z lines
 
-Full recap: https://github.com/$(git remote get-url origin | sed -E 's|.*github.com[:/]([^/]+/[^/.]+).*|\1|')/blob/main/output/articles/push-recap-${today}.md
+Full recap: https://github.com/<SELF_REPO>/blob/main/output/articles/push-recap-${today}.md
 ```
+
+`<SELF_REPO>` is this repo's `owner/repo`: run `git remote get-url origin` as its own Bash call and take the `owner/repo` part after `github.com/` or `github.com:` (drop any trailing `.git`) yourself, then write it in literally.
 
 The notification must let a reader know what shipped without clicking through. Names and numbers, not "various improvements." Each bullet must cite at least one: specific file, specific feature, specific user impact.
 
@@ -609,3 +617,4 @@ Append one block per run (never overwrite) so re-running the same branch on the 
 - **scorecard branch:** Pure local file I/O — no curl, no `gh api`, no secrets on the command line. Works in a GitHub Actions run without any of the extra auth handling the other branches need. The only outbound call is `./notify` itself, which stages to `.pending-notify/` for the workflow to re-deliver after the run.
 - **ops branch:** All inputs are local file reads (logs, issues index, cron-state). `gh pr list` runs through the GitHub CLI (auth handled internally) — if it fails, treat the source as unavailable and skip the PR-staleness check. `./notify` stages to `.pending-notify/` for re-delivery after the run, so delivery is reliable.
 - **push branch:** `gh api` and `gh pr list` handle auth internally and work in a GitHub Actions run. If a call returns a rate-limit error (403 with `X-RateLimit-Remaining: 0`), record it in the source-status footer and continue with what you have. For large diffs where the `patch` field is `null`, fall back to filename + additions/deletions stats. Never use raw `curl` against the GitHub API — always `gh api`.
+- **Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`LATEST_ANALYTICS=$(...)`, `SINCE="$(...)"`, `TODAY=${ARG:-$(...)}`), uses `$(( ))` math or a `$(...)` substitution, or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn. So every `date`, `ls` or `git remote` lookup is its own call: read the value it prints and write it into later commands and templates literally (`<SINCE>`, `<SELF_REPO>`), and work small numbers like `WINDOW_DAYS` out yourself.

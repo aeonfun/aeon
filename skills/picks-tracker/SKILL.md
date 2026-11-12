@@ -36,8 +36,8 @@ Also extract prediction market picks from lines matching `**Market:**`:
 
 Expected log format (written by token-pick and monitor-polymarket):
 ```
-- **Token:** XMR — $350.52 (+1.17% 24h, +2.55% 7d)
-- **Market:** "US x Iran permanent peace deal by April 30?" — NO $0.615 (YES 38.5%)
+- **Token:** XMR - $350.52 (+1.17% 24h, +2.55% 7d)
+- **Market:** "US x Iran permanent peace deal by April 30?" - NO $0.615 (YES 38.5%)
 ```
 
 Focus on the last **30 days** of logs. If a token was picked multiple times, record each instance separately.
@@ -48,15 +48,14 @@ If zero picks are found in the window, log `PICKS_TRACKER_SKIP: no picks in last
 
 For each unique token symbol, fetch the current price from CoinGecko.
 
-First, try the search endpoint to get the coin ID. The optional demo key rides `./secretcurl`'s `{COINGECKO_API_KEY}` placeholder (never a bare `$SECRET` on the line); the header is only sent when a key is set:
+First, try the search endpoint to get the coin ID. The optional demo key rides `./secretcurl`'s `{COINGECKO_API_KEY}` placeholder (never a bare `$SECRET` on the line); the header is only sent when a key is set. Key check: read the "Keys set for this run" line in your run notes, never a shell test (those are refused and cost a turn). When `COINGECKO_API_KEY` is on that line keep the `-H "x-cg-demo-api-key: {COINGECKO_API_KEY}"` shown below; when it is not, drop that `-H` (keyless public works at a lower rate limit).
 ```bash
-CG_HDR=(); [ -n "${COINGECKO_API_KEY:+x}" ] && CG_HDR=(-H "x-cg-demo-api-key: {COINGECKO_API_KEY}")
-./secretcurl -s "${CG_HDR[@]}" "https://api.coingecko.com/api/v3/search?query=SYMBOL"
+./secretcurl -s -H "x-cg-demo-api-key: {COINGECKO_API_KEY}" "https://api.coingecko.com/api/v3/search?query=SYMBOL"
 ```
 
 Then fetch the price:
 ```bash
-./secretcurl -s "${CG_HDR[@]}" "https://api.coingecko.com/api/v3/simple/price?ids=COIN_ID&vs_currencies=usd&include_24hr_change=true"
+./secretcurl -s -H "x-cg-demo-api-key: {COINGECKO_API_KEY}" "https://api.coingecko.com/api/v3/simple/price?ids=COIN_ID&vs_currencies=usd&include_24hr_change=true"
 ```
 
 **Fallback:** If curl fails, use WebFetch for the same URL (drop the API key header).
@@ -130,17 +129,17 @@ Keep it honest. No cherry-picking dates.
 Send via `./notify` (inline multi-line literal — do NOT pipe or use `$(cat)`):
 
 ```
-*picks scorecard — [START_DATE] → [TODAY]*
+*picks scorecard - [START_DATE] → [TODAY]*
 
 *token picks ([N] total)*
-[SYMBOL] [DATE] — picked $[PICK] → now $[CURRENT] ([PERF]%) [EMOJI]
+[SYMBOL] [DATE] - picked $[PICK] → now $[CURRENT] ([PERF]%) [EMOJI]
 ...sorted best to worst...
 
 *score: [WINS]W [HOLDS]H [LOSSES]L | avg [AVG]% | hit rate [HIT_RATE]%*
 *best: [SYMBOL] +[BEST]% | worst: [SYMBOL] [WORST]%*
 
 *market picks*
-[QUESTION_SNIPPET] — [POSITION] [STATUS_EMOJI]
+[QUESTION_SNIPPET] - [POSITION] [STATUS_EMOJI]
 ...
 
 no financial advice. just tracking the record.
@@ -154,7 +153,7 @@ Keep the message under 3000 chars. If too long, truncate to the most recent 10 p
 
 Write a brief scorecard to `output/articles/picks-scorecard-${today}.md`:
 ```markdown
-# Picks Scorecard — [DATE]
+# Picks Scorecard - [DATE]
 
 ## Token Performance
 | Symbol | Picked | Pick Price | Current | Change | Result |

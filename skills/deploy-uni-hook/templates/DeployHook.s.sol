@@ -16,6 +16,7 @@ pragma solidity 0.8.26;
 import {Script, console2} from "forge-std/Script.sol";
 
 import {IPoolManager} from "@uniswap/v4-core/src/interfaces/IPoolManager.sol";
+import {SwapParams, ModifyLiquidityParams} from "@uniswap/v4-core/src/types/PoolOperation.sol";
 import {IHooks} from "@uniswap/v4-core/src/interfaces/IHooks.sol";
 import {PoolKey} from "@uniswap/v4-core/src/types/PoolKey.sol";
 import {Currency} from "@uniswap/v4-core/src/types/Currency.sol";
@@ -156,7 +157,7 @@ contract DeployHook is Script {
         tB.approve(address(swapRouter), type(uint256).max);
         lpRouter.modifyLiquidity(
             key,
-            IPoolManager.ModifyLiquidityParams({
+            ModifyLiquidityParams({
                 tickLower: TickMath.minUsableTick(60),
                 tickUpper: TickMath.maxUsableTick(60),
                 liquidityDelta: 1e21,
@@ -178,9 +179,17 @@ contract DeployHook is Script {
         // doomed swap must never be recorded as broadcast in the first place.
         uint256 snap = vm.snapshotState();
         bool seedSwapOk;
+        // Keep the probe's revert data so the operator can see WHY the seed swap
+        // was skipped (a memory var survives vm.revertToState, which only rolls
+        // back EVM state). Logged with the SEED_SWAP_SKIPPED marker below.
+        bytes memory seedSwapRevert;
+        // Outside vm.startBroadcast(), msg.sender here is this script contract,
+        // which holds no tokens - prank as the deployer so the probe spends from
+        // the right balance without being recorded as a broadcast transaction.
+        vm.prank(me);
         try swapRouter.swap(
             key,
-            IPoolManager.SwapParams({
+            SwapParams({
                 zeroForOne: true,
                 amountSpecified: -1e15,
                 sqrtPriceLimitX96: TickMath.MIN_SQRT_PRICE + 1
@@ -189,14 +198,16 @@ contract DeployHook is Script {
             ""
         ) {
             seedSwapOk = true;
-        } catch {}
+        } catch (bytes memory reason) {
+            seedSwapRevert = reason;
+        }
         vm.revertToState(snap);
 
         if (seedSwapOk) {
             vm.startBroadcast();
             swapRouter.swap(
                 key,
-                IPoolManager.SwapParams({
+                SwapParams({
                     zeroForOne: true,
                     amountSpecified: -1e15,
                     sqrtPriceLimitX96: TickMath.MIN_SQRT_PRICE + 1
@@ -207,6 +218,7 @@ contract DeployHook is Script {
             vm.stopBroadcast();
         } else {
             console2.log("SEED_SWAP_SKIPPED");
+            console2.logBytes(seedSwapRevert);
         }
 
         console2.log("kind        ", kind);

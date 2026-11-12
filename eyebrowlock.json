@@ -4,6 +4,74 @@
   "generator": "eyebrow/0.4.1",
   "artifacts": [
     {
+      "id": "1fb64745b1710fc6",
+      "tool": "aeon",
+      "scope": "project:.",
+      "type": "skill",
+      "name": "canister-audit",
+      "source": {
+        "kind": "local",
+        "ref": "skills/canister-audit"
+      },
+      "capabilities": {},
+      "files": [
+        {
+          "path": "README.md",
+          "hash": "81c069188a693b0328be01ba7746e5d74e54b80dd095b6b0ec3f99ac558f0c87"
+        },
+        {
+          "path": "SKILL.md",
+          "hash": "11dfd3da3c8a2a4fb510ff9ad270a21e6097220713143a8f69f369d6a859d767"
+        },
+        {
+          "path": "fixtures/README.md",
+          "hash": "15898815e88dabc5b2ed67f74f1501f5402250bf515d8a0afbd6863447d23541"
+        },
+        {
+          "path": "fixtures/token_vault/.gitignore",
+          "hash": "2ebe6cb6f5289849dce5a8a6cdd77e06b1385302c862982f8e181c4782d19214"
+        },
+        {
+          "path": "fixtures/token_vault/Cargo.toml",
+          "hash": "75cf2b4a78a7b9b114106622a4fd64a4b60c3d863ff7aa99360cbc72e9e6d453"
+        },
+        {
+          "path": "fixtures/token_vault/repro/finding.json",
+          "hash": "3dc362990ca35509f0a00295de16c59af508e5b01f773fe4768ba0d1834841a8"
+        },
+        {
+          "path": "fixtures/token_vault/repro/repro.sh",
+          "hash": "b960d82678d1a7e10b936a7dce0ec2e94f1e362a86312b7b66d841ad724641d8"
+        },
+        {
+          "path": "fixtures/token_vault/rust-toolchain.toml",
+          "hash": "045aa0b806e6faad4d96d385fd3825ec1186f58a7e20eca9f71be833fad12ca4"
+        },
+        {
+          "path": "fixtures/token_vault/src/lib.rs",
+          "hash": "d059d5211afb66a7bfe1f5d848ce39cd1a331f15270a9587a05b474a4258d28e"
+        },
+        {
+          "path": "fixtures/token_vault/tests/repro.rs",
+          "hash": "1d675de13789c4340cfd780a6f677f1f51f7ab6dcc49b0fbe16893644d7bbfcd"
+        },
+        {
+          "path": "fixtures/token_vault/token_vault.did",
+          "hash": "9167fba62d73b9b7a1dfe838e5f2d84ba7df2ec0b31389daaecdca4480c12246"
+        },
+        {
+          "path": "references/ic-security-checklist.md",
+          "hash": "593c9769b69ac5b1534319efb729fe993c53476d11e503d8cc37e67571c0b3f0"
+        },
+        {
+          "path": "references/ic-semgrep-rust.yml",
+          "hash": "ea3a8d37777a0b91236bb5fec925cee4423c1b5dc2bdc29a616b68bc724dbf2c"
+        }
+      ],
+      "contentHash": "sha256-f182e601476561a8b522ef306c5314c0d752119587da4a660af3c45711d2beda",
+      "discoveredFrom": "skills/canister-audit/SKILL.md"
+    },
+    {
       "id": "564d8f38dcfa4c55",
       "tool": "aeon",
       "scope": "project:.",
@@ -196,10 +264,10 @@
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "00f9d082404bc868f92c81542e241157a53374a19a86427820c8410b8ddf7969"
+          "hash": "d0713a60fca1f9cf0b9d34f03173abd4945431d6c047f60e620206b69cd1729d"
         }
       ],
-      "contentHash": "sha256-705d6cbecedb32e66c38041e682dcb31ee43319991c6dadfefe451b6610b017b",
+      "contentHash": "sha256-43a211e892761c1c964a59fe01e68beb4598e18fa0d123b9b2354a8eeaeb7696",
       "discoveredFrom": "skills/search-skill/SKILL.md"
     },
     {
@@ -234,6 +302,7 @@
       },
       "capabilities": {
         "network": [
+          "\u003cNETWORK\u003e.g.alchemy.com",
           "api.coingecko.com",
           "api.etherscan.io",
           "rpc.mainnet.chain.robinhood.com"
@@ -242,10 +311,10 @@
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "07d3d3fe646f3bcc3a98e1605137a6ca78480d61ab8f079761ef8b2c90e15e9f"
+          "hash": "b5e5bbc5eb44b5ee3e01ea6eede7d700ff1c0f22a3443830d5ab9cf92737ac0b"
         }
       ],
-      "contentHash": "sha256-4e37de88d4cd25030e67b0bb0a53d02338d69f436ce0135a55f7567065c8e646",
+      "contentHash": "sha256-23bbf759cb62ecd52aec8bbc32f9b742cc22d3cc995a95daa2022544b7dd2c3f",
       "discoveredFrom": "skills/onchain-monitor/SKILL.md"
     },
     {
@@ -528,16 +597,17 @@
       },
       "capabilities": {
         "network": [
+          "api.twitterapi.io",
           "api.x.ai"
         ]
       },
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "85d5f87189d45fc327a4280db7fd7d2cf64147f6bb82ff9a1e7091cd3e98db71"
+          "hash": "041cb83ae532fe49cd7fc90fdf2b98e7a7b46fe44ae275d6c71e15bde22db7cc"
         }
       ],
-      "contentHash": "sha256-5fb5998447998c31184d7df53bc14d58efc3df9c1d290992d3d4ae051329834c",
+      "contentHash": "sha256-47599fabb9eaf0f8c262515c58cabdd1a1d57a919c2f7da7b3eb36b65e19bf43",
       "discoveredFrom": "skills/mention-radar/SKILL.md"
     },
     {
@@ -554,10 +624,10 @@
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "86c10bfc5c4066d9bcbdd004459c4c957508f7ba2cbe2166074ed7e163b7f67b"
+          "hash": "b5f6727a31390930e0631b3e3f6d8e39bf5e95a5f4963e225a3c58007bfd4631"
         }
       ],
-      "contentHash": "sha256-02c5b0552fb2bfa8c70854abc72092db6f08bc00809491f8680581baf70db755",
+      "contentHash": "sha256-336d4c9a29b9bed2f9eb9929c2bb79319a718604b67434ea5f4020050de0896b",
       "discoveredFrom": "skills/skill-health/SKILL.md"
     },
     {
@@ -659,10 +729,10 @@
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "2d2d8b1a14668b1a59c8e1cd34ef47c39135e4134612f28aa14c39a61e412c9a"
+          "hash": "9f7a59cd0bcfd2ecf04752e6f07fecd72a5b8014e106d971a95545295f95e3e2"
         }
       ],
-      "contentHash": "sha256-3afd11a6cb741138ebe9e1fab5a7996684280713d82252ce2bc6501d1b53c6ac",
+      "contentHash": "sha256-220c94358d51a3c51747afc26718c1a6f668f2214335a0c065931b700ce7700e",
       "discoveredFrom": "skills/strategy-builder/SKILL.md"
     },
     {
@@ -1041,10 +1111,10 @@
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "2b0991c38bf51e2ef602edaf99afcb9b4ec5b0fcaa680bd1d0dd710bd0e2393f"
+          "hash": "00e3bb8b7d8f39ec639106800abed4f4c3b966dde34c9b316e0a2b74b806831f"
         }
       ],
-      "contentHash": "sha256-9560813e46d3be92b7d962ec29f0db681fcd3403bbfcf7fc3a25ba75d43f610f",
+      "contentHash": "sha256-bbd9c2cd255e5b943d3818ef134fceb8775cdd9697654e169f6fd6f6c6fde8dd",
       "discoveredFrom": "skills/changelog/SKILL.md"
     },
     {
@@ -1700,10 +1770,10 @@
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "fdbdb95af9aa06de96ab8a547623fdb82067078c839e8fa06ede720e5611f361"
+          "hash": "972a86bc0d2dfe86104a532e9602cd8de9eba2e2bdc7e1432cdbfec0719f15d9"
         }
       ],
-      "contentHash": "sha256-269c3ae428ae0258d45639b7c6e029a0a8260f21099d1c3ea6c01b466b12d095",
+      "contentHash": "sha256-7ea0a20c34944bd1c657751f4fdcc4747608f3b866a74017a187be4f075a3e85",
       "discoveredFrom": "skills/picks-tracker/SKILL.md"
     },
     {
@@ -1738,16 +1808,17 @@
       },
       "capabilities": {
         "network": [
+          "api.twitterapi.io",
           "api.x.ai"
         ]
       },
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "e5e47f590f2ac2a4236df4c1ff74b10e3ba6568a789e370bef1ac415aa073df1"
+          "hash": "83b50dbd462248a1a4476157c043f7c1f3585619c4579ea5956684ac971dbefe"
         }
       ],
-      "contentHash": "sha256-691c7527de3ff7bc86f80d9a6623df571aa9ff2cb00b8924504e0741f39f9449",
+      "contentHash": "sha256-98c4c6b8acf8222ce66492f6f750150888572f49ff787a3f526cf912e705e86c",
       "discoveredFrom": "skills/reply-maker/SKILL.md"
     },
     {
@@ -1829,6 +1900,26 @@
       ],
       "contentHash": "sha256-93a731eba29fa1998febd3b14f1393be076442edeb1a0c6550b22eceb7f1a86d",
       "discoveredFrom": "skills/finance-district-mcp/SKILL.md"
+    },
+    {
+      "id": "4f15ffa080e0bc18",
+      "tool": "aeon",
+      "scope": "project:.",
+      "type": "skill",
+      "name": "flovia",
+      "source": {
+        "kind": "local",
+        "ref": "skills/flovia"
+      },
+      "capabilities": {},
+      "files": [
+        {
+          "path": "SKILL.md",
+          "hash": "7bca662387350255bdeef307638a530bc7e982ddff3434f83afd136432d3482a"
+        }
+      ],
+      "contentHash": "sha256-55c78c75632ac43dad95c4e67adacf3a6463bfe206a35b5f0439e50f98ec0c88",
+      "discoveredFrom": "skills/flovia/SKILL.md"
     },
     {
       "id": "b36aee0061d7b8b5",
@@ -2019,10 +2110,10 @@
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "01e96f1e5657a5739d04fd1a28b5405746d8a0ad0b56b4da1c2660596d1da810"
+          "hash": "744b164820ae16fae9a6313c00479f6eb23752a08e413efb4f49a42ceccc2d7a"
         }
       ],
-      "contentHash": "sha256-f769e0d47602e7323c7a0e33338b1f8a8c155e32567e9e2585c6d0d9e3005f7b",
+      "contentHash": "sha256-720d13e5e046f0fcdfebc4d3d906f4885470eb9ca10d03fcb1f1985f43bb5291",
       "discoveredFrom": "skills/defi-overview/SKILL.md"
     },
     {
@@ -2088,6 +2179,7 @@
       },
       "capabilities": {
         "network": [
+          "api.twitterapi.io",
           "api.x.ai",
           "x.com"
         ]
@@ -2095,10 +2187,10 @@
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "6dd3aa21b17bc9e525802387f8cf0544c9387ce7d118081fca2b9523360114d5"
+          "hash": "c199d389f221acf2a9adf5dfa32c910d0258aaa5eb98f2ef7c16d7121f611999"
         }
       ],
-      "contentHash": "sha256-1d5e4c22d96d144b8a7ac5b9385ab413e947998674c13f7c92802010c2e67046",
+      "contentHash": "sha256-6a3aed8d975f9c5720217e1355500e55a31c96306e740c83daaee67a1ef63a18",
       "discoveredFrom": "skills/shiplog/SKILL.md"
     },
     {
@@ -2173,16 +2265,18 @@
       },
       "capabilities": {
         "network": [
-          "api.x.ai"
+          "api.twitterapi.io",
+          "api.x.ai",
+          "x.com"
         ]
       },
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "308e7ee0a21d3b4f0f3fbb1941aaec8e80cfd400965aadeaed31161f28762e3e"
+          "hash": "2584733fd76a69bcb12597811ac0e5be8da5e03ad68ee4c7eb5a8a6955ebee53"
         }
       ],
-      "contentHash": "sha256-8abe59187948ce2c01cf1863f464499adb6a655a3804ba9de8e45a56764823bf",
+      "contentHash": "sha256-94cc95f98af14746390bcc565e21ea69ca7c8edaed1899827436dfc1a6788541",
       "discoveredFrom": "skills/write-tweet/SKILL.md"
     },
     {
@@ -2505,6 +2599,7 @@
       },
       "capabilities": {
         "network": [
+          "api.twitterapi.io",
           "api.x.ai",
           "x.com"
         ]
@@ -2512,10 +2607,10 @@
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "6c7929ff6df3b4a4491ed6086dd1da018c1ed3c2729f8ea2f98ed14c914cfca7"
+          "hash": "5a3e611481743ba9f5752dce474245ba8c85222db0c3dc2bc516508c8e3d3491"
         }
       ],
-      "contentHash": "sha256-24193d664a2402d12cf7b55a3da16355dcb326e4b459616394fbfe7ee45e598b",
+      "contentHash": "sha256-7804454f681b6cc574b4b50e7851a4a3611351ff20c108b9800b5bcba4430570",
       "discoveredFrom": "skills/fetch-tweets/SKILL.md"
     },
     {
@@ -2530,6 +2625,7 @@
       },
       "capabilities": {
         "network": [
+          "\u003cALCHEMY_NETWORK\u003e.g.alchemy.com",
           "api.coingecko.com",
           "api.dexscreener.com",
           "api.geckoterminal.com",
@@ -2539,10 +2635,10 @@
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "8f0226dbd33b1a83f2ebdb99a7c3c3d7c0e8953687976d2f04d877e0634efcd6"
+          "hash": "6ea41f7cc6eb278f1d78914269b56d10322bc3b6fc964327a896c4962735fdbf"
         }
       ],
-      "contentHash": "sha256-9d849bd6685b3e74dcb8143e326a094bc56d30a7435fde03ca9a21ad5208e4cd",
+      "contentHash": "sha256-1d0c6ea7871536c5baf26d991eb67efe87ad465467dd76d42789fcc0ace7b162",
       "discoveredFrom": "skills/token-movers/SKILL.md"
     },
     {
@@ -2632,7 +2728,7 @@
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "12a46d15241393c9e8e086dba3f1bb1abc5aaa6c4406e9c8160024f3a495f1d1"
+          "hash": "83b9839e8f99e3c5c05f61ea4795d50478eedf8409db3870e317dae88c675a68"
         }
       ],
       "findings": [
@@ -2641,12 +2737,12 @@
           "severity": "high",
           "owasp": "ASK-06",
           "file": "SKILL.md",
-          "line": 105,
+          "line": 106,
           "snippet": "output/**           .mcp.json           .env*               aeon.db",
           "explanation": "references sensitive credential or secret paths"
         }
       ],
-      "contentHash": "sha256-fead703d79cbd78a27855b2ad567ffac6af3ace93470055bc9e32d45c26458a5",
+      "contentHash": "sha256-4499eb804836ca462fa635d8169738b2daee911d8d49def46d9204dffd95fd44",
       "discoveredFrom": "skills/aeon-update/SKILL.md"
     },
     {
@@ -3400,6 +3496,109 @@
       ],
       "contentHash": "sha256-b230f3f81002d9247112aef5443c7aae9559de36f118d7308e548dbe9619d3ec",
       "discoveredFrom": "skills/anatomy/SKILL.md"
+    },
+    {
+      "id": "53303e97a714e88e",
+      "tool": "aeon",
+      "scope": "project:.",
+      "type": "skill",
+      "name": "github-filing-registry",
+      "source": {"kind": "local", "ref": "skills/github-filing-registry"},
+      "capabilities": {"network": ["api.github.com"]},
+      "files": [
+        {"path": "SKILL.md", "hash": "b95b9c6d984ff6eb0404559092b2d20d089986784255df96b86fefaa9f87c8a0"}
+      ],
+      "contentHash": "sha256-b95b9c6d984ff6eb0404559092b2d20d089986784255df96b86fefaa9f87c8a0",
+      "discoveredFrom": "skills/github-filing-registry/SKILL.md"
+    },
+    {
+      "id": "ac741688c8cdedb9",
+      "tool": "aeon",
+      "scope": "project:.",
+      "type": "skill",
+      "name": "canister-status",
+      "source": {
+        "kind": "local",
+        "ref": "skills/canister-status"
+      },
+      "capabilities": {
+        "network": [
+          "ic-api.internetcomputer.org"
+        ]
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "hash": "3d6cb3eef3de27c6bf145cb4227077612c480416016b753d9d934c45154bb6c7"
+        },
+        {
+          "path": "SKILL.md",
+          "hash": "7d9bf7ec00f126213610aa7f6bcc180b516fde256182c07cff3c10635f837614"
+        },
+        {
+          "path": "reconcile.mjs",
+          "hash": "85ec8f7b1909cfc241805fe42e8f3184d5a5a10896892fda7d25483d1b6aa23d"
+        }
+      ],
+      "contentHash": "sha256-7f052c4b160c9dce17242e0bd3d8a149961f444aee89152bfeb196b798b86ed5",
+      "discoveredFrom": "skills/canister-status/SKILL.md"
+    },
+    {
+      "id": "8c956ce889cadd94",
+      "tool": "aeon",
+      "scope": "project:.",
+      "type": "skill",
+      "name": "sns-digest",
+      "source": {
+        "kind": "local",
+        "ref": "skills/sns-digest"
+      },
+      "capabilities": {
+        "network": [
+          "ic-api.internetcomputer.org",
+          "sns-api.internetcomputer.org"
+        ]
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "hash": "9b841cf756bc6ee56bc74ae7c0f3a51584aa98009d51c32d82509f24711a2862"
+        },
+        {
+          "path": "SKILL.md",
+          "hash": "299cda7613db7d4bff36b39b17b6ccd7922f740bf30b3dbfe52b1b1e3b4254ce"
+        },
+        {
+          "path": "parse-proposals.mjs",
+          "hash": "db031a02c1cac858a460d40d1d6398772efa9755b1c9734f3a7079b55ada8c84"
+        }
+      ],
+      "contentHash": "sha256-597a9e7a5c6756fd7db78204d94d68c13093c63c976238953523c14c7a385f11",
+      "discoveredFrom": "skills/sns-digest/SKILL.md"
+    },
+    {
+      "id": "21a3645b845f8948",
+      "tool": "aeon",
+      "scope": "project:.",
+      "type": "skill",
+      "name": "icp-deploy-check",
+      "source": {
+        "kind": "local",
+        "ref": "skills/icp-deploy-check"
+      },
+      "capabilities": {},
+      "files": [
+        {
+          "path": "README.md",
+          "hash": "c3c86b340c63f18d2c917810ceef1b064a23eea9652ba7af48e2f3403625196f"
+        },
+        {
+          "path": "SKILL.md",
+          "hash": "8efdc284fececfff168f19170ed399ebee8aaa6fc0f5ebc1fd1a0a9fa0f350ee"
+        }
+      ],
+      "contentHash": "sha256-843b93076035aa6f117a50f524ccb9b595c52b54ec7b5b6a7d62e4097f49959e",
+      "discoveredFrom": "skills/icp-deploy-check/SKILL.md"
     }
   ]
 }

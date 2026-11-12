@@ -13,15 +13,17 @@ code, not by the model's reading of the steps.
 
   python3 scripts/aeon_update.py plan --upstream OWNER/REPO --baseline SHA --head SHA
       S4-S6. Diffs upstream's BASELINE and HEAD trees, partitions the changed
-      paths, 3-way classifies each OWNED file and stages every blob the apply
-      step needs under $WORK. Mutates nothing in the repo, so `report` mode
+      paths, 3-way classifies each OWNED file (a byte-identical copy of an older
+      upstream version, held or not, is stale and takes HEAD) and stages every
+      blob the apply step needs under $WORK. Mutates nothing in the repo, so `report` mode
       stops here. Prints a JSON summary; the full plan is $WORK/plan.json.
 
   python3 scripts/aeon_update.py apply
       S7-S8, on the checked-out aeon-update/* branch. Writes the CLEAN files,
       carries new skills' glyphs, regenerates the catalogs, runs the
       pack-registry and eyebrow-lock checks (reverting what would go red),
-      runs validate-config, recomputes pending_conflicts and writes
+      runs validate-config, recomputes pending_conflicts (minus the state
+      file's keep_local globs) and writes
       memory/topics/aeon-update-state.json. Prints a JSON result; the full
       result is $WORK/result.json. Stages nothing except deletions.
 
@@ -36,6 +38,7 @@ eyebrow binary (none = unavailable, exercises the fail-safe).
 import argparse
 import concurrent.futures
 import difflib
+import fnmatch
 import hashlib
 import json
 import os
@@ -63,6 +66,9 @@ OPERATOR_FILES = {
     "eyebrowlock.json", ".github/dependabot.yml",
 }
 OPERATOR_DIRS = ("soul/", "memory/", "output/", "apps/dashboard/outputs/")
+# Conflicts that touch how runs execute are listed first, instance docs last, so
+# real drift is not buried under the README and CHANGELOG an instance rewrote.
+DRIFT_FIRST = (".github/workflows/", "harness-adapter/")
 CLEAN = ("CLEAN-ADD", "CLEAN-UPDATE", "CLEAN-MERGE", "CLEAN-DELETE")
 CATALOG_GENERATORS = (
     ["bin/generate-skills-json"],
@@ -148,6 +154,34 @@ class GhUpstream:
         rows = self._api(f"commits?sha={head}&path={urllib.parse.quote(path)}&per_page=30") or []
         return [r["sha"] for r in rows]
 
+    def blob_history(self, paths, head):
+        """{path: blob shas the path had in its last 30 commits up to HEAD}, in one
+        GraphQL call per 20 paths instead of a REST call per (path, commit)."""
+        owner, name = self.repo.split("/", 1)
+        out = {}
+        for i in range(0, len(paths), 20):
+            chunk = paths[i:i + 20]
+            fields = " ".join(
+                f"p{j}: history(path: {json.dumps(p)}, first: 30) {{ nodes {{ file(path: {json.dumps(p)}) {{ oid }} }} }}"
+                for j, p in enumerate(chunk)
+            )
+            q = ("query($o: String!, $n: String!, $h: GitObjectID!) { repository(owner: $o, name: $n) "
+                 "{ object(oid: $h) { ... on Commit { " + fields + " } } } }")
+            r = run(["gh", "api", "graphql", "-f", f"query={q}", "-f", f"o={owner}", "-f", f"n={name}", "-f", f"h={head}"])
+            # A commit where the path is gone (a delete or rename) comes back as a
+            # NOT_FOUND error next to the data, and gh exits 1: keep the data.
+            try:
+                data = (json.loads(r.stdout or b"null") or {}).get("data")
+            except ValueError:
+                data = None
+            if not data:
+                raise RuntimeError(f"graphql history: {(r.stderr + r.stdout).decode(errors='replace').strip()[-300:]}")
+            obj = (data.get("repository") or {}).get("object") or {}
+            for j, path in enumerate(chunk):
+                nodes = (obj.get(f"p{j}") or {}).get("nodes") or []
+                out[path] = {n["file"]["oid"] for n in nodes if n.get("file")}
+        return out
+
 
 class GitUpstream:
     """Reads upstream from a local clone (tests, or an operator dry run)."""
@@ -189,6 +223,17 @@ class GitUpstream:
     def path_commits(self, path, head):
         return self._git("log", "--format=%H", "-n", "30", head, "--", path).stdout.decode().split()
 
+    def blob_history(self, paths, head):
+        out = {}
+        for path in paths:
+            shas = set()
+            for c in self.path_commits(path, head):
+                r = self._git("rev-parse", "--verify", "-q", f"{c}:{path}", check=False)
+                if r.returncode == 0:
+                    shas.add(r.stdout.decode().strip())
+            out[path] = shas
+        return out
+
 
 def upstream_backend(repo):
     local = os.environ.get("AEON_UPDATE_UPSTREAM_GIT")
@@ -229,6 +274,35 @@ def operator_owned(p):
     if p.startswith("catalog/") and p.count("/") == 1 and p.endswith(".json") and p != "catalog/skill-packs.json":
         return True
     return False
+
+
+def keep_local_globs(state=None):
+    """The instance's `keep_local` list in the state file: glob patterns for OWNED
+    paths it keeps its own way on purpose (rewritten docs, files it deleted). `*`
+    also matches `/`, so `docs/**` and `docs/*` both cover the whole tree, and a
+    pattern ending in `/` is a directory prefix. Anything else in the key is ignored."""
+    raw = (load_state() if state is None else state).get("keep_local")
+    if not isinstance(raw, list):
+        return ()
+    return tuple(g.strip() for g in raw if isinstance(g, str) and g.strip())
+
+
+def kept_local(p, globs):
+    for g in globs:
+        if g.endswith("/"):
+            if p.startswith(g):
+                return True
+        elif fnmatch.fnmatchcase(p, g):
+            return True
+    return False
+
+
+def drift_rank(p):
+    if p.startswith(DRIFT_FIRST):
+        return 0
+    if p.startswith("docs/") or (p.endswith(".md") and not p.startswith("skills/")):
+        return 2
+    return 1
 
 
 def skill_of(p):
@@ -353,7 +427,8 @@ def cmd_plan(args):
             die(str(e))
         prior = load_state().get("pending_conflicts") or []
         print(json.dumps({"status": "AEON_UPDATE_IN_SYNC", "baseline": args.baseline, "head": args.head,
-                          "pending_conflicts": compute_pending([], prior, head_tree, enabled_skills())}, indent=1))
+                          "pending_conflicts": compute_pending([], prior, head_tree, enabled_skills(),
+                                                               keep_local_globs())}, indent=1))
         return
     try:
         base_tree = up.tree(args.baseline)
@@ -366,6 +441,7 @@ def cmd_plan(args):
         changed |= set(PACK_UNIT)
     changed.add("catalog/skill-packs.json")
     enabled = enabled_skills()
+    keep = keep_local_globs()
 
     entries, fetch = [], set()
     for path in sorted(changed):
@@ -374,11 +450,48 @@ def cmd_plan(args):
         e = {"path": path, "base": base, "head": head, "local": local, "reason": ""}
         if operator_owned(path):
             e["disposition"] = "OPERATOR" if base != head else "SKIP"
+        elif kept_local(path, keep):
+            # Never written, never a conflict: the instance chose its own copy (or
+            # its deletion). Listed under `kept_local` so the choice stays visible.
+            e["disposition"], e["reason"] = "KEEP-LOCAL", "keep_local"
         else:
             e["disposition"], e["reason"] = classify(path, base, head, local, enabled, head_tree)
         if e["disposition"] == "SKIP":
             continue
         entries.append(e)
+
+    # Stale copies. A local file byte-identical to an older upstream version of
+    # itself was never customized: an earlier sync held it back, or it predates the
+    # baseline. A 3-way merge against BASELINE reads the upstream lines it lacks as
+    # local deletions and keeps them out (miroshark-aeon#222 auto-merged
+    # scripts/langfuse-otel.sh and dropped the trigger-label block that way), and a
+    # held file upstream did not touch in range was never looked at again, so it
+    # sat in pending_conflicts for good (aeon-agent's trigger-label and otel-span
+    # fixes). Both take HEAD's copy: CLEAN-UPDATE `stale-copy`. Without the history
+    # (API error) nothing changes: merge or hold, never a blind overwrite.
+    held, planned = {}, {e["path"] for e in entries}
+    for p in load_state().get("pending_conflicts") or []:
+        path = p.get("path")
+        if not path or path in planned or operator_owned(path) or kept_local(path, keep) or path not in head_tree:
+            continue
+        local = local_entry(path)
+        if local is None or local[0] == "040000" or head_tree[path][0] == "160000" or same(local, head_tree[path]):
+            continue
+        held[path] = local
+    cand = sorted({e["path"] for e in entries if e["disposition"] == "MERGE"} | set(held))
+    try:
+        history = up.blob_history(cand, args.head) if cand else {}
+    except RuntimeError:
+        history = {}
+    for e in entries:
+        if e["disposition"] == "MERGE" and e["local"][1] in history.get(e["path"], ()):
+            e["disposition"], e["reason"] = "CLEAN-UPDATE", "stale-copy"
+    for path, local in sorted(held.items()):
+        if local[1] in history.get(path, ()):
+            entries.append({"path": path, "base": base_tree.get(path), "head": head_tree[path], "local": local,
+                            "disposition": "CLEAN-UPDATE", "reason": "stale-copy"})
+
+    for e in entries:
         for side in ("base", "head"):
             if e[side] and e[side][0] != "160000":
                 fetch.add(e[side][1])
@@ -450,7 +563,7 @@ def cmd_plan(args):
     }
     (work / "plan.json").write_text(json.dumps(plan, indent=2))
     prior = load_state().get("pending_conflicts") or []
-    pending = compute_pending(entries, prior, head_tree, enabled_skills())
+    pending = compute_pending(entries, prior, head_tree, enabled_skills(), keep)
     print(json.dumps(summary(plan, entries, pending, work), indent=1))
 
 
@@ -465,10 +578,12 @@ def summary(plan, entries, pending, work, extra=None):
         "ahead": plan["ahead"],
         "counts": {k: len(v) for k, v in sorted(by.items())},
         "clean": {k: by[k] for k in CLEAN if k in by},
-        "conflicts": [
+        "stale_copies": [e["path"] for e in entries if e["disposition"] == "CLEAN-UPDATE" and e["reason"] == "stale-copy"],
+        "conflicts": sorted((
             {"path": e["path"], "reason": e["reason"], "upstream_commits": e.get("upstream_commits", []), "diff": e.get("diff")}
             for e in entries if e["disposition"] == "CONFLICT"
-        ],
+        ), key=lambda c: drift_rank(c["path"])),
+        "kept_local": [e["path"] for e in entries if e["disposition"] == "KEEP-LOCAL"],
         "operator": [{"path": e["path"], "diff": e.get("diff")} for e in entries if e["disposition"] == "OPERATOR"],
         "unreadable": [{"path": e["path"], "error": e["reason"]} for e in entries if e["disposition"] == "UNREADABLE"],
         "pending_conflicts": pending,
@@ -480,8 +595,10 @@ def summary(plan, entries, pending, work, extra=None):
     return out
 
 
-def compute_pending(entries, prior, head_tree, enabled):
-    """S8: this run's conflicts plus prior entries that are still divergent."""
+def compute_pending(entries, prior, head_tree, enabled, keep=()):
+    """S8: this run's conflicts plus prior entries that are still divergent, workflow
+    and harness paths first. A prior entry the instance has since put on its
+    `keep_local` list is dropped: it was a choice, not drift."""
     now = {e["path"]: e for e in entries}
     out = [
         {"path": e["path"], "reason": e["reason"], "upstream_commits": e.get("upstream_commits", [])}
@@ -490,7 +607,7 @@ def compute_pending(entries, prior, head_tree, enabled):
     seen = {x["path"] for x in out}
     for p in prior:
         path = p.get("path")
-        if not path or path in seen:
+        if not path or path in seen or kept_local(path, keep):
             continue
         e = now.get(path)
         if e and e["disposition"] in CLEAN:
@@ -504,7 +621,7 @@ def compute_pending(entries, prior, head_tree, enabled):
         if not same(local_entry(path), head_tree.get(path)):
             out.append(p)
             seen.add(path)
-    return out
+    return sorted(out, key=lambda x: drift_rank(x["path"]))
 
 
 # --- apply (S7-S8) ------------------------------------------------------------
@@ -787,7 +904,7 @@ def cmd_apply(_args):
 
     head_tree = {p: tuple(v) for p, v in plan["head_tree"].items()}
     prior = load_state().get("pending_conflicts") or []
-    pending = compute_pending(entries, prior, head_tree, enabled_skills())
+    pending = compute_pending(entries, prior, head_tree, enabled_skills(), keep_local_globs())
 
     vc = run_tool(["node", "scripts/validate-config.js", "aeon.yml"])
     if vc and vc["rc"] != 0:

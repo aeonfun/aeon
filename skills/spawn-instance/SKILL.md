@@ -49,19 +49,30 @@ Every run ends with one of these status codes, written to the log and (where rel
 
 ### 2. Pre-flight checks
 
+**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`OWNER=$(gh api ...)`, `TMPDIR=$(mktemp -d)`), uses `if` / `for` / `while` or a `[ ... ]` test, joins commands with `;`, `&&` or `||` (including `|| { echo ...; exit 1; }`), or starts with `cd DIR`, and `find`, `rm`, `awk`, `basename`, `mktemp`, `seq` and `sleep` are not allowed commands; each refusal costs a model turn. So run each `gh` / `git` command as its own call, read what it prints and write that value into later commands literally (the `<OWNER>`, `<REPO_NAME>` style placeholders in the snippets); turn each `|| exit` into the prose check after the call; run `git` in the clone with `git -C <dir>`; write files with Write/Edit; and do the memory reset deletes inside one `python3 -c` call.
+
+Run each as its own call:
 ```bash
-gh auth status || { echo "SPAWN_API_ERROR: gh not authenticated"; exit 1; }
-OWNER=$(gh api user --jq '.login') || { echo "SPAWN_API_ERROR: cannot read user"; exit 1; }
-PARENT_REPO=$(gh repo view --json nameWithOwner -q .nameWithOwner)
-# If current repo is itself a fork, use the upstream as the parent:
-PARENT_UPSTREAM=$(gh api "repos/${PARENT_REPO}" --jq '.parent.full_name // .full_name')
+gh auth status
+```
+If it fails, log `SPAWN_API_ERROR: gh not authenticated` and stop.
+```bash
+gh api user --jq '.login'
+```
+It prints OWNER. If it fails, log `SPAWN_API_ERROR: cannot read user` and stop.
+```bash
+gh repo view --json nameWithOwner -q .nameWithOwner
+```
+It prints PARENT_REPO. If the current repo is itself a fork, use the upstream as the parent; this prints PARENT_UPSTREAM:
+```bash
+gh api repos/<PARENT_REPO> --jq '.parent.full_name // .full_name'
 ```
 
 Check rate limit:
 ```bash
-REMAINING=$(gh api rate_limit --jq '.resources.core.remaining')
-[ "${REMAINING:-0}" -lt 50 ] && { echo "SPAWN_API_ERROR: rate limit too low (${REMAINING})"; exit 1; }
+gh api rate_limit --jq '.resources.core.remaining'
 ```
+It prints REMAINING. If it is below 50 (or empty, which counts as 0), log `SPAWN_API_ERROR: rate limit too low (<REMAINING>)` and stop.
 
 ### 3. Check the fleet registry
 
@@ -90,14 +101,9 @@ Read `memory/instances.json`. If it doesn't exist, create it with `{"instances":
 
 **Do not use a hardcoded skill list.** The catalog in earlier revisions contained broken names (`wallet-digest`, `trending-coins`, `tweet-digest`, `hn-digest` — none of which exist in `skills/`). Always enumerate live.
 
+Build the live catalog of available skills and their tags/description in one call (a shell `for` loop is refused; the loop lives inside `node -e`). It prints each skill's name and the frontmatter between its first two `---` lines, skipping directories with no `SKILL.md`:
 ```bash
-# Build live catalog of available skills and their tags/description.
-for d in skills/*/; do
-  name=$(basename "$d")
-  [ -f "$d/SKILL.md" ] || continue
-  # Extract frontmatter fields (description + tags)
-  awk '/^---/{f++;next} f==1{print}' "$d/SKILL.md"
-done
+node -e 'const fs=require("fs"); for (const d of fs.readdirSync("skills").sort()) { const f="skills/"+d+"/SKILL.md"; if (!fs.existsSync(f)) continue; const m=fs.readFileSync(f,"utf8").split(/^---[^\n]*$/m)[1] || ""; console.log("== "+d+"\n"+m.trim()) }'
 ```
 
 For each skill, parse the frontmatter `description:` and `tags:` lines. Classify the purpose into themes by keyword match (case-insensitive) and pick skills whose description or tags overlap:
@@ -123,41 +129,44 @@ Save the final list as `SKILLS_ENABLED`.
 
 ### 5. Fork the parent repo
 
+First check whether the fork already exists:
 ```bash
-if gh api "repos/${OWNER}/${REPO_NAME}" --jq '.full_name' >/dev/null 2>&1; then
-  FORK_STATE="exists"
-else
-  # Try the modern flag first
-  if ! gh repo fork "${PARENT_UPSTREAM}" --fork-name "${REPO_NAME}" --clone=false 2>/dev/null; then
-    # Fallback: POST to /repos/{owner}/{repo}/forks with a custom name
-    gh api "repos/${PARENT_UPSTREAM}/forks" -X POST -f name="${REPO_NAME}" --jq '.full_name' \
-      || { echo "SPAWN_FORK_FAILED"; exit 1; }
-  fi
-  FORK_STATE="created"
-fi
+gh api repos/<OWNER>/<REPO_NAME> --jq '.full_name'
 ```
+If it prints the full name, `FORK_STATE` is `exists`; skip to the wait below. If it fails (404), try the modern flag first:
+```bash
+gh repo fork <PARENT_UPSTREAM> --fork-name <REPO_NAME> --clone=false
+```
+If that fails, fall back to a POST to `/repos/{owner}/{repo}/forks` with a custom name:
+```bash
+gh api repos/<PARENT_UPSTREAM>/forks -X POST -f name=<REPO_NAME> --jq '.full_name'
+```
+If that fails too, log `SPAWN_FORK_FAILED` and stop. Otherwise `FORK_STATE` is `created`.
 
-**Wait for fork availability** (GitHub forks are async):
+**Wait for fork availability** (GitHub forks are async): run this check as a separate call, up to 10 times, until it prints the full name (each model turn between calls is the wait; there is no `sleep`):
 ```bash
-for i in $(seq 1 10); do
-  gh api "repos/${OWNER}/${REPO_NAME}" --jq '.full_name' >/dev/null 2>&1 && break
-  sleep 3
-done
-gh api "repos/${OWNER}/${REPO_NAME}" --jq '.full_name' >/dev/null 2>&1 \
-  || { echo "SPAWN_FORK_FAILED: fork not reachable after wait"; exit 1; }
+gh api repos/<OWNER>/<REPO_NAME> --jq '.full_name'
 ```
+If it still fails after 10 tries, log `SPAWN_FORK_FAILED: fork not reachable after wait` and stop.
 
 ### 6. Configure the fork
 
+Work in the fixed directory `/tmp/spawn-instance-work` (the runner is thrown away after the run, so there is no cleanup step). Each line below is its own call:
 ```bash
-TMPDIR=$(mktemp -d)
-trap 'rm -rf "$TMPDIR"' EXIT
-gh repo clone "${OWNER}/${REPO_NAME}" "$TMPDIR/repo" -- --quiet \
-  || { echo "SPAWN_API_ERROR: clone failed"; exit 1; }
-cd "$TMPDIR/repo"
-git config user.name "aeonframework"
-git config user.email "aeonframework@proton.me"
+mkdir -p /tmp/spawn-instance-work
 ```
+```bash
+gh repo clone <OWNER>/<REPO_NAME> /tmp/spawn-instance-work/repo -- --quiet
+```
+If the clone fails, log `SPAWN_API_ERROR: clone failed` and stop.
+```bash
+git -C /tmp/spawn-instance-work/repo config user.name "aeonframework"
+```
+```bash
+git -C /tmp/spawn-instance-work/repo config user.email "aeonframework@proton.me"
+```
+
+Every path in 6a-6e (`aeon.yml`, `SETUP.md`, `CLAUDE.md`, `memory/...`, `skills/...`) is inside the clone, `/tmp/spawn-instance-work/repo`. Read and change those files with Read/Edit/Write on their absolute paths.
 
 #### 6a. Write a customized `aeon.yml`
 
@@ -190,7 +199,7 @@ Go to **Settings > Secrets and variables > Actions** and add these secrets:
 ### Required (pick one for Claude auth)
 | Secret | Description |
 |--------|------------|
-| `ANTHROPIC_API_KEY` | Anthropic API key — console.anthropic.com |
+| `ANTHROPIC_API_KEY` | Anthropic API key - console.anthropic.com |
 | `CLAUDE_CODE_OAUTH_TOKEN` | Alternative: Claude Code OAuth token |
 
 ### Recommended (notifications)
@@ -226,44 +235,46 @@ If a line starting with `- Managed instance of` already exists, replace it rathe
 
 The child starts with a clean slate:
 
-```bash
-# Reset MEMORY.md to a minimal template
-cat > memory/MEMORY.md <<EOF
-# Long-term Memory
-*Last consolidated: never*
+1. Reset `memory/MEMORY.md` to a minimal template with Write (PARENT_UPSTREAM and PURPOSE written in literally):
+   ```markdown
+   # Long-term Memory
+   *Last consolidated: never*
 
-## About This Repo
-- Aeon instance of ${PARENT_UPSTREAM}. Purpose: ${PURPOSE}.
+   ## About This Repo
+   - Aeon instance of <PARENT_UPSTREAM>. Purpose: <PURPOSE>.
 
-## Next Priorities
-- Configure secrets per SETUP.md
-- Wait for first scheduled skill to run
-EOF
-
-# Clear logs, state, topics — safe paths only, never follow symlinks
-find memory/logs -mindepth 1 -type f -delete 2>/dev/null || true
-find memory/topics -mindepth 1 -type f -delete 2>/dev/null || true
-find memory/issues -mindepth 1 -type f ! -name 'INDEX.md' -delete 2>/dev/null || true
-[ -f memory/issues/INDEX.md ] && echo "# Issues — none open" > memory/issues/INDEX.md
-echo '{}' > memory/cron-state.json
-# Do NOT clear memory/instances.json on the child — the child has none.
-rm -f memory/instances.json 2>/dev/null || true
-```
+   ## Next Priorities
+   - Configure secrets per SETUP.md
+   - Wait for first scheduled skill to run
+   ```
+2. Clear logs, state and topics, safe paths only, never following symlinks, in one call: it deletes every regular file under `memory/logs`, `memory/topics` and `memory/issues` (except files named `INDEX.md`), and removes `memory/instances.json` (the child has no fleet of its own). Missing directories are skipped:
+   ```bash
+   python3 -c 'import os; r="/tmp/spawn-instance-work/repo/memory"; [os.remove(p) for s in ("logs", "topics", "issues") for dp, _, fs in os.walk(os.path.join(r, s)) for f in fs for p in [os.path.join(dp, f)] if os.path.isfile(p) and not os.path.islink(p) and not (s == "issues" and f == "INDEX.md")]; j=os.path.join(r, "instances.json"); os.path.lexists(j) and os.remove(j)'
+   ```
+3. If `memory/issues/INDEX.md` exists (check with Glob), overwrite it with Write as the single line `# Issues - none open`.
+4. Write `memory/cron-state.json` as `{}` with Write.
 
 #### 6e. Commit and push
 
+Each its own call, with PURPOSE, the skills list and PARENT_UPSTREAM written in literally:
 ```bash
-git add -A
-git commit -m "chore: configure instance — ${PURPOSE}
-
-Skills enabled: ${SKILLS_ENABLED_CSV}
-Parent: ${PARENT_UPSTREAM}
-Spawned: ${today}"
-git push origin main 2>/dev/null \
-  || git push origin HEAD:main 2>/dev/null \
-  || { echo "SPAWN_PUSH_FAILED"; cd - >/dev/null; exit 1; }
-cd - >/dev/null
+git -C /tmp/spawn-instance-work/repo add -A
 ```
+```bash
+git -C /tmp/spawn-instance-work/repo commit -m "chore: configure instance - <PURPOSE>
+
+Skills enabled: <SKILLS_ENABLED_CSV>
+Parent: <PARENT_UPSTREAM>
+Spawned: ${today}"
+```
+```bash
+git -C /tmp/spawn-instance-work/repo push origin main
+```
+If that push fails, try:
+```bash
+git -C /tmp/spawn-instance-work/repo push origin HEAD:main
+```
+If that fails too, log `SPAWN_PUSH_FAILED` and stop.
 
 If push fails, **do not delete the fork** — leave it for manual inspection and notify with:
 ```
@@ -276,26 +287,26 @@ Recover with: gh repo clone ${OWNER}/${REPO_NAME} && push manually, then re-regi
 Forks have Actions disabled by default. Use **typed** booleans (`-F`, not `-f`, or `enabled=true` is sent as the string "true"):
 
 ```bash
-gh api "repos/${OWNER}/${REPO_NAME}/actions/permissions" -X PUT \
-  -F enabled=true -f allowed_actions=all \
-  || { echo "SPAWN_ACTIONS_FAILED"; exit 1; }
+gh api repos/<OWNER>/<REPO_NAME>/actions/permissions -X PUT \
+  -F enabled=true -f allowed_actions=all
 ```
+If it fails, log `SPAWN_ACTIONS_FAILED` and stop.
 
 ### 8. Post-flight verification
 
+Three separate calls. Fork reachable:
 ```bash
-# Fork reachable
-gh api "repos/${OWNER}/${REPO_NAME}" --jq '.full_name' >/dev/null \
-  || { echo "SPAWN_API_ERROR: post-flight fork check failed"; exit 1; }
-
-# Our commit is HEAD
-HEAD_SHA=$(gh api "repos/${OWNER}/${REPO_NAME}/commits/main" --jq '.sha' 2>/dev/null)
-[ -n "$HEAD_SHA" ] || { echo "SPAWN_API_ERROR: post-flight HEAD check failed"; exit 1; }
-
-# Actions enabled
-ACTIONS_ON=$(gh api "repos/${OWNER}/${REPO_NAME}/actions/permissions" --jq '.enabled' 2>/dev/null)
-[ "$ACTIONS_ON" = "true" ] || { echo "SPAWN_ACTIONS_FAILED: post-flight"; exit 1; }
+gh api repos/<OWNER>/<REPO_NAME> --jq '.full_name'
 ```
+If it fails, log `SPAWN_API_ERROR: post-flight fork check failed` and stop. Our commit is HEAD:
+```bash
+gh api repos/<OWNER>/<REPO_NAME>/commits/main --jq '.sha'
+```
+It prints HEAD_SHA. If it fails or prints nothing, log `SPAWN_API_ERROR: post-flight HEAD check failed` and stop. Actions enabled:
+```bash
+gh api repos/<OWNER>/<REPO_NAME>/actions/permissions --jq '.enabled'
+```
+If it does not print `true`, log `SPAWN_ACTIONS_FAILED: post-flight` and stop.
 
 ### 9. Register the instance
 
@@ -336,7 +347,7 @@ On success (`SPAWN_OK` or `SPAWN_FORK_EXISTS_RECOVERED`):
 Repo: ${OWNER}/${REPO_NAME}
 Purpose: ${PURPOSE}
 Skills (${N}): ${SKILLS_ENABLED_CSV}
-Status: ${EXIT_CODE} — PENDING SECRETS
+Status: ${EXIT_CODE} - PENDING SECRETS
 
 Activate:
 1. https://github.com/${OWNER}/${REPO_NAME}/settings/secrets/actions
@@ -348,7 +359,7 @@ See SETUP.md in the repo for the full secret list tailored to your enabled skill
 
 On refusal (`SPAWN_FORK_EXISTS_REGISTERED`, `SPAWN_INVALID_VAR`, `SPAWN_NO_SKILLS`):
 ```
-spawn-instance: ${EXIT_CODE} — ${one-line reason}. No changes made.
+spawn-instance: ${EXIT_CODE} - ${one-line reason}. No changes made.
 ```
 
 On failure (`SPAWN_FORK_FAILED`, `SPAWN_PUSH_FAILED`, `SPAWN_ACTIONS_FAILED`, `SPAWN_API_ERROR`):

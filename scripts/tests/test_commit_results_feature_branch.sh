@@ -260,6 +260,28 @@ HOOK
     && git -C "$R" show feat/demo:memory/logs/2026-01-01.md 2>/dev/null | grep -q 'opened a PR' \
     && pass "$wf: non-main dispatch keeps code and state on its branch" || bad "$wf: non-main dispatch lost work on its branch"
   [ "$(git -C "$R" rev-parse main)" = "$MAIN_BEFORE" ] && pass "$wf: non-main dispatch leaves main alone" || bad "$wf: non-main dispatch moved main"
+
+  # --- Scan clones left in the run dir: never committed as gitlinks ----------
+  # A name with a space sits next to a tracked file named like its first word.
+  for where in branch main; do
+    D="$TMP/$wf/gitlink-$where"; setup "$D"
+    if [ "$where" = main ]; then git -C "$D/run" checkout -q main 2>/dev/null; REF=main; else REF=feat/demo; fi
+    (
+      cd "$D/run" || exit 1
+      for n in target "my target"; do
+        git init -q "$n" && git -C "$n" commit -q --allow-empty -m clone
+      done
+      printf 'keep\n' > my
+    )
+    out=$(cd "$D/run" && bash -e "$STEP" 2>&1); rc=$?
+    R="$D/remote.git"
+    [ "$rc" -eq 0 ] && [ -z "$(git -C "$R" ls-tree -r "$REF" | awk '$1=="160000"')" ] \
+      && [ -z "$(git -C "$R" ls-tree -r main | awk '$1=="160000"')" ] \
+      && [ "$(git -C "$R" show "$REF:my" 2>/dev/null)" = keep ] \
+      && [ -d "$D/run/target/.git" ] && [ -d "$D/run/my target/.git" ] \
+      && pass "$wf: scan clones are not committed as gitlinks ($where), other files still are" \
+      || { bad "$wf: a scan clone was committed as a gitlink or a file was lost ($where, rc=$rc)"; echo "$out" | tail -10; }
+  done
 }
 
 run_suite aeon.yml

@@ -1,0 +1,12 @@
+service : {
+  // Legitimate paths - preserve sum(balances) <= total_deposited.
+  deposit : (nat64) -> ();
+  withdraw : (nat64) -> ();
+  // Properly guarded admin method (negative control: must NOT be flagged).
+  admin_set_total : (nat64) -> ();
+  // INTENTIONAL FLAW: unguarded free credit, no anonymous-principal rejection.
+  claim_bonus : (nat64) -> ();
+  // Read-only.
+  balance_of : (principal) -> (nat64) query;
+  total_deposited : () -> (nat64) query;
+}

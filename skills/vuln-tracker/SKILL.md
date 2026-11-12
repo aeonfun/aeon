@@ -59,6 +59,7 @@ Then run the arm(s) selected by `scope`, and finish with the shared **Notify** a
 
 - **Arm A & Arm B (GitHub reads):** all data via `gh api` / `gh search` / `gh pr view`. `gh` handles auth internally via `GH_TOKEN` (and Arm B's private-advisory reads need the elevated `GH_GLOBAL` PAT). No env-var-authenticated `curl` from bash — a bare `$SECRET` on the command line is refused by the Bash permission layer, so `gh api` (auth handled internally) is the reliable path; no postprocess scripts needed. Arm B keeps a documented `curl` fallback for the advisory endpoint — see Arm B step B2 — but `gh api` is preferred.
 - **Arm C (local only):** reads only local files (`memory/pending-disclosures/`, `memory/issues/`, `memory/topics/pr-status.md`). No outbound network or auth required.
+- **Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`BOT_AUTHOR="..."`, `REPO="owner/repo"`, `PVR_NOW=$(gh api ...)`) or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn. So write the bot author, each repo, PR number and GHSA ID into each `gh` / `./secretcurl` call literally (the `<BOT_AUTHOR>`, `<REPO>`, `<NUM>`, `<GHSA>` placeholders), make one call per PR, repo or advisory instead of a loop, and turn each `|| echo fallback` into a prose rule for when the call fails. Append each arm's section to the notify buffer with Edit (Write when the file is new), never with a shell `>>`.
 
 ---
 
@@ -74,11 +75,9 @@ This arm cross-references `memory/vuln-scanned.json` against live GitHub state a
 
 ### A1. Load the canonical scan history
 
-**`memory/vuln-scanned.json` may be a flat top-level array of scan rows, not a `{scans: [...]}` object** - vuln-scanner writes the flat shape. Read it in a way that accepts both:
+**`memory/vuln-scanned.json` may be a flat top-level array of scan rows, not a `{scans: [...]}` object** - vuln-scanner writes the flat shape. Read it in a way that accepts both (the flat `[ {repo,scanned_at,findings,channel}, ... ]` shape and the legacy `{scans: [...]}` object), one `jq` call:
 
 ```bash
-# Accepts both the flat `[ {repo,scanned_at,findings,channel}, ... ]` shape
-# and the legacy `{scans: [...]}` object.
 jq -c 'if type=="array" then .[] else (.scans[]? // empty) end' memory/vuln-scanned.json 2>/dev/null
 ```
 
@@ -100,11 +99,10 @@ Each scan entry has at minimum: `repo`, `scanned_at`, `findings`, `channel`, `se
 
 The bot author is whoever the workflow uses (typically `github-actions[bot]` or a dedicated account configured in the workflow). Determine the author from `aeon.yml` or the workflow file; default to whatever account opened the most recent security-fix PR (any of the prefixes above) you can find.
 
-**Pass 1 (title prefixes, works everywhere):**
+**Pass 1 (title prefixes, works everywhere)**, with the resolved bot author written in literally as `<BOT_AUTHOR>`:
 
 ```bash
-BOT_AUTHOR="<resolved bot author>"
-gh search prs --author "$BOT_AUTHOR" --json number,title,url,state,createdAt,closedAt,repository --limit 200 \
+gh search prs --author "<BOT_AUTHOR>" --json number,title,url,state,createdAt,closedAt,repository --limit 200 \
   | jq '[.[] | select(
       (.title | startswith("fix(deps):")) or
       (.title | startswith("fix(security):")) or
@@ -112,12 +110,12 @@ gh search prs --author "$BOT_AUTHOR" --json number,title,url,state,createdAt,clo
     )]'
 ```
 
-**Pass 2 (GraphQL, required - picks up every `security/` branch whatever the title says):**
+**Pass 2 (GraphQL, required - picks up every `security/` branch whatever the title says)**, same author written in literally:
 
 ```bash
 gh api graphql -f query='
 {
-  search(query: "author:'"$BOT_AUTHOR"' is:pr sort:created-desc", type: ISSUE, first: 100) {
+  search(query: "author:<BOT_AUTHOR> is:pr sort:created-desc", type: ISSUE, first: 100) {
     nodes { ... on PullRequest {
       number title url state createdAt closedAt mergedAt
       repository { nameWithOwner }
@@ -137,10 +135,10 @@ Cross-reference with `vuln-scanned.json`:
 
 ### A3. Fetch live state for each open PR
 
-For each open PR (state from step A2):
+For each open PR (state from step A2), one call per PR, with `<REPO>` and `<NUM>` written in literally:
 
 ```bash
-gh pr view "$REPO/$NUM" --json state,merged,closedAt,createdAt,reviews,comments,reviewDecision,author
+gh pr view "<NUM>" -R "<REPO>" --json state,merged,closedAt,createdAt,reviews,comments,reviewDecision,author
 ```
 
 Per-PR signals:
@@ -148,20 +146,20 @@ Per-PR signals:
 - **Stale-no-review**: `state == "OPEN"` AND no review AND no maintainer comment AND `createdAt` > 7d ago.
 - **Aging-with-engagement**: `state == "OPEN"` AND any maintainer activity AND open > 14d.
 
-If a scan entry has `advisory_ids` (one or more GHSA IDs), check each one's published state:
+If a scan entry has `advisory_ids` (one or more GHSA IDs), check each one's published state, one call per GHSA ID with the origin repo and ID written in literally:
 
 ```bash
-gh api "repos/$ORIGIN_REPO/security-advisories/$GHSA_ID" --jq '.state // "not found"'
+gh api "repos/<ORIGIN_REPO>/security-advisories/<GHSA_ID>" --jq '.state // "not found"'
 ```
 
 `state == "published"` → public advisory visible. 404 → osv-scanner referenced it but the upstream repo never published its own advisory.
 
 ### A4. Fetch star counts for every secured repo
 
-For every unique `repo` across the union from step A2 (JSON history + bot-authored security PRs):
+For every unique `repo` across the union from step A2 (JSON history + bot-authored security PRs), one call per repo with the repo written in literally:
 
 ```bash
-gh api "repos/$REPO" --jq '{stars: .stargazers_count, archived: .archived}' 2>/dev/null
+gh api "repos/<REPO>" --jq '{stars: .stargazers_count, archived: .archived}' 2>/dev/null
 ```
 
 **Refetch every run.** Do NOT carry star counts forward from the previous `memory/topics/vuln-followup.md` — per-repo counts drift between runs and the secured-stars headline is the operator's load-bearing metric. Cache only within a single run, keyed by `nameWithOwner`, so a repo with multiple PRs is fetched once.
@@ -180,10 +178,10 @@ For each historical entry where the disclosure couldn't ship, re-check whether t
 
 - **`channel: "skipped"`** with `reason` containing "no PVR":
   ```bash
-  PVR_NOW=$(gh api "repos/$REPO/private-vulnerability-reporting" --jq .enabled 2>/dev/null || echo "false")
+  gh api "repos/<REPO>/private-vulnerability-reporting" --jq .enabled
   ```
-  If `PVR_NOW=true` and the original was `false`, surface as **newly-actionable**.
-- **`channel: "skipped"`** with `reason` containing "no SECURITY.md" — re-check `gh api repos/$REPO/contents/SECURITY.md` and `.github/SECURITY.md`. If now present, surface as **newly-actionable**.
+  It prints PVR_NOW. If the call fails, PVR_NOW is `false`. If `PVR_NOW=true` and the original was `false`, surface as **newly-actionable**.
+- **`channel: "skipped"`** with `reason` containing "no SECURITY.md" - re-check `gh api repos/<REPO>/contents/SECURITY.md` and `.github/SECURITY.md`. If now present, surface as **newly-actionable**.
 - **`channel: "pending-disclosure"`** — cross-reference with `memory/pending-disclosures/` to see if the draft is still on disk. If the file is gone but the JSON entry says `pending-disclosure`, mark as `lost-draft` so it stops being escalated forever.
 
 ### A6. Categorize every entry, then rewrite the dashboard
@@ -219,19 +217,19 @@ Round star counts to abbreviated form for the headline (12.4k, 1.8k, 940). Keep 
 - **Open-PR repos (in flight):** ★ <total_stars_in_flight> across <in_flight_repo_count> repos
 - **All tracked repos:** ★ <total_stars_tracked> across <total_repo_count> repos
 
-### Secured leaderboard — every merged PR ranked by repo stars
+### Secured leaderboard - every merged PR ranked by repo stars
 | Rank | Repo | Stars | PR | Merged | Severity | Title |
 |------|------|-------|----|--------|----------|-------|
 
-### Per-repo breakdown — secured (sorted by stars desc)
+### Per-repo breakdown - secured (sorted by stars desc)
 | Repo | Stars | Merged PRs | First merge | Latest merge | Severities landed |
 |------|-------|------------|-------------|--------------|-------------------|
 
-### Per-repo breakdown — in flight (sorted by stars desc)
+### Per-repo breakdown - in flight (sorted by stars desc)
 | Repo | Stars | Open PRs | Oldest open | Severities open |
 |------|-------|----------|-------------|-----------------|
 
-### Per-repo breakdown — queued / skipped / closed (sorted by stars desc)
+### Per-repo breakdown - queued / skipped / closed (sorted by stars desc)
 | Repo | Stars | Status | Severity | Note |
 |------|-------|--------|----------|------|
 
@@ -241,7 +239,7 @@ Round star counts to abbreviated form for the headline (12.4k, 1.8k, 940). Keep 
 | Repo | Stars | PR | Title | Last activity | Latest commenter |
 |------|-------|----|----|--------------|------------------|
 
-### Newly actionable — channel opened up since the original scan (<count>)
+### Newly actionable - channel opened up since the original scan (<count>)
 | Repo | Stars | Original date | Original blocker | Now |
 |------|-------|---------------|------------------|-----|
 
@@ -253,7 +251,7 @@ Round star counts to abbreviated form for the headline (12.4k, 1.8k, 940). Keep 
 | Date merged | Repo | Stars | PR | Severity | Title |
 |-------------|------|-------|----|----------|-------|
 
-## Open / clean (no operator action — wait, < 7d) (<count>)
+## Open / clean (no operator action - wait, < 7d) (<count>)
 | Repo | Stars | PR | Severity | Opened | Age |
 |------|-------|----|----------|--------|-----|
 
@@ -290,17 +288,17 @@ Append this section to the combined buffer (`.pending-notify-temp/vuln-tracker-$
 ★ secured: <total_stars_secured> across <secured_repo_count> repos  (in flight: <total_stars_in_flight> / <in_flight_repo_count>)
 
 needs answer: <N>
-<repo> (★<stars>) #<num> — <latest_commenter>: "<comment_excerpt_first_120_chars>"
+<repo> (★<stars>) #<num> - <latest_commenter>: "<comment_excerpt_first_120_chars>"
 
 newly actionable: <N>
-<repo> (★<stars>, queued <days>d) — <what_changed>
+<repo> (★<stars>, queued <days>d) - <what_changed>
 
 merged this week: <N>  <list_with_stars>
 opened, waiting: <N>
 stale: <N>
 queued: <N> (<critical>C / <high>H / <other>M+L)
 
-leaderboard top-3 (PRs by ★): #1 <repo1> ★<s1> (PR #<pr1>) — #2 <repo2> ★<s2> (PR #<pr2>) — #3 <repo3> ★<s3> (PR #<pr3>)
+leaderboard top-3 (PRs by ★): #1 <repo1> ★<s1> (PR #<pr1>) - #2 <repo2> ★<s2> (PR #<pr2>) - #3 <repo3> ★<s3> (PR #<pr3>)
 
 dashboard: memory/topics/vuln-followup.md (full leaderboard inside)
 ```
@@ -336,13 +334,10 @@ Record that Arm B status and skip Arm B (no notification section). In a `full` p
 
 ### B2. Probe each advisory's triage state
 
-For each entry, determine `repo` and `ghsa` from frontmatter.
+For each entry, determine `repo` and `ghsa` from frontmatter. Then one call per entry, with them written in literally (for example `owner/repo` and `GHSA-xxxx-xxxx-xxxx`):
 
 ```bash
-REPO="owner/repo"
-GHSA="GHSA-xxxx-xxxx-xxxx"
-
-gh api "repos/${REPO}/security-advisories/${GHSA}" \
+gh api "repos/<REPO>/security-advisories/<GHSA>" \
   --jq '{state: .state, cve_id: .cve_id, published_at: .published_at}' 2>&1
 ```
 
@@ -360,7 +355,7 @@ Expected outcomes:
 **Fallback:** `gh api` uses `GH_TOKEN` internally (workflow wires `GH_GLOBAL` for the elevated advisory read). If `gh` is somehow unavailable, fall back to `./secretcurl` with the `{GH_TOKEN}` placeholder (same token; `GH_GLOBAL` itself is not a substitutable name):
 ```bash
 ./secretcurl -s -H "Authorization: Bearer {GH_TOKEN}" \
-  "https://api.github.com/repos/${REPO}/security-advisories/${GHSA}" \
+  "https://api.github.com/repos/<REPO>/security-advisories/<GHSA>" \
   | grep -o '"state":"[a-z]*"'
 ```
 (Never write a raw `curl` with `$GH_GLOBAL` / `$GH_TOKEN`: a bare `$SECRET` on the command line is refused by the Bash permission layer. `gh api` stays the primary path.)
@@ -410,11 +405,11 @@ Append to the combined buffer:
 pvr triage: {total} advisories in flight. {changed_count} changed.
 
 CHANGED:
-- {repo} {ghsa} — {old_state} → {new_state}
+- {repo} {ghsa} - {old_state} → {new_state}
   {action_item}
 
 AGED (>30d no response):
-- {repo} {ghsa} — {days}d in triage. {severity}. escalate or close.
+- {repo} {ghsa} - {days}d in triage. {severity}. escalate or close.
   patch: {patch_branch}
 
 STILL TRIAGE:
@@ -557,17 +552,17 @@ Append to the combined buffer.
 disclosure queue: {escalate_count} past threshold (of {total} drafts).
 
 ESCALATE:
-- {repo} — {severity}, {age}d old (threshold: {N}d)
+- {repo} - {severity}, {age}d old (threshold: {N}d)
 [... others in `escalate` state ...]
 
 operator-todo ({operator_todo_count}):
-- {repo} — {severity}, {age}d — {operator-reason}
+- {repo} - {severity}, {age}d - {operator-reason}
 
 cleanup candidates ({cleanup_count}):
-- {repo} — [covered: PR #{N} / superseded-upstream / submitted] — safe to delete from memory/pending-disclosures/
+- {repo} - [covered: PR #{N} / superseded-upstream / submitted] - safe to delete from memory/pending-disclosures/
 
 {IF blocking issue tracked in memory/issues/INDEX.md}
-blocked by {ISS-ID} — {short reason}
+blocked by {ISS-ID} - {short reason}
 fix: {fix estimate} unblocks {N} of {escalate_count + pending_count}
 {end}
 ```
@@ -582,7 +577,7 @@ disclosure queue: {total} drafts. {critical_count} CRITICAL, {high_count} HIGH, 
 oldest in-window: {repo} ({age}d).
 {cleanup section if cleanup_count > 0}
 {IF blocking issue tracked in memory/issues/INDEX.md}
-blocked by {ISS-ID} — {short reason}.
+blocked by {ISS-ID} - {short reason}.
 {end}
 ```
 
@@ -607,10 +602,10 @@ Append to `memory/logs/${today}.md` under ONE heading (the health loop parses `#
 ```
 ### vuln-tracker
 - scope: <full | prs | pvr | queue | single-advisory:GHSA-…>
-- Arm A (PR/advisory): <status> — <total_in_json> JSON + <pre_history_prs> pre-history = <total> tracked; states: <merged> merged / <open_clean> open-clean / <needs_answer> needs-answer / <stale> stale / <aging> aging / <closed> closed / <queued> queued / <skipped> skipped-rechecked / <newly_actionable> newly-actionable
+- Arm A (PR/advisory): <status> - <total_in_json> JSON + <pre_history_prs> pre-history = <total> tracked; states: <merged> merged / <open_clean> open-clean / <needs_answer> needs-answer / <stale> stale / <aging> aging / <closed> closed / <queued> queued / <skipped> skipped-rechecked / <newly_actionable> newly-actionable
 - Stars: ★<total_stars_secured> secured (<secured_repo_count> repos) / ★<total_stars_in_flight> in flight (<in_flight_repo_count> repos) / ★<total_stars_tracked> tracked (<total_repo_count> repos)
-- Arm B (PVR triage): <status> — checked <total>; changed <changed_count> (<list>); aged>30d <aged_count>; still-triage <waiting_count>; tracking issue <url|none>
-- Arm C (disclosure queue): <status> — <total> drafts (<critical_count> CRITICAL / <high_count> HIGH / <other_count> MED/LOW); <escalate_count> escalate / <pending_count> in-window / <operator_todo_count> operator-todo / <cleanup_count> cleanup; oldest in-window <repo> (<age>d); blocking issue <ISS-ID|none>
+- Arm B (PVR triage): <status> - checked <total>; changed <changed_count> (<list>); aged>30d <aged_count>; still-triage <waiting_count>; tracking issue <url|none>
+- Arm C (disclosure queue): <status> - <total> drafts (<critical_count> CRITICAL / <high_count> HIGH / <other_count> MED/LOW); <escalate_count> escalate / <pending_count> in-window / <operator_todo_count> operator-todo / <cleanup_count> cleanup; oldest in-window <repo> (<age>d); blocking issue <ISS-ID|none>
 - Operator queue this run: <needs_answer + newly_actionable + aged PVRs + escalate_count>
 - Notification: <sent | skipped (no movement)>
 - VULN_TRACKER_OK

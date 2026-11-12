@@ -1,42 +1,36 @@
 """Contract checks, not a claim that a model followed the reporting instructions."""
 from pathlib import Path
 import unittest
-import subprocess
-import tempfile
 
 SKILL = (Path(__file__).resolve().parents[2] / "skills/vuln-scanner/SKILL.md").read_text()
 
 
 class ScannerStatusContract(unittest.TestCase):
+    # The status rows are prose rules the model applies to each scanner call's exit
+    # code (the skill no longer ships an if/else shell block, which the run refuses).
+    @staticmethod
+    def _rule(prefix):
+        rows = [line for line in SKILL.splitlines() if line.startswith(f"- `{prefix}=timeout`")]
+        assert len(rows) == 1, f"expected one status rule for {prefix}, got {len(rows)}"
+        return rows[0]
+
     def test_history_status_uses_exit_code_not_finding_count(self):
-        block = SKILL.split('if [ "${TRUFFLEHOG_GIT_RC:-1}"', 1)[1].split('\necho "osv=', 1)[0]
-        block = 'if [ "${TRUFFLEHOG_GIT_RC:-1}"' + block
-        with tempfile.TemporaryDirectory() as directory:
-            # Partial findings must not turn a later process failure into ok.
-            (Path(directory) / "trufflehog-git.json").write_text('{}\n')
-            for rc, expected in [(0, "ok"), (1, "fail"), (124, "timeout"), (137, "fail")]:
-                with self.subTest(rc=rc):
-                    # Execute the actual status block with partial findings.
-                    script = block.replace("/tmp/vuln-scan", directory)
-                    result = subprocess.run(["bash", "-c", f"TRUFFLEHOG_GIT_RC={rc}\n{script}"], check=True)
-                    self.assertEqual(result.returncode, 0)
-                    rows = (Path(directory) / "sources.txt").read_text().splitlines()
-                    self.assertEqual(rows[-1], f"trufflehog-git={expected}")
+        rule = self._rule("trufflehog-git")
+        # Timeout first, then ok only on exit 0, everything else (incl. never ran) fail.
+        self.assertIn("when TRUFFLEHOG_GIT_RC is `124`", rule)
+        self.assertIn("`trufflehog-git=ok` when it is `0`", rule)
+        self.assertIn("else `trufflehog-git=fail` (also when the pass never ran)", rule)
+        self.assertLess(rule.index("=timeout"), rule.index("=ok"))
+        self.assertLess(rule.index("=ok"), rule.index("=fail"))
+        self.assertIn("Its exit code is TRUFFLEHOG_GIT_RC.", SKILL)
 
     def test_filesystem_clean_empty_stream_is_ok(self):
-        # The filesystem trufflehog status is the RC-driven ok/fail echo. It now lives
-        # inside a timeout-aware if/else (the `=124` guard mirrors the git block), so it
-        # is indented and sits alongside a sibling `trufflehog=timeout` line - select it
-        # by its ok/fail expression and strip the indentation before running it.
-        row = next(
-            line.strip()
-            for line in SKILL.splitlines()
-            if line.strip().startswith('echo "trufflehog=') and "&& echo ok" in line
-        )
-        with tempfile.TemporaryDirectory() as directory:
-            for rc, expected in [(0, "ok"), (1, "fail")]:
-                subprocess.run(["bash", "-c", f"TRUFFLEHOG_RC={rc}\n" + row.replace("/tmp/vuln-scan", directory)], check=True)
-                self.assertEqual((Path(directory) / "sources.txt").read_text().splitlines()[-1], f"trufflehog={expected}")
+        rule = self._rule("trufflehog")
+        self.assertIn("when TRUFFLEHOG_RC is `124`", rule)
+        self.assertIn("`trufflehog=ok` when it is `0`", rule)
+        self.assertIn("else `trufflehog=fail`", rule)
+        self.assertIn("an exit-0 empty stream is a clean scan", rule)
+        self.assertIn("Its exit code is TRUFFLEHOG_RC.", SKILL)
 
     def test_report_preserves_history_status(self):
         report = SKILL.split("### A7. Write local report", 1)[1].split("### A8.", 1)[0]

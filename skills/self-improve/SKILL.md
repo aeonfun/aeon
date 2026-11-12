@@ -35,11 +35,11 @@ Improve the agent itself based on recent performance. **ONE change per run.**
 
 ### Steps
 
-1. **Check for open improvement PRs** — don't pile up unreviewed work:
+1. **Check for open improvement PRs** - don't pile up unreviewed work. Run the count as its own Bash call (see **Shell shape** in the Network note):
    ```bash
-   OPEN_PRS=$(gh pr list --state open --json title,number --jq '[.[] | select(.title | test("^(fix|feat|chore)\\("; "i"))] | length')
+   gh pr list --state open --json title,number --jq '[.[] | select(.title | test("^(fix|feat|chore)\\("; "i"))] | length'
    ```
-   If there are already 3+ open improvement PRs, log "self-improve: 3+ open PRs, waiting for review" and exit. Don't create more debt.
+   It prints OPEN_PRS. If there are already 3+ open improvement PRs, log "self-improve: 3+ open PRs, waiting for review" and exit. Don't create more debt.
 
 2. **Identify what to improve.** If the focus area is empty, scan for issues:
    - Read `memory/logs/` from last 2 days — look for:
@@ -73,16 +73,20 @@ Improve the agent itself based on recent performance. **ONE change per run.**
    - Change the core architecture
    - Modify secrets or environment variables
 
-4b. **Dry-run gate.** Before opening the PR, execute the improved skill once with **synthetic** secrets, so a regression never reaches production having run only with real credentials. Let `$skill` be the skill you edited:
+4b. **Dry-run gate.** Before opening the PR, execute the improved skill once with **synthetic** secrets, so a regression never reaches production having run only with real credentials. Write the skill you edited in literally as `<SKILL>`. One call (the script's default verdict path is `output/.dry-run/<SKILL>.json`, so no `DRYRUN_VERDICT=` prefix is needed):
    ```bash
-   DRYRUN_VERDICT="output/.dry-run/$skill.json" bash scripts/dry-run.sh run "$skill" || true
+   ./scripts/dry-run.sh run <SKILL>
    ```
-   Read `output/.dry-run/$skill.json`: `passed: true` (or `skipped: true`, when the `SKILL_DRYRUN` repo variable is `0`) continues. `passed: false` means **revert the edit and stop** (log `self-improve: dry-run gate failed for $skill` with the verdict `reasons[]`; do not open the PR). Put the verdict under a `## Dry-run` section in the PR body. The gate is structural (exit, output, declared `mode`, declared `requires:`); no real credential enters the run.
+   A non-zero exit is not the verdict; carry on and read the file. Read `output/.dry-run/<SKILL>.json`: `passed: true` (or `skipped: true`, when the `SKILL_DRYRUN` repo variable is `0`) continues. `passed: false` means **revert the edit and stop** (log `self-improve: dry-run gate failed for <SKILL>` with the verdict `reasons[]`; do not open the PR). Put the verdict under a `## Dry-run` section in the PR body. The gate is structural (exit, output, declared `mode`, declared `requires:`); no real credential enters the run.
 
-5. **Create a branch and PR:**
+5. **Create a branch and PR**, each command as its own call:
    ```bash
    git checkout -b fix/self-improve-${today}
+   ```
+   ```bash
    git add -A
+   ```
+   ```bash
    git commit -m "fix: [description of what was improved]
 
    Problem: [what was failing/degraded]
@@ -106,7 +110,7 @@ Improve the agent itself based on recent performance. **ONE change per run.**
 
 6. **Notify.** Send via `./notify`:
    ```
-   self-improve: [what was fixed] — PR: [url]
+   self-improve: [what was fixed] - PR: [url]
    ```
 
 7. **Log** (see the shared `## Log` section below).
@@ -152,7 +156,7 @@ Read `memory/MEMORY.md` for context and goals. Read ALL `memory/logs/` entries f
    - Update `feeds.yml` if feeds are dead
 7. **Send a summary** via `./notify`:
    ```
-   *Self Review — ${today}*
+   *Self Review - ${today}*
    Quality: assessment
    Reliability: X/Y skills ran
    Actions taken: what was fixed
@@ -191,3 +195,5 @@ For **audit** mode:
 ## Network note
 
 Write mode. Both branches touch the repo (improve opens a PR via `git`/`gh`; audit writes `output/articles/self-review-${today}.md` and may prune `MEMORY.md`/`feeds.yml`). For the GitHub API, use the `gh` CLI (`gh pr list`, `gh pr create`) — it handles auth internally, so no `$SECRET` ever touches the command line (a bare secret on the line is what the Bash permission layer refuses; there is no network sandbox). No pre-fetch or post-process side-channel is needed.
+
+**Shell shape.** Each Bash call is one allowed command (pipes are fine). The run refuses a call that sets a variable (`OPEN_PRS=$(gh pr list ...)`, a `DRYRUN_VERDICT=... ` prefix), starts with `bash`, or joins commands with `;`, `&&` or `||`, and each refusal costs a model turn. So run the PR count as a bare `gh pr list` call and read the number it prints, run the dry-run gate as one `./scripts/dry-run.sh run <SKILL>` call with the skill name written in literally, and run each `git` step as its own call.

@@ -11,6 +11,31 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Added
 
+- **Telegram private replies, a Details button and a `/panel` run widget (Bot API 10.4).** In
+  instant mode the webhook Worker now answers button taps with ephemeral replies only the tapper
+  sees, tells a non-owner group member privately that buttons are owner-only, and serves a new
+  global **📄 Details** button that shows the skill's full latest output to the tapper alone.
+  `/panel` sends an HTML widget with the latest run per skill plus Run and Refresh, answered by the
+  Worker through `widget_query`. The poller falls back to posting Details and a pointer for `/panel`.
+
+- **Internet Computer (ICP) skill pack adds three skills.** `canister-status` alerts on control-plane
+  changes (new controller, module-hash upgrade, de-indexing), `sns-digest` posts an NNS and SNS proposal
+  digest, and `icp-deploy-check` runs a static pre-deploy checklist over a local repo. Public reads are
+  keyless. Also ships the icskills contribution package under `docs/icp/`. Catalog now 92 skills. (#1330)
+- **YUSA Pack listed as a community pack.** Its `yusa-skill-audit` skill reads installed `SKILL.md`,
+  `soul/` and `STRATEGY.md` the way the model does and reports hidden instructions such as Unicode TAG
+  characters. (#1340)
+- **`canister-audit` skill audits Internet Computer Rust canisters.** It models invariants, runs a semgrep IC
+  ruleset and cargo-audit, checks the 12 canister-security pitfalls, and proves confirmed high or critical
+  findings with a PocketIC reproduction through the shared PoC gate. Catalog now 89 skills. (#1328)
+- **`fetch-tweets` skips the model when no tracked account posted.** `scripts/fetch_tweets_idle.py`
+  checks each handle on twitterapi.io before the run and records a success without a model call
+  when nothing new is in the window. Any doubt or error means the skill runs as usual. (#1323)
+- **`flovia` skill provides live lookups through the Flovia MCP.** Answer questions with live data
+  across Nansen smart money and token flows, CoinGecko markets, direct chain reads, Zerion wallets,
+  and Exa search, backed by one-click OAuth Connect in the dashboard. Catalog now 88 skills. (#1313)
+- **Sentinel community pack reports launch buys.** The token check reports the deployer's launch
+  buy on tracked tokens. (#1305)
 - **Plugin 0.2.0 connects to the hosted Aeon MCP server.** The Claude Code and Codex
   plugin bundles the connection and a `get-started` skill that checks setup, names missing
   keys and offers a first heartbeat run. Setup changes require confirmation and secret
@@ -261,9 +286,68 @@ from or pin to; the template keeps serving the latest `main` to new forks.
   invariant scan selectable alongside the legacy scanner, with a shadow mode that runs
   it side by side for comparison before switching over. It merged just after the prior
   sync window but is numbered below that watermark, so it is reconciled here. (#1039)
+- **New `github-filing-registry` skill (Dev & Code).** A persistent JSON ledger of every
+  issue and PR filed against upstream repos - status, evidence, next action and history -
+  so a run never files the same thing twice or loses track of what it filed. Pure shell +
+  `gh` CLI with add, status, triage, sync and log subcommands; concurrent writes are
+  flock-serialized and ids canonicalize to `owner/repo#number`. Catalog now 87 skills. (#1294)
+- **Lazybrief and Vauban community packs listed.** Lazybrief (`NurstarK/lazybrief`) turns an
+  overnight dump of links, notes and todos into a five-line morning brief via a local Gemma
+  on Ollama - local or self-hosted runs only, no secrets. Vauban (`vaubandev/vauban`,
+  `--path aeon`) reads one Vauban vault's spending policy on Robinhood Chain (4663):
+  owner, agent, freeze, allowlist, hourly and daily caps, and held moves; keyless and
+  read-only, `watch:0xVAULT` reports only what changed. (#1273, #1292)
+- **`sc-audit` documents standalone use in Claude Code.** A new `skills/sc-audit/README.md`
+  covers install (copy `sc-audit` + `vuln-scanner` into `.claude/skills/`), running without
+  `./secretcurl` or `./notify`, and a per-step table of what works outside an Aeon
+  instance, verified on a headless run that found the planted critical bug. (#1285)
 
 ### Changed
 
+- **Sentinel community pack listing is 10 skills,** adding `pons-pool-check`, which names a Pons token's
+  official Uniswap v4 pool on Robinhood Chain and lists the other pools for the same token. (#1336)
+- **ICP integration reference added** under `docs/icp/`: MCP verification, architecture, skills
+  compatibility, the `canister-audit` design and test targets (investigation only). (#1316)
+- **Scheduler catch-up window 12h -> 23h.** A slot missed because GitHub fired few ticks is still
+  paid by a later tick within 23 hours, never twice. (#1317)
+- **`aeon-update` takes upstream for stale copies.** A framework file that is a byte-for-byte copy of
+  an older upstream version is treated as stale, not customized, including files held in
+  `pending_conflicts`. (#1318)
+- **Scorer grades the article a run wrote.** The judge reads the written article, not only the short
+  notify card, so reports with a `Sources:` line stop scoring low. `token-movers` now lists real
+  source URLs and fetch times in its report. (#1319, #1320)
+- **Skills use only shell shapes the run accepts.** Key checks read the "Keys set for this run" line
+  instead of testing `$KEY`, and snippets drop shell variables, `$(...)`, `;`/`&&` chains and
+  redirects. Skill templates and the setup skill's `skill-anatomy.md` teach the same shapes
+  (mirrored to the plugin copy and hosted mirror). (#1324, #1326, #1327)
+- **Langfuse root span carries the final reply.** With `LANGFUSE_LOG_CONTENT` set to `1` or `all`
+  the first 4,000 characters of the reply (credentials masked) go on the run root span;
+  `docs/langfuse.md` updated. (#1322)
+- **Sentinel Pack listing is 9 skills,** adding `pack-registry-drift`. (#1333)
+- **X-reading skills default to TwitterAPI.io with xAI fallback.** `fetch-tweets`, `mention-radar`,
+  `reply-maker`, `shiplog`, and `write-tweet` read through `TWITTER_API_KEY` when set, falling
+  back to `x_search`. (#1308, #1309)
+- **Scheduler cron moves to off-peak minutes.** `.github/workflows/scheduler.yml` runs every 30 minutes
+  at minutes `11,41` to avoid GitHub schedule-drop periods, and `docs/CONFIGURATION.md` documents
+  off-peak presets. (#1307)
+- **Ecosystem list removes dead links.** Unreachable website URLs for Sparkleware and Mneme are
+  dropped while keeping their project rows and X links. (#1311)
+- **Setup skill counts follow the catalog to 88** (`87` -> `88` in `SKILL.md`, `layout.md`,
+  `mcp.md` and the `skill-anatomy.md` survey, incl. `title` 79 -> 80, `Steps` 52 -> 53 and
+  the Crypto pack 19 -> 20). Plugin copy kept in lockstep. (docs-sync)
+- **Sentinel Pack listing catches up with its eight skills,** adding
+  `hook-registry-check`: it reads every address in `aeonfun/univ4-hooks` on its own
+  chain and reports when a listed address has no code, its flag bits do not match, or
+  the same hook exposes different functions on different chains. Read-only and keyless.
+  (#1287)
+- **Ecosystem page refreshed.** 18 rows with no public Aeon tie or a dead project removed
+  and the AgentLink link fixed; 26 projects building with Aeon added from X mentions,
+  GitHub forks and community chats; a later cleanup removed 6 of those rows and refreshed
+  two dead X avatar links, leaving 77 rows. The page mirrors `docs/ECOSYSTEM.md` live.
+  (#1274, #1288, #1289, #1290, #1291, #1293)
+- **Setup skill counts follow the catalog to 87** (`86` -> `87` in `SKILL.md`, `layout.md`,
+  `mcp.md` and the `skill-anatomy.md` survey, incl. `title` 78 -> 79 and the Dev pack
+  17 -> 18). Plugin copy kept in lockstep. (docs-sync)
 - **Sentinel Pack listing catches up with its six monitoring skills:** address diffs,
   Aeon v4 hook usage, Pons launch lookalikes, token checks, repeat deployers and graduations
   to locked v4 pools. The later seventh skill is recorded above. (#1269)
@@ -419,6 +503,35 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Fixed
 
+- **`token-movers` verdicts no longer skip big moves.** RALLYING and SLIDING now also cover a 10%+ day on
+  under 2.0x volume, which used to publish as CONSOLIDATING. Single-token mode saves each API response to a
+  file and reads it with one `jq` call, so raw JSON stays out of context. (#1335)
+- **`heartbeat` uses a real timestamp** in its status page instead of a made-up one, and the scorer's
+  strategy scope check is covered by a test. (#1335)
+- **`token-movers` reports a true 24h price change.** It comes from hourly candles instead of the last run's
+  state line, and a new "Since last report" column holds the run-to-run figures. `TOKEN_REPORT_STATE` gains a
+  `ts=` field. (#1337)
+- **Notifications and feed cards carry no em or en dashes.** `notify.sh`, `notify_format.py` and
+  `notify-jsonrender.sh` convert them to hyphens, and the text templates in 62 skills were cleaned. (#1338)
+- **Idle skips are not health regressions.** The health step exits cleanly on an idle-gate skip instead of
+  scoring `run_failed`. A successful run now clears `last_error` in the cron state (file and issues
+  backends), and non-claude harness failures save the real error text. (#1338)
+- **`git-push-retry.sh` retries transient GitHub push failures.** `[remote rejected] (failure)` and
+  `(Internal Server Error)` are retried up to 2 times after a pull; auth, permission, hook and
+  transport errors still stop at once. (#1332)
+- **`vuln-scanner` no longer stages scan clones as submodules.** Scanner scratch dirs are
+  gitignored and the dep-bump flow stages only the specific lockfile or manifest. (#1331)
+- **Maintenance:** minimatch forced to 11.0.4 in webhook and dashboard. (#1325)
+- **`skill-install` records commit SHA when unauthenticated.** Resolves the commit SHA via git
+  ls-remote when `gh` CLI is logged out. (#1312)
+- **`validate-readme-catalog` counts only first-party packs.** Skips community packs installed
+  in `skills.lock` so fork checkouts validate accurately against the first-party catalog. (#1314)
+- **Harness Claude Code `/tmp` access and otel WARNING level.** `--add-dir /tmp` prevents path
+  refusals, and runs with denied tool calls emit otel level WARNING with `error_class tool_denied`. (#1307)
+- **`validate-pack` finds a `--path` pack's LICENSE next to its manifest.** Packs that
+  keep `LICENSE` in their own folder (e.g. `vaubandev/vauban --path aeon`) no longer get
+  a false "no LICENSE file at pack root" warning; the repo root is still the fallback.
+  (#1301)
 - **`aeon-update` keeps its new baseline off main until its PR merges.** Branch-only
   state no longer leaks onto main after a stash conflict, logs and output stay out of the
   sync commit, and an open sync PR prevents a duplicate. The plan/apply helper described
@@ -1358,6 +1471,12 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Security
 
+- **`vuln-scanner` tooling is pinned and staged, not downloaded in-run.** The skill used
+  to fetch osv-scanner from `releases/latest` mid-run with no version pin or checksum,
+  in a run where `GH_GLOBAL` and the Resend keys are in the environment; the staging
+  script installed trufflehog by piping its main-branch `install.sh` into `sh`.
+  `scripts/stage-vuln-scanner.sh` now installs osv-scanner v2.7.0 and trufflehog v3.99.7
+  ahead of the run and the skill drops the in-run download. (#1286)
 - **Run guards after a skill run.** On main, changes a run made under `scripts/`, `.github/` or
   `harness-adapter/` are restored to a freshly fetched `main` with an `::error::`; feature-branch
   PR flows are unaffected. Push helpers run from the starting commit with hooks off, and a new
@@ -1426,6 +1545,10 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Maintenance
 
+- **Maintenance.** Dependabot bundles across the dashboard, webhook, mcp-server and Actions
+  deps, a zod override for Remotion's pinned nested copies (Dependabot alert 68), CI gets
+  concurrency cancellation and job timeouts, and the changelog scorer gets a bounded final
+  result. (#1275, #1282, #1295, #1296, #1302, #1303, #1304)
 - **Maintenance.** The MCP harness test waits for killed children to be reaped, run
   scratch under `output/` and the repo root is ignored, MCP SDK and hono are updated, and
   the dashboard moves to Next 16.4.1. (#1253, #1257, #1263, #1264)

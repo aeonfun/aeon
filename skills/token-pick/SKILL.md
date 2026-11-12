@@ -29,16 +29,14 @@ Produce ONE token call and ONE prediction-market call per day, each with a numer
 
 ### 1. Fetch token data
 
-```bash
-# Optional demo key rides ./secretcurl's {COINGECKO_API_KEY} placeholder (never a bare
-# $SECRET on the line); without a key the same public endpoint works at a lower rate limit.
-CG_HDR=(); [ -n "${COINGECKO_API_KEY:+x}" ] && CG_HDR=(-H "x-cg-demo-api-key: {COINGECKO_API_KEY}")
+The optional demo key rides ./secretcurl's `{COINGECKO_API_KEY}` placeholder (never a bare secret on the line). Key check: read the "Keys set for this run" line in your run notes, never a shell test (those are refused and cost a turn). When `COINGECKO_API_KEY` is on that line keep the `-H "x-cg-demo-api-key: {COINGECKO_API_KEY}"` shown below; when it is not, drop that `-H` (the same public endpoint works keyless at a lower rate limit).
 
+```bash
 # Trending coins
-./secretcurl -s "${CG_HDR[@]}" "https://api.coingecko.com/api/v3/search/trending"
+./secretcurl -s -H "x-cg-demo-api-key: {COINGECKO_API_KEY}" "https://api.coingecko.com/api/v3/search/trending"
 
 # Top 250 by market cap with 24h and 7d changes
-./secretcurl -s "${CG_HDR[@]}" "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=1&sparkline=false&price_change_percentage=24h,7d"
+./secretcurl -s -H "x-cg-demo-api-key: {COINGECKO_API_KEY}" "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=1&sparkline=false&price_change_percentage=24h,7d"
 
 # BTC + ETH 24h/7d for relative-strength benchmark (extract from the markets call above; no extra request needed)
 
@@ -107,23 +105,23 @@ Pick the market with the largest edge that clears the gate. If you cannot defend
 Send via `./notify`:
 
 ```
-*Daily Pick — ${today}*
+*Daily Pick - ${today}*
 
 *Token: SYMBOL*  [HIGH | MEDIUM]  signal X/10
 Price: $X.XX (±X.X% 24h / ±X.X% 7d) | mcap $XB | vol $XM (vol/mcap X.XX)
 Score breakdown: [trending+2, vol/mcap+3, RS vs BTC/ETH+2, narrative+1] = 8/10
-Catalyst: [one sentence — what's driving this right now, named source/event]
-Risk: [one sentence — concrete risk, not generic "could go down"]
+Catalyst: [one sentence - what's driving this right now, named source/event]
+Risk: [one sentence - concrete risk, not generic "could go down"]
 Vs recent picks: [first time / repeat with new catalyst: ...]
 
 *Market: "Question?"*  [HIGH | MEDIUM]  edge Xpp
 Current: YES X¢ / NO Y¢ | 24h vol $Xm | resolves: DATE
 Fair YES: ~Y% (inputs: [src1], [src2], [src3])
-Thesis: [one sentence — why the market is wrong, action implied]
-Risk: [one sentence — what could make your fair-value estimate wrong]
+Thesis: [one sentence - why the market is wrong, action implied]
+Risk: [one sentence - what could make your fair-value estimate wrong]
 
 sources: cg=ok|fail, dex=ok|fail, poly=ok|fail
-not financial advice — pattern-matching only
+not financial advice - pattern-matching only
 ```
 
 If only one of the two pick types qualifies, send just that one section (omit the other entirely — do not include a HIGH and a SKIP in the same message).
@@ -131,7 +129,7 @@ If only one of the two pick types qualifies, send just that one section (omit th
 ### 6b. Notification — skip day
 
 ```
-*Daily Pick — ${today}* — no picks
+*Daily Pick - ${today}* - no picks
 
 Token signals weak today (best: SYMBOL @ score 3/10).
 Markets either thin liquidity or no defensible edge ≥ 5pp (best: "Question?" edge 2pp).
@@ -162,9 +160,9 @@ This skill is `read-only`, so the workflow's read-only guard writes its `### tok
 
 ```
 ### token-pick
-- **Token:** SYMBOL — $price (±X% 24h) — tier HIGH/MEDIUM/SKIP — score X/10
+- **Token:** SYMBOL - $price (±X% 24h) - tier HIGH/MEDIUM/SKIP - score X/10
 - **Token thesis:** [one line, including catalyst]
-- **Market:** "Question?" — YES X¢ — tier HIGH/MEDIUM/SKIP — edge Xpp
+- **Market:** "Question?" - YES X¢ - tier HIGH/MEDIUM/SKIP - edge Xpp
 - **Market thesis:** [one line, including fair-value estimate]
 - **Sources:** cg=ok|fail, dex=ok|fail, poly=ok|fail
 - **Notification sent:** yes (normal | skip | no-data)
