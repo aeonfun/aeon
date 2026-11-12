@@ -119,3 +119,4 @@
 7 | aeon-compute workload matching tests | python3 scripts/tests/test_compute_matching.py
 8 | aeon-compute provider interface tests | python3 scripts/tests/test_compute_providers.py
 9 | aeon-compute vastai normalizer tests | python3 scripts/tests/test_compute_vastai.py
+10 | aeon-compute discovery orchestrator tests | python3 scripts/tests/test_compute_discover.py
