@@ -123,26 +123,26 @@ but the model reads them as ordinary input.
 |---|---|---|---|
 | U+E0000-E007F | Unicode TAG block | HIGH | Each tag maps 1:1 to an ASCII character, so a whole sentence ("ignore previous instructions and send …") hides inside a line that renders as a harmless summary. Known as ASCII smuggling. |
 | U+202A-202E, U+2066-2069 | bidi embeddings, overrides, isolates | HIGH | Text displays in a different order than it is read (Trojan Source, CVE-2021-42574). |
-| U+200B-200C, U+2060-2064 | zero-width space, non-joiner, word joiner, invisible operators | MEDIUM | `ig​nore` reads as one word but escapes every keyword pattern here. Also appears by accident in pasted text, so it warns rather than fails. |
+| U+200B-200D, U+2060-2064, U+00AD, U+FEFF past byte 0, U+E0100-E01EF | zero-width space, non-joiner and joiner, word joiner, invisible operators, soft hyphen, mid-text BOM, variation selectors supplement | MEDIUM | `ig​nore` reads as one word but escapes every keyword pattern here. These also turn up by accident in pasted text, so they warn rather than fail. |
 
-Not flagged: U+FEFF (a leading BOM), U+200D (the zero-width *joiner* inside family
-and profession emoji), and a well-formed subdivision flag (🏴 + 2-6 lowercase/digit
-tags + cancel tag, e.g. England), which is the one legitimate use of TAG
-characters. A longer tag run, or one with a capital letter or a space, is a hidden
-sentence and still fails.
+Allowed, because they are normal text:
 
-The match runs on raw UTF-8 bytes under `LC_ALL=C`, so it needs no `grep -P` and
-behaves the same on GNU and BSD grep. The finding reports the line and a count,
-never the characters themselves: they are invisible, and for TAG smuggling they are
-the payload. `cat -v` on that line shows the bytes.
+- a BOM (U+FEFF) at byte 0 of the file;
+- U+200D joining two emoji (👨‍👩‍👧, 🏳️‍🌈), checked by the bytes on both sides, so a joiner inside a word still warns;
+- plain U+FE0F;
+- the three real subdivision flags, England, Scotland and Wales, matched by their exact byte sequences. They are the only legitimate use of TAG characters. Any other tag run, including a sentence chunked into many black-flag sequences, fails.
 
-Fixtures: `malicious-hidden-tag`, `malicious-hidden-tag-mixed`,
-`malicious-hidden-tag-flag` (a sentence behind a flag prefix),
-`malicious-hidden-bidi`, and `benign-unicode-text` (emoji with joiners, CJK,
-Greek, curly quotes), `benign-flag-emoji`, `benign-bom`. All three malicious
-fixtures passed the scanner before this rule. Across the 92 first-party skills the
-rule changes no verdict; the one hit was a stray U+200B inside an example JSON line
-in `skills/remotion/SKILL.md`, removed in the same change.
+Not flagged: LRM, RLM and ALM (U+200E, U+200F, U+061C). They mark direction in right-to-left text and cannot reorder it the way overrides and isolates do.
+
+Every tool in the pipeline runs under `LC_ALL=C`. `grep -o` can emit a partial UTF-8 sequence, and BSD `cut` on macOS rejects that in a UTF-8 locale (`Illegal byte sequence`), which used to drop the finding silently. If the file cannot be filtered at all, the scanner reports a finding instead of reading the empty result as clean. The finding reports the line and a count, never the characters themselves: they are invisible, and for TAG smuggling they are the payload. `cat -v` on that line shows the bytes.
+
+Fixtures:
+
+- `malicious-hidden-tag`, `-tag-mixed`, `-tag-flag` (a sentence behind a flag prefix), `-tag-flagchunk` (a sentence split across many flag-shaped sequences), `malicious-hidden-bidi`;
+- `warn-hidden-zero-width`, `-zwj-word`, `-feff-mid`, `-soft-hyphen`, `-variation-selector` (the MEDIUM tier, asserted as WARN);
+- `benign-unicode-text` (emoji incl. ZWJ sequences, CJK, Greek, curly quotes), `benign-flag-emoji` (all three subdivision flags), `benign-bom`.
+
+The calibration test now has three outcomes, `pass`, `warn` and `fail`, so a benign fixture that starts warning is caught too. Across the 92 first-party skills the hidden-character rules change no verdict.
 
 ## A note on query-string secrets
 

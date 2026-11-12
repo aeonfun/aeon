@@ -234,18 +234,26 @@ LOW_PATTERNS=(
 )
 
 # Invisible characters: text the model reads but a reviewer never sees. Matched as
-# raw UTF-8 bytes under LC_ALL=C so it needs no grep -P and runs on BSD grep too.
+# raw UTF-8 bytes; every tool in the pipeline runs under LC_ALL=C because grep -o
+# can emit a partial (invalid UTF-8) sequence that BSD tools reject in a UTF-8 locale.
 #   HIGH   Unicode TAG block U+E0000-E007F (ASCII smuggling: a whole hidden sentence)
 #   HIGH   bidi embedding/override/isolate U+202A-202E, U+2066-2069 (Trojan Source)
-#   MEDIUM zero-width U+200B-200C, U+2060-2064 (splits words past keyword rules)
-# Left out as harmless: U+FEFF (a leading BOM) and U+200D (the joiner inside emoji).
-# Subdivision flags (England, Scotland, Wales) are TAG sequences too, so a black flag
-# + 2-6 lowercase/digit tags + cancel tag is removed before matching; anything
-# longer, or any capital letter or space, is still a hidden sentence.
+#   MEDIUM zero-width U+200B-200C, U+2060-2064; soft hyphen U+00AD; variation
+#          selectors supplement U+E0100-E01EF; U+FEFF past byte 0; U+200D not
+#          between two emoji (all can split a word past the keyword rules)
+# Allowed: a BOM at byte 0, U+200D joining two emoji, plain U+FE0F, and the three
+# real subdivision flags (England, Scotland, Wales), matched by exact bytes.
+# Not flagged: LRM/RLM/ALM (U+200E, U+200F, U+061C); they mark direction in RTL text
+# and cannot reorder it the way overrides and isolates do.
 HIDDEN_TAG=$'\xf3\xa0[\x80\x81]'
-TAG_FLAG=$'\xf0\x9f\x8f\xb4(\xf3\xa0\x80[\xb0-\xb9]|\xf3\xa0\x81[\xa1-\xba]){2,6}\xf3\xa0\x81\xbf'
 HIDDEN_BIDI=$'\xe2\x80[\xaa-\xae]|\xe2\x81[\xa6-\xa9]'
-HIDDEN_ZW=$'\xe2\x80[\x8b\x8c]|\xe2\x81[\xa0-\xa4]'
+HIDDEN_ZW=$'\xe2\x80[\x8b\x8c\x8d]|\xe2\x81[\xa0-\xa4]|\xc2\xad|\xef\xbb\xbf|\xf3\xa0[\x84-\x87]'
+_TAG_GB=$'\xf3\xa0\x81\xa7\xf3\xa0\x81\xa2'
+_TAG_END=$'\xf3\xa0\x81\xbf'
+TAG_FLAG=$'\xf0\x9f\x8f\xb4'"$_TAG_GB"$'(\xf3\xa0\x81\xa5\xf3\xa0\x81\xae\xf3\xa0\x81\xa7|\xf3\xa0\x81\xb3\xf3\xa0\x81\xa3\xf3\xa0\x81\xb4|\xf3\xa0\x81\xb7\xf3\xa0\x81\xac\xf3\xa0\x81\xb3)'"$_TAG_END"
+# 4-byte emoji (U+1F000-1FAFF) or a BMP pictograph (U+2600-27BF), optional FE0F, then ZWJ, then another emoji.
+_EMOJI=$'(\xf0\x9f[\x80-\xab][\x80-\xbf]|\xe2[\x98-\x9e][\x80-\xbf])(\xef\xb8\x8f)?'
+EMOJI_ZWJ="${_EMOJI}"$'\xe2\x80\x8d'"(${_EMOJI})"
 
 # ---------- Scanner ----------
 
@@ -297,14 +305,26 @@ scan_prose() {
   done
 }
 
-# scan_hidden <file> <label> <byte-pattern>  — one "L<n>: <label> ×<count>" line per
+# strip_allowed <file>  — the file with the allowed invisible sequences removed
+# (real subdivision flags, emoji ZWJ joins, a BOM at byte 0), byte for byte otherwise.
+strip_allowed() {
+  local bom=$'\xef\xbb\xbf'
+  LC_ALL=C sed -E -e "1s/^$bom//" -e "s/$TAG_FLAG//g" -e ":z" -e "s/$EMOJI_ZWJ/\\1\\2\\4/g" -e "tz" "$1"
+}
+
+# scan_hidden <file> <label> <byte-pattern>  — one "L<n>: <label> x<count>" line per
 # matching line. The matched text is never echoed: it is invisible, and for TAG
 # smuggling it is the payload itself. Same output contract as scan_tier.
+# Fails closed: if the file can't be filtered, that is reported as a finding.
 scan_hidden() {
-  local file="$1" label="$2" pattern="$3" line_num count
+  local file="$1" label="$2" pattern="$3" stripped line_num count
+  if ! stripped=$(strip_allowed "$file" 2>/dev/null); then
+    printf 'L0: %s: could not scan file for hidden characters [hidden characters]\n' "$label"
+    return
+  fi
   while IFS=: read -r line_num count; do
     printf 'L%s: %s x%s [hidden characters]\n' "$line_num" "$label" "$count"
-  done < <(LC_ALL=C sed -E "s/$TAG_FLAG//g" "$file" 2>/dev/null | LC_ALL=C grep -noE "$pattern" | cut -d: -f1 | uniq -c | awk '{print $2":"$1}')
+  done < <(printf '%s\n' "$stripped" | LC_ALL=C grep -noE "$pattern" | LC_ALL=C cut -d: -f1 | LC_ALL=C uniq -c | LC_ALL=C awk '{print $2":"$1}')
 }
 
 scan_file() {
