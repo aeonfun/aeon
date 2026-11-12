@@ -9,10 +9,11 @@ set -euo pipefail
 #   benign-*     MUST pass with no warning — template vars, command substitution,
 #                authenticated API calls, defensive injection prose, emoji (incl. ZWJ
 #                sequences), CJK, subdivision flags, a leading BOM.
-#   warn-*       MUST warn (MEDIUM, exit 0) — zero-width, soft hyphen, ZWJ inside a
-#                word, BOM past byte 0, variation selectors supplement.
-#   malicious-*  MUST fail (exit 1) — curl|sh RCE, secret exfiltration, destructive
-#                rm, a bare prompt-injection imperative, TAG smuggling, bidi overrides.
+#   warn-*       MUST warn (MEDIUM, exit 0): zero-width, soft hyphen, ZWJ inside a
+#                word, BOM past byte 0, a lone variation selectors supplement char.
+#   malicious-*  MUST fail (exit 1): curl|sh RCE, secret exfiltration, destructive
+#                rm, a bare prompt-injection imperative, TAG smuggling, bidi overrides,
+#                variation selector smuggling.
 #
 # Run it under a UTF-8 locale too: that is where a non-C tool in the hidden-character
 # pipeline breaks on BSD/macOS.
