@@ -111,3 +111,11 @@
 
 1 | filing-registry sync-with-change (last_synced) | bash scripts/tests/test_filing_registry_sync.sh
 2 | effective-model unit tests | bash scripts/tests/test_effective_model.sh
+
+3 | aeon-compute contract tests | python3 scripts/tests/test_compute_contracts.py
+4 | aeon-compute failure taxonomy tests | python3 scripts/tests/test_compute_failures.py
+5 | aeon-compute lifecycle tests | python3 scripts/tests/test_compute_lifecycle.py
+6 | aeon-compute state persistence tests | python3 scripts/tests/test_compute_state.py
+7 | aeon-compute workload matching tests | python3 scripts/tests/test_compute_matching.py
+8 | aeon-compute provider interface tests | python3 scripts/tests/test_compute_providers.py
+9 | aeon-compute vastai normalizer tests | python3 scripts/tests/test_compute_vastai.py
