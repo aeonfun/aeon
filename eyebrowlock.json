@@ -1111,10 +1111,10 @@
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "2b0991c38bf51e2ef602edaf99afcb9b4ec5b0fcaa680bd1d0dd710bd0e2393f"
+          "hash": "00e3bb8b7d8f39ec639106800abed4f4c3b966dde34c9b316e0a2b74b806831f"
         }
       ],
-      "contentHash": "sha256-9560813e46d3be92b7d962ec29f0db681fcd3403bbfcf7fc3a25ba75d43f610f",
+      "contentHash": "sha256-bbd9c2cd255e5b943d3818ef134fceb8775cdd9697654e169f6fd6f6c6fde8dd",
       "discoveredFrom": "skills/changelog/SKILL.md"
     },
     {
@@ -2635,10 +2635,10 @@
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "3d86c1cf0d47cc379761c42791b726ccc192518e4f9c1e5328110c4dd6fb95fb"
+          "hash": "6ea41f7cc6eb278f1d78914269b56d10322bc3b6fc964327a896c4962735fdbf"
         }
       ],
-      "contentHash": "sha256-8cc64b6391805e31ed98d84a74d00f5c4b15a3b9b27b4137d27044de1678ebd2",
+      "contentHash": "sha256-1d0c6ea7871536c5baf26d991eb67efe87ad465467dd76d42789fcc0ace7b162",
       "discoveredFrom": "skills/token-movers/SKILL.md"
     },
     {
@@ -2728,7 +2728,7 @@
       "files": [
         {
           "path": "SKILL.md",
-          "hash": "12a46d15241393c9e8e086dba3f1bb1abc5aaa6c4406e9c8160024f3a495f1d1"
+          "hash": "83b9839e8f99e3c5c05f61ea4795d50478eedf8409db3870e317dae88c675a68"
         }
       ],
       "findings": [
@@ -2737,12 +2737,12 @@
           "severity": "high",
           "owasp": "ASK-06",
           "file": "SKILL.md",
-          "line": 105,
+          "line": 106,
           "snippet": "output/**           .mcp.json           .env*               aeon.db",
           "explanation": "references sensitive credential or secret paths"
         }
       ],
-      "contentHash": "sha256-fead703d79cbd78a27855b2ad567ffac6af3ace93470055bc9e32d45c26458a5",
+      "contentHash": "sha256-4499eb804836ca462fa635d8169738b2daee911d8d49def46d9204dffd95fd44",
       "discoveredFrom": "skills/aeon-update/SKILL.md"
     },
     {

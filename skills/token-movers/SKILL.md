@@ -544,14 +544,14 @@ Pick exactly one label from the table. Thresholds use *today's true deltas* from
 |-------|---------|
 | `BREAKOUT` | Δprice ≥ +10% AND vol ratio ≥ 2.0 |
 | `BREAKDOWN` | Δprice ≤ −10% AND vol ratio ≥ 2.0 |
-| `RALLYING` | Δprice ≥ +3% AND (vol ratio ≥ 1.0 OR Δprice ≥ +10%) |
-| `SLIDING` | Δprice ≤ −3% AND (vol ratio ≥ 1.0 OR Δprice ≤ −10%) |
+| `RALLYING` | Δprice ≥ +3% (any vol ratio) |
+| `SLIDING` | Δprice ≤ −3% (any vol ratio) |
 | `ACCUMULATING` | abs(Δprice) < 3% AND buy/sell ratio ≥ 1.3 AND whale buys ≥ 1 |
 | `DISTRIBUTING` | abs(Δprice) < 3% AND buy/sell ratio ≤ 0.7 AND whale sells ≥ 1 |
-| `QUIET` | vol ratio < 0.5 AND whale trades = 0 |
-| `CONSOLIDATING` | (everything else) |
+| `QUIET` | abs(Δprice) < 3% AND vol ratio < 0.5 AND whale trades = 0 |
+| `CONSOLIDATING` | abs(Δprice) < 3% (everything else) |
 
-A move of 10% or more always lands on BREAKOUT/BREAKDOWN (vol ratio 2.0 or more) or RALLYING/SLIDING (any lower vol ratio), never on QUIET or CONSOLIDATING.
+Any move of 3% or more gets a directional verdict: BREAKOUT/BREAKDOWN at 10%+ on vol ratio 2.0 or more, else RALLYING/SLIDING, whatever the volume. QUIET and CONSOLIDATING are only for days under 3% either way, so a -9.8% day on 0.57x volume is SLIDING, never CONSOLIDATING, and -7.2% on thin volume is SLIDING, never QUIET. When vol ratio is under 1.0, say the move came on thin volume in the verdict line (`-9.8% on 0.57x volume, thin selling`) instead of softening the label.
 
 Do not freelance labels. The verdict drives the lede, the TL;DR, and the notification. Explain the verdict through its numbers and thresholds (`+12.4% on 1.6x volume`); never mention this table, its steps or a missing row in the article or notification.
 
