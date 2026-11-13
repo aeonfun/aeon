@@ -284,7 +284,7 @@
       "description": "Finds instructions hidden from the operator in installed skills, soul and strategy files: Unicode TAG smuggling, zero-width splits, look-alike letters, hidden HTML, base64. Keyless, read-only, no network.",
       "author": "yusasecurity",
       "license": "MIT",
-      "homepage": "https://yusa-two.vercel.app",
+      "homepage": "https://yusasecurity.xyz",
       "category": "dev",
       "trust_level": "community",
       "skills": [
