@@ -11,12 +11,29 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Added
 
+- **Verify-run receipts for the dev-loop proof gate.** `scripts/dev-loop-proof.sh` now accepts a
+  verify-run receipt (a clean, read-only Actions run at a pinned PR head) as proof, next to the
+  existing aeon-skill receipt, which parses unchanged. Adds the `epoch-verify` workflow and
+  `scripts/epoch-evidence.sh`; a 26-case matrix rejects push-triggered, wrong-repo, fork-head and
+  moved-head receipts and fails closed when evidence is missing. (#1349)
+- **`skill-scan` flags hidden Unicode.** The scanner now fails on Unicode TAG characters (ASCII
+  smuggling), bidi overrides and isolates (Trojan Source) and runs of variation selectors, and warns on
+  zero-width characters, soft hyphens and a mid-file BOM. The checks run as raw bytes under `LC_ALL=C`,
+  so macOS and Linux agree, allow only the three real subdivision flags and a ZWJ between two emoji,
+  and fail closed when a file cannot be filtered. `bin/add-skill` and `bin/install-skill-pack` gate on
+  it, so a skill with a hidden payload no longer installs without a prompt. Calibration fixtures and
+  `docs/skill-scan-calibration.md` cover each rule. (#1344, #1350, #1351)
+- **Community packs: Bowmark Pack listed, Vauban Pack updated to v0.5.0.** The Bowmark Pack's
+  `bowmark-page-watch` reads the pages you name on a schedule and notifies when one changes (needs
+  `BOWMARK_API_KEY`). The Vauban Pack listing now covers `rule:` dry runs, `inspect:` setting checks and
+  the largest move the caps allow. (#1342, #1345)
+
 - **Telegram private replies, a Details button and a `/panel` run widget (Bot API 10.4).** In
   instant mode the webhook Worker now answers button taps with ephemeral replies only the tapper
   sees, tells a non-owner group member privately that buttons are owner-only, and serves a new
   global **📄 Details** button that shows the skill's full latest output to the tapper alone.
   `/panel` sends an HTML widget with the latest run per skill plus Run and Refresh, answered by the
-  Worker through `widget_query`. The poller falls back to posting Details and a pointer for `/panel`.
+  Worker through `widget_query`. The poller falls back to posting Details and a pointer for `/panel`. (#1348)
 
 - **Internet Computer (ICP) skill pack adds three skills.** `canister-status` alerts on control-plane
   changes (new controller, module-hash upgrade, de-indexing), `sns-digest` posts an NNS and SNS proposal
@@ -304,6 +321,17 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Changed
 
+- **Token usage and the run manifest record the model that answered.** A gateway can remap the requested
+  model, so `scripts/effective-model.sh` now takes the model from the run envelope (the adapter's `model`
+  field, else the Claude `modelUsage` entry with the most output tokens, else the requested model) and
+  writes `SKILL_MODEL`, `SKILL_MODEL_REQUESTED` and `SKILL_MODEL_SOURCE`. The signed manifest gains
+  `model_requested`, `model_source` and `gateway`; `token-usage.csv` columns are unchanged. A harness
+  that reports no model still records the requested one, with a warning. (#1343)
+- **`aeon-update` gets a `keep_local` list.** Instance-rewritten docs and files deleted on purpose no
+  longer come back as conflicts every sync. An optional `keep_local` glob list in
+  `memory/topics/aeon-update-state.json` marks matching paths `KEEP-LOCAL`: never written, never a
+  conflict, listed under `kept_local`. Conflicts now list workflow and harness-adapter files first. (#1354)
+
 - **Sentinel community pack listing is 10 skills,** adding `pons-pool-check`, which names a Pons token's
   official Uniswap v4 pool on Robinhood Chain and lists the other pools for the same token. (#1336)
 - **ICP integration reference added** under `docs/icp/`: MCP verification, architecture, skills
@@ -502,6 +530,14 @@ from or pin to; the template keeps serving the latest `main` to new forks.
   showcase hooks in `aeonfun/univ4-hooks` carried the fee. (#1035)
 
 ### Fixed
+
+- **`changelog` push-to mode works on the first try.** The skill runs `gh auth setup-git` after the
+  cross-repo clone and opens the PR with explicit `--repo`, `--head` and `--base`, so the push and the PR no
+  longer fail and recover by improvising. (#1354)
+- **`token-movers` gives moves of 3% or more a directional verdict.** RALLYING and SLIDING no longer need a
+  volume ratio of 1.0 or more, QUIET and CONSOLIDATING require a price change under 3%, and thin volume
+  goes in the verdict line instead of softening the label. (#1354)
+- **Ecosystem page: dead Sentysis X link fixed.** It now points to `@Sentysisdotcom`. (#1347)
 
 - **`token-movers` verdicts no longer skip big moves.** RALLYING and SLIDING now also cover a 10%+ day on
   under 2.0x volume, which used to publish as CONSOLIDATING. Single-token mode saves each API response to a
