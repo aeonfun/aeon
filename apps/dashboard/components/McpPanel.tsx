@@ -300,12 +300,7 @@ export function McpPanel({
         {oauthBusy && oauthFallback && (
           <p className="mt-3 text-[11px] font-mono text-primary-40">
             {"browser didn't open? "}
-            <a
-              href={oauthFallback}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-aeon-green underline"
-            >
+            <a href={oauthFallback} target="_blank" rel="noopener noreferrer" className="text-aeon-green underline">
               authorize here
             </a>
           </p>
