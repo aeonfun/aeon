@@ -123,7 +123,36 @@ assert.equal(sns[0].key, `sns:${root}:125`, 'SNS dedup uses the SNS id under its
 assert.throws(() => parseNnsResponse({ data: [{ status: 'OPEN', id: 125028 }] }), /proposal_id/);
 assert.throws(() => parseSnsResponse({ data: [{ status: 'OPEN', id: '1', root_canister_id: 'wrong' }] }, root), /does not match/);
 assert.throws(() => parseNnsResponse({ data: [null] }), /must be an object/);
-assert.throws(() => parseSnsListResponse({ data: [{ root_canister_id: root, name: 'ALICE', active: 'yes', enabled: true }] }), /must be booleans/);
 assert.throws(() => parseNnsResponse({ results: [] }), /data array/);
+assert.throws(() => parseSnsListResponse({ results: [] }), /data array/, 'a malformed sns-list envelope still fails closed');
+
+// follow-up #2 - a malformed or empty-name DAO row is skipped, not fatal; valid DAOs in the same batch still come through.
+assert.deepEqual(
+  parseSnsListResponse({ data: [{ root_canister_id: root, name: 'ALICE', active: 'yes', enabled: true }] }),
+  [],
+  'a malformed sns-list row is skipped, not thrown',
+);
+assert.deepEqual(
+  parseSnsListResponse({
+    data: [
+      { root_canister_id: 'rkp4c-7iaaa-aaaaa-aaaca-cai', name: '', active: true, enabled: true },
+      { root_canister_id: root, name: 'ALICE', active: true, enabled: true },
+    ],
+  }).map((row) => row.root_canister_id),
+  [root],
+  'an empty-name DAO does not break the sweep (follow-up #2)',
+);
+
+// follow-up #3 - a DAO whose root is not a valid canister id is dropped before it can reach the shell curl.
+assert.deepEqual(
+  parseSnsListResponse({
+    data: [
+      { root_canister_id: 'not-a-canister-id; rm -rf /', name: 'EVIL', active: true, enabled: true },
+      { root_canister_id: root, name: 'ALICE', active: true, enabled: true },
+    ],
+  }).map((row) => row.root_canister_id),
+  [root],
+  'a root that is not a valid canister id is dropped (follow-up #3)',
+);
 
 console.log('PASS test_icp_skill_pack');

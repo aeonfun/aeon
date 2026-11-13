@@ -34,12 +34,12 @@ No secret. Two keyless public APIs (verified 2026-11-07), fetched with `curl` so
 curl -sS --max-time 20 -o /tmp/nns-proposals.json -w 'nns http=%{http_code} bytes=%{size_download}\n' "https://ic-api.internetcomputer.org/api/v3/proposals?limit=50&include_status=OPEN"
 ```
 ```bash
-curl -sS --max-time 20 -o /tmp/snses.json -w 'snses http=%{http_code} bytes=%{size_download}\n' "https://sns-api.internetcomputer.org/api/v1/snses?limit=50&offset=0"
+curl -sS --max-time 20 -o /tmp/snses-<OFF>.json -w 'snses http=%{http_code} bytes=%{size_download}\n' "https://sns-api.internetcomputer.org/api/v1/snses?limit=50&offset=<OFF>"   # paged — see step 3
 ```
 
 - **NNS proposals** — the response is `{data: [...]}`. Every row has both a database row `id` and the actual governance `proposal_id`; use `proposal_id` for display, links, state, and dedup. Rows also carry `status`, `action`, `title`, `latest_tally`, and `deadline_timestamp_seconds`. `include_status=OPEN` returns currently-votable proposals.
-- **SNS list** — the response is `{data: [...]}` with each DAO's `root_canister_id`, `name`, `active`, `enabled`, and `swap_lifecycle`. Normalize it with `--source sns-list`; the parser returns only rows where both `active` and `enabled` are true. Per-SNS proposals use `https://sns-api.internetcomputer.org/api/v1/snses/<root>/proposals?limit=50&include_status=OPEN`. SNS proposal rows use their `id` field as the DAO proposal identifier; they do not use the NNS `proposal_id` field.
-- Parse the SNS list and both proposal response families with `skills/sns-digest/parse-proposals.mjs`. It fails closed on a malformed top-level object or row instead of turning unexpected API data into a proposal.
+- **SNS list** — the response is `{data: [...], total_snses}` with each DAO's `root_canister_id`, `name`, `active`, `enabled`, and `swap_lifecycle`; `total_snses` is the full count, used to page (step 3). Normalize it with `--source sns-list`; the parser returns only rows where both `active` and `enabled` are true. Per-SNS proposals use `https://sns-api.internetcomputer.org/api/v1/snses/<root>/proposals?limit=50&include_status=OPEN`. SNS proposal rows use their `id` field as the DAO proposal identifier; they do not use the NNS `proposal_id` field.
+- Parse the SNS list and both proposal response families with `skills/sns-digest/parse-proposals.mjs`. For a **proposal** response it fails closed on a malformed top-level object or row, so unexpected API data never becomes a proposal. For the **SNS list** (discovery) it keeps the strict envelope check but *skips* any individual DAO row it can't safely target — malformed, empty name, or a `root_canister_id` that isn't a valid canister id — so one bad row can't abort the whole sweep.
 
 ## Steps
 
@@ -48,11 +48,16 @@ curl -sS --max-time 20 -o /tmp/snses.json -w 'snses http=%{http_code} bytes=%{si
    ```bash
    node skills/sns-digest/parse-proposals.mjs --source nns --input /tmp/nns-proposals.json
    ```
-3. **Fetch SNS** (unless scope is `nns`): require an HTTP 200 for the SNS-list call, then validate and filter it:
+3. **Fetch the SNS list, paged** (unless scope is `nns`): there are more active DAOs than fit on one page — the response carries `total_snses` (how many exist in all). Start at `offset=0, limit=50`; after each page, if `offset + 50 < total_snses`, fetch the next with `offset += 50` until the list is exhausted. Require an HTTP 200 per page, then validate/filter each page and union the DAOs across pages:
    ```bash
-   node skills/sns-digest/parse-proposals.mjs --source sns-list --input /tmp/snses.json
+   node skills/sns-digest/parse-proposals.mjs --source sns-list --input /tmp/snses-<OFF>.json
    ```
-   Resolve the requested name/root from that normalized active-and-enabled list, and cap the empty-scope sweep at 10. For each selected root, replace `<ROOT>` and `<N>` with literals:
+   The parser returns only active-and-enabled DAOs and drops any row it can't safely target, so one bad DAO never fails the run. Resolve the scope against the unioned list:
+   - **empty scope** → sweep **every** active-and-enabled DAO (today ~38 — not a fixed 10, which missed most open proposals).
+   - **a name** (e.g. `ALICE`) → resolve it to its root in the list.
+   - **a raw root-canister-id** → use it only if it matches `^([a-z0-9]{5}-){4}[a-z0-9]{3}$`; otherwise the scope is invalid — stop. Never substitute an unvalidated id into the curl below.
+
+   For each selected root, replace `<ROOT>` and `<N>` with literals:
    ```bash
    curl -sS --max-time 20 -o /tmp/sns-<N>-proposals.json -w 'sns-proposals http=%{http_code} bytes=%{size_download}\n' "https://sns-api.internetcomputer.org/api/v1/snses/<ROOT>/proposals?limit=50&include_status=OPEN"
    ```

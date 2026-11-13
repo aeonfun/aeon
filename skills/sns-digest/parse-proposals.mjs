@@ -7,6 +7,11 @@ function isObject(value) {
   return value !== null && typeof value === 'object' && !Array.isArray(value);
 }
 
+// Textual canister-id shape (same as skills/canister-status/reconcile.mjs). A root
+// from this list is substituted into a shell curl, so anything that isn't a
+// well-formed id is dropped before it can reach the command line.
+const CANISTER_ID = /^([a-z0-9]{5}-){4}[a-z0-9]{3}$/;
+
 function identifier(value, field) {
   if (Number.isInteger(value) && value >= 0) return String(value);
   if (typeof value === 'string' && /^\d+$/.test(value)) return value;
@@ -39,25 +44,30 @@ function openRows(value) {
 }
 
 export function parseSnsListResponse(value) {
+  // The SNS list is discovery, not a proposal source: a row we can't safely target
+  // is skipped, not fatal — one malformed or empty-name DAO must not fail the whole
+  // sweep. The envelope still fails closed via responseRows, and the proposal
+  // parsers below stay strict (an unexpected proposal row never becomes a proposal).
   return responseRows(value)
-    .map((row, index) => {
-      if (!isObject(row)) throw new Error(`data[${index}] must be an object`);
-      if (typeof row.root_canister_id !== 'string' || !row.root_canister_id) {
-        throw new Error(`data[${index}].root_canister_id must be a non-empty string`);
-      }
-      if (typeof row.name !== 'string' || !row.name) throw new Error(`data[${index}].name must be a non-empty string`);
-      if (typeof row.active !== 'boolean' || typeof row.enabled !== 'boolean') {
-        throw new Error(`data[${index}].active and enabled must be booleans`);
-      }
-      return {
-        root_canister_id: row.root_canister_id,
-        name: row.name,
-        active: row.active,
-        enabled: row.enabled,
-        swap_lifecycle: isObject(row.swap_lifecycle) ? row.swap_lifecycle : null,
-      };
-    })
-    .filter((row) => row.active && row.enabled);
+    .filter(
+      (row) =>
+        isObject(row) &&
+        typeof row.root_canister_id === 'string' &&
+        CANISTER_ID.test(row.root_canister_id) &&
+        typeof row.name === 'string' &&
+        row.name &&
+        typeof row.active === 'boolean' &&
+        typeof row.enabled === 'boolean' &&
+        row.active &&
+        row.enabled,
+    )
+    .map((row) => ({
+      root_canister_id: row.root_canister_id,
+      name: row.name,
+      active: row.active,
+      enabled: row.enabled,
+      swap_lifecycle: isObject(row.swap_lifecycle) ? row.swap_lifecycle : null,
+    }));
 }
 
 export function parseNnsResponse(value) {
