@@ -88,8 +88,7 @@ skills as-is.
   pinned PocketIC server
 - `.github/workflows/ci-canister-audit-fixture.yml` - runs the reproduction end to end
 
-**Read + monitor skills** (proposed in [#1330](https://github.com/aeonfun/aeon/pull/1330),
-not yet on main)
+**Read + monitor skills** (merged in [#1330](https://github.com/aeonfun/aeon/pull/1330))
 - `canister-status` - control-plane monitor (controllers, module hash, upgrades);
   alerts on change
 - `sns-digest` - NNS + SNS governance proposal digest
