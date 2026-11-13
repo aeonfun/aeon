@@ -316,6 +316,28 @@
         "external_api",
         "sends_notifications"
       ]
+    },
+    {
+      "repo": "normancomics/phantomoperator-aeon-pack",
+      "name": "PhantomOperator Aeon Skill Pack",
+      "description": "Authorized privacy and public-exposure checks through PhantomOperator, with documented Base x402 spend limits.",
+      "author": "normancomics",
+      "license": "MIT",
+      "homepage": "https://freysaai.freysa.dev",
+      "category": "security",
+      "trust_level": "community",
+      "skills": [
+        "phantomoperator"
+      ],
+      "secrets_required": [
+        "AEON_X402_WALLET_PRIVATE_KEY",
+        "PHANTOMOPERATOR_PERSON_LOOKUP_ALLOWLIST"
+      ],
+      "capabilities": [
+        "external_api",
+        "writes_external_host",
+        "onchain_writes"
+      ]
     }
   ]
 }
