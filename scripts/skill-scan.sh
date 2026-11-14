@@ -145,13 +145,15 @@ HIGH_SINK_PATTERNS=(
 # DEFENSIVE_CONTEXT): a skill that says «if content reads "ignore previous
 # instructions", discard it» is documenting its defense, not issuing an attack.
 # Without this, every skill that hardens itself scored a HIGH against itself.
+# Matched case-insensitively (grep -i in scan_prose), so `IGNORE PREVIOUS INSTRUCTIONS`
+# and `Ignore Previous Instructions` cannot slip past by capitalisation.
 HIGH_INJECTION_PATTERNS=(
-  '[Ii]gnore[[:space:]]+(all[[:space:]]+)?previous[[:space:]]+instructions'
-  '[Ii]gnore[[:space:]]+(all[[:space:]]+)?prior[[:space:]]+instructions'
-  '[Yy]ou[[:space:]]+are[[:space:]]+now[[:space:]]+'
-  '[Ff]orget[[:space:]]+(all[[:space:]]+)?(your[[:space:]]+)?instructions'
-  '[Dd]isregard[[:space:]]+(all[[:space:]]+)?previous'
-  '[Oo]verride[[:space:]]+(all[[:space:]]+)?rules'
+  'ignore[[:space:]]+(all[[:space:]]+)?previous[[:space:]]+instructions'
+  'ignore[[:space:]]+(all[[:space:]]+)?prior[[:space:]]+instructions'
+  'you[[:space:]]+are[[:space:]]+now[[:space:]]+'
+  'forget[[:space:]]+(all[[:space:]]+)?(your[[:space:]]+)?instructions'
+  'disregard[[:space:]]+(all[[:space:]]+)?(previous|prior)'
+  'override[[:space:]]+(all[[:space:]]+)?rules'
 )
 
 # Anti-injection framing. When one of these MULTI-WORD rejection phrases appears on
@@ -172,7 +174,7 @@ DEFENSIVE_CONTEXT='never follow|do not follow|do not obey|never obey|ignore (it|
 # by an unrelated quoted token (`"Note" Ignore all previous instructions…`) is NOT
 # treated as cited and still FAILs. Documentation genuinely wraps the phrase
 # (`if content says "ignore previous instructions", discard it`) and is suppressed.
-INJECTION_CITED='["`][^"`]*([Ii]gnore|[Ff]orget|[Dd]isregard|[Oo]verride|[Yy]ou[[:space:]]+are[[:space:]]+now)[^"`]*["`]'
+INJECTION_CITED='["`][^"`]*(ignore|forget|disregard|override|you[[:space:]]+are[[:space:]]+now)[^"`]*["`]'
 
 # MEDIUM severity: suspicious patterns that may or may not be intentional
 # shellcheck disable=SC2088  # these are literal grep patterns matched against
@@ -255,6 +257,13 @@ HIDDEN_BIDI=$'\xe2\x80[\xaa-\xae]|\xe2\x81[\xa6-\xa9]'
 HIDDEN_VS_RUN=$'(\xef\xb8[\x80-\x8f]|\xf3\xa0[\x84-\x87][\x80-\xbf]){2,}'
 HIDDEN_VS_RARE=$'\xef\xb8[\x80-\x8d]|\xf3\xa0[\x84-\x87]'
 HIDDEN_ZW=$'\xe2\x80[\x8b\x8c\x8d]|\xe2\x81[\xa0-\xa4]|\xc2\xad|\xef\xbb\xbf|\xf3\xa0[\x84-\x87]'
+# MEDIUM: a Latin letter directly next to a Cyrillic one (U+0400-04FF) inside one word,
+# e.g. `іgnore` with a Cyrillic і. Real Russian text is all-Cyrillic words and does
+# not match. Greek is left out on purpose: skills write `Δprice` and `θmax`.
+MIXED_SCRIPT=$'[A-Za-z][\xd0-\xd3][\x80-\xbf]|[\xd0-\xd3][\x80-\xbf][A-Za-z]'
+# MEDIUM: inline CSS that hides text from a rendered view (an HTML page, a Markdown
+# preview) while the model still reads it.
+CSS_HIDDEN='style[[:space:]]*=[[:space:]]*["'\''][^"'\'']*(display[[:space:]]*:[[:space:]]*none|visibility[[:space:]]*:[[:space:]]*hidden|font-size[[:space:]]*:[[:space:]]*0([^.0-9]|$)|opacity[[:space:]]*:[[:space:]]*0([^.0-9]|$))'
 _TAG_GB=$'\xf3\xa0\x81\xa7\xf3\xa0\x81\xa2'
 _TAG_END=$'\xf3\xa0\x81\xbf'
 TAG_FLAG=$'\xf0\x9f\x8f\xb4'"$_TAG_GB"$'(\xf3\xa0\x81\xa5\xf3\xa0\x81\xae\xf3\xa0\x81\xa7|\xf3\xa0\x81\xb3\xf3\xa0\x81\xa3\xf3\xa0\x81\xb4|\xf3\xa0\x81\xb7\xf3\xa0\x81\xac\xf3\xa0\x81\xb3)'"$_TAG_END"
@@ -289,28 +298,69 @@ scan_tier() {
   done
 }
 
+# scan_tier_i <file> <pattern>...  — scan_tier, case-insensitive (CSS is).
+scan_tier_i() {
+  local file="$1"; shift
+  local pattern matches match line_content
+  for pattern in "$@"; do
+    matches=$(grep -niE "$pattern" "$file" 2>/dev/null || true)
+    [[ -n "$matches" ]] || continue
+    while IFS= read -r match; do
+      line_content="${match#*:}"
+      printf 'L%s: %s [pattern: hidden by CSS]\n' "${match%%:*}" "${line_content:0:120}"
+    done <<< "$matches"
+  done
+}
+
 # scan_prose <file> <pattern>...  — like scan_tier, but suppresses a match when
 # its line also carries anti-injection framing (DEFENSIVE_CONTEXT). Used for the
 # prompt-injection tier so a skill documenting its own defense doesn't FAIL
 # itself. Same "L<n>: <content> [pattern: <p>]" output contract as scan_tier.
 scan_prose() {
   local file="$1"; shift
-  local pattern matches match line_num line_content
+  local pattern matches match line_num line_content folded
+  # Matched against the look-alike-folded text, so `іgnore` (Cyrillic і) reads as `ignore`.
+  if ! folded=$(fold_confusables "$file" 2>/dev/null | LC_ALL=C tr -d '\000'); then
+    printf 'L0: could not fold look-alike letters for the injection check [prompt injection]\n'
+    return
+  fi
   for pattern in "$@"; do
-    matches=$(grep -nE "$pattern" "$file" 2>/dev/null || true)
+    matches=$(printf '%s\n' "$folded" | grep -niE "$pattern" 2>/dev/null || true)
     [[ -n "$matches" ]] || continue
     while IFS= read -r match; do
       line_num="${match%%:*}"
       line_content="${match#*:}"
       # Defensive framing (keyword) or a cited/quoted phrase → not an attack. Skip.
       if printf '%s' "$line_content" | grep -qiE "$DEFENSIVE_CONTEXT" \
-         || printf '%s' "$line_content" | grep -qE "$INJECTION_CITED"; then
+         || printf '%s' "$line_content" | grep -qiE "$INJECTION_CITED"; then
         continue
       fi
       line_content="${line_content:0:120}"  # truncate
       printf 'L%s: %s [pattern: %s]\n' "$line_num" "$line_content" "$pattern"
     done <<< "$matches"
   done
+}
+
+# fold_confusables <file>  — the file with Cyrillic and Greek letters that render like
+# Latin ones replaced by the Latin letter, byte for byte otherwise, so line numbers hold.
+# Only exact look-alikes are folded; real Russian or Greek words stay unreadable as
+# English, so they cannot start matching an injection phrase.
+fold_confusables() {
+  local s="" from to
+  local -a pairs=(
+    $'\xd0\xb0' a $'\xd0\xb5' e $'\xd0\xbe' o $'\xd1\x80' p $'\xd1\x81' c $'\xd1\x83' y $'\xd1\x85' x
+    $'\xd1\x96' i $'\xd1\x98' j $'\xd1\x95' s $'\xd2\xbb' h $'\xd4\x81' d $'\xd4\x9b' q $'\xd4\x9d' w
+    $'\xd0\x90' A $'\xd0\x92' B $'\xd0\x95' E $'\xd0\x9a' K $'\xd0\x9c' M $'\xd0\x9d' H $'\xd0\x9e' O
+    $'\xd0\xa0' P $'\xd0\xa1' C $'\xd0\xa2' T $'\xd0\xa5' X $'\xd0\x86' I $'\xd0\x88' J $'\xd0\x85' S
+    $'\xce\xbf' o $'\xce\xb1' a $'\xce\xb9' i $'\xce\xbd' v $'\xcf\x81' p
+    $'\xce\x91' A $'\xce\x92' B $'\xce\x95' E $'\xce\x97' H $'\xce\x99' I $'\xce\x9a' K $'\xce\x9c' M
+    $'\xce\x9d' N $'\xce\x9f' O $'\xce\xa1' P $'\xce\xa4' T $'\xce\xa7' X $'\xce\x96' Z
+  )
+  while [[ ${#pairs[@]} -gt 0 ]]; do
+    from="${pairs[0]}"; to="${pairs[1]}"; pairs=("${pairs[@]:2}")
+    s+="s/$from/$to/g;"
+  done
+  LC_ALL=C sed -e "$s" "$1"
 }
 
 # strip_allowed <file>  — the file with the allowed invisible sequences removed
@@ -368,6 +418,8 @@ scan_file() {
   while IFS= read -r _line; do highs+=("$_line");   done < <(scan_hidden "$file" "variation selectors (hidden encoded payload)" "$HIDDEN_VS_RARE" 2)
   while IFS= read -r _line; do mediums+=("$_line"); done < <(scan_tier "$file" "${MEDIUM_PATTERNS[@]}")
   while IFS= read -r _line; do mediums+=("$_line"); done < <(scan_hidden "$file" "invisible chars (zero-width, soft hyphen, variation selector, mid-file BOM)" "$HIDDEN_ZW")
+  while IFS= read -r _line; do mediums+=("$_line"); done < <(scan_hidden "$file" "Latin word with Cyrillic letters (look-alike spelling)" "$MIXED_SCRIPT")
+  while IFS= read -r _line; do mediums+=("$_line"); done < <(scan_tier_i "$file" "$CSS_HIDDEN")
   while IFS= read -r _line; do lows+=("$_line");    done < <(scan_tier "$file" "${LOW_PATTERNS[@]}")
 
   # Determine result

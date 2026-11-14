@@ -146,6 +146,21 @@ Fixtures:
 
 The calibration test now has three outcomes, `pass`, `warn` and `fail`, so a benign fixture that starts warning is caught too. Across the 92 first-party skills the hidden-character rules change no verdict.
 
+## Spelling around the injection rules
+
+Three ways to write an injection phrase that the rules above read past, each closed:
+
+| Trick | Example | Rule | Tier |
+|---|---|---|---|
+| Capitals | `IGNORE ALL PREVIOUS INSTRUCTIONS` | Injection patterns match case-insensitively (`grep -i`), and so does the quoted-citation check, so `"IGNORE PREVIOUS INSTRUCTIONS"` cited in a defensive line still passes. | HIGH |
+| Look-alike letters | `іgnore` with a Cyrillic `і` (U+0456) | Before the injection patterns run, Cyrillic and Greek letters that render like Latin ones (`а е о р с у х і ј ѕ`, `ο α ι ν ρ`, and the capitals) are folded to Latin, byte for byte, so line numbers hold. Only exact look-alikes are folded: a Russian word stays unreadable as English and cannot start matching. If the fold fails, the scanner reports a finding. | HIGH |
+| Mixed spelling | `dаily` with a Cyrillic `а` | Any Latin letter directly next to a Cyrillic one inside a word. Russian text is whole Cyrillic words and does not match. Greek is left out because skills write `Δprice` and `θmax`. | MEDIUM |
+| Text hidden by CSS | `<span style="display:none">…</span>` | Inline `display:none`, `visibility:hidden`, `font-size:0` or `opacity:0`: invisible in a rendered preview, read in full by the model. `opacity:0.9` and `display:flex` do not match. | MEDIUM |
+
+`disregard … prior` now matches like `disregard … previous`.
+
+Fixtures: `malicious-injection-uppercase`, `-homoglyph`, `-disregard-prior`; `warn-hidden-css`, `warn-mixed-script`; `benign-cyrillic-text` (Russian words and a Russian name), `benign-greek-math` (`Δprice`, `θmax`), `benign-defensive-uppercase` (a capitalised phrase cited inside a defensive line), `benign-css-visible`. Across the 92 first-party skills these rules change no verdict.
+
 ## A note on query-string secrets
 
 A secret carried in a URL query string (`…?token=$GITHUB_TOKEN`) is a real
