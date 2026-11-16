@@ -11,6 +11,18 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Added
 
+- **`skill-scan` catches injection phrases in capitals or look-alike letters, and CSS-hidden text.**
+  Injection patterns and the quoted-citation check now match case-insensitively, so `IGNORE ALL PREVIOUS
+  INSTRUCTIONS` fails (HIGH) while a defensive line that cites it still passes. Cyrillic and Greek letters
+  that render like Latin ones are folded to Latin before the patterns run, byte for byte so line numbers
+  hold, and a Latin letter next to a Cyrillic one inside a word warns (MEDIUM). Inline `display:none`,
+  `visibility:hidden`, `font-size:0` and `opacity:0` warn (MEDIUM), and `disregard ... prior` now matches
+  like `disregard ... previous`. Nine new calibration fixtures and a section in
+  `docs/skill-scan-calibration.md` cover each rule; the 92 first-party skills keep their verdicts. (#1363)
+- **PhantomOperator community pack listed.** Its `phantomoperator` skill runs authorized privacy and
+  public-exposure checks and declares Base x402 spend limits; it needs `AEON_X402_WALLET_PRIVATE_KEY` and a
+  person-lookup allowlist and can write on-chain, so read its listing before enabling. (#1283)
+
 - **Verify-run receipts for the dev-loop proof gate.** `scripts/dev-loop-proof.sh` now accepts a
   verify-run receipt (a clean, read-only Actions run at a pinned PR head) as proof, next to the
   existing aeon-skill receipt, which parses unchanged. Adds the `epoch-verify` workflow and
@@ -321,6 +333,10 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Changed
 
+- **YUSA Pack homepage moved to `yusasecurity.xyz`.** The community pack listing in
+  `catalog/skill-packs.json` now links the pack's own domain instead of the old preview URL. (#1360)
+- **Maintenance.** `hono` 4.13.18 and `@hono/node-server` 2.1.8 bundled in `apps/mcp-server`
+  (lockfile only; replaces #1356 and #1359). (#1362)
 - **Token usage and the run manifest record the model that answered.** A gateway can remap the requested
   model, so `scripts/effective-model.sh` now takes the model from the run envelope (the adapter's `model`
   field, else the Claude `modelUsage` entry with the most output tokens, else the requested model) and
