@@ -175,7 +175,7 @@ export function McpPanel({
       const next = { ...draft, [slug]: data.server }
       setDraft(next)
       onSave(next)
-      if (data.warning) setOauthError(`Connected, but: ${data.warning}`)
+      if (data.warning) setOauthError(f.oauthSession ? `Connected. ${f.oauthSession}` : `Connected, but: ${data.warning}`)
     } catch (e) {
       setOauthError(e instanceof Error ? e.message : 'OAuth connect failed')
     } finally {

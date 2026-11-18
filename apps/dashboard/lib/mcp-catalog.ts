@@ -25,6 +25,11 @@ export interface McpCatalogEntry {
   oauth?: boolean
   oauthScopes?: string[]
   oauthClientId?: string
+  // For OAuth servers that grant no refresh token by design (a fixed-length
+  // session): shown after Connect in place of the generic "no refresh token"
+  // warning, so the operator knows how long the session lasts and when to
+  // reconnect. The run uses the captured access token until it expires.
+  oauthSession?: string
 }
 
 export const MCP_CATALOG: McpCatalogEntry[] = [
@@ -171,6 +176,28 @@ export const MCP_CATALOG: McpCatalogEntry[] = [
     // GH_SECRETS_PAT persistence matters - see docs/mcp-oauth.md.
     oauth: true,
     oauthScopes: ['flovia:use', 'offline_access'],
+  },
+  {
+    slug: 'icp',
+    name: 'Internet Computer',
+    url: 'https://mcp.internetcomputer.org/mcp',
+    logo: 'https://internetcomputer.org/apple-touch-icon.png',
+    description:
+      'Internet Computer (ICP) MCP by DFINITY - open an IC app, read its canister interfaces and docs, and run query calls as your Internet Identity. Reaches apps that opted in with a /.well-known/ic-architecture manifest. Sign in once with Internet Identity; sessions last up to 30 days.',
+    // Standard OAuth, probed live 2026-11-18: PRM at /.well-known/oauth-protected-
+    // resource/mcp names AS https://mcp.internetcomputer.org/mcp (self-issuing; AS
+    // metadata at the origin well-known): authorization_code only, PKCE S256, DCR
+    // registration_endpoint /mcp/oauth/register, public client via auth method
+    // "none", no scopes_supported (none requested). No refresh_token grant by
+    // design: the operator signs in with Internet Identity and picks the session
+    // length (up to 30 days, per DFINITY) and access level ("Questions only" for
+    // read-only skills) on the consent screen. storeSecrets() keeps the access
+    // token as MCP_ICP_TOKEN and writes no MCP_ICP_OAUTH, so mcp-oauth-refresh.sh
+    // skips it and runs use the token until the session ends; then reconnect.
+    // Companion skill: icp-mcp. See docs/icp/README.md.
+    oauth: true,
+    oauthSession:
+      'Internet Computer sessions have no refresh token: this one lasts as long as you chose at sign-in (up to 30 days). Reconnect here when it expires.',
   },
 ]
 

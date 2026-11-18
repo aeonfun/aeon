@@ -3599,6 +3599,26 @@
       ],
       "contentHash": "sha256-843b93076035aa6f117a50f524ccb9b595c52b54ec7b5b6a7d62e4097f49959e",
       "discoveredFrom": "skills/icp-deploy-check/SKILL.md"
+    },
+    {
+      "id": "961221e21a6642cb",
+      "tool": "aeon",
+      "scope": "project:.",
+      "type": "skill",
+      "name": "icp-mcp",
+      "source": {
+        "kind": "local",
+        "ref": "skills/icp-mcp"
+      },
+      "capabilities": {},
+      "files": [
+        {
+          "path": "SKILL.md",
+          "hash": "ef95f3933d2f3af6015b9054631d2b809098b52720f4a9353bb49524d5a408a1"
+        }
+      ],
+      "contentHash": "sha256-4bbd12ab4df65420dd5dd8907bbe0eec9337e93318e07928a6f4874a2637c06b",
+      "discoveredFrom": "skills/icp-mcp/SKILL.md"
     }
   ]
 }
