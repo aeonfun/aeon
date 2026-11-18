@@ -44,14 +44,17 @@ while [[ $# -gt 0 ]]; do
     --help|-h) usage ;;
     -*) echo "Unknown option: $1" >&2; usage ;;
     *)
-      # A skill directory: SKILL.md first, then the Markdown and text files it ships
-      # (references/, templates/, plugins/ ...). A skill can tell the agent to load any of
-      # them, so scanning SKILL.md alone leaves the rest of the instructions unread.
+      # A skill directory: SKILL.md first, then every regular text file it ships, whatever
+      # the extension (references/setup, *.yaml, *.mjs ...). SKILL.md can point the agent at
+      # any of them. Binary files are skipped (grep -I); too many files fails closed below.
       if [[ -d "$1" ]]; then
-        [[ -f "$1/SKILL.md" ]] && FILES+=("$1/SKILL.md")
+        d="${1%/}"
+        [[ -f "$d/SKILL.md" ]] && FILES+=("$d/SKILL.md")
         while IFS= read -r f; do
-          FILES+=("$f")
-        done < <(find "$1" -type f \( -iname '*.md' -o -iname '*.txt' \) ! -path "$1/SKILL.md" ! -path '*/.git/*' 2>/dev/null | LC_ALL=C sort)
+          if [[ ! -s "$f" ]] || LC_ALL=C grep -Iq . "$f" 2>/dev/null; then
+            [[ -s "$f" ]] && FILES+=("$f")
+          fi
+        done < <(find "$d" -type f ! -path "$d/SKILL.md" ! -path '*/.git/*' 2>/dev/null | LC_ALL=C sort)
       else
         FILES+=("$1")
       fi
@@ -68,6 +71,14 @@ fi
 if [[ ${#FILES[@]} -eq 0 ]]; then
   echo "No files to scan." >&2
   usage
+fi
+
+# Caps keep a hostile pack from making the scan slow; going past one fails closed.
+MAX_FILES=500
+MAX_BYTES=1048576
+if [[ ${#FILES[@]} -gt $MAX_FILES ]]; then
+  echo "[FAIL] ${#FILES[@]} text files to scan, over the limit of $MAX_FILES. Review this skill by hand."
+  exit 1
 fi
 
 # Load trusted sources
@@ -109,7 +120,7 @@ HIGH_SINK_PATTERNS=(
   # Arbitrary code execution: `eval` followed by something it can run (a quote, `$`,
   # backtick, `(` or `--`), so prose like "the eval harness" or "long eval strings"
   # in a reference doc does not read as a command.
-  'eval[[:space:]]+(--[[:space:]]+)?["'\''$`(\\]'
+  '(^|[^[:alnum:]_])eval[[:space:]]+[^.,;:!?]*["'\''$`(\\]'
   'eval\('
   # Remote code execution: a download piped straight into an interpreter, or fed
   # to one via process substitution (`bash <(curl …)`, `source <(curl …)`,
@@ -145,7 +156,9 @@ HIGH_SINK_PATTERNS=(
   'rm[[:space:]]+([-][a-zA-Z-]+[[:space:]]+)*["'\'']?/(["'\'']|[[:space:]]|$|--)'
   'rm[[:space:]]+([-][a-zA-Z-]+[[:space:]]+)*["'\'']?/\*'
   'rm[[:space:]]+([-][a-zA-Z-]+[[:space:]]+)*["'\'']?/(bin|boot|dev|etc|home|lib|lib64|opt|proc|root|sbin|sys|usr|var)(["'\'']|[[:space:]]|/|$)'
-  'rm[[:space:]]+([-][a-zA-Z-]+[[:space:]]+)*\*'
+  # The glob must end the command (end of line, `;`, `&`, `|`, `)`, backtick, or a path/flag
+  # after it), so `rm * rm` and `rm * Math.sqrt` in code, where an operand follows, don't match.
+  'rm[[:space:]]+([-][a-zA-Z-]+[[:space:]]+)*\*[[:space:]]*($|[;&|)`]|[-./~])'
   'rm[[:space:]]+([-][a-zA-Z-]+[[:space:]]+)*~'
   'mkfs\.'
   'dd[[:space:]]+if=.*of=/dev/'
@@ -409,12 +422,24 @@ scan_hidden() {
 
 scan_file() {
   local file="$1"
-  local skill_name
-  skill_name=$(basename "$(dirname "$file")")
+  local skill_name dir
+  # Name the finding after the skill that owns the file, not its subfolder (references/ ...).
+  dir=$(dirname "$file")
+  while [[ "$dir" != "/" && "$dir" != "." && ! -f "$dir/SKILL.md" ]]; do dir=$(dirname "$dir"); done
+  if [[ -f "$dir/SKILL.md" ]]; then skill_name=$(basename "$dir"); else skill_name=$(basename "$(dirname "$file")"); fi
 
   if [[ ! -f "$file" ]]; then
     echo -e "${RED}ERROR${NC}: File not found: $file"
     return 1
+  fi
+
+  local size
+  size=$(wc -c < "$file" 2>/dev/null | tr -d ' ') || size=0
+  if [[ "${size:-0}" -gt $MAX_BYTES ]]; then
+    TOTAL_FAIL=$((TOTAL_FAIL + 1))
+    echo -e "${RED}[FAIL]${NC} $skill_name ($file)"
+    echo -e "  ${RED}HIGH${NC}: L0: file is $size bytes, over the $MAX_BYTES-byte scan limit [size]"
+    return 0
   fi
 
   local content

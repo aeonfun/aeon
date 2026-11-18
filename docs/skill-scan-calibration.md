@@ -165,13 +165,16 @@ Fixtures: `malicious-injection-uppercase`, `-homoglyph`, `-disregard-prior`; `wa
 
 A skill is more than its `SKILL.md`. It can ship `references/`, `templates/` or `plugins/` and tell the agent to load them (`load references/setup.md and follow it`). The installers copy the whole folder but used to scan only `SKILL.md`, so an untrusted skill could keep that file clean and put the injection one link away.
 
-`skill-scan.sh` now accepts a skill directory and scans `SKILL.md` plus every `.md` and `.txt` file under it. `bin/add-skill` and `bin/install-skill-pack` pass the directory. A single `SKILL.md` path and `--all` behave as before.
+`skill-scan.sh` now accepts a skill directory and scans `SKILL.md` plus every regular text file under it, whatever the name or extension: `references/setup`, `.markdown`, `.yaml`, `.json`, `.mjs`, `.sh` and so on. Binary files (anything `grep -I` treats as binary, such as images) and empty files are skipped. A folder with more than 500 text files, or any single file over 1 MiB, fails instead of being partly scanned. `bin/add-skill` and `bin/install-skill-pack` pass the directory; a trailing slash is ignored. A single `SKILL.md` path and `--all` behave as before. A finding in a nested file is reported under the skill that owns it, not under `references`.
 
-Reference docs are written for the agent, so they hold more code-shaped prose than `SKILL.md` does. One rule was too loose for them: `eval[[:space:]]` matched "Long eval strings break inline JSON quoting". It now needs `eval` followed by something it can run: a quote, `$`, a backtick, `(` or `--`. `eval "$(curl …)"`, `eval $CMD`, `` eval `curl …` `` and `eval(atob(…))` still fail; no first-party `SKILL.md` finding changes.
+Files beside `SKILL.md` include code and prose written for the agent, so two rules that only ever saw `SKILL.md` were too loose for them:
 
-Scanned as folders, the 92 first-party skills give 0 FAIL. Two move from PASS to WARN, `base-mcp` and `canister-audit`, on MEDIUM path patterns (`../references/…`) in their reference docs; a warning does not block an install.
+- `eval[[:space:]]` matched "Long eval strings break inline JSON quoting". It now needs a shell character somewhere after `eval` on the line: `(^|[^[:alnum:]_])eval[[:space:]]+[^.,;:!?]*["'$`(\]`. `eval echo $(curl …)`, `eval echo "$x"`, `eval "$(curl …)"` and `eval(atob(…))` still fail, as on `main`.
+- The `rm` glob sink matched `rm * rm` and `rm * Math.sqrt(…)`, arithmetic on a variable named `rm` in `skills/anatomy`. The glob must now end the command (end of line, `;`, `&`, `|`, `)`, a backtick, or a path or flag after it). `rm -rf *`, `sudo rm -rf *`, `cd x && rm -rf *`, `` `rm -f *` `` and `(rm -rf *)` still fail.
 
-Fixtures, which the calibration test now scans as folders the way the installers do: `malicious-reference-file` (clean `SKILL.md`, injection in `references/setup.md`), `malicious-eval-quoted`, and `benign-reference-files` (a reference doc and a template, including the "eval strings" sentence). `test_community_skill_install.sh` runs `bin/add-skill` end to end on an untrusted pack whose reference file carries the injection and checks the install is blocked.
+Scanned as folders, the 92 first-party skills give 0 FAIL. Some move from PASS to WARN on MEDIUM patterns in their reference docs and code (`../references/…` paths and the like); a warning does not block an install.
+
+Fixtures, which the calibration test now scans as folders the way the installers do: `malicious-reference-file` (injection in `references/setup.md`), `malicious-reference-noext` (the same in `references/setup`, no extension), `malicious-eval-quoted`, `malicious-eval-echo`, `benign-reference-files` (a reference doc and a template, including the "eval strings" sentence) and `benign-reference-code` (the `rm * rm` arithmetic in a `.mjs` file, plus a binary image). `test_community_skill_install.sh` runs `bin/add-skill` end to end on an untrusted pack whose reference file carries the injection and checks the install is blocked.
 
 ## A note on query-string secrets
 
