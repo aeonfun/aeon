@@ -6,6 +6,7 @@ set -euo pipefail
 # Usage:
 #   ./scripts/skill-scan.sh <path-to-SKILL.md>
 #   ./scripts/skill-scan.sh skills/my-skill/SKILL.md
+#   ./scripts/skill-scan.sh skills/my-skill    # SKILL.md + every .md/.txt it ships
 #   ./scripts/skill-scan.sh --all              # Scan all skills
 #   ./scripts/skill-scan.sh --all --json        # JSON output
 #
@@ -30,7 +31,7 @@ SCAN_ALL=false
 FILES=()
 
 usage() {
-  echo "Usage: $0 <SKILL.md path> [--json]"
+  echo "Usage: $0 <SKILL.md path | skill dir> [--json]"
   echo "       $0 --all [--json]"
   exit 2
 }
@@ -42,7 +43,19 @@ while [[ $# -gt 0 ]]; do
     --json) JSON_OUTPUT=true; shift ;;
     --help|-h) usage ;;
     -*) echo "Unknown option: $1" >&2; usage ;;
-    *) FILES+=("$1"); shift ;;
+    *)
+      # A skill directory: SKILL.md first, then the Markdown and text files it ships
+      # (references/, templates/, plugins/ ...). A skill can tell the agent to load any of
+      # them, so scanning SKILL.md alone leaves the rest of the instructions unread.
+      if [[ -d "$1" ]]; then
+        [[ -f "$1/SKILL.md" ]] && FILES+=("$1/SKILL.md")
+        while IFS= read -r f; do
+          FILES+=("$f")
+        done < <(find "$1" -type f \( -iname '*.md' -o -iname '*.txt' \) ! -path "$1/SKILL.md" ! -path '*/.git/*' 2>/dev/null | LC_ALL=C sort)
+      else
+        FILES+=("$1")
+      fi
+      shift ;;
   esac
 done
 
@@ -93,8 +106,10 @@ fi
 # HIGH · SINKS — real code-execution / exfiltration / destruction. These match
 # the dangerous act itself, so they hold wherever the text appears.
 HIGH_SINK_PATTERNS=(
-  # Arbitrary code execution
-  'eval[[:space:]]'
+  # Arbitrary code execution: `eval` followed by something it can run (a quote, `$`,
+  # backtick, `(` or `--`), so prose like "the eval harness" or "long eval strings"
+  # in a reference doc does not read as a command.
+  'eval[[:space:]]+(--[[:space:]]+)?["'\''$`(\\]'
   'eval\('
   # Remote code execution: a download piped straight into an interpreter, or fed
   # to one via process substitution (`bash <(curl …)`, `source <(curl …)`,

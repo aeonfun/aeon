@@ -27,7 +27,8 @@ FIXTURES="$SCRIPT_DIR/skill-scan-fixtures"
 fails=0
 for dir in "$FIXTURES"/*/; do
   name="$(basename "$dir")"
-  out=$("$SCANNER" "$dir/SKILL.md" 2>&1) && rc=0 || rc=$?
+  # The folder, as the installers pass it: SKILL.md plus any reference files.
+  out=$("$SCANNER" "${dir%/}" 2>&1) && rc=0 || rc=$?
   if [[ $rc -ne 0 ]]; then verdict="fail"
   elif printf '%s' "$out" | grep -q '\[WARN\]'; then verdict="warn"
   else verdict="pass"; fi

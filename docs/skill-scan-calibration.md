@@ -161,6 +161,18 @@ Three ways to write an injection phrase that the rules above read past, each clo
 
 Fixtures: `malicious-injection-uppercase`, `-homoglyph`, `-disregard-prior`; `warn-hidden-css`, `warn-mixed-script`; `benign-cyrillic-text` (Russian words and a Russian name), `benign-greek-math` (`Δprice`, `θmax`), `benign-defensive-uppercase` (a capitalised phrase cited inside a defensive line), `benign-css-visible`. Across the 92 first-party skills these rules change no verdict.
 
+## The whole skill folder
+
+A skill is more than its `SKILL.md`. It can ship `references/`, `templates/` or `plugins/` and tell the agent to load them (`load references/setup.md and follow it`). The installers copy the whole folder but used to scan only `SKILL.md`, so an untrusted skill could keep that file clean and put the injection one link away.
+
+`skill-scan.sh` now accepts a skill directory and scans `SKILL.md` plus every `.md` and `.txt` file under it. `bin/add-skill` and `bin/install-skill-pack` pass the directory. A single `SKILL.md` path and `--all` behave as before.
+
+Reference docs are written for the agent, so they hold more code-shaped prose than `SKILL.md` does. One rule was too loose for them: `eval[[:space:]]` matched "Long eval strings break inline JSON quoting". It now needs `eval` followed by something it can run: a quote, `$`, a backtick, `(` or `--`. `eval "$(curl …)"`, `eval $CMD`, `` eval `curl …` `` and `eval(atob(…))` still fail; no first-party `SKILL.md` finding changes.
+
+Scanned as folders, the 92 first-party skills give 0 FAIL. Two move from PASS to WARN, `base-mcp` and `canister-audit`, on MEDIUM path patterns (`../references/…`) in their reference docs; a warning does not block an install.
+
+Fixtures, which the calibration test now scans as folders the way the installers do: `malicious-reference-file` (clean `SKILL.md`, injection in `references/setup.md`), `malicious-eval-quoted`, and `benign-reference-files` (a reference doc and a template, including the "eval strings" sentence). `test_community_skill_install.sh` runs `bin/add-skill` end to end on an untrusted pack whose reference file carries the injection and checks the install is blocked.
+
 ## A note on query-string secrets
 
 A secret carried in a URL query string (`…?token=$GITHUB_TOKEN`) is a real
