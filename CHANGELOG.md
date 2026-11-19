@@ -337,6 +337,7 @@ from or pin to; the template keeps serving the latest `main` to new forks.
   `catalog/skill-packs.json` now links the pack's own domain instead of the old preview URL. (#1360)
 - **Maintenance.** `hono` 4.13.18 and `@hono/node-server` 2.1.8 bundled in `apps/mcp-server`
   (lockfile only; replaces #1356 and #1359). (#1362)
+- **Maintenance.** `next` bumped from 16.4.3 to 16.4.5 in `apps/dashboard`. (#1365)
 - **Token usage and the run manifest record the model that answered.** A gateway can remap the requested
   model, so `scripts/effective-model.sh` now takes the model from the run envelope (the adapter's `model`
   field, else the Claude `modelUsage` entry with the most output tokens, else the requested model) and
@@ -547,6 +548,8 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Fixed
 
+- **Ecosystem page: PancakeSwap X link fixed.** `docs/ECOSYSTEM.md` now points to `@PancakeFi`, the
+  account's new handle; the old `@PancakeSwap` link returned 404. The website reads this file live. (#1368)
 - **`changelog` push-to mode works on the first try.** The skill runs `gh auth setup-git` after the
   cross-repo clone and opens the PR with explicit `--repo`, `--head` and `--base`, so the push and the PR no
   longer fail and recover by improvising. (#1354)
