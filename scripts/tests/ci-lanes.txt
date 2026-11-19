@@ -112,3 +112,4 @@
 
 1 | filing-registry sync-with-change (last_synced) | bash scripts/tests/test_filing_registry_sync.sh
 2 | effective-model unit tests | bash scripts/tests/test_effective_model.sh
+9 | mcp denied tools (run-time block) tests | bash scripts/tests/test_mcp_denied_tools.sh

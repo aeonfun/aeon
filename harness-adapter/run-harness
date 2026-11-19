@@ -8,6 +8,7 @@
 #     --allowed-tools "<list>"      Claude --allowedTools grammar, e.g. "Read,Grep,Bash(git:*)"
 #     --mode read-only|write        capability tier (derived from --allowed-tools if omitted; default write)
 #     --mcp-config <file>           Claude-style .mcp.json (${VAR}s expanded from env; translated per harness)
+#     --disallowed-tools "<list>"   MCP tools to block (mcp__<srv>__<tool>, comma-joined); others drop that server
 #     --max-turns <n>               agentic-turn cap where supported (claude/grok); others rely on --timeout
 #     --json-schema '<schema>'      structured output (native on claude/grok/codex; prompt+validate+retry on pi/vibe/kimi)
 #     --append-system-prompt <txt>  extra standing instructions
@@ -26,7 +27,7 @@ set -uo pipefail
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 usage() {
-  sed -n '2,22p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//' >&2
+  sed -n '2,23p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//' >&2
   exit 2
 }
 
@@ -34,7 +35,7 @@ usage() {
 HARNESS="$1"; shift
 [ -f "$HERE/adapters/$HARNESS.sh" ] || { echo "unknown harness '$HARNESS'" >&2; usage; }
 
-MODEL="" MODE="" ALLOWED="" MCP="" MAXT="" SCHEMA="" APPEND=""
+MODEL="" MODE="" ALLOWED="" DENIED="" MCP="" MAXT="" SCHEMA="" APPEND=""
 TIMEOUT=600 SANDBOX=auto COMPAT=auto NOTOOLS=
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -42,6 +43,7 @@ while [ $# -gt 0 ]; do
     --mode)                 MODE="$2"; shift 2 ;;
     --allowed-tools | --allowedTools) ALLOWED="$2"; shift 2 ;;
     --mcp-config)           MCP="$2"; shift 2 ;;
+    --disallowed-tools | --disallowedTools) DENIED="$2"; shift 2 ;;
     --max-turns)            MAXT="$2"; shift 2 ;;
     --json-schema)          SCHEMA="$2"; shift 2 ;;
     --append-system-prompt) APPEND="$2"; shift 2 ;;
@@ -83,6 +85,25 @@ if [ -n "$MCP" ]; then
   MCP="$RH_TMPDIR/mcp.json"
 fi
 
+# --disallowed-tools: MCP tools no run may call (a write tool on a server that is
+# otherwise read, e.g. the ICP server's canister_update_call). claude blocks each
+# tool natively (--disallowedTools beats the mcp__<srv> allow). No other harness
+# has a per-tool deny we can trust (grok aborts the turn on a deny rule), so for
+# them the whole server is dropped from this run's MCP config: fail closed, never
+# "the prompt says not to". RH_MCP_DROPPED tells adapters that read the project
+# .mcp.json natively (grok) to start no MCP servers at all.
+RH_MCP_DROPPED=""
+if [ -n "$DENIED" ] && [ "$HARNESS" != "claude" ] && [ -n "$MCP" ]; then
+  DROP=$(printf '%s' "$DENIED" | tr ',' '\n' | sed -nE 's/^mcp__(.+)__[^_].*$/\1/p' | sort -u | tr '\n' ' ')
+  if [ -n "$DROP" ]; then
+    # shellcheck disable=SC2086 # DROP is a space-joined list of server names
+    jq --args 'reduce $ARGS.positional[] as $s (.; del(.mcpServers[$s]))' $DROP < "$MCP" > "$RH_TMPDIR/mcp.filtered.json" \
+      && mv "$RH_TMPDIR/mcp.filtered.json" "$MCP"
+    RH_MCP_DROPPED="${DROP% }"
+    echo "warning: $HARNESS has no per-tool deny; MCP server(s) with blocked tools dropped this run: $RH_MCP_DROPPED" >&2
+  fi
+fi
+
 # pre-expand CLAUDE.md @imports for harnesses that load it verbatim (all but claude)
 if [ "$HARNESS" != "claude" ]; then
   . "$HERE/lib/imports.sh"
@@ -114,6 +135,7 @@ export RH_PROMPT_FILE="$RH_TMPDIR/prompt.txt"
 export RH_TMPDIR RH_LIB="$HERE/lib"
 export RH_HARNESS="$HARNESS"
 export RH_MODEL="$MODEL" RH_MODE="$MODE" RH_ALLOWED_TOOLS="$ALLOWED"
+export RH_DISALLOWED_TOOLS="$DENIED" RH_MCP_DROPPED
 export RH_MCP_CONFIG="$MCP" RH_MAX_TURNS="$MAXT" RH_JSON_SCHEMA="$SCHEMA"
 export RH_APPEND_SYSTEM_PROMPT="$APPEND" RH_COMPAT_RULES="$COMPAT_RULES"
 export RH_TIMEOUT="$TIMEOUT" RH_NO_TOOLS="$NOTOOLS"

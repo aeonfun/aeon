@@ -3,30 +3,40 @@
 How Aeon reaches the Internet Computer, what it ships for IC work, and the limits that
 shape those choices. Reference material - not a changelog.
 
-## Why the hosted ICP MCP connector is not used
+## The hosted ICP MCP (connected)
 
-The official endpoint, `https://mcp.internetcomputer.org/mcp`, is a real, spec-compliant
-MCP server, but it authenticates with **interactive OAuth only**. Its published metadata
-(`/.well-known/oauth-authorization-server`) advertises exactly one grant:
+DFINITY's hosted ICP MCP, `https://mcp.internetcomputer.org/mcp`, is in the dashboard
+MCP catalog as `icp`, with the companion skill `icp-mcp`. It lets a run act as the
+operator's Internet Identity at an IC app: open the app, read its canisters' Candid and
+API docs, and make query calls. The server also has `canister_update_call`, which
+changes state. Aeon blocks it at run time for every skill and message run (catalog
+`deniedTools`, `catalog/mcp-denied-tools.json`; see
+[docs/mcp-oauth.md](../mcp-oauth.md)), so no prompt can make a run call it.
 
-- `grant_types_supported: ["authorization_code"]` - no `client_credentials`, so there is
-  no machine-to-machine grant.
-- no `refresh_token` - a token cannot be renewed without a human.
-- a PKCE public client (`code_challenge_methods_supported: ["S256"]`,
-  `token_endpoint_auth_methods_supported: ["none"]`); obtaining a code means driving a
-  browser redirect that signs in with Internet Identity.
-- Dynamic Client Registration is supported, but DCR only registers a client; the client
-  still has to complete the interactive `authorization_code` + PKCE flow to get a token.
+**Auth.** The server is a spec-compliant OAuth MCP (probed live 2026-11-18): PRM at
+`/.well-known/oauth-protected-resource/mcp`, self-issuing AS, `authorization_code` +
+PKCE S256, Dynamic Client Registration, public client. It offers **no refresh token and
+no machine grant** by design. Instead the operator signs in with Internet Identity once
+and picks the session length (**up to 30 days**) and the access level (**Questions
+only** or **Actions & questions**). That fits Aeon's existing dashboard OAuth flow:
 
-Aeon runs headless on GitHub Actions, with no browser and no human in the loop, so it
-cannot complete that flow or keep a session alive. This is a limit of the *hosted
-connector*, not of the IC: a self-hosted canister MCP (e.g. one built with the
-third-party [`ic-rmcp`](https://github.com/ByteSmithLabs/ic-rmcp) SDK, `x-api-key`
-auth, key visible to subnet nodes) is possible, but Aeon does not use one. Aeon uses the
-direct-read path below. The hosted connector's one row in the OAuth provider table is in
-[`docs/mcp-oauth.md`](../mcp-oauth.md).
+1. Dashboard → MCP → **Connect Internet Computer** runs the browser flow and stores the
+   access token as `MCP_ICP_TOKEN`. No `MCP_ICP_OAUTH` is written, so
+   `scripts/mcp-oauth-refresh.sh` skips it.
+2. Every headless run sends that token until the session ends.
+3. When it ends, `icp-mcp` logs `ICP_MCP_SESSION_EXPIRED` and notifies; reconnect from
+   the panel. For a daily or weekly schedule that is about one reconnect a month.
 
-## The read path Aeon does use
+**Reach.** Sending AI traffic to arbitrary third-party APIs is against AI vendors' terms,
+so the ICP MCP only reaches apps that **opted in** by publishing a
+`/.well-known/ic-architecture` manifest that declares their canisters
+([service discoverability](https://docs.internetcomputer.org/guides/frontends/service-discoverability/)).
+Reads and writes stay on the canisters an app declares as its own. That makes it the
+right tool for working *inside* an app (for example a Caffeine app) as the operator, and
+the wrong tool for watching arbitrary canisters, which is why the monitor skills below
+keep the keyless public read path.
+
+## The keyless read path (monitor skills)
 
 IC state that Aeon needs is read **directly over HTTPS, keyless**, from the public
 dashboard and SNS aggregator APIs:
@@ -70,7 +80,8 @@ skills as-is.
 
 ## Known gaps
 
-- **The hosted MCP connector is interactive-only** (no machine grant, no refresh token).
+- **The hosted MCP session is fixed-length** (up to 30 days, no refresh token): reconnect
+  from the dashboard when it ends. It reaches opted-in apps only.
 - **No off-the-shelf IC Semgrep ruleset.** `canister-audit` ships a small hand-authored
   one (`references/ic-semgrep-rust.yml`); the agentic source pass is the reliable core and
   the ruleset is a high-recall first pass.
@@ -88,16 +99,26 @@ skills as-is.
   pinned PocketIC server
 - `.github/workflows/ci-canister-audit-fixture.yml` - runs the reproduction end to end
 
-**Read + monitor skills** (proposed in [#1330](https://github.com/aeonfun/aeon/pull/1330),
-not yet on main)
+**Read + monitor skills** ([#1330](https://github.com/aeonfun/aeon/pull/1330))
 - `canister-status` - control-plane monitor (controllers, module hash, upgrades);
   alerts on change
 - `sns-digest` - NNS + SNS governance proposal digest
 - `icp-deploy-check` - static pre-deploy checklist for an IC Rust canister repo
 
+**Hosted ICP MCP (`icp-mcp`)**
+- `apps/dashboard/lib/mcp-catalog.ts` - the `icp` catalog entry (OAuth Connect, `oauthSession` note)
+- `skills/icp-mcp/SKILL.md` - read-only app lookups through the ICP MCP
+- `docs/mcp-oauth.md` - the fixed-session provider notes
+
+**Upstreamed to [dfinity/icskills](https://github.com/dfinity/icskills)**
+- `icp-deploy-check` ([dfinity/icskills#447](https://github.com/dfinity/icskills/pull/447)) and
+  `canister-audit` ([dfinity/icskills#450](https://github.com/dfinity/icskills/pull/450)), both merged 2026-11-13
+
 ## Citations
 
 - ICP MCP endpoint metadata and docs: `https://mcp.internetcomputer.org/mcp`,
-  `https://internetcomputer.org/icp-mcp/` (probed 2026-11-03).
+  `https://internetcomputer.org/icp-mcp/` (probed 2026-11-03, re-probed 2026-11-18).
+- Session length (up to 30 days) and the opt-in rule: DFINITY, 2026-11-18;
+  `https://docs.internetcomputer.org/guides/frontends/service-discoverability/`.
 - IC dashboard + SNS APIs: `https://ic-api.internetcomputer.org`,
   `https://sns-api.internetcomputer.org`.

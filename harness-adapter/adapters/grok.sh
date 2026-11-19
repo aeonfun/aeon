@@ -154,7 +154,13 @@ fi
 # the harness is already executing as the agent's workspace. The flag is hidden on
 # --help but accepted (grok 0.2.101 and 1.0.46); passed ONLY when an MCP config is in
 # play, so a non-MCP run keeps the default untrusted posture.
-if [ -n "${RH_MCP_CONFIG:-}" ] && [ -f "${RH_MCP_CONFIG:-}" ]; then
+# A server with blocked tools (RH_MCP_DROPPED, set by run-harness) is gone from
+# RH_MCP_CONFIG, but grok reads the project .mcp.json natively and would still
+# start it. Without --trust grok starts no project MCP server, so skip it: no MCP
+# on grok this run beats an unblocked write tool.
+if [ -n "${RH_MCP_DROPPED:-}" ]; then
+  echo "warning: grok reads .mcp.json natively and cannot block single tools; MCP is off this run (blocked tools on: $RH_MCP_DROPPED)" >&2
+elif [ -n "${RH_MCP_CONFIG:-}" ] && [ -f "${RH_MCP_CONFIG:-}" ]; then
   ARGS+=(--trust)
   for srv in $(jq -r '.mcpServers // {} | keys[]' "$RH_MCP_CONFIG"); do
     ARGS+=(--allow "MCPTool(${srv}__*)")

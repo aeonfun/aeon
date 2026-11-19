@@ -1077,6 +1077,9 @@ jobs:
                 ALLOWED="$ALLOWED,mcp__${srv}"
               done
               MCP_FLAGS=(--mcp-config .mcp.json --strict-mcp-config)
+              # Run-time tool blocks: catalog/mcp-denied-tools.json
+              MCP_DENY="$(bash scripts/mcp-denied-tools.sh .mcp.json)"
+              [ -n "$MCP_DENY" ] && echo "MCP tools blocked: $MCP_DENY"
               MCP_ON="$(jq -r '.mcpServers | keys | join(", ")' .mcp.json | tr -d '\r\n')"
               echo "MCP enabled: $MCP_ON"; echo "MCP_STATUS=on:$MCP_ON" >> "$GITHUB_OUTPUT"
             fi
@@ -1167,6 +1170,7 @@ jobs:
           # left empty otherwise, so it doubles as the "MCP on" gate. run-harness does
           # its own ${VAR} expansion + per-harness translation from the same file.
           if [ "${#MCP_FLAGS[@]}" -gt 0 ]; then RH_ARGS+=(--mcp-config .mcp.json); fi
+          if [ -n "${MCP_DENY:-}" ]; then RH_ARGS+=(--disallowed-tools "$MCP_DENY"); fi
 
           if [ "$HARNESS" = "claude" ]; then
             # Cascade: try each provider in order; fall over only on a provider-shaped

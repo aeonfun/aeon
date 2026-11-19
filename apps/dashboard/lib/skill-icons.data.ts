@@ -44,6 +44,7 @@ export const SKILL_ICONS: Record<string, string> = {
   "higgsfield": "<rect x='3' y='4' width='18' height='16' rx='2'/><circle cx='8.5' cy='9.5' r='1.5'/><path d='M3 16l5-4 4 3 3-2 6 4'/><path d='M18 3v3M16.5 4.5h3'/>",
   "hunter-22": "<circle cx='12' cy='12' r='10'/><circle cx='12' cy='12' r='6'/><circle cx='12' cy='12' r='2'/>",
   "icp-deploy-check": "<path d='M12 2 4 5v6c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V5z'/><path d='M9 12l2 2 4-4'/>",
+  "icp-mcp": "<circle cx='7.5' cy='12' r='4.5'/><circle cx='16.5' cy='12' r='4.5'/><path d='M12 9.2v5.6'/>",
   "idea-forge": "<path d='M15 14c.2-1 .7-1.7 1.5-2.5a6 6 0 1 0-9 0c.8.8 1.3 1.5 1.5 2.5'/><path d='M9 18h6'/><path d='M10 22h4'/>",
   "idea-pipeline": "<path d='M22 3H2l8 9.5V19l4 2v-8.5z'/>",
   "inbox-triage": "<path d='M22 12h-6l-2 3h-4l-2-3H2'/><path d='M5.5 5.1 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.5-6.9A2 2 0 0 0 16.8 4H7.2a2 2 0 0 0-1.8 1.1z'/>",

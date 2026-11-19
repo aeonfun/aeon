@@ -66,6 +66,9 @@ ARGS+=(--add-dir /tmp)
 [ -n "${RUNNER_TEMP:-}" ] && [ "$RUNNER_TEMP" != /tmp ] && ARGS+=(--add-dir "$RUNNER_TEMP")
 [ -n "${RH_MODEL:-}" ] && ARGS+=(--model "$RH_MODEL")
 [ -n "${RH_ALLOWED_TOOLS:-}" ] && ARGS+=(--allowedTools "$RH_ALLOWED_TOOLS")
+# Blocked MCP tools (run-harness --disallowed-tools): a deny wins over the
+# mcp__<srv> allow, so the rest of that server stays usable.
+[ -n "${RH_DISALLOWED_TOOLS:-}" ] && ARGS+=(--disallowedTools "$RH_DISALLOWED_TOOLS")
 # --no-tools: no tool schemas in the prompt (a one-shot text call like the scorer).
 [ "${RH_NO_TOOLS:-}" = 1 ] && ARGS+=(--tools "")
 if [ -n "${RH_MCP_CONFIG:-}" ] && [ -f "${RH_MCP_CONFIG:-}" ]; then

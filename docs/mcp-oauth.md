@@ -53,7 +53,28 @@ discovery notes) and their companion skills:
 | Finance District Agent Wallet (`finance-district`) | `wallet-mcp.fd.xyz` | `openid offline_access api://fd-agent-wallet-mcp/mcp:tools` (resource scope gates tool access) | yes | `finance-district-mcp` |
 | PostHog (`posthog`) | `mcp.posthog.com/mcp` | `openid user:read organization:read project:read error_tracking:read` (read scopes only; `user:read` is required or the session 403s on init) | unverified — assume yes (no `offline_access`; refresh via the `refresh_token` grant) | `posthog-errors` |
 | Higgsfield (`higgsfield`) | `mcp.higgsfield.ai/mcp` | `openid email offline_access` | yes | `higgsfield` |
-| Internet Computer (`icp`) | `mcp.internetcomputer.org/mcp` | *(none - not wired)* | no - no refresh token or machine grant | *(not wired: `authorization_code` + PKCE via Internet Identity only; see [docs/icp/README.md](icp/README.md))* |
+| Internet Computer (`icp`) | `mcp.internetcomputer.org/mcp` | *(none - the server advertises no scopes; access level is chosen on the Internet Identity consent screen)* | no refresh token by design - a fixed session of up to 30 days, then reconnect (see below) | `icp-mcp` |
+
+**Fixed-session providers (Internet Computer).** The ICP MCP issues no refresh
+token: the operator signs in with Internet Identity once and picks the session
+length (up to 30 days) and the access level. Connect stores only
+`MCP_ICP_TOKEN` (no `MCP_ICP_OAUTH`), so the refresh script has nothing to do and
+every run uses that token until the session ends. The catalog's `oauthSession`
+note replaces the generic "no refresh token" warning in the panel. When the
+session ends, the companion skill logs `ICP_MCP_SESSION_EXPIRED` and notifies;
+reconnect from the panel. For a daily or weekly schedule that is one reconnect a
+month. See [docs/icp/README.md](icp/README.md).
+
+**Blocked tools (`deniedTools`).** A catalog entry can list tools no run may
+call, e.g. a write on a server the skills only read. ICP lists
+`canister_update_call`, which changes state on chain as the operator's identity.
+The same lists, keyed by server URL, live in `catalog/mcp-denied-tools.json`
+(a dashboard test keeps the two equal). Every skill and message run turns them
+into `run-harness --disallowed-tools` (`scripts/mcp-denied-tools.sh`), so the
+block holds whatever access level was picked at sign-in and whatever text a
+skill reads. On claude the tool is refused and the rest of the server works.
+Other harnesses cannot block one tool, so they get no MCP from that server for
+the run (grok gets no project MCP at all that run).
 
 The glim and Executor loops were verified end-to-end on a live instance
 (Connect → per-run refresh → PAT-persisted rotation → refresh off the persisted
@@ -99,7 +120,10 @@ token (`GH_GLOBAL`, or the optional `GH_SECRETS_PAT`) as **required** in practic
   one run mints and persists per interval.)
 - **No offline scope, no refresh.** If the provider doesn't return a refresh token
   (e.g. it needs an explicit offline-access scope), only the access token is stored
-  and it will expire — the panel warns when this happens.
+  and it will expire — the panel warns when this happens. Providers that issue no
+  refresh token on purpose (a fixed-length session, e.g. Internet Computer) set
+  `oauthSession` on the catalog entry so the panel says how long the session lasts
+  instead of warning.
 
 ## Testing it
 
