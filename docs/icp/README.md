@@ -8,8 +8,10 @@ shape those choices. Reference material - not a changelog.
 DFINITY's hosted ICP MCP, `https://mcp.internetcomputer.org/mcp`, is in the dashboard
 MCP catalog as `icp`, with the companion skill `icp-mcp`. It lets a run act as the
 operator's Internet Identity at an IC app: open the app, read its canisters' Candid and
-API docs, and make query calls (`canister_update_call` exists too; `icp-mcp` never
-calls it).
+API docs, and make query calls. The server also has `canister_update_call`, which
+changes state. Aeon blocks it at run time for every skill and message run (catalog
+`deniedTools`, `catalog/mcp-denied-tools.json`; see
+[docs/mcp-oauth.md](../mcp-oauth.md)), so no prompt can make a run call it.
 
 **Auth.** The server is a spec-compliant OAuth MCP (probed live 2026-11-18): PRM at
 `/.well-known/oauth-protected-resource/mcp`, self-issuing AS, `authorization_code` +

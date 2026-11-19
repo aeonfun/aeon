@@ -713,6 +713,9 @@ jobs:
                 ALLOWED="$ALLOWED,mcp__${srv}"
               done
               MCP_FLAGS=(--mcp-config .mcp.json --strict-mcp-config)
+              # Write tools blocked at run time (catalog/mcp-denied-tools.json).
+              MCP_DENY="$(bash scripts/mcp-denied-tools.sh .mcp.json)"
+              [ -n "$MCP_DENY" ] && echo "MCP tools blocked: $MCP_DENY"
               echo "MCP enabled: $(jq -r '.mcpServers | keys | join(", ")' .mcp.json)"
             fi
           fi
@@ -752,6 +755,7 @@ jobs:
           # run-harness re-expands the config and translates it per harness; the
           # claude adapter adds --strict-mcp-config itself, as this step used to.
           if [ "${#MCP_FLAGS[@]}" -gt 0 ]; then RH_ARGS+=(--mcp-config .mcp.json); fi
+          if [ -n "${MCP_DENY:-}" ]; then RH_ARGS+=(--disallowed-tools "$MCP_DENY"); fi
           # Which --model to forward, mirroring aeon.yml's Run step. aeon's own ids
           # are claude-*/grok-*, which mean nothing to an OpenRouter-backed CLI:
           # forwarding one there leaves the harness on its default while every

@@ -65,6 +65,17 @@ session ends, the companion skill logs `ICP_MCP_SESSION_EXPIRED` and notifies;
 reconnect from the panel. For a daily or weekly schedule that is one reconnect a
 month. See [docs/icp/README.md](icp/README.md).
 
+**Blocked tools (`deniedTools`).** A catalog entry can list tools no run may
+call, e.g. a write on a server the skills only read. ICP lists
+`canister_update_call`, which changes state on chain as the operator's identity.
+The same lists, keyed by server URL, live in `catalog/mcp-denied-tools.json`
+(a dashboard test keeps the two equal). Every skill and message run turns them
+into `run-harness --disallowed-tools` (`scripts/mcp-denied-tools.sh`), so the
+block holds whatever access level was picked at sign-in and whatever text a
+skill reads. On claude the tool is refused and the rest of the server works.
+Other harnesses cannot block one tool, so they get no MCP from that server for
+the run (grok gets no project MCP at all that run).
+
 The glim and Executor loops were verified end-to-end on a live instance
 (Connect → per-run refresh → PAT-persisted rotation → refresh off the persisted
 token, no re-connect): every wired provider rotates, so treat a secrets-write

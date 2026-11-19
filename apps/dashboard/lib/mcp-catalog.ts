@@ -30,6 +30,13 @@ export interface McpCatalogEntry {
   // warning, so the operator knows how long the session lasts and when to
   // reconnect. The run uses the captured access token until it expires.
   oauthSession?: string
+  // Tools of this server that no skill run may call (names without the
+  // mcp__<slug>__ prefix), e.g. a state-changing write on a server the skills
+  // only read. Blocked at run time, not just by the skill prompt: the workflows
+  // turn each into run-harness --disallowed-tools via scripts/mcp-denied-tools.sh,
+  // which reads the same lists keyed by URL from catalog/mcp-denied-tools.json
+  // (mcp-catalog.test.ts keeps the two equal).
+  deniedTools?: string[]
 }
 
 export const MCP_CATALOG: McpCatalogEntry[] = [
@@ -196,6 +203,9 @@ export const MCP_CATALOG: McpCatalogEntry[] = [
     // skips it and runs use the token until the session ends; then reconnect.
     // Companion skill: icp-mcp. See docs/icp/README.md.
     oauth: true,
+    // canister_update_call changes state on chain as the operator's Internet
+    // Identity: blocked in every run, whatever access level was picked at sign-in.
+    deniedTools: ['canister_update_call'],
     oauthSession:
       'Internet Computer sessions have no refresh token: this one lasts as long as you chose at sign-in (up to 30 days). Reconnect here when it expires.',
   },

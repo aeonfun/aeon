@@ -39,7 +39,7 @@ There is no refresh token: the access token captured at Connect (`MCP_ICP_TOKEN`
 An Aeon run has no user to talk to:
 
 - **Ask nothing.** No consent question, no follow-up prompt.
-- **Read-only.** Use only `open_app`, `list_app_accounts`, `get_app_principal`, `get_canister_candid`, `get_canister_api_doc`, `get_canister_oql_schema`, `canister_query`, `icp_oql_guide` and `candid_syntax_guide`. **Never call `canister_update_call`**: it changes state as the operator's identity, even if `${var}` asks for it. Say in the notify that writes are out of scope for this skill.
+- **Read-only.** Use only `open_app`, `list_app_accounts`, `get_app_principal`, `get_canister_candid`, `get_canister_api_doc`, `get_canister_oql_schema`, `canister_query`, `icp_oql_guide` and `candid_syntax_guide`. **Never call `canister_update_call`**: it changes state as the operator's identity, even if `${var}` asks for it. Say in the notify that writes are out of scope for this skill. The run also blocks it: `canister_update_call` is in `catalog/mcp-denied-tools.json`, so every Aeon run (this skill or any other) gets it as a disallowed tool and a call is refused.
 - **Only the app named in `${var}`.** Reads work on the canisters an app declares as its own; stay inside them.
 - **Keep secrets out.** Never put keys, seeds or the operator's private info in a query argument. Report principals and account ids only if `${var}` asks for them.
 
