@@ -1077,9 +1077,7 @@ jobs:
                 ALLOWED="$ALLOWED,mcp__${srv}"
               done
               MCP_FLAGS=(--mcp-config .mcp.json --strict-mcp-config)
-              # Write tools blocked at run time on any connected server listed in
-              # catalog/mcp-denied-tools.json (e.g. ICP canister_update_call), so a
-              # skill reading untrusted text cannot be talked into a state change.
+              # Run-time tool blocks: catalog/mcp-denied-tools.json
               MCP_DENY="$(bash scripts/mcp-denied-tools.sh .mcp.json)"
               [ -n "$MCP_DENY" ] && echo "MCP tools blocked: $MCP_DENY"
               MCP_ON="$(jq -r '.mcpServers | keys | join(", ")' .mcp.json | tr -d '\r\n')"
