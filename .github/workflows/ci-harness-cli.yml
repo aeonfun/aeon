@@ -62,7 +62,7 @@ jobs:
   smoke:
     name: smoke (${{ matrix.harness }})
     runs-on: ${{ vars.AEON_RUNNER || 'ubuntu-24.04' }}
-    timeout-minutes: 15
+    timeout-minutes: 2
     strategy:
       fail-fast: false
       matrix:
@@ -84,7 +84,7 @@ jobs:
       # job that saves the .deb on a miss (else all 7 race for the same key).
       - name: Install bubblewrap (read-only sandbox smoke)
         if: matrix.harness != 'ccr'
-        timeout-minutes: 5
+        timeout-minutes: 1
         uses: ./.github/actions/install-bubblewrap
         with:
           save-cache: 'false'
