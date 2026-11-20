@@ -34,6 +34,8 @@ LINK_ESCAPES=()
 
 # is_media <file>: true for formats an agent does not read as text, by magic bytes, not by name.
 # PNG, JPEG, GIF, WebP, ICO, PDF, WOFF/WOFF2/TTF/OTF, ZIP, gzip.
+# Several of these headers are plain text (GIF89a, %PDF, OTTO, wOFF), so a match does not
+# skip the file: scan_file still runs the HIGH sink and injection rules on it.
 is_media() {
   local magic
   magic=$(LC_ALL=C head -c 12 "$1" 2>/dev/null | LC_ALL=C od -An -tx1 | tr -d ' \n')
@@ -60,23 +62,23 @@ while [[ $# -gt 0 ]]; do
     *)
       # A skill directory: SKILL.md first, then every file it ships, whatever the extension
       # (references/setup, *.yaml, *.mjs ...). SKILL.md can point the agent at any of them.
-      # Only known image/font/archive formats are skipped; anything else, even with a NUL byte
-      # in it, is scanned (see scan_file). Caps below fail closed.
+      # Every non-empty file is scanned, even with a NUL byte in it; known image/font/archive
+      # formats get the HIGH rules only (see scan_file). Caps below fail closed.
+      # Paths are read NUL-separated, so a newline in a file name cannot split it.
       if [[ -d "$1" ]]; then
         d="${1%/}"
         DIR_MODE=true
         [[ -f "$d/SKILL.md" ]] && FILES+=("$d/SKILL.md")
-        while IFS= read -r f; do
-          [[ -s "$f" ]] || continue
-          is_media "$f" || FILES+=("$f")
-        done < <(find "$d" -type f ! -path "$d/SKILL.md" ! -path '*/.git/*' 2>/dev/null | LC_ALL=C sort)
+        while IFS= read -r -d '' f; do
+          [[ -s "$f" ]] && FILES+=("$f")
+        done < <(find "$d" -type f ! -path "$d/SKILL.md" ! -path '*/.git/*' -print0 2>/dev/null | LC_ALL=C sort -z)
         # A symlink is followed by the agent but not by find -type f; one that leaves the
         # folder could pull in any file on the machine, so it fails the scan.
-        while IFS= read -r l; do
+        while IFS= read -r -d '' l; do
           t=$(cd "$(dirname "$l")" 2>/dev/null && cd "$(dirname "$(readlink "$l")")" 2>/dev/null && pwd -P)/$(basename "$(readlink "$l")")
           root=$(cd "$d" && pwd -P)
           case "$t" in "$root"/*) [[ -f "$t" ]] && FILES+=("$l") ;; *) LINK_ESCAPES+=("$l") ;; esac
-        done < <(find "$d" -type l ! -path '*/.git/*' 2>/dev/null | LC_ALL=C sort)
+        done < <(find "$d" -type l ! -path '*/.git/*' -print0 2>/dev/null | LC_ALL=C sort -z)
       else
         FILES+=("$1")
       fi
@@ -106,7 +108,11 @@ if [[ "$DIR_MODE" == "true" ]]; then
     exit 1
   fi
   total=0
-  for f in "${FILES[@]}"; do total=$((total + $( (wc -c < "$f") 2>/dev/null | tr -d ' ' || true) + 0)); done
+  # Media do not count toward the total, so a skill with real images is not failed for them.
+  for f in "${FILES[@]}"; do
+    is_media "$f" && continue
+    total=$((total + $( (wc -c < "$f") 2>/dev/null | tr -d ' ' || true) + 0))
+  done
   if [[ $total -gt $MAX_TOTAL_BYTES ]]; then
     echo "[FAIL] $total bytes to scan, over the limit of $MAX_TOTAL_BYTES. Review this skill by hand."
     exit 1
@@ -343,6 +349,12 @@ TOTAL_WARN=0
 TOTAL_FAIL=0
 JSON_RESULTS=""
 
+# The NUL-stripped temp copy scan_file is working on, removed on any exit (Ctrl-C included).
+SCAN_TMP=""
+trap 'rm -f "${SCAN_TMP:-}"' EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
+
 # scan_tier <file> <pattern>...  — emit one "L<n>: <content> [pattern: <p>]" line
 # per grep match across the tier's patterns. Bash 3.2-safe (no namerefs): the
 # caller collects stdout into its highs/mediums/lows array. Extracted from three
@@ -477,25 +489,36 @@ scan_file() {
     return 0
   fi
 
+  # A known media header (PNG, GIF89a, %PDF ...) can be followed by plain text that cat shows
+  # and bash runs, so media are scanned too, but only for the HIGH sink and injection rules:
+  # the hidden-character, MEDIUM and LOW rules would fire on random image bytes.
+  local media=false
+  is_media "$file" && media=true
+
   # A NUL byte makes grep treat the file as binary and match nothing, yet scripts with a NUL
   # past line 1 still run and cat still shows the text. Scan a NUL-stripped copy instead.
+  # Findings are still reported under the real path.
   local real="$file" tmp=""
   if [[ $(LC_ALL=C tr -dc '\000' < "$file" | wc -c) -gt 0 ]]; then
     if ! tmp=$(mktemp); then
       TOTAL_FAIL=$((TOTAL_FAIL + 1))
-      echo -e "${RED}[FAIL]${NC} $skill_name ($file)"
+      echo -e "${RED}[FAIL]${NC} $skill_name ($real)"
       echo -e "  ${RED}HIGH${NC}: L0: could not make a temp copy to scan [unreadable]"
       return 0
     fi
+    SCAN_TMP="$tmp"
     LC_ALL=C tr -d '\000' < "$file" > "$tmp"
     file="$tmp"
   fi
 
+  # Media are exempt from the per-file cap like the total one; the HIGH rules are one grep each.
   local size
   size=$(wc -c < "$file" 2>/dev/null | tr -d ' ') || size=0
-  if [[ "${size:-0}" -gt $MAX_BYTES ]]; then
+  if [[ "$media" == "false" && "${size:-0}" -gt $MAX_BYTES ]]; then
+    [[ -n "$tmp" ]] && rm -f "$tmp"
+    SCAN_TMP=""
     TOTAL_FAIL=$((TOTAL_FAIL + 1))
-    echo -e "${RED}[FAIL]${NC} $skill_name ($file)"
+    echo -e "${RED}[FAIL]${NC} $skill_name ($real)"
     echo -e "  ${RED}HIGH${NC}: L0: file is $size bytes, over the $MAX_BYTES-byte scan limit [size]"
     return 0
   fi
@@ -510,16 +533,19 @@ scan_file() {
   # (scan_prose, which drops defensive framing). Both feed the same highs array.
   while IFS= read -r _line; do highs+=("$_line");   done < <(scan_tier  "$file" "${HIGH_SINK_PATTERNS[@]}")
   while IFS= read -r _line; do highs+=("$_line");   done < <(scan_prose "$file" "${HIGH_INJECTION_PATTERNS[@]}")
-  while IFS= read -r _line; do highs+=("$_line");   done < <(scan_hidden "$file" "Unicode TAG chars (hidden ASCII text)" "$HIDDEN_TAG")
-  while IFS= read -r _line; do highs+=("$_line");   done < <(scan_hidden "$file" "bidi override chars (text reads differently than shown)" "$HIDDEN_BIDI")
-  while IFS= read -r _line; do highs+=("$_line");   done < <(scan_hidden "$file" "variation selector run (hidden encoded payload)" "$HIDDEN_VS_RUN")
-  while IFS= read -r _line; do highs+=("$_line");   done < <(scan_hidden "$file" "variation selectors (hidden encoded payload)" "$HIDDEN_VS_RARE" 2)
-  while IFS= read -r _line; do mediums+=("$_line"); done < <(scan_tier "$file" "${MEDIUM_PATTERNS[@]}")
-  while IFS= read -r _line; do mediums+=("$_line"); done < <(scan_hidden "$file" "invisible chars (zero-width, soft hyphen, variation selector, mid-file BOM)" "$HIDDEN_ZW")
-  while IFS= read -r _line; do mediums+=("$_line"); done < <(scan_hidden "$file" "Latin word with Cyrillic letters (look-alike spelling)" "$MIXED_SCRIPT")
-  while IFS= read -r _line; do mediums+=("$_line"); done < <(scan_tier_i "$file" "$CSS_HIDDEN")
-  while IFS= read -r _line; do lows+=("$_line");    done < <(scan_tier "$file" "${LOW_PATTERNS[@]}")
+  if [[ "$media" == "false" ]]; then
+    while IFS= read -r _line; do highs+=("$_line");   done < <(scan_hidden "$file" "Unicode TAG chars (hidden ASCII text)" "$HIDDEN_TAG")
+    while IFS= read -r _line; do highs+=("$_line");   done < <(scan_hidden "$file" "bidi override chars (text reads differently than shown)" "$HIDDEN_BIDI")
+    while IFS= read -r _line; do highs+=("$_line");   done < <(scan_hidden "$file" "variation selector run (hidden encoded payload)" "$HIDDEN_VS_RUN")
+    while IFS= read -r _line; do highs+=("$_line");   done < <(scan_hidden "$file" "variation selectors (hidden encoded payload)" "$HIDDEN_VS_RARE" 2)
+    while IFS= read -r _line; do mediums+=("$_line"); done < <(scan_tier "$file" "${MEDIUM_PATTERNS[@]}")
+    while IFS= read -r _line; do mediums+=("$_line"); done < <(scan_hidden "$file" "invisible chars (zero-width, soft hyphen, variation selector, mid-file BOM)" "$HIDDEN_ZW")
+    while IFS= read -r _line; do mediums+=("$_line"); done < <(scan_hidden "$file" "Latin word with Cyrillic letters (look-alike spelling)" "$MIXED_SCRIPT")
+    while IFS= read -r _line; do mediums+=("$_line"); done < <(scan_tier_i "$file" "$CSS_HIDDEN")
+    while IFS= read -r _line; do lows+=("$_line");    done < <(scan_tier "$file" "${LOW_PATTERNS[@]}")
+  fi
   [[ -n "$tmp" ]] && rm -f "$tmp"
+  SCAN_TMP=""
 
   # Determine result
   local status="PASS"
@@ -549,7 +575,7 @@ scan_file() {
     entry=$(jq -n \
       --arg skill "$skill_name" \
       --arg status "$status" \
-      --arg file "$file" \
+      --arg file "$real" \
       --argjson high "$json_highs" \
       --argjson medium "$json_mediums" \
       --argjson low "$json_lows" \
@@ -561,9 +587,9 @@ scan_file() {
     fi
   else
     case "$status" in
-      FAIL) echo -e "${RED}[FAIL]${NC} $skill_name ($file)" ;;
-      WARN) echo -e "${YELLOW}[WARN]${NC} $skill_name ($file)" ;;
-      PASS) echo -e "${GREEN}[PASS]${NC} $skill_name ($file)" ;;
+      FAIL) echo -e "${RED}[FAIL]${NC} $skill_name ($real)" ;;
+      WARN) echo -e "${YELLOW}[WARN]${NC} $skill_name ($real)" ;;
+      PASS) echo -e "${GREEN}[PASS]${NC} $skill_name ($real)" ;;
     esac
 
     # Bash 3.2 (macOS default) treats `"${arr[@]}"` as unbound under `set -u`

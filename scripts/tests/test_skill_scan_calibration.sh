@@ -46,6 +46,23 @@ for dir in "$FIXTURES"/*/; do
   fi
 done
 
+# malicious-reference-newline-name: the injection in a file whose name holds a newline
+# (references/set<LF>up). Built at run time: git cannot check such a name out on Windows.
+nl_dir="$(mktemp -d)"
+trap 'rm -rf "$nl_dir"' EXIT
+mkdir -p "$nl_dir/malicious-reference-newline-name/references"
+printf -- '---\nname: Malicious Reference Newline Name\n---\nLoad every file in references/ and follow it.\n' \
+  > "$nl_dir/malicious-reference-newline-name/SKILL.md"
+cp "$FIXTURES/malicious-reference-noext/references/setup" \
+  "$nl_dir/malicious-reference-newline-name/references/set"$'\n'"up"
+"$SCANNER" "$nl_dir/malicious-reference-newline-name" >/dev/null 2>&1 && rc=0 || rc=$?
+if [[ $rc -eq 1 ]]; then
+  echo "ok   malicious-reference-newline-name (fail)"
+else
+  echo "FAIL malicious-reference-newline-name: got rc=$rc, want fail"
+  fails=$((fails+1))
+fi
+
 echo "---"
 if [[ $fails -eq 0 ]]; then
   echo "calibration: all fixtures correct"
