@@ -62,6 +62,7 @@ jobs:
     # Bench: runs 38823788873 + 38825096928. The label comes from the
     # AEON_RUNNER repo variable like every other job; unset = ubuntu-24.04.
     runs-on: ${{ vars.AEON_RUNNER || 'ubuntu-24.04' }}
+    timeout-minutes: 2
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: Install deps
@@ -74,7 +75,7 @@ jobs:
       # This job is the one that saves the .deb on a cache miss; ci-harness-cli's
       # smoke jobs only restore it.
       - name: Install bubblewrap (live read-only sandbox test)
-        timeout-minutes: 5
+        timeout-minutes: 1
         uses: ./.github/actions/install-bubblewrap
       # The suites live in scripts/tests/ci-lanes.txt, split over 10 lanes that run
       # at once (GitHub parallel steps, at most 10 concurrent; more parallel steps

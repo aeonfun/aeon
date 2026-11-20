@@ -28,6 +28,7 @@ concurrency:
 jobs:
   pocketic-repro:
     runs-on: ubuntu-24.04
+    timeout-minutes: 5
     defaults:
       run:
         working-directory: skills/canister-audit/fixtures/token_vault
