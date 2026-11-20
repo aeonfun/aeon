@@ -28,7 +28,21 @@ fi
 
 JSON_OUTPUT=false
 SCAN_ALL=false
+DIR_MODE=false
 FILES=()
+LINK_ESCAPES=()
+
+# is_media <file>: true for formats an agent does not read as text, by magic bytes, not by name.
+# PNG, JPEG, GIF, WebP, ICO, PDF, WOFF/WOFF2/TTF/OTF, ZIP, gzip.
+is_media() {
+  local magic
+  magic=$(LC_ALL=C head -c 12 "$1" 2>/dev/null | LC_ALL=C od -An -tx1 | tr -d ' \n')
+  case "$magic" in
+    89504e470d0a1a0a*|ffd8ff*|47494638*|52494646????????57454250*|00000100*|25504446*) return 0 ;;
+    774f4646*|774f4632*|00010000*|4f54544f*|504b0304*|1f8b*) return 0 ;;
+  esac
+  return 1
+}
 
 usage() {
   echo "Usage: $0 <SKILL.md path | skill dir> [--json]"
@@ -44,17 +58,25 @@ while [[ $# -gt 0 ]]; do
     --help|-h) usage ;;
     -*) echo "Unknown option: $1" >&2; usage ;;
     *)
-      # A skill directory: SKILL.md first, then every regular text file it ships, whatever
-      # the extension (references/setup, *.yaml, *.mjs ...). SKILL.md can point the agent at
-      # any of them. Binary files are skipped (grep -I); too many files fails closed below.
+      # A skill directory: SKILL.md first, then every file it ships, whatever the extension
+      # (references/setup, *.yaml, *.mjs ...). SKILL.md can point the agent at any of them.
+      # Only known image/font/archive formats are skipped; anything else, even with a NUL byte
+      # in it, is scanned (see scan_file). Caps below fail closed.
       if [[ -d "$1" ]]; then
         d="${1%/}"
+        DIR_MODE=true
         [[ -f "$d/SKILL.md" ]] && FILES+=("$d/SKILL.md")
         while IFS= read -r f; do
-          if [[ ! -s "$f" ]] || LC_ALL=C grep -Iq . "$f" 2>/dev/null; then
-            [[ -s "$f" ]] && FILES+=("$f")
-          fi
+          [[ -s "$f" ]] || continue
+          is_media "$f" || FILES+=("$f")
         done < <(find "$d" -type f ! -path "$d/SKILL.md" ! -path '*/.git/*' 2>/dev/null | LC_ALL=C sort)
+        # A symlink is followed by the agent but not by find -type f; one that leaves the
+        # folder could pull in any file on the machine, so it fails the scan.
+        while IFS= read -r l; do
+          t=$(cd "$(dirname "$l")" 2>/dev/null && cd "$(dirname "$(readlink "$l")")" 2>/dev/null && pwd -P)/$(basename "$(readlink "$l")")
+          root=$(cd "$d" && pwd -P)
+          case "$t" in "$root"/*) [[ -f "$t" ]] && FILES+=("$l") ;; *) LINK_ESCAPES+=("$l") ;; esac
+        done < <(find "$d" -type l ! -path '*/.git/*' 2>/dev/null | LC_ALL=C sort)
       else
         FILES+=("$1")
       fi
@@ -73,12 +95,26 @@ if [[ ${#FILES[@]} -eq 0 ]]; then
   usage
 fi
 
-# Caps keep a hostile pack from making the scan slow; going past one fails closed.
+# Caps keep a hostile skill folder from making the scan slow; going past one fails closed.
+# They apply to directory mode only, so --all is not limited by the size of the repo.
 MAX_FILES=500
 MAX_BYTES=1048576
-if [[ ${#FILES[@]} -gt $MAX_FILES ]]; then
-  echo "[FAIL] ${#FILES[@]} text files to scan, over the limit of $MAX_FILES. Review this skill by hand."
-  exit 1
+MAX_TOTAL_BYTES=10485760
+if [[ "$DIR_MODE" == "true" ]]; then
+  if [[ ${#FILES[@]} -gt $MAX_FILES ]]; then
+    echo "[FAIL] ${#FILES[@]} files to scan, over the limit of $MAX_FILES. Review this skill by hand."
+    exit 1
+  fi
+  total=0
+  for f in "${FILES[@]}"; do total=$((total + $( (wc -c < "$f") 2>/dev/null | tr -d ' ' || true) + 0)); done
+  if [[ $total -gt $MAX_TOTAL_BYTES ]]; then
+    echo "[FAIL] $total bytes to scan, over the limit of $MAX_TOTAL_BYTES. Review this skill by hand."
+    exit 1
+  fi
+  if [[ ${#LINK_ESCAPES[@]} -gt 0 ]]; then
+    for l in "${LINK_ESCAPES[@]}"; do echo "[FAIL] $l is a symlink that points outside the skill folder ($(readlink "$l"))."; done
+    exit 1
+  fi
 fi
 
 # Load trusted sources
@@ -158,7 +194,7 @@ HIGH_SINK_PATTERNS=(
   'rm[[:space:]]+([-][a-zA-Z-]+[[:space:]]+)*["'\'']?/(bin|boot|dev|etc|home|lib|lib64|opt|proc|root|sbin|sys|usr|var)(["'\'']|[[:space:]]|/|$)'
   # The glob must end the command (end of line, `;`, `&`, `|`, `)`, backtick, or a path/flag
   # after it), so `rm * rm` and `rm * Math.sqrt` in code, where an operand follows, don't match.
-  'rm[[:space:]]+([-][a-zA-Z-]+[[:space:]]+)*\*[[:space:]]*($|[;&|)`]|[-./~])'
+  'rm[[:space:]]+([-][a-zA-Z-]+[[:space:]]+)*\*[[:space:]]*($|[^[:alnum:]_[:space:](]|[0-9]+>)'
   'rm[[:space:]]+([-][a-zA-Z-]+[[:space:]]+)*~'
   'mkfs\.'
   'dd[[:space:]]+if=.*of=/dev/'
@@ -433,6 +469,28 @@ scan_file() {
     return 1
   fi
 
+  # Fail closed: a file the scanner cannot read may still be read by the agent.
+  if ! LC_ALL=C head -c 1 "$file" >/dev/null 2>&1; then
+    TOTAL_FAIL=$((TOTAL_FAIL + 1))
+    echo -e "${RED}[FAIL]${NC} $skill_name ($file)"
+    echo -e "  ${RED}HIGH${NC}: L0: could not read the file [unreadable]"
+    return 0
+  fi
+
+  # A NUL byte makes grep treat the file as binary and match nothing, yet scripts with a NUL
+  # past line 1 still run and cat still shows the text. Scan a NUL-stripped copy instead.
+  local real="$file" tmp=""
+  if [[ $(LC_ALL=C tr -dc '\000' < "$file" | wc -c) -gt 0 ]]; then
+    if ! tmp=$(mktemp); then
+      TOTAL_FAIL=$((TOTAL_FAIL + 1))
+      echo -e "${RED}[FAIL]${NC} $skill_name ($file)"
+      echo -e "  ${RED}HIGH${NC}: L0: could not make a temp copy to scan [unreadable]"
+      return 0
+    fi
+    LC_ALL=C tr -d '\000' < "$file" > "$tmp"
+    file="$tmp"
+  fi
+
   local size
   size=$(wc -c < "$file" 2>/dev/null | tr -d ' ') || size=0
   if [[ "${size:-0}" -gt $MAX_BYTES ]]; then
@@ -461,6 +519,7 @@ scan_file() {
   while IFS= read -r _line; do mediums+=("$_line"); done < <(scan_hidden "$file" "Latin word with Cyrillic letters (look-alike spelling)" "$MIXED_SCRIPT")
   while IFS= read -r _line; do mediums+=("$_line"); done < <(scan_tier_i "$file" "$CSS_HIDDEN")
   while IFS= read -r _line; do lows+=("$_line");    done < <(scan_tier "$file" "${LOW_PATTERNS[@]}")
+  [[ -n "$tmp" ]] && rm -f "$tmp"
 
   # Determine result
   local status="PASS"
