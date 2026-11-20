@@ -18,7 +18,7 @@ The rest of this doc is the first one. For the second: `bin/add-mcp`, `--desktop
 
 `./aeon` → **MCP** panel. Featured servers install one-click. Behaviour depends on the catalog entry:
 
-- **`authSecret`** → wires `Authorization: Bearer ${SECRET}` and shows a paste-token row.
+- **`authSecret`** → wires an `Authorization: Bearer YOUR_API_KEY` header (the real value comes from the repo secret) and shows a paste-token row.
 - **`oauth: true`** → shows **Connect**, runs the browser OAuth flow, stores tokens as repo secrets. See *Key refresh* below.
 - **Neither** → public server, no auth wired.
 
@@ -30,7 +30,7 @@ The rest of this doc is the first one. For the second: `bin/add-mcp`, `--desktop
 ./aeon mcp add glim                        # by catalog slug
 ./aeon mcp add myserver https://x.com/mcp  # custom HTTP
 ./aeon mcp add myserver https://… --sse    # SSE transport
-./aeon mcp add myserver https://… --header "Authorization: Bearer \${MY_TOKEN}"
+./aeon mcp add myserver https://… --header "Authorization: Bearer YOUR_API_KEY"
 ./aeon mcp rm myserver
 ```
 
@@ -65,7 +65,7 @@ Append to `MCP_CATALOG` in `apps/dashboard/lib/mcp-catalog.ts`. That one array f
     "glim": {
       "type": "http",
       "url": "https://glim.sh/mcp",
-      "headers": { "Authorization": "Bearer ${MCP_GLIM_TOKEN}" }
+      "headers": { "Authorization": "Bearer YOUR_API_KEY" }
     }
   }
 }
