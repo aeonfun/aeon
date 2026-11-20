@@ -98,16 +98,16 @@ var=<value>
 
 ### `./secretcurl` and the `{ENV_NAME}` placeholder
 
-Claude Code's Bash permission analyzer **blocks any command containing a secret expansion** (`$XAI_API_KEY`, `${XAI_API_KEY}`) because it can't statically prove safety. `./secretcurl` takes curl's arguments and substitutes `{ENV_NAME}` tokens *inside* the script, so the secret never reaches the agent's command line:
+Claude Code's Bash permission analyzer **blocks any command containing a secret expansion** (`$YOUR_API_KEY`, `${YOUR_API_KEY}`) because it can't statically prove safety. `./secretcurl` takes curl's arguments and substitutes `{ENV_NAME}` tokens *inside* the script, so the secret never reaches the agent's command line:
 
 ```bash
 jq -nc '{model:"grok-4.7", input:"<prompt>"}' | ./secretcurl -s -X POST https://api.x.ai/v1/responses \
-  -H 'Authorization: Bearer {XAI_API_KEY}' -H 'Content-Type: application/json' --data-binary @-
+  -H 'Authorization: Bearer {YOUR_API_KEY}' -H 'Content-Type: application/json' --data-binary @-
 ```
 
 Every value on a `./secretcurl` line is written in literally: the run refuses a shell variable there (`-d "$PAYLOAD"`), a body built in a heredoc, and any redirect into a file. Pipe the body in with `--data-binary @-` and save the reply with `-o /tmp/<file>`. Keys are never tested from the shell either (`[ -n "$KEY" ]`, `printenv`): the run notes list them on a "Keys set for this run" line.
 
-Braces, not `$`. A skill that writes `-H "Authorization: Bearer $XAI_API_KEY"` will be blocked at run time, not at author time.
+Braces, not `$`. A skill that writes `-H "Authorization: Bearer $YOUR_API_KEY"` will be blocked at run time, not at author time.
 
 In a scheduled run `./secretcurl` only fills placeholders for secrets the skill lists in `requires:` (plus `GH_TOKEN` / `GITHUB_TOKEN`). A placeholder for any other set key is refused with a message that names it, never its value, so declare every key you put in braces. curl runs with a stripped environment, and `--variable`, `--expand-*`, `-K` / `--config` and option values that read a file under `/proc` are refused. (#1215, #1216)
 
