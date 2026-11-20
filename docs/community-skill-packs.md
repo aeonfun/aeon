@@ -154,7 +154,7 @@ The two skills land in `skills/arxiv-watcher` and `skills/citation-graph`, with 
 
 ## Trust model
 
-`install-skill-pack` runs the same security scanner as `bin/add-skill` (`scripts/skill-scan.sh`). Behavior:
+`install-skill-pack` runs the same security scanner as `bin/add-skill` (`scripts/skill-scan.sh`) on each skill's whole folder: `SKILL.md` and every text file it ships, such as `references/`, `templates/` and helper scripts, whatever the extension. Binary files are skipped; a folder over 500 text files or a file over 1 MiB fails the scan. Behavior:
 
 - **Trusted source** (listed in `skills/security/trusted-sources.txt` as either `owner` or `owner/repo`) — the deep content scan is skipped. Format validation still applies.
 - **Untrusted source, clean scan** — install proceeds.

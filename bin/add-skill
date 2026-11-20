@@ -190,7 +190,7 @@ for skill in "${SKILL_NAMES[@]}"; do
   # Run security scan on untrusted sources
   if [[ "$TRUSTED_SOURCE" == "false" ]] && [[ -x "$SCANNER" ]]; then
     echo "  scanning: $skill ..."
-    if ! "$SCANNER" "$src/SKILL.md" 2>/dev/null; then
+    if ! "$SCANNER" "$src" 2>/dev/null; then
       if [[ "$FORCE_INSTALL" == "true" ]]; then
         echo "  ⚠ SECURITY ISSUES DETECTED — installing anyway (--force)"
         skill_log_force_install "$ROOT_DIR/memory/logs/security.log" "$skill" "$REPO"

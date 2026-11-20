@@ -1,0 +1,3 @@
+# Style
+
+Keep sentences short.

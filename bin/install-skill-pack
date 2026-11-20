@@ -563,12 +563,12 @@ FAILED=0
 # Returns: 0 = clean or accepted, 1 = blocked.
 scan_and_prompt() {
   local skill="$1"
-  local skill_md="$2"
+  local skill_dir="$2"
   if [[ "$TRUSTED_SOURCE" == "true" ]] || [[ ! -x "$SCANNER" ]]; then
     return 0
   fi
   local scan_output
-  if scan_output=$("$SCANNER" "$skill_md" 2>&1); then
+  if scan_output=$("$SCANNER" "$skill_dir" 2>&1); then
     echo "  ✓ security scan passed: $skill"
     return 0
   fi
@@ -727,7 +727,7 @@ for i in "${!SLUGS[@]}"; do
     desc=$(skill_fm "$src_dir/SKILL.md" description)
   fi
 
-  if ! scan_and_prompt "$slug" "$src_dir/SKILL.md"; then
+  if ! scan_and_prompt "$slug" "$src_dir"; then
     echo "  ✗ blocked: $slug"
     FAILED=$((FAILED + 1))
     continue
