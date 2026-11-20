@@ -5,7 +5,7 @@
  * github-push.test.ts: a bare "instance" (origin), a bare "template"
  * (upstream) and a working clone whose main still tracks upstream.
  */
-import { describe, it, before, after } from "node:test";
+import { describe, it, beforeEach, after } from "node:test";
 import { strict as assert } from "node:assert";
 import { execFileSync } from "node:child_process";
 import { rmSync, writeFileSync } from "node:fs";
@@ -19,7 +19,13 @@ const git = (cwd: string, ...args: string[]) =>
     .toString()
     .trim();
 
-before(() => {
+// A fresh fixture per test, so no test leans on the remotes, commits or dirty
+// tree an earlier one left behind (they must pass in any order). `base` and
+// `work` stay the same paths because AEON_REPO_ROOT is pinned to `work`.
+beforeEach(() => {
+  for (const d of ["instance.git", "template.git", "work", "other"]) {
+    rmSync(join(base, d), { recursive: true, force: true });
+  }
   for (const r of ["instance.git", "template.git"]) git(base, "init", "-q", "--bare", "-b", "main", r);
   git(base, "init", "-q", "-b", "main", "work");
   git(work, "config", "user.email", "test@example.com");
@@ -73,11 +79,13 @@ describe("syncPush", () => {
     assert.match(res.ok ? "" : res.error, /template/);
     assert.equal(git(work, "rev-parse", "HEAD"), before);
     assert.notEqual(git(work, "status", "--porcelain"), "");
-    git(work, "remote", "set-url", "origin", join(base, "instance.git"));
   });
 
   it("refuses when there is no origin remote at all", () => {
     git(work, "remote", "remove", "origin");
+    // A change to push, or syncPush returns "Already in sync" before it ever
+    // looks at the remote.
+    writeFileSync(join(work, "aeon.yml"), "model: e\n");
     const res = syncPush();
     assert.equal(res.ok, false);
     assert.match(res.ok ? "" : res.error, /no origin remote/);
