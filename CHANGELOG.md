@@ -11,6 +11,13 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Added
 
+- **Hosted ICP MCP connects in one click, with a read-only `icp-mcp` skill.** DFINITY's hosted ICP MCP
+  (`mcp.internetcomputer.org/mcp`) is now an OAuth server in the dashboard MCP catalog. The operator signs
+  in with Internet Identity once and the session lasts up to 30 days (no refresh token, so the panel says
+  to reconnect when it ends). `icp-mcp` opens an app, reads its canister interfaces and docs, and answers
+  a question with live query calls; it never makes update calls and only reaches apps that published an
+  `ic-architecture` manifest. Disabled by default. Catalog now 93 skills. (#1367)
+
 - **`skill-scan` catches injection phrases in capitals or look-alike letters, and CSS-hidden text.**
   Injection patterns and the quoted-citation check now match case-insensitively, so `IGNORE ALL PREVIOUS
   INSTRUCTIONS` fails (HIGH) while a defensive line that cites it still passes. Cyrillic and Greek letters
@@ -333,6 +340,17 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Changed
 
+- **`skill-scan` now scans the whole skill folder on install.** `bin/add-skill` and
+  `bin/install-skill-pack` pass the skill directory, so `references/`, templates and helper files are
+  scanned, not just `SKILL.md`. More than 500 text files or any file over 1 MiB fails closed. The `eval` and
+  `rm` glob sinks were tightened so prose and arithmetic no longer trip them. (#1366)
+- **The plugin no longer ships the history-mining script.** Mode 8 (mine history), its script and its
+  reference are removed from both setup-skill copies so the Claude plugin directory accepts the plugin;
+  `plugin/SECURITY.md` now says it is Markdown only. (#1370)
+- **Setup-skill doc examples use `YOUR_API_KEY`** instead of real secret names in header and curl
+  examples. (#1371)
+- **Maintenance.** CI test runs use random order on Node 24 and job time limits are sized to measured run
+  times; the dashboard `syncPush` tests no longer depend on order. (#1372, #1373, #1374)
 - **YUSA Pack homepage moved to `yusasecurity.xyz`.** The community pack listing in
   `catalog/skill-packs.json` now links the pack's own domain instead of the old preview URL. (#1360)
 - **Maintenance.** `hono` 4.13.18 and `@hono/node-server` 2.1.8 bundled in `apps/mcp-server`
