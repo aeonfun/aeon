@@ -61,7 +61,9 @@ concurrency:
 jobs:
   smoke:
     name: smoke (${{ matrix.harness }})
-    runs-on: ${{ vars.AEON_RUNNER || 'ubuntu-24.04' }}
+    # A ~20s check per harness: GitHub's runner on purpose, not AEON_RUNNER
+    # (free on public repos, starts faster, a bigger runner does not help).
+    runs-on: ubuntu-24.04
     timeout-minutes: 2
     strategy:
       fail-fast: false

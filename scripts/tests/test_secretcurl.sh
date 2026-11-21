@@ -34,7 +34,7 @@ class H(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path == '/slow-enough':
             open(sys.argv[2], 'w').close()
-            import time; time.sleep(2)
+            import time; time.sleep(4)
         self._reply()
     def do_POST(self): self._reply()
     def log_message(self, *a): pass
@@ -46,29 +46,36 @@ python3 "$ECHO_SRV" "$PORT" "$MARKER" &
 SRV_PID=$!
 cleanup() { kill "$SRV_PID" 2>/dev/null; wait "$SRV_PID" 2>/dev/null; rm -f "$ECHO_SRV" "$MARKER"; }
 trap cleanup EXIT
-for _ in 1 2 3 4 5; do
+# Up to 5s for the server to listen: a loaded runner (ci-tests runs 10 lanes
+# side by side) can take well over 1s to start python.
+for _ in $(seq 1 50); do
   curl -s -o /dev/null --max-time 1 "http://127.0.0.1:$PORT/" && break
-  sleep 0.2
+  sleep 0.1
 done
 
 # --- argv exposure: the real gap this fix closes ----------------------------
 # The server touches $MARKER the instant it starts handling /slow-enough, then
-# blocks for 2s before replying -- so once the marker exists, the curl process
+# blocks for 4s before replying -- so once the marker exists, the curl process
 # handling this request is guaranteed to still be alive and blocked server-side,
 # with no race between "request sent" and "ps snapshot taken".
-"$S" -s -o /dev/null --max-time 5 "http://127.0.0.1:$PORT/slow-enough" \
+"$S" -s -o /dev/null --max-time 8 "http://127.0.0.1:$PORT/slow-enough" \
   -H "Authorization: Bearer {TEST_SECRETCURL_API_KEY}" &
 SC_PID=$!
 for _ in $(seq 1 50); do [ -e "$MARKER" ] && break; sleep 0.1; done
+[ -e "$MARKER" ] || bad "slow-enough request never reached the server (marker missing)"
 SNAPSHOT=$(ps -ef 2>/dev/null || ps aux 2>/dev/null)
 wait "$SC_PID" 2>/dev/null
 
-if printf '%s' "$SNAPSHOT" | grep -q 'marker-secret-do-not-leak'; then
+# Here-strings, not printf | grep -q: grep -q exits at its first match, and on a
+# busy runner the ps snapshot is bigger than a pipe buffer, so printf then dies
+# of SIGPIPE ("write error: Broken pipe") and pipefail turns the MATCH into a
+# failed test. That was the ci-tests flake (run 41836506981).
+if grep -q 'marker-secret-do-not-leak' <<<"$SNAPSHOT"; then
   bad "secret value must not appear in any process argv (found: $(printf '%s' "$SNAPSHOT" | grep 'marker-secret' | head -1))"
 else
   pass "secret value does not appear in any process argv while the request is in flight"
 fi
-if printf '%s' "$SNAPSHOT" | grep -qE '[c]url (-q )?-K /dev/fd/'; then
+if grep -qE '[c]url (-q )?-K /dev/fd/' <<<"$SNAPSHOT"; then
   pass "curl subprocess invoked via -K (config on a /dev/fd pipe), not inline args"
 else
   bad "expected a 'curl -K /dev/fd/N' subprocess in the ps snapshot (got: $(printf '%s' "$SNAPSHOT" | grep '[c]url'))"

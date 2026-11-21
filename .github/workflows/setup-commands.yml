@@ -28,6 +28,9 @@ permissions:
 
 jobs:
   setup:
+    # The canon repo has no TELEGRAM_BOT_TOKEN, so an aeon.yml push there is
+    # always a no-op; skip it unless someone runs it by hand.
+    if: github.repository != 'aeonfun/aeon' || github.event_name == 'workflow_dispatch'
     runs-on: ${{ vars.AEON_RUNNER || 'ubuntu-24.04' }}
     timeout-minutes: 5
     steps:

@@ -42,7 +42,9 @@ concurrency:
 jobs:
   poll:
     if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.message == '') || (github.event_name == 'repository_dispatch' && github.event.action == 'cron-tick')
-    runs-on: ${{ vars.AEON_RUNNER || 'ubuntu-24.04' }}
+    # Pure polling: GitHub's runner on purpose, not AEON_RUNNER (free on public
+    # repos), so a cron tick never bills Blacksmith minutes.
+    runs-on: ubuntu-24.04
     timeout-minutes: 5
 
     steps:

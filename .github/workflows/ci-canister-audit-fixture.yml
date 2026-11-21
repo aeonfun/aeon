@@ -35,6 +35,19 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
+      # Cache the cargo registry and the shared target dir both builds below use,
+      # so a run only recompiles what changed instead of the canister + repro crates
+      # from scratch. The target dir is outside the checkout, so it is listed under
+      # cache-directories (a `workspaces` target path is joined onto the crate dir).
+      # Saved from main only, so PR runs read it but never churn it.
+      - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
+        with:
+          workspaces: |
+            skills/canister-audit/fixtures/token_vault
+            skills/canister-audit/fixtures/token_vault/repro
+          cache-directories: /tmp/canister-audit-target
+          save-if: ${{ github.ref == 'refs/heads/main' }}
+
       - name: Add wasm32 target
         run: rustup target add wasm32-unknown-unknown
 
