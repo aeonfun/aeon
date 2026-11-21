@@ -1,10 +1,10 @@
 # How Aeon skills are actually written
 
-Surveyed across all 92 skills in `aeonfun/aeon`. Frequencies are real counts - match the dominant convention unless there's a reason not to. Bodies run 14-1228 lines (~221 median); a skill is a prompt, not a config file, and reads as prose.
+Surveyed across all 93 skills in `aeonfun/aeon`. Frequencies are real counts - match the dominant convention unless there's a reason not to. Bodies run 14-1228 lines (~221 median); a skill is a prompt, not a config file, and reads as prose.
 
 ## Frontmatter
 
-Near-universal - **all 92 skills** carry `name`, `description`, `category`, and `tags`; 81 also carry `title` (the other 11 fall back to the slug):
+Near-universal - **all 93 skills** carry `name`, `description`, `category`, and `tags`; 82 also carry `title` (the other 11 fall back to the slug):
 
 ```yaml
 name: my-skill       # the slug (matches the skills/<slug>/ directory)
@@ -21,7 +21,7 @@ Then, in descending real-world use:
 |---|---|---|
 | `var:` | 81 | the operator-tunable knob (topic, filter, mode). Default value; `./aeon skills set <name> --var` overrides at run time |
 | `requires:` | 41 | API keys to inject. **This is an allowlist** - see the trap below |
-| `mode:` | 37 | `read-only` (20) or `write` (17). **Absent = `write`** |
+| `mode:` | 38 | `read-only` (21) or `write` (17). **Absent = `write`** |
 | `capabilities:` | 29 | declared blast radius, e.g. `external_api`, `sends_notifications`. Taxonomy locked by `ci-capabilities-parity` |
 | `commits:` | 14 | `true` (10) / `false` (4) - whether the run may commit |
 | `permissions:` | 11 | GitHub token scopes, e.g. `contents:write`, `pull-requests:write` |
@@ -117,7 +117,7 @@ There is **no network sandbox** - plain `curl` works for unauthenticated GETs.
 
 `memory/` is the durable state that survives between runs. Four conventions, in order of how often skills touch them:
 
-### `memory/logs/${today}.md` - the run log (73 of 92 skills)
+### `memory/logs/${today}.md` - the run log (73 of 93 skills)
 
 Every skill appends what it did, under **one** heading that is exactly its slug:
 
