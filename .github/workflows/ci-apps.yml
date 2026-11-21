@@ -13,7 +13,8 @@ name: ci-apps
 # caught by hand: `next build` crashed while `tsc --noEmit` passed. That is why
 # the dashboard job runs BOTH — a typecheck alone would have missed it.
 #
-# One job per app so a red X names the broken surface, and so a slow dashboard
+# One job per app (the CLI rides in the dashboard job, which it borrows its
+# toolchain from) so a red X names the broken surface, and so a slow dashboard
 # build never masks a fast Worker failure. The workflow-level path filter is
 # `apps/**` rather than per-job filters: keeping it native (no third-party
 # paths-filter action) is worth re-running a 30-second Worker job on a
@@ -52,7 +53,9 @@ jobs:
   format:
     timeout-minutes: 2
     name: format - biome
-    runs-on: ${{ vars.AEON_RUNNER || 'ubuntu-24.04' }}
+    # A ~10s check: GitHub's runner on purpose, not AEON_RUNNER (free on public
+    # repos, starts faster, a bigger runner does not help).
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
@@ -82,7 +85,9 @@ jobs:
         with:
           node-version: '24'
           cache: npm
-          cache-dependency-path: apps/dashboard/package-lock.json
+          cache-dependency-path: |
+            apps/dashboard/package-lock.json
+            apps/cli/package-lock.json
       - name: Install deps
         run: npm ci
       - name: Typecheck (strict)
@@ -103,48 +108,33 @@ jobs:
       # Kept separate from the typecheck on purpose — see the TS7 note above.
       - name: Production build
         run: npm run build
-
-  cli:
-    timeout-minutes: 2
-    name: cli — typecheck
-    runs-on: ${{ vars.AEON_RUNNER || 'ubuntu-24.04' }}
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
-        with:
-          node-version: '22'
-          cache: npm
-          cache-dependency-path: |
-            apps/cli/package-lock.json
-            apps/dashboard/package-lock.json
-      # The CLI deliberately shares one source of truth with the dashboard: its
-      # tsconfig compiles ../dashboard/lib/**/*.ts and borrows that app's
-      # typescript + @types (apps/cli/tsconfig.json `typeRoots`). So the CLI
-      # cannot be typechecked without the dashboard's node_modules — installing
-      # both here is what makes `npm run typecheck` resolve at all.
-      - name: Install dashboard deps (CLI borrows its typescript + @types)
-        run: npm ci
-        working-directory: apps/dashboard
+      # The CLI steps live here, not in their own job: the CLI shares one source
+      # of truth with the dashboard (its tsconfig compiles ../dashboard/lib/**/*.ts
+      # and borrows that app's typescript, @types and eslint via
+      # apps/cli/tsconfig.json `typeRoots`), so it needs the dashboard
+      # node_modules installed above. A separate job paid for a second
+      # dashboard npm ci. Step names still say "CLI" so a red X names it.
       - name: Install CLI deps
         run: npm ci
         working-directory: apps/cli
-      - name: Typecheck (strict, includes the shared dashboard lib)
+      - name: CLI typecheck (strict, includes the shared dashboard lib)
         run: npm run typecheck
         working-directory: apps/cli
-      # Borrows the dashboard's eslint + TypeScript rules (installed above), the
-      # same single-source-of-truth idiom as the typecheck.
-      - name: Lint (eslint, borrows the dashboard install)
+      - name: CLI lint (eslint, borrows the dashboard install)
         run: npm run lint
         working-directory: apps/cli
       # `aeon init` end to end against a fake gh (a directory of bare repos):
       # template switch-over, re-run, resume, --dir, refusals. No network.
-      - name: aeon init sandbox tests
+      - name: CLI aeon init sandbox tests
         run: bash apps/cli/test/init-sandbox.sh
+        working-directory: .
 
   mcp-server:
     timeout-minutes: 2
     name: mcp-server — build
-    runs-on: ${{ vars.AEON_RUNNER || 'ubuntu-24.04' }}
+    # A ~10s check: GitHub's runner on purpose, not AEON_RUNNER (free on public
+    # repos, starts faster, a bigger runner does not help).
+    runs-on: ubuntu-24.04
     defaults:
       run:
         working-directory: apps/mcp-server
@@ -176,7 +166,9 @@ jobs:
   webhook:
     timeout-minutes: 2
     name: webhook — worker bundle
-    runs-on: ${{ vars.AEON_RUNNER || 'ubuntu-24.04' }}
+    # A ~10s check: GitHub's runner on purpose, not AEON_RUNNER (free on public
+    # repos, starts faster, a bigger runner does not help).
+    runs-on: ubuntu-24.04
     defaults:
       run:
         working-directory: apps/webhook
