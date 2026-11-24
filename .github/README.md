@@ -30,6 +30,8 @@
 [![license](https://img.shields.io/badge/license-MIT-F4EFE1?style=flat-square&labelColor=0d0c0a)](../LICENSE)
 [![node](https://img.shields.io/badge/node-20+-F4EFE1?style=flat-square&labelColor=0d0c0a)](https://nodejs.org/)
 
+[![As seen on Open Source Alternatives](https://www.opensourcealternatives.to/badge-osa.svg)](https://www.opensourcealternatives.to)
+
 </div>
 
 <p align="center">
