@@ -32,6 +32,7 @@
 7 | harness-adapter grok tests | bash scripts/tests/test_harness_adapter_grok.sh
 7 | hermes adapter tests | bash scripts/tests/test_hermes_adapter.sh
 7 | cursor adapter tests | bash scripts/tests/test_cursor_adapter.sh
+7 | droid adapter tests | bash scripts/tests/test_droid_adapter.sh
 9 | codex adapter model + token tests | bash scripts/tests/test_codex_adapter.sh
 9 | pi adapter MCP tests | bash scripts/tests/test_pi_adapter_mcp.sh
 1 | harness capability manifest tests | bash scripts/tests/test_generate_harnesses_json.sh

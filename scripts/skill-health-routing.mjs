@@ -18,7 +18,7 @@ const ROOT = process.cwd();
 const HEALTH_DIR = join(ROOT, 'memory', 'skill-health');
 const TOKEN_FILE = join(ROOT, 'memory', 'token-usage.csv');
 // Harness allowlist mirrors scripts/resolve-harness.sh; keep in sync.
-const HARNESSES = new Set(['claude', 'grok', 'codex', 'pi', 'vibe', 'kimi', 'fx', 'cursor', 'hermes']);
+const HARNESSES = new Set(['claude', 'grok', 'codex', 'pi', 'vibe', 'kimi', 'fx', 'cursor', 'hermes', 'droid']);
 
 function usage() {
   console.error(`usage: node scripts/skill-health-routing.mjs <skill-name>`);

@@ -68,9 +68,14 @@ need() {  # need VAR_NAME "what to set"
 FX_PIN=v0.0.12
 CURSOR_PIN=2026.10.01-14929f9
 HERMES_PIN=f97608f178d1ffeca59860195ab7da295f7c8e5f   # hermes-agent release v2026.9.24
+# Factory publishes version-pinned binaries and a *.sha256 next to each at
+# downloads.factory.ai/factory-cli/releases/<version>/<os>/<arch>/droid, so droid
+# is installed from the pinned release with the checksums below (same as fx).
+DROID_PIN=1.21.1
 FX_VERSION="${FX_VERSION:-$FX_PIN}"
 CURSOR_VERSION="${CURSOR_VERSION:-$CURSOR_PIN}"
 HERMES_COMMIT="${HERMES_COMMIT:-$HERMES_PIN}"
+DROID_VERSION="${DROID_VERSION:-$DROID_PIN}"
 
 # pin_platform -> "<os> <arch>" as linux|darwin x86_64|aarch64, or fail closed.
 pin_platform() {
@@ -388,6 +393,30 @@ TOML
     [ -n "${GITHUB_PATH:-}" ] && echo "$HOME/.local/bin" >> "$GITHUB_PATH"
     need CURSOR_API_KEY "a Cursor API key for headless CLI runs"
     echo "cursor: API key staged via CURSOR_API_KEY" ;;
+  droid)
+    # Factory's app.factory.ai/cli script only maps the platform and installs
+    # downloads.factory.ai/factory-cli/releases/<version>/<os>/<arch>/droid after a
+    # sha256 check, so fetch that pinned binary directly instead of running the
+    # vendor script. Checksums = the vendor's published droid.sha256 per platform.
+    plat="$(pin_platform)"; read -r os arch <<<"$plat"
+    [ "$arch" = x86_64 ] && darch=x64 || darch=arm64
+    droid_sha=""
+    case "$os-$arch" in
+      linux-x86_64)   droid_sha=a7c985f7945884a722042c8574114316a286f9c72f215dd9ac97bf426acefe26 ;;
+      linux-aarch64)  droid_sha=247b19386cbb880c886b7d34e02e3d4bddb093e0936b04169276787f51079096 ;;
+      darwin-x86_64)  droid_sha=6581196b2ce9465f7f752c44d5e3e8b75da0808026996b8f2e205a9ce89c1789 ;;
+      darwin-aarch64) droid_sha=3b1390a50cb469185cc19f7156798188de70ca5ea356983baf0f56790633c41b ;;
+    esac
+    [ "$DROID_VERSION" = "$DROID_PIN" ] || droid_sha=""
+    pin_tmp
+    fetch_pinned "https://downloads.factory.ai/factory-cli/releases/$DROID_VERSION/$os/$darch/droid" \
+      "${DROID_SHA256:-$droid_sha}" "$PIN_TMP/droid"
+    mkdir -p "$HOME/.local/bin"
+    mv "$PIN_TMP/droid" "$HOME/.local/bin/droid"
+    chmod +x "$HOME/.local/bin/droid"
+    echo "droid: installed $DROID_VERSION (sha256 verified)"
+    [ -n "${GITHUB_PATH:-}" ] && echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+    need FACTORY_API_KEY "a Factory API key for headless CLI runs (get one at https://app.factory.ai/settings/api-keys)" ;;
   hermes)
     # hermes-agent.nousresearch.com/install.sh serves main's installer, which
     # clones main HEAD. Instead take scripts/install.sh from the pinned release

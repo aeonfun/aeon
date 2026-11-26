@@ -39,7 +39,7 @@ ARCHIVE="$SNAP/home.tar"
 
 # PATH-under-$HOME|kept-live-entries (comma-separated, relative to PATH; a
 # leading "+" keeps the entry even when it did not exist at snapshot time).
-# cursor, fx and hermes run under a scratch HOME inside run-harness's own temp
+# cursor, fx, hermes and droid run under a scratch HOME inside run-harness's own temp
 # dir (fresh per call), and hermes's install dir is locked read-only by the
 # sandbox, so none of their real-$HOME config is shared with the scorer.
 SPEC=(

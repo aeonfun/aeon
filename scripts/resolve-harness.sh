@@ -5,7 +5,7 @@
 # an agent resolves identically. It is the companion of scripts/install-harness.sh
 # (which stages the CLI these outputs describe) and of harness-adapter/run-harness
 # (which consumes MODEL_ARG). Splitting the decision from the workflow is what lets
-# messages.yml support all nine harnesses instead of only claude/grok — a gap that
+# messages.yml support all ten harnesses instead of only claude/grok — a gap that
 # existed purely because this ~100 lines lived inside one workflow step.
 #
 # Usage:
@@ -29,10 +29,11 @@
 #
 # Outputs (stdout, one KEY=VALUE per line — append to $GITHUB_OUTPUT/$GITHUB_ENV,
 # or `eval` after review):
-#   HARNESS        claude | grok | codex | pi | vibe | kimi | fx | cursor | hermes
+#   HARNESS        claude | grok | codex | pi | vibe | kimi | fx | cursor | hermes | droid
 #   AUTH_MODE      native-oauth | native-key | openrouter | gateway (claude only:
 #                  a key from aeon.yml's gateway: block, see below) | none
 #                  (cursor with no CURSOR_API_KEY: it has no fallback)
+#                  (droid with no FACTORY_API_KEY: same — no fallback)
 #   HARNESS_MODEL  the model label for logs/records ("(native:…)" on native auth)
 #   MODEL_ARG      what to pass as `run-harness --model`, or empty for "the
 #                  harness's own staged config decides" (always empty on claude:
@@ -74,7 +75,7 @@ fi
 #   agy      — its print mode runs tools outside $PWD, so it reports success
 #              having written nothing to the workspace.
 case "$HARNESS" in
-  claude|grok|codex|pi|vibe|kimi|fx|cursor|hermes) ;;
+  claude|grok|codex|pi|vibe|kimi|fx|cursor|hermes|droid) ;;
   *) echo "::warning::unknown harness '$HARNESS' — falling back to claude" >&2
      HARNESS="claude" ;;
 esac
@@ -97,6 +98,10 @@ case "$HARNESS" in
   # CURSOR_API_KEY), so with no key it is labelled `none` rather than a fallback
   # that does not exist. Label only: the run still stops at the install step.
   cursor) if [ -n "${CURSOR_API_KEY:-}" ]; then AUTH_MODE="native-key"; else AUTH_MODE="none"; fi ;;
+  # droid has no OpenRouter path either (install-harness.sh fails closed without
+  # FACTORY_API_KEY), so with no key it is labelled `none` rather than a fallback
+  # that does not exist. Label only: the run still stops at the install step.
+  droid) if [ -n "${FACTORY_API_KEY:-}" ]; then AUTH_MODE="native-key"; else AUTH_MODE="none"; fi ;;
   vibe)  if [ -n "${MISTRAL_API_KEY:-}" ]; then AUTH_MODE="native-key"; fi ;;
   pi)    if [ -n "${ANTHROPIC_API_KEY:-}" ] || [ -n "${ANTHROPIC_OAUTH_TOKEN:-}" ] || [ -n "${OPENAI_API_KEY:-}" ]; then AUTH_MODE="native-key"; fi ;;
   # fx has no OpenRouter path at all (confirmed: no mention anywhere in its
@@ -182,6 +187,7 @@ case "$HARNESS" in
   # bypass the Nous Portal subscription, so let Hermes use its configured default.
   hermes) DEFAULT_HM="default" ;;
   cursor) DEFAULT_HM="auto" ;;                         # Cursor's router (CURSOR_MODELS[0])
+  droid) DEFAULT_HM="default" ;;                        # Droid's own default (claude-opus-5-5; DROID_MODELS[0])
   *)     DEFAULT_HM="openai/gpt-5-mini" ;;              # generic fallback: only claude/grok hit it (and don't consume it)
 esac
 HM="${HARNESS_MODEL:-${REQ_MODEL:-$DEFAULT_HM}}"
@@ -208,7 +214,7 @@ else
   # the account default. If the account refuses the id, adapters/codex.sh
   # retries once on the account default and warns.
   case "$HARNESS" in
-    cursor|hermes) MODEL_ARG="$HM" ;;
+    cursor|hermes|droid) MODEL_ARG="$HM" ;;
     codex)
       PICK="${HARNESS_MODEL:-$REQ_MODEL}"
       case "$PICK" in

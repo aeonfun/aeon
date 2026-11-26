@@ -119,6 +119,10 @@ const HARNESS_AUTH_SPECS = {
     authSecrets: ['CURSOR_API_KEY'],
     apiKey: { secret: 'CURSOR_API_KEY', placeholder: 'Cursor API key' },
   },
+  droid: {
+    authSecrets: ['FACTORY_API_KEY'],
+    apiKey: { secret: 'FACTORY_API_KEY', placeholder: 'Factory API key' },
+  },
   hermes: {
     authSecrets: ['HERMES_AUTH', 'OPENROUTER_API_KEY'],
     oauth: {

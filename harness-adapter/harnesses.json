@@ -9,8 +9,8 @@
       "124": "timeout"
     }
   },
-  "generated": "2026-10-16T18:32:57Z",
-  "count": 9,
+  "generated": "2026-11-26T14:44:36Z",
+  "count": 10,
   "harnesses": [
     {
       "id": "claude",
@@ -161,6 +161,43 @@
         "native_oauth": [],
         "native_key": [
           "CURSOR_API_KEY"
+        ],
+        "openrouter": false
+      }
+    },
+    {
+      "id": "droid",
+      "label": "Factory Droid",
+      "cli": {
+        "install": "curl -fsSL https://app.factory.ai/cli | sh",
+        "bin": "droid",
+        "min_version": "1.21.1"
+      },
+      "invoke": "droid exec -o json -f <promptfile>",
+      "round_trip": true,
+      "token_usage": "full",
+      "cost": false,
+      "read_only": "sandbox",
+      "structured_output": "shim",
+      "mcp": "native",
+      "max_turns": "none",
+      "claude_md": "native",
+      "default_model": "default",
+      "credentials": [
+        {
+          "secret": "FACTORY_API_KEY",
+          "kind": "api_key",
+          "auth_mode": "native-key",
+          "label": "Factory API key",
+          "get_url": "https://app.factory.ai/settings/api-keys",
+          "aeon_cmd": "./aeon auth --harness droid --key <key>"
+        }
+      ],
+      "native_control_path": "run-harness",
+      "auth": {
+        "native_oauth": [],
+        "native_key": [
+          "FACTORY_API_KEY"
         ],
         "openrouter": false
       }

@@ -34,6 +34,7 @@ const DOMAINS: Record<string, string> = {
   CURSOR_API_KEY: 'cursor.com',
   HERMES_AUTH: 'nousresearch.com',
   MISTRAL_API_KEY: 'mistral.ai',
+  FACTORY_API_KEY: 'factory.ai',
   ...GATEWAY_DOMAINS,
   // Channels
   TELEGRAM_BOT_TOKEN: 'telegram.org',

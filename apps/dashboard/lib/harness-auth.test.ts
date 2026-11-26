@@ -14,6 +14,7 @@ describe("OAuth harness credentials", () => {
 
   it("does not treat pasteable API keys as captured login sessions", () => {
     assert.equal(OAUTH_SECRET_HARNESS.CURSOR_API_KEY, undefined);
+    assert.equal(OAUTH_SECRET_HARNESS.FACTORY_API_KEY, undefined);
     assert.equal(OAUTH_SECRET_HARNESS.GLM_API_KEY, undefined);
   });
 });

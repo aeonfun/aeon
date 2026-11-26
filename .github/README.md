@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="../docs/assets/hero-animated.svg" alt="AEON - the most autonomous agent framework. 93 skills across 9 harnesses (Claude Code, Grok, Codex, Pi, Vibe, Kimi, fx, Cursor, Hermes), running unattended on GitHub Actions: it ships features to your repos, privately discloses real vulnerabilities, deploys live apps, runs deep research, and writes new skills for itself. Keywords: autonomous AI agent, agent framework, GitHub Actions automation, self-improving agent, multi-agent orchestration, LLM skills, cron agent." width="100%" />
+  <img src="../docs/assets/hero-animated.svg" alt="AEON - the most autonomous agent framework. 93 skills across 10 harnesses (Claude Code, Grok, Codex, Pi, Vibe, Kimi, fx, Cursor, Hermes, Droid), running unattended on GitHub Actions: it ships features to your repos, privately discloses real vulnerabilities, deploys live apps, runs deep research, and writes new skills for itself. Keywords: autonomous AI agent, agent framework, GitHub Actions automation, self-improving agent, multi-agent orchestration, LLM skills, cron agent." width="100%" />
 </p>
 
 <p align="center">
@@ -62,7 +62,7 @@ git clone https://github.com/aeonfun/aeon && cd aeon
 ./aeon init
 ```
 
-`./aeon init` does the rest and tells you what it did at each step: signs you in to GitHub, creates **your own repo** from the template (public by default - Actions minutes are free; `--private` if you prefer), points this folder and `gh` at it, turns on GitHub Actions, stores your GitHub token for runs, connects a model (any of nine [harnesses](../docs/harnesses.md): a Claude subscription, an API key, or one OpenRouter key) and, if you want, links Telegram. It is safe to re-run: every step checks first and skips what is already done. Then `./aeon` opens the same dashboard locally at [localhost:5555](http://localhost:5555) to **pick skills** and **Run**. `bin/onboard` re-checks the whole setup any time (read-only).
+`./aeon init` does the rest and tells you what it did at each step: signs you in to GitHub, creates **your own repo** from the template (public by default - Actions minutes are free; `--private` if you prefer), points this folder and `gh` at it, turns on GitHub Actions, stores your GitHub token for runs, connects a model (any of ten [harnesses](../docs/harnesses.md): a Claude subscription, an API key, or one OpenRouter key) and, if you want, links Telegram. It is safe to re-run: every step checks first and skips what is already done. Then `./aeon` opens the same dashboard locally at [localhost:5555](http://localhost:5555) to **pick skills** and **Run**. `bin/onboard` re-checks the whole setup any time (read-only).
 
 </details>
 
@@ -129,13 +129,13 @@ The prompt *is* the skill. You schedule it, hand it a `var`, chain it into other
 
 fetch-tweets, shiplog, and mention-radar read X through [TwitterAPI.io](https://twitterapi.io/?ref=wa6is4im) when `TWITTER_API_KEY` is set. Disclosure: I receive TwitterAPI.io credits for this post through their Community Rewards program. Referral: https://twitterapi.io/?ref=wa6is4im
 
-## Support nine harnesses: Claude, Grok, Codex, Pi, Vibe, Kimi, fx, Cursor, Hermes
+## Support ten harnesses: Claude, Grok, Codex, Pi, Vibe, Kimi, fx, Cursor, Hermes, Droid
 
 <p align="center">
-  <img src="../docs/assets/harnesses-aeon.jpg" alt="Nine engines, one socket - a SKILL.md flows through run-harness into any of nine agent CLIs: Claude, Grok, Codex, Pi, Vibe, Kimi, fx, Cursor, Hermes. Every harness honors the same contract: result, usage, session." width="100%" />
+  <img src="../docs/assets/harnesses-aeon.jpg" alt="Nine engines, one socket - a SKILL.md flows through run-harness into any of ten agent CLIs: Claude, Grok, Codex, Pi, Vibe, Kimi, fx, Cursor, Hermes, Droid. Every harness honors the same contract: result, usage, session." width="100%" />
 </p>
 
-The same `SKILL.md` runs on any of nine agent CLIs - **Claude**, **Grok**, **Codex**, **Pi**, **Vibe**, **Kimi**, **fx**, **Cursor**, **Hermes** - behind one `run-harness` contract (same result, usage, and session shape). Swap the harness; nothing else changes. How the contract works: [`docs/harnesses.md`](../docs/harnesses.md). GLM Coding Plan is a Claude AI Gateway hop (`GLM_API_KEY`), not a harness.
+The same `SKILL.md` runs on any of ten agent CLIs - **Claude**, **Grok**, **Codex**, **Pi**, **Vibe**, **Kimi**, **fx**, **Cursor**, **Hermes**, **Droid** - behind one `run-harness` contract (same result, usage, and session shape). Swap the harness; nothing else changes. How the contract works: [`docs/harnesses.md`](../docs/harnesses.md). GLM Coding Plan is a Claude AI Gateway hop (`GLM_API_KEY`), not a harness.
 
 ## Why "the most autonomous"
 
@@ -239,7 +239,7 @@ The deep reference lives in [`docs/`](../docs) - jump in:
 
 <p align="center">
   <a href="../docs/CONFIGURATION.md"><img src="../docs/assets/doc-config.svg" alt="Configuration - chaining, triggers, scheduler, capability modes, gateways, Fleet Watcher" height="30" align="absmiddle"></a>&nbsp;
-  <a href="../docs/harnesses.md"><img src="../docs/assets/doc-harnesses.svg" alt="Harnesses - run skills on any of nine agent CLIs behind one contract" height="30" align="absmiddle"></a>&nbsp;
+  <a href="../docs/harnesses.md"><img src="../docs/assets/doc-harnesses.svg" alt="Harnesses - run skills on any of ten agent CLIs behind one contract" height="30" align="absmiddle"></a>&nbsp;
   <a href="../docs/skill-packs.md"><img src="../docs/assets/doc-packs.svg" alt="Skill Packs - how packs work and how to build your own" height="30" align="absmiddle"></a>&nbsp;
   <a href="../docs/CORE.md"><img src="../docs/assets/doc-core.svg" alt="Core - the self-healing health and repair loop" height="30" align="absmiddle"></a>
 </p>

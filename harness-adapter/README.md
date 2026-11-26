@@ -1,9 +1,9 @@
 # harness-adapter
 
-**One Claude Code-shaped contract, nine coding-agent harnesses.**
+**One Claude Code-shaped contract, ten coding-agent harnesses.**
 
 This directory is exactly what the workflow runs: the `run-harness` dispatcher and
-the nine adapters aeon can dispatch to - **claude, grok, codex, pi, vibe, kimi, fx, cursor, hermes**.
+the ten adapters aeon can dispatch to - **claude, grok, codex, pi, vibe, kimi, fx, cursor, hermes, droid**.
 It is self-contained, so fixes land here directly. Three further harnesses
 (`opencode`, `copilot`, `agy`) were evaluated and deliberately left out; the
 per-harness reasons are recorded in the allowlist comment in
@@ -40,7 +40,7 @@ exit    0 ok · 3 abnormal model stop with no output · 124 timeout · other = e
 An abnormal stop (grok `stopReason=Cancelled`, codex `turn.failed`, …) with no
 output **fails the run** — partial or empty results are never emitted as success.
 
-## The nine harnesses
+## The ten harnesses
 
 | | claude | grok | codex | pi | vibe | kimi |
 |---|---|---|---|---|---|---|
@@ -57,7 +57,7 @@ current pins (claude 2.1.301, grok 1.0.46, codex-cli 0.159.3, pi 0.99.2, vibe 2.
 kimi 2.1.1) are checked on every change by `.github/workflows/ci-harness-cli.yml`:
 each CLI is installed at its pin, its `--help` must still list every flag its
 adapter passes, and a prompt goes through `run-harness` against a local fake model
-server (no real model call). aeon runs all nine through
+server (no real model call). aeon runs all ten through
 this adapter; claude's call is additionally wrapped in the AI-gateway failover
 cascade.
 
@@ -72,6 +72,7 @@ The two newer adapters are:
 |---|---|---|---|
 | cursor | `agent -p --trust --output-format json` | `CURSOR_API_KEY` | provider output only; zero when Cursor omits usage |
 | hermes | `hermes -z --usage-file <path>` | `HERMES_AUTH` (Nous Portal OAuth archive) or OpenRouter | usage/session from the usage file |
+| droid | `droid exec -o json -f <promptfile>` | `FACTORY_API_KEY` | full (input/output/cache); no USD cost |
 
 ¹ grok reports usage **only** on `--output-format streaming-json`, whose terminal
 `{"type":"end"}` event carries usage, `total_cost_usd` and `sessionId`; the adapter
@@ -149,7 +150,7 @@ ones by name. Proven in CI against a fake model and a fake stdio server (fast,
 **Read-only enforcement is hoisted into the dispatcher.** Only codex has a native
 kernel sandbox that actually holds; every other harness — claude, grok, pi, vibe,
 kimi, fx — runs read-only under `sandbox-exec` (macOS) or `bwrap` (Linux) with the
-workspace mounted read-only, so `--mode read-only` means the same thing on all nine:
+workspace mounted read-only, so `--mode read-only` means the same thing on all ten:
 *the repo physically cannot be mutated*, regardless of the model or its permission
 config. (vibe and kimi lean on this entirely — their `-p` modes have no
 permission-layer gate of their own.)
@@ -199,6 +200,7 @@ Only the harnesses you actually dispatch need to be installed.
 | Kimi Code | `npm i -g --ignore-scripts @moonshot-ai/kimi-code@2.1.1` (or `brew install kimi-code`) | `kimi login` (Moonshot) or a provider in `~/.kimi-code/config.toml` |
 | Cursor CLI | `curl -fsSL https://cursor.com/install | bash` | `CURSOR_API_KEY` for headless runs |
 | Hermes Agent | `curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash` | `hermes setup --portal`; archive as `HERMES_AUTH` for CI |
+| Droid CLI | `curl -fsSL https://app.factory.ai/cli | sh` | `FACTORY_API_KEY` for headless runs |
 
 For aeon, these installs + auth are automated by `aeon.yml`'s *Install harness CLI*
 step and the native-auth secrets (`CODEX_AUTH`, `KIMI_AUTH`, `MISTRAL_API_KEY`,

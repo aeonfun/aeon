@@ -4,7 +4,7 @@
 # Set var: "value" to pass a default parameter to the skill.
 # Set model: "claude-haiku-5-5" per skill to override the default model (cost optimization).
 # Set harness: "<name>" per skill (claude, grok, codex, pi, vibe, kimi, fx, cursor,
-# hermes) to run it on a different coding-agent CLI than the default Claude Code
+# hermes, droid) to run it on a different coding-agent CLI than the default Claude Code
 # harness (see the top-level `harness:` key below).
 
 skills:
@@ -261,7 +261,8 @@ model: claude-sonnet-5-5
 #   fx                - Vercel fx (AI_GATEWAY_API_KEY; no OpenRouter fallback).
 #   cursor            - Cursor CLI (CURSOR_API_KEY).
 #   hermes            - Nous Research Hermes Agent (HERMES_AUTH or OpenRouter).
-# All nine run through harness-adapter/run-harness (one Claude-Code-shaped
+#   droid             - Factory Droid CLI (FACTORY_API_KEY; no OpenRouter fallback).
+# All ten run through harness-adapter/run-harness (one Claude-Code-shaped
 # contract). GLM is a gateway provider, not a harness. See docs/harnesses.md for
 # models, auth, and verification.
 # Override per-skill with `harness: "<name>"` in the skill entry, or per-run via
