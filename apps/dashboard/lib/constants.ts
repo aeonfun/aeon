@@ -176,7 +176,17 @@ const RETIRED_MODEL_LABELS: Record<string, string> = {
 // that is not offered (an older pin) is appended, marked as configured.
 export function pickerOptions(list: readonly { id: string; label: string }[], current?: string | null) {
   if (!current || list.some(m => m.id === current)) return list
-  const known = [MODELS, GROK_MODELS, CODEX_MODELS, VIBE_MODELS, PI_MODELS, KIMI_MODELS, CURSOR_MODELS, HERMES_MODELS, DROID_MODELS]
+  const known = [
+    MODELS,
+    GROK_MODELS,
+    CODEX_MODELS,
+    VIBE_MODELS,
+    PI_MODELS,
+    KIMI_MODELS,
+    CURSOR_MODELS,
+    HERMES_MODELS,
+    DROID_MODELS,
+  ]
     .flat()
     .find(m => m.id === current)
   const label = known?.label ?? RETIRED_MODEL_LABELS[current] ?? current

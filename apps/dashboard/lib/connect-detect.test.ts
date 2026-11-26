@@ -146,7 +146,12 @@ describe("detectPaste: keys by prefix (from the manifest)", () => {
       ["MISTRAL_API_KEY", "OPENROUTER_API_KEY"],
     );
     assert.ok(acceptsOpenRouter("claude") && acceptsOpenRouter("hermes"));
-    assert.ok(!acceptsOpenRouter("cursor") && !acceptsOpenRouter("fx") && !acceptsOpenRouter("grok") && !acceptsOpenRouter("droid"));
+    assert.ok(
+      !acceptsOpenRouter("cursor") &&
+        !acceptsOpenRouter("fx") &&
+        !acceptsOpenRouter("grok") &&
+        !acceptsOpenRouter("droid"),
+    );
     assert.equal(new Set(PROVIDER_OPTIONS.map(p => p.secret)).size, PROVIDER_OPTIONS.length);
   });
 });
