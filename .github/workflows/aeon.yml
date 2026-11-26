@@ -15,7 +15,7 @@ on:
         default: '(config default)'
         # Keep in sync with every dashboard model list (MODELS/GROK_MODELS/
         # CODEX_MODELS/VIBE_MODELS/PI_MODELS/KIMI_MODELS/CURSOR_MODELS/HERMES_MODELS
-        # in apps/dashboard/lib/constants.ts): the dashboard dispatches
+        # /DROID_MODELS in apps/dashboard/lib/constants.ts): the dashboard dispatches
         # `-f model=<id>` and this is a `choice` input, so any id it offers that's
         # missing here is rejected with HTTP 422 at dispatch time.
         # scripts/tests/test_dashboard_model_choices.sh enforces it.
@@ -25,7 +25,8 @@ on:
         # deepseek-v4.1-flash; pi deepseek/deepseek-v4.1-flash (default) +
         # deepseek-v4-pro; cursor its own ids (`auto` default); hermes `default`
         # (its configured provider) or an OpenRouter-style override
-        # (anthropic/claude-sonnet-5.5, openai/gpt-6.1-sol). Ids no longer offered by
+        # (anthropic/claude-sonnet-5.5, openai/gpt-6.1-sol); droid `default`
+        # (its own configured model, claude-opus-5-5). Ids no longer offered by
         # any picker (e.g. `gpt-5.1`, grok-4.5, kimi-k2.6, kimi-k2.5,
         # deepseek-v4-flash, claude-sonnet-4.6, gpt-5.4, gemini-2.5-pro) stay here
         # so existing configs still dispatch. "Resolve harness" forwards them
@@ -80,6 +81,7 @@ on:
           - fx
           - cursor
           - hermes
+          - droid
       var:
         description: 'Variable (e.g. AI, bitcoin, owner/repo)'
         required: false
@@ -107,7 +109,7 @@ on:
         required: false
         type: string
       harness:
-        description: 'Agent harness override (claude | grok | codex | pi | vibe | kimi | fx | cursor | hermes)'
+        description: 'Agent harness override (claude | grok | codex | pi | vibe | kimi | fx | cursor | hermes | droid)'
         required: false
         type: string
       var:
@@ -326,6 +328,7 @@ jobs:
           KIMI_AUTH: ${{ secrets.KIMI_AUTH }}
           HERMES_AUTH: ${{ secrets.HERMES_AUTH }}
           CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
+          FACTORY_API_KEY: ${{ secrets.FACTORY_API_KEY }}
           AI_GATEWAY_API_KEY: ${{ secrets.AI_GATEWAY_API_KEY }}
           VERCEL_OIDC_TOKEN: ${{ secrets.VERCEL_OIDC_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -402,6 +405,7 @@ jobs:
           KIMI_AUTH: ${{ secrets.KIMI_AUTH }}
           HERMES_AUTH: ${{ secrets.HERMES_AUTH }}
           CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
+          FACTORY_API_KEY: ${{ secrets.FACTORY_API_KEY }}
           AI_GATEWAY_API_KEY: ${{ secrets.AI_GATEWAY_API_KEY }}
           VERCEL_OIDC_TOKEN: ${{ secrets.VERCEL_OIDC_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}

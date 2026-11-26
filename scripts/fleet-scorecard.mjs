@@ -135,7 +135,7 @@ const CLAUDE_FAMILY_FALLBACK = { fable: 'claude-fable-5-1', opus: 'claude-opus-5
 const normalizeModel = (model) => String(model || '').trim().toLowerCase()
   .replace(/^anthropic\//, '').replace(/-\d{8}$/, '').replace(/\./g, '-');
 // Rates in $ per token for a model, or null when it is not a Claude model. Rows
-// from other harnesses (codex/pi/kimi/vibe/grok/cursor/hermes ids, and the
+// from other harnesses (codex/pi/kimi/vibe/grok/cursor/hermes/droid ids, and the
 // `<harness>-default` rows the adapter writes when a harness runs its own
 // default) have no price here, so they are counted as unpriced instead of being
 // billed at Claude rates.

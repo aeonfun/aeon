@@ -17,7 +17,7 @@ Claude harness (default):
                                     (needs the repo + workflow scopes:
                                     gh auth refresh -h github.com -s repo,workflow)
 
-Other harnesses (--harness grok|codex|kimi|pi|vibe|fx|cursor|hermes):
+Other harnesses (--harness grok|codex|kimi|pi|vibe|fx|cursor|hermes|droid):
   aeon auth --harness grok          Log in with your X account, store as GROK_CREDENTIALS
   aeon auth --harness grok --key <xai-…>          Store an xAI API key instead
   aeon auth --harness codex         Log in with ChatGPT (browser), store as CODEX_AUTH
@@ -27,11 +27,12 @@ Other harnesses (--harness grok|codex|kimi|pi|vibe|fx|cursor|hermes):
   aeon auth --harness vibe --key <key>            Mistral key for vibe
   aeon auth --harness fx --key <key>              Vercel AI Gateway key for fx
   aeon auth --harness cursor --key <key>          Cursor API key
+  aeon auth --harness droid --key <key>           Factory API key
   aeon auth --harness hermes        Log in with Nous Portal, store as HERMES_AUTH
   (codex, kimi, pi, vibe and hermes also run on the shared OPENROUTER_API_KEY - set that in the dashboard's Keys.)
 
 Options:
-  --harness <h>       claude-code | grok | codex | kimi | pi | vibe | fx | cursor | hermes (omit for claude-code)
+  --harness <h>       claude-code | grok | codex | kimi | pi | vibe | fx | cursor | hermes | droid (omit for claude-code)
   --github            Copy \`gh auth token\` into GH_GLOBAL
   --provider <slug>   Force a gateway (bankr, openrouter, venice, …) — Claude only
   --base-url <url>    Custom HTTPS base URL (API-key auth only) — Claude only

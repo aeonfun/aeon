@@ -98,6 +98,7 @@ describe("detectPaste: keys by prefix (from the manifest)", () => {
     ["inf_abc", "claude", "SURPLUS_API_KEY", "Surplus Intelligence key"],
     ["plainkey123", "vibe", "MISTRAL_API_KEY", "Mistral API key"],
     ["plainkey123", "cursor", "CURSOR_API_KEY", "Cursor API key"],
+    ["plainkey123", "droid", "FACTORY_API_KEY", "Factory API key"],
     ["plainkey123", "fx", "AI_GATEWAY_API_KEY", "Vercel AI Gateway key"],
   ];
   for (const [key, harness, secret, label] of cases) {
@@ -145,7 +146,12 @@ describe("detectPaste: keys by prefix (from the manifest)", () => {
       ["MISTRAL_API_KEY", "OPENROUTER_API_KEY"],
     );
     assert.ok(acceptsOpenRouter("claude") && acceptsOpenRouter("hermes"));
-    assert.ok(!acceptsOpenRouter("cursor") && !acceptsOpenRouter("fx") && !acceptsOpenRouter("grok"));
+    assert.ok(
+      !acceptsOpenRouter("cursor") &&
+        !acceptsOpenRouter("fx") &&
+        !acceptsOpenRouter("grok") &&
+        !acceptsOpenRouter("droid"),
+    );
     assert.equal(new Set(PROVIDER_OPTIONS.map(p => p.secret)).size, PROVIDER_OPTIONS.length);
   });
 });

@@ -11,6 +11,8 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ### Added
 
+- **Tenth harness: Factory Droid CLI (`droid`).** The `droid` harness runs Factory's Droid CLI in non-interactive `droid exec -o json -f <file>` mode, authenticating with `FACTORY_API_KEY` (get one at app.factory.ai/settings/api-keys; `aeon auth --harness droid --key <key>`). Write mode passes `--auto high`; read-only mode is the default (no `--auto` flag). The adapter runs under a scratch HOME like cursor, maps the `{type, result, usage, session_id, is_error}` JSON shape to the standard envelope, and treats `is_error: true` as a failure. Default model is `claude-opus-5-5` (Droid's own default, surfaced as `default` in the dashboard picker). No OpenRouter fallback, like cursor and fx. Factory's CLI installer publishes no checksum, so the installer is run with a clean env (like hermes) and the lack of a sha256 check is noted in a comment. (#1382)
+
 - **Hosted ICP MCP connects in one click, with a read-only `icp-mcp` skill.** DFINITY's hosted ICP MCP
   (`mcp.internetcomputer.org/mcp`) is now an OAuth server in the dashboard MCP catalog. The operator signs
   in with Internet Identity once and the session lasts up to 30 days (no refresh token, so the panel says

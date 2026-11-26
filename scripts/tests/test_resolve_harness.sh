@@ -93,15 +93,23 @@ mkfixture hermes
   && pass "hermes: HERMES_AUTH → native-oauth" || bad "hermes native-oauth"
 mkfixture cursor
 [ "$(get AUTH_MODE "" CURSOR_API_KEY=xx)" = "native-key" ] \
-  && pass "cursor: CURSOR_API_KEY → native-key" || bad "cursor native-key"
+  && pass "cursor: CURSOR_API_KEY -> native-key" || bad "cursor native-key"
 [ "$(get AUTH_MODE "" OPENROUTER_API_KEY=xx)" = "none" ] \
-  && pass "cursor: no CURSOR_API_KEY → none (no OpenRouter fallback)" || bad "cursor none label (got '$(get AUTH_MODE "" OPENROUTER_API_KEY=xx)')"
+  && pass "cursor: no CURSOR_API_KEY -> none (no OpenRouter fallback)" || bad "cursor none label (got '$(get AUTH_MODE "" OPENROUTER_API_KEY=xx)')"
+mkfixture droid
+[ "$(get AUTH_MODE "" FACTORY_API_KEY=xx)" = "native-key" ] \
+  && pass "droid: FACTORY_API_KEY -> native-key" || bad "droid native-key"
+[ "$(get AUTH_MODE "" OPENROUTER_API_KEY=xx)" = "none" ] \
+  && pass "droid: no FACTORY_API_KEY -> none (no OpenRouter fallback)" || bad "droid none label (got '$(get AUTH_MODE "" OPENROUTER_API_KEY=xx)')"
 mkfixture glm
 [ "$(get HARNESS)" = "claude" ] \
   && pass "glm: dead harness name → claude" || bad "glm dead name (got '$(get HARNESS)')"
 mkfixture cursor
 [ "$(get MODEL_ARG "" CURSOR_API_KEY=xx)" = "auto" ] \
   && pass "cursor: native model override forwarded" || bad "cursor model forwarding"
+mkfixture droid
+[ "$(get MODEL_ARG "" FACTORY_API_KEY=xx)" = "default" ] \
+  && pass "droid: native model override forwarded" || bad "droid model forwarding"
 mkfixture hermes
 [ "$(get MODEL_ARG "" HERMES_AUTH=xx)" = "default" ] \
   && pass "hermes: Portal model override forwarded" || bad "hermes model forwarding"

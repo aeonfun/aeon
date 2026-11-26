@@ -111,6 +111,15 @@ export const HERMES_MODELS = [
   { id: 'openai/gpt-6.1-sol', label: 'GPT-6.1 Sol' },
 ]
 
+// droid defaults to `default`: Factory's Droid CLI runs on its own configured
+// model (claude-opus-5-5 by default). resolve-harness.sh treats `default` as
+// "no override" and the droid adapter omits -m for it, so Droid uses its built-in
+// default. Droid runs Claude Code under the hood and can take any model id via
+// -m, but aeon-native claude-* ids are skipped by the model resolver for
+// non-claude harnesses, so `default` is the only dashboard choice (the operator
+// can still override per-skill with a non-claude-* id or vars.HARNESS_MODEL).
+export const DROID_MODELS = [{ id: 'default', label: 'Droid default' }]
+
 // Harnesses (agent CLIs). `claude` = Claude Code (default, AI Gateway), labelled
 // "Anthropic"; `grok` = Grok Build (own X-account/API-key auth, own models),
 // "xAI". codex/pi/vibe/kimi run through harness-adapter's run-harness on a
@@ -131,6 +140,7 @@ export const HARNESSES = [
   { id: 'vibe', label: 'Mistral' },
   { id: 'cursor', label: 'Cursor' },
   { id: 'hermes', label: 'Hermes' },
+  { id: 'droid', label: 'Droid' },
 ] as const satisfies readonly { id: Harness; label: string }[]
 
 // Labels for ids no longer offered in any picker but still valid dispatch
@@ -166,7 +176,17 @@ const RETIRED_MODEL_LABELS: Record<string, string> = {
 // that is not offered (an older pin) is appended, marked as configured.
 export function pickerOptions(list: readonly { id: string; label: string }[], current?: string | null) {
   if (!current || list.some(m => m.id === current)) return list
-  const known = [MODELS, GROK_MODELS, CODEX_MODELS, VIBE_MODELS, PI_MODELS, KIMI_MODELS, CURSOR_MODELS, HERMES_MODELS]
+  const known = [
+    MODELS,
+    GROK_MODELS,
+    CODEX_MODELS,
+    VIBE_MODELS,
+    PI_MODELS,
+    KIMI_MODELS,
+    CURSOR_MODELS,
+    HERMES_MODELS,
+    DROID_MODELS,
+  ]
     .flat()
     .find(m => m.id === current)
   const label = known?.label ?? RETIRED_MODEL_LABELS[current] ?? current
@@ -181,6 +201,7 @@ export function modelsForHarness(harness: string) {
   if (harness === 'kimi') return KIMI_MODELS
   if (harness === 'cursor') return CURSOR_MODELS
   if (harness === 'hermes') return HERMES_MODELS
+  if (harness === 'droid') return DROID_MODELS
   return MODELS
 }
 

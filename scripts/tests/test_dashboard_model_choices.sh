@@ -40,6 +40,7 @@ LISTS = {
     "PI_MODELS": "pi",
     "CURSOR_MODELS": "cursor",
     "HERMES_MODELS": "hermes",
+    "DROID_MODELS": "droid",
 }
 
 errors = []

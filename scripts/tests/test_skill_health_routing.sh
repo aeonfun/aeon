@@ -13,7 +13,7 @@ grep -q 'health file not found' <<<"$err"
 TMP=$(mktemp -d)
 trap 'rm -rf "$TMP"' EXIT
 mkdir -p "$TMP/memory/skill-health"
-printf '%s\n' '{"history":[{"date":"2026-08-27","score":4,"harness":"cursor"},{"date":"2026-08-27","score":4,"harness":"hermes"},{"date":"2026-08-27","score":4,"harness":"fx"},{"date":"2026-08-27","score":4,"harness":"kimi"},{"date":"2026-08-27","score":4,"harness":"vibe"},{"date":"2026-08-27","score":4,"harness":"pi"}]}' > "$TMP/memory/skill-health/alias-check.json"
+printf '%s\n' '{"history":[{"date":"2026-08-27","score":4,"harness":"cursor"},{"date":"2026-08-27","score":4,"harness":"hermes"},{"date":"2026-08-27","score":4,"harness":"fx"},{"date":"2026-08-27","score":4,"harness":"kimi"},{"date":"2026-08-27","score":4,"harness":"vibe"},{"date":"2026-08-27","score":4,"harness":"pi"},{"date":"2026-08-27","score":4,"harness":"droid"}]}' > "$TMP/memory/skill-health/alias-check.json"
 printf '%s\n' \
   'date,skill,model,input_tokens,output_tokens,cache_read,cache_creation' \
   '2026-08-27,alias-check,cursor-default,10,1,20,0' \
@@ -22,10 +22,11 @@ printf '%s\n' \
   '2026-08-27,alias-check,kimi-default,10,1,20,0' \
   '2026-08-27,alias-check,vibe-default,10,1,20,0' \
   '2026-08-27,alias-check,pi-default,10,1,20,0' \
+  '2026-08-27,alias-check,droid-default,10,1,20,0' \
   '2026-08-27,alias-check,bogus-default,10,1,20,0' \
   > "$TMP/memory/token-usage.csv"
 ALIAS_OUT=$(cd "$TMP" && node "$ROOT/scripts/skill-health-routing.mjs" alias-check)
-for harness in cursor hermes fx kimi vibe pi; do
+for harness in cursor hermes fx kimi vibe pi droid; do
   grep -q "^  ${harness}: 1 rows," <<<"$ALIAS_OUT"
 done
 # a non-harness "-default" row must NOT be attributed

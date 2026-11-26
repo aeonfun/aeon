@@ -71,6 +71,12 @@ export const BUILTIN_SECRETS: Omit<Secret, 'isSet'>[] = [
       'Hermes Nous Portal login captured for CI - a base64 tar of ~/.hermes/auth.json and config.yaml. Set it with `aeon auth --harness hermes` or the dashboard "Connect Nous Portal" button, which opens the official Nous OAuth flow and stores the resulting session.',
   },
   {
+    name: 'FACTORY_API_KEY',
+    group: 'Core',
+    description:
+      'Factory API key for the Droid CLI harness. Set it here or with `aeon auth --harness droid --key`; the key is stored as a GitHub Actions secret and never committed. Create one at app.factory.ai/settings/api-keys.',
+  },
+  {
     name: 'GLM_API_KEY',
     group: 'Core',
     description:

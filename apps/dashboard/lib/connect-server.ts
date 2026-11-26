@@ -148,6 +148,7 @@ export const FOUND_ENV_KEYS = [
   'MOONSHOT_API_KEY',
   'CURSOR_API_KEY',
   'AI_GATEWAY_API_KEY',
+  'FACTORY_API_KEY',
 ]
 
 export interface FoundItem {

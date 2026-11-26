@@ -1,33 +1,35 @@
 ---
 title: Harnesses — advanced behavior
-description: Deep reference for Aeon's harness axis (the nine agent CLIs behind one run-harness contract) - token accounting, capability-mode mapping, MCP, and per-surface harness selection.
+description: Deep reference for Aeon's harness axis (the ten agent CLIs behind one run-harness contract) - token accounting, capability-mode mapping, MCP, and per-surface harness selection.
 ---
 
 # Harnesses — advanced behavior
 
 The **harness** is the coding-agent CLI that runs your skills. The README's
-[harnesses](../.github/README.md#support-nine-harnesses-claude-grok-codex-pi-vibe-kimi-fx-cursor-hermes)
-section covers the basics - nine agent CLIs behind one `run-harness` contract,
+[harnesses](../.github/README.md#support-ten-harnesses-claude-grok-codex-pi-vibe-kimi-fx-cursor-hermes-droid)
+section covers the basics - ten agent CLIs behind one `run-harness` contract,
 with `claude` as the default. Every harness, `claude` and `grok` included, runs
 through the same adapter; `glm` is not a harness but a gateway provider (see
 [LLM Gateways](CONFIGURATION.md#llm-gateways)). This page collects the deeper
 behavior for anyone running a non-default harness (especially `grok`) in anger.
 
-## Additional harnesses via run-harness (`codex`, `pi`, `vibe`, `kimi`, `fx`, `cursor`, `hermes`)
+## Additional harnesses via run-harness (`codex`, `pi`, `vibe`, `kimi`, `fx`, `cursor`, `hermes`, `droid`)
 
-Seven more harnesses are selectable in the dashboard's harness dropdown and the
+Eight more harnesses are selectable in the dashboard's harness dropdown and the
 `harness:` config: **codex** (OpenAI Codex CLI), **pi** (Pi Coding Agent),
 **vibe** (Mistral Vibe), **kimi** (Moonshot Kimi), **fx** (Vercel's fx -
 [fx.sh](https://fx.sh), a minimal native Zig coding agent), **cursor** (Cursor
-CLI), and **hermes** (Nous Research Hermes Agent). Like `claude` and `grok`,
+CLI), **hermes** (Nous Research Hermes Agent), and **droid** (Factory's Droid
+CLI). Like `claude` and `grok`,
 they run through [`harness-adapter`](../harness-adapter/)'s `run-harness`, which
 wraps each CLI in the same Claude-Code-shaped `{result, usage, session_id}`
 contract, so everything downstream (scoring, token accounting, memory,
 notifications) is unchanged.
 
-**fx** differs on auth — see the table below: it has no OpenRouter fallback, so
+**fx** differs on auth - see the table below: it has no OpenRouter fallback, so
 it runs on a Vercel AI Gateway key (or `VERCEL_OIDC_TOKEN` inside Vercel's own
-CI) rather than the shared `OPENROUTER_API_KEY`.
+CI) rather than the shared `OPENROUTER_API_KEY`. **droid** and **cursor** also
+have no OpenRouter fallback - each needs its own API key.
 
 Each one runs on its own provider login (see **Native auth** below); a single
 shared **`OPENROUTER_API_KEY`** is the zero-setup alternative for codex, pi,
@@ -76,6 +78,7 @@ login locally, store the session as a repo secret, restore it on the runner):
 | `fx`    | Vercel AI Gateway key (or `VERCEL_OIDC_TOKEN`) | `aeon auth --harness fx --key <key>` -> `AI_GATEWAY_API_KEY`. **No login flow and no OpenRouter fallback** - see below. |
 | `cursor` | Cursor API key | `aeon auth --harness cursor --key <key>` -> `CURSOR_API_KEY`; headless entry point is `agent -p --trust` because every CI run starts with a fresh home. `--force` remains write-mode only. |
 | `hermes` | Nous Portal OAuth | `aeon auth --harness hermes` → `HERMES_AUTH`; the adapter restores `~/.hermes/auth.json`. |
+| `droid` | Factory API key | `aeon auth --harness droid --key <key>` → `FACTORY_API_KEY`; headless entry point is `droid exec -o json -f <file>`. `--auto high` is write-mode only; read-only is the default. No OpenRouter fallback. |
 
 Which one runs is decided at dispatch by **which secret is set**, native first,
 OpenRouter last (`authSecretsForHarness` / the `HARNESS_AUTH` registry in
@@ -104,6 +107,7 @@ or the local dashboard, and `./aeon init`, walk you through the same list; `bin/
 | `claude` | 1. `CLAUDE_CODE_OAUTH_TOKEN` - Claude subscription (Pro/Max) (login token; [get](https://claude.ai), `./aeon auth --harness claude-code`)<br>2. `ANTHROPIC_API_KEY` - Anthropic API key (pay as you go) (API key; [get](https://console.anthropic.com/settings/keys), `./aeon auth --key <sk-ant-api...>`)<br>then any [gateway key](CONFIGURATION.md#llm-gateways) (openrouter, bankr, usepod, venice, surplus, grok, glm, hivemindos) | `claude-sonnet-5-5` |
 | `codex` | 1. `CODEX_AUTH` - ChatGPT login (Plus/Pro) (login capture; [get](https://chatgpt.com), `./aeon auth --harness codex`)<br>2. `OPENAI_API_KEY` - OpenAI API key (API key; [get](https://platform.openai.com/api-keys), `./aeon auth --harness codex --key <sk-...>`)<br>3. `OPENROUTER_API_KEY` - OpenRouter key (one key covers most harnesses) (API key; [get](https://openrouter.ai/settings/keys), `./aeon secrets set OPENROUTER_API_KEY --stdin`) | `openai/gpt-6-luna` |
 | `cursor` | 1. `CURSOR_API_KEY` - Cursor API key (API key; [get](https://cursor.com/dashboard), `./aeon auth --harness cursor --key <key>`) | `auto` |
+| `droid` | 1. `FACTORY_API_KEY` - Factory API key (API key; [get](https://app.factory.ai/settings/api-keys), `./aeon auth --harness droid --key <key>`) | `default` |
 | `fx` | 1. `AI_GATEWAY_API_KEY` - Vercel AI Gateway key (API key; [get](https://vercel.com/docs/ai-gateway), `./aeon auth --harness fx --key <key>`)<br>2. `VERCEL_OIDC_TOKEN` - Vercel OIDC token (OIDC token; [get](https://vercel.com/docs/oidc), `vercel env pull`) | the harness's own default |
 | `grok` | 1. `GROK_CREDENTIALS` - X account login (grok login) (login capture; [get](https://x.ai/grok), `./aeon auth --harness grok`)<br>2. `XAI_API_KEY` - xAI API key (API key; [get](https://console.x.ai), `./aeon auth --harness grok --key <xai-...>`) | `grok-4.7` |
 | `hermes` | 1. `HERMES_AUTH` - Nous Portal login (login capture; [get](https://portal.nousresearch.com), `./aeon auth --harness hermes`)<br>2. `OPENROUTER_API_KEY` - OpenRouter key (one key covers most harnesses) (API key; [get](https://openrouter.ai/settings/keys), `./aeon secrets set OPENROUTER_API_KEY --stdin`) | the harness's own default |
@@ -112,8 +116,9 @@ or the local dashboard, and `./aeon init`, walk you through the same list; `bin/
 | `vibe` | 1. `MISTRAL_API_KEY` - Mistral API key (API key; [get](https://console.mistral.ai/api-keys), `./aeon auth --harness vibe --key <key>`)<br>2. `OPENROUTER_API_KEY` - OpenRouter key (one key covers most harnesses) (API key; [get](https://openrouter.ai/settings/keys), `./aeon secrets set OPENROUTER_API_KEY --stdin`) | `mistralai/mistral-medium-3-5` |
 
 Notes: `GROK_CREDENTIALS` needs `GH_GLOBAL` (or the optional `GH_SECRETS_PAT`) to save its
-rotating refresh token after each run (see Token accounting below). `cursor` and `fx` have no
-OpenRouter fallback; with no key `cursor` reports `AUTH_MODE=none` and stops at install.
+rotating refresh token after each run (see Token accounting below). `cursor`, `fx` and
+`droid` have no OpenRouter fallback; with no key `cursor` and `droid` report
+`AUTH_MODE=none` and stop at install.
 
 
 **`fx` breaks the "OpenRouter last" rule above** — it's the one harness with no
@@ -304,7 +309,7 @@ the harness is already executing as the agent's workspace.
 
 **Other harnesses.** MCP is not grok-only: `claude`, `codex`, `vibe` and `kimi`
 all call live MCP tools too (codex and kimi needed their own dispatcher fixes —
-see the [harness-adapter README](../harness-adapter/README.md#the-nine-harnesses)).
+see the [harness-adapter README](../harness-adapter/README.md#the-ten-harnesses)).
 `pi` joined them with its built-in MCP support (0.99+): the adapter translates
 `.mcp.json` into pi's `mcp.json` inside a temp `PI_CODING_AGENT_DIR` (the user's
 own `~/.pi/agent/mcp.json` is never read or written) and declares each server's
@@ -314,7 +319,7 @@ hard-coded 10s; a server slower than that misses the first turn. pi rejects the
 legacy `sse` transport, so `sse` entries are skipped with a warning (as are other
 types and server names outside letters, digits, `_` and `-`); the run itself goes
 on. See footnote 9 in the
-[harness-adapter README](../harness-adapter/README.md#the-nine-harnesses).
+[harness-adapter README](../harness-adapter/README.md#the-ten-harnesses).
 
 ## Newer grok knobs (opt-in per skill)
 
@@ -354,10 +359,10 @@ one path, an adapter-level fix reaches every surface by construction.
 claude/grok/codex, prompt-shim on pi/vibe/kimi). Callers that don't pass it get
 plain text. (A grok-only `GROK_JSON_SCHEMA` env var existed on the old script
 path until it was removed: nothing in the repo ever set it, and the scorer it was
-reserved for goes schema-less on purpose so a single parse path covers all nine
+reserved for goes schema-less on purpose so a single parse path covers all ten
 harnesses.)
 
-**Both hosted surfaces stage all nine.** `aeon.yml` (skill runs) and
+**Both hosted surfaces stage all ten.** `aeon.yml` (skill runs) and
 `messages.yml` (inbound messages) share the same two scripts, so a repo answers
 messages on the harness it runs skills on:
 
@@ -371,7 +376,7 @@ Each workflow still declares its own `env:` block, because `secrets.*` only
 resolves inside a workflow — but the logic is shared, which is the half that
 drifted before. `messages.yml` used to carry a second, weaker copy that knew only
 claude and grok, so a repo on codex/pi/vibe/kimi had its messages answered on
-claude with a `::warning::`. The local MCP server (`apps/mcp-server`) resolves all nine but expects the CLI to already be installed on your machine.
+claude with a `::warning::`. The local MCP server (`apps/mcp-server`) resolves all ten but expects the CLI to already be installed on your machine.
 
 ## Every entry point runs on either harness
 
@@ -383,8 +388,8 @@ behaves identically everywhere. All of them dispatch through `run-harness`:
 |---------|---------------------|-------|
 | Scheduled / manual skill run (`aeon.yml`) | dispatch **Harness** input → per-skill `harness:` → global `harness:` → `claude` | full flags + MCP + scorer |
 | Skill chains (`chain-runner.yml`) | inherits — each step dispatches `aeon.yml`, which resolves per-skill/global | |
-| Inbound messages (`messages.yml`, Telegram/Discord/Slack) | global `harness:` in `aeon.yml` | conversational reply in write mode; the resolved harness's CLI is staged here (all nine), same as skill runs |
-| Local MCP server (`apps/mcp-server`) | `AEON_HARNESS` env → global `harness:` | `resolveHarness()` in `skill-executor.ts`; resolves all nine, expects the CLI installed locally |
+| Inbound messages (`messages.yml`, Telegram/Discord/Slack) | global `harness:` in `aeon.yml` | conversational reply in write mode; the resolved harness's CLI is staged here (all ten), same as skill runs |
+| Local MCP server (`apps/mcp-server`) | `AEON_HARNESS` env → global `harness:` | `resolveHarness()` in `skill-executor.ts`; resolves all ten, expects the CLI installed locally |
 | Webhook (`apps/webhook`) | relay only → dispatches `messages.yml` | harness-agnostic |
 | Post-run quality scorer (`aeon.yml`) | scores through the same harness the skill ran on | |
 

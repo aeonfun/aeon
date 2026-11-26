@@ -259,6 +259,7 @@ pins = {
     "fx": first(r'^FX_PIN=v?([0-9][0-9.]*)', install_src),
     "cursor": first(r'^CURSOR_PIN=(\S+)', install_src),
     "hermes": first(r'^HERMES_PIN=\S+\s+# hermes-agent release v(\S+)', install_src),
+    "droid": first(r'^DROID_PIN=(\S+)', install_src),
 }
 for h, pin in pins.items():
     check(pin is not None, f"{h}: could not read the install pin")

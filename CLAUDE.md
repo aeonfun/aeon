@@ -9,7 +9,7 @@ Aeon is a fork-and-configure agent framework. The operator enables **skills** (s
 One skill run, end to end:
 1. **Dispatch** — a schedule or a manual **Run now** fires a single skill. Chains dispatch their steps through `chain-runner.yml`.
 2. **Resolve** — the workflow picks the model and the capability mode (`read-only` vs `write`, from the skill's frontmatter), resolves `.mcp.json`, and injects the skill's declared `requires:` keys into the run environment (auth'd network calls happen *in-run* — see Network & Secrets).
-3. **Run** - it launches the skill's harness through `harness-adapter/run-harness` (Claude Code by default; nine harnesses are supported, see `docs/harnesses.md`) with the prompt "run skill X". This file (`CLAUDE.md`, or its generated mirror `AGENTS.md` on non-claude harnesses) and `STRATEGY.md` auto-load as your standing instructions; the prompt points you at `skills/X/SKILL.md`, which you read and execute.
+3. **Run** - it launches the skill's harness through `harness-adapter/run-harness` (Claude Code by default; ten harnesses are supported, see `docs/harnesses.md`) with the prompt "run skill X". This file (`CLAUDE.md`, or its generated mirror `AGENTS.md` on non-claude harnesses) and `STRATEGY.md` auto-load as your standing instructions; the prompt points you at `skills/X/SKILL.md`, which you read and execute.
 4. **Act** — read memory, fetch/compute, write files or open a PR (write mode only), and report via `./notify`.
 5. **After** — on success the workflow converts feed output via `./notify-jsonrender` and reverts stray writes from read-only skills. You append a log to `memory/logs/`.
 

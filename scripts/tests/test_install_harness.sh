@@ -30,7 +30,7 @@ printf '%s\n' "\$@" >> "\$PKG_LOG"
 EOF
   chmod +x "$BIN/$tool"
 done
-# fx / cursor / hermes are pinned downloads (curl -o, then a sha256 check), so a
+# fx / cursor / droid / hermes are pinned downloads (curl -o, then a sha256 check), so a
 # fake curl serves local fixtures instead of the network and records each URL.
 FIX="$BIN/fixtures"; export FIX
 mkdir -p "$FIX/fx" "$FIX/cursor/dist-package"
@@ -39,6 +39,8 @@ printf '#!/bin/sh\necho fake-cursor\n' > "$FIX/cursor/dist-package/cursor-agent"
 chmod +x "$FIX/fx/fx" "$FIX/cursor/dist-package/cursor-agent"
 tar -czf "$FIX/fx.tar.gz" -C "$FIX/fx" fx
 tar -czf "$FIX/cursor.tar.gz" -C "$FIX/cursor" dist-package
+printf '#!/bin/sh\necho fake-droid\n' > "$FIX/droid"
+chmod +x "$FIX/droid"
 # The fake hermes installer records its argv and which credentials it could see.
 # It writes under $HOME because its env is scrubbed (no PKG_LOG in there).
 cat > "$FIX/hermes-install.sh" <<'EOF'
@@ -55,6 +57,7 @@ printf 'curl %s\n' "$url" >> "$PKG_LOG"
 case "$url" in
   https://releases.fx.sh/*) cp "$FIX/fx.tar.gz" "$out" ;;
   https://downloads.cursor.com/*) cp "$FIX/cursor.tar.gz" "$out" ;;
+  https://downloads.factory.ai/*) cp "$FIX/droid" "$out" ;;
   https://raw.githubusercontent.com/NousResearch/hermes-agent/*/scripts/install.sh) cp "$FIX/hermes-install.sh" "$out" ;;
   *) exit 22 ;;
 esac
@@ -63,6 +66,7 @@ chmod +x "$BIN/curl"
 sha() { if command -v sha256sum >/dev/null 2>&1; then sha256sum "$1" | cut -d' ' -f1; else shasum -a 256 "$1" | cut -d' ' -f1; fi; }
 FX_SUM="FX_SHA256=$(sha "$FIX/fx.tar.gz")"
 CURSOR_SUM="CURSOR_SHA256=$(sha "$FIX/cursor.tar.gz")"
+DROID_SUM="DROID_SHA256=$(sha "$FIX/droid")"
 HERMES_SUM="HERMES_INSTALLER_SHA256=$(sha "$FIX/hermes-install.sh")"
 
 # run <harness> [env...] -> stages into a fresh $HOME; sets H_DIR and PKG_LOG
@@ -246,6 +250,21 @@ grep -Eq '^curl https://downloads\.cursor\.com/lab/[0-9]{4}\.[0-9]{2}\.[0-9]{2}-
   && pass "cursor: downloads a version-pinned build" || bad "cursor: not pinned ($(cat "$PKG_LOG"))"
 [ -x "$H_DIR/.local/bin/agent" ] && "$H_DIR/.local/bin/agent" | grep -q fake-cursor \
   && pass "cursor: ~/.local/bin/agent links the verified build" || bad "cursor: agent link missing"
+# droid: a version-pinned binary from downloads.factory.ai, sha256 checked.
+if run droid FACTORY_API_KEY=fk-test "$DROID_SUM"; then
+  grep -Eq '^curl https://downloads\.factory\.ai/factory-cli/releases/[0-9][^/]*/(linux|darwin)/(x64|arm64)/droid$' "$PKG_LOG" \
+    && pass "droid: downloads a version-pinned release binary" || bad "droid: not pinned ($(cat "$PKG_LOG"))"
+  [ -x "$H_DIR/.local/bin/droid" ] && "$H_DIR/.local/bin/droid" | grep -q fake-droid \
+    && pass "droid: ~/.local/bin/droid is the verified binary" || bad "droid: binary not installed"
+else
+  bad "droid: install failed ($(tail -1 "$H_DIR/out.txt"))"
+fi
+if run droid FACTORY_API_KEY=fk-test; then
+  bad "droid: a binary that fails the pinned sha256 must be refused"
+else
+  grep -q "sha256 mismatch" "$H_DIR/out.txt" && [ ! -e "$H_DIR/.local/bin/droid" ] \
+    && pass "droid: sha256 mismatch refuses the install" || bad "droid mismatch error ($(tail -1 "$H_DIR/out.txt"))"
+fi
 GH_ENV=(GH_GLOBAL=ghp_global GH_SECRETS_PAT=ghp_pat GH_TOKEN=ghs_tok GITHUB_TOKEN=ghs_wf ANTHROPIC_API_KEY=sk-ant)
 if run hermes "${GH_ENV[@]}" OPENROUTER_API_KEY=sk-test AUTH_MODE=openrouter "$HERMES_SUM"; then
   pin=$(sed -n 's|^curl https://raw.githubusercontent.com/NousResearch/hermes-agent/\([0-9a-f]\{40\}\)/scripts/install.sh$|\1|p' "$PKG_LOG")

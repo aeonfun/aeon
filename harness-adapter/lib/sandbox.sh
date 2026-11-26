@@ -103,7 +103,7 @@ EOF
       # read-only is about the repo, not the harness's own config. claude writes
       # ~/.claude (incl. the transcript the scorer reads) + ~/.claude.json; codex
       # ~/.codex; grok ~/.grok; kimi ~/.kimi-code; vibe ~/.vibe; pi ~/.pi; all of
-      # them ~/.cache + ~/.npm. (fx/cursor/hermes run under a scratch HOME inside
+      # them ~/.cache + ~/.npm. (fx/cursor/hermes/droid run under a scratch HOME inside
       # RH_TMPDIR, already rw above, so they need nothing here.) Everything else
       # under $HOME — ~/.gitconfig, ~/.config/{git,gh}, ~/.ssh, ~/.npmrc,
       # ~/.local/{bin,lib}, pipx venvs, other PATH dirs — stays read-only from the
