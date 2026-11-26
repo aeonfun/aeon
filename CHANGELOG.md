@@ -351,6 +351,12 @@ from or pin to; the template keeps serving the latest `main` to new forks.
   examples. (#1371)
 - **Maintenance.** CI test runs use random order on Node 24 and job time limits are sized to measured run
   times; the dashboard `syncPush` tests no longer depend on order. (#1372, #1373, #1374)
+- **README carries the Open Source Alternatives badge.** `.github/README.md` links the "As seen on Open
+  Source Alternatives" badge that the directory requires for its listing review; the matching badge is
+  already in the aeon.fun footer. (#1381)
+- **Maintenance.** The small CI checks (`ci-apps`, `ci-harness-cli`, `ci-shellcheck`, canister audit
+  fixture, `messages`, `scheduler`, `setup-commands`) run on GitHub runners, the `secretcurl` test flake is
+  fixed and the Rust build is cached. (#1376)
 - **YUSA Pack homepage moved to `yusasecurity.xyz`.** The community pack listing in
   `catalog/skill-packs.json` now links the pack's own domain instead of the old preview URL. (#1360)
 - **Maintenance.** `hono` 4.13.18 and `@hono/node-server` 2.1.8 bundled in `apps/mcp-server`
