@@ -40,7 +40,7 @@
 //   4. SKILL COUNTS  - every "N skills" / "N+ skills" claim and every
 //      "all-N-skills-by-pack" link anchor, in the README and the docs/assets
 //      that repeat the total (docs/skill-packs.md, docs/aeon-setup.md,
-//      docs/examples/README.md, the hero SVG), must equal total_skills. A
+//      docs/examples/README.md), must equal total_skills. A
 //      rounded "60+ skills" always fails; that floor is how these drifted.
 //
 // Sections 2-3 run over every Markdown file in that list, so the full-catalog
@@ -78,7 +78,6 @@ const DEFAULT_DOCS = [
   'docs/skill-packs.md',
   'docs/aeon-setup.md',
   'docs/examples/README.md',
-  'docs/assets/hero-animated.svg',
 ].map((p) => resolve(ROOT, p))
 const docsArg = opt('--docs', null)
 const DOCS = docsArg !== null
@@ -243,8 +242,7 @@ function checkMarkdown(file) {
 }
 
 // ---- 4. whole-catalog skill counts in prose, alt text and images ----
-// "60+ skills across 9 harnesses", "Aeon ships **85 skills**", the hero SVG's
-// "85 skills" bubble, and the "#full-catalog-all-N-skills-by-pack" anchor all
+// "60+ skills across 9 harnesses", "Aeon ships **85 skills**", and the "#full-catalog-all-N-skills-by-pack" anchor all
 // restate catalog.total_skills by hand. Rules:
 //   - "N+ skills" always fails: a rounded floor is exactly how these drifted
 //     (it said 60+ while the catalog was 85). Write the exact count.

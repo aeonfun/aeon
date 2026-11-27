@@ -16,7 +16,7 @@ import '@/components/glass/connect/connect.css'
 
 export const metadata: Metadata = {
   // The dashboard sets per-view titles on the client ("Strategy · Aeon").
-  title: { default: 'Aeon', template: '%s · Aeon' },
+  title: { default: 'Aeon HQ', template: '%s · Aeon' },
   description: 'Your local Aeon dashboard: skills, runs, soul and keys for this agent repo.',
   // The tab icon is app/icon.png (the glass mark), added by Next; the files below are the
   // dashboard's own favicons for older browsers and home-screen installs.
