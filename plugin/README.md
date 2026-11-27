@@ -19,7 +19,7 @@ the unattended framework catalog. Full setup guide:
 
 ```
 /plugin marketplace add aeonfun/aeon
-/plugin install aeon@aeon
+/plugin install aeon-agent@aeon
 ```
 
 **Codex**
