@@ -1,7 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="88" height="40" viewBox="0 0 88 40" role="img" aria-label="ADK">
-  <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c1a15"/><stop offset="1" stop-color="#0d0c0a"/></linearGradient></defs>
-  <rect x="0.5" y="0.5" width="87" height="39" rx="19.5" fill="url(#g)" stroke="#F4EFE1" stroke-opacity="0.5"/>
-  <rect x="2" y="1.5" width="84" height="15" rx="12" fill="#F4EFE1" opacity="0.05"/>
-  <g stroke="#F4EFE1" stroke-width="1.6" fill="none" stroke-linejoin="round"><rect x="14.3" y="14.3" width="6" height="6" rx="1.1"/><rect x="23" y="14.3" width="6" height="6" rx="1.1"/><rect x="18.6" y="21" width="6" height="6" rx="1.1"/></g>
-  <text x="37" y="25.5" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="15" font-weight="700" fill="#F4EFE1">ADK</text>
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FBF8F3"/><stop offset="1" stop-color="#E6DFD3"/></linearGradient>
+    <linearGradient id="h" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF" stop-opacity="0.55"/><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
+    <radialGradient id="o" cx="0.5" cy="1.15" r="0.75"><stop offset="0" stop-color="#FF5A1F" stop-opacity="0.35"/><stop offset="1" stop-color="#FF5A1F" stop-opacity="0"/></radialGradient>
+    
+  </defs>
+  <rect x="0.5" y="0.5" width="87" height="39" rx="19.5" fill="url(#g)"/>
+  <rect x="0.5" y="0.5" width="87" height="39" rx="19.5" fill="url(#o)"/>
+  <rect x="3" y="2" width="82" height="17" rx="8.5" fill="url(#h)"/>
+  <rect x="0.5" y="0.5" width="87" height="39" rx="19.5" fill="none" stroke="#FFFFFF" stroke-opacity="0.9"/>
+<g stroke="#141B27" stroke-width="1.6" fill="none" stroke-linejoin="round"><rect x="14.3" y="14.3" width="6" height="6" rx="1.1"/><rect x="23" y="14.3" width="6" height="6" rx="1.1"/><rect x="18.6" y="21" width="6" height="6" rx="1.1"/></g>
+  <path d="M39.415 25.5H37.15L41.11 14.475H43.285L47.230000000000004 25.5H44.935L44.095 23.07H40.255ZM41.905 18.285 40.885 21.225H43.48L42.445 18.285Q42.37 18.03 42.287499999999994 17.76Q42.205 17.490000000000002 42.175 17.325000000000003Q42.144999999999996 17.490000000000002 42.0775 17.7525Q42.01 18.015 41.905 18.285ZM52.705 25.5H48.565V14.475H52.584999999999994Q54.22 14.475 55.449999999999996 15.1725Q56.67999999999999 15.870000000000001 57.3775 17.115000000000002Q58.074999999999996 18.36 58.074999999999996 20.009999999999998Q58.074999999999996 21.63 57.39999999999999 22.8675Q56.724999999999994 24.105 55.5175 24.802500000000002Q54.309999999999995 25.5 52.705 25.5ZM50.739999999999995 15.465V24.525L49.705 23.490000000000002H52.51Q53.529999999999994 23.490000000000002 54.26499999999999 23.07Q54.99999999999999 22.65 55.397499999999994 21.869999999999997Q55.794999999999995 21.09 55.794999999999995 20.009999999999998Q55.794999999999995 18.9 55.38249999999999 18.1125Q54.97 17.325000000000003 54.205 16.905Q53.44 16.485 52.37499999999999 16.485H49.705ZM68.8 14.475 61.464999999999996 23.97V20.7L66.235 14.475ZM62.004999999999995 14.475V25.5H59.83V14.475ZM63.669999999999995 20.895 65.05 18.990000000000002 68.83 25.5H66.32499999999999Z" fill="#141B27"/>
 </svg>
