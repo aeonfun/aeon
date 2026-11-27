@@ -264,7 +264,14 @@ gh repo view "<WEBSITE_REPO>" --json defaultBranchRef --jq '.defaultBranchRef.na
 
 **Pin the commit identity in the clone.** A freshly cloned repo does NOT inherit the workflow's git identity, so without these two lines the commit author falls back to an improvised/unlinked email. Set `GIT_USER_NAME` / `GIT_USER_EMAIL` from `memory/docs-sync.md` (`git_user_name` / `git_user_email`); when the config omits them, default to `aeon` / `aeon@users.noreply.github.com`. Always pin it so every changelog commit + PR is attributed to one stable, intentional identity — never an improvised one.
 
-If `app/changelog-data.ts` exists, read it and collect `PUBLISHED_PR_NUMBERS` (every PR number already in `CHANGELOG`). If it doesn't exist yet, this is a **bootstrap** run (see step B.4) and nothing is published.
+**Find the changelog data file (`DATA_FILE`).** Websites lay their files out differently, so never assume one path. Check in this order (Glob/Read) and stop at the first file that exists:
+1. **The website's own instructions.** If `CLAUDE.md` or `AGENTS.md` exists at the clone root, read it and look for the changelog data path (e.g. a line like `Changelog: content/changelog/changelog-data.ts`). A path named there wins.
+2. `content/changelog/changelog-data.ts`
+3. `app/changelog-data.ts`
+
+If one exists, that is `DATA_FILE` (use it everywhere below): read it and collect `PUBLISHED_PR_NUMBERS` (every PR number already in `CHANGELOG`).
+
+If none exists, Glob for `app/**/changelog/page.tsx` (route groups count, e.g. `app/(glass)/changelog/page.tsx`). A changelog page means the site already has a changelog whose data lives somewhere else: read that page's imports to find the data file and use it as `DATA_FILE`. If you still cannot find it, exit with `DOCS_SYNC_NO_DATA_FILE` (notify + log, no PR) - never bootstrap over an existing page. Only when there is **no data file and no changelog page** is this a **bootstrap** run (see step B.4), and nothing is published.
 
 **Compute the new set:** from step B.1's windowed PRs, keep only those whose `number` is NOT in `PUBLISHED_PR_NUMBERS`. PR number is the idempotency key — not dates — so re-running within the same window is always safe and never duplicates.
 
@@ -290,7 +297,7 @@ Compose ONE `ChangelogEntry`:
 
 ## B.4. Apply to the website
 
-The data file `app/changelog-data.ts` is the **only** file you mutate on a normal run. Its shape:
+The data file `DATA_FILE` (found in step B.2) is the **only** file you mutate on a normal run. Its shape:
 
 ```ts
 export type ChangelogPR = { number: number; title: string; url: string; author: string };
@@ -307,21 +314,28 @@ export const CHANGELOG: ChangelogEntry[] = [
 export const PUBLISHED_PR_NUMBERS = CHANGELOG.flatMap((e) => e.prs.map((p) => p.number));
 ```
 
-**Normal run:** prepend the new entry to the top of the `CHANGELOG` array. Touch nothing else.
+**Normal run:** prepend the new entry to the top of the `CHANGELOG` array. Touch nothing else. Write it in the file's existing style: copy the shape of the newest entry already there (quote style, indent, trailing commas, semicolons, how long strings wrap) so the new entry looks like the ones below it. The schema above shows the fields, not the file's formatting.
 
-**Bootstrap run** (no `app/changelog-data.ts` yet) — create the changelog surface, matching the site's existing conventions (do NOT invent a new design system):
-1. Create `app/changelog-data.ts` with the schema above + your first entry.
+**Bootstrap run** (no data file and no changelog page, see step B.2) - create the changelog surface, matching the site's existing conventions (do NOT invent a new design system):
+1. Create the data file with the schema above + your first entry: `content/changelog/changelog-data.ts` if the site keeps its data files under `content/`, else `app/changelog-data.ts`. That path is `DATA_FILE`.
 2. Create `app/changelog/page.tsx` that renders `CHANGELOG`. **Read an existing list page first** (`app/blog/page.tsx` is the model on these sites) and reuse its shared chrome: same `SiteNav`/`SiteFooter`, the same CSS module it imports (e.g. `../docs/page.module.css` as `chrome`), the same hero/section structure. Wire full Next.js `metadata` (title, description, canonical, OpenGraph) like the other pages. Give it a JSON-LD block if the blog page has one.
-3. Add a **"Recent changes"** section to `app/docs/page.tsx`: import `CHANGELOG` from `../changelog-data` and render the latest 3 entries inline, with a "Full changelog →" link to `/changelog`. Place it near the top of the docs body, after the intro. Keep edits to that file minimal and self-contained.
+3. Add a **"Recent changes"** section to `app/docs/page.tsx`: import `CHANGELOG` from `DATA_FILE` (relative path from that page) and render the latest 3 entries inline, with a "Full changelog →" link to `/changelog`. Place it near the top of the docs body, after the intro. Keep edits to that file minimal and self-contained.
 4. Add a **`changelog`** link to the primary nav in `app/site-chrome.tsx` (or wherever the site renders its nav — check the layout if there's no `site-chrome`).
 
-Match indentation, quote style, and naming of each repo exactly. After editing, if the site has a formatter available, run it too so a `format:check` gate passes (`npm run format`, i.e. biome/prettier `--write`). If the site has a typecheck/lint/build available, run it (`npm run lint` / `npx tsc --noEmit` / `npm run build`) and fix any error your change introduced. If `npm` isn't available in the run, skip silently and note it in the PR body.
+Match indentation, quote style, and naming of each repo exactly. After editing, format per step B.4.1 (the formatter only when the site declares a formatter gate). If the site has a typecheck/lint/build available, run it (`npm run lint` / `npx tsc --noEmit` / `npm run build`) and fix any error your change introduced. If `npm` isn't available in the run, skip silently and note it in the PR body.
 
-## B.4.1. Format the file you changed (MANDATORY, both runs)
+## B.4.1. Format the file you changed (both runs)
 
-The website's CI runs a `format:check` gate (`biome ci .` or `prettier --check`). A hand-written `changelog-data.ts` entry almost never matches the formatter's exact output (quote style, trailing commas, indent, line wrapping), so an unformatted prepend lands the PR **CI-red** - this is the common failure, not an edge case. Format the file(s) you touched before committing, on **every** run (normal prepend and bootstrap alike):
+First check whether the website **declares a formatter gate**. It does when any of these is true:
+- `biome.json` or `biome.jsonc` exists, or `grep -c '"@biomejs/biome"' package.json` is above 0;
+- a Prettier config exists (`.prettierrc`, `.prettierrc.json`, `.prettierrc.*`, `prettier.config.*`), or `grep -c '"prettier"' package.json` is above 0;
+- `grep -c '"format:check"' package.json` is above 0.
 
-Detect the repo's formatter + PINNED version so output matches its `format:check`. Use npx (no repo `npm ci` needed); a bare/newer formatter can format differently than the pinned one and still fail the gate, so pin the version the repo declares. `FILES` is `app/changelog-data.ts` plus any other files a bootstrap run created/edited, written in literally. Run these as separate calls from `/tmp/docs-sync-work` (see **Shell shape** in A.2):
+**No gate:** skip the formatter (do not install or run one: a formatter with default settings would rewrite the whole file). Instead make sure the prepended entry matches the existing file's style by copying an existing entry's shape (quotes, indent, trailing commas, line wrapping), and note `no formatter gate, style matched by hand` in the PR body.
+
+**Gate declared:** the website's CI runs a `format:check` gate (`biome ci .` or `prettier --check`). A hand-written entry almost never matches the formatter's exact output (quote style, trailing commas, indent, line wrapping), so an unformatted prepend lands the PR **CI-red**. Format the file(s) you touched before committing, on **every** run (normal prepend and bootstrap alike).
+
+Detect the repo's formatter + PINNED version so output matches its `format:check`. Use npx (no repo `npm ci` needed); a bare/newer formatter can format differently than the pinned one and still fail the gate, so pin the version the repo declares. `FILES` is `DATA_FILE` plus any other files a bootstrap run created/edited, written in literally. Run these as separate calls from `/tmp/docs-sync-work` (see **Shell shape** in A.2):
 
 1. **Biome?** Use Glob for `biome.json` / `biome.jsonc` in the work dir, and run:
    ```bash
@@ -349,9 +363,9 @@ Detect the repo's formatter + PINNED version so output matches its `format:check
    npx --yes prettier@<PV> --write <FILES>
    ```
    If that fails, note `prettier format skipped` (a warning, not a stop).
-3. **Else:** no formatter config found - note it in the PR body.
+3. **Else** (only a `format:check` script, no Biome or Prettier found): match the style by hand as in the no-gate case and note it in the PR body.
 
-If neither formatter is present, note it in the PR body. Do not skip this step silently on a normal run - the missing format is exactly what turns a one-line changelog prepend into a red PR.
+Never skip this step silently: either the formatter ran, or the PR body says why not and the entry was matched to the file's style by hand.
 
 ## B.5. Branch, commit, PR
 
@@ -399,7 +413,7 @@ Always pass `--head` and `--base`: the shell's working dir is the clone, but `gh
 
 ## B.6. Notify (gated)
 
-Send only on `DOCS_SYNC_OK` / `DOCS_SYNC_BOOTSTRAP` (a real entry was written) and on `DOCS_SYNC_NO_CONFIG` (one-line config prompt). Stay silent on `DOCS_SYNC_NOTHING_NEW` / `DOCS_SYNC_BELOW_THRESHOLD`.
+Send only on `DOCS_SYNC_OK` / `DOCS_SYNC_BOOTSTRAP` (a real entry was written) and on `DOCS_SYNC_NO_CONFIG` (one-line config prompt) / `DOCS_SYNC_NO_DATA_FILE` (one line: the site has a changelog page but the data file was not found). Stay silent on `DOCS_SYNC_NOTHING_NEW` / `DOCS_SYNC_BELOW_THRESHOLD`.
 
 ```
 *Changelog (push-to) - ${today}*
@@ -431,7 +445,7 @@ Consolidate both branches under ONE `### changelog` heading in `memory/logs/${to
 ```
 ### changelog
 - Mode: push-to
-- Status: DOCS_SYNC_OK | DOCS_SYNC_BOOTSTRAP | DOCS_SYNC_NOTHING_NEW | DOCS_SYNC_BELOW_THRESHOLD | DOCS_SYNC_NO_CONFIG
+- Status: DOCS_SYNC_OK | DOCS_SYNC_BOOTSTRAP | DOCS_SYNC_NOTHING_NEW | DOCS_SYNC_BELOW_THRESHOLD | DOCS_SYNC_NO_CONFIG | DOCS_SYNC_NO_DATA_FILE
 - Product: ${PRODUCT_REPO} → Website: ${WEBSITE_REPO}
 - New PRs: N (numbers: ...)
 - Entry: "<title>"
