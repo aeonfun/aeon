@@ -13,7 +13,6 @@
 </p>
 
 <p align="center">
-  Give it a direction and it ships the work: features, vulnerability disclosures, live apps, deep research - and new skills for itself.<br/><br/>
   <strong>Multiply yourself ⭐<br/>Give every idea its own swarm, 24/7.<br/>Outwork any company.</strong>
 </p>
 
