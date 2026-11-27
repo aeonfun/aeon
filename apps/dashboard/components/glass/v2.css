@@ -1,0 +1,152 @@
+/* v2 "Print plates": the riso materials this variation adds, scoped to its own classes. Ink is
+   laid as halftone dots, and each block carries a second ink a few pixels off register, the way
+   a two-drum riso print lands. Everything rests flat and complete under reduced motion. */
+
+/* Halftone ink: a dot screen in the current ink color over a solid at lower strength. */
+.v2p-ink {
+  --ink: var(--foreground);
+  background-color: color-mix(in oklch, var(--ink) 86%, transparent);
+  background-image: radial-gradient(circle at 50% 50%, color-mix(in oklch, var(--ink) 100%, black 18%) 0.9px, transparent 1.3px);
+  background-size: 4px 4px;
+}
+.v2p-ink-red {
+  --ink: var(--primary);
+}
+
+/* The second drum: an offset block of the other ink behind the first. */
+.v2p-reg {
+  position: relative;
+  isolation: isolate;
+}
+.v2p-reg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background-color: color-mix(in oklch, var(--reg, var(--primary)) 78%, transparent);
+  background-image: radial-gradient(circle at 50% 50%, var(--reg, var(--primary)) 0.8px, transparent 1.2px);
+  background-size: 4px 4px;
+  translate: var(--off, 5px) var(--off, 5px);
+}
+
+/* A riso screen on the product tiles: dots of the second ink that thicken toward one corner,
+   the way a gradient lands on a two-drum print. */
+.v2p-screen {
+  background-image: radial-gradient(circle at 50% 50%, var(--reg, var(--primary)) 1.5px, transparent 2px);
+  background-size: 7px 7px;
+  mask-image: radial-gradient(140% 120% at 100% 100%, #000 0%, rgb(0 0 0 / 0.55) 30%, transparent 62%);
+  opacity: 0.7;
+}
+
+/* Poster numerals: the figure in ink with a faint red ghost off register behind it. */
+.v2p-poster {
+  text-shadow: 0.035em 0.03em 0 oklch(0.65 0.23 32 / 0.28);
+}
+
+/* The How plates turn over on a vertical axis. */
+.v2p-plate {
+  perspective: 1400px;
+}
+.v2p-turn {
+  transform-style: preserve-3d;
+  transition: rotate 700ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.v2p-plate[data-flipped] .v2p-turn {
+  rotate: y 180deg;
+}
+.v2p-face {
+  backface-visibility: hidden;
+}
+.v2p-back {
+  rotate: y 180deg;
+}
+.v2p-lead {
+  transition: opacity 240ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.v2p-plate[data-flipped] .v2p-lead {
+  opacity: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  /* No turn: the back fades over the front in place. */
+  .v2p-turn,
+  .v2p-plate[data-flipped] .v2p-turn {
+    rotate: none;
+    transition: none;
+  }
+  .v2p-back {
+    rotate: none;
+    opacity: 0;
+    transition: opacity 200ms ease-out !important;
+  }
+  .v2p-plate[data-flipped] .v2p-back {
+    opacity: 1;
+  }
+}
+
+/* Leader lines draw on as they scroll in. */
+.v2p-leader {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 900ms cubic-bezier(0.65, 0, 0.35, 1) var(--d, 0ms);
+}
+[data-seen] .v2p-leader {
+  stroke-dashoffset: 0;
+}
+/* The same draw for leaders made of 1px rules (How): down from the pin, then across to the star. */
+.v2p-rule-y {
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 700ms cubic-bezier(0.65, 0, 0.35, 1) var(--d, 0ms);
+}
+.v2p-rule-x {
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 700ms cubic-bezier(0.65, 0, 0.35, 1) var(--d, 0ms);
+}
+[data-seen] :is(.v2p-rule-y, .v2p-rule-x) {
+  transform: none;
+}
+.v2p-pop {
+  opacity: 0;
+  scale: 0.6;
+  transition:
+    opacity 400ms cubic-bezier(0.23, 1, 0.32, 1) var(--d, 0ms),
+    scale 500ms cubic-bezier(0.23, 1, 0.32, 1) var(--d, 0ms);
+}
+[data-seen] .v2p-pop {
+  opacity: 1;
+  scale: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .v2p-leader {
+    stroke-dashoffset: 0;
+    transition: none;
+  }
+  .v2p-rule-y,
+  .v2p-rule-x {
+    transform: none;
+    transition: none;
+  }
+  .v2p-pop {
+    opacity: 1;
+    scale: 1;
+    transition: none;
+  }
+}
+
+/* The riso blocks of the ledger rise from the floor line as they scroll in. */
+.v2p-block {
+  transform-origin: bottom;
+  scale: 1 0;
+  transition: scale 800ms cubic-bezier(0.23, 1, 0.32, 1) var(--d, 0ms);
+}
+[data-seen] .v2p-block {
+  scale: 1 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .v2p-block {
+    scale: 1 1;
+    transition: none;
+  }
+}

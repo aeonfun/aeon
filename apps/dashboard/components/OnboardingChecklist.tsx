@@ -2,6 +2,10 @@
 
 import { useState } from 'react'
 import { harnessName } from '../lib/connect-detect'
+import { CountUp } from './glass/count-up'
+import { ArrowUpRightLightIcon, CheckLightIcon } from './glass/d/icons'
+import { ACTION, ActionButton, CARD, CHIP, CHIP_OFF, CHIP_ROW, LABEL, NewTab } from './glass/connect/ui'
+import { cn } from '@/lib/cn'
 
 // Setup checklist on HQ, shown until every row is done. Each row has one
 // action that opens the flow that completes it. "Model" is done once a
@@ -39,28 +43,31 @@ interface OnboardingChecklistProps extends ChecklistState {
 
 type RowState = 'done' | 'todo' | 'unknown'
 
-function Dot({ state }: { state: RowState }) {
+// The step marker: an orange numbered bead while it is still to do (the docs .g-steps bead),
+// a smoke check once done, a quiet "?" when it could not be checked. The word comes with it.
+function Bead({ state, n }: { state: RowState; n: number }) {
   if (state === 'done') {
     return (
-      <svg
-        viewBox="0 0 16 16"
-        className="w-4 h-4 text-aeon-green shrink-0"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        aria-label="done"
-      >
-        <path d="M3 8.5l3 3 7-7" />
-      </svg>
+      <span className="relative z-[1] grid size-[2.1rem] shrink-0 place-items-center rounded-full bg-[var(--foreground)] text-[var(--g-paper)] shadow-[inset_0_1px_0_rgb(255_255_255/0.25)]">
+        <CheckLightIcon className="size-4" />
+      </span>
+    )
+  }
+  if (state === 'unknown') {
+    return (
+      <span className="g-chip relative z-[1] grid size-[2.1rem] shrink-0 place-items-center rounded-full font-mono text-[13px] font-semibold text-muted-foreground">
+        ?
+      </span>
     )
   }
   return (
-    <span
-      aria-label={state}
-      className={`w-2.5 h-2.5 mx-[3px] rounded-full shrink-0 ${state === 'unknown' ? 'bg-[rgba(250,250,250,0.25)]' : 'border border-aeon-red'}`}
-    />
+    <span className="c-bead relative z-[1] grid size-[2.1rem] shrink-0 place-items-center rounded-full font-mono text-[13px] font-semibold text-[var(--primary-foreground)]">
+      {n}
+    </span>
   )
 }
+
+const STATE_WORD: Record<RowState, string> = { done: 'Done', todo: 'To do', unknown: 'Not checked' }
 
 export function checklistComplete(s: ChecklistState): boolean {
   return (
@@ -126,56 +133,82 @@ export function OnboardingChecklist(props: OnboardingChecklistProps) {
       label: 'First skill run',
       state: firstRunDone ? 'done' : 'todo',
       detail: firstRunDone ? 'A skill finished successfully.' : 'Run any skill once to see it work end to end.',
-      action: firstRunDone ? undefined : { label: 'Run one', onClick: props.onFirstRun },
+      action: firstRunDone ? undefined : { label: 'Run now', onClick: props.onFirstRun },
     },
   ]
   const doneCount = rows.filter(r => r.state === 'done').length
 
   return (
-    <section aria-label="Setup checklist" className="border border-[rgba(250,250,250,0.10)] bg-aeon-panel">
-      <div className="flex items-center gap-3 px-5 md:px-6 py-4 border-b border-[rgba(250,250,250,0.10)]">
-        <span className="font-display text-[13px] tracking-[0.18em] text-aeon-red uppercase">Setup</span>
-        <span className="flex-1 h-px bg-[rgba(250,250,250,0.10)]" />
-        <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-primary-35">
-          {doneCount} / {rows.length} done
+    <section aria-labelledby="setup-title" className={cn(CARD, 'px-4 py-5 sm:px-6 sm:py-6')}>
+      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+        <h2 id="setup-title" className={LABEL}>
+          Setup
+        </h2>
+        <span className="font-mono text-[12px] text-muted-foreground tabular-nums">
+          <CountUp to={doneCount} duration={1.2} /> of {rows.length} done
         </span>
       </div>
-      <ul className="divide-y divide-[rgba(250,250,250,0.08)]">
-        {rows.map(r => (
-          <li key={r.label} className="flex items-center gap-4 px-5 md:px-6 py-3">
-            <Dot state={r.state} />
-            <div className="min-w-0 flex-1">
-              <div
-                className={`text-xs font-mono uppercase tracking-[0.12em] ${r.state === 'done' ? 'text-primary-50' : 'text-aeon-fg'}`}
-              >
-                {r.label}
-              </div>
-              <div className="text-[11px] font-mono text-primary-40 truncate" title={r.detail}>
-                {r.detail}
-              </div>
-            </div>
-            {r.action &&
-              (r.action.href ? (
-                <a href={r.action.href} target="_blank" rel="noopener noreferrer" className="btn-mini shrink-0">
-                  {r.action.label}
-                </a>
-              ) : (
-                <button onClick={r.action.onClick} className="btn-mini-go shrink-0">
-                  {r.action.label}
-                </button>
-              ))}
-            {r.label === 'Notifications set up' && !notificationsSet && choosing && (
-              <div className="flex flex-wrap justify-end gap-1.5 shrink-0" role="group" aria-label="Pick a channel">
-                {CHANNELS.map(c => (
-                  <button key={c.id} onClick={() => props.onNotifications(c.id)} className="btn-mini-go">
-                    {c.label}
-                  </button>
-                ))}
-              </div>
+      <div aria-hidden className="mt-3 h-1 overflow-hidden rounded-full bg-[var(--muted)]">
+        <div
+          className="h-full rounded-full bg-[var(--foreground)] transition-[width] duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]"
+          style={{ width: `${(doneCount / rows.length) * 100}%` }}
+        />
+      </div>
+      <ol className="mt-5">
+        {rows.map((r, i) => (
+          <li key={r.label} className="relative flex gap-4 pb-5 last:pb-0">
+            {i < rows.length - 1 && (
+              <span
+                aria-hidden
+                className="absolute top-[2.1rem] bottom-0 left-[calc(1.05rem-0.5px)] w-px bg-[linear-gradient(var(--line),transparent)]"
+              />
             )}
+            <Bead state={r.state} n={i + 1} />
+            <div className="flex min-w-0 flex-1 flex-wrap items-start justify-between gap-x-4 gap-y-2.5 pt-1">
+              <div className="min-w-0 flex-1 basis-[14rem]">
+                <p
+                  className={cn(
+                    'text-[16px] leading-[1.35] font-medium',
+                    r.state === 'done' && 'text-muted-foreground',
+                  )}
+                >
+                  {r.label}
+                  <span className="sr-only">: {STATE_WORD[r.state]}</span>
+                </p>
+                <p className="mt-0.5 text-[14px] leading-[1.5] text-muted-foreground [overflow-wrap:anywhere]">
+                  {r.detail}
+                </p>
+              </div>
+              {r.action &&
+                (r.action.href ? (
+                  <a href={r.action.href} target="_blank" rel="noopener noreferrer" className={cn(ACTION, 'shrink-0')}>
+                    {r.action.label}
+                    <ArrowUpRightLightIcon className="size-3.5" />
+                    <NewTab />
+                  </a>
+                ) : (
+                  <ActionButton onClick={r.action.onClick} className="shrink-0">
+                    {r.action.label}
+                  </ActionButton>
+                ))}
+              {r.label === 'Notifications set up' && !notificationsSet && choosing && (
+                <div className={cn(CHIP_ROW, 'w-full')} role="group" aria-label="Pick a channel">
+                  {CHANNELS.map(c => (
+                    <button
+                      key={c.id}
+                      type="button"
+                      onClick={() => props.onNotifications(c.id)}
+                      className={cn(CHIP, CHIP_OFF)}
+                    >
+                      {c.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </li>
         ))}
-      </ul>
+      </ol>
     </section>
   )
 }

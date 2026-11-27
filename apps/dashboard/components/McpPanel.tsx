@@ -1,10 +1,31 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Scramble } from './ui/Animated'
-import { inputCls } from '../lib/utils'
 import { MCP_CATALOG, tokenVar } from '../lib/mcp-catalog'
 import type { Secret, McpServer, McpServers, McpAuthResponse } from '../lib/types'
+import { McpLogo } from './ui/McpLogo'
+import { Section } from './ui/Section'
+import { CheckLightIcon } from './glass/d/icons'
+import {
+  ActionButton,
+  ATTN,
+  Callout,
+  CARD,
+  EmptyState,
+  Field,
+  LINK,
+  LIST,
+  Loading,
+  NewTab,
+  PageHeader,
+  PrimaryButton,
+  TAG,
+  TAG_ATTN,
+  TAG_INK,
+  TAG_MUTED,
+} from './glass/connect/ui'
+import { SegmentedChoice } from './glass/connect/forms'
+import { cn } from '@/lib/cn'
 
 // One-click starters - public HTTP MCP servers that install with no token.
 const FEATURED = MCP_CATALOG
@@ -61,7 +82,7 @@ export function McpPanel({
   }, [servers])
 
   // Per-row token entry - set an existing server's referenced secret inline,
-  // exactly like a credential row in Settings (paste value → Set → saved to GH).
+  // exactly like a credential row in Settings (paste value, Set, saved to GH).
   const [secretDraft, setSecretDraft] = useState<Record<string, string>>({})
   const isSecretSet = (n: string) => secrets.some(s => s.name === n && s.isSet)
   const saveRowSecret = (n: string) => {
@@ -206,310 +227,306 @@ export function McpPanel({
   }
 
   return (
-    <div className="max-w-5xl mx-auto pb-16 space-y-8">
-      <section className="relative overflow-hidden border border-[rgba(250,250,250,0.10)] bg-aeon-panel">
-        <div className="dither" aria-hidden="true" />
-        <div className="relative z-10 px-5 md:px-8 pt-10 pb-8">
-          <h1
-            className="font-display uppercase leading-[0.92] tracking-tight text-aeon-fg"
-            style={{ fontSize: 'clamp(40px, 6.5vw, 88px)' }}
-          >
-            <Scramble text="MCP" />{' '}
-            <span className="text-aeon-red">
-              <Scramble text="SERVERS" delay={160} />
-            </span>
-          </h1>
-          <p className="mt-4 max-w-xl text-sm text-primary-70 leading-relaxed">
-            Servers your skills can <span className="text-primary-100">call</span> during a run - GitHub, a database, a
-            paid API.
-          </p>
-          <p className="mt-2 max-w-xl text-sm text-primary-70 leading-relaxed">
-            Want the other direction? Drive this agent from ChatGPT, Claude or Cursor with the hosted MCP server:{' '}
-            <a
-              href="https://www.aeon.fun/connect/mcp"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary-70 underline decoration-dotted underline-offset-2 hover:text-aeon-fg transition-colors"
-            >
-              www.aeon.fun/connect/mcp
-            </a>
-          </p>
-        </div>
-      </section>
+    <div className="space-y-[clamp(36px,4vw,56px)]">
+      <PageHeader title="MCP servers" sub="Servers your skills can call during a run: GitHub, a database, a paid API.">
+        <p className="mt-2 max-w-[78ch] text-[15px] leading-[1.55] text-muted-foreground">
+          Want the other direction? Drive this agent from ChatGPT, Claude or Cursor with the hosted MCP server:{' '}
+          <a href="https://www.aeon.fun/connect/mcp" target="_blank" rel="noopener noreferrer" className={LINK}>
+            www.aeon.fun/connect/mcp
+            <NewTab />
+          </a>
+        </p>
+      </PageHeader>
 
-      <section className="border-t border-[rgba(250,250,250,0.10)] pt-6">
-        <div className="flex items-center gap-3 mb-4">
-          <span className="font-display text-[13px] tracking-[0.18em] text-aeon-red uppercase">Featured</span>
-          <span className="flex-1 h-px bg-[rgba(250,250,250,0.10)]" />
-          <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-primary-35">one-click install</span>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <Section
+        label="Featured"
+        action={<span className="font-mono text-[12px] text-muted-foreground">One-click install</span>}
+      >
+        <ul className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
           {FEATURED.map(f => {
             const installed = isFeaturedInstalled(f.url)
             return (
-              <div
-                key={f.slug}
-                className="border border-[rgba(250,250,250,0.10)] bg-aeon-panel px-[var(--space-md)] py-[var(--space-sm)] flex items-center gap-3"
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={f.logo}
-                  alt={f.name}
-                  width={36}
-                  height={36}
-                  className="w-9 h-9 rounded object-cover bg-aeon-bg shrink-0 border border-[rgba(250,250,250,0.10)]"
-                />
+              <li key={f.slug} className={cn(CARD, 'flex items-center gap-3 px-4 py-3.5')}>
+                <McpLogo src={f.logo} size={40} className="size-10 rounded-[12px]" />
                 <div className="min-w-0 flex-1">
-                  <div className="font-mono text-xs text-primary-100">{f.name}</div>
-                  <div className="text-[11px] text-primary-40 font-mono truncate">{f.url}</div>
+                  <p className="text-[15px] font-medium">{f.name}</p>
+                  <div className="truncate font-mono text-[12px] text-muted-foreground">{f.url}</div>
                 </div>
                 {installed ? (
-                  <span className="text-[10px] font-mono uppercase tracking-[0.14em] text-aeon-green shrink-0">
-                    ✓ installed
+                  <span className={cn(TAG, TAG_INK, 'shrink-0 gap-1')}>
+                    <CheckLightIcon className="size-3" />
+                    Installed
                   </span>
                 ) : (
-                  <button
+                  <ActionButton
                     onClick={() => installFeatured(f)}
                     disabled={saving || oauthBusy === f.slug}
-                    className="btn-mini-go shrink-0"
+                    className="shrink-0"
                     title={f.oauth ? 'Opens your browser to authorize, then stores the tokens' : undefined}
                   >
-                    {oauthBusy === f.slug ? 'Connecting…' : f.oauth ? 'Connect' : 'Install'}
-                  </button>
+                    {oauthBusy === f.slug ? 'Connecting' : f.oauth ? 'Connect' : 'Install'}
+                  </ActionButton>
                 )}
-              </div>
+              </li>
             )
           })}
-        </div>
-        {oauthError && <p className="mt-3 text-[11px] font-mono text-aeon-red">{oauthError}</p>}
+        </ul>
+        {oauthError && (
+          <p role="alert" className={cn('mt-3 text-[14px] leading-[1.5]', ATTN)}>
+            {oauthError}
+          </p>
+        )}
         {/* Secrets-PAT setup section. OAuth providers rotate their refresh token
             on every run; the runner can only save each rotation back if a
             secrets-write PAT is set. Without one, an OAuth MCP server works for
             exactly one run after Connect and then its auth breaks. Shown until
             GH_SECRETS_PAT (or repo-wide GH_GLOBAL) exists; hidden once set. */}
         {!(isSecretSet('GH_SECRETS_PAT') || isSecretSet('GH_GLOBAL')) && (
-          <div className="mt-3 border border-[rgba(250,250,250,0.10)] bg-aeon-panel px-[var(--space-md)] py-[var(--space-sm)]">
-            <p className="text-[10px] font-mono uppercase tracking-[0.14em] text-aeon-red mb-1.5">
-              ⚠ OAuth MCP servers won&apos;t keep working without a secrets PAT
-            </p>
-            <p className="text-[11px] text-primary-40 leading-relaxed">
+          <Callout attention className="mt-4" title="OAuth MCP servers won't keep working without a secrets PAT">
+            <p>
               Providers rotate their refresh token on every run, and the runner needs a secrets-write credential to save
-              each rotation — without it a Connected server works once, then its auth breaks. To set it up: create a
+              each rotation. Without it a Connected server works once, then its auth breaks. To set it up: create a
               fine-grained PAT at{' '}
               <a
                 href="https://github.com/settings/personal-access-tokens"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-primary-70 underline decoration-dotted underline-offset-2 hover:text-aeon-fg transition-colors"
+                className={LINK}
               >
                 github.com/settings/personal-access-tokens
+                <NewTab />
               </a>
-              , add this repo under <span className="text-primary-70">Repository access</span>, grant{' '}
-              <span className="text-primary-70">Secrets: Read and write</span>, and save it as{' '}
+              , add this repo under <span className="font-medium text-foreground">Repository access</span>, grant{' '}
+              <span className="font-medium text-foreground">Secrets: Read and write</span>, and save it as{' '}
               <button
+                type="button"
                 onClick={() => onGoToSecret('GH_SECRETS_PAT')}
                 title="Open in Keys to set this key"
-                className="text-aeon-red-alert underline decoration-dotted underline-offset-2 hover:text-aeon-fg transition-colors"
+                className={cn(LINK, 'font-mono text-[14px]')}
               >
                 GH_SECRETS_PAT
               </button>{' '}
               in Keys. Already Connected a server? Re-connect it once after adding the PAT.
             </p>
-          </div>
+            {isSecretSet('MCP_SECRETS_PAT') && (
+              <p className="mt-2">
+                You have a <span className="font-mono text-[14px] text-foreground">MCP_SECRETS_PAT</span> from before
+                the rename; the runner no longer reads it. Rename it to{' '}
+                <button
+                  type="button"
+                  onClick={() => onGoToSecret('GH_SECRETS_PAT')}
+                  title="Open in Keys to set this key"
+                  className={cn(LINK, 'font-mono text-[14px]')}
+                >
+                  GH_SECRETS_PAT
+                </button>{' '}
+                (save the same PAT under the new name), then remove MCP_SECRETS_PAT.
+              </p>
+            )}
+          </Callout>
         )}
-      </section>
+      </Section>
 
-      <section className="border-t border-[rgba(250,250,250,0.10)] pt-6">
-        <div className="flex items-center gap-3 mb-4">
-          <span className="font-display text-[13px] tracking-[0.18em] text-aeon-red uppercase">.mcp.json</span>
-          <span className="flex-1 h-px bg-[rgba(250,250,250,0.10)]" />
-          <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-primary-35">
+      <Section
+        label=".mcp.json"
+        action={
+          <span className="font-mono text-[12px] text-muted-foreground tabular-nums">
             {names.length} server{names.length === 1 ? '' : 's'}
           </span>
-        </div>
-
+        }
+      >
         {loading ? (
-          <div className="text-xs font-mono text-primary-40 py-8">Loading…</div>
+          <Loading label="Loading servers" />
         ) : (
           <>
             {names.length > 0 ? (
-              <div className="border border-[rgba(250,250,250,0.10)] divide-y divide-[rgba(250,250,250,0.08)]">
+              <ul className={cn(LIST, 'flex flex-col gap-0.5')}>
                 {names.map(n => {
                   const s = draft[n]
                   const refs = refsOf(s)
                   return (
-                    <div
+                    <li
                       key={n}
-                      className="px-[var(--space-md)] py-[var(--space-sm)] flex items-start justify-between gap-3"
+                      className="flex flex-wrap items-start justify-between gap-x-3 gap-y-2 rounded-[14px] px-3.5 py-3.5"
                     >
-                      <div className="min-w-0">
-                        <div className="flex items-center gap-2">
-                          <span className="font-mono text-xs text-primary-100">{n}</span>
-                          <span className="text-[9px] font-mono uppercase tracking-[0.14em] text-primary-40 border border-[rgba(250,250,250,0.12)] px-1.5 py-0.5">
-                            {transportOf(s)}
-                          </span>
+                      <div className="min-w-0 flex-1 basis-[16rem]">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="font-mono text-[14px] font-medium">{n}</span>
+                          <span className={cn(TAG, TAG_MUTED)}>{transportOf(s)}</span>
                         </div>
-                        <div className="text-[11px] text-primary-40 font-mono truncate mt-0.5">{describe(s)}</div>
+                        <div className="mt-1 truncate font-mono text-[12px] text-muted-foreground">{describe(s)}</div>
                         {refs.length > 0 && (
-                          <div className="mt-2 space-y-1.5">
+                          <ul className="mt-3 space-y-2">
                             {refs.map(r => {
                               const ok = isSecretSet(r)
                               const pending = !!busy[`sec-${r}`]
                               return (
-                                <div key={r} className="flex items-center gap-2">
+                                <li key={r} className="flex flex-wrap items-center gap-2">
                                   <span
-                                    className={`text-[10px] font-mono border px-1.5 py-0.5 shrink-0 ${ok ? 'text-aeon-green border-aeon-green/30' : 'text-aeon-red border-aeon-red/30'}`}
+                                    className={cn(
+                                      TAG,
+                                      'shrink-0 font-normal normal-case tracking-normal',
+                                      ok ? TAG_INK : TAG_ATTN,
+                                    )}
                                   >
                                     ${'{'}
                                     {r}
                                     {'}'}
                                   </span>
                                   {ok ? (
-                                    <span className="text-[10px] font-mono text-aeon-green">✓ set</span>
+                                    <span className="inline-flex items-center gap-1 font-mono text-[12px] text-muted-foreground">
+                                      <CheckLightIcon className="size-3.5" />
+                                      Set
+                                    </span>
                                   ) : pending ? (
-                                    <span className="text-[10px] font-mono text-primary-40">setting…</span>
+                                    <span className="font-mono text-[12px] text-muted-foreground">Setting</span>
                                   ) : (
                                     <>
-                                      <input
-                                        type="password"
-                                        value={secretDraft[r] ?? ''}
-                                        onChange={e => setSecretDraft(d => ({ ...d, [r]: e.target.value }))}
-                                        onKeyDown={e => e.key === 'Enter' && saveRowSecret(r)}
-                                        placeholder="paste bearer token - saved to GitHub & wired in"
-                                        className="flex-1 min-w-0 bg-aeon-bg border border-[rgba(250,250,250,0.10)] px-2 py-1 text-[11px] font-mono text-primary-100 outline-none focus:border-aeon-red transition-colors cursor-target"
-                                      />
-                                      <button
-                                        onClick={() => saveRowSecret(r)}
-                                        disabled={!(secretDraft[r] ?? '').trim()}
-                                        className="btn-mini-go shrink-0"
-                                      >
-                                        Set
-                                      </button>
+                                      <span className={cn('font-mono text-[12px]', ATTN)}>Not set</span>
+                                      <div className="flex w-full items-center gap-2">
+                                        <Field
+                                          label={`Token for ${r}`}
+                                          hideLabel
+                                          type="password"
+                                          value={secretDraft[r] ?? ''}
+                                          onChange={e => setSecretDraft(d => ({ ...d, [r]: e.target.value }))}
+                                          onKeyDown={e => e.key === 'Enter' && saveRowSecret(r)}
+                                          placeholder="Paste the bearer token: saved to GitHub and wired in"
+                                          className="min-w-0 flex-1"
+                                        />
+                                        <ActionButton
+                                          onClick={() => saveRowSecret(r)}
+                                          disabled={!(secretDraft[r] ?? '').trim()}
+                                          className="h-12 shrink-0 px-5"
+                                        >
+                                          Set
+                                        </ActionButton>
+                                      </div>
                                     </>
                                   )}
-                                </div>
+                                </li>
                               )
                             })}
-                          </div>
+                          </ul>
                         )}
                       </div>
-                      <button onClick={() => removeServer(n)} className="btn-mini-danger shrink-0">
+                      <ActionButton onClick={() => removeServer(n)} className={cn('shrink-0', ATTN)}>
                         Remove
-                      </button>
-                    </div>
+                      </ActionButton>
+                    </li>
                   )
                 })}
-              </div>
+              </ul>
             ) : (
-              <div className="text-xs font-mono text-primary-40 py-6 border border-dashed border-[rgba(250,250,250,0.10)] text-center">
-                No servers yet. Add one below.
+              <div className={CARD}>
+                <EmptyState title="No servers yet" hint="Install a featured one above, or add your own below." />
               </div>
             )}
 
             {/* Add form */}
             <div className="mt-4">
               {adding ? (
-                <div className="border border-[rgba(250,250,250,0.10)] p-[var(--space-md)] space-y-3">
-                  <div className="flex gap-2">
-                    <input
+                <div className={cn(CARD, 'space-y-4 p-4 sm:p-5')}>
+                  <div className="flex flex-wrap items-end gap-3">
+                    <Field
+                      label="Server name"
                       value={name}
                       onChange={e => setName(e.target.value)}
-                      placeholder="server name (e.g. github)"
+                      placeholder="e.g. github"
                       autoFocus
-                      className={inputCls}
+                      className="min-w-0 flex-1 basis-[14rem]"
                     />
-                    <div className="flex shrink-0 border border-[rgba(250,250,250,0.10)]">
-                      {(['http', 'stdio'] as const).map(t => (
-                        <button
-                          key={t}
-                          onClick={() => setTransport(t)}
-                          className={`text-[11px] font-mono uppercase tracking-[0.14em] px-3 py-2 transition-colors ${transport === t ? 'bg-aeon-red text-white' : 'text-primary-40 hover:text-primary-70'}`}
-                        >
-                          {t}
-                        </button>
-                      ))}
-                    </div>
+                    <SegmentedChoice
+                      variant="group"
+                      label="Transport"
+                      value={transport}
+                      options={[
+                        { id: 'http', label: 'http' },
+                        { id: 'stdio', label: 'stdio' },
+                      ]}
+                      onChange={setTransport}
+                      className="mb-1"
+                    />
                   </div>
                   {transport === 'http' ? (
                     <>
-                      <input
+                      <Field
+                        label="URL"
                         value={url}
                         onChange={e => setUrl(e.target.value)}
                         placeholder="https://mcp.example.com/v1"
-                        className={inputCls}
+                        inputMode="url"
                       />
-                      <input
+                      <Field
+                        label="Bearer token (optional)"
                         type="password"
                         value={bearerToken}
                         onChange={e => setBearerToken(e.target.value)}
-                        placeholder="bearer token (optional) - paste it, saved to GitHub & wired in"
-                        className={inputCls}
+                        placeholder="Paste it: saved to GitHub and wired in"
                       />
                       {bearerToken.trim() && slugify(name) && (
-                        <p className="text-[10px] font-mono text-primary-40 px-0.5">
-                          → stored as secret <span className="text-primary-70">{tokenVar(slugify(name))}</span>,
-                          referenced from this server in <span className="text-primary-70">.mcp.json</span>
+                        <p className="px-1 text-[14px] leading-[1.5] text-muted-foreground">
+                          Stored as secret <span className="font-mono text-foreground">{tokenVar(slugify(name))}</span>,
+                          referenced from this server in <span className="font-mono text-foreground">.mcp.json</span>
                         </p>
                       )}
                     </>
                   ) : (
                     <>
-                      <input
+                      <Field
+                        label="Command"
                         value={command}
                         onChange={e => setCommand(e.target.value)}
-                        placeholder="command (e.g. npx)"
-                        className={inputCls}
+                        placeholder="e.g. npx"
                       />
-                      <input
+                      <Field
+                        label="Args, space-separated"
                         value={args}
                         onChange={e => setArgs(e.target.value)}
-                        placeholder="args, space-separated (e.g. -y @modelcontextprotocol/server-sequential-thinking)"
-                        className={inputCls}
+                        placeholder="e.g. -y @modelcontextprotocol/server-sequential-thinking"
                       />
                     </>
                   )}
-                  <div className="flex gap-2">
-                    <button onClick={addServer} className="btn-mini-go">
-                      Add server
-                    </button>
-                    <button onClick={resetForm} className="btn-mini">
-                      Cancel
-                    </button>
+                  <div className="flex flex-wrap justify-end gap-2">
+                    <ActionButton onClick={resetForm}>Cancel</ActionButton>
+                    <PrimaryButton onClick={addServer}>Add server</PrimaryButton>
                   </div>
                 </div>
               ) : (
-                <button
-                  onClick={() => setAdding(true)}
-                  className="w-full text-sm font-mono uppercase tracking-[0.14em] text-primary-60 border border-dashed border-[rgba(250,250,250,0.16)] py-3.5 hover:text-aeon-red hover:border-aeon-red/40 transition-colors disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:text-primary-60 disabled:hover:border-[rgba(250,250,250,0.16)]"
-                >
-                  + Add server
-                </button>
+                <ActionButton onClick={() => setAdding(true)} className="h-12 w-full">
+                  <svg
+                    aria-hidden
+                    viewBox="0 0 16 16"
+                    className="size-4"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={1.6}
+                    strokeLinecap="round"
+                  >
+                    <path d="M8 3v10M3 8h10" />
+                  </svg>
+                  Add server
+                </ActionButton>
               )}
             </div>
 
             {/* Footer: secrets reminder + save */}
             {allRefs.some(r => !isSecretSet(r)) && (
-              <p className="mt-5 text-[11px] text-primary-40 leading-relaxed">
-                <span className="text-aeon-red">Secrets:</span> paste each unset token in the box on its server above -
-                it saves straight to GitHub and the runner wires it into every run automatically. Until set, runs skip
-                MCP rather than fail.
+              <p className="mt-5 max-w-[78ch] text-[14px] leading-[1.55] text-muted-foreground">
+                <span className="font-medium text-foreground">Secrets:</span> paste each unset token in the box on its
+                server above. It saves straight to GitHub and the runner wires it into every run automatically. Until
+                set, runs skip MCP rather than fail.
               </p>
             )}
-            <div className="flex items-center justify-end mt-4">
-              <div className="flex items-center gap-2">
-                {dirty && (
-                  <button onClick={() => setDraft(servers)} className="btn-mini">
-                    Revert
-                  </button>
-                )}
-                <button onClick={() => onSave(draft)} disabled={!dirty || saving} className="btn-mini-go">
-                  {saving ? 'Saving…' : 'Save'}
-                </button>
-              </div>
+            <div className="mt-5 flex flex-wrap items-center justify-end gap-2">
+              {dirty && <ActionButton onClick={() => setDraft(servers)}>Revert</ActionButton>}
+              <PrimaryButton onClick={() => onSave(draft)} disabled={!dirty || saving}>
+                {saving ? 'Saving' : 'Save'}
+              </PrimaryButton>
             </div>
           </>
         )}
-      </section>
+      </Section>
     </div>
   )
 }

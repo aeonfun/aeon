@@ -1,0 +1,82 @@
+/* Type B1 "Launch grotesk". Unlayered, so it beats the Tailwind utilities. Type logic borrowed
+   from sazabi.com: heavy display set tight in both tracking and leading, a medium-weight body, and
+   small wide uppercase labels and buttons for the technical layer. */
+
+/* The emphasis face is the display family itself; theme.css points italics at this variable. */
+[data-type="b1"] {
+  --font-display-italic: var(--font-display);
+  font-weight: 450;
+}
+
+/* Display: Satoshi. Running display text (subs, card copy) sits a touch above regular. */
+[data-type="b1"] .font-display {
+  font-weight: 450;
+  font-kerning: normal;
+}
+/* Headlines: medium, not light; the weight contrast lives between the headline and its
+   emphasis word. */
+[data-type="b1"] .font-display.font-light {
+  font-weight: 500;
+}
+
+/* Emphasis: no slant; Satoshi's Black end. Standalone voice lines (card titles, quotes) go bold. */
+[data-type="b1"] .font-display.italic,
+[data-type="b1"] .font-display .italic {
+  font-style: normal;
+  font-synthesis: none;
+  font-weight: 700;
+}
+[data-type="b1"] .font-display .italic {
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+
+/* Tight leading on big type, as on the reference's posters. */
+[data-type="b1"] .font-display.leading-\[1\.02\],
+[data-type="b1"] .font-display.leading-\[1\.04\],
+[data-type="b1"] .font-display.leading-\[1\.06\] {
+  line-height: 0.98;
+}
+
+/* Tracking: one firm -3% on headlines, a bit more on posters. */
+[data-type="b1"] .font-display.tracking-\[-0\.06em\] {
+  letter-spacing: -0.05em;
+}
+[data-type="b1"] .font-display.tracking-\[-0\.05em\] {
+  letter-spacing: -0.042em;
+}
+[data-type="b1"] .font-display.tracking-\[-0\.045em\] {
+  letter-spacing: -0.036em;
+}
+[data-type="b1"] .font-display.tracking-\[-0\.04em\],
+[data-type="b1"] .font-display.tracking-\[-0\.035em\] {
+  letter-spacing: -0.03em;
+}
+
+/* Figures: Satoshi's tabular 1 sits in a wide cell ("1 09") and pushes $100M+ out of its column,
+   and no figure here counts up, so the posters set proportional figures, firm but not crowded. */
+[data-type="b1"] .font-display.tabular-nums {
+  font-variant-numeric: proportional-nums lining-nums;
+  letter-spacing: -0.03em;
+}
+
+/* Labels: small wide caps, tracked like the reference's Eurostile labels. */
+[data-type="b1"] .font-mono.uppercase {
+  letter-spacing: 0.08em;
+}
+
+/* Buttons: uppercase, semibold, tracked, as on the reference. Chips (the shipped-fixes feed) share
+   the pill shape but are names, not buttons. */
+[data-type="b1"] a.h-11.rounded-full.whitespace-nowrap:not(.g-chip) {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+/* Big numbers: one -3% on every poster figure. Set on the figure itself, since an em tracking set
+   on a small wrapper inherits as that wrapper's pixels (5.4M and $AEON came out almost untracked). */
+[data-type="b1"] .font-display.v2p-poster,
+[data-type="b1"] .font-display .v2p-poster {
+  letter-spacing: -0.03em;
+}

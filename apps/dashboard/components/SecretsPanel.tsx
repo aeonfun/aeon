@@ -1,10 +1,10 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, useId } from 'react'
 import type { Secret, Skill } from '../lib/types'
-import { inputCls, displayName } from '../lib/utils'
+import { displayName } from '../lib/utils'
 import { keyProvidedByHarness } from '../lib/constants'
-import { Scramble } from './ui/Animated'
+import { KeyName } from './ui/KeyName'
 import { ServiceIcon } from './ui/ServiceIcon'
 import type { ServiceGlyph } from '../lib/service-icons'
 import { linkify } from './ui/Linkify'
@@ -14,6 +14,10 @@ import { TelegramCommandsCard } from './TelegramCommandsCard'
 import { TelegramChatIdHelper } from './TelegramChatIdHelper'
 import { TelegramLinkCard } from './TelegramLinkCard'
 import { OAUTH_SECRET_HARNESS } from '../lib/harness-auth'
+import { CountUp } from './glass/count-up'
+import { ActionButton, Chevron, Field, LABEL, PageHeader, PrimaryButton, SMALL_LABEL, TAG } from './glass/connect/ui'
+import { BODY, ExternalLink, HINT, INLINE_CODE, QUIET_TAG, StatusNote } from './glass/connect/forms'
+import { cn } from '@/lib/cn'
 
 // Logo shown next to each credential group's header. Brand groups use their
 // favicon; non-brand groups use a glyph.
@@ -34,6 +38,9 @@ const GROUP_ICON: Record<string, { domain?: string; glyph?: ServiceGlyph }> = {
 // the section simply doesn't render until a server is connected.
 const GROUP_ORDER = ['Core', 'Telegram', 'Discord', 'Slack', 'Email', 'Observability', 'MCP', 'Skill Keys']
 
+// Plain group titles (the catalog's group ids stay as they are).
+const GROUP_TITLE: Record<string, string> = { Core: 'Model and GitHub', 'Skill Keys': 'Skill keys', MCP: 'MCP servers' }
+
 interface SecretsPanelProps {
   secrets: Secret[]
   skills: Skill[]
@@ -53,6 +60,10 @@ interface SecretsPanelProps {
   githubConnecting?: boolean
 }
 
+// Keys: every credential the agent holds, grouped by channel. Each key is a row that opens in
+// place (like the security list): the row shows the name, what it is for and whether it is set;
+// open, it shows where to get it, which skills use it, and the field to set it or the button to
+// remove it.
 export function SecretsPanel({
   secrets,
   skills,
@@ -69,11 +80,12 @@ export function SecretsPanel({
   onConnectGithub,
   githubConnecting,
 }: SecretsPanelProps) {
+  // The one open row; an unset key shows its value field when open.
   const [editingSecret, setEditingSecret] = useState<string | null>(null)
   const [secretValue, setSecretValue] = useState('')
   const [addingSecret, setAddingSecret] = useState(false)
   const [newSecretName, setNewSecretName] = useState('')
-  // Bot token saved this session, kept to pre-fill the chat-ID helper —
+  // Bot token saved this session, kept to pre-fill the chat-ID helper -
   // GitHub secrets are write-only, so it can't be read back later.
   const [sessionBotToken, setSessionBotToken] = useState('')
 
@@ -85,6 +97,9 @@ export function SecretsPanel({
     setSecretValue('')
     const t = setTimeout(() => {
       document.getElementById(`secret-${focusKey}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      document
+        .querySelector<HTMLInputElement>(`#secret-${focusKey} input[type="password"]`)
+        ?.focus({ preventScroll: true })
     }, 60)
     onFocusHandled?.()
     return () => clearTimeout(t)
@@ -116,282 +131,428 @@ export function SecretsPanel({
     setNewSecretName('')
   }
 
+  const toggle = (name: string) => {
+    setSecretValue('')
+    setEditingSecret(cur => (cur === name ? null : name))
+  }
+
+  const setCount = secrets.filter(s => s.isSet).length
+
   return (
-    <div className="max-w-5xl mx-auto pb-16 space-y-10">
-      <section className="relative overflow-hidden border border-[rgba(250,250,250,0.10)] bg-aeon-panel">
-        <div className="dither" aria-hidden="true" />
-        <div className="relative z-10 px-5 md:px-8 pt-10 pb-8">
-          <h1
-            className="font-display uppercase leading-[0.92] tracking-tight text-aeon-fg"
-            style={{ fontSize: 'clamp(40px, 6.5vw, 88px)' }}
-          >
-            <Scramble text="ACCESS" />{' '}
-            <span className="text-aeon-red">
-              <Scramble text="KEYS" delay={180} />
-            </span>
-          </h1>
-          <p className="mt-4 max-w-xl text-sm text-primary-70 leading-relaxed">Set a secret, the channel turns on.</p>
-        </div>
-      </section>
+    <div className="space-y-[clamp(36px,4vw,56px)] pb-4">
+      <PageHeader
+        title="Keys"
+        sub={
+          <>Set a secret, the channel turns on. Values are saved as encrypted GitHub secrets and never shown again.</>
+        }
+      />
 
       {GROUP_ORDER.map(group => {
         const gs = secrets.filter(s => s.group === group)
         if (!gs.length) return null
+        const headId = `keys-${group.replace(/\W+/g, '-').toLowerCase()}`
+        const set = gs.filter(s => s.isSet).length
         return (
-          <section key={group} className="border-t border-[rgba(250,250,250,0.10)] pt-6">
-            <div className="group flex items-center gap-3 mb-4">
+          <section key={group} aria-labelledby={headId}>
+            <div className="flex min-h-10 items-center gap-3">
               <ServiceIcon domain={GROUP_ICON[group]?.domain} glyph={GROUP_ICON[group]?.glyph} />
-              <span className="font-display text-[13px] tracking-[0.18em] text-aeon-red uppercase">{group}</span>
-              <span className="flex-1 h-px bg-[rgba(250,250,250,0.10)]" />
-              <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-primary-35">
-                {/* MCP rows only exist once a server is connected, so "n / n set"
+              <h2 id={headId} className={LABEL}>
+                {GROUP_TITLE[group] ?? group}
+              </h2>
+              <span className="ml-auto shrink-0 font-mono text-[12px] text-muted-foreground tabular-nums">
+                {/* MCP rows only exist once a server is connected, so "n of n set"
                     would always read 100%. Count them instead. */}
-                {group === 'MCP'
-                  ? `${gs.length} credential${gs.length === 1 ? '' : 's'}`
-                  : `${gs.filter(s => s.isSet).length} / ${gs.length} set`}
+                {group === 'MCP' ? (
+                  <>
+                    <CountUp to={gs.length} duration={1.2} /> credential{gs.length === 1 ? '' : 's'}
+                  </>
+                ) : (
+                  <>
+                    <CountUp to={set} duration={1.2} /> of {gs.length} set
+                  </>
+                )}
               </span>
             </div>
             {group === 'MCP' && (
-              <p className="text-[11px] text-primary-40 leading-relaxed mb-3 -mt-1">
-                Credentials belonging to the servers on the <span className="text-primary-70">MCP</span> page. They are
-                created there (paste a bearer token, or Connect for OAuth) and listed here so every key the agent holds
-                shows up in one inventory. Removing one here leaves its server wired in{' '}
-                <span className="text-primary-70">.mcp.json</span> but unauthenticated, and runs will skip MCP with a
-                warning until it is set again.
+              <p className={cn(HINT, 'mt-2 max-w-[78ch]')}>
+                Credentials belonging to the servers on the MCP page. They are created there (paste a bearer token, or
+                Connect for OAuth) and listed here so every key the agent holds shows up in one place. Removing one here
+                leaves its server wired in <code className={INLINE_CODE}>.mcp.json</code> but unauthenticated, and runs
+                skip MCP with a warning until it is set again.
               </p>
             )}
-            <div className="border border-[rgba(250,250,250,0.10)] divide-y divide-[rgba(250,250,250,0.08)]">
+            <ul className="g-chip mt-3 flex flex-col gap-0.5 rounded-[22px] p-1.5">
               {gs.map(secret => (
-                <div
+                <SecretRow
                   key={secret.name}
-                  id={`secret-${secret.name}`}
-                  className={`group px-[var(--space-md)] py-[var(--space-sm)] scroll-mt-24 transition-colors ${editingSecret === secret.name ? 'bg-aeon-red/5' : ''}`}
-                >
-                  {/* Phones: actions drop below the text (indented past the icon)
-                      instead of squeezing the description into a narrow column. */}
-                  <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-2 md:gap-3">
-                    <div className="flex items-start gap-3 min-w-0">
-                      <ServiceIcon name={secret.name} className="mt-0.5" />
-                      <div className="min-w-0">
-                        <div className="flex items-center gap-2">
-                          <span className="font-mono text-xs break-all">{secret.name}</span>
-                          <span
-                            className={`w-2 h-2 rounded-full ${secret.isSet ? 'bg-aeon-green' : 'bg-[rgba(250,250,250,0.15)]'}`}
-                          />
-                        </div>
-                        <div className="text-[11px] text-primary-40 font-mono">{linkify(secret.description)}</div>
-                        {keyProvidedByHarness(secret.name, harness) && !secret.isSet && (
-                          <div className="text-[10px] text-aeon-green/80 font-mono mt-1 flex items-center gap-1.5">
-                            <span className="w-1.5 h-1.5 rounded-full bg-aeon-green shrink-0" />
-                            Covered by the Grok Build harness (built-in web search) - optional here; set it for the
-                            premium xAI x_search feed, used by both harnesses.
-                          </div>
-                        )}
-                        {secret.name === 'TELEGRAM_BOT_TOKEN' && (
-                          <a
-                            href="https://t.me/BotFather"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            title="Opens BotFather in Telegram. Send /newbot and follow the prompts (or /token for an existing bot) - it replies with the bot token, e.g. 123456789:AAxx... Paste that here."
-                            className="inline-block text-[10px] font-mono text-aeon-red/80 hover:text-aeon-red transition-colors mt-1"
-                          >
-                            Get one from @BotFather ↗
-                          </a>
-                        )}
-                        {secret.name === 'TELEGRAM_CHAT_ID' && (
-                          <TelegramChatIdHelper
-                            defaultToken={sessionBotToken}
-                            onFound={chatId => {
-                              setEditingSecret('TELEGRAM_CHAT_ID')
-                              setSecretValue(chatId)
-                            }}
-                          />
-                        )}
-                        {(usedBy.get(secret.name)?.length ?? 0) > 0 && (
-                          <div className="text-[10px] text-primary-35 font-mono mt-1 flex flex-wrap items-center gap-x-1.5 gap-y-1">
-                            <span className="uppercase tracking-[0.14em] text-primary-30">Used by</span>
-                            {usedBy
-                              .get(secret.name)!
-                              .sort((a, b) => Number(a.optional) - Number(b.optional))
-                              .map(u => (
-                                <button
-                                  key={u.name}
-                                  onClick={() => onSelectSkill(u.name)}
-                                  title={u.optional ? 'Works better with this key' : 'Required for this skill'}
-                                  className={`hover:text-aeon-fg transition-colors ${u.optional ? 'text-primary-40' : 'text-aeon-red/80'}`}
-                                >
-                                  {displayName(u.name)}
-                                </button>
-                              ))}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                    <div className="flex flex-wrap gap-1.5 shrink-0 pl-[34px] md:pl-0">
-                      {secret.name === 'CLAUDE_CODE_OAUTH_TOKEN' && !claudeAuthSet && (
-                        <button
-                          onClick={() => onConnect('claude')}
-                          title="Connect Claude: run claude setup-token and paste the token, or use an API key or OpenRouter."
-                          className="text-[11px] text-aeon-bg bg-aeon-fg font-mono px-2.5 py-1 hover:opacity-90 transition-opacity disabled:opacity-50"
-                        >
-                          Connect
-                        </button>
-                      )}
-                      {secret.name === 'GROK_CREDENTIALS' && (
-                        <button
-                          onClick={() => onConnect('grok')}
-                          title="Connect Grok: log in with your X account and paste the captured login, or use an xAI key. Use Reconnect if the session expires."
-                          className="text-[11px] text-aeon-bg bg-aeon-fg font-mono px-2.5 py-1 hover:opacity-90 transition-opacity disabled:opacity-50"
-                        >
-                          {secret.isSet ? 'Reconnect' : 'Connect'}
-                        </button>
-                      )}
-                      {secret.name === 'GH_GLOBAL' && (
-                        <button
-                          onClick={onConnectGithub}
-                          disabled={githubConnecting}
-                          title="Copy this machine's GitHub CLI token into GH_GLOBAL so Actions can push, open PRs, and call other repos. Uses the gh session the dashboard already has - no extra login. Use Reconnect after gh auth switch. Or paste a PAT with Set."
-                          className="text-[11px] text-aeon-bg bg-aeon-fg font-mono px-2.5 py-1 hover:opacity-90 transition-opacity disabled:opacity-50"
-                        >
-                          {githubConnecting ? '…' : secret.isSet ? 'Reconnect' : 'Connect'}
-                        </button>
-                      )}
-                      {OAUTH_SECRET_HARNESS[secret.name] && (
-                        <button
-                          onClick={() => onConnect(OAUTH_SECRET_HARNESS[secret.name])}
-                          title={`Connect ${OAUTH_SECRET_HARNESS[secret.name]}: log in and paste the captured login. Use Reconnect if it expires.`}
-                          className="text-[11px] text-aeon-bg bg-aeon-fg font-mono px-2.5 py-1 hover:opacity-90 transition-opacity disabled:opacity-50"
-                        >
-                          {secret.isSet ? 'Reconnect' : 'Connect'}
-                        </button>
-                      )}
-                      {!secret.isSet && editingSecret !== secret.name && !OAUTH_SECRET_HARNESS[secret.name] && (
-                        <button
-                          onClick={() => {
-                            setEditingSecret(secret.name)
-                            setSecretValue('')
-                          }}
-                          className="btn-mini"
-                        >
-                          Set
-                        </button>
-                      )}
-                      {secret.isSet && (
-                        <button
-                          onClick={() => onDelete(secret.name)}
-                          disabled={!!busy[`sec-${secret.name}`]}
-                          className="btn-mini-danger"
-                        >
-                          Remove
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                  {editingSecret === secret.name && (
-                    <div className="flex gap-2 mt-2">
-                      <input
-                        type="password"
-                        value={secretValue}
-                        onChange={e => setSecretValue(e.target.value)}
-                        onKeyDown={e => e.key === 'Enter' && handleSave(secret.name)}
-                        placeholder="paste value..."
-                        autoFocus
-                        className={inputCls}
-                      />
-                      <button
-                        onClick={() => handleSave(secret.name)}
-                        disabled={!secretValue.trim()}
-                        className="btn-mini-go"
-                      >
-                        Save
-                      </button>
-                      <button
-                        onClick={() => {
-                          setEditingSecret(null)
-                          setSecretValue('')
+                  secret={secret}
+                  open={editingSecret === secret.name}
+                  onToggle={() => toggle(secret.name)}
+                  value={editingSecret === secret.name ? secretValue : ''}
+                  onValue={setSecretValue}
+                  onSave={() => handleSave(secret.name)}
+                  onCancel={() => {
+                    setEditingSecret(null)
+                    setSecretValue('')
+                  }}
+                  onDelete={() => onDelete(secret.name)}
+                  removing={!!busy[`sec-${secret.name}`]}
+                  harnessCovers={keyProvidedByHarness(secret.name, harness) && !secret.isSet}
+                  usedBy={usedBy.get(secret.name) ?? []}
+                  onSelectSkill={onSelectSkill}
+                  connect={
+                    secret.name === 'CLAUDE_CODE_OAUTH_TOKEN' && !claudeAuthSet
+                      ? {
+                          label: 'Connect',
+                          title:
+                            'Connect Claude: run claude setup-token and paste the token, or use an API key or OpenRouter.',
+                          run: () => onConnect('claude'),
+                        }
+                      : secret.name === 'GROK_CREDENTIALS'
+                        ? {
+                            label: secret.isSet ? 'Reconnect' : 'Connect',
+                            title:
+                              'Connect Grok: log in with your X account and paste the captured login, or use an xAI key. Use Reconnect if the session expires.',
+                            run: () => onConnect('grok'),
+                          }
+                        : secret.name === 'GH_GLOBAL'
+                          ? {
+                              label: githubConnecting ? 'Connecting' : secret.isSet ? 'Reconnect' : 'Connect',
+                              title:
+                                "Copy this machine's GitHub CLI token into GH_GLOBAL so Actions can push, open PRs, and call other repos. Uses the gh session the dashboard already has, no extra login. Use Reconnect after gh auth switch. Or paste a PAT below.",
+                              run: onConnectGithub,
+                              busy: githubConnecting,
+                            }
+                          : OAUTH_SECRET_HARNESS[secret.name]
+                            ? {
+                                label: secret.isSet ? 'Reconnect' : 'Connect',
+                                title: `Connect ${OAUTH_SECRET_HARNESS[secret.name]}: log in and paste the captured login. Use Reconnect if it expires.`,
+                                run: () => onConnect(OAUTH_SECRET_HARNESS[secret.name]),
+                              }
+                            : null
+                  }
+                  canPaste={!OAUTH_SECRET_HARNESS[secret.name]}
+                  extra={
+                    secret.name === 'TELEGRAM_CHAT_ID' ? (
+                      <TelegramChatIdHelper
+                        defaultToken={sessionBotToken}
+                        onFound={chatId => {
+                          setEditingSecret('TELEGRAM_CHAT_ID')
+                          setSecretValue(chatId)
                         }}
-                        className="btn-mini"
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  )}
-                </div>
+                      />
+                    ) : secret.name === 'TELEGRAM_BOT_TOKEN' ? (
+                      <p className={HINT}>
+                        <ExternalLink
+                          href="https://t.me/BotFather"
+                          title="Opens BotFather in Telegram. Send /newbot and follow the prompts (or /token for an existing bot) - it replies with the bot token, e.g. 123456789:AAxx... Paste that here."
+                        >
+                          Get one from @BotFather
+                        </ExternalLink>{' '}
+                        Send /newbot (or /token for an existing bot) and paste the token it replies with.
+                      </p>
+                    ) : null
+                  }
+                />
               ))}
               {group === 'Telegram' &&
                 (sessionBotToken || secrets.some(s => s.name === 'TELEGRAM_BOT_TOKEN' && s.isSet)) && (
-                  <TelegramLinkCard
-                    sessionBotToken={sessionBotToken}
-                    chatIdSet={secrets.some(s => s.name === 'TELEGRAM_CHAT_ID' && s.isSet)}
-                    onLinked={() => onMarkSet('TELEGRAM_CHAT_ID')}
-                  />
+                  <li className="border-t border-[var(--line)]">
+                    <TelegramLinkCard
+                      sessionBotToken={sessionBotToken}
+                      chatIdSet={secrets.some(s => s.name === 'TELEGRAM_CHAT_ID' && s.isSet)}
+                      onLinked={() => onMarkSet('TELEGRAM_CHAT_ID')}
+                    />
+                  </li>
                 )}
               {group === 'Telegram' && (
-                <TelegramCommandsCard tokenSet={secrets.some(s => s.name === 'TELEGRAM_BOT_TOKEN' && s.isSet)} />
+                <li className="border-t border-[var(--line)]">
+                  <TelegramCommandsCard tokenSet={secrets.some(s => s.name === 'TELEGRAM_BOT_TOKEN' && s.isSet)} />
+                </li>
               )}
-              {group === 'Telegram' && <InstantModeCard repo={repo} sessionBotToken={sessionBotToken} />}
+              {group === 'Telegram' && (
+                <li className="border-t border-[var(--line)]">
+                  <InstantModeCard repo={repo} sessionBotToken={sessionBotToken} />
+                </li>
+              )}
               {group === 'Observability' && (
-                <LangfuseRegionCard
-                  keysSet={
-                    secrets.some(s => s.name === 'LANGFUSE_PUBLIC_KEY' && s.isSet) &&
-                    secrets.some(s => s.name === 'LANGFUSE_SECRET_KEY' && s.isSet)
-                  }
-                />
+                <li className="border-t border-[var(--line)]">
+                  <LangfuseRegionCard
+                    keysSet={
+                      secrets.some(s => s.name === 'LANGFUSE_PUBLIC_KEY' && s.isSet) &&
+                      secrets.some(s => s.name === 'LANGFUSE_SECRET_KEY' && s.isSet)
+                    }
+                  />
+                </li>
               )}
-            </div>
+            </ul>
           </section>
         )
       })}
-      <div>
+
+      {/* Any other secret, by name */}
+      <section aria-labelledby="keys-add">
+        <h2 id="keys-add" className="sr-only">
+          Add a key
+        </h2>
         {addingSecret ? (
-          <div className="space-y-2">
-            <input
-              type="text"
+          <div className="g-chip space-y-4 rounded-[22px] px-4 py-5 sm:px-6">
+            <p className={LABEL}>Add a key</p>
+            <Field
+              label="Secret name"
               value={newSecretName}
               onChange={e => setNewSecretName(e.target.value.toUpperCase().replace(/[^A-Z0-9_]/g, ''))}
               placeholder="SECRET_NAME"
               autoFocus
-              className={inputCls}
+              spellCheck={false}
+              autoComplete="off"
+              inputClassName="font-mono"
             />
             {newSecretName && (
-              <div className="flex gap-2">
-                <input
-                  type="password"
-                  value={secretValue}
-                  onChange={e => setSecretValue(e.target.value)}
-                  onKeyDown={e => e.key === 'Enter' && handleSave(newSecretName)}
-                  placeholder="value..."
-                  className={inputCls}
-                />
-                <button
-                  onClick={() => handleSave(newSecretName)}
-                  disabled={!secretValue.trim()}
-                  className="btn-mini-go"
-                >
-                  Save
-                </button>
-              </div>
+              <Field
+                label="Value"
+                type="password"
+                value={secretValue}
+                onChange={e => setSecretValue(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && handleSave(newSecretName)}
+                placeholder="Paste the value"
+                autoComplete="off"
+              />
             )}
-            <button
-              onClick={() => {
-                setAddingSecret(false)
-                setNewSecretName('')
-                setSecretValue('')
-              }}
-              className="btn-mini"
-            >
-              Cancel
-            </button>
+            <div className="flex flex-wrap justify-end gap-2">
+              <ActionButton
+                onClick={() => {
+                  setAddingSecret(false)
+                  setNewSecretName('')
+                  setSecretValue('')
+                }}
+              >
+                Cancel
+              </ActionButton>
+              {newSecretName && (
+                <PrimaryButton onClick={() => handleSave(newSecretName)} disabled={!secretValue.trim()}>
+                  Save
+                </PrimaryButton>
+              )}
+            </div>
           </div>
         ) : (
           <button
+            type="button"
             onClick={() => setAddingSecret(true)}
-            className="w-full text-sm font-mono uppercase tracking-[0.14em] text-primary-60 border border-dashed border-[rgba(250,250,250,0.16)] py-3.5 hover:text-aeon-red hover:border-aeon-red/40 transition-colors"
+            className="group g-chip flex w-full cursor-pointer items-center gap-4 rounded-[22px] px-5 py-4 text-left transition-[background-color] duration-150 outline-none focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--foreground)]"
           >
-            + Add Credential
+            <span
+              aria-hidden
+              className="grid size-10 shrink-0 place-items-center rounded-full bg-[oklch(0.3_0.015_240/0.06)] text-muted-foreground transition-colors duration-150 group-hover:text-[var(--primary)]"
+            >
+              <svg
+                viewBox="0 0 16 16"
+                className="size-5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={1.5}
+                strokeLinecap="round"
+              >
+                <path d="M8 3v10M3 8h10" />
+              </svg>
+            </span>
+            <span className="min-w-0">
+              <span className="block font-display text-[1.1875rem] leading-[1.3] font-light tracking-[-0.012em]">
+                Add a key
+              </span>
+              <span className="mt-0.5 block text-[14px] text-muted-foreground">
+                Any other secret a skill reads, by name
+              </span>
+            </span>
           </button>
         )}
-      </div>
+      </section>
     </div>
+  )
+}
+
+function SecretRow({
+  secret,
+  open,
+  onToggle,
+  value,
+  onValue,
+  onSave,
+  onCancel,
+  onDelete,
+  removing,
+  harnessCovers,
+  usedBy,
+  onSelectSkill,
+  connect,
+  canPaste,
+  extra,
+}: {
+  secret: Secret
+  open: boolean
+  onToggle: () => void
+  value: string
+  onValue: (v: string) => void
+  onSave: () => void
+  onCancel: () => void
+  onDelete: () => void
+  removing: boolean
+  harnessCovers: boolean
+  usedBy: { name: string; optional: boolean }[]
+  onSelectSkill: (name: string) => void
+  connect: { label: string; title: string; run: () => void; busy?: boolean } | null
+  // OAuth logins are captured by the Connect flow, never pasted here.
+  canPaste: boolean
+  extra: React.ReactNode
+}) {
+  const id = useId()
+  const field = useRef<HTMLDivElement>(null)
+  // Opening an unset key by click or keyboard puts the cursor in its value field.
+  const wasOpen = useRef(open)
+  useEffect(() => {
+    if (open && !wasOpen.current && !secret.isSet && canPaste)
+      field.current?.querySelector('input')?.focus({ preventScroll: true })
+    wasOpen.current = open
+  }, [open, secret.isSet, canPaste])
+
+  const sorted = [...usedBy].sort((a, b) => Number(a.optional) - Number(b.optional))
+  return (
+    <li
+      id={`secret-${secret.name}`}
+      className={cn(
+        'group scroll-mt-28 rounded-[16px] transition-[background-color] duration-200',
+        open && 'bg-[var(--hover)]',
+      )}
+    >
+      <button
+        type="button"
+        aria-expanded={open}
+        aria-controls={id}
+        onClick={onToggle}
+        className="group/row grid w-full cursor-pointer grid-cols-[auto_minmax(0,1fr)_auto_1rem] items-center gap-x-3 rounded-[14px] px-3 py-3 text-left transition-[background-color] duration-150 outline-none hover:bg-[var(--hover)] focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-[var(--foreground)] sm:gap-x-4"
+      >
+        <ServiceIcon name={secret.name} />
+        <span className="min-w-0">
+          <span className="block font-mono text-[13px] font-medium [overflow-wrap:anywhere]">
+            <KeyName name={secret.name} />
+          </span>
+          {/* Open, the full text (with its links) moves into the detail below. */}
+          {!open && (
+            <span className="mt-0.5 block truncate text-[14px] leading-[1.45] text-muted-foreground">
+              {secret.description}
+            </span>
+          )}
+        </span>
+        <span
+          className={cn(
+            TAG,
+            'shrink-0',
+            secret.isSet
+              ? 'bg-[var(--primary)] text-[var(--foreground)] shadow-[inset_0_1px_0_rgb(255_255_255/0.35)]'
+              : QUIET_TAG,
+          )}
+        >
+          {secret.isSet ? 'Set' : 'Not set'}
+        </span>
+        <Chevron open={open} className="transition-[rotate,color] group-hover/row:text-foreground" />
+      </button>
+      <div
+        id={id}
+        className={cn(
+          'grid transition-[grid-template-rows] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] motion-reduce:transition-none',
+          open ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]',
+        )}
+      >
+        <div className="min-h-0 overflow-hidden" inert={!open}>
+          <div className="flex flex-col gap-4 px-3 pt-1 pb-5 sm:pl-[calc(22px+1.75rem)]">
+            <p className={BODY}>{linkify(secret.description)}</p>
+            {harnessCovers && (
+              <StatusNote tone="info" live={false}>
+                Covered by the Grok Build harness (built-in web search) - optional here; set it for the premium xAI
+                x_search feed, used by both harnesses.
+              </StatusNote>
+            )}
+            {extra}
+            {sorted.length > 0 && (
+              <div>
+                <p className={SMALL_LABEL}>Used by</p>
+                <ul className="mt-2 flex flex-wrap gap-1.5">
+                  {sorted.map(u => (
+                    <li key={u.name}>
+                      <button
+                        type="button"
+                        onClick={() => onSelectSkill(u.name)}
+                        title={u.optional ? 'Works better with this key' : 'Required for this skill'}
+                        className="g-chip flex h-9 cursor-pointer items-center gap-2 rounded-full px-3.5 text-[14px] transition-[background-color] duration-150 outline-none focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--foreground)]"
+                      >
+                        {displayName(u.name)}
+                        <span className="font-mono text-[10.5px] tracking-[0.08em] text-muted-foreground uppercase">
+                          {u.optional ? 'optional' : 'needs it'}
+                        </span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {!secret.isSet && canPaste && (
+              <div ref={field} className="flex flex-col gap-2 sm:flex-row sm:items-end">
+                <Field
+                  label={`Value for ${secret.name}`}
+                  hideLabel
+                  className="min-w-0 flex-1"
+                  type="password"
+                  value={value}
+                  onChange={e => onValue(e.target.value)}
+                  onKeyDown={e => e.key === 'Enter' && onSave()}
+                  placeholder="Paste the value"
+                  autoComplete="off"
+                />
+                <div className="flex gap-2">
+                  <ActionButton onClick={onCancel} className="h-12">
+                    Cancel
+                  </ActionButton>
+                  <PrimaryButton onClick={onSave} disabled={!value.trim()} className="h-12 flex-1 sm:flex-none">
+                    Save
+                  </PrimaryButton>
+                </div>
+              </div>
+            )}
+            {(connect || secret.isSet) && (
+              <div className="flex flex-wrap gap-2">
+                {connect && (
+                  <ActionButton onClick={connect.run} disabled={connect.busy} title={connect.title}>
+                    {connect.label}
+                  </ActionButton>
+                )}
+                {secret.isSet && (
+                  <ActionButton
+                    onClick={onDelete}
+                    disabled={removing}
+                    title={`Delete ${secret.name} from the repo's GitHub secrets`}
+                    className="ml-auto"
+                  >
+                    <svg
+                      aria-hidden
+                      viewBox="0 0 16 16"
+                      className="size-4 text-muted-foreground"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={1.4}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M3 4.5h10M6.5 4.5V3h3v1.5M4.5 4.5l.6 8.5h5.8l.6-8.5" />
+                    </svg>
+                    {removing ? 'Removing' : 'Remove'}
+                  </ActionButton>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </li>
   )
 }

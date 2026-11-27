@@ -39,11 +39,10 @@ import {
   modelsForHarness,
 } from '../lib/constants'
 import { displayName, lastSuccessfulRunId } from '../lib/utils'
-import TargetCursor from '../components/ui/TargetCursor'
 import { LoadingScreen } from '../components/LoadingScreen'
 import { ErrorScreen } from '../components/ErrorScreen'
-import { LeftSidebar } from '../components/LeftSidebar'
-import { TopBar, viewTitle } from '../components/TopBar'
+import { LeftSidebar, ViewNav } from '../components/LeftSidebar'
+import { TopBar, viewTitle, RepoActions, ModelControls } from '../components/TopBar'
 import { MobileBar } from '../components/MobileBar'
 import { useNarrow } from '../lib/use-narrow'
 import { HQOverview } from '../components/HQOverview'
@@ -58,6 +57,10 @@ import { ImportModal } from '../components/ImportModal'
 import { ConnectModal, type SavedCredential } from '../components/ConnectModal'
 import { OnboardingChecklist, type NotifyChannel } from '../components/OnboardingChecklist'
 import { PanelError } from '../components/PanelError'
+import { AeonFrame } from '../components/AeonFrame'
+import { Opener } from '../components/glass/connect/opener'
+import { useFocusTrap } from '../components/glass/connect/use-focus-trap'
+import { cn } from '@/lib/cn'
 
 // The secret each notification channel's setup starts at: the first one of
 // its pair that is still missing (see ./notify's opt-in secrets).
@@ -74,7 +77,7 @@ export default function Dashboard() {
   const [secretFocus, setSecretFocus] = useState<string | null>(null)
   // Shared with the sidebar's category chips - HQ category cards toggle it too.
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null)
-  const mainScrollRef = useRef<HTMLDivElement>(null)
+  const mainScrollRef = useRef<HTMLElement>(null)
 
   const [skills, setSkills] = useState<Skill[]>([])
   const [runs, setRuns] = useState<Run[]>([])
@@ -118,6 +121,9 @@ export default function Dashboard() {
   const narrow = useNarrow()
   const [navOpen, setNavOpen] = useState(false)
   const [activityOpen, setActivityOpen] = useState(false)
+  // An open drawer behaves like a dialog: focus inside, Tab kept inside, Escape closes it.
+  const navDrawer = useRef<HTMLDivElement>(null)
+  useFocusTrap(navDrawer, narrow && navOpen, () => setNavOpen(false))
   const [githubLoading, setGithubLoading] = useState(false)
   // The Connect modal: which harness it connects.
   const [connectFor, setConnectFor] = useState<{ harness: Harness } | null>(null)
@@ -221,7 +227,7 @@ export default function Dashboard() {
   }, [fetchData])
   // Restore the operator's enabled-pack selection from a prior visit, scoped to
   // THIS repo (Core is always on). Per-repo keying so testing multiple forks on
-  // the same localhost doesn't bleed one fork's pack selection into another — a
+  // the same localhost doesn't bleed one fork's pack selection into another - a
   // fresh fork starts Core-only. Runs once the repo is known.
   const restoredRepoRef = useRef<string | null>(null)
   useEffect(() => {
@@ -323,11 +329,21 @@ export default function Dashboard() {
         })
     }
   }, [view, packsLoaded])
-  // Reset the main content scroll to the top whenever the active view or the
-  // selected skill changes, so each screen (Soul, Strategy, a skill, …) opens at the top.
+  // Bring the main panel's top back into view whenever the active view or the
+  // selected skill changes, so each screen (Soul, Strategy, a skill...) opens at the top.
+  // The page scrolls as a whole, so only scroll when the panel's top is above the nav.
   useEffect(() => {
-    mainScrollRef.current?.scrollTo({ top: 0 })
+    const el = mainScrollRef.current
+    if (!el) return
+    const top = el.getBoundingClientRect().top
+    if (top < 96) window.scrollTo({ top: top + window.scrollY - 96 })
   }, [view, selectedSkill])
+  // Keep the tab title in step with where you are: "Digest · Aeon", "Keys · Aeon"...
+  useEffect(() => {
+    const sel = selectedSkill ? skills.find(s => s.name === selectedSkill) || null : null
+    const label = sel || view !== 'hq' ? viewTitle(sel, view, repo) : 'HQ'
+    document.title = [...new Set([label, repo ? repo.split('/').pop() : '', 'Aeon'].filter(Boolean))].join(' · ')
+  }, [view, selectedSkill, skills, repo])
 
   const toggleSkill = async (n: string, en: boolean) => {
     setBusy(b => ({ ...b, [n]: true }))
@@ -469,7 +485,7 @@ export default function Dashboard() {
     try {
       const { ok, data } = await postJson<ErrorResponse>('/api/outputs')
       if (ok) {
-        flash('Pulled - refreshing')
+        flash('Pulled, refreshing')
         setAnalyticsData(null)
         setStrategyLoaded(false)
         setMcpLoaded(false)
@@ -681,7 +697,7 @@ export default function Dashboard() {
   const skill = selectedSkill ? skills.find(s => s.name === selectedSkill) || null : null
   // Any model/provider key set means Aeon can authenticate - the "Auth" CTA hides.
   // Harness-aware: the grok harness needs its OWN auth (X-account session or an
-  // xAI key), so a Claude token doesn't count when grok is selected — that's what
+  // xAI key), so a Claude token doesn't count when grok is selected - that's what
   // surfaces the Auth CTA → "Connect X account". Derived from live `secrets`.
   const hasModelKey = secrets.some(s => s.isSet && authSecretsForHarness(harness).includes(s.name))
   const isSet = (n: string) => secrets.some(s => s.isSet && s.name === n)
@@ -695,7 +711,7 @@ export default function Dashboard() {
     (isSet('RESEND_API_KEY') && isSet('NOTIFY_EMAIL_TO'))
   const firstRunDone = runs.some(r => r.conclusion === 'success' && r.workflow.startsWith('skill: '))
   // Skills visible across the dashboard = first-party skills whose pack is
-  // enabled (Core always on), PLUS every community skill — anything in a pack
+  // enabled (Core always on), PLUS every community skill - anything in a pack
   // that isn't first-party was installed from another repo on purpose, so it's
   // never hidden behind the pack lens regardless of its pack key (`installed`,
   // or a per-source pack like `antfleet-pr-review`). The sidebar + HQ render
@@ -710,22 +726,51 @@ export default function Dashboard() {
   const skillsPicked = skills.some(s => s.enabled && s.name !== 'heartbeat')
   const workingCount = runs.filter(r => r.status === 'in_progress').length
 
-  if (loading) return <LoadingScreen />
-  if (error) return <ErrorScreen error={error} />
+  // Pull / Push / GitHub: beads in the nav on wide screens, labelled pills in the panel bar on phones.
+  const repoActions = { repo, pulling, syncing, hasChanges, behind, onPull: pullFromGithub, onSync: syncToGithub }
+  const modelControls = {
+    model,
+    harness,
+    gateway,
+    hasModelKey,
+    onSetupAuth: () => setConnectFor({ harness }),
+    onUpdateModel: updateModel,
+    onUpdateHarness: updateHarness,
+  }
+  const ready = !loading && !error
+  const frame = (body: React.ReactNode) => (
+    <AeonFrame
+      navLead={
+        ready ? (
+          <div className="hidden items-center gap-2 lg:flex">
+            <ModelControls tone="nav" {...modelControls} />
+          </div>
+        ) : undefined
+      }
+      navExtra={ready ? <RepoActions tone="nav" {...repoActions} /> : undefined}
+    >
+      {body}
+    </AeonFrame>
+  )
 
-  return (
-    <div className="h-screen flex bg-aeon-bg text-aeon-fg">
-      <TargetCursor />
+  if (loading) return frame(<LoadingScreen />)
+  if (error) return frame(<ErrorScreen error={error} />)
+
+  return frame(
+    <>
       {toast && (
-        <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 bg-aeon-fg text-aeon-bg px-5 py-2.5 text-xs font-mono uppercase tracking-[0.18em] shadow-xl">
+        <div
+          role="status"
+          aria-live="polite"
+          className="g-glass fixed bottom-4 left-1/2 z-[120] w-max max-w-[calc(100vw-24px)] -translate-x-1/2 rounded-full px-5 py-3 text-center font-mono text-[12px] font-medium tracking-[0.08em] text-foreground uppercase"
+        >
           {toast}
         </div>
       )}
 
-      {/* Below the modals (z-40) and the toast (z-50). */}
       {narrow && (navOpen || activityOpen) && (
         <div
-          className="fixed inset-0 z-30 bg-black/60"
+          className="c-drawer-backdrop fixed inset-0 z-[100]"
           aria-hidden
           onClick={() => {
             setNavOpen(false)
@@ -734,267 +779,282 @@ export default function Dashboard() {
         />
       )}
 
-      <div
-        inert={narrow && !navOpen}
-        className={
-          narrow
-            ? `fixed inset-y-0 left-0 z-[35] flex max-w-[88vw] transition-transform duration-300 ${navOpen ? 'translate-x-0' : '-translate-x-full'}`
-            : 'flex'
-        }
-      >
-        <LeftSidebar
-          view={view}
-          setView={v => {
-            setView(v)
-            setSelectedSkill(null)
-            setNavOpen(false)
-          }}
-          selectedSkill={selectedSkill}
-          skills={visibleSkills}
-          runs={runs}
-          secrets={secrets}
-          repo={repo}
-          harness={harness}
-          enabledCount={enabledCount}
-          workingCount={workingCount}
-          categoryFilter={categoryFilter}
-          setCategoryFilter={setCategoryFilter}
-          onSkillSelect={name => {
-            setSelectedSkill(name)
-            setView('hq')
-            setNavOpen(false)
-          }}
-          onShowImport={() => {
-            setShowImport(true)
-            setNavOpen(false)
-          }}
-          sync={{ pulling, syncing, hasChanges, behind, onPull: pullFromGithub, onPush: syncToGithub }}
-        />
-      </div>
+      {/* The sky and the logo in its rings; on phones, the bar that opens the two drawers. */}
+      <Opener>
+        <div className="mx-auto mt-[clamp(16px,2vw,24px)] max-w-[1400px] px-3 sm:px-6 md:hidden">
+          <MobileBar
+            title={viewTitle(skill, view, repo)}
+            onOpenNav={() => setNavOpen(true)}
+            onOpenActivity={() => setActivityOpen(true)}
+          />
+        </div>
+      </Opener>
 
-      <div className="flex-1 flex flex-col min-w-0">
-        <MobileBar
-          title={viewTitle(skill, view, repo)}
-          onOpenNav={() => setNavOpen(true)}
-          onOpenActivity={() => setActivityOpen(true)}
-        />
-        <TopBar
-          skill={skill}
-          view={view}
-          repo={repo}
-          model={model}
-          harness={harness}
-          gateway={gateway}
-          hasModelKey={hasModelKey}
-          pulling={pulling}
-          syncing={syncing}
-          hasChanges={hasChanges}
-          behind={behind}
-          onSetupAuth={() => setConnectFor({ harness })}
-          onUpdateModel={updateModel}
-          onUpdateHarness={updateHarness}
-          onPull={pullFromGithub}
-          onSync={syncToGithub}
-        />
+      {/* The docs layout: sticky glass sidebar | the screen on a glass sheet | feed, runs, analytics. */}
+      <div className="relative mx-auto mt-[clamp(24px,3vw,40px)] grid max-w-[1400px] items-start gap-6 px-3 sm:px-6 md:grid-cols-[236px_minmax(0,1fr)] lg:gap-8 xl:grid-cols-[248px_minmax(0,1fr)_auto]">
+        <div
+          ref={navDrawer}
+          inert={narrow && !navOpen}
+          role={narrow ? 'dialog' : undefined}
+          aria-modal={narrow && navOpen ? true : undefined}
+          aria-label={narrow ? 'Navigation' : undefined}
+          className={
+            narrow
+              ? cn(
+                  'fixed inset-y-0 left-0 z-[101] flex w-[min(340px,88vw)] p-2 transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]',
+                  navOpen ? 'translate-x-0' : '-translate-x-[105%]',
+                )
+              : 'sticky top-24 self-start'
+          }
+        >
+          <LeftSidebar
+            view={view}
+            setView={v => {
+              setView(v)
+              setSelectedSkill(null)
+              setNavOpen(false)
+            }}
+            selectedSkill={selectedSkill}
+            skills={visibleSkills}
+            runs={runs}
+            secrets={secrets}
+            repo={repo}
+            harness={harness}
+            enabledCount={enabledCount}
+            workingCount={workingCount}
+            categoryFilter={categoryFilter}
+            setCategoryFilter={setCategoryFilter}
+            onSkillSelect={name => {
+              setSelectedSkill(name)
+              setView('hq')
+              setNavOpen(false)
+            }}
+            onShowImport={() => {
+              setShowImport(true)
+              setNavOpen(false)
+            }}
+            onClose={narrow ? () => setNavOpen(false) : undefined}
+            className={narrow ? 'c-solid h-full max-h-full' : 'max-h-[calc(100svh-7rem)]'}
+          />
+        </div>
 
-        <div ref={mainScrollRef} className="flex-1 overflow-y-auto p-[var(--space-lg)]">
-          {view === 'secrets' && !selectedSkill && (
-            <SecretsPanel
-              secrets={secrets}
-              skills={skills}
-              busy={busy}
-              repo={repo}
-              harness={harness}
-              focusKey={secretFocus}
-              onFocusHandled={() => setSecretFocus(null)}
-              onSave={saveSecret}
-              onDelete={deleteSecret}
-              onSelectSkill={name => {
-                setSelectedSkill(name)
-                setView('hq')
-              }}
-              onConnect={h => setConnectFor({ harness: HARNESSES.find(x => x.id === h)?.id ?? 'claude' })}
-              onMarkSet={n => markSecretSet(n, 'Telegram')}
-              onConnectGithub={() => setupGithubAuth()}
-              githubConnecting={githubLoading}
-            />
-          )}
-          {view === 'strategy' &&
-            !selectedSkill &&
-            (strategyError ? (
-              <PanelError
-                label="strategy"
-                onRetry={() => {
-                  setStrategyError(false)
-                  setStrategyLoaded(false)
-                }}
+        <article ref={mainScrollRef} className="g-glass min-w-0 rounded-[28px] px-4 py-6 sm:px-8 sm:py-9 lg:px-10">
+          <div className="relative z-[1]">
+            {/* The agent's controls: one bar over every view, above the view's own title. */}
+            <div className="-mt-1 mb-[clamp(28px,3.5vw,44px)] sm:-mt-2">
+              <TopBar
+                controls={<ModelControls {...modelControls} />}
+                actions={<RepoActions {...repoActions} />}
+                views={
+                  <ViewNav
+                    view={view}
+                    selectedSkill={selectedSkill}
+                    setView={v => {
+                      setView(v)
+                      setSelectedSkill(null)
+                    }}
+                  />
+                }
               />
-            ) : (
-              <StrategyPanel
-                content={strategy}
-                loading={!strategyLoaded}
-                saving={strategySaving}
-                building={strategyBuilding}
-                onSave={saveStrategy}
-                onBuild={buildStrategy}
-              />
-            ))}
-          {view === 'mcp' &&
-            !selectedSkill &&
-            (mcpError ? (
-              <PanelError
-                label="MCP servers"
-                onRetry={() => {
-                  setMcpError(false)
-                  setMcpLoaded(false)
-                }}
-              />
-            ) : (
-              <McpPanel
-                servers={mcpServers}
-                loading={!mcpLoaded}
-                saving={mcpSaving}
+            </div>
+            {view === 'secrets' && !selectedSkill && (
+              <SecretsPanel
                 secrets={secrets}
-                busy={busy}
-                onSave={saveMcp}
-                onSetSecret={saveSecret}
-                onDeleteSecret={deleteSecret}
-                onGoToSecret={goToSecret}
-              />
-            ))}
-          {view === 'soul' &&
-            !selectedSkill &&
-            (soulError ? (
-              <PanelError
-                label="soul"
-                onRetry={() => {
-                  setSoulError(false)
-                  setSoulLoaded(false)
-                }}
-              />
-            ) : (
-              <SoulPanel
-                soul={soul}
-                style={soulStyle}
-                loading={!soulLoaded}
-                saving={soulSaving}
-                building={soulBuilding}
-                installing={soulInstalling}
-                onSave={saveSoul}
-                onBuild={buildSoul}
-                onInstallExample={installSoulExample}
-              />
-            ))}
-          {view === 'hq' && !selectedSkill && (
-            <HQOverview
-              skills={visibleSkills}
-              runs={runs}
-              enabledCount={enabledCount}
-              workingCount={workingCount}
-              categoryFilter={categoryFilter}
-              onCategoryClick={key => setCategoryFilter(categoryFilter === key ? null : key)}
-              onOpenPacks={() => setView('packs')}
-              onConnect={connectHarness}
-              checklist={
-                <OnboardingChecklist
-                  repo={repo}
-                  actionsEnabled={actionsEnabled}
-                  harness={harness}
-                  hasModelKey={hasModelKey}
-                  skillsPicked={skillsPicked}
-                  notificationsSet={notificationsSet}
-                  firstRunDone={firstRunDone}
-                  onConnect={() => setConnectFor({ harness })}
-                  onPickSkills={() => {
-                    setSelectedSkill(null)
-                    setView('packs')
-                  }}
-                  onNotifications={c => goToSecret(NOTIFY_FIRST_SECRET[c](isSet))}
-                  onFirstRun={() => {
-                    const first = visibleSkills.find(s => s.enabled)
-                    if (first) {
-                      setSelectedSkill(first.name)
-                      setView('hq')
-                    } else setView('packs')
-                  }}
-                />
-              }
-            />
-          )}
-          {view === 'packs' &&
-            !selectedSkill &&
-            (packsError ? (
-              <PanelError
-                label="packs"
-                onRetry={() => {
-                  setPacksError(false)
-                  setPacksLoaded(false)
-                }}
-              />
-            ) : (
-              <PacksPanel
-                firstParty={packs?.firstParty ?? []}
-                community={packs?.community ?? []}
                 skills={skills}
-                enabledPacks={enabledPacks}
-                loading={!packsLoaded}
                 busy={busy}
-                onTogglePack={togglePack}
-                onToggleSkill={toggleSkill}
+                repo={repo}
+                harness={harness}
+                focusKey={secretFocus}
+                onFocusHandled={() => setSecretFocus(null)}
+                onSave={saveSecret}
+                onDelete={deleteSecret}
                 onSelectSkill={name => {
                   setSelectedSkill(name)
                   setView('hq')
                 }}
-                onInstallPack={arg => runSkill('install-skill', arg)}
+                onConnect={h => setConnectFor({ harness: HARNESSES.find(x => x.id === h)?.id ?? 'claude' })}
+                onMarkSet={n => markSecretSet(n, 'Telegram')}
+                onConnectGithub={() => setupGithubAuth()}
+                githubConnecting={githubLoading}
               />
-            ))}
-          {skill && (
-            <SkillDetail
-              skill={skill}
-              runs={runs}
-              model={model}
-              harness={harness}
-              secrets={secrets}
-              mcpServers={mcpServers}
-              busy={busy}
-              onToggle={toggleSkill}
-              onRun={runSkill}
-              onDelete={deleteSkill}
-              onUpdateSchedule={updateSchedule}
-              onUpdateVar={updateVar}
-              onUpdateModel={updateSkillModel}
-              onGoToSecret={goToSecret}
-              onGoToMcp={goToMcp}
-            />
-          )}
-        </div>
-      </div>
+            )}
+            {view === 'strategy' &&
+              !selectedSkill &&
+              (strategyError ? (
+                <PanelError
+                  label="strategy"
+                  onRetry={() => {
+                    setStrategyError(false)
+                    setStrategyLoaded(false)
+                  }}
+                />
+              ) : (
+                <StrategyPanel
+                  content={strategy}
+                  loading={!strategyLoaded}
+                  saving={strategySaving}
+                  building={strategyBuilding}
+                  onSave={saveStrategy}
+                  onBuild={buildStrategy}
+                />
+              ))}
+            {view === 'mcp' &&
+              !selectedSkill &&
+              (mcpError ? (
+                <PanelError
+                  label="MCP servers"
+                  onRetry={() => {
+                    setMcpError(false)
+                    setMcpLoaded(false)
+                  }}
+                />
+              ) : (
+                <McpPanel
+                  servers={mcpServers}
+                  loading={!mcpLoaded}
+                  saving={mcpSaving}
+                  secrets={secrets}
+                  busy={busy}
+                  onSave={saveMcp}
+                  onSetSecret={saveSecret}
+                  onDeleteSecret={deleteSecret}
+                  onGoToSecret={goToSecret}
+                />
+              ))}
+            {view === 'soul' &&
+              !selectedSkill &&
+              (soulError ? (
+                <PanelError
+                  label="soul"
+                  onRetry={() => {
+                    setSoulError(false)
+                    setSoulLoaded(false)
+                  }}
+                />
+              ) : (
+                <SoulPanel
+                  soul={soul}
+                  style={soulStyle}
+                  loading={!soulLoaded}
+                  saving={soulSaving}
+                  building={soulBuilding}
+                  installing={soulInstalling}
+                  onSave={saveSoul}
+                  onBuild={buildSoul}
+                  onInstallExample={installSoulExample}
+                />
+              ))}
+            {view === 'hq' && !selectedSkill && (
+              <HQOverview
+                skills={visibleSkills}
+                runs={runs}
+                enabledCount={enabledCount}
+                workingCount={workingCount}
+                categoryFilter={categoryFilter}
+                onCategoryClick={key => setCategoryFilter(categoryFilter === key ? null : key)}
+                onOpenPacks={() => setView('packs')}
+                onConnect={connectHarness}
+                checklist={
+                  <OnboardingChecklist
+                    repo={repo}
+                    actionsEnabled={actionsEnabled}
+                    harness={harness}
+                    hasModelKey={hasModelKey}
+                    skillsPicked={skillsPicked}
+                    notificationsSet={notificationsSet}
+                    firstRunDone={firstRunDone}
+                    onConnect={() => setConnectFor({ harness })}
+                    onPickSkills={() => {
+                      setSelectedSkill(null)
+                      setView('packs')
+                    }}
+                    onNotifications={c => goToSecret(NOTIFY_FIRST_SECRET[c](isSet))}
+                    onFirstRun={() => {
+                      const first = visibleSkills.find(s => s.enabled)
+                      if (first) {
+                        setSelectedSkill(first.name)
+                        setView('hq')
+                      } else setView('packs')
+                    }}
+                  />
+                }
+              />
+            )}
+            {view === 'packs' &&
+              !selectedSkill &&
+              (packsError ? (
+                <PanelError
+                  label="packs"
+                  onRetry={() => {
+                    setPacksError(false)
+                    setPacksLoaded(false)
+                  }}
+                />
+              ) : (
+                <PacksPanel
+                  firstParty={packs?.firstParty ?? []}
+                  community={packs?.community ?? []}
+                  skills={skills}
+                  enabledPacks={enabledPacks}
+                  loading={!packsLoaded}
+                  busy={busy}
+                  onTogglePack={togglePack}
+                  onToggleSkill={toggleSkill}
+                  onSelectSkill={name => {
+                    setSelectedSkill(name)
+                    setView('hq')
+                  }}
+                  onInstallPack={arg => runSkill('install-skill', arg)}
+                />
+              ))}
+            {skill && (
+              <SkillDetail
+                skill={skill}
+                runs={runs}
+                model={model}
+                harness={harness}
+                secrets={secrets}
+                mcpServers={mcpServers}
+                busy={busy}
+                onToggle={toggleSkill}
+                onRun={runSkill}
+                onDelete={deleteSkill}
+                onUpdateSchedule={updateSchedule}
+                onUpdateVar={updateVar}
+                onUpdateModel={updateSkillModel}
+                onGoToSecret={goToSecret}
+                onGoToMcp={goToMcp}
+              />
+            )}
+          </div>
+        </article>
 
-      <RightPanel
-        runs={runs}
-        outputs={outputs}
-        feedLoading={feedLoading}
-        feedError={feedError}
-        analyticsData={analyticsData}
-        analyticsError={analyticsError}
-        drawerOpen={activityOpen}
-        onCloseDrawer={() => setActivityOpen(false)}
-        onRefresh={() => {
-          fetchData()
-          setFeedKey(k => k + 1)
-          setAnalyticsData(null)
-          setAnalyticsError(false)
-        }}
-        onFetchAnalytics={() => {
-          if (!analyticsData) {
+        <RightPanel
+          runs={runs}
+          outputs={outputs}
+          feedLoading={feedLoading}
+          feedError={feedError}
+          analyticsData={analyticsData}
+          analyticsError={analyticsError}
+          drawerOpen={activityOpen}
+          onCloseDrawer={() => setActivityOpen(false)}
+          onRefresh={() => {
+            fetchData()
+            setFeedKey(k => k + 1)
+            setAnalyticsData(null)
             setAnalyticsError(false)
-            getJson<AnalyticsData>('/api/analytics')
-              .then(d => setAnalyticsData(d))
-              .catch(() => setAnalyticsError(true))
-          }
-        }}
-        onConnect={connectHarness}
-      />
+          }}
+          onFetchAnalytics={() => {
+            if (!analyticsData) {
+              setAnalyticsError(false)
+              getJson<AnalyticsData>('/api/analytics')
+                .then(d => setAnalyticsData(d))
+                .catch(() => setAnalyticsError(true))
+            }
+          }}
+          onConnect={connectHarness}
+        />
+      </div>
 
       {showImport && <ImportModal onClose={() => setShowImport(false)} onImport={importSkill} />}
       {connectFor && (
@@ -1010,6 +1070,6 @@ export default function Dashboard() {
           }}
         />
       )}
-    </div>
+    </>,
   )
 }

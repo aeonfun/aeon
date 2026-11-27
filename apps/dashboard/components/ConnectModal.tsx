@@ -1,11 +1,15 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { inputCls } from '../lib/utils'
+import { cn } from '@/lib/cn'
 import { postJson } from '../lib/api-client'
 import type { Harness } from '../lib/types'
 import { detectPaste, providersForHarness, acceptsOpenRouter, harnessName, type Detection } from '../lib/connect-detect'
 import { guideFor, captureCommand, canDriveLogin, type Os } from '../lib/connect-commands'
+import { ActionButton, Field, LINK, PrimaryButton, Select, SMALL_LABEL } from './glass/connect/ui'
+import { CommandBox } from './ui/CommandBox'
+import { BODY, ExternalLink, HINT, INLINE_CODE, SegmentedChoice, StatusNote, StepLabel } from './glass/connect/forms'
+import { GlassModal } from './glass/connect/modal'
 
 // One modal to connect any harness to a model, command first:
 //   Step 1  run this on your computer (copy button), or get a key
@@ -32,92 +36,27 @@ interface ConnectModalProps {
   onGoToSecret: (name: string) => void
 }
 
-const panelCls = 'border border-[rgba(250,250,250,0.10)] bg-aeon-bg/40 px-[var(--space-md)] py-[var(--space-sm)]'
-const stepCls = 'text-[10px] font-mono uppercase tracking-[0.18em] text-primary-40 mb-2'
-const primaryBtn =
-  'w-full bg-aeon-fg text-aeon-bg text-sm py-3 font-mono uppercase tracking-[2px] hover:opacity-90 transition-opacity disabled:opacity-50'
-const secondaryBtn =
-  'w-full bg-aeon-panel text-aeon-fg border border-[rgba(250,250,250,0.14)] text-xs py-2.5 font-mono uppercase tracking-[2px] hover:border-aeon-red transition-colors disabled:opacity-50'
-
-function CopyIcon({ done }: { done: boolean }) {
-  return done ? (
-    <svg
-      viewBox="0 0 16 16"
-      className="w-3.5 h-3.5"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      aria-hidden="true"
-    >
-      <path d="M3 8.5l3 3 7-7" />
-    </svg>
-  ) : (
-    <svg
-      viewBox="0 0 16 16"
-      className="w-3.5 h-3.5"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      aria-hidden="true"
-    >
-      <rect x="5" y="5" width="8" height="9" />
-      <path d="M3 11V2h8" />
-    </svg>
-  )
-}
-
-function CommandBox({ command }: { command: string }) {
-  const [copied, setCopied] = useState(false)
-  const copy = async () => {
-    try {
-      await navigator.clipboard.writeText(command)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 1500)
-    } catch {
-      /* select-all fallback below */
-    }
-  }
-  return (
-    <div className="flex items-stretch border border-[rgba(250,250,250,0.14)] bg-aeon-bg">
-      <code className="flex-1 min-w-0 px-3 py-2 text-[11px] font-mono text-aeon-fg break-all select-all">
-        {command}
-      </code>
-      <button
-        onClick={copy}
-        title="Copy"
-        className="shrink-0 px-3 border-l border-[rgba(250,250,250,0.14)] text-primary-70 hover:text-aeon-fg flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-[0.14em]"
-      >
-        <CopyIcon done={copied} />
-        {copied ? 'Copied' : 'Copy'}
-      </button>
-    </div>
-  )
-}
-
 function DetectionLine({ d }: { d: Detection }) {
   if (d.state === 'empty') return null
-  const tone =
-    d.state === 'error'
-      ? 'text-aeon-red-alert'
-      : d.warn || d.needsProvider
-        ? 'text-aeon-red'
-        : d.state === 'pending'
-          ? 'text-primary-50'
-          : 'text-aeon-green'
+  // Orange (attention) for "can't save" and for a warning; smoke for a clean match or a pending check.
+  const attention = d.state === 'error' || !!d.warn || !!d.needsProvider
   return (
-    <div className="mt-2 text-[11px] font-mono leading-relaxed" aria-live="polite">
-      <div className={tone}>
-        {d.state === 'error' ? 'Not savable: ' : d.state === 'pending' ? 'Detected: ' : 'Detected: '}
-        <span className="text-aeon-fg">{d.label}</span>
+    <div className="mt-3 space-y-1" aria-live="polite">
+      <StatusNote
+        tone={d.state === 'error' ? 'error' : attention ? 'warn' : d.state === 'pending' ? 'busy' : 'ok'}
+        live={false}
+      >
+        {d.state === 'error' ? 'Not savable: ' : 'Detected: '}
+        <span className="font-medium text-foreground">{d.label}</span>
         {d.secret && (
           <>
             {' '}
-            {'->'} <span className="text-aeon-fg">{d.secret}</span>
+            {'->'} <code className={INLINE_CODE}>{d.secret}</code>
           </>
         )}
-      </div>
+      </StatusNote>
       {d.note && (
-        <div className={d.state === 'error' || d.warn ? 'text-aeon-red-alert/80' : 'text-primary-40'}>{d.note}</div>
+        <p className={cn(HINT, 'pl-6', (d.state === 'error' || d.warn) && 'text-[oklch(0.5_0.19_33)]')}>{d.note}</p>
       )}
     </div>
   )
@@ -127,31 +66,33 @@ function DetectionLine({ d }: { d: Detection }) {
 function SavedPanel({ saved, harness, onClose }: { saved: SavedCredential; harness: Harness; onClose: () => void }) {
   return (
     <div>
-      <p className={stepCls}>Saved</p>
-      <div className={`${panelCls} flex items-start gap-3`}>
+      <div className="g-chip flex items-start gap-3 rounded-[18px] px-4 py-4">
         <svg
           viewBox="0 0 16 16"
-          className="mt-0.5 w-4 h-4 text-aeon-green shrink-0"
+          className="mt-0.5 size-5 shrink-0 text-foreground"
           fill="none"
           stroke="currentColor"
-          strokeWidth="2"
+          strokeWidth={1.5}
+          strokeLinecap="round"
+          strokeLinejoin="round"
           aria-hidden="true"
         >
-          <path d="M3 8.5l3 3 7-7" />
+          <circle cx="8" cy="8" r="6.25" />
+          <path d="M5.4 8.2 7.2 10l3.4-3.8" />
         </svg>
-        <div className="min-w-0 text-[11px] font-mono leading-relaxed">
-          <div className="text-aeon-fg">
+        <div className="min-w-0 space-y-1">
+          <p className="text-[15px] leading-[1.5] font-medium">
             Saved {saved.secret || saved.label || 'the credential'}. The next run uses it.
-          </div>
+          </p>
           {saved.harness && saved.harness !== harness && (
-            <div className="text-primary-40">Saving also selected the {harnessName(saved.harness)} harness.</div>
+            <p className={HINT}>Saving also selected the {harnessName(saved.harness)} harness.</p>
           )}
-          <div className="text-primary-40">If a run fails, HQ says why and what to do next.</div>
+          <p className={HINT}>If a run fails, HQ says why and what to do next.</p>
         </div>
       </div>
-      <button onClick={onClose} className={`${primaryBtn} mt-[var(--space-md)]`}>
+      <PrimaryButton onClick={onClose} className="mt-6 w-full">
         Done
-      </button>
+      </PrimaryButton>
     </div>
   )
 }
@@ -339,210 +280,199 @@ export function ConnectModal({ harness, patSet, onClose, onSaved, onGoToSecret }
   const isCapture = Boolean(captureCommand(harness, os)) && harness !== 'claude'
 
   return (
-    <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/30 backdrop-blur-sm">
-      <div
-        role="dialog"
-        aria-label={`Connect ${harnessName(harness)}`}
-        className="bg-aeon-panel border border-[rgba(250,250,250,0.10)] w-full max-w-lg mx-4 p-[var(--space-lg)] shadow-2xl max-h-[92vh] overflow-y-auto"
-      >
-        <div className="flex items-center justify-between mb-[var(--space-sm)]">
-          <h2 className="font-display text-xl">Connect {harnessName(harness)}</h2>
-          <button onClick={onClose} aria-label="Close" className="text-primary-35 hover:text-primary-100 text-lg">
-            &times;
-          </button>
-        </div>
+    <GlassModal title={`Connect ${harnessName(harness)}`} onClose={onClose} dismissible={false}>
+      {saved ? (
+        <SavedPanel saved={saved} harness={harness} onClose={onClose} />
+      ) : (
+        <>
+          <p className={cn(BODY, 'mb-6')}>
+            Give Aeon a model to run on. It is saved as an encrypted GitHub secret, and the next run uses it.
+          </p>
 
-        {saved ? (
-          <SavedPanel saved={saved} harness={harness} onClose={onClose} />
-        ) : (
-          <>
-            <p className="text-xs text-primary-50 font-mono mb-[var(--space-md)]">
-              Give Aeon a model to run on. It is saved as an encrypted GitHub secret, and the next run uses it.
-            </p>
-
-            {/* Step 1 */}
-            <p className={stepCls}>Step 1 {step1 ? '- run this on your computer' : '- get a key'}</p>
-            {step1 ? (
-              <>
-                {isCapture && (
-                  <div className="flex gap-1 mb-1.5">
-                    {(['mac', 'linux'] as const).map(o => (
-                      <button
-                        key={o}
-                        onClick={() => setOs(o)}
-                        aria-pressed={os === o}
-                        className={`text-[10px] font-mono uppercase tracking-[0.14em] px-2 py-0.5 border ${os === o ? 'border-aeon-fg text-aeon-fg' : 'border-[rgba(250,250,250,0.14)] text-primary-40 hover:text-primary-70'}`}
-                      >
-                        {o === 'mac' ? 'macOS' : 'Linux'}
-                      </button>
-                    ))}
-                  </div>
-                )}
-                <CommandBox command={step1} />
-                <p className="text-[10px] text-primary-40 font-mono mt-1.5 leading-relaxed">
-                  {harness === 'claude'
-                    ? 'Signs in with your Claude plan and prints a token that starts with sk-ant-oat.'
-                    : isCapture && os === 'mac'
-                      ? 'Logs in, then copies the saved login to your clipboard.'
-                      : isCapture
-                        ? 'Logs in, then prints the saved login. Copy the whole line it prints.'
-                        : ''}
+          {/* Step 1 */}
+          <StepLabel n={1}>{step1 ? 'Run this on your computer' : 'Get a key'}</StepLabel>
+          {step1 ? (
+            <>
+              {isCapture && (
+                <SegmentedChoice
+                  label="Your computer"
+                  value={os}
+                  options={
+                    [
+                      { id: 'mac', label: 'macOS' },
+                      { id: 'linux', label: 'Linux' },
+                    ] as const
+                  }
+                  onChange={setOs}
+                  className="mb-2.5"
+                  chipClassName="h-9 px-3.5 text-[11.5px]"
+                />
+              )}
+              <CommandBox command={step1} />
+              {(harness === 'claude' || isCapture || guide.cli) && (
+                <p className={cn(HINT, 'mt-2')}>
+                  {harness === 'claude' ? (
+                    <>
+                      Signs in with your Claude plan and prints a token that starts with{' '}
+                      <span className="whitespace-nowrap">sk-ant-oat</span>.
+                    </>
+                  ) : isCapture && os === 'mac' ? (
+                    'Logs in, then copies the saved login to your clipboard.'
+                  ) : isCapture ? (
+                    'Logs in, then prints the saved login. Copy the whole line it prints.'
+                  ) : (
+                    ''
+                  )}
                   {guide.cli && (
                     <>
                       {' '}
-                      Inside your aeon folder? <code className="text-primary-70">{guide.cli}</code> does it all.
+                      Inside your Aeon folder? <code className={cn(INLINE_CODE, 'whitespace-nowrap')}>{guide.cli}</code>{' '}
+                      does it all.
                     </>
                   )}
                 </p>
-              </>
-            ) : null}
-            {guide.keys.length > 0 && (
-              <p className="text-[11px] font-mono text-primary-50 mt-2">
-                {step1 ? 'Or use an API key: ' : 'Get one: '}
-                {guide.keys.map((k, i) => (
-                  <span key={k.url}>
-                    {i > 0 && ' / '}
-                    <a
-                      href={k.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-primary-70 underline decoration-dotted underline-offset-2 hover:text-aeon-fg"
-                    >
-                      {k.label}
-                    </a>
-                  </span>
-                ))}
-              </p>
-            )}
+              )}
+            </>
+          ) : null}
+          {guide.keys.length > 0 && (
+            <p className={cn(HINT, 'mt-2.5')}>
+              {step1 ? 'Or use an API key: ' : 'Get one: '}
+              {guide.keys.map((k, i) => (
+                <span key={k.url}>
+                  {i > 0 && ', '}
+                  <ExternalLink href={k.url}>{k.label}</ExternalLink>
+                </span>
+              ))}
+            </p>
+          )}
 
-            {/* Step 2 */}
-            <p className={`${stepCls} mt-[var(--space-md)]`}>Step 2 - paste the result</p>
-            <input
-              type="password"
-              value={value}
-              autoComplete="off"
-              spellCheck={false}
-              onChange={e => {
-                setValue(e.target.value)
-                setError('')
-              }}
-              onKeyDown={e => e.key === 'Enter' && save()}
-              placeholder={guide.pasteHint}
-              aria-label="Paste your token, key, or login"
-              className={inputCls}
-            />
-            <DetectionLine d={detection} />
-            {value.trim() && providerOptions.length > 1 && (detection.needsProvider || showProvider || provider) ? (
-              <select
-                value={provider}
-                onChange={e => setProvider(e.target.value)}
-                aria-label="Provider"
-                className="mt-2 w-full bg-aeon-bg text-aeon-fg text-xs px-3 py-2 border border-[rgba(250,250,250,0.10)] outline-none font-mono cursor-pointer hover:border-[rgba(250,250,250,0.22)] focus:border-aeon-red transition-colors"
-              >
-                <option value="">Provider: detect automatically</option>
-                {providerOptions.map(p => (
-                  <option key={p.id} value={p.id}>
-                    {p.label}
-                  </option>
-                ))}
-              </select>
-            ) : value.trim() &&
-              providerOptions.length > 1 &&
-              detection.state !== 'pending' &&
-              !detection.captureHarness ? (
-              <button
-                onClick={() => setShowProvider(true)}
-                className="mt-1 text-[10px] font-mono text-primary-40 hover:text-aeon-fg"
-              >
-                Wrong provider? Pick it
-              </button>
-            ) : null}
-            {harness === 'claude' && (
-              <p className="text-[10px] text-primary-40 font-mono mt-2 leading-relaxed">
-                If a run fails, the Why? toggle on HQ says why. An API key or OpenRouter also works.
-              </p>
-            )}
-            {harness === 'grok' && !patSet && (
-              <p className="text-[10px] text-primary-40 font-mono mt-2 leading-relaxed">
-                An X-account login rotates on every run and needs a secrets PAT to keep working past ~6h:{' '}
-                <button
-                  onClick={() => onGoToSecret('GH_SECRETS_PAT')}
-                  className="text-aeon-red-alert underline decoration-dotted underline-offset-2 hover:text-aeon-fg"
-                >
-                  set GH_SECRETS_PAT
-                </button>
-                . An xAI key needs nothing extra.
-              </p>
-            )}
-            <button
-              onClick={save}
-              disabled={detection.state !== 'ok' || !!busy}
-              className={`${primaryBtn} mt-[var(--space-md)]`}
+          {/* Step 2 */}
+          <StepLabel n={2} className="mt-7">
+            Paste the result
+          </StepLabel>
+          <Field
+            label="Paste your token, key, or login"
+            hideLabel
+            type="password"
+            value={value}
+            autoComplete="off"
+            spellCheck={false}
+            onChange={e => {
+              setValue(e.target.value)
+              setError('')
+            }}
+            onKeyDown={e => e.key === 'Enter' && save()}
+            placeholder="Paste here"
+          />
+          {/* The full hint sits under the field: as a placeholder it clipped in the pill. */}
+          {!value.trim() && <p className={cn(HINT, 'mt-2 px-1')}>{guide.pasteHint}</p>}
+          <DetectionLine d={detection} />
+          {value.trim() && providerOptions.length > 1 && (detection.needsProvider || showProvider || provider) ? (
+            <Select
+              label="Provider"
+              hideLabel
+              value={provider}
+              onChange={e => setProvider(e.target.value)}
+              className="mt-3"
             >
-              {busy === 'save' ? '...' : detection.secret ? `Save as ${detection.secret}` : 'Save'}
+              <option value="">Provider: detect automatically</option>
+              {providerOptions.map(p => (
+                <option key={p.id} value={p.id}>
+                  {p.label}
+                </option>
+              ))}
+            </Select>
+          ) : value.trim() &&
+            providerOptions.length > 1 &&
+            detection.state !== 'pending' &&
+            !detection.captureHarness ? (
+            <button
+              type="button"
+              onClick={() => setShowProvider(true)}
+              className={cn(LINK, 'mt-2 cursor-pointer text-[14px] text-muted-foreground')}
+            >
+              Wrong provider? Pick it
             </button>
-            {error && (
-              <p className="mt-2 text-[11px] font-mono text-aeon-red-alert" role="alert">
-                {error}
-              </p>
-            )}
+          ) : null}
+          {harness === 'claude' && (
+            <p className={cn(HINT, 'mt-3')}>If a run fails, HQ says why. An API key or OpenRouter also works.</p>
+          )}
+          {harness === 'grok' && !patSet && (
+            <p className={cn(HINT, 'mt-3')}>
+              An X-account login rotates on every run and needs a secrets PAT to keep working past about 6 hours:{' '}
+              <button
+                type="button"
+                onClick={() => onGoToSecret('GH_SECRETS_PAT')}
+                className={cn(LINK, 'cursor-pointer')}
+              >
+                set GH_SECRETS_PAT
+              </button>
+              . An xAI key needs nothing extra.
+            </p>
+          )}
+          <PrimaryButton onClick={save} disabled={detection.state !== 'ok' || !!busy} className="mt-6 w-full">
+            {busy === 'save' ? 'Saving' : detection.secret ? `Save as ${detection.secret}` : 'Save'}
+          </PrimaryButton>
+          {error && (
+            <StatusNote tone="error" className="mt-3">
+              {error}
+            </StatusNote>
+          )}
 
-            {/* Options */}
-            {(acceptsOpenRouter(harness) || (local && (canDriveLogin(harness) || found.length > 0))) && (
-              <div className="mt-[var(--space-md)] pt-[var(--space-md)] border-t border-[rgba(250,250,250,0.10)] space-y-2">
-                <p className={stepCls}>Other ways</p>
-                {acceptsOpenRouter(harness) && (
-                  <>
-                    <button onClick={connectOpenRouter} disabled={!!busy} className={secondaryBtn}>
-                      {busy === 'openrouter' ? 'Waiting for OpenRouter...' : 'Connect OpenRouter in one click'}
-                    </button>
-                    {orLink && (
-                      <a
-                        href={orLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="block text-[11px] font-mono text-aeon-red underline"
-                      >
-                        Popup blocked - open OpenRouter
-                      </a>
-                    )}
-                  </>
-                )}
-                {local && canDriveLogin(harness) && (
-                  <button
-                    onClick={driveLogin}
-                    disabled={!!busy}
-                    title="Runs the login on this machine, opens your browser, and saves the result"
-                    className={secondaryBtn}
-                  >
-                    {busy === 'drive'
-                      ? 'Waiting for the login in your browser...'
-                      : 'Do it for me (runs the login here)'}
-                  </button>
-                )}
-                {local && found.length > 0 && (
-                  <div className={panelCls}>
-                    <p className="text-[10px] font-mono uppercase tracking-[0.18em] text-primary-40 mb-1.5">
-                      Found on this machine
+          {/* Options */}
+          {(acceptsOpenRouter(harness) || (local && (canDriveLogin(harness) || found.length > 0))) && (
+            <div className="mt-7 space-y-3 border-t border-[var(--line)] pt-6">
+              <p className={SMALL_LABEL}>Other ways</p>
+              {acceptsOpenRouter(harness) && (
+                <>
+                  <ActionButton onClick={connectOpenRouter} disabled={!!busy} className="h-11 w-full">
+                    {busy === 'openrouter' ? 'Waiting for OpenRouter' : 'Connect OpenRouter in one click'}
+                  </ActionButton>
+                  {orLink && (
+                    <p className={HINT}>
+                      <ExternalLink href={orLink}>Popup blocked: open OpenRouter</ExternalLink>
                     </p>
+                  )}
+                </>
+              )}
+              {local && canDriveLogin(harness) && (
+                <ActionButton
+                  onClick={driveLogin}
+                  disabled={!!busy}
+                  title="Runs the login on this machine, opens your browser, and saves the result"
+                  className="h-11 w-full"
+                >
+                  {busy === 'drive' ? 'Waiting for the login in your browser' : 'Do it for me (runs the login here)'}
+                </ActionButton>
+              )}
+              {local && found.length > 0 && (
+                <div className="g-chip rounded-[18px] px-4 py-3">
+                  <p className={cn(SMALL_LABEL, 'mb-1')}>Found on this machine</p>
+                  <ul className="[&>li+li]:border-t [&>li+li]:border-[var(--line)]">
                     {found.map(f => (
-                      <div key={f.id} className="flex items-center justify-between gap-2 py-1">
-                        <div className="min-w-0 text-[11px] font-mono">
-                          <div className="text-aeon-fg truncate">{f.label}</div>
-                          <div className="text-primary-40">would fill {f.secret}</div>
+                      <li key={f.id} className="flex items-center justify-between gap-3 py-2.5">
+                        <div className="min-w-0">
+                          <p className="truncate text-[15px] font-medium">{f.label}</p>
+                          <p className={HINT}>
+                            Would fill <code className={INLINE_CODE}>{f.secret}</code>
+                          </p>
                         </div>
-                        <button onClick={() => pickFound(f.id)} disabled={!!busy} className="btn-mini-go shrink-0">
-                          {busy === f.id ? '...' : 'Use this'}
-                        </button>
-                      </div>
+                        <ActionButton
+                          onClick={() => pickFound(f.id)}
+                          disabled={!!busy}
+                          className="h-9 shrink-0 px-3.5 text-[13px]"
+                        >
+                          {busy === f.id ? 'Saving' : 'Use this'}
+                        </ActionButton>
+                      </li>
                     ))}
-                  </div>
-                )}
-              </div>
-            )}
-          </>
-        )}
-      </div>
-    </div>
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
+        </>
+      )}
+    </GlassModal>
   )
 }

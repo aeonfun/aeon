@@ -1,0 +1,128 @@
+/* Aeon Connect's own glass bits, on top of theme.css + skin.css (same recipes, plain classes so a
+   <button> can wear them without the website's Button component). */
+
+/* The orange call to action: skin.css .g-btn-bg[data-g="primary"] on the element itself.
+   Ink on orange is --primary-foreground (passes 4.5:1). */
+.c-primary {
+  color: oklch(0.2 0.015 240);
+  background:
+    radial-gradient(90% 70% at 30% 0%, oklch(0.88 0.1 55 / 0.7), transparent 60%),
+    linear-gradient(180deg, oklch(0.74 0.18 40 / 0.94), oklch(0.65 0.23 32 / 0.94) 55%, oklch(0.6 0.22 30 / 0.96));
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.65),
+    inset 0 0 0 1px rgb(255 255 255 / 0.22),
+    inset 0 -3px 8px -3px rgb(110 20 0 / 0.4),
+    0 8px 22px -8px oklch(0.65 0.23 32 / 0.65);
+}
+.c-primary:hover:not(:disabled) {
+  filter: brightness(1.07) saturate(1.05);
+}
+
+/* The end of the paper (frame.tsx): it starts clear over the paper's own light pools, settles to
+   paper, and deepens into the haze .g-footer opens on, so there is no edge at the footer. */
+[data-variant="v94"][data-skin="glass"] .c-dusk {
+  background: linear-gradient(
+    to bottom in oklab,
+    oklch(0.965 0.006 235 / 0),
+    var(--g-paper) 22%,
+    oklch(0.92 0.008 232) 62%,
+    var(--g-haze)
+  );
+}
+
+/* Dialog and drawer backdrops: the docs search dialog's smoke veil. */
+.c-modal-backdrop,
+.c-drawer-backdrop {
+  background: oklch(0.25 0.015 240 / 0.28);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+/* Dialogs portal-free but fixed: keep the paper tokens even when opened over the night. */
+.c-modal {
+  color: var(--foreground);
+}
+
+/* Dashboard columns that stay in view: thin scrollbars inside the glass. */
+.c-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: oklch(0.3 0.015 240 / 0.22) transparent;
+  overscroll-behavior: contain;
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .c-modal-backdrop,
+  .c-drawer-backdrop {
+    background: oklch(0.25 0.015 240 / 0.6);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+/* A numbered step bead (docs.css .g-steps): orange glass, Geist Mono numeral. */
+.c-bead {
+  background: radial-gradient(120% 120% at 30% 20%, oklch(0.8 0.15 55), oklch(0.65 0.23 32) 70%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.55), 0 6px 14px -6px oklch(0.6 0.18 40 / 0.6);
+}
+
+/* Drawers on phones slide over the night sky: a near-solid sheet keeps them readable. */
+[data-variant="v94"][data-skin="glass"] .g-glass.c-solid {
+  background:
+    radial-gradient(120% 60% at 12% 0%, rgb(255 255 255 / 0.6), transparent 55%),
+    linear-gradient(158deg, rgb(250 252 253 / 0.96), rgb(242 246 249 / 0.94) 48%, rgb(236 242 246 / 0.95));
+}
+
+/* The dialog sheet takes focus on open so keys land inside; it is a container, not a control,
+   so it shows no ring (its controls keep theirs). */
+[data-variant="v94"] .c-modal:focus-visible {
+  outline: none;
+}
+
+/* A code block inside a narrow panel or modal: the docs block, a little tighter. */
+[data-variant="v94"][data-skin="glass"] .g-code.c-code {
+  margin-top: 0;
+  & pre {
+    padding: 14px 52px 14px 18px;
+    font-size: 13px;
+    line-height: 1.65;
+  }
+}
+
+/* Field: the pill around the input draws the focus ring (focus-within), so the input itself must
+   not draw a second one. theme.css's global :focus-visible outline is unlayered and beats the
+   outline-none utility, hence this rule. */
+[data-variant="v94"] .c-field-input:focus-visible {
+  outline: none;
+}
+
+/* The signed-out trust section (trust.tsx). Its icon beads sit on paper glass, so they wear the
+   footer's solid paper bead (skin.css) rather than the clear one made for the night. */
+[data-variant="v94"][data-skin="glass"] .c-trust .g-bead {
+  background: radial-gradient(120% 120% at 30% 18%, #fff, rgb(236 242 246 / 0.85) 60%, rgb(255 255 255 / 0.9));
+  box-shadow:
+    inset 0 1px 0 #fff,
+    inset 0 -6px 10px -6px oklch(0.3 0.015 240 / 0.25),
+    0 0 0 1px oklch(0.3 0.015 240 / 0.12),
+    0 6px 14px -8px oklch(0.3 0.015 240 / 0.45);
+}
+
+/* Rise in once on first view (the opener's .v94-land fade and lift, keyed to [data-seen] instead
+   of [data-open]), staggered by --d. Under reduced motion it rests in place. */
+@media (prefers-reduced-motion: no-preference) {
+  .c-rise {
+    opacity: 0;
+    translate: 0 18px;
+    transition:
+      opacity 320ms ease-out var(--d, 0ms),
+      translate 1000ms cubic-bezier(0.23, 1, 0.32, 1) var(--d, 0ms);
+  }
+  [data-seen] .c-rise {
+    opacity: 1;
+    translate: none;
+  }
+}
+
+/* Paragraphs wrap evenly: no lone last word, no early break that strands a short tail. */
+[data-variant="v94"] :is(p, li, dd) {
+  text-wrap: pretty;
+}

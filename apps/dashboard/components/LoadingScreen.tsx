@@ -1,28 +1,18 @@
+import { Opener, OpenerHeader } from './glass/connect/opener'
+import { SMALL_LABEL } from './glass/connect/recipes'
+import { cn } from '@/lib/cn'
+
+// The dashboard while its first reads land: the same opener as every screen (sky, logo in its
+// rings), the agent's name, and a quiet line saying what is happening.
 export function LoadingScreen() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-aeon-bg relative overflow-hidden">
-      <div className="dither" aria-hidden="true" />
-      <div className="relative z-10 flex flex-col items-center gap-6">
-        <div className="relative w-28 h-28 flex items-center justify-center">
-          <span
-            className="absolute inset-0 rounded-full border border-dashed border-aeon-rule animate-aeon-spin"
-            aria-hidden="true"
-          />
-          <span className="brand-mark" style={{ width: 72, height: 72 }} aria-hidden="true">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/android-chrome-192x192.png" alt="" />
-          </span>
-        </div>
-        <div className="text-center space-y-1">
-          <p className="font-display text-2xl uppercase tracking-wide text-aeon-fg">AEON HQ</p>
-          <p className="text-[11px] text-aeon-red font-mono uppercase tracking-[0.28em] animate-shimmer">
-            Initializing
-          </p>
-        </div>
-        <div className="w-40 h-[2px] bg-[rgba(250,250,250,0.08)] overflow-hidden">
-          <div className="h-full w-full bg-gradient-to-r from-transparent via-aeon-red to-transparent bg-[length:200%_100%] animate-shimmer-gradient" />
-        </div>
-      </div>
-    </div>
+    <Opener open className="min-h-[70svh]">
+      <OpenerHeader title="Aeon">
+        <p role="status" className={cn(SMALL_LABEL, 'mt-6 flex items-center justify-center gap-2.5')}>
+          <span aria-hidden className="size-2 animate-pulse rounded-full bg-[var(--primary)]" />
+          Loading your agent
+        </p>
+      </OpenerHeader>
+    </Opener>
   )
 }

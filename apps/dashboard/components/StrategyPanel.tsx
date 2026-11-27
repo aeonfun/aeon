@@ -1,10 +1,25 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Scramble } from './ui/Animated'
 import { STRATEGY_SCAFFOLD, ARCHETYPES } from '../lib/strategy-templates'
-import { editorCls, panelInputCls } from '../lib/utils'
+import { cn } from '@/lib/cn'
+import {
+  ActionButton,
+  CARD,
+  Field,
+  LABEL,
+  Loading,
+  PageHeader,
+  PanelHeader,
+  PrimaryButton,
+  TAG,
+  TAG_ATTN,
+  TAG_INK,
+} from './glass/connect/ui'
+import { EDITOR, HINT, INLINE_CODE, TemplateCard, TextArea } from './glass/connect/forms'
 import type { StrategySources } from '../lib/types'
+
+export type { StrategySources }
 
 interface StrategyPanelProps {
   content: string
@@ -47,65 +62,35 @@ export function StrategyPanel({ content, loading, saving, building, onSave, onBu
   }
 
   return (
-    <div className="max-w-5xl mx-auto pb-16 space-y-8">
-      {/* Hero */}
-      <section className="relative overflow-hidden border border-[rgba(250,250,250,0.10)] bg-aeon-panel">
-        <div className="dither" aria-hidden="true" />
-        <div className="relative z-10 px-5 md:px-8 pt-10 pb-8">
-          {/* One word in two colors: nowrap + a smaller floor so phones never
-              split it into "STRA" / "TEGY". */}
-          <h1
-            className="font-display uppercase leading-[0.92] tracking-tight text-aeon-fg whitespace-nowrap"
-            style={{ fontSize: 'clamp(30px, 7vw, 88px)' }}
-          >
-            <Scramble text="STRA" />
-            <span className="text-aeon-red">
-              <Scramble text="TEGY" delay={160} />
-            </span>
-          </h1>
-          <p className="mt-4 max-w-xl text-sm text-primary-70 leading-relaxed">
-            One file every skill reads. It&apos;s imported into{' '}
-            <span className="font-mono text-primary-100">CLAUDE.md</span>, so it sits in the context of every run - keep
-            it tight: a north-star, a few priorities, the hard constraints.
-          </p>
-        </div>
-      </section>
+    <div className="space-y-[clamp(36px,4vw,56px)] pb-4">
+      <PageHeader
+        title="Strategy"
+        sub={
+          <>
+            One file every skill reads. It is imported into <code className={INLINE_CODE}>CLAUDE.md</code>, so it sits
+            in the context of every run: keep it tight, with a north star, a few priorities and the hard limits.
+          </>
+        }
+      />
 
       {/* Build my strategy */}
-      <section className="border border-[rgba(250,250,250,0.10)] bg-aeon-panel p-6">
-        <div className="flex items-center gap-3 mb-3">
-          <span className="font-display text-[13px] tracking-[0.18em] text-aeon-red uppercase">BUILD MY STRATEGY</span>
-          <span className="flex-1 h-px bg-[rgba(250,250,250,0.10)]" />
-        </div>
-        <p className="text-[12px] text-primary-50 font-mono leading-relaxed mb-4">
-          <span className="text-primary-80">Every field is optional - give just one.</span> The{' '}
-          <span className="text-primary-80">strategy-builder</span> agent reads what you give it (plus your repo README
-          + memory), then drafts a tight STRATEGY.md - one north-star, a few priorities, the constraints - committed
-          straight to <span className="text-primary-80">STRATEGY.md</span>.
-        </p>
-
-        <div className="space-y-2">
-          <label className="flex flex-col gap-1">
-            <span className="text-[10px] font-mono uppercase tracking-[0.14em] text-primary-40">
-              Goal / project{' '}
-              <span className="text-primary-30">· what you&apos;re building + what winning looks like</span>
-            </span>
-            <textarea
+      <section aria-labelledby="strategy-build">
+        <PanelHeader title={<span id="strategy-build">Build my strategy</span>} />
+        <div className={cn(CARD, 'mt-3 px-4 py-5 sm:px-7 sm:py-7')}>
+          <div className="space-y-4">
+            <TextArea
+              label="Goal or project"
+              hint="What you are building and what winning looks like"
               value={goal}
               onChange={e => setGoal(e.target.value)}
               rows={3}
+              textareaClassName="max-sm:min-h-[9rem]"
               spellCheck={false}
-              placeholder="e.g. Growing my open-source agent framework - I want active contributors and a reputation for reliability, not just stars."
-              className={`${panelInputCls} w-full resize-y leading-relaxed`}
+              placeholder="e.g. Growing my open-source agent framework. I want active contributors and a reputation for reliability, not just stars."
             />
-          </label>
-          <div className="grid sm:grid-cols-2 gap-2">
-            <label className="flex flex-col gap-1">
-              <span className="text-[10px] font-mono uppercase tracking-[0.14em] text-primary-40">
-                GitHub repo <span className="text-primary-30">· optional</span>
-              </span>
-              <input
-                type="text"
+            <div className="grid gap-4 sm:grid-cols-2">
+              <Field
+                label="GitHub repo (optional)"
                 value={repo}
                 onChange={e => setRepo(e.target.value)}
                 onKeyDown={e => {
@@ -113,107 +98,97 @@ export function StrategyPanel({ content, loading, saving, building, onSave, onBu
                 }}
                 placeholder="owner/repo"
                 spellCheck={false}
-                className={`${panelInputCls} w-full`}
               />
-            </label>
-            <label className="flex flex-col gap-1">
-              <span className="text-[10px] font-mono uppercase tracking-[0.14em] text-primary-40">
-                Links <span className="text-primary-30">· product, site, deck - comma separated</span>
-              </span>
-              <input
-                type="text"
+              <Field
+                label="Links, comma separated"
                 value={links}
                 onChange={e => setLinks(e.target.value)}
                 onKeyDown={e => {
                   if (e.key === 'Enter') build()
                 }}
-                placeholder="yoursite.com, …"
+                placeholder="yoursite.com, deck link"
                 spellCheck={false}
-                className={`${panelInputCls} w-full`}
               />
-            </label>
+            </div>
           </div>
-        </div>
 
-        <div className="flex items-center gap-3 mt-4">
-          <button
-            onClick={build}
-            disabled={!canBuild}
-            className="bg-aeon-red text-white text-[11px] font-mono uppercase tracking-[0.14em] px-5 py-2.5 hover:opacity-90 transition-opacity disabled:opacity-40 cursor-target"
-          >
-            {building ? 'Dispatching…' : 'Build my strategy'}
-          </button>
-          <span className="text-[10px] text-primary-35 font-mono">Any one field is enough - all optional.</span>
+          <div className="mt-6 flex justify-end">
+            <PrimaryButton onClick={build} disabled={!canBuild}>
+              {building ? 'Starting' : 'Build'}
+            </PrimaryButton>
+          </div>
         </div>
       </section>
 
       {/* Editor */}
-      <section className="border-t border-[rgba(250,250,250,0.10)] pt-6">
-        <div className="flex items-center gap-3 mb-4 flex-wrap">
-          <span className="font-display text-[13px] tracking-[0.18em] text-aeon-red uppercase">STRATEGY.md</span>
-          <span className="flex-1 h-px bg-[rgba(250,250,250,0.10)]" />
+      <section aria-labelledby="strategy-file">
+        <div className="flex min-h-10 flex-wrap items-center gap-3">
+          <h2 id="strategy-file" className={LABEL}>
+            STRATEGY.md
+          </h2>
           {unconfigured ? (
-            <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-aeon-red">template defaults</span>
+            <span className={cn(TAG, TAG_ATTN)}>Template defaults</span>
           ) : (
-            <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-aeon-green">customized</span>
+            <span className={cn(TAG, TAG_INK)}>Customized</span>
           )}
-          <button onClick={() => setShowTemplates(v => !v)} className="btn-mini cursor-target">
-            {showTemplates ? 'Close' : 'Templates'}
-          </button>
+          <ActionButton
+            onClick={() => setShowTemplates(v => !v)}
+            aria-expanded={showTemplates}
+            aria-controls="strategy-templates"
+            className="ml-auto"
+          >
+            {showTemplates ? 'Close templates' : 'Templates'}
+          </ActionButton>
         </div>
 
         {/* Template picker - two per row */}
         {showTemplates && (
-          <div className="mb-4 border border-[rgba(250,250,250,0.10)] bg-aeon-panel p-4 space-y-3">
-            <p className="text-[11px] text-primary-50 font-mono">
-              Start from a scaffold, or an archetype that shows the shape of a sharp strategy. Replaces the current
-              editor content - edit the bracketed bits to make it yours.
+          <div
+            id="strategy-templates"
+            className="mt-3 rounded-[22px] bg-[rgb(255_255_255/0.45)] p-4 shadow-[inset_0_0_0_1px_var(--line)] sm:p-5"
+          >
+            <p className={cn(HINT, 'max-w-[78ch]')}>
+              Start from a scaffold, or an archetype that shows the shape of a sharp strategy. It replaces what is in
+              the editor: edit the bracketed bits to make it yours.
             </p>
-            <div className="grid grid-cols-2 gap-2">
-              <button
-                onClick={() => applyTemplate(STRATEGY_SCAFFOLD)}
-                className="text-left border border-[rgba(250,250,250,0.12)] hover:border-aeon-red px-3 py-2.5 transition-colors cursor-target"
-              >
-                <div className="text-[12px] text-primary-100 font-medium">Blank scaffold</div>
-                <div className="text-[10px] text-primary-40 font-mono">Guided headings, no content</div>
-              </button>
+            <ul className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
+              <li className="flex">
+                <TemplateCard
+                  title="Blank scaffold"
+                  blurb="Guided headings, no content"
+                  onPick={() => applyTemplate(STRATEGY_SCAFFOLD)}
+                />
+              </li>
               {ARCHETYPES.map(a => (
-                <button
-                  key={a.key}
-                  onClick={() => applyTemplate(a.content)}
-                  className="text-left border border-[rgba(250,250,250,0.12)] hover:border-aeon-red px-3 py-2.5 transition-colors cursor-target"
-                >
-                  <div className="text-[12px] text-primary-100 font-medium">{a.label}</div>
-                  <div className="text-[10px] text-primary-40 font-mono leading-snug">{a.blurb}</div>
-                </button>
+                <li key={a.key} className="flex">
+                  <TemplateCard title={a.label} blurb={a.blurb} onPick={() => applyTemplate(a.content)} />
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
         )}
 
         {loading ? (
-          <div className="text-xs font-mono text-primary-40 py-8">Loading…</div>
+          <Loading />
         ) : (
           <>
+            <label htmlFor="strategy-editor" className="sr-only">
+              STRATEGY.md
+            </label>
             <textarea
+              id="strategy-editor"
               value={draft}
               onChange={e => setDraft(e.target.value)}
               spellCheck={false}
               rows={24}
               placeholder={STRATEGY_SCAFFOLD}
-              className={editorCls}
+              className={cn(EDITOR, 'mt-3')}
             />
-            <div className="flex items-center justify-end mt-3">
-              <div className="flex items-center gap-2">
-                {dirty && (
-                  <button onClick={() => setDraft(content)} className="btn-mini">
-                    Revert
-                  </button>
-                )}
-                <button onClick={() => onSave(draft)} disabled={!dirty || saving} className="btn-mini-go">
-                  {saving ? 'Saving…' : 'Save'}
-                </button>
-              </div>
+            <div className="mt-4 flex items-center justify-end gap-2">
+              {dirty && <ActionButton onClick={() => setDraft(content)}>Revert</ActionButton>}
+              <PrimaryButton onClick={() => onSave(draft)} disabled={!dirty || saving}>
+                {saving ? 'Saving' : 'Save'}
+              </PrimaryButton>
             </div>
           </>
         )}
