@@ -264,7 +264,7 @@ The deep reference lives in [`docs/`](../docs) - jump in:
       <a href="https://www.aeon.fun/docs" title="Read the Aeon docs"><img src="../docs/assets/comm-docs-aeon.jpg" alt="Read the Aeon documentation - guides and reference." width="100%"/></a>
     </td>
     <td align="center" valign="middle" width="33%">
-      <a href="https://bankr.bot/discover/0xbf8e8f0e8866a7052f948c16508644347c57aba3" title="$aeon on Bankr"><img src="../docs/assets/comm-bankr-aeon.jpg" alt="$aeon token on Bankr." width="100%"/></a>
+      <a href="https://bankr.bot/discover/0xbf8e8f0e8866a7052f948c16508644347c57aba3" title="$AEON on Bankr"><img src="../docs/assets/comm-bankr-aeon.jpg" alt="$AEON token on Bankr." width="100%"/></a>
     </td>
   </tr>
 </table>
