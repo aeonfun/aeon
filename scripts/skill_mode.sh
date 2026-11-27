@@ -110,6 +110,12 @@ WRITE_TOOLS="$WRITE_TOOLS,Bash(./scripts/feature-open-pr.sh:*)"
 # pr-review asks GitHub whether it already reviewed a PR at its head commit, with
 # the same receipt count the dev-loop gate uses, before posting another review.
 WRITE_TOOLS="$WRITE_TOOLS,Bash(./scripts/dev-loop-review.sh:*)"
+# install-skill (the dashboard "Install" button's backend) must run the repo's own
+# hardened installer and the catalog regenerators its SKILL.md names. Without these
+# the claude harness denies the installer's first call (`--dry-run`) and the install
+# can never complete in Actions. Scoped to these exact repo scripts, not a general runner.
+WRITE_TOOLS="$WRITE_TOOLS,Bash(bin/install-skill-pack:*),Bash(./bin/install-skill-pack:*)"
+WRITE_TOOLS="$WRITE_TOOLS,Bash(bin/generate-skills-json:*),Bash(bin/generate-packs-json:*)"
 # Foundry bare-names + the key-safe runner for deploy-uni-hook. Foundry is staged by
 # scripts/stage-deploy-uni-hook.sh (the sandbox denies in-run installs); the skill then
 # builds/simulates/broadcasts by bare name. `./hook-deploy.sh` hides the deployer key

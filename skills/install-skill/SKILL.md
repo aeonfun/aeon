@@ -76,7 +76,7 @@ Your job is to drive that script, regenerate the catalog, and wrap the result in
    ```
    Both files should be listed.
 
-6. **Commit, open a PR, and auto-merge it** - never push to `main` directly; the PR is the audit trail and CI gate. Stage **all** install changes so no manifest is missed - `git add -A` (the install touched only skill dirs + `aeon.yml`, `skills.json`, `skills.lock`, `packs.json`), commit, push the branch, then open the PR and capture its URL. Each git step is its own call:
+6. **Commit, open a PR, and auto-merge it** - never push to `main` directly; the PR is the audit trail and CI gate. Stage **all** install changes so no manifest is missed - `git add -A` (the install touched only skill dirs + `aeon.yml`, `skills.json`, `skills.lock`, `packs.json`, plus the new skills' icons: `catalog/skill-icons.json`, `docs/assets/skill-icons/<slug>.svg`, `apps/dashboard/lib/skill-icons.data.ts`), commit, push the branch, then open the PR and capture its URL. Each git step is its own call:
    ```bash
    git add -A
    ```
