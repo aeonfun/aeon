@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""render_card.py — build the Weekly Aeon Card image from memory/token-usage.csv.
+"""render_card.py - build the Weekly Aeon Card image from memory/token-usage.csv.
 
 Pure-stdlib, deterministic (today is passed in, never read from the clock), no
-network. Emits a self-contained SVG (the canonical image — renders on GitHub and
+network. Emits a self-contained SVG (the canonical image - renders on GitHub and
 any browser) and, best-effort, a PNG for chat/social sharing.
 
 Usage:
@@ -14,6 +14,7 @@ Exit 0 prints a one-line JSON summary to stdout (the skill parses it for notify)
 Exit 3 = no usable rows (empty/absent ledger).
 """
 import argparse, csv, json, sys
+from pathlib import Path
 from collections import defaultdict
 from datetime import date, timedelta
 
@@ -63,11 +64,35 @@ def by_skill(rows, top=5):
     return ranked[:top]
 
 
-def svg(instance, today, wd, life, week, week_skills, life_skills, models, span):
+# Palette from the live aeon.fun glass design (aeon-website app/(glass)/skin.css, oklch as sRGB hex).
+# The orange star is the one warm color; everything else is cool smoke glass.
+THEMES = {
+    "night": dict(bg0="#091018", bg1="#2b343c", fg="#f3f8f9", muted="#b4bec5", line="#3a454e",
+                  dim="#6f7b84", acc="#fc3d1d", acc2="#f3f8f9", hi="#ff865b", lo="#e2290c"),
+    "dawn": dict(bg0="#f0f4f7", bg1="#d0d9de", fg="#272f35", muted="#4b545a", line="#c3ccd2",
+                 dim="#8a949b", acc="#fc3d1d", acc2="#272f35", hi="#ff865b", lo="#e2290c"),
+}
+THEME = "night"
+
+
+def mark_svg(x, y, size, color):
+    """The Aeon logo (mark.svg next to this file), inlined so the card stays self-contained."""
+    try:
+        with open(Path(__file__).with_name("mark.svg")) as fh:
+            m = fh.read()
+    except OSError:
+        return ""
+    return m.replace("<svg ", f'<svg x="{x}" y="{y}" width="{size}" height="{size}" color="{color}" ', 1)
+
+
+def svg(instance, today, wd, life, week, week_skills, life_skills, models, span, theme=THEME):
     W, H = 1200, 630
-    bg0, bg1 = "#0d1117", "#161b22"
-    fg, muted, line = "#e6edf3", "#8b949e", "#30363d"
-    acc, acc2 = "#7c9cff", "#34d399"
+    t = THEMES[theme]
+    bg0, bg1 = t["bg0"], t["bg1"]
+    fg, muted, line, dim = t["fg"], t["muted"], t["line"], t["dim"]
+    acc, acc2 = t["acc"], t["acc2"]
+    mark = mark_svg(64, 38, 52, fg)
+    brand_x = 128 if mark else 64
     cache_pct = (100 * life["cache_read"] / life["total"]) if life["total"] else 0
     rows = week_skills if week_skills else life_skills
     bar_label = "Top skills this week" if week_skills else "Top skills (all-time)"
@@ -80,18 +105,25 @@ def svg(instance, today, wd, life, week, week_skills, life_skills, models, span)
             out.append(
                 f'<text x="64" y="{y+13}" font-size="19" fill="{fg}" '
                 f'font-family="monospace">{esc(name)[:22]}</text>'
-                f'<rect x="330" y="{y}" width="{w}" height="18" rx="4" fill="{acc}"/>'
+                f'<rect x="330" y="{y}" width="{w}" height="18" rx="9" fill="url(#bar)"/>'
+                f'<rect x="334" y="{y+2}" width="{max(w-8, 0)}" height="1.5" rx="0.75" fill="#ffffff" fill-opacity="0.6"/>'
                 f'<text x="{330+w+10}" y="{y+14}" font-size="16" fill="{muted}" '
                 f'font-family="monospace">{human(tok)} · {runs}r</text>')
             y += 40
         return "\n".join(out)
 
     return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
-<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-<stop offset="0" stop-color="{bg0}"/><stop offset="1" stop-color="{bg1}"/></linearGradient></defs>
+<defs><linearGradient id="bg" x1="0" y1="0" x2="0.35" y2="1">
+<stop offset="0" stop-color="{bg0}"/><stop offset="1" stop-color="{bg1}"/></linearGradient>
+<linearGradient id="bar" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="{t['hi']}"/><stop offset="0.55" stop-color="{acc}"/><stop offset="1" stop-color="{t['lo']}"/></linearGradient>
+<radialGradient id="glow" cx="0.12" cy="0.4" r="0.45">
+<stop offset="0" stop-color="{acc}" stop-opacity="0.14"/><stop offset="1" stop-color="{acc}" stop-opacity="0"/></radialGradient></defs>
 <rect width="{W}" height="{H}" fill="url(#bg)"/>
-<rect x="0" y="0" width="{W}" height="6" fill="{acc}"/>
-<text x="64" y="78" font-size="30" font-weight="700" fill="{fg}">◆ AEON</text>
+<rect width="{W}" height="{H}" fill="url(#glow)"/>
+<rect x="0" y="0" width="{W}" height="4" fill="url(#bar)"/>
+{mark}
+<text x="{brand_x}" y="78" font-size="30" font-weight="700" fill="{fg}">Aeon</text>
 <text x="{W-64}" y="70" text-anchor="end" font-size="22" fill="{acc2}" font-weight="600">{esc(instance)}</text>
 <text x="{W-64}" y="98" text-anchor="end" font-size="17" fill="{muted}" font-family="monospace">week of {esc(today)}</text>
 <text x="64" y="150" font-size="40" font-weight="800" fill="{fg}">Weekly Consumption</text>
@@ -109,7 +141,7 @@ def svg(instance, today, wd, life, week, week_skills, life_skills, models, span)
 {bars()}
 <line x1="64" y1="560" x2="{W-64}" y2="560" stroke="{line}" stroke-width="1"/>
 <text x="64" y="592" font-size="16" fill="{muted}" font-family="monospace">cache-read {cache_pct:.0f}% of tokens · {len(models)} model(s): {esc(', '.join(models)[:60])}</text>
-<text x="{W-64}" y="592" text-anchor="end" font-size="14" fill="{line}">generated {esc(today)}</text>
+<text x="{W-64}" y="592" text-anchor="end" font-size="14" fill="{dim}">generated {esc(today)}</text>
 </svg>'''
 
 
@@ -121,13 +153,13 @@ def report_md(instance, today, wd, life, week, week_sk, life_sk, models, span, c
         return "\n".join(out)
     return f"""---
 type: Article
-title: Weekly Aeon Card — {instance} — {today}
-description: Token-consumption recap for {instance} — {human(week['total'])} tokens over the last {wd}d, {human(life['total'])} all-time.
+title: Weekly Aeon Card - {instance} - {today}
+description: Token-consumption recap for {instance} - {human(week['total'])} tokens over the last {wd}d, {human(life['total'])} all-time.
 tags: [monitoring, meta, tokens]
 timestamp: {today}
 ---
 
-# Weekly Aeon Card — {instance} — {today}
+# Weekly Aeon Card - {instance} - {today}
 
 **This week ({wd}d):** {human(week['total'])} tokens across {week['runs']} runs
 **All-time:** {human(life['total'])} tokens across {life['runs']} runs (since {span})
@@ -154,7 +186,7 @@ def dashboard_json(instance, today, wd, life, week, cache_pct, img_link):
             p["variant"] = variant
         return {"type": "Text", "props": p}
     els = {
-        "card": {"type": "Card", "props": {"title": f"Weekly Aeon Card — {instance}"}, "children": ["stack"]},
+        "card": {"type": "Card", "props": {"title": f"Weekly Aeon Card - {instance}"}, "children": ["stack"]},
         "stack": {"type": "Stack", "props": {"direction": "vertical", "gap": "md"}, "children": ["wk", "life", "cache", "img"]},
         "wk": {**txt(f"This week ({wd}d): {human(week['total'])} tokens · {week['runs']} runs")},
         "life": {**txt(f"All-time: {human(life['total'])} tokens · {life['runs']} runs")},
@@ -177,6 +209,7 @@ def main():
     ap.add_argument("--dashboard", default="")
     ap.add_argument("--log", default="")
     ap.add_argument("--img-link", default="")
+    ap.add_argument("--theme", default=THEME, choices=sorted(THEMES))
     a = ap.parse_args()
 
     try:
@@ -199,7 +232,7 @@ def main():
     cache_pct = (100 * life["cache_read"] / life["total"]) if life["total"] else 0
     img_link = a.img_link or a.out
     doc = svg(a.instance, a.today, a.window_days, life, week,
-              week_sk, life_sk, models, span)
+              week_sk, life_sk, models, span, a.theme)
 
     with open(a.out, "w") as fh:
         fh.write(doc)
