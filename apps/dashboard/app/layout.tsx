@@ -26,7 +26,7 @@ const mono = Space_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'AEON HQ',
+  title: 'Aeon HQ',
   description: 'Agent operations headquarters',
   icons: {
     icon: [

@@ -199,7 +199,7 @@ export function HQOverview({
             AEON HQ <i className="not-italic text-aeon-red">★</i> {enabledCount} ENABLED{' '}
             <i className="not-italic text-aeon-red">★</i> {cats.length} PACKS{' '}
             <i className="not-italic text-aeon-red">★</i> {runs.length} RUNS LOGGED{' '}
-            <i className="not-italic text-aeon-red">★</i> NO BABYSITTING <i className="not-italic text-aeon-red">★</i>
+            <i className="not-italic text-aeon-red">★</i> MULTIPLY YOURSELF <i className="not-italic text-aeon-red">★</i>
           </span>
         ))}
       </VelocityMarquee>

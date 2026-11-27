@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="../docs/assets/hero-animated.svg" alt="AEON - the most autonomous agent framework. 93 skills across 10 harnesses (Claude Code, Grok, Codex, Pi, Vibe, Kimi, fx, Cursor, Hermes, Droid), running unattended on GitHub Actions: it ships features to your repos, privately discloses real vulnerabilities, deploys live apps, runs deep research, and writes new skills for itself. Keywords: autonomous AI agent, agent framework, GitHub Actions automation, self-improving agent, multi-agent orchestration, LLM skills, cron agent." width="100%" />
+  <img src="../docs/assets/hero-animated.svg" alt="Aeon - Multiply yourself. Give every idea its own swarm, 24/7, and outwork any company. An open-source agent framework across 10 harnesses (Claude Code, Grok, Codex, Pi, Vibe, Kimi, fx, Cursor, Hermes, Droid), running unattended on your own GitHub Actions: it ships features to your repos, privately discloses real vulnerabilities, deploys live apps, runs deep research, and writes new skills for itself. Keywords: autonomous AI agent, agent framework, GitHub Actions automation, self-improving agent, multi-agent orchestration, LLM skills, cron agent." width="100%" />
 </p>
 
 <p align="center">
@@ -14,7 +14,7 @@
 
 <p align="center">
   Give it a direction and it ships the work: features, vulnerability disclosures, live apps, deep research - and new skills for itself.<br/><br/>
-  <strong>No approval loops. No babysitting. Configure once, forget forever.</strong>
+  <strong>Multiply yourself. Give every idea its own swarm, 24/7. Outwork any company.</strong>
 </p>
 
 > **▶ Start in your browser:** **[www.aeon.fun/connect](https://www.aeon.fun/connect)** - sign in with GitHub, connect a model, pick skills. No clone, no terminal.
@@ -137,9 +137,9 @@ fetch-tweets, shiplog, and mention-radar read X through [TwitterAPI.io](https://
 
 The same `SKILL.md` runs on any of ten agent CLIs - **Claude**, **Grok**, **Codex**, **Pi**, **Vibe**, **Kimi**, **fx**, **Cursor**, **Hermes**, **Droid** - behind one `run-harness` contract (same result, usage, and session shape). Swap the harness; nothing else changes. How the contract works: [`docs/harnesses.md`](../docs/harnesses.md). GLM Coding Plan is a Claude AI Gateway hop (`GLM_API_KEY`), not a harness.
 
-## Why "the most autonomous"
+## Why it runs on its own
 
-Most agent tools keep you in the loop - approve this call, review this diff. Aeon is built for the work you want done while you're away, and it's the only framework that does all four unattended: runs on a schedule, remembers across runs, reacts to conditions, and repairs its own broken skills. The most autonomous agent is the one that never asks.
+Most agent tools keep you in the loop - approve this call, review this diff. Aeon is built for the work you want done while you're away, and it's the only framework that does all four unattended: runs on a schedule, remembers across runs, reacts to conditions, and repairs its own broken skills.
 
 Full comparison vs Claude Code, Hermes, and OpenClaw: [`SHOWCASE.md`](../docs/SHOWCASE.md).
 
