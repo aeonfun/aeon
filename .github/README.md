@@ -132,7 +132,7 @@ fetch-tweets, shiplog, and mention-radar read X through [TwitterAPI.io](https://
 ## Support ten harnesses: Claude, Grok, Codex, Pi, Vibe, Kimi, fx, Cursor, Hermes, Droid
 
 <p align="center">
-  <img src="../docs/assets/harnesses-aeon.jpg" alt="Nine engines, one socket - a SKILL.md flows through run-harness into any of ten agent CLIs: Claude, Grok, Codex, Pi, Vibe, Kimi, fx, Cursor, Hermes, Droid. Every harness honors the same contract: result, usage, session." width="100%" />
+  <img src="../docs/assets/harnesses-aeon.jpg" alt="Ten engines, one socket - a SKILL.md flows through run-harness into any of ten agent CLIs: Claude, Grok, Codex, Pi, Vibe, Kimi, fx, Cursor, Hermes, Droid. Every harness honors the same contract: result, usage, session." width="100%" />
 </p>
 
 The same `SKILL.md` runs on any of ten agent CLIs - **Claude**, **Grok**, **Codex**, **Pi**, **Vibe**, **Kimi**, **fx**, **Cursor**, **Hermes**, **Droid** - behind one `run-harness` contract (same result, usage, and session shape). Swap the harness; nothing else changes. How the contract works: [`docs/harnesses.md`](../docs/harnesses.md). GLM Coding Plan is a Claude AI Gateway hop (`GLM_API_KEY`), not a harness.
@@ -148,7 +148,7 @@ Full comparison vs Claude Code, Hermes, and OpenClaw: [`SHOWCASE.md`](../docs/SH
 ## Proof of work
 
 <p align="center">
-  <img src="../docs/assets/proof-aeon.jpg" alt="Proof of work, live at aeon.fun: 4.7M GitHub stars secured across 100+ open-source repos, 70+ products and agents built on Aeon, and 9 community skill packs." width="100%" />
+  <img src="../docs/assets/proof-aeon.jpg" alt="Proof of work, live at aeon.fun: 4.7M GitHub stars secured across 100+ open-source repos, 70+ products and agents built on Aeon, and 20 community skill packs." width="100%" />
 </p>
 
 Live at **[aeon.fun](https://www.aeon.fun)**: **4.7M GitHub stars secured** - real vulnerabilities found, patched, and responsibly disclosed across 100+ open-source repos (**Alibaba**, **Tencent**, **Vercel**, and more), many rated High or Critical. **70+ products built on top of Aeon.**
