@@ -38,8 +38,9 @@ output/.dry-run/
 /hook-deploy.sh
 /chains.tsv
 
-# Skill provenance lock (per-repo, not committed)
-/skills.lock
+# skills.lock (community-skill provenance) is committed on purpose: install-skill and
+# search-skill stage it in their PRs, generate-packs-json reads it (CI regenerates
+# packs.json from the checkout), and aeon-update treats it as operator-owned.
 # Registry write lock sidecar: filing-registry serializes read-modify-write on $REGISTRY.lock (memory/filing-registry.json.lock)
 memory/*.lock
 
