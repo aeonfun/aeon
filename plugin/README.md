@@ -1,7 +1,8 @@
 # Aeon operator console (plugin)
 
-The operator-facing skill for [Aeon](https://github.com/aeonfun/aeon), the open-source
-agent framework that gives every idea its own swarm and runs your own skills on a schedule in GitHub Actions. This
+> Multiply yourself ⭐ Give every idea its own swarm, 24/7. Outwork any company.
+
+The operator-facing skill for [Aeon](https://github.com/aeonfun/aeon). This
 plugin ships that skill so you can drive an Aeon instance straight from your
 coding agent: get started from scratch, turn skills on or off, schedule or
 reschedule what runs, edit what a skill does, debug a skill that will not fire,
