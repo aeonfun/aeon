@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "updated": "2026-11-26",
+  "updated": "2026-11-27",
   "description": "Machine-readable registry of community skill packs installable via bin/install-skill-pack. Mirrors the human-readable table in README.md.",
   "packs": [
     {
@@ -358,6 +358,28 @@
       "capabilities": [
         "read_only",
         "external_api",
+        "sends_notifications"
+      ]
+    },
+    {
+      "repo": "danbuildss/orric-aeon",
+      "name": "Orric, by Breakra",
+      "description": "API-contract checks for Aeon: watch OpenAPI specs, keep one PR comment on spec changes in your own repos, and flag breaking changes shipped as patch/minor releases. Verdicts come from Breakra's deterministic, open-source engine (local npx, no API key).",
+      "author": "danbuildss",
+      "license": "MIT",
+      "homepage": "https://breakra.dev",
+      "category": "dev",
+      "trust_level": "community",
+      "skills": [
+        "orric-watch",
+        "orric-pr-check",
+        "orric-release-check"
+      ],
+      "secrets_required": [],
+      "capabilities": [
+        "read_only",
+        "external_api",
+        "writes_external_host",
         "sends_notifications"
       ]
     }
