@@ -19,7 +19,7 @@ name: ci-readme-catalog
 # It also checks every whole-catalog "N skills" count (and "N+ skills", which
 # always fails) plus the "all-N-skills-by-pack" link anchor in the README and
 # the docs that repeat the total (docs/skill-packs.md, docs/aeon-setup.md,
-# docs/examples/README.md, docs/assets/hero-animated.svg), and runs the table
+# docs/examples/README.md), and runs the table
 # checks over docs/skill-packs.md, where the full catalog table now lives.
 #
 # Run locally: node scripts/validate-readme-catalog.mjs
@@ -34,7 +34,6 @@ on:
       - 'docs/skill-packs.md'
       - 'docs/aeon-setup.md'
       - 'docs/examples/README.md'
-      - 'docs/assets/hero-animated.svg'
       - '.github/workflows/ci-readme-catalog.yml'
   push:
     branches: [main]
@@ -46,7 +45,6 @@ on:
       - 'docs/skill-packs.md'
       - 'docs/aeon-setup.md'
       - 'docs/examples/README.md'
-      - 'docs/assets/hero-animated.svg'
   workflow_dispatch:
 
 permissions:
