@@ -2,8 +2,12 @@
 
 import { useState, useRef } from 'react'
 import type { UploadFile } from '../lib/types'
-import { inputCls, slugify } from '../lib/utils'
+import { slugify } from '../lib/utils'
+import { cn } from '@/lib/cn'
 import { CATEGORIES } from '../lib/constants'
+import { GlassModal } from './glass/connect/modal'
+import { ActionButton, Field, PrimaryButton, Select } from './glass/connect/ui'
+import { HINT } from './glass/connect/forms'
 
 interface ImportModalProps {
   onClose: () => void
@@ -11,7 +15,7 @@ interface ImportModalProps {
 }
 
 // Categories an imported skill can be filed into. `core`, `evolution`, and
-// `basics` are the curated default-visible packs — imported community skills
+// `basics` are the curated default-visible packs - imported community skills
 // don't land there.
 const CURATED_PACKS = new Set(['core', 'evolution', 'basics'])
 const PACK_CATEGORIES = CATEGORIES.filter(c => !CURATED_PACKS.has(c.key))
@@ -59,114 +63,98 @@ export function ImportModal({ onClose, onImport }: ImportModalProps) {
   }
 
   return (
-    <div onClick={onClose} className="fixed inset-0 z-40 flex items-center justify-center bg-black/30 backdrop-blur-sm">
+    <GlassModal title="Add a skill" onClose={onClose} width="max-w-md">
+      <input
+        ref={fileInputRef}
+        type="file"
+        multiple
+        className="hidden"
+        onChange={e => e.target.files && readFilesFromInput(e.target.files)}
+      />
+      <input
+        ref={el => {
+          if (el) el.setAttribute('webkitdirectory', '')
+        }}
+        type="file"
+        className="hidden"
+        id="folder-input"
+        onChange={e => e.target.files && readFilesFromInput(e.target.files)}
+      />
       <div
-        onClick={e => e.stopPropagation()}
-        className="bg-aeon-panel border border-[rgba(250,250,250,0.10)] w-full max-w-md mx-4 p-[var(--space-lg)] shadow-2xl"
+        onDragOver={e => {
+          e.preventDefault()
+          setUploadDragOver(true)
+        }}
+        onDragLeave={() => setUploadDragOver(false)}
+        onDrop={e => {
+          e.preventDefault()
+          setUploadDragOver(false)
+          if (e.dataTransfer.files.length > 0) readFilesFromInput(e.dataTransfer.files)
+        }}
+        className={cn(
+          'rounded-[22px] border-[1.5px] border-dashed px-6 py-9 text-center transition-[background-color,border-color] duration-150',
+          uploadDragOver
+            ? 'border-[var(--foreground)] bg-[var(--hover)]'
+            : 'border-[oklch(0.3_0.015_240/0.28)] bg-[rgb(255_255_255/0.45)]',
+        )}
       >
-        <div className="flex items-center justify-between mb-[var(--space-md)]">
-          <h2 className="font-display text-xl">Add new skill</h2>
-          <button onClick={onClose} className="text-primary-35 hover:text-primary-100 text-lg">
-            &times;
-          </button>
-        </div>
-        <input
-          ref={fileInputRef}
-          type="file"
-          multiple
-          className="hidden"
-          onChange={e => e.target.files && readFilesFromInput(e.target.files)}
-        />
-        <input
-          ref={el => {
-            if (el) el.setAttribute('webkitdirectory', '')
-          }}
-          type="file"
-          className="hidden"
-          id="folder-input"
-          onChange={e => e.target.files && readFilesFromInput(e.target.files)}
-        />
-        <div
-          onDragOver={e => {
-            e.preventDefault()
-            setUploadDragOver(true)
-          }}
-          onDragLeave={() => setUploadDragOver(false)}
-          onDrop={e => {
-            e.preventDefault()
-            setUploadDragOver(false)
-            if (e.dataTransfer.files.length > 0) readFilesFromInput(e.dataTransfer.files)
-          }}
-          className={`border-2 border-dashed p-8 text-center transition-colors ${uploadDragOver ? 'border-aeon-red bg-aeon-red/10' : 'border-[rgba(250,250,250,0.12)] hover:border-[rgba(250,250,250,0.2)]'}`}
-        >
-          {!uploadFiles.length ? (
-            <>
-              <div className="text-sm text-primary-50 font-display mb-3">Drop a skill folder here</div>
-              <div className="flex gap-2 justify-center">
-                <button
-                  onClick={() => fileInputRef.current?.click()}
-                  className="bg-aeon-bg text-primary-70 text-[11px] px-3 py-1.5 font-mono border border-[rgba(250,250,250,0.10)] hover:border-[rgba(250,250,250,0.2)] transition-colors"
-                >
-                  Files
-                </button>
-                <button
-                  onClick={() => document.getElementById('folder-input')?.click()}
-                  className="bg-aeon-bg text-primary-70 text-[11px] px-3 py-1.5 font-mono border border-[rgba(250,250,250,0.10)] hover:border-[rgba(250,250,250,0.2)] transition-colors"
-                >
-                  Folder
-                </button>
-              </div>
-              <div className="text-[11px] text-primary-35 font-mono mt-3">Must include SKILL.md</div>
-            </>
-          ) : (
-            <>
-              <div className="text-sm text-primary-70 font-display">
-                {uploadFiles.length} file{uploadFiles.length !== 1 ? 's' : ''}
-              </div>
-              <button
-                onClick={() => {
-                  setUploadFiles([])
-                  setUploadName('')
-                }}
-                className="btn-mini mt-2"
-              >
-                Clear
-              </button>
-            </>
-          )}
-        </div>
-        {uploadFiles.length > 0 && (
-          <div className="mt-[var(--space-md)] space-y-3">
-            <input
-              type="text"
-              value={uploadName}
-              onChange={e => setUploadName(e.target.value)}
-              placeholder="skill-name"
-              className={inputCls}
-            />
-            <select
-              value={uploadCategory}
-              onChange={e => setUploadCategory(e.target.value)}
-              className={inputCls}
-              title="Pack the skill joins"
+        {!uploadFiles.length ? (
+          <>
+            <p className="font-display text-[1.25rem] leading-[1.25] font-light tracking-[-0.015em]">
+              Drop a skill folder here
+            </p>
+            <div className="mt-4 flex justify-center gap-2">
+              <ActionButton onClick={() => fileInputRef.current?.click()}>Files</ActionButton>
+              <ActionButton onClick={() => document.getElementById('folder-input')?.click()}>Folder</ActionButton>
+            </div>
+            <p className={cn(HINT, 'mt-3')}>Must include SKILL.md</p>
+          </>
+        ) : (
+          <>
+            <p className="font-display text-[1.25rem] leading-[1.25] font-light tracking-[-0.015em]">
+              {uploadFiles.length} file{uploadFiles.length !== 1 ? 's' : ''} ready
+            </p>
+            <ActionButton
+              onClick={() => {
+                setUploadFiles([])
+                setUploadName('')
+              }}
+              className="mt-3"
             >
-              <option value="">Pack - auto (Lab until sorted)</option>
-              {PACK_CATEGORIES.map(c => (
-                <option key={c.key} value={c.key}>
-                  {c.label}
-                </option>
-              ))}
-            </select>
-            <button
-              onClick={handleUpload}
-              disabled={importLoading}
-              className="w-full bg-aeon-fg text-aeon-bg text-sm py-3 font-mono uppercase tracking-[2px] hover:opacity-90 transition-opacity disabled:opacity-50"
-            >
-              {importLoading ? 'Adding...' : 'Add skill'}
-            </button>
-          </div>
+              Clear
+            </ActionButton>
+          </>
         )}
       </div>
-    </div>
+      {uploadFiles.length > 0 && (
+        <div className="mt-6 space-y-4">
+          <Field
+            label="Skill name"
+            value={uploadName}
+            onChange={e => setUploadName(e.target.value)}
+            placeholder="skill-name"
+            spellCheck={false}
+            autoComplete="off"
+            inputClassName="font-mono"
+          />
+          <Select
+            label="Pack"
+            value={uploadCategory}
+            onChange={e => setUploadCategory(e.target.value)}
+            title="Pack the skill joins"
+          >
+            <option value="">Automatic (Lab until sorted)</option>
+            {PACK_CATEGORIES.map(c => (
+              <option key={c.key} value={c.key}>
+                {c.label}
+              </option>
+            ))}
+          </Select>
+          <PrimaryButton onClick={handleUpload} disabled={importLoading} className="w-full">
+            {importLoading ? 'Adding' : 'Add skill'}
+          </PrimaryButton>
+        </div>
+      )}
+    </GlassModal>
   )
 }

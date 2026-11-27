@@ -2,21 +2,39 @@
 
 import { useState } from 'react'
 import type { Skill, Run, Secret, SkillKeyRef, SkillMcpRef, McpServers } from '../lib/types'
-import { modelsForHarness, pickerOptions, keyProvidedByHarness, CATEGORIES } from '../lib/constants'
-import { SkillGlyph, hasSkillGlyph } from './ui/SkillGlyph'
+import { modelsForHarness, pickerOptions, keyProvidedByHarness } from '../lib/constants'
 import { MCP_BY_SLUG } from '../lib/mcp-catalog'
-import {
-  displayName,
-  getSkillStatus,
-  cronLabel,
-  statusDot,
-  inputCls,
-  runStatusColor,
-  runStatusGlyph,
-} from '../lib/utils'
+import { displayName, cronLabel, timeAgo } from '../lib/utils'
 import { ScheduleEditor } from './ScheduleEditor'
-import { timeAgo } from '../lib/utils'
-import { Scramble } from './ui/Animated'
+import { KeyName } from './ui/KeyName'
+import { McpLogo } from './ui/McpLogo'
+import { Section } from './ui/Section'
+import { ArrowRightLightIcon } from './glass/d/icons'
+import { RunStatus, SkillRunTag, runState } from './glass/connect/run-status'
+import {
+  ActionButton,
+  AttentionIcon,
+  ATTN,
+  Callout,
+  CARD,
+  DoneIcon,
+  EmptyState,
+  Field,
+  FOCUS,
+  LINK,
+  LIST,
+  PrimaryButton,
+  ROW,
+  Select,
+  SMALL_LABEL,
+  SUB,
+  Switch,
+  TAG,
+  TAG_INK,
+  TAG_MUTED,
+  TITLE,
+} from './glass/connect/ui'
+import { cn } from '@/lib/cn'
 
 interface SkillDetailProps {
   skill: Skill
@@ -34,24 +52,56 @@ interface SkillDetailProps {
   onUpdateModel: (name: string, m: string) => void
   onGoToSecret: (name: string) => void
   onGoToMcp: () => void
+  // Opens a run's detail. Without it the activity rows are plain (not clickable).
+  onViewRun?: (run: Run) => void
 }
 
-function Section({ label, action, children }: { label: string; action?: React.ReactNode; children: React.ReactNode }) {
+// Status of one declared requirement (a key or an MCP server): icon + word, never color alone.
+// Satisfied = smoke check; a missing required one = orange attention mark; a missing optional
+// one = quiet smoke ring.
+function ReqState({
+  ok,
+  required,
+  okLabel,
+  missingLabel,
+}: {
+  ok: boolean
+  required: boolean
+  okLabel: string
+  missingLabel: string
+}) {
+  if (ok)
+    return (
+      <span className="inline-flex items-center gap-1.5 text-muted-foreground">
+        <DoneIcon className="size-3.5" />
+        {okLabel}
+      </span>
+    )
+  if (required)
+    return (
+      <span className={cn('inline-flex items-center gap-1.5', ATTN)}>
+        <AttentionIcon className="size-3.5" />
+        {missingLabel}
+      </span>
+    )
   return (
-    <section className="border-t border-[rgba(250,250,250,0.10)] pt-6">
-      <div className="flex items-center gap-3 mb-4">
-        <span className="font-display text-[13px] tracking-[0.18em] text-aeon-red uppercase">{label}</span>
-        <span className="flex-1 h-px bg-[rgba(250,250,250,0.10)]" />
-        {action}
-      </div>
-      {children}
-    </section>
+    <span className="inline-flex items-center gap-1.5 text-muted-foreground">
+      <span aria-hidden className="size-3 rounded-full shadow-[inset_0_0_0_1.5px_currentColor]" />
+      {missingLabel}
+    </span>
   )
 }
 
-// A single declared credential. The key name and the right-hand action both
-// jump to Keys → Access Keys, scrolled to this key with its input open -
-// so the operator can paste the value in one click.
+// Phones: the pill drops under the text so the description keeps the full width.
+const REQ_ROW = cn(ROW, 'group items-start gap-4 px-4 py-3.5 max-sm:flex-wrap max-sm:gap-y-3')
+const REQ_META =
+  'flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[11.5px] font-medium tracking-[0.08em] uppercase'
+// The pill on the right of a requirement row: what pressing the row does.
+const REQ_GO =
+  'g-chip mt-0.5 inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full pr-3 pl-4 text-[13px] font-medium whitespace-nowrap transition-[background-color] duration-150 group-hover:bg-white'
+
+// A single declared credential. The whole row jumps to Keys → Access Keys, scrolled to this
+// key with its input open, so the operator can paste the value in one click.
 function KeyRow({
   kref,
   secret,
@@ -71,91 +121,71 @@ function KeyRow({
   const satisfied = isSet || providedByHarness
   const desc = secret?.description || 'Third-party credential referenced by this skill.'
 
-  // Status color: satisfied → green. Missing required → red. Missing "works better" → muted amber.
-  const dot = satisfied ? 'bg-aeon-green' : kref.optional ? 'bg-aeon-red/60' : 'bg-aeon-red-alert'
-  const tierLabel = kref.optional ? 'Works better' : 'Required'
-  const tierColor = kref.optional ? 'text-aeon-red/80' : 'text-aeon-red'
-  const statusText = isSet ? '· set' : providedByHarness ? '· covered by Grok Build' : '· not set'
-
   return (
-    <div className="px-[var(--space-md)] py-[var(--space-sm)]">
-      <div className="flex items-center justify-between gap-3">
-        <div className="min-w-0">
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className={`w-2 h-2 rounded-full shrink-0 ${dot}`} />
-            <button
-              onClick={() => onGoTo(kref.key)}
-              title="Open in Keys to set this key"
-              className="font-mono text-xs text-aeon-fg hover:text-aeon-red underline decoration-dotted underline-offset-2 transition-colors"
-            >
-              {kref.key}
-            </button>
-            <span className={`text-[9px] font-mono uppercase tracking-[0.18em] ${tierColor}`}>{tierLabel}</span>
-            <span className="text-[9px] font-mono uppercase tracking-[0.18em] text-primary-35">{statusText}</span>
-          </div>
-          <div className="text-[11px] text-primary-40 font-mono mt-0.5 leading-relaxed">
+    <li>
+      <button type="button" onClick={() => onGoTo(kref.key)} title="Open in Keys to set this key" className={REQ_ROW}>
+        <span className="min-w-0 flex-1 max-sm:basis-full">
+          <span className="block font-mono text-[14px] font-medium [overflow-wrap:anywhere]">
+            <KeyName name={kref.key} />
+          </span>
+          <span className={cn(REQ_META, 'mt-1.5')}>
+            <ReqState
+              ok={satisfied}
+              required={!kref.optional}
+              okLabel={isSet ? 'Set' : 'Covered by Grok Build'}
+              missingLabel="Not set"
+            />
+          </span>
+          <span className="mt-1.5 block text-[14px] leading-[1.5] text-muted-foreground">
             {providedByHarness
               ? 'Covered by the Grok Build harness via its built-in web search - set a key for the premium xAI x_search feed (used by both harnesses).'
               : desc}
-          </div>
-        </div>
-        <button onClick={() => onGoTo(kref.key)} className={`${isSet ? 'btn-mini-go' : 'btn-mini'} shrink-0`}>
-          {isSet ? '✓ in vault' : providedByHarness ? 'Override →' : 'Set →'}
-        </button>
-      </div>
-    </div>
+          </span>
+        </span>
+        <span className={REQ_GO}>
+          {isSet ? 'In vault' : providedByHarness ? 'Override' : 'Set key'}
+          <ArrowRightLightIcon className="size-3.5 transition-[translate] duration-150 group-hover:translate-x-0.5" />
+        </span>
+      </button>
+    </li>
   )
 }
 
-// A single declared MCP server. Mirrors KeyRow: logo + name + install/installed
-// status, with the action jumping to the MCP page to install it.
+// A single declared MCP server. Mirrors KeyRow: logo + name + installed state, the whole row
+// jumping to the MCP page to install it.
 function McpRow({ mref, installed, onGoTo }: { mref: SkillMcpRef; installed: boolean; onGoTo: () => void }) {
   const entry = MCP_BY_SLUG[mref.slug]
   const name = entry?.name || mref.slug
   const url = entry?.url || ''
   const desc = entry?.description || 'MCP server this skill calls during a run.'
-  const dot = installed ? 'bg-aeon-green' : mref.optional ? 'bg-aeon-red/60' : 'bg-aeon-red-alert'
-  const tierLabel = mref.optional ? 'Works better' : 'Required'
-  const tierColor = mref.optional ? 'text-aeon-red/80' : 'text-aeon-red'
 
   return (
-    <div className="px-[var(--space-md)] py-[var(--space-sm)]">
-      <div className="flex items-center justify-between gap-3">
-        <div className="flex items-start gap-3 min-w-0">
-          {entry?.logo ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={entry.logo}
-              alt={name}
-              width={32}
-              height={32}
-              className="w-8 h-8 rounded object-cover bg-aeon-bg shrink-0 border border-[rgba(250,250,250,0.10)] mt-0.5"
-            />
-          ) : (
-            <span className={`w-2 h-2 rounded-full shrink-0 mt-2 ${dot}`} />
-          )}
-          <div className="min-w-0">
-            <div className="flex items-center gap-2 flex-wrap">
-              <button
-                onClick={onGoTo}
-                title="Manage on the MCP page"
-                className="font-mono text-xs text-aeon-fg hover:text-aeon-red underline decoration-dotted underline-offset-2 transition-colors"
-              >
-                {name}
-              </button>
-              <span className={`text-[9px] font-mono uppercase tracking-[0.18em] ${tierColor}`}>{tierLabel}</span>
-              <span className="text-[9px] font-mono uppercase tracking-[0.18em] text-primary-35">
-                {installed ? '· installed' : '· not installed'}
-              </span>
-            </div>
-            {url && <div className="text-[11px] text-primary-50 font-mono mt-0.5 truncate">{url}</div>}
-            <div className="text-[11px] text-primary-40 font-mono mt-0.5 leading-relaxed">{desc}</div>
-          </div>
-        </div>
-        <button onClick={onGoTo} className={`${installed ? 'btn-mini-go' : 'btn-mini'} shrink-0`}>
-          {installed ? '✓ installed' : 'Install →'}
-        </button>
-      </div>
+    <li>
+      <button type="button" onClick={onGoTo} title="Manage on the MCP page" className={REQ_ROW}>
+        <McpLogo src={entry?.logo} size={36} className="mt-0.5 size-9 rounded-[10px]" />
+        <span className="min-w-0 flex-1 max-sm:basis-[calc(100%-3.25rem)]">
+          <span className="block text-[15px] font-medium">{name}</span>
+          <span className={cn(REQ_META, 'mt-1.5')}>
+            <ReqState ok={installed} required={!mref.optional} okLabel="Installed" missingLabel="Not installed" />
+          </span>
+          {url && <span className="mt-1.5 block truncate font-mono text-[12px] text-muted-foreground">{url}</span>}
+          <span className="mt-1 block text-[14px] leading-[1.5] text-muted-foreground">{desc}</span>
+        </span>
+        <span className={cn(REQ_GO, 'max-sm:ml-[3.25rem]')}>
+          {installed ? 'Installed' : 'Install'}
+          <ArrowRightLightIcon className="size-3.5 transition-[translate] duration-150 group-hover:translate-x-0.5" />
+        </span>
+      </button>
+    </li>
+  )
+}
+
+// Requirement group: "Required to run" / "Works better with", then the rows on one chip card.
+function ReqGroup({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <p className={cn(SMALL_LABEL, 'mb-2 px-1')}>{title}</p>
+      <ul className={cn(LIST, 'flex flex-col gap-0.5')}>{children}</ul>
     </div>
   )
 }
@@ -176,9 +206,10 @@ export function SkillDetail({
   onUpdateModel,
   onGoToSecret,
   onGoToMcp,
+  onViewRun,
 }: SkillDetailProps) {
   // Per-skill model-override options must track the active harness, like the
-  // global picker (TopBar/page.tsx) — otherwise a non-claude harness only offers
+  // global picker (TopBar/page.tsx) - otherwise a non-claude harness only offers
   // Claude models here, so an operator can't pin a skill to e.g. kimi-k3 and
   // picking a Claude id would bake a mismatched `model:` into the skill.
   const modelOptions = modelsForHarness(harness)
@@ -187,17 +218,8 @@ export function SkillDetail({
   const [varDraft, setVarDraft] = useState('')
 
   const skillRuns = runs.filter(r => r.workflow.toLowerCase().includes(skill.name))
-  const st = getSkillStatus(skill.name, skill.enabled, runs)
-  // "On demand" skills carry no cron — they only fire on a manual Run now / dispatch.
+  // "On demand" skills carry no cron - they only fire on a manual Run now / dispatch.
   const isManual = skill.schedule === 'workflow_dispatch'
-  const statusTextCls =
-    st.color === 'green'
-      ? 'text-aeon-green'
-      : st.color === 'orange'
-        ? 'text-aeon-amber'
-        : st.color === 'red'
-          ? 'text-aeon-red-alert'
-          : 'text-primary-50'
 
   // Join the skill's declared `requires` against the central credential registry
   // (the same list shown in Keys → Access Keys) for descriptions + set state.
@@ -227,116 +249,49 @@ export function SkillDetail({
   const worksBetterMcp = mcp.filter(m => m.optional)
   const missingRequiredMcp = requiredMcp.filter(m => !isMcpInstalled(m.slug))
 
-  // Scramble locks each word to `white-space: nowrap`, so a long unbreakable
-  // token (e.g. "INVESTIGATION", 13 chars) can't wrap and would overflow the
-  // hero box. Scale the max font-size down by the longest word so it always fits.
   const title = displayName(skill.name)
-  const catColor = CATEGORIES.find(c => c.key === skill.category)?.color || '#8B8B8B'
-  const longestWord = title.split(' ').reduce((m, w) => Math.max(m, w.length), 0)
-  const titleMaxPx = longestWord >= 13 ? 50 : longestWord >= 11 ? 60 : longestWord >= 9 ? 72 : 88
+  const busyToggle = !!busy[skill.name]
+  const busyRun = !!busy[`r-${skill.name}`]
 
   return (
-    <div className="max-w-5xl mx-auto pb-16 space-y-10">
-      <section className="relative overflow-hidden border border-[rgba(250,250,250,0.10)] bg-aeon-panel">
-        <div className="dither" aria-hidden="true" />
-        <div className="relative z-10 px-5 md:px-8 pt-10 pb-8">
-          <div className="flex items-center gap-4 mb-4 flex-wrap">
-            <span className="inline-flex items-center gap-2 text-[11px] font-mono uppercase tracking-[0.18em]">
-              <span className={statusDot(st.color)} />
-              <span className={statusTextCls}>{st.label}</span>
-              {skill.enabled && (
-                <>
-                  <span className="text-primary-35">·</span>
-                  <span className="text-primary-50">
-                    {isManual ? 'On demand' : `Runs ${cronLabel(skill.schedule)}`}
-                  </span>
-                </>
-              )}
-            </span>
-          </div>
-          {hasSkillGlyph(skill.name) && (
-            <span
-              className="inline-flex mb-4 border border-[rgba(250,250,250,0.12)] bg-aeon-bg p-2.5"
-              style={{ color: catColor }}
-              aria-hidden="true"
-            >
-              <SkillGlyph slug={skill.name} className="w-8 h-8" />
-            </span>
-          )}
-          <h1
-            className="font-display uppercase leading-[0.92] tracking-tight text-aeon-fg break-words"
-            style={{ fontSize: `clamp(32px, 6vw, ${titleMaxPx}px)` }}
-          >
-            <Scramble key={skill.name} text={title} />
-          </h1>
-          {skill.description && (
-            <p className="mt-4 max-w-2xl text-sm text-primary-70 leading-relaxed">{skill.description}</p>
-          )}
+    <div className="space-y-[clamp(36px,4vw,56px)]">
+      <header className="max-sm:text-center">
+        <h1 className={TITLE}>{title}</h1>
+        {skill.description && (
+          <p className={cn('mt-4 max-w-[78ch] text-pretty max-sm:mx-auto', SUB)}>{skill.description}</p>
+        )}
 
-          <div className="mt-7 flex items-center gap-4 flex-wrap">
-            {/* Not a <button>: the target-cursor auto-frames button/a/select, which
-                would bracket the whole switch+label. A div with role="switch" keeps
-                a11y while letting `cursor-target` scope the brackets to just the pill. */}
-            <div
-              role="switch"
-              aria-checked={skill.enabled}
-              aria-disabled={!!busy[skill.name]}
-              tabIndex={0}
-              onClick={() => {
-                if (!busy[skill.name]) onToggle(skill.name, !skill.enabled)
-              }}
-              onKeyDown={e => {
-                if ((e.key === 'Enter' || e.key === ' ') && !busy[skill.name]) {
-                  e.preventDefault()
-                  onToggle(skill.name, !skill.enabled)
-                }
-              }}
-              title={skill.enabled ? 'Enabled — click to turn off' : 'Disabled — click to turn on'}
-              className={`inline-flex items-center gap-3 group select-none outline-none ${busy[skill.name] ? 'opacity-50 pointer-events-none' : 'cursor-pointer'}`}
-            >
-              <span
-                className={`cursor-target relative w-12 h-[26px] rounded-full border transition-colors duration-200 group-focus-visible:ring-2 group-focus-visible:ring-aeon-green/40 ${skill.enabled ? 'bg-aeon-green/25 border-aeon-green' : 'bg-[rgba(250,250,250,0.05)] border-[rgba(250,250,250,0.22)] group-hover:border-[rgba(250,250,250,0.4)]'}`}
-              >
-                <span
-                  className={`absolute top-1/2 -translate-y-1/2 w-[18px] h-[18px] rounded-full transition-all duration-200 ${skill.enabled ? 'left-[26px] bg-aeon-green' : 'left-[3px] bg-[rgba(250,250,250,0.5)]'}`}
-                />
-              </span>
-              <span
-                className={`font-display text-sm uppercase tracking-[0.14em] transition-colors ${skill.enabled ? 'text-aeon-green' : 'text-primary-50'}`}
-              >
-                {skill.enabled ? 'Enabled' : 'Disabled'}
-              </span>
-            </div>
-            <button
-              onClick={() => onRun(skill.name, skill.var, skill.model)}
-              disabled={!!busy[`r-${skill.name}`]}
-              className="btn-solid disabled:opacity-50"
-              style={{ background: 'var(--aeon-red)', borderColor: 'var(--aeon-red)', color: 'var(--aeon-fg-pure)' }}
-            >
-              {busy[`r-${skill.name}`] ? '…' : 'Run now'}
-            </button>
-            <button
-              onClick={() => {
-                if (confirm(`Delete ${displayName(skill.name)}?`)) onDelete(skill.name)
-              }}
-              className="btn-mini-danger ml-auto uppercase tracking-[0.18em]"
-            >
-              Delete
-            </button>
-          </div>
+        <div className="mt-7 flex flex-wrap items-center gap-x-8 gap-y-3 max-sm:justify-center">
+          <Switch
+            on={skill.enabled}
+            disabled={busyToggle}
+            onChange={next => {
+              if (!busyToggle) onToggle(skill.name, next)
+            }}
+            label={busyToggle ? 'Saving...' : skill.enabled ? 'Enabled' : 'Disabled'}
+            title={skill.enabled ? 'Enabled - click to disable' : 'Disabled - click to enable'}
+          />
+          <SkillRunTag skill={skill} runs={runs} />
+          <PrimaryButton
+            onClick={() => onRun(skill.name, skill.var, skill.model)}
+            disabled={busyRun}
+            className="sm:ml-auto"
+          >
+            {busyRun ? 'Starting...' : 'Run now'}
+          </PrimaryButton>
         </div>
-      </section>
+      </header>
 
       <Section
-        label="Skill schedule"
+        label="Schedule"
         action={
-          <button onClick={() => setEditingSchedule(!editingSchedule)} className="btn-mini uppercase tracking-[0.18em]">
+          <ActionButton onClick={() => setEditingSchedule(!editingSchedule)} aria-expanded={editingSchedule}>
             {editingSchedule ? 'Cancel' : 'Change schedule'}
-          </button>
+          </ActionButton>
         }
       >
         {editingSchedule ? (
-          <div className="border border-[rgba(250,250,250,0.10)] p-5 bg-aeon-panel">
+          <div className={cn(CARD, 'p-4 sm:p-5')}>
             <ScheduleEditor
               cron={skill.schedule}
               onSave={c => {
@@ -346,16 +301,16 @@ export function SkillDetail({
             />
           </div>
         ) : (
-          <div className="flex items-center gap-4 flex-wrap">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
             <span
-              className={`font-display uppercase tracking-tight ${skill.enabled && !isManual ? 'text-aeon-fg' : 'text-primary-50'}`}
-              style={{ fontSize: 'clamp(24px, 3vw, 36px)' }}
+              className={cn(
+                'font-display text-[clamp(1.75rem,3vw,2.25rem)] leading-[1.1] font-light tracking-[-0.03em]',
+                !(skill.enabled && !isManual) && 'text-muted-foreground',
+              )}
             >
               {cronLabel(skill.schedule)}
             </span>
-            <span
-              className={`inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-[0.16em] px-2.5 py-1 border ${!skill.enabled ? 'text-aeon-amber border-aeon-amber/40' : isManual ? 'text-primary-50 border-[rgba(250,250,250,0.2)]' : 'text-aeon-green border-aeon-green/40'}`}
-            >
+            <span className={cn(TAG, !skill.enabled ? TAG_MUTED : isManual ? TAG_MUTED : TAG_INK)}>
               {!skill.enabled ? 'Disabled' : isManual ? 'Manual only' : 'Runs automatically'}
             </span>
           </div>
@@ -364,33 +319,31 @@ export function SkillDetail({
 
       {requires.length > 0 && (
         <Section label="API keys">
-          {missingRequired.length > 0 && (
-            <div className="mb-4 flex items-start gap-3 border border-aeon-red-alert/40 bg-aeon-red-alert/5 px-4 py-3">
-              <span className="text-aeon-red-alert text-sm leading-none mt-0.5">▲</span>
-              <p className="text-[12px] text-primary-70 font-mono leading-relaxed">
-                Missing {missingRequired.length} required key{missingRequired.length > 1 ? 's' : ''} - this skill
-                won&apos;t work until {missingRequired.length > 1 ? 'they are' : 'it is'} set:{' '}
+          <div className="space-y-5">
+            {missingRequired.length > 0 && (
+              <Callout
+                attention
+                role="status"
+                title={`Missing ${missingRequired.length} required key${missingRequired.length > 1 ? 's' : ''}`}
+              >
+                This skill won&apos;t work until {missingRequired.length > 1 ? 'they are' : 'it is'} set:{' '}
                 {missingRequired.map((r, i) => (
                   <span key={r.key}>
                     {i > 0 && ', '}
                     <button
+                      type="button"
                       onClick={() => onGoToSecret(r.key)}
                       title="Open in Keys to set this key"
-                      className="text-aeon-red-alert underline decoration-dotted underline-offset-2 hover:text-aeon-fg transition-colors"
+                      className={cn(LINK, 'font-mono text-[14px]')}
                     >
                       {r.key}
                     </button>
                   </span>
                 ))}
-              </p>
-            </div>
-          )}
-          {requiredKeys.length > 0 && (
-            <div className="mb-4">
-              <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-aeon-red mb-2">
-                Required to run
-              </div>
-              <div className="border border-[rgba(250,250,250,0.10)] divide-y divide-[rgba(250,250,250,0.08)]">
+              </Callout>
+            )}
+            {requiredKeys.length > 0 && (
+              <ReqGroup title="Required to run">
                 {requiredKeys.map(r => (
                   <KeyRow
                     key={r.key}
@@ -400,15 +353,10 @@ export function SkillDetail({
                     onGoTo={onGoToSecret}
                   />
                 ))}
-              </div>
-            </div>
-          )}
-          {worksBetterKeys.length > 0 && (
-            <div>
-              <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-aeon-red/80 mb-2">
-                Works better with
-              </div>
-              <div className="border border-[rgba(250,250,250,0.10)] divide-y divide-[rgba(250,250,250,0.08)]">
+              </ReqGroup>
+            )}
+            {worksBetterKeys.length > 0 && (
+              <ReqGroup title="Works better with">
                 {worksBetterKeys.map(r => (
                   <KeyRow
                     key={r.key}
@@ -418,67 +366,59 @@ export function SkillDetail({
                     onGoTo={onGoToSecret}
                   />
                 ))}
-              </div>
-            </div>
-          )}
+              </ReqGroup>
+            )}
+          </div>
         </Section>
       )}
 
       {mcp.length > 0 && (
         <Section label="MCP servers">
-          {missingRequiredMcp.length > 0 && (
-            <div className="mb-4 flex items-start gap-3 border border-aeon-red-alert/40 bg-aeon-red-alert/5 px-4 py-3">
-              <span className="text-aeon-red-alert text-sm leading-none mt-0.5">▲</span>
-              <p className="text-[12px] text-primary-70 font-mono leading-relaxed">
-                Missing {missingRequiredMcp.length} required MCP server{missingRequiredMcp.length > 1 ? 's' : ''} - this
-                skill won&apos;t work until {missingRequiredMcp.length > 1 ? 'they are' : 'it is'} installed from the{' '}
-                <button
-                  onClick={onGoToMcp}
-                  className="text-aeon-red-alert underline decoration-dotted underline-offset-2 hover:text-aeon-fg transition-colors"
-                >
+          <div className="space-y-5">
+            {missingRequiredMcp.length > 0 && (
+              <Callout
+                attention
+                role="status"
+                title={`Missing ${missingRequiredMcp.length} required MCP server${missingRequiredMcp.length > 1 ? 's' : ''}`}
+              >
+                This skill won&apos;t work until {missingRequiredMcp.length > 1 ? 'they are' : 'it is'} installed from
+                the{' '}
+                <button type="button" onClick={onGoToMcp} className={LINK}>
                   MCP page
                 </button>
                 :{' '}
-                <span className="text-aeon-red-alert">
+                <span className="font-medium text-foreground">
                   {missingRequiredMcp.map(m => MCP_BY_SLUG[m.slug]?.name || m.slug).join(', ')}
                 </span>
-              </p>
-            </div>
-          )}
-          {requiredMcp.length > 0 && (
-            <div className="mb-4">
-              <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-aeon-red mb-2">
-                Required to run
-              </div>
-              <div className="border border-[rgba(250,250,250,0.10)] divide-y divide-[rgba(250,250,250,0.08)]">
+              </Callout>
+            )}
+            {requiredMcp.length > 0 && (
+              <ReqGroup title="Required to run">
                 {requiredMcp.map(m => (
                   <McpRow key={m.slug} mref={m} installed={isMcpInstalled(m.slug)} onGoTo={onGoToMcp} />
                 ))}
-              </div>
-            </div>
-          )}
-          {worksBetterMcp.length > 0 && (
-            <div>
-              <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-aeon-red/80 mb-2">
-                Works better with
-              </div>
-              <div className="border border-[rgba(250,250,250,0.10)] divide-y divide-[rgba(250,250,250,0.08)]">
+              </ReqGroup>
+            )}
+            {worksBetterMcp.length > 0 && (
+              <ReqGroup title="Works better with">
                 {worksBetterMcp.map(m => (
                   <McpRow key={m.slug} mref={m} installed={isMcpInstalled(m.slug)} onGoTo={onGoToMcp} />
                 ))}
-              </div>
-            </div>
-          )}
+              </ReqGroup>
+            )}
+          </div>
         </Section>
       )}
 
       <Section label="Skill settings">
         {skill.varHint && (
-          <p className="text-xs text-primary-40 font-mono mb-3 leading-relaxed max-w-2xl">{skill.varHint}</p>
+          <p className="mb-3 max-w-[78ch] text-[15px] leading-[1.55] text-muted-foreground">{skill.varHint}</p>
         )}
         {editingVar ? (
-          <div className="flex gap-2 flex-wrap">
-            <input
+          <div className="flex flex-wrap items-end gap-2">
+            <Field
+              label="Setting"
+              hideLabel
               type="text"
               value={varDraft}
               onChange={e => setVarDraft(e.target.value)}
@@ -490,62 +430,82 @@ export function SkillDetail({
               }}
               placeholder="e.g. AI, bitcoin, owner/repo"
               autoFocus
-              className={inputCls}
+              className="min-w-0 flex-1 basis-[16rem]"
             />
-            <button
-              onClick={() => {
-                onUpdateVar(skill.name, varDraft)
-                setEditingVar(false)
-              }}
-              className="btn-mini-go"
-            >
-              Save
-            </button>
-            <button onClick={() => setEditingVar(false)} className="btn-mini">
-              Cancel
-            </button>
+            <div className="flex gap-2">
+              <ActionButton onClick={() => setEditingVar(false)} className="h-12 px-5">
+                Cancel
+              </ActionButton>
+              <PrimaryButton
+                onClick={() => {
+                  onUpdateVar(skill.name, varDraft)
+                  setEditingVar(false)
+                }}
+                className="h-12 px-5"
+              >
+                Save
+              </PrimaryButton>
+            </div>
           </div>
         ) : skill.var ? (
           <button
+            type="button"
             onClick={() => {
               setEditingVar(true)
               setVarDraft(skill.var)
             }}
-            className="group flex items-center gap-3 text-left cursor-target"
+            className={cn(
+              'group flex max-w-full cursor-pointer items-center gap-3 rounded-[14px] py-1 text-left',
+              FOCUS,
+            )}
             title="Click to edit"
           >
-            <span
-              className="font-display uppercase tracking-tight text-aeon-fg"
-              style={{ fontSize: 'clamp(22px, 2.4vw, 30px)' }}
-            >
+            <span className="min-w-0 font-display text-[clamp(1.375rem,2.4vw,1.875rem)] leading-[1.2] font-light tracking-[-0.02em] [overflow-wrap:anywhere]">
               &ldquo;{skill.var}&rdquo;
             </span>
-            <span className="btn-mini opacity-0 group-hover:opacity-100 transition-opacity">Edit</span>
+            <span className="g-chip inline-flex h-9 shrink-0 items-center rounded-full px-4 text-[13px] font-medium opacity-100 transition-opacity duration-150 sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-visible:opacity-100">
+              Edit
+            </span>
           </button>
         ) : (
           <button
+            type="button"
             onClick={() => {
               setEditingVar(true)
               setVarDraft('')
             }}
-            className="group w-full flex items-center gap-3 border border-dashed border-[rgba(250,250,250,0.16)] px-4 py-4 hover:border-aeon-red/40 transition-colors cursor-target"
+            className={cn(
+              'group flex w-full cursor-pointer items-center gap-3 rounded-[22px] px-5 py-4 text-left shadow-[inset_0_0_0_1px_var(--line)] transition-[background-color] duration-150 hover:bg-[var(--hover)]',
+              FOCUS,
+            )}
           >
-            <span className="text-sm text-left text-primary-40 font-mono uppercase tracking-[0.18em] group-hover:text-primary-70 transition-colors">
-              No custom settings
-            </span>
-            <span className="btn-mini-go ml-auto shrink-0 whitespace-nowrap">
-              <span className="md:hidden">+ Set</span>
-              <span className="hidden md:inline">+ Set var</span>
+            <span className="text-[15px] text-muted-foreground">No custom settings</span>
+            <span className="g-chip ml-auto inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full px-4 text-[13px] font-medium whitespace-nowrap">
+              <svg
+                aria-hidden
+                viewBox="0 0 16 16"
+                className="size-3.5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={1.6}
+                strokeLinecap="round"
+              >
+                <path d="M8 3v10M3 8h10" />
+              </svg>
+              <span className="md:hidden">Set</span>
+              <span className="hidden md:inline">Set var</span>
             </span>
           </button>
         )}
       </Section>
 
       <Section label="Capability level">
-        <select
+        <Select
+          label="Model for this skill"
+          hideLabel
           value={skill.model}
           onChange={e => onUpdateModel(skill.name, e.target.value)}
-          className="bg-aeon-panel text-aeon-fg text-sm px-4 py-3 border border-[rgba(250,250,250,0.10)] outline-none font-mono w-full max-w-md cursor-pointer hover:border-[rgba(250,250,250,0.22)] focus:border-aeon-red transition-colors"
+          className="max-w-md"
         >
           <option value="">Default ({modelOptions.find(m => m.id === model)?.label ?? model})</option>
           {pickerOptions(modelOptions, skill.model).map(m => (
@@ -553,36 +513,103 @@ export function SkillDetail({
               {m.label}
             </option>
           ))}
-        </select>
+        </Select>
       </Section>
 
-      <Section label="Activity log">
-        <div className="border border-[rgba(250,250,250,0.10)] divide-y divide-[rgba(250,250,250,0.08)]">
-          {skillRuns.slice(0, 10).map(run => (
-            <div key={run.id} className="w-full flex items-center gap-4 px-5 py-3 text-left group">
-              <span className={`text-sm w-4 shrink-0 ${runStatusColor(run)}`}>{runStatusGlyph(run)}</span>
-              <span className="text-xs text-primary-70 truncate flex-1 font-mono">
-                {run.conclusion === 'success'
-                  ? 'Task completed'
-                  : run.conclusion === 'failure'
-                    ? 'Task failed'
-                    : run.status === 'in_progress'
-                      ? 'Working…'
-                      : 'Queued'}
-              </span>
-              <span className="text-[10px] text-primary-35 font-mono tabular-nums uppercase tracking-[0.14em]">
-                {timeAgo(run.created_at)}
-              </span>
-            </div>
-          ))}
-          {!skillRuns.length && (
-            <div className="px-6 py-12 text-center">
-              <p className="font-display uppercase text-aeon-fg text-xl tracking-wide">No activity</p>
-              <p className="text-[11px] text-primary-40 font-mono mt-2 uppercase tracking-[0.18em]">
-                This skill hasn&apos;t fired yet
-              </p>
-            </div>
+      <Section
+        label="Activity log"
+        action={
+          skillRuns.length > 10 ? (
+            <span className="font-mono text-[12px] text-muted-foreground">Latest 10 of {skillRuns.length}</span>
+          ) : undefined
+        }
+      >
+        <div className={LIST}>
+          {skillRuns.length ? (
+            <ul className="flex flex-col gap-0.5">
+              {skillRuns.slice(0, 10).map(run => {
+                const state = runState(run)
+                const rowCls = cn(
+                  'flex min-h-12 w-full items-center gap-3 rounded-[14px] px-3 py-2.5 text-left',
+                  state === 'failed' && 'bg-[oklch(0.65_0.23_32/0.07)]',
+                )
+                const body = (
+                  <>
+                    <RunStatus run={run} className="w-[7.5rem] shrink-0" />
+                    <span className="min-w-0 flex-1 truncate text-[15px]">
+                      {run.conclusion === 'success'
+                        ? 'Task completed'
+                        : run.conclusion === 'timed_out'
+                          ? 'Timed out'
+                          : run.conclusion === 'cancelled'
+                            ? 'Cancelled'
+                            : run.conclusion
+                              ? 'Task failed'
+                              : run.status === 'in_progress'
+                                ? 'Working...'
+                                : 'Queued'}
+                    </span>
+                    <time
+                      dateTime={run.created_at}
+                      className="shrink-0 font-mono text-[12px] text-muted-foreground tabular-nums"
+                    >
+                      {timeAgo(run.created_at)}
+                    </time>
+                  </>
+                )
+                return (
+                  <li key={run.id}>
+                    {onViewRun ? (
+                      <button
+                        type="button"
+                        onClick={() => onViewRun(run)}
+                        className={cn(
+                          rowCls,
+                          'cursor-pointer transition-[background-color] duration-150 hover:bg-[var(--hover)]',
+                          FOCUS,
+                        )}
+                      >
+                        {body}
+                      </button>
+                    ) : (
+                      <div className={rowCls}>{body}</div>
+                    )}
+                  </li>
+                )
+              })}
+            </ul>
+          ) : (
+            <EmptyState title="No activity" />
           )}
+        </div>
+      </Section>
+
+      {/* Danger zone: the one action that cannot be undone from here, kept away from Run now. */}
+      <Section label="Danger zone">
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-3 rounded-[20px] px-5 py-4 shadow-[inset_0_0_0_1px_oklch(0.65_0.23_32/0.35)] max-sm:justify-center max-sm:text-center">
+          <p className="min-w-0 flex-1 text-[15px] text-[var(--g-ink-soft)] max-sm:basis-full">
+            Delete {displayName(skill.name)} from this repo.
+          </p>
+          <ActionButton
+            onClick={() => {
+              if (confirm(`Delete ${displayName(skill.name)}?`)) onDelete(skill.name)
+            }}
+            className={ATTN}
+          >
+            <svg
+              aria-hidden
+              viewBox="0 0 16 16"
+              className="size-4"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={1.4}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M2.75 4.25h10.5M6.25 4.25V2.75h3.5v1.5M4 4.25l.6 8.4a1 1 0 0 0 1 .93h4.8a1 1 0 0 0 1-.93l.6-8.4M6.75 7v4M9.25 7v4" />
+            </svg>
+            Delete skill
+          </ActionButton>
         </div>
       </Section>
     </div>

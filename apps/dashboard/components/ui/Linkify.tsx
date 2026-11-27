@@ -7,7 +7,9 @@ import type { ReactNode } from 'react'
 // like "on-chain", "(bk_...)" or "X-API-Key" are never linked by accident.
 const URL_RE = /((?:https?:\/\/)?(?:[a-z0-9-]+\.)+[a-z]{2,}(?:\/[^\s)]*)?)/gi
 
-const LINK_CLS = 'text-aeon-red/80 hover:text-aeon-red underline decoration-dotted underline-offset-2 transition-colors'
+// The prose link on glass: ink text, a soft orange underline that turns full orange on hover.
+const LINK_CLS =
+  'text-foreground underline decoration-[oklch(0.7_0.17_42/0.55)] decoration-[1.5px] underline-offset-4 transition-[text-decoration-color] duration-150 hover:decoration-[var(--primary)] [overflow-wrap:anywhere]'
 
 export function linkify(text: string): ReactNode {
   if (!text) return text
@@ -39,6 +41,7 @@ export function linkify(text: string): ReactNode {
         className={LINK_CLS}
       >
         {url}
+        <span className="sr-only"> (opens in a new tab)</span>
       </a>,
     )
     if (tail) out.push(tail)

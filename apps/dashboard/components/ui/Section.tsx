@@ -1,11 +1,30 @@
 import type { ReactNode } from 'react'
+import { cn } from '@/lib/cn'
+import { LABEL } from '@/components/glass/connect/recipes'
 
-export function Section({ label, children }: { label: string; children: ReactNode }) {
+// A titled block inside a dashboard screen: the mono caps label (plain, descriptive), an optional
+// note or action on the right, then the content. No rule or orange: spacing does the separating,
+// like the sections of www.aeon.fun/docs.
+export function Section({
+  label,
+  action,
+  children,
+  className,
+  id,
+}: {
+  label: ReactNode
+  action?: ReactNode
+  children: ReactNode
+  className?: string
+  id?: string
+}) {
   return (
-    <section className="border-t border-[rgba(250,250,250,0.10)] pt-6">
-      <div className="flex items-center gap-3 mb-5">
-        <span className="font-display text-[13px] tracking-[0.18em] text-aeon-red uppercase">{label}</span>
-        <span className="flex-1 h-px bg-[rgba(250,250,250,0.10)]" />
+    <section aria-labelledby={id} className={className}>
+      <div className="mb-3 flex min-h-10 flex-wrap items-center justify-between gap-x-3 gap-y-1">
+        <h2 id={id} className={LABEL}>
+          {label}
+        </h2>
+        {action}
       </div>
       {children}
     </section>

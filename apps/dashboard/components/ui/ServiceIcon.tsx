@@ -27,10 +27,9 @@ export function ServiceIcon({ name, domain, glyph, className = '' }: ServiceIcon
   const [failed, setFailed] = useState(false)
   const { src, glyph: resolvedGlyph } = resolveServiceMark({ name, domain, glyph })
 
-  // Light chip backing so dark/filled marks (GitHub, Base, x.AI…) stay legible
-  // against the near-black UI. Logos sit grayscale-and-calm, lifting to full
-  // colour on row hover.
-  const box = `inline-flex items-center justify-center w-[22px] h-[22px] rounded-sm overflow-hidden shrink-0 ring-1 ring-[rgba(250,250,250,0.14)] bg-[rgba(248,248,248,0.94)] ${className}`
+  // A small white tile with a smoke hairline, so every mark (dark or light) reads the same on
+  // the glass paper. Logos sit grayscale and calm, lifting to full colour on row hover.
+  const box = `inline-flex items-center justify-center size-[22px] rounded-[7px] overflow-hidden shrink-0 bg-white shadow-[inset_0_1px_0_#fff,0_0_0_1px_oklch(0.3_0.015_240/0.12)] ${className}`
 
   if (src && !failed) {
     return (
@@ -57,7 +56,7 @@ export function ServiceIcon({ name, domain, glyph, className = '' }: ServiceIcon
           fill="none"
           stroke="currentColor"
           strokeWidth={1.5}
-          className="w-[13px] h-[13px] text-[rgba(10,10,10,0.55)]"
+          className="size-[13px] text-muted-foreground"
         >
           <path strokeLinecap="round" strokeLinejoin="round" d={GLYPH_PATHS[resolvedGlyph]} />
         </svg>
@@ -66,7 +65,7 @@ export function ServiceIcon({ name, domain, glyph, className = '' }: ServiceIcon
   }
 
   return (
-    <span className={`${box} font-mono text-[9px] tracking-tight text-[rgba(10,10,10,0.6)]`} aria-hidden="true">
+    <span className={`${box} font-mono text-[9px] tracking-tight text-muted-foreground`} aria-hidden="true">
       {initials(name ?? '')}
     </span>
   )

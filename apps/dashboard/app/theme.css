@@ -1,0 +1,596 @@
+/* v94 "Constellation": a violet night over a sea of clouds, fog that parts on cream paper, and
+   one constellation line through the run. Radius scale: pills for
+   controls, 20-28 for cards and media. Shadows tinted to the violet hue. */
+[data-variant="v94"] {
+  color-scheme: dark;
+  --radius: 1.25rem;
+
+  --background: oklch(0.418 0.25 268);
+  --foreground: oklch(0.954 0.013 82);
+  --surface: oklch(0.47 0.2 266);
+  --deep: oklch(0.33 0.19 266);
+  --deeper: oklch(0.27 0.15 265.5);
+  --card: var(--surface);
+  --card-foreground: var(--foreground);
+  --popover: oklch(0.36 0.2 266);
+  --popover-foreground: var(--foreground);
+  /* Star orange: fills only. Ink on it is deep violet (passes 4.5:1). */
+  --primary: oklch(0.65 0.23 32);
+  --primary-foreground: oklch(0.2 0.08 266);
+  --secondary: oklch(1 0 0 / 0.1);
+  --secondary-foreground: var(--foreground);
+  --muted: oklch(0.2 0.1 265.5 / 0.35);
+  --muted-foreground: oklch(0.85 0.04 268);
+  --accent: oklch(1 0 0 / 0.1);
+  --accent-foreground: var(--foreground);
+  --destructive: oklch(0.65 0.23 32);
+  --border: oklch(1 0 0 / 0.16);
+  --line: oklch(1 0 0 / 0.16);
+  --input: var(--border);
+  --ring: var(--foreground);
+
+  /* Hero sweep: a deep studio top that settles into the field behind the tile. */
+  --sweep-top: oklch(0.256 0.131 265.3);
+  --sweep-mid: oklch(0.33 0.18 265.8);
+
+  /* fluid-functionalism tokens re-pointed at the violet field. */
+  --hover: oklch(1 0 0 / 0.08);
+  --active: oklch(1 0 0 / 0.12);
+  --selected: oklch(1 0 0 / 0.2);
+  --tint: oklch(1 0 0 / 0.12);
+  --tint-hover: oklch(1 0 0 / 0.16);
+  --focus-ring: var(--foreground);
+  --overlay: 20 8 70;
+  --surface-1: oklch(0.418 0.25 268);
+  --surface-2: oklch(0.38 0.21 266);
+  --surface-3: oklch(0.36 0.2 266);
+  --surface-4: oklch(0.27 0.15 265.5);
+  --surface-5: oklch(0.36 0.2 266);
+  --surface-6: oklch(0.38 0.2 266);
+  --surface-7: oklch(0.4 0.2 266);
+  --surface-8: oklch(0.42 0.2 266);
+  --shadow-color: oklch(0.18 0.12 266 / 0.28);
+  --sb: 0 0 0 1px oklch(1 0 0 / 0.14), 0 1px 2px -1px oklch(0.18 0.12 266 / 0.3), 0 8px 24px -8px oklch(0.18 0.12 266 / 0.35);
+  --sbh: 0 0 0 1px oklch(1 0 0 / 0.22), 0 1px 2px -1px oklch(0.18 0.12 266 / 0.3), 0 12px 32px -8px oklch(0.18 0.12 266 / 0.4);
+}
+
+/* Cream 2px focus ring everywhere, including over the fluid tab list ring. */
+[data-variant="v94"] :focus-visible {
+  outline: 2px solid var(--foreground);
+  outline-offset: 2px;
+}
+
+/* Italic display text uses the separately loaded italic face. */
+[data-variant="v94"] .font-display.italic,
+[data-variant="v94"] .font-display .italic {
+  font-family: var(--font-display-italic), var(--font-display), serif;
+}
+
+[data-variant="v94"] ::selection {
+  background: oklch(0.65 0.23 32);
+  color: oklch(0.2 0.08 266);
+}
+
+/* Grain 0.06 over the whole field, tiled (no live filter on a large area). */
+[data-variant="v94"] .v94-grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.06;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+
+/* magicui marquee keyframes (not in globals.css), scoped to this variation. */
+[data-variant="v94"] .animate-marquee {
+  animation: v94-marquee var(--duration) linear infinite;
+}
+@keyframes v94-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(-100% - var(--gap))); }
+}
+
+/* The marquee is a plain CSS loop, so it stops under reduced motion here. */
+@media (prefers-reduced-motion: reduce) {
+  [data-variant="v94"] .animate-marquee {
+    animation: none;
+  }
+}
+
+/* Hero: the logo sits high and centered like a sun; its size follows the viewport height so
+   the headline, CTA, and command always fit under it. */
+[data-variant="v94"] .v94-sun {
+  --t: clamp(104px, min(18svh, 30vw), 180px);
+  position: relative;
+  width: var(--t);
+  height: var(--t);
+}
+/* The rings span ten logos, centered on it; the hero clips them. */
+[data-variant="v94"] .v94-sun > .v94-halo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(var(--t) * 10);
+  height: calc(var(--t) * 10);
+  transform: translate(-50%, -50%);
+  z-index: -1;
+}
+
+/* The close: the mark's 1024 box, with its light around it (centered on the ring). */
+[data-variant="v94"] .v94-sky {
+  --s: clamp(208px, 27vw, 340px);
+  --pt: clamp(120px, 14vw, 200px);
+  padding-top: var(--pt);
+}
+[data-variant="v94"] .v94-meet {
+  width: var(--s);
+  aspect-ratio: 1;
+}
+[data-variant="v94"] .v94-meet-light {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: -1;
+  width: 520%;
+  height: 520%;
+  max-width: none;
+  translate: -50% -50%;
+  pointer-events: none;
+  /* The box is 5.2 marks tall around the mark's center, so the sky's top edge sits at
+     2.1 marks minus the top padding: the light is gone there and full 80% of the way down. */
+  mask-image: linear-gradient(to bottom, transparent calc(var(--s) * 2.1 - var(--pt)), #000 calc(var(--s) * 2.1 - var(--pt) * 0.2));
+}
+
+/* Sunrise: each band rises from the inside out, once, on first view. */
+[data-variant="v94"] .v94-band {
+  transform-box: view-box;
+  transform-origin: 0 0;
+}
+[data-variant="v94"] .v94-halo[data-run] .v94-band {
+  animation: v94-rise 2200ms cubic-bezier(0.23, 1, 0.32, 1) calc(var(--i) * 130ms) both;
+}
+@keyframes v94-rise {
+  from {
+    opacity: 0;
+    transform: scale(0.82);
+  }
+}
+
+/* One run every 9s: the core inhales, and a ring of light leaves the tile and fades at the edge. */
+[data-variant="v94"] .v94-core,
+[data-variant="v94"] .v94-pulse {
+  transform-box: view-box;
+  transform-origin: 0 0;
+}
+[data-variant="v94"] .v94-pulse {
+  opacity: 0;
+}
+[data-variant="v94"] .v94-halo[data-run] .v94-pulse {
+  animation: v94-pulse 9s cubic-bezier(0.22, 0.61, 0.36, 1) 1600ms infinite;
+}
+[data-variant="v94"] .v94-halo[data-run] .v94-core {
+  animation: v94-core 9s ease-in-out 1600ms infinite;
+}
+[data-variant="v94"] .v94-halo[data-run="paused"] :is(.v94-band, .v94-pulse, .v94-core) {
+  animation-play-state: paused;
+}
+@keyframes v94-pulse {
+  0% {
+    opacity: 0;
+    transform: scale(1);
+  }
+  4% {
+    opacity: 1;
+  }
+  48% {
+    opacity: 0;
+    transform: scale(7.4);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(7.4);
+  }
+}
+@keyframes v94-core {
+  0%,
+  40%,
+  100% {
+    opacity: 0.75;
+  }
+  8% {
+    opacity: 1;
+  }
+}
+
+/* ---------------------------------------------------------------------------------------
+   Daybreak: below the hero the violet night turns into a cream morning. Inside .v94-day the
+   tokens flip to paper (the snake's cream #F4EFE6) with violet ink; every primitive reads the
+   same tokens, so buttons, chips and focus rings follow. The ouroboros is cream, so on paper it
+   always sits on an ink pool (a disc of the night violet), never on the paper itself. */
+[data-variant="v94"] .v94-day {
+  color-scheme: light;
+  --background: oklch(0.954 0.013 82);
+  --paper-2: oklch(0.925 0.017 78);
+  --sheet: oklch(0.982 0.006 82);
+  --foreground: oklch(0.29 0.16 265.8);
+  --ink-pool: oklch(0.418 0.25 268);
+  --on-pool: oklch(0.954 0.013 82);
+  --card: var(--sheet);
+  --card-foreground: var(--foreground);
+  --muted: oklch(0.29 0.16 265.8 / 0.07);
+  --muted-foreground: oklch(0.45 0.1 266.8);
+  --border: oklch(0.29 0.16 265.8 / 0.2);
+  --line: oklch(0.29 0.16 265.8 / 0.16);
+  --input: var(--border);
+  --ring: var(--foreground);
+  --secondary: oklch(0.29 0.16 265.8 / 0.08);
+  --accent: oklch(0.29 0.16 265.8 / 0.08);
+  --hover: oklch(0.29 0.16 265.8 / 0.06);
+  --active: oklch(0.29 0.16 265.8 / 0.1);
+  --selected: oklch(0.29 0.16 265.8 / 0.12);
+  --tint: oklch(0.29 0.16 265.8 / 0.08);
+  --tint-hover: oklch(0.29 0.16 265.8 / 0.13);
+  --focus-ring: var(--foreground);
+  --sb: 0 0 0 1px oklch(0.29 0.16 265.8 / 0.1), 0 1px 2px -1px oklch(0.29 0.16 265.8 / 0.08), 0 2px 4px 0 oklch(0.29 0.16 265.8 / 0.05);
+  --sbh: 0 0 0 1px oklch(0.29 0.16 265.8 / 0.14), 0 1px 2px -1px oklch(0.29 0.16 265.8 / 0.1), 0 2px 4px 0 oklch(0.29 0.16 265.8 / 0.07);
+  background: var(--background);
+  color: var(--foreground);
+}
+[data-variant="v94"] .v94-day ::selection {
+  background: oklch(0.65 0.23 32);
+  color: oklch(0.2 0.08 266);
+}
+
+/* ---------------------------------------------------------------------------------------
+   Constellation. The hero is a night stage pinned under the page; the fog gate (mist.tsx)
+   scrolls up over it, closes, and parts on the paper. */
+[data-variant="v94"] .v94-stage {
+  position: relative;
+  isolation: isolate;
+  background: var(--sweep-top);
+}
+/* The night pins only when it fits; on short screens it scrolls like any section. */
+@media (min-height: 560px) {
+  [data-variant="v94"] .v94-night {
+    position: sticky;
+    top: 0;
+  }
+}
+/* Reduced motion: the gate is plain paper; a soft fog edge where it meets the night. */
+[data-variant="v94"] .v94-fog-edge {
+  background: linear-gradient(to bottom, oklch(0.36 0.15 266.2 / 0), oklch(0.7 0.08 270.5 / 0.7) 45%, oklch(0.954 0.013 82));
+}
+/* The dusk fog: cream at the top, the violet night at the bottom, under its banks. */
+[data-variant="v94"] .v94-dusk {
+  background: linear-gradient(to bottom, var(--background), oklch(0.74 0.07 270.5) 45%, oklch(0.418 0.25 268) 85%);
+}
+/* The paper zone for the constellation's ink ends 40% into the dusk fog. */
+[data-variant="v94"] .v94-paper-zone {
+  bottom: calc(clamp(320px, 52svh, 560px) * 0.6);
+}
+
+/* The constellation line (constellation.tsx). On the night: starlight with a faint glow and
+   cream stars; on the paper: violet ink with orange stars. The route ahead waits dotted. */
+[data-variant="v94"] .v94-cline path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+[data-variant="v94"] .v94-cl-ahead {
+  stroke: oklch(1 0 0 / 0.16);
+  stroke-width: 1;
+  stroke-dasharray: 1 7;
+}
+[data-variant="v94"] .v94-cl-ahead[data-paper] {
+  stroke: oklch(0.29 0.16 265.8 / 0.24);
+}
+[data-variant="v94"] .v94-cl-glow {
+  stroke: oklch(0.8 0.12 269.2 / 0.2);
+  stroke-width: 6;
+}
+[data-variant="v94"] .v94-cl-line {
+  stroke: oklch(0.95 0.04 269.2 / 0.85);
+  stroke-width: 1.25;
+}
+[data-variant="v94"] [data-paper] > .v94-cl-line {
+  stroke: oklch(0.36 0.2 266 / 0.75);
+}
+[data-variant="v94"] .v94-cdot {
+  opacity: 0;
+}
+[data-variant="v94"] .v94-cdot > circle {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+[data-variant="v94"] .v94-cdot-glow {
+  fill: oklch(0.85 0.1 269.2 / 0.28);
+}
+[data-variant="v94"] .v94-cdot-core {
+  fill: oklch(0.98 0.02 82);
+}
+[data-variant="v94"] .v94-cdot[data-paper] .v94-cdot-glow {
+  fill: oklch(0.65 0.23 32 / 0.18);
+}
+[data-variant="v94"] .v94-cdot[data-paper] .v94-cdot-core {
+  fill: oklch(0.65 0.23 32);
+}
+[data-variant="v94"] .v94-cdot[data-on] {
+  opacity: 1;
+}
+[data-variant="v94"] .v94-chead-glow {
+  fill: oklch(0.9 0.08 270.5 / 0.28);
+}
+[data-variant="v94"] .v94-chead-core {
+  fill: oklch(0.99 0.02 80);
+}
+[data-variant="v94"] .v94-chead[data-paper] .v94-chead-glow {
+  fill: oklch(0.72 0.19 38 / 0.3);
+  r: 11px;
+}
+[data-variant="v94"] .v94-chead[data-paper] .v94-chead-core {
+  fill: oklch(0.65 0.23 32);
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-variant="v94"] .v94-cdot {
+    transition: opacity 500ms ease-out;
+  }
+  [data-variant="v94"] .v94-cdot > circle {
+    transition: scale 900ms cubic-bezier(0.23, 1, 0.32, 1);
+    scale: 0.2;
+  }
+  [data-variant="v94"] .v94-cdot[data-on] > circle {
+    scale: 1;
+  }
+  /* Once lit, a few stars keep twinkling. */
+  [data-variant="v94"] .v94-cdot[data-on]:nth-child(3n) .v94-cdot-core {
+    animation: v94-twinkle var(--tw, 4s) ease-in-out var(--twd, 0s) infinite;
+  }
+}
+
+/* Figures that draw when they come in (bars grow from the floor, points pop). Resting drawn
+   under reduced motion. */
+[data-variant="v94"] .v94-grow {
+  transform-origin: 50% 100%;
+  scale: 1 0;
+  transition: scale 900ms cubic-bezier(0.23, 1, 0.32, 1) var(--d, 0ms);
+}
+[data-variant="v94"] .v94-pop {
+  transform-box: fill-box;
+  transform-origin: center;
+  scale: 0;
+  transition: scale 700ms cubic-bezier(0.23, 1, 0.32, 1) var(--d, 0ms);
+}
+[data-variant="v94"] [data-lit] .v94-grow {
+  scale: 1 1;
+}
+[data-variant="v94"] [data-lit] .v94-pop {
+  scale: 1;
+}
+[data-variant="v94"] .v94-dial-line {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 1600ms cubic-bezier(0.45, 0, 0.2, 1) 500ms;
+}
+[data-variant="v94"] [data-lit] .v94-dial-line {
+  stroke-dashoffset: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-variant="v94"] .v94-grow,
+  [data-variant="v94"] .v94-pop {
+    scale: 1 1;
+    transition: none;
+  }
+  [data-variant="v94"] .v94-dial-line {
+    stroke-dashoffset: 0;
+    transition: none;
+  }
+}
+/* The schedule dial: the hand sweeps one day every 24s; each skill's star flares as it passes.
+   At rest (reduced motion) the hand points at 09:00. */
+[data-variant="v94"] .v94-dial-hand {
+  /* view-box puts the origin at user (0, 0), the dial center. */
+  transform-box: view-box;
+  transform-origin: 0 0;
+  rotate: 135deg;
+}
+[data-variant="v94"] .v94-dial-glow {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-variant="v94"] .v94-dial-hand {
+    animation: v94-day 24s linear infinite;
+  }
+  [data-variant="v94"] .v94-dial-glow {
+    animation: v94-flare 24s ease-out infinite;
+  }
+}
+@keyframes v94-day {
+  from {
+    rotate: 0deg;
+  }
+  to {
+    rotate: 360deg;
+  }
+}
+@keyframes v94-flare {
+  0% {
+    opacity: 1;
+    scale: 1.8;
+  }
+  10%,
+  100% {
+    opacity: 0;
+    scale: 1;
+  }
+}
+
+/* Night sky: the CSS sky sits under the art, in its colors, until the image paints. */
+[data-variant="v94"] .v94-sky-still {
+  background:
+    radial-gradient(120% 40% at 50% 100%, oklch(0.72 0.08 270.5 / 0.8), transparent 70%),
+    linear-gradient(in oklch, oklch(0.17 0.08 266), oklch(0.24 0.13 266) 60%, oklch(0.36 0.15 268));
+}
+[data-variant="v94"] .v94-twinkle {
+  animation: v94-twinkle var(--tw, 4s) ease-in-out var(--twd, 0s) infinite;
+}
+@keyframes v94-twinkle {
+  50% {
+    opacity: 0.25;
+  }
+}
+
+/* The constellation around the hero logo: ten logos wide, four tall, centered on it. */
+[data-variant="v94"] .v94-sun > .v94-wings {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(var(--t) * 10);
+  height: calc(var(--t) * 4);
+  transform: translate(-50%, -50%);
+  z-index: -1;
+}
+[data-variant="v94"] .v94-wings path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+[data-variant="v94"] .v94-wing-star {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* The opening, once on load (about 2.6s), never blocking: the headline is readable from the
+   first frame (its fade is 320ms). Sky ignites, the ring turns in, the star rises into it, the
+   headline lands, and the two figures of stars open out from the halo, star by star.
+   Reduced motion: none of it; everything rests. */
+[data-variant="v94"] .v94-ignite {
+  opacity: 0;
+}
+[data-variant="v94"] .v94-logo {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+[data-variant="v94"] .v94-logo > span {
+  position: absolute;
+  display: block;
+}
+[data-variant="v94"] .v94-logo-star {
+  transform-origin: 50% 55.1%;
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-variant="v94"] [data-open] .v94-ignite {
+    animation: v94-ignite 1300ms cubic-bezier(0.4, 0, 0.2, 1) both;
+  }
+  [data-variant="v94"] [data-open] .v94-logo-ring {
+    animation: v94-ring-in 1300ms cubic-bezier(0.23, 1, 0.32, 1) 120ms backwards;
+  }
+  [data-variant="v94"] [data-open] .v94-logo-star {
+    animation: v94-star-in 1250ms cubic-bezier(0.22, 1, 0.36, 1) 300ms backwards;
+  }
+  [data-variant="v94"] [data-open] .v94-land {
+    animation:
+      v94-fade 320ms ease-out var(--d, 0ms) backwards,
+      v94-lift 1000ms cubic-bezier(0.23, 1, 0.32, 1) var(--d, 0ms) backwards;
+  }
+  [data-variant="v94"] [data-open] .v94-wings path {
+    animation: v94-draw 1500ms cubic-bezier(0.45, 0, 0.2, 1) calc(900ms + var(--i, 0) * 140ms) backwards;
+  }
+  [data-variant="v94"] [data-open] .v94-wing-star {
+    animation: v94-star-pop 900ms cubic-bezier(0.23, 1, 0.32, 1) var(--d, 900ms) backwards;
+  }
+}
+@keyframes v94-star-pop {
+  from {
+    opacity: 0;
+    scale: 0.2;
+  }
+}
+@keyframes v94-fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes v94-lift {
+  from {
+    translate: 0 18px;
+  }
+}
+@keyframes v94-ignite {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes v94-ring-in {
+  from {
+    opacity: 0;
+    rotate: -150deg;
+    scale: 0.86;
+  }
+}
+@keyframes v94-star-in {
+  from {
+    opacity: 0;
+    translate: 0 70%;
+    rotate: -72deg;
+    scale: 0.4;
+  }
+  35% {
+    opacity: 1;
+  }
+}
+@keyframes v94-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+}
+
+/* Riso prints. Each print develops when it scrolls in: halftone dots grow out of the paper while
+   the full ink rolls down from the top, and the plate slides into register. */
+@property --v94-dot {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+@property --v94-wipe {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
+[data-variant="v94"] .v94-print {
+  background: oklch(0.975 0.01 80);
+  box-shadow:
+    0 0 0 1px oklch(0.29 0.16 265.8 / 0.06),
+    0 1px 2px oklch(0.29 0.16 265.8 / 0.06),
+    0 22px 40px -26px oklch(0.29 0.16 265.8 / 0.45);
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-variant="v94"] .v94-riso:is([data-print="wait"], [data-print="in"]) {
+    mask-image:
+      linear-gradient(to bottom, #000 calc(var(--v94-wipe) - 22%), transparent var(--v94-wipe)),
+      radial-gradient(circle, #000 var(--v94-dot), transparent calc(var(--v94-dot) + 0.75px));
+    mask-size: 100% 100%, 9px 9px;
+    mask-repeat: no-repeat, repeat;
+  }
+  [data-variant="v94"] .v94-riso[data-print="in"] {
+    --v94-dot: 7px;
+    --v94-wipe: 124%;
+    transition:
+      --v94-dot 1200ms cubic-bezier(0.3, 0.7, 0.3, 1),
+      --v94-wipe 1700ms cubic-bezier(0.45, 0, 0.2, 1) 250ms;
+  }
+  [data-variant="v94"] .v94-riso img {
+    transition: translate 1500ms cubic-bezier(0.23, 1, 0.32, 1) 200ms;
+  }
+  [data-variant="v94"] .v94-riso[data-print="wait"] img {
+    translate: 6px -4px;
+  }
+}

@@ -1,27 +1,18 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { Run, SkillOutput, AnalyticsData } from '../lib/types'
 import type { RunLogs } from '../lib/runs'
-import { timeAgo, runStatusColor, runStatusGlyph } from '../lib/utils'
+import { timeAgo } from '../lib/utils'
 import { SpecNode } from './SpecNode'
 import { PanelError } from './PanelError'
+import { cn } from '@/lib/cn'
+import { CountUp } from './glass/count-up'
+import { RunRow, RunStatus, runName, runState } from './glass/connect/run-status'
+import { ACTION, CHIP, CHIP_OFF, CHIP_ON, FOCUS, IconButton, Loading, SMALL_LABEL } from './glass/connect/ui'
+import { useNarrow } from '@/lib/use-narrow'
+import { useFocusTrap } from './glass/connect/use-focus-trap'
 import { RunDiagnosis } from './RunDiagnosis'
-import { useNarrow } from '../lib/use-narrow'
-
-// The Activity and Runs tabs render the same row; only their empty-state copy differs.
-function RunRow({ run, onView }: { run: Run; onView: (run: Run) => void }) {
-  return (
-    <button
-      onClick={() => onView(run)}
-      className="w-full flex items-center gap-2.5 px-3 py-2.5 border-b border-[rgba(250,250,250,0.04)] hover:bg-aeon-bg transition-colors text-left"
-    >
-      <span className={`text-xs ${runStatusColor(run)}`}>{runStatusGlyph(run)}</span>
-      <span className="text-xs text-primary-70 truncate flex-1 font-mono">{run.workflow}</span>
-      <span className="text-[11px] text-primary-35 font-mono tabular-nums">{timeAgo(run.created_at)}</span>
-    </button>
-  )
-}
 
 interface RightPanelProps {
   runs: Run[]
@@ -30,12 +21,12 @@ interface RightPanelProps {
   feedError: boolean
   analyticsData: AnalyticsData | null
   analyticsError: boolean
-  // Phones: the panel is a slide-in drawer opened from the dashboard's MobileBar.
+  // Phones: the panel is a slide-in drawer opened from the dashboard's mobile bar.
   drawerOpen?: boolean
   onCloseDrawer?: () => void
   onRefresh: () => void
   onFetchAnalytics: () => void
-  // A failed run's "Connect" (its credential was the problem).
+  // A failed run's credential problem: open Connect for the run's harness.
   onConnect?: (harness?: string) => void
 }
 
@@ -60,6 +51,9 @@ export function RightPanel({
   const [showFullLogs, setShowFullLogs] = useState(false)
   const [collapsed, setCollapsed] = useState(false)
   const narrow = useNarrow()
+  // On phones the panel is a drawer: focus inside, Tab kept inside, Escape closes it.
+  const drawer = useRef<HTMLElement>(null)
+  useFocusTrap(drawer, narrow && !!drawerOpen, onCloseDrawer)
 
   // Restore the collapsed state on mount (set in an effect, not the initializer,
   // to avoid an SSR/client hydration mismatch).
@@ -95,251 +89,390 @@ export function RightPanel({
     }
   }
 
-  // Collapsed: a thin rail with an expand control and a vertical label. Not on
-  // phones, where the panel is a drawer instead.
+  // Collapsed: one slim control that brings the panel back (a rail beside the page on wide
+  // screens, a bar under it in between). Not on phones, where the panel is a drawer instead.
   if (collapsed && !narrow) {
     return (
-      <div className="w-9 border-l border-[rgba(250,250,250,0.10)] flex flex-col items-center shrink-0 bg-aeon-panel">
+      <div className="md:col-start-2 xl:sticky xl:top-24 xl:col-start-3 xl:row-start-1 xl:self-start">
         <button
+          type="button"
           onClick={() => toggleCollapsed(false)}
           title="Expand panel"
-          aria-label="Expand panel"
-          className="h-12 w-full flex items-center justify-center text-sm text-primary-40 hover:text-aeon-fg transition-colors shrink-0 border-b border-[rgba(250,250,250,0.10)]"
+          aria-label="Expand feed, runs and analytics"
+          className={cn(
+            'g-chip flex h-11 w-full cursor-pointer items-center justify-center gap-2.5 rounded-full px-4 transition-[background-color] duration-150 xl:h-auto xl:w-11 xl:flex-col xl:py-5',
+            FOCUS,
+          )}
         >
-          &#8249;
-        </button>
-        <button
-          onClick={() => toggleCollapsed(false)}
-          title="Expand panel"
-          aria-label="Expand panel"
-          className="flex-1 w-full flex items-start justify-center pt-4 group"
-        >
-          <span className="text-[10px] font-mono uppercase tracking-[0.28em] text-primary-35 group-hover:text-primary-70 transition-colors [writing-mode:vertical-rl]">
-            Feed · Runs · Analytics
-          </span>
+          <svg
+            aria-hidden
+            viewBox="0 0 16 16"
+            className="size-4 text-muted-foreground xl:rotate-0"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={1.5}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M10 3.5 5.5 8l4.5 4.5" />
+          </svg>
+          <span className={cn(SMALL_LABEL, 'xl:[writing-mode:vertical-rl]')}>Feed, runs, analytics</span>
         </button>
       </div>
     )
   }
 
+  const total = analyticsData ? Math.max(...analyticsData.skills.map(sk => sk.total), 1) : 1
+  const clean = (t: string) => t.replace(/\x1b\[[0-9;]*m/g, '')
+
   return (
-    <div
+    <aside
+      ref={drawer}
+      aria-label="Feed, runs and analytics"
+      role={narrow ? 'dialog' : undefined}
+      aria-modal={narrow && drawerOpen ? true : undefined}
       inert={narrow && !drawerOpen}
-      className={`border-l border-[rgba(250,250,250,0.10)] flex flex-col shrink-0 bg-aeon-panel ${
+      className={
         narrow
-          ? `fixed inset-y-0 right-0 z-[35] w-[320px] max-w-[88vw] transition-transform duration-300 ${drawerOpen ? 'translate-x-0' : 'translate-x-full'}`
-          : 'w-[288px]'
-      }`}
+          ? cn(
+              'fixed inset-y-0 right-0 z-[101] flex w-[min(360px,90vw)] p-2 transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]',
+              drawerOpen ? 'translate-x-0' : 'translate-x-[105%]',
+            )
+          : 'min-w-0 md:col-start-2 xl:sticky xl:top-24 xl:col-start-3 xl:row-start-1 xl:w-[300px] xl:self-start'
+      }
     >
-      <div className="h-12 border-b border-[rgba(250,250,250,0.10)] flex items-center px-3 gap-1 shrink-0">
-        {(['feed', 'runs', 'analytics'] as const).map(tab => (
-          <button
-            key={tab}
-            onClick={() => {
-              setRightTab(tab)
-              if (tab === 'analytics') onFetchAnalytics()
-            }}
-            className={`text-[11px] px-2.5 py-1.5 transition-colors font-mono uppercase tracking-[1px] ${rightTab === tab ? 'bg-aeon-fg text-aeon-bg' : 'text-primary-40 hover:text-primary-70'}`}
+      <div
+        className={cn(
+          'g-glass flex w-full flex-col rounded-[24px]',
+          narrow ? 'c-solid h-full' : 'xl:max-h-[calc(100svh-7rem)]',
+        )}
+      >
+        {/* Tabs, refresh, collapse */}
+        <div className="relative z-[1] flex items-center gap-1.5 px-3 pt-3 pb-2">
+          <div role="tablist" aria-label="Activity" className="flex min-w-0 gap-0.5">
+            {(['feed', 'runs', 'analytics'] as const).map(tab => (
+              <button
+                key={tab}
+                type="button"
+                role="tab"
+                aria-selected={rightTab === tab}
+                onClick={() => {
+                  setRightTab(tab)
+                  if (tab === 'analytics') onFetchAnalytics()
+                }}
+                className={cn(CHIP, 'h-9 px-2.5 text-[11px] tracking-[0.06em]', rightTab === tab ? CHIP_ON : CHIP_OFF)}
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
+          <IconButton onClick={onRefresh} title="Refresh" aria-label="Refresh" className="ml-auto size-9">
+            <svg
+              aria-hidden
+              viewBox="0 0 16 16"
+              className="size-4"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={1.5}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M13 8a5 5 0 1 1-1.6-3.7M13 2.5v3h-3" />
+            </svg>
+          </IconButton>
+          <IconButton
+            onClick={() => (narrow ? onCloseDrawer?.() : toggleCollapsed(true))}
+            title={narrow ? 'Close' : 'Collapse panel'}
+            aria-label={narrow ? 'Close panel' : 'Collapse panel'}
+            className="size-9"
           >
-            {tab}
-          </button>
-        ))}
-        <button
-          onClick={onRefresh}
-          title="Refresh"
-          aria-label="Refresh"
-          className="text-sm leading-none text-primary-35 hover:text-aeon-red transition-colors ml-auto"
-        >
-          &#8635;
-        </button>
-        <button
-          onClick={() => (narrow ? onCloseDrawer?.() : toggleCollapsed(true))}
-          title={narrow ? 'Close' : 'Collapse panel'}
-          aria-label={narrow ? 'Close panel' : 'Collapse panel'}
-          className="text-sm leading-none text-primary-35 hover:text-aeon-fg transition-colors ml-2 px-0.5"
-        >
-          &#8250;
-        </button>
-      </div>
+            {narrow ? (
+              <svg
+                aria-hidden
+                viewBox="0 0 16 16"
+                className="size-4"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={1.5}
+                strokeLinecap="round"
+              >
+                <path d="M4 4l8 8M12 4l-8 8" />
+              </svg>
+            ) : (
+              <svg
+                aria-hidden
+                viewBox="0 0 16 16"
+                className="size-4"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={1.5}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M6 3.5 10.5 8 6 12.5" />
+              </svg>
+            )}
+          </IconButton>
+        </div>
 
-      <div className="flex-1 overflow-y-auto overflow-x-hidden">
-        {/* Feed */}
-        {rightTab === 'feed' &&
-          (feedLoading ? (
-            <div className="flex justify-center py-12">
-              <div className="w-2 h-2 rounded-full bg-aeon-red animate-pulse" />
-            </div>
-          ) : feedError ? (
-            <PanelError label="the feed" onRetry={onRefresh} />
-          ) : outputs.length > 0 ? (
-            <div className="space-y-3 p-3">
-              {outputs.map(o => (
-                <div key={o.filename} className="min-w-0">
-                  <div className="flex items-center gap-2 mb-1.5">
-                    <span className="text-[11px] font-mono text-aeon-red">{o.skill}</span>
-                    <span className="text-[11px] text-primary-35 font-mono">{timeAgo(o.timestamp)}</span>
-                  </div>
-                  {o.spec?.root && o.spec?.elements ? <SpecNode id={o.spec.root} elements={o.spec.elements} /> : null}
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div>
-              {!runs.length ? (
-                <div className="px-4 py-12 text-center text-xs text-primary-35 font-mono">No activity yet</div>
-              ) : (
-                runs.map(run => <RunRow key={run.id} run={run} onView={viewRunLogs} />)
-              )}
-            </div>
-          ))}
-
-        {/* Runs */}
-        {rightTab === 'runs' &&
-          (selectedRun ? (
-            <div className="flex flex-col h-full">
-              <div className="flex items-center gap-2 px-3 py-2.5 border-b border-[rgba(250,250,250,0.10)]">
-                <button
-                  onClick={() => {
-                    setSelectedRun(null)
-                    setRunLogs('')
-                    setRunSummary('')
-                  }}
-                  className="text-primary-40 hover:text-primary-100 text-xs"
-                >
-                  &larr;
-                </button>
-                <span className="font-mono text-xs text-primary-70 truncate flex-1">{selectedRun.workflow}</span>
-                <a
-                  href={selectedRun.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[11px] text-primary-40 font-mono border border-[rgba(250,250,250,0.10)] px-2 py-0.5 hover:border-aeon-red hover:text-aeon-red transition-colors"
-                >
-                  GitHub
-                </a>
+        <div className="c-scroll relative z-[1] min-h-0 flex-1 overflow-x-hidden overflow-y-auto px-2 pb-3">
+          {/* Feed */}
+          {rightTab === 'feed' &&
+            (feedLoading ? (
+              <Loading label="Loading the feed" />
+            ) : feedError ? (
+              <PanelError label="the feed" onRetry={onRefresh} />
+            ) : outputs.length > 0 ? (
+              <div className="space-y-4 px-1 pt-1">
+                {outputs.map(o => (
+                  <article key={o.filename} className="min-w-0">
+                    <div className="mb-2 flex items-center gap-2 px-1">
+                      <span className="truncate text-[14px] font-medium">{o.skill}</span>
+                      <time
+                        dateTime={o.timestamp}
+                        className="ml-auto shrink-0 font-mono text-[12px] text-muted-foreground"
+                      >
+                        {timeAgo(o.timestamp)}
+                      </time>
+                    </div>
+                    {o.spec?.root && o.spec?.elements ? <SpecNode id={o.spec.root} elements={o.spec.elements} /> : null}
+                  </article>
+                ))}
               </div>
-              <div className="flex-1 overflow-y-auto p-3">
-                <RunDiagnosis
-                  run={selectedRun}
-                  onConnect={onConnect}
-                  className="mb-3 pb-3 border-b border-[rgba(250,250,250,0.10)]"
-                />
-                {logsLoading ? (
-                  <div className="flex justify-center py-8">
-                    <div className="w-2 h-2 rounded-full bg-aeon-red animate-pulse" />
-                  </div>
+            ) : (
+              <div>
+                {!runs.length ? (
+                  <p className={cn(SMALL_LABEL, 'px-4 py-12 text-center')}>No activity yet</p>
                 ) : (
-                  <div className="space-y-3">
-                    {runSummary ? (
-                      <>
-                        <pre className="text-[11px] leading-relaxed font-mono text-primary-70 whitespace-pre-wrap break-words">
-                          {runSummary.replace(/\x1b\[[0-9;]*m/g, '').replace(/^\d{4}-\d{2}-\d{2}T[\d:.]+Z ?/gm, '')}
-                        </pre>
-                        <button
-                          onClick={() => setShowFullLogs(!showFullLogs)}
-                          className="text-[11px] text-primary-40 hover:text-aeon-red font-mono transition-colors"
-                        >
-                          {showFullLogs ? '- Hide full logs' : '+ Show full logs'}
-                        </button>
-                        {showFullLogs && (
-                          <pre className="text-[11px] font-mono text-primary-50 whitespace-pre-wrap break-words border-t border-[rgba(250,250,250,0.10)] pt-3">
-                            {runLogs.replace(/\x1b\[[0-9;]*m/g, '')}
+                  <ul className="flex flex-col gap-0.5">
+                    {runs.map(run => (
+                      <li key={run.id}>
+                        <RunRow run={run} compact onClick={() => viewRunLogs(run)} />
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            ))}
+
+          {/* Runs */}
+          {rightTab === 'runs' &&
+            (selectedRun ? (
+              <div className="flex flex-col">
+                <div className="flex items-center gap-1.5 px-1 pt-1 pb-2">
+                  <IconButton
+                    onClick={() => {
+                      setSelectedRun(null)
+                      setRunLogs('')
+                      setRunSummary('')
+                    }}
+                    aria-label="Back to runs"
+                    className="size-9"
+                  >
+                    <svg
+                      aria-hidden
+                      viewBox="0 0 16 16"
+                      className="size-4"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={1.5}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M10 3.5 5.5 8l4.5 4.5" />
+                    </svg>
+                  </IconButton>
+                  <span className="min-w-0 flex-1 truncate text-[15px] font-medium">{runName(selectedRun)}</span>
+                </div>
+                <div className="flex flex-wrap items-center gap-2 px-1 pb-3">
+                  <RunStatus run={selectedRun} />
+                  <span className="font-mono text-[12px] text-muted-foreground">{timeAgo(selectedRun.created_at)}</span>
+                  <span className="ml-auto flex gap-1.5">
+                    <a
+                      href={selectedRun.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={cn(ACTION, 'h-9 px-3 text-[13px]')}
+                    >
+                      GitHub<span className="sr-only"> (opens in a new tab)</span>
+                    </a>
+                  </span>
+                </div>
+                <div className="px-1">
+                  <RunDiagnosis
+                    run={selectedRun}
+                    onConnect={onConnect}
+                    className="mb-3 rounded-[16px] bg-[oklch(0.65_0.23_32/0.07)] px-3 py-2.5"
+                  />
+                  {logsLoading ? (
+                    <Loading label="Reading the log" />
+                  ) : (
+                    <div className="space-y-3">
+                      {runSummary ? (
+                        <>
+                          <pre className="g-code overflow-x-auto px-4 py-3 font-mono text-[12px] leading-[1.6] break-words whitespace-pre-wrap">
+                            {clean(runSummary).replace(/^\d{4}-\d{2}-\d{2}T[\d:.]+Z ?/gm, '')}
                           </pre>
+                          <button
+                            type="button"
+                            onClick={() => setShowFullLogs(!showFullLogs)}
+                            aria-expanded={showFullLogs}
+                            className={cn(ACTION, 'h-9 px-3 text-[13px]')}
+                          >
+                            {showFullLogs ? 'Hide full log' : 'Show full log'}
+                          </button>
+                          {showFullLogs && (
+                            <pre className="g-code overflow-x-auto px-4 py-3 font-mono text-[12px] leading-[1.6] break-words whitespace-pre-wrap text-muted-foreground">
+                              {clean(runLogs)}
+                            </pre>
+                          )}
+                        </>
+                      ) : (
+                        <pre className="g-code overflow-x-auto px-4 py-3 font-mono text-[12px] leading-[1.6] break-words whitespace-pre-wrap">
+                          {clean(runLogs)}
+                        </pre>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            ) : (
+              <div>
+                {!runs.length ? (
+                  <p className={cn(SMALL_LABEL, 'px-4 py-12 text-center')}>No runs</p>
+                ) : (
+                  <ul className="flex flex-col gap-0.5">
+                    {runs.map(run => (
+                      <li key={run.id}>
+                        <RunRow run={run} compact onClick={() => viewRunLogs(run)} />
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            ))}
+
+          {/* Analytics */}
+          {rightTab === 'analytics' &&
+            (analyticsError ? (
+              <PanelError label="analytics" onRetry={onFetchAnalytics} />
+            ) : !analyticsData ? (
+              <Loading label="Loading analytics" />
+            ) : (
+              <div className="space-y-4 px-1 pt-1">
+                <dl className="grid grid-cols-2 gap-2">
+                  <div className="g-chip rounded-[18px] px-3.5 py-3">
+                    <dt className={SMALL_LABEL}>Runs</dt>
+                    <dd className="mt-1 font-display text-[2rem] leading-[0.95] font-light tracking-[-0.05em] tabular-nums">
+                      <CountUp to={analyticsData.summary.totalRuns} />
+                    </dd>
+                  </div>
+                  <div className="g-chip rounded-[18px] px-3.5 py-3">
+                    <dt className={SMALL_LABEL}>Succeeded</dt>
+                    <dd
+                      className={cn(
+                        'mt-1 font-display text-[2rem] leading-[0.95] font-light tracking-[-0.05em] tabular-nums',
+                        analyticsData.summary.totalRuns > 0 &&
+                          analyticsData.summary.overallSuccessRate < 80 &&
+                          'text-[oklch(0.5_0.19_33)]',
+                        !analyticsData.summary.totalRuns && 'text-muted-foreground',
+                      )}
+                    >
+                      {/* No runs yet is not a failure: a neutral dash, not a red 0%. */}
+                      {analyticsData.summary.totalRuns > 0 ? (
+                        <CountUp to={analyticsData.summary.overallSuccessRate} suffix="%" />
+                      ) : (
+                        <>
+                          <span aria-hidden>-</span>
+                          <span className="sr-only">No runs yet</span>
+                        </>
+                      )}
+                    </dd>
+                  </div>
+                </dl>
+                {analyticsData.insights.length > 0 && (
+                  <ul className="space-y-1.5">
+                    {analyticsData.insights.map((ins, i) => (
+                      <li
+                        key={i}
+                        className={cn(
+                          'flex items-start gap-2.5 rounded-[16px] px-3 py-2.5 text-[13px] leading-[1.5]',
+                          ins.type === 'warning' ? 'bg-[oklch(0.65_0.23_32/0.08)]' : 'bg-[var(--hover)]',
                         )}
-                      </>
-                    ) : (
-                      <pre className="text-[11px] font-mono text-primary-50 whitespace-pre-wrap break-words">
-                        {runLogs.replace(/\x1b\[[0-9;]*m/g, '')}
-                      </pre>
-                    )}
+                      >
+                        <span
+                          aria-hidden
+                          className={cn(
+                            'mt-[0.45em] size-1.5 shrink-0 rounded-full',
+                            ins.type === 'warning' ? 'bg-[var(--primary)]' : 'bg-[var(--g-ink-soft)]',
+                          )}
+                        />
+                        <span>
+                          {ins.type === 'warning' && <span className="sr-only">Warning: </span>}
+                          {ins.message}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                {!analyticsData.skills.length ? (
+                  <p className="px-4 py-8 text-center text-[13px] leading-[1.5] text-muted-foreground">
+                    No runs yet. Success rates by skill show up here after the first runs.
+                  </p>
+                ) : (
+                  <div>
+                    <p className={cn(SMALL_LABEL, 'mb-1.5 flex justify-between px-1')}>
+                      <span>By skill</span>
+                      <span>Success</span>
+                    </p>
+                    <ul className="space-y-0.5">
+                      {analyticsData.skills.map(s => {
+                        const last = s.lastConclusion
+                          ? runState({ status: 'completed', conclusion: s.lastConclusion })
+                          : 'other'
+                        return (
+                          <li key={s.name} className="flex items-center gap-2 px-1 py-1.5">
+                            <span className="w-[6.5rem] shrink-0 truncate text-[13px]" title={s.name}>
+                              {s.name}
+                            </span>
+                            <span
+                              aria-hidden
+                              className="flex h-1.5 flex-1 overflow-hidden rounded-full bg-[var(--hover)]"
+                            >
+                              {s.success > 0 && (
+                                <span
+                                  className="h-full bg-[var(--g-ink-soft)]"
+                                  style={{ width: `${(s.success / total) * 100}%` }}
+                                />
+                              )}
+                              {s.failure > 0 && (
+                                <span
+                                  className="h-full bg-[var(--primary)]"
+                                  style={{ width: `${(s.failure / total) * 100}%` }}
+                                />
+                              )}
+                            </span>
+                            <span
+                              className={cn(
+                                'w-10 shrink-0 text-right font-mono text-[12px] tabular-nums',
+                                s.successRate < 80 ? 'text-[oklch(0.5_0.19_33)]' : 'text-muted-foreground',
+                              )}
+                            >
+                              {s.successRate}%
+                            </span>
+                            <span className="sr-only">
+                              : {s.success} succeeded, {s.failure} failed{last === 'failed' ? ', last run failed' : ''}
+                            </span>
+                          </li>
+                        )
+                      })}
+                    </ul>
                   </div>
                 )}
               </div>
-            </div>
-          ) : (
-            <div>
-              {!runs.length ? (
-                <div className="px-4 py-12 text-center text-xs text-primary-35 font-mono">No runs</div>
-              ) : (
-                runs.map(run => <RunRow key={run.id} run={run} onView={viewRunLogs} />)
-              )}
-            </div>
-          ))}
-
-        {/* Analytics */}
-        {rightTab === 'analytics' &&
-          (analyticsError ? (
-            <PanelError label="analytics" onRetry={onFetchAnalytics} />
-          ) : !analyticsData ? (
-            <div className="flex justify-center py-12">
-              <div className="w-2 h-2 rounded-full bg-aeon-red animate-pulse" />
-            </div>
-          ) : (
-            <div className="p-3 space-y-4">
-              <div className="grid grid-cols-2 gap-[var(--space-xs)]">
-                <div className="card-hst p-3">
-                  <div className="text-label">Runs</div>
-                  <div className="font-display text-2xl mt-1">{analyticsData.summary.totalRuns}</div>
-                </div>
-                <div className="card-hst p-3">
-                  <div className="text-label">Success</div>
-                  <div
-                    className={`font-display text-2xl mt-1 ${analyticsData.summary.overallSuccessRate >= 80 ? 'text-aeon-green' : analyticsData.summary.overallSuccessRate >= 50 ? 'text-aeon-amber' : 'text-aeon-red-alert'}`}
-                  >
-                    {analyticsData.summary.overallSuccessRate}%
-                  </div>
-                </div>
-              </div>
-              {analyticsData.insights.length > 0 && (
-                <div className="space-y-1.5">
-                  {analyticsData.insights.map((ins, i) => (
-                    <div
-                      key={i}
-                      className={`text-[11px] font-mono px-3 py-2 border ${ins.type === 'warning' ? 'text-aeon-red bg-aeon-red/10 border-aeon-red/30' : ins.type === 'success' ? 'text-aeon-green bg-aeon-green/10 border-aeon-green/30' : 'text-primary-70 bg-white/5 border-white/15'}`}
-                    >
-                      {ins.message}
-                    </div>
-                  ))}
-                </div>
-              )}
-              <div className="space-y-1">
-                {analyticsData.skills.map(s => (
-                  <div key={s.name} className="flex items-center gap-2 py-1">
-                    <span
-                      className={`text-xs w-3 text-center ${s.lastConclusion === 'success' ? 'text-aeon-green' : s.lastConclusion === 'failure' ? 'text-aeon-red-alert' : 'text-primary-35'}`}
-                    >
-                      {s.lastConclusion === 'success' ? '\u2713' : s.lastConclusion === 'failure' ? '\u2717' : '\u00b7'}
-                    </span>
-                    <span className="font-mono text-[11px] text-primary-70 w-28 truncate">{s.name}</span>
-                    <div className="flex-1 h-2 bg-aeon-bg overflow-hidden flex">
-                      {s.success > 0 && (
-                        <div
-                          className="bg-aeon-green/60 h-full"
-                          style={{
-                            width: `${(s.success / Math.max(...analyticsData.skills.map(sk => sk.total), 1)) * 100}%`,
-                          }}
-                        />
-                      )}
-                      {s.failure > 0 && (
-                        <div
-                          className="bg-aeon-red-alert/40 h-full"
-                          style={{
-                            width: `${(s.failure / Math.max(...analyticsData.skills.map(sk => sk.total), 1)) * 100}%`,
-                          }}
-                        />
-                      )}
-                    </div>
-                    <span
-                      className={`text-[10px] font-mono tabular-nums w-8 text-right ${s.successRate >= 80 ? 'text-aeon-green' : s.successRate >= 50 ? 'text-aeon-amber' : 'text-aeon-red-alert'}`}
-                    >
-                      {s.successRate}%
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
+            ))}
+        </div>
       </div>
-    </div>
+    </aside>
   )
 }

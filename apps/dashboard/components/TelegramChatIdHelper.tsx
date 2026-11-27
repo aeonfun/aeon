@@ -1,7 +1,9 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { inputCls, isRecord } from '../lib/utils'
+import { isRecord } from '../lib/utils'
+import { ActionButton, Field } from './glass/connect/ui'
+import { ExternalLink, HINT, INLINE_CODE, StatusNote } from './glass/connect/forms'
 import type { TelegramStatus } from '../lib/types'
 
 interface TelegramChatIdHelperProps {
@@ -56,7 +58,7 @@ export function TelegramChatIdHelper({ defaultToken, onFound }: TelegramChatIdHe
         const id = chatIdFrom(updates[i])
         if (id !== undefined) {
           onFound(String(id))
-          setStatus({ ok: true, msg: `Found chat ID ${id} - filled in above, hit Save.` })
+          setStatus({ ok: true, msg: `Found chat ID ${id}. It is filled in below: press Save.` })
           return
         }
       }
@@ -70,66 +72,75 @@ export function TelegramChatIdHelper({ defaultToken, onFound }: TelegramChatIdHe
 
   if (!open) {
     return (
-      <button
-        onClick={() => setOpen(true)}
-        title="Paste your bot token and Aeon reads your chat ID from Telegram's getUpdates API"
-        className="text-[10px] font-mono text-aeon-red/80 hover:text-aeon-red transition-colors mt-1"
-      >
-        Find my chat ID →
-      </button>
+      <div>
+        <ActionButton
+          onClick={() => setOpen(true)}
+          title="Paste your bot token and Aeon reads your chat ID from Telegram's getUpdates API"
+        >
+          Find my chat ID
+          <svg
+            aria-hidden
+            viewBox="0 0 16 16"
+            className="size-4 text-muted-foreground"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={1.5}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M3 8h10M9 4l4 4-4 4" />
+          </svg>
+        </ActionButton>
+      </div>
     )
   }
 
   return (
-    <div className="mt-2 border border-[rgba(250,250,250,0.10)] bg-aeon-bg/40 p-3 space-y-2">
-      <p className="text-[11px] text-primary-40 leading-relaxed">
-        Send your bot any message in Telegram first (it can&apos;t see you until you do), then paste its token - the
-        chat ID is read from <span className="font-mono text-primary-70">getUpdates</span>. The token stays in your
-        browser; nothing is stored.
+    <div className="space-y-3 rounded-[18px] bg-[rgb(255_255_255/0.5)] p-4 shadow-[inset_0_0_0_1px_var(--line)]">
+      <p className={HINT}>
+        Send your bot any message in Telegram first (it can&apos;t see you until you do), then paste its token: the chat
+        ID is read from <code className={INLINE_CODE}>getUpdates</code>. The token stays in your browser; nothing is
+        stored.
       </p>
-      <div className="flex gap-2">
-        <input
+      <div className="flex flex-col gap-2 sm:flex-row">
+        <Field
+          label="Bot token"
+          hideLabel
+          className="min-w-0 flex-1"
           type="password"
           value={token}
           onChange={e => setToken(e.target.value)}
           onKeyDown={e => e.key === 'Enter' && findChatId()}
-          placeholder="paste bot token..."
-          className={inputCls}
+          placeholder="Paste the bot token"
+          autoComplete="off"
         />
-        <button
-          onClick={findChatId}
-          disabled={!trimmed || busy}
-          className="bg-aeon-green text-white text-[11px] px-4 py-2 font-mono hover:opacity-90 transition-opacity disabled:opacity-50 shrink-0"
-        >
-          {busy ? 'Fetching…' : 'Fetch'}
-        </button>
-        <button
-          onClick={() => {
-            setOpen(false)
-            setStatus(null)
-          }}
-          className="text-[11px] text-primary-40 font-mono px-2 py-2 hover:text-primary-70 shrink-0"
-        >
-          Cancel
-        </button>
+        <div className="flex gap-2">
+          <ActionButton onClick={findChatId} disabled={!trimmed || busy} className="h-12 flex-1 sm:flex-none">
+            {busy ? 'Fetching' : 'Fetch'}
+          </ActionButton>
+          <ActionButton
+            onClick={() => {
+              setOpen(false)
+              setStatus(null)
+            }}
+            className="h-12"
+          >
+            Cancel
+          </ActionButton>
+        </div>
       </div>
-      {status && (
-        <p className={`text-[11px] font-mono ${status.ok ? 'text-aeon-green' : 'text-aeon-red-alert/80'}`}>
-          {status.msg}
-        </p>
-      )}
+      {status && <StatusNote tone={status.ok ? 'ok' : 'error'}>{status.msg}</StatusNote>}
       {getUpdatesUrl && (
-        <a
-          href={getUpdatesUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          title={
-            'Opens getUpdates for your bot in a new tab - look for "chat":{"id":...} in the JSON. Empty result? Message your bot first.'
-          }
-          className="inline-block text-[10px] font-mono text-primary-40 hover:text-aeon-red transition-colors"
-        >
-          or open getUpdates in a new tab ↗
-        </a>
+        <p className={HINT}>
+          <ExternalLink
+            href={getUpdatesUrl}
+            title={
+              'Opens getUpdates for your bot in a new tab - look for "chat":{"id":...} in the JSON. Empty result? Message your bot first.'
+            }
+          >
+            Or open getUpdates in a new tab
+          </ExternalLink>
+        </p>
       )}
     </div>
   )

@@ -1,7 +1,9 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { inputCls } from '../lib/utils'
+import { cn } from '@/lib/cn'
+import { ActionButton, Field, LINK, TAG } from './glass/connect/ui'
+import { HINT, QUIET_TAG, StatusNote } from './glass/connect/forms'
 import { postJson } from '../lib/api-client'
 
 // Sets TELEGRAM_CHAT_ID without copy-paste: show a t.me deep link with a
@@ -112,78 +114,85 @@ export function TelegramLinkCard({ sessionBotToken, chatIdSet, onLinked }: Teleg
   }
 
   return (
-    <div className="px-[var(--space-md)] py-[var(--space-sm)]">
-      <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-primary-40 mb-1">
-        Link your chat {chatIdSet && status !== 'found' ? '(already set - relink to change)' : ''}
-      </div>
+    <div className="px-3 py-4 sm:pl-[calc(22px+1.75rem)]">
+      <p className="flex flex-wrap items-center gap-2">
+        <span className="text-[15px] font-medium">Link your chat</span>
+        {chatIdSet && status !== 'found' && <span className={cn(TAG, QUIET_TAG)}>Already set, relink to change</span>}
+      </p>
       {status === 'idle' || status === 'starting' || status === 'error' ? (
         <>
-          <p className="text-[11px] text-primary-40 leading-relaxed mb-2">
+          <p className={cn(HINT, 'mt-1 max-w-[78ch]')}>
             Skip finding the chat ID by hand: get a link, tap it, press Start, done.
             {!sessionBotToken &&
               ' Paste the bot token once more (GitHub secrets cannot be read back); it is only used for this and not stored.'}
           </p>
-          <div className="flex gap-2">
+          <div className="mt-3 flex flex-col gap-2 sm:flex-row">
             {!sessionBotToken && (
-              <input
+              <Field
+                label="Bot token"
+                hideLabel
+                className="min-w-0 flex-1"
                 type="password"
                 value={token}
                 onChange={e => setToken(e.target.value)}
-                placeholder="bot token (123456789:AA...)"
-                className={inputCls}
+                onKeyDown={e => e.key === 'Enter' && botToken && start()}
+                placeholder="Bot token (123456789:AA...)"
+                autoComplete="off"
               />
             )}
-            <button onClick={start} disabled={!botToken || status === 'starting'} className="btn-mini-go shrink-0">
-              {status === 'starting' ? '...' : 'Get my link'}
-            </button>
+            <ActionButton
+              onClick={start}
+              disabled={!botToken || status === 'starting'}
+              className="h-12 shrink-0 self-start sm:self-auto"
+            >
+              {status === 'starting' ? 'Getting the link' : 'Get my link'}
+            </ActionButton>
           </div>
-          {status === 'error' && <p className="text-[11px] font-mono text-aeon-red-alert/80 mt-1.5">{msg}</p>}
+          {status === 'error' && (
+            <StatusNote tone="error" className="mt-2">
+              {msg}
+            </StatusNote>
+          )}
         </>
       ) : status === 'waiting' && link ? (
-        <div className="space-y-2">
-          <p className="text-[11px] text-primary-50 leading-relaxed">
+        <div className="mt-2 space-y-3">
+          <p className={HINT}>
             Open this on the phone or computer where you use Telegram and press{' '}
-            <span className="text-aeon-fg">Start</span>:
+            <strong className="font-medium text-foreground">Start</strong>:
           </p>
-          <div className="flex items-stretch border border-[rgba(250,250,250,0.14)] bg-aeon-bg">
+          <div className="g-chip flex min-h-12 items-center gap-2 rounded-[18px] py-1.5 pr-1.5 pl-4">
             <a
               href={link.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 min-w-0 px-3 py-2 text-[11px] font-mono text-aeon-fg break-all hover:text-aeon-red"
+              className={cn(LINK, 'min-w-0 flex-1 py-1.5 font-mono text-[13px] [overflow-wrap:anywhere]')}
             >
               {link.link}
+              <span className="sr-only"> (opens in a new tab)</span>
             </a>
-            <button
-              onClick={copy}
-              className="shrink-0 px-3 border-l border-[rgba(250,250,250,0.14)] text-[10px] font-mono uppercase tracking-[0.14em] text-primary-70 hover:text-aeon-fg"
-            >
+            <ActionButton onClick={copy} className="h-9 shrink-0 px-3.5 text-[13px]">
               {copied ? 'Copied' : 'Copy'}
-            </button>
+            </ActionButton>
           </div>
-          <p className="text-[11px] font-mono text-primary-40 flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-aeon-red animate-pulse" />
-            Waiting for /start from @{link.username}...
-          </p>
+          <StatusNote tone="busy">Waiting for /start from @{link.username}</StatusNote>
         </div>
       ) : status === 'found' ? (
-        <p className="text-[11px] font-mono text-aeon-green">{msg}</p>
+        <StatusNote tone="ok" className="mt-2">
+          {msg}
+        </StatusNote>
       ) : status === 'backlog' ? (
-        <div>
-          <p className="text-[11px] text-aeon-red/80 leading-relaxed">
-            This bot has 100+ old updates waiting, so Aeon cannot see your new /start. Paste the chat id yourself with{' '}
-            <span className="text-aeon-fg">Find my chat ID</span> under TELEGRAM_CHAT_ID above, or clear the bot&apos;s
-            old updates and try again.
-          </p>
-          <button onClick={() => setStatus('idle')} className="btn-mini mt-1.5">
-            Try again
-          </button>
+        <div className="mt-2 space-y-3">
+          <StatusNote tone="error">
+            This bot has 100+ old updates waiting, so Aeon cannot see your new /start. Paste the chat id yourself with
+            Find my chat ID under TELEGRAM_CHAT_ID above, or clear the bot&apos;s old updates and try again.
+          </StatusNote>
+          <ActionButton onClick={() => setStatus('idle')}>Try again</ActionButton>
         </div>
       ) : (
-        <p className="text-[11px] text-aeon-red/80 leading-relaxed">
-          This bot uses a webhook (instant mode), so Aeon cannot read its messages here. Use{' '}
-          <span className="text-aeon-fg">Find my chat ID</span> under TELEGRAM_CHAT_ID above instead.
-        </p>
+        <StatusNote tone="error" className="mt-2">
+          This bot uses a webhook (instant replies), so Aeon cannot read its messages here. Use Find my chat ID under
+          TELEGRAM_CHAT_ID above instead.
+        </StatusNote>
       )}
     </div>
   )

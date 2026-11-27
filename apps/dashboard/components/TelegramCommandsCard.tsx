@@ -2,16 +2,20 @@
 
 import { useState } from 'react'
 import type { TelegramStatus } from '../lib/types'
+import { withBase } from '@/lib/base-path'
+import { cn } from '@/lib/cn'
+import { ActionButton, TAG } from './glass/connect/ui'
+import { HINT, QUIET_TAG, INLINE_CODE, StatusNote } from './glass/connect/forms'
 
 interface TelegramCommandsCardProps {
   // Whether TELEGRAM_BOT_TOKEN is set. The workflow reads the token server-side, so
-  // re-registering only makes sense once it exists — the button is disabled until then.
+  // re-registering only makes sense once it exists - the button is disabled until then.
   tokenSet: boolean
 }
 
 // A row inside the Telegram credentials list. Slash commands register automatically
 // the moment the bot token is saved (POST /api/secrets dispatches the workflow), and
-// again whenever aeon.yml changes on main — so this is just a manual "re-sync after
+// again whenever aeon.yml changes on main - so this is just a manual "re-sync after
 // toggling skills" button. It POSTs to /api/telegram/commands, which dispatches the
 // Setup Telegram Commands workflow (reads the stored TELEGRAM_BOT_TOKEN server-side and
 // calls setMyCommands + setChatMenuButton). No token pasting.
@@ -24,7 +28,7 @@ export function TelegramCommandsCard({ tokenSet }: TelegramCommandsCardProps) {
     setBusy(true)
     setStatus(null)
     try {
-      const res = await fetch('/api/telegram/commands', { method: 'POST' })
+      const res = await fetch(withBase('/api/telegram/commands'), { method: 'POST' })
       const data = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string }
       if (!res.ok || !data.ok) {
         setStatus({ ok: false, msg: data.error || 'Could not start the registration workflow.' })
@@ -32,7 +36,7 @@ export function TelegramCommandsCard({ tokenSet }: TelegramCommandsCardProps) {
       }
       setStatus({
         ok: true,
-        msg: 'Registering… the workflow is running in GitHub Actions; your / menu updates in ~30s.',
+        msg: 'Registering. The workflow is running in GitHub Actions; your / menu updates in about 30 seconds.',
       })
     } catch {
       setStatus({ ok: false, msg: 'Could not reach the dashboard API.' })
@@ -42,24 +46,20 @@ export function TelegramCommandsCard({ tokenSet }: TelegramCommandsCardProps) {
   }
 
   return (
-    <div className="px-[var(--space-md)] py-[var(--space-sm)]">
-      <div className="flex items-start justify-between gap-3">
+    <div className="px-3 py-4 sm:pl-[calc(22px+1.75rem)]">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
         <div className="min-w-0">
-          <div className="flex items-center gap-2">
-            <span className="font-mono text-xs">⌘ Slash commands</span>
-            <span className="text-[10px] font-mono uppercase tracking-[0.14em] text-primary-35">auto</span>
-          </div>
-          <div className="text-[11px] text-primary-40 font-mono mt-1">
-            Enabled skills become Telegram <span className="text-primary-70">/</span> commands - then{' '}
-            <span className="text-primary-70">/skillname</span> runs instantly, no LLM call.
-          </div>
-          {status && (
-            <p className={`text-[11px] font-mono mt-2 ${status.ok ? 'text-aeon-green' : 'text-aeon-red-alert/80'}`}>
-              {status.msg}
-            </p>
-          )}
+          <p className="flex flex-wrap items-center gap-2">
+            <span className="text-[15px] font-medium">Slash commands</span>
+            <span className={cn(TAG, QUIET_TAG)}>Automatic</span>
+          </p>
+          <p className={cn(HINT, 'mt-1 max-w-[78ch]')}>
+            Enabled skills become Telegram <code className={INLINE_CODE}>/</code> commands, so{' '}
+            <code className={INLINE_CODE}>/skillname</code> runs at once with no model call. They register when the bot
+            token is saved; register again after enabling or disabling skills.
+          </p>
         </div>
-        <button
+        <ActionButton
           onClick={register}
           disabled={!tokenSet || busy}
           title={
@@ -67,11 +67,16 @@ export function TelegramCommandsCard({ tokenSet }: TelegramCommandsCardProps) {
               ? 'Runs the Setup Telegram Commands workflow - reuses the stored bot token server-side, no pasting.'
               : 'Set TELEGRAM_BOT_TOKEN first; commands register automatically once it is saved.'
           }
-          className="text-[11px] text-aeon-bg bg-aeon-fg font-mono px-2.5 py-1 hover:opacity-90 transition-opacity disabled:opacity-50 shrink-0"
+          className="self-start sm:self-auto"
         >
-          {busy ? 'Registering…' : 'Register again'}
-        </button>
+          {busy ? 'Registering' : 'Register again'}
+        </ActionButton>
       </div>
+      {status && (
+        <StatusNote tone={status.ok ? 'ok' : 'error'} className="mt-3">
+          {status.msg}
+        </StatusNote>
+      )}
     </div>
   )
 }

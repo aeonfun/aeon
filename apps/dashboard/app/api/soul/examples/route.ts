@@ -11,18 +11,40 @@ const SOURCE_REPO = 'aeonfun/soul.md'
 
 // Short blurbs for the known examples; unknown ones still list with just a name.
 const BLURBS: Record<string, string> = {
-  karpathy: 'AI researcher & educator - builds from scratch, Software 2.0',
-  'garry-tan': 'YC president - founder-first, optimistic, direct',
-  steipete: 'Indie Apple-platform dev - sharp, technical, opinionated',
-  'vivian-balakrishnan': "Singapore's foreign minister - measured, statesmanlike",
+  ansem: 'Crypto trader with loud, early calls',
+  'elon-musk': 'Builds rockets and cars, posts fast',
+  'garry-tan': 'YC president, founder-first and direct',
+  'hunter-biden': 'Artist and author, tells it straight',
+  karpathy: 'AI researcher who builds from scratch',
+  'michael-saylor': 'Bitcoin maximalist, all conviction',
+  steipete: 'Indie dev, sharp and opinionated',
+  'vitalik-buterin': 'Ethereum founder, careful and curious',
+  'vivian-balakrishnan': "Singapore's foreign minister, measured and statesmanlike",
 }
+
+// Their X profile pictures, saved in public/souls/<key>.webp (96px) so the page calls no third party.
+const AVATARS = new Set([
+  'ansem',
+  'elon-musk',
+  'garry-tan',
+  'hunter-biden',
+  'karpathy',
+  'michael-saylor',
+  'steipete',
+  'vitalik-buterin',
+])
 
 export async function GET() {
   try {
     const entries = await getRemoteDirectory(SOURCE_REPO, 'examples')
     const examples: SoulExample[] = entries
       .filter(e => e.type === 'dir' && !e.name.startsWith('_') && !e.name.startsWith('.'))
-      .map(d => ({ key: d.name, label: displayName(d.name), blurb: BLURBS[d.name] || '' }))
+      .map(d => ({
+        key: d.name,
+        label: displayName(d.name),
+        blurb: BLURBS[d.name] || '',
+        avatar: AVATARS.has(d.name) ? `/souls/${d.name}.webp` : undefined,
+      }))
     return NextResponse.json({ examples } satisfies SoulExamplesResponse)
   } catch {
     return NextResponse.json({ examples: [] } satisfies SoulExamplesResponse)

@@ -1,0 +1,446 @@
+/* /docs in the glass look: the reading text of each page (.g-prose), its steps, callouts, code and
+   tables. Sizes and inks follow the landing (B1 type, the paper, star orange as the one accent). */
+
+html:has(.g-docs) {
+  scroll-behavior: smooth;
+  scroll-padding-top: 104px;
+}
+@media (prefers-reduced-motion: reduce) {
+  html:has(.g-docs) {
+    scroll-behavior: auto;
+  }
+}
+
+[data-variant="v94"][data-skin="glass"] .g-prose {
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--foreground);
+
+  & > :first-child {
+    margin-top: 0;
+  }
+  & p,
+  & ul,
+  & ol,
+  & table,
+  & figure,
+  & pre,
+  & blockquote {
+    margin-top: 1.1em;
+  }
+  /* Same weight as every other title on the site (the page title, section titles): 500. */
+  & :is(h2, h3, h4) {
+    position: relative;
+    font-family: var(--font-display);
+    font-weight: 500;
+    scroll-margin-top: 104px;
+    text-wrap: balance;
+  }
+  & h2 {
+    margin-top: 2.2em;
+    font-size: clamp(1.5rem, 2.1vw, 1.75rem);
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+  }
+  & h3 {
+    margin-top: 1.8em;
+    font-size: 1.1875rem;
+    line-height: 1.3;
+    letter-spacing: -0.012em;
+  }
+  & h2 + *,
+  & h3 + * {
+    margin-top: 0.6em;
+  }
+  /* The # beside a heading, shown on hover: a link to that part of the page. */
+  & .g-anchor {
+    margin-left: 0.35em;
+    color: var(--muted-foreground);
+    opacity: 0;
+    text-decoration: none;
+    transition: opacity 150ms ease;
+  }
+  & :is(h2, h3, h4):hover .g-anchor,
+  & .g-anchor:focus-visible {
+    opacity: 1;
+  }
+
+  & a:not(.g-chip, .g-anchor) {
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-color: oklch(0.7 0.17 42 / 0.55);
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 4px;
+    transition: text-decoration-color 150ms ease;
+  }
+  & a:not(.g-chip, .g-anchor):hover {
+    text-decoration-color: var(--primary);
+  }
+  & strong {
+    font-weight: 600;
+  }
+
+  & ul,
+  & ol {
+    padding-left: 1.4em;
+  }
+  & ul {
+    list-style: disc;
+  }
+  & ol {
+    list-style: decimal;
+  }
+  & li {
+    margin-top: 0.4em;
+    padding-left: 0.2em;
+  }
+  & li::marker {
+    color: var(--muted-foreground);
+  }
+
+  /* Inline code: a small pill of smoke. */
+  & :not(pre) > code {
+    border-radius: 7px;
+    background: oklch(0.3 0.015 240 / 0.07);
+    box-shadow: inset 0 0 0 1px oklch(0.3 0.015 240 / 0.08);
+    padding: 0.12em 0.38em;
+    font-family: var(--font-mono);
+    font-size: 0.82em;
+    overflow-wrap: anywhere;
+  }
+  & :is(h2, h3) code {
+    font-size: 0.8em;
+  }
+
+  & hr {
+    margin: 2.4em 0;
+    border: 0;
+    border-top: 1px solid var(--line);
+  }
+  & blockquote {
+    border-left: 2px solid var(--primary);
+    padding-left: 1em;
+    color: var(--g-ink-soft);
+  }
+}
+
+/* Callouts: the title close to its text. */
+[data-variant="v94"][data-skin="glass"] .g-prose .g-callout p {
+  margin-top: 0.45em;
+}
+[data-variant="v94"][data-skin="glass"] .g-prose .g-callout p:first-child {
+  margin-top: 0;
+}
+
+/* Code blocks: a sheet of clear glass, light syntax colors (Shiki's github-light), a copy button. */
+[data-variant="v94"][data-skin="glass"] .g-code {
+  position: relative;
+  margin-top: 1.25em;
+  border-radius: 18px;
+  background: linear-gradient(170deg, rgb(255 255 255 / 0.85), rgb(244 248 251 / 0.7));
+  box-shadow:
+    inset 0 1px 0 #fff,
+    0 0 0 1px oklch(0.3 0.015 240 / 0.1),
+    0 10px 24px -18px oklch(0.25 0.015 240 / 0.45);
+
+  & pre {
+    margin: 0;
+    overflow-x: auto;
+    padding: 18px 20px;
+    font-family: var(--font-mono);
+    font-size: 13.5px;
+    line-height: 1.7;
+    background: none !important;
+  }
+  & pre code {
+    display: grid;
+  }
+  /* Long files (a whole SKILL.md in a blog post) wrap instead of scrolling sideways. */
+  & pre.g-wrap code {
+    display: block;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+  & .shiki span {
+    color: var(--shiki-light, inherit);
+  }
+  /* With no caption row the copy button would sit on the code itself: the code stops short of a
+     gutter on the right where the button lives, so even a long line scrolls under nothing. */
+  &:has(> button):not(:has(> figcaption)) pre {
+    margin-right: 46px;
+    padding-right: 6px;
+  }
+}
+
+/* Tables: rows on the glass, a soft rule between them, the header in small caps. */
+[data-variant="v94"][data-skin="glass"] .g-table {
+  margin-top: 1.25em;
+  overflow-x: auto;
+  border-radius: 18px;
+  background: rgb(255 255 255 / 0.55);
+  box-shadow:
+    inset 0 1px 0 #fff,
+    0 0 0 1px oklch(0.3 0.015 240 / 0.1);
+
+  & table {
+    margin: 0;
+    width: 100%;
+    min-width: 34rem;
+    border-collapse: collapse;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  & th {
+    padding: 12px 16px;
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+    white-space: nowrap;
+  }
+  & td code {
+    white-space: nowrap;
+  }
+  /* A table's caption (blog posts): a quiet line above the header. */
+  & caption {
+    caption-side: top;
+    padding: 14px 16px 2px;
+    text-align: left;
+    font-size: 14px;
+    color: var(--g-ink-soft);
+  }
+  /* Row labels (first cell of a row): normal text, a little bolder. */
+  & tbody th {
+    padding: 11px 16px;
+    vertical-align: top;
+    border-top: 1px solid var(--line);
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--foreground);
+    white-space: normal;
+  }
+  & td {
+    padding: 11px 16px;
+    vertical-align: top;
+    border-top: 1px solid var(--line);
+  }
+}
+
+/* A table wider than its card scrolls sideways; its edges fade where more of it is hidden, so the
+   scroll shows (a scroll-driven mask, only while the table can scroll: an inactive timeline leaves
+   the table as it is). */
+@property --g-fade-l {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+@property --g-fade-r {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+@keyframes g-table-fade {
+  0% {
+    --g-fade-l: 0px;
+    --g-fade-r: 56px;
+  }
+  12% {
+    --g-fade-l: 40px;
+  }
+  88% {
+    --g-fade-r: 56px;
+  }
+  100% {
+    --g-fade-l: 40px;
+    --g-fade-r: 0px;
+  }
+}
+@supports (animation-timeline: scroll()) {
+  [data-variant="v94"][data-skin="glass"] .g-table {
+    mask-image: linear-gradient(to right, transparent, #000 var(--g-fade-l), #000 calc(100% - var(--g-fade-r)), transparent);
+    animation: g-table-fade linear both;
+    animation-timeline: scroll(self inline);
+    /* The mask clips anything painted outside the box, so the outer ring is drawn inside. */
+    box-shadow:
+      inset 0 1px 0 #fff,
+      inset 0 0 0 1px oklch(0.3 0.015 240 / 0.1);
+  }
+}
+
+/* Steps: an orange bead with the number, a thin line down to the next. */
+[data-variant="v94"][data-skin="glass"] .g-steps {
+  counter-reset: g-step;
+  margin-top: 1.5em;
+  padding: 0 !important;
+  list-style: none !important;
+
+  & > li {
+    position: relative;
+    counter-increment: g-step;
+    margin: 0;
+    padding: 0 0 1.6em 3.25rem;
+  }
+  & > li::before {
+    content: counter(g-step);
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: grid;
+    place-items: center;
+    width: 2.1rem;
+    height: 2.1rem;
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--primary-foreground);
+    background: radial-gradient(120% 120% at 30% 20%, oklch(0.8 0.15 55), var(--primary) 70%);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.55),
+      0 6px 14px -6px oklch(0.6 0.18 40 / 0.6);
+  }
+  & > li:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    left: calc(1.05rem - 0.5px);
+    top: 2.5rem;
+    bottom: 0.4rem;
+    width: 1px;
+    background: linear-gradient(var(--line), transparent);
+  }
+  & > li > h3:first-child {
+    margin-top: 0.15em;
+  }
+}
+
+/* The search dialog: glass over a soft veil. */
+[data-variant="v94"][data-skin="glass"] .g-search::backdrop,
+.g-search::backdrop {
+  background: oklch(0.25 0.015 240 / 0.28);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+/* The search field sits in its own sheet, which already shows where typing goes: no ring. */
+[data-variant="v94"] .g-search input:focus-visible {
+  outline: none;
+}
+
+/* Each page arrives: its head, then the text, rise a little and fade in (the sidebar stays put).
+   The page mounts fresh on every docs link, so this plays on each move. */
+@keyframes g-docs-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+.g-docs-in {
+  animation: g-docs-in 520ms cubic-bezier(0.23, 1, 0.32, 1) var(--d, 0ms) both;
+}
+
+/* Copy's icon swap, and the Open menu dropping in. */
+@keyframes g-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.72);
+  }
+}
+.g-pop {
+  animation: g-pop 180ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes g-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.98);
+  }
+}
+.g-menu-in {
+  transform-origin: top;
+  animation: g-menu-in 180ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* The bar beside "On this page" glides to the part in view. */
+.g-toc-bar {
+  transition:
+    top 320ms cubic-bezier(0.23, 1, 0.32, 1),
+    height 320ms cubic-bezier(0.23, 1, 0.32, 1),
+    opacity 200ms ease;
+}
+
+/* The topic cards on /docs: a glass plate cropped on its star, the words on a white haze at the
+   foot. On hover the card lifts, the plate leans in and a band of light crosses the glass. */
+[data-variant="v94"][data-skin="glass"] .g-guide {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: 24px;
+  background: var(--g-paper);
+  box-shadow:
+    inset 0 1px 0 #fff,
+    0 0 0 1px oklch(0.3 0.015 240 / 0.1),
+    0 14px 30px -22px oklch(0.25 0.015 240 / 0.5);
+  transition:
+    transform 320ms cubic-bezier(0.23, 1, 0.32, 1),
+    box-shadow 320ms cubic-bezier(0.23, 1, 0.32, 1);
+  outline: none;
+
+  & .g-guide-art {
+    z-index: -2;
+    transition: transform 900ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  /* The haze the words sit on. */
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(to bottom, rgb(248 249 251 / 0) 30%, rgb(248 249 251 / 0.82) 62%, rgb(248 249 251 / 0.96));
+  }
+  & .g-guide-sheen {
+    position: absolute;
+    inset: -20% -60%;
+    z-index: -1;
+    background: linear-gradient(105deg, transparent 42%, rgb(255 255 255 / 0.55) 50%, transparent 58%);
+    transform: translateX(-70%);
+    pointer-events: none;
+  }
+  &:focus-visible {
+    box-shadow:
+      inset 0 1px 0 #fff,
+      0 0 0 2px var(--foreground);
+  }
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  [data-variant="v94"][data-skin="glass"] .g-guide:hover {
+    transform: translateY(-3px);
+    box-shadow:
+      inset 0 1px 0 #fff,
+      0 0 0 1px oklch(0.3 0.015 240 / 0.12),
+      0 22px 40px -24px oklch(0.25 0.015 240 / 0.55);
+    & .g-guide-art {
+      transform: scale(1.045);
+    }
+    & .g-guide-sheen {
+      transform: translateX(70%);
+      transition: transform 1100ms cubic-bezier(0.23, 1, 0.32, 1);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .g-docs-in,
+  .g-pop,
+  .g-menu-in {
+    animation: none;
+  }
+  .g-toc-bar {
+    transition: none;
+  }
+}

@@ -1,0 +1,26 @@
+/* The logo turn (copied from aeon-website app/v2.css, only the .d-turn block): the star
+   turns a full circle under the pointer and the ring closes its cut meanwhile. Keyed on .v2-page. */
+/* The logo's star turns a full circle under the pointer (hero and nav), and back when it
+   leaves; the ouroboros stays put. In the nav mark the star sits inside one SVG. */
+.v2-page .d-turn-mark,
+.v2-page .d-turn .d-mark-star {
+  transition: rotate 1100ms cubic-bezier(0.65, 0, 0.35, 1);
+}
+.v2-page .d-turn .d-mark-star {
+  transform-box: fill-box;
+  transform-origin: 50% 55.1%;
+}
+/* The nav mark is one SVG: its ring closes the cut round the star at once while the star turns,
+   and opens it again once the star is back at rest. */
+.v2-page .d-turn .d-mark-cut {
+  transition: opacity 250ms ease 1050ms;
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .v2-page .d-turn:hover :is(.d-turn-mark, .d-mark-star) {
+    rotate: 360deg;
+  }
+  .v2-page .d-turn:hover .d-mark-cut {
+    opacity: 0;
+    transition: opacity 120ms ease;
+  }
+}

@@ -1,0 +1,613 @@
+/* glass skin: overrides on top of app/theme.css, scoped to [data-variant="v94"][data-skin="glass"].
+   The blue world turned to glass and light: a night only at the very top of the hero, fading to a
+   pale dawn haze; a cool clear paper; smoke-grey glass for ink; every panel a sheet of glass with
+   something behind it (art, light, the page), a white top highlight, a faint prismatic rim, and in
+   Chromium a refracting edge (glass-filters.tsx). The orange star stays the one warm color. */
+
+/* ---------------------------------------------------------------------------------------
+   Tokens. The root scope is the night (hero, the clear nav, the menu); its background is the
+   dawn haze the page closes on. */
+[data-variant="v94"][data-skin="glass"] {
+  --g-ink: oklch(0.3 0.015 240);
+  --g-ink-soft: oklch(0.36 0.015 240);
+  --g-paper: oklch(0.965 0.006 235);
+  --g-haze: oklch(0.88 0.012 235);
+  --g-hi: rgb(255 255 255 / 0.95);
+
+  --background: var(--g-haze);
+  --foreground: oklch(0.975 0.005 220);
+  --surface: oklch(0.36 0.015 240);
+  --deep: oklch(0.3 0.015 240);
+  --deeper: oklch(0.24 0.015 240);
+  --popover: oklch(0.3 0.015 240);
+  --primary-foreground: oklch(0.2 0.015 240);
+  --secondary: oklch(1 0 0 / 0.14);
+  --muted: oklch(0.2 0.015 240 / 0.3);
+  --muted-foreground: oklch(0.88 0.008 235);
+  --accent: oklch(1 0 0 / 0.12);
+  --border: oklch(1 0 0 / 0.2);
+  --line: oklch(1 0 0 / 0.2);
+  /* Under the hero art only; the art covers it. Pale, so the words always measure on light. */
+  --sweep-top: var(--g-haze);
+  --sweep-mid: oklch(0.3 0.016 245);
+  --hover: oklch(1 0 0 / 0.1);
+  --active: oklch(1 0 0 / 0.14);
+  --selected: oklch(1 0 0 / 0.2);
+  --tint: oklch(1 0 0 / 0.14);
+  --tint-hover: oklch(1 0 0 / 0.2);
+  --overlay: 22 28 34;
+  --surface-1: oklch(0.36 0.015 240);
+  --surface-2: oklch(0.33 0.015 240);
+  --surface-3: oklch(0.3 0.015 240);
+  --surface-4: oklch(0.24 0.015 240);
+  --shadow-color: oklch(0.2 0.015 240 / 0.28);
+
+  /* The logo ring's glass (emblem-parts.tsx): smoke glass by default, for paper and pale glass. */
+  --g-ring-a: #e4ebf0;
+  --g-ring-b: #9fafbb;
+  --g-ring-c: #475864;
+  --g-ring-d: #c2cfd8;
+  --g-ring-e: #33414b;
+  --g-ring-rim: #182128;
+}
+/* Clear glass for the ring over the night (the hero logo, the nav before it turns to glass). */
+[data-variant="v94"][data-skin="glass"] :is(.g-clear, .g-nav:not([data-solid])) {
+  --g-ring-a: rgb(255 255 255 / 0.85);
+  --g-ring-b: rgb(226 234 240 / 0.42);
+  --g-ring-c: rgb(190 205 216 / 0.38);
+  --g-ring-d: rgb(245 249 251 / 0.62);
+  --g-ring-e: rgb(160 178 190 / 0.5);
+  --g-ring-rim: #e8f0f5;
+}
+
+/* The light scopes: the paper, the close, the footer, and the glass nav. Smoke ink on clear. */
+[data-variant="v94"][data-skin="glass"] :is(.v94-day, .g-close, .g-footer, .g-dawn, .g-nav[data-solid]) {
+  color-scheme: light;
+  --background: var(--g-paper);
+  --paper-2: oklch(0.935 0.008 235);
+  --sheet: oklch(0.995 0.002 220);
+  --foreground: var(--g-ink);
+  --ink-pool: var(--g-ink);
+  --on-pool: var(--g-paper);
+  --card: var(--sheet);
+  --card-foreground: var(--foreground);
+  --muted: oklch(0.3 0.015 240 / 0.06);
+  --muted-foreground: oklch(0.44 0.015 240);
+  --border: oklch(0.3 0.015 240 / 0.18);
+  --line: oklch(0.3 0.015 240 / 0.15);
+  --input: var(--border);
+  --ring: var(--foreground);
+  --secondary: oklch(0.3 0.015 240 / 0.07);
+  --accent: oklch(0.3 0.015 240 / 0.07);
+  --hover: oklch(0.3 0.015 240 / 0.06);
+  --active: oklch(0.3 0.015 240 / 0.1);
+  --selected: oklch(0.3 0.015 240 / 0.12);
+  --tint: oklch(0.3 0.015 240 / 0.07);
+  --tint-hover: oklch(0.3 0.015 240 / 0.12);
+  --focus-ring: var(--foreground);
+  --sb: 0 0 0 1px oklch(0.3 0.015 240 / 0.1), 0 1px 2px -1px oklch(0.3 0.015 240 / 0.08), 0 2px 4px 0 oklch(0.3 0.015 240 / 0.05);
+  --sbh: 0 0 0 1px oklch(0.3 0.015 240 / 0.14), 0 1px 2px -1px oklch(0.3 0.015 240 / 0.1), 0 2px 4px 0 oklch(0.3 0.015 240 / 0.07);
+  color: var(--foreground);
+}
+[data-variant="v94"][data-skin="glass"] .g-dawn {
+  --muted-foreground: oklch(0.36 0.015 240);
+  --background: transparent;
+}
+
+[data-variant="v94"][data-skin="glass"] ::selection,
+[data-variant="v94"][data-skin="glass"] .v94-day ::selection {
+  background: oklch(0.65 0.23 32);
+  color: oklch(0.2 0.015 240);
+}
+
+/* The paper: clear cool white, with caustic light lying on it, as under a sheet of glass in the
+   sun (soft prismatic pools, cyan on one side and rose on the other, repeating down the page). */
+[data-variant="v94"][data-skin="glass"] .v94-day {
+  background:
+    radial-gradient(ellipse 34% 260px at 12% 420px, oklch(0.95 0.035 200 / 0.55), transparent 70%),
+    radial-gradient(ellipse 26% 200px at 90% 1180px, oklch(0.95 0.03 340 / 0.45), transparent 70%),
+    radial-gradient(ellipse 30% 220px at 70% 1900px, oklch(0.96 0.035 80 / 0.4), transparent 70%),
+    var(--background);
+  background-size: 100% 2200px, 100% 2200px, 100% 2200px, auto;
+  background-repeat: repeat-y;
+}
+
+/* ---------------------------------------------------------------------------------------
+   The night stage: deep blue-black only at the very top, through slate, into the dawn haze. */
+[data-variant="v94"][data-skin="glass"] .v94-sky-still {
+  background: linear-gradient(in oklch, oklch(0.17 0.02 250), oklch(0.32 0.018 245) 22%, oklch(0.62 0.01 240) 38%, oklch(0.86 0.012 70) 56%, oklch(0.8 0.012 240));
+}
+/* Where the words sit, the haze lifts to pale glass: the top stays night for the ring and its
+   branches, the horizon keeps its orange line below. */
+[data-variant="v94"][data-skin="glass"] .g-haze {
+  background: linear-gradient(to bottom, transparent 22%, oklch(0.9 0.008 235 / 0.5) 40%, oklch(0.93 0.012 70 / 0.62) 56%, oklch(0.93 0.012 70 / 0.3) 70%, transparent 82%);
+  mask-image: radial-gradient(64% 70% at 50% 54%, #000 46%, transparent 100%);
+}
+/* Reduced motion: a soft frost edge where the gate meets the night. */
+[data-variant="v94"][data-skin="glass"] .v94-fog-edge {
+  background: linear-gradient(to bottom, oklch(0.6 0.012 240 / 0), oklch(0.86 0.01 235 / 0.7) 45%, var(--g-paper));
+}
+/* The dusk: paper into the dawn haze the close sits on. */
+[data-variant="v94"][data-skin="glass"] .v94-dusk {
+  background: linear-gradient(to bottom, var(--g-paper), oklch(0.92 0.008 232) 45%, var(--g-haze) 85%);
+}
+[data-variant="v94"][data-skin="glass"] .v94-print {
+  background: var(--g-paper);
+  box-shadow:
+    0 0 0 1px oklch(0.3 0.015 240 / 0.06),
+    0 1px 2px oklch(0.3 0.015 240 / 0.06),
+    0 22px 40px -26px oklch(0.3 0.015 240 / 0.4);
+}
+
+/* ---------------------------------------------------------------------------------------
+   Glass panels. Cards and sheets: a frosted body that blurs and saturates what lies behind it,
+   a white highlight along the top, a soft smoke weight at the bottom, a hairline, and a faint
+   prismatic rim (::after). Faces that turn in 3D skip the backdrop (it breaks under 3D). */
+[data-variant="v94"][data-skin="glass"] .g-glass {
+  background:
+    radial-gradient(120% 60% at 12% 0%, rgb(255 255 255 / 0.55), transparent 55%),
+    linear-gradient(158deg, rgb(255 255 255 / 0.74), rgb(255 255 255 / 0.4) 48%, rgb(234 241 246 / 0.55));
+  -webkit-backdrop-filter: blur(16px) saturate(1.7);
+  backdrop-filter: blur(16px) saturate(1.7);
+  box-shadow:
+    inset 0 1px 0 var(--g-hi),
+    inset 0 0 0 1px rgb(255 255 255 / 0.55),
+    inset 0 -14px 26px -18px oklch(0.3 0.015 240 / 0.2),
+    0 0 0 1px oklch(0.3 0.015 240 / 0.1),
+    0 18px 40px -24px oklch(0.25 0.015 240 / 0.45);
+}
+[data-variant="v94"][data-skin="glass"] .g-glass:not(.absolute, .fixed, .sticky) {
+  position: relative;
+}
+[data-variant="v94"][data-skin="glass"] :is(.g-glass, .g-slab, .g-menu-pill, .g-nav[data-solid])::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  background: conic-gradient(from 200deg, rgb(255 150 205 / 0.7), rgb(255 214 140 / 0.6), rgb(150 255 222 / 0.55), rgb(126 196 255 / 0.7), rgb(206 160 255 / 0.6), rgb(255 150 205 / 0.7));
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+  opacity: 0.6;
+}
+[data-variant="v94"][data-skin="glass"] .v2p-face.g-glass {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  background:
+    radial-gradient(120% 60% at 12% 0%, rgb(255 255 255 / 0.6), transparent 55%),
+    linear-gradient(158deg, rgb(255 255 255 / 0.8), rgb(246 249 251 / 0.66) 50%, rgb(234 241 246 / 0.78));
+}
+/* The How plates: the glass art a touch deeper, so the smoke rims hold their silhouette on the
+   haze, and a cool contact shadow on the paper under each (how.tsx). */
+[data-variant="v94"][data-skin="glass"] .v2p-face:not(.v2p-back) img {
+  filter: contrast(1.12) brightness(0.985);
+}
+[data-variant="v94"][data-skin="glass"] .g-contact {
+  pointer-events: none;
+  background: radial-gradient(closest-side, oklch(0.3 0.02 245 / 0.34), oklch(0.3 0.02 245 / 0.12) 55%, transparent);
+  filter: blur(3px);
+}
+/* The plate's back: its print shows through, frosted and turned around. */
+[data-variant="v94"][data-skin="glass"] .g-frost-img {
+  opacity: 0.55;
+  filter: blur(10px) saturate(1.3);
+  mask-image: none;
+}
+
+/* Chips (the names and the posts in the tickers): the same glass, no backdrop, since they move. */
+[data-variant="v94"][data-skin="glass"] .g-chip {
+  background: linear-gradient(170deg, rgb(255 255 255 / 0.92), rgb(240 245 248 / 0.7) 55%, rgb(255 255 255 / 0.82));
+  box-shadow:
+    inset 0 1px 0 #fff,
+    inset 0 -6px 12px -8px oklch(0.3 0.015 240 / 0.22),
+    0 0 0 1px oklch(0.3 0.015 240 / 0.1),
+    0 6px 16px -10px oklch(0.3 0.015 240 / 0.4);
+}
+[data-variant="v94"][data-skin="glass"] .g-chip:hover {
+  background: linear-gradient(170deg, #fff, rgb(246 249 251 / 0.9));
+}
+
+/* Round beads: the menu toggle, the social links. Clear over the night, smoke on light. */
+[data-variant="v94"][data-skin="glass"] .g-bead {
+  background: radial-gradient(120% 120% at 30% 18%, rgb(255 255 255 / 0.42), rgb(255 255 255 / 0.1) 58%, rgb(255 255 255 / 0.2));
+  -webkit-backdrop-filter: blur(10px) saturate(1.8);
+  backdrop-filter: blur(10px) saturate(1.8);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.7),
+    inset 0 0 0 1px rgb(255 255 255 / 0.3),
+    inset 0 -6px 10px -6px rgb(0 0 0 / 0.2),
+    0 6px 16px -8px rgb(10 18 26 / 0.45);
+  transition:
+    background 200ms ease,
+    scale 150ms ease;
+}
+[data-variant="v94"][data-skin="glass"] .g-bead:hover {
+  background: radial-gradient(120% 120% at 30% 18%, rgb(255 255 255 / 0.55), rgb(255 255 255 / 0.18) 58%, rgb(255 255 255 / 0.28));
+}
+[data-variant="v94"][data-skin="glass"] :is(.g-nav[data-solid], .g-footer) .g-bead {
+  background: radial-gradient(120% 120% at 30% 18%, #fff, rgb(236 242 246 / 0.85) 60%, rgb(255 255 255 / 0.9));
+  box-shadow:
+    inset 0 1px 0 #fff,
+    inset 0 -6px 10px -6px oklch(0.3 0.015 240 / 0.25),
+    0 0 0 1px oklch(0.3 0.015 240 / 0.12),
+    0 6px 14px -8px oklch(0.3 0.015 240 / 0.45);
+}
+
+/* ---------------------------------------------------------------------------------------
+   Buttons (ui/button.tsx paints .g-btn-bg): the primary a pill of orange glass lit from inside;
+   the secondary clear glass; the outline a bare glass rim. */
+[data-variant="v94"][data-skin="glass"] .g-btn-bg[data-g="primary"] {
+  background:
+    radial-gradient(90% 70% at 30% 0%, oklch(0.88 0.1 55 / 0.7), transparent 60%),
+    linear-gradient(180deg, oklch(0.74 0.18 40 / 0.94), oklch(0.65 0.23 32 / 0.94) 55%, oklch(0.6 0.22 30 / 0.96));
+  -webkit-backdrop-filter: blur(8px) saturate(1.6);
+  backdrop-filter: blur(8px) saturate(1.6);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.65),
+    inset 0 0 0 1px rgb(255 255 255 / 0.22),
+    inset 0 -3px 8px -3px rgb(110 20 0 / 0.4),
+    0 8px 22px -8px oklch(0.65 0.23 32 / 0.65);
+  transition: filter 160ms ease;
+}
+[data-variant="v94"][data-skin="glass"] .group:hover > .g-btn-bg[data-g="primary"] {
+  filter: brightness(1.07) saturate(1.05);
+}
+[data-variant="v94"][data-skin="glass"] .g-btn-bg[data-g="secondary"] {
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.48), rgb(255 255 255 / 0.18));
+  -webkit-backdrop-filter: blur(12px) saturate(1.8);
+  backdrop-filter: blur(12px) saturate(1.8);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.85),
+    inset 0 0 0 1px rgb(255 255 255 / 0.4),
+    inset 0 -4px 10px -6px rgb(0 0 0 / 0.16),
+    0 0 0 1px oklch(0.3 0.015 240 / 0.08),
+    0 8px 20px -10px rgb(10 18 26 / 0.4);
+  transition: background 160ms ease;
+}
+[data-variant="v94"][data-skin="glass"] .group:hover > .g-btn-bg[data-g="secondary"] {
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.66), rgb(255 255 255 / 0.3));
+}
+[data-variant="v94"][data-skin="glass"] .v94-day .g-btn-bg[data-g="secondary"] {
+  background: linear-gradient(180deg, #fff, rgb(236 242 246 / 0.78));
+  box-shadow:
+    inset 0 1px 0 #fff,
+    inset 0 -5px 10px -6px oklch(0.3 0.015 240 / 0.22),
+    0 0 0 1px oklch(0.3 0.015 240 / 0.13),
+    0 8px 18px -10px oklch(0.3 0.015 240 / 0.4);
+}
+[data-variant="v94"][data-skin="glass"] .g-btn-bg[data-g="tertiary"] {
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.8),
+    0 0 0 1px var(--border);
+}
+
+/* ---------------------------------------------------------------------------------------
+   The nav: clear over the night, then a pill of liquid glass. The page shows through it
+   blurred and saturated; in Chromium its rim also bends what passes underneath. */
+[data-variant="v94"][data-skin="glass"] .g-nav {
+  position: relative;
+  transition:
+    background-color 300ms ease-out,
+    box-shadow 300ms ease-out;
+}
+[data-variant="v94"][data-skin="glass"] .g-nav > * {
+  position: relative;
+  z-index: 1;
+}
+[data-variant="v94"][data-skin="glass"] .g-nav[data-solid] {
+  background:
+    radial-gradient(60% 120% at 20% -20%, rgb(255 255 255 / 0.5), transparent 60%),
+    linear-gradient(180deg, rgb(255 255 255 / 0.56), rgb(238 244 248 / 0.4));
+  -webkit-backdrop-filter: blur(14px) saturate(1.9) brightness(1.04);
+  backdrop-filter: blur(14px) saturate(1.9) brightness(1.04);
+  box-shadow:
+    inset 0 1px 0 var(--g-hi),
+    inset 0 0 0 1px rgb(255 255 255 / 0.45),
+    inset 0 -10px 18px -12px oklch(0.3 0.015 240 / 0.22),
+    0 0 0 1px oklch(0.3 0.015 240 / 0.1),
+    0 14px 34px -14px oklch(0.2 0.015 240 / 0.42);
+}
+
+/* ---------------------------------------------------------------------------------------
+   The menu: smoked glass closes over the page, caustic light pooled in it; the pills are
+   beads of clear glass that fill with the star's orange under the pointer. */
+[data-variant="v94"][data-skin="glass"] .g-menu {
+  background:
+    radial-gradient(50% 40% at 18% 12%, oklch(0.8 0.05 210 / 0.22), transparent 70%),
+    radial-gradient(46% 40% at 84% 92%, oklch(0.72 0.17 40 / 0.22), transparent 70%),
+    linear-gradient(165deg, oklch(0.34 0.015 240 / 0.86), oklch(0.22 0.015 240 / 0.92));
+  -webkit-backdrop-filter: blur(26px) saturate(1.5);
+  backdrop-filter: blur(26px) saturate(1.5);
+}
+@media (min-width: 900px) {
+  [data-variant="v94"][data-skin="glass"] .g-menu {
+    background:
+      radial-gradient(50% 40% at 18% 12%, oklch(0.8 0.05 210 / 0.2), transparent 70%),
+      radial-gradient(46% 40% at 84% 92%, oklch(0.72 0.17 40 / 0.2), transparent 70%),
+      linear-gradient(165deg, oklch(0.34 0.015 240 / 0.6), oklch(0.22 0.015 240 / 0.72));
+  }
+}
+[data-variant="v94"][data-skin="glass"] .g-menu-pill {
+  position: relative;
+  color: var(--g-ink);
+  background:
+    radial-gradient(70% 90% at 22% 0%, rgb(255 255 255 / 0.85), transparent 60%),
+    linear-gradient(172deg, rgb(255 255 255 / 0.74), rgb(222 231 238 / 0.5) 56%, rgb(255 255 255 / 0.66));
+  box-shadow:
+    inset 0 1px 0 #fff,
+    inset 0 -12px 22px -12px oklch(0.3 0.015 240 / 0.4),
+    inset 0 0 0 1px rgb(255 255 255 / 0.6),
+    0 20px 44px -20px rgb(0 0 0 / 0.75);
+  transition:
+    background 300ms ease,
+    color 300ms ease;
+}
+[data-variant="v94"][data-skin="glass"] .g-menu-pill:is(:hover, :focus-visible) {
+  color: var(--primary-foreground);
+  background:
+    radial-gradient(70% 90% at 22% 0%, oklch(0.9 0.09 55 / 0.85), transparent 60%),
+    linear-gradient(172deg, oklch(0.76 0.17 42 / 0.95), oklch(0.65 0.23 32 / 0.94) 56%, oklch(0.62 0.22 30 / 0.96));
+}
+[data-variant="v94"][data-skin="glass"] .g-menu-pill > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------------------------------------------------------------------------------------
+   The city walk: each caption sits on a pane of glass over the prints as they slide by.
+   The pane and its words fade through --op (city.tsx), so the pane keeps its backdrop. */
+[data-variant="v94"][data-skin="glass"] .g-cap > * {
+  opacity: var(--op, 1);
+}
+[data-variant="v94"][data-skin="glass"] .g-cap::before {
+  content: "";
+  position: absolute;
+  inset: -26px -30px;
+  z-index: -1;
+  border-radius: 30px;
+  pointer-events: none;
+  opacity: var(--op, 1);
+  background:
+    radial-gradient(120% 60% at 12% 0%, rgb(255 255 255 / 0.5), transparent 55%),
+    linear-gradient(158deg, rgb(255 255 255 / 0.66), rgb(255 255 255 / 0.36) 50%, rgb(236 242 246 / 0.5));
+  -webkit-backdrop-filter: blur(14px) saturate(1.7);
+  backdrop-filter: blur(14px) saturate(1.7);
+  box-shadow:
+    inset 0 1px 0 var(--g-hi),
+    inset 0 0 0 1px rgb(255 255 255 / 0.55),
+    inset 0 -14px 26px -18px oklch(0.3 0.015 240 / 0.2),
+    0 0 0 1px oklch(0.3 0.015 240 / 0.08),
+    0 22px 44px -26px oklch(0.25 0.015 240 / 0.45);
+}
+
+/* ---------------------------------------------------------------------------------------
+   The close and the footer: the dawn haze with light pooled in it, and one big slab of
+   frosted glass over it. */
+/* The close: dawn light pooled behind the rising mark. Tighter than the other skins: the mark
+   sits closer under the dusk (2026-10-29, then a fifth more, about 36% in all). */
+[data-variant="v94"][data-skin="glass"] .v94-sky {
+  --pt: clamp(64px, 6vw, 96px);
+}
+/* Phones: the dusk is shorter too, so the mark sits right under it. */
+@media (max-width: 639px) {
+  [data-variant="v94"][data-skin="glass"] .v94-sky {
+    --pt: 36px;
+  }
+}
+[data-variant="v94"][data-skin="glass"] .g-close {
+  background: radial-gradient(46% 420px at 50% 227px, oklch(0.94 0.05 62 / 0.75), oklch(0.92 0.02 200 / 0.3) 55%, transparent 75%);
+}
+/* Behind the slab: a low dawn landscape of glass (two soft ridges and a horizon of light) with
+   caustic pools lying on it, so the slab has something to show through. */
+[data-variant="v94"][data-skin="glass"] .g-footer {
+  background:
+    radial-gradient(22% 34% at 14% 34%, oklch(0.9 0.08 50 / 0.75), transparent 72%),
+    radial-gradient(18% 30% at 86% 58%, oklch(0.88 0.07 205 / 0.8), transparent 72%),
+    radial-gradient(16% 26% at 56% 86%, oklch(0.9 0.06 320 / 0.6), transparent 72%),
+    radial-gradient(12% 20% at 40% 22%, oklch(0.93 0.05 180 / 0.6), transparent 72%),
+    radial-gradient(120% 34% at 22% 100%, oklch(0.86 0.016 240 / 0.8), transparent 70%),
+    radial-gradient(110% 30% at 86% 100%, oklch(0.85 0.018 245 / 0.75), transparent 70%),
+    linear-gradient(to bottom, var(--g-haze), oklch(0.93 0.02 70) 52%, oklch(0.89 0.012 235) 68%, oklch(0.9 0.01 235));
+}
+[data-variant="v94"][data-skin="glass"] .g-slab {
+  position: relative;
+  background:
+    linear-gradient(162deg, rgb(255 255 255 / 0.4), rgb(255 255 255 / 0.12) 40%, rgb(255 255 255 / 0.06) 70%, rgb(255 255 255 / 0.16));
+  -webkit-backdrop-filter: blur(10px) saturate(1.5);
+  backdrop-filter: blur(10px) saturate(1.5);
+  box-shadow:
+    inset 0 1px 0 #fff,
+    inset 1px 0 0 rgb(255 255 255 / 0.7),
+    inset 0 0 0 1px rgb(255 255 255 / 0.6),
+    inset 0 -1px 0 oklch(0.3 0.015 240 / 0.12),
+    0 0 0 1px oklch(0.3 0.015 240 / 0.12),
+    0 1px 2px oklch(0.25 0.015 240 / 0.12),
+    0 6px 12px -8px oklch(0.25 0.015 240 / 0.24);
+}
+[data-variant="v94"][data-skin="glass"] .g-slab > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------------------------------------------------------------------------------------
+   The riso inks, recast as glass: blocks of cool smoke glass (or translucent orange glass)
+   that blur what lies behind them, lit along the top and the left edge, a white rim and a
+   darker foot; the second drum becomes a pool of cool light under the block; the screen a
+   caustic. The inks are plain colors with alpha (no color-mix: Chromium drops the hue of a
+   mix with transparent and the smoke turns warm brown). */
+[data-variant="v94"][data-skin="glass"] .v2p-ink {
+  --ink: oklch(0.32 0.022 245 / 0.86);
+  background-color: var(--ink);
+  background-image:
+    linear-gradient(180deg, rgb(255 255 255 / 0.2), rgb(255 255 255 / 0.04) 26%, transparent 50%),
+    linear-gradient(100deg, rgb(255 255 255 / 0.1), transparent 22%),
+    radial-gradient(120% 80% at 84% 114%, oklch(0.86 0.05 220 / 0.18), transparent 60%);
+  background-size: auto;
+  -webkit-backdrop-filter: blur(12px) saturate(1.6);
+  backdrop-filter: blur(12px) saturate(1.6);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.75),
+    inset 1px 0 0 rgb(255 255 255 / 0.28),
+    inset 0 0 0 1px rgb(255 255 255 / 0.16),
+    inset 0 -12px 20px -14px oklch(0.18 0.02 245 / 0.55),
+    0 0 0 1px oklch(0.3 0.015 240 / 0.14);
+}
+[data-variant="v94"][data-skin="glass"] .v2p-ink-red {
+  --ink: oklch(0.67 0.21 34 / 0.78);
+  background-image:
+    linear-gradient(180deg, rgb(255 255 255 / 0.3), rgb(255 255 255 / 0.06) 26%, transparent 50%),
+    linear-gradient(100deg, rgb(255 255 255 / 0.12), transparent 22%),
+    radial-gradient(120% 80% at 84% 114%, oklch(0.9 0.08 60 / 0.3), transparent 60%);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.8),
+    inset 1px 0 0 rgb(255 255 255 / 0.35),
+    inset 0 0 0 1px rgb(255 255 255 / 0.3),
+    inset 0 -12px 20px -14px oklch(0.45 0.18 30 / 0.5),
+    0 0 0 1px oklch(0.55 0.2 32 / 0.25);
+}
+/* The block's light on the paper: a cool caustic pooled a little below and behind it. */
+[data-variant="v94"][data-skin="glass"] .v2p-reg::before {
+  background-color: transparent;
+  background-image: radial-gradient(closest-side, oklch(0.82 0.06 220 / 0.45), oklch(0.9 0.03 230 / 0.2) 60%, transparent);
+  filter: blur(8px);
+}
+[data-variant="v94"][data-skin="glass"] .v2p-screen {
+  background-image:
+    radial-gradient(60% 50% at 100% 100%, oklch(0.9 0.05 215 / 0.16), transparent 70%),
+    radial-gradient(30% 26% at 92% 96%, oklch(0.9 0.06 330 / 0.18), transparent 70%);
+  background-size: auto;
+  mask-image: none;
+  opacity: 1;
+}
+/* The display figures print crisp: no off-register fringe; the prism stays on the glass. */
+[data-variant="v94"][data-skin="glass"] .v2p-poster {
+  text-shadow: none;
+}
+
+/* ---------------------------------------------------------------------------------------
+   Chromium: the glass refracts. The backdrop is blurred less so the bend at the rim reads. */
+body[data-g-refract] [data-skin="glass"] .g-nav[data-solid] {
+  -webkit-backdrop-filter: blur(5px) saturate(1.9) brightness(1.04) url(#g-refract-pill);
+  backdrop-filter: blur(5px) saturate(1.9) brightness(1.04) url(#g-refract-pill);
+}
+body[data-g-refract] [data-skin="glass"] .g-glass:not(.v2p-face),
+body[data-g-refract] [data-skin="glass"] .g-cap::before {
+  -webkit-backdrop-filter: blur(9px) saturate(1.7) url(#g-refract-card);
+  backdrop-filter: blur(9px) saturate(1.7) url(#g-refract-card);
+}
+
+/* Reduce transparency: the glass turns near solid; the words never depend on what is behind. */
+@media (prefers-reduced-transparency: reduce) {
+  [data-variant="v94"][data-skin="glass"] :is(.g-glass, .g-slab, .g-nav[data-solid]),
+  [data-variant="v94"][data-skin="glass"] .g-cap::before {
+    background: oklch(0.985 0.004 220 / 0.97);
+  }
+  [data-variant="v94"][data-skin="glass"] .g-menu {
+    background: oklch(0.26 0.015 240 / 0.98);
+  }
+}
+
+/* The nav's small constellation (d/sections/nav.tsx): smoke stars that fill in as you read. */
+[data-variant="v94"][data-skin="glass"] .g-navstar {
+  fill: oklch(0.3 0.015 240 / 0.3);
+  transition: fill 300ms ease-out;
+}
+[data-variant="v94"][data-skin="glass"] .g-navstar[data-on] {
+  fill: var(--foreground);
+}
+
+/* The close has no horizon line: the light round the rising mark also fades out before the
+   sky's bottom edge (3.1 marks down its box), so the sky melts into the page. */
+[data-variant="v94"][data-skin="glass"] .v94-meet-light {
+  mask-image: linear-gradient(
+    to bottom,
+    transparent calc(var(--s) * 2.1 - var(--pt)),
+    #000 calc(var(--s) * 2.1 - var(--pt) * 0.2),
+    #000 calc(var(--s) * 2.45),
+    transparent calc(var(--s) * 3.1)
+  );
+}
+
+/* The halo in three layers (halo.tsx): the bands one still drawing, the core and the run their
+   own small SVGs moved only by opacity and scale, so iOS never repaints the big drawing (it
+   blinked there as the tiles redrew every frame). Same timing as the parent's v94-pulse. */
+[data-variant="v94"][data-skin="glass"] .g-halo-bands {
+  position: absolute;
+}
+[data-variant="v94"][data-skin="glass"] :is(.g-halo-core, .g-halo-run) {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+}
+[data-variant="v94"][data-skin="glass"] .g-halo-core {
+  will-change: opacity;
+}
+[data-variant="v94"][data-skin="glass"] .g-halo-run {
+  opacity: 0;
+  scale: 0.4;
+  will-change: opacity, scale;
+}
+[data-variant="v94"][data-skin="glass"] .v94-halo[data-run] .g-halo-run {
+  animation: g-halo-run 9s cubic-bezier(0.22, 0.61, 0.36, 1) 1600ms infinite;
+}
+[data-variant="v94"][data-skin="glass"] .v94-halo[data-run] .g-halo-core {
+  animation: v94-core 9s ease-in-out 1600ms infinite;
+}
+/* Sunrise, once: as one layer on touch screens, band by band (inside out) with a mouse. */
+[data-variant="v94"][data-skin="glass"] .v94-halo[data-run] .g-halo-bands {
+  animation: g-halo-rise 2200ms cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+@media (hover: hover) and (pointer: fine) {
+  [data-variant="v94"][data-skin="glass"] .v94-halo[data-run] .g-halo-bands {
+    animation: none;
+  }
+  [data-variant="v94"][data-skin="glass"] .g-halo-band {
+    transform-box: view-box;
+    transform-origin: 0 0;
+  }
+  [data-variant="v94"][data-skin="glass"] .v94-halo[data-run] .g-halo-band {
+    animation: v94-rise 2200ms cubic-bezier(0.23, 1, 0.32, 1) calc(var(--i) * 130ms) both;
+  }
+}
+[data-variant="v94"][data-skin="glass"] .v94-halo[data-run="paused"] :is(.g-halo-bands, .g-halo-band, .g-halo-core, .g-halo-run) {
+  animation-play-state: paused;
+}
+@keyframes g-halo-rise {
+  from {
+    opacity: 0;
+    scale: 0.82;
+  }
+}
+@keyframes g-halo-run {
+  0% {
+    opacity: 0;
+    scale: 0.4;
+  }
+  4% {
+    opacity: 1;
+  }
+  48% {
+    opacity: 0;
+    scale: 2.96;
+  }
+  100% {
+    opacity: 0;
+    scale: 2.96;
+  }
+}
+
+/* The tickers (Used by on the signed-out page) hold still under the pointer and while a link inside
+   has keyboard focus. The group-hover / group-focus-within utilities on them sit in Tailwind's
+   layer, under theme.css's unlayered marquee animation shorthand, so the pause is set here. */
+[data-variant="v94"][data-skin="glass"] .group:focus-within > .animate-marquee {
+  animation-play-state: paused;
+}
+@media (hover: hover) {
+  [data-variant="v94"][data-skin="glass"] .group:hover > .animate-marquee {
+    animation-play-state: paused;
+  }
+}

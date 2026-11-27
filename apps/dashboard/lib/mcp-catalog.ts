@@ -44,7 +44,7 @@ export const MCP_CATALOG: McpCatalogEntry[] = [
     slug: 'base',
     name: 'Base',
     url: 'https://mcp.base.org',
-    logo: 'https://pbs.twimg.com/profile_images/2060695832840556549/R0s33fMN_400x400.jpg',
+    logo: 'https://avatars.githubusercontent.com/u/16627100?s=200&v=4',
     description: 'Base Account access - wallet, portfolio, swaps, signing, x402 payments, and batched contract calls.',
     // Base is its own OAuth authorization server: no Protected Resource Metadata,
     // but full AS metadata (+ DCR) at https://mcp.base.org/.well-known/oauth-authorization-server.
@@ -108,7 +108,7 @@ export const MCP_CATALOG: McpCatalogEntry[] = [
     url: 'https://wallet-mcp.fd.xyz',
     logo: 'https://fd.xyz/apple-icon.png',
     description:
-      'Non-custodial MCP wallet for AI agents: hold and send across EVM, Solana, Bitcoin and Sui, swap tokens, earn DeFi yield, and make x402 payments — all within server-enforced spending caps, with keys that never leave a secure enclave (the agent never holds them).',
+      'Non-custodial MCP wallet for AI agents: hold and send across EVM, Solana, Bitcoin and Sui, swap tokens, earn DeFi yield, and make x402 payments, all within server-enforced spending caps, with keys that never leave a secure enclave (the agent never holds them).',
     // Standard OAuth. PRM (RFC 9728) at wallet-mcp.fd.xyz/.well-known/oauth-protected-resource
     // names AS https://oauth.fd.xyz (RFC 8414: authorization_code + refresh_token grants,
     // PKCE S256, DCR registration_endpoint, public client via auth "none"). offline_access

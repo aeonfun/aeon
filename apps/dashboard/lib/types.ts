@@ -279,6 +279,8 @@ export interface SoulExample {
   key: string
   label: string
   blurb: string
+  // Path to a local profile picture in public/souls, when there is one.
+  avatar?: string
 }
 export interface SoulExamplesResponse {
   examples: SoulExample[]

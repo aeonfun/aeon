@@ -1,4 +1,28 @@
+'use client'
+
 import type { SpecElement } from '../lib/types'
+import { CountUp } from './glass/count-up'
+import { ArrowUpRightLightIcon } from './glass/d/icons'
+import {
+  AttentionIcon,
+  ATTN,
+  CARD,
+  DoneIcon,
+  LINK,
+  NewTab,
+  SMALL_LABEL,
+  TAG,
+  TAG_ATTN,
+  TAG_INK,
+  TAG_MUTED,
+} from './glass/connect/ui'
+import { StarMark } from './glass/d/emblem-parts'
+import { cn } from '@/lib/cn'
+
+// Glass rendering of a skill's feed output (json-render spec): cards are g-chip cards, figures
+// are Satoshi and count up when they are plain numbers, tags use the glass tones (no green or
+// red: up is ink, down is deep orange, each with an arrow), alerts are callouts with an icon and
+// a word.
 
 // The feed panel is a fixed ~288px column. Two problems used to push content out
 // of its card:
@@ -14,6 +38,33 @@ import type { SpecElement } from '../lib/types'
 const hard = '[overflow-wrap:anywhere] break-words'
 const soft = 'break-words'
 
+// A figure that is a plain number ("7", "1,204", "3.5") counts up; anything else ("$268.0K",
+// "0.00002483", "12%") shows as written.
+function Figure({ value }: { value: string }) {
+  const m = /^-?\d{1,3}(,\d{3})*(\.\d+)?$|^-?\d+(\.\d+)?$/.exec(value)
+  if (!m || value.replace(/[^\d]/g, '').length > 9) return <>{value}</>
+  const n = Number(value.replace(/,/g, ''))
+  const decimals = value.includes('.') ? value.split('.')[1].length : 0
+  return <CountUp to={n} decimals={decimals} duration={1.2} />
+}
+
+function Arrow({ up }: { up: boolean }) {
+  return (
+    <svg
+      aria-hidden
+      viewBox="0 0 16 16"
+      className="size-3.5 shrink-0"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.6}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      {up ? <path d="M8 13V3M4 7l4-4 4 4" /> : <path d="M8 3v10M4 9l4 4 4-4" />}
+    </svg>
+  )
+}
+
 export function SpecNode({ id, elements }: { id: string; elements: Record<string, SpecElement> }) {
   const el = elements[id]
   if (!el) return null
@@ -22,14 +73,22 @@ export function SpecNode({ id, elements }: { id: string; elements: Record<string
   switch (el.type) {
     case 'Card':
       return (
-        <div className="card-hst p-[var(--space-md)] min-w-0 overflow-hidden">
+        <div className={cn(CARD, 'min-w-0 overflow-hidden p-4')}>
           {(p.title || p.description) && (
             <div className="mb-3 min-w-0">
-              {p.title && <h3 className={`font-display text-lg text-primary-100 ${soft}`}>{String(p.title)}</h3>}
-              {p.description && <p className={`text-xs text-primary-50 mt-0.5 ${soft}`}>{String(p.description)}</p>}
+              {p.title && (
+                <h3 className={`font-display text-[1.1875rem] leading-[1.3] font-light tracking-[-0.012em] ${soft}`}>
+                  {String(p.title)}
+                </h3>
+              )}
+              {p.description && (
+                <p className={`mt-0.5 text-[14px] leading-[1.45] text-muted-foreground ${soft}`}>
+                  {String(p.description)}
+                </p>
+              )}
             </div>
           )}
-          <div className="space-y-3 min-w-0">{kids}</div>
+          <div className="min-w-0 space-y-3">{kids}</div>
         </div>
       )
     // A horizontal Stack of Stats must wrap, not crush: without this, three stats in
@@ -39,8 +98,7 @@ export function SpecNode({ id, elements }: { id: string; elements: Record<string
     // content wraps instead of overflowing.
     case 'Stack': {
       const horizontal = p.direction === 'horizontal'
-      const gap =
-        p.gap === 'lg' ? 'gap-[var(--space-lg)]' : p.gap === 'sm' ? 'gap-[var(--space-xs)]' : 'gap-[var(--space-sm)]'
+      const gap = p.gap === 'lg' ? 'gap-[22px]' : p.gap === 'sm' ? 'gap-[6px]' : 'gap-[11px]'
       return (
         <div
           className={`flex min-w-0 ${gap} ${horizontal ? 'flex-row flex-wrap [&>[data-stat]]:basis-[7rem] [&>[data-stat]]:grow [&>[data-stat]]:shrink-0' : 'flex-col [&>*]:min-w-0'}`}
@@ -82,7 +140,7 @@ export function SpecNode({ id, elements }: { id: string; elements: Record<string
       const min = Math.min(260, Math.max(base, need ? need + 32 : base))
       return (
         <div
-          className="grid gap-[var(--space-sm)] min-w-0 [&>*]:min-w-0"
+          className="grid min-w-0 gap-[11px] [&>*]:min-w-0"
           style={{ gridTemplateColumns: `repeat(auto-fit, minmax(min(100%, ${min}px), 1fr))` }}
         >
           {kids}
@@ -92,49 +150,40 @@ export function SpecNode({ id, elements }: { id: string; elements: Record<string
     case 'Heading': {
       const cls =
         p.level === 'h1'
-          ? 'font-display text-2xl'
+          ? 'text-[1.625rem] leading-[1.15] tracking-[-0.025em]'
           : p.level === 'h2'
-            ? 'font-display text-lg'
-            : 'font-display text-sm text-primary-70'
-      return <div className={`${cls} ${soft}`}>{String(p.text || '')}</div>
+            ? 'text-[1.25rem] leading-[1.25] tracking-[-0.015em]'
+            : 'text-[1rem] leading-[1.3] text-[var(--g-ink-soft)]'
+      return <div className={`font-display font-light ${cls} ${soft}`}>{String(p.text || '')}</div>
     }
     case 'Text': {
       const cls =
         p.variant === 'caption'
-          ? 'text-micro text-primary-40'
+          ? 'text-[12px] leading-[1.45] text-muted-foreground'
           : p.variant === 'muted'
-            ? 'text-xs text-primary-50'
+            ? 'text-[14px] leading-[1.5] text-muted-foreground'
             : p.variant === 'lead'
-              ? 'text-sm text-primary-70'
-              : 'text-xs text-primary-70'
+              ? 'text-[16px] leading-[1.5] text-[var(--g-ink-soft)]'
+              : 'text-[14px] leading-[1.5] text-[var(--g-ink-soft)]'
       return <p className={`${cls} ${soft}`}>{String(p.text || '')}</p>
     }
     case 'Badge': {
       const v = p.variant || 'default'
-      const cls =
-        v === 'destructive'
-          ? 'bg-aeon-red-alert/10 text-aeon-red-alert border-aeon-red-alert/30'
-          : v === 'secondary'
-            ? 'bg-aeon-bg text-primary-50 border-[rgba(250,250,250,0.08)]'
-            : 'bg-aeon-green/10 text-aeon-green border-aeon-green/30'
-      return (
-        <span className={`inline-block max-w-full text-[11px] px-2 py-0.5 border font-mono ${soft} ${cls}`}>
-          {String(p.text || '')}
-        </span>
-      )
+      const tone = v === 'destructive' ? TAG_ATTN : v === 'secondary' ? TAG_MUTED : TAG_INK
+      return <span className={cn(TAG, 'max-w-full leading-[1.3]', tone, soft)}>{String(p.text || '')}</span>
     }
     case 'Table': {
       const columns = (p.columns || []) as string[]
       const rows = (p.rows || []) as string[][]
       return (
-        <div className="overflow-x-auto">
-          <table className="w-full text-[11px] font-mono">
+        <div className="overflow-x-auto rounded-[16px] bg-[rgb(255_255_255/0.55)] shadow-[inset_0_1px_0_#fff,0_0_0_1px_oklch(0.3_0.015_240/0.1)]">
+          <table className="w-full text-[13px] leading-[1.45]">
             <thead>
               <tr>
                 {columns.map((c, i) => (
                   <th
                     key={i}
-                    className="text-left text-primary-40 font-medium px-2 py-1.5 border-b border-[rgba(250,250,250,0.08)]"
+                    className="px-3 py-2.5 text-left font-mono text-[11px] font-medium tracking-[0.08em] whitespace-nowrap text-muted-foreground uppercase"
                   >
                     {c}
                   </th>
@@ -145,10 +194,7 @@ export function SpecNode({ id, elements }: { id: string; elements: Record<string
               {rows.map((row, ri) => (
                 <tr key={ri}>
                   {row.map((cell, ci) => (
-                    <td
-                      key={ci}
-                      className={`px-2 py-1.5 text-primary-70 border-b border-[rgba(250,250,250,0.04)] ${hard}`}
-                    >
+                    <td key={ci} className={`border-t border-[var(--line)] px-3 py-2 align-top ${hard}`}>
                       {cell}
                     </td>
                   ))}
@@ -161,12 +207,29 @@ export function SpecNode({ id, elements }: { id: string; elements: Record<string
     }
     case 'Stat': {
       const trend = p.trend as string | undefined
-      const dc = trend === 'up' ? 'text-aeon-green' : trend === 'down' ? 'text-aeon-red' : 'text-primary-50'
+      const value = String(p.value ?? '')
       return (
-        <div data-stat className="bg-aeon-bg p-3 min-w-0 overflow-hidden">
-          {p.label && <div className={`text-label mb-1 ${soft}`}>{String(p.label)}</div>}
-          <div className={`font-display text-xl text-primary-100 leading-tight ${hard}`}>{String(p.value || '')}</div>
-          {p.delta && <div className={`text-xs font-mono ${dc} ${hard}`}>{String(p.delta)}</div>}
+        <div data-stat className="min-w-0 overflow-hidden rounded-[16px] bg-[oklch(0.3_0.015_240/0.05)] px-3.5 py-3">
+          {p.label && <div className={cn(SMALL_LABEL, 'mb-1.5', soft)}>{String(p.label)}</div>}
+          <div
+            className={`font-display text-[1.625rem] leading-[1.1] font-light tracking-[-0.03em] tabular-nums ${hard}`}
+          >
+            <Figure value={value} />
+          </div>
+          {p.delta && (
+            <div
+              className={cn(
+                'mt-1 flex items-center gap-1 font-mono text-[12px]',
+                trend === 'down' ? ATTN : trend === 'up' ? 'text-foreground' : 'text-muted-foreground',
+                hard,
+              )}
+            >
+              {(trend === 'up' || trend === 'down') && <Arrow up={trend === 'up'} />}
+              {trend === 'up' && <span className="sr-only">Up </span>}
+              {trend === 'down' && <span className="sr-only">Down </span>}
+              {String(p.delta)}
+            </div>
+          )}
         </div>
       )
     }
@@ -174,27 +237,39 @@ export function SpecNode({ id, elements }: { id: string; elements: Record<string
       const pct = Math.min(100, (Number(p.value || 0) / Number(p.max || 100)) * 100)
       return (
         <div className="min-w-0">
-          {p.label && <div className={`text-label mb-1.5 ${soft}`}>{String(p.label)}</div>}
-          <div className="progress-bar">
-            <div className="progress-bar-fill" style={{ width: `${pct}%` }} />
+          {p.label && <div className={cn(SMALL_LABEL, 'mb-1.5', soft)}>{String(p.label)}</div>}
+          <div
+            role="progressbar"
+            aria-valuenow={Math.round(pct)}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-label={p.label ? String(p.label) : undefined}
+            className="h-1.5 overflow-hidden rounded-full bg-[var(--muted)]"
+          >
+            <div
+              className="h-full rounded-full bg-[var(--foreground)] transition-[width] duration-300"
+              style={{ width: `${pct}%` }}
+            />
           </div>
         </div>
       )
     }
     case 'TweetCard':
       return (
-        <div className="card-hst p-3 min-w-0 overflow-hidden">
+        <div className={cn(CARD, 'min-w-0 overflow-hidden rounded-[18px] p-3.5')}>
           {p.author && (
-            <div className="flex items-center gap-1.5 mb-1 min-w-0">
-              <span className={`text-xs font-medium text-primary-100 ${soft}`}>{String(p.author)}</span>
-              {p.handle && <span className={`text-[11px] text-primary-40 ${hard}`}>{String(p.handle)}</span>}
+            <div className="mb-1 flex min-w-0 flex-wrap items-baseline gap-x-1.5">
+              <span className={`text-[14px] font-medium ${soft}`}>{String(p.author)}</span>
+              {p.handle && (
+                <span className={`font-mono text-[12px] text-muted-foreground ${hard}`}>{String(p.handle)}</span>
+              )}
             </div>
           )}
-          <p className={`text-xs text-primary-70 leading-relaxed ${soft}`}>{String(p.text || '')}</p>
+          <p className={`text-[14px] leading-[1.5] text-[var(--g-ink-soft)] ${soft}`}>{String(p.text || '')}</p>
           {(p.likes || p.retweets) && (
-            <div className="flex gap-3 mt-1.5 text-[11px] text-primary-40 font-mono">
+            <div className="mt-2 flex gap-3 font-mono text-[12px] text-muted-foreground">
               {p.likes && <span>{String(p.likes)} likes</span>}
-              {p.retweets && <span>{String(p.retweets)} RTs</span>}
+              {p.retweets && <span>{String(p.retweets)} reposts</span>}
             </div>
           )}
         </div>
@@ -205,13 +280,17 @@ export function SpecNode({ id, elements }: { id: string; elements: Record<string
           href={String(p.href || '#')}
           target="_blank"
           rel="noopener noreferrer"
-          className="block card-hst card-hst-orange p-3 min-w-0 overflow-hidden"
+          className="group g-chip flex min-w-0 items-start gap-3 overflow-hidden rounded-[18px] p-3.5 outline-none focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--foreground)]"
         >
-          <div className={`text-xs text-primary-100 ${soft}`}>{String(p.title || '')}</div>
-          <div className="flex gap-2 mt-0.5 text-[11px] text-primary-40 font-mono min-w-0">
-            {p.source && <span className={hard}>{String(p.source)}</span>}
-            {p.score && <span>{String(p.score)}</span>}
-          </div>
+          <span className="min-w-0 flex-1">
+            <span className={`block text-[14px] leading-[1.45] font-medium ${soft}`}>{String(p.title || '')}</span>
+            <span className="mt-1 flex min-w-0 gap-2 font-mono text-[12px] text-muted-foreground">
+              {p.source && <span className={hard}>{String(p.source)}</span>}
+              {p.score && <span>{String(p.score)}</span>}
+            </span>
+          </span>
+          <ArrowUpRightLightIcon className="mt-0.5 size-3.5 shrink-0 text-muted-foreground transition-[translate,color] duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-foreground" />
+          <NewTab />
         </a>
       )
     case 'Link':
@@ -220,30 +299,48 @@ export function SpecNode({ id, elements }: { id: string; elements: Record<string
           href={String(p.href || '#')}
           target="_blank"
           rel="noopener noreferrer"
-          className={`block text-xs text-aeon-red hover:underline underline-offset-2 font-mono ${hard}`}
+          className={cn(LINK, 'block w-fit max-w-full font-mono text-[13px]', hard)}
         >
           {String(p.label || p.href || '')}
+          <NewTab />
         </a>
       )
     case 'Alert': {
       const t = p.type || 'info'
-      const cls =
-        t === 'error'
-          ? 'border-aeon-red-alert/30 bg-aeon-red-alert/10 text-aeon-red-alert'
-          : t === 'warning'
-            ? 'border-aeon-amber/30 bg-aeon-amber/10 text-aeon-amber'
-            : t === 'success'
-              ? 'border-aeon-green/30 bg-aeon-green/10 text-aeon-green'
-              : 'border-white/15 bg-white/5 text-primary-70'
+      const attention = t === 'error' || t === 'warning'
+      const word = t === 'error' ? 'Error' : t === 'warning' ? 'Warning' : t === 'success' ? 'Done' : null
       return (
-        <div className={`p-3 border min-w-0 overflow-hidden ${cls}`}>
-          {p.title && <div className={`text-xs font-bold mb-0.5 ${soft}`}>{String(p.title)}</div>}
-          {p.message && <div className={`text-[11px] opacity-80 ${soft}`}>{String(p.message)}</div>}
+        <div
+          role={attention ? 'alert' : undefined}
+          className={cn(
+            'flex min-w-0 gap-2.5 overflow-hidden rounded-[16px] px-3.5 py-3',
+            attention ? 'bg-[oklch(0.65_0.23_32/0.08)] shadow-[inset_0_0_0_1px_oklch(0.65_0.23_32/0.22)]' : 'g-chip',
+          )}
+        >
+          {attention ? (
+            <AttentionIcon className="mt-[0.15em]" />
+          ) : t === 'success' ? (
+            <DoneIcon className="mt-[0.15em]" />
+          ) : (
+            <StarMark aria-hidden className="mt-[0.2em] h-[0.95em] w-auto shrink-0" />
+          )}
+          <div className="min-w-0 flex-1">
+            {(word || p.title) && (
+              <div className={cn('text-[14px] font-semibold', attention && ATTN, soft)}>
+                {word && p.title ? `${word}: ${String(p.title)}` : (word ?? String(p.title))}
+              </div>
+            )}
+            {p.message && (
+              <div className={`mt-0.5 text-[13px] leading-[1.5] text-[var(--g-ink-soft)] ${soft}`}>
+                {String(p.message)}
+              </div>
+            )}
+          </div>
         </div>
       )
     }
     case 'Separator':
-      return <div className="warning-stripes" />
+      return <hr className="my-1 border-0 border-t border-[var(--line)]" />
     default:
       return null
   }

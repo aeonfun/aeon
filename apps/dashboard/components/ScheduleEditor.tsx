@@ -1,9 +1,15 @@
 'use client'
 
-import { useState } from 'react'
+import { useId, useState } from 'react'
 import { DAYS } from '../lib/constants'
 import { parseCron, buildCron } from '../lib/utils'
+import { Chip, CHIP_ROW, NumberField, PrimaryButton, SMALL_LABEL } from './glass/connect/ui'
+import { SegmentedChoice } from './glass/connect/forms'
+import { cn } from '@/lib/cn'
 
+// Two ways to schedule a skill, each a row you pick by its radio (or by touching its fields):
+// every N minutes or hours, or at a time of day on chosen days. Glass: the picked row sits on a
+// g-chip card, the other is plain; numbers in small 16px pills; units and days as chips.
 export function ScheduleEditor({ cron, onSave }: { cron: string; onSave: (c: string) => void }) {
   const parsed = parseCron(cron)
   const [mode, setMode] = useState<'interval' | 'time'>(parsed.mode)
@@ -22,60 +28,68 @@ export function ScheduleEditor({ cron, onSave }: { cron: string; onSave: (c: str
     const w = days.filter(d => d !== -1 && d !== v)
     setDays(days.includes(v) ? (w.length === 0 ? [-1] : w) : [...w, v])
   }
+  const name = useId()
 
-  const inputCls =
-    'w-12 bg-aeon-panel text-aeon-fg text-xs px-2 py-1.5 border border-[rgba(250,250,250,0.10)] outline-none text-center font-mono focus:border-aeon-red transition-colors'
+  const row = (on: boolean) =>
+    cn(
+      'flex flex-wrap items-center gap-x-3 gap-y-2 rounded-[18px] px-4 py-3 transition-[background-color,box-shadow] duration-150',
+      on ? 'g-chip' : 'shadow-[inset_0_0_0_1px_var(--line)]',
+    )
+  const radio = 'size-4 shrink-0 cursor-pointer accent-[oklch(0.3_0.015_240)]'
 
   return (
     <div className="space-y-3">
-      <div className="flex items-center gap-3">
-        <label className="flex items-center gap-2 cursor-pointer">
+      <div className={row(mode === 'interval')}>
+        <label className="flex min-h-10 cursor-pointer items-center gap-2.5">
           <input
             type="radio"
+            name={name}
             checked={mode === 'interval'}
             onChange={() => setMode('interval')}
-            className="accent-[#d24b40] w-3.5 h-3.5"
+            className={radio}
           />
-          <span className="text-xs text-primary-50">Every</span>
-          <input
-            type="number"
-            min={1}
-            max={iu === 'm' ? 59 : 24}
-            value={iv}
-            onFocus={() => setMode('interval')}
-            onChange={e => {
-              setIv(Math.max(1, parseInt(e.target.value) || 1))
-              setMode('interval')
-            }}
-            className={inputCls}
-          />
-          <div className="flex text-xs overflow-hidden border border-[rgba(250,250,250,0.10)]">
-            {(['m', 'h'] as const).map(u => (
-              <button
-                key={u}
-                onClick={() => {
-                  setIu(u)
-                  setMode('interval')
-                }}
-                className={`px-2.5 py-1.5 transition-colors font-mono ${iu === u ? 'bg-aeon-fg text-aeon-bg' : 'bg-aeon-panel text-primary-40 hover:text-primary-70'}`}
-              >
-                {u}
-              </button>
-            ))}
-          </div>
+          <span className="text-[15px] font-medium">Every</span>
         </label>
+        <NumberField
+          aria-label="Interval"
+          min={1}
+          max={iu === 'm' ? 59 : 24}
+          value={iv}
+          onFocus={() => setMode('interval')}
+          onChange={e => {
+            setIv(Math.max(1, parseInt(e.target.value) || 1))
+            setMode('interval')
+          }}
+        />
+        <SegmentedChoice
+          variant="group"
+          label="Interval unit"
+          value={iu}
+          options={[
+            { id: 'm', label: 'min' },
+            { id: 'h', label: 'hours' },
+          ]}
+          onChange={u => {
+            setIu(u)
+            setMode('interval')
+          }}
+        />
       </div>
-      <div className="flex items-center gap-3">
-        <label className="flex items-center gap-2 cursor-pointer">
+
+      <div className={row(mode === 'time')}>
+        <label className="flex min-h-10 cursor-pointer items-center gap-2.5">
           <input
             type="radio"
+            name={name}
             checked={mode === 'time'}
             onChange={() => setMode('time')}
-            className="accent-[#d24b40] w-3.5 h-3.5"
+            className={radio}
           />
-          <span className="text-xs text-primary-50">At</span>
-          <input
-            type="number"
+          <span className="text-[15px] font-medium">At</span>
+        </label>
+        <span className="flex items-center gap-1.5">
+          <NumberField
+            aria-label="Hour"
             min={1}
             max={12}
             value={h12}
@@ -84,11 +98,12 @@ export function ScheduleEditor({ cron, onSave }: { cron: string; onSave: (c: str
               setH12(Math.max(1, Math.min(12, parseInt(e.target.value) || 1)))
               setMode('time')
             }}
-            className={inputCls}
           />
-          <span className="text-primary-35">:</span>
-          <input
-            type="number"
+          <span aria-hidden className="font-mono text-muted-foreground">
+            :
+          </span>
+          <NumberField
+            aria-label="Minute"
             min={0}
             max={59}
             value={String(min).padStart(2, '0')}
@@ -97,47 +112,44 @@ export function ScheduleEditor({ cron, onSave }: { cron: string; onSave: (c: str
               setMin(Math.max(0, Math.min(59, parseInt(e.target.value) || 0)))
               setMode('time')
             }}
-            className={inputCls}
           />
-          <div className="flex text-xs overflow-hidden border border-[rgba(250,250,250,0.10)]">
-            {(['AM', 'PM'] as const).map(v => (
-              <button
-                key={v}
-                onClick={() => {
-                  setAp(v)
-                  setMode('time')
-                }}
-                className={`px-2.5 py-1.5 transition-colors font-mono ${ap === v ? 'bg-aeon-fg text-aeon-bg' : 'bg-aeon-panel text-primary-40 hover:text-primary-70'}`}
+        </span>
+        <SegmentedChoice
+          variant="group"
+          label="Morning or afternoon"
+          value={ap}
+          options={[
+            { id: 'AM', label: 'AM' },
+            { id: 'PM', label: 'PM' },
+          ]}
+          onChange={v => {
+            setAp(v)
+            setMode('time')
+          }}
+        />
+      </div>
+
+      {mode === 'time' && (
+        <div>
+          <p className={cn(SMALL_LABEL, 'mb-2 px-1')}>Days</p>
+          <div className={CHIP_ROW} role="group" aria-label="Days">
+            {DAYS.map(d => (
+              <Chip
+                key={d.value}
+                on={d.value === -1 ? days.includes(-1) : days.includes(d.value)}
+                onClick={() => toggleDay(d.value)}
+                className="px-3.5"
               >
-                {v}
-              </button>
+                {d.label}
+              </Chip>
             ))}
           </div>
-        </label>
-      </div>
-      {mode === 'time' && (
-        <div className="flex gap-1">
-          {DAYS.map(d => (
-            <button
-              key={d.value}
-              onClick={() => toggleDay(d.value)}
-              className={`text-xs px-2.5 py-1 transition-colors font-mono ${
-                (d.value === -1 ? days.includes(-1) : days.includes(d.value))
-                  ? 'bg-aeon-fg text-aeon-bg'
-                  : 'bg-aeon-panel text-primary-40 border border-[rgba(250,250,250,0.10)] hover:text-primary-70'
-              }`}
-            >
-              {d.label}
-            </button>
-          ))}
         </div>
       )}
-      <button
-        onClick={() => onSave(buildCron(mode, iv, iu, h12, min, ap, days))}
-        className="bg-aeon-fg text-aeon-bg text-xs px-5 py-2 font-mono uppercase tracking-[2px] hover:opacity-90 transition-opacity"
-      >
-        Save
-      </button>
+
+      <div className="flex justify-end pt-1">
+        <PrimaryButton onClick={() => onSave(buildCron(mode, iv, iu, h12, min, ap, days))}>Save</PrimaryButton>
+      </div>
     </div>
   )
 }
