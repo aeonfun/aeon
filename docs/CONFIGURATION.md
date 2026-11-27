@@ -186,7 +186,7 @@ Per-skill execution state (`memory/cron-state.json` — status, success rate, qu
 ## LLM Gateways
 
 <p align="center">
-  <img src="../docs/assets/providers.jpg" alt="9 ways to power Claude Code: Claude subscription, Anthropic API, OpenRouter, Bankr, UsePod, Venice, Surplus, Grok, GLM" width="640" />
+  <img src="../docs/assets/providers.jpg" alt="10 ways to power Claude Code: Claude subscription, Anthropic API, OpenRouter, Bankr, UsePod, Venice, Surplus, Grok, GLM, HivemindOS" width="640" />
 </p>
 
 Aeon can power Claude Code **ten** ways. Two are **direct** to Anthropic; the other eight route through a **gateway**. Press **Connect a model** in the dashboard to add a credential; it's saved as the secret below (HivemindOS is not in the modal yet - set `HIVEMINDOS_CREDIT_TOKEN` as a repo secret directly). (Separately, the [Grok Build harness](harnesses.md) runs the `grok` CLI instead of Claude Code - that's a different axis from the gateways here.)
