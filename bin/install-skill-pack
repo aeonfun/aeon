@@ -556,6 +556,7 @@ fi
 echo ""
 
 INSTALLED=0
+INSTALLED_SLUGS=()
 SKIPPED=0
 FAILED=0
 
@@ -764,6 +765,7 @@ for i in "${!SLUGS[@]}"; do
   INSTALLED=$((INSTALLED + 1))
 
   record_provenance "$slug" "$rel_path"
+  INSTALLED_SLUGS+=("$slug")
   update_skills_json "$slug" "$desc" "$category"
   add_to_aeon_yml "$slug" "$schedule" "$default_enabled"
 done
@@ -793,6 +795,27 @@ if [[ "$DRY_RUN" == "false" ]] && [[ $INSTALLED -gt 0 ]]; then
     "$ROOT_DIR/bin/generate-packs-json" >/dev/null 2>&1 \
       && echo "  catalog: packs.json regenerated (installed pack)" \
       || echo "  warning: packs.json regen failed — run bin/generate-packs-json"
+  fi
+  # Community skills arrive without a glyph, and bin/generate-skill-icons --check
+  # (CI + the skill-integration test) fails on any catalog skill missing one. Give
+  # each newly installed slug a neutral "package" glyph (never overwriting an
+  # existing one) and rebuild the icon assets. Best-effort, like the regens above.
+  ICONS_JSON="$ROOT_DIR/catalog/skill-icons.json"
+  if [[ -f "$ICONS_JSON" ]] && [[ ${#INSTALLED_SLUGS[@]} -gt 0 ]]; then
+    PKG_GLYPH="<path d='M21 8l-9-5-9 5 9 5 9-5z'/><path d='M3 8v8l9 5 9-5V8'/><path d='M12 13v8'/>"
+    tmp_icons=$(mktemp)
+    if jq --arg g "$PKG_GLYPH" '.icons |= (reduce $ARGS.positional[] as $s (.; if has($s) then . else .[$s] = $g end))' \
+        "$ICONS_JSON" --args "${INSTALLED_SLUGS[@]}" > "$tmp_icons"; then
+      mv "$tmp_icons" "$ICONS_JSON"
+      if [[ -x "$ROOT_DIR/bin/generate-skill-icons" ]] && command -v node >/dev/null 2>&1; then
+        "$ROOT_DIR/bin/generate-skill-icons" >/dev/null 2>&1 \
+          && echo "  catalog: skill icons updated" \
+          || echo "  warning: icon regen failed — run bin/generate-skill-icons"
+      fi
+    else
+      rm -f "$tmp_icons"
+      echo "  warning: could not add icons — add glyphs to catalog/skill-icons.json"
+    fi
   fi
 
   echo ""
