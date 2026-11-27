@@ -215,7 +215,7 @@ export const MCP_CATALOG: McpCatalogEntry[] = [
     url: 'https://mcp.ironflow.sh/data',
     logo: 'https://ironflow.sh/apple-touch-icon.png',
     description:
-      'Ironflow - Hyperliquid market data from its own nodes: trades, funding, liquidations, open interest, a live liquidation map, wallet PnL and trader rankings, plus read-only SQL over every fill. Native perps, HIP-3, HIP-4 and spot. 42 read-only tools, no API key needed.',
+      'Ironflow - Hyperliquid market data from its own nodes: trades, funding, liquidations, open interest, a live liquidation map, wallet PnL and trader rankings, plus read-only SQL over every fill. Native perps, HIP-3, HIP-4 and spot. 42 read-only tools, no API key needed. Tool calls and their arguments are logged and kept for 90 days.',
     // Public streamable HTTP, no auth (probed live 2026-11-25: initialize returns
     // serverInfo "ironflow" with no session id, tools/list returns 42 tools, all
     // readOnlyHint). /data is the read-only toolset of https://mcp.ironflow.sh/mcp,
