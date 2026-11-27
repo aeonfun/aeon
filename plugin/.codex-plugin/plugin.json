@@ -1,6 +1,6 @@
 {
   "name": "aeon",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Run and manage your Aeon agent: run skills and read results, turn them on or off and reschedule them, check setup, read memory, edit strategy and voice, add skill packs, plus the operator console skill.",
   "author": {
     "name": "Aeon Inc",
