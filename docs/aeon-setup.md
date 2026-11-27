@@ -44,10 +44,10 @@ The setup skill also ships as a [Claude Code plugin](https://code.claude.com/doc
 
 ```
 /plugin marketplace add aeonfun/aeon
-/plugin install aeon@aeon
+/plugin install aeon-agent@aeon
 ```
 
-Then type `/aeon` in any session and point it at your instance when it asks which repo. Update later with `/plugin update aeon@aeon`, or remove it with `/plugin uninstall aeon@aeon`. (The plugin lives in the [`plugin/`](../plugin) subdirectory of this repo, a self-contained copy of the setup skill, so installing it never pulls in the unattended `skills/` catalog.)
+Then type `/aeon` in any session and point it at your instance when it asks which repo. Update later with `/plugin update aeon-agent@aeon`, or remove it with `/plugin uninstall aeon-agent@aeon`. (The plugin lives in the [`plugin/`](../plugin) subdirectory of this repo, a self-contained copy of the setup skill, so installing it never pulls in the unattended `skills/` catalog.)
 
 The same plugin installs on **Codex** too - it ships a Codex manifest and a repo-scoped marketplace catalog (`.agents/plugins/marketplace.json`):
 

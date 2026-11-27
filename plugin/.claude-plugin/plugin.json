@@ -1,10 +1,10 @@
 {
-  "name": "aeon",
-  "displayName": "Aeon",
+  "name": "aeon-agent",
+  "displayName": "Aeon Agent",
   "version": "0.2.0",
   "description": "Run your own scheduled agent: set up Aeon, turn skills on, schedule and debug runs.",
   "author": {
-    "name": "Aeon Inc",
+    "name": "aeonfun",
     "email": "aaron@aeon.fun",
     "url": "https://www.aeon.fun"
   },

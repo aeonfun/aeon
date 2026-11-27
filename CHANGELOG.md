@@ -9,6 +9,10 @@ from or pin to; the template keeps serving the latest `main` to new forks.
 
 ## [Unreleased]
 
+### Changed
+
+- **Claude Code plugin renamed to `aeon-agent` ("Aeon Agent").** The Claude plugin directory refuses the name "aeon" (it matches a brand another listing owns), so the Claude manifest and marketplace entry now use `aeon-agent`, author `aeonfun`. Install with `/plugin install aeon-agent@aeon`; if you installed `aeon@aeon`, uninstall it and install the new name. The marketplace name (`aeon`) and the Codex plugin (`aeon@aeon`) are unchanged.
+
 ### Added
 
 - **Tenth harness: Factory Droid CLI (`droid`).** The `droid` harness runs Factory's Droid CLI in non-interactive `droid exec -o json -f <file>` mode, authenticating with `FACTORY_API_KEY` (get one at app.factory.ai/settings/api-keys; `aeon auth --harness droid --key <key>`). Write mode passes `--auto high`; read-only mode is the default (no `--auto` flag). The adapter runs under a scratch HOME like cursor, maps the `{type, result, usage, session_id, is_error}` JSON shape to the standard envelope, and treats `is_error: true` as a failure. Default model is `claude-opus-5-5` (Droid's own default, surfaced as `default` in the dashboard picker). No OpenRouter fallback, like cursor and fx. Factory's CLI installer publishes no checksum, so the installer is run with a clean env (like hermes) and the lack of a sha256 check is noted in a comment. (#1382)
