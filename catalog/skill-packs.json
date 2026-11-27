@@ -340,6 +340,28 @@
       ]
     },
     {
+      "repo": "specstream/search-web-skill",
+      "path": "aeon",
+      "name": "SpecStream Pack",
+      "description": "Live web search through the SpecStream Search API: a short answer with the page it was read from, then ranked sources",
+      "author": "specstream",
+      "license": "MIT",
+      "homepage": "https://specstream.ai",
+      "category": "research",
+      "trust_level": "community",
+      "skills": [
+        "specstream-web-search"
+      ],
+      "secrets_required": [
+        "SPECSTREAM_API_KEY"
+      ],
+      "capabilities": [
+        "read_only",
+        "external_api",
+        "sends_notifications"
+      ]
+    },
+    {
       "repo": "danbuildss/orric-aeon",
       "name": "Orric, by Breakra",
       "description": "API-contract checks for Aeon: watch OpenAPI specs, keep one PR comment on spec changes in your own repos, and flag breaking changes shipped as patch/minor releases. Verdicts come from Breakra's deterministic, open-source engine (local npx, no API key).",

@@ -77,6 +77,9 @@ echo "$WT" | grep -q "Bash(./scripts/vuln-poc-gate.sh:\*)" \
 echo "$WT" | grep -q "Bash(./scripts/feature-open-pr.sh:\*)" \
   && pass "write tier includes the feature open-PR check" || bad "write tier missing feature open-PR check"
 echo "$RT" | grep -q "feature-open-pr" && bad "read-only tier must not include the feature open-PR check" || pass "read-only tier excludes the feature open-PR check"
+echo "$WT" | grep -q "Bash(bin/install-skill-pack:\*)" \
+  && pass "write tier includes the community-pack installer" || bad "write tier missing community-pack installer"
+echo "$RT" | grep -q "install-skill-pack" && bad "read-only tier must not include the installer" || pass "read-only tier excludes the installer"
 echo "$WT" | grep -q "Bash(./scripts/dev-loop-review.sh:\*)" \
   && pass "write tier includes the review receipt check" || bad "write tier missing review receipt check"
 
