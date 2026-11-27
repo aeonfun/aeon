@@ -30,7 +30,10 @@ for dir in "$FIXTURES"/*/; do
   # The folder, as the installers pass it: SKILL.md plus any reference files.
   out=$("$SCANNER" "${dir%/}" 2>&1) && rc=0 || rc=$?
   if [[ $rc -ne 0 ]]; then verdict="fail"
-  elif printf '%s' "$out" | grep -q '\[WARN\]'; then verdict="warn"
+  # Here-string, not printf | grep -q: under pipefail, grep -q exits on the first
+  # match, printf can get SIGPIPE on large output, and the pipeline then reads as
+  # "no match" (flaky warn-mixed-script: got pass, want warn).
+  elif grep -q '\[WARN\]' <<<"$out"; then verdict="warn"
   else verdict="pass"; fi
   case "$name" in
     benign-*)    want="pass" ;;
