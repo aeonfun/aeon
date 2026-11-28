@@ -178,10 +178,20 @@ HIGH_SINK_PATTERNS=(
   # `-d`/`--data` with no space before the value (e.g. -d"k=$TOKEN") — the space-
   # anchored `-d ` alternative above does not catch the quoted, spaceless spelling.
   'curl[^|]*[[:space:]]-d["'\''][^"'\'']*(\$[A-Z_]{3,}|secret|token|password|api.?key)'
+  # Credential files sent as an upload or as request data (`-F f=@~/.ssh/id_rsa`,
+  # `-T ~/.aws/credentials`, `--upload-file .env`, `-d @.env`). A file name alone is
+  # not enough to match: it must be a known secret store, so `-F file=@report.pdf`
+  # and `-T build.tar.gz` stay clean.
+  '(curl|wget)[^|]*([[:space:]]-F|--form|[[:space:]]-T|--upload-file|--data(-binary|-raw|-urlencode)?|[[:space:]]-d|--post-file)[^|]*(\.env([^[:alnum:]_.]|$)|id_(rsa|ed25519|ecdsa|dsa)|\.ssh/|\.aws/|\.gnupg/|\.netrc|\.npmrc|\.pypirc|\.git-credentials|/credentials([^[:alnum:]_]|$))'
   # Dump the environment to the network
   'printenv.*\|.*(curl|wget|nc)'
   'env[[:space:]].*\|.*(curl|wget|nc)'
+  # `set`, `export -p` and `declare -p` print every variable too, secrets included.
+  '(^|[;&|(`[:space:]])(set|export[[:space:]]+-p|declare[[:space:]]+-[a-zA-Z]*p[a-zA-Z]*)[[:space:]]*\|.*(curl|wget|nc|ncat|socat)'
   'cat.*/proc/.*environ'
+  # Bash's /dev/tcp and /dev/udp open a raw socket: a reverse shell or a silent
+  # upload with no curl in sight.
+  '/dev/(tcp|udp)/[^/[:space:]]+/[0-9]+'
   # Direct exfil of well-known bot / secret tokens
   '\$TELEGRAM_BOT_TOKEN'
   '\$DISCORD_BOT_TOKEN'
