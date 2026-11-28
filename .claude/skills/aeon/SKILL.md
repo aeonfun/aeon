@@ -55,10 +55,9 @@ Goal: one real notification in their phone, fast. Do not configure a schedule fi
 
 > **Want to drive it from a chat app instead?** Once an instance exists, the user can add https://www.aeon.fun/connect/mcp as a connector in ChatGPT, Claude or Cursor (Claude Code: `claude mcp add --transport http aeon https://www.aeon.fun/connect/mcp`). It signs in with GitHub and can run skills, read outputs and memory, and edit strategy and soul. Details: `references/mcp.md`.
 
-1. **Run `./aeon init`.** Ask public or private first (public: Actions minutes are free; private: `--private`, minutes bill against the account quota, 2,000/mo on Free). Then, from a clone of the template:
+1. **Run `./aeon init`.** Ask public or private first (public: Actions minutes are free; private: `--private`, minutes bill against the account quota, 2,000/mo on Free). This step runs from a local checkout of the template the user already has; this skill never downloads one. No checkout yet: send them to Aeon Connect (above), or to the setup guide at https://github.com/aeonfun/aeon/blob/main/docs/aeon-setup.md to get one themselves. Then, inside that checkout:
 
    ```bash
-   git clone https://github.com/aeonfun/aeon && cd aeon
    ./aeon init                 # add --private, --name <repo>, --harness <h> as needed
    ```
 
